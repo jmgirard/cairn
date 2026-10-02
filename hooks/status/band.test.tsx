@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { bandLines, lineText } from './band'
-import { FIXTURES } from './fixtures.gen'
+import { bandLines, knownStep, lineText, SKILL_LABELS } from './band'
+import { FIXTURES, SKILLS } from './fixtures.gen'
 
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat` and
 // `$.fs.read` calls from an in-memory copy of a fixture, keyed by absolute
@@ -33,9 +33,14 @@ function copyOf(name: string): Copy {
   return { cwd: fixture.cwd, files: { ...fixture.files } }
 }
 
+// How the chapter tool beneath the mod answers a call: it marks the
+// chapter, refuses the call, or marks nothing and errs.
+type ChapterAnswer = 'mark' | 'deny' | 'error'
+
 // The world beneath the mod: the fixture copy as the session's directory and
-// files, and a turn end that answers nothing.
-function seat(on: On, copy: Copy) {
+// files, a turn end that answers nothing, a skill prompt passed through, the
+// chapter tool, and a session end.
+function seat(on: On, copy: Copy, chapter: ChapterAnswer = 'mark') {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
   on('session.cwd', async () => ({ value: copy.cwd }))
   on('fs.stat', async ($, e, next) =>
@@ -43,12 +48,32 @@ function seat(on: On, copy: Copy) {
   )
   on('fs.read', async ($, e, next) => (has(e.path) ? { value: copy.files[e.path] } : next(e)))
   on('turn.complete', async () => ({ text: '' }))
+  on('skill.prompt', async ($, e) => ({ text: e.text }))
+  on('tool.call', { tool: CHAPTER_TOOL }, async () =>
+    chapter === 'deny'
+      ? { deny: 'refused beneath' }
+      : chapter === 'error'
+        ? { result: 'failed beneath', isError: true }
+        : { result: 'Chapter marked' },
+  )
+  on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
   // The engine's own drawing of the band slot, which the mod draws its rows
   // above, or passes to when it has nothing to show.
   on('ui.render', { component: 'AbovePrompt' }, async () => ({ type: 'Text', props: {}, children: [ENGINE] }))
 }
 
 const ENGINE = 'engine slot'
+const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
+
+// A skill prompt, as the engine expands one.
+async function prompt($, skill: string) {
+  await $.skill.prompt({ skill, text: `the ${skill} prompt` })
+}
+
+// A chapter the main loop marks.
+async function chapter($, title: string) {
+  await $.tool.call({ tool: CHAPTER_TOOL, title })
+}
 
 // A plugin beneath the mod that draws its own band row and never calls
 // `next`. Its register closes over nothing here, so its row text is
@@ -104,7 +129,7 @@ function below(node: unknown, type: string): Element[] {
   return el.type === type ? [el, ...rest] : rest
 }
 
-const ROW_KEY = /^M\d+-(header|item)$/
+const ROW_KEY = /^(M\d+|skill)-(header|item)$/
 
 // A row's text with a header row's two groups joined by the right group's
 // left margin, the least gap a row draws (a wide row spreads them further),
@@ -767,5 +792,382 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
     seat(on, copyOf('no-active'))
     await $.turn.complete(turn())
     await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW]), $)
+  })
+})
+
+// M195: the running cairn skill and the session's chapters.
+
+// Each skill's label, written out by hand, never read from band.ts.
+const LABELS: Record<string, string> = {
+  'cairn-init': 'init',
+  'cairn-release': 'release',
+  'cairn-triage': 'triage',
+  'design-interview': 'design',
+  hotfix: 'hotfix',
+  milestone: 'status',
+  'milestone-brief': 'brief',
+  'milestone-implement': 'implement',
+  'milestone-plan': 'plan',
+  'milestone-review': 'review',
+}
+
+// A skill row's text: the label, padded as the phase label is, then the
+// slash command.
+const skillRow = (skill: string) => `${LABELS[skill].padEnd(9)} /${skill}`
+
+const M010 = '/cairn/milestones/M010-nested.md'
+const MIXED_REST = DRAWN.mixed.slice(2)
+
+// Mounts the band on each surface, runs `act` against it, and checks it.
+async function eachSurface(name: string, chapterAnswer: ChapterAnswer, act: (ui: Ui, $, copy: Copy) => Promise<void>, $, on) {
+  const copy = copyOf(name)
+  seat(on, copy, chapterAnswer)
+  await $.turn.complete(turn())
+  for (const surface of SURFACES) {
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+    await act(ui, $, copy)
+    await ui.unmount()
+  }
+}
+
+describe('the label map covers the skill directories (M195 AC1)', () => {
+  test('the skill list is not empty, and the map has a label for each skill and no other', () => {
+    expect(SKILLS.length).toBe(10)
+    expect(Object.keys(SKILL_LABELS).sort()).toEqual([...SKILLS].sort())
+    expect(Object.keys(LABELS).sort()).toEqual([...SKILLS].sort())
+  })
+})
+
+describe('the row that carries a running cairn skill shows its label (M195 AC1)', () => {
+  for (const skill of SKILLS) {
+    for (const spelling of [skill, `cairn:${skill}`]) {
+      test(`${spelling} over no-active`, async ($, on) => {
+        const copy = copyOf('no-active')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        await prompt($, spelling)
+        await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([skillRow(skill), ENGINE]), $)
+      })
+    }
+  }
+
+  for (const other of ['commit', 'other:hotfix', 'cairn:nope']) {
+    test(`${other} leaves the band as it was`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      await prompt($, 'milestone-plan')
+      const drawn = [skillRow('milestone-plan'), ...DRAWN['single-in-progress'], ENGINE]
+      await mountEach('single-in-progress', BAND, async ui => expect(await lines(ui)).toEqual(drawn), $)
+      await prompt($, other)
+      await mountEach('single-in-progress', BAND, async ui => expect(await lines(ui)).toEqual(drawn), $)
+    })
+  }
+})
+
+describe('a running skill with no active row of its phase gets a skill row (M195 AC2)', () => {
+  const CASES: { skill: string; fixture: string; drawn: string[] }[] = [
+    { skill: 'milestone-plan', fixture: 'no-active', drawn: [skillRow('milestone-plan')] },
+    { skill: 'milestone-plan', fixture: 'mixed', drawn: [skillRow('milestone-plan'), ...DRAWN.mixed] },
+    { skill: 'hotfix', fixture: 'mixed', drawn: [skillRow('hotfix'), ...DRAWN.mixed] },
+    {
+      skill: 'milestone-review',
+      fixture: 'single-in-progress',
+      drawn: [skillRow('milestone-review'), ...DRAWN['single-in-progress']],
+    },
+    // Outside a cairn repo, a running cairn skill draws its row alone.
+    { skill: 'cairn-init', fixture: 'no-roadmap', drawn: [skillRow('cairn-init')] },
+    { skill: 'milestone-implement', fixture: 'mixed', drawn: DRAWN.mixed },
+    { skill: 'milestone-review', fixture: 'mixed', drawn: DRAWN.mixed },
+  ]
+  for (const { skill, fixture, drawn } of CASES) {
+    test(`${skill} over ${fixture}`, async ($, on) => {
+      seat(on, copyOf(fixture))
+      await $.turn.complete(turn())
+      await prompt($, skill)
+      await mountEach(
+        fixture,
+        BAND,
+        async ui => {
+          expect(await lines(ui)).toEqual([...drawn, ENGINE])
+          const [header] = await ui.findAll({ key: 'skill-header' })
+          if (drawn[0] === skillRow(skill)) {
+            // Nothing on the right side but the close button.
+            const [, right] = kids(header)
+            expect(textOf(right).trim()).toBe('')
+            expect(below(right, 'Button').length).toBe(1)
+          } else {
+            expect(header).toBeUndefined()
+          }
+        },
+        $,
+      )
+    })
+  }
+})
+
+describe('the item row follows the session chapters (M195 AC3)', () => {
+  test('a review prompt and a chapter put the title under M010', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await chapter($, 'Post-merge hygiene')
+        expect(await lines(ui)).toEqual([DRAWN.mixed[0], '  → Post-merge hygiene', ...MIXED_REST, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('an implement prompt and a chapter put the title alone under M012', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-implement')
+        await chapter($, 'T1: Write it.')
+        const drawn = [...DRAWN.mixed.slice(0, 3), '  → T1: Write it.', ...DRAWN.mixed.slice(3)]
+        expect(await lines(ui)).toEqual([...drawn, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  for (const surface of SURFACES) {
+    test(`a file edited between two chapters draws the new counts with no turn end (${surface})`, async ($, on) => {
+      const copy = copyOf('mixed')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-review')
+      await chapter($, 'AC3: Third criterion.')
+      expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
+      copy.files[M010] = copy.files[M010].replace('- [ ] AC3:', '- [x] AC3:')
+      await chapter($, 'Consistency gate')
+      expect(await lines(ui)).toEqual([
+        'review    M010 Nested tasks and a capital X  all 3 criteria checked',
+        '  → Consistency gate',
+        ...MIXED_REST,
+        ENGINE,
+      ])
+      await ui.unmount()
+    })
+
+    test(`the chapter moves to the next review row, then to a skill row (${surface})`, async ($, on) => {
+      const copy = copyOf('mixed')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-review')
+      copy.files[ROADMAP] = copy.files[ROADMAP].replace('| Nested tasks and a capital X | review |', '| Nested tasks and a capital X | done |')
+      await chapter($, 'Approval gate')
+      expect(await lines(ui)).toEqual([
+        'implement M012 A Tasks section with no boxes  no tasks',
+        'review    M013 Capitalized status, file gone  no milestone file',
+        '  → Approval gate',
+        'implement M014 No Tasks section at all  no tasks',
+        ENGINE,
+      ])
+      copy.files[ROADMAP] = copy.files[ROADMAP].replace('| Capitalized status, file gone | Review |', '| Capitalized status, file gone | done |')
+      await chapter($, 'Post-merge hygiene')
+      expect(await lines(ui)).toEqual([
+        skillRow('milestone-review'),
+        '  → Post-merge hygiene',
+        'implement M012 A Tasks section with no boxes  no tasks',
+        'implement M014 No Tasks section at all  no tasks',
+        ENGINE,
+      ])
+      await ui.unmount()
+    })
+  }
+
+  for (const answer of ['deny', 'error'] as const) {
+    test(`a chapter call that ends in a ${answer} beneath leaves the item row as it was`, async ($, on) => {
+      await eachSurface(
+        'mixed',
+        answer,
+        async (ui, $) => {
+          await prompt($, 'milestone-review')
+          try {
+            await chapter($, 'Post-merge hygiene')
+          } catch {
+            // A refused call may reject; the drawing is what counts.
+          }
+          expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+
+  test("a subagent's chapter call leaves the item row as it was", async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await $.tool.call({ tool: CHAPTER_TOOL, title: 'Subagent chapter', agentId: 'a1' })
+        expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('an empty chapter title leaves the item row as it was', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await chapter($, 'Consistency gate')
+        await chapter($, '')
+        expect(await lines(ui)).toEqual([DRAWN.mixed[0], '  → Consistency gate', ...MIXED_REST, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a chapter with no cairn skill running starts no step', async ($, on) => {
+    await eachSurface(
+      'no-active',
+      'mark',
+      async (ui, $) => {
+        await chapter($, 'Auth bug fix')
+        expect(await lines(ui)).toEqual([ENGINE])
+        expect(await hasCairn(ui)).toBe(false)
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a stored skill with no label reads as no step', () => {
+    expect(knownStep({ skill: 'milestone-gone', chapter: 'Old chapter' })).toBeNull()
+    expect(knownStep({ skill: 'hotfix', chapter: null })).toEqual({ skill: 'hotfix', chapter: null })
+    expect(knownStep(null)).toBeNull()
+  })
+
+  test('a skill row with no chapter has no item row, and gains one at a chapter', async ($, on) => {
+    await eachSurface(
+      'no-active',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        expect(await lines(ui)).toEqual([skillRow('milestone-plan'), ENGINE])
+        await chapter($, 'Question gate')
+        expect(await lines(ui)).toEqual([skillRow('milestone-plan'), '  → Question gate', ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+})
+
+describe('every session end clears the step (M195 AC4)', () => {
+  for (const reason of ['clear', 'resume'] as const) {
+    test(`a session end with reason ${reason}`, async ($, on) => {
+      await eachSurface(
+        'single-in-progress',
+        'mark',
+        async (ui, $) => {
+          await prompt($, 'milestone-plan')
+          await chapter($, 'Investigation')
+          expect(await lines(ui)).toEqual([skillRow('milestone-plan'), '  → Investigation', ...DRAWN['single-in-progress'], ENGINE])
+          await $.session.end({ reason, sessionId: 's1' })
+          expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+
+  test('a second milestone-review prompt drops the chapter', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-review')
+        await chapter($, 'Post-merge hygiene')
+        await prompt($, 'cairn:milestone-review')
+        expect(await lines(ui)).toEqual([...DRAWN.mixed, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+})
+
+describe('the close button works with skill rows (M195 AC5)', () => {
+  test('the close button sits on the skill row when it comes first', async ($, on) => {
+    await eachSurface(
+      'single-in-progress',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        const [header] = await ui.findAll({ key: 'skill-header' })
+        expect(below(header, 'Button').map(keyOf)).toEqual(['cairn-close'])
+        expect((await ui.findAll({ type: 'Button' })).length).toBe(1)
+      },
+      $,
+      on,
+    )
+  })
+
+  for (const surface of SURFACES) {
+    test(`after a press, a chapter, a checked task, and the same skill keep it hidden; another skill shows it (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-plan')
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await chapter($, 'Question gate')
+      expect(await lines(ui)).toEqual([ENGINE])
+      copy.files[M002] = copy.files[M002].replace('- [ ] T2:', '- [x] T2:')
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      await prompt($, 'cairn:milestone-plan')
+      expect(await lines(ui)).toEqual([ENGINE])
+      await prompt($, 'hotfix')
+      expect(await rowKeys(ui)).toEqual(['skill-header', 'M002-header', 'M002-item'])
+      await ui.unmount()
+    })
+
+    test(`a session end after a press shows the band again (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-plan')
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      await ui.unmount()
+    })
+  }
+
+  test('a press on a lone skill row hides it', async ($, on) => {
+    await eachSurface(
+      'no-active',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        expect(await lines(ui)).toEqual([skillRow('milestone-plan'), ENGINE])
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        expect(await hasCairn(ui)).toBe(false)
+        // The next surface starts shown: a new skill prompt brings it back.
+        await prompt($, 'hotfix')
+      },
+      $,
+      on,
+    )
   })
 })
