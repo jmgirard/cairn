@@ -27,11 +27,13 @@ export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[
 export type CairnBandMark = { id: string; status: string }
 
 // What the close button stores at a press: the active ids and statuses in
-// ROADMAP order, and the running cairn skill's bare name, or null.
-export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null }
+// ROADMAP order, the running cairn skill's bare name or null, and the idle
+// row's id or null.
+export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null; idle: string | null }
 
 // The running cairn skill's bare name (`milestone-plan`), and the title of
-// the last chapter the main loop marked since its prompt was expanded.
+// the last chapter the main loop marked since its prompt was expanded. A
+// main-loop turn that ends in an answer ends it.
 export type CairnStep = { skill: string; chapter: string | null }
 
 declare module 'claude-code' {

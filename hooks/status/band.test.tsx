@@ -1405,8 +1405,9 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       expect(await lines(ui)).toEqual([ENGINE])
       await chapter($, 'Question gate')
       expect(await lines(ui)).toEqual([ENGINE])
+      // A chapter reads the files again, and the step runs on.
       copy.files[M002] = copy.files[M002].replace('- [ ] T2:', '- [x] T2:')
-      await $.turn.complete(turn())
+      await chapter($, 'Solidify')
       expect(await lines(ui)).toEqual([ENGINE])
       await prompt($, 'cairn:milestone-plan')
       expect(await lines(ui)).toEqual([ENGINE])
@@ -1980,5 +1981,197 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
     await $.turn.complete(turn())
     await prompt($, 'milestone')
     await mountEach('no-active', BAND, async ui => expect(await rowKeys(ui)).toEqual(['skill-row']), $)
+  })
+})
+
+// A turn end with a given reason, as the engine sends one.
+function turnWith(reason: 'answer' | 'aborted' | 'refusal' | 'error', agentId?: string) {
+  const base = { ...turn(), reason, isAborted: reason === 'aborted' }
+  const refused = reason === 'refusal' ? { refusal: { category: null, explanation: null } } : {}
+  return { ...base, ...refused, ...(agentId === undefined ? {} : { agentId }) }
+}
+
+const PLAN_GATE = 'plan M002 → Question gate  1/3 tasks'
+
+describe("a cairn skill's step ends at its main-loop turn end (M199 AC3)", () => {
+  test('a milestone row goes back to its phase label, and a later chapter sets nothing', async ($, on) => {
+    await eachSurface(
+      'single-in-progress',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        await chapter($, 'Question gate')
+        expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+        await $.turn.complete(turnWith('answer'))
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        await chapter($, 'A chapter in plain conversation')
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a skill row gives way to the idle row', async ($, on) => {
+    await eachSurface(
+      'no-active',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone')
+        expect(await lines(ui)).toEqual([skillRow('milestone'), ENGINE])
+        await $.turn.complete(turnWith('answer'))
+        expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], ENGINE])
+        await chapter($, 'A chapter in plain conversation')
+        expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  test('a skill row with nothing workable gives way to nothing', async ($, on) => {
+    seat(on, noneWorkable('no-active'))
+    await $.turn.complete(turn())
+    await mountEach(
+      'no-active',
+      BAND,
+      async ui => {
+        await prompt($, 'milestone')
+        expect(await rowKeys(ui)).toEqual(['skill-row'])
+        await $.turn.complete(turnWith('answer'))
+        expect(await hasCairn(ui)).toBe(false)
+      },
+      $,
+    )
+  })
+
+  for (const reason of ['aborted', 'refusal', 'error'] as const) {
+    test(`a main-loop turn that ends ${reason} keeps the step`, async ($, on) => {
+      await eachSurface(
+        'single-in-progress',
+        'mark',
+        async (ui, $) => {
+          await prompt($, 'milestone-plan')
+          await chapter($, 'Question gate')
+          await $.turn.complete(turnWith(reason))
+          expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+
+  test("a subagent's turn end keeps the step", async ($, on) => {
+    await eachSurface(
+      'single-in-progress',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        await chapter($, 'Question gate')
+        await $.turn.complete(turnWith('answer', 'a1'))
+        expect(await lines(ui)).toEqual([PLAN_GATE, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+})
+
+const M021 = '/cairn/milestones/M021-wait.md'
+// Each case presses the close button on no-active's idle row, ends a turn
+// with nothing changed, makes its change, and asserts whether the band
+// shows, by the keys of the rows it draws.
+type IdleClose = { name: string; change: ($, files: Record<string, string>) => Promise<void>; shown: string[] | null }
+
+const IDLE_CLOSES: IdleClose[] = [
+  {
+    name: 'a checked box keeps it hidden',
+    change: async ($, files) => {
+      files[M021] = files[M021].replace('- [ ] T1:', '- [x] T1:')
+      await $.turn.complete(turn())
+    },
+    shown: null,
+  },
+  {
+    name: 'an edited title keeps it hidden',
+    change: async ($, files) => {
+      files[ROADMAP] = files[ROADMAP].replace('| Waiting to start |', '| Still waiting to start |')
+      await $.turn.complete(turn())
+    },
+    shown: null,
+  },
+  {
+    name: 'a new next workable milestone shows it',
+    change: async ($, files) => {
+      files[ROADMAP] = files[ROADMAP].replace('| M020 | Shipped |', '| M022 | Jumps the queue | planned | — | high | milestones/M022-jump.md |\n| M020 | Shipped |')
+      await $.turn.complete(turn())
+    },
+    shown: ['idle-row'],
+  },
+  {
+    name: 'a row that becomes in-progress shows it',
+    change: async ($, files) => {
+      files[ROADMAP] = files[ROADMAP].replace('| Waiting to start | planned |', '| Waiting to start | in-progress |')
+      await $.turn.complete(turn())
+    },
+    shown: ['M021-row'],
+  },
+  {
+    name: 'a cairn skill that starts shows it',
+    change: async $ => {
+      await prompt($, 'milestone')
+    },
+    shown: ['skill-row'],
+  },
+]
+
+describe("a press stores the idle row's id (M199 AC4)", () => {
+  for (const { name, change, shown } of IDLE_CLOSES) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        const copy = copyOf('no-active')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        expect(await rowKeys(ui)).toEqual(['idle-row'])
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        await $.turn.complete(turn())
+        expect(await lines(ui)).toEqual([ENGINE])
+        await change($, copy.files)
+        if (shown === null) {
+          expect(await lines(ui)).toEqual([ENGINE])
+        } else {
+          expect(await rowKeys(ui)).toEqual(shown)
+        }
+        await ui.unmount()
+      })
+    }
+  }
+
+  for (const surface of SURFACES) {
+    test(`a skill's step that ends shows the band again (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-plan')
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await $.turn.complete(turnWith('answer'))
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      await ui.unmount()
+    })
+  }
+
+  test('the new next milestone is the one the band then names', async ($, on) => {
+    const copy = copyOf('no-active')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-close' })
+    await IDLE_CLOSES[2].change($, copy.files)
+    expect(await lines(ui)).toEqual(['next M022 Jumps the queue  /milestone-implement M022', ENGINE])
+    await ui.unmount()
   })
 })
