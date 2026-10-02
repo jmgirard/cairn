@@ -93,3 +93,5 @@ Findings (three lenses: diff-bug 13, blame-history 7, prior-review 1):
 - R13 (blame-history 4, second half): the repair text "without changing behavior" now looks false. Proposed: reject. The backfill writes exactly what the absent-file inference gives, which is the behavior the sentence means.
 - R14 (blame-history 6): `generic.md` and `python.md` do not mention the plugin marker. Proposed: reject. Both remain correct.
 - R15 (blame-history 7): the profile does not say that validate skips `types/index.d.ts`. Proposed: reject. The M193 lesson in LESSONS.md holds it.
+
+Triage, 2026-10-01: the user chose the proposed dispositions at the gate. R1–R9 were fixed on the branch. I reproduced R2's "no hooks module to load" on `hooks/status` and on a scratch plugin with no mod before writing the new verify text. R10 became the candidate row "claude-plugin profile edge cases". R11–R15 were rejected for the reasons above. After the fixes: scripts 394 OK, hooks 174 OK, plugin validate passed with warnings, plugin test 47/47, `cairn_validate` all passed, and `skills/tests` showed main's 4 reds and 1 error. The profile is 115 lines.

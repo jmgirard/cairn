@@ -130,7 +130,8 @@ Chapter markers: mark a chapter at each phase transition — each phase its
   `.claude-plugin/plugin.json` / `.claude-plugin/marketplace.json` /
   `Dockerfile`) — has no profile to infer. When this fires, present a
   **project-type chip** (AskUserQuestion: R package / Python package / Claude
-  Code plugin / Docker image / generic;
+  Code plugin or Docker image / generic — four options, the tool's limit, the
+  third followed by a second question picking claude-plugin or docker-image;
   recommend per any weak signal, else generic) to select the profile
   *explicitly* rather than silently defaulting to
   generic, then run the greenfield opener flow (§1). A repo that has a marker or
@@ -212,7 +213,9 @@ Then:
   consequence and a recommended **reversible default**:
   - **Universal layer** (every profile): distribution ambition — rendered per
     the selected profile (r-package → CRAN vs GitHub-only; python → PyPI vs
-    private; generic → tagged public release vs internal-only), landing in
+    private; generic → tagged public release vs internal-only; docker-image
+    and claude-plugin ask it as their own registry and listing openers, so it
+    is not asked twice there), landing in
     DESIGN Purpose & Scope; and **numeric-work-needs-oracle-verification**
     (universal — D-024/D-025), landing in DESIGN Conventions (a line committing
     numeric results to the oracle doctrine's ≥2-types bar).

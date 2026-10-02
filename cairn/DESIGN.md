@@ -45,7 +45,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   source note, synthesis note, archive summary, and the LESSONS.md /
   DECISIONS.md file headers (M163).
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
-  (`r-package`, `python`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
+  (`r-package`, `python`, `claude-plugin`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer, all no-op outside cairn repos. Eight hooks: `session_context`

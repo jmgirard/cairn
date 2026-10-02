@@ -31,12 +31,15 @@
   or `.claude-plugin/marketplace.json` is at the repo root, after the R and
   Python markers and before a `Dockerfile`. A repo with markers for two
   kinds of deliverable gets a question about which one is primary, and the
-  project-type question for an empty repo lists the new profile. A plugin
-  repo with no `cairn/PROFILE.md` and no R or Python marker now infers
-  `claude-plugin`. Before, it inferred `generic`, or `docker-image` when a
-  `Dockerfile` was present.
+  project-type question for an empty repo lists the new profile.
 
 ### Changes that affect existing repos
+
+- **A plugin repo with no `cairn/PROFILE.md` now infers `claude-plugin`.**
+  This applies when the repo has no R or Python marker. Before, it inferred
+  `generic`, or `docker-image` when a `Dockerfile` was present, so its verify
+  step now runs the `claude plugin` checks. `/cairn-init` repair writes the
+  same profile when it backfills the file.
 
 - **Subagent titles no longer open with a model tag, and the session sets
   the model on every spawn.** The rulebook drops the rule that every Agent

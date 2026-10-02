@@ -22,16 +22,19 @@ check from the repo root and check its exit code:
 - `claude plugin validate .claude-plugin/marketplace.json` where the repo has
   a marketplace file.
 - Where the repo has `*.test.ts` or `*.test.tsx` files:
-  `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test <mod-dir>`. It runs
-  every such file under `<mod-dir>`. Without the variable, a process that the
+  `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test <plugin-dir>`.
+  `<plugin-dir>` is the folder whose `hooks/hooks.json` names the mod under
+  `modules`. Any other folder fails with "no hooks module to load". The command
+  runs every `*.test.ts(x)` file under that folder, so keep tests for other
+  runners (vitest, jest) outside it. Without the variable, a process that the
   rollout switch serves "off" refuses with "hooks modules are turned off in
   this process" (observed on Claude Code 2.1.286).
 - Other code the plugin ships (hook scripts in Python or shell, an MCP
   server) keeps its own test command. Declare it here.
 
-Do not add `--strict`. It fails on warnings, and a cairn-tracked repo whose
-plugin root is the repo root always draws one: "CLAUDE.md at the plugin root
-is not loaded as project context".
+Do not add `--strict`. It fails on warnings, and a CLAUDE.md at the plugin
+root always draws one: "CLAUDE.md at the plugin root is not loaded as project
+context".
 
 A desktop app shell has no `claude` on its PATH. Find the binary here:
 - A native install links `~/.local/bin/claude` to
@@ -60,8 +63,7 @@ rules in tracking-rules:
   in. Test what the mod draws or stores, not its internal calls.
 - Hook scripts and MCP servers are tested in their own language, under that
   language's usual runner.
-- Skill, command, and agent markdown is prose. No test is owed for it beyond
-  the `claude plugin validate` run.
+- Skill, command, and agent markdown is prose and owes no test.
 - The dependency surface is the plugin's runtime needs (a language runtime
   that its hooks call, an MCP server's packages) and the lowest Claude Code
   version it supports. A new one is a dependency change. A breaking change to
@@ -105,7 +107,7 @@ ambition is rendered here as the **Listing?** question below.
   - Lands in: the `verify` and `release-walk` slots and DESIGN Conventions.
 - **Mod?** Does the plugin ship a mod with `*.test.ts(x)` tests?
   - Options: **no** (reversible default) · yes.
-  - Consequence: yes adds `claude plugin test <mod-dir>` to verify.
+  - Consequence: yes adds `claude plugin test <plugin-dir>` to verify.
   - Lands in: the `verify` slot and DESIGN Conventions.
 
 ## changelog
