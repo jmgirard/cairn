@@ -17,14 +17,15 @@ import type { BandRow } from './reader'
 // phase's theme key at full strength. The rest of the row draws in
 // `inactive`, the theme's gray, but for the empty cells (EMPTY) and the
 // warning labels. Theme keys follow the person's light or dark theme.
-export type Span = { text: string; color?: string; bold?: boolean; dimColor?: boolean }
+export type Span = { text: string; color?: string; bold?: boolean }
 
 export const GRAY = 'inactive'
 const ORANGE = 'rgb(194,122,92)'
 const GREEN = 'rgb(106,165,122)'
-// The empty cells: the theme key `subtle`, a gray near the background in
-// the light and dark themes. A dim cell with no color drew close to the
-// orange's brightness at a live look (M198).
+// The empty cells: the theme key `subtle`. The 2.1.286 light and dark
+// themes set it fainter than `inactive`, and the ANSI themes set it equal.
+// A dim cell with no color drew close to the orange's brightness at a live
+// look (M198).
 const EMPTY = 'subtle'
 
 // A step: a chapter or an open item. `label` is its positional label

@@ -207,10 +207,9 @@ async function reconcile($) {
 
 // A span's style props, leaving out the ones it does not set.
 function style(span: Span) {
-  const props: { color?: string; bold?: boolean; dimColor?: boolean } = {}
+  const props: { color?: string; bold?: boolean } = {}
   if (span.color !== undefined) props.color = span.color
   if (span.bold) props.bold = true
-  if (span.dimColor) props.dimColor = true
   return props
 }
 
