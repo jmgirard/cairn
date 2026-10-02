@@ -60,11 +60,17 @@ export const register: Register = on => {
     // Two groups: the phase, id and title on the left, which give way first,
     // and the bar and counts or the state label on the right, which keep
     // their width. The engine cuts the title to the room that is left.
+    // A shrinking Box also takes `minWidth: 0`, and the short parts sit in a
+    // Box that never shrinks. Without both, the desktop app drew an item
+    // row's long text at full width past the edge with no `…`, and its
+    // arrow and label shrank to nothing.
     const header = (line: HeaderLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between">
-        <Box key={`${line.key}-left`} flexShrink={1}>
-          {spans(line.head)}
-          <Box key={`${line.key}-title`} flexShrink={1}>
+        <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
+          <Box key={`${line.key}-head`} flexShrink={0}>
+            {spans(line.head)}
+          </Box>
+          <Box key={`${line.key}-title`} flexShrink={1} minWidth={0}>
             <Text wrap="truncate-end">{line.title}</Text>
           </Box>
         </Box>
@@ -87,20 +93,23 @@ export const register: Register = on => {
     )
 
     // The positional label draws bold and at full strength, with no
-    // dimColor; the rest of the row is dim. The rest sits in a Box of its
-    // own that gives way, as the title does. With the arrow, label, and rest
-    // nested in one Text, the desktop drew the rest as a bare `…`.
+    // dimColor; the rest of the row is dim. The arrow and label keep their
+    // width, and the rest gives way, as the title does. With the arrow,
+    // label, and rest nested in one Text, the desktop drew the rest as a
+    // bare `…`.
     const item = (line: ItemLine) => (
       <Box key={line.key}>
-        <Text wrap="truncate-end" dimColor>
-          {line.arrow}
-        </Text>
-        {line.label === null ? null : (
-          <Text wrap="truncate-end" bold>
-            {line.label}
+        <Box key={`${line.key}-label`} flexShrink={0}>
+          <Text wrap="truncate-end" dimColor>
+            {line.arrow}
           </Text>
-        )}
-        <Box key={`${line.key}-rest`} flexShrink={1}>
+          {line.label === null ? null : (
+            <Text wrap="truncate-end" bold>
+              {line.label}
+            </Text>
+          )}
+        </Box>
+        <Box key={`${line.key}-rest`} flexShrink={1} minWidth={0}>
           <Text wrap="truncate-end" dimColor>
             {line.rest}
           </Text>

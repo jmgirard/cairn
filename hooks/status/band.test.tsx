@@ -287,7 +287,31 @@ function layout(header: Element) {
   const groups = kids(header)
   const [left, right] = groups
   const titleBox = below(left, 'Box').find(b => b.props.flexShrink === 1 && kids(b).length === 1 && kids(b)[0].type === 'Text')
-  return { groups, left, right, title: titleBox ? kids(titleBox)[0] : undefined }
+  return { groups, left, right, titleBox, title: titleBox ? kids(titleBox)[0] : undefined }
+}
+
+// What gives way in a row: the left group and the title's Box shrink to any
+// width, and the phase and id keep theirs. The desktop app drew a long text
+// whose Box lacked `minWidth: 0` past the edge, and shrank the short Texts
+// beside it to nothing.
+function shrinks(header: Element) {
+  const { left, titleBox } = layout(header)
+  expect(left.props.minWidth).toBe(0)
+  expect(titleBox?.props.minWidth).toBe(0)
+  const [head] = kids(left)
+  expect(head.type).toBe('Box')
+  expect(head.props.flexShrink).toBe(0)
+}
+
+// The same for an item row: the arrow and label keep their width, and the
+// rest's Box shrinks to any width.
+function itemShrinks(item: Element) {
+  const [label, rest] = kids(item)
+  expect(kids(item).map(k => k.type)).toEqual(['Box', 'Box'])
+  expect(label.props.flexShrink).toBe(0)
+  expect(textOf(label).startsWith('  → ')).toBe(true)
+  expect(rest.props.flexShrink).toBe(1)
+  expect(rest.props.minWidth).toBe(0)
 }
 
 const CLOSE = { terminal: '×', desktop: '×' } as const
@@ -315,6 +339,7 @@ describe('each header row is a left and a right group (AC1)', () => {
             expect(textOf(left)).toBe(`${row.status === 'review' ? 'review   ' : 'implement'} ${row.id} ${row.title}`)
             expect(textOf(title)).toBe(row.title)
             expect(title?.props.wrap).toBe('truncate-end')
+            shrinks(header)
             // The right group: the bar at 60 columns or more, and the counts
             // or the state label; the close button last on the first row.
             const hasBar = below(right, 'Text').some(t => /[█░]/.test(textOf(t)))
@@ -348,6 +373,7 @@ describe('each header row is a left and a right group (AC1)', () => {
           expect(right.props.marginLeft).toBe(2)
           expect(title?.children).toEqual([row.title])
           expect(title?.props.wrap).toBe('truncate-end')
+          shrinks(header)
           expect(below(right, 'Text').some(t => /[█░]/.test(textOf(t)))).toBe(false)
           expect(textOf(right).trim()).toBe(name === 'long-title' ? '1/2 tasks' : '1/2 criteria')
           expect(keyOf(kids(right)[kids(right).length - 1])).toBe('cairn-close')
@@ -437,6 +463,8 @@ describe("the item row's label draws bold (AC4)", () => {
           const others = texts.filter(t => t.text !== text && !outer.includes(t.text))
           expect(others.length).toBeGreaterThan(0)
           expect(others.filter(t => t.text.props.dimColor !== true)).toEqual([])
+          itemShrinks(item)
+          expect(textOf(kids(item)[0])).toBe(`  → ${label}`)
         },
         $,
       )
@@ -456,6 +484,7 @@ describe("the item row's label draws bold (AC4)", () => {
         expect(texts.length).toBeGreaterThan(0)
         expect(texts.filter(t => t.text.props.dimColor !== true)).toEqual([])
         expect(texts.filter(t => t.text.props.bold)).toEqual([])
+        itemShrinks(item)
       },
       $,
     )

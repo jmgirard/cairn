@@ -79,5 +79,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - re-audit: AC2 (full) — README's close-button paragraph and the reversal line, both covered by T7 and the line above. Nothing else.
 - 2026-10-01: minor amendment: a new T7 carries the label change. The live look moves to T8 and runs after it. Coverage adds T7 to AC2 and AC6.
 - 2026-10-01: T7 done. The test's desktop label went to `×` first and failed red on the two desktop AC2 cases. Then `CLOSE_LABEL` was removed and README's paragraph corrected. The CHANGELOG and DESIGN.md wording names no label and holds. Verify: scripts 394 OK, hooks 174 OK, validate clean, mod tests 82/82.
+- 2026-10-01: T8 second live look (desktop, implement phase, operator's screenshot): the button drew `×` and the bar and counts sat at the right edge. The item row's arrow and `T8:` label shrank to nothing, and its text ran past the edge with no ellipsis.
+- 2026-10-01: shrink fix: the shrinking Boxes (left group, title, item rest) take `minWidth: 0`. The phase and id, and the item's arrow and label, sit in a Box with `flexShrink: 0`. New shrink assertions in the AC1 and AC4 cases failed 9 cases on the old code. Mod tests 82/82, scripts 394 OK, hooks 174 OK, validate clean.
 
 ## Decisions
