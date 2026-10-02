@@ -53,7 +53,7 @@ Make the band's close button follow one rule through the four edge cases in the 
 ## Tasks
 
 - [x] T1: Lost press. In `reconcile` (`register.tsx:218-223`), compute the current mark. Then decide inside `update($, dismissed, hidden => …)`. The callback returns null only for a set `hidden` that differs from the current mark. Add the two held-read guard cases. The `fs.read` handler awaits a promise the test holds, and the test waits on a timer until the read is held. A microtask loop does not reach the read, as the plan probe showed.
-- [ ] T2: Failed read. For a found ROADMAP that it cannot read, `loadBand` in `reader.ts` returns null. On null or on a throw, `refresh` keeps both atoms. With no root found, it still empties the band. Update the `refresh` comment ("No readable working directory or ROADMAP"). Add the AC2 cases, and show each red on main first. Check that `reader.test.ts` still passes over every fixture.
+- [x] T2: Failed read. For a found ROADMAP that it cannot read, `loadBand` in `reader.ts` returns null. On null or on a throw, `refresh` keeps both atoms. With no root found, it still empties the band. Update the `refresh` comment ("No readable working directory or ROADMAP"). Add the AC2 cases, and show each red on main first. Check that `reader.test.ts` still passes over every fixture.
 - [ ] T3: Session end. After the step is cleared, the `session.end` hook sets `dismissed` to null, with no branch on the reason. Add the no-skill cases for `clear` and `resume` on both surfaces, red on main first. Keep the running-skill case at `band.test.tsx:1420` and add its `resume` twin.
 - [ ] T4: Unknown stored skill. Move `mark` and `same` from `register.tsx:192-205` to `band.ts`, exported. The mark reads the step through `knownStep`. `ui.render`, `dismiss`, and `reconcile` call it. Add the direct test and show it red against a planted copy that skips the label check.
 - [ ] T5: Live look. Open a new desktop Code session, because the mod loads at session start. Press the close button on a showing band, run `/clear`, and see whether the band returns. Log what showed. If the band stays hidden, stop at the amendment gate before T6.
@@ -69,6 +69,7 @@ Make the band's close button follow one rule through the four edge cases in the 
 - 2026-10-02: plan gate chose the decide-inside-`update` fix over storing the drawn state at the press. The reason: it closes the window in one function and keeps M194's press behavior. Falsified by a press observed lost in a real session after the fix.
 - 2026-10-02: implement started on branch m200-band-close-state; no question gate, as the plan left nothing open.
 - 2026-10-02: T1 done: `reconcile` decides inside its `update` callback; two held-read guard cases added, green on the branch and on main's `register.tsx`; verify 4/4 green (plugin test 605 pass).
+- 2026-10-02: T2 done. `loadBand` returns null for a found ROADMAP it cannot read. On null or a throw, `refresh` keeps the rows and still compares the close state against them, so a step that ended at the same turn end still clears it. The two AC2 cases failed on the unfixed code (the press case at the good read) and pass now. A reader test covers the null. Verify 4/4 green (608 pass).
 
 ## Decisions
 

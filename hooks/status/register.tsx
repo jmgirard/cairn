@@ -230,15 +230,20 @@ function style(span: Span) {
   return props
 }
 
+// No ROADMAP found empties the band. A found ROADMAP that cannot be read,
+// or a read that throws, keeps the rows as they were (M200), and the close
+// state is then compared against those rows.
 async function refresh($) {
-  let state: BandState = { rows: [], workable: [] }
+  let state: BandState | null = null
   try {
     state = await loadBand(fsSource($))
   } catch {
-    // No readable working directory or ROADMAP: the band is cleared.
-    state = { rows: [], workable: [] }
+    state = null
   }
-  await update($, band, () => state)
+  if (state !== null) {
+    const next = state
+    await update($, band, () => next)
+  }
   await reconcile($)
 }
 

@@ -187,6 +187,14 @@ describe('reader details', () => {
     expect(reads).toEqual(['/cairn/ROADMAP.md'])
   })
 
+  test('a found ROADMAP that cannot be read gives null, and no ROADMAP found gives an empty band (M200)', async () => {
+    const fixture = FIXTURES['single-in-progress']
+    const source = { ...memorySource(fixture.files, fixture.cwd), read: async () => null }
+    expect(await loadBand(source)).toBeNull()
+    const none = FIXTURES['no-roadmap']
+    expect(await loadBand({ ...memorySource(none.files, none.cwd), read: async () => null })).toEqual({ rows: [], workable: [] })
+  })
+
   test('an archive directory that cannot be listed marks nothing done', async () => {
     const fixture = FIXTURES['idle-deps']
     const source = { ...memorySource(fixture.files, fixture.cwd), list: async () => null }

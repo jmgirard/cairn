@@ -1105,6 +1105,38 @@ describe('a press while a turn end reads the ROADMAP (M200 AC1)', () => {
   }
 })
 
+// The ROADMAP stats as a file, and its read rejects.
+describe('a failed read of a found ROADMAP leaves the band as it was (M200 AC2)', () => {
+  test('after a press, the band stays hidden through a failed read and the good read after it', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-close' })
+    expect(await lines(ui)).toEqual([ENGINE])
+    copy.unreadable = [ROADMAP]
+    await $.turn.complete(turn())
+    expect(await lines(ui)).toEqual([ENGINE])
+    copy.unreadable = []
+    await $.turn.complete(turn())
+    expect(await lines(ui)).toEqual([ENGINE])
+    expect(await hasCairn(ui)).toBe(false)
+    await ui.unmount()
+  })
+
+  test('with no press, a failed read still draws the row', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    copy.unreadable = [ROADMAP]
+    await $.turn.complete(turn())
+    expect(await rowKeys(ui)).toEqual(['M002-row'])
+    expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+    await ui.unmount()
+  })
+})
+
 // A plugin above the mod that draws how the mod's render hook settled, read
 // from `next.trace`: `returned` when it settled on a result, here the
 // engine's drawing it handed on to, and `skipped` when it threw. A thrown
