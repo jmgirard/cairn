@@ -9,9 +9,10 @@ verify, consistency-gate, test-doctrine, release-walk, init-detection,
 greenfield-openers, changelog) that supplies the language/toolchain-specific commands the
 operational skills read, instead of the core hardcoding one language (M45
 spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
-orthogonal to the profile). Four profiles ship — `r-package` (devtools/CRAN),
-`python` (pytest/PyPI), `docker-image` (hadolint+build/container registry), and
-`generic`; this repo runs `generic`. Logic lives here (skills, rules,
+orthogonal to the profile). Five profiles ship — `r-package` (devtools/CRAN),
+`python` (pytest/PyPI), `claude-plugin` (`claude plugin validate`/`test`, M192),
+`docker-image` (hadolint+build/container registry), and `generic`; this repo
+runs `generic`. Logic lives here (skills, rules,
 templates); state lives in each adopting repo under `cairn/`. The founding
 spec is superseded by this file, the shared rulebook, and DECISIONS.md; git
 history preserves it (removed at v1.0, M62).

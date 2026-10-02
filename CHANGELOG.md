@@ -32,8 +32,9 @@
   Python markers and before a `Dockerfile`. A repo with markers for two
   kinds of deliverable gets a question about which one is primary, and the
   project-type question for an empty repo lists the new profile. A plugin
-  repo with no `cairn/PROFILE.md` now infers `claude-plugin` where it
-  inferred `generic` before.
+  repo with no `cairn/PROFILE.md` and no R or Python marker now infers
+  `claude-plugin`. Before, it inferred `generic`, or `docker-image` when a
+  `Dockerfile` was present.
 
 ### Changes that affect existing repos
 

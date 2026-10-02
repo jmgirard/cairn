@@ -60,8 +60,8 @@ rules in tracking-rules:
   in. Test what the mod draws or stores, not its internal calls.
 - Hook scripts and MCP servers are tested in their own language, under that
   language's usual runner.
-- Skill, command, and agent markdown is prose. `claude plugin validate`
-  checks it, and no other test is owed for it.
+- Skill, command, and agent markdown is prose. No test is owed for it beyond
+  the `claude plugin validate` run.
 - The dependency surface is the plugin's runtime needs (a language runtime
   that its hooks call, an MCP server's packages) and the lowest Claude Code
   version it supports. A new one is a dependency change. A breaking change to

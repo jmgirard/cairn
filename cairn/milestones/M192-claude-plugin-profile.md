@@ -1,6 +1,6 @@
 # M192: A claude-plugin toolchain profile for repos that build plugins and mods
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M191
 - **Driving RR:** —
@@ -62,5 +62,8 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - 2026-10-01: T4 done. README, the two plugin descriptions, and `/cairn-init`'s tree and file list name `claude-plugin`. Also fixed: the docker-image detection slot now names the plugin markers. `skills/tests` (hand-run) went from 6 reds and 2 errors to main's 4 reds and 1 error after the label map, the profile loop, and the five-profiles guard and its mutation entry were updated. AC4's second grep returns no line. Verify green.
 - 2026-10-01: T5 done. CHANGELOG `Unreleased` → New gains the profile entry, including that a plugin repo with no PROFILE.md now infers `claude-plugin`.
 - 2026-10-01: T6 done. Scratch git repo holding only `.claude-plugin/plugin.json`: the seven markers read absent except that one. `/cairn-init`'s selection step passes `DESCRIPTION` and the Python markers and reaches **claude-plugin**. One deliverable's markers, so no disambiguation gate. A marker is present, so not greenfield and no project-type chip. The repair path and tracking-rules reach the same profile. `claude plugin validate` passed there.
+- 2026-10-01: delegated the claim audit to one fresh-context Opus reader, read-only. It reported 22 claims, 1 wrong (CHANGELOG said a plugin repo used to infer `generic`, but with a `Dockerfile` it inferred `docker-image`) and 1 holding with a limit (validate's markdown check is shallow). Both were reworded and the same reader re-read them: 2 hold. DESIGN.md's "Four profiles ship" line, outside AC4's grep, was updated to five.
+- 2026-10-01: claim audit: 22 claims read, 2 corrected — CHANGELOG.md, skills/shared/profiles/claude-plugin.md
+- 2026-10-01: implement complete. scripts 394 OK, hooks 174 OK, plugin validate passed with warnings, plugin test 47/47, cairn_validate all checks passed. `skills/tests` (hand-run, non-gating) 661 with main's 4 reds and 1 error. Status → review.
 
 ## Decisions
