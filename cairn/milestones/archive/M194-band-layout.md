@@ -1,0 +1,11 @@
+# M194: A right-aligned milestone band with a close button
+
+**Status:** done (2026-10-01, PR #201 https://github.com/jmgirard/cairn/pull/201)
+
+**Goal:** Lay out the milestone band with its bar and counts at the right edge, and give it a close button that hides it until the active milestones or their phases change.
+
+**Outcome:** Each header row in `hooks/status/register.tsx` is a `space-between` Box with two groups. The left group (`flexShrink: 1`, `minWidth: 0`) holds a non-shrinking phase-and-id Box and the whole title in a `truncate-end` Text. The engine cuts the title, and `fit()` is gone from `band.ts`. The right group (`flexShrink: 0`, `marginLeft: 2`) holds the bar and counts or the state label. On the first row it ends in a `cairn-close` Button (`role: 'dismiss'`, `plain`, label `×`). A press stores the active ids and statuses in ROADMAP order in a new `dismissed` session atom. Its type is `CairnBandMark` in `types/index.d.ts`. The band passes to `next(e)` while that list is unchanged, and a refresh that finds it changed clears it. The item row has a non-shrinking Box for the arrow and the bold `T2:`/`AC3:` label, and a shrinking Box for the dim rest. Fixtures `long-title`, `wide-title`, and `unlabeled-item` were added, for 82 mod tests. README, DESIGN, and CHANGELOG describe the two groups and the close button. Three live looks in the desktop app (T7, T8) led to the `×` label and the `minWidth: 0` shrink fix.
+
+**Decisions:** none promoted. Plan gate: hide until the ordered id-and-status list changes, flex groups over `fit()`. The amendment gate reversed the native close control to a plain `×` label, because the desktop drew the long accessible name as text.
+
+**Review:** Three lenses, 14 findings, no return. Fixed at the gate: the unverified "new session starts shown" doc sentence removed, "keep their place" reworded, ragged wraps reflowed, and an AC2 last-child assertion added. Follow-ups: a narrow-width overrun went to "Band layout edge cases", which lost its UTF-16 cut and split-pair items. The new row "Band close-state edge cases" holds three items. They are a press lost during a refresh, a failed read that un-hides the band, and the `/clear` question. Five findings were rejected and two noted. The M193 lesson was extended with the desktop layout facts, and no line was added.
