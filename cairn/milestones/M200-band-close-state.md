@@ -89,6 +89,8 @@ Make the band's close button follow one rule through the four edge cases in the 
 - 2026-10-02: T9 done. A `loaded` helper in `reader.test.ts` throws on a null `loadBand` result, and the nine sites call it. Verify 4/4 green (615 pass).
 - 2026-10-02: T10 done. The candidate search found no overlap outside the "Status mod follow-ons" row, which now lists the four M200 review items.
 - 2026-10-02: T8 done. `cairn/DESIGN.md` and the `reconcile` comment now say a press made while the refresh reads is kept, and that a hook changing the rows or step before the `update` can still clear a press. The `CairnBandHidden` comment says the skill is null for a skill with no label. The `refresh` comment names a `loadBand` throw. The DESIGN component line no longer says the close state holds through session ends. The AC2 describe title follows the amended clause. Wraps are even in the CHANGELOG entry, the README paragraph, the DESIGN bullet, and the `band.test.tsx` header. AC5 sweep read, verify 4/4 green (615 pass), `cairn_validate` green.
+- 2026-10-02: the amendment gate chose the AC2 wording with the code check added as the evidence for the first sentence.
+- re-audit: AC2 (full) — one finding, satisfiability: the code check never ties a failed read to the null that `refresh` tests. The reader proposed a parenthesis naming `readText`'s catch and `loadBand`'s null. The other five questions returned nothing. This is AC2's second re-audit line, so no further reader runs.
 
 ## Decisions
 
