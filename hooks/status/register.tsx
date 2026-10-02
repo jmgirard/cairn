@@ -146,7 +146,7 @@ export const register: Register = on => {
             <Button
               key="cairn-close"
               role="dismiss"
-              plain
+              {...(e.surface === 'terminal' ? { plain: true as const } : {})}
               label={CLOSE_GLYPH}
               onPress={() => dismiss($)}
             />

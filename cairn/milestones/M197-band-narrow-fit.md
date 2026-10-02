@@ -61,6 +61,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - 2026-10-01: T1 done. In `widest`, M1000 is in-progress at an open `T10a:` with 99/100 tasks, and M1001 is in-progress with no file. M1002 is in review at an open `AC10a:` with 99/100 criteria, and M1003 has all 100 criteria checked. `six-active` has six active rows and one planned row between them. The Python helpers match both hand-written `expected.json` files. Verify clean: scripts 394, hooks 174, validate 0, mod tests 196/196.
 - 2026-10-01: T2 done. The new tests ran first against the old `band.ts`: 133 of 260 failed, the AC1 sweep among them (the implement skill row needed 38 columns at 36 and 37). The 59 and 60 column tests became 56 and 57, the switch width of mixed's first row.
 - 2026-10-01: T3 done. `band.ts` picks each form with `fit`, the skill row drops its command, labels take one space, and the bar draws one glyph. `register.tsx` passes the close gap and label columns. A planted close width of 0 failed 9 tests, the AC2 switch tests among them. The AC1 sweep stayed green, because a 3-column error only shrinks the text. Verify clean: mod tests 260/260.
+- 2026-10-01: T4 look build A. The desktop draws the close Button without `plain`, and the terminal keeps the plain `×`. A bracketed terminal `[ × ]` takes 7 columns with its gap, and the widest implement carrier then needs 38 at 36. Verify clean: mod tests 260/260.
 
 ## Decisions
 

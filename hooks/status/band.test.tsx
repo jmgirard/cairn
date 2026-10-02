@@ -486,6 +486,9 @@ function shrinks(row: Element) {
 }
 
 const CLOSE = { terminal: '×', desktop: '×' } as const
+// The terminal draws the close button plain, its label alone. The desktop
+// draws its own close control.
+const PLAIN = { terminal: true, desktop: undefined } as const
 
 // The left group of each mixed row, written out by hand.
 const MIXED_LEFT: Record<string, string> = {
@@ -588,7 +591,7 @@ describe('the close button (M194 AC2)', () => {
         expect(buttons.map(keyOf)).toEqual(['cairn-close'])
         const [button] = buttons
         expect(button.props.role).toBe('dismiss')
-        expect(button.props.plain).toBe(true)
+        expect(button.props.plain).toBe(PLAIN[surface])
         expect(button.props.label).toBe(CLOSE[surface])
         // The Button is the last child of the first row's right group.
         const [first] = await ui.findAll({ key: `${FIXTURES[name].rows[0].id}-row` })
