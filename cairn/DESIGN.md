@@ -62,18 +62,21 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one row per milestone in M196).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
-  `plugin.json`. It draws a header row per `in-progress` or `review`
-  milestone. When the phase's section has an open box, an item row under it
-  names the first one; the section is `## Tasks` in implement and
+  `plugin.json`. It draws one row per `in-progress` or `review` milestone.
+  The phase's section is `## Tasks` in implement and
   `## Acceptance criteria` in review. The rows sit above what the hooks
-  beneath draw, and the band blocks nothing. A header row has a left group
-  (phase, id, title) and a right group (bar and counts, or a state label).
-  The engine cuts the title. The first header row ends in a `role:
-  'dismiss'` close button. A press stores the active ids and statuses and
+  beneath draw, and the band blocks nothing. A row has a left group (phase,
+  id, and one text) and a right group (bar and counts, counts alone, or a
+  state label). The text is the chapter on the row that carries the
+  running skill, else the section's first open box after a `→`, else the
+  title. The bar shows with no chapter or with a chapter that opens with a
+  positional label (`T2:`, `AC3:`), and not at any other chapter. The
+  engine cuts the text. The first row ends in a `role: 'dismiss'` close
+  button. A press stores the active ids and statuses and
   the running skill in the `dismissed` state value. The band then passes to
   `next(e)` until that list or the skill changes. A `skill.prompt` hook
   stores a cairn skill, by its bare or `cairn:` name, in the `step` state
@@ -86,11 +89,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
   `init`. The first row of the skill's status carries the skill
   (`in-progress` for implement, `review` for review), and otherwise a skill
-  row comes first. A skill row shows the label and the slash command. The
-  carrying row's item row shows the chapter. A session without the desktop
-  app's chapter tool, such as one in the terminal, sets no chapter:
-  milestone rows show their next open item, and a skill row has no item
-  row. The skill event carries no agent id, so a subagent that loads a
+  row comes first. A skill row shows the label, the slash command, and the
+  chapter after a `→`. A session without the desktop app's chapter tool,
+  such as one in the terminal, sets no chapter: milestone rows show their
+  next open item, and a skill row shows the label and the command only. The skill event carries no agent id, so a subagent that loads a
   cairn skill sets it too. `band.ts` builds the rows and `register.tsx`
   draws them. `reader.ts` mirrors the Python ROADMAP and section helpers,
   held to them by shared fixtures under

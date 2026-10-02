@@ -40,7 +40,7 @@ Draw each active milestone and each skill row on one line that shows the current
 - [x] T1: Write the tests first in `hooks/status/band.test.tsx`. Rewrite the `DRAWN` map and the M193, M194, and M195 drawing tests for one line per row. Add the every-fixture row-count test (AC1) and the text-source tests in both phases (AC2). Add the right-group tests for a labeled chapter, an unlabeled chapter, no chapter, and a chapter on a state-label row (AC3). Confirm that the new tests fail on the two-row code for the reason they name.
 - [x] T2: In `hooks/status/band.ts`, replace `HeaderLine` and `ItemLine` with one line type. Its left group is the head and one text: an arrow, a bold positional label, and the rest, or the title alone. `bandLines` picks the text (chapter, next item, title) and the right group (bar and counts, counts alone, or the state label). `skillLines` builds one line, and `lineText` follows.
 - [x] T3: In `hooks/status/register.tsx`, draw the one line with the close button on the first row. Keep the M194 flex rules: `minWidth: 0` on each shrinking Box, and `flexShrink: 0` on the head, the arrow and label, and the right group. Run the four verify checks of `cairn/PROFILE.md`.
-- [ ] T4: Rewrite the band text in README.md, CHANGELOG.md, and `cairn/DESIGN.md`, and the comments in `band.ts` and `register.tsx`, for one row. Take the README examples from `lineText` output over a fixture and a test's chapter. Run the AC4 grep.
+- [x] T4: Rewrite the band text in README.md, CHANGELOG.md, and `cairn/DESIGN.md`, and the comments in `band.ts` and `register.tsx`, for one row. Take the README examples from `lineText` output over a fixture and a test's chapter. Run the AC4 grep.
 - [ ] T5: Do a live look in a new desktop Code session from the branch, because a session keeps the mod it loaded at start (M195 lesson). Mark a long `T<n>:` chapter during implement, a long unlabeled chapter, and a chapter on a skill row. Take a screenshot of each at the default window width.
 
 ## Work log
@@ -50,6 +50,7 @@ Draw each active milestone and each skill row on one line that shows the current
 - 2026-10-01: plan gate chose the current step on the left, with the title as fallback, over the title with no step. The id names the milestone, and the step is the part that changes. Falsified by sessions where two active milestones cannot be told apart by id alone.
 - 2026-10-01: started on branch m196-one-line-band. No question gate: the plan left no implementation choice open.
 - 2026-10-01: T1–T3 done. The rewritten `band.test.tsx` ran 146 red of 188 on the two-row code, each sampled red showing two rows or the old `-header`/`-item` keys, then 188 green on the one-line code. A step's arrow is dim, its label bold, and its rest at full strength, since the step is now the row's main text. Scripts and hooks suites, plugin validate, and plugin test are green.
+- 2026-10-01: T4 done. README, CHANGELOG, and DESIGN.md describe one row per milestone. The README examples are the mixed fixture's rows, the M010 post-merge chapter row, and the plan skill row, each asserted in `band.test.tsx`. The AC4 grep prints nothing (exit 1). The M062 fixture's criterion text still reads "The item row stays dim." It is fixture data the band never draws, outside the AC4 files. All four verify checks are green.
 
 ## Decisions
 

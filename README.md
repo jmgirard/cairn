@@ -73,24 +73,24 @@ Run `/milestone` any time you're unsure where things stand.
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
 the milestones in flight. Each `in-progress` or `review` row of
-`cairn/ROADMAP.md` gets a header row, in ROADMAP order. The phase, the id,
-and the title sit at the left of the header row. A 10-cell progress bar and
+`cairn/ROADMAP.md` gets one row in the band, in ROADMAP order. The phase,
+the id, and one text sit at the left of the row. A 10-cell progress bar and
 the checked and total checkboxes of the phase's section sit at its right
 edge. During `implement` that section is `## Tasks`. During `review` it is
-`## Acceptance criteria`. A dim item row under the header names the
-section's first unchecked task or criterion, with its `T2:` or `AC3:` label
-in bold. One of the band's test fixtures gives these rows, shown here with
-the left and right parts two spaces apart:
+`## Acceptance criteria`. The text is the section's first unchecked task
+or criterion after a `→`, with its `T2:` or `AC3:` label in bold. One of
+the band's test fixtures gives these rows, shown here with the left and
+right parts two spaces apart:
 
 ```text
-review    M010 Nested tasks and a capital X  ██████░░░░  2/3 criteria
-  → AC3: Third criterion.
+review    M010 → AC3: Third criterion.  ██████░░░░  2/3 criteria
 implement M012 A Tasks section with no boxes  no tasks
 review    M013 Capitalized status, file gone  no milestone file
 implement M014 No Tasks section at all  no tasks
 ```
 
-Three labels replace the bar, the counts, and the item row.
+Three labels replace the bar and the counts, and the row then shows the
+milestone's title as its text.
 `no milestone file` means that the row's `File/Archive` path names no
 regular file the band can read. `no tasks` or `no criteria` means that the
 section is missing or holds no checkboxes. `all 3 tasks checked` or
@@ -99,7 +99,7 @@ section is missing or holds no checkboxes. `all 3 tasks checked` or
 The phase label is drawn in your theme's Claude orange for `implement` and
 its success green for `review`. The bar's filled cells take the same color,
 and `no milestone file` takes the theme's warning color. Below 60 columns
-the bar is left out. A title too long for the width is cut at its end, and
+the bar is left out. A text too long for the width is cut at its end, and
 the bar and the counts stay at the right edge. If another plugin draws a
 band in the same place, its rows show under cairn's.
 
@@ -114,26 +114,34 @@ milestone rows. A skill row shows the label and the slash command, and
 nothing at its right edge but the close button.
 
 In the desktop app, each chapter the session marks, for example
-`Consistency gate` or `Post-merge hygiene`, takes the item row under the
-row that carries the skill. A skill row shows the chapter under it. The
-band reads the files again at each chapter, so the counts match the files
-at that chapter. During planning, with no milestone active, the band shows:
+`Consistency gate` or `Post-merge hygiene`, becomes the text of the row
+that carries the skill, after a `→`. A skill row shows the chapter after
+its slash command. The bar shows while the chapter is a task or criterion,
+one that opens with a label such as `T4:` or `AC2:`. At any other chapter
+the row shows the counts alone. The band reads the files again at each
+chapter, so the counts match the files at that chapter. During review, at
+the post-merge step, the first test fixture's row shows:
 
 ```text
-plan      /milestone-plan
-  → Question gate
+review    M010 → Post-merge hygiene  2/3 criteria
+```
+
+During planning, with no milestone active, the band shows:
+
+```text
+plan      /milestone-plan → Question gate
 ```
 
 Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
 one in the terminal, milestone rows show their next open box, and a skill
-row has no item row. The skill and its chapter stay until a cairn skill
+row shows its label and slash command only. The skill and its chapter stay until a cairn skill
 starts again, the same one included, or the session ends, a `/clear`
 included. A subagent that loads a cairn skill also sets the label, because
 the skill event does not say which agent loaded it.
 
-The first header row ends in a close button, `×`, in the terminal and in
-the desktop app. A skill row counts as a header row. Pressing the button
+The first row ends in a close button, `×`, in the terminal and in the
+desktop app. That row can be a milestone row or a skill row. Pressing the button
 hides the band. The band stays hidden while two things stay the same. The
 first is the list of active milestones: their ids, their statuses, and
 their ROADMAP order. The second is the running cairn skill. When either

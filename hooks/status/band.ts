@@ -32,7 +32,7 @@ const PHASES: Record<string, Phase> = {
 }
 
 export const BAR_CELLS = 10
-// Below this many band columns the header row drops the bar.
+// Below this many band columns a row drops the bar.
 export const BAR_MIN_COLUMNS = 60
 // The columns between the left and the right group.
 export const GAP = 2
