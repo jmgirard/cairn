@@ -17,7 +17,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 
 **In:**
 - Each header row in `hooks/status/` becomes two groups. The left group holds the phase, the id, and the title. The right group holds the bar, the counts or the state label, and on the first row the close button. The engine cuts the title by screen width, so `fit()` in `band.ts` is removed. This absorbs two items of the "Band layout edge cases" candidate row: the UTF-16 title cut and the split surrogate pair. Post-merge hygiene narrows the row only if T7's live look records a wide-character title cut with no split character.
-- A close `Button` with `role: 'dismiss'`. A desktop draws its native close control at the band's trailing edge, and the terminal draws `×`. A press stores the ordered list of active ids and statuses in a new session state value, declared in `types/index.d.ts`. The band stays hidden while the current list equals the stored one. A new session starts with the band shown.
+- A close `Button` with `role: 'dismiss'` and the label `×` on the terminal and the desktop. A press stores the ordered list of active ids and statuses in a new session state value, declared in `types/index.d.ts`. The band stays hidden while the current list equals the stored one. A new session starts with the band shown.
 - The item row's positional label (`T3:`, `AC2:`) draws bold, and the rest of the row stays dim.
 - README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
 
@@ -31,7 +31,7 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 ## Acceptance criteria
 
 - [ ] AC1: Each header row draws as a `Box` with `justifyContent: 'space-between'` whose children are two `Box` groups. The left group carries `flexShrink: 1` and holds the phase label, the id, and the title. The title's `Text` holds the whole ROADMAP title with `wrap="truncate-end"`, inside a `Box` with `flexShrink: 1`. The right group carries `flexShrink: 0` and `marginLeft: 2`. It holds the bar (at `bodyColumns` 60 or more) and the counts, or the state label that M193's AC2 names. On the first row it also holds AC2's close button. Shown by `claude plugin test` cases on the terminal and desktop surfaces that read the drawn elements' props from `findAll`. The cases mount `mixed` at `bodyColumns` 59, 60, and 120. At `bodyColumns` 40 they also mount two more fixtures. One has a title longer than 120 characters. The other has a title with wide characters and an emoji outside the Basic Multilingual Plane.
-- [ ] AC2: When the band draws rows, its tree holds exactly one `Button`. It is keyed `cairn-close` and is the last child of the first header row's right group. It has `role: 'dismiss'` and `plain`. Its label is `×` on the terminal and `Close milestone band` on the desktop. A press makes the next drawing of the band pass to `next(e)`. That drawing holds no cairn row. It holds what the hooks beneath draw: the engine's own slot, or in its place the row a plugin beneath draws. Shown by `claude plugin test` cases on both surfaces over `mixed` and `single-in-progress`, and over `mixed` with a plugin beneath that draws its own row.
+- [ ] AC2: When the band draws rows, its tree holds exactly one `Button`. It is keyed `cairn-close` and is the last child of the first header row's right group. It has `role: 'dismiss'` and `plain`, and its label is `×` on the terminal and the desktop. A press makes the next drawing of the band pass to `next(e)`. That drawing holds no cairn row. It holds what the hooks beneath draw: the engine's own slot, or in its place the row a plugin beneath draws. Shown by `claude plugin test` cases on the terminal and desktop surfaces over `mixed` and `single-in-progress`, and over `mixed` with a plugin beneath that draws its own row.
 - [ ] AC3: After a press, the band stays hidden at each turn end whose refreshed active rows have the same ids and statuses, in the same ROADMAP order, as at the press. It shows again at the first turn end where that ordered list differs. It then stays shown until the next press. A list that returns to its press-time value does not hide it again. Shown by edit cases on both surfaces in `hooks/status/band.test.tsx`. A checked task box, an added `planned` row, and an edited title each keep the band hidden. Four edits each show it again: a row moved from `in-progress` to `review`, an added active row, a removed active row, and two active rows that swap ROADMAP order. A row moved to `review` shows the band. A move back to `in-progress` keeps it shown.
 - [ ] AC4: When the item row's text after its arrow matches `^(T|AC)\d+[a-z]*:`, the matched label's `Text` carries `bold`, and neither it nor any `Text` that encloses it carries `dimColor`. Every other `Text` of the item row carries `dimColor`. An item text with no such label has `dimColor` on every `Text`. Shown by `claude plugin test` cases on both surfaces over `mixed` (`AC3:`), `single-in-progress` (`T2:`), `nested-first` (`T1a:`), and a fixture whose first unchecked task has no positional label.
 - [ ] AC5: The band keeps M193's rows, texts, colors, ROADMAP order, survey yield, and stacking above `next(e)`, except where AC1, AC2, and AC4 change them. Shown by M193's cases in `hooks/status/band.test.tsx`, restated where AC1, AC2, or AC4 changed the tree, and passing on the surfaces each ran on.
@@ -40,11 +40,11 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 ## Coverage
 
 - AC1 → T1, T3, T4
-- AC2 → T2, T3, T4
+- AC2 → T2, T3, T4, T7
 - AC3 → T2, T3, T5
 - AC4 → T1, T3, T4
 - AC5 → T4
-- AC6 → T4, T5, T6
+- AC6 → T4, T5, T6, T7
 
 ## Tasks
 
@@ -54,7 +54,8 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - [x] T4: Tests. Restate M193's cases where the tree changed. Add the AC1, AC2, and AC4 cases on both surfaces, red first.
 - [x] T5: Edit cases for AC3 on both surfaces.
 - [x] T6: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
-- [ ] T7: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
+- [ ] T7: Label the close button `×` on the terminal and the desktop. Remove `CLOSE_LABEL` and its comment in `register.tsx`, set the test's `CLOSE` to `×` on both surfaces, and correct README's close-button paragraph. Read the CHANGELOG and DESIGN.md wording against it.
+- [ ] T8: Look at the band live in the desktop app at a normal and a narrow width, in both phases, with a wide-character title, and press the close button. Record what it showed in the work log.
 
 ## Work log
 
@@ -73,5 +74,9 @@ Lay out the milestone band with its bar and counts at the right edge, and give i
 - 2026-10-01: claim audit: 43 claims read, 6 corrected — hooks/status/band.ts, hooks/status/band.test.tsx (the README, CHANGELOG, and types claims held). The same reader re-read the 6 fixes and 3 optional "or order" fixes in register.tsx and the AC3 describe name: all held. Mod tests 82/82, validate clean.
 - 2026-10-01: T7 first live look (desktop, implement phase, operator's screenshot): the bar and counts sat at the right edge. Two defects. The item row read `→ T7:…`, the text after the label cut to a bare ellipsis. The close button drew its label `Close milestone band` as text, not a native close control.
 - 2026-10-01: item row fix: the arrow, label, and rest are now sibling Texts in the row Box. The rest sits inside a `flexShrink: 1` Box, as the title does. Before, one Text nested all three. AC4's wording already allowed this. Mod tests 82/82, validate clean.
+- 2026-10-01: amendment gate after the live look: the operator chose the label `×` on the terminal and the desktop, keeping `role: 'dismiss'` and `plain`. This reverses the plan gate's native-close-control choice, because the desktop drew `Close milestone band` as text in the band. It also drops the desktop accessible name the first plan audit added, so the name is now `×`. AC2 and the Scope bullet are amended. Falsified by a desktop drawing where `×` does not read as closing the band.
+- re-audit: AC2 (full) — four findings. "Both surfaces" had no antecedent, reworded to "the terminal and the desktop". No task carried the change, so T7 was added. README, register.tsx, and the test's `CLOSE` carry the old label. The reversal needs a work-log line. "Exactly one Button" covers more row sets than its cases, kept as in the plan.
+- re-audit: AC2 (full) — README's close-button paragraph and the reversal line, both covered by T7 and the line above. Nothing else.
+- 2026-10-01: minor amendment: a new T7 carries the label change. The live look moves to T8 and runs after it. Coverage adds T7 to AC2 and AC6.
 
 ## Decisions
