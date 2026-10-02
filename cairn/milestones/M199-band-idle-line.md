@@ -119,3 +119,16 @@ Three fresh reviewers ran: diff-bug (Opus, D), blame-history (Sonnet, B), and pr
 - B8: Checked and consistent, no action.
 - P1: Ragged wraps in the edited prose, which M193, M195, M196, and M198 each fixed at their gates. Four added lines exceed 80 columns in README.md, `cairn/DESIGN.md`, and `gen_fixtures.py`, and CHANGELOG.md and DESIGN.md have short orphan lines. Proposed: fix now by reflowing.
 - P2: Same as D4.
+
+Triage at the gate, 2026-10-02. The operator accepted every proposed disposition.
+
+- D1: follow-up. README.md and CHANGELOG.md now state that a turn Claude ends to wait for background work ends the skill. README.md also states that a question asked in plain text ends it. A candidate row is added at post-merge hygiene.
+- D2: fixed. The reader test "a done row meets a dependency spelled at another padding" failed with the `canonId` plant and got `[]`, then passed with the reader restored.
+- D3: fixed. The reader test "only an archive file ending in .md marks its id done" failed with the suffix check planted out and got `["M091", "M093"]`, then passed.
+- D7: fixed. `render()` now calls `workable(root, rows)` into a local named `ready`. `cairn_next.py` still recommends review M199 on this repo.
+- D8: fixed in README.md lines 74 and 168 and the `reader.ts` header. The describe title is noted.
+- B5: fixed. Four sweep tests walk the idle row from 36 to 120 columns, plus a test that the sweep has its four fixtures. A plant that never drops the command reddened all four, with overruns such as `idle-row at 36: 40`.
+- P1: fixed. Every line this branch adds to README.md, CHANGELOG.md, `cairn/DESIGN.md`, and `gen_fixtures.py` is 80 columns or less. The one exception is the DESIGN.md bullet head for `hooks/status/`, which is one line by that file's own pattern.
+- D5, B7: follow-up, added to the "Band close-state edge cases" row at post-merge hygiene.
+- D4, P2, D6, B3, B6: rejected for the reasons above. B2, B4, B8: noted.
+- After the fixes, the verify slot passed again: scripts, hooks, plugin validate, and 603 plugin tests, each exit 0. `cairn_validate` passed.

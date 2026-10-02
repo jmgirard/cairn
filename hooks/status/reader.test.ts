@@ -87,6 +87,26 @@ describe('the workable list (M199 AC1)', () => {
     expect(canonId('Mfoo')).toBe('Mfoo')
   })
 
+  test('a done row meets a dependency spelled at another padding', () => {
+    const rows = roadmap(['| M57 | Shipped | done | — | normal | m |', '| M060 | Next | planned | M057 | normal | m |'])
+    expect(workableRows(rows, []).map(r => r.id)).toEqual(['M060'])
+  })
+
+  test('only an archive file ending in .md marks its id done', async () => {
+    const text = [
+      '| ID | Title | Status | Depends on | Priority | File/Archive |',
+      '|---|---|---|---|---|---|',
+      '| M091 | On a text file | planned | M090 | high | m |',
+      '| M093 | On a markdown file | planned | M092 | normal | m |',
+    ].join('\n')
+    const files = {
+      '/cairn/ROADMAP.md': text,
+      '/cairn/milestones/archive/M090-notes.txt': '',
+      '/cairn/milestones/archive/M092-shipped.md': '',
+    }
+    expect((await loadBand(memorySource(files, '/'))).workable.map(r => r.id)).toEqual(['M093'])
+  })
+
   test('a priority word that names an object property reads as normal', () => {
     const rows = roadmap([
       '| M002 | Low | planned | — | low | m |',

@@ -4,8 +4,9 @@
 // validator uses (`parse_roadmap_rows_full` in hooks/cairn_common.py, `_section_body` and
 // `_AC_ITEM` in scripts/cairn_validate.py, `find_cairn_root` for the walk),
 // and `workable` in scripts/cairn_next.py over the rows `cairn_scripts.rows`
-// parses (its Depends-on cells through `parse_depends`), with the helpers
-// `workable` calls (`canon_id`, `archive_files`, `sort_by_priority`). The
+// parses (its Depends-on cells through `parse_depends`), with what
+// `workable` reaches through `done_ids` and `_workable` (`canon_id`,
+// `archive_files`, and `sort_by_priority` with its `id_num`). The
 // mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
 // and `\d` also take other Unicode digits, so an id such as `M００５７`
 // reads differently in the two.

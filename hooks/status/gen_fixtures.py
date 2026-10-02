@@ -5,9 +5,9 @@ A `claude plugin test` file cannot read files, so the status mod's tests
 read the fixture directories through this generated module. Each fixture
 directory becomes one entry: its files keyed by absolute in-memory path
 (the fixture directory is `/`), the session's working directory, and the
-rows and the ordered workable ids its `expected.json` states. The module also lists the plugin's skill
-names, one per `skills/*/SKILL.md`, which the band's label map is held to
-(M195).
+rows and the ordered workable ids its `expected.json` states. The module
+also lists the plugin's skill names, one per `skills/*/SKILL.md`, which
+the band's label map is held to (M195).
 
     python3 hooks/status/gen_fixtures.py          # rewrite the module
     python3 hooks/status/gen_fixtures.py --check  # exit 1 when stale

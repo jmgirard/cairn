@@ -92,19 +92,19 @@ transitions, human-gated merges, and a domain verification doctrine.
   terminal, and a `✕` dim at rest on other surfaces. A press stores the
   active ids and statuses, the running skill, and the idle row's id or null
   in the `dismissed` state value. The band then passes to `next(e)` until
-  that list, the skill, or the idle id changes. A `skill.prompt` hook stores a cairn skill, by its bare or
-  `cairn:` name, in the `step` state value. While a cairn skill runs, a
-  `tool.call` hook on the desktop app's chapter tool stores the title of
-  each main-loop chapter that went through. Every main-loop chapter that
-  went through reads the files again. A main-loop `turn.complete` with
-  reason `answer` clears `step`, and so does every `session.end`. A turn
-  that ends `aborted`, `refusal`, or `error`, and a subagent's turn end,
-  keep it.
-  `SKILL_LABELS` in `band.ts` gives each skill's label, held to the
-  `skills/*/SKILL.md` list that `gen_fixtures.py` writes: `plan`,
-  `implement`, `review`, `hotfix`, `triage`, `release`, `status` (for
-  `milestone`), `brief`, `design`, and `init`. The skill's label takes the
-  place of the phase label on the row. It draws in the muted green for
+  that list, the skill, or the idle id changes. A `skill.prompt` hook
+  stores a cairn skill, by its bare or `cairn:` name, in the `step` state
+  value. While a cairn skill runs, a `tool.call` hook on the desktop app's
+  chapter tool stores the title of each main-loop chapter that went
+  through. Every main-loop chapter that went through reads the files
+  again. A main-loop `turn.complete` with reason `answer` clears `step`,
+  and so does every `session.end`. A turn that ends `aborted`, `refusal`,
+  or `error`, and a subagent's turn end, keep it. `SKILL_LABELS` in
+  `band.ts` gives each skill's label, held to the `skills/*/SKILL.md` list
+  that `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
+  `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
+  `init`. The skill's label takes the place of the phase label on the row.
+  It draws in the muted green for
   `/milestone-review` and the muted orange otherwise. With no active
   milestone, a skill row shows the label, the slash command, and the chapter
   after a `→`. A session without the desktop app's chapter tool, such as one
@@ -120,9 +120,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
   three-digit padding. With an empty list the band draws nothing.
   `band.ts` builds the row and `register.tsx` draws it. `reader.ts`
-  mirrors the Python ROADMAP and section helpers and `cairn_next.workable`, held to them by shared
-  fixtures under `hooks/status/fixtures/` (`gen_fixtures.py` writes
-  `fixtures.gen.ts` for the `claude plugin test` cases).
+  mirrors the Python ROADMAP and section helpers and
+  `cairn_next.workable`, held to them by shared fixtures under
+  `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for
+  the `claude plugin test` cases).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),

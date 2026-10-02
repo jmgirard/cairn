@@ -1548,6 +1548,21 @@ describe('each sampled row fits the band from 36 to 120 columns in the terminal 
     }
   }
 
+  const idleFixtures = Object.keys(FIXTURES).filter(name => idleId(name) !== null)
+  test('the idle sweep has fixtures to walk', () => {
+    expect(idleFixtures.sort()).toEqual(['idle-deps', 'idle-order', 'no-active', 'repo-at-cut'])
+  })
+
+  for (const name of idleFixtures) {
+    test(`${name}: the idle row, with no skill running (M199)`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const { overruns, measured } = await sweep($, ['idle-row'])
+      expect(measured).toBe(WIDTHS.length)
+      expect(overruns).toEqual([])
+    })
+  }
+
   for (const name of ['no-active', 'widest']) {
     for (const skill of SKILLS) {
       test(`${name}: the ${skill} row at the chapter Question gate`, async ($, on) => {

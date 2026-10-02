@@ -72,8 +72,9 @@ Run `/milestone` any time you're unsure where things stand.
 ### The milestone band
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
-one row for the milestone in flight. With no cairn skill running, that is
-the first `in-progress` row of `cairn/ROADMAP.md`, else its first `review`
+one row for the milestone in flight, or between milestones for the next one
+you can start. With no cairn skill running, the milestone in flight is the
+first `in-progress` row of `cairn/ROADMAP.md`, else its first `review`
 row. The row gives no sign of the other active milestones. The phase, one
 space, the id, and one text sit at the left of the row. A 10-cell progress
 bar and the checked and total checkboxes of the phase's section sit at its
@@ -165,13 +166,16 @@ Chapters come from the desktop app's chapter tool,
 one in the terminal, a milestone row shows its next open box, and a skill
 row shows its label and slash command only. The skill and its chapter
 stay until the turn that runs the skill ends with Claude's answer, such as
-the skill's closing summary. A question the skill asks you waits inside
-that turn, so the skill stays while you answer. A cairn skill that starts again, the same one
-included, or a session end, a `/clear` included, also ends them. A turn
-that you interrupt, or one that ends in an error, keeps them. A chapter
-marked after the skill ended does not show. A subagent that loads a cairn
-skill also sets the label, because the skill event does not say which
-agent loaded it.
+the skill's closing summary. A question chip the skill asks you waits
+inside that turn, so the skill stays while you answer it. A question asked
+in plain text ends the turn, and the skill with it. So does a turn that
+Claude ends to wait for background work, such as the reviewers that
+`/milestone-review` starts. The rest of that skill shows no label. A cairn
+skill that starts again, the same one included, or a session end, a
+`/clear` included, also ends them. A turn that you interrupt, or one that
+ends in an error, keeps them. A chapter marked after the skill ended does
+not show. A subagent that loads a cairn skill also sets the label, because
+the skill event does not say which agent loaded it.
 
 With no milestone active and no cairn skill running, the band shows an
 idle row for the next milestone you can start. That milestone is the first
