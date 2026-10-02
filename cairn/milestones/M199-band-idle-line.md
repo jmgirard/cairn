@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M199: A band that names the next milestone
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,7 +61,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - [x] T4: In `register.tsx`, end the step at a main-loop `turn.complete` with reason `answer`. Add the drawn idle id to the close mark under a new `dismissed` shape tag. Update `types/index.d.ts`. Add the AC3 and AC4 cases first.
 - [x] T5: Update README.md, CHANGELOG.md, and `cairn/DESIGN.md`. Run the AC5 sweep and read each line it returns.
 - [x] T6: Do the AC6 live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If a question chip ends the turn, stop and amend through the gate.
-- [ ] T7: Run the verify slot from the repo root and check each exit code.
+- [x] T7: Run the verify slot from the repo root and check each exit code.
 
 ## Work log
 
@@ -80,6 +80,8 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: T6 paused at the operator's choice before the live look. The scratch repo is at `scratchpad/idle-look` in this session's scratch directory, with M002 workable and M003 waiting on M002. On resume, recreate it if it is gone, then do the look.
 - 2026-10-02: T6 done. The operator did the live look in a copy at `~/Desktop/cairn-idle-look`, because Finder hides `/private/tmp`. After `/milestone` ended its turn, its skill row (`status /milestone → Route`) gave way to `next M002`. During the `/milestone-plan` question chip, the plan row stayed (`→ Question gate`), so a chip keeps the step. That claim went into README and the `register.tsx` comment. The idle row drew only after the first message, not at session open. A new test shows `session.start` draws it in the harness. In this repo the M199 row drew at open. In the Desktop copy, M002 set to in-progress drew no row before the first message either. So the gap belongs to that folder or to how the app starts a session, not to the idle row. It joins the "Status mod follow-ons" row.
 - 2026-10-02: correction to the line above. The operator's screenshot shows the app's "New" page with no session running: the session starts at the first message. So no band can draw before it, and the note was taken back out of the "Status mod follow-ons" row. The cairn-repo look that drew the M199 row at once was not re-checked.
+- 2026-10-02: T7 done. Verify green: scripts 395, hooks 174, plugin validate, and 596 plugin tests. Validate green, and ROADMAP is 18,953 bytes.
+- claim audit: 58 claims read, 2 corrected — hooks/status/reader.ts (the header named `parse_depends` as a helper that `workable` calls, and the mirror comments left out that it reads ASCII digits only, where Python also takes other Unicode digits). The same reader re-read the three corrected comments and found them correct.
 
 ## Decisions
 

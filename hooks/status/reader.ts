@@ -3,8 +3,12 @@
 // planned milestones are workable. It mirrors the Python helpers the
 // validator uses (`parse_roadmap_rows_full` in hooks/cairn_common.py, `_section_body` and
 // `_AC_ITEM` in scripts/cairn_validate.py, `find_cairn_root` for the walk),
-// and `workable` in scripts/cairn_next.py with the `cairn_scripts` helpers
-// it calls (`parse_depends`, `canon_id`, `archive_files`, `sort_by_priority`).
+// and `workable` in scripts/cairn_next.py over the rows `cairn_scripts.rows`
+// parses (its Depends-on cells through `parse_depends`), with the helpers
+// `workable` calls (`canon_id`, `archive_files`, `sort_by_priority`). The
+// mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
+// and `\d` also take other Unicode digits, so an id such as `M００５７`
+// reads differently in the two.
 // hooks/status/reader.test.ts holds this reader, and
 // scripts/tests/test_status_fixtures.py the Python helpers, to the same
 // fixtures.
@@ -95,8 +99,9 @@ export function parseRoadmapRows(text: string): RoadmapRow[] {
 
 const DIGITS = /^\d+$/
 
-// The milestone ids in a Depends-on cell, as `parse_depends`: a token is an
-// `M` and digits, and every other token, `—` included, is dropped.
+// The milestone ids in a Depends-on cell, as `parse_depends` for ASCII
+// digits: a token is an `M` and digits, and every other token, `—`
+// included, is dropped.
 export function parseDepends(cell: string): string[] {
   return cell
     .trim()
@@ -104,8 +109,8 @@ export function parseDepends(cell: string): string[] {
     .filter(token => token.startsWith('M') && DIGITS.test(token.slice(1)))
 }
 
-// An id at three-digit padding, as `canon_id`: `M57`, `M057`, and `M0057`
-// are `M057`, and a non-numeric id stays as it is.
+// An id at three-digit padding, as `canon_id` for ASCII digits: `M57`,
+// `M057`, and `M0057` are `M057`, and a non-numeric id stays as it is.
 export function canonId(id: string): string {
   const rest = id.slice(1)
   return DIGITS.test(rest) ? `M${BigInt(rest).toString().padStart(3, '0')}` : id
