@@ -1,0 +1,11 @@
+# M196: A one-line milestone band
+
+**Status:** done (2026-10-01, PR #203 https://github.com/jmgirard/cairn/pull/203)
+
+**Goal:** Draw each active milestone and each skill row on one line that shows the current step, with the bar shown only during the task or criterion loop.
+
+**Outcome:** `band.ts` replaces `HeaderLine` and `ItemLine` with one line type. A milestone row's left group is the phase label, the bold id, and one text. The text is the chapter on the row that carries the running skill, else the phase's next open box, else the title. A chapter or box follows a dim `→`, and its `T<n>`, `T<n><letter>`, or `AC<n>` label draws bold. With no chapter or a labeled chapter, the right group shows the bar and counts. At any other chapter it shows the counts alone, and a state label stays. Below 60 columns the bar is left out. A skill row is its label and slash command, then the chapter. `register.tsx` draws one line per row with the M194 flex rules and the close button on the first row. The stored `band`, `step`, and `dismissed` values are unchanged. README, CHANGELOG, and DESIGN.md describe one row per milestone, with README examples asserted in `band.test.tsx`. Mod tests went from 135 to 188. A live look in the desktop app at the default width drew three rows on one line each, cut by `…`. They were a labeled chapter, an unlabeled chapter, and a skill row.
+
+**Decisions:** The plan gate chose the bar only during the task or criterion loop over pre and post cells on every bar. It chose the current step on the left, with the title as fallback. After the live look the operator kept the separate skill row and filed "Band one row with a skill".
+
+**Review:** All five criteria passed on the first round with the three-lens fan-out. No finding showed a criterion failing. The gate fixed four items. They were ragged wraps in CHANGELOG and README, a DESIGN sentence about the `→`, two stale test names, and a test whose chapter equaled the next task. Two follow-ups went to "Band layout edge cases": the skill-row head overrun at about 36 columns and the row's stale "header row" wording. The operator marked that row high for a layout milestone. Six findings were rejected with reasons. Among them were the phase-blind label test and range labels such as `T1-T3:`.
