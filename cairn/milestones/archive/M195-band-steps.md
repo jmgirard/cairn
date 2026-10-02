@@ -1,0 +1,11 @@
+# M195: A milestone band that names every cairn step
+
+**Status:** done (2026-10-01, PR #202 https://github.com/jmgirard/cairn/pull/202)
+
+**Goal:** Make the milestone band name the cairn skill that is running and its current step, so that planning, the final checks, and post-merge hygiene show in the band.
+
+**Outcome:** The status mod hooks `skill.prompt`. It stores a running cairn skill, by its bare or `cairn:` name, in a new `step` atom (`step-1`). A `tool.call` hook on `mcp__ccd_session__mark_chapter` stores each main-loop chapter title while a skill runs. Each such call reads the files again. A denied, errored, subagent, or empty-title call sets nothing. Every `session.end` clears the step. `SKILL_LABELS` in `band.ts` maps the ten skills to `plan`, `implement`, `review`, `hotfix`, `triage`, `release`, `status`, `brief`, `design`, and `init`. It is held to the `skills/*/SKILL.md` list that `gen_fixtures.py` writes as `SKILLS`. Implement and review run on the first row of their status. Any other skill, or one of those two with no such row, gets a skill row with its label and slash command. The carrying row's item row shows the chapter. The close button's mark (`dismissed-2`) adds the skill. README, DESIGN.md, and the CHANGELOG describe it. Mod tests went from 82 to 135. A live look in the desktop app showed two facts. The `cairn:` spelling sets the step, and the band redraws in the middle of a turn.
+
+**Decisions:** The plan gate chose the skill event and the existing chapter calls over a phase file that each skill writes. It inferred nothing from git. It gave rows to all ten skills. It kept the `review` label and put the chapter on the item row. Accepted limit: a subagent that loads a cairn skill also sets the label.
+
+**Review:** Round 1 returned on AC6 (CHANGELOG and DESIGN.md docs clauses missing), fixed by T9. Round 2 passed all seven criteria with the three-lens fan-out. The gate fixed six items. They were a stale chapter write, a missing subagent-guard test, an empty title, an unknown stored skill, two doc clauses, and uneven wraps. Follow-ups went to the "Band close-state edge cases", "Band idle line", and "Status mod follow-ons" rows. Five findings were rejected with reasons. The M193 LESSONS line was extended with the M195 mod-reload and event-name facts.
