@@ -80,6 +80,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - claim audit: 45 claims read, 3 corrected — README.md, CHANGELOG.md, hooks/status/register.tsx. "Draws nothing outside a cairn repo" was false, because a running cairn skill draws its rows there. A `cairn-init` over `no-roadmap` case now backs the corrected text, for 131 mod tests. The terminal claim now names the chapter tool and gives the terminal as an example. The same reader re-read the three once and found them true.
 - 2026-10-01: T8 split, a minor task edit. A mod edit made during a turn reloads at the turn end, and the band's skill and mid-turn redraw can only be seen by the operator. This session checks the implement row, the `cairn:` spelling, and the mid-turn redraw. The plan and review looks are recorded at M195's own review.
 - 2026-10-01: operator screenshot of the band: `implement M195 … 7/8 tasks` with the pre-edit T8 text on the item row, so that drawing came before the band read `697a950`. Operator note: the band's `×` is smaller than the desktop app's own close icon. That note went to the "Band layout edge cases" candidate row, outside M195's scope.
+- 2026-10-01: T8 attempt in the planning session after a `/cairn:milestone-implement M195` rerun. Three chapters were marked 15 seconds apart, and the operator saw no change on the M195 item row. The desktop session still ran the mod it loaded at session start, so the edits made during the session never loaded. T8 moves to a new Code session on this branch.
 
 ## Decisions
 
