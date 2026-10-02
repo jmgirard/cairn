@@ -1,6 +1,6 @@
 # M197: A band that fits narrow windows and the desktop font
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -33,7 +33,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 
 - AC1 → T1, T2, T3, T4
 - AC2 → T2, T3, T4
-- AC3 → T2, T3, T4, T6
+- AC3 → T2, T3, T4, T6, T9
 - AC4 → T5
 - AC5 → T1, T4
 - AC6 → T7
@@ -49,6 +49,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - [x] T6: In a new desktop Code session, look at a narrow pane with an active milestone and a running skill. Make sure that the rows stay inside the pane and that the bar keeps one width at two counts. Make sure that the gap after `implement` and after `review` is the same. Log what the look shows.
 - [x] T7: Update README's "The milestone band" section, the CHANGELOG's Unreleased band entry, and DESIGN.md's `hooks/status/` paragraph. Say that README rows show the empty bar cells as `█`, because a text block cannot show dim.
 - [x] T8: Run the verify slot from the repo root and read each exit code. Run `python3 -m unittest` in `scripts/tests` and in `hooks/tests`. Then run `claude plugin validate .claude-plugin/plugin.json` and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
+- [x] T9: In the AC3 skill-row test of `band.test.tsx`, assert the bar on each row a skill draws on `widest`: ten `█` cells, the empty run dim. Assert no bar on a skill row.
 
 ## Work log
 
@@ -83,6 +84,8 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - 2026-10-01: the claim audit's re-read found all 8 corrections true, plus the new README sentence on wide characters, which took the reader's tighter wording. The corrections fixed comments that still spoke of several rows, the `stepLines` rule comment, and the `width` comment, which now says it undercounts wide characters. In README they fixed the first example's condition (M010 as the only active milestone) and the `✕` wording ("dim at rest").
 - 2026-10-01: T8 done. Verify slot from the repo root, each exit code read: `scripts/tests` 394 OK (0), `hooks/tests` 174 OK (0), `claude plugin validate` 0, `claude plugin test` 459 pass and 0 fail (0). Status set to `review`.
 - 2026-10-01: review return 1 (defect, step 3): AC3 fails as written. The skill-row test at `band.test.tsx:1695` asserts the label and space but not the bar on the `widest` skill rows `M1000` and `M1002`. AC4 waits for the operator to name the zoom and say the `✕` is no smaller. Status set to `in-progress`.
+- 2026-10-01: minor amendment: T9 added for the AC3 return, and AC3's Coverage line now names T9.
+- 2026-10-01: T9 done. The AC3 skill-row test now asserts the bar on the 10 `widest` skill-carried rows and no bar on the `no-active` skill rows. A planted `░` empty run failed exactly those 10 tests, each on the bar text. The new test comment is read against this run, and the claim audit above is not re-run. Verify clean: scripts 394, hooks 174, validate 0, mod tests 459/459. Status set to `review`.
 
 ## Decisions
 

@@ -1707,6 +1707,16 @@ describe('one space after the label, and one bar glyph with dim empty cells (M19
             expect(labelGap(row)).toEqual([LABELS[skill], ' '])
             const third = kids(layout(row).head)[2]
             expect(third === undefined ? '' : textOf(third)).toBe(id === null ? `/${skill}` : id)
+            // A skill row has no bar. A milestone row under the skill's
+            // label keeps its ten cells, the empty run dim.
+            const bar = barTexts(row)
+            if (id === null) {
+              expect(bar).toEqual([])
+              return
+            }
+            expect(bar.map(t => textOf(t)).join('')).toBe('█'.repeat(10))
+            expect(bar[bar.length - 1].props.dimColor).toBe(true)
+            for (const filled of bar.slice(0, -1)) expect(filled.props.dimColor).toBeUndefined()
           },
           $,
         )
