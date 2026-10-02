@@ -74,45 +74,44 @@ transitions, human-gated merges, and a domain verification doctrine.
   beneath draw, and the band blocks nothing. A row has a left group (phase
   or skill label, one space, id, and one text) and a right group (bar and
   counts, counts alone, or a state label). The text is the running skill's
-  chapter, else the section's first open box, else the title. A
-  chapter or an open box follows a `→`. The bar shows with no chapter or with a chapter that opens with a
-  positional label (`T2:`, `AC3:`), and not at any other chapter. It
-  draws ten `█` cells: the filled ones in the phase's theme key (`claude`
-  or `success`), the empty ones in the theme key `subtle`. The phase or
-  skill label takes a fixed raw color, `rgb(194,122,92)` or
-  `rgb(106,165,122)`. In the desktop app's dark theme, `dimColor` turned
-  the theme's orange brown at a live look (M198). No Text in the
-  row carries `dimColor`. The other Text leaves take the theme key
-  `inactive`, the theme's gray, but for the space leaves and the `warning`
-  labels. `band.ts` measures the parts
-  that never shrink at one column per code point. The right group takes
-  the first of its forms that leaves the text its room, else its last
-  form. The room is 10 columns, or less for a shorter text. A skill row drops its
-  slash command by the same measure. The engine cuts the text. The row
-  ends in a plain `role: 'dismiss'` close button: `×` in the terminal, and
-  a `✕` dim at rest on other surfaces. A press stores the active ids and statuses and
-  the running skill in the `dismissed` state value. The band then passes to
-  `next(e)` until that list or the skill changes. A `skill.prompt` hook
-  stores a cairn skill, by its bare or `cairn:` name, in the `step` state
-  value. While a cairn skill runs, a `tool.call` hook on the desktop app's
-  chapter tool stores the title of each main-loop chapter that went
-  through. Every main-loop chapter that went through reads the files again.
-  Every `session.end` clears `step`. `SKILL_LABELS` in `band.ts` gives each
-  skill's label, held to the `skills/*/SKILL.md` list that
-  `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
-  `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
-  `init`. The skill's label takes the place of the phase label on the
-  row. It draws in the muted green for `/milestone-review` and the muted
-  orange otherwise. With no active milestone, a skill row shows the label, the
-  slash command, and the chapter after a `→`. A session without the desktop app's chapter tool,
-  such as one in the terminal, sets no chapter: a milestone row shows its
-  next open item, and a skill row shows the label and the command only.
-  The skill event carries no agent id, so a subagent that loads a cairn
-  skill sets it too. `band.ts` builds the row and `register.tsx`
-  draws it. `reader.ts` mirrors the Python ROADMAP and section helpers,
-  held to them by shared fixtures under
-  `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for the
-  `claude plugin test` cases).
+  chapter, else the section's first open box, else the title. A chapter or
+  an open box follows a `→`. The bar shows with no chapter or with a chapter
+  that opens with a positional label (`T2:`, `AC3:`), and not at any other
+  chapter. It draws ten `█` cells: the filled ones in the phase's theme key
+  (`claude` or `success`), the empty ones in the theme key `subtle`. The
+  phase or skill label takes a fixed raw color, `rgb(194,122,92)` or
+  `rgb(106,165,122)`. In the desktop app's dark theme, `dimColor` turned the
+  theme's orange brown at a live look (M198). No Text in the row carries
+  `dimColor`. The other Text leaves take the theme key `inactive`, the
+  theme's gray, but for the space leaves and the `warning` labels. `band.ts`
+  measures the parts that never shrink at one column per code point. The
+  right group takes the first of its forms that leaves the text its room,
+  else its last form. The room is 10 columns, or less for a shorter text. A
+  skill row drops its slash command by the same measure. The engine cuts the
+  text. The row ends in a plain `role: 'dismiss'` close button: `×` in the
+  terminal, and a `✕` dim at rest on other surfaces. A press stores the
+  active ids and statuses and the running skill in the `dismissed` state
+  value. The band then passes to `next(e)` until that list or the skill
+  changes. A `skill.prompt` hook stores a cairn skill, by its bare or
+  `cairn:` name, in the `step` state value. While a cairn skill runs, a
+  `tool.call` hook on the desktop app's chapter tool stores the title of
+  each main-loop chapter that went through. Every main-loop chapter that
+  went through reads the files again. Every `session.end` clears `step`.
+  `SKILL_LABELS` in `band.ts` gives each skill's label, held to the
+  `skills/*/SKILL.md` list that `gen_fixtures.py` writes: `plan`,
+  `implement`, `review`, `hotfix`, `triage`, `release`, `status` (for
+  `milestone`), `brief`, `design`, and `init`. The skill's label takes the
+  place of the phase label on the row. It draws in the muted green for
+  `/milestone-review` and the muted orange otherwise. With no active
+  milestone, a skill row shows the label, the slash command, and the chapter
+  after a `→`. A session without the desktop app's chapter tool, such as one
+  in the terminal, sets no chapter: a milestone row shows its next open
+  item, and a skill row shows the label and the command only. The skill
+  event carries no agent id, so a subagent that loads a cairn skill sets it
+  too. `band.ts` builds the row and `register.tsx` draws it. `reader.ts`
+  mirrors the Python ROADMAP and section helpers, held to them by shared
+  fixtures under `hooks/status/fixtures/` (`gen_fixtures.py` writes
+  `fixtures.gen.ts` for the `claude plugin test` cases).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),

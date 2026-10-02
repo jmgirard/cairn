@@ -35,25 +35,25 @@
   chapter after its slash command. In a session without the desktop app's
   chapter tool, such as one in the terminal, a skill row shows its label
   and slash command only. The milestone row there shows its next open item.
-  The skill stays until a cairn skill starts again or the session ends. A subagent
-  that loads a cairn skill also sets the label, because the skill event does
-  not say which agent loaded it. The phase or skill label draws in a fixed
-  muted orange or green. The bar's filled cells draw in your Claude Code
-  theme's full orange or green, and the empty cells in its subtle gray. The
-  colorblind themes draw the green in blue, and the ANSI themes draw the
-  orange as bright red and the subtle gray as the row's gray. The rest of
-  the row draws in the theme's gray, with `no milestone file` in the
-  warning color. One space follows the phase label. The bar draws all ten
-  cells with `█`. In a narrow window the right part takes a shorter form,
-  so that the text keeps room: `2/3 tasks`, then
-  `2/3`, and `2/2 checked` or `no file` for the labels. A skill row drops
-  its slash command. Another plugin's band in the same place shows under
-  cairn's row. At session start and at the end of
+  The skill stays until a cairn skill starts again or the session ends. A
+  subagent that loads a cairn skill also sets the label, because the skill
+  event does not say which agent loaded it. The phase or skill label draws
+  in a fixed muted orange or green. The bar's filled cells draw in your
+  Claude Code theme's full orange or green, and the empty cells in its
+  subtle gray. The colorblind themes draw the green in blue, and the ANSI
+  themes draw the orange as bright red and the subtle gray as the row's
+  gray. The rest of the row draws in the theme's gray, with
+  `no milestone file` and its short form `no file` in the warning color. One
+  space follows the phase label. The bar draws all ten cells with `█`. In a
+  narrow window the right part takes a shorter form, so that the text keeps
+  room: `2/3 tasks`, then `2/3`, and `2/2 checked` or `no file` for the
+  labels. A skill row drops its slash command. Another plugin's band in the
+  same place shows under cairn's row. At session start and at the end of
   each turn, the band reads the files again. With no active milestone and no
   cairn skill running, it draws nothing. Outside a cairn repo, it draws only
-  a running cairn skill's skill row. It needs Claude Code 2.1.287 or later, where
-  mods are on by default, or an earlier version with hooks modules turned
-  on. See "The milestone band" in the README.
+  a running cairn skill's skill row. It needs Claude Code 2.1.287 or later,
+  where mods are on by default, or an earlier version with hooks modules
+  turned on. See "The milestone band" in the README.
 - **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code
   plugin, a marketplace, or a mod can now declare it. Its verify step runs
   `claude plugin validate` on each plugin's `.claude-plugin/plugin.json` and

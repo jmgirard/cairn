@@ -56,7 +56,7 @@ The row layout, the forms, and the fit stay as M197 left them.
 - [x] T6: Rerun the AC3 sweep against the look D colors and fix each hit, the labels' fixed colors included.
 - [x] T7: Run the verify slot.
 - [x] T8: Review return (R1, R2). Make the band color claims in README.md and CHANGELOG.md true in every theme. Drop "near the background" for the empty cells. The ANSI themes give `subtle` the value of `inactive`. The desktop dark theme drew the empty cells mid gray at the review look. Say that the colorblind themes draw `success` in blue. Then rerun the AC3 sweep and read each hit.
-- [ ] T9: Review return (R5, R6). Reflow the edited CHANGELOG and DESIGN band paragraphs to even wraps. Name `no file` beside `no milestone file` as a warning text in README and CHANGELOG.
+- [x] T9: Review return (R5, R6). Reflow the edited CHANGELOG and DESIGN band paragraphs to even wraps. Name `no file` beside `no milestone file` as a warning text in README and CHANGELOG.
 - [ ] T10: Review return (R7). Remove the unused `dimColor` field from `Span` in `band.ts` and its branch in `style()` in `register.tsx`. Run the verify slot.
 
 ## Work log
@@ -91,6 +91,7 @@ The row layout, the forms, and the fit stay as M197 left them.
 - 2026-10-02: implement resumed on the return. No question gate: T8-T10 leave nothing open.
 - 2026-10-02: substantive amendment at the mini gate, operator's choice: AC3 no longer requires README to say the empty cells are "near the background". R1 showed that required text false in the ANSI themes and in the review screenshot. AC3 already had two re-audit lines, so the change went to the operator with no reader. The criterion narrows, and nothing widens.
 - 2026-10-02: T8 done. The 2.1.286 binary sets `success` blue in both colorblind themes, `claude` to `ansi:redBright` in both ANSI themes, and `subtle` equal to `inactive` there. README and CHANGELOG now say so and drop "near the background". The AC3 sweep's band hits each read true. The `band.ts:25` comment still says "near the background" and goes with T10. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
+- 2026-10-02: T9 done. The band paragraphs M198 edited are reflowed: CHANGELOG lines 38-56, README 102-122, and DESIGN 77-115, with no inline code span split across lines. A word diff shows only the new `no file` words in README and CHANGELOG. Verify clean: scripts 394, hooks 174, plugin validate exit 0, mod tests 506/506.
 
 ## Decisions
 
