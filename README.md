@@ -80,8 +80,8 @@ bar and the checked and total checkboxes of the phase's section sit at its
 right edge. During `implement` that section is `## Tasks`. During `review`
 it is `## Acceptance criteria`. The text is the section's first unchecked
 task or criterion after a `→`, with its `T2:` or `AC3:` label in bold. One
-of the band's test fixtures gives this row, shown here with the left and
-right parts two spaces apart:
+of the band's test fixtures gives this row when M010 is its only active
+milestone, shown here with the left and right parts two spaces apart:
 
 ```text
 review M010 → AC3: Third criterion.  ██████████  2/3 criteria
@@ -102,7 +102,9 @@ The phase label is drawn in your theme's Claude orange for `implement` and
 its success green for `review`. The bar's filled cells take the same color,
 and `no milestone file` takes the theme's warning color. In a narrow
 window the right part takes a shorter form, so that the text keeps 10
-columns. A text shorter than 10 columns keeps its full width. The bar and counts give way
+columns. A text shorter than 10 columns keeps its full width. The band
+counts one column per character, so a short text of wide characters,
+such as CJK characters or emoji, can get less room than it draws. The bar and counts give way
 to the counts with their noun (`2/3 criteria`), and then to the bare counts
 (`2/3`). `all 2 criteria checked` gives way to `2/2 checked`, and
 `no milestone file` to `no file`. A text too long for the width is cut at
@@ -157,7 +159,7 @@ also sets the label, because the skill event does not say which agent
 loaded it.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
-app a `✕` that is dim until you point at it. The row can be a milestone
+app a `✕` that is dim at rest. The row can be a milestone
 row or a skill row. Pressing the
 button hides the band. The band stays hidden while two things stay the same. The
 first is the list of active milestones: their ids, their statuses, and

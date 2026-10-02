@@ -100,7 +100,9 @@ function stepOf(text: string): Step {
   return { kind: 'step', label, rest: label === null ? text : text.slice(label.length) }
 }
 
-// Columns at one per code point, as the terminal draws the band's glyphs.
+// Columns at one per code point: true for the band's own glyphs (`█`, `→`,
+// `×`) and ASCII. A wide character in a text, such as a CJK character or
+// an emoji, is undercounted.
 export function width(text: string): number {
   return [...text].length
 }
@@ -122,8 +124,7 @@ function textNeed(body: Body): number {
 }
 
 // The first form that leaves the text the room it needs, else the last.
-// `close` is the columns the first row's close gap and label take, 0 on the
-// other rows.
+// `close` is the columns the row's close gap and label take.
 function fit(columns: number, close: number, head: number, need: number, forms: Span[][]): Span[] {
   const room = (form: Span[]) => columns - head - GAP - spansWidth(form) - close
   return forms.find(form => room(form) >= need) ?? forms[forms.length - 1]
@@ -140,9 +141,11 @@ export function skillLines(step: CairnStep, columns: number, close = 0): BandLin
   return [{ key: 'skill-row', head: fits ? full : label, body, tail: [] }]
 }
 
-// The band's one row, or none: the milestone row the running skill shows,
-// else a skill row, else nothing. `rows` are the active rows in ROADMAP
-// order. `close` is the columns the close gap and label take.
+// The band's one row, or none: the first `review` row under
+// /milestone-review, else the first `in-progress` row, else the first
+// `review` row; with no active row, a skill row while a cairn skill runs,
+// else nothing. `rows` are the active rows in ROADMAP order. `close` is the
+// columns the close gap and label take.
 export function stepLines(rows: BandRow[], step: CairnStep | null, columns: number, close = 0): BandLine[] {
   const first = (status: string) => rows.find(row => row.status === status)
   const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined

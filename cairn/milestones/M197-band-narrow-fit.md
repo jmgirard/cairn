@@ -1,6 +1,6 @@
 # M197: A band that fits narrow windows and the desktop font
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,7 +48,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - [x] T5: In a new desktop Code session, look at two close-control forms in the light and dark themes. One is a Button without `plain`, so the app draws its native close control. The other is the label `✕`. Keep the form the operator picks, and log the screenshots. If neither form matches the app's icon, open the amendment gate to move AC4 back to a candidate row.
 - [x] T6: In a new desktop Code session, look at a narrow pane with an active milestone and a running skill. Make sure that the rows stay inside the pane and that the bar keeps one width at two counts. Make sure that the gap after `implement` and after `review` is the same. Log what the look shows.
 - [x] T7: Update README's "The milestone band" section, the CHANGELOG's Unreleased band entry, and DESIGN.md's `hooks/status/` paragraph. Say that README rows show the empty bar cells as `█`, because a text block cannot show dim.
-- [ ] T8: Run the verify slot from the repo root and read each exit code. Run `python3 -m unittest` in `scripts/tests` and in `hooks/tests`. Then run `claude plugin validate .claude-plugin/plugin.json` and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
+- [x] T8: Run the verify slot from the repo root and read each exit code. Run `python3 -m unittest` in `scripts/tests` and in `hooks/tests`. Then run `claude plugin validate .claude-plugin/plugin.json` and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
 
 ## Work log
 
@@ -79,6 +79,9 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - 2026-10-01: T5 done. The operator took screenshots of build B in a new desktop Code session on the cairn repo. They show the dark and light themes, each at the default width and in a narrow window. The band drew one row, `implement M197 → T5: …`, with `✕` beside the app's own `×` on the bar above, at about the same size. The operator picked `✕` over build A's rounded-square button, because it is closer to the app's icon. The operator saw that `✕` drew brighter than the app's icon. The desktop label is now dim at rest (the Button's `dimColor`), and the terminal keeps the plain `×`. The dim label has no look yet. Verify clean: mod tests 459/459.
 - 2026-10-01: T6 done from the same screenshots and the build A look. In the narrow window the row stayed inside the pane, and the text was cut by `…` before the bar. The running implement skill was on the M197 row. In the build A look on `six-active`, the bars at 1/2, 0/1, 2/3, 1/2, and 0/2 drew at one width. The gap after `implement` matched the gap after `review`. T4 did not change the label or bar code that this look showed.
 - 2026-10-01: T7 done. README's band section now describes one row, the shorter forms, the one-space label, the one-glyph bar, and the dim desktop `✕`. It has four one-line `text` blocks, and each equals a row `band.test.tsx` asserts: `DRAWN.mixed[0]`, the post-merge row, the `plan M002 → Investigation` row, and the `plan /milestone-plan → Question gate` row. The CHANGELOG entry and DESIGN.md's `hooks/status/` entry follow. `cairn_validate` passes.
+- claim audit: 78 claims read, 8 corrected — hooks/status/band.ts, hooks/status/register.tsx, hooks/status/band.test.tsx, README.md
+- 2026-10-01: the claim audit's re-read found all 8 corrections true, plus the new README sentence on wide characters, which took the reader's tighter wording. The corrections fixed comments that still spoke of several rows, the `stepLines` rule comment, and the `width` comment, which now says it undercounts wide characters. In README they fixed the first example's condition (M010 as the only active milestone) and the `✕` wording ("dim at rest").
+- 2026-10-01: T8 done. Verify slot from the repo root, each exit code read: `scripts/tests` 394 OK (0), `hooks/tests` 174 OK (0), `claude plugin validate` 0, `claude plugin test` 459 pass and 0 fail (0). Status set to `review`.
 
 ## Decisions
 

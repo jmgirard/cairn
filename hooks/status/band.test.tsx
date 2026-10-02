@@ -506,7 +506,7 @@ function leafIn(texts: Element[], text: string): Element | undefined {
   return texts.find(t => t.children.every(c => typeof c === 'string') && textOf(t) === text)
 }
 
-describe('the rows carry style props (M193 AC3)', () => {
+describe('the row carries style props (M193 AC3)', () => {
   for (const [id, label, color] of [
     ['M012', 'implement', 'claude'],
     ['M013', 'no milestone file', 'warning'],
@@ -1429,8 +1429,8 @@ async function sweep($, keys: string[]): Promise<{ overruns: string[]; measured:
   return { overruns, measured }
 }
 
-// The two skills that a milestone row carries, the status of that row, the
-// field that holds its open item, and a long chapter.
+// Two skills whose row is the first of a status, that status, the field
+// that holds its open item, and a long chapter.
 const LONG_STEPS = [
   { skill: 'milestone-implement', status: 'in-progress', next: 'nextTask', chapter: 'T10a: Long step' },
   { skill: 'milestone-review', status: 'review', next: 'nextCriterion', chapter: 'AC10a: Long step' },

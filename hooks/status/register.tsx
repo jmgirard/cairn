@@ -41,8 +41,8 @@ const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 // live look as closest to the app's own close icon (M197).
 const CLOSE_GLYPH = '×'
 const DESKTOP_CLOSE_GLYPH = '✕'
-// The columns the first row's close gap and plain label take in the
-// terminal, which the rows leave free when they pick their forms.
+// The columns the row's close gap and one-glyph label take on either
+// surface, which the row leaves free when it picks its form.
 const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 
 export const register: Register = on => {
