@@ -59,7 +59,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - [x] T5: Draw in `register.tsx`. Draw the skill row and the chapter item row, and keep the close button on the first header row.
 - [x] T6: Tests. Add the AC1–AC5 cases on both surfaces, red first, and restate any M194 case whose tree changed.
 - [x] T7: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
-- [ ] T8: Look at the band live in the desktop app during a real plan, implement, and review, including a review chapter after all criteria are checked. Record what it showed in the work log.
+- [ ] T8: Look at the band live in the desktop app after the mod reloads: a `/cairn:milestone-implement M195` run, then chapters marked during one turn. Record what it showed in the work log. The plan look and a review chapter after all criteria are checked are recorded at M195's review.
 
 ## Work log
 
@@ -77,6 +77,8 @@ Make the milestone band name the cairn skill that is running and its current ste
 - 2026-10-01: T2–T6 done in `972c6a5`. A `step` atom (`step-1`) and a `dismissed` atom (`dismissed-2`, now marks plus skill), the `skill.prompt`, chapter `tool.call`, and `session.end` hooks, `SKILL_LABELS`, `cairnSkill`, `skillLines`, and `stepLines` in `band.ts`, and `SKILLS` in `fixtures.gen.ts`. 48 new mod cases, 130 in all, green on the first run.
 - 2026-10-01: discrimination. Ten planted defects each turned at least one new case red (any prefix accepted, deny or error not checked, no session-end reset, skill left out of or chapter put in the close mark, no refresh at a chapter, a re-run that keeps the chapter, the carrier rule removed, the skill name as label). The restored tree was green again. A probe `skills/zz-probe/SKILL.md` made `gen_fixtures.py --check` exit 1. Verify slot green: scripts 394, hooks 174, plugin validate (the same one CLAUDE.md warning as main), mod tests 130.
 - 2026-10-01: T7 done. README "The milestone band" gained the skill row, chapter, and terminal paragraphs, and its close-button and refresh paragraphs name the skill. The DESIGN.md `hooks/status/` line and the CHANGELOG entry say the same. A sweep for "draws nothing" found one stale CHANGELOG clause, now "no active milestone and no cairn skill running". Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 130.
+- claim audit: 45 claims read, 3 corrected — README.md, CHANGELOG.md, hooks/status/register.tsx. "Draws nothing outside a cairn repo" was false, because a running cairn skill draws its rows there. A `cairn-init` over `no-roadmap` case now backs the corrected text, for 131 mod tests. The terminal claim now names the chapter tool and gives the terminal as an example. The same reader re-read the three once and found them true.
+- 2026-10-01: T8 split, a minor task edit. A mod edit made during a turn reloads at the turn end, and the band's skill and mid-turn redraw can only be seen by the operator. This session checks the implement row, the `cairn:` spelling, and the mid-turn redraw. The plan and review looks are recorded at M195's own review.
 
 ## Decisions
 

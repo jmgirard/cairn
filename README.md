@@ -124,8 +124,10 @@ plan      /milestone-plan
   → Question gate
 ```
 
-The terminal has no chapter tool. There, milestone rows show their next
-open box, and a skill row has no item row. The skill and its chapter stay
+Chapters come from the desktop app's chapter tool,
+`mcp__ccd_session__mark_chapter`. In a session without that tool, such as
+one in the terminal, milestone rows show their next open box, and a skill
+row has no item row. The skill and its chapter stay
 until a cairn skill starts again, the same one included, or the session
 ends, a `/clear` included. A subagent that loads a cairn skill also sets
 the label, because the skill event does not say which agent loaded it.
@@ -145,8 +147,9 @@ The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
 end of each turn. It also reads them when a cairn skill starts and at each
 chapter. A box you check or a status you change shows after the next of
-these. The band draws nothing outside a cairn repo. It also draws nothing
-when no row is `in-progress` or `review` and no cairn skill runs.
+these. The band draws nothing when no row is `in-progress` or `review` and
+no cairn skill runs. Outside a cairn repo, it draws only the rows of a
+running cairn skill, such as `/cairn-init` in a new repo.
 It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
 

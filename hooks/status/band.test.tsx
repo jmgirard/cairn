@@ -874,6 +874,8 @@ describe('a running skill with no active row of its phase gets a skill row (M195
       fixture: 'single-in-progress',
       drawn: [skillRow('milestone-review'), ...DRAWN['single-in-progress']],
     },
+    // Outside a cairn repo, a running cairn skill draws its row alone.
+    { skill: 'cairn-init', fixture: 'no-roadmap', drawn: [skillRow('cairn-init')] },
     { skill: 'milestone-implement', fixture: 'mixed', drawn: DRAWN.mixed },
     { skill: 'milestone-review', fixture: 'mixed', drawn: DRAWN.mixed },
   ]

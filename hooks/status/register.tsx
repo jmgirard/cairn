@@ -31,8 +31,8 @@ const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as C
 // expanded; null while no cairn skill runs.
 const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
 
-// The desktop app's chapter tool. The terminal has no such tool, so there
-// the chapter stays null.
+// The desktop app's chapter tool. In a session without it, such as one in
+// the terminal, the chapter stays null.
 const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 
 // The close button's label on every surface. The desktop app draws a
