@@ -1,0 +1,11 @@
+# M200: A close button that holds through refreshes and session ends
+
+**Status:** done (2026-10-02, PR #207 https://github.com/jmgirard/cairn/pull/207)
+
+**Goal:** Make the band's close button follow one rule through the four edge cases in the "Band close-state edge cases" candidate row.
+
+**Outcome:** `reconcile` in `register.tsx` decides whether to clear `dismissed` inside its `update` callback, so a press made while it reads `band` and `step` is not lost. A hook that changes the state between those reads and the write can still clear a press. `loadBand` returns null for a found ROADMAP it cannot read, and `refresh` then keeps the rows, so the failed read alone does not hide or show the band. A ROADMAP that is not found still empties it. Every `session.end` sets `dismissed` to null, with no branch on the reason. `mark` and `same` moved to `band.ts`, and `mark` reads the step through `knownStep`, so a stored skill the label map no longer knows counts as no skill. The T5 live look showed that a desktop `/clear` stops the process and the band draws again at the next message. README, CHANGELOG, and DESIGN state the rules. Mod tests went from 603 to 615.
+
+**Decisions:** The plan gate chose to clear the close state at every session end, to keep the last state only for a found but unreadable ROADMAP, and to decide inside `update` rather than store the drawn state at a press. The falsifier for each is in the milestone file's work log, which git holds.
+
+**Review:** The first review had 16 findings. AC2 took an amendment return: its first sentence now says the failed read alone does not hide or show the band, with a code check as evidence. AC5 took a defect return for press claims wider than the fix. The re-review had 12 findings. S1, a DESIGN line saying a refresh keeps the close state, failed AC5 and was fixed at the gate as a logged override of the return floor. Four comment and wrap fixes landed with it. Five deferred items went to the "Status mod follow-ons" row. They are kept rows after a repo move, a session end lost to a press's two reads, a ROADMAP read mid-write, the AC2 test gap, and a write of `dismissed` at every refresh. The "Band close-state edge cases" candidate graduated. No lessons.
