@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null}
   ]

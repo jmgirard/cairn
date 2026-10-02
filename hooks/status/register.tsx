@@ -4,31 +4,36 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { ARROW, cairnSkill, GAP, GRAY, knownStep, stepLines, width } from './band'
-import type { BandRow, FileSource } from './reader'
+import type { BandState, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193 to M197): one row for one
+// The milestone band above the prompt (M191, M193 to M199): one row for one
 // `in-progress` or `review` ROADMAP row, refreshed when the session starts,
 // at the end of each turn, when a cairn skill's prompt is expanded, and at
 // each chapter the session marks. A running cairn skill shows its label and
 // the last chapter on that row, or on a skill row when no milestone is
-// active (band.ts picks the row). The row sits above whatever the hooks
+// active. With neither, an idle row names the next workable planned
+// milestone (band.ts picks the row). The row sits above whatever the hooks
 // beneath draw in the same slot. It ends in a close button, which hides the
-// band until the active rows' ids, statuses, or order, or the running
-// skill, change.
+// band until the active rows' ids, statuses, or order, the running skill,
+// or the idle row's id change.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
-const band = atom({ plugin: 'cairn', key: 'band' } as const, [] as BandRow[], { shape: 'band-2' })
+const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [] } as BandState, {
+  shape: 'band-3',
+})
 
-// The active ids and statuses, in ROADMAP order, and the running skill, at
-// the last press of the close button; null while the band shows.
+// The active ids and statuses, in ROADMAP order, the running skill, and the
+// idle row's id, at the last press of the close button; null while the band
+// shows.
 const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandHidden | null, {
-  shape: 'dismissed-2',
+  shape: 'dismissed-3',
 })
 
 // The running cairn skill and the last chapter marked since its prompt was
-// expanded; null while no cairn skill runs.
+// expanded, until a main-loop turn ends in an answer; null while no cairn
+// skill runs.
 const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
 
 // The desktop app's chapter tool. In a session without it, such as one in
@@ -52,10 +57,16 @@ export const register: Register = on => {
     return result
   })
 
+  // A main-loop turn that ends in an answer ends the running cairn skill's
+  // step (M199): a cairn skill runs until its close block ends the turn, and
+  // a question chip waits inside the turn (seen at the M199 live look). An
+  // interrupted, refused, or failed turn keeps the step.
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     // A subagent's turn ending is not the session's turn ending.
-    if (e.agentId === undefined) await refresh($)
+    if (e.agentId !== undefined) return result
+    if (e.reason === 'answer') await update($, step, () => null)
+    await refresh($)
     return result
   })
 
@@ -94,14 +105,15 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
-    const rows = await read($, band)
+    const state = await read($, band)
+    const { rows, workable } = state
     const current = knownStep(await read($, step))
-    if (rows.length === 0 && current === null) return next(e)
+    if (rows.length === 0 && current === null && workable.length === 0) return next(e)
     const hidden = await read($, dismissed)
-    if (hidden !== null && same(hidden, mark(rows, current))) return next(e)
+    if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS)
+    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -172,17 +184,21 @@ export const register: Register = on => {
   })
 }
 
-// The ids and statuses of the active rows, in ROADMAP order, and the
-// running skill. The chapter is left out, so a new chapter alone keeps the
-// band hidden.
-function mark(rows: BandRow[], current: CairnStep | null): CairnBandHidden {
-  const marks: CairnBandMark[] = rows.map(row => ({ id: row.id, status: row.status }))
-  return { marks, skill: current === null ? null : current.skill }
+// The ids and statuses of the active rows, in ROADMAP order, the running
+// skill, and the idle row's id when the band draws one (no active row and
+// no running skill), else null. The chapter is left out, so a new chapter
+// alone keeps the band hidden, and so is the workable list while a row is
+// active or a skill runs, so a planned row added then keeps it hidden too.
+function mark(state: BandState, current: CairnStep | null): CairnBandHidden {
+  const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
+  const idle = state.rows.length === 0 && current === null ? (state.workable[0]?.id ?? null) : null
+  return { marks, skill: current === null ? null : current.skill, idle }
 }
 
 function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
   return (
     a.skill === b.skill &&
+    a.idle === b.idle &&
     a.marks.length === b.marks.length &&
     a.marks.every((m, i) => m.id === b.marks[i].id && m.status === b.marks[i].status)
   )
@@ -191,13 +207,14 @@ function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
 // The press reads the rows and the step as they are now, not as they were
 // drawn.
 async function dismiss($) {
-  const rows = await read($, band)
+  const state = await read($, band)
   const current = await read($, step)
-  await update($, dismissed, () => mark(rows, current))
+  await update($, dismissed, () => mark(state, current))
 }
 
-// A change to the active ids, statuses, or order, or to the running skill,
-// brings the band back, and it stays until the next press.
+// A change to the active ids, statuses, or order, to the running skill, or
+// to the idle row's id brings the band back, and it stays until the next
+// press. The end of a skill's step is a change to the running skill.
 async function reconcile($) {
   const hidden = await read($, dismissed)
   if (hidden === null) return
@@ -214,14 +231,14 @@ function style(span: Span) {
 }
 
 async function refresh($) {
-  let rows: BandRow[] = []
+  let state: BandState = { rows: [], workable: [] }
   try {
-    rows = await loadBand(fsSource($))
+    state = await loadBand(fsSource($))
   } catch {
     // No readable working directory or ROADMAP: the band is cleared.
-    rows = []
+    state = { rows: [], workable: [] }
   }
-  await update($, band, () => rows)
+  await update($, band, () => state)
   await reconcile($)
 }
 
@@ -230,6 +247,15 @@ function fsSource($): FileSource {
     cwd: () => $.session.cwd(),
     isFile: path => isFile($, path),
     read: path => readText($, path),
+    list: path => listNames($, path),
+  }
+}
+
+async function listNames($, path: string): Promise<string[] | null> {
+  try {
+    return (await $.fs.list(path)).map(entry => entry.name)
+  } catch {
+    return null
   }
 }
 

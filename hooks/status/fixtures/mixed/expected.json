@@ -1,5 +1,6 @@
 {
   "cwd": "",
+  "workable": [],
   "rows": [
     {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "tasksChecked": 3, "tasksTotal": 5, "criteriaChecked": 2, "criteriaTotal": 3, "nextTask": "T1b: Nested task, open.", "nextCriterion": "AC3: Third criterion."},
     {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},

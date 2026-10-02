@@ -16,16 +16,18 @@
   section with no boxes, or a fully checked section shows a label in place
   of the bar and the counts. With no chapter on the row, the text is then
   the milestone's title. The phase, id, and text sit at the left of a row,
-  and the bar and counts or the label at its right edge. A long text is cut at its end, so the
-  counts stay at the right edge. A close button at the end of the row
-  hides the band: `×` in the terminal, and a `✕` that is dim at rest in
-  the desktop app. If the active milestones' ids, statuses, or ROADMAP order
-  change, it shows again. If another cairn skill starts, or the session ends
-  while one runs, it also shows again. The band also names the running
-  cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`, `release`,
-  `status`, `brief`, `design`, or `init`. The skill's label takes the place
-  of the phase label on the row. If a `review` milestone exists, the row is
-  the first one during `/milestone-review`. With no active milestone, a
+  and the bar and counts or the label at its right edge. A long text is
+  cut at its end, so the counts stay at the right edge. A close button at
+  the end of the row hides the band: `×` in the terminal, and a `✕` that
+  is dim at rest in the desktop app. If the active milestones' ids,
+  statuses, or ROADMAP order change, it shows again. If another cairn skill
+  starts, or a running one ends, it also shows again. If a new milestone
+  takes the idle row's place, it shows again too. The band also names the
+  running cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`,
+  `release`, `status`, `brief`, `design`, or `init`. The skill's label
+  takes the place of the phase label on the row. If a `review` milestone
+  exists, the row is the first one during `/milestone-review`. With no
+  active milestone, a
   skill gets a skill row with its label and slash command. In
   the desktop app, each chapter the session marks, such as `Post-merge
   hygiene`, becomes the row's text, and the
@@ -35,12 +37,16 @@
   chapter after its slash command. In a session without the desktop app's
   chapter tool, such as one in the terminal, a skill row shows its label
   and slash command only. The milestone row there shows its next open item.
-  The skill stays until a cairn skill starts again or the session ends. A
-  subagent that loads a cairn skill also sets the label, because the skill
-  event does not say which agent loaded it. The phase or skill label draws
-  in a fixed muted orange or green. The bar's filled cells draw in your
-  Claude Code theme's full orange or green, and the empty cells in its
-  subtle gray. The colorblind themes draw the green in blue, and the ANSI
+  The skill stays until the turn that runs it ends with Claude's answer, a
+  cairn skill starts again, or the session ends. A turn that Claude ends
+  to wait for background work also ends it. A turn that you interrupt, or
+  one that ends in an error, keeps it. A chapter marked after the skill
+  ended does not show. A subagent that loads a cairn skill also sets the
+  label, because the skill event does not say which agent loaded it. The
+  phase or skill label draws in a fixed muted orange or green. The bar's
+  filled cells draw in your Claude Code theme's full orange or green, and
+  the empty cells in its subtle gray. The colorblind themes draw the green
+  in blue, and the ANSI
   themes draw the orange as bright red and the subtle gray as the row's
   gray. The rest of the row draws in the theme's gray, with
   `no milestone file` and its short form `no file` in the warning color. One
@@ -50,7 +56,12 @@
   labels. A skill row drops its slash command. Another plugin's band in the
   same place shows under cairn's row. At session start and at the end of
   each turn, the band reads the files again. With no active milestone and no
-  cairn skill running, it draws nothing. Outside a cairn repo, it draws only
+  cairn skill running, it draws an idle row for the next milestone you can
+  start: `next`, the id, the title, and `/milestone-implement <id>` at the
+  right edge, all in gray. That milestone is the first `planned` row whose
+  dependencies are all done, by priority and then by id, as `cairn_next.py`
+  picks it. A narrow window drops the command. With no workable milestone,
+  the band draws nothing. Outside a cairn repo, it draws only
   a running cairn skill's skill row. It needs Claude Code 2.1.287 or later,
   where mods are on by default, or an earlier version with hooks modules
   turned on. See "The milestone band" in the README.

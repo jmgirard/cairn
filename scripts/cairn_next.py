@@ -14,22 +14,34 @@ import sys
 import cairn_scripts as cs
 
 
+def done_ids(root, rows):
+    """Canonical ids of done milestones. A dependency is satisfied if it is a
+    done row OR a done milestone whose ROADMAP row was pruned under
+    terminal-row retention but whose archive file remains (matches
+    cairn_validate's dependency check)."""
+    return {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
+        cs.canon_id(mid) for mid in cs.archive_files(root)
+    }
+
+
+def workable(root, rows):
+    """Planned rows whose dependencies are all done, by priority then id.
+    The status band's reader (hooks/status/reader.ts) mirrors this, held to
+    it by scripts/tests/test_status_fixtures.py (M199)."""
+    return _workable(rows, done_ids(root, rows))
+
+
 def render(root):
     rows = cs.rows(cs.read_roadmap(root))
     by_id = {cs.canon_id(r["id"]): r for r in rows}
-    # A dependency is satisfied if it is a done row OR a done milestone whose
-    # ROADMAP row was pruned under terminal-row retention but whose archive file
-    # remains (matches cairn_validate's dependency check).
-    done = {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
-        cs.canon_id(mid) for mid in cs.archive_files(root)
-    }
+    done = done_ids(root, rows)
     lines = [f"cairn next — {root}", ""]
 
     in_progress = [r for r in rows if r["status"] == "in-progress"]
     review = [r for r in rows if r["status"] == "review"]
     blocked = [r for r in rows if r["status"] == "blocked"]
 
-    workable = _workable(rows, done)
+    ready = workable(root, rows)
 
     # Single recommended action, in precedence order.
     if review:
@@ -38,8 +50,8 @@ def render(root):
     elif in_progress:
         r = in_progress[0]
         rec = f"resume {r['id']} → /milestone-implement {r['id']}"
-    elif workable:
-        r = workable[0]
+    elif ready:
+        r = ready[0]
         rec = f"implement {r['id']} → /milestone-implement {r['id']}"
     else:
         rec = "plan the next milestone → /milestone-plan"
@@ -47,8 +59,8 @@ def render(root):
     lines.append("")
 
     lines.append("Workable planned (dependencies satisfied):")
-    if workable:
-        for r in workable:
+    if ready:
+        for r in ready:
             lines.append(f"  {r['id']} ({r['priority']}) — {r['title']}")
     else:
         lines.append("  none")

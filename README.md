@@ -72,8 +72,9 @@ Run `/milestone` any time you're unsure where things stand.
 ### The milestone band
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
-one row for the milestone in flight. With no cairn skill running, that is
-the first `in-progress` row of `cairn/ROADMAP.md`, else its first `review`
+one row for the milestone in flight, or between milestones for the next one
+you can start. With no cairn skill running, the milestone in flight is the
+first `in-progress` row of `cairn/ROADMAP.md`, else its first `review`
 row. The row gives no sign of the other active milestones. The phase, one
 space, the id, and one text sit at the left of the row. A 10-cell progress
 bar and the checked and total checkboxes of the phase's section sit at its
@@ -164,29 +165,51 @@ Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
 one in the terminal, a milestone row shows its next open box, and a skill
 row shows its label and slash command only. The skill and its chapter
-stay until a cairn skill starts again, the same one included, or the
-session ends, a `/clear` included. A subagent that loads a cairn skill
-also sets the label, because the skill event does not say which agent
-loaded it.
+stay until the turn that runs the skill ends with Claude's answer, such as
+the skill's closing summary. A question chip the skill asks you waits
+inside that turn, so the skill stays while you answer it. A question asked
+in plain text ends the turn, and the skill with it. So does a turn that
+Claude ends to wait for background work, such as the reviewers that
+`/milestone-review` starts. The rest of that skill shows no label. A cairn
+skill that starts again, the same one included, or a session end, a
+`/clear` included, also ends them. A turn that you interrupt, or one that
+ends in an error, keeps them. A chapter marked after the skill ended does
+not show. A subagent that loads a cairn skill also sets the label, because
+the skill event does not say which agent loaded it.
+
+With no milestone active and no cairn skill running, the band shows an
+idle row for the next milestone you can start. That milestone is the first
+`planned` row whose `Depends on` milestones are all done, by priority and
+then by id, the one `cairn_next.py` recommends. A dependency is done when
+its row is `done` or its file is in `cairn/milestones/archive/`. The idle
+row draws `next`, the id in bold, and the title in the theme's gray, and
+the command that starts the milestone at the right edge:
+
+```text
+next M021 Waiting to start  /milestone-implement M021
+```
+
+In a narrow window the idle row drops its command, so that the title
+keeps room. With no workable planned milestone, the band draws nothing.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
-app a `✕` that is dim at rest. The row can be a milestone
-row or a skill row. Pressing the
-button hides the band. The band stays hidden while two things stay the same. The
-first is the list of active milestones: their ids, their statuses, and
-their ROADMAP order. The second is the running cairn skill. When either
-changes, the band shows again. For example, a milestone moves from
-`implement` to `review`, or a milestone becomes active or leaves both
-statuses. Another cairn skill can start, or the session can end while a
-skill runs. A checked box, an edited title, or a new chapter does not bring
-the band back, and the same skill run again does not either.
+app a `✕` that is dim at rest. The row can be a milestone row, a skill
+row, or the idle row. Pressing the button hides the band. The band stays
+hidden while three things stay the same. The first is the list of active
+milestones: their ids, their statuses, and their ROADMAP order. The second
+is the running cairn skill. The third is the milestone the idle row names.
+When any of them changes, the band shows again. For example, a milestone
+moves from `implement` to `review`, or a milestone becomes active or leaves
+both statuses. Another cairn skill can start, or a skill's turn can end. A
+new planned milestone can take the idle row's place. A checked box, an
+edited title, or a new chapter does not bring the band back, and the same
+skill run again does not either.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
 end of each turn. It also reads them when a cairn skill starts and at each
 chapter. A box you check or a status you change shows after the next of
-these. The band draws nothing when no row is `in-progress` or `review` and
-no cairn skill runs. Outside a cairn repo, it draws only the skill row of
+these. Outside a cairn repo, it draws only the skill row of
 a running cairn skill, such as `/cairn-init` in a new repo.
 It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
