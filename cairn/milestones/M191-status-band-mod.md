@@ -102,7 +102,8 @@ Ship a Claude Code mod inside the cairn plugin that draws the active milestone, 
 - claim audit: 60 claims read, 4 corrected — README.md, CHANGELOG.md, hooks/status/reader.ts, hooks/status/register.tsx, hooks/status/reader.test.ts
 - 2026-10-01: the claim audit's re-read found all corrections hold. It flagged one README sentence that still read as a hard 2.1.287 requirement, and that sentence now says 2.1.287 is where mods are on by default.
 - 2026-10-01: T5 done. A fresh desktop session in this repo, opened by the operator, quoted its session-start first line as "# cairn tracking context (auto-injected by the cairn plugin)". Its screenshot showed the band line "M191 … · implement · 5/6 tasks".
-- 2026-10-01: implement complete, status set to review. Verify slot: scripts 394 OK, hooks 174 OK, `claude plugin validate` exit 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` 32 pass. `cairn_validate` passes with 1 advisory.
+- 2026-10-01: implement complete, status set to review.
+- step-7 approval: m191-status-band-mod approved for merge (2026-10-01, after the gate's fixes at 2df844a). Verify slot: scripts 394 OK, hooks 174 OK, `claude plugin validate` exit 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` 32 pass. `cairn_validate` passes with 1 advisory.
 
 ## Decisions
 
