@@ -6,6 +6,10 @@
 
 Export things.
 
+## Acceptance criteria
+
+- [ ] AC1: The export command writes one file per table.
+
 ## Tasks
 
 - [x] T1: Write the parser.

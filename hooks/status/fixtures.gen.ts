@@ -9,7 +9,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M004 | Its file was never written | review | — | normal | milestones/M004-missing.md |\n",
     },
     rows: [
-      {"id": "M004", "title": "Its file was never written", "status": "review", "checked": null, "total": null},
+      {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
     ],
   },
   "mixed": {
@@ -22,10 +22,20 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M014-none.md": "# M014: No Tasks section at all\n\n- **Status:** in-progress\n\n## Goal\n\n- [x] A box under Goal, which does not count.\n",
     },
     rows: [
-      {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "checked": 3, "total": 5},
-      {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "checked": 0, "total": 0},
-      {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "checked": null, "total": null},
-      {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "checked": 0, "total": 0},
+      {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "tasksChecked": 3, "tasksTotal": 5, "criteriaChecked": 2, "criteriaTotal": 3, "nextTask": "T1b: Nested task, open.", "nextCriterion": "AC3: Third criterion."},
+      {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
+      {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+      {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+    ],
+  },
+  "nested-first": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M030 | The next task is nested | in-progress | — | normal | milestones/M030-nested.md |\n",
+      "/cairn/milestones/M030-nested.md": "# M030: The next task is nested\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The band names the nested task.\n\n## Tasks\n\n- [x] T1: Top-level task, done.\n    - [ ]   T1a: Nested task, open, with extra spaces after the box.\n- [ ] T2: Second top-level task.\n",
+    },
+    rows: [
+      {"id": "M030", "title": "The next task is nested", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1a: Nested task, open, with extra spaces after the box.", "nextCriterion": "AC1: The band names the nested task."},
     ],
   },
   "no-active": {
@@ -57,10 +67,40 @@ export const FIXTURES: Record<string, Fixture> = {
     cwd: "/",
     files: {
       "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M002 | Add the export command | in-progress | M001 | normal | milestones/M002-export.md |\n| M001 | First release | done | — | high | milestones/archive/M001-first.md |\n\n## Candidates\n\n- An idea that is not a row — added 2026-01-01\n",
-      "/cairn/milestones/M002-export.md": "# M002: Add the export command\n\n- **Status:** in-progress\n\n## Goal\n\nExport things.\n\n## Tasks\n\n- [x] T1: Write the parser.\n- [ ] T2: Write the command.\n- [ ] T3: Write the docs.\n\n## Work log\n\n- 2026-01-02: started.\n",
+      "/cairn/milestones/M002-export.md": "# M002: Add the export command\n\n- **Status:** in-progress\n\n## Goal\n\nExport things.\n\n## Acceptance criteria\n\n- [ ] AC1: The export command writes one file per table.\n\n## Tasks\n\n- [x] T1: Write the parser.\n- [ ] T2: Write the command.\n- [ ] T3: Write the docs.\n\n## Work log\n\n- 2026-01-02: started.\n",
     },
     rows: [
-      {"id": "M002", "title": "Add the export command", "status": "in-progress", "checked": 1, "total": 3},
+      {"id": "M002", "title": "Add the export command", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the command.", "nextCriterion": "AC1: The export command writes one file per table."},
+    ],
+  },
+  "states-implement": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M040 | Its file was never written | in-progress | — | normal | milestones/M040-missing.md |\n| M041 | No Tasks section | in-progress | — | normal | milestones/M041-none.md |\n| M042 | A Tasks section with no boxes | in-progress | — | normal | milestones/M042-empty.md |\n| M043 | Every task checked | in-progress | — | normal | milestones/M043-all.md |\n",
+      "/cairn/milestones/M041-none.md": "# M041: No Tasks section\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: An open criterion, which the implement phase does not show.\n",
+      "/cairn/milestones/M042-empty.md": "# M042: A Tasks section with no boxes\n\n- **Status:** in-progress\n\n## Tasks\n\nThe tasks are not written yet.\n",
+      "/cairn/milestones/M043-all.md": "# M043: Every task checked\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: Open.\n\n## Tasks\n\n- [x] T1: Done.\n  - [X] T1a: Done, nested.\n- [x] T2: Done.\n",
+    },
+    rows: [
+      {"id": "M040", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+      {"id": "M041", "title": "No Tasks section", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: An open criterion, which the implement phase does not show."},
+      {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+      {"id": "M043", "title": "Every task checked", "status": "in-progress", "tasksChecked": 3, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: Open."},
+    ],
+  },
+  "states-review": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M050 | Its file was never written | review | — | normal | milestones/M050-missing.md |\n| M051 | No criteria section | review | — | normal | milestones/M051-none.md |\n| M052 | A criteria section with no boxes | review | — | normal | milestones/M052-empty.md |\n| M053 | Every criterion checked | review | — | normal | milestones/M053-all.md |\n",
+      "/cairn/milestones/M051-none.md": "# M051: No criteria section\n\n- **Status:** review\n\n## Tasks\n\n- [ ] T1: An open task, which the review phase does not show.\n",
+      "/cairn/milestones/M052-empty.md": "# M052: A criteria section with no boxes\n\n- **Status:** review\n\n## Acceptance criteria\n\nThe criteria are not written yet.\n\n## Tasks\n\n- [x] T1: Done.\n",
+      "/cairn/milestones/M053-all.md": "# M053: Every criterion checked\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [x] AC1: Done.\n- [X] AC2: Done, capital X.\n\n## Tasks\n\n- [ ] T1: Open.\n",
+    },
+    rows: [
+      {"id": "M050", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+      {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null},
+      {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+      {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null},
     ],
   },
   "subdirectory": {
@@ -71,7 +111,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/pkg/src/main.txt": "The session starts in this directory, two levels below the root.\n",
     },
     rows: [
-      {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "checked": 2, "total": 2},
+      {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
     ],
   },
 }

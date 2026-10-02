@@ -5,8 +5,10 @@ Each directory under hooks/status/fixtures/ is a small project tree with an
 `claude plugin test` through the generated `hooks/status/fixtures.gen.ts`.
 This file holds the same `expected.json` to the Python helpers the
 validator uses: `cairn_scripts.rows` for the ROADMAP rows, and `_AC_ITEM`
-over `_section_body(text, "Tasks")` for the task counts. It also fails
-when the generated module is stale.
+over `_section_body` of `Tasks` and of `Acceptance criteria` for the counts
+(M193 AC5). A section's first unchecked line is its first `_AC_ITEM` line
+with an open box, less the box prefix. It also fails when the generated
+module is stale.
 """
 
 import json
@@ -33,6 +35,23 @@ import gen_fixtures  # noqa: E402
 
 ACTIVE = ("in-progress", "review")
 CHECKED = re.compile(r"^\s*-\s*\[[xX]\]")
+OPEN_BOX = re.compile(r"^\s*-\s*\[ \]\s*")
+NO_FILE = {
+    "tasksChecked": None,
+    "tasksTotal": None,
+    "criteriaChecked": None,
+    "criteriaTotal": None,
+    "nextTask": None,
+    "nextCriterion": None,
+}
+
+
+def section_fields(text, heading):
+    """(checked, total, first unchecked line less its box) for one section."""
+    items = [line for line in cv._section_body(text, heading) if cv._AC_ITEM.match(line)]
+    checked = sum(1 for line in items if CHECKED.match(line))
+    first = next((OPEN_BOX.sub("", line, count=1) for line in items if OPEN_BOX.match(line)), None)
+    return checked, len(items), first
 
 
 def python_rows(start):
@@ -48,29 +67,37 @@ def python_rows(start):
         if row["status"] not in ACTIVE:
             continue
         path = os.path.join(root, "cairn", row["relpath"])
-        checked = total = None
+        fields = dict(NO_FILE)
         if os.path.isfile(path):
             with open(path, encoding="utf-8") as f:
-                body = cv._section_body(f.read(), "Tasks")
-            items = [line for line in body if cv._AC_ITEM.match(line)]
-            total = len(items)
-            checked = sum(1 for line in items if CHECKED.match(line))
-        out.append(
-            {
-                "id": row["id"],
-                "title": row["title"],
-                "status": row["status"],
-                "checked": checked,
-                "total": total,
+                text = f.read()
+            t_checked, t_total, t_first = section_fields(text, "Tasks")
+            c_checked, c_total, c_first = section_fields(text, "Acceptance criteria")
+            fields = {
+                "tasksChecked": t_checked,
+                "tasksTotal": t_total,
+                "criteriaChecked": c_checked,
+                "criteriaTotal": c_total,
+                "nextTask": t_first,
+                "nextCriterion": c_first,
             }
-        )
+        out.append({"id": row["id"], "title": row["title"], "status": row["status"], **fields})
     return out
 
 
 class StatusFixtureAgreement(unittest.TestCase):
     def test_fixture_domain_is_not_empty(self):
         names = [p.name for p in gen_fixtures.cases()]
-        for name in ("mixed", "missing-file", "no-active", "no-roadmap", "subdirectory"):
+        for name in (
+            "mixed",
+            "missing-file",
+            "nested-first",
+            "no-active",
+            "no-roadmap",
+            "states-implement",
+            "states-review",
+            "subdirectory",
+        ):
             self.assertIn(name, names)
 
     def test_python_helpers_match_expected(self):
