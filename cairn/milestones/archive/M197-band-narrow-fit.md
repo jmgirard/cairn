@@ -1,0 +1,11 @@
+# M197: A band that fits narrow windows and the desktop font
+
+**Status:** done (2026-10-02, PR #204 https://github.com/jmgirard/cairn/pull/204; resolves the candidate row "Band one row with a skill")
+
+**Goal:** Keep each band row inside the window from 36 columns up, with a steady label gap, bar, and close control in the desktop app.
+
+**Outcome:** The band draws one row: the first `review` milestone while `/milestone-review` runs, else the first `in-progress` one, else the first `review` one. A running cairn skill's label and chapter go on that row. A skill row is drawn only with no active milestone. `band.ts` measures the parts that never shrink at one column per code point. Its `fit` picks the first right-group form that leaves the text 10 columns, or less for a shorter text, else the last form. The forms run from bar and counts to counts with their noun to bare counts. `all N checked` gives way to `N/N checked`, and `no milestone file` to `no file`. A skill row drops its slash command by the same measure. This replaces the 60-column bar cutoff. One space follows the label instead of `padEnd(LABEL_WIDTH)`. The bar draws ten `█` cells, the empty ones dim. `register.tsx` passes the close width to the fit and draws a plain `✕`, dim at rest, off the terminal. The terminal keeps `×`. New fixtures are `widest` and `six-active`. Mod tests went from 188 to 459. README, CHANGELOG, and DESIGN.md describe the one row.
+
+**Decisions:** The plan gate chose shorter forms over an engine-cut right group. It chose one space over a padded Box, and one dim glyph over `█` and `░`. At the T4 live look the operator required one row at all times, and AC1, AC3, AC5, AC6, and Scope were amended. The operator picked `✕` over the app's native close button.
+
+**Review:** Round 1 returned once at step 3: AC3's skill-row test did not assert the bar on the `widest` skill rows. T9 added it. Round 2 passed all seven criteria, AC4 on the operator's answer at the chip. The three-lens fan-out found no failing criterion. The gate fixed three README wording points (the text's room, the bar's color under a skill label, "a milestone row"). Hygiene removed the "Band layout edge cases" and "Band one row with a skill" rows. Ten findings were rejected with reasons, among them a press keying on unshown milestones and the dim `✕` on VS Code and mobile.
