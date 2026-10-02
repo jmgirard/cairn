@@ -1,0 +1,11 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M070", "title": "First active row", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Open.", "nextCriterion": "AC1: Open."},
+    {"id": "M071", "title": "Second active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: Open."},
+    {"id": "M072", "title": "Third active row", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Open.", "nextCriterion": "AC1: Open."},
+    {"id": "M074", "title": "Fourth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
+    {"id": "M075", "title": "Fifth active row", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T3: Open.", "nextCriterion": "AC1: Open."},
+    {"id": "M076", "title": "Sixth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC1: Open."}
+  ]
+}

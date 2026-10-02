@@ -1,0 +1,110 @@
+# M1000: An open task at the widest counts
+
+- **Status:** in-progress
+
+## Acceptance criteria
+
+- [ ] AC1: Open.
+
+## Tasks
+
+- [x] T1: Done.
+- [x] T2: Done.
+- [x] T3: Done.
+- [x] T4: Done.
+- [x] T5: Done.
+- [x] T6: Done.
+- [x] T7: Done.
+- [x] T8: Done.
+- [x] T9: Done.
+- [x] T10: Done.
+- [ ] T10a: Open at the widest counts.
+- [x] T11: Done.
+- [x] T12: Done.
+- [x] T13: Done.
+- [x] T14: Done.
+- [x] T15: Done.
+- [x] T16: Done.
+- [x] T17: Done.
+- [x] T18: Done.
+- [x] T19: Done.
+- [x] T20: Done.
+- [x] T21: Done.
+- [x] T22: Done.
+- [x] T23: Done.
+- [x] T24: Done.
+- [x] T25: Done.
+- [x] T26: Done.
+- [x] T27: Done.
+- [x] T28: Done.
+- [x] T29: Done.
+- [x] T30: Done.
+- [x] T31: Done.
+- [x] T32: Done.
+- [x] T33: Done.
+- [x] T34: Done.
+- [x] T35: Done.
+- [x] T36: Done.
+- [x] T37: Done.
+- [x] T38: Done.
+- [x] T39: Done.
+- [x] T40: Done.
+- [x] T41: Done.
+- [x] T42: Done.
+- [x] T43: Done.
+- [x] T44: Done.
+- [x] T45: Done.
+- [x] T46: Done.
+- [x] T47: Done.
+- [x] T48: Done.
+- [x] T49: Done.
+- [x] T50: Done.
+- [x] T51: Done.
+- [x] T52: Done.
+- [x] T53: Done.
+- [x] T54: Done.
+- [x] T55: Done.
+- [x] T56: Done.
+- [x] T57: Done.
+- [x] T58: Done.
+- [x] T59: Done.
+- [x] T60: Done.
+- [x] T61: Done.
+- [x] T62: Done.
+- [x] T63: Done.
+- [x] T64: Done.
+- [x] T65: Done.
+- [x] T66: Done.
+- [x] T67: Done.
+- [x] T68: Done.
+- [x] T69: Done.
+- [x] T70: Done.
+- [x] T71: Done.
+- [x] T72: Done.
+- [x] T73: Done.
+- [x] T74: Done.
+- [x] T75: Done.
+- [x] T76: Done.
+- [x] T77: Done.
+- [x] T78: Done.
+- [x] T79: Done.
+- [x] T80: Done.
+- [x] T81: Done.
+- [x] T82: Done.
+- [x] T83: Done.
+- [x] T84: Done.
+- [x] T85: Done.
+- [x] T86: Done.
+- [x] T87: Done.
+- [x] T88: Done.
+- [x] T89: Done.
+- [x] T90: Done.
+- [x] T91: Done.
+- [x] T92: Done.
+- [x] T93: Done.
+- [x] T94: Done.
+- [x] T95: Done.
+- [x] T96: Done.
+- [x] T97: Done.
+- [x] T98: Done.
+- [x] T99: Done.

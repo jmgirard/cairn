@@ -1,13 +1,13 @@
 # M197: A band that fits narrow windows and the desktop font
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's session draws the band
-- **Branch/PR:** —
+- **Branch/PR:** m197-band-narrow-fit
 
 ## Goal
 
@@ -41,7 +41,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 
 ## Tasks
 
-- [ ] T1: Add the `widest` and `six-active` fixtures under `hooks/status/fixtures/`, each with its `expected.json`. `widest` holds one row per right-group form at the AC1 bounds, all with 5-character ids. Its rows are an open `T10a:` task, an open `AC10a:` criterion, all of 100 checked, and a missing file. The open-task row comes first among the `in-progress` rows, and the open-criterion row comes first among the `review` rows. Run `python3 hooks/status/gen_fixtures.py`, then the Python suites, which read every fixture.
+- [x] T1: Add the `widest` and `six-active` fixtures under `hooks/status/fixtures/`, each with its `expected.json`. `widest` holds one row per right-group form at the AC1 bounds, all with 5-character ids. Its rows are an open `T10a:` task, an open `AC10a:` criterion, all of 100 checked, and a missing file. The open-task row comes first among the `in-progress` rows, and the open-criterion row comes first among the `review` rows. Run `python3 hooks/status/gen_fixtures.py`, then the Python suites, which read every fixture.
 - [ ] T2: Write the failing tests in `band.test.tsx` first. They are the AC1 width sweep, the AC2 form changes at their switch widths, the AC3 label and glyph tests, and the AC5 six-row test. Rewrite the hand-written `DRAWN` rows with one-space labels. Retire the 59-column and 60-column bar tests and the `░` filters.
 - [ ] T3: Change `band.ts`. Drop `padEnd(LABEL_WIDTH)`, draw the empty bar cells as dim `█`, and replace `BAR_MIN_COLUMNS` with the AC2 form choice. `bandLines` and `skillLines` need the first row's close width to measure the fit. Change `register.tsx` only for what the measure needs.
 - [ ] T4: In a new desktop Code session, look at two close-control forms in the light and dark themes. One is a Button without `plain`, so the app draws its native close control. The other is the label `✕`. Keep the form the operator picks, and log the screenshots. If neither form matches the app's icon, open the amendment gate to move AC4 back to a candidate row.
@@ -58,6 +58,7 @@ Keep each band row inside the window from 36 columns up, with a steady label gap
 - 2026-10-01: plan gate chose one dim `█` glyph for empty cells over `█` and `░`. One glyph keeps the bar one width in any font. Falsified by a terminal theme where dim and filled `█` look the same.
 - 2026-10-01: plan gate chose to fix the close control's size here over leaving it as a candidate, because the operator raised it with the layout items. Falsified by T4 finding that no form the mod can draw matches the app's icon.
 - 2026-10-01: criteria re-audit (full mode, same Opus reader) after the gate returned 2 findings, and both were fixed. AC1's second set now holds only carrier rows that show counts, because a labeled chapter on a state-label row needs 38 columns. T1 now orders `widest` so its open rows carry the skill. Narrowing the promise won over a fallback that drops the positional label. Falsified by a real session whose all-checked carrier row overruns a narrow window.
+- 2026-10-01: T1 done. The `widest` fixture has M1000 (in-progress, open `T10a:`, 99/100 tasks), M1001 (in-progress, no file), M1002 (review, open `AC10a:`, 99/100 criteria), and M1003 (review, all 100 criteria checked). `six-active` has six active rows and one planned row between them. The Python helpers match both hand-written `expected.json` files. Verify clean: scripts 394, hooks 174, validate 0, mod tests 196/196.
 
 ## Decisions
 
