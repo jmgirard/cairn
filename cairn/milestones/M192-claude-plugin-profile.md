@@ -47,7 +47,7 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - [x] T3: Update the inference order in tracking-rules "Toolchain profiles" and at the three `/cairn-init` sites (about lines 109–126 and 321). Add the plugin markers to the no-marker list, and add the new profile to the project-type chip and the image-vs-package gate.
 - [x] T4: Sweep the profile lists that AC4's grep returns: README, `skills/cairn-init/SKILL.md` (about lines 159 and 200), tracking-rules, and the two plugin descriptions. Fix the "four profiles" lines in `skills/tests/test_toolchain_profiles.py` and `skills/tests/test_mutation_harness.py`, and hand-run `skills/tests`.
 - [x] T5: Add a CHANGELOG `Unreleased` entry.
-- [ ] T6: In a scratch repo with only `.claude-plugin/plugin.json`, read through `/cairn-init`'s selection steps and record the profile they reach in the work log (AC3).
+- [x] T6: In a scratch repo with only `.claude-plugin/plugin.json`, read through `/cairn-init`'s selection steps and record the profile they reach in the work log (AC3).
 
 ## Work log
 
@@ -61,5 +61,6 @@ Add a fifth toolchain profile, `claude-plugin`, so that cairn can track a repo t
 - 2026-10-01: T3 done. Tracking-rules and the three `/cairn-init` sites state one order with the plugin markers between `python` and `docker-image`. The disambiguation gate now covers any two of language, plugin, and image, recommending the profile the order picks, per the question gate. Verify green as at T2.
 - 2026-10-01: T4 done. README, the two plugin descriptions, and `/cairn-init`'s tree and file list name `claude-plugin`. Also fixed: the docker-image detection slot now names the plugin markers. `skills/tests` (hand-run) went from 6 reds and 2 errors to main's 4 reds and 1 error after the label map, the profile loop, and the five-profiles guard and its mutation entry were updated. AC4's second grep returns no line. Verify green.
 - 2026-10-01: T5 done. CHANGELOG `Unreleased` → New gains the profile entry, including that a plugin repo with no PROFILE.md now infers `claude-plugin`.
+- 2026-10-01: T6 done. Scratch git repo holding only `.claude-plugin/plugin.json`: the seven markers read absent except that one. `/cairn-init`'s selection step passes `DESCRIPTION` and the Python markers and reaches **claude-plugin**. One deliverable's markers, so no disambiguation gate. A marker is present, so not greenfield and no project-type chip. The repair path and tracking-rules reach the same profile. `claude plugin validate` passed there.
 
 ## Decisions
