@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { bandLines, knownStep, lineText, SKILL_LABELS } from './band'
+import { bandLines, idleLines, knownStep, lineText, SKILL_LABELS } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
 import { listNames } from './reader'
 
@@ -141,7 +141,7 @@ function below(node: unknown, type: string): Element[] {
   return el.type === type ? [el, ...rest] : rest
 }
 
-const ROW_KEY = /^(M\d+|skill)-row$/
+const ROW_KEY = /^(M\d+|skill|idle)-row$/
 
 // A row's text with its two groups joined by the right group's left margin,
 // the least gap a row draws (a wide row spreads them further), with the
@@ -268,6 +268,22 @@ function shownId(name: string, skill: string | null = null): string | null {
   return (skill === 'milestone-review' ? first('review') : undefined) ?? first('in-progress') ?? first('review') ?? null
 }
 
+// The id the idle row names on a fixture with no skill running: the first
+// id of the fixture's workable list when no row is active, else null.
+function idleId(name: string): string | null {
+  return shownId(name) === null ? (FIXTURES[name].workable[0] ?? null) : null
+}
+
+// A copy of a fixture with every planned row set to blocked, so nothing is
+// workable.
+function noneWorkable(name: string): Copy {
+  const copy = copyOf(name)
+  for (const path of Object.keys(copy.files)) {
+    if (path.endsWith('cairn/ROADMAP.md')) copy.files[path] = copy.files[path].replace(/\| planned \|/g, '| blocked |')
+  }
+  return copy
+}
+
 // A copy of a fixture in which `id` is the only active row: every other
 // `in-progress` or `review` row in its ROADMAP is set to `done`.
 function alone(name: string, id: string): Copy {
@@ -322,19 +338,20 @@ describe('one row while the band shows (M197 AC5)', () => {
   })
 
   for (const name of names) {
-    test(`${name}: with no skill running, one row on a fixture with an active row, else none`, async ($, on) => {
+    test(`${name}: with no skill running, one row on a fixture with an active row, else the idle row or none`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       const id = shownId(name)
+      const idle = idleId(name)
       await mountEach(
         name,
         BAND,
         async ui => {
-          if (id === null) {
+          if (id === null && idle === null) {
             expect(await hasCairn(ui)).toBe(false)
             return
           }
-          expect(await rowKeys(ui)).toEqual([`${id}-row`])
+          expect(await rowKeys(ui)).toEqual([id === null ? 'idle-row' : `${id}-row`])
           await closesFirst(ui)
         },
         $,
@@ -845,7 +862,7 @@ const EDITS: Edit[] = [
     edit: files => {
       files[ROADMAP] = files[ROADMAP].replace('| Waiting to start | planned |', '| Waiting to start | in-progress |')
     },
-    before: [ENGINE],
+    before: ['next M021 Waiting to start  /milestone-implement M021', ENGINE],
     after: ['implement M021 → T1: Not started.  ██████████  0/1 tasks', ENGINE],
   },
   {
@@ -1048,9 +1065,9 @@ const PROBE = {
 }
 
 describe('the band draws nothing', () => {
-  for (const name of ['no-roadmap', 'no-active']) {
-    test(`${name}: the mod draws nothing, passes to the engine, and does not throw`, { plugins: [PROBE] }, async ($, on) => {
-      seat(on, copyOf(name))
+  for (const name of ['no-roadmap', 'no-active', 'idle-deps']) {
+    test(`${name} with nothing workable: the mod draws nothing, passes to the engine, and does not throw`, { plugins: [PROBE] }, async ($, on) => {
+      seat(on, noneWorkable(name))
       await $.turn.complete(turn())
       for (const surface of SURFACES) {
         const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
@@ -1088,10 +1105,16 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
     )
   })
 
-  test('with nothing active, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
-    seat(on, copyOf('no-active'))
+  test('with nothing active or workable, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
+    seat(on, noneWorkable('no-active'))
     await $.turn.complete(turn())
     await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW]), $)
+  })
+
+  test('the idle row sits above the band beneath (M199)', { plugins: [BENEATH] }, async ($, on) => {
+    seat(on, copyOf('no-active'))
+    await $.turn.complete(turn())
+    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([IDLE_DRAWN['no-active'], BENEATH_ROW]), $)
   })
 })
 
@@ -1305,8 +1328,8 @@ describe('the carrying row follows the session chapters (M195 AC3)', () => {
       'mark',
       async (ui, $) => {
         await chapter($, 'Auth bug fix')
-        expect(await lines(ui)).toEqual([ENGINE])
-        expect(await hasCairn(ui)).toBe(false)
+        expect(await lines(ui)).toEqual(['next M021 Waiting to start  /milestone-implement M021', ENGINE])
+        expect(await rowKeys(ui)).toEqual(['idle-row'])
       },
       $,
       on,
@@ -1787,9 +1810,12 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
   }
 })
 
-// The fixtures that draw no row with no skill running, written out by
-// hand. Under a running skill each of them draws a skill row.
+// The fixtures with no active row, written out by hand. With no skill
+// running, each draws its idle row or nothing (M199). Under a running skill
+// each of them draws a skill row.
 const NO_ROW = ['idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
+// The fixtures among them that draw nothing with no skill running.
+const NO_IDLE = ['no-roadmap']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
 const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : ORANGE)
@@ -1804,9 +1830,10 @@ function leavesOf(node: Element): Element[] {
 }
 
 describe('the band draws in gray, with a muted hue on the label and the theme hue on the filled cells (M198 AC1, AC2)', () => {
-  test('the fixtures that draw no row with no skill', () => {
+  test('the fixtures with no active row, and those that draw nothing with no skill', () => {
     for (const name of NO_ROW) expect(Object.keys(FIXTURES)).toContain(name)
     for (const name of Object.keys(FIXTURES)) expect(shownId(name) === null).toBe(NO_ROW.includes(name))
+    for (const name of NO_ROW) expect(idleId(name) === null).toBe(NO_IDLE.includes(name))
   })
 
   // A skill row is seen under each of the two skills, since every fixture
@@ -1818,6 +1845,7 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
         await $.turn.complete(turn())
         if (skill !== null) await prompt($, skill)
         const id = NO_ROW.includes(name) ? null : shownId(name, skill)
+        const idle = skill === null ? idleId(name) : null
         const status = FIXTURES[name].rows.find(row => row.id === id)?.status ?? null
         for (const columns of [120, 36]) {
           await mountEach(
@@ -1825,12 +1853,12 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
             at(columns),
             async (ui, surface) => {
               const boxes = await ui.findAll({ key: 'cairn-band' })
-              if (skill === null && id === null) {
+              if (skill === null && id === null && idle === null) {
                 expect(boxes).toEqual([])
                 return
               }
               const keys = await rowKeys(ui)
-              expect(keys).toEqual([id === null ? 'skill-row' : `${id}-row`])
+              expect(keys).toEqual([id !== null ? `${id}-row` : idle !== null ? 'idle-row' : 'skill-row'])
               // The row and the leaves come from one tree, so the label and
               // the cells are found among the leaves by identity.
               const row = below(boxes[0], 'Box').find(box => keyOf(box) === keys[0]) as Element
@@ -1838,10 +1866,12 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
               expect(leaves.length).toBeGreaterThan(0)
 
               // AC1: the label takes a fixed muted hue and the filled cells
-              // the phase's theme key, both with no dimColor.
+              // the phase's theme key, both with no dimColor. The idle row's
+              // label is gray (M199 AC1).
               const head = kids(layout(row).head)
               const label = head[0]
-              expect(label.props.color).toBe(skill === null ? PHASE_HUE[status as string] : skillHue(skill))
+              const hue = idle !== null ? 'inactive' : skill === null ? PHASE_HUE[status as string] : skillHue(skill)
+              expect(label.props.color).toBe(hue)
               expect(label.props.dimColor).toBeUndefined()
               const cells = leaves.filter(t => /^█+$/.test(textOf(t)))
               const empty = cells[cells.length - 1]
@@ -1862,9 +1892,10 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
                 if (leaf === label || cells.includes(leaf) || /^ *$/.test(text)) continue
                 expect([text, leaf.props.dimColor]).toEqual([text, undefined])
                 expect([text, leaf.props.color]).toEqual([text, WARNINGS.includes(text) ? 'warning' : 'inactive'])
-                if (text === id || POSITIONAL_LABEL.test(text)) expect(leaf.props.bold).toBe(true)
+                if (text === id || text === idle || POSITIONAL_LABEL.test(text)) expect(leaf.props.bold).toBe(true)
               }
               if (id !== null) expect(textOf(head[2])).toBe(id)
+              if (idle !== null) expect(textOf(head[2])).toBe(idle)
 
               // The close Button keeps its M197 props.
               const [button] = await ui.findAll({ type: 'Button' })
@@ -1878,4 +1909,76 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
       })
     }
   }
+})
+
+// Each idle row at 120 columns, written out by hand (M199 AC1).
+const IDLE_DRAWN: Record<string, string> = {
+  'idle-deps': 'next M040 Met by a done row and an archive file at another padding  /milestone-implement M040',
+  'idle-order': 'next M500 Priority in mixed case  /milestone-implement M500',
+  'no-active': 'next M021 Waiting to start  /milestone-implement M021',
+  'repo-at-cut': 'next M191 Milestone status band, a Claude Code mod inside the cairn plugin  /milestone-implement M191',
+}
+
+describe('the idle row names the next workable milestone (M199 AC1)', () => {
+  test('the hand-written idle rows cover every fixture that draws one', () => {
+    expect(Object.keys(IDLE_DRAWN).sort()).toEqual(NO_ROW.filter(name => !NO_IDLE.includes(name)).sort())
+  })
+
+  for (const [name, text] of Object.entries(IDLE_DRAWN)) {
+    test(`${name}: the idle row with its command at 120 columns`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      await mountEach(
+        name,
+        BAND,
+        async ui => {
+          expect(await lines(ui)).toEqual([text, ENGINE])
+          await closesFirst(ui)
+        },
+        $,
+      )
+    })
+
+    test(`${name}: the idle row leaves its command out at 36 columns`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const id = idleId(name) as string
+      await mountEach(
+        name,
+        at(36),
+        async ui => {
+          const [row] = await lines(ui)
+          expect(row.startsWith(`next ${id} `)).toBe(true)
+          expect(row).not.toContain('/milestone-implement')
+          await closesFirst(ui)
+        },
+        $,
+      )
+    })
+  }
+
+  test('the command stays while the title keeps its room, and goes at one column less', () => {
+    // The head `next M001 ` takes 10 columns, the gap 2, the command 25, and
+    // the close gap and label 3.
+    const short = { id: 'M001', title: 'Go' }
+    expect(lineText(idleLines(short, 42, 3)[0])).toBe('next M001 Go  /milestone-implement M001')
+    expect(lineText(idleLines(short, 41, 3)[0])).toBe('next M001 Go')
+    const long = { id: 'M001', title: 'A title well over ten columns' }
+    expect(lineText(idleLines(long, 50, 3)[0])).toBe('next M001 A title well over ten columns  /milestone-implement M001')
+    expect(lineText(idleLines(long, 49, 3)[0])).toBe('next M001 A title well over ten columns')
+  })
+
+  test('an active row draws its milestone row, though a planned row is workable', async ($, on) => {
+    expect(FIXTURES['six-active'].workable).toEqual(['M073'])
+    seat(on, copyOf('six-active'))
+    await $.turn.complete(turn())
+    await mountEach('six-active', BAND, async ui => expect(await rowKeys(ui)).toEqual(['M070-row']), $)
+  })
+
+  test('a running cairn skill with no active row draws its skill row, not the idle row', async ($, on) => {
+    seat(on, copyOf('no-active'))
+    await $.turn.complete(turn())
+    await prompt($, 'milestone')
+    await mountEach('no-active', BAND, async ui => expect(await rowKeys(ui)).toEqual(['skill-row']), $)
+  })
 })

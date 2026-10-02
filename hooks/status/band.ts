@@ -1,5 +1,5 @@
 import type { CairnStep } from '../../types'
-import type { BandRow } from './reader'
+import type { BandRow, WorkableRow } from './reader'
 
 // The band's one row, as a plain description that register.tsx draws. It
 // shows one active milestone: the first `review` row while
@@ -10,6 +10,7 @@ import type { BandRow } from './reader'
 // title. Its right side holds the bar and the counts, the counts alone, or
 // a state label, in the first of its forms that leaves the text enough
 // room. A running cairn skill with no active milestone gets a skill row.
+// With neither, the first workable planned milestone gets an idle row.
 
 // One run of text and its style. The label draws in a fixed muted orange
 // or green. In the desktop app's dark theme, a theme key's `dimColor`
@@ -157,17 +158,46 @@ export function skillLines(step: CairnStep, columns: number, close = 0): BandLin
   return [{ key: 'skill-row', head: fits ? full : label, body, tail: [] }]
 }
 
+// The idle row: `next`, the bold id, and the title, all in gray, and the
+// command that starts the milestone on the right. When the head leaves the
+// title less than the room it needs, the command goes.
+export const IDLE_LABEL = 'next'
+
+export function idleLines(next: WorkableRow, columns: number, close = 0): BandLine[] {
+  const head: Span[] = [
+    { text: IDLE_LABEL, color: GRAY },
+    { text: ' ' },
+    { text: next.id, color: GRAY, bold: true },
+    { text: ' ' },
+  ]
+  const body: Body = { kind: 'title', title: next.title }
+  const forms: Span[][] = [[{ text: `/milestone-implement ${next.id}`, color: GRAY }], []]
+  const tail = fit(columns, close, headWidth(head, body), textNeed(body), forms)
+  return [{ key: 'idle-row', head, body, tail }]
+}
+
 // The band's one row, or none: the first `review` row under
 // /milestone-review, else the first `in-progress` row, else the first
 // `review` row; with no active row, a skill row while a cairn skill runs,
-// else nothing. `rows` are the active rows in ROADMAP order. `close` is the
-// columns the close gap and label take.
-export function stepLines(rows: BandRow[], step: CairnStep | null, columns: number, close = 0): BandLine[] {
+// else an idle row for the first workable planned row, else nothing.
+// `rows` are the active rows in ROADMAP order, and `workable` the workable
+// planned rows in their order. `close` is the columns the close gap and
+// label take.
+export function stepLines(
+  rows: BandRow[],
+  step: CairnStep | null,
+  columns: number,
+  close = 0,
+  workable: WorkableRow[] = [],
+): BandLine[] {
   const first = (status: string) => rows.find(row => row.status === status)
   const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined
   const row = reviewed ?? first('in-progress') ?? first('review')
-  if (row === undefined) return step === null ? [] : skillLines(step, columns, close)
-  return bandLines(row, columns, step === null ? null : step.chapter, close, step === null ? null : step.skill)
+  if (row !== undefined) {
+    return bandLines(row, columns, step === null ? null : step.chapter, close, step === null ? null : step.skill)
+  }
+  if (step !== null) return skillLines(step, columns, close)
+  return workable.length === 0 ? [] : idleLines(workable[0], columns, close)
 }
 
 // One milestone's row. A chapter, when given, takes the place of the next

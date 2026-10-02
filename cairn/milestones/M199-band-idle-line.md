@@ -57,7 +57,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 
 - [x] T1: Move the done-set and workable logic of `cairn_next.py` into one helper that `render()` and the test both call. Add the AC2 fixtures, in a few trees that each carry several cases. Add the ordered workable list to every `expected.json`. Carry it through `gen_fixtures.py` and the `Fixture` type. Hold it to the helper in `test_status_fixtures.py`.
 - [x] T2: In `reader.ts`, parse the depends and priority cells and canonicalize ids. Add a `list` call to `FileSource` and to `memorySource`, and list `cairn/milestones/archive/`. Compute the workable list. Bump the `band` shape tag. Add `reader.test.ts` cases first and see them fail.
-- [ ] T3: In `band.ts`, add the idle row, its two forms, and its place in the row choice after the skill row. Add `band.test.tsx` cases first, on both surfaces at both widths.
+- [x] T3: In `band.ts`, add the idle row, its two forms, and its place in the row choice after the skill row. Add `band.test.tsx` cases first, on both surfaces at both widths.
 - [ ] T4: In `register.tsx`, end the step at a main-loop `turn.complete` with reason `answer`. Add the drawn idle id to the close mark under a new `dismissed` shape tag. Update `types/index.d.ts`. Add the AC3 and AC4 cases first.
 - [ ] T5: Update README.md, CHANGELOG.md, and `cairn/DESIGN.md`. Run the AC5 sweep and read each line it returns.
 - [ ] T6: Do the AC6 live look in a new desktop Code session, because a running session keeps the mod it loaded at its start. If a question chip ends the turn, stop and amend through the gate.

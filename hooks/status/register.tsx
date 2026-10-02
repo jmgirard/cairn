@@ -96,14 +96,14 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
-    const { rows } = await read($, band)
+    const { rows, workable } = await read($, band)
     const current = knownStep(await read($, step))
-    if (rows.length === 0 && current === null) return next(e)
+    if (rows.length === 0 && current === null && workable.length === 0) return next(e)
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(rows, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS)
+    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
