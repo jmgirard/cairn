@@ -6,11 +6,16 @@
 
 - **A milestone band above the prompt.** The plugin now ships a Claude Code
   mod (`hooks/status/register.tsx`, named under a new `modules` key in
-  `hooks/hooks.json`). In a cairn-tracked repo it draws one line per
-  `in-progress` or `review` milestone: id, title, phase, and the checked
-  and total tasks of the milestone file's `## Tasks` section. It refreshes
-  when the session starts and at the end of each turn, and draws nothing
-  outside a cairn repo or with no active milestone. It needs Claude Code
+  `hooks/hooks.json`). In a cairn-tracked repo it draws a header row per
+  `in-progress` or `review` milestone: the phase, the id, the title, a
+  progress bar, and the checked and total boxes of the phase's section.
+  That section is `## Tasks` during implement and `## Acceptance criteria`
+  during review. A dim item row under the header names the section's
+  first unchecked box. The colors come from your Claude Code theme. Below
+  60 columns, the bar is left out. Another plugin's band in the same place
+  shows under cairn's rows. At session start and at the end of each
+  turn, the band reads the files again. Outside a cairn repo, or with no
+  active milestone, it draws nothing. It needs Claude Code
   2.1.287 or later, where mods are on by default, or an earlier version
   with hooks modules turned on. See "The milestone band" in the README.
 

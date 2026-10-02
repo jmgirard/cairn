@@ -72,20 +72,39 @@ Run `/milestone` any time you're unsure where things stand.
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
 the milestones in flight. Each `in-progress` or `review` row of
-`cairn/ROADMAP.md` gets one line, in ROADMAP order. A line gives the id, the
-title, and the phase (`implement` or `review`). It ends with the checked and
-total checkboxes in the milestone file's `## Tasks` section:
+`cairn/ROADMAP.md` gets a header row, in ROADMAP order. The header row gives
+the phase, the id, the title, and a 10-cell progress bar. It ends with the
+checked and total checkboxes of the phase's section in the milestone file.
+During
+`implement` that section is `## Tasks`. During `review` it is
+`## Acceptance criteria`. A dim item row under the header names the
+section's first unchecked task or criterion. The band's test fixtures draw
+these rows at 120 columns:
 
 ```text
-M012 Add the export command · implement · 2/5 tasks
-M013 Fix the date parser · review · no milestone file
+review    M010 Nested tasks and a capital X  ██████░░░░  2/3 criteria
+  → AC3: Third criterion.
+implement M012 A Tasks section with no boxes  no tasks
+review    M013 Capitalized status, file gone  no milestone file
+implement M014 No Tasks section at all  no tasks
 ```
 
-`no milestone file` means the row's `File/Archive` path names no regular
-file the band can read. The
-band finds the ROADMAP in the session's working directory or the nearest
+Three labels replace the bar, the counts, and the item row.
+`no milestone file` means that the row's `File/Archive` path names no
+regular file the band can read. `no tasks` or `no criteria` means that the
+section is missing or holds no checkboxes. `all 3 tasks checked` or
+`all 2 criteria checked` means that every box in the section is checked.
+
+The phase label is drawn in your theme's Claude orange for `implement` and
+its success green for `review`. The bar's filled cells take the same color,
+and `no milestone file` takes the theme's warning color. Below 60 columns
+the bar is left out. A title too long for the width is cut with `…`, so
+the counts stay on screen. If another plugin draws a band in the same place,
+its rows show under cairn's.
+
+The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and again at
-the end of each turn. A task you check or a status you change shows after
+the end of each turn. A box you check or a status you change shows after
 the next turn ends. If no `cairn/ROADMAP.md` is at or above the working
 directory, or no row is `in-progress` or `review`, the band draws nothing.
 It also gives way while Claude Code shows a survey there. The band draws on
