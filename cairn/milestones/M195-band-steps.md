@@ -1,6 +1,6 @@
 # M195: A milestone band that names every cairn step
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,7 +59,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - [x] T5: Draw in `register.tsx`. Draw the skill row and the chapter item row, and keep the close button on the first header row.
 - [x] T6: Tests. Add the AC1–AC5 cases on both surfaces, red first, and restate any M194 case whose tree changed.
 - [x] T7: Docs. Update README "The milestone band", the DESIGN.md `hooks/status/` line, and the CHANGELOG `Unreleased` entry.
-- [ ] T8: Look at the band live in the desktop app after the mod reloads: a `/cairn:milestone-implement M195` run, then chapters marked during one turn. Record what it showed in the work log. The plan look and a review chapter after all criteria are checked are recorded at M195's review.
+- [x] T8: Look at the band live in the desktop app after the mod reloads: a `/cairn:milestone-implement M195` run, then chapters marked during one turn. Record what it showed in the work log. The plan look and a review chapter after all criteria are checked are recorded at M195's review.
 
 ## Work log
 
@@ -81,6 +81,7 @@ Make the milestone band name the cairn skill that is running and its current ste
 - 2026-10-01: T8 split, a minor task edit. A mod edit made during a turn reloads at the turn end, and the band's skill and mid-turn redraw can only be seen by the operator. This session checks the implement row, the `cairn:` spelling, and the mid-turn redraw. The plan and review looks are recorded at M195's own review.
 - 2026-10-01: operator screenshot of the band: `implement M195 … 7/8 tasks` with the pre-edit T8 text on the item row, so that drawing came before the band read `697a950`. Operator note: the band's `×` is smaller than the desktop app's own close icon. That note went to the "Band layout edge cases" candidate row, outside M195's scope.
 - 2026-10-01: T8 attempt in the planning session after a `/cairn:milestone-implement M195` rerun. Three chapters were marked 15 seconds apart, and the operator saw no change on the M195 item row. The desktop session still ran the mod it loaded at session start, so the edits made during the session never loaded. T8 moves to a new Code session on this branch.
+- 2026-10-01: T8 done in a new Code session that loaded the mod from this branch. After `/cairn:milestone-implement M195`, three chapters were marked in one turn, with the verify runs between them. With the turn still open at a question, the operator saw the M195 item row read `T8 probe: third chapter`. So the `cairn:` spelling sets the step, and the band redraws in the middle of a turn. Verify slot green: scripts 394, hooks 174, validate exit 0, mod tests 131.
 
 ## Decisions
 
