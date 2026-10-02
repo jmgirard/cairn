@@ -1,6 +1,6 @@
 # M193: A styled milestone band that follows the phase
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -54,7 +54,7 @@ Redraw the milestone band so that each active milestone shows a styled header ro
 - [x] T4: Render in `register.tsx`. Draw the rows from T3, stacked above the tree from `next(e)`, and still yield to a survey. Rewrite the `band.test.tsx` cases for AC1–AC3 and AC6 on both surfaces, including a beneath-cairn plugin that draws its own row. That test plugin's `register` closes over nothing in the test file, so its row text is written inside it.
 - [x] T5: Edit cases. Restate M191's five cases in the new layout, and add the check-a-task and the in-progress-to-review cases on both surfaces.
 - [x] T6: Docs. Rewrite README "The milestone band" (its example rows taken from a test case's drawing), update the DESIGN.md `hooks/status/` line, and add a CHANGELOG `Unreleased` entry.
-- [ ] T7: Look at the band live in the desktop app at a normal and a narrow width, in implement and in review, and record what it showed in the work log.
+- [x] T7: Look at the band live in the desktop app at a normal and a narrow width, in implement and in review, and record what it showed in the work log.
 
 ## Work log
 
@@ -68,5 +68,6 @@ Redraw the milestone band so that each active milestone shows a styled header ro
 - 2026-10-01: T3, T4, T5: `band.ts` builds each row as styled spans, and `register.tsx` draws them in the `cairn-band` Box above the tree from `next(e)`. A narrow band cuts the title so the counts stay. The engine drops `key` from a Text, so each row's key sits on a Box. M191's in-progress-to-review edit case now asserts both rows switch to criteria, since `single-in-progress` holds an open criterion. Three planted defects turned tests red: no stacking, no `wrap` on spans, and the bar threshold at 59. Verify clean: scripts and hooks OK, validate passed with 1 warning, mod tests 47/47.
 - 2026-10-01: T6: README "The milestone band" rewritten, its example rows copied from the `mixed` drawing in `band.test.tsx`. The DESIGN.md `hooks/status/` line names the two rows and the stacking. The band is still unreleased, so its CHANGELOG `Unreleased` entry was rewritten in place, not joined by a second entry. Verify clean, `cairn_validate` all checks passed.
 - 2026-10-01: T7 checkpoint, half done: the operator saw implement at a normal width. Status is set to `review` for one turn only, so the band draws the review rows for the remaining screenshots. It goes back to `in-progress` after them.
+- 2026-10-01: T7: the operator sent three desktop screenshots, and the status is back to `in-progress`. Implement, normal width: orange `implement`, bold id, 8 of 10 cells filled for 6/7 tasks, a dim item row with the arrow, cut with `…`. Review, normal width: green `review` padded to the width of `implement`, 10 empty cells, `0/7 criteria`, AC1 on the item row. Review, narrow: no bar, the title cut with `…`, the counts kept. Two observations, no defect: the desktop font draws `░` narrower than `█`, so the bar width changes with the count. The item row shows raw markdown, so backticks appear, as AC1 specifies.
 
 ## Decisions
