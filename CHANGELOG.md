@@ -13,8 +13,12 @@
   during review. A dim item row under the header names the section's
   first unchecked box. A missing milestone file, a section with no boxes,
   or a fully checked section shows a label in place of the bar, the
-  counts, and the item row. The colors come from your Claude Code theme.
-  Below 60 columns, the bar is left out. Another plugin's band in the same
+  counts, and the item row. The phase, id, and title sit at the left of a
+  header row, and the bar and counts or the label at its right edge. A long
+  title is cut at its end, so the counts stay at the right edge. The item
+  row's `T2:` or `AC3:` label is bold. A close button on the first row hides
+  the band until the active milestones' ids, statuses, or ROADMAP order
+  change. The colors come from your Claude Code theme. Below 60 columns, the bar is left out. Another plugin's band in the same
   place shows under cairn's rows. At session start and at the end of each
   turn, the band reads the files again. Outside a cairn repo, or with no
   active milestone, it draws nothing. It needs Claude Code 2.1.287 or

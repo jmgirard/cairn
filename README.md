@@ -73,13 +73,14 @@ Run `/milestone` any time you're unsure where things stand.
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
 the milestones in flight. Each `in-progress` or `review` row of
-`cairn/ROADMAP.md` gets a header row, in ROADMAP order. The header row gives
-the phase, the id, the title, and a 10-cell progress bar. It ends with the
-checked and total checkboxes of the phase's section in the milestone file.
-During `implement` that section is `## Tasks`. During `review` it is
+`cairn/ROADMAP.md` gets a header row, in ROADMAP order. The phase, the id,
+and the title sit at the left of the header row. A 10-cell progress bar and
+the checked and total checkboxes of the phase's section sit at its right
+edge. During `implement` that section is `## Tasks`. During `review` it is
 `## Acceptance criteria`. A dim item row under the header names the
-section's first unchecked task or criterion. The band's test fixtures draw
-these rows at 120 columns:
+section's first unchecked task or criterion, with its `T2:` or `AC3:` label
+in bold. One of the band's test fixtures gives these rows, shown here with
+the left and right parts two spaces apart:
 
 ```text
 review    M010 Nested tasks and a capital X  ██████░░░░  2/3 criteria
@@ -98,9 +99,17 @@ section is missing or holds no checkboxes. `all 3 tasks checked` or
 The phase label is drawn in your theme's Claude orange for `implement` and
 its success green for `review`. The bar's filled cells take the same color,
 and `no milestone file` takes the theme's warning color. Below 60 columns
-the bar is left out. A title too long for the width is cut with `…` before
-the counts are. If another plugin draws a band in the same place,
-its rows show under cairn's.
+the bar is left out. A title too long for the width is cut at its end, and
+the bar and the counts stay at the right edge. If another plugin draws a
+band in the same place, its rows show under cairn's.
+
+The first header row ends in a close button, `×`, in the terminal and in
+the desktop app. Pressing it hides the band. The band stays hidden while
+the list of active milestones stays the same: their ids, their statuses,
+and their ROADMAP order. At the end of the first turn where that list is
+different, the band shows again. For example, a milestone moves from
+`implement` to `review`, a milestone becomes active, or one leaves both
+statuses. A checked box or an edited title does not bring the band back.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and again at

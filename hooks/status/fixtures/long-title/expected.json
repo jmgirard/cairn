@@ -1,0 +1,6 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Draw the band.", "nextCriterion": "AC1: The band cuts the title."}
+  ]
+}

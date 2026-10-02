@@ -16,10 +16,15 @@ export type CairnBandRow = {
   nextCriterion: string | null
 }
 
+// One active milestone's id and status, as the close button stores them.
+export type CairnBandMark = { id: string; status: string }
+
 declare module 'claude-code' {
   interface PluginState {
-    // Kept under a shape tag (register.tsx), so rows an older layout wrote
-    // read as absent after a reload.
-    cairn: { band: Shaped<CairnBandRow[]> }
+    // `band` is kept under a shape tag (register.tsx), so rows an older
+    // layout wrote read as absent after a reload. `dismissed` holds the
+    // active ids and statuses, in ROADMAP order, at the last press of the
+    // close button, and is null while the band shows.
+    cairn: { band: Shaped<CairnBandRow[]>; dismissed: CairnBandMark[] | null }
   }
 }
