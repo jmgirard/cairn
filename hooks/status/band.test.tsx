@@ -9,8 +9,9 @@ import { listNames, loadBand, memorySource } from './reader'
 // `$.fs.read` and `$.fs.list` calls from an in-memory copy of a fixture,
 // keyed by absolute path. A plain answer goes back as `{ value }`; a path
 // the copy lacks, and the read of a path it marks unreadable, go on to the
-// bottom of the chain, which rejects, as a missing file does in a session. The copy is mutable: an edit case edits a file between two turn
-// ends, and the second turn end reads the edit.
+// bottom of the chain, which rejects, as a missing file does in a session.
+// The copy is mutable: an edit case edits a file between two turn ends,
+// and the second turn end reads the edit.
 
 const SURFACES = ['terminal', 'desktop'] as const
 // The implement and review hues, written out by hand (M198).
@@ -1137,7 +1138,7 @@ describe("a stored skill with no label counts as no step in the close button's m
 })
 
 // The ROADMAP stats as a file, and its read rejects.
-describe('a failed read of a found ROADMAP leaves the band as it was (M200 AC2)', () => {
+describe('a failed read of a found ROADMAP keeps the rows and alone does not hide or show the band (M200 AC2)', () => {
   test('after a press, the band stays hidden through a failed read and the good read after it', async ($, on) => {
     const copy = copyOf('single-in-progress')
     seat(on, copy)

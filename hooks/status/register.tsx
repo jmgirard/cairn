@@ -199,7 +199,9 @@ async function dismiss($) {
 // to the idle row's id brings the band back, and it stays until the next
 // press. The end of a skill's step is a change to the running skill. The
 // decision reads the close state inside the update, so a press made while
-// the rows and the step are read is kept, not cleared (M200).
+// the rows and the step are read is kept, not cleared (M200). A hook that
+// changes the rows or the step before the update can still clear a press
+// made against the new state, because the comparison uses the old reads.
 async function reconcile($) {
   const now = mark(await read($, band), await read($, step))
   await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
@@ -213,9 +215,10 @@ function style(span: Span) {
   return props
 }
 
-// No ROADMAP found empties the band. A found ROADMAP that cannot be read,
-// or a read that throws, keeps the rows as they were (M200), and the close
-// state is then compared against those rows.
+// No ROADMAP found empties the band. A found ROADMAP that cannot be read
+// keeps the rows as they were (M200). A throw from `loadBand` keeps them
+// too. Of the calls `fsSource` makes, only the working directory's read is
+// not caught. The close state is then compared against the kept rows.
 async function refresh($) {
   let state: BandState | null = null
   try {

@@ -18,30 +18,27 @@
   the milestone's title. The phase, id, and text sit at the left of a row,
   and the bar and counts or the label at its right edge. A long text is
   cut at its end, so the counts stay at the right edge. A close button at
-  the end of the row hides the band: `×` in the terminal, and a `✕` that
-  is dim at rest in the desktop app. If the active milestones' ids,
-  statuses, or ROADMAP order change, it shows again. If another cairn skill
-  starts, or a running one ends, it also shows again. If a new milestone
-  takes the idle row's place, it shows again too. Every session end also
-  shows it again. In the desktop app, a `/clear` stops the session, and the
-  band draws again at your next message. If the ROADMAP is found but cannot
-  be read, the band keeps its row, and the failed read alone does not hide
-  or show it. The
-  band also names the
-  running cairn skill: `plan`, `implement`, `review`, `hotfix`, `triage`,
-  `release`, `status`, `brief`, `design`, or `init`. The skill's label
-  takes the place of the phase label on the row. If a `review` milestone
-  exists, the row is the first one during `/milestone-review`. With no
-  active milestone, a
-  skill gets a skill row with its label and slash command. In
-  the desktop app, each chapter the session marks, such as `Post-merge
-  hygiene`, becomes the row's text, and the
-  band reads the files again. The bar shows while that chapter opens with
-  a `T4:` or `AC2:` label. At any other chapter a row with counts shows the
-  counts alone, and a state label stays as it is. A skill row shows the
-  chapter after its slash command. In a session without the desktop app's
-  chapter tool, such as one in the terminal, a skill row shows its label
-  and slash command only. The milestone row there shows its next open item.
+  the end of the row hides the band: `×` in the terminal, and a `✕` that is
+  dim at rest in the desktop app. If the active milestones' ids, statuses,
+  or ROADMAP order change, it shows again. If another cairn skill starts, or
+  a running one ends, it also shows again. If a new milestone takes the idle
+  row's place, it shows again too. Every session end also shows it again. In
+  the desktop app, a `/clear` stops the session, and the band draws again at
+  your next message. If the ROADMAP is found but cannot be read, the band
+  keeps its row, and the failed read alone does not hide or show it. The
+  band also names the running cairn skill: `plan`, `implement`, `review`,
+  `hotfix`, `triage`, `release`, `status`, `brief`, `design`, or `init`. The
+  skill's label takes the place of the phase label on the row. If a `review`
+  milestone exists, the row is the first one during `/milestone-review`.
+  With no active milestone, a skill gets a skill row with its label and
+  slash command. In the desktop app, each chapter the session marks, such as
+  `Post-merge hygiene`, becomes the row's text, and the band reads the files
+  again. The bar shows while that chapter opens with a `T4:` or `AC2:`
+  label. At any other chapter a row with counts shows the counts alone, and
+  a state label stays as it is. A skill row shows the chapter after its
+  slash command. In a session without the desktop app's chapter tool, such
+  as one in the terminal, a skill row shows its label and slash command
+  only. The milestone row there shows its next open item.
   The skill stays until the turn that runs it ends with Claude's answer, a
   cairn skill starts again, or the session ends. A turn that Claude ends
   to wait for background work also ends it. A turn that you interrupt, or

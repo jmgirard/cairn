@@ -59,9 +59,9 @@ Make the band's close button follow one rule through the four edge cases in the 
 - [x] T5: Live look. Open a new desktop Code session, because the mod loads at session start. Press the close button on a showing band, run `/clear`, and see whether the band returns. Log what showed. If the band stays hidden, stop at the amendment gate before T6.
 - [x] T6: Docs. Update the README close-button paragraph, the CHANGELOG Unreleased entry, the DESIGN.md `hooks/status/` bullet, and the `register.tsx` header comment. Run the AC5 sweep and read each hit in context. Run the four verify commands.
 - [ ] T7: (review return, R1) Amend AC2 through the gated amendment protocol. Its first sentence then says the failed read alone does not hide or show the band.
-- [ ] T8: (review return, R2 to R4, R8) Narrow the "a press made during a refresh is kept" sentences in `cairn/DESIGN.md` and the `reconcile` comment to the window the fix closes. Fix the `CairnBandHidden` comment in `types/index.d.ts` and the "a read that throws" wording in the `refresh` comment. Even the wraps in the CHANGELOG entry, the README paragraph, the DESIGN bullet, and the `band.test.tsx` header comment. Rerun the AC5 sweep and the four verify commands.
-- [ ] T9: (review return, R9) Add a null check at the nine `reader.test.ts` sites that use the `loadBand` result.
-- [ ] T10: (review return, R4 to R7) Search the candidates first, then add four items to a candidate row. The items are the stale rows after a working-directory throw, a session end lost to a press's two reads, a ROADMAP read mid-write, and the AC2 test gap.
+- [x] T8: (review return, R2 to R4, R8) Narrow the "a press made during a refresh is kept" sentences in `cairn/DESIGN.md` and the `reconcile` comment to the window the fix closes. Fix the `CairnBandHidden` comment in `types/index.d.ts` and the "a read that throws" wording in the `refresh` comment. Even the wraps in the CHANGELOG entry, the README paragraph, the DESIGN bullet, and the `band.test.tsx` header comment. Rerun the AC5 sweep and the four verify commands.
+- [x] T9: (review return, R9) Add a null check at the nine `reader.test.ts` sites that use the `loadBand` result.
+- [x] T10: (review return, R4 to R7) Search the candidates first, then add four items to a candidate row. The items are the stale rows after a working-directory throw, a session end lost to a press's two reads, a ROADMAP read mid-write, and the AC2 test gap.
 
 ## Work log
 
@@ -84,6 +84,11 @@ Make the band's close button follow one rule through the four edge cases in the 
 - 2026-10-02: review started. AC1, AC3, AC4, and AC6 verified. AC2 and AC5 not verified. Gate green. Three reviewers reported 16 findings.
 - amendment return: AC2 — "When `cairn/ROADMAP.md` is found but its read fails, a refresh keeps the band's rows, and the failed read alone does not hide or show the band."
 - 2026-10-02: defect return 1 (review): AC5 failed. `cairn/DESIGN.md` and the `reconcile` comment say a press made during a refresh is kept. A second hook can change the step between the reads and the write in `reconcile`, and that breaks the claim. Status set to in-progress. Requested changes are T7 to T10.
+- 2026-10-02: implement resumed on the branch. The base is still `origin/main` (7a2ffc6), so no merge.
+- re-audit: AC2 (full) — one finding, bounded promise: the first sentence covers every refresh trigger, and the named cases cover a turn end only. The reader proposed a code check as the evidence for the first sentence. The other five questions returned nothing.
+- 2026-10-02: T9 done. A `loaded` helper in `reader.test.ts` throws on a null `loadBand` result, and the nine sites call it. Verify 4/4 green (615 pass).
+- 2026-10-02: T10 done. The candidate search found no overlap outside the "Status mod follow-ons" row, which now lists the four M200 review items.
+- 2026-10-02: T8 done. `cairn/DESIGN.md` and the `reconcile` comment now say a press made while the refresh reads is kept, and that a hook changing the rows or step before the `update` can still clear a press. The `CairnBandHidden` comment says the skill is null for a skill with no label. The `refresh` comment names a `loadBand` throw. The DESIGN component line no longer says the close state holds through session ends. The AC2 describe title follows the amended clause. Wraps are even in the CHANGELOG entry, the README paragraph, the DESIGN bullet, and the `band.test.tsx` header. AC5 sweep read, verify 4/4 green (615 pass), `cairn_validate` green.
 
 ## Decisions
 
