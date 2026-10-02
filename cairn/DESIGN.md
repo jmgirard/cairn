@@ -95,14 +95,15 @@ transitions, human-gated merges, and a domain verification doctrine.
   that list, the skill, or the idle id changes. `mark` and `same` in
   `band.ts` build and compare that value, and `mark` reads the step through
   `knownStep`, as the drawing does. A refresh decides whether to clear
-  `dismissed` inside its `update` callback, so a press made while the
-  refresh reads the rows and the step is kept. A hook that changes the rows
-  or the step before that `update` can still clear a press made against the
-  new state. Every `session.end` sets `dismissed` to null, with no branch on
-  the reason. In the desktop app a `/clear` stops the session's process, and
-  the band draws again at the next message (M200 live look). When the
-  ROADMAP is found but its read fails, `loadBand` returns null and the
-  refresh keeps the band's rows. When no ROADMAP is found, the band empties.
+  `dismissed` inside its `update` callback, so a press made while
+  `reconcile` reads the `band` and `step` values is kept when those reads
+  match it. A hook that changes the rows or the step before that `update`
+  can still clear a press made against the new state. Every `session.end`
+  sets `dismissed` to null, with no branch on the reason. In the desktop app
+  a `/clear` stops the session's process, and the band draws again at the
+  next message (M200 live look). When the ROADMAP is found but its read
+  fails, `loadBand` returns null and the refresh keeps the band's rows. When
+  no ROADMAP is found, the band empties.
   A `skill.prompt` hook stores a cairn skill, by its bare or `cairn:` name,
   in the `step` state value. While a cairn skill runs, a `tool.call` hook on
   the desktop app's chapter tool stores the title of each main-loop chapter
