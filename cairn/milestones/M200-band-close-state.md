@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M200: A close button that holds through refreshes and session ends
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -58,6 +58,10 @@ Make the band's close button follow one rule through the four edge cases in the 
 - [x] T4: Unknown stored skill. Move `mark` and `same` from `register.tsx:192-205` to `band.ts`, exported. The mark reads the step through `knownStep`. `ui.render`, `dismiss`, and `reconcile` call it. Add the direct test and show it red against a planted copy that skips the label check.
 - [x] T5: Live look. Open a new desktop Code session, because the mod loads at session start. Press the close button on a showing band, run `/clear`, and see whether the band returns. Log what showed. If the band stays hidden, stop at the amendment gate before T6.
 - [x] T6: Docs. Update the README close-button paragraph, the CHANGELOG Unreleased entry, the DESIGN.md `hooks/status/` bullet, and the `register.tsx` header comment. Run the AC5 sweep and read each hit in context. Run the four verify commands.
+- [ ] T7: (review return, R1) Amend AC2 through the gated amendment protocol. Its first sentence then says the failed read alone does not hide or show the band.
+- [ ] T8: (review return, R2 to R4, R8) Narrow the "a press made during a refresh is kept" sentences in `cairn/DESIGN.md` and the `reconcile` comment to the window the fix closes. Fix the `CairnBandHidden` comment in `types/index.d.ts` and the "a read that throws" wording in the `refresh` comment. Even the wraps in the CHANGELOG entry, the README paragraph, the DESIGN bullet, and the `band.test.tsx` header comment. Rerun the AC5 sweep and the four verify commands.
+- [ ] T9: (review return, R9) Add a null check at the nine `reader.test.ts` sites that use the `loadBand` result.
+- [ ] T10: (review return, R4 to R7) Search the candidates first, then add four items to a candidate row. The items are the stale rows after a working-directory throw, a session end lost to a press's two reads, a ROADMAP read mid-write, and the AC2 test gap.
 
 ## Work log
 
@@ -77,6 +81,9 @@ Make the band's close button follow one rule through the four edge cases in the 
 - claim audit: 25 claims read, 3 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx
 - 2026-10-02: the three corrected claims said a failed read keeps the close state as it was. A step that ends at the same turn end can still clear it, so they now say the failed read alone does not hide or show the band. The same reader re-read all three as true.
 - 2026-10-02: implement complete. Verify 4/4 green (615 pass), `cairn_validate` green. Status set to review.
+- 2026-10-02: review started. AC1, AC3, AC4, and AC6 verified. AC2 and AC5 not verified. Gate green. Three reviewers reported 16 findings.
+- amendment return: AC2 — "When `cairn/ROADMAP.md` is found but its read fails, a refresh keeps the band's rows, and the failed read alone does not hide or show the band."
+- 2026-10-02: defect return 1 (review): AC5 failed. `cairn/DESIGN.md` and the `reconcile` comment say a press made during a refresh is kept. A second hook can change the step between the reads and the write in `reconcile`, and that breaks the claim. Status set to in-progress. Requested changes are T7 to T10.
 
 ## Decisions
 
@@ -111,3 +118,5 @@ Findings (three fresh reviewers: Opus diff, Sonnet blame-history, Sonnet prior-r
 - R14 (Opus 13): the plan-gate choices sit only in the work log, and the claim-audit line has no date. Proposed: reject, because milestone-local choices belong in the milestone file and the work log is append-only.
 - R15 (blame 3, prior-review 6): a stat that succeeds and a read that fails differ from a missing file, and `dismiss` still reads in two steps. Proposed: reject, both chosen at the plan gate.
 - R16 (blame 4 and 6): `session.end` no longer calls `reconcile`, and `mark` moved with its comments. Proposed: noted, no effect.
+
+Gate (2026-10-02): the maintainer chose "Send back to implement". Every proposed disposition above stands as the final one. R1 is an amendment return. R2 is a defect return on AC5. R3, R4's comment, R8, and R9 are fixes for the return (T7 to T9). R4's stale-rows case, R5, R6, and R7 go to a candidate row (T10).
