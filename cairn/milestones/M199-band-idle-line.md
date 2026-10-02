@@ -73,6 +73,7 @@ A skill that a plain reply resumes in a new turn shows no skill label. This limi
 - 2026-10-02: implement started on branch `m199-band-idle-line`. No question gate: the plan left no choice open for the operator.
 - 2026-10-02: T1 done. `cairn_next.py` gains `done_ids` and `workable`, and `render()` calls `done_ids`. Two new fixtures, `idle-order` and `idle-deps`, have hand-written workable lists, and `cairn_next.workable` matches both. All 17 `expected.json` files carry `workable`. `idle-*` joins the band test's no-row list until T3. Verify: scripts, hooks, validate, and 536 plugin tests green.
 - 2026-10-02: T2 done. `loadBand` returns `{ rows, workable }`, and `FileSource` gains `list`. A `band-3` atom holds the new shape, and `types/index.d.ts` gains `CairnBandState`. The band test answers `fs.list`. The new reader tests failed to load before the code existed. Verify: 561 plugin tests and the other three checks green.
+- 2026-10-02: plants in `reader.ts`, each restored after its run. Ignoring dependencies reddened 6 tests, skipping the archive id's padding 2, and a text sort of ids 1. Keeping the priority's case reddened nothing, because the `High` row had the lowest id. That row moved from M020 to M500, and the plant then reddened `idle-order`.
 
 ## Decisions
 

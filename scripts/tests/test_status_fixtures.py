@@ -133,7 +133,8 @@ class StatusFixtureAgreement(unittest.TestCase):
         deps = json.loads((FIXTURES / "idle-deps" / "expected.json").read_text(encoding="utf-8"))
         self.assertNotIn("M050", deps["workable"])
         order = json.loads((FIXTURES / "idle-order" / "expected.json").read_text(encoding="utf-8"))
-        self.assertEqual(order["workable"][0], "M020")
+        # M500's `High` sorts it first only when the cell is case-folded.
+        self.assertEqual(order["workable"][:2], ["M500", "M030"])
 
     def test_generated_module_is_current(self):
         module = STATUS_DIR / "fixtures.gen.ts"

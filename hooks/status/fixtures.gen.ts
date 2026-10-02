@@ -32,11 +32,11 @@ export const FIXTURES: Record<string, Fixture> = {
   "idle-order": {
     cwd: "/",
     files: {
-      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M010 | Low priority, lowest id | planned | — | low | milestones/M010-low.md |\n| M1000 | Four-digit id | planned | — | normal | milestones/M1000-big.md |\n| Mfoo | Not a numeric id | planned | — | normal | milestones/Mfoo.md |\n| M999 | Three-digit id | planned | — | normal | milestones/M999-small.md |\n| M020 | Priority in mixed case | planned | — | High | milestones/M020-high.md |\n| M030 | Unknown priority | planned | — | someday | milestones/M030-unknown.md |\n| M005 | Done long ago | done | — | high | milestones/archive/M005-done.md |\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M010 | Low priority, lowest id | planned | — | low | milestones/M010-low.md |\n| M1000 | Four-digit id | planned | — | normal | milestones/M1000-big.md |\n| Mfoo | Not a numeric id | planned | — | normal | milestones/Mfoo.md |\n| M999 | Three-digit id | planned | — | normal | milestones/M999-small.md |\n| M500 | Priority in mixed case | planned | — | High | milestones/M500-high.md |\n| M030 | Unknown priority | planned | — | someday | milestones/M030-unknown.md |\n| M005 | Done long ago | done | — | high | milestones/archive/M005-done.md |\n",
     },
     rows: [
     ],
-    workable: ["M020", "M030", "M999", "M1000", "Mfoo", "M010"],
+    workable: ["M500", "M030", "M999", "M1000", "Mfoo", "M010"],
   },
   "long-title": {
     cwd: "/",
