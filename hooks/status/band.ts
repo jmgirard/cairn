@@ -1,14 +1,15 @@
 import type { CairnStep } from '../../types'
 import type { BandRow } from './reader'
 
-// The band's rows, as plain descriptions that register.tsx draws. Each
-// milestone gets one row. Its left side names the phase, the id, and one
-// text: the session's last chapter while the running skill is on that row,
-// else the phase's next open task or criterion, else the title. Its right
-// side holds the bar and the counts, the counts alone, or a state label,
-// in the first of its forms that leaves the text enough room. A running
-// cairn skill with no milestone row of its phase gets a skill row of its
-// own, above the milestone rows.
+// The band's one row, as a plain description that register.tsx draws. It
+// shows one active milestone: the first `review` row while
+// /milestone-review runs and one exists, else the first `in-progress` row,
+// else the first `review` row. Its left side names the phase, or the
+// running cairn skill in its place, then the id and one text: the skill's
+// last chapter, else the phase's next open task or criterion, else the
+// title. Its right side holds the bar and the counts, the counts alone, or
+// a state label, in the first of its forms that leaves the text enough
+// room. A running cairn skill with no active milestone gets a skill row.
 
 // One run of text and its style. Colors are theme keys, so they follow the
 // person's light or dark theme.
@@ -60,11 +61,10 @@ export const SKILL_LABELS: Record<string, string> = {
   'cairn-init': 'init',
 }
 
-// The ROADMAP status of the milestone row a skill runs on, for the two
-// skills that run on one.
-const CARRIES: Record<string, string> = {
-  'milestone-implement': 'in-progress',
-  'milestone-review': 'review',
+// A skill's label color: the review phase's for /milestone-review, the
+// implement phase's for every other skill.
+function skillColor(skill: string): string {
+  return skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
 }
 
 // A skill's bare name when it is a cairn skill, from its bare name or its
@@ -133,33 +133,34 @@ function fit(columns: number, close: number, head: number, need: number, forms: 
 // is set, and nothing on the right. When the head leaves the chapter less
 // than the room it needs, the slash command goes.
 export function skillLines(step: CairnStep, columns: number, close = 0): BandLine[] {
-  const color = step.skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
-  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color }, { text: ' ' }]
+  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]
   const full: Span[] = [...label, { text: `/${step.skill}` }, { text: ' ' }]
   const body: Body = step.chapter === null ? null : stepOf(step.chapter)
   const fits = columns - headWidth(full, body) - GAP - close >= textNeed(body)
   return [{ key: 'skill-row', head: fits ? full : label, body, tail: [] }]
 }
 
-// Every row of the band. With a running skill, the first milestone row of
-// its phase carries it and shows the chapter, or a skill row comes first
-// when no row does. `close` is the columns the close gap and label take on
-// the first row.
+// The band's one row, or none: the milestone row the running skill shows,
+// else a skill row, else nothing. `rows` are the active rows in ROADMAP
+// order. `close` is the columns the close gap and label take.
 export function stepLines(rows: BandRow[], step: CairnStep | null, columns: number, close = 0): BandLine[] {
-  const status = step === null ? undefined : CARRIES[step.skill]
-  const carrier = status === undefined ? -1 : rows.findIndex(row => row.status === status)
-  const chapter = step === null ? null : step.chapter
-  const skillRow = step !== null && carrier < 0
-  const milestones = rows.flatMap((row, i) =>
-    bandLines(row, columns, i === carrier ? chapter : null, i === 0 && !skillRow ? close : 0),
-  )
-  return skillRow ? [...skillLines(step, columns, close), ...milestones] : milestones
+  const first = (status: string) => rows.find(row => row.status === status)
+  const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined
+  const row = reviewed ?? first('in-progress') ?? first('review')
+  if (row === undefined) return step === null ? [] : skillLines(step, columns, close)
+  return bandLines(row, columns, step === null ? null : step.chapter, close, step === null ? null : step.skill)
 }
 
 // One milestone's row. A chapter, when given, takes the place of the next
-// open item. `close` is the columns the close gap and label take when the
-// row comes first, else 0.
-export function bandLines(row: BandRow, columns: number, chapter: string | null = null, close = 0): BandLine[] {
+// open item, and a skill, when given, puts its label in place of the
+// phase's. `close` is the columns the close gap and label take.
+export function bandLines(
+  row: BandRow,
+  columns: number,
+  chapter: string | null = null,
+  close = 0,
+  skill: string | null = null,
+): BandLine[] {
   const phase = phaseOf(row)
   const isTasks = phase.noun === 'tasks'
   const checked = isTasks ? row.tasksChecked : row.criteriaChecked
@@ -187,7 +188,7 @@ export function bandLines(row: BandRow, columns: number, chapter: string | null 
   }
 
   const head: Span[] = [
-    { text: phase.label, color: phase.color },
+    skill === null ? { text: phase.label, color: phase.color } : { text: SKILL_LABELS[skill], color: skillColor(skill) },
     { text: ' ' },
     { text: row.id, bold: true },
     { text: ' ' },

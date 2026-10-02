@@ -7,13 +7,13 @@ import { ARROW, cairnSkill, GAP, knownStep, stepLines, width } from './band'
 import type { BandRow, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193, M194, M195, M196): one
-// row per `in-progress` or `review` ROADMAP row, refreshed when the session
-// starts, at the end of each turn, when a cairn skill's prompt is expanded,
-// and at each chapter the session marks. A running cairn skill shows its
-// label and the last chapter, on the milestone row of its phase or on a
-// skill row of its own. The rows sit above whatever the hooks beneath draw
-// in the same slot. The first row ends in a close button, which hides the
+// The milestone band above the prompt (M191, M193 to M197): one row for one
+// `in-progress` or `review` ROADMAP row, refreshed when the session starts,
+// at the end of each turn, when a cairn skill's prompt is expanded, and at
+// each chapter the session marks. A running cairn skill shows its label and
+// the last chapter on that row, or on a skill row when no milestone is
+// active (band.ts picks the row). The row sits above whatever the hooks
+// beneath draw in the same slot. It ends in a close button, which hides the
 // band until the active rows' ids, statuses, or order, or the running
 // skill, change.
 
