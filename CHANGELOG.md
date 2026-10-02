@@ -38,10 +38,10 @@
   a state label stays as it is. A skill row shows the chapter after its
   slash command. In a session without the desktop app's chapter tool, such
   as one in the terminal, a skill row shows its label and slash command
-  only. The milestone row there shows its next open item.
-  The skill stays until the turn that runs it ends with Claude's answer, a
-  cairn skill starts again, or the session ends. A turn that Claude ends
-  to wait for background work also ends it. A turn that you interrupt, or
+  only. The milestone row there shows its next open item. The skill stays
+  until the turn that runs it ends with Claude's answer, a cairn skill
+  starts again, or the session ends. A turn that Claude ends to wait for
+  background work also ends it. A turn that you interrupt, or
   one that ends in an error, keeps it. A chapter marked after the skill
   ended does not show. A subagent that loads a cairn skill also sets the
   label, because the skill event does not say which agent loaded it. The

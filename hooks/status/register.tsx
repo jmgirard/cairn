@@ -217,9 +217,10 @@ function style(span: Span) {
 }
 
 // No ROADMAP found empties the band. A found ROADMAP that cannot be read
-// keeps the rows as they were (M200). A throw from `loadBand` keeps them
-// too. Of the calls `fsSource` makes, only `$.session.cwd()` is not
-// caught. The close state is then compared against the kept rows.
+// keeps the rows as they were (M200). Any throw from `loadBand`, its
+// parsing included, keeps them too. Of the calls `fsSource` makes, only
+// `$.session.cwd()` is not caught. The close state is then compared
+// against the kept rows and the current step.
 async function refresh($) {
   let state: BandState | null = null
   try {
