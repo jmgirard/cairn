@@ -1,6 +1,6 @@
 # M193: A styled milestone band that follows the phase
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,5 +67,6 @@ Redraw the milestone band so that each active milestone shows a styled header ro
 - 2026-10-01: T1, T2: three new fixtures (`nested-first`, `states-implement`, `states-review`) and an open criterion in `single-in-progress`. Each `expected.json` row now carries task and criterion counts and `nextTask` and `nextCriterion`, written by hand. The reader and `CairnBandRow` carry the same fields. The old Python test failed on 7 fixtures before the change, and a planted wrong value failed it after. `band.ts` reads the renamed task fields until T3 rewrites it. Verify clean: scripts 394, hooks OK, validate passed with 1 warning, mod tests 37/37.
 - 2026-10-01: T3, T4, T5: `band.ts` builds each row as styled spans, and `register.tsx` draws them in the `cairn-band` Box above the tree from `next(e)`. A narrow band cuts the title so the counts stay. The engine drops `key` from a Text, so each row's key sits on a Box. M191's in-progress-to-review edit case now asserts both rows switch to criteria, since `single-in-progress` holds an open criterion. Three planted defects turned tests red: no stacking, no `wrap` on spans, and the bar threshold at 59. Verify clean: scripts and hooks OK, validate passed with 1 warning, mod tests 47/47.
 - 2026-10-01: T6: README "The milestone band" rewritten, its example rows copied from the `mixed` drawing in `band.test.tsx`. The DESIGN.md `hooks/status/` line names the two rows and the stacking. The band is still unreleased, so its CHANGELOG `Unreleased` entry was rewritten in place, not joined by a second entry. Verify clean, `cairn_validate` all checks passed.
+- 2026-10-01: T7 checkpoint, half done: the operator saw implement at a normal width. Status is set to `review` for one turn only, so the band draws the review rows for the remaining screenshots. It goes back to `in-progress` after them.
 
 ## Decisions
