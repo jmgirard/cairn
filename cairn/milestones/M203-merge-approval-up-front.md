@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -177,6 +177,8 @@ own questions".
 - 2026-10-03: claim audit re-read by the same reader: all 5 corrected claims now match. Its one edge note (a deny with no default branch names the base remote, not a ref) is folded into the test docstring.
 - review return 1: AC3 fails because a run that merged a milestone up front and then ends at a stop (an implement stop, a review CI timeout, a thrash stop) ends with a close block that carries no end-of-run list of that merge's findings. AC5 fails because the routing template and the CLAUDE.md section name the cases only as "any route-back case". The gate fails because `cairn/DESIGN.md:61-63`, the `merge_guard` line, does not name the default-branch slot read.
 - 2026-10-03: T8 added for review return 1 (minor amendment, Coverage AC3 and AC5 gain T8). Done: the rulebook close-block shape, implement step 8, and review step 10 carry the end-of-run list at any close that ends the run. The routing template and the CLAUDE.md section list the route-back cases. To keep the CLAUDE.md section at 29 lines, its Trivial bullet now fits on one line. The template's file grows to 35 lines, past its "~25 lines" body note, which no check reads. DESIGN's `merge_guard` line names the slot read. Verify green, `skills/tests` at main's 4 reds and 1 error.
+- claim audit: 37 claims read, 2 corrected — CLAUDE.md, skills/shared/templates/claude-md-section.md
+- 2026-10-03: the T8 claim audit (commit f1c43f8 only) found both route-back lists missing the open-PR-thread case. Fixed, and the same reader confirmed both now match.
 
 ## Decisions
 

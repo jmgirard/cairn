@@ -28,8 +28,8 @@ first:
   to the merge question on: a goal, scope, or criteria change, a declined merge
   question, missing evidence, an unfixed finding, a top-ranked finding rejected
   as false (any, if user-facing), no spawned reviewers, an IP or D-entry change,
-  a review asking for changes, a Fable shortfall, guest mode, a companion repo,
-  an issue write, red CI, or a push after the PR opens.
+  a changes-requested review or open PR thread, a Fable shortfall, guest mode,
+  a companion repo, an issue write, red CI, or a push after the PR opens.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
