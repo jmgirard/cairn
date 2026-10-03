@@ -242,7 +242,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   branch. An up-front approval holds only while the plan's promise merges unchanged. Each route-back case sends the run
   to the merge question: a Goal, Scope, or criteria change beyond checkbox ticks, a substantive amendment, an amendment
   return, or a declined merge question; an unevidenced criterion or an unfixed fix-now finding; a top-ranked finding
-  rejected as false, or any reject on a user-facing milestone; a review with no spawned reviewers; an IP in `Principles
+  rejected as false, or any finding rejected as false on a user-facing milestone; a review with no spawned reviewers; an IP in `Principles
   touched:` or a D-entry added on the branch; a step-7 condition that adds to the merge question; red CI or a commit
   pushed after the PR opened (`/milestone-review` steps 7 and 8). Removing or narrowing a case changes IP1. Never
   force-push (the force_push_guard hook denies it on the default branch); never merge red or pending CI.
@@ -263,7 +263,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
   it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
   number out: `gh pr merge <N> --squash`. An up-front marker (`M<NNN> approved up front YYYY-MM-DD per plan <sha> for
-  PR #<N>`) is written only after green CI, and the guard denies it unless the milestone's slot reads `up front` at
+  PR #<N>`) is written only after green CI (or the no-checks case) with no commit pushed after the PR opened, and the guard denies it unless the milestone's slot reads `up front` at
   the base remote's remote-tracking default branch.
 - **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
   merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix; a URL or branch positional is denied

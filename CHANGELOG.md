@@ -99,13 +99,16 @@
   `/milestone-review` merges it with no merge question. That holds only if
   its goal, scope, and criteria merge as the plan committed them and no
   route-back case applies. Each route-back case sends the run to the merge
-  question. The cases are a criteria or scope change, a declined merge
-  question, a missing criterion evidence line, an unfixed fix-now finding,
+  question. The cases are a goal, scope, or criteria change (a substantive
+  amendment or an amendment return included), a declined merge question, a
+  missing criterion evidence line, an unfixed fix-now finding,
   a top-ranked finding rejected as false (on a user-facing milestone, any
   finding rejected as false), a review without its reviewers, a principle
   or decision-log change, the existing reasons that add to the merge
   question, and red CI or a push after the PR opens. Review writes the
-  approval marker only after CI is green. The merge guard then reads the
+  approval marker only after CI is green, or the PR reports no checks and
+  the profile allows a merge on local green, and only if no commit was
+  pushed after the PR opened. The merge guard then reads the
   milestone's `Merge approval:` line from the base remote's default branch,
   as last fetched. It denies the merge unless that line reads `up front`,
   and the deny text names the value it read and where. The close block or

@@ -1503,8 +1503,10 @@ class TestMergeGuard(RepoFixture):
 class TestMergeGuardUpFront(RepoFixture):
     """M203 AC4 (D-145): an `approved up front` marker stands only on the
     milestone's `Merge approval:` slot read from the remote-tracking default
-    branch. Each denial names the slot value read (or that none could be)
-    and the ref and path it read; a legacy marker is untouched."""
+    branch. Each slot denial names the value read, or why none could be, and
+    the ref it read (or the base remote, when no default branch resolves),
+    plus the path when a file was found; a legacy marker never
+    consults the slot."""
 
     MARKER = "M203 approved up front 2026-10-03 per plan abc1234 for PR #7\n"
     SOURCE = "refs/remotes/origin/main:cairn/milestones/M203-up-front.md"

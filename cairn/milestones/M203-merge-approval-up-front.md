@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -168,6 +168,8 @@ own questions".
 - 2026-10-03: T4 done. `cairn_common` gains `marker_up_front_milestone` and `default_branch_merge_slot`, which read the slot at `refs/remotes/<base>/<default>`. `merge_guard` denies an up-front marker unless that slot reads `up front`, and its docstring and missing-marker text name both gates. `TestMergeGuardUpFront` has 13 tests. Three planted defects each turned their target test red: a working-tree read, a local-branch read, and a match on any milestone's slot. Verify green (hooks 187 OK).
 - 2026-10-03: T5 done. The rulebook approval bullet lists the route-back cases and the up-front marker, and its merge-question gate bullet names the skip. README "Merges are yours", the routing template, the CLAUDE.md section (26 lines), and a CHANGELOG entry state the up-front approval and the cases. Verify green.
 - 2026-10-03: T6 done. Verify green: scripts 395 OK (21 skipped), hooks 187 OK, plugin validate passes with warnings, plugin test 632 pass, `cairn_validate` all checks passed. The hand-run `skills/tests` showed two new reds in `test_section_allow_lists`, fixed by adding Merge approval to the rulebook's section-ownership table. It now has the 4 reds and 1 error that main has.
+- claim audit: 42 claims read, 5 corrected — skills/shared/tracking-rules.md, README.md, CHANGELOG.md, hooks/tests/test_hooks.py
+- 2026-10-03: claim audit re-read by the same reader: all 5 corrected claims now match. Its one edge note (a deny with no default branch names the base remote, not a ref) is folded into the test docstring.
 
 ## Decisions
 
