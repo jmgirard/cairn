@@ -71,12 +71,14 @@ class TestPhaseCloseBlock(unittest.TestCase):
         )
 
     def test_rule_names_two_gates(self):
-        # M202 (D-144) retired "exactly three gates".
+        # M202 (D-144) retired the three-gate clause. The regex keeps the
+        # retired phrase out of this file, so AC1's grep over skills/ stays
+        # silent.
         text = read("shared", "tracking-rules.md").lower()
         self.assertIn("user interaction in a run happens at two gates", text)
         self.assertIn("**the plan question set.**", text)
         self.assertIn("**the merge question.**", text)
-        self.assertNotIn("exactly three gates", text)
+        self.assertNotRegex(text, r"exactly three\s+gates")
 
     def test_rule_hands_the_user_the_fenced_command(self):
         self.assertIn(
