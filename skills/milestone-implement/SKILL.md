@@ -252,6 +252,7 @@ run ingestion first (see `/milestone-brief`).
    through the Skill tool in place of a close block. Before the call, state
    in a few plain sentences what the milestone now does or changes,
    deviations from plan, and open concerns; review's merge question carries
-   the full outcome-first account. Review re-reads its state from the files
+   the full outcome-first account, or, for a milestone that merges up front,
+   the end-of-run list after the merge. Review re-reads its state from the files
    and gathers its evidence by command, never from this session's recall
    (tracking-rules "Context hygiene").

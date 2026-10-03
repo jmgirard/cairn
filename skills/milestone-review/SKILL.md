@@ -83,10 +83,12 @@ re-enters here, at the step the record shows is next:
   create` — the header already names the open PR — from the push and the
   marker write onward. The step-7 PR-conversation read runs before that
   chip is re-posed, the PR pre-existing. When the newest approval line
-  reads `approved up front` (D-145), step 7's up-front check runs again in
-  place of the chip, with the PR-conversation read. If it passes, step 8's
-  up-front arm re-derives CI from `gh pr checks`, and a commit pushed since
-  the PR opened sends the run to the chip. If it fails, the chip is posed.
+  reads `approved up front` (D-145), the branch is not pushed: a push
+  would be a late push. Step 1 runs, and a moved default branch sends the
+  run to the chip. Step 7's up-front check runs again in place of the
+  chip, with the PR-conversation read. If it passes, step 8's up-front arm
+  re-derives CI from `gh pr checks` and reads the PR head for a late push.
+  If it fails, the chip is posed.
 - (d) any other state, or a state above whose conditions are not met →
   step 1, then the review with the post-approval open at step 8 skipping
   `gh pr create` when the header already names an open PR. A `gh` that is
@@ -395,25 +397,31 @@ re-enters here, at the step the record shows is next:
    - the Goal, Scope, and Acceptance criteria text on the branch differs
      from that of the plan commit only in checkbox ticks (`git show
      <plan-sha>:<path>` against the branch file, `[x]` read as `[ ]`),
-   - no work-log line opens `substantive amendment:`, `amendment return:`,
-     or `step-7 decline:`,
+   - no work-log line carries `substantive amendment:`, `amendment
+     return:`, `step-7 decline:`, or `ci route-back:` (a dated line
+     included),
    - each criterion box is ticked against a recorded evidence line (step 3),
    - no finding disposed fix-now is left unfixed,
    - no `#1` finding of any lens was rejected as false, and on a
      user-facing tier no finding was rejected as false,
-   - the Review section carries a `spawned:` line (step 5),
+   - the newest `spawned:` line of the Review section was written by this
+     pass and names every lens step 5's routing requires for this diff,
    - `Principles touched:` names no IP, and `git diff
      <default-branch>...HEAD` adds no `### D-` heading,
-   - no condition below that adds to the merge question applies: a
-     `CHANGES_REQUESTED` review or an unresolved thread from the
-     PR-conversation read, a Driving RR shortfall, guest mode, a
-     `companion:` entry, or a `Resolves:` slot that is not `—`.
+   - no condition below that adds to the merge question applies: any item
+     of the PR-conversation read (a review, an unresolved thread, or a
+     comment; the read runs before this check whenever a PR exists), a
+     Driving RR shortfall, guest mode, a `companion:` entry, or a
+     `Resolves:` slot that is not `—`.
 
    If all pass, append the work-log line `step-7 approval: <branch>
    approved up front per plan <sha>`, commit it on the branch before step
-   8's push, and go to step 8 with no chip. The CI checks of step 8 are the
-   last route-back cases. If any check fails, pose the merge question below,
-   and its presentation names the check that sent the run back.
+   8's push, and go to step 8 with no chip. The CI checks and the second
+   PR-conversation read of step 8 are the last route-back cases. If any
+   check fails, pose the merge question below, and its presentation names
+   the check that sent the run back. The check never runs on resume route
+   (b): a merge made outside the session always takes route (b)'s
+   post-hoc acceptance chip.
 
    Present, outcome-first (per tracking-rules):
    what the user is approving in plain words — what the milestone does or
@@ -453,7 +461,8 @@ re-enters here, at the step the record shows is next:
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
-   the chip) — a fresh PR is opened at step 8 after this chip and is merged
+   the chip), and once more in step 8's up-front arm after CI and before
+   the marker (D-145) — a fresh PR is opened at step 8 after this chip and is merged
    with no read, so the read runs at most once per pass through this gate,
    here (a resume that re-poses the chip is a new pass). When it
    runs: once, immediately before the merge chip
@@ -573,16 +582,21 @@ re-enters here, at the step the record shows is next:
 
    **Up-front arm (D-145).** Under a `step-7 approval: … approved up front`
    line, the CI wait comes before the marker, never after it. Run the wait
-   above first. The marker is written only when CI is green, or the
-   no-checks case applies, and no commit was pushed to the branch after the
-   PR opened (for a PR that already existed, after this step's push). Then
-   write `cairn/.merge-approved` in a separate step as `M<NNN> approved up
-   front YYYY-MM-DD per plan <sha> for PR #<N>`, and merge as above. The
-   guard reads the slot from the default branch for such a marker. Red CI
-   is a route-back case: fix on the branch, re-verify, push, and pose step
-   7's merge question, with its PR-conversation read. A CI-ceiling stop
-   takes the timeout close block above, and the resume route re-checks
-   CI. No marker is on disk until then.
+   above first. A late push is read one way: the PR head (`gh pr view <N>
+   --json headRefOid`) is not the commit that added the up-front approval
+   line (`git log -1 --format=%H -S'approved up front' -- <milestone file>`).
+   The marker is written only when CI is green, or the no-checks case
+   applies, there is no late push, and step 7's PR-conversation read, run
+   again now, finds no item. Then write `cairn/.merge-approved` in a
+   separate step as `M<NNN> approved up front YYYY-MM-DD per plan <sha> for
+   PR #<N>`, and merge as above. The guard reads the slot from the default
+   branch for such a marker. Red CI, a late push, or an item in the read is
+   a route-back case. For red CI, fix on the branch, re-verify, push, and
+   append the work-log line `ci route-back: <what failed>`. In each case,
+   pose step 7's merge chip directly, with its PR-conversation read. The
+   up-front check does not run again for this milestone. A CI-ceiling stop
+   takes the timeout close block above, and the resume route re-checks CI.
+   No marker is on disk until then.
 
    **Companion arm — before the primary.** Where the header carries
    `companion:` entries, each companion goes through this step first, in

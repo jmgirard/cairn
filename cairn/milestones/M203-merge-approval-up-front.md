@@ -123,7 +123,7 @@ own questions".
       close-block shape, implement and review stops). The routing template
       and the CLAUDE.md section state the route-back cases. The
       `merge_guard` line of `cairn/DESIGN.md` names the slot read.
-- [ ] T9: Review return 2 and the pass-2 findings marked "fix now". One
+- [x] T9: Review return 2 and the pass-2 findings marked "fix now". One
       definition of a late push: the PR head is the commit that added the
       up-front line. A red-CI fix goes straight to the merge question. The
       PR-conversation read runs before the marker, and any item routes back.
@@ -172,7 +172,8 @@ own questions".
 - re-audit: AC5 (full) — "within the 30-line section cap" is ambiguous at 30 against the strict `< 30` cap, and it binds the template's line count, a property the old AC5 did not bind (a widening under D-118); fixed by dropping the cap clause, since `cairn_validate` already enforces the CLAUDE.md cap.
 - re-audit: AC5 (full) — requiring a pointer on the two routing surfaces binds a property the old AC5 did not, so it is a substitution, not a pure narrowing (D-118); proposed "state the up-front approval and either list the cases or point to the rulebook's approval bullet for them".
 - 2026-10-03: stop at the second re-audit of AC5 (repeated review-failure stop). Amended AC5 not yet written.
-- 2026-10-03: substantive amendment: AC5 written at the user's answer as the second reader's strict narrowing. The two routing surfaces either list the cases or point to the rulebook bullet. T9 (return 2) and T10 (AC5) added, Coverage updated.
+- 2026-10-03: substantive amendment: AC5 written at the user's answer as the second reader's strict narrowing. The two routing surfaces either list the cases or point to the rulebook bullet. T9 (return 2) and T10 (AC5) added, Coverage updated. The plan-owned body went to 160 lines, so the criteria section was rewrapped to 110 columns with no word changed (checked by whitespace-normalized compare) and AC5 unticked.
+- 2026-10-03: T9 done. The guard resolves the default branch locally (`<base>/HEAD`, then `main`, then `master`, no `ls-remote`), reads `ls-tree -z` and `ref:./path`, and matches the slot through `slot_is_up_front`, which drops backticks and needs `up front` as words. Its docstring and DESIGN state that a chip-form marker is not checked. Six new tests cover a backtick value, `up frontier`, a zero-padded file, a non-ASCII name, an unset remote HEAD, and a cairn root in a subdirectory. Four of them failed before the fix. In review step 7, the prefix check reads `carries` and adds `ci route-back:`. The `spawned:` line must come from the current pass and name every required lens. Any PR-conversation item routes back, and route (b) never runs the up-front check. In step 8, a late push means the PR head is not the up-front line's commit, red CI writes `ci route-back:` and goes straight to the chip, and the conversation is read again before the marker. Route (c) does not push under an up-front line. The plan question names the cases that always route back. Stale "stops at the merge question" prose is fixed in README, DESIGN, and the plan and implement skills. Verify green (hooks 193 OK), and `skills/tests` shows main's 4 reds and 1 error.
 
 ## Decisions
 

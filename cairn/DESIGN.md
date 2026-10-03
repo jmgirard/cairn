@@ -35,7 +35,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   the session on Fable (D-014).
 - The milestone run (M202): `/milestone-plan` asks the one question set,
   then invokes `/milestone-implement` through the Skill tool, which invokes
-  `/milestone-review`; review asks the merge question and, after the merge,
+  `/milestone-review`; review asks the merge question, or merges a
+  milestone approved up front in the question set (M203, D-145), and, after the merge,
   invokes implement for the next workable milestone of the same plan. The
   agent decides everything else with a work-log line and stops only at the
   rulebook's closed stop list. The three skills stay separate, so typed
@@ -62,7 +63,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn/.merge-approved` marker, bound to the PR it approves since M72,
   and, for an up-front marker, to the milestone's `Merge approval:` slot read
   from the remote-tracking default branch since M203, technically backing
-  IP1),
+  IP1; a chip-form marker is not checked against the slot, so the read
+  catches drift, not an agent that skips the question),
   `force_push_guard` (denies force-pushes to the default branch — IP1's
   never-force-push line, mechanically backed; M60), `commit_guard`
   (nudge against committing on the default branch), `memory_guard` (GP4

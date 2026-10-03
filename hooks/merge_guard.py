@@ -24,7 +24,13 @@ needs the milestone's `Merge approval:` slot to read `up front` in its file
 at the local remote-tracking ref of the default branch, never the working
 tree or the local default branch: the plan commit there is the record of
 the user's answer. A missing ref, file, or slot denies, and so does any
-other value. The read trusts that ref as last fetched.
+other value. The read trusts that ref as last fetched and makes no network
+call: it resolves `<base>/HEAD`, else `<base>/main`, else `<base>/master`.
+Limit (M203 review): only a marker that says `up front` is checked against
+the slot. A chip-form marker is never checked against it, and the marker's
+`M<NNN>` is not tied to the milestone the PR carries. The read catches a
+mislabeled or drifted up-front marker, not an agent that writes the
+chip form without asking (D-043, D-145).
 
 Known limitations (documented, accepted): this is defense-in-depth behind
 the skill approval-gate + single-use marker, not an airtight sandbox, so
@@ -224,7 +230,7 @@ def main():
             )
             return
         value, source, problem = cc.default_branch_merge_slot(root, number)
-        if problem is not None or not value.lower().startswith("up front"):
+        if problem is not None or not cc.slot_is_up_front(value):
             read = (
                 "no slot value could be read (%s)" % problem
                 if problem is not None

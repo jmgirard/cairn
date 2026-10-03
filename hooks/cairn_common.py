@@ -336,36 +336,60 @@ def marker_up_front_milestone(path):
     return str(int(match.group(1))) if match else ""
 
 
+def slot_is_up_front(value):
+    """True when a `Merge approval:` value reads `up front` as words.
+
+    Backticks and surrounding whitespace are dropped, so `` `up front …` ``
+    counts; `up frontier` does not."""
+    if value is None:
+        return False
+    text = value.replace("`", "").strip().lower()
+    return re.match(r"up front(\s|$)", text) is not None
+
+
 def default_branch_merge_slot(cwd, number):
     """Read milestone `number`'s `Merge approval:` slot from the default branch.
 
-    Reads the local remote-tracking ref `refs/remotes/<base>/<default>`, never
-    the working tree or the local default branch, so a slot written only on a
-    branch cannot answer for it. Returns (value, source, problem): `value` is
-    the slot's text or None, `source` names the ref and path read (or the ref
-    alone), and `problem` is None when the slot was read, else a short reason
-    it could not be. Never raises.
+    `cwd` is the cairn root. Reads the local remote-tracking ref
+    `refs/remotes/<base>/<default>`, never the working tree or the local
+    default branch, so a slot written only on a branch cannot answer for it.
+    The ref resolves locally with no network call, so the read stays inside
+    the hook's timeout: `<base>/HEAD`, else `<base>/main`, else
+    `<base>/master`. Paths are read relative to `cwd` (`ref:./path`), so a
+    cairn root below the git root works. Returns (value, source, problem):
+    `value` is the slot's text or None, `source` names the ref and path read
+    (or the ref alone), and `problem` is None when the slot was read, else a
+    short reason it could not be. Never raises.
     """
-    default = default_branch(cwd)
-    if default is None:
-        return None, "the base remote", "no default branch resolves"
-    ref = f"refs/remotes/{base_remote(cwd)}/{default}"
+    base = base_remote(cwd)
+    ref = None
+    rc, out = git(["symbolic-ref", "--quiet", f"refs/remotes/{base}/HEAD"], cwd)
+    if rc == 0 and out.strip():
+        ref = out.strip()
+    else:
+        for name in ("main", "master"):
+            candidate = f"refs/remotes/{base}/{name}"
+            if git(["rev-parse", "--verify", "--quiet", candidate], cwd)[0] == 0:
+                ref = candidate
+                break
+    if ref is None:
+        return None, f"refs/remotes/{base}", "no remote-tracking default branch resolves"
     rc, _ = git(["rev-parse", "--verify", "--quiet", ref], cwd)
     if rc != 0:
         return None, ref, "the ref does not exist"
-    rc, out = git(["ls-tree", "--name-only", ref, "cairn/milestones/"], cwd)
+    rc, out = git(["ls-tree", "-z", "--name-only", ref, "--", "cairn/milestones/"], cwd)
     path = None
     if rc == 0:
-        for line in out.splitlines():
-            name = line.strip().rsplit("/", 1)[-1]
+        for entry in out.split("\0"):
+            name = entry.rsplit("/", 1)[-1]
             m = re.match(r"M(\d+)-.*\.md$", name)
             if m and str(int(m.group(1))) == number:
-                path = line.strip()
+                path = entry
                 break
     if path is None:
         return None, ref, "no milestone file for M%s under cairn/milestones/" % number
     source = f"{ref}:{path}"
-    rc, text = git(["show", source], cwd)
+    rc, text = git(["show", f"{ref}:./{path}"], cwd)
     if rc != 0:
         return None, source, "the file cannot be read"
     match = _SLOT_LINE.search(text)

@@ -138,7 +138,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (tracking-rules "Question gates and phase closes"). It asks only what the
    user alone can settle, and it looks ahead to what implement and review
    will need from the user, since the run asks nothing more until the merge
-   question. Its questions are:
+   question, or at all for a milestone whose merge it approves up front.
+   Its questions are:
    - what to work on, for a request that names no work,
    - choices that the request leaves open about what the user will get,
    - files, access, or looks that only the user can supply and that
@@ -153,8 +154,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      code and its finding dispositions only after the merge. The route-back
      cases (`/milestone-review` step 7) send the run to the merge question
      anyway. For a user-facing or IP-touching milestone, the recommendation
-     is `at the end`. A set that holds no room for the question writes `at
-     the end`.
+     is `at the end`. In guest mode, and for a milestone that touches an IP,
+     fills `Resolves:`, or has a companion checkout, the question says that
+     the merge question still comes, since each of those always routes back.
+     A set that holds no room for the question writes `at the end`.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,
@@ -392,7 +395,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    through the Skill tool for the first workable milestone this plan
    created: status `planned`, every `Depends on:` milestone `done`, in
    ROADMAP order. The run goes on from there with no further question until
-   the merge question.
+   the merge question, or through the merge of a milestone approved up front.
    **Close block instead** when another milestone is `in-progress`, when the
    user asked for a plan alone, or when no milestone of the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan

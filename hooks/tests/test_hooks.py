@@ -1670,6 +1670,65 @@ class TestMergeGuardUpFront(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
         self.assertFalse(self.marker().exists())
 
+    def test_allows_slot_value_in_backticks(self):
+        self.milestone(203, "`up front 2026-10-03`")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assertEqual(self.merge().stdout.strip(), "")
+
+    def test_denies_slot_that_only_starts_with_up_front(self):
+        self.milestone(203, "up frontier")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "the slot reads `up frontier`")
+
+    def test_allows_zero_padded_file_for_unpadded_marker_id(self):
+        self.milestone("007", "up front 2026-10-03")
+        self.commit_and_push()
+        self.MARKER = "M7 approved up front 2026-10-03 per plan abc1234 for PR #7\n"
+        self.marker().write_text(self.MARKER)
+        self.assertEqual(self.merge().stdout.strip(), "")
+
+    def test_allows_non_ascii_milestone_filename(self):
+        self.milestone(203, "up front 2026-10-03", name="café")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assertEqual(self.merge().stdout.strip(), "")
+
+    def test_reads_main_when_remote_head_is_unset(self):
+        # No refs/remotes/origin/HEAD: the guard falls back to a local
+        # origin/main ref and never asks the network (M203 review).
+        self.milestone(203, "up front 2026-10-03")
+        self.commit_and_push()
+        self.git("remote", "set-head", "origin", "--delete")
+        self.marker().write_text(self.MARKER)
+        self.assertEqual(self.merge().stdout.strip(), "")
+
+    def test_allows_cairn_root_in_repo_subdirectory(self):
+        # A cairn root below the git root: paths read from the ref are
+        # resolved relative to that root, not the git root.
+        sub = self.root / "pkg"
+        (sub / "cairn" / "milestones").mkdir(parents=True)
+        (sub / "cairn" / "ROADMAP.md").write_text(ROADMAP)
+        (sub / "cairn" / "milestones" / "M203-up-front.md").write_text(
+            "# M203: Up front\n\n- **Merge approval:** up front 2026-10-03\n"
+        )
+        self.commit_and_push()
+        marker = sub / "cairn" / ".merge-approved"
+        marker.write_text(self.MARKER)
+        proc = run_hook(
+            "merge_guard.py",
+            {
+                "session_id": "test",
+                "cwd": str(sub),
+                "hook_event_name": "PreToolUse",
+                "tool_name": "Bash",
+                "tool_input": {"command": "gh pr merge 7 --squash"},
+            },
+        )
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(marker.exists())
+
     def test_missing_marker_deny_names_both_gates(self):
         out = hook_json(self.merge())
         self.assertEqual(out["permissionDecision"], "deny")

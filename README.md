@@ -248,7 +248,8 @@ in the environment.
 Development is a cycle of milestones: PR-sized units of work with explicit
 acceptance criteria. One command starts a run. You answer one question set
 when the plan is made, and Claude then implements and reviews the milestone
-in the same run and stops at the merge question:
+in the same run and stops at the merge question, unless you approved the
+merge up front (see *Merges are yours*):
 
 ```mermaid
 flowchart LR
@@ -320,7 +321,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 |---|---|
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
-| Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
+| Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question, or to the merge itself when you approved it up front |
 | Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
 | Resume a run at review | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, each finding settled by the agent, merge on your approval |
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
@@ -432,8 +433,8 @@ profile.
     false on a user-facing milestone,
   - the review ran without its separate reviewers,
   - the milestone touches an inviolable principle or adds a decision entry,
-  - the PR has a review that asks for changes or an unresolved review
-    thread, a Fable target fell short,
+  - the PR has any review, review thread, or comment, a Fable target fell
+    short,
     the repo is a guest one, a companion repo is involved, or the merge
     would write to GitHub issues,
   - CI fails, or a commit is pushed after the PR opens.
