@@ -49,6 +49,9 @@ declare module 'claude-code' {
       band: Shaped<CairnBandState>
       dismissed: Shaped<CairnBandHidden | null>
       step: Shaped<CairnStep | null>
+      // True from a cairn skill's prompt until the next prompt, Stop, or
+      // turn end (M201).
+      expanded: Shaped<boolean>
     }
   }
 }

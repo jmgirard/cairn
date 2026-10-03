@@ -2330,6 +2330,71 @@ describe('an idle typed prompt ends a kept step, and a notice turn keeps it (M20
       on,
     )
   })
+
+  // The engine expands a typed slash command before it raises the
+  // command's prompt (M201 T4 live look), so the prompt finds the new step
+  // already set and keeps it.
+  test("a typed cairn slash command expanded before its prompt keeps its own label", async ($, on) => {
+    await eachSurface(
+      'single-in-progress',
+      'mark',
+      async (ui, $) => {
+        await prompt($, 'milestone-plan')
+        await chapter($, 'Question gate')
+        await $.classic.Stop(stopWith('one'))
+        await prompt($, 'milestone-brief')
+        await $.prompt.submit(submitWith('composer'))
+        const [key] = await rowKeys(ui)
+        expect(key).toBe('M002-row')
+        const [row] = await ui.findAll({ key })
+        expect(labelOf(row)).toBe(LABELS['milestone-brief'])
+        await $.classic.Stop(stopWith('empty'))
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      },
+      $,
+      on,
+    )
+  })
+
+  // A skill the model loads mid-turn is expanded too. A Stop or a turn end
+  // after it means a later typed prompt did not bring it, so that prompt
+  // ends the step. A skill that is not cairn's sets no mark.
+  const LATER: { name: string; act: ($) => Promise<unknown> }[] = [
+    {
+      name: 'a cairn skill prompt and a Stop with one task in flight',
+      act: async $ => {
+        await prompt($, 'milestone-plan')
+        await $.classic.Stop(stopWith('one'))
+      },
+    },
+    {
+      name: 'a cairn skill prompt and an interrupted turn',
+      act: async $ => {
+        await prompt($, 'milestone-plan')
+        await $.turn.complete(turnWith('aborted'))
+      },
+    },
+    { name: "a skill prompt that is not cairn's", act: $ => $.skill.prompt({ skill: 'simplify', text: 'the simplify prompt' }) },
+  ]
+  for (const { name, act } of LATER) {
+    test(`an idle typed prompt after ${name} ends a kept step`, async ($, on) => {
+      await eachSurface(
+        'single-in-progress',
+        'mark',
+        async (ui, $) => {
+          await prompt($, 'milestone-plan')
+          await chapter($, 'Question gate')
+          await $.classic.Stop(stopWith('one'))
+          await act($)
+          expect(await lines(ui)).not.toEqual([...DRAWN['single-in-progress'], ENGINE])
+          await $.prompt.submit(submitWith('composer'))
+          expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
 })
 
 // The mixed fixture cut to one review row (M010) and one in-progress row

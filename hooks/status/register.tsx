@@ -43,6 +43,12 @@ const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as C
 // no cairn skill runs.
 const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
 
+// True from a cairn skill's prompt until the next prompt, Stop, or turn end.
+// The engine expands a typed slash command before it raises the command's
+// prompt, so that prompt finds this set and keeps the step the command just
+// started (M201).
+const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { shape: 'expanded-1' })
+
 // The desktop app's chapter tool. In a session without it, such as one in
 // the terminal, the chapter stays null.
 const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
@@ -69,6 +75,7 @@ export const register: Register = on => {
   // starts the next one, so a turn end is not the skill's end.
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
+    await update($, expanded, () => false)
     await refresh($)
     await debug($, `turn.complete reason=${String((e as { reason?: unknown }).reason)}`)
     return result
@@ -83,6 +90,7 @@ export const register: Register = on => {
   // so its step ends at that Stop.
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
+    await update($, expanded, () => false)
     const tasks =
       e.background_tasks === undefined
         ? 'absent'
@@ -103,12 +111,16 @@ export const register: Register = on => {
   // or through Remote Control (`bridge`), while the session was idle (no
   // `turnId`) ends a step that a Stop kept (M201). A background task's
   // notice, a peer's message, or a prompt typed over a running turn keeps
-  // it. The step ends before `next`, so a typed cairn slash command's own
-  // skill prompt, which runs beneath, sets the new step. A prompt that a
-  // hook beneath blocks or drops has already ended the step.
+  // it. A typed cairn slash command keeps the step its own skill prompt set:
+  // the engine expands the command first, so the prompt finds `expanded`
+  // set. Were the skill prompt to run beneath instead, the step would end
+  // before `next` and the skill prompt would set the new one. A prompt that
+  // a hook beneath blocks or drops has already ended the step.
   on('prompt.submit', async ($, e, next) => {
     const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
-    if (typed && e.turnId === undefined) {
+    const fresh = await read($, expanded)
+    await update($, expanded, () => false)
+    if (typed && e.turnId === undefined && !fresh) {
       await update($, step, () => null)
       await refresh($)
     }
@@ -126,6 +138,7 @@ export const register: Register = on => {
     const skill = cairnSkill(e.skill)
     if (skill !== null) {
       await update($, step, () => ({ skill, chapter: null }))
+      await update($, expanded, () => true)
       await refresh($)
     }
     await debug($, `skill.prompt skill=${e.skill}`)

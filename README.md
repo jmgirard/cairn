@@ -173,7 +173,10 @@ to wait for background work, such as the reviewers that
 `/milestone-review` starts, the skill stays through the wait and through
 the turns that the work's notices start. A prompt you type while Claude is
 idle ends the skill. A prompt you type while Claude works keeps it, and so
-does a message from another session. A cairn skill that starts again, the
+does a message from another session. An interrupt with Esc keeps it too,
+because an interrupted turn has no stop, so the skill stays until your
+next prompt or until Claude next stops with no background work in flight.
+A cairn skill that starts again, the
 same one included, or a session end, a `/clear` included, also ends them.
 A chapter marked after the skill ended does not show. A subagent that
 loads a cairn skill also sets the label, because the skill event does not

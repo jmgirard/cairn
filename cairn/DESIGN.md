@@ -111,9 +111,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   files again. A `classic.Stop` with no `agent_id`, whose answer from
   beneath carries no `block`, clears `step` when its `background_tasks` is
   empty or absent (M201). So does a `prompt.submit` with origin kind
-  `composer` or `bridge` and no `turnId`. That hook clears `step` before
-  it calls `next`, so a typed cairn slash command's own `skill.prompt` sets
-  the new step. Every `session.end` clears it too. A Stop that lists work
+  `composer` or `bridge` and no `turnId`, unless the `expanded` state value
+  is set. A cairn `skill.prompt` sets `expanded`, and every `classic.Stop`,
+  `turn.complete`, and `prompt.submit` clears it. The engine raises a typed
+  slash command's `skill.prompt` before its `prompt.submit` (M201 live
+  look), so that prompt keeps the step the command just set. An interrupted
+  turn raises `turn.complete` with reason `aborted` and no Stop, so it keeps
+  the step. Every `session.end` clears it too. A Stop that lists work
   in flight, a blocked Stop, and a subagent's Stop keep it, and so do a
   `task-notification` prompt and every `turn.complete`, which only reads
   the files again. The hooks do not read `session_crons`, so a skill that
