@@ -48,7 +48,7 @@ of telling the skill's own tasks from other in-flight work.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: A `classic.Stop` with no `agent_id`, whose answer from beneath the
+- [x] AC1: A `classic.Stop` with no `agent_id`, whose answer from beneath the
       mod carries no `block`, ends the running cairn skill's step when its
       `background_tasks` is empty or absent, and keeps the step when that list
       holds one or more tasks. A `classic.Stop` whose answer from beneath
@@ -59,7 +59,7 @@ of telling the skill's own tasks from other in-flight work.
       and a `block` from a hook beneath, and with an empty list and an
       `agent_id`. They also raise a `turn.complete` with reason `answer`. Each
       case then checks the band's skill label.
-- [ ] AC2: The only hooks in `register.tsx` that start or end a step are
+- [x] AC2: The only hooks in `register.tsx` that start or end a step are
       `skill.prompt`, `session.end`, `classic.Stop`, and `prompt.submit`.
       Besides a cairn skill's prompt and a session end, a step, running or
       kept, ends at two events. One is the first later `classic.Stop` that AC1
@@ -80,19 +80,19 @@ of telling the skill's own tasks from other in-flight work.
       `classic.Stop` with one task, a cairn `skill.prompt` then a
       `turn.complete`, and a non-cairn `skill.prompt`. Each case then checks
       the label.
-- [ ] AC3: With one `in-progress` row and one `review` row and
+- [x] AC3: With one `in-progress` row and one `review` row and
       `/milestone-review` running, a `classic.Stop` that lists one background
       task keeps the `review` row under the `review` label, and so does the
       turn that a `task-notification` prompt then starts. A `claude plugin
       test` case shows this. It checks the drawn row after each event.
-- [ ] AC4: In a live desktop session in this repo, one `/milestone-review` or
+- [x] AC4: In a live desktop session in this repo, one `/milestone-review` or
       `/milestone-plan` run starts a background subagent and ends its turn to
       wait. The band shows the skill's label during the wait and through the
       turn that the subagent's notice starts. After the skill's closing turn
       ends with no background work in flight, the band shows no skill label. In
       a second background wait, in a later wait or another run, a prompt the
       operator types ends the label.
-- [ ] AC5: Each of four passages states the step-end rule of AC1 and AC2. The
+- [x] AC5: Each of four passages states the step-end rule of AC1 and AC2. The
       README and CHANGELOG passages also state the interrupt behavior that T4
       records and the three limits in Scope Out. The passages are:
       1. the band paragraph of `README.md` that names
@@ -103,7 +103,7 @@ of telling the skill's own tasks from other in-flight work.
       4. the comments in `hooks/status/register.tsx` on the file header,
          the `step` atom, and the `classic.Stop`, `prompt.submit`, and
          `turn.complete` hooks.
-- [ ] AC6: The `verify` slot of `cairn/PROFILE.md` runs clean: both gating
+- [x] AC6: The `verify` slot of `cairn/PROFILE.md` runs clean: both gating
       `python3 -m unittest` suites, `claude plugin validate`, and `claude
       plugin test`.
 
@@ -193,3 +193,11 @@ of telling the skill's own tasks from other in-flight work.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC1 (2026-10-03): `claude plugin test` 632 pass, exit 0. The M201 AC1 block passes 12 cases: an empty and an absent list each end the step, and the skill row gives way to the idle row or to nothing. A Stop with one task, an empty-list Stop that a hook beneath blocks, and an empty-list Stop with an agent id each keep it. Main-loop turn ends with reasons answer, aborted, refusal, and error, and a subagent turn end, each keep it. Each case checks the drawn label on both surfaces.
+- AC2 (2026-10-03): the hooks that start or end a step are `classic.Stop` (register.tsx:95), `prompt.submit` (115), `skill.prompt` (128), and `session.end` (151). `tool.call` (142) writes only the chapter of a running step. `prompt.submit` names `composer` and `bridge` and no other kind (register.tsx:111). The M201 AC2 block passes all ten named prompt cases.
+- AC3 (2026-10-03): "the review row stays under review through the wait and the notice turn" passes on the terminal and desktop surfaces.
+- AC4 (2026-10-03): live look run 3 (work log), a `/cairn:milestone-plan` dry run with one background subagent. The debug log recorded step `milestone-plan` after the typed command, after the wait's Stop (`subagent:running`), and through the notice turn (the hand-back, origin `peer`). The closing turn's Stop with an empty list set it to none. In the second wait, the operator's typed word (origin `composer`, no `turnId`) set it to none. The operator saw the band show the `plan` label during the phase 1 wait.
+- AC5 (2026-10-03): README lines 166-191 state the Stop rule, the idle typed-prompt end, the Esc result, and the three limits. CHANGELOG lines 40-52 state the same. DESIGN lines 111-121 state the Stop rule, the typed-prompt rule, the `expanded` mark, and the interrupt. The register.tsx header, `step` atom, and `classic.Stop`, `prompt.submit`, and `turn.complete` hook comments state the rule.
+- AC6 (2026-10-03): `python3 -m unittest discover -s scripts/tests` 395 OK (21 skipped), `-s hooks/tests` 174 OK, `claude plugin validate` passed with its one CLAUDE.md warning, `claude plugin test` 632 pass. Each exit code 0.
+- Consistency gate (2026-10-03): `cairn_validate` all checks passed. No principle changed, so `cairn_impact` was skipped. The generic profile adds no toolchain checks.
