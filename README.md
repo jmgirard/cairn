@@ -165,17 +165,31 @@ Chapters come from the desktop app's chapter tool,
 `mcp__ccd_session__mark_chapter`. In a session without that tool, such as
 one in the terminal, a milestone row shows its next open box, and a skill
 row shows its label and slash command only. The skill and its chapter
-stay until the turn that runs the skill ends with Claude's answer, such as
+stay until Claude stops with no background work in flight, such as after
 the skill's closing summary. A question chip the skill asks you waits
-inside that turn, so the skill stays while you answer it. A question asked
-in plain text ends the turn, and the skill with it. So does a turn that
-Claude ends to wait for background work, such as the reviewers that
-`/milestone-review` starts. The rest of that skill shows no label. A cairn
-skill that starts again, the same one included, or a session end, a
-`/clear` included, also ends them. A turn that you interrupt, or one that
-ends in an error, keeps them. A chapter marked after the skill ended does
-not show. A subagent that loads a cairn skill also sets the label, because
-the skill event does not say which agent loaded it.
+inside the turn, so the skill stays while you answer it. A question asked
+in plain text ends the turn. With no background work in flight, the skill
+ends with it, and otherwise your typed answer ends it. When Claude ends a turn
+to wait for background work, such as the reviewers that
+`/milestone-review` starts, the skill stays through the wait and through
+the turns that the work's notices start. A prompt you type while Claude is
+idle ends the skill. A prompt you type while Claude works keeps it, and so
+does a message from another session. An interrupt with Esc keeps it too,
+because an interrupted turn has no stop, so the skill stays until your
+next prompt or until Claude next stops with no background work in flight.
+A cairn skill that starts again, the
+same one included, or a session end, a `/clear` included, also ends them.
+A chapter marked after the skill ended does not show. A subagent that
+loads a cairn skill also sets the label, because the skill event does not
+say which agent loaded it.
+
+The rule has three limits. A skill that waits through `ScheduleWakeup` or
+a scheduled task, and not through background work, loses its label when
+Claude stops. Background work that the skill did not start, such as a
+server or a monitor started earlier, keeps a finished skill's label until
+your next prompt, because the band does not tell the skill's own work from
+other work. A prompt you type that a hook blocks or drops still ends the
+label.
 
 With no milestone active and no cairn skill running, the band shows an
 idle row for the next milestone you can start. That milestone is the first

@@ -7,18 +7,23 @@ import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width }
 import type { BandState, FileSource } from './reader'
 import { loadBand } from './reader'
 
-// The milestone band above the prompt (M191, M193 to M199): one row for one
+// The milestone band above the prompt (M191, M193 to M201): one row for one
 // `in-progress` or `review` ROADMAP row, refreshed when the session starts,
-// at the end of each turn, when a cairn skill's prompt is expanded, and at
-// each chapter the session marks. A running cairn skill shows its label and
-// the last chapter on that row, or on a skill row when no milestone is
-// active. With neither, an idle row names the next workable planned
-// milestone (band.ts picks the row). The row sits above whatever the hooks
-// beneath draw in the same slot. It ends in a close button, which hides the
-// band until the active rows' ids, statuses, or order, the running skill,
-// or the idle row's id change, or the session ends (M200). A found
-// ROADMAP that cannot be read keeps the rows, and the close state is
-// compared against them and the current step.
+// at the end of each turn, when a cairn skill's prompt is expanded, at each
+// chapter the session marks, and when a step ends. A running cairn skill
+// shows its label and the last chapter on that row, or on a skill row when
+// no milestone is active. With neither, an idle row names the next workable
+// planned milestone (band.ts picks the row). A skill's step ends at the
+// first main-loop Stop with no background work in flight that no hook
+// beneath blocks, or at a prompt the operator types while the session is
+// idle, unless a cairn skill's prompt was expanded since the last prompt,
+// Stop, or turn end, as a typed cairn slash command's is. So the label holds while the skill waits on background work and
+// through the turns that the work's notices start (M201). The row sits
+// above whatever the hooks beneath draw in the same slot. It ends in a
+// close button, which hides the band until the active rows' ids, statuses,
+// or order, the running skill, or the idle row's id change, or the session
+// ends (M200). A found ROADMAP that cannot be read keeps the rows, and the
+// close state is compared against them and the current step.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -34,9 +39,17 @@ const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as C
 })
 
 // The running cairn skill and the last chapter marked since its prompt was
-// expanded, until a main-loop turn ends in an answer; null while no cairn
-// skill runs.
+// expanded, until a main-loop Stop with nothing in flight or an idle typed
+// prompt ends it (the `classic.Stop` and `prompt.submit` hooks). A typed
+// prompt that finds `expanded` set keeps it; null while no cairn skill runs.
 const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
+
+// True from a cairn skill's prompt until the next prompt, Stop, turn end, or
+// session end.
+// The engine expands a typed slash command before it raises the command's
+// prompt, so that prompt finds this set and keeps the step the command just
+// started (M201).
+const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { shape: 'expanded-1' })
 
 // The desktop app's chapter tool. In a session without it, such as one in
 // the terminal, the chapter stays null.
@@ -59,17 +72,52 @@ export const register: Register = on => {
     return result
   })
 
-  // A main-loop turn that ends in an answer ends the running cairn skill's
-  // step (M199): a cairn skill runs until its close block ends the turn, and
-  // a question chip waits inside the turn (seen at the M199 live look). An
-  // interrupted, refused, or failed turn keeps the step.
+  // A turn end reads the tracking files again and ends no step (M201). A
+  // skill that waits on background work ends its turn, and the work's notice
+  // starts the next one, so a turn end is not the skill's end.
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
-    // A subagent's turn ending is not the session's turn ending.
-    if (e.agentId !== undefined) return result
-    if (e.reason === 'answer') await update($, step, () => null)
+    await update($, expanded, () => false)
     await refresh($)
     return result
+  })
+
+  // The main loop's Stop ends the running cairn skill's step when nothing is
+  // in flight: `background_tasks` is empty or absent, and no hook beneath
+  // blocked the stop (M201). A Stop with work in flight keeps the step
+  // through the wait, and so does a blocked Stop, after which the turn goes
+  // on. A Stop inside a subagent carries an `agent_id` and keeps the step.
+  // A skill that waits through ScheduleWakeup or a cron lists nothing here,
+  // so its step ends at that Stop.
+  on('classic.Stop', async ($, e, next) => {
+    const result = await next(e)
+    await update($, expanded, () => false)
+    if (e.agent_id !== undefined || result?.block !== undefined) return result
+    if ((e.background_tasks ?? []).length === 0) {
+      await update($, step, () => null)
+      await refresh($)
+    }
+    return result
+  })
+
+  // A prompt the operator typed, at the terminal or the desktop (`composer`)
+  // or through Remote Control (`bridge`), while the session was idle (no
+  // `turnId`) ends a step that a Stop kept (M201). A background task's
+  // notice, a peer's message, or a prompt typed over a running turn keeps
+  // it. A typed cairn slash command keeps the step its own skill prompt set:
+  // the engine expands the command first, so the prompt finds `expanded`
+  // set. Were the skill prompt to run beneath instead, the step would end
+  // before `next` and the skill prompt would set the new one. A prompt that
+  // a hook beneath blocks or drops has already ended the step.
+  on('prompt.submit', async ($, e, next) => {
+    const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
+    const fresh = await read($, expanded)
+    await update($, expanded, () => false)
+    if (typed && e.turnId === undefined && !fresh) {
+      await update($, step, () => null)
+      await refresh($)
+    }
+    return next(e)
   })
 
   // A cairn skill's prompt starts its step with no chapter, the same skill
@@ -80,6 +128,7 @@ export const register: Register = on => {
     const skill = cairnSkill(e.skill)
     if (skill !== null) {
       await update($, step, () => ({ skill, chapter: null }))
+      await update($, expanded, () => true)
       await refresh($)
     }
     return result
@@ -102,6 +151,7 @@ export const register: Register = on => {
   on('session.end', async ($, e, next) => {
     const result = await next(e)
     await update($, step, () => null)
+    await update($, expanded, () => false)
     await update($, dismissed, () => null)
     return result
   })
