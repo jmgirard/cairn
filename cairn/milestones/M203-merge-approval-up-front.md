@@ -45,7 +45,7 @@ own questions".
       milestone, it recommends `at the end`. The plan writes each slot as `up front YYYY-MM-DD` or `at the
       end`. A set that did not pose the question writes `at the end`. A re-cut via `/milestone-plan` asks
       again and rewrites the slot. Review and the guard read `—` or a missing slot as `at the end`.
-- [ ] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips the merge question:
+- [x] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips the merge question:
       - the default-branch copy of the slot reads `up front`,
       - this invocation of review started with an empty Review section and no PR for the branch, and the
         work log has no `step-7 approval:` line,
@@ -271,3 +271,7 @@ own questions".
 - blame-history #6: implement step 6 still says the line "opens" the prefix. — fix now
 - blame-history #7: the template's header still says "~25 lines" at 28. — fix now
 - prior-review #1: README and CHANGELOG omit the moved-default case (M112). — fix now (as diff-bug #9)
+- Pass 4 (2026-10-03, after return 3, RR16, and the AC3 amendment). `origin/main` has not moved, and `git remote set-head origin -a` ran with the fetch. AC3 evidence (amended AC3): step 7 (`skills/milestone-review/SKILL.md:390-430`) runs the up-front check only in a first-pass invocation, one that started with an empty Review section, no PR, and no `step-7 approval:` line. It reads the default-branch slot and carries each AC3 check: plan-commit diff, the amendment and decline prefixes, evidence ticks, fix-now `fixed <sha>`, `#1` and user-facing rejects, `spawned:`, IP and `### D-`, and the step-7 adders without the PR-review adder. It commits `step-7 approval: <branch> approved up front per plan <sha>` before step 8's push and goes to step 8 in the same invocation. Step 8's arm (line 593) writes `M<NNN> approved up front YYYY-MM-DD per plan <sha> for PR #<N>` only after green CI or the no-checks case and a read with no non-bot item. Red CI, a non-bot item, or a CI-ceiling stop poses the chip, and route (c) never skips it. The end-of-run list holds at step 7 (line 463), step 10, implement step 8 (line 234), and the rulebook close-block shape (line 423). Pass.
+- Pass 4 AC4 evidence: `python3 -m unittest discover -s hooks/tests -k UpFront` runs 19 tests, all OK. They include each case AC4 names, with `test_denies_without_remote_tracking_ref` and `test_denies_when_remote_head_is_unset` for an unreadable ref, and `test_legacy_marker_reads_no_slot`. Pass.
+- Pass 4 AC5 evidence: the rulebook approval bullet (the one list), README "Merges are yours", and the CHANGELOG entry state the up-front approval and the narrowed cases. The routing template and CLAUDE.md point to the rulebook bullet. Verify: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 193 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
+- Pass 4 AC1 note: IP1 now cites D-145 and D-146, and the AC1 clauses recorded in pass 1 stand. Consistency gate: `cairn_validate` all checks passed (one sizing advisory, 12 tasks). Pass.
