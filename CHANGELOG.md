@@ -88,43 +88,19 @@
 
 ### Changes that affect existing repos
 
-- **Approve a merge in the plan's question set.** The question set of
-  `/milestone-plan` now asks whether to approve the merge of each milestone
-  up front or at the end. The plan writes the answer into a new
-  `Merge approval:` line in the milestone file's header, as
-  `up front YYYY-MM-DD` or `at the end`. For a user-facing milestone, or
-  one that touches an inviolable principle, it recommends `at the end`. A
-  milestone with the line missing or `—`, such as one planned before this
-  change, reads as `at the end`. If a milestone was approved up front,
-  `/milestone-review` merges it with no merge question. That holds only if
-  its goal, scope, and criteria merge as the plan committed them, review
-  runs from its start to the merge in one invocation, and no route-back
-  case applies. Each route-back case sends the run to the merge question.
-  The cases are any stop, resume, or return, a goal, scope, or criteria change (a substantive
-  amendment or an amendment return included), a declined merge question, a
-  missing criterion evidence line, an unfixed fix-now finding,
-  a top-ranked finding rejected as false (on a user-facing milestone, any
-  finding rejected as false), a review without its reviewers, a principle
-  or decision-log change, the existing reasons that add to the merge
-  question, a comment, an unresolved thread, or a commenting or
-  changes-requested review on the PR from a non-bot author, and red CI.
-  Bot items are logged and listed and do not route back, unless one needs a
-  fix, which is pushed and then asks. Review writes the
-  approval marker only in the same invocation, after CI is green, or the
-  PR reports no checks and the profile allows a merge on local green, and
-  after a read of the PR conversation just before the marker finds no
-  non-bot item. The merge guard then reads the milestone's `Merge
-  approval:` line at the base remote's `<base>/HEAD`, as last fetched,
-  with no network call. Review's sync step runs `git remote set-head <base>
-  -a` so that ref is set, and an unset one denies with that command named.
-  The guard denies the merge unless the line reads `up front`, and the
-  deny text names the value it read and where. Only a marker that says
-  `up front` is checked against that line. The close block or
-  merge question that ends the run lists each finding of an up-front merge
-  with its outcome. Review now logs each finding with its reviewer and
-  rank, and records which reviewers ran. A declined merge question writes
-  a `step-7 decline:` work-log line. Inviolable principle IP1 changes to
-  name both approval points.
+- **Review records its findings in fixed line formats.**
+  `/milestone-review` now logs each finding in the Review section as
+  `<lens> #<rank>: <finding> — <disposition>`. The lens is `diff-bug`,
+  `blame-history`, or `prior-review`. A reject names its reason and its
+  ground: false, style, or planned change. A fix-now line gains
+  `, fixed <sha>` once its fix is committed. Each review pass that spawns
+  reviewers writes one `spawned: <lens>, …` line, and a degraded
+  (author-inline) pass writes none. A declined merge question writes the
+  work-log line `step-7 decline: <what was requested>`.
+  `/milestone-implement` writes a substantive amendment's work-log line
+  with `substantive amendment:` after its date. The merge question counts
+  the milestone's amendments from those lines and the `amendment return:`
+  lines.
 
 - **One question set, then the agent runs the milestone to the merge
   question.** `/milestone-plan` asks one question set, then invokes

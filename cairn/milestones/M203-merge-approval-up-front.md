@@ -69,7 +69,7 @@ RR15, RR16, and the review passes go with it. The merge question of
       `cairn/DESIGN.md` to main's text, and append the superseding D-entry.
 - [x] T3: Restore the review and implement skills to main's text, then add AC3's formats, decline line,
       and amendment count, and AC4's prefix. Word them with no mention of an up-front check.
-- [ ] T4: Replace the branch's CHANGELOG entry with one entry for the formats.
+- [x] T4: Replace the branch's CHANGELOG entry with one entry for the formats.
 - [ ] T5: Run the verify slot and `cairn_validate`, and hand-run `skills/tests`.
 
 ## Work log
@@ -134,6 +134,7 @@ RR15, RR16, and the review passes go with it. The merge question of
 - 2026-10-03: implement of the re-cut started on branch m203-merge-approval-up-front. T1 done: main merged into the branch, the milestone file and ROADMAP resolved to main's versions. Untracked `tsconfig.json` left unstaged.
 - 2026-10-03: T2 done: `hooks`, `skills/shared`, `skills/milestone-plan`, `CLAUDE.md`, `README.md`, and `cairn/DESIGN.md` restored to main's text. D-147 supersedes D-145 and D-146 and keeps IP1 as main has it. Verify green (scripts 395 OK, 21 skipped; hooks 174 OK; plugin validate passes with warnings; plugin test 632 pass), `cairn_validate` all checks passed.
 - 2026-10-03: T3 done: both skills restored to main's text, then review step 5 gains the finding-line format, the `fixed <sha>` suffix, the lens slugs, and the `spawned:` line (none for a degraded pass), step 7 counts amendments from the `substantive amendment:` and `amendment return:` lines and writes `step-7 decline:` on a decline, and implement step 6's sentence carries the prefix. No up-front wording. Verify green, same counts as T2.
+- 2026-10-03: T4 done: CHANGELOG restored to main's text, then one entry added at the top of Unreleased "Changes that affect existing repos" for the formats of AC3 and AC4. Its diff adds 14 lines and removes none.
 
 ## Decisions
 
