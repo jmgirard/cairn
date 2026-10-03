@@ -169,6 +169,7 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T7 done. Verify green: scripts 0 fail, hooks 0 fail, plugin validate passed, plugin test 632 pass 0 fail; cairn_validate all checks passed. Status set to review.
 - 2026-10-03: review return 1 (defect, step-4 gate): AC1 fails as written. Its grep over `skills/` prints two lines, `skills/tests/test_gate_wording.py:74` and `:79`, which hold the retired phrase "exactly three gates" in a comment and an `assertNotIn` literal (T5's work-log line scoped the grep to outside `skills/tests`). AC2–AC7 and `cairn_validate` passed on this pass; nothing ticked. Status back to in-progress.
 - 2026-10-03: return 1 fixed. `test_gate_wording.py` now asserts `assertNotRegex(text, r"exactly three\s+gates")` and its comment names "the three-gate clause", so AC1's grep prints no line. A planted "exactly three gates" makes the regex match, the real rulebook does not. Verify green (scripts 0, hooks 0, validate 0, plugin test 0). Status set to review.
+- step-7 approval: m202-one-question-set-run approved for merge
 
 ## Decisions
 
