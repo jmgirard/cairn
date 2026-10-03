@@ -136,7 +136,7 @@ own questions".
       each finding its lens, rank, and disposition, and records the spawned
       lenses. Read the resume routes that parse the `step-7 approval:` line.
       A resume after a CI timeout finds the up-front line and re-derives CI.
-- [ ] T4: The slot read, the deny text, and the docstring in
+- [x] T4: The slot read, the deny text, and the docstring in
       `hooks/merge_guard.py`, with the `hooks/tests` tests of AC4.
 - [ ] T5: The surfaces in AC5.
 - [ ] T6: Run the verify slot and `cairn_validate`.
@@ -165,6 +165,7 @@ own questions".
 - 2026-10-03: T1 done: IP1 adds the two gates for a milestone merge, D-145 records the change, its route-back cases, and the D-138, D-144, and D-043 links. Verify green (scripts 395 OK, hooks 174 OK, plugin validate and test 632 pass).
 - 2026-10-03: T2 done: template slot defaults to `at the end`; plan step 3 adds the per-milestone merge question, step 4 the slot write with the re-cut rule. No script parses header slots, so no parser change. Verify green.
 - 2026-10-03: T3 done. Review step 7 reads the default-branch slot and runs the route-back checks, step 8's up-front arm writes the marker only after green CI, resume route (c) re-runs the check, and steps 7 and 10 carry the end-of-run list. To make the checks readable from files, step 5 logs each finding as `<lens> #<rank>: … — <disposition>` with a `spawned:` line, a decline writes `step-7 decline:`, and implement step 6 opens its line `substantive amendment:`. Verify green. `skills/tests` resume_routing has one red in `/hotfix` text, the same on the pre-edit tree.
+- 2026-10-03: T4 done. `cairn_common` gains `marker_up_front_milestone` and `default_branch_merge_slot`, which read the slot at `refs/remotes/<base>/<default>`. `merge_guard` denies an up-front marker unless that slot reads `up front`, and its docstring and missing-marker text name both gates. `TestMergeGuardUpFront` has 13 tests. Three planted defects each turned their target test red: a working-tree read, a local-branch read, and a match on any milestone's slot. Verify green (hooks 187 OK).
 
 ## Decisions
 

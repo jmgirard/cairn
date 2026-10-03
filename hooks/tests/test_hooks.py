@@ -1500,6 +1500,182 @@ class TestMergeGuard(RepoFixture):
         self.assertEqual(proc.stdout.strip(), "")
 
 
+class TestMergeGuardUpFront(RepoFixture):
+    """M203 AC4 (D-145): an `approved up front` marker stands only on the
+    milestone's `Merge approval:` slot read from the remote-tracking default
+    branch. Each denial names the slot value read (or that none could be)
+    and the ref and path it read; a legacy marker is untouched."""
+
+    MARKER = "M203 approved up front 2026-10-03 per plan abc1234 for PR #7\n"
+    SOURCE = "refs/remotes/origin/main:cairn/milestones/M203-up-front.md"
+
+    def setUp(self):
+        super().setUp()
+        bare = tempfile.TemporaryDirectory()
+        self.addCleanup(bare.cleanup)
+        subprocess.run(
+            ["git", "init", "-q", "--bare", bare.name],
+            check=True, capture_output=True,
+        )
+        subprocess.run(
+            ["git", "-C", bare.name, "symbolic-ref", "HEAD", "refs/heads/main"],
+            check=True, capture_output=True,
+        )
+        self.git("remote", "add", "origin", bare.name)
+
+    def merge_payload(self, command):
+        return self.payload(
+            hook_event_name="PreToolUse",
+            tool_name="Bash",
+            tool_input={"command": command},
+        )
+
+    def marker(self):
+        return self.root / "cairn" / ".merge-approved"
+
+    def milestone(self, number, slot, name="up-front"):
+        # `slot` None writes a header with no `Merge approval:` line at all.
+        path = self.root / "cairn" / "milestones" / f"M{number}-{name}.md"
+        lines = [f"# M{number}: Up front", "", "- **Status:** review"]
+        if slot is not None:
+            lines.append(
+                f"- **Merge approval:** {slot}   <!-- owner: plan -->"
+            )
+        lines.append("- **Branch/PR:** —")
+        path.write_text("\n".join(lines) + "\n")
+        return path
+
+    def commit_and_push(self, message="plan"):
+        self.git("add", "-A")
+        self.git("commit", "-q", "--allow-empty", "-m", message)
+        self.git("push", "-q", "origin", "HEAD:refs/heads/main")
+        self.git("fetch", "-q", "origin")
+        self.git("remote", "set-head", "origin", "main")
+
+    def merge(self, pr="7"):
+        return run_hook(
+            "merge_guard.py", self.merge_payload(f"gh pr merge {pr} --squash")
+        )
+
+    def assert_denied(self, proc, *needles):
+        out = hook_json(proc)
+        self.assertEqual(out["permissionDecision"], "deny")
+        reason = out["permissionDecisionReason"]
+        for needle in needles:
+            self.assertIn(needle, reason)
+        self.assertEqual(
+            self.marker().read_text(), self.MARKER,
+            "a denied merge must not consume the approval",
+        )
+        return reason
+
+    def test_allows_up_front_slot_on_default_branch(self):
+        self.milestone(203, "up front 2026-10-03")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        proc = self.merge()
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertEqual(
+            (self.root / "cairn" / ".merge-approved.pending").read_text(),
+            self.MARKER,
+        )
+
+    def test_denies_another_pr_number(self):
+        self.milestone(203, "up front 2026-10-03")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge("9"), "PR #7", "#9")
+
+    def test_denies_slot_at_the_end(self):
+        self.milestone(203, "at the end")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(
+            self.merge(), "the slot reads `at the end`", self.SOURCE,
+            "merge question",
+        )
+
+    def test_denies_slot_dash(self):
+        self.milestone(203, "—")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "the slot reads `—`", self.SOURCE)
+
+    def test_denies_missing_slot(self):
+        self.milestone(203, None)
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(
+            self.merge(), "no slot value could be read",
+            "no `Merge approval:` slot", self.SOURCE,
+        )
+
+    def test_denies_up_front_only_in_working_tree(self):
+        self.milestone(203, "at the end")
+        self.commit_and_push()
+        self.milestone(203, "up front 2026-10-03")  # uncommitted edit
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "the slot reads `at the end`", self.SOURCE)
+
+    def test_denies_up_front_only_on_local_default_branch(self):
+        self.milestone(203, "at the end")
+        self.commit_and_push()
+        self.milestone(203, "up front 2026-10-03")
+        self.git("commit", "-q", "-am", "local only")  # never pushed
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "the slot reads `at the end`", self.SOURCE)
+
+    def test_denies_without_remote_tracking_ref(self):
+        self.milestone(203, "up front 2026-10-03")
+        self.commit_and_push()
+        self.git("update-ref", "-d", "refs/remotes/origin/main")
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(
+            self.merge(), "no slot value could be read",
+            "the ref does not exist", "refs/remotes/origin/main",
+        )
+
+    def test_denies_absent_file(self):
+        self.commit_and_push("init push")
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(
+            self.merge(), "no slot value could be read",
+            "no milestone file for M203",
+        )
+
+    def test_denies_when_only_another_milestones_slot_is_up_front(self):
+        self.milestone(203, "at the end")
+        self.milestone(204, "up front 2026-10-03", name="other")
+        self.commit_and_push()
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "the slot reads `at the end`", self.SOURCE)
+
+    def test_denies_up_front_marker_naming_no_milestone(self):
+        self.milestone(203, "up front 2026-10-03")
+        self.commit_and_push()
+        self.MARKER = "approved up front 2026-10-03 for PR #7\n"
+        self.marker().write_text(self.MARKER)
+        self.assert_denied(self.merge(), "names no milestone")
+
+    def test_legacy_marker_reads_no_slot(self):
+        # A chip-approval marker never consults the slot, even one that
+        # reads `at the end`.
+        self.milestone(203, "at the end")
+        self.commit_and_push()
+        legacy = "M203 approved 2026-10-03 for PR #7\n"
+        self.marker().write_text(legacy)
+        proc = self.merge()
+        self.assertEqual(proc.stdout.strip(), "")
+        self.assertFalse(self.marker().exists())
+
+    def test_missing_marker_deny_names_both_gates(self):
+        out = hook_json(self.merge())
+        self.assertEqual(out["permissionDecision"], "deny")
+        reason = out["permissionDecisionReason"]
+        self.assertIn("merge question", reason)
+        self.assertIn("plan question set", reason)
+
+
 class TestMergeGuardCdTarget(RepoFixture):
     """M188: the guard reads the one accepted `cd <dir> && gh pr merge`
     spelling and resolves the repo from the target — stepping aside for an

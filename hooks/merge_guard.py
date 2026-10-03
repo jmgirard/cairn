@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """PreToolUse(Bash) hook: deny merges to main without recorded approval.
 
-Nothing reaches main without the user's explicit approval at the review
-gate. /milestone-review (or /hotfix) records that approval by writing a
+Nothing reaches main without the user's explicit approval at a gate: the
+merge question, or the plan question set for a milestone approved up front
+(D-145). /milestone-review (or /hotfix) records that approval by writing a
 single-use marker file, cairn/.merge-approved (gitignored); this hook
 denies `gh pr merge` and `git merge`-into-main when the marker is
 absent, and consumes it when present. Consumption is a rename to
@@ -17,6 +18,13 @@ same one (M72): a command naming a different PR is denied, and so is a bare
 `gh pr merge` that names none, since an approval that cannot be checked is
 not an approval. A marker with no PR reference predates the convention and
 falls back to the bare existence check. Denials never consume the marker.
+
+An up-front marker (`M<NNN> approved up front … for PR #<N>`, D-145) also
+needs the milestone's `Merge approval:` slot to read `up front` in its file
+at the local remote-tracking ref of the default branch, never the working
+tree or the local default branch: the plan commit there is the record of
+the user's answer. A missing ref, file, or slot denies, and so does any
+other value. The read trusts that ref as last fetched.
 
 Known limitations (documented, accepted): this is defense-in-depth behind
 the skill approval-gate + single-use marker, not an airtight sandbox, so
@@ -137,9 +145,10 @@ def main():
     marker = os.path.join(root, cc.MARKER_RELPATH)
     if not os.path.isfile(marker):
         deny(
-            "Merging to main requires explicit user approval at the "
-            "review gate (tracking-rules: nothing reaches main "
-            "without it). /milestone-review records that approval "
+            "Merging to main requires explicit user approval, given at "
+            "the merge question or up front in the plan question set "
+            "(tracking-rules: nothing reaches main without it, D-145). "
+            "/milestone-review records that approval "
             "by writing cairn/.merge-approved, which this guard "
             "consumes per merge attempt (a failed attempt's marker "
             "is restored automatically by merge_guard_post). If the "
@@ -199,6 +208,38 @@ def main():
         # marker_pr is None: a marker written before the PR-binding
         # convention. Fall through to the existence check it was written
         # under rather than rejecting it.
+
+    # An up-front marker (D-145) stands only on the milestone's slot as the
+    # default branch carries it; a slot that cannot be read denies.
+    number = cc.marker_up_front_milestone(marker)
+    if number is not None:
+        if not number:
+            deny(
+                "The approval marker at %s claims an up-front approval but "
+                "names no milestone, so the guard cannot read the "
+                "`Merge approval:` slot it rests on. Approval comes at the "
+                "merge question, or up front in the plan question set for a "
+                "milestone whose slot on the default branch reads `up front` "
+                "(D-145). Pose the merge question." % marker
+            )
+            return
+        value, source, problem = cc.default_branch_merge_slot(root, number)
+        if problem is not None or not value.lower().startswith("up front"):
+            read = (
+                "no slot value could be read (%s)" % problem
+                if problem is not None
+                else "the slot reads `%s`" % value
+            )
+            deny(
+                "The approval marker claims an up-front approval for M%s, "
+                "but the guard read its `Merge approval:` slot at %s and %s. "
+                "Approval comes at the merge question, or up front in the "
+                "plan question set, and only a slot that reads `up front` on "
+                "the default branch carries the up-front approval (D-145). "
+                "Pose the merge question; never rewrite the marker or the "
+                "slot to match." % (number, source, read)
+            )
+            return
 
     # Consume by rename — single-use: one approval, one merge attempt.
     # merge_guard_post resolves the pending file by outcome (restore on

@@ -307,6 +307,73 @@ def marker_pr_number(path):
     return match.group(1) if match else None
 
 
+# An up-front approval marker (D-145): `M<NNN> approved up front YYYY-MM-DD
+# per plan <sha> for PR #<N>`. The guard reads such a marker against the
+# milestone's `Merge approval:` slot on the default branch.
+_MARKER_UP_FRONT = re.compile(r"\bapproved\s+up\s+front\b", re.IGNORECASE)
+_MARKER_MILESTONE = re.compile(r"\bM(\d+)\b")
+_SLOT_LINE = re.compile(
+    r"^\s*-\s*\*\*Merge approval:\*\*[ \t]*(.*?)[ \t]*(?:<!--.*)?$", re.MULTILINE
+)
+
+
+def marker_up_front_milestone(path):
+    """For an up-front marker, the milestone number it names, else None.
+
+    Returns None for a marker without `approved up front` (the chip-approval
+    marker, or a legacy one) or one that cannot be read, so the caller's
+    up-front check applies only where the marker claims it. Returns "" for an
+    up-front marker naming no `M<NNN>`, which the caller denies.
+    """
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as handle:
+            body = handle.read()
+    except Exception:
+        return None
+    if not _MARKER_UP_FRONT.search(body):
+        return None
+    match = _MARKER_MILESTONE.search(body)
+    return str(int(match.group(1))) if match else ""
+
+
+def default_branch_merge_slot(cwd, number):
+    """Read milestone `number`'s `Merge approval:` slot from the default branch.
+
+    Reads the local remote-tracking ref `refs/remotes/<base>/<default>`, never
+    the working tree or the local default branch, so a slot written only on a
+    branch cannot answer for it. Returns (value, source, problem): `value` is
+    the slot's text or None, `source` names the ref and path read (or the ref
+    alone), and `problem` is None when the slot was read, else a short reason
+    it could not be. Never raises.
+    """
+    default = default_branch(cwd)
+    if default is None:
+        return None, "the base remote", "no default branch resolves"
+    ref = f"refs/remotes/{base_remote(cwd)}/{default}"
+    rc, _ = git(["rev-parse", "--verify", "--quiet", ref], cwd)
+    if rc != 0:
+        return None, ref, "the ref does not exist"
+    rc, out = git(["ls-tree", "--name-only", ref, "cairn/milestones/"], cwd)
+    path = None
+    if rc == 0:
+        for line in out.splitlines():
+            name = line.strip().rsplit("/", 1)[-1]
+            m = re.match(r"M(\d+)-.*\.md$", name)
+            if m and str(int(m.group(1))) == number:
+                path = line.strip()
+                break
+    if path is None:
+        return None, ref, "no milestone file for M%s under cairn/milestones/" % number
+    source = f"{ref}:{path}"
+    rc, text = git(["show", source], cwd)
+    if rc != 0:
+        return None, source, "the file cannot be read"
+    match = _SLOT_LINE.search(text)
+    if not match:
+        return None, source, "the file has no `Merge approval:` slot"
+    return match.group(1), source, None
+
+
 def read_input():
     """Parse the hook's stdin JSON; permissive on garbage."""
     try:
