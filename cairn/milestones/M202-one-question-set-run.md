@@ -184,3 +184,30 @@ Pass 2 (2026-10-03, after return 1), on branch head 3bc80e7. The branch contains
 - AC6: Each surface states the run and the resume commands. The README workflow section is at lines 249-271 ("One command starts a run"). The README "What the system expects from you" bullets are at lines 409 and 414. The others are the `CHANGELOG.md:91` entry, `cairn/DESIGN.md:36`, `claude-md-section.md:14`, and `CLAUDE.md:22`. D-144 supersedes the three-gate clause, D-124's per-phase handoff, and D-067's arguable-finding question. It annotates D-003 and D-022.
 - AC7: Each verify command exits 0. `scripts/tests` ran 395 tests, OK with 21 skipped. `hooks/tests` exits 0. `claude plugin validate` passed with warnings. `claude plugin test .` reports 632 pass and 0 fail.
 - Consistency gate: `cairn_validate` passes all checks (exit 0). No DESIGN principle line changed, so `cairn_impact` was skipped. The `generic` profile names no toolchain checks.
+
+Independent review, pass 2: the tier is user-facing, so three fresh reviewers ran (diff-bug on Opus, blame-history and prior-review on Sonnet). The PR-comment probe found no threads. Their 32 reports merge into 24 findings below (F1 to F24). The agent settled each one. No finding shows a criterion failing, and none is a load-bearing defect, so status stays `review`.
+
+- F1, fix now. Previews and recaps that a skill shows just before a phase-end Skill call are not sure to render (plan step 7, implement steps 6 and 9, review step 9).
+- F2, fix now. Old gate wording survives: the rulebook says the maintainer triages the ranked list and calls the merge question "the review gate". Plan steps 3 and 4, the milestone template, and `/milestone-brief` also name gates that are gone. Rejected parts: "gated amendment" stays, because the re-audit reader still gates amended wording. The freshness clause's "pending user gate" stays, because review still has the merge chip and implement's claim audit stops with a close block.
+- F3, fix now. Resume route (b) runs on a merged head, but a gate or floor failure there now calls implement for a branch that is gone.
+- F4, follow-up (new candidate row). No milestone after M166 re-seeded the rulebook-size baseline in `/milestone` and two tests. This branch adds to the drift.
+- F5, fix now. The plan guest arm says "the close block is unchanged", and step 7 says "after the commit", which guest mode does not make.
+- F6, rejected, planned change. The session that wrote the code settles the reviewers' findings. AC5 and D-144 call for this, and D-144 names its falsifier.
+- F7, rejected, planned change. Pre-existing and unmodified-line findings go to candidate rows, not to rejection. AC5 sends "the rest" to candidate rows.
+- F8, follow-up (new candidate row). New cross-referencing rows never trip the M161 two-milestone trigger, and every unfixed finding adds ROADMAP lines toward the cap.
+- F9, fix now. The merge question does not show criteria the agent amended during the run.
+- F10, fix now. The D-118 widening path points at "a stop above", and no stop there names a widening.
+- F11, rejected, planned change. Plan step 1 no longer asks for sign-off to plan ahead. The question set still runs, and a plan made ahead ends with a close block.
+- F12, follow-up (new candidate row). Review step 10 can chain into milestones from a plan that never ran as a run (made before M202, or a plan alone).
+- F13, rejected, planned change. A run has no stop at the milestone seam. D-144 accepts this and records the falsifier, and the context-hygiene stop at a task boundary remains.
+- F14, fix now. Answers from the question set (permissions, files, looks) are not written to disk, so a resumed run cannot read them.
+- F15, fix now. A review return adds no task, so implement can hand back with nothing fixed.
+- F16, fix now. "Ask the user" rules for a dirty tree and another in-progress milestone are not on the closed stop list.
+- F17, follow-up (new candidate row). A release-window advisory for an unrelated release ends the run, and the close block always puts `/milestone` first.
+- F18, fix now. "Defer the rest" of the plan questions points at a gate that is gone.
+- F19, fix now. `records-hygiene.md` is 55 lines against its own "under 55 lines" budget.
+- F20, fix now. A declined merge question names no close block or resume command.
+- F21, fix now. Plan step 7 and review step 10 pick the next milestone in different orders, and a re-cut can leave two plan commits naming one id.
+- F22, fix now. CHANGELOG and README say implement never asks anything and that typed implement or review resumes every stop.
+- F23, fix now. The checker-regress rule lets the agent replace asked-for hardening with deletion, which drops what the user asked for.
+- F24, fix now. Thrash trigger (b) does not say how a switch to the recorded alternative is made.
