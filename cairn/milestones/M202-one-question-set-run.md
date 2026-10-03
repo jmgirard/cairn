@@ -211,3 +211,5 @@ Independent review, pass 2: the tier is user-facing, so three fresh reviewers ra
 - F22, fix now. CHANGELOG and README say implement never asks anything and that typed implement or review resumes every stop.
 - F23, fix now. The checker-regress rule lets the agent replace asked-for hardening with deletion, which drops what the user asked for.
 - F24, fix now. Thrash trigger (b) does not say how a switch to the recorded alternative is made.
+- F2 addendum: the milestone template's "plan gate chose" line and plan step 4's "Record the alternative the gate rejected" bullet stay. They are a fixed record shape that the work logs and the prose tests match on.
+- Fix-now landed after checkpoint 5cfbff1, covering F1, F2, F3, F5, F9, F10, F14 to F16, and F18 to F24. Edited: the rulebook, the plan, implement, review, and brief skills, `records-hygiene.md` (now 54 lines), README, CHANGELOG, and three prose tests with one mutation entry. Verify re-run green: scripts 0, hooks 0, validate 0, plugin test 0. `cairn_validate` passes, and the AC1 grep prints no line. `skills/tests` shows 663 tests with the same 4 failures and 1 error as main.

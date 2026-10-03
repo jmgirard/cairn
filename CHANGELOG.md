@@ -97,7 +97,9 @@
   actions and dependency changes. The agent decides criteria wording,
   criteria-audit findings, splits, approach, test scope, and changelog
   entries, and logs each in the milestone's work log. Implement asks no
-  questions of its own. Review settles each reviewer finding itself. It
+  question round of its own. It stops only at a listed stop, such as an
+  action the question set did not cover or an amendment that changes what
+  you get. Review settles each reviewer finding itself. It
   rejects a finding that is false, a style or linter item, or a complaint
   about a planned change, with the reason. It fixes a real finding inside
   the milestone's scope on the branch, and it sends the rest to candidate

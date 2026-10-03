@@ -268,7 +268,8 @@ repeated review failures, a CI wait that times out, and a few others that
 the rulebook lists. A run ends the same recognizable way: a short recap, a
 status table, and the next command in a copyable block. If a run stopped,
 typing `/milestone-implement` or `/milestone-review` with the milestone id
-resumes it.
+resumes it. A stop that finds the goal wrong names `/milestone-plan`
+instead, and the close block always names the command to type.
 
 ## A worked example
 
@@ -288,7 +289,8 @@ the ROADMAP as `planned`, commits, and starts implementing.
 left open, such as flag naming and output format, with a log line for each.
 It works the tasks in order: tests first, one checkpoint commit per task,
 each commit updating the milestone file's checkboxes alongside the code. You
-are not asked anything. When all tasks pass, status flips to `review` and
+are not asked anything unless the run reaches a listed stop, such as an
+action the question set did not cover. When all tasks pass, status flips to `review` and
 review starts.
 
 **3. Ship it.** Review re-runs every check fresh, gathers evidence for each

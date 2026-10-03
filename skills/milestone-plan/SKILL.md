@@ -119,10 +119,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records
    an earlier milestone of the same repo shipping, where that checker
-   verifies repo-internal artifacts. On such a hit the plan takes
-   simplifying or deleting the checker, with a work-log line. Hardening it
-   is taken only when the request asks for it by name, and then the step-3
-   set poses it with simplifying as the recommended option. A repair that
+   verifies repo-internal artifacts. On such a hit the step-3 set poses
+   simplifying or deleting the checker as the recommended option and
+   hardening it as a present, non-recommended alternative, since dropping
+   asked-for work is never the agent's call. A repair that
    leaves the checker's promise unchanged stays outside the shape
    (D-090's Untouched clause); one that widens the checker's promise is
    the regress shape however it is framed.
@@ -158,6 +158,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    step 5's ledger: "M12 covers A and B, C becomes M13 (planned now, depends
    on M12), D becomes a candidate row". Dropping something the user asked
    for is never the agent's call; it is a question of the set.
+   **The answers go on disk.** Step 4 writes each answer that grants a
+   permission, a file, access, or a look as one work-log line in the
+   milestone it serves, `question set: <what was asked> — <answer>`, so a
+   resumed run reads what the user granted from the file, never from recall.
 
    **Issue acknowledgement (one option).** When the `Resolves:` slot step 4
    will fill is not `—`, the set poses one option offering an
@@ -252,7 +256,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - Acceptance criteria verifiable with evidence; never vibes. Criteria
      that cite a formula or reference value must name their source
      (`citekey (p. N)` — see the primary-sources rule). **Write the wording
-     step 3's audit read**; a criterion the gate changed goes back through
+     step 3's audit read**; a criterion the question set's answers changed goes back through
      the audit's questions — in the mode step 3 assigns the milestone's
      tier — before it is written, and the change is reported.
    - **Bounded promises only (M130).** An acceptance criterion that makes a
@@ -363,10 +367,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    **Guest arm** (tracking-rules "Collaboration mode"): in guest mode there
    is no plan commit and no push — the milestone files and ROADMAP rows are
    written to disk in this same turn and stay uncommitted (`cairn/` is in
-   `.git/info/exclude`); the preview and the close block are unchanged.
+   `.git/info/exclude`); the preview and step 7 are unchanged.
 
 7. **Hand off to implement** (tracking-rules "Question gates and phase
-   closes"). After the commit and push of step 6, show the plan summary and
+   closes"). After step 6, show the plan summary and
    remainder ledger in chat, then invoke `/milestone-implement M<NNN>`
    through the Skill tool for the first workable milestone this plan
    created: status `planned`, every `Depends on:` milestone `done`, in

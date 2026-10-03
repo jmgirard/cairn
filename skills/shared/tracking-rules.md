@@ -234,9 +234,10 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
 - Before branching or committing, check `git status`: a dirty tree with unrelated changes means ask the user — never
-  sweep strangers into a checkpoint commit. If the default branch moves under an active branch, merge it into the branch
+  sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
+  instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at the review gate.** Never force-push (the
+- **Nothing reaches the default branch without the user's explicit approval at the merge question.** Never force-push (the
   force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
@@ -361,7 +362,7 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
 - **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a
   recommendation and brief pros and cons. It asks only what the user alone can settle and foresees what implement and
   review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
-  holds, flag at most 3 prioritized markers and defer the rest.
+  holds, ask the 3 that matter most. The agent decides the rest with a work-log line, unless one is a stop below.
 - **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
   present, never a prose yes/no.
 
@@ -456,7 +457,10 @@ These rules bind all chat output while any cairn skill is active.
   fuller evidence appears best-effort in the chat above, and where it exists as a file on disk — a milestone file's
   Review section, a drafted record — the question text cites its path.
   A durable-record preview or a handoff command either ends its turn's rendered text or is restated verbatim in the
-  first rendered text after the tool call resolves.
+  first rendered text after the tool call resolves. Inside a run, text shown before a phase-end Skill call is
+  pre-tool-call text: each record it previews is already on disk, and the run's next guaranteed position — the merge
+  question's chip, or the close block that ends the run — cites the file that holds it, plus the restatements
+  `/milestone-review` step 7 names.
 - **Chips carry choices, not evidence.** A chip is a decision surface, never the dump for long material: option
   labels are short; descriptions say in plain language what is chosen and why it matters; ≤4 options per question.
   The decision-relevant substance rides in the chip's question text and option descriptions (Mandated-substance rule
@@ -528,7 +532,7 @@ These rules bind all chat output while any cairn skill is active.
   milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
   three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet
   prior-PR-comments — always spawned, no-op without prior-review evidence); reviewers rank their findings, the
-  maintainer triages the ranked list at the gate, every finding logged.
+  agent settles each one, and the merge question lists every disposition.
 - **Never Haiku.** For anything.
 - **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —
   costlier than Opus, so a deliberate per-instance choice, never a standing default; ad-hoc Fable spawning is

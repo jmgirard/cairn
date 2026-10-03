@@ -1839,14 +1839,14 @@ REGISTRY = [
         guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
         target="skills/milestone-plan/SKILL.md",
-        block="simplifying or deleting the checker, with a work-log line",
+        block="simplifying or deleting the checker as the recommended option",
     ),
-    # M202 (D-144): hardening only on a request naming it.
+    # M202 review F23: hardening stays a present, non-recommended option.
     Mutation(
         guard="test_stakes_tier",
-        test="TestCheckerRegressClause.test_hardening_only_when_named_with_simplifying_recommended",
+        test="TestCheckerRegressClause.test_hardening_stays_present_but_non_recommended",
         target="skills/milestone-plan/SKILL.md",
-        block="is taken only when the request asks for it by name",
+        block="hardening it as a present, non-recommended alternative",
     ),
     Mutation(
         guard="test_stakes_tier",
@@ -1884,7 +1884,7 @@ REGISTRY = [
         guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
         target="skills/milestone-plan/SKILL.md",
-        block="On such a hit the plan takes",
+        block="On such a hit the step-3 set poses",
     ),
     # M142 defect return #2: whole-slice equality fixtures (D-103's
     # instrument) — one entry per fixture, each anchored on a phrase the

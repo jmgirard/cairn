@@ -35,12 +35,15 @@ run ingestion first (see `/milestone-brief`).
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
    with a resolved blocker (resume). Verify all `Depends on:` milestones are
    `done`, and that no OTHER milestone is `in-progress` (at most one, ever —
-   if one exists, stop and route there or ask). Set `in-progress` in
-   ROADMAP + header mirror.
+   if one exists, stop with the close block naming it and its resume
+   command). Set `in-progress` in ROADMAP + header mirror. **On a return
+   from review**, the newest `review return <n>:` work-log line names what
+   failed; add one task for it (a minor amendment, step 6) before working,
+   so step 9 cannot hand back with the failure unfixed.
 
 2. **Branch.** Check `git status` first — a dirty tree with unrelated
-   changes means ask the user; never sweep strangers into a checkpoint
-   commit. First session: detect the default branch (tracking-rules git
+   changes stays unstaged, with a work-log line naming it; never sweep
+   strangers into a checkpoint commit. First session: detect the default branch (tracking-rules git
    model: `git symbolic-ref --short refs/remotes/<base>/HEAD`, strip
    `<base>/`, where `<base>` is the base remote — `origin` in owner mode,
    `upstream` when present in guest mode) and sync it with `<base>` first —
@@ -73,7 +76,9 @@ run ingestion first (see `/milestone-brief`).
 3. **No question round.** The agent decides the implementation choices the
    plan left open (API shape, naming, structure) and writes a work-log line
    for each. A dependency change, or an outward or irreversible action, that
-   the plan question set did not grant permission for is a stop: one chip
+   the plan question set did not grant permission for — read from the
+   milestone's `question set:` work-log lines, never from recall — is a
+   stop: one chip
    with a recommendation, and a D-entry for a dependency change.
    **The escalation offer is a stop.** If the plan tags an item `(RB
    tripwire: <token>)`, or a new tripwire emerges mid-work (same three
@@ -143,8 +148,9 @@ run ingestion first (see `/milestone-brief`).
      criterion, or extending an existing criterion's promise to a property
      or domain it did not previously bind. It narrows or holds the criteria
      set and gives the motivating finding a follow-up home (a candidate
-     ROADMAP row or a split milestone) instead. A widening reaches the
-     criteria only at a stop above, offered there as an explicitly
+     ROADMAP row or a split milestone) instead. A widening changes what the
+     user sees from the plan, so it reaches the criteria only at the stop
+     above, offered there as an explicitly
      non-recommended option, and a widening adopted at the user's selection
      records a work-log line naming each criterion widened or added. An amendment that executes a widening-test-reclassified
      return is carved out of this rule by name — D-101's inadmissibility

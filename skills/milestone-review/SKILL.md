@@ -68,8 +68,9 @@ re-enters here, at the step the record shows is next:
   3–7 executed against the merged default-branch head (check it out and
   pull; Review-section evidence and the step-6 checkpoint land by docs-only
   commit; step 5's reviewers read the merged PR's diff — `gh pr diff <N>` —
-  in place of the branch diff; fix-now code goes through `/hotfix`, never a
-  commit on the default branch), step 7's chip posed with question text
+  in place of the branch diff; fix-now code, a step-4 gate failure, and a
+  floor return go through `/hotfix`, never a commit on the default branch
+  and never a return to `/milestone-implement`), step 7's chip posed with question text
   naming acceptance of the post-hoc verification and the issue writes it
   authorizes, its recommended option accepting that verification rather
   than merging — a decline logs
@@ -175,9 +176,12 @@ re-enters here, at the step the record shows is next:
    `generic`) makes this half a clean no-op.
 
    Any criterion or gate failure → status back to `in-progress`, work-log
-   line naming exactly what failed, then invoke `/milestone-implement <id>`
-   through the Skill tool to fix it; implement hands back to review on
-   completion. This return is not a stop. The thrash rule below is the stop
+   line naming exactly what failed (`review return <n>: …`, the line
+   `/milestone-implement` step 1 turns into a task), then invoke
+   `/milestone-implement <id>` through the Skill tool to fix it; implement
+   hands back to review on completion. Under resume route (b) the branch is
+   already merged, so the failure goes through `/hotfix`, invoked through
+   the Skill tool, never to implement. This return is not a stop. The thrash rule below is the stop
    (the repeated review-failure stop of the rulebook's list).
 
    **Thrash rule.** Count returns **per milestone, never per cut** — a
@@ -205,6 +209,8 @@ re-enters here, at the step the record shows is next:
      Re-cutting around the same predicate buys the next mechanism, not a fix,
      so the remedy is to reconsider the alternative the plan gate recorded
      against — step 4 of `/milestone-plan` records it in the work log.
+     Switching to it is an amendment under `/milestone-implement` step 6,
+     with that step's stop where the switch changes what the user sees.
      Where it recorded none, offer escalation via `/milestone-brief` —
      per instance, never automatically (D-004).
 
@@ -383,7 +389,14 @@ re-enters here, at the step the record shows is next:
    9's issue writes rest on; no other issue write is made on the review path.
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary, and the chip's
-   question text names the count of findings under each disposition. With a Driving RR:
+   question text names the count of findings under each disposition.
+   Each criterion or scope amendment the work log records for this
+   milestone appears verbatim in this presentation, and the chip's question
+   text names how many there were, so no promise changed in the run
+   reaches the merge unseen. Where the run merged an earlier milestone of
+   the same plan, the chip's question text also cites that milestone's
+   archive summary path, which holds the records step 9 previewed before
+   its handoff (tracking-rules, Mandated-substance rule). With a Driving RR:
    repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
    tolerance is strict — any shortfall counts) adds an explicit chip option
    **"accept shortfall, recorded as such"** — the maintainer decides seeing
@@ -438,7 +451,9 @@ re-enters here, at the step the record shows is next:
    this chip is the only gate its merge has (tracking-rules, Git and
    approval model).
    Approval withheld (or declined at the chip) → log the requested changes
-   as tasks, status back to `in-progress`, stop. Approval appends one
+   as tasks, status back to `in-progress`, and stop with the close block,
+   its fenced next command `/milestone-implement <id>` labeled as the
+   command that works the requested changes. Approval appends one
    work-log line naming the branch it approved (`step-7 approval: <branch>
    approved for merge`) — the line the Session-start resume route reads by
    its prefix — committed on the branch before step 8's push, so the
@@ -648,10 +663,11 @@ re-enters here, at the step the record shows is next:
 10. **The next milestone of the plan, or the close block — no chip.**
     (tracking-rules "Question gates and phase closes".) After the step-9
     hygiene commit lands (guest arm: after its on-disk pass), find the plan this milestone came from: the
-    default-branch commit whose subject reads `plan M<NNN>[, M<NNN>…]: …`
+    newest default-branch commit whose subject reads `plan M<NNN>[, M<NNN>…]: …`
     and names this milestone's id (`git log --format=%s --grep='^plan '
-    <default-branch>`; `/milestone-plan` step 6 names every id of the plan
-    there). The next workable milestone of the plan is the first other id
+    <default-branch>`, newest first; `/milestone-plan` step 6 names every id
+    of the plan there). The next workable milestone of the plan is, in
+    ROADMAP order as `/milestone-plan` step 7 picks it, the first other id
     in that subject whose ROADMAP status is `planned` and whose `Depends
     on:` milestones are all `done`, with no milestone `in-progress`. If one
     exists, state in one or two sentences what shipped, then invoke

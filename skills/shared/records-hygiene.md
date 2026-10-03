@@ -39,12 +39,11 @@ entry that silently outranks a record it never mentions.
 **A candidate row already carrying deferred review findings filed from two or
 more distinct milestones (named in its provenance or weighed notes) is not
 silently extended again.** The `/milestone` health audit poses a disposition
-chip for such a row when it finds one. `/milestone-review`'s post-merge pass asks no
-question inside a run, so it never extends such a row: it files the new
-findings as a new row that cross-references it. The chip's options: promote a bounded milestone for the items that guard shipped
-behavior; route items the user accepts to `cairn/DESIGN.md` Known issues (the
-review skill's accepted-limitations block); prune the rest; extend once more
-as an explicit choice, never the default. "Extended" means gaining a new
+chip for it; `/milestone-review`'s post-merge pass files new findings as a new
+row cross-referencing it. The chip's options: promote a bounded milestone for the items that guard
+shipped behavior; route items the user accepts to `cairn/DESIGN.md` Known
+issues (the review skill's accepted-limitations block); prune the rest; extend
+once more as an explicit choice, never the default. "Extended" means gaining a new
 provenance or weighed note without a disposition; compressing the row to meet
 a byte budget never substitutes for the disposition.
 

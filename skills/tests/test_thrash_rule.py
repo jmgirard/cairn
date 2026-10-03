@@ -256,6 +256,8 @@ THRASH_FIXTURE = normalize("""\
      Re-cutting around the same predicate buys the next mechanism, not a fix,
      so the remedy is to reconsider the alternative the plan gate recorded
      against — step 4 of `/milestone-plan` records it in the work log.
+     Switching to it is an amendment under `/milestone-implement` step 6,
+     with that step's stop where the switch changes what the user sees.
      Where it recorded none, offer escalation via `/milestone-brief` —
      per instance, never automatically (D-004).
 
