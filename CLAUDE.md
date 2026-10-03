@@ -15,7 +15,8 @@ rulebook only loads once a cairn skill fires, so working in plain
 conversation silently bypasses the work tiers and the git model. Classify
 first:
 
-- **Trivial** (no runtime surface — typo, comment, tracking edit): commit to main.
+- **Trivial** (no runtime surface — typo, comment, tracking edit): commit to
+  main.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
   `/milestone-plan`. One question set follows, then the run goes on through
@@ -24,12 +25,8 @@ first:
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
   reaches main without explicit user approval at the merge question, or up
-  front in the plan question set if the plan's promise merges unchanged. Back
-  to the merge question on: a goal, scope, or criteria change, a declined merge
-  question, missing evidence, an unfixed finding, a top-ranked finding rejected
-  as false (any, if user-facing), no spawned reviewers, an IP or D-entry change,
-  a changes-requested review or open PR thread, a Fable shortfall, guest mode,
-  a companion repo, an issue write, red CI, or a push after the PR opens.
+  front in the plan question set if the plan's promise merges unchanged (the
+  rulebook's approval bullet lists what routes back).
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't

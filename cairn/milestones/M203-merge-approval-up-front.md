@@ -131,7 +131,7 @@ own questions".
       backticks, matches `up front` as a word, and reads `ref:./path` from
       `ls-tree -z`. Add tests for those cases and a zero-padded id. Fix the
       stale prose sites.
-- [ ] T10: Execute the AC5 amendment: the two routing surfaces point to the
+- [x] T10: Execute the AC5 amendment: the two routing surfaces point to the
       rulebook bullet, the template is back under the cap, and the CLAUDE.md
       Trivial reflow is reverted.
 
@@ -174,6 +174,7 @@ own questions".
 - 2026-10-03: stop at the second re-audit of AC5 (repeated review-failure stop). Amended AC5 not yet written.
 - 2026-10-03: substantive amendment: AC5 written at the user's answer as the second reader's strict narrowing. The two routing surfaces either list the cases or point to the rulebook bullet. T9 (return 2) and T10 (AC5) added, Coverage updated. The plan-owned body went to 160 lines, so the criteria section was rewrapped to 110 columns with no word changed (checked by whitespace-normalized compare) and AC5 unticked.
 - 2026-10-03: T9 done. The guard resolves the default branch locally (`<base>/HEAD`, then `main`, then `master`, no `ls-remote`), reads `ls-tree -z` and `ref:./path`, and matches the slot through `slot_is_up_front`, which drops backticks and needs `up front` as words. Its docstring and DESIGN state that a chip-form marker is not checked. Six new tests cover a backtick value, `up frontier`, a zero-padded file, a non-ASCII name, an unset remote HEAD, and a cairn root in a subdirectory. Four of them failed before the fix. In review step 7, the prefix check reads `carries` and adds `ci route-back:`. The `spawned:` line must come from the current pass and name every required lens. Any PR-conversation item routes back, and route (b) never runs the up-front check. In step 8, a late push means the PR head is not the up-front line's commit, red CI writes `ci route-back:` and goes straight to the chip, and the conversation is read again before the marker. Route (c) does not push under an up-front line. The plan question names the cases that always route back. Stale "stops at the merge question" prose is fixed in README, DESIGN, and the plan and implement skills. Verify green (hooks 193 OK), and `skills/tests` shows main's 4 reds and 1 error.
+- 2026-10-03: T10 done. The routing template and the CLAUDE.md section state the up-front approval and point to the rulebook's approval bullet for the cases. `claude_section_line_count` gives 28 for the template and 26 for CLAUDE.md, both under the 30 cap, and the Trivial reflow is reverted. Verify green.
 
 ## Decisions
 

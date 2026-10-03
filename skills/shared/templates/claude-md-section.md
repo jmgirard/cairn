@@ -18,12 +18,7 @@ git model. Classify first:
 - **Never implement code on the default branch** outside a milestone/hotfix
   branch; nothing reaches it without the user's explicit approval at the
   merge question, or up front in the plan question set if the plan's promise
-  merges unchanged. Back to the merge question on: a goal, scope, or criteria
-  change, a declined merge question, missing evidence, an unfixed finding, a
-  top-ranked finding rejected as false (any, if user-facing), no spawned
-  reviewers, an IP or D-entry change, a changes-requested review or open PR
-  thread, a Fable shortfall, guest mode, a companion repo, an issue write, red
-  CI, or a push after the PR opens.
+  merges unchanged (the rulebook's approval bullet lists what routes back).
 
 Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct
