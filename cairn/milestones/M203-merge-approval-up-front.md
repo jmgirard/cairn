@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -177,6 +177,8 @@ own questions".
 - 2026-10-03: T10 done. The routing template and the CLAUDE.md section state the up-front approval and point to the rulebook's approval bullet for the cases. `claude_section_line_count` gives 28 for the template and 26 for CLAUDE.md, both under the 30 cap, and the Trivial reflow is reverted. Verify green.
 - claim audit: 42 claims read, 7 corrected — skills/shared/tracking-rules.md, skills/milestone-review/SKILL.md, README.md, CHANGELOG.md, CLAUDE.md, skills/shared/templates/claude-md-section.md
 - 2026-10-03: the T9/T10 claim audit (`5314538..HEAD`) found one behavior bug and six wording gaps. The bug: route (c) appended an unpushed second approval line, so a resumed up-front run always read a late push. Fixed: route (c) appends none. Step 8 writes `step-8 route-back:` for red CI, a late push, or a conversation item, and step 7 reads it. The rulebook bullet lists the T9 cases and the late-push definition. The README and CHANGELOG name the read's items. The same reader confirmed all seven. Verify green, and `skills/tests` shows main's 4 reds and 1 error.
+- review return 3: two pass-3 findings fail what the up-front path does. Step 8's up-front arm keys on any up-front line, so a chip approval after a route-back loops (diff-bug #1, AC3). A default branch that moves before a resume is not logged, so a later resume can merge an unverified tree unattended (diff-bug #3).
+- 2026-10-03: stop at the thrash rule. Trigger (a): this is the third defect return. Trigger (b): AC3 has failed in three passes by three mechanisms (the end-of-run list at a stop, the red-CI re-entry, the approval-line keying and the moved default branch).
 
 ## Decisions
 
@@ -230,3 +232,23 @@ own questions".
 - Pass 3 AC4 evidence: `python3 -m unittest discover -s hooks/tests -k UpFront` runs 19 tests, all OK. That covers each allow and deny case AC4 names, plus a backtick value, `up frontier`, a zero-padded file, a non-ASCII name, an unset remote HEAD, and a subdirectory cairn root. The docstring and missing-marker deny name both gates, and a slot deny names the value read, or why none, and its ref and path. Pass.
 - Pass 3 AC5 evidence (amended AC5): the rulebook's approval bullet (`skills/shared/tracking-rules.md:240-250`), README "Merges are yours" (line 424), and the CHANGELOG Unreleased entry (line 91) state the up-front approval and list the cases. `skills/shared/templates/claude-md-section.md:20-21` and `CLAUDE.md:27-29` state the up-front approval and point to "the rulebook's approval bullet". Section lengths are 28 and 26 lines. Verify: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 193 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
 - Pass 3 consistency gate: `cairn_validate` all checks passed. `cairn/DESIGN.md`'s `merge_guard` line names the slot read and its limit. Pass.
+- spawned: diff-bug (Opus), blame-history (Sonnet), prior-review (Sonnet) — pass 3
+- diff-bug #1: step 8's up-front arm keys on any up-front line, not the newest approval line, so a chip approval after a route-back loops on a late push, and step 7 and step 10 list a chip merge as "merged up front". — fix now (floor: AC3 "In every other case it asks the merge question as before" fails as executed)
+- diff-bug #2: the `spawned:` line carries no pass id, so the "this pass" check cannot be read on resume route (c). — fix now
+- diff-bug #3: a moved default branch on resume (c) writes no work-log line, so the next resume can merge unattended without step 3 re-run. — fix now (floor: an unattended merge of an unverified tree)
+- diff-bug #4: "no fix-now finding left unfixed" has no writer, because the line shape never records the fix. — fix now
+- diff-bug #5: lens names have no fixed slug (`prior-review` against "Prior-PR-comments reviewer"). — fix now
+- diff-bug #6: the skill's `git show` paths are git-root-relative, so a subdirectory cairn root fails the slot read. — fix now
+- diff-bug #7: step 7 cites step 10's plan-commit recipe, which prints subjects only, not the sha. — fix now
+- diff-bug #8: any bot comment routes an up-front run back. — fix now (state it in the plan question)
+- diff-bug #9: README and CHANGELOG omit the moved-default-branch case. — fix now
+- diff-bug #10: a stale `<base>/HEAD` target denies without trying main or master. — follow-up (safe direction; row "Up-front merge approval follow-ons")
+- diff-bug #11: the 2026-10-03 "substantive amendment of AC1 to AC4" line lacks the colon. — reject (false as a defect: the line is history under IP4, and the plan-commit diff check catches the change it records)
+- blame-history #1: the read after green CI on a fresh PR reverses a path D-138 rejected, and D-145 does not narrow that clause. — fix now (a D-entry)
+- blame-history #2: routing back on every comment, bots included, widens M177's grading beyond D-145's list. — fix now (record it with blame-history #1)
+- blame-history #3: the main/master fallback guesses the default branch against the canonical recipe. — fix now
+- blame-history #4: the `-S'approved up front'` pickaxe can pick a later commit that quotes the phrase. — fix now (key on the full `step-7 approval: <branch> approved up front` text)
+- blame-history #5: README and CHANGELOG omit the `spawned:` and moved-default cases. — fix now (as diff-bug #9)
+- blame-history #6: implement step 6 still says the line "opens" the prefix. — fix now
+- blame-history #7: the template's header still says "~25 lines" at 28. — fix now
+- prior-review #1: README and CHANGELOG omit the moved-default case (M112). — fix now (as diff-bug #9)
