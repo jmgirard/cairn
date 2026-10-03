@@ -84,10 +84,13 @@ rule stay as they are. Only who settles their findings changes.
       user sees from the plan, the step stops for the user instead.
 - [ ] AC5: `skills/milestone-review/SKILL.md` poses `AskUserQuestion` only
       at the merge question and at the stops in AC1. Its step-7 sentence on
-      clarifying questions is gone. Review fixes on the branch each finding
-      that the reviewers rank as real and inside the milestone scope. It
-      sends the other findings to candidate rows. Items from a PR
-      conversation get the same dispositions from the agent. The merge
+      clarifying questions is gone. Review rejects, with the reason in the
+      Review section, a finding that it shows to be false against the code,
+      a style or linter item, or a complaint about a change the plan called
+      for. It fixes on the branch each other finding that it judges real and
+      inside the milestone scope, and it sends the rest to candidate rows.
+      Items from a PR conversation get the same dispositions from the agent,
+      and an item that requests nothing is logged as noted. The merge
       question lists the disposition of each finding in plain words. If the
       same plan created another workable milestone, review invokes
       `/milestone-implement` for it after the merge. Otherwise it ends with
@@ -124,7 +127,7 @@ rule stay as they are. Only who settles their findings changes.
       gates, the stop list, the early-stop clause for a run, and the
       close-block paragraph. Adjust "Context hygiene" (lines 341-349) for a
       run that crosses phase seams in one session.
-- [ ] T2: `skills/milestone-plan/SKILL.md`: the step-3 rule for the
+- [x] T2: `skills/milestone-plan/SKILL.md`: the step-3 rule for the
       questions of the set, criteria-audit findings settled by the agent,
       and step 7 with the Skill-tool handoff. The plan commit subject names
       the IDs of the run, so review can find the next one.
@@ -154,7 +157,10 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: implement started on branch m202-one-question-set-run. Untracked `tsconfig.json` on main left out of every commit.
 - 2026-10-03: implement question gate chose to amend AC5 so that review rejects a finding it shows false against the code, with the reason in the Review section, over a candidate row for every unfixed finding (ROADMAP at 51 of 60 lines).
 - re-audit: AC5 (full) — reviewers give no real-or-not verdict, so "the reviewers rank as real" points at nothing; the exception misses a real-ranked finding shown false; PR items that request nothing lose "noted"; style, linter, and planned-change items would fill the ROADMAP; D-110's triage clause is not in AC6's list (the D-entry will name it); the second amendment return stop is not in AC1's list (T1 folds it into the repeated review-failure stop).
+- 2026-10-03: AC5 amended at a second mini gate (user chose the revised wording): review rejects false, style or linter, and planned-change findings with a reason, judges real itself, and logs PR items that request nothing as noted.
+- re-audit: AC5 (full) — wording can be met; the step-9 records-hygiene chip and the step-10 release-parking chip fall outside "only" (T4 retires both, the D-entry annotates D-050); D-110 to be named by the D-entry. No further reader for AC5.
 - 2026-10-03: T1 done. The rulebook names two gates, the closed stop list, a run-scoped early-stop clause, and a close block that ends the run; Context hygiene covers a run across seams; dependency changes go to the question set or a stop. Verify green (scripts 0 fail, hooks 0 fail, validate passed, plugin test 632 pass).
+- 2026-10-03: T2 done. Plan step 3 names the four kinds of question and what the agent decides; audit findings, collisions, inbox hits, and the checker-regress shape are settled by the agent with a work-log line; step 7 hands off to `/milestone-implement` through the Skill tool, with a close block when another milestone is in progress, a plan alone was asked, or nothing is workable. Verify green.
 
 ## Decisions
 
