@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -29,7 +29,7 @@ own questions".
 
 ## Acceptance criteria
 
-- [ ] AC1: IP1 in `cairn/DESIGN.md` keeps its sentence that nothing
+- [x] AC1: IP1 in `cairn/DESIGN.md` keeps its sentence that nothing
       reaches the default branch without explicit user approval at a gate.
       It adds the two gates for a milestone merge. One is the merge
       question. The other is the plan question set, for a milestone whose
@@ -41,7 +41,7 @@ own questions".
       mechanism that keeps the promise unchanged, and states that removing
       or narrowing a route-back case changes IP1. It narrows D-138 and
       D-144 and annotates D-043 by name.
-- [ ] AC2: The milestone template carries a `Merge approval:` header slot.
+- [x] AC2: The milestone template carries a `Merge approval:` header slot.
       Step 3 of `skills/milestone-plan/SKILL.md` lists merge approval among
       the questions of the set, with one answer for each milestone. When a
       plan creates several, the user can hold any of them `at the end`. The
@@ -85,7 +85,7 @@ own questions".
       merge question that ends the run lists each milestone merged up
       front in the run. For each, it gives the PR and each finding verbatim
       with its disposition and the reason for each reject.
-- [ ] AC4: The deny text and the docstring of `hooks/merge_guard.py` name
+- [x] AC4: The deny text and the docstring of `hooks/merge_guard.py` name
       both points of approval. For a marker that carries `up front`, the
       guard reads the milestone file at the local remote-tracking ref of
       the default branch of the base remote. If the file, the ref, or the
@@ -170,6 +170,7 @@ own questions".
 - 2026-10-03: T6 done. Verify green: scripts 395 OK (21 skipped), hooks 187 OK, plugin validate passes with warnings, plugin test 632 pass, `cairn_validate` all checks passed. The hand-run `skills/tests` showed two new reds in `test_section_allow_lists`, fixed by adding Merge approval to the rulebook's section-ownership table. It now has the 4 reds and 1 error that main has.
 - claim audit: 42 claims read, 5 corrected — skills/shared/tracking-rules.md, README.md, CHANGELOG.md, hooks/tests/test_hooks.py
 - 2026-10-03: claim audit re-read by the same reader: all 5 corrected claims now match. Its one edge note (a deny with no default branch names the base remote, not a ref) is folded into the test docstring.
+- review return 1: AC3 fails because a run that merged a milestone up front and then ends at a stop (an implement stop, a review CI timeout, a thrash stop) ends with a close block that carries no end-of-run list of that merge's findings. AC5 fails because the routing template and the CLAUDE.md section name the cases only as "any route-back case". The gate fails because `cairn/DESIGN.md:61-63`, the `merge_guard` line, does not name the default-branch slot read.
 
 ## Decisions
 
@@ -180,3 +181,10 @@ own questions".
 - 2026-10-03 (RR15 Q5): RR15 recommends the IP1 wording "Nothing reaches the default branch without the user's explicit approval at a gate of the run: at the merge question, or in the plan question set for a milestone whose promise, as that plan committed it, then merges unchanged and with every check of the run passed." It rejects a D-entry alone with IP1 unchanged. It does not recommend dropping the up-front path, but only if recommendations 1 to 5 ship with M203.
 
 ## Review
+
+- AC1 evidence (2026-10-03): `cairn/DESIGN.md:199-203` IP1 keeps "Nothing reaches the default branch without explicit user approval at a gate" and adds the merge question and the plan question set for a milestone whose promise merges unchanged and meets no route-back case. D-145 (DECISIONS.md) records the user decision at the 2026-10-03 gate, states the approval "comes before the diff exists", calls the route-back cases "the mechanism that keeps that promise unchanged", says removing or narrowing a case changes IP1, narrows D-138 and D-144, and annotates D-043, each found by grep. Pass.
+- AC2 evidence (2026-10-03): `skills/shared/templates/milestone.md:14` carries `- **Merge approval:** at the end`. `skills/milestone-plan/SKILL.md` step 3 lists merge approval with one answer per milestone, lets the user hold any `at the end`, says a run with no route-back case merges with no further question and its code and dispositions are seen only after the merge, and recommends `at the end` for a user-facing or IP-touching milestone. Step 4 (line 328) writes `up front YYYY-MM-DD` or `at the end`, writes `at the end` when the set did not pose the question, and asks again on a re-cut. Review step 7 (line 389) reads `—` or a missing slot as `at the end`. The guard treats both the same as `at the end`: `test_denies_slot_dash`, `test_denies_missing_slot`, and `test_denies_slot_at_the_end` pass. Pass.
+- AC3 evidence (2026-10-03): `skills/milestone-review/SKILL.md` step 7 (lines 386-415) carries each route-back check of AC3: it reads the default-branch slot, compares Goal, Scope, and criteria with the plan commit's apart from ticks, checks the `substantive amendment:`/`amendment return:`/`step-7 decline:` prefixes and the evidence lines, finds no unfixed fix-now and no `#1` or user-facing reject as false, and reads the `spawned:` line, the IP slot, the `### D-` diff, and the step-7 adders. It commits `step-7 approval: <branch> approved up front per plan <sha>` before step 8's push. The step-8 up-front arm (lines 574-585) writes `M<NNN> approved up front YYYY-MM-DD per plan <sha> for PR #<N>` only after green CI or the no-checks case with no push after the PR opened, and sends red CI to the merge question. Steps 7 (line 441-447) and 10 (line 749) carry the end-of-run list. FAIL on one clause: "The close block or merge question that ends the run lists each milestone merged up front in the run". A run that merged a milestone up front and then ends at a stop ends with a close block that carries no such list: an implement stop, a review CI timeout, or a thrash stop of a later milestone. Only step 10's close and step 7's merge question carry it.
+- AC4 evidence (2026-10-03): `hooks/merge_guard.py:3-6` (docstring) and its missing-marker deny (line 149) name the merge question and the plan question set. The up-front branch reads the slot through `cairn_common.default_branch_merge_slot` at `refs/remotes/<base>/<default>`, denies on an unread ref, file, or slot or a value other than `up front`, and names the value read (or why none) and its source. `python3 -m unittest discover -s hooks/tests -k UpFront`: 13 tests OK. They cover the allow case, a denial for another PR, `at the end`, `—`, a missing slot, working-tree-only, local-default-branch-only, no remote-tracking ref, an absent file, and another milestone's slot, plus the legacy marker. During T4, three planted defects each turned their target test red. Pass.
+- AC5 evidence (2026-10-03): the approval bullet of `skills/shared/tracking-rules.md` and "Merges are yours" in `README.md` state the up-front approval and list the route-back cases, and the `CHANGELOG.md` Unreleased entry does too. Verify, as in M202 AC7: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 187 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. FAIL on two surfaces: `skills/shared/templates/claude-md-section.md` and the cairn section of `CLAUDE.md` state the up-front approval but name the cases only as "any route-back case". They do not state the cases.
+- Consistency gate (2026-10-03): `cairn_validate` all checks passed (exit 0). IP1 changed, so `cairn_impact.py IP1` ran and listed 34 references. The DECISIONS, archive, and M203 references are history or this milestone. One live reference is unreconciled: `cairn/DESIGN.md:61-63` describes `merge_guard` as bound to the PR it approves and does not name the default-branch slot read for an up-front marker. The `generic` profile names no toolchain checks.
