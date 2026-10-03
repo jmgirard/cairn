@@ -70,6 +70,7 @@ export const register: Register = on => {
   on('turn.complete', async ($, e, next) => {
     const result = await next(e)
     await refresh($)
+    await debug($, `turn.complete reason=${String((e as { reason?: unknown }).reason)}`)
     return result
   })
 
@@ -82,15 +83,19 @@ export const register: Register = on => {
   // so its step ends at that Stop.
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
-    // TEMPORARY (M201 T4 live look): removed before review.
-    $.ui.log(
-      `cairn band debug: Stop agent=${e.agent_id ?? 'main'} tasks=${e.background_tasks === undefined ? 'absent' : e.background_tasks.map(t => `${t.type}:${t.status}`).join(',') || 'empty'} block=${result.block === undefined ? 'no' : 'yes'}`,
-    )
-    if (e.agent_id !== undefined || result.block !== undefined) return result
+    const tasks =
+      e.background_tasks === undefined
+        ? 'absent'
+        : e.background_tasks.map(t => `${t.type}:${t.status}`).join(',') || 'empty'
+    if (e.agent_id !== undefined || result.block !== undefined) {
+      await debug($, `Stop agent=${e.agent_id ?? 'main'} tasks=${tasks} block=${result.block === undefined ? 'no' : 'yes'}`)
+      return result
+    }
     if ((e.background_tasks ?? []).length === 0) {
       await update($, step, () => null)
       await refresh($)
     }
+    await debug($, `Stop agent=main tasks=${tasks} block=no`)
     return result
   })
 
@@ -103,13 +108,14 @@ export const register: Register = on => {
   // hook beneath blocks or drops has already ended the step.
   on('prompt.submit', async ($, e, next) => {
     const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
-    // TEMPORARY (M201 T4 live look): removed before review.
-    $.ui.log(`cairn band debug: prompt origin=${e.origin.kind} turnId=${e.turnId ?? 'none'}`)
     if (typed && e.turnId === undefined) {
       await update($, step, () => null)
       await refresh($)
     }
-    return next(e)
+    await debug($, `prompt origin=${e.origin.kind} turnId=${e.turnId ?? 'none'}`)
+    const result = await next(e)
+    await debug($, `prompt done origin=${e.origin.kind}`)
+    return result
   })
 
   // A cairn skill's prompt starts its step with no chapter, the same skill
@@ -122,6 +128,7 @@ export const register: Register = on => {
       await update($, step, () => ({ skill, chapter: null }))
       await refresh($)
     }
+    await debug($, `skill.prompt skill=${e.skill}`)
     return result
   })
 
@@ -246,6 +253,28 @@ async function dismiss($) {
 async function reconcile($) {
   const now = mark(await read($, band), await read($, step))
   await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
+}
+
+// TEMPORARY (M201 T4 live look): removed before review. Appends one line,
+// with the step the band then draws, to a file outside git's view, and to the
+// transcript.
+const DEBUG_FILE = '/Users/jmgirard/github/cairn/.m201-band-debug.log'
+async function debug($, line: string) {
+  const current = await read($, step)
+  const label = current === null ? 'none' : `${current.skill}${current.chapter === null ? '' : ` / ${current.chapter}`}`
+  const text = `${new Date().toISOString()} ${line} -> step=${label}`
+  $.ui.log(`cairn band debug: ${text}`)
+  try {
+    let prior = ''
+    try {
+      prior = await $.fs.read(DEBUG_FILE)
+    } catch {
+      prior = ''
+    }
+    await $.fs.write(DEBUG_FILE, `${prior}${text}\n`)
+  } catch (error) {
+    $.ui.log(`cairn band debug: write failed: ${String(error)}`)
+  }
 }
 
 // A span's style props, leaving out the ones it does not set.
