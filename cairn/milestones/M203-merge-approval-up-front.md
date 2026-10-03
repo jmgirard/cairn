@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -191,6 +191,8 @@ own questions".
 - 2026-10-03: T12 done. D-146 records the one-pass rule, the rulebook's single route-back list, the bot rule, the D-138 narrowing, and the guard's `<base>/HEAD`-only read. Review step 7's check now runs only in a first-pass invocation, and step 8's arm is entered by control flow. Route (c)'s up-front branch, `step-8 route-back:`, the late-push detector, and "this pass" are gone. Step 1 runs `git remote set-head <base> -a`. The pass-3 one-line fixes are in: `fixed <sha>` suffix, lens slugs, cairn-root `git show` paths, a `%H` plan recipe, "carries" in implement, and the template header. README and CHANGELOG keep their case lists because AC5 requires them, synced to the narrowed list, which departs from RR16 rec 4. The plan question points to the rulebook list. The guard denies an unset remote HEAD, and its test was flipped (red before the change). Verify green (hooks 193 OK), and `skills/tests` shows main's 4 reds and 1 error.
 - claim audit: 55 claims read, 4 corrected — skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, README.md, CHANGELOG.md
 - 2026-10-03: T12 claim-audit fixes. The end-of-run lists include `conversation:` lines, and the thread query selects author `__typename`. The rulebook reads "a `Resolves:` slot other than `—`". A bot item disposed fix-now is fixed as red CI is and then asks, which keeps D-146's "never routes back" true of the item's presence. The same reader confirmed all four. One edit broke a pinned prose-guard phrase, and the restore followed the M148 lesson: the pinned sentence is kept and a new sentence added. Verify green, and `skills/tests` shows main's 4 reds and 1 error.
+- review return 4: two pass-4 findings fail AC3's one-pass path. A failed merge retried after a push can merge an unreviewed tree unattended (diff-bug #1). A chip approval re-enters the up-front arm and loops (diff-bug #4).
+- 2026-10-03: stop at the thrash rule (fourth defect return, AC3 failing a fourth time). D-146's falsifier and the user's T11 answer name removal of the up-front path for this case, with no further brief.
 
 ## Decisions
 
@@ -275,3 +277,22 @@ own questions".
 - Pass 4 AC4 evidence: `python3 -m unittest discover -s hooks/tests -k UpFront` runs 19 tests, all OK. They include each case AC4 names, with `test_denies_without_remote_tracking_ref` and `test_denies_when_remote_head_is_unset` for an unreadable ref, and `test_legacy_marker_reads_no_slot`. Pass.
 - Pass 4 AC5 evidence: the rulebook approval bullet (the one list), README "Merges are yours", and the CHANGELOG entry state the up-front approval and the narrowed cases. The routing template and CLAUDE.md point to the rulebook bullet. Verify: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 193 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
 - Pass 4 AC1 note: IP1 now cites D-145 and D-146, and the AC1 clauses recorded in pass 1 stand. Consistency gate: `cairn_validate` all checks passed (one sizing advisory, 12 tasks). Pass.
+- spawned: diff-bug (Opus), blame-history (Sonnet), prior-review (Sonnet) — pass 4
+- diff-bug #1: step 8's "if a merge fails and is retried, rewrite the marker" applies on the up-front arm, so a failed merge, a default-branch merge-in, and a push can merge an unreviewed tree with no question, and D-146's "the only push after the PR opens is a red-CI fix" is false. — fix now (floor: an unattended merge of an unreviewed tree, AC3)
+- diff-bug #2: bot `conversation:` lines written after CI have no stated path into the squash, so the end-of-run list read at the merge commit misses them. — fix now
+- diff-bug #3: "merged up front" is still keyed on the presence of the up-front line, so a chip merge after a route-back is listed as up front (pass-3 diff-bug #1, second half). — fix now
+- diff-bug #4: the arm's entry condition stays true after the arm posed the chip, so a chip approval re-enters the arm and re-poses the chip without end. — fix now (floor: the run never finishes, AC3)
+- diff-bug #5: the first-pass fact is observable only at session start, and nothing records it. — fix now
+- diff-bug #6: a `review return` written before any Review line leaves the next invocation a first pass, against "any return asks" on four surfaces. — fix now
+- diff-bug #7: the rulebook says "pass" where step 8 says "invocation". — fix now
+- diff-bug #8: the rulebook's close-block list omits `conversation:` lines. — fix now
+- diff-bug #9: README and CHANGELOG do not say a partial reviewer set routes back. — fix now
+- diff-bug #10: "an empty Review section" is undefined against the template comment. — fix now
+- diff-bug #11: up to five 10-second git calls inside the 15-second hook timeout. — follow-up (row "Up-front merge approval follow-ons")
+- blame-history #1: same as diff-bug #3. — fix now (as diff-bug #3)
+- blame-history #2: a failed `set-head` in step 1 has no route, and an unset ref is first seen at the guard after the marker. — fix now
+- blame-history #3: the bot test is worded three ways (`__typename`, `type`, `user.type`). — fix now
+- blame-history #4: same as diff-bug #8. — fix now (as diff-bug #8)
+- blame-history #5: the `step-7 decline:` prefix and its "so a later pass asks again" sentence are redundant under the one-pass rule. — fix now
+- blame-history #6: the plan-commit recipe leaves the id match to the reader and reads the local default branch. — fix now
+- prior-review #1: the plan question does not say bot items are listed after the merge and do not stop it. — fix now
