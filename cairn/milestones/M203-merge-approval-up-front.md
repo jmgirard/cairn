@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -99,6 +99,7 @@ own questions".
 - 2026-10-03: plan gate chose one approval for each plan over a standing approval and over the end question, at the user's answer. Falsified by an up-front merge that the user reverts.
 - 2026-10-03: implement started on branch m203-merge-approval-up-front, in the run after M202 merged. Untracked `tsconfig.json` left unstaged.
 - 2026-10-03: T1 escalation offer (ip-touching): the user chose to escalate the IP1 change via `/milestone-brief` before T1 starts.
+- 2026-10-03: blocked on RB15. The brief is committed on this branch, not on main, because the milestone's state already lives on the branch, and a main commit would conflict with it.
 
 ## Decisions
 
