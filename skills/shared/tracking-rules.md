@@ -373,8 +373,9 @@ go. **The orchestrator immediately invokes the target skill via the Skill tool**
 **Stops between the gates (a closed list).** Between the two gates a run stops for the user only at one of these. A
 stop whose choice is the user's is posed as a chip; any other stop ends with the close block.
 
-- the user's eyes or hands are needed (a live look, a file, a login, a deployment), or an external blocker that the
-  status `blocked` names,
+- the user's eyes or hands are needed (a live look, a file, a login, a deployment, or the user's request in so many
+  words for a freshness-mandated reader the harness will not spawn, per the freshness-spawns clause), or an external
+  blocker that the status `blocked` names,
 - an outward or irreversible action, or a dependency change, that the question set did not cover,
 - the goal is found wrong, or a change drops something the user asked for (an amendment that changes what the user
   sees from the plan included),
@@ -408,7 +409,8 @@ satisfies it, and it is what disposes of the status line's check results. It is 
 (`/milestone-implement`'s stop close, and the three timeout stops: `/milestone-review` step 8, `/hotfix` step 6,
 `/cairn-release` step 3), every other such close inheriting it by citation. Then the next command or commands in fenced
 blocks, primary first, each with a one-line plain-language label; at a stop inside a run the primary is the typed
-command that resumes it (`/milestone-implement <id>` or `/milestone-review <id>`). Last, one line noting that adjusting
+command that resumes it (`/milestone-implement <id>` or `/milestone-review <id>`), unless the stop's step names
+another (the goal-wrong stop's `/milestone-plan`, the guest handoff's `/milestone`). Last, one line noting that adjusting
 course or `/clear` are both safe at this point. No chip is posed to route to the next skill: the user runs the fenced
 command, and the block's fixed shape is itself the signal that a boundary was reached. Decision chips, the merge
 question and the stops above among them, are unaffected: a gate is a choice, and a close is a handoff. Outside a run,

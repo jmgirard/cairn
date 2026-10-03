@@ -311,8 +311,8 @@ re-enters here, at the step the record shows is next:
    section, surfaced, never silently dropped (IP3), and the merge question
    lists each disposition in plain words (step 7). **The actioned list is
    the findings settled fix-now or follow-up.** Fix-now work is committed
-   on the branch after step 6's checkpoint and before step 8's push and
-   approval marker (the M105 squash lesson: the push carries it), with the
+   on the branch after step 6's checkpoint and before step 7's merge
+   question is posed, so step 8's push carries it (the M105 squash lesson), with the
    verify slot re-run; a floor-qualifying finding returns status itself,
    as the return floor below states.
 
@@ -596,7 +596,7 @@ re-enters here, at the step the record shows is next:
    extend a candidate row already carrying deferred review findings filed
    from two or more distinct milestones, it files this milestone's deferred
    findings as a new row that cross-references that row instead, and names
-   the row in the close block. The disposition chip of
+   the row in step 10's handoff sentence or close block. The disposition chip of
    `skills/shared/records-hygiene.md` §7 belongs to the `/milestone` health
    audit, which the user runs; review poses no question here. A whole-list
    sweep is `/cairn-triage`, run by the user on demand, never from this
@@ -647,7 +647,7 @@ re-enters here, at the step the record shows is next:
 
 10. **The next milestone of the plan, or the close block — no chip.**
     (tracking-rules "Question gates and phase closes".) After the step-9
-    hygiene commit lands, find the plan this milestone came from: the
+    hygiene commit lands (guest arm: after its on-disk pass), find the plan this milestone came from: the
     default-branch commit whose subject reads `plan M<NNN>[, M<NNN>…]: …`
     and names this milestone's id (`git log --format=%s --grep='^plan '
     <default-branch>`; `/milestone-plan` step 6 names every id of the plan
@@ -656,9 +656,10 @@ re-enters here, at the step the record shows is next:
     on:` milestones are all `done`, with no milestone `in-progress`. If one
     exists, state in one or two sentences what shipped, then invoke
     `/milestone-implement <next-id>` through the Skill tool: the run goes on
-    with no new question set. Guest mode never reaches this step with a
-    merge, and a release-window advisory from step 9 (below) or any stop
-    ends the run instead.
+    with no new question set. In guest mode steps 9–10 run later, after the
+    maintainers merge (step 8's guest arm); that is not a run, so step 10
+    takes the close block. A release-window advisory from step 9 (see the
+    displacement clause below) or any stop also ends the run.
     **Otherwise the close block ends the run.** M<NNN> is archived and all
     state is on disk, so the natural next step is a fresh context: run
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the

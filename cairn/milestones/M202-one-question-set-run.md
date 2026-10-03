@@ -1,6 +1,6 @@
 # M202: One question set, then the agent runs the milestone to the merge question
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -144,7 +144,7 @@ rule stay as they are. Only who settles their findings changes.
       retired wording: `test_gate_wording.py:93`,
       `test_chapter_marker_mandate.py:41-43`, `test_stakes_tier.py:83`,
       `test_gate_conclusion_preview.py:6-7`.
-- [ ] T7: Run the verify slot and `cairn_validate`.
+- [x] T7: Run the verify slot and `cairn_validate`.
 
 ## Work log
 
@@ -165,6 +165,8 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T4 done. Review settles each finding (reject with reason, fix now, follow-up) and each PR item (plus noted); gate and floor failures return to implement through the Skill tool; the clarifying-questions sentence is gone; the merge question lists dispositions; step 9 files a new cross-referencing row in place of the records-hygiene §7 chip (§7 now names `/milestone` alone); step 10 hands off to the next workable milestone of the plan, read from the plan commit subject, and moves release parking to `/milestone` in the close block.
 - 2026-10-03: T5 done. README (core loop, worked example, session paragraph, skill table, "What the system expects from you", inbox and issue lines), CHANGELOG entry, DESIGN architecture and trigger convention, routing template, and this repo's CLAUDE.md describe the run; D-144 records it (supersedes the three-gate clause, D-124's per-phase handoff, D-067's arguable-finding question, D-110's maintainer triage; annotates D-003, D-022, D-050). AC1 grep outside `skills/tests` prints nothing. The CHANGELOG claim on repair was read against `/cairn-init` §3 (repair never rewrites authored content) and narrowed. README line 161's band example keeps the chapter "Question gate", which the band tests use as a fixture.
 - 2026-10-03: T6 done, delegated to one Opus agent and its diff read here. The branch had added 39 failures and 28 errors in `skills/tests`; 11 files re-anchored or rewritten to the new rules, none deleted, 21 mutation-harness entries repointed, 2 tests added. The agent found `/hotfix` step 6 still citing review's four triage options, so hotfix now names them itself (hotfix keeps its questions) and its test follows. skills/tests 663, the same 4 reds and 1 error as main.
+- claim audit: 41 claims read, 7 corrected — tracking-rules.md (refused fresh-reader stop folded into stop item 1; resume-command exception for the goal-wrong and guest stops), milestone-review/SKILL.md (guest arm reaches step 10 later; fix-now deadline is before the merge question; deferred row named in the handoff or close block; "displacement clause below"), records-hygiene.md (§7 chip posed when the audit finds such a row). Each correction re-read once by the same reader and holds.
+- 2026-10-03: T7 done. Verify green: scripts 0 fail, hooks 0 fail, plugin validate passed, plugin test 632 pass 0 fail; cairn_validate all checks passed. Status set to review.
 
 ## Decisions
 
