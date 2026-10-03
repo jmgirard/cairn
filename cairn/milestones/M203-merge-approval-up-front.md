@@ -181,6 +181,9 @@ own questions".
 - 2026-10-03: the T8 claim audit (commit f1c43f8 only) found both route-back lists missing the open-PR-thread case. Fixed, and the same reader confirmed both now match.
 - review return 2: two review findings fail what the up-front path does. The step-8 red-CI fix re-enters step 7's up-front check and can merge with no question, against AC3 (diff-bug #1). The guard's slot read can run past the hook's 15-second timeout through `git ls-remote` and leave the merge unguarded (blame-history #5). The other fix-now findings of pass 2 are in the Review section, marked "fix now".
 - amendment return: AC5 — "Three surfaces state the up-front approval and the cases that go back to the merge question: the approval bullet of the git model in `skills/shared/tracking-rules.md`, "Merges are yours" in `README.md`, and a `CHANGELOG.md` entry. `skills/shared/templates/claude-md-section.md` and the cairn section of `CLAUDE.md` state the up-front approval and point to the rulebook's approval bullet for the cases, each within the 30-line section cap. The verify slot passes as in AC7 of M202."
+- re-audit: AC5 (full) — "within the 30-line section cap" is ambiguous at 30 against the strict `< 30` cap, and it binds the template's line count, a property the old AC5 did not bind (a widening under D-118); fixed by dropping the cap clause, since `cairn_validate` already enforces the CLAUDE.md cap.
+- re-audit: AC5 (full) — requiring a pointer on the two routing surfaces binds a property the old AC5 did not, so it is a substitution, not a pure narrowing (D-118); proposed "state the up-front approval and either list the cases or point to the rulebook's approval bullet for them".
+- 2026-10-03: stop at the second re-audit of AC5 (repeated review-failure stop). Amended AC5 not yet written.
 
 ## Decisions
 
