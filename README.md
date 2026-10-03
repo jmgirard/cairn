@@ -433,8 +433,8 @@ profile.
     false on a user-facing milestone,
   - the review ran without its separate reviewers,
   - the milestone touches an inviolable principle or adds a decision entry,
-  - the PR has any review, review thread, or comment, a Fable target fell
-    short,
+  - the PR has a comment, an unresolved thread, or a review that comments
+    or asks for changes, a Fable target fell short,
     the repo is a guest one, a companion repo is involved, or the merge
     would write to GitHub issues,
   - CI fails, or a commit is pushed after the PR opens.

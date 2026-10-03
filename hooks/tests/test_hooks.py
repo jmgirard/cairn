@@ -1696,8 +1696,8 @@ class TestMergeGuardUpFront(RepoFixture):
         self.assertEqual(self.merge().stdout.strip(), "")
 
     def test_reads_main_when_remote_head_is_unset(self):
-        # No refs/remotes/origin/HEAD: the guard falls back to a local
-        # origin/main ref and never asks the network (M203 review).
+        # No refs/remotes/origin/HEAD: the guard falls back to the local
+        # origin/main ref (M203 review).
         self.milestone(203, "up front 2026-10-03")
         self.commit_and_push()
         self.git("remote", "set-head", "origin", "--delete")

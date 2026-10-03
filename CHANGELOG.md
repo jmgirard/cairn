@@ -105,12 +105,13 @@
   a top-ranked finding rejected as false (on a user-facing milestone, any
   finding rejected as false), a review without its reviewers, a principle
   or decision-log change, the existing reasons that add to the merge
-  question, any review, thread, or comment on the PR, and red CI or a push
-  after the PR opens. Review writes the approval marker only after CI is
+  question, a comment, an unresolved thread, or a commenting or
+  changes-requested review on the PR, and red CI or a push after the PR
+  opens. Review writes the approval marker only after CI is
   green, or the PR reports no checks and the profile allows a merge on
   local green. It also needs the PR head to be the commit that added the
-  up-front approval line, and a second read of the PR conversation to find
-  nothing. The merge guard then reads the milestone's `Merge approval:`
+  up-front approval line, and a read of the PR conversation just before the
+  marker to find nothing. The merge guard then reads the milestone's `Merge approval:`
   line from the base remote's default branch, as last fetched, with no
   network call. It denies the merge unless that line reads `up front`, and
   the deny text names the value it read and where. Only a marker that says

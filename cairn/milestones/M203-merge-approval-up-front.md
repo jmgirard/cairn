@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -175,6 +175,8 @@ own questions".
 - 2026-10-03: substantive amendment: AC5 written at the user's answer as the second reader's strict narrowing. The two routing surfaces either list the cases or point to the rulebook bullet. T9 (return 2) and T10 (AC5) added, Coverage updated. The plan-owned body went to 160 lines, so the criteria section was rewrapped to 110 columns with no word changed (checked by whitespace-normalized compare) and AC5 unticked.
 - 2026-10-03: T9 done. The guard resolves the default branch locally (`<base>/HEAD`, then `main`, then `master`, no `ls-remote`), reads `ls-tree -z` and `ref:./path`, and matches the slot through `slot_is_up_front`, which drops backticks and needs `up front` as words. Its docstring and DESIGN state that a chip-form marker is not checked. Six new tests cover a backtick value, `up frontier`, a zero-padded file, a non-ASCII name, an unset remote HEAD, and a cairn root in a subdirectory. Four of them failed before the fix. In review step 7, the prefix check reads `carries` and adds `ci route-back:`. The `spawned:` line must come from the current pass and name every required lens. Any PR-conversation item routes back, and route (b) never runs the up-front check. In step 8, a late push means the PR head is not the up-front line's commit, red CI writes `ci route-back:` and goes straight to the chip, and the conversation is read again before the marker. Route (c) does not push under an up-front line. The plan question names the cases that always route back. Stale "stops at the merge question" prose is fixed in README, DESIGN, and the plan and implement skills. Verify green (hooks 193 OK), and `skills/tests` shows main's 4 reds and 1 error.
 - 2026-10-03: T10 done. The routing template and the CLAUDE.md section state the up-front approval and point to the rulebook's approval bullet for the cases. `claude_section_line_count` gives 28 for the template and 26 for CLAUDE.md, both under the 30 cap, and the Trivial reflow is reverted. Verify green.
+- claim audit: 42 claims read, 7 corrected — skills/shared/tracking-rules.md, skills/milestone-review/SKILL.md, README.md, CHANGELOG.md, CLAUDE.md, skills/shared/templates/claude-md-section.md
+- 2026-10-03: the T9/T10 claim audit (`5314538..HEAD`) found one behavior bug and six wording gaps. The bug: route (c) appended an unpushed second approval line, so a resumed up-front run always read a late push. Fixed: route (c) appends none. Step 8 writes `step-8 route-back:` for red CI, a late push, or a conversation item, and step 7 reads it. The rulebook bullet lists the T9 cases and the late-push definition. The README and CHANGELOG name the read's items. The same reader confirmed all seven. Verify green, and `skills/tests` shows main's 4 reds and 1 error.
 
 ## Decisions
 
