@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -180,6 +180,7 @@ own questions".
 - review return 3: two pass-3 findings fail what the up-front path does. Step 8's up-front arm keys on any up-front line, so a chip approval after a route-back loops (diff-bug #1, AC3). A default branch that moves before a resume is not logged, so a later resume can merge an unverified tree unattended (diff-bug #3).
 - 2026-10-03: stop at the thrash rule. Trigger (a): this is the third defect return. Trigger (b): AC3 has failed in three passes by three mechanisms (the end-of-run list at a stop, the red-CI re-entry, the approval-line keying and the moved default branch).
 - 2026-10-03: thrash stop answered: the user chose to escalate the up-front state machine via `/milestone-brief` before any more fixes, over the recommended one-pass descope.
+- 2026-10-03: blocked on RB16. The brief is committed on this branch, as RB15 was, because the milestone's state lives on the branch.
 
 ## Decisions
 
