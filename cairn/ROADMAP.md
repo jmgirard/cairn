@@ -14,7 +14,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 |---|---|---|---|---|---|
 | M201 | A band label that holds through background waits | done | — | normal | milestones/archive/M201-band-label-background-waits.md |
 | M202 | One question set, then the agent runs the milestone to the merge question | done | — | normal | milestones/archive/M202-one-question-set-run.md |
-| M203 | Approve the merge in the question set | planned | M202 | normal | milestones/M203-merge-approval-up-front.md |
+| M203 | Approve the merge in the question set | in-progress | M202 | normal | milestones/M203-merge-approval-up-front.md |
 | M200 | A close button that holds through refreshes and session ends | done | — | normal | milestones/archive/M200-band-close-state.md |
 ## Candidates
 

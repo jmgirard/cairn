@@ -1,13 +1,13 @@
 # M203: Approve the merge in the question set
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing, because the skills and the merge guard ship in the plugin to every adopter
-- **Branch/PR:** —
+- **Branch/PR:** m203-merge-approval-up-front
 
 ## Goal
 
@@ -97,6 +97,7 @@ own questions".
 - 2026-10-03: created by /milestone-plan, in one run with M202.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) covered M202 and M203. The M202 work log has the result.
 - 2026-10-03: plan gate chose one approval for each plan over a standing approval and over the end question, at the user's answer. Falsified by an up-front merge that the user reverts.
+- 2026-10-03: implement started on branch m203-merge-approval-up-front, in the run after M202 merged. Untracked `tsconfig.json` left unstaged.
 
 ## Decisions
 
