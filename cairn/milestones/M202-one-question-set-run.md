@@ -1,13 +1,13 @@
 # M202: One question set, then the agent runs the milestone to the merge question
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because the skills ship in the plugin to every adopter
-- **Branch/PR:** —
+- **Branch/PR:** m202-one-question-set-run
 
 ## Goal
 
@@ -119,7 +119,7 @@ rule stay as they are. Only who settles their findings changes.
 
 ## Tasks
 
-- [ ] T1: Rewrite "Question gates and phase closes" in
+- [x] T1: Rewrite "Question gates and phase closes" in
       `skills/shared/tracking-rules.md` (lines 351-393 today): the two
       gates, the stop list, the early-stop clause for a run, and the
       close-block paragraph. Adjust "Context hygiene" (lines 341-349) for a
@@ -151,6 +151,10 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: plan gate chose a Skill-tool handoff between the three skills over one merged skill, because each skill keeps its trigger text and resume role. Falsified by a run that loses its place at a phase seam.
 - 2026-10-03: plan gate chose to run the milestones of a plan in a row over a stop after each merge, at the user's answer. Falsified by a run whose condensed context drops a fact that the tracking files did not hold.
 - 2026-10-03: plan gate chose findings settled by the agent over a fix-now question, because 89% of those answers took the recommended set. Falsified by merged runs whose finding dispositions the user reverses.
+- 2026-10-03: implement started on branch m202-one-question-set-run. Untracked `tsconfig.json` on main left out of every commit.
+- 2026-10-03: implement question gate chose to amend AC5 so that review rejects a finding it shows false against the code, with the reason in the Review section, over a candidate row for every unfixed finding (ROADMAP at 51 of 60 lines).
+- re-audit: AC5 (full) — reviewers give no real-or-not verdict, so "the reviewers rank as real" points at nothing; the exception misses a real-ranked finding shown false; PR items that request nothing lose "noted"; style, linter, and planned-change items would fill the ROADMAP; D-110's triage clause is not in AC6's list (the D-entry will name it); the second amendment return stop is not in AC1's list (T1 folds it into the repeated review-failure stop).
+- 2026-10-03: T1 done. The rulebook names two gates, the closed stop list, a run-scoped early-stop clause, and a close block that ends the run; Context hygiene covers a run across seams; dependency changes go to the question set or a stop. Verify green (scripts 0 fail, hooks 0 fail, validate passed, plugin test 632 pass).
 
 ## Decisions
 

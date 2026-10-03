@@ -138,8 +138,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   tracking together (even half-done, marked as such).
 - **Git is ground truth for code.** Outside commits are reconciled with a catch-up work-log line, never retroactive
   rewriting. **User overrides are logged, never resisted** — comply and record the override in the work-log.
-- **Dependency changes are never unilateral** — any add/remove/re-pin goes through a question gate and is recorded as a
-  D-entry. **Breaking changes to public behavior follow a deprecation cycle** unless the project is pre-1.0 and the user
+- **Dependency changes are never unilateral** — any add/remove/re-pin is asked in the plan question set or at a stop
+  ("Question gates and phase closes") and is recorded as a D-entry. **Breaking changes to public behavior follow a deprecation cycle** unless the project is pre-1.0 and the user
   explicitly waives it; the active profile names the language's mechanics.
 - **Release timing is user-declared, never agent-proposed** (D-050): cairn never proposes, plans unprompted, or
   nominates a release; an unopened window parks it as `blocked`. `/cairn-release` never self-submits.
@@ -340,57 +340,80 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 
 ## Context hygiene
 
-Stateless resume makes conversation context disposable. Only the user can `/clear` — skills mark the seams in their
-recaps, never assume continuation. **The milestone boundary is the canonical `/clear` point**: after the post-merge
-hygiene commit, everything load-bearing is on the default branch; prefer `/clear` over `/compact` there. **Stop points
-are commit points are safe-clear points**: never tidy mid-task — finish the current task, checkpoint-commit with an
-honest work-log line, stop, resume fresh; if compaction threatens to lose something important, write it to the milestone
-file instead. Same-session implement → review is fine (evidence by command, never recall; review in a fresh subagent) —
-the seam that matters is milestone → milestone. A resume stumble is a tracking-file gap — fix the file.
+Stateless resume makes conversation context disposable. Only the user can `/clear`. Skills mark the seams in their
+recaps and never assume continuation. A run (next section) crosses phase and milestone seams in one session. At each
+seam everything load-bearing is on disk: the plan commit, a checkpoint commit, the post-merge hygiene commit. The next
+skill re-reads its state from those files, never from recall, and gathers its evidence by command; review runs its
+reviewers in fresh subagents. **Stop points are commit points are safe-clear points**: never tidy mid-task. Finish the
+current task and checkpoint-commit with an honest work-log line. When the context runs short, stop there with the close
+block (the context-hygiene stop), and the phase's typed command resumes in a fresh session. If compaction threatens to
+lose something important, write it to the milestone file instead. **The end of a run is the canonical `/clear`
+point**: after the close block that ends it, prefer `/clear` over `/compact`. A resume stumble is a tracking-file gap,
+so fix the file.
 
 ## Question gates and phase closes
 
-User interaction happens at exactly three gates — plan questions, pre-implementation questions, final merge approval —
-each a single exchange: the chip is posed in the same turn as its presentation, per the Mandated-substance rule below.
-At a gate, ask one batched round of 2–5 concrete decision questions via AskUserQuestion, each with a
-recommendation and brief pros/cons; between gates, work autonomously, never dripping questions. When more are open than
-one round holds, flag at most 3 prioritized markers and defer the rest. The **final merge-approval gate is itself an
-AskUserQuestion chip** — one approve/decline question (a decline option always present), never a prose yes/no. When a
-gate-chip option names a skill (`→ /skill` notation — an escalation offer, a repair route), selecting it is the go:
-**the orchestrator immediately invokes the target skill via the Skill tool**; the user never types that command.
+A milestone **run** is one `/milestone-plan` question set, then `/milestone-implement`, `/milestone-review`, and the
+merge, each skill invoking the next through the Skill tool. After a merge, the run goes on to the next workable
+milestone that the same plan created. User interaction in a run happens at two gates, each a single exchange whose chip
+is posed in the same turn as its presentation (the Mandated-substance rule below):
 
-- **Between gates, the turn does not end while work is still owed** (the early-stop clause). A message with no tool
-  call ends the turn, and the work stops there until the user speaks again. Four endings are unwanted while a task, a
-  check, or a record the skill's steps still owe is unfinished: a recap that closes by naming the next step instead
-  of taking it; an offer to carry on unless the user prefers otherwise, which waits for an answer the user was not
-  going to give; a list of decisions for the user when, by the session's own account, none of them blocks the rest of
-  the work; and stopping to report because the turn has been long or a task landed, at a point where the skill's steps
-  name no stop. None of the four is a stop the steps name: the phase close block and a checkpoint stop that context
-  hygiene demands at a task boundary are named stops, never these endings. A session that notices itself inviting the
-  user to redirect it or offering to wait deletes that and does the next thing; a recommendation on an open decision
-  is stated — as a gate chip where the decision is the user's and a skill step mandates one, otherwise in a position
-  the Mandated-substance rule guarantees — and the work that does not depend on the answer carries on. The wanted
-  stops are the ones where nothing can move without the user, or where what blocks the session is deliberately
-  protected from it — among them a gate or decision chip a skill step mandates, an escalation offer, confirmation
-  before a risky, irreversible, or destructive action, a checkpoint stop at a task boundary when context hygiene
-  demands one, the phase close block, a timeout stop, a stop at an external blocker a skill step names, and a guard
-  hook's denial. Nothing here overrides confirmation before a risky or destructive action.
+- **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a
+  recommendation and brief pros and cons. It asks only what the user alone can settle and foresees what implement and
+  review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
+  holds, flag at most 3 prioritized markers and defer the rest.
+- **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
+  present, never a prose yes/no.
 
-Every phase or skill ends with a **close block**, never a chip. The turn's final rendered text carries: an outcome
-recap (one or two sentences, plain words); a status table or line — unit of work, status, branch/PR and check results,
-where they exist; where the unit of work has a branch or an open PR, a **CI line** — one plain-language sentence
-stating whether the fenced next command waits on CI itself and what the user does meanwhile; a bare check state
-("CI: running") never satisfies it, and it is what disposes of the status line's check results — restated at four
-sites (`/milestone-implement` step 9, and the three timeout stops: `/milestone-review` step 8, `/hotfix` step 6,
-`/cairn-release` step 3), every other such close inheriting it by citation; the next command or commands in fenced
-blocks, primary first, each with a one-line plain-language label; and one line noting that
-adjusting course or `/clear` are both safe at this point. No chip is posed to route to
-the next skill — the user runs the fenced command — and its fixed shape is itself the signal that a boundary was
-reached. Decision-gate chips, the merge-approval gate among them, are unaffected: a gate is a choice, a phase end is a
-handoff. A decision arising mid-skill or at an internal phase boundary — a continue/stop choice, an acceptance over a
-produced proposal — is a gate and keeps its chip; the close block governs the end that hands the user a next command.
-Review's close after a successful merge recommends `/clear` plus the next action — the shape every phase
-close now shares, generalized from what was once review's sole exception.
+Everything else in a run the agent decides itself and records in a work-log line. Skills outside the run (`/hotfix`,
+`/cairn-triage`, `/cairn-init`, `/cairn-release`, `/design-interview`, `/milestone`, `/milestone-brief`) state their own
+gates. When a chip option names a skill (`→ /skill` notation: an escalation offer, a repair route), selecting it is the
+go. **The orchestrator immediately invokes the target skill via the Skill tool**, and the user never types that command.
+
+**Stops between the gates (a closed list).** Between the two gates a run stops for the user only at one of these. A
+stop whose choice is the user's is posed as a chip; any other stop ends with the close block.
+
+- the user's eyes or hands are needed (a live look, a file, a login, a deployment), or an external blocker that the
+  status `blocked` names,
+- an outward or irreversible action, or a dependency change, that the question set did not cover,
+- the goal is found wrong, or a change drops something the user asked for (an amendment that changes what the user
+  sees from the plan included),
+- the repeated review-failure stop (`/milestone-review` step 4's thrash rule, and the second amendment return or the
+  second re-audit on one criterion),
+- a CI wait that times out, or red CI that the agent cannot fix,
+- a guard hook's denial,
+- a stop at a task boundary for context hygiene,
+- the offer to escalate to a Fable review (`/milestone-brief`),
+- the user's yes before a risky or destructive action,
+- the guest-mode handoff.
+
+**Inside a run, the turn does not end while work is still owed** (the early-stop clause). A message with no tool call
+ends the turn, and the work stops there until the user speaks again. Four endings are unwanted while a task, a check, a
+record, or a next phase is still owed: a recap that closes by naming the next step instead of taking it; an offer to
+carry on unless the user prefers otherwise, which waits for an answer the user was not going to give; a list of
+decisions for the user when none of them is a stop on the list above; and stopping to report because the turn has been
+long, a task landed, or a phase ended. A phase end inside a run is a Skill-tool call, never a stop. A session that
+notices itself inviting the user to redirect it or offering to wait deletes that and does the next thing. An open
+decision that is not on the stop list is decided, recorded in a work-log line, and acted on. Nothing here overrides
+confirmation before a risky or destructive action.
+
+Inside a run, a phase ends with a call to the next skill through the Skill tool: plan to implement, implement to
+review, and review to the implement phase of the next workable milestone of the same plan. The **close block** ends
+the run: at a stop on the list above, after a merge that leaves no workable milestone of the plan, and at the end of a
+skill outside the run. It is never a chip. The turn's final rendered text carries: an outcome recap (one or two
+sentences, plain words); a status table or line (unit of work, status, branch/PR and check results, where they exist);
+where the unit of work has a branch or an open PR, a **CI line**, one plain-language sentence stating whether the
+fenced next command waits on CI itself and what the user does meanwhile. A bare check state ("CI: running") never
+satisfies it, and it is what disposes of the status line's check results. It is restated at four sites
+(`/milestone-implement`'s stop close, and the three timeout stops: `/milestone-review` step 8, `/hotfix` step 6,
+`/cairn-release` step 3), every other such close inheriting it by citation. Then the next command or commands in fenced
+blocks, primary first, each with a one-line plain-language label; at a stop inside a run the primary is the typed
+command that resumes it (`/milestone-implement <id>` or `/milestone-review <id>`). Last, one line noting that adjusting
+course or `/clear` are both safe at this point. No chip is posed to route to the next skill: the user runs the fenced
+command, and the block's fixed shape is itself the signal that a boundary was reached. Decision chips, the merge
+question and the stops above among them, are unaffected: a gate is a choice, and a close is a handoff. Outside a run,
+a decision arising mid-skill (a continue-or-stop choice, an acceptance over a produced proposal) is a gate and keeps
+its chip. The close that ends a run after a merge recommends `/clear` plus the next action.
 
 ## Output & interaction discipline
 
