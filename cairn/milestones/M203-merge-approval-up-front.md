@@ -102,6 +102,16 @@ own questions".
 - 2026-10-03: T1 escalation offer (ip-touching): the user chose to escalate the IP1 change via `/milestone-brief` before T1 starts.
 - 2026-10-03: blocked on RB15. The brief is committed on this branch, not on main, because the milestone's state already lives on the branch, and a main commit would conflict with it.
 - 2026-10-03: RR15 ingested (Fable, advisory, 16 recommendations). Apply: recs 1 to 9. They add route-backs to the merge question, bind the approval per milestone, add the slot read to the guard, and change the IP1, AC2, AC3, T3, and T4 wording. These widen AC2 to AC4 and change the per-plan approval the user chose, so T7 records them for the step-6 amendment stop. Follow-up row: recs 10 to 13. Rejected as RR15 reasons: rec 14 (stronger marker binding exceeds the stakes, D-043), rec 15 (a D-entry alone, against IP2), and rec 16 (dropping the path, unless recs 1 to 5 do not ship).
+- 2026-10-03: T7 amendment stop: the user chose to apply RR15 recs 1 to 9.
+- re-audit: AC1 (full) — IP1's new text would cover docs-only commits, D-138 and D-144 not narrowed, "every check of the run passed" unbounded; fixed.
+- re-audit: AC2 (full) — the "seen only after the merge" clause false under route-backs, no recommended option; fixed.
+- re-audit: AC3 (full) — CI condition after the pre-push approval line, "substantive" left to judgment, dead M202 AC1 citation, slot copy and D-entry scope unnamed, no list for a chained run; fixed.
+- re-audit: AC4 (full) — probes vary only the PR number and one slot value; fixed.
+- re-audit: AC1 (full) — D-043 not annotated, a rulebook edit to the route-back list would change IP1 without the IP procedure.
+- re-audit: AC2 (full) — RR15's "a re-cut asks again" dropped.
+- re-audit: AC3 (full) — stop detection reads close blocks that are not on disk, "amendment line" undefined, a declined merge question does not route back, plan commit ambiguous, no-push clause worded as a ban.
+- re-audit: AC4 (full) — probes do not vary the milestone file or the ref, deny text cannot name a slot it never read.
+- 2026-10-03: stop at the second re-audit of AC1 to AC4 (repeated review-failure stop). Amended text not yet written.
 
 ## Decisions
 
