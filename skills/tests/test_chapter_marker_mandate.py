@@ -37,16 +37,19 @@ DIRECTIVE_OPENING = "chapter markers: mark a chapter at each phase transition"
 # it — the set AC2 (M171) promises — matched case-insensitively with
 # whitespace collapsed (a line wrap inside the list does not matter).
 PHASE_LIST = "each phase its `phase header:` directive names"
+# M202 (D-144): plan's gate stretch is the question set, implement has no
+# question gate and marks each stop, and review's approval gate is the merge
+# question.
 STRETCH_TOKENS = {
-    "milestone-plan": "investigation, the question gate, solidify-and-commit",
+    "milestone-plan": "investigation, the question set, solidify-and-commit",
     "milestone-implement": (
-        "the question gate, each task (title opens with its `tn:` label), "
-        "each plan amendment"
+        "each task (title opens with its `tn:` label), each plan amendment, "
+        "each stop"
     ),
     "milestone-review": (
         "each acceptance criterion in step 3 (title opens with its `acn:` "
         "label), then the consistency gate, the independent review, the "
-        "approval gate, post-merge hygiene"
+        "merge question, post-merge hygiene"
     ),
     "milestone-brief": PHASE_LIST,
     "hotfix": "at each numbered step",

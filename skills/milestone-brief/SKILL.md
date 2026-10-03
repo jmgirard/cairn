@@ -96,7 +96,7 @@ start (any skill) when a manual RR appears:
    gives that criterion its own `## Coverage` line: `coverage-complete`
    counts every AC checkbox positionally, so a bare, unnumbered BC checkbox
    reds that check (M107). This runs through the `/milestone-implement`
-   step-6 amendment gate when the AC block already exists. After ingesting,
+   step-6 amendment protocol when the AC block already exists. After ingesting,
    re-check the plan-owned body against the 150-line cap; if the added
    criteria push it over, compress the single heaviest plan-owned section in
    one pass (tracking-rules), never a nibble-and-recount loop.

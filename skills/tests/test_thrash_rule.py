@@ -194,13 +194,15 @@ AMENDMENT_FIXTURE = normalize("""\
    promise, not the work. It routes to the gated
    criterion-amendment protocol (`/milestone-implement` step 6) and
    re-review, the amendment the only work convened; status is set to
-   `in-progress` for that amendment alone, and review stops there. Its
+   `in-progress` for that amendment alone, and review invokes
+   `/milestone-implement <id>` through the Skill tool for it. Its
    work-log line carries a fixed
    shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
    these lines are counted per milestone on their own track: never reset by
    a re-cut, and never added to the defect-return count (D-097 narrows
    D-064). A second amendment return naming the same AC<N> on one milestone
-   stops — no further round is convened; the disposition goes to the user.
+   stops (the repeated review-failure stop of the rulebook's list): no
+   further round is convened, and the disposition goes to the user.
 """.lower())
 
 WIDENING_FIXTURE = normalize("""\
@@ -254,6 +256,8 @@ THRASH_FIXTURE = normalize("""\
      Re-cutting around the same predicate buys the next mechanism, not a fix,
      so the remedy is to reconsider the alternative the plan gate recorded
      against — step 4 of `/milestone-plan` records it in the work log.
+     Switching to it is an amendment under `/milestone-implement` step 6,
+     with that step's stop where the switch changes what the user sees.
      Where it recorded none, offer escalation via `/milestone-brief` —
      per instance, never automatically (D-004).
 
@@ -543,8 +547,10 @@ class TestReturnFloor(unittest.TestCase):
         # IP3: filtered from the return path, never from the record.
         self.assertRegex(
             review(),
-            r"every other actioned finding takes the triage above — fix now / "
-            r"follow-up\s+/ reject — with no status change, and is logged",
+            # M202 (D-144): the agent's step-5 disposition replaces the
+            # maintainer's triage at the gate.
+            r"every other actioned finding takes its disposition above with "
+            r"no status\s+change, and is logged",
         )
 
     def test_amendment_return_is_the_named_exception(self):
@@ -553,7 +559,7 @@ class TestReturnFloor(unittest.TestCase):
         # M130 plan audit caught in the draft wording.
         self.assertRegex(
             review(),
-            r"the amendment return\s+below is the one named exception",
+            r"the amendment return\s+below is the one named\s+exception",
         )
 
     def test_defect_return_count_is_step4_plus_floor_returns(self):
@@ -572,8 +578,10 @@ class TestReturnFloor(unittest.TestCase):
         # both uncountable and followed by a merge chip.
         self.assertRegex(
             review(),
-            r"a floor return\s+takes step 4's exit — a work-log line naming "
-            r"exactly what failed, stop",
+            # M202 (D-144): the exit now invokes implement instead of
+            # stopping.
+            r"a floor return\s+takes step 4's exit: a\s+work-log line naming "
+            r"exactly what failed, then the return to\s+`/milestone-implement`",
         )
 
     def test_thrash_count_is_of_defect_returns(self):
@@ -601,7 +609,8 @@ class TestReturnFloor(unittest.TestCase):
             r"routes to the gated\s+criterion-amendment protocol "
             r"\(`/milestone-implement` step 6\) and\s+re-review, the amendment "
             r"the only work convened; status is set to\s+`in-progress` for "
-            r"that amendment alone, and review stops there",
+            r"that amendment alone, and review invokes\s+"
+            r"`/milestone-implement <id>` through the skill tool for it",
         )
 
     def test_implement_step_6_writes_the_amendment_return_shape(self):

@@ -78,8 +78,10 @@ class TestReviewResumeRoute(unittest.TestCase):
             "merged default-branch head (check it out and pull; "
             "Review-section evidence and the step-6 checkpoint land by "
             "docs-only commit; step 5's reviewers read the merged PR's diff "
-            "— `gh pr diff <N>` — in place of the branch diff; fix-now code "
-            "goes through `/hotfix`, never a commit on the default branch), "
+            "— `gh pr diff <N>` — in place of the branch diff; fix-now code, "
+            "a step-4 gate failure, and a floor return go through `/hotfix`, "
+            "never a commit on the default branch and never a return to "
+            "`/milestone-implement`), "
             "step 7's chip posed with question text naming acceptance of "
             "the post-hoc verification and the issue writes it authorizes, "
             "its recommended option accepting that verification rather than "
@@ -114,7 +116,7 @@ class TestReviewResumeRoute(unittest.TestCase):
 
     def test_step_seven_records_the_approval_line(self):
         step7 = flat(section(read("milestone-review", "SKILL.md"),
-                             "7. **Final approval gate.**",
+                             "7. **The merge question.**",
                              "8. **On approval"))
         self.assertIn(
             "Approval appends one work-log line naming the branch it "

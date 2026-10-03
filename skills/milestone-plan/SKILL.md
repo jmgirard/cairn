@@ -18,7 +18,7 @@ it (especially: sizing tripwires, status gatekeeping, question gates).
 Phase header: `# Milestone <NN>: <title>` → `## Plan` (before an ID is
 assigned, `# Planning`); see the tracking-rules Phase header rule.
 Chapter markers: mark a chapter at each phase transition and at each stretch —
-investigation, the question gate, solidify-and-commit (session start implicit).
+investigation, the question set, solidify-and-commit (session start implicit).
 
 ## Session start
 
@@ -35,8 +35,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 1. Confirm nothing else is `in-progress` — run
    `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` for the mechanical
    active/workable picture rather than eyeballing the ROADMAP. If it reports
-   an active milestone, get explicit user sign-off to plan ahead anyway
-   (planning ahead is fine; it just needs saying).
+   an active milestone, say so in chat. Planning ahead is fine, and the plan
+   then ends with the close block, not the run (step 7).
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Sonnet Explore
@@ -77,8 +77,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    surfacing it**, and **back-reference each match by its own `D-0NN` id** so a
    later entry superseding it surfaces too.
    Quote a collision verbatim from the full entry, never from the heading.
-   Prior state is *surfaced at the question gate*, never silently obeyed or
-   silently overridden:
+   Prior state is surfaced, never silently obeyed or silently overridden. A
+   disposition that changes what the user will get (a standing rejection, a
+   shipped milestone that may already do it, a cut of something asked for)
+   is a question of the step-3 set. The agent takes the rest itself and
+   writes a work-log line for each:
    - `candidate` row → the normal promotion path: absorb the row, note the
      lineage.
    - `planned` milestone → no duplicates: amend it, supersede its plan, or
@@ -102,12 +105,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    `hotfix-*`, is dropped (the `author.login` and `headRefName` fields are
    what the filter reads; the operator's login is what `gh api user --jq
    .login` returns). What survives is judged for overlap with the goal
-   being planned, and only a hit takes a disposition here: an open issue
-   overlapping the goal is posed at the step-3 gate as a `Resolves:` entry
-   (`closes` or `partial`) or as a candidate row; an open PR overlapping it
-   is posed as a candidate row naming `/hotfix` as its door (search-first
-   applies to both). Items with no overlap take no disposition at the plan
-   gate — report their count in the gate's chat; `/milestone` §3 is where
+   being planned, and only a hit takes a disposition here, which the agent
+   decides and logs: an open issue overlapping the goal becomes a
+   `Resolves:` entry (`closes` or `partial`) or a candidate row; an open PR
+   overlapping it becomes a candidate row naming `/hotfix` as its door
+   (search-first applies to both). Items with no overlap take no disposition
+   at the plan — report their count in the chat; `/milestone` §3 is where
    they are triaged. The sweep writes nothing to GitHub — no labels,
    comments, or closes. **When `gh` is missing, unauthenticated, or the
    repo has no remote:** name which of the three it was, skip the sweep,
@@ -116,9 +119,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records
    an earlier milestone of the same repo shipping, where that checker
-   verifies repo-internal artifacts. On such a hit the gate poses
+   verifies repo-internal artifacts. On such a hit the step-3 set poses
    simplifying or deleting the checker as the recommended option and
-   hardening it as a present, non-recommended alternative. A repair that
+   hardening it as a present, non-recommended alternative, since dropping
+   asked-for work is never the agent's call. A repair that
    leaves the checker's promise unchanged stays outside the shape
    (D-090's Untouched clause); one that widens the checker's promise is
    the regress shape however it is framed.
@@ -129,19 +133,40 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    acceptance bar, or a gate question. Empty file → nothing to surface. This
    is intake, not obedience: a lesson informs the plan, it doesn't dictate it.
 
-3. **Question gate** (one batched AskUserQuestion round, 2–5 questions, each
-   with a recommendation): scope boundary, sequencing, acceptance bar, and
-   any collision dispositions.
+3. **The question set** (one batched AskUserQuestion round, 2–5 questions,
+   each with a recommendation): the one plan gate of the run
+   (tracking-rules "Question gates and phase closes"). It asks only what the
+   user alone can settle, and it looks ahead to what implement and review
+   will need from the user, since the run asks nothing more until the merge
+   question. Its questions are:
+   - what to work on, for a request that names no work,
+   - choices that the request leaves open about what the user will get,
+   - files, access, or looks that only the user can supply and that
+     implement or review will need,
+   - permission for the outward actions and dependency changes that the work
+     foresees.
+
+   The agent decides the rest itself and writes a work-log line for each:
+   criteria wording, criteria-audit findings, milestone splits and order,
+   approach, test scope, and changelog entries. A question the agent cannot
+   phrase without the terms of cairn is a question the agent decides itself.
    Acceptance chips (tracking-rules): a question resting on a produced
-   conclusion — subagent findings, a collision verdict — shows that
-   conclusion's substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule). Every proposed scope cut must state **where
-   the remainder goes** — never "M12 covers A and B" alone, but "M12 covers
-   A and B; C becomes M13 (planned now, depends on M12); D becomes a
-   candidate row; E sounds unwanted — drop entirely?".
+   conclusion (subagent findings, a collision verdict) shows that
+   conclusion's substance compactly in the chip and verbatim in the chat
+   above, best-effort (Mandated-substance rule). A split or cut the agent
+   makes states **where the remainder goes** in its work-log line and in
+   step 5's ledger: "M12 covers A and B, C becomes M13 (planned now, depends
+   on M12), D becomes a candidate row". Dropping something the user asked
+   for is never the agent's call; it is a question of the set.
+   **The answers go on disk.** Step 4 writes each answer that grants a
+   permission, a file, access, or a look as one work-log line in the
+   milestone it serves, `question set: <what was asked> — <answer>`, so a
+   resumed run reads what the user granted from the file, never from recall.
 
    **Issue acknowledgement (one option).** When the `Resolves:` slot step 4
-   will fill is not `—`, the gate poses one option offering an
-   acknowledgement comment on all slotted issues. The comment body is
+   will fill is not `—`, the set poses one option offering an
+   acknowledgement comment on all slotted issues (an outward action, so it
+   is the user's permission to give). The comment body is
    `Queued as M<NNN>: <title>` — plus, for a `partial` entry, the remainder's
    candidate-row text — shown verbatim in the chat before selection and
    composed against the plan as the gate's other answers settle it; it is
@@ -179,27 +204,27 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    own prose, a work-log recording act, a mandated evidence quotation,
    among others (D-118; recording instruments joined the genus by
    D-120). A criterion
-   binding an instrument property is a finding, disposed at this gate
+   binding an instrument property is a finding, disposed by the agent
    like the audit's other findings: the instrument property moves to the
-   tasks or the gate procedure, or the criterion narrows to the
+   tasks or the review procedure, or the criterion narrows to the
    deliverable property it certifies. The question governs what a promise
    binds, never how a deliverable-bound promise is verified — it never
    relaxes the probe question above, in the full mode that asks it.
    Both modes ask a proportionality question of each criterion:
    is the promise's domain proportionate to the declared surface tier
    (the step-2 rule)? An internal-tier criterion outside the
-   internal-tier criteria standard is a finding, disposed at this gate
+   internal-tier criteria standard is a finding, disposed by the agent
    like the audit's other findings; the question governs promises and
    never relaxes the probe question above, in the mode that asks it.
    **The reduced audit asks only the bounded-promise, proportionality,
    and instrument questions** of each criterion — it omits the
    satisfiability, reachability, and probe questions — and keeps the
    disposal rule below in full.
-   Dispose of what either mode returns at
-   this gate, never silently: a finding with one clear right answer is fixed
-   and the fix reported in chat, and a finding you could reasonably decide
-   either way becomes one of this round's questions, within the three-marker
-   cap. The instrument is a reader and never a check — satisfiability and
+   The agent disposes of what either mode returns itself, never silently:
+   each finding is fixed or answered, and its disposition is reported in
+   chat and written in a work-log line. A finding the agent could decide
+   either way is decided toward the narrower promise.
+   The instrument is a reader and never a check — satisfiability and
    IP-conflict are judgments about prose meaning, which D-059's retirement
    precedent says to route to the mechanism that works rather than mechanize.
    **The audit records one work-log line either way, naming the mode it ran
@@ -211,7 +236,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
    **Release-shaped tripwire.** Release timing is user-declared, never agent-proposed (tracking-rules; D-050) — so a release-framed scope stops here for an explicit window declaration.
    It fires when the scope in hand would ship a version: a release, a CRAN or
-   registry submission, a "prepare/consolidate for vX.Y.Z". On a hit, the gate
+   registry submission, a "prepare/consolidate for vX.Y.Z". On a hit, the question set
    asks the user to declare the window in so many words, and
    the default answer is no — absent a declaration the work lands as a `candidate` row, never as a `planned` milestone, and never at `Priority: high`.
    A declared window is the user saying to queue this release now; the
@@ -231,7 +256,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - Acceptance criteria verifiable with evidence; never vibes. Criteria
      that cite a formula or reference value must name their source
      (`citekey (p. N)` — see the primary-sources rule). **Write the wording
-     step 3's audit read**; a criterion the gate changed goes back through
+     step 3's audit read**; a criterion the question set's answers changed goes back through
      the audit's questions — in the mode step 3 assigns the milestone's
      tier — before it is written, and the change is reported.
    - **Bounded promises only (M130).** An acceptance criterion that makes a
@@ -276,7 +301,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      incidental `(IPn)` in prose (M17).
    - **Resolves** (header slot): the slot is filled from the issues the scope
      absorbs — a promoted candidate row citing one, or an issue the user
-     names, or a step-2 inbox hit the gate accepted — one entry per issue:
+     names, or a step-2 inbox hit the plan took — one entry per issue:
      `#N closes` when this milestone's PR closes
      it, `#N partial` when only part of it ships. A `partial` entry's
      remainder is recorded as a `candidate` row in the same plan commit
@@ -335,17 +360,27 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    sections, any D-entry, new ROADMAP rows — verbatim in a guaranteed-rendered
    position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`) and
    commit files + rows together, directly to main, no branch, no PR
-   (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`; push. A session
+   (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`, naming every
+   milestone ID the plan created, since `/milestone-review` step 10 reads
+   this subject to find the next milestone of the run; push. A session
    dying mid-plan must not leave a half-planned ghost.
    **Guest arm** (tracking-rules "Collaboration mode"): in guest mode there
    is no plan commit and no push — the milestone files and ROADMAP rows are
    written to disk in this same turn and stay uncommitted (`cairn/` is in
-   `.git/info/exclude`); the preview and the close block are unchanged.
+   `.git/info/exclude`); the preview and step 7 are unchanged.
 
-7. **Close block** (tracking-rules "Question gates and phase closes"),
-   composed from what was just planned — recap (the plan summary and
-   remainder ledger live here), status table (new milestone(s), status,
-   priority), fenced next command(s) with plain labels — e.g.
-   `/milestone-implement M<NNN>` to start the proximal one first,
-   `/milestone-plan` to plan another — and the adjust-or-`/clear` safety
+7. **Hand off to implement** (tracking-rules "Question gates and phase
+   closes"). After step 6, show the plan summary and
+   remainder ledger in chat, then invoke `/milestone-implement M<NNN>`
+   through the Skill tool for the first workable milestone this plan
+   created: status `planned`, every `Depends on:` milestone `done`, in
+   ROADMAP order. The run goes on from there with no further question until
+   the merge question.
+   **Close block instead** when another milestone is `in-progress`, when the
+   user asked for a plan alone, or when no milestone of the plan is workable
+   (a release parked as `blocked`, an unmet dependency): recap (the plan
+   summary and remainder ledger live here), status table (new milestone(s),
+   status, priority), fenced next command(s) with plain labels, such as
+   `/milestone-implement M<NNN>` to start the proximal one or
+   `/milestone-plan` to plan another, and the adjust-or-`/clear` safety
    line; no chip.

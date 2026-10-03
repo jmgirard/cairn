@@ -25,9 +25,9 @@ pinned; no count of them is stated. Per rule:
     finding at the gate, and never relaxes the one-exemplar probe question
     it sits beside;
   - the checker-regress clause names the SHAPE (extending or hardening a
-    previously-shipped checker over repo-internal artifacts), poses deletion
-    as the RECOMMENDED option with hardening present but non-recommended,
-    and carries the repair DISCRIMINATOR both ways — promise-unchanged
+    previously-shipped checker over repo-internal artifacts), has the step-3
+    set pose deletion as the RECOMMENDED option with hardening present but
+    non-recommended (M202 review F23), and carries the repair DISCRIMINATOR both ways — promise-unchanged
     repairs stay outside the shape, promise-widening ones are inside it
     however framed.
 
@@ -80,7 +80,7 @@ REGRESS_END = "**harvest recent lessons"
 # renumbering of the workflow is unrelated to these rules and must not
 # false-red them (M142 pass-2 R4).
 STEP2_START = "**investigate first.**"
-STEP2_END = "**question gate**"
+STEP2_END = "**the question set**"
 STEP3_END = "**solidify autonomously**"
 COLLISION_START = "**collision check (mandatory).**"
 
@@ -235,9 +235,10 @@ class TestCheckerRegressClause(unittest.TestCase):
         self.assertIn("verifies repo-internal artifacts", rule)
 
     def test_deletion_is_the_recommended_option(self):
-        # "the gate poses" is an obligation — "may pose" softened green
-        # under the first cut (M142 return, D8).
-        self.assertIn("on such a hit the gate poses", regress_rule())
+        # "the set poses" is an obligation — "may pose" softened green
+        # under the first cut (M142 return, D8). M202 review F23: dropping
+        # asked-for hardening is the user's call, so the step-3 set poses it.
+        self.assertIn("on such a hit the step-3 set poses", regress_rule())
         self.assertIn(
             "simplifying or deleting the checker as the recommended option",
             regress_rule(),
@@ -316,9 +317,10 @@ REGRESS_FIXTURE = normalize("""\
 **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records
    an earlier milestone of the same repo shipping, where that checker
-   verifies repo-internal artifacts. On such a hit the gate poses
+   verifies repo-internal artifacts. On such a hit the step-3 set poses
    simplifying or deleting the checker as the recommended option and
-   hardening it as a present, non-recommended alternative. A repair that
+   hardening it as a present, non-recommended alternative, since dropping
+   asked-for work is never the agent's call. A repair that
    leaves the checker's promise unchanged stays outside the shape
    (D-090's Untouched clause); one that widens the checker's promise is
    the regress shape however it is framed.

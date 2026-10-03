@@ -111,7 +111,8 @@ class TestPlanGateAcknowledgement(unittest.TestCase):
     def test_gate_poses_one_option_for_all_slotted_issues(self):
         self.assertRegex(
             plan(),
-            r"the gate poses one option offering an\s+acknowledgement comment "
+            # M202 (D-144): the plan's gate is now the question set.
+            r"the set poses one option offering an\s+acknowledgement comment "
             r"on all slotted issues",
         )
 
@@ -297,7 +298,8 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
     def test_plan_time_acknowledgement_offer(self):
         self.assertRegex(
             self.readme(),
-            r"plan gate offers one option to post `Queued as M<NNN>: <title>`",
+            r"plan question set offers one option to post `Queued as M<NNN>: "
+            r"<title>`",
         )
         self.assertRegex(self.readme(), r"posted only if you select it, never by default")
 

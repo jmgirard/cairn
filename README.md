@@ -246,22 +246,30 @@ in the environment.
 ## The core loop
 
 Development is a cycle of milestones: PR-sized units of work with explicit
-acceptance criteria. You steer at defined gates; Claude works autonomously
-between them:
+acceptance criteria. One command starts a run. You answer one question set
+when the plan is made, and Claude then implements and reviews the milestone
+in the same run and stops at the merge question:
 
 ```mermaid
 flowchart LR
-    idea["idea"] --> plan["/milestone-plan (scope gate)"]
-    plan --> implement["/milestone-implement (choices gate)"]
-    implement --> review["/milestone-review (approval gate)"]
+    idea["idea"] --> plan["/milestone-plan (question set)"]
+    plan --> implement["/milestone-implement"]
+    implement --> review["/milestone-review (merge question)"]
     review --> merged["merged"]
     review -->|criteria unmet| implement
+    merged -->|next milestone of the plan| implement
 ```
 
-Each phase ends the same recognizable way: a short recap, a status table,
-and the next command in a copyable block — you run it when you're ready.
-Decisions along the way (plan questions, merge approval) arrive as
-clickable options.
+Each skill starts the next one itself. After a merge, the run goes on to the
+next milestone of the same plan that is ready to start. Between the two
+questions Claude stops only for a short list of reasons: it needs your eyes
+or hands, an action the question set did not cover, a goal found wrong,
+repeated review failures, a CI wait that times out, and a few others that
+the rulebook lists. A run ends the same recognizable way: a short recap, a
+status table, and the next command in a copyable block. If a run stopped,
+typing `/milestone-implement` or `/milestone-review` with the milestone id
+resumes it. A stop that finds the goal wrong names `/milestone-plan`
+instead, and the close block always names the command to type.
 
 ## A worked example
 
@@ -269,44 +277,42 @@ Say your repo is a small CLI tool and you want a `--dry-run` flag.
 
 **1. Plan it.** You say: *"plan a milestone: add a --dry-run flag to the
 sync command."* Claude reads the roadmap, decisions, and the relevant code,
-then asks one short batch of scoping questions, each with a recommendation.
-Should `--dry-run` cover `sync` only or every mutating subcommand? Is
-printing the would-be actions enough, or must exit codes match a real run?
-You click answers (or type your own). Claude writes
-`cairn/milestones/M007-dry-run-flag.md` with the goal, in and out scope,
-verifiable acceptance criteria, and ordered tasks, registers it in the
-ROADMAP as `planned`, commits, and offers a chip: **Start implementing
-M007**.
+then asks one short batch of questions, each with a recommendation. It asks
+only what you alone can settle. Should `--dry-run` cover `sync` only or
+every mutating subcommand? Is printing the would-be actions enough, or must
+exit codes match a real run? You click answers (or type your own). Claude
+writes `cairn/milestones/M007-dry-run-flag.md` with the goal, in and out
+scope, verifiable acceptance criteria, and ordered tasks, registers it in
+the ROADMAP as `planned`, commits, and starts implementing.
 
-**2. Build it.** `/milestone-implement M007` cuts a branch, asks any
-implementation choices the plan left open (flag naming, output format),
-then works the tasks in order: tests first, one checkpoint commit per
-task, each commit updating the milestone file's checkboxes alongside the
-code. Between the gate and the finish you aren't asked anything. When all
-tasks pass, status flips to `review` and you get a diff summary with the
-next command ready to copy: `/milestone-review M007`.
+**2. Build it.** Implement cuts a branch and decides the details the plan
+left open, such as flag naming and output format, with a log line for each.
+It works the tasks in order: tests first, one checkpoint commit per task,
+each commit updating the milestone file's checkboxes alongside the code. You
+are not asked anything unless the run reaches a listed stop, such as an
+action the question set did not cover. When all tasks pass, status flips to `review` and
+review starts.
 
-**3. Ship it.** `/milestone-review M007` re-runs every check fresh, gathers
-evidence for each acceptance criterion (no evidence, no tick), and hands
-the diff to independent reviewer agents that didn't write it — a three-lens
-fan-out for anything touching executable or user-facing surface, a single
-reviewer for an internal docs-only diff. Findings come to you ranked, and
-you decide what gets fixed before merge. Then it
-opens a PR and asks *you* to merge, with the evidence in front of you.
+**3. Ship it.** Review re-runs every check fresh, gathers evidence for each
+acceptance criterion (no evidence, no tick), and hands the diff to
+independent reviewer agents that didn't write it — a three-lens fan-out for
+anything touching executable or user-facing surface, a single reviewer for
+an internal docs-only diff. Claude settles each finding itself: it fixes a
+real one inside the milestone's scope, sends a real one outside it to a
+ROADMAP candidate row, and rejects a false one with the reason. Then it
+asks *you* to merge, with the evidence and each finding's outcome in front
+of you, and opens the PR after your yes.
 Nothing lands on your default branch until you say yes. After the merge,
 the milestone compresses to a short summary in the archive, the ROADMAP
 row flips to `done`, and the next session, tomorrow or next month, resumes
 from the files alone.
 
-**Start each phase in a fresh session.** That's the intended mode, not just
-a supported one: the milestone file is the handoff, so plan, implement, and
-review each start cold from the files. Clearing between phases costs
-little — the plan already distilled the investigation — and avoids dragging
-a long session into context compaction. Review benefits most: a session
-that didn't watch the code get written verifies from evidence instead of
-inheriting the implementer's assumptions. The exception is a small
-milestone with a short planning phase, where continuing straight into
-implementation is fine.
+**A run stays in one session, and the files carry it.** Each phase re-reads
+the milestone file and gathers its evidence by command, so nothing depends
+on what the session remembers. The reviewers are fresh agents that did not
+watch the code get written. If the context runs short, Claude stops at a
+task boundary with a checkpoint commit, and the typed command resumes the
+run in a fresh session. The end of a run is the natural point to `/clear`.
 
 ## Which skill, when
 
@@ -314,9 +320,9 @@ implementation is fine.
 |---|---|
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
-| Turn an idea into a real plan | `/milestone-plan <title>`: investigation, scoping questions, milestone file(s) with acceptance criteria |
-| Build a planned milestone | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits; resumable across sessions |
-| Verify and ship a finished milestone | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, merge on your approval |
+| Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
+| Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
+| Resume a run at review | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, each finding settled by the agent, merge on your approval |
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
@@ -402,14 +408,18 @@ profile.
 
 ## What the system expects from you
 
-- **Answer the gates.** Questions arrive in small batches at three points
-  (planning scope, implementation choices, merge approval), each with a
-  recommendation. Between gates, expect autonomy. Questions arriving
-  mid-implementation are a sign something has gone wrong.
-- **Boundaries are stops, not automation.** A phase ends with a copyable
-  next command that nothing runs but you, and a decision's clickable
-  options wait until you pick one; walking away at either point is always
-  safe, and the last checkpoint commit holds the state for next time.
+- **Answer two questions.** One question set comes when the plan is made,
+  each question with a recommendation. It also asks ahead for what the run
+  will need from you: a file, a login, a live look, or permission for an
+  outward action. The merge question comes at the end of review. Between
+  them, expect the agent to decide and log the rest.
+- **A run stops only for a listed reason.** It stops when it needs your eyes
+  or hands, for an action the question set did not cover, when the goal is
+  found wrong or a change would drop something you asked for, after repeated
+  review failures, at a CI wait that times out, and at a few others the
+  rulebook lists. Walking away at a stop is always safe: the last checkpoint
+  commit holds the state, and typing `/milestone-implement` or
+  `/milestone-review` with the milestone id resumes the run.
 - **Merges are yours.** Nothing reaches your default branch without your
   explicit approval at review. A guard hook mechanically blocks merges
   that lack a recorded approval, and the approval names the one PR it
@@ -466,7 +476,7 @@ actually reach.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
   becomes a triage item. `/milestone-plan`'s collision check also reads
-  both open inboxes and offers a disposition only for an item overlapping
+  both open inboxes and settles a disposition only for an item overlapping
   the scope being planned.
   The pull request itself is opened only after you approve at the merge
   chip, so a `pull_request`-triggered suite first runs on the head that
@@ -476,7 +486,7 @@ actually reach.
   is merged past unread.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
-  plan gate offers one option to post `Queued as M<NNN>: <title>` on each
+  plan question set offers one option to post `Queued as M<NNN>: <title>` on each
   slotted issue — posted only if you select it, never by default. The
   PR the review opens after your approval has a body ending with
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub

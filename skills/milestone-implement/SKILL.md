@@ -18,8 +18,11 @@ it (especially: git model, tracking-travels-with-code, delegation policy,
 CI waiting rules).
 Phase header: `# Milestone <NN>: <title>` → `## Implement`.
 Chapter markers: mark a chapter at each phase transition and at each stretch —
-the question gate, each task (title opens with its `Tn:` label), each plan
-amendment (session start implicit).
+each task (title opens with its `Tn:` label), each plan amendment, each stop
+(session start implicit).
+Inside a run (tracking-rules "Question gates and phase closes") this phase
+asks no question of its own. It stops for the user only at a stop on the
+rulebook's list, and it ends by invoking `/milestone-review` (step 9).
 
 ## Session start
 
@@ -32,12 +35,15 @@ run ingestion first (see `/milestone-brief`).
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
    with a resolved blocker (resume). Verify all `Depends on:` milestones are
    `done`, and that no OTHER milestone is `in-progress` (at most one, ever —
-   if one exists, stop and route there or ask). Set `in-progress` in
-   ROADMAP + header mirror.
+   if one exists, stop with the close block naming it and its resume
+   command). Set `in-progress` in ROADMAP + header mirror. **On a return
+   from review**, the newest `review return <n>:` work-log line names what
+   failed; add one task for it (a minor amendment, step 6) before working,
+   so step 9 cannot hand back with the failure unfixed.
 
 2. **Branch.** Check `git status` first — a dirty tree with unrelated
-   changes means ask the user; never sweep strangers into a checkpoint
-   commit. First session: detect the default branch (tracking-rules git
+   changes stays unstaged, with a work-log line naming it; never sweep
+   strangers into a checkpoint commit. First session: detect the default branch (tracking-rules git
    model: `git symbolic-ref --short refs/remotes/<base>/HEAD`, strip
    `<base>/`, where `<base>` is the base remote — `origin` in owner mode,
    `upstream` when present in guest mode) and sync it with `<base>` first —
@@ -67,18 +73,24 @@ run ingestion first (see `/milestone-brief`).
    force-push guard covers the default branch alone); the maintainers'
    review comments stay attached to the PR.
 
-3. **Question gate:** surface the implementation choices the plan left open
-   (API shape, naming, dependency picks — dependency changes always need a
-   gate + D-entry) with recommendations. Skip only if nothing is genuinely
-   open.
-   Acceptance chips (tracking-rules): a question resting on a produced
-   conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule). If the plan tags an item `(RB tripwire: <token>)` — or a new
-   tripwire emerges mid-work (same three categories; see tracking-rules) —
-   include an **Escalate via `/milestone-brief`** option on that question; the
-   three tripwires are the must-offer cases, but escalation may also be offered
-   for a genuinely hard question the session cannot confidently settle (D-062
-   lowered this bar). Either way it stays gated per instance through
-   `/milestone-brief` — D-004.
+3. **No question round.** The agent decides the implementation choices the
+   plan left open (API shape, naming, structure) and writes a work-log line
+   for each. A dependency change, or an outward or irreversible action, that
+   the plan question set did not grant permission for — read from the
+   milestone's `question set:` work-log lines, never from recall — is a
+   stop: one chip
+   with a recommendation, and a D-entry for a dependency change.
+   **The escalation offer is a stop.** If the plan tags an item `(RB
+   tripwire: <token>)`, or a new tripwire emerges mid-work (same three
+   categories; see tracking-rules), stop at that item with one chip that
+   offers **Escalate via `/milestone-brief`** beside the agent's own
+   recommended answer. The three tripwires are the must-offer cases, and the
+   offer may also be made for a genuinely hard question the session cannot
+   confidently settle (D-062 lowered this bar). Either way it stays gated per
+   instance through `/milestone-brief` (D-004). Acceptance chips
+   (tracking-rules): a question resting on a produced conclusion shows its
+   substance compactly in the chip and verbatim in the chat above,
+   best-effort (Mandated-substance rule).
 
 4. **Work tasks in order, autonomously.** For each task:
    - Tests first where feasible; numeric results per the oracle doctrine;
@@ -98,7 +110,7 @@ run ingestion first (see `/milestone-brief`).
      A claim resting on an observed failure follows the tracking-rules failure-identity rule: verified to be the failure the claim is about, never read off a bare error.
    - Stay within implement-owned sections per the tracking-rules
      section-ownership table; Goal, Scope, and Acceptance criteria change
-     only via the amendment gate (step 6).
+     only via the substantive amendment of step 6.
    - Durable-record preview (tracking-rules): a milestone-local Decisions
      entry or promoted D-entry is shown verbatim in a guaranteed-rendered
      position (Mandated-substance rule; work-log
@@ -118,26 +130,29 @@ run ingestion first (see `/milestone-brief`).
      adds, removes, or reorders a criterion or task renumbers the `ACn:` /
      `Tn:` labels and the Coverage lines together.
    - *Substantive* (a criterion or scope must change; a change to
-     acceptance-criterion wording is *Substantive* by definition): mini
-     question gate with a recommendation, the proposed text shown verbatim
-     in a guaranteed-rendered position at the
-     mini gate's chip (acceptance chips, tracking-rules); record the
-     amendment as a dated work-log line
+     acceptance-criterion wording is *Substantive* by definition): the
+     agent makes the amendment and records it as a dated work-log line
      (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in a guaranteed-rendered position (durable-record preview).
+     **The stop.** If the amendment drops something the user asked for, or
+     changes what the user sees from the plan, stop for the user instead:
+     one chip with a recommendation, the proposed text shown verbatim in a
+     guaranteed-rendered position at the chip (acceptance chips,
+     tracking-rules). A change to the wording alone, the deliverable the
+     user sees unchanged, takes no stop.
      A change that adds, removes, or reorders a criterion or task renumbers
      the `ACn:` / `Tn:` labels and the Coverage lines together.
      **Return-adjacent direction rule (D-118).** On a milestone whose
-     work log records one or more defect returns, a proposed amendment
-     that widens the criteria set — adding an acceptance criterion, or
-     extending an existing criterion's promise to a property or domain
-     it did not previously bind — is presented at the mini gate with
-     narrowing-or-holding the criteria set as the one recommended option and
-     the widening as an explicitly non-recommended alternative, the
-     motivating finding offered a follow-up home (a candidate ROADMAP
-     row or a split milestone) instead. A widening adopted at the user's
-     selection records a work-log line naming each criterion widened or
-     added. An amendment that executes a widening-test-reclassified
+     work log records one or more defect returns, the agent never takes an
+     amendment that widens the criteria set — adding an acceptance
+     criterion, or extending an existing criterion's promise to a property
+     or domain it did not previously bind. It narrows or holds the criteria
+     set and gives the motivating finding a follow-up home (a candidate
+     ROADMAP row or a split milestone) instead. A widening changes what the
+     user sees from the plan, so it reaches the criteria only at the stop
+     above, offered there as an explicitly
+     non-recommended option, and a widening adopted at the user's selection
+     records a work-log line naming each criterion widened or added. An amendment that executes a widening-test-reclassified
      return is carved out of this rule by name — D-101's inadmissibility
      (below) governs it unchanged.
      Amended acceptance-criterion wording — an amendment return from
@@ -164,9 +179,10 @@ run ingestion first (see `/milestone-brief`).
      `binding criteria` check normalizes (`" ".join(s.split())`); an ingest
      line that does not name the criterion exempts nothing, and an exempt
      criterion writes no re-audit line and spends no re-entry.
-     Per criterion, wording fixed at the mini gate re-enters the questions
-     once with its own fresh reader, and further churn on that criterion
-     goes to the user — the bound and the stop both read from the
+     Per criterion, wording the agent fixes after the reader's findings, or
+     a user fixes at a stop, re-enters the questions once with its own fresh
+     reader, and further churn on that criterion goes to the user (the
+     repeated review-failure stop of the rulebook's list) — the bound and the stop both read from the
      `re-audit: AC<N>` lines, never from session memory: a second
      `re-audit: AC<N>` line naming the same criterion on one milestone is
      the stop, and with it present no further reader is spawned for that
@@ -182,8 +198,9 @@ run ingestion first (see `/milestone-brief`).
      that grows a plan-owned section re-checks the body against the 150-line
      cap; if it now exceeds it, compress the single heaviest plan-owned
      section in one pass (tracking-rules), never a nibble-and-recount loop.
-   - *The goal itself is wrong*: stop; status back to `planned`; close
-     block pointing at `/milestone-plan` for a proper re-cut.
+   - *The goal itself is wrong* (a stop on the rulebook's list): status
+     back to `planned`; close block pointing at `/milestone-plan` for a
+     proper re-cut.
    Never silently deliver something other than what the plan promised —
    review checks criteria as written.
 
@@ -206,30 +223,33 @@ run ingestion first (see `/milestone-brief`).
    first read of the branch's added claims against the code by a reader
    other than their author, before review (D-136).
 
-8. **Blocked?** External blocker → status `blocked` + work-log line naming
-   it, stop. Needs Fable-level judgment → close block pointing at
-   `/milestone-brief`, stop.
-
-9. **Completion.** When all tasks are checked and the active profile's
-   `verify` slot passes clean (for a toolchain whose profile names a fuller
-   pre-review check, that check), set status `review`, checkpoint-commit, then
-   stop with the **close block** (tracking-rules "Question gates and phase
-   closes") — outcome-first recap: what the milestone now does or changes,
-   in plain words, before the mechanics — then a file-level summary of the
-   branch diff, test/check results, deviations from plan, and open concerns;
-   a status table (milestone, status, branch/PR, suite results); the
-   implement-end **CI line** (tracking-rules close-block shape) — one plain
-   sentence saying there is nothing to wait for now: no PR exists yet, and
-   `/milestone-review` pushes the branch, opens the PR, and waits on CI
-   itself at its merge step, after the user's approval (on a return from
-   a review that stopped between its post-approval open and the merge,
-   where the header already names an open PR, the line instead
+8. **Stops.** Implement stops only at a stop on the rulebook's list
+   (tracking-rules "Question gates and phase closes"). An external blocker
+   → status `blocked` + work-log line naming it. Needs Fable-level
+   judgment → the escalation offer of step 3. A context-hygiene stop →
+   checkpoint-commit at the task boundary. Each stop that is not a chip
+   ends with the **close block**: an outcome-first recap of what is done
+   and why it stopped; a status table (milestone, status, branch/PR, suite
+   results); the implement-stop **CI line** (tracking-rules close-block
+   shape), one plain sentence saying there is nothing to wait for now: no
+   PR exists yet, and `/milestone-review` pushes the branch, opens the PR,
+   and waits on CI itself at its merge step, after the user's approval (on
+   a return from a review that stopped between its post-approval open and
+   the merge, where the header already names an open PR, the line instead
    says there is still nothing to wait for now: review re-pushes and
    re-waits on that PR's checks at its merge step, and any check state the
-   PR shows was run against the pre-return head);
-   the fenced
-   next command, `/milestone-review <id>` labeled plainly; and the safety
-   line — adjustments on the branch first are fine, and the checkpoint makes
-   this a safe `/clear` point, since review resumes statelessly in a fresh
-   session (same-session review is also fine; see tracking-rules context
-   hygiene). No chip.
+   PR shows was run against the pre-return head); the fenced next command,
+   `/milestone-implement <id>` labeled as the command that resumes the run;
+   and the safety line (the checkpoint makes this a safe `/clear` point).
+   No chip.
+
+9. **Completion: hand off to review.** When all tasks are checked and the
+   active profile's `verify` slot passes clean (for a toolchain whose
+   profile names a fuller pre-review check, that check), set status
+   `review`, checkpoint-commit, then invoke `/milestone-review <id>`
+   through the Skill tool in place of a close block. Before the call, state
+   in a few plain sentences what the milestone now does or changes,
+   deviations from plan, and open concerns; review's merge question carries
+   the full outcome-first account. Review re-reads its state from the files
+   and gathers its evidence by command, never from this session's recall
+   (tracking-rules "Context hygiene").

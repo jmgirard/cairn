@@ -8,10 +8,13 @@ Skills are prose, so this locks two invariants:
    itself* as an AskUserQuestion chip, never a prose "ask plainly for
    authorization" yes/no.
 
-2. The phase-close rule (M156, retiring M26's routing-chip mandate): every
-   phase or skill ends with the close block — recap, status, fenced next
-   command(s), safety line — and no skill reintroduces the routing-chip
-   token; decision-gate chips are unaffected.
+2. The phase-close rule (M156, retiring M26's routing-chip mandate; M202,
+   D-144, reshaping it for the run): inside a run a phase ends with a
+   Skill-tool call to the next skill; the close block — recap, status,
+   fenced next command(s), safety line — ends the run, never a chip, and
+   no skill reintroduces the routing-chip token; decision chips are
+   unaffected. A run has two gates, the plan question set and the merge
+   question.
 
 Guard tests read each SKILL as one string, so `assertIn` fails across a
 newline (M23 lesson) — asserted phrases live on single lines in the source.
@@ -20,6 +23,7 @@ newline (M23 lesson) — asserted phrases live on single lines in the source.
 """
 
 import pathlib
+import re
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -47,26 +51,50 @@ class TestMergeGateIsAChip(unittest.TestCase):
 # retired with its subject; its merge-gate-survives assert lives on below.
 class TestPhaseCloseBlock(unittest.TestCase):
     def test_rule_states_close_block_never_a_chip(self):
+        # M202 (D-144): the close block ends the run (not every phase), and
+        # is still never a chip.
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertRegex(
+            text,
+            r"the \*\*close block\*\* ends\s+the run: at a stop on the list "
+            r"above, after a merge that leaves no workable milestone of the "
+            r"plan",
+        )
+        self.assertIn("skill outside the run. it is never a chip.", text)
+
+    def test_rule_phase_end_in_run_is_a_skill_call(self):
+        # M202 (D-144): inside a run a phase end hands off by the Skill
+        # tool, never by a stop.
         self.assertIn(
-            "ends with a **close block**, never a chip",
+            "a phase end inside a run is a skill-tool call, never a stop.",
             read("shared", "tracking-rules.md").lower(),
         )
 
+    def test_rule_names_two_gates(self):
+        # M202 (D-144) retired the three-gate clause. The regex keeps the
+        # retired phrase out of this file, so AC1's grep over skills/ stays
+        # silent.
+        text = read("shared", "tracking-rules.md").lower()
+        self.assertIn("user interaction in a run happens at two gates", text)
+        self.assertIn("**the plan question set.**", text)
+        self.assertIn("**the merge question.**", text)
+        self.assertNotRegex(text, r"exactly three\s+gates")
+
     def test_rule_hands_the_user_the_fenced_command(self):
         self.assertIn(
-            "the next skill — the user runs the fenced command",
+            "the next skill: the user runs the fenced",
             read("shared", "tracking-rules.md").lower(),
         )
 
     def test_rule_carries_the_safety_line(self):
-        self.assertIn(
-            "adjusting course or `/clear` are both safe at this point",
+        self.assertRegex(
             read("shared", "tracking-rules.md").lower(),
+            r"adjusting\s+course or `/clear` are both safe at this point",
         )
 
     def test_rule_spares_decision_gates(self):
         self.assertIn(
-            "unaffected: a gate is a choice, a phase end is a",
+            "are unaffected: a gate is a choice, and a close is a handoff",
             read("shared", "tracking-rules.md").lower(),
         )
 
@@ -89,8 +117,9 @@ class TestPhaseCloseBlock(unittest.TestCase):
     def test_review_keeps_its_merge_gate_chip(self):
         # retiring routing chips removes only phase-end chips; the merge
         # gate stays a chip (IP1's explicit approval surface)
+        # M202 (D-144): the merge question is the run's second gate.
         text = read("milestone-review", "SKILL.md")
-        self.assertIn("this is the third gate", text)
+        self.assertIn("the merge question, the second gate of the run", text)
         self.assertIn("AskUserQuestion", text)
 
 

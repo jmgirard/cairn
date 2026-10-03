@@ -95,20 +95,23 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
             r"It reads the wording\s+step 4 will write, never a paraphrase of it",
         )
 
-    def test_clear_findings_are_fixed_and_the_fix_reported(self):
+    def test_findings_are_disposed_by_the_agent_and_logged(self):
+        # M202 (D-144): the agent disposes of every finding itself, reported
+        # in chat and in a work-log line (no longer fix-or-gate-question).
         self.assertRegex(
             plan(),
-            r"a finding with one clear right answer is fixed\s+"
-            r"and the fix reported in chat",
+            r"each finding is fixed or answered, and its disposition is "
+            r"reported in\s+chat and written in a work-log line",
         )
 
-    def test_judgment_findings_become_gate_questions_under_the_cap(self):
-        # The two dispositions fail independently: dropping this one alone
-        # leaves an audit that silently applies the author's own judgment,
-        # which is the disposition the instrument replaces.
+    def test_arguable_findings_are_decided_toward_the_narrower_promise(self):
+        # M202 (D-144) retired the gate question for a finding the author
+        # could decide either way; the direction of the agent's own decision
+        # is what keeps it from silently applying the author's preference.
         self.assertRegex(
             plan(),
-            r"becomes one of this round's questions, within the three-marker\s+cap",
+            r"A finding the agent could decide\s+either way is decided "
+            r"toward the narrower promise",
         )
 
     def test_audit_is_a_reader_and_never_a_check(self):
@@ -363,9 +366,12 @@ class TestAmendmentReaudit(unittest.TestCase):
         # and round 2 gets its own reader — round 1's is no longer fresh.
         self.assertRegex(
             implement(),
-            r"Per criterion, wording fixed at the mini gate re-enters the "
-            r"questions\s+once with its own fresh reader, and further churn "
-            r"on that criterion\s+goes to the user",
+            # M202 (D-144): no mini gate; the agent's fix or a user's fix at
+            # a stop re-enters.
+            r"Per criterion, wording the agent fixes after the reader's "
+            r"findings, or\s+a user fixes at a stop, re-enters the questions "
+            r"once with its own fresh\s+reader, and further churn on that "
+            r"criterion goes to the user",
         )
 
 

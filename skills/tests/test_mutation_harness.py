@@ -954,15 +954,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
-        test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
+        test="TestPerSkillDirectives.test_implement_stop_chips",
         target="skills/milestone-implement/SKILL.md",
-        block="conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (Mandated-substance rule).",
+        block="substance compactly in the chip and verbatim in the chat above,",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
-        test="TestPerSkillDirectives.test_implement_gate_and_mini_gate",
+        test="TestPerSkillDirectives.test_implement_stop_chips",
         target="skills/milestone-implement/SKILL.md",
-        block="mini gate's chip (acceptance chips, tracking-rules)",
+        block="guaranteed-rendered position at the chip (acceptance chips,",
     ),
     Mutation(
         guard="test_gate_conclusion_preview",
@@ -1019,25 +1019,25 @@ REGISTRY = [
         guard="test_gate_wording",
         test="TestPhaseCloseBlock.test_rule_states_close_block_never_a_chip",
         target=RULES,
-        block="ends with a **close block**, never a chip",
+        block="skill outside the run. It is never a chip.",
     ),
     Mutation(
         guard="test_gate_wording",
         test="TestPhaseCloseBlock.test_rule_hands_the_user_the_fenced_command",
         target=RULES,
-        block="the next skill — the user runs the fenced command",
+        block="the next skill: the user runs the fenced",
     ),
     Mutation(
         guard="test_gate_wording",
         test="TestPhaseCloseBlock.test_rule_carries_the_safety_line",
         target=RULES,
-        block="adjusting course or `/clear` are both safe at this point",
+        block="course or `/clear` are both safe at this point",
     ),
     Mutation(
         guard="test_gate_wording",
         test="TestPhaseCloseBlock.test_rule_spares_decision_gates",
         target=RULES,
-        block="unaffected: a gate is a choice, a phase end is a",
+        block="are unaffected: a gate is a choice, and a close is a handoff",
     ),
     # M155: the Mandated-substance rule's four operative clauses each carry
     # the doctrine independently (per-block discipline, M53) — the rendering
@@ -1573,15 +1573,15 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_clear_findings_are_fixed_and_the_fix_reported",
+        test="TestPlanGateCriteriaAudit.test_findings_are_disposed_by_the_agent_and_logged",
         target="skills/milestone-plan/SKILL.md",
-        block="a finding with one clear right answer is fixed\n   and the fix reported in chat",
+        block="each finding is fixed or answered, and its disposition is reported in",
     ),
     Mutation(
         guard="test_fresh_context_readers",
-        test="TestPlanGateCriteriaAudit.test_judgment_findings_become_gate_questions_under_the_cap",
+        test="TestPlanGateCriteriaAudit.test_arguable_findings_are_decided_toward_the_narrower_promise",
         target="skills/milestone-plan/SKILL.md",
-        block="becomes one of this round's questions, within the three-marker\n   cap",
+        block="either way is decided toward the narrower promise.",
     ),
     Mutation(
         guard="test_fresh_context_readers",
@@ -1739,7 +1739,7 @@ REGISTRY = [
         guard="test_fresh_context_readers",
         test="TestAmendmentReaudit.test_reentry_is_once_per_criterion_with_its_own_fresh_reader",
         target=IMPLEMENT,
-        block="Per criterion, wording fixed at the mini gate re-enters the questions\n     once with its own fresh reader, and further churn on that criterion\n     goes to the user",
+        block="Per criterion, wording the agent fixes after the reader's findings, or\n     a user fixes at a stop, re-enters the questions once with its own fresh\n     reader, and further churn on that criterion goes to the user",
     ),
     # M121 (narrows D-067, first instrument). Three entries across two files:
     # the record requirement, the sentence making a missing line evidence, and
@@ -1841,6 +1841,7 @@ REGISTRY = [
         target="skills/milestone-plan/SKILL.md",
         block="simplifying or deleting the checker as the recommended option",
     ),
+    # M202 review F23: hardening stays a present, non-recommended option.
     Mutation(
         guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_hardening_stays_present_but_non_recommended",
@@ -1883,7 +1884,7 @@ REGISTRY = [
         guard="test_stakes_tier",
         test="TestCheckerRegressClause.test_deletion_is_the_recommended_option",
         target="skills/milestone-plan/SKILL.md",
-        block="On such a hit the gate poses",
+        block="On such a hit the step-3 set poses",
     ),
     # M142 defect return #2: whole-slice equality fixtures (D-103's
     # instrument) — one entry per fixture, each anchored on a phrase the
@@ -2445,13 +2446,13 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestReturnFloor.test_sub_floor_findings_triage_with_no_status_change_and_are_logged",
         target=REVIEW,
-        block="Every other actioned finding takes the triage above — fix now / follow-up\n   / reject — with no status change, and is logged",
+        block="Every other actioned finding takes its disposition above with no status\n   change, and is logged",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestReturnFloor.test_amendment_return_is_the_named_exception",
         target=REVIEW,
-        block="The amendment return\n   below is the one named exception",
+        block="The amendment return below is the one named\n   exception",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -2463,7 +2464,7 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestReturnFloor.test_floor_return_takes_step_4_exit",
         target=REVIEW,
-        block="A floor return\n   takes step 4's exit — a work-log line naming exactly what failed, stop.",
+        block="A floor return takes step 4's exit: a\n   work-log line naming exactly what failed, then the return to\n   `/milestone-implement`.",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -2481,7 +2482,7 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestReturnFloor.test_amendment_route_convenes_the_amendment_alone",
         target=REVIEW,
-        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone, and review stops there",
+        block="routes to the gated\n   criterion-amendment protocol (`/milestone-implement` step 6) and\n   re-review, the amendment the only work convened; status is set to\n   `in-progress` for that amendment alone, and review invokes\n   `/milestone-implement <id>` through the Skill tool for it",
     ),
     Mutation(
         guard="test_thrash_rule",
@@ -3106,7 +3107,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestPlanGateAcknowledgement.test_gate_poses_one_option_for_all_slotted_issues",
         target=PLAN,
-        block="the gate poses one option offering an",
+        block="the set poses one option offering an",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3265,7 +3266,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
         target=README,
-        block="plan gate offers one option to post `Queued as M<NNN>: <title>`",
+        block="plan question set offers one option to post `Queued as M<NNN>: <title>`",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3581,10 +3582,9 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_pr_conversation_gate",
-        test="TestReviewStepSevenRead.test_four_triage_options",
+        test="TestReviewStepSevenRead.test_agent_disposes_each_item",
         target=REVIEW,
-        block="fix now / follow-up / reject with reason / noted (requests\n"
-              "   nothing)",
+        block="by step 5's rule (reject with reason, fix now, or follow-up), and an",
     ),
     Mutation(
         guard="test_pr_conversation_gate",

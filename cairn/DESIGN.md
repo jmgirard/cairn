@@ -33,6 +33,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   standalone two-phase (facts → principles) DESIGN.md elicitation interview
   (D-013), offered from `/cairn-init`'s close block; it recommends running
   the session on Fable (D-014).
+- The milestone run (M202): `/milestone-plan` asks the one question set,
+  then invokes `/milestone-implement` through the Skill tool, which invokes
+  `/milestone-review`; review asks the merge question and, after the merge,
+  invokes implement for the next workable milestone of the same plan. The
+  agent decides everything else with a work-log line and stops only at the
+  rulebook's closed stop list. The three skills stay separate, so typed
+  `/milestone-implement` or `/milestone-review` resumes a stopped run.
 - `skills/shared/tracking-rules.md` — the single rulebook. Conditional
   modules beside it: `validation-doctrine.md` (domain doctrine for
   numeric/scoring work, referenced from the rulebook — M58),
@@ -176,7 +183,7 @@ transitions, human-gated merges, and a domain verification doctrine.
 - Skill descriptions are written for trigger accuracy: `/hotfix`
   auto-triggers on bug reports *and on an incoming external PR* — it is
   bidirectional, authoring a fix or adopting one (M73); phase skills trigger
-  on explicit intent/chips.
+  on explicit intent or on the previous skill's Skill-tool handoff in a run.
 - Repos never pin plugin versions — whatever plugin version is installed is
   the law; a breaking change to the state-file format ships with migration
   handling in `/cairn-init` (ported from the founding spec at its removal,

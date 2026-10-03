@@ -88,6 +88,32 @@
 
 ### Changes that affect existing repos
 
+- **One question set, then the agent runs the milestone to the merge
+  question.** `/milestone-plan` asks one question set, then invokes
+  `/milestone-implement` itself, which invokes `/milestone-review` when its
+  tasks pass. The set asks only what you alone can settle: what to work on,
+  open choices about what you will get, files, access, or looks that
+  implement or review will need, and permission for foreseen outward
+  actions and dependency changes. The agent decides criteria wording,
+  criteria-audit findings, splits, approach, test scope, and changelog
+  entries, and logs each in the milestone's work log. Implement asks no
+  question round of its own. It stops only at a listed stop, such as an
+  action the question set did not cover or an amendment that changes what
+  you get. Review settles each reviewer finding itself. It
+  rejects a finding that is false, a style or linter item, or a complaint
+  about a planned change, with the reason. It fixes a real finding inside
+  the milestone's scope on the branch, and it sends the rest to candidate
+  rows. The merge question lists each finding's outcome. After a merge,
+  review starts the next milestone of the same plan that is ready to
+  start. Between the two questions the run stops only for a short list in
+  the rulebook, such as needing your eyes or hands, an action the question
+  set did not cover, repeated review failures, or a CI wait that times
+  out. Typing `/milestone-implement` or `/milestone-review` with the
+  milestone id resumes a stopped run. The routing section that
+  `/cairn-init` writes into a new `CLAUDE.md` describes the run. Repair
+  never rewrites a section a repo already has, so an existing section keeps
+  its old wording until you edit it by hand.
+
 - **A plugin repo with no `cairn/PROFILE.md` now infers `claude-plugin`.**
   This applies when the repo has no R or Python marker. Before, it inferred
   `generic`, or `docker-image` when a `Dockerfile` was present, so its verify

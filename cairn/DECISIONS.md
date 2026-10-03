@@ -5276,3 +5276,58 @@ an older Claude Code. A separate opt-in plugin is the fallback if an
 older or mod-disabled Claude Code refuses the mixed hooks file or drops
 the guards. Verification now needs the `claude` binary, which desktop
 shells do not have on the PATH, so the verify slot says where to find it.
+
+### D-144 (2026-10-03): One question set, then the run goes on to the merge question — supersedes the rulebook's three-gate clause, D-124's per-phase close-block handoff, D-067's plan-gate question for an arguable criteria-audit finding, and D-110's maintainer-triage clause; annotates D-003, D-022, and D-050 (M202)
+
+**Context:** The milestone loop asked the user at three points and ended
+each phase with a close block that the user had to answer by typing the
+next command. The plan evidence in M202's work log shows that almost all
+answered questions took the recommended option, and that the questions
+whose answers changed the outcome were about scope, goal, and live looks,
+which the user alone can settle. The rest cost the user a stop and a typed
+command each.
+
+**Decision:** A milestone run has two gates: the plan question set and the
+merge question. The question set asks only what the user alone can settle:
+what to work on, open choices about what the user will get, files, access,
+or looks that implement or review will need, and permission for foreseen
+outward actions and dependency changes. The agent decides everything else
+(criteria wording, criteria-audit findings, splits and order, approach,
+test scope, changelog entries, implementation choices, review-finding
+dispositions) and records each in a work-log line. A question the agent
+cannot phrase without cairn's terms is one it decides. Between the gates a
+run stops only at the closed list in the rulebook's "Question gates and
+phase closes". Inside a run each phase ends by invoking the next skill
+through the Skill tool: plan to implement, implement to review, and review
+to the implement phase of the next workable milestone of the same plan,
+found from the plan commit's subject. The close block ends the run. Review
+settles each finding itself: it rejects a false, style or linter, or
+planned-change finding with a reason, fixes a real in-scope finding on the
+branch, and sends the rest to candidate rows; the merge question lists each
+disposition. Implement asks no question round, and a substantive amendment
+stops for the user only when it drops something asked for or changes what
+the user sees. Rejected: one merged skill for the whole loop (each skill
+keeps its trigger text and its resume role, D-140); a stop after each
+merge (the user chose to run a plan's milestones in a row); a fix-now
+question at review.
+
+Superseded: the rulebook's "exactly three gates" clause; D-124's "every
+phase or skill ends with a close block", which now holds only at the end
+of a run, at a stop, and outside the run (its chip-less close shape and
+self-sufficient gate chips stand); D-067's clause that an arguable
+criteria-audit finding becomes a plan-gate question; D-110's "the
+maintainer triages the ranked list at the approval gate" (the ranked list,
+the no-filter instruction, and the logged dispositions stand). Annotated:
+D-003 and D-022, whose one-click glue between phases returns as an
+agent-side Skill-tool call with no user stop; D-050, whose parking offer
+moves from review's last chip to the close block, which leads with
+`/milestone` to pose it.
+
+**Consequences:** The user answers one question set and one merge question
+per run, and typed `/milestone-implement` or `/milestone-review` resumes a
+stopped run. A run crosses phase and milestone seams in one session, so
+every seam's state must be on disk. Falsifiers, from the plan gate: a run
+that loses its place at a phase seam reopens the Skill-tool handoff; a run
+whose condensed context drops a fact the tracking files did not hold
+reopens running a plan's milestones in a row; merged runs whose finding
+dispositions the user reverses reopen review's own settling.

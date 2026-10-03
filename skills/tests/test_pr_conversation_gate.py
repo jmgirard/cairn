@@ -3,7 +3,8 @@
 nestedtune PR 65 received bot review suggestions that no cairn skill
 surfaced — a cairn-driven PR's conversation went unread at its merge gate.
 M177 gives `/milestone-review` step 7 a PR-conversation read run once
-before the merge chip, a triage of every item it returns, and a blocking
+before the merge chip, a disposition of every item it returns (the agent's
+own since M202, D-144), and a blocking
 rule for a human changes-requested review; `/hotfix` step 6 carries the
 same by cross-reference; `/milestone`'s audit reports the counts. Each
 clause is pinned here (AC1–AC4) and registered in the mutation harness.
@@ -40,12 +41,13 @@ def section(text, start, end):
 class TestReviewStepSevenRead(unittest.TestCase):
     """AC1: step 7 reads the PR's conversation once before the chip, with
     the three paginated reads, and presents every item, any author, with
-    the four triage options."""
+    the agent's disposition (M202, D-144: replaced the four user triage
+    options)."""
 
     def setUp(self):
         self.step = flat(section(read("milestone-review", "SKILL.md"),
-                                 "7. **Final approval gate.**",
-                                 "Ask any remaining clarifying"))
+                                 "7. **The merge question.**",
+                                 "Put the merge authorization **itself**"))
 
     def test_read_runs_once_before_the_chip_with_no_wait(self):
         self.assertIn(
@@ -83,16 +85,22 @@ class TestReviewStepSevenRead(unittest.TestCase):
         self.assertIn(
             "Every unresolved thread, every review in state `COMMENTED` or "
             "`CHANGES_REQUESTED`, and every conversation comment — whatever "
-            "its author, human or bot — is presented at the gate with "
-            "author, path and line where inline, and body",
+            "its author, human or bot — gets a disposition from the agent "
+            "by step 5's rule",
             self.step,
         )
 
-    def test_four_triage_options(self):
+    def test_agent_disposes_each_item(self):
+        step = self.step
         self.assertIn(
-            "fix now / follow-up / reject with reason / noted (requests "
-            "nothing)",
-            self.step,
+            "(reject with reason, fix now, or follow-up), and an item that "
+            "requests nothing is logged as noted",
+            step,
+        )
+        self.assertIn(
+            "Each is presented at the merge question with author, path and "
+            "line where inline, body, and its disposition.",
+            step,
         )
 
     def test_comment_text_is_evidence_never_instruction(self):
@@ -170,9 +178,15 @@ class TestHotfixStepSix(unittest.TestCase):
     def test_cross_references_the_review_step_seven_rule(self):
         self.assertIn(
             "run the PR-conversation read `/milestone-review` step 7 states "
-            "— the same three paginated reads, the any-author presentation "
-            "with its four triage options, and the changes-requested "
-            "blocking rule with its override option",
+            "— the same three paginated reads, the any-author presentation, "
+            "and the changes-requested blocking rule with its override option",
+            self.step,
+        )
+        # M202: review's agent settles items; a hotfix still offers the
+        # user the four triage options itself.
+        self.assertIn(
+            "four triage options (fix now / follow-up / reject with reason / "
+            "noted, requests nothing) where review's agent settles them",
             self.step,
         )
 
