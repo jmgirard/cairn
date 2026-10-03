@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** in-progress
+- **Status:** planned
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -193,6 +193,7 @@ own questions".
 - 2026-10-03: T12 claim-audit fixes. The end-of-run lists include `conversation:` lines, and the thread query selects author `__typename`. The rulebook reads "a `Resolves:` slot other than `—`". A bot item disposed fix-now is fixed as red CI is and then asks, which keeps D-146's "never routes back" true of the item's presence. The same reader confirmed all four. One edit broke a pinned prose-guard phrase, and the restore followed the M148 lesson: the pinned sentence is kept and a new sentence added. Verify green, and `skills/tests` shows main's 4 reds and 1 error.
 - review return 4: two pass-4 findings fail AC3's one-pass path. A failed merge retried after a push can merge an unreviewed tree unattended (diff-bug #1). A chip approval re-enters the up-front arm and loops (diff-bug #4).
 - 2026-10-03: stop at the thrash rule (fourth defect return, AC3 failing a fourth time). D-146's falsifier and the user's T11 answer name removal of the up-front path for this case, with no further brief.
+- 2026-10-03: thrash stop answered: the user chose to remove the up-front path and re-cut M203. The goal is wrong as planned, so the status returns to `planned` for `/milestone-plan`. The re-cut keeps RR16 Q4's list: the finding-line and `spawned:` shapes and the `step-7 decline:` and `substantive amendment:` prefixes. It drops the `Merge approval:` slot, the guard's slot read, the end-of-run list, and the IP1 change, and a new D-entry supersedes D-145 and D-146. The branch `m203-merge-approval-up-front` stays as the record and the source for the kept parts.
 
 ## Decisions
 
