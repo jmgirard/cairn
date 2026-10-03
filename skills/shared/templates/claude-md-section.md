@@ -11,11 +11,13 @@ git model. Classify first:
   directly to the default branch.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
-  `/milestone-plan` (then `/milestone-implement` → `/milestone-review`).
+  `/milestone-plan`. One question set follows, then the run goes on through
+  implement and review to the merge question; typed `/milestone-implement`
+  or `/milestone-review` resumes a stopped run.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on the default branch** outside a milestone/hotfix
   branch; nothing reaches it without the user's explicit approval at the
-  review gate.
+  merge question.
 
 Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct

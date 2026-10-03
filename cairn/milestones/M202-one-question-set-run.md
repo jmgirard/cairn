@@ -138,7 +138,7 @@ rule stay as they are. Only who settles their findings changes.
       (lines 283-304) and the PR-conversation triage (lines 375-407). Then
       the clarifying-questions sentence and the "third gate" wording (lines
       409-411), and the step-10 handoff to the next milestone of the plan.
-- [ ] T5: The surfaces in AC6, and the D-entry. Grep the repo for the old
+- [x] T5: The surfaces in AC6, and the D-entry. Grep the repo for the old
       phrasing first (the M112 lesson), and fix each hit outside history.
 - [ ] T6: In `skills/tests`, update or delete the assertions that pin the
       retired wording: `test_gate_wording.py:93`,
@@ -163,6 +163,7 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T2 done. Plan step 3 names the four kinds of question and what the agent decides; audit findings, collisions, inbox hits, and the checker-regress shape are settled by the agent with a work-log line; step 7 hands off to `/milestone-implement` through the Skill tool, with a close block when another milestone is in progress, a plan alone was asked, or nothing is workable. Verify green.
 - 2026-10-03: T3 done. Implement has no question round; uncovered dependency or outward actions and the escalation offer are stops; substantive amendments are made with a work-log line and stop only when they drop something asked for or change what the user sees; D-118 widening reaches criteria only at a stop; step 8 lists the stops with the stop close block and CI line; step 9 hands off to `/milestone-review` through the Skill tool.
 - 2026-10-03: T4 done. Review settles each finding (reject with reason, fix now, follow-up) and each PR item (plus noted); gate and floor failures return to implement through the Skill tool; the clarifying-questions sentence is gone; the merge question lists dispositions; step 9 files a new cross-referencing row in place of the records-hygiene §7 chip (§7 now names `/milestone` alone); step 10 hands off to the next workable milestone of the plan, read from the plan commit subject, and moves release parking to `/milestone` in the close block.
+- 2026-10-03: T5 done. README (core loop, worked example, session paragraph, skill table, "What the system expects from you", inbox and issue lines), CHANGELOG entry, DESIGN architecture and trigger convention, routing template, and this repo's CLAUDE.md describe the run; D-144 records it (supersedes the three-gate clause, D-124's per-phase handoff, D-067's arguable-finding question, D-110's maintainer triage; annotates D-003, D-022, D-050). AC1 grep outside `skills/tests` prints nothing. The CHANGELOG claim on repair was read against `/cairn-init` §3 (repair never rewrites authored content) and narrowed. README line 161's band example keeps the chapter "Question gate", which the band tests use as a fixture.
 
 ## Decisions
 

@@ -19,10 +19,12 @@ first:
   main.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
-  `/milestone-plan` (then `/milestone-implement` → `/milestone-review`).
+  `/milestone-plan`. One question set follows, then the run goes on through
+  implement and review to the merge question; typed `/milestone-implement`
+  or `/milestone-review` resumes a stopped run.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without explicit user approval at the review gate.
+  reaches main without explicit user approval at the merge question.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
