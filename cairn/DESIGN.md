@@ -119,8 +119,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   turn raises `turn.complete` with reason `aborted` and no Stop, so it keeps
   the step. Every `session.end` clears it too. A Stop that lists work
   in flight, a blocked Stop, and a subagent's Stop keep it, and so do a
-  `task-notification` prompt and every `turn.complete`, which only reads
-  the files again. The hooks do not read `session_crons`, so a skill that
+  `task-notification` prompt and every `turn.complete`, which reads the
+  files again and clears `expanded`. The hooks do not read `session_crons`, so a skill that
   waits through `ScheduleWakeup` or a cron loses its step at that Stop. `SKILL_LABELS` in
   `band.ts` gives each skill's label, held to the `skills/*/SKILL.md` list
   that `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,

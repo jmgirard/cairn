@@ -16,7 +16,8 @@ import { loadBand } from './reader'
 // planned milestone (band.ts picks the row). A skill's step ends at the
 // first main-loop Stop with no background work in flight that no hook
 // beneath blocks, or at a prompt the operator types while the session is
-// idle, so the label holds while the skill waits on background work and
+// idle, unless a cairn skill's prompt was expanded since the last prompt,
+// Stop, or turn end, as a typed cairn slash command's is. So the label holds while the skill waits on background work and
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,
@@ -39,11 +40,12 @@ const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as C
 
 // The running cairn skill and the last chapter marked since its prompt was
 // expanded, until a main-loop Stop with nothing in flight or an idle typed
-// prompt ends it (the `classic.Stop` and `prompt.submit` hooks); null while
-// no cairn skill runs.
+// prompt ends it (the `classic.Stop` and `prompt.submit` hooks). A typed
+// prompt that finds `expanded` set keeps it; null while no cairn skill runs.
 const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
 
-// True from a cairn skill's prompt until the next prompt, Stop, or turn end.
+// True from a cairn skill's prompt until the next prompt, Stop, turn end, or
+// session end.
 // The engine expands a typed slash command before it raises the command's
 // prompt, so that prompt finds this set and keeps the step the command just
 // started (M201).
@@ -90,7 +92,7 @@ export const register: Register = on => {
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
     await update($, expanded, () => false)
-    if (e.agent_id !== undefined || result.block !== undefined) return result
+    if (e.agent_id !== undefined || result?.block !== undefined) return result
     if ((e.background_tasks ?? []).length === 0) {
       await update($, step, () => null)
       await refresh($)
@@ -149,6 +151,7 @@ export const register: Register = on => {
   on('session.end', async ($, e, next) => {
     const result = await next(e)
     await update($, step, () => null)
+    await update($, expanded, () => false)
     await update($, dismissed, () => null)
     return result
   })

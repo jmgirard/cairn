@@ -168,7 +168,8 @@ row shows its label and slash command only. The skill and its chapter
 stay until Claude stops with no background work in flight, such as after
 the skill's closing summary. A question chip the skill asks you waits
 inside the turn, so the skill stays while you answer it. A question asked
-in plain text ends the turn, and the skill with it. When Claude ends a turn
+in plain text ends the turn. With no background work in flight, the skill
+ends with it, and otherwise your typed answer ends it. When Claude ends a turn
 to wait for background work, such as the reviewers that
 `/milestone-review` starts, the skill stays through the wait and through
 the turns that the work's notices start. A prompt you type while Claude is
