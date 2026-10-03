@@ -131,7 +131,7 @@ rule stay as they are. Only who settles their findings changes.
       questions of the set, criteria-audit findings settled by the agent,
       and step 7 with the Skill-tool handoff. The plan commit subject names
       the IDs of the run, so review can find the next one.
-- [ ] T3: `skills/milestone-implement/SKILL.md`: remove the step-3 question
+- [x] T3: `skills/milestone-implement/SKILL.md`: remove the step-3 question
       round (lines 70-81 today), keep the escalation offer as a stop, make
       step-6 amendments without a gate, and end step 9 with the handoff.
 - [ ] T4: `skills/milestone-review/SKILL.md`: findings settled by the agent
@@ -161,6 +161,7 @@ rule stay as they are. Only who settles their findings changes.
 - re-audit: AC5 (full) — wording can be met; the step-9 records-hygiene chip and the step-10 release-parking chip fall outside "only" (T4 retires both, the D-entry annotates D-050); D-110 to be named by the D-entry. No further reader for AC5.
 - 2026-10-03: T1 done. The rulebook names two gates, the closed stop list, a run-scoped early-stop clause, and a close block that ends the run; Context hygiene covers a run across seams; dependency changes go to the question set or a stop. Verify green (scripts 0 fail, hooks 0 fail, validate passed, plugin test 632 pass).
 - 2026-10-03: T2 done. Plan step 3 names the four kinds of question and what the agent decides; audit findings, collisions, inbox hits, and the checker-regress shape are settled by the agent with a work-log line; step 7 hands off to `/milestone-implement` through the Skill tool, with a close block when another milestone is in progress, a plan alone was asked, or nothing is workable. Verify green.
+- 2026-10-03: T3 done. Implement has no question round; uncovered dependency or outward actions and the escalation offer are stops; substantive amendments are made with a work-log line and stop only when they drop something asked for or change what the user sees; D-118 widening reaches criteria only at a stop; step 8 lists the stops with the stop close block and CI line; step 9 hands off to `/milestone-review` through the Skill tool.
 
 ## Decisions
 
