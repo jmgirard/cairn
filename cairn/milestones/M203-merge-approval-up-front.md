@@ -130,7 +130,7 @@ own questions".
       `skills/shared/templates/milestone.md`. Add the merge question to the
       step-3 list of `skills/milestone-plan/SKILL.md` and the slot write to
       step 4.
-- [ ] T3: `skills/milestone-review/SKILL.md` steps 5, 7, and 8: the
+- [x] T3: `skills/milestone-review/SKILL.md` steps 5, 7, and 8: the
       route-back cases, the up-front path, the work-log line, the marker
       after green CI, and the end-of-run list of dispositions. Step 5 gives
       each finding its lens, rank, and disposition, and records the spawned
@@ -164,6 +164,7 @@ own questions".
 - 2026-10-03: substantive amendment of AC1 to AC4 at the user's answer: the second reader's seven fixes applied, the "no stop fired" condition dropped (the user is present at each stop and types the resume), no third reader. T3 and T4 widened to match, T7 ticked.
 - 2026-10-03: T1 done: IP1 adds the two gates for a milestone merge, D-145 records the change, its route-back cases, and the D-138, D-144, and D-043 links. Verify green (scripts 395 OK, hooks 174 OK, plugin validate and test 632 pass).
 - 2026-10-03: T2 done: template slot defaults to `at the end`; plan step 3 adds the per-milestone merge question, step 4 the slot write with the re-cut rule. No script parses header slots, so no parser change. Verify green.
+- 2026-10-03: T3 done. Review step 7 reads the default-branch slot and runs the route-back checks, step 8's up-front arm writes the marker only after green CI, resume route (c) re-runs the check, and steps 7 and 10 carry the end-of-run list. To make the checks readable from files, step 5 logs each finding as `<lens> #<rank>: … — <disposition>` with a `spawned:` line, a decline writes `step-7 decline:`, and implement step 6 opens its line `substantive amendment:`. Verify green. `skills/tests` resume_routing has one red in `/hotfix` text, the same on the pre-edit tree.
 
 ## Decisions
 
