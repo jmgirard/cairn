@@ -139,7 +139,7 @@ own questions".
 - [x] T4: The slot read, the deny text, and the docstring in
       `hooks/merge_guard.py`, with the `hooks/tests` tests of AC4.
 - [x] T5: The surfaces in AC5.
-- [ ] T6: Run the verify slot and `cairn_validate`.
+- [x] T6: Run the verify slot and `cairn_validate`.
 - [x] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
 
 ## Work log
@@ -167,6 +167,7 @@ own questions".
 - 2026-10-03: T3 done. Review step 7 reads the default-branch slot and runs the route-back checks, step 8's up-front arm writes the marker only after green CI, resume route (c) re-runs the check, and steps 7 and 10 carry the end-of-run list. To make the checks readable from files, step 5 logs each finding as `<lens> #<rank>: … — <disposition>` with a `spawned:` line, a decline writes `step-7 decline:`, and implement step 6 opens its line `substantive amendment:`. Verify green. `skills/tests` resume_routing has one red in `/hotfix` text, the same on the pre-edit tree.
 - 2026-10-03: T4 done. `cairn_common` gains `marker_up_front_milestone` and `default_branch_merge_slot`, which read the slot at `refs/remotes/<base>/<default>`. `merge_guard` denies an up-front marker unless that slot reads `up front`, and its docstring and missing-marker text name both gates. `TestMergeGuardUpFront` has 13 tests. Three planted defects each turned their target test red: a working-tree read, a local-branch read, and a match on any milestone's slot. Verify green (hooks 187 OK).
 - 2026-10-03: T5 done. The rulebook approval bullet lists the route-back cases and the up-front marker, and its merge-question gate bullet names the skip. README "Merges are yours", the routing template, the CLAUDE.md section (26 lines), and a CHANGELOG entry state the up-front approval and the cases. Verify green.
+- 2026-10-03: T6 done. Verify green: scripts 395 OK (21 skipped), hooks 187 OK, plugin validate passes with warnings, plugin test 632 pass, `cairn_validate` all checks passed. The hand-run `skills/tests` showed two new reds in `test_section_allow_lists`, fixed by adding Merge approval to the rulebook's section-ownership table. It now has the 4 reds and 1 error that main has.
 
 ## Decisions
 
