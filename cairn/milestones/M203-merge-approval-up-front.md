@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -53,7 +53,7 @@ own questions".
       question writes `at the end`. A re-cut via `/milestone-plan` asks
       again and rewrites the slot. Review and the guard read `—` or a
       missing slot as `at the end`.
-- [ ] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips
+- [x] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips
       the merge question:
       - the default-branch copy of the slot reads `up front`,
       - the Goal, Scope, and Acceptance criteria text on the branch differs
@@ -106,7 +106,7 @@ own questions".
         reads `up front`.
 
       A legacy marker without `up front` behaves as before.
-- [ ] AC5: Five surfaces state the up-front approval and the cases that go
+- [x] AC5: Five surfaces state the up-front approval and the cases that go
       back to the merge question. Two are bullets: the approval bullet of the git
       model in `skills/shared/tracking-rules.md`, and "Merges are yours" in
       `README.md`. The others are
@@ -179,6 +179,8 @@ own questions".
 - 2026-10-03: T8 added for review return 1 (minor amendment, Coverage AC3 and AC5 gain T8). Done: the rulebook close-block shape, implement step 8, and review step 10 carry the end-of-run list at any close that ends the run. The routing template and the CLAUDE.md section list the route-back cases. To keep the CLAUDE.md section at 29 lines, its Trivial bullet now fits on one line. The template's file grows to 35 lines, past its "~25 lines" body note, which no check reads. DESIGN's `merge_guard` line names the slot read. Verify green, `skills/tests` at main's 4 reds and 1 error.
 - claim audit: 37 claims read, 2 corrected — CLAUDE.md, skills/shared/templates/claude-md-section.md
 - 2026-10-03: the T8 claim audit (commit f1c43f8 only) found both route-back lists missing the open-PR-thread case. Fixed, and the same reader confirmed both now match.
+- review return 2: two review findings fail what the up-front path does. The step-8 red-CI fix re-enters step 7's up-front check and can merge with no question, against AC3 (diff-bug #1). The guard's slot read can run past the hook's 15-second timeout through `git ls-remote` and leave the merge unguarded (blame-history #5). The other fix-now findings of pass 2 are in the Review section, marked "fix now".
+- amendment return: AC5 — "Three surfaces state the up-front approval and the cases that go back to the merge question: the approval bullet of the git model in `skills/shared/tracking-rules.md`, "Merges are yours" in `README.md`, and a `CHANGELOG.md` entry. `skills/shared/templates/claude-md-section.md` and the cairn section of `CLAUDE.md` state the up-front approval and point to the rulebook's approval bullet for the cases, each within the 30-line section cap. The verify slot passes as in AC7 of M202."
 
 ## Decisions
 
@@ -196,3 +198,35 @@ own questions".
 - AC4 evidence (2026-10-03): `hooks/merge_guard.py:3-6` (docstring) and its missing-marker deny (line 149) name the merge question and the plan question set. The up-front branch reads the slot through `cairn_common.default_branch_merge_slot` at `refs/remotes/<base>/<default>`, denies on an unread ref, file, or slot or a value other than `up front`, and names the value read (or why none) and its source. `python3 -m unittest discover -s hooks/tests -k UpFront`: 13 tests OK. They cover the allow case, a denial for another PR, `at the end`, `—`, a missing slot, working-tree-only, local-default-branch-only, no remote-tracking ref, an absent file, and another milestone's slot, plus the legacy marker. During T4, three planted defects each turned their target test red. Pass.
 - AC5 evidence (2026-10-03): the approval bullet of `skills/shared/tracking-rules.md` and "Merges are yours" in `README.md` state the up-front approval and list the route-back cases, and the `CHANGELOG.md` Unreleased entry does too. Verify, as in M202 AC7: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 187 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. FAIL on two surfaces: `skills/shared/templates/claude-md-section.md` and the cairn section of `CLAUDE.md` state the up-front approval but name the cases only as "any route-back case". They do not state the cases.
 - Consistency gate (2026-10-03): `cairn_validate` all checks passed (exit 0). IP1 changed, so `cairn_impact.py IP1` ran and listed 34 references. The DECISIONS, archive, and M203 references are history or this milestone. One live reference is unreconciled: `cairn/DESIGN.md:61-63` describes `merge_guard` as bound to the PR it approves and does not name the default-branch slot read for an up-front marker. The `generic` profile names no toolchain checks.
+- Pass 2 (2026-10-03, after review return 1). `origin/main` has not moved. AC3 evidence: the step 7 and step 8 text recorded above stands. The failed clause now holds at every run-ending close. The rulebook's close-block shape (`skills/shared/tracking-rules.md:417-419`) carries the end-of-run list at whichever stop or skill ends the run. Implement step 8 (`skills/milestone-implement/SKILL.md:233-234`) carries it at an implement stop. Review step 10 (`skills/milestone-review/SKILL.md:749-754`) carries it at step 10's close and at a CI timeout, decline, or thrash stop. Step 7 (line 441-447) carries it at the merge question. Pass.
+- Pass 2 AC5 evidence: `skills/shared/templates/claude-md-section.md:20-26` and the cairn section of `CLAUDE.md` (29 lines) now state the up-front approval and list the route-back cases. The T8 claim audit read the list against review step 7 and step 8 and found every case after one fix. The tracking-rules bullet, README, and CHANGELOG stand as recorded above. Verify: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 187 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
+- Pass 2 consistency gate: `cairn_validate` all checks passed. The one live IP1 reference from pass 1, `cairn/DESIGN.md:61-64`, now names the slot read for an up-front marker. The other `cairn_impact.py IP1` references are history or this milestone. Pass.
+- spawned: diff-bug (Opus), blame-history (Sonnet), prior-review (Sonnet)
+- diff-bug #1: after red CI the fix push re-enters step 7's up-front check, which can pass and merge with no question; step 8's exemption hides the push. — fix now (floor: AC3's "If CI is red or a fix is pushed, it asks the merge question" fails as executed)
+- diff-bug #2: route (c) pushes the unpushed PR-URL commit, so an up-front resume always reads "pushed after the PR opened". — fix now
+- diff-bug #3: step 8's "after this step's push" exemption is narrower than the rulebook's route-back case. — fix now (one definition: the PR head is the commit that added the up-front approval line)
+- diff-bug #4: an older pass's `spawned:` line satisfies the check after a later author-inline pass, and a partial fan-out passes too. — fix now
+- diff-bug #5: on a fresh PR, nothing reads the PR conversation before an unattended merge. — fix now (read after green CI, before the marker)
+- diff-bug #6: step 7 does not order the PR-conversation read before the up-front check. — fix now
+- diff-bug #7: "opens `substantive amendment:`" misses a dated line. — fix now ("carries")
+- diff-bug #8: the plan question promises an unattended merge where guest mode, an IP, a `Resolves:` slot, or a companion always routes back. — fix now
+- diff-bug #9: the guard denies a slot value wrapped in backticks. — fix now
+- diff-bug #10: a cairn root in a repo subdirectory denies every up-front merge (`git show ref:path` is root-relative). — fix now
+- diff-bug #11: `ls-tree` without `-z` quotes non-ASCII filenames, which then fail to match. — fix now
+- diff-bug #12a: a chip-form marker skips the slot read, and DESIGN, README, and the docstring overstate the guard. — fix now (state the limit)
+- diff-bug #12b: no tests for a zero-padded id, guest `upstream`, or a `cd`-target repo. — fix now for the zero-padded id; follow-up for guest and `cd`-target (row "Up-front merge approval follow-ons")
+- diff-bug #12c: "a Fable shortfall" names the Driving RR case differently from step 7. — reject (style: plain words for readers of the routing surfaces)
+- blame-history #1: the routing template's section is 33 lines, against the 30-line cap `cairn_validate` applies to an adopter's CLAUDE.md (27 on main). — fix now, through an amendment return of AC5 (the cap makes the list unreachable there)
+- blame-history #2: resume route (b) would run the up-front check and skip its post-hoc acceptance chip. — fix now
+- blame-history #3: same as diff-bug #12a. — fix now (as #12a)
+- blame-history #4: no resolvable default branch denies every up-front merge. — fix now (local fallback, with #5)
+- blame-history #5: the slot read can call `git ls-remote` plus three 10-second git calls, past the hook's 15-second timeout, leaving the merge unguarded. — fix now (floor: a guard that can time out open is a defect in what the hook does)
+- blame-history #6: same as diff-bug #5. — fix now (as diff-bug #5)
+- blame-history #7: same as diff-bug #2. — fix now (as diff-bug #2)
+- blame-history #8: stale prose says the run always ends at the merge question (README 251 and 323, DESIGN 36-38, plan 140 and 395, implement 254). — fix now for those sites
+- blame-history #9: the CLAUDE.md Trivial reflow is noise. — fix now (revert once the amended AC5 shortens the list)
+- prior-review #1: stale "merge question" sentences (M112 lesson). — fix now for the sites in blame-history #8; reject the rest as false (tracking-rules "two gates" and review's "second gate" stay true, because the plan question set is the other gate, and the README mermaid label names the default path)
+- prior-review #2a: an unreadable marker falls back to the existence check and is consumed (M100). — follow-up (changes M72's deliberate legacy fallback; row "Up-front merge approval follow-ons")
+- prior-review #2b: `startswith("up front")` accepts `up frontier`. — fix now (with diff-bug #9)
+- prior-review #3: the rulebook-size baseline is not re-seeded (M149). — follow-up (already in the "Run edge cases" row, M202 F4)
+- prior-review #4: `COMMENTED` reviews and conversation comments neither route back nor reach the end-of-run list (M177). — fix now (any item in the read routes back)
