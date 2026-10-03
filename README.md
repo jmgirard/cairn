@@ -421,9 +421,27 @@ profile.
   commit holds the state, and typing `/milestone-implement` or
   `/milestone-review` with the milestone id resumes the run.
 - **Merges are yours.** Nothing reaches your default branch without your
-  explicit approval at review. A guard hook mechanically blocks merges
+  explicit approval. You give it at the merge question at the end of
+  review, or up front in the plan's question set for each milestone you
+  choose. An up-front approval covers only the plan as you approved it.
+  The run comes back to the merge question in these cases:
+  - the goal, scope, or criteria change, or you declined an earlier merge
+    question,
+  - a criterion lacks evidence, or a finding marked for a fix is unfixed,
+  - review rejects a reviewer's top finding as false, or any finding as
+    false on a user-facing milestone,
+  - the review ran without its separate reviewers,
+  - the milestone touches an inviolable principle or adds a decision entry,
+  - the PR has a review that asks for changes, a Fable target fell short,
+    the repo is a guest one, a companion repo is involved, or the merge
+    would write to GitHub issues,
+  - CI fails, or a commit is pushed after the PR opens.
+
+  A milestone that merges up front lists its findings, and how each was
+  settled, at the end of the run. A guard hook mechanically blocks merges
   that lack a recorded approval, and the approval names the one PR it
-  covers. Starting a review is not merging; you get the evidence first.
+  covers. For an up-front approval the guard also checks that the plan on
+  your default branch says `up front`. Starting a review is not merging.
   (The guard watches what Claude runs, not what you do; see *Working with
   collaborators*.)
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a

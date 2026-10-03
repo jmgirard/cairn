@@ -17,7 +17,8 @@ git model. Classify first:
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on the default branch** outside a milestone/hotfix
   branch; nothing reaches it without the user's explicit approval at the
-  merge question.
+  merge question, or up front in the plan question set when the plan's
+  promise merges unchanged (any route-back case asks at the merge question).
 
 Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct

@@ -237,8 +237,15 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
   instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at the merge question.** Never force-push (the
-  force_push_guard hook denies it on the default branch); never merge red or pending CI.
+- **Nothing reaches the default branch without the user's explicit approval at a gate** (IP1, D-145): the merge question,
+  or up front in the plan question set for a milestone whose `Merge approval:` slot reads `up front` on the default
+  branch. An up-front approval holds only while the plan's promise merges unchanged. Each route-back case sends the run
+  to the merge question: a Goal, Scope, or criteria change beyond checkbox ticks, a substantive amendment, an amendment
+  return, or a declined merge question; an unevidenced criterion or an unfixed fix-now finding; a top-ranked finding
+  rejected as false, or any reject on a user-facing milestone; a review with no spawned reviewers; an IP in `Principles
+  touched:` or a D-entry added on the branch; a step-7 condition that adds to the merge question; red CI or a commit
+  pushed after the PR opened (`/milestone-review` steps 7 and 8). Removing or narrowing a case changes IP1. Never
+  force-push (the force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
   included. A `paths-ignore` of `cairn/**` skips such a push for `push` triggers and not for `pull_request` triggers,
@@ -255,7 +262,9 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
   it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
-  number out: `gh pr merge <N> --squash`.
+  number out: `gh pr merge <N> --squash`. An up-front marker (`M<NNN> approved up front YYYY-MM-DD per plan <sha> for
+  PR #<N>`) is written only after green CI, and the guard denies it unless the milestone's slot reads `up front` at
+  the base remote's remote-tracking default branch.
 - **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
   merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix; a URL or branch positional is denied
   separately, as not naming a checkable PR). In a multi-repo session, a companion repo's merge is spelled `cd
@@ -364,7 +373,9 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
   review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
   holds, ask the 3 that matter most. The agent decides the rest with a work-log line, unless one is a stop below.
 - **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
-  present, never a prose yes/no.
+  present, never a prose yes/no. A milestone approved up front in the question set skips it unless a route-back case
+  of the git model's approval bullet applies, and the close block or merge question that ends the run lists its
+  finding dispositions.
 
 Everything else in a run the agent decides itself and records in a work-log line. Skills outside the run (`/hotfix`,
 `/cairn-triage`, `/cairn-init`, `/cairn-release`, `/design-interview`, `/milestone`, `/milestone-brief`) state their own

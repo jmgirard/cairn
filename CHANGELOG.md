@@ -88,6 +88,33 @@
 
 ### Changes that affect existing repos
 
+- **Approve a merge in the plan's question set.** The question set of
+  `/milestone-plan` now asks whether to approve the merge of each milestone
+  up front or at the end. The plan writes the answer into a new
+  `Merge approval:` line in the milestone file's header, as
+  `up front YYYY-MM-DD` or `at the end`. For a user-facing milestone, or
+  one that touches an inviolable principle, it recommends `at the end`. A
+  milestone with the line missing or `—`, such as one planned before this
+  change, reads as `at the end`. If a milestone was approved up front,
+  `/milestone-review` merges it with no merge question. That holds only if
+  its goal, scope, and criteria merge as the plan committed them and no
+  route-back case applies. Each route-back case sends the run to the merge
+  question. The cases are a criteria or scope change, a declined merge
+  question, a missing criterion evidence line, an unfixed fix-now finding,
+  a top-ranked finding rejected as false (on a user-facing milestone, any
+  finding rejected as false), a review without its reviewers, a principle
+  or decision-log change, the existing reasons that add to the merge
+  question, and red CI or a push after the PR opens. Review writes the
+  approval marker only after CI is green. The merge guard then reads the
+  milestone's `Merge approval:` line from the base remote's default branch,
+  as last fetched. It denies the merge unless that line reads `up front`,
+  and the deny text names the value it read and where. The close block or
+  merge question that ends the run lists each finding of an up-front merge
+  with its outcome. Review now logs each finding with its reviewer and
+  rank, and records which reviewers ran. A declined merge question writes
+  a `step-7 decline:` work-log line. Inviolable principle IP1 changes to
+  name both approval points.
+
 - **One question set, then the agent runs the milestone to the merge
   question.** `/milestone-plan` asks one question set, then invokes
   `/milestone-implement` itself, which invokes `/milestone-review` when its
