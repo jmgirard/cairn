@@ -5331,3 +5331,62 @@ that loses its place at a phase seam reopens the Skill-tool handoff; a run
 whose condensed context drops a fact the tracking files did not hold
 reopens running a plan's milestones in a row; merged runs whose finding
 dispositions the user reverses reopen review's own settling.
+
+### D-145 (2026-10-03): IP1 gains a second gate for a milestone merge: an up-front approval in the plan question set, kept by route-back cases — changes IP1 by user decision; narrows D-138 and D-144; annotates D-043 (M203, RR15)
+
+**Context:** D-144 left a run with two gates, and the merge question is the
+last one. Because the PR opens only after that answer (D-138), CI waits on
+the user, so a run cannot finish while the user is away. The M202 record
+shows that the merge question rarely changed the outcome. The cases where
+it did change the outcome were amendments, rejected findings, principle
+changes, and degraded reviews. RR15 reviewed the change.
+
+**Decision:** At the 2026-10-03 plan gate the user chose that a merge can
+be approved in the plan question set. IP1 keeps its sentence and adds that,
+for a milestone merge, the gate is the merge question or the plan question
+set. The plan question set counts only for a milestone whose promise, as
+that plan committed it, merges unchanged and meets none of the route-back
+cases. The up-front approval comes before the diff exists. It approves the
+promise as the plan commit carries it, not the code. The route-back cases
+are the mechanism that keeps that promise unchanged. Each of these cases
+sends the run back to the merge question:
+
+- a change to Goal, Scope, or Acceptance criteria beyond checkbox ticks, a
+  substantive amendment, an amendment return, or a declined merge question,
+- a criterion without passing evidence, or a fix-now finding left unfixed,
+- a finding rejected as false that its lens ranked first, or any such
+  reject on a user-facing milestone,
+- a review with no spawned reviewers,
+- an IP in `Principles touched:`, or a D-entry added on the branch,
+- a step-7 condition that adds to the merge question,
+- red CI, or a commit pushed after the PR opened.
+
+Removing or
+narrowing a route-back case changes IP1 and takes this same procedure. The
+approval binds each milestone, so one answer can cover several milestones
+of a plan and the user can hold any of them for the end. A re-cut asks
+again. Rejected: a standing approval for every run of a repo (the user's
+choice at the gate); a D-entry alone with IP1's text unchanged, because it
+changes the read meaning of IP1 without changing its text (IP2); and
+dropping the up-front path, which RR15 rejects on the condition that the
+route-back cases ship with it.
+
+Narrowed: D-138's "the PR opens after the user's approval at the merge
+gate" now also admits the up-front approval, under which the PR opens with
+no user act. D-144's "one merge question per run" holds only for a
+milestone without an up-front approval or one that meets a route-back
+case. Under an up-front merge, the close block or merge question that ends
+the run lists each disposition. Annotated: D-043's "IP1 is touched only in
+its documentation and mechanical backing, never weakened". This entry
+changes IP1 by the IP procedure. The guard's backing grows: it reads the
+milestone's slot from the default branch for an up-front marker.
+
+**Consequences:** A run whose milestone was approved up front and met no
+route-back case merges with no user act and reports after the merge. The
+merge guard reads the `Merge approval:` slot from the remote-tracking
+default branch, so a slot written only on the branch cannot authorize a
+merge. Falsifiers, from the plan gate and RR15: an up-front merge that the
+user reverts or hotfixes for a defect that a rejected or follow-up finding
+named; the user reversing a disposition after reading the end-of-run list;
+the user choosing `at the end` on most plans. RR15 recs 10 to 13 are a
+candidate row.

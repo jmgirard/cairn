@@ -197,7 +197,10 @@ stance; tradeable with stated justification). IP block first; numbers run
 within each type and are never reused.
 
 - IP1: Nothing reaches the default branch without explicit user approval at a
-  gate.
+  gate. For a milestone merge the gate is the merge question or the plan
+  question set. The plan question set counts only for a milestone whose
+  promise, as that plan committed it, merges unchanged and meets none of the
+  route-back cases the rulebook lists (D-145).
 - IP2: Prior state is surfaced, never silently obeyed or silently
   overridden.
 - IP3: Nothing the user asked for is silently dropped (conservation:
