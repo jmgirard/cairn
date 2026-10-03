@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -134,6 +134,7 @@ own questions".
 - [x] T10: Execute the AC5 amendment: the two routing surfaces point to the
       rulebook bullet, the template is back under the cap, and the CLAUDE.md
       Trivial reflow is reverted.
+- [ ] T11: Take RR16 recs 1 to 6 to the step-6 amendment stop: the one-pass AC3, a D-entry, the pass-3 one-line fixes, one route-back list, the guard deny for an unset remote HEAD, and non-bot route-back. The other choice to offer is removal (rec 9).
 
 ## Work log
 
@@ -181,6 +182,7 @@ own questions".
 - 2026-10-03: stop at the thrash rule. Trigger (a): this is the third defect return. Trigger (b): AC3 has failed in three passes by three mechanisms (the end-of-run list at a stop, the red-CI re-entry, the approval-line keying and the moved default branch).
 - 2026-10-03: thrash stop answered: the user chose to escalate the up-front state machine via `/milestone-brief` before any more fixes, over the recommended one-pass descope.
 - 2026-10-03: blocked on RB16. The brief is committed on this branch, as RB15 was, because the milestone's state lives on the branch.
+- 2026-10-03: RR16 ingested (Fable, advisory, 12 recommendations). Apply: recs 1 to 6, through T11's amendment stop, because rec 1 narrows AC3 and changes what the user sees. Consider: rec 7 (pose the plan's merge question only when a plan has an internal, IP-free milestone) and rec 8 (a `resume:` line on routes (c) and (d)) go to the follow-on row. Rec 9 (removal) is the fallback offered at T11 and named for the next AC3 return. Rejected as RR16 reasons: rec 10 (the script leaves the writers in prose), rec 11 (new pass-id or base-oid writers are the mechanism of all three returns), and rec 12 (the main/master fallback guesses).
 
 ## Decisions
 
@@ -189,6 +191,13 @@ own questions".
 - 2026-10-03 (RR15 Q3): The approval binds each milestone, not the plan. One question can answer for several ids and lets the user hold any of them `at the end`. A re-cut asks again.
 - 2026-10-03 (RR15 Q4): The marker was always written by the agent. The guard's PR regex already accepts the `up front` form, so AC4's test is a regression guard. A stronger tie would have the guard read the milestone's `Merge approval:` slot from the base remote's default branch, with the marker and the work-log line citing the plan commit.
 - 2026-10-03 (RR15 Q5): RR15 recommends the IP1 wording "Nothing reaches the default branch without the user's explicit approval at a gate of the run: at the merge question, or in the plan question set for a milestone whose promise, as that plan committed it, then merges unchanged and with every check of the run passed." It rejects a D-entry alone with IP1 unchanged. It does not recommend dropping the up-front path, but only if recommendations 1 to 5 ship with M203.
+- 2026-10-03 (RR16 Q1): The skip rests on non-monotone predicates ("newest approval line", "this pass", "moved since") read over an append-only log. Four readers key the approval line four ways, and three facts the readers need (pass identity, base oid at evidence time, "fixed") have no writer. The route-back list is enumerated by hand in six places. The design as written is an open set.
+- 2026-10-03 (RR16 Q2): A verifiable full design needs every predicate monotone, with the approval line one-shot. A script could compute "may skip", but it leaves the writers in prose, so the drift stays. Rejected for now.
+- 2026-10-03 (RR16 Q3): The one-pass rule removes pass-3 diff-bug #1 to #3 and blame #4 by construction. The up-front check runs only in an invocation that starts with an empty Review section and no PR for the branch, and step 8's arm is entered by control flow only. Checkable from three monotone facts at the start. Cost: a CI run longer than the foreground ceiling stops, and the resume asks.
+- 2026-10-03 (RR16 Q4): Under removal, keep only the finding-line and `spawned:` shapes and the `step-7 decline:` and `substantive amendment:` prefixes. In this repo, with no CI, removal costs the user's presence at each milestone end and no unattended chaining. Nearly every milestone here is user-facing, where the plan question recommends `at the end`, so the skip's domain here is small.
+- 2026-10-03 (RR16 Q5): RR16 recommends the one-pass narrowing, with removal as the fallback if the next review pass returns on AC3 again or the user judges the domain too small. AC1, AC2, AC4, and AC5 hold, and AC3 narrows. Narrowing the skip's domain (more cases ask) is not a narrowing of a route-back case.
+- 2026-10-03 (RR16 Q6): Only non-bot PR conversation items route back (author `type`, as M177's blocking rule), and bot items are logged and listed. The read after CI on a fresh PR takes a rejected D-138 alternative, so a D-entry narrows D-138 for it.
+- 2026-10-03 (RR16 Q7): For an unset `<base>/HEAD`, the guard denies and names `git remote set-head <base> -a`, and review step 1 runs that command with its fetch. The main/master fallback is a guess the rulebook forbids.
 
 ## Review
 
