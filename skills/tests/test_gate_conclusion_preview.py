@@ -3,9 +3,10 @@
 Locks the "Acceptance chips show what's accepted" rule in
 `tracking-rules.md` (AC1), the cross-reference from "Chips carry choices,
 not evidence" (AC2), and the one-line directives at the five
-conclusion-feeding chip steps (AC3): `/milestone-plan` question gate,
-`/milestone-implement` question gate + amendment mini-gate,
-`/milestone-review` approval gate, `/milestone-brief` RB gate +
+conclusion-feeding chip steps (AC3): `/milestone-plan` question set,
+`/milestone-implement` stop chips (step 3's escalation or dependency stop,
+step 6's amendment stop; M202, D-144 retired its question gate and mini
+gate), `/milestone-review` merge question, `/milestone-brief` RB gate +
 RR-ingestion routing, `/milestone` Route triage. Also anchors the
 previously-unguarded "Chips carry choices, not evidence" rule itself.
 
@@ -18,6 +19,7 @@ are matched case-insensitively.
 """
 
 import pathlib
+import re
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -38,15 +40,20 @@ class TestPerSkillDirectives(unittest.TestCase):
             read("milestone-plan", "SKILL.md"),
         )
 
-    def test_implement_gate_and_mini_gate(self):
+    def test_implement_stop_chips(self):
+        # M202 (D-144): the step-3 stop chip and the step-6 amendment stop
+        # carry the directive the retired question gate and mini gate did.
         t = read("milestone-implement", "SKILL.md")
-        self.assertIn(
-            "conclusion shows its substance compactly in the chip and verbatim in the chat above, best-effort (mandated-substance rule).",
+        self.assertRegex(
             t,
+            r"a question resting on a produced conclusion shows its\s+"
+            r"substance compactly in the chip and verbatim in the chat above,"
+            r"\s+best-effort \(mandated-substance rule\)\.",
         )
-        self.assertIn(
-            "mini gate's chip (acceptance chips, tracking-rules)",
+        self.assertRegex(
             t,
+            r"guaranteed-rendered position at the chip \(acceptance chips,"
+            r"\s+tracking-rules\)",
         )
 
     def test_review_approval_gate(self):

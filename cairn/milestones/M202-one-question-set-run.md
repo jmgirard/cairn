@@ -140,7 +140,7 @@ rule stay as they are. Only who settles their findings changes.
       409-411), and the step-10 handoff to the next milestone of the plan.
 - [x] T5: The surfaces in AC6, and the D-entry. Grep the repo for the old
       phrasing first (the M112 lesson), and fix each hit outside history.
-- [ ] T6: In `skills/tests`, update or delete the assertions that pin the
+- [x] T6: In `skills/tests`, update or delete the assertions that pin the
       retired wording: `test_gate_wording.py:93`,
       `test_chapter_marker_mandate.py:41-43`, `test_stakes_tier.py:83`,
       `test_gate_conclusion_preview.py:6-7`.
@@ -164,6 +164,7 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T3 done. Implement has no question round; uncovered dependency or outward actions and the escalation offer are stops; substantive amendments are made with a work-log line and stop only when they drop something asked for or change what the user sees; D-118 widening reaches criteria only at a stop; step 8 lists the stops with the stop close block and CI line; step 9 hands off to `/milestone-review` through the Skill tool.
 - 2026-10-03: T4 done. Review settles each finding (reject with reason, fix now, follow-up) and each PR item (plus noted); gate and floor failures return to implement through the Skill tool; the clarifying-questions sentence is gone; the merge question lists dispositions; step 9 files a new cross-referencing row in place of the records-hygiene §7 chip (§7 now names `/milestone` alone); step 10 hands off to the next workable milestone of the plan, read from the plan commit subject, and moves release parking to `/milestone` in the close block.
 - 2026-10-03: T5 done. README (core loop, worked example, session paragraph, skill table, "What the system expects from you", inbox and issue lines), CHANGELOG entry, DESIGN architecture and trigger convention, routing template, and this repo's CLAUDE.md describe the run; D-144 records it (supersedes the three-gate clause, D-124's per-phase handoff, D-067's arguable-finding question, D-110's maintainer triage; annotates D-003, D-022, D-050). AC1 grep outside `skills/tests` prints nothing. The CHANGELOG claim on repair was read against `/cairn-init` §3 (repair never rewrites authored content) and narrowed. README line 161's band example keeps the chapter "Question gate", which the band tests use as a fixture.
+- 2026-10-03: T6 done, delegated to one Opus agent and its diff read here. The branch had added 39 failures and 28 errors in `skills/tests`; 11 files re-anchored or rewritten to the new rules, none deleted, 21 mutation-harness entries repointed, 2 tests added. The agent found `/hotfix` step 6 still citing review's four triage options, so hotfix now names them itself (hotfix keeps its questions) and its test follows. skills/tests 663, the same 4 reds and 1 error as main.
 
 ## Decisions
 

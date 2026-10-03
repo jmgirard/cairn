@@ -176,9 +176,11 @@ a bare PR number resolves against the fork.
    only when a PR already exists — an adopted PR, or the PR-reference
    re-entry of an authored fix — run the PR-conversation read
    `/milestone-review` step 7 states — the
-   same three paginated reads, the any-author presentation with its four
-   triage options, and the changes-requested blocking rule with its
-   override option — an adopted
+   same three paginated reads, the any-author presentation, and the
+   changes-requested blocking rule with its override option, except that
+   a hotfix keeps its own questions: each item is offered to the user with
+   four triage options (fix now / follow-up / reject with reason / noted,
+   requests nothing) where review's agent settles them — an adopted
    PR's contributor comments in scope; the hotfix difference is that a
    hotfix keeps no milestone file, so each disposition, and a selected
    override, is stated in the chat presentation beside the item it

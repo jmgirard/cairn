@@ -13,6 +13,7 @@ lives on a single source line (M23) and steers clear of `**bold**` splits
 """
 
 import pathlib
+import re
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -34,9 +35,12 @@ class TestSearchFirstPointers(unittest.TestCase):
         )
 
     def test_milestone_review_points_to_the_rule(self):
-        self.assertIn(
-            "search-first candidate-creation rule",
+        # M202 (D-144) reworded step 5's follow-up disposition; the pointer
+        # now reads "search-first, per the candidate-creation rule".
+        self.assertRegex(
             read("milestone-review", "SKILL.md"),
+            r"search-first, per the\s+candidate-creation rule, "
+            r"`tracking-rules\.md` intake",
         )
 
 

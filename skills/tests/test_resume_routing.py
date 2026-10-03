@@ -114,7 +114,7 @@ class TestReviewResumeRoute(unittest.TestCase):
 
     def test_step_seven_records_the_approval_line(self):
         step7 = flat(section(read("milestone-review", "SKILL.md"),
-                             "7. **Final approval gate.**",
+                             "7. **The merge question.**",
                              "8. **On approval"))
         self.assertIn(
             "Approval appends one work-log line naming the branch it "
