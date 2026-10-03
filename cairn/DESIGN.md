@@ -261,3 +261,13 @@ within each type and are never reused.
   (hooks snapshot at process start, so a rule's runtime effect needs a fresh
   session to observe). A deliberate architectural bet, noted plainly rather
   than papered over (corrected M144).
+- The band's `expanded` mark (M201) has narrow gaps, accepted at the M201
+  review gate with no fix planned. A subagent's Stop or turn end in the
+  milliseconds between a typed cairn command's `skill.prompt` and its prompt
+  clears the mark, so that prompt ends the new step. A subagent that loads a
+  cairn skill sets the mark, so one idle typed prompt keeps the step. The
+  `prompt.submit` hook reads and clears the mark in two steps. A Stop that a
+  hooks module above cairn blocks still ends the step. The keep cases in
+  `band.test.tsx` do not check their closing Stop, and no case covers the
+  first gap or a session end with the mark set. Each gap leaves a wrong
+  label until the next Stop or typed prompt.

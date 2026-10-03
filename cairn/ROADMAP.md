@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-02 (M200 done via PR #207 and archived, M197 row and the "Band close-state edge cases" candidate pruned, five M200 review items in "Status mod follow-ons". Validate green. Byte and module budgets hand-read under cap. skills/tests 661 with the same 4 reds and 1 error as at M198, non-gating (D-109). No lessons.)_
+_Last hygiene check: 2026-10-03 (M201 done via PR #208 and archived, five M201 review items to DESIGN Known issues, M198 row pruned. Validate green. Byte budgets hand-read under cap, no doctrine module touched. skills/tests 661 with the same 4 reds and 1 error as at M198, non-gating (D-109). One lesson added, the M111 terminal-row lesson retired because `cairn_validate` now fails on it.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,12 +12,11 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M201 | A band label that holds through background waits | review | — | normal | milestones/M201-band-label-background-waits.md |
+| M201 | A band label that holds through background waits | done | — | normal | milestones/archive/M201-band-label-background-waits.md |
 | M202 | One question set, then the agent runs the milestone to the merge question | planned | — | normal | milestones/M202-one-question-set-run.md |
 | M203 | Approve the merge in the question set | planned | M202 | normal | milestones/M203-merge-approval-up-front.md |
 | M200 | A close button that holds through refreshes and session ends | done | — | normal | milestones/archive/M200-band-close-state.md |
 | M199 | A band that names the next milestone | done | — | normal | milestones/archive/M199-band-idle-line.md |
-| M198 | A muted band that matches the app's own bar | done | — | normal | milestones/archive/M198-muted-band.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
