@@ -29,36 +29,83 @@ own questions".
 
 ## Acceptance criteria
 
-- [ ] AC1: IP1 in `cairn/DESIGN.md` states that the user gives explicit
-      approval either in the plan question set or at the merge question. A
+- [ ] AC1: IP1 in `cairn/DESIGN.md` keeps its sentence that nothing
+      reaches the default branch without explicit user approval at a gate.
+      It adds the two gates for a milestone merge. One is the merge
+      question. The other is the plan question set, for a milestone whose
+      promise, as that plan committed it, merges unchanged. That milestone
+      also meets none of the route-back cases that the rulebook lists. A
       D-entry records the user decision that changes IP1 (RB tripwire:
       ip-touching). The D-entry states that the up-front approval comes
-      before the diff exists.
+      before the diff exists. It names the route-back cases as the
+      mechanism that keeps the promise unchanged, and states that removing
+      or narrowing a route-back case changes IP1. It narrows D-138 and
+      D-144 and annotates D-043 by name.
 - [ ] AC2: The milestone template carries a `Merge approval:` header slot.
       Step 3 of `skills/milestone-plan/SKILL.md` lists merge approval among
-      the questions of the set. The plan writes the slot from the answer,
-      as `up front YYYY-MM-DD` or `at the end`.
-- [ ] AC3: If all of these hold, `skills/milestone-review/SKILL.md`
-      merges without the merge question:
-      - the slot reads `up front`,
-      - CI is green, or the rulebook rule for a PR with no CI runs applies,
+      the questions of the set, with one answer for each milestone. When a
+      plan creates several, the user can hold any of them `at the end`. The
+      question states that a run with no route-back case merges unseen. It
+      also states that the code and the finding dispositions of such a run
+      appear only after the merge. For a user-facing or IP-touching
+      milestone, it recommends `at the end`. The plan writes each slot as
+      `up front YYYY-MM-DD` or `at the end`. A set that did not pose the
+      question writes `at the end`. A re-cut via `/milestone-plan` asks
+      again and rewrites the slot. Review and the guard read `—` or a
+      missing slot as `at the end`.
+- [ ] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips
+      the merge question:
+      - the default-branch copy of the slot reads `up front`,
+      - the Goal, Scope, and Acceptance criteria text on the branch differs
+        from that of the plan commit only in checkbox ticks (the plan
+        commit is the newest default-branch commit whose subject is
+        `plan …` and names M<NNN>),
+      - no work-log line records a substantive amendment, an
+        `amendment return:`, or a declined merge question,
       - each criterion has passing evidence,
-      - no finding that the reviewers rank as real and in scope is left
-        unfixed,
-      - no stop in the AC1 list of M202 fired,
+      - no finding the agent disposed fix-now is left unfixed,
+      - no finding that its lens ranked first was rejected as false,
+      - on a user-facing milestone, no finding was rejected as false,
+      - the Review section records the spawned reviewers,
+      - `Principles touched:` names no IP, and `git diff <default>...HEAD`
+        adds no `### D-` heading,
       - no condition of step 7 that adds to the merge question applies (a
         PR review that requests changes, a Driving RR shortfall, guest
         mode, a companion PR, an issue write from `Resolves:`).
 
-      In that case, before the merge it writes the `step-7 approval:`
-      work-log line marked `up front`. It also writes the marker
-      `M<NNN> approved up front YYYY-MM-DD for PR #<N>`. Otherwise it asks the merge question as before. The close block after the
-      merge lists each finding that went to a candidate row.
-- [ ] AC4: The deny text of `hooks/merge_guard.py` names both points of
-      approval. A `hooks/tests` test shows that the guard allows
-      `gh pr merge <N>` under an `approved up front` marker that names PR
-      `<N>`. The same test shows that the guard denies the merge for
-      another PR number.
+      In that case, before the push of step 8, it commits the work-log
+      line `step-7 approval: <branch> approved up front per plan <sha>`.
+      After the PR opens, CI must be green, or the rulebook rule for a PR
+      with no CI runs must apply. No commit was pushed after the PR opened
+      (for a PR that already existed, after the push of step 8). When both
+      hold, it writes the marker
+      `M<NNN> approved up front YYYY-MM-DD per plan <sha> for PR #<N>`. If
+      CI is red or a fix is pushed, it asks the merge question. In every
+      other case it asks the merge question as before. The close block or
+      merge question that ends the run lists each milestone merged up
+      front in the run. For each, it gives the PR and each finding verbatim
+      with its disposition and the reason for each reject.
+- [ ] AC4: The deny text and the docstring of `hooks/merge_guard.py` name
+      both points of approval. For a marker that carries `up front`, the
+      guard reads the milestone file at the local remote-tracking ref of
+      the default branch of the base remote. If the file, the ref, or the
+      slot cannot be read, the guard denies the merge. If the slot does not
+      read `up front`, the guard denies the merge. The deny text names the
+      slot value it read, or that none could be read, and the ref and path
+      it read from. `hooks/tests` tests show that the guard allows
+      `gh pr merge <N>` in one case: an `approved up front` marker for PR
+      `<N>` and a default-branch slot of `up front`. The tests show a
+      denial for each of these:
+      - another PR number,
+      - a slot of `at the end`, a slot of `—`, and a missing slot,
+      - `up front` only in the working tree,
+      - `up front` only on the local default branch,
+      - no remote-tracking ref,
+      - an absent file,
+      - a marker for one milestone while only another milestone's slot
+        reads `up front`.
+
+      A legacy marker without `up front` behaves as before.
 - [ ] AC5: Five surfaces state the up-front approval and the cases that go
       back to the merge question. Two are bullets: the approval bullet of the git
       model in `skills/shared/tracking-rules.md`, and "Merges are yours" in
@@ -83,15 +130,17 @@ own questions".
       `skills/shared/templates/milestone.md`. Add the merge question to the
       step-3 list of `skills/milestone-plan/SKILL.md` and the slot write to
       step 4.
-- [ ] T3: `skills/milestone-review/SKILL.md` steps 7 and 8: the up-front
-      path, the work-log line, the marker, and the close-block list of
-      deferred findings. Read the resume routes that parse the
-      `step-7 approval:` line, so a resume after a CI timeout finds it.
-- [ ] T4: The deny text in `hooks/merge_guard.py` (lines 140-147 today)
-      and the `hooks/tests` test.
+- [ ] T3: `skills/milestone-review/SKILL.md` steps 5, 7, and 8: the
+      route-back cases, the up-front path, the work-log line, the marker
+      after green CI, and the end-of-run list of dispositions. Step 5 gives
+      each finding its lens, rank, and disposition, and records the spawned
+      lenses. Read the resume routes that parse the `step-7 approval:` line.
+      A resume after a CI timeout finds the up-front line and re-derives CI.
+- [ ] T4: The slot read, the deny text, and the docstring in
+      `hooks/merge_guard.py`, with the `hooks/tests` tests of AC4.
 - [ ] T5: The surfaces in AC5.
 - [ ] T6: Run the verify slot and `cairn_validate`.
-- [ ] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
+- [x] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
 
 ## Work log
 
@@ -112,6 +161,7 @@ own questions".
 - re-audit: AC3 (full) — stop detection reads close blocks that are not on disk, "amendment line" undefined, a declined merge question does not route back, plan commit ambiguous, no-push clause worded as a ban.
 - re-audit: AC4 (full) — probes do not vary the milestone file or the ref, deny text cannot name a slot it never read.
 - 2026-10-03: stop at the second re-audit of AC1 to AC4 (repeated review-failure stop). Amended text not yet written.
+- 2026-10-03: substantive amendment of AC1 to AC4 at the user's answer: the second reader's seven fixes applied, the "no stop fired" condition dropped (the user is present at each stop and types the resume), no third reader. T3 and T4 widened to match, T7 ticked.
 
 ## Decisions
 
