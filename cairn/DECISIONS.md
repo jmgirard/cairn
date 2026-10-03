@@ -5390,3 +5390,44 @@ user reverts or hotfixes for a defect that a rejected or follow-up finding
 named; the user reversing a disposition after reading the end-of-run list;
 the user choosing `at the end` on most plans. RR15 recs 10 to 13 are a
 candidate row.
+
+### D-146 (2026-10-03): The up-front skip narrows to one uninterrupted review pass, the rulebook holds the one route-back list, and bot PR items never route back — annotates D-145; narrows D-138 again and M177's grading for the up-front read (M203, RR16)
+
+**Context:** M203 took three defect returns on its up-front skip. Each
+review pass found new defects in when review may skip the merge question.
+Most sat in resume and re-entry paths and in work-log lines that one part
+of the review skill writes and another reads. RR16 traced them to
+predicates over an append-only log that change meaning as lines are added,
+such as "the newest approval line" and "this pass".
+
+**Decision:** At the user's answer of 2026-10-03, the skip runs only in a
+first-pass invocation of `/milestone-review`: one that started with an
+empty Review section, no PR for the branch, and no `step-7 approval:` line.
+Step 8's up-front arm is entered only by control flow from that same
+invocation. Any stop, resume, or return asks the merge question. This
+narrows when the skip happens, so more cases ask. It removes no route-back
+case. A moved default branch before a resume, and a push after the PR
+opened, were route-back cases. Both still ask, because any resume asks and
+the only push after the PR opens in one pass is a red-CI fix. Only their
+resume-time detectors go. The rulebook's approval bullet is the one
+authoritative list of route-back cases, and the other surfaces point to it
+or mirror it. In the read after CI on the up-front arm, an item from an
+author whose `type` is `Bot` is logged and listed but never routes back.
+Items from other authors route back. Taking that read on a fresh PR
+narrows D-138, which rejected a second read after CI. D-138's reason was a
+chip re-posed after the marker, and on this arm no chip was posed and no
+marker exists before the read. The guard reads `<base>/HEAD` only. When it
+is unset, the guard denies and names `git remote set-head <base> -a`, and
+review's sync step runs that command. Rejected: a script that computes
+"may skip" (the writers stay in prose, so the drift stays), new pass-id or
+base-oid records (more facts whose meaning changes), and a main/master
+fallback in the guard (a guess the rulebook forbids). Removal of the
+up-front path stays the named fallback.
+
+**Consequences:** An adopter whose CI outlasts the foreground wait ceiling
+gets the merge question on resume, so the skip buys nothing for that
+milestone. A repo with a bot that comments on every PR still merges
+unattended, and the bot's items appear in the end-of-run list. Falsifiers:
+another review return on AC3 of M203 takes removal with no further brief;
+an up-front merge the user reverts for a defect a bot item named reopens
+the bot rule.

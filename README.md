@@ -426,6 +426,8 @@ profile.
   review, or up front in the plan's question set for each milestone you
   choose. An up-front approval covers only the plan as you approved it.
   The run comes back to the merge question in these cases:
+  - review does not run from its start to the merge in one go: any stop,
+    resume, or return asks you,
   - the goal, scope, or criteria change, or you declined an earlier merge
     question,
   - a criterion lacks evidence, or a finding marked for a fix is unfixed,
@@ -433,11 +435,14 @@ profile.
     false on a user-facing milestone,
   - the review ran without its separate reviewers,
   - the milestone touches an inviolable principle or adds a decision entry,
-  - the PR has a comment, an unresolved thread, or a review that comments
-    or asks for changes, a Fable target fell short,
-    the repo is a guest one, a companion repo is involved, or the merge
-    would write to GitHub issues,
-  - CI fails, or a commit is pushed after the PR opens.
+  - a person (not a bot) leaves a comment, an unresolved thread, or a
+    review that comments or asks for changes on the PR, a Fable target fell
+    short, the repo is a guest one, a companion repo is involved, or the
+    merge would write to GitHub issues,
+  - CI fails.
+
+  Bot comments on the PR are logged and listed, and they do not stop the
+  merge.
 
   A milestone that merges up front lists its findings, and how each was
   settled, at the end of the run. A guard hook mechanically blocks merges

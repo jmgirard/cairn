@@ -25,7 +25,8 @@ at the local remote-tracking ref of the default branch, never the working
 tree or the local default branch: the plan commit there is the record of
 the user's answer. A missing ref, file, or slot denies, and so does any
 other value. The read trusts that ref as last fetched and makes no network
-call: it resolves `<base>/HEAD`, else `<base>/main`, else `<base>/master`.
+call: it resolves `<base>/HEAD` only, and an unset one denies with the
+command that sets it (`git remote set-head <base> -a`, RR16).
 Limit (M203 review): only a marker that says `up front` is checked against
 the slot. A chip-form marker is never checked against it, and the marker's
 `M<NNN>` is not tied to the milestone the PR carries. The read catches a

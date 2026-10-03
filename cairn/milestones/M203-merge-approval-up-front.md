@@ -137,7 +137,7 @@ own questions".
       rulebook bullet, the template is back under the cap, and the CLAUDE.md
       Trivial reflow is reverted.
 - [x] T11: Take RR16 recs 1 to 6 to the step-6 amendment stop: the one-pass AC3, a D-entry, the pass-3 one-line fixes, one route-back list, the guard deny for an unset remote HEAD, and non-bot route-back. The other choice to offer is removal (rec 9).
-- [ ] T12: Apply RR16 recs 1 to 6 and review return 3: D-146, the one-pass review text, the rulebook's
+- [x] T12: Apply RR16 recs 1 to 6 and review return 3: D-146, the one-pass review text, the rulebook's
       single route-back list, the guard deny for an unset remote HEAD, and the pass-3 one-line fixes.
 
 ## Work log
@@ -188,6 +188,7 @@ own questions".
 - 2026-10-03: blocked on RB16. The brief is committed on this branch, as RB15 was, because the milestone's state lives on the branch.
 - 2026-10-03: RR16 ingested (Fable, advisory, 12 recommendations). Apply: recs 1 to 6, through T11's amendment stop, because rec 1 narrows AC3 and changes what the user sees. Consider: rec 7 (pose the plan's merge question only when a plan has an internal, IP-free milestone) and rec 8 (a `resume:` line on routes (c) and (d)) go to the follow-on row. Rec 9 (removal) is the fallback offered at T11 and named for the next AC3 return. Rejected as RR16 reasons: rec 10 (the script leaves the writers in prose), rec 11 (new pass-id or base-oid writers are the mechanism of all three returns), and rec 12 (the main/master fallback guesses).
 - 2026-10-03: substantive amendment: AC3 narrowed to the one-pass rule at the user's answer to T11, as drafted from RR16 Q5. The skip runs only in an invocation that started with an empty Review section, no PR, and no `step-7 approval:` line. Step 8 runs in the same invocation, and red CI, a non-bot PR item, or any stop asks. The "PR review that requests changes" adder moves into the non-bot item rule. AC3 has two `re-audit` lines, so the user's answer settled the wording with no reader (step 6). Removal is named for the next AC3 return. T12 added, AC3 unticked.
+- 2026-10-03: T12 done. D-146 records the one-pass rule, the rulebook's single route-back list, the bot rule, the D-138 narrowing, and the guard's `<base>/HEAD`-only read. Review step 7's check now runs only in a first-pass invocation, and step 8's arm is entered by control flow. Route (c)'s up-front branch, `step-8 route-back:`, the late-push detector, and "this pass" are gone. Step 1 runs `git remote set-head <base> -a`. The pass-3 one-line fixes are in: `fixed <sha>` suffix, lens slugs, cairn-root `git show` paths, a `%H` plan recipe, "carries" in implement, and the template header. README and CHANGELOG keep their case lists because AC5 requires them, synced to the narrowed list, which departs from RR16 rec 4. The plan question points to the rulebook list. The guard denies an unset remote HEAD, and its test was flipped (red before the change). Verify green (hooks 193 OK), and `skills/tests` shows main's 4 reds and 1 error.
 
 ## Decisions
 

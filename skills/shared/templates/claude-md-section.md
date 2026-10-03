@@ -1,4 +1,4 @@
-<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section body under ~25 lines. -->
+<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section under 30 lines (cairn_validate's cap), heading included. -->
 
 ## Project tracking (cairn)
 

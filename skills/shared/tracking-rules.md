@@ -237,17 +237,19 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
   instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at a gate** (IP1, D-145): the merge question,
-  or up front in the plan question set for a milestone whose `Merge approval:` slot reads `up front` on the default
-  branch. An up-front approval holds only while the plan's promise merges unchanged. Each route-back case sends the run
-  to the merge question: a Goal, Scope, or criteria change beyond checkbox ticks, a substantive amendment, an amendment
-  return, or a declined merge question; an unevidenced criterion or an unfixed fix-now finding; a top-ranked finding
-  rejected as false, or any finding rejected as false on a user-facing milestone; a review whose newest `spawned:` line
-  is not from this pass or misses a required lens; an IP in `Principles touched:` or a D-entry added on the branch; a
-  step-7 condition that adds to the merge question, any item of the PR-conversation read included (a comment, an
-  unresolved thread, or a commenting or changes-requested review), read at step 7 and again before the marker; a
-  default branch that moved before a resume; red CI, or a late push — a PR head other than the commit that added the
-  up-front approval line (`/milestone-review` steps 7 and 8, resume route (c)). Removing or narrowing a case changes IP1. Never
+- **Nothing reaches the default branch without the user's explicit approval at a gate** (IP1, D-145, D-146): the merge
+  question, or up front in the plan question set for a milestone whose `Merge approval:` slot reads `up front` on the
+  default branch. An up-front approval holds only while the plan's promise merges unchanged, in one uninterrupted
+  review pass. This is the one authoritative list of route-back cases; each sends the run to the merge question: any
+  invocation of review other than a first pass (one that started with an empty Review section, no PR, and no
+  `step-7 approval:` line), so any stop, resume, or return asks; a Goal, Scope, or criteria change beyond checkbox
+  ticks, a substantive amendment, an amendment return, or a declined merge question; an unevidenced criterion or an
+  unfixed fix-now finding; a top-ranked finding rejected as false, or any finding rejected as false on a user-facing
+  milestone; a `spawned:` line that misses a required lens; an IP in `Principles touched:` or a D-entry added on the
+  branch; a Driving RR shortfall, guest mode, a companion, or a `Resolves:` slot; red CI; a PR-conversation item from
+  a non-bot author (a comment, an unresolved thread, or a commenting or changes-requested review) read after CI
+  (`/milestone-review` steps 7 and 8). Bot items are logged and listed, never routed back. Removing or narrowing a case
+  changes IP1. Never
   force-push (the force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
@@ -266,9 +268,9 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
   it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
   number out: `gh pr merge <N> --squash`. An up-front marker (`M<NNN> approved up front YYYY-MM-DD per plan <sha> for
-  PR #<N>`) is written only after green CI (or the no-checks case), with no late push and an empty PR-conversation
-  read, and the guard denies it unless the milestone's slot reads `up front` at
-  the base remote's remote-tracking default branch.
+  PR #<N>`) is written only in the same review pass, after green CI (or the no-checks case) and a PR-conversation
+  read with no non-bot item, and the guard denies it unless the milestone's slot reads `up front` at `<base>/HEAD`
+  (an unset `<base>/HEAD` denies, naming `git remote set-head <base> -a`).
 - **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
   merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix; a URL or branch positional is denied
   separately, as not naming a checkable PR). In a multi-repo session, a companion repo's merge is spelled `cd

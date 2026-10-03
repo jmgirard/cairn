@@ -97,24 +97,27 @@
   milestone with the line missing or `—`, such as one planned before this
   change, reads as `at the end`. If a milestone was approved up front,
   `/milestone-review` merges it with no merge question. That holds only if
-  its goal, scope, and criteria merge as the plan committed them and no
-  route-back case applies. Each route-back case sends the run to the merge
-  question. The cases are a goal, scope, or criteria change (a substantive
+  its goal, scope, and criteria merge as the plan committed them, review
+  runs from its start to the merge in one invocation, and no route-back
+  case applies. Each route-back case sends the run to the merge question.
+  The cases are any stop, resume, or return, a goal, scope, or criteria change (a substantive
   amendment or an amendment return included), a declined merge question, a
   missing criterion evidence line, an unfixed fix-now finding,
   a top-ranked finding rejected as false (on a user-facing milestone, any
   finding rejected as false), a review without its reviewers, a principle
   or decision-log change, the existing reasons that add to the merge
   question, a comment, an unresolved thread, or a commenting or
-  changes-requested review on the PR, and red CI or a push after the PR
-  opens. Review writes the approval marker only after CI is
-  green, or the PR reports no checks and the profile allows a merge on
-  local green. It also needs the PR head to be the commit that added the
-  up-front approval line, and a read of the PR conversation just before the
-  marker to find nothing. The merge guard then reads the milestone's `Merge approval:`
-  line from the base remote's default branch, as last fetched, with no
-  network call. It denies the merge unless that line reads `up front`, and
-  the deny text names the value it read and where. Only a marker that says
+  changes-requested review on the PR from a non-bot author, and red CI.
+  Bot items are logged and listed and do not route back. Review writes the
+  approval marker only in the same invocation, after CI is green, or the
+  PR reports no checks and the profile allows a merge on local green, and
+  after a read of the PR conversation just before the marker finds no
+  non-bot item. The merge guard then reads the milestone's `Merge
+  approval:` line at the base remote's `<base>/HEAD`, as last fetched,
+  with no network call. Review's sync step runs `git remote set-head <base>
+  -a` so that ref is set, and an unset one denies with that command named.
+  The guard denies the merge unless the line reads `up front`, and the
+  deny text names the value it read and where. Only a marker that says
   `up front` is checked against that line. The close block or
   merge question that ends the run lists each finding of an up-front merge
   with its outcome. Review now logs each finding with its reviewer and

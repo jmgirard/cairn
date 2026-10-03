@@ -151,9 +151,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      front`, and the other options let the user hold any of them `at the
      end`. The question says in plain words that a run with no route-back
      case merges with no further question, and that the user then sees its
-     code and its finding dispositions only after the merge. The route-back
-     cases (`/milestone-review` step 7) send the run to the merge question
-     anyway. For a user-facing or IP-touching milestone, the recommendation
+     code and its finding dispositions only after the merge. The skip
+     happens only when review runs from its start to the merge in one go,
+     and the route-back cases (the rulebook's approval bullet, the one list)
+     send the run to the merge question anyway. For a user-facing or IP-touching milestone, the recommendation
      is `at the end`. In guest mode, and for a milestone that touches an IP,
      fills `Resolves:`, or has a companion checkout, the question says that
      the merge question still comes, since each of those always routes back.

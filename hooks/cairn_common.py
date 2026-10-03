@@ -353,27 +353,24 @@ def default_branch_merge_slot(cwd, number):
     `cwd` is the cairn root. Reads the local remote-tracking ref
     `refs/remotes/<base>/<default>`, never the working tree or the local
     default branch, so a slot written only on a branch cannot answer for it.
-    The ref resolves locally with no network call, so the read stays inside
-    the hook's timeout: `<base>/HEAD`, else `<base>/main`, else
-    `<base>/master`. Paths are read relative to `cwd` (`ref:./path`), so a
+    The ref is `<base>/HEAD`, resolved locally with no network call so the
+    read stays inside the hook's timeout. When it is unset, the read reports
+    a problem naming `git remote set-head <base> -a`, never a guessed `main`
+    or `master` (RR16 Q7). Paths are read relative to `cwd` (`ref:./path`), so a
     cairn root below the git root works. Returns (value, source, problem):
     `value` is the slot's text or None, `source` names the ref and path read
     (or the ref alone), and `problem` is None when the slot was read, else a
     short reason it could not be. Never raises.
     """
     base = base_remote(cwd)
-    ref = None
     rc, out = git(["symbolic-ref", "--quiet", f"refs/remotes/{base}/HEAD"], cwd)
-    if rc == 0 and out.strip():
-        ref = out.strip()
-    else:
-        for name in ("main", "master"):
-            candidate = f"refs/remotes/{base}/{name}"
-            if git(["rev-parse", "--verify", "--quiet", candidate], cwd)[0] == 0:
-                ref = candidate
-                break
-    if ref is None:
-        return None, f"refs/remotes/{base}", "no remote-tracking default branch resolves"
+    if rc != 0 or not out.strip():
+        return (
+            None,
+            f"refs/remotes/{base}/HEAD",
+            "it is unset; run `git remote set-head %s -a` and retry" % base,
+        )
+    ref = out.strip()
     rc, _ = git(["rev-parse", "--verify", "--quiet", ref], cwd)
     if rc != 0:
         return None, ref, "the ref does not exist"

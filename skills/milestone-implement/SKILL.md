@@ -132,7 +132,7 @@ run ingestion first (see `/milestone-brief`).
    - *Substantive* (a criterion or scope must change; a change to
      acceptance-criterion wording is *Substantive* by definition): the
      agent makes the amendment and records it as a dated work-log line
-     that opens `substantive amendment:` (the prefix `/milestone-review`
+     that carries `substantive amendment:` after its date (the prefix `/milestone-review`
      step 7's up-front check reads) (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in a guaranteed-rendered position (durable-record preview).
      **The stop.** If the amendment drops something the user asked for, or

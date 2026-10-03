@@ -1695,14 +1695,17 @@ class TestMergeGuardUpFront(RepoFixture):
         self.marker().write_text(self.MARKER)
         self.assertEqual(self.merge().stdout.strip(), "")
 
-    def test_reads_main_when_remote_head_is_unset(self):
-        # No refs/remotes/origin/HEAD: the guard falls back to the local
-        # origin/main ref (M203 review).
+    def test_denies_when_remote_head_is_unset(self):
+        # No refs/remotes/origin/HEAD: the guard never guesses main or
+        # master (RR16 Q7); it denies and names the command that sets it.
         self.milestone(203, "up front 2026-10-03")
         self.commit_and_push()
         self.git("remote", "set-head", "origin", "--delete")
         self.marker().write_text(self.MARKER)
-        self.assertEqual(self.merge().stdout.strip(), "")
+        self.assert_denied(
+            self.merge(), "no slot value could be read",
+            "git remote set-head origin -a",
+        )
 
     def test_allows_cairn_root_in_repo_subdirectory(self):
         # A cairn root below the git root: paths read from the ref are
