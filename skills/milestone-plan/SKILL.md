@@ -138,27 +138,13 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    (tracking-rules "Question gates and phase closes"). It asks only what the
    user alone can settle, and it looks ahead to what implement and review
    will need from the user, since the run asks nothing more until the merge
-   question, or at all for a milestone whose merge it approves up front.
-   Its questions are:
+   question. Its questions are:
    - what to work on, for a request that names no work,
    - choices that the request leaves open about what the user will get,
    - files, access, or looks that only the user can supply and that
      implement or review will need,
    - permission for the outward actions and dependency changes that the work
-     foresees,
-   - merge approval, with one answer for each milestone the plan creates
-     (D-145). The recommended option names the milestones it approves `up
-     front`, and the other options let the user hold any of them `at the
-     end`. The question says in plain words that a run with no route-back
-     case merges with no further question, and that the user then sees its
-     code and its finding dispositions only after the merge. The skip
-     happens only when review runs from its start to the merge in one go,
-     and the route-back cases (the rulebook's approval bullet, the one list)
-     send the run to the merge question anyway. For a user-facing or IP-touching milestone, the recommendation
-     is `at the end`. In guest mode, and for a milestone that touches an IP,
-     fills `Resolves:`, or has a companion checkout, the question says that
-     the merge question still comes, since each of those always routes back.
-     A set that holds no room for the question writes `at the end`.
+     foresees.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,
@@ -329,13 +315,6 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      step 2 makes the classification mandatory. `/milestone-review` step 5
      reads the slot to scale its review fan-out; skill conduct only — no
      validate check parses it.
-   - **Merge approval** (header slot): written from the step-3 answer for
-     this milestone, as `up front YYYY-MM-DD` (the gate's date) or `at the
-     end`. A set that did not pose the question writes `at the end`. A
-     re-cut of the milestone asks the question again and rewrites the slot,
-     never carrying the old answer over. The plan commit on the default
-     branch is the record that `/milestone-review` and `merge_guard` read
-     (D-145).
    - **Driving RR** (header slot): a milestone planned from an RR that
      carries Binding criteria sets the slot to `RR<NN>`, ingests each
      criterion verbatim into the AC block (the `binding criteria` check
@@ -396,7 +375,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    through the Skill tool for the first workable milestone this plan
    created: status `planned`, every `Depends on:` milestone `done`, in
    ROADMAP order. The run goes on from there with no further question until
-   the merge question, or through the merge of a milestone approved up front.
+   the merge question.
    **Close block instead** when another milestone is `in-progress`, when the
    user asked for a plan alone, or when no milestone of the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan

@@ -1,4 +1,4 @@
-<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section under 30 lines (cairn_validate's cap), heading included. -->
+<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section body under ~25 lines. -->
 
 ## Project tracking (cairn)
 
@@ -17,8 +17,7 @@ git model. Classify first:
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on the default branch** outside a milestone/hotfix
   branch; nothing reaches it without the user's explicit approval at the
-  merge question, or up front in the plan question set if the plan's promise
-  merges unchanged (the rulebook's approval bullet lists what routes back).
+  merge question.
 
 Whenever the request is anything but trivial, invoke the skill *first* so the
 full rulebook (the plugin's `skills/shared/tracking-rules.md`) and its conduct

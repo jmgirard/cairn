@@ -36,7 +36,7 @@ through the implement amendment protocol or a review send-back, always with a wo
 | Section | Writing skill | Write-mode |
 |---|---|---|
 | Status (header) | the transitioning skill (plan → implement → review) | mirror-update |
-| Priority, Depends on, Driving RR, Principles touched, Resolves, Surface tier, Merge approval (header) | plan | create; amend-via-gate |
+| Priority, Depends on, Driving RR, Principles touched, Resolves, Surface tier (header) | plan | create; amend-via-gate |
 | Branch/PR (header) | implement (branch, plus one `companion: <abs-path> <branch>` entry per companion checkout the milestone also works in), review (PR URLs) | create |
 | Goal | plan | create; a wrong goal returns to plan, never edited in place |
 | Scope (In/Out) | plan | create; amend-via-gate |
@@ -237,20 +237,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
   instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at a gate** (IP1, D-145, D-146): the merge
-  question, or up front in the plan question set for a milestone whose `Merge approval:` slot reads `up front` on the
-  default branch. An up-front approval holds only while the plan's promise merges unchanged, in one uninterrupted
-  review pass. This is the one authoritative list of route-back cases; each sends the run to the merge question: any
-  invocation of review other than a first pass (one that started with an empty Review section, no PR, and no
-  `step-7 approval:` line), so any stop, resume, or return asks; a Goal, Scope, or criteria change beyond checkbox
-  ticks, a substantive amendment, an amendment return, or a declined merge question; an unevidenced criterion or an
-  unfixed fix-now finding; a top-ranked finding rejected as false, or any finding rejected as false on a user-facing
-  milestone; a `spawned:` line that misses a required lens; an IP in `Principles touched:` or a D-entry added on the
-  branch; a Driving RR shortfall, guest mode, a companion, or a `Resolves:` slot other than `—`; red CI, or a fix
-  pushed for a bot item disposed fix-now; a PR-conversation item from a non-bot author (a comment, an unresolved
-  thread, or a commenting or changes-requested review) read after CI (`/milestone-review` steps 7 and 8). Bot items are
-  logged and listed and do not route back by their presence. Removing or narrowing a case changes IP1. Never
-  force-push (the force_push_guard hook denies it on the default branch); never merge red or pending CI.
+- **Nothing reaches the default branch without the user's explicit approval at the merge question.** Never force-push (the
+  force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
   included. A `paths-ignore` of `cairn/**` skips such a push for `push` triggers and not for `pull_request` triggers,
@@ -267,10 +255,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
   it approves (`… approved YYYY-MM-DD for PR #<N>`); the guard refuses a merge whose PR it does not name — spell the
-  number out: `gh pr merge <N> --squash`. An up-front marker (`M<NNN> approved up front YYYY-MM-DD per plan <sha> for
-  PR #<N>`) is written only in the same review pass, after green CI (or the no-checks case) and a PR-conversation
-  read with no non-bot item, and the guard denies it unless the milestone's slot reads `up front` at `<base>/HEAD`
-  (an unset `<base>/HEAD` denies, naming `git remote set-head <base> -a`).
+  number out: `gh pr merge <N> --squash`.
 - **An approval binds one repo**: the marker lives in the merged repo's own `cairn/`, and the guard denies a `gh pr
   merge` that targets another repo (`--repo`/`-R`, a `GH_REPO=` prefix; a URL or branch positional is denied
   separately, as not naming a checkable PR). In a multi-repo session, a companion repo's merge is spelled `cd
@@ -379,9 +364,7 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
   review will need from the user; `/milestone-plan` step 3 names its questions. When more are open than one round
   holds, ask the 3 that matter most. The agent decides the rest with a work-log line, unless one is a stop below.
 - **The merge question.** One AskUserQuestion chip with one approve-or-decline question, a decline option always
-  present, never a prose yes/no. A milestone approved up front in the question set skips it unless a route-back case
-  of the git model's approval bullet applies, and the close block or merge question that ends the run lists its
-  finding dispositions.
+  present, never a prose yes/no.
 
 Everything else in a run the agent decides itself and records in a work-log line. Skills outside the run (`/hotfix`,
 `/cairn-triage`, `/cairn-init`, `/cairn-release`, `/design-interview`, `/milestone`, `/milestone-brief`) state their own
@@ -420,10 +403,7 @@ Inside a run, a phase ends with a call to the next skill through the Skill tool:
 review, and review to the implement phase of the next workable milestone of the same plan. The **close block** ends
 the run: at a stop on the list above, after a merge that leaves no workable milestone of the plan, and at the end of a
 skill outside the run. It is never a chip. The turn's final rendered text carries: an outcome recap (one or two
-sentences, plain words); where a milestone of the run merged up front (D-145), the end-of-run list — for each such
-milestone its PR and each finding verbatim with its disposition and each reject's reason (`/milestone-review` step 10),
-at whichever stop or skill ends the run; a status table or line (unit of work, status, branch/PR and check results,
-where they exist);
+sentences, plain words); a status table or line (unit of work, status, branch/PR and check results, where they exist);
 where the unit of work has a branch or an open PR, a **CI line**, one plain-language sentence stating whether the
 fenced next command waits on CI itself and what the user does meanwhile. A bare check state ("CI: running") never
 satisfies it, and it is what disposes of the status line's check results. It is restated at four sites

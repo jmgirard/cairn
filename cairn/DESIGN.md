@@ -35,8 +35,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   the session on Fable (D-014).
 - The milestone run (M202): `/milestone-plan` asks the one question set,
   then invokes `/milestone-implement` through the Skill tool, which invokes
-  `/milestone-review`; review asks the merge question, or merges a
-  milestone approved up front in the question set (M203, D-145), and, after the merge,
+  `/milestone-review`; review asks the merge question and, after the merge,
   invokes implement for the next workable milestone of the same plan. The
   agent decides everything else with a work-log line and stops only at the
   rulebook's closed stop list. The three skills stay separate, so typed
@@ -61,10 +60,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   are read-bounded to their newest content, D-063); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
   `cairn/.merge-approved` marker, bound to the PR it approves since M72,
-  and, for an up-front marker, to the milestone's `Merge approval:` slot read
-  from the remote-tracking default branch since M203, technically backing
-  IP1; a chip-form marker is not checked against the slot, so the read
-  catches drift, not an agent that skips the question),
+  technically backing IP1),
   `force_push_guard` (denies force-pushes to the default branch — IP1's
   never-force-push line, mechanically backed; M60), `commit_guard`
   (nudge against committing on the default branch), `memory_guard` (GP4
@@ -201,10 +197,7 @@ stance; tradeable with stated justification). IP block first; numbers run
 within each type and are never reused.
 
 - IP1: Nothing reaches the default branch without explicit user approval at a
-  gate. For a milestone merge the gate is the merge question or the plan
-  question set. The plan question set counts only for a milestone whose
-  promise, as that plan committed it, merges unchanged and meets none of the
-  route-back cases the rulebook lists (D-145, D-146).
+  gate.
 - IP2: Prior state is surfaced, never silently obeyed or silently
   overridden.
 - IP3: Nothing the user asked for is silently dropped (conservation:

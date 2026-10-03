@@ -24,9 +24,7 @@ first:
   or `/milestone-review` resumes a stopped run.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without explicit user approval at the merge question, or up
-  front in the plan question set if the plan's promise merges unchanged (the
-  rulebook's approval bullet lists what routes back).
+  reaches main without explicit user approval at the merge question.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't

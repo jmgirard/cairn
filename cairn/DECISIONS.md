@@ -5431,3 +5431,31 @@ unattended, and the bot's items appear in the end-of-run list. Falsifiers:
 another review return on AC3 of M203 takes removal with no further brief;
 an up-front merge the user reverts for a defect a bot item named reopens
 the bot rule.
+
+### D-147 (2026-10-03): The up-front merge approval is removed, and the merge question stays the only gate for a milestone merge — supersedes D-145 and D-146 (M203)
+
+**Context:** D-145 let the plan question set approve a milestone merge, and
+D-146 narrowed that skip to one review pass. Each review pass of M203 found
+a new way for the skip to merge with no question, and D-146's own falsifier
+named removal for the next return on AC3. The M203 work log records the
+returns and the two thrash stops.
+
+**Decision:** At the user's choice of 2026-10-03, at the thrash stop after
+the review returns that the M203 work log records, the up-front merge
+approval is removed. IP1 keeps its text on main, so D-145's change to IP1
+never takes effect. The merge question stays the only gate for a milestone
+merge, as D-138 and D-144 state, and the merge guard keeps main's check.
+D-145 and D-146 stay as history, and RB15, RR15, RB16, and RR16 stay in the
+review archive. Kept from the first cut: review step 5's fixed line formats
+for each finding and for the reviewers each pass spawned, step 7's
+`step-7 decline:` line and its amendment count, and implement step 6's
+`substantive amendment:` prefix. They make the review record readable from
+the files with no skip to serve. Rejected: keeping D-146's one-pass skip,
+because its falsifier fired.
+
+**Consequences:** Each milestone of a run waits for the user at its merge
+question, and CI waits on that answer (D-138). The narrowings of D-138 and
+D-144 and the annotation of D-043 that D-145 and D-146 made lapse with
+them. The follow-on items of RR15, RR16, and the review passes get no
+candidate row. A later proposal to approve a merge before the diff exists
+starts from this entry and RR16.

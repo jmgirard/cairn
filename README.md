@@ -248,8 +248,7 @@ in the environment.
 Development is a cycle of milestones: PR-sized units of work with explicit
 acceptance criteria. One command starts a run. You answer one question set
 when the plan is made, and Claude then implements and reviews the milestone
-in the same run and stops at the merge question, unless you approved the
-merge up front (see *Merges are yours*):
+in the same run and stops at the merge question:
 
 ```mermaid
 flowchart LR
@@ -321,7 +320,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 |---|---|
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
-| Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question, or to the merge itself when you approved it up front |
+| Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
 | Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
 | Resume a run at review | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, each finding settled by the agent, merge on your approval |
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
@@ -422,33 +421,9 @@ profile.
   commit holds the state, and typing `/milestone-implement` or
   `/milestone-review` with the milestone id resumes the run.
 - **Merges are yours.** Nothing reaches your default branch without your
-  explicit approval. You give it at the merge question at the end of
-  review, or up front in the plan's question set for each milestone you
-  choose. An up-front approval covers only the plan as you approved it.
-  The run comes back to the merge question in these cases:
-  - review does not run from its start to the merge in one go: any stop,
-    resume, or return asks you,
-  - the goal, scope, or criteria change, or you declined an earlier merge
-    question,
-  - a criterion lacks evidence, or a finding marked for a fix is unfixed,
-  - review rejects a reviewer's top finding as false, or any finding as
-    false on a user-facing milestone,
-  - the review ran without its separate reviewers,
-  - the milestone touches an inviolable principle or adds a decision entry,
-  - a person (not a bot) leaves a comment, an unresolved thread, or a
-    review that comments or asks for changes on the PR, a Fable target fell
-    short, the repo is a guest one, a companion repo is involved, or the
-    merge would write to GitHub issues,
-  - CI fails.
-
-  Bot comments on the PR are logged and listed, and they do not stop the
-  merge unless one needs a fix.
-
-  A milestone that merges up front lists its findings, and how each was
-  settled, at the end of the run. A guard hook mechanically blocks merges
+  explicit approval at review. A guard hook mechanically blocks merges
   that lack a recorded approval, and the approval names the one PR it
-  covers. For an up-front approval the guard also checks that the plan on
-  your default branch says `up front`. Starting a review is not merging.
+  covers. Starting a review is not merging; you get the evidence first.
   (The guard watches what Claude runs, not what you do; see *Working with
   collaborators*.)
 - **Supply primary sources.** If a formula, cutoff, or scoring key needs a
