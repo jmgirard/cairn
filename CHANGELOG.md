@@ -43,7 +43,8 @@
   while Claude is idle, a cairn skill starts again, or the session ends. A
   turn that Claude ends to wait for background work keeps it, and so do the
   turns that the work's notices start. An interrupt with Esc keeps it until
-  your next prompt or Claude's next stop. Three limits remain. A skill that
+  your next prompt, or until Claude next stops with no background work in
+  flight. Three limits remain. A skill that
   waits through `ScheduleWakeup` or a scheduled task loses its label when
   Claude stops. Background work that the skill did not start keeps a
   finished skill's label until your next prompt. A prompt that a hook
