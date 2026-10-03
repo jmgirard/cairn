@@ -748,7 +748,10 @@ re-enters here, at the step the record shows is next:
     and lists each finding that went to a candidate row. For each milestone
     of the run that merged up front, this one included, it lists the PR and
     each finding verbatim with its disposition and each reject's reason
-    (step 7's end-of-run list, read the same way). The status line
+    (step 7's end-of-run list, read the same way). Every other close block
+    that ends a run in which a milestone merged up front carries the same
+    list: a stop in this skill (a CI timeout, a decline, a thrash stop) or
+    in `/milestone-implement`. The status line
     names the merge and archive state, and the fenced commands emit
     `/clear` and the slash command the recommendation names (its `→
     /<skill> [M<NNN>]` tail, e.g. `/milestone-plan`) as copyable lines —

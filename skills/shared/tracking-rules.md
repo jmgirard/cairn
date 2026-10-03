@@ -414,7 +414,10 @@ Inside a run, a phase ends with a call to the next skill through the Skill tool:
 review, and review to the implement phase of the next workable milestone of the same plan. The **close block** ends
 the run: at a stop on the list above, after a merge that leaves no workable milestone of the plan, and at the end of a
 skill outside the run. It is never a chip. The turn's final rendered text carries: an outcome recap (one or two
-sentences, plain words); a status table or line (unit of work, status, branch/PR and check results, where they exist);
+sentences, plain words); where a milestone of the run merged up front (D-145), the end-of-run list — for each such
+milestone its PR and each finding verbatim with its disposition and each reject's reason (`/milestone-review` step 10),
+at whichever stop or skill ends the run; a status table or line (unit of work, status, branch/PR and check results,
+where they exist);
 where the unit of work has a branch or an open PR, a **CI line**, one plain-language sentence stating whether the
 fenced next command waits on CI itself and what the user does meanwhile. A bare check state ("CI: running") never
 satisfies it, and it is what disposes of the status line's check results. It is restated at four sites

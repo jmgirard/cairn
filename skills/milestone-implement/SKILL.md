@@ -230,7 +230,8 @@ run ingestion first (see `/milestone-brief`).
    judgment → the escalation offer of step 3. A context-hygiene stop →
    checkpoint-commit at the task boundary. Each stop that is not a chip
    ends with the **close block**: an outcome-first recap of what is done
-   and why it stopped; a status table (milestone, status, branch/PR, suite
+   and why it stopped; where an earlier milestone of the run merged up
+   front, the end-of-run list of `/milestone-review` step 10 (D-145); a status table (milestone, status, branch/PR, suite
    results); the implement-stop **CI line** (tracking-rules close-block
    shape), one plain sentence saying there is nothing to wait for now: no
    PR exists yet, and `/milestone-review` pushes the branch, opens the PR,

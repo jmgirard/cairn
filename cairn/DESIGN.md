@@ -60,7 +60,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   are read-bounded to their newest content, D-063); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
   `cairn/.merge-approved` marker, bound to the PR it approves since M72,
-  technically backing IP1),
+  and, for an up-front marker, to the milestone's `Merge approval:` slot read
+  from the remote-tracking default branch since M203, technically backing
+  IP1),
   `force_push_guard` (denies force-pushes to the default branch — IP1's
   never-force-push line, mechanically backed; M60), `commit_guard`
   (nudge against committing on the default branch), `memory_guard` (GP4

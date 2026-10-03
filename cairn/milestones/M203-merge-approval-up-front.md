@@ -118,9 +118,9 @@ own questions".
 
 - AC1 → T1
 - AC2 → T2
-- AC3 → T3
+- AC3 → T3, T8
 - AC4 → T4
-- AC5 → T5, T6
+- AC5 → T5, T6, T8
 
 ## Tasks
 
@@ -141,6 +141,11 @@ own questions".
 - [x] T5: The surfaces in AC5.
 - [x] T6: Run the verify slot and `cairn_validate`.
 - [x] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
+- [x] T8: Review return 1. Every close block that ends a run in which a
+      milestone merged up front carries the end-of-run list (rulebook
+      close-block shape, implement and review stops). The routing template
+      and the CLAUDE.md section state the route-back cases. The
+      `merge_guard` line of `cairn/DESIGN.md` names the slot read.
 
 ## Work log
 
@@ -171,6 +176,7 @@ own questions".
 - claim audit: 42 claims read, 5 corrected — skills/shared/tracking-rules.md, README.md, CHANGELOG.md, hooks/tests/test_hooks.py
 - 2026-10-03: claim audit re-read by the same reader: all 5 corrected claims now match. Its one edge note (a deny with no default branch names the base remote, not a ref) is folded into the test docstring.
 - review return 1: AC3 fails because a run that merged a milestone up front and then ends at a stop (an implement stop, a review CI timeout, a thrash stop) ends with a close block that carries no end-of-run list of that merge's findings. AC5 fails because the routing template and the CLAUDE.md section name the cases only as "any route-back case". The gate fails because `cairn/DESIGN.md:61-63`, the `merge_guard` line, does not name the default-branch slot read.
+- 2026-10-03: T8 added for review return 1 (minor amendment, Coverage AC3 and AC5 gain T8). Done: the rulebook close-block shape, implement step 8, and review step 10 carry the end-of-run list at any close that ends the run. The routing template and the CLAUDE.md section list the route-back cases. To keep the CLAUDE.md section at 29 lines, its Trivial bullet now fits on one line. The template's file grows to 35 lines, past its "~25 lines" body note, which no check reads. DESIGN's `merge_guard` line names the slot read. Verify green, `skills/tests` at main's 4 reds and 1 error.
 
 ## Decisions
 
