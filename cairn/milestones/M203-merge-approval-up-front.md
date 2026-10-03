@@ -179,6 +179,7 @@ own questions".
 - 2026-10-03: the T9/T10 claim audit (`5314538..HEAD`) found one behavior bug and six wording gaps. The bug: route (c) appended an unpushed second approval line, so a resumed up-front run always read a late push. Fixed: route (c) appends none. Step 8 writes `step-8 route-back:` for red CI, a late push, or a conversation item, and step 7 reads it. The rulebook bullet lists the T9 cases and the late-push definition. The README and CHANGELOG name the read's items. The same reader confirmed all seven. Verify green, and `skills/tests` shows main's 4 reds and 1 error.
 - review return 3: two pass-3 findings fail what the up-front path does. Step 8's up-front arm keys on any up-front line, so a chip approval after a route-back loops (diff-bug #1, AC3). A default branch that moves before a resume is not logged, so a later resume can merge an unverified tree unattended (diff-bug #3).
 - 2026-10-03: stop at the thrash rule. Trigger (a): this is the third defect return. Trigger (b): AC3 has failed in three passes by three mechanisms (the end-of-run list at a stop, the red-CI re-entry, the approval-line keying and the moved default branch).
+- 2026-10-03: thrash stop answered: the user chose to escalate the up-front state machine via `/milestone-brief` before any more fixes, over the recommended one-pass descope.
 
 ## Decisions
 
