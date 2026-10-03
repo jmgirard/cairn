@@ -34,7 +34,7 @@ rule stay as they are. Only who settles their findings changes.
 
 ## Acceptance criteria
 
-- [ ] AC1: The "Question gates and phase closes" section of
+- [x] AC1: The "Question gates and phase closes" section of
       `skills/shared/tracking-rules.md` names two gates: the plan question
       set and the merge question. It names each stop allowed between them:
       - the user's eyes or hands are needed (a live look, a file, a login,
@@ -57,7 +57,7 @@ rule stay as they are. Only who settles their findings changes.
       `grep -rn -i -E 'three gates|third gate|three points|choices gate|pre-implementation (gate|question)|nothing runs but you'`
       over `skills/`, `README.md`, `CHANGELOG.md`, `CLAUDE.md`, and
       `cairn/DESIGN.md` prints no line.
-- [ ] AC2: Step 3 of `skills/milestone-plan/SKILL.md` names the questions
+- [x] AC2: Step 3 of `skills/milestone-plan/SKILL.md` names the questions
       that the set asks:
       - what to work on, for a request that names no work,
       - choices that the request leaves open about what the user will get,
@@ -71,18 +71,18 @@ rule stay as they are. Only who settles their findings changes.
       order, approach, test scope, and changelog entries. It states that a
       question the agent cannot phrase without the terms of cairn is a
       question the agent decides itself.
-- [ ] AC3: `skills/milestone-plan/SKILL.md` ends with its commit and push.
+- [x] AC3: `skills/milestone-plan/SKILL.md` ends with its commit and push.
       Then it invokes `/milestone-implement` through the Skill tool for the
       first workable milestone that it planned. If another milestone is in
       progress, or the user asked for a plan alone, it ends with a close
       block instead.
-- [ ] AC4: `skills/milestone-implement/SKILL.md` has no question round
+- [x] AC4: `skills/milestone-implement/SKILL.md` has no question round
       before work starts. On completion it sets `review` and invokes
       `/milestone-review` through the Skill tool in place of its close
       block. Its amendment step makes an amendment with a work-log line. If
       an amendment drops something the user asked for, or changes what the
       user sees from the plan, the step stops for the user instead.
-- [ ] AC5: `skills/milestone-review/SKILL.md` poses `AskUserQuestion` only
+- [x] AC5: `skills/milestone-review/SKILL.md` poses `AskUserQuestion` only
       at the merge question and at the stops in AC1. Its step-7 sentence on
       clarifying questions is gone. Review rejects, with the reason in the
       Review section, a finding that it shows to be false against the code,
@@ -95,7 +95,7 @@ rule stay as they are. Only who settles their findings changes.
       same plan created another workable milestone, review invokes
       `/milestone-implement` for it after the merge. Otherwise it ends with
       its close block.
-- [ ] AC6: Six surfaces describe the run. In `README.md` they are the
+- [x] AC6: Six surfaces describe the run. In `README.md` they are the
       workflow section and the "What the system expects from you" section.
       The others are a `CHANGELOG.md` entry, the architecture in
       `cairn/DESIGN.md`, `skills/shared/templates/claude-md-section.md`,
@@ -106,7 +106,7 @@ rule stay as they are. Only who settles their findings changes.
       the rulebook, the per-phase close-block handoff of D-124, and the
       plan-gate question for an arguable criteria-audit finding. It
       annotates D-003 and D-022.
-- [ ] AC7: The verify slot passes with exit code 0 for each command:
+- [x] AC7: The verify slot passes with exit code 0 for each command:
       `python3 -m unittest discover` over `scripts/tests` and over
       `hooks/tests`, `claude plugin validate`, and `claude plugin test`.
 
@@ -173,3 +173,14 @@ rule stay as they are. Only who settles their findings changes.
 ## Decisions
 
 ## Review
+
+Pass 2 (2026-10-03, after return 1), on branch head 3bc80e7. The branch contains `origin/main` (203e023), so no merge was needed.
+
+- AC1: `tracking-rules.md:358` says interaction in a run "happens at two gates". It names the plan question set and the merge question. All ten stops of AC1 are bullets in the stop list. A grep for their openings counts 10. Line 401 opens the close-block paragraph with "Inside a run, a phase ends with a call to the next skill through the Skill tool". Line 402 says "The **close block** ends the run". The AC1 grep over the five named paths prints no line (exit 1). On pass 1 it printed two lines from `skills/tests/test_gate_wording.py`.
+- AC2: `skills/milestone-plan/SKILL.md:142-147` lists the four kinds of question. Lines 149-151 name what the agent decides with a work-log line each: criteria wording, criteria-audit findings, milestone splits and order, approach, test scope, and changelog entries. Lines 151-152 say a question the agent cannot phrase without the terms of cairn is one it decides.
+- AC3: Step 6 of the plan skill commits and pushes (lines 354-362). Step 7 (lines 368-374) then invokes `/milestone-implement M<NNN>` through the Skill tool for the first workable milestone of the plan. In lines 375-382, if another milestone is in progress or the user asked for a plan alone, the step ends with a close block instead.
+- AC4: `skills/milestone-implement/SKILL.md:73` is step 3, "No question round". Step 9 (lines 240-249) sets `review` and invokes `/milestone-review <id>` through the Skill tool in place of a close block. Step 6 (lines 127-137) makes a substantive amendment with a work-log line. If the amendment drops something asked for or changes what the user sees, it stops for the user.
+- AC5: `skills/milestone-review/SKILL.md:24` limits `AskUserQuestion` to the merge question and the stops. A grep for every chip and `AskUserQuestion` site finds only the merge chip, its resume re-posings, and the thrash-rule stop. A grep for "clarif" prints nothing. Lines 294-308 hold the three dispositions: reject with a reason, fix now, follow-up. Line 412 logs a PR item that requests nothing as noted. Line 312 has the merge question list each disposition. Lines 651-658 invoke `/milestone-implement <next-id>` for the next workable milestone of the plan. With no such milestone, the close block ends the run.
+- AC6: Each surface states the run and the resume commands. The README workflow section is at lines 249-271 ("One command starts a run"). The README "What the system expects from you" bullets are at lines 409 and 414. The others are the `CHANGELOG.md:91` entry, `cairn/DESIGN.md:36`, `claude-md-section.md:14`, and `CLAUDE.md:22`. D-144 supersedes the three-gate clause, D-124's per-phase handoff, and D-067's arguable-finding question. It annotates D-003 and D-022.
+- AC7: Each verify command exits 0. `scripts/tests` ran 395 tests, OK with 21 skipped. `hooks/tests` exits 0. `claude plugin validate` passed with warnings. `claude plugin test .` reports 632 pass and 0 fail.
+- Consistency gate: `cairn_validate` passes all checks (exit 0). No DESIGN principle line changed, so `cairn_impact` was skipped. The `generic` profile names no toolchain checks.
