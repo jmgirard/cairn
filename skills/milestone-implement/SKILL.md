@@ -132,8 +132,8 @@ run ingestion first (see `/milestone-brief`).
    - *Substantive* (a criterion or scope must change; a change to
      acceptance-criterion wording is *Substantive* by definition): the
      agent makes the amendment and records it as a dated work-log line
-     that carries `substantive amendment:` after its date (the prefix `/milestone-review`
-     step 7's up-front check reads) (+ D-entry if cross-cutting); show the amended criterion/scope text
+     that carries `substantive amendment:` after its date (the prefix
+     `/milestone-review` step 7 counts) (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in a guaranteed-rendered position (durable-record preview).
      **The stop.** If the amendment drops something the user asked for, or
      changes what the user sees from the plan, stop for the user instead:
@@ -230,8 +230,7 @@ run ingestion first (see `/milestone-brief`).
    judgment → the escalation offer of step 3. A context-hygiene stop →
    checkpoint-commit at the task boundary. Each stop that is not a chip
    ends with the **close block**: an outcome-first recap of what is done
-   and why it stopped; where an earlier milestone of the run merged up
-   front, the end-of-run list of `/milestone-review` step 10 (D-145); a status table (milestone, status, branch/PR, suite
+   and why it stopped; a status table (milestone, status, branch/PR, suite
    results); the implement-stop **CI line** (tracking-rules close-block
    shape), one plain sentence saying there is nothing to wait for now: no
    PR exists yet, and `/milestone-review` pushes the branch, opens the PR,
@@ -252,7 +251,6 @@ run ingestion first (see `/milestone-brief`).
    through the Skill tool in place of a close block. Before the call, state
    in a few plain sentences what the milestone now does or changes,
    deviations from plan, and open concerns; review's merge question carries
-   the full outcome-first account, or, for a milestone that merges up front,
-   the end-of-run list after the merge. Review re-reads its state from the files
+   the full outcome-first account. Review re-reads its state from the files
    and gathers its evidence by command, never from this session's recall
    (tracking-rules "Context hygiene").
