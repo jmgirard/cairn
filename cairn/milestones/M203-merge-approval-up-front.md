@@ -85,7 +85,7 @@ own questions".
       - a marker for one milestone while only another milestone's slot reads `up front`.
 
       A legacy marker without `up front` behaves as before.
-- [ ] AC5: Three surfaces state the up-front approval and the cases that go back to the merge question: the
+- [x] AC5: Three surfaces state the up-front approval and the cases that go back to the merge question: the
       approval bullet of the git model in `skills/shared/tracking-rules.md`, "Merges are yours" in
       `README.md`, and a `CHANGELOG.md` entry. `skills/shared/templates/claude-md-section.md` and the cairn
       section of `CLAUDE.md` state the up-front approval and either list the cases or point to the rulebook's
@@ -226,3 +226,7 @@ own questions".
 - prior-review #2b: `startswith("up front")` accepts `up frontier`. — fix now (with diff-bug #9)
 - prior-review #3: the rulebook-size baseline is not re-seeded (M149). — follow-up (already in the "Run edge cases" row, M202 F4)
 - prior-review #4: `COMMENTED` reviews and conversation comments neither route back nor reach the end-of-run list (M177). — fix now (any item in the read routes back)
+- Pass 3 (2026-10-03, after return 2 and the AC5 amendment return). `origin/main` has not moved. AC3 evidence: step 7 (`skills/milestone-review/SKILL.md` lines 386-425) carries every route-back check of AC3. The amendment check is the plan-commit diff plus the `substantive amendment:`/`amendment return:`/`step-7 decline:`/`step-8 route-back:` lines. The `spawned:` check needs the current pass with every required lens, and the step-7 adders include any PR-conversation item. It commits `step-7 approval: <branch> approved up front per plan <sha>` before step 8's push. The step-8 up-front arm writes `M<NNN> approved up front YYYY-MM-DD per plan <sha> for PR #<N>` only after green CI or the no-checks case, with no late push (the PR head is the approval-line commit) and an empty PR-conversation read. Red CI, a late push, or a read item writes `step-8 route-back:` and poses the chip. The end-of-run list holds at step 7, step 10, and every run-ending close (rulebook close-block shape, implement step 8). Pass.
+- Pass 3 AC4 evidence: `python3 -m unittest discover -s hooks/tests -k UpFront` runs 19 tests, all OK. That covers each allow and deny case AC4 names, plus a backtick value, `up frontier`, a zero-padded file, a non-ASCII name, an unset remote HEAD, and a subdirectory cairn root. The docstring and missing-marker deny name both gates, and a slot deny names the value read, or why none, and its ref and path. Pass.
+- Pass 3 AC5 evidence (amended AC5): the rulebook's approval bullet (`skills/shared/tracking-rules.md:240-250`), README "Merges are yours" (line 424), and the CHANGELOG Unreleased entry (line 91) state the up-front approval and list the cases. `skills/shared/templates/claude-md-section.md:20-21` and `CLAUDE.md:27-29` state the up-front approval and point to "the rulebook's approval bullet". Section lengths are 28 and 26 lines. Verify: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 193 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
+- Pass 3 consistency gate: `cairn_validate` all checks passed. `cairn/DESIGN.md`'s `merge_guard` line names the slot read and its limit. Pass.
