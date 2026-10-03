@@ -1,6 +1,6 @@
 # M202: One question set, then the agent runs the milestone to the merge question
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -167,6 +167,7 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T6 done, delegated to one Opus agent and its diff read here. The branch had added 39 failures and 28 errors in `skills/tests`; 11 files re-anchored or rewritten to the new rules, none deleted, 21 mutation-harness entries repointed, 2 tests added. The agent found `/hotfix` step 6 still citing review's four triage options, so hotfix now names them itself (hotfix keeps its questions) and its test follows. skills/tests 663, the same 4 reds and 1 error as main.
 - claim audit: 41 claims read, 7 corrected — tracking-rules.md (refused fresh-reader stop folded into stop item 1; resume-command exception for the goal-wrong and guest stops), milestone-review/SKILL.md (guest arm reaches step 10 later; fix-now deadline is before the merge question; deferred row named in the handoff or close block; "displacement clause below"), records-hygiene.md (§7 chip posed when the audit finds such a row). Each correction re-read once by the same reader and holds.
 - 2026-10-03: T7 done. Verify green: scripts 0 fail, hooks 0 fail, plugin validate passed, plugin test 632 pass 0 fail; cairn_validate all checks passed. Status set to review.
+- 2026-10-03: review return 1 (defect, step-4 gate): AC1 fails as written. Its grep over `skills/` prints two lines, `skills/tests/test_gate_wording.py:74` and `:79`, which hold the retired phrase "exactly three gates" in a comment and an `assertNotIn` literal (T5's work-log line scoped the grep to outside `skills/tests`). AC2–AC7 and `cairn_validate` passed on this pass; nothing ticked. Status back to in-progress.
 
 ## Decisions
 
