@@ -45,8 +45,10 @@ own questions".
       milestone, it recommends `at the end`. The plan writes each slot as `up front YYYY-MM-DD` or `at the
       end`. A set that did not pose the question writes `at the end`. A re-cut via `/milestone-plan` asks
       again and rewrites the slot. Review and the guard read `—` or a missing slot as `at the end`.
-- [x] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips the merge question:
+- [ ] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips the merge question:
       - the default-branch copy of the slot reads `up front`,
+      - this invocation of review started with an empty Review section and no PR for the branch, and the
+        work log has no `step-7 approval:` line,
       - the Goal, Scope, and Acceptance criteria text on the branch differs from that of the plan commit only
         in checkbox ticks (the plan commit is the newest default-branch commit whose subject is `plan …` and
         names M<NNN>),
@@ -58,14 +60,14 @@ own questions".
       - on a user-facing milestone, no finding was rejected as false,
       - the Review section records the spawned reviewers,
       - `Principles touched:` names no IP, and `git diff <default>...HEAD` adds no `### D-` heading,
-      - no condition of step 7 that adds to the merge question applies (a PR review that requests changes, a
-        Driving RR shortfall, guest mode, a companion PR, an issue write from `Resolves:`).
+      - no condition of step 7 that adds to the merge question applies (a Driving RR shortfall, guest mode, a
+        companion PR, an issue write from `Resolves:`).
 
-      In that case, before the push of step 8, it commits the work-log line `step-7 approval: <branch>
-      approved up front per plan <sha>`. After the PR opens, CI must be green, or the rulebook rule for a PR
-      with no CI runs must apply. No commit was pushed after the PR opened (for a PR that already existed,
-      after the push of step 8). When both hold, it writes the marker `M<NNN> approved up front YYYY-MM-DD per
-      plan <sha> for PR #<N>`. If CI is red or a fix is pushed, it asks the merge question. In every other
+      In that case it commits the work-log line `step-7 approval: <branch> approved up front per plan <sha>`
+      before the push of step 8, and step 8 runs in the same invocation. Step 8 writes the marker `M<NNN>
+      approved up front YYYY-MM-DD per plan <sha> for PR #<N>` only when CI is green, or the rulebook rule for
+      a PR with no CI runs applies, and the PR-conversation read finds no item from a non-bot author. Red CI,
+      a non-bot item, or any stop poses the merge question, in this invocation or the next. In every other
       case it asks the merge question as before. The close block or merge question that ends the run lists
       each milestone merged up front in the run. For each, it gives the PR and each finding verbatim with its
       disposition and the reason for each reject.
@@ -95,7 +97,7 @@ own questions".
 
 - AC1 → T1
 - AC2 → T2
-- AC3 → T3, T8, T9
+- AC3 → T3, T8, T9, T12
 - AC4 → T4, T9
 - AC5 → T5, T6, T8, T10
 
@@ -134,7 +136,9 @@ own questions".
 - [x] T10: Execute the AC5 amendment: the two routing surfaces point to the
       rulebook bullet, the template is back under the cap, and the CLAUDE.md
       Trivial reflow is reverted.
-- [ ] T11: Take RR16 recs 1 to 6 to the step-6 amendment stop: the one-pass AC3, a D-entry, the pass-3 one-line fixes, one route-back list, the guard deny for an unset remote HEAD, and non-bot route-back. The other choice to offer is removal (rec 9).
+- [x] T11: Take RR16 recs 1 to 6 to the step-6 amendment stop: the one-pass AC3, a D-entry, the pass-3 one-line fixes, one route-back list, the guard deny for an unset remote HEAD, and non-bot route-back. The other choice to offer is removal (rec 9).
+- [ ] T12: Apply RR16 recs 1 to 6 and review return 3: D-146, the one-pass review text, the rulebook's
+      single route-back list, the guard deny for an unset remote HEAD, and the pass-3 one-line fixes.
 
 ## Work log
 
@@ -183,6 +187,7 @@ own questions".
 - 2026-10-03: thrash stop answered: the user chose to escalate the up-front state machine via `/milestone-brief` before any more fixes, over the recommended one-pass descope.
 - 2026-10-03: blocked on RB16. The brief is committed on this branch, as RB15 was, because the milestone's state lives on the branch.
 - 2026-10-03: RR16 ingested (Fable, advisory, 12 recommendations). Apply: recs 1 to 6, through T11's amendment stop, because rec 1 narrows AC3 and changes what the user sees. Consider: rec 7 (pose the plan's merge question only when a plan has an internal, IP-free milestone) and rec 8 (a `resume:` line on routes (c) and (d)) go to the follow-on row. Rec 9 (removal) is the fallback offered at T11 and named for the next AC3 return. Rejected as RR16 reasons: rec 10 (the script leaves the writers in prose), rec 11 (new pass-id or base-oid writers are the mechanism of all three returns), and rec 12 (the main/master fallback guesses).
+- 2026-10-03: substantive amendment: AC3 narrowed to the one-pass rule at the user's answer to T11, as drafted from RR16 Q5. The skip runs only in an invocation that started with an empty Review section, no PR, and no `step-7 approval:` line. Step 8 runs in the same invocation, and red CI, a non-bot PR item, or any stop asks. The "PR review that requests changes" adder moves into the non-bot item rule. AC3 has two `re-audit` lines, so the user's answer settled the wording with no reader (step 6). Removal is named for the next AC3 return. T12 added, AC3 unticked.
 
 ## Decisions
 
