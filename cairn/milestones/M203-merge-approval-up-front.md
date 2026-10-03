@@ -126,7 +126,7 @@ own questions".
 
 - [x] T1: Rewrite IP1 in `cairn/DESIGN.md` and append the D-entry (RB
       tripwire: ip-touching). The user decided it at the plan gate.
-- [ ] T2: Add the `Merge approval:` slot to
+- [x] T2: Add the `Merge approval:` slot to
       `skills/shared/templates/milestone.md`. Add the merge question to the
       step-3 list of `skills/milestone-plan/SKILL.md` and the slot write to
       step 4.
@@ -163,6 +163,7 @@ own questions".
 - 2026-10-03: stop at the second re-audit of AC1 to AC4 (repeated review-failure stop). Amended text not yet written.
 - 2026-10-03: substantive amendment of AC1 to AC4 at the user's answer: the second reader's seven fixes applied, the "no stop fired" condition dropped (the user is present at each stop and types the resume), no third reader. T3 and T4 widened to match, T7 ticked.
 - 2026-10-03: T1 done: IP1 adds the two gates for a milestone merge, D-145 records the change, its route-back cases, and the D-138, D-144, and D-043 links. Verify green (scripts 395 OK, hooks 174 OK, plugin validate and test 632 pass).
+- 2026-10-03: T2 done: template slot defaults to `at the end`; plan step 3 adds the per-milestone merge question, step 4 the slot write with the re-cut rule. No script parses header slots, so no parser change. Verify green.
 
 ## Decisions
 

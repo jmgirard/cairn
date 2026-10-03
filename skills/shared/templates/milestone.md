@@ -11,6 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** —   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
+- **Merge approval:** at the end   <!-- owner: plan · create/amend-via-gate; `up front YYYY-MM-DD` (approved in the plan question set; /milestone-review merges without the merge question unless a route-back case applies) or `at the end`; a set that did not pose the question writes `at the end`, a re-cut asks again and rewrites it, and review and merge_guard read `—` or a missing slot as `at the end` (D-145) -->
 - **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
