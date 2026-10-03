@@ -134,7 +134,7 @@ rule stay as they are. Only who settles their findings changes.
 - [x] T3: `skills/milestone-implement/SKILL.md`: remove the step-3 question
       round (lines 70-81 today), keep the escalation offer as a stop, make
       step-6 amendments without a gate, and end step 9 with the handoff.
-- [ ] T4: `skills/milestone-review/SKILL.md`: findings settled by the agent
+- [x] T4: `skills/milestone-review/SKILL.md`: findings settled by the agent
       (lines 283-304) and the PR-conversation triage (lines 375-407). Then
       the clarifying-questions sentence and the "third gate" wording (lines
       409-411), and the step-10 handoff to the next milestone of the plan.
@@ -162,6 +162,7 @@ rule stay as they are. Only who settles their findings changes.
 - 2026-10-03: T1 done. The rulebook names two gates, the closed stop list, a run-scoped early-stop clause, and a close block that ends the run; Context hygiene covers a run across seams; dependency changes go to the question set or a stop. Verify green (scripts 0 fail, hooks 0 fail, validate passed, plugin test 632 pass).
 - 2026-10-03: T2 done. Plan step 3 names the four kinds of question and what the agent decides; audit findings, collisions, inbox hits, and the checker-regress shape are settled by the agent with a work-log line; step 7 hands off to `/milestone-implement` through the Skill tool, with a close block when another milestone is in progress, a plan alone was asked, or nothing is workable. Verify green.
 - 2026-10-03: T3 done. Implement has no question round; uncovered dependency or outward actions and the escalation offer are stops; substantive amendments are made with a work-log line and stop only when they drop something asked for or change what the user sees; D-118 widening reaches criteria only at a stop; step 8 lists the stops with the stop close block and CI line; step 9 hands off to `/milestone-review` through the Skill tool.
+- 2026-10-03: T4 done. Review settles each finding (reject with reason, fix now, follow-up) and each PR item (plus noted); gate and floor failures return to implement through the Skill tool; the clarifying-questions sentence is gone; the merge question lists dispositions; step 9 files a new cross-referencing row in place of the records-hygiene §7 chip (§7 now names `/milestone` alone); step 10 hands off to the next workable milestone of the plan, read from the plan commit subject, and moves release parking to `/milestone` in the close block.
 
 ## Decisions
 
