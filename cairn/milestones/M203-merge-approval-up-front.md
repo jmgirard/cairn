@@ -1,144 +1,76 @@
-# M203: Approve the merge in the question set
+# M203: Record review findings in fixed formats
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
-- **Surface tier:** user-facing, because the skills and the merge guard ship in the plugin to every adopter
+- **Surface tier:** user-facing, because the review and implement skills ship in the plugin to every adopter
 - **Branch/PR:** m203-merge-approval-up-front
 
 ## Goal
 
-The user can approve the merge of a milestone in the plan question set, so a run whose review passes merges without a second question.
+Review records each finding and the reviewers each pass spawned in fixed line formats, and the up-front merge approval tried on this branch is removed, so the merge question stays the only gate for a milestone merge.
 
 ## Scope
 
-**In:** IP1 and a D-entry that records the user decision of 2026-10-03.
-A `Merge approval:` header slot that the plan writes from the question
-set. The merge path of review for an up-front approval, with the cases that
-go back to the merge question. The deny text of `merge_guard` and a test.
-The rulebook, README, routing template, CLAUDE.md, and CHANGELOG text on
-approval.
+**In:** Revert the up-front merge approval on the branch to main's text:
+hooks, the shared rulebook and templates, the plan skill, CLAUDE.md,
+README, and DESIGN. Keep RB15, RR15, RB16, RR16, D-145, and D-146 as
+history, with a new D-entry that supersedes the two entries. Keep review
+step 5's finding-line and `spawned:` formats, step 7's `step-7 decline:`
+line and an amendment count, and implement step 6's `substantive
+amendment:` prefix. One CHANGELOG entry.
 
-**Out:** A standing approval for every run of a repo. The user chose one
-approval for each plan at the 2026-10-03 gate, so this has no row. The
-merge question of `/hotfix` goes to the candidate row "`/hotfix` keeps its
-own questions".
+**Out:** The up-front merge approval, removed at the user's choice of
+2026-10-03 after the review returns the first cut's work log records. The
+new D-entry carries the reason, so there is no row. The follow-on items of
+RR15, RR16, and the review passes go with it. The merge question of
+`/hotfix` stays in the candidate row "`/hotfix` keeps its own questions".
 
 ## Acceptance criteria
 
-- [x] AC1: IP1 in `cairn/DESIGN.md` keeps its sentence that nothing reaches the default branch without
-      explicit user approval at a gate. It adds the two gates for a milestone merge. One is the merge
-      question. The other is the plan question set, for a milestone whose promise, as that plan committed it,
-      merges unchanged. That milestone also meets none of the route-back cases that the rulebook lists. A
-      D-entry records the user decision that changes IP1 (RB tripwire: ip-touching). The D-entry states that
-      the up-front approval comes before the diff exists. It names the route-back cases as the mechanism that
-      keeps the promise unchanged, and states that removing or narrowing a route-back case changes IP1. It
-      narrows D-138 and D-144 and annotates D-043 by name.
-- [x] AC2: The milestone template carries a `Merge approval:` header slot. Step 3 of
-      `skills/milestone-plan/SKILL.md` lists merge approval among the questions of the set, with one answer
-      for each milestone. When a plan creates several, the user can hold any of them `at the end`. The
-      question states that a run with no route-back case merges unseen. It also states that the code and the
-      finding dispositions of such a run appear only after the merge. For a user-facing or IP-touching
-      milestone, it recommends `at the end`. The plan writes each slot as `up front YYYY-MM-DD` or `at the
-      end`. A set that did not pose the question writes `at the end`. A re-cut via `/milestone-plan` asks
-      again and rewrites the slot. Review and the guard read `—` or a missing slot as `at the end`.
-- [x] AC3: If all of these hold, `skills/milestone-review/SKILL.md` skips the merge question:
-      - the default-branch copy of the slot reads `up front`,
-      - this invocation of review started with an empty Review section and no PR for the branch, and the
-        work log has no `step-7 approval:` line,
-      - the Goal, Scope, and Acceptance criteria text on the branch differs from that of the plan commit only
-        in checkbox ticks (the plan commit is the newest default-branch commit whose subject is `plan …` and
-        names M<NNN>),
-      - no work-log line records a substantive amendment, an `amendment return:`, or a declined merge
-        question,
-      - each criterion has passing evidence,
-      - no finding the agent disposed fix-now is left unfixed,
-      - no finding that its lens ranked first was rejected as false,
-      - on a user-facing milestone, no finding was rejected as false,
-      - the Review section records the spawned reviewers,
-      - `Principles touched:` names no IP, and `git diff <default>...HEAD` adds no `### D-` heading,
-      - no condition of step 7 that adds to the merge question applies (a Driving RR shortfall, guest mode, a
-        companion PR, an issue write from `Resolves:`).
-
-      In that case it commits the work-log line `step-7 approval: <branch> approved up front per plan <sha>`
-      before the push of step 8, and step 8 runs in the same invocation. Step 8 writes the marker `M<NNN>
-      approved up front YYYY-MM-DD per plan <sha> for PR #<N>` only when CI is green, or the rulebook rule for
-      a PR with no CI runs applies, and the PR-conversation read finds no item from a non-bot author. Red CI,
-      a non-bot item, or any stop poses the merge question, in this invocation or the next. In every other
-      case it asks the merge question as before. The close block or merge question that ends the run lists
-      each milestone merged up front in the run. For each, it gives the PR and each finding verbatim with its
-      disposition and the reason for each reject.
-- [x] AC4: The deny text and the docstring of `hooks/merge_guard.py` name both points of approval. For a
-      marker that carries `up front`, the guard reads the milestone file at the local remote-tracking ref of
-      the default branch of the base remote. If the file, the ref, or the slot cannot be read, the guard
-      denies the merge. If the slot does not read `up front`, the guard denies the merge. The deny text names
-      the slot value it read, or that none could be read, and the ref and path it read from. `hooks/tests`
-      tests show that the guard allows `gh pr merge <N>` in one case: an `approved up front` marker for PR
-      `<N>` and a default-branch slot of `up front`. The tests show a denial for each of these:
-      - another PR number,
-      - a slot of `at the end`, a slot of `—`, and a missing slot,
-      - `up front` only in the working tree,
-      - `up front` only on the local default branch,
-      - no remote-tracking ref,
-      - an absent file,
-      - a marker for one milestone while only another milestone's slot reads `up front`.
-
-      A legacy marker without `up front` behaves as before.
-- [x] AC5: Three surfaces state the up-front approval and the cases that go back to the merge question: the
-      approval bullet of the git model in `skills/shared/tracking-rules.md`, "Merges are yours" in
-      `README.md`, and a `CHANGELOG.md` entry. `skills/shared/templates/claude-md-section.md` and the cairn
-      section of `CLAUDE.md` state the up-front approval and either list the cases or point to the rulebook's
-      approval bullet for them. The verify slot passes as in AC7 of M202.
+- [ ] AC1: `cairn/DECISIONS.md` carries D-145 and D-146 as the branch wrote them, and a new D-entry after
+      them. The new entry records the user's choice of 2026-10-03 to remove the up-front merge approval
+      after the review returns the M203 work log records, supersedes D-145 and D-146, and states that IP1
+      keeps its text on main, so D-145's change to IP1 never takes effect.
+- [ ] AC2: `git diff main...HEAD -- hooks skills/shared skills/milestone-plan CLAUDE.md README.md
+      cairn/DESIGN.md` prints nothing, and `git grep -n -i -e "up front" -e "up-front" -- skills hooks
+      README.md CLAUDE.md CHANGELOG.md cairn/DESIGN.md` returns no match.
+- [ ] AC3: Step 5 of `skills/milestone-review/SKILL.md` states the finding-line format
+      `<lens> #<rank>: <finding> — <disposition>`, with a reject's reason and its ground (false, style, or
+      planned change), a fix-now line's `, fixed <sha>` suffix, the lens slugs `diff-bug`,
+      `blame-history`, and `prior-review`, and one `spawned: <lens>, …` line per review pass that spawns
+      reviewers, and none for a degraded (author-inline) pass. Step 7's decline exit writes the work-log
+      line `step-7 decline: <what was requested>`. Step 7's merge question states how many amendments
+      there were, counted from the `substantive amendment:` and `amendment return:` lines in this
+      milestone's work log.
+- [ ] AC4: Step 6 of `skills/milestone-implement/SKILL.md` writes a substantive amendment's work-log line
+      with `substantive amendment:` after its date. `git diff main...HEAD --
+      skills/milestone-implement/SKILL.md` changes that sentence and no other.
+- [ ] AC5: `git diff main...HEAD -- CHANGELOG.md` adds one entry under Unreleased and changes no other
+      line, and the entry describes the formats of AC3 and AC4. The four commands of the
+      `cairn/PROFILE.md` verify slot, as written there, each exit 0.
 
 ## Coverage
 
-- AC1 → T1
-- AC2 → T2
-- AC3 → T3, T8, T9, T12
-- AC4 → T4, T9
-- AC5 → T5, T6, T8, T10
+- AC1 → T2
+- AC2 → T2, T3
+- AC3 → T3
+- AC4 → T3
+- AC5 → T4, T5
 
 ## Tasks
 
-- [x] T1: Rewrite IP1 in `cairn/DESIGN.md` and append the D-entry (RB
-      tripwire: ip-touching). The user decided it at the plan gate.
-- [x] T2: Add the `Merge approval:` slot to
-      `skills/shared/templates/milestone.md`. Add the merge question to the
-      step-3 list of `skills/milestone-plan/SKILL.md` and the slot write to
-      step 4.
-- [x] T3: `skills/milestone-review/SKILL.md` steps 5, 7, and 8: the
-      route-back cases, the up-front path, the work-log line, the marker
-      after green CI, and the end-of-run list of dispositions. Step 5 gives
-      each finding its lens, rank, and disposition, and records the spawned
-      lenses. Read the resume routes that parse the `step-7 approval:` line.
-      A resume after a CI timeout finds the up-front line and re-derives CI.
-- [x] T4: The slot read, the deny text, and the docstring in
-      `hooks/merge_guard.py`, with the `hooks/tests` tests of AC4.
-- [x] T5: The surfaces in AC5.
-- [x] T6: Run the verify slot and `cairn_validate`.
-- [x] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
-- [x] T8: Review return 1. Every close block that ends a run in which a
-      milestone merged up front carries the end-of-run list (rulebook
-      close-block shape, implement and review stops). The routing template
-      and the CLAUDE.md section state the route-back cases. The
-      `merge_guard` line of `cairn/DESIGN.md` names the slot read.
-- [x] T9: Review return 2 and the pass-2 findings marked "fix now". One
-      definition of a late push: the PR head is the commit that added the
-      up-front line. A red-CI fix goes straight to the merge question. The
-      PR-conversation read runs before the marker, and any item routes back.
-      The guard resolves the default branch locally (no network), strips
-      backticks, matches `up front` as a word, and reads `ref:./path` from
-      `ls-tree -z`. Add tests for those cases and a zero-padded id. Fix the
-      stale prose sites.
-- [x] T10: Execute the AC5 amendment: the two routing surfaces point to the
-      rulebook bullet, the template is back under the cap, and the CLAUDE.md
-      Trivial reflow is reverted.
-- [x] T11: Take RR16 recs 1 to 6 to the step-6 amendment stop: the one-pass AC3, a D-entry, the pass-3 one-line fixes, one route-back list, the guard deny for an unset remote HEAD, and non-bot route-back. The other choice to offer is removal (rec 9).
-- [x] T12: Apply RR16 recs 1 to 6 and review return 3: D-146, the one-pass review text, the rulebook's
-      single route-back list, the guard deny for an unset remote HEAD, and the pass-3 one-line fixes.
+- [x] T1: Check out the branch and merge main into it. Resolve the milestone file and ROADMAP to main's
+      versions, which carry the branch's record.
+- [ ] T2: Restore `hooks`, `skills/shared`, `skills/milestone-plan`, `CLAUDE.md`, `README.md`, and
+      `cairn/DESIGN.md` to main's text, and append the superseding D-entry.
+- [ ] T3: Restore the review and implement skills to main's text, then add AC3's formats, decline line,
+      and amendment count, and AC4's prefix. Word them with no mention of an up-front check.
+- [ ] T4: Replace the branch's CHANGELOG entry with one entry for the formats.
+- [ ] T5: Run the verify slot and `cairn_validate`, and hand-run `skills/tests`.
 
 ## Work log
 
@@ -194,6 +126,12 @@ own questions".
 - review return 4: two pass-4 findings fail AC3's one-pass path. A failed merge retried after a push can merge an unreviewed tree unattended (diff-bug #1). A chip approval re-enters the up-front arm and loops (diff-bug #4).
 - 2026-10-03: stop at the thrash rule (fourth defect return, AC3 failing a fourth time). D-146's falsifier and the user's T11 answer name removal of the up-front path for this case, with no further brief.
 - 2026-10-03: thrash stop answered: the user chose to remove the up-front path and re-cut M203. The goal is wrong as planned, so the status returns to `planned` for `/milestone-plan`. The re-cut keeps RR16 Q4's list: the finding-line and `spawned:` shapes and the `step-7 decline:` and `substantive amendment:` prefixes. It drops the `Merge approval:` slot, the guard's slot read, the end-of-run list, and the IP1 change, and a new D-entry supersedes D-145 and D-146. The branch `m203-merge-approval-up-front` stays as the record and the source for the kept parts.
+- 2026-10-03: re-cut by /milestone-plan at the user's thrash-stop answer: remove the up-front path, keep the review record formats. Title, Goal, Scope, criteria, Coverage, and tasks were replaced, and git holds the first cut's T1 to T12 and AC1 to AC5. The work log, Decisions, and Review sections above carry over from the branch unchanged.
+- 2026-10-03: question set: none posed. The user's thrash-stop answer set the scope, and no other choice was open to the user. The merge question stays at the end, so no `Merge approval:` slot is written (main's template has none).
+- 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 6 findings, all fixed before writing. AC1 held a count in a D-entry and wording that clashed with D-145's heading. AC3's amendment count had no target and its `spawned:` rule missed the degraded pass. AC5's verify command lacked the slot's variable and its CHANGELOG entry was not identifiable. AC2 and AC4: nothing. It noted three kept sentences (review lines 330 and 522, implement line 136) that mention the up-front check and must be reworded for AC2's grep (T3).
+- 2026-10-03: plan chose to reuse the branch and revert, over a fresh branch from main with the formats cherry-picked, because the branch already holds the RB/RR archives and D-145/D-146. Falsified if the PR diff carries up-front text that AC2's diff and grep miss.
+- 2026-10-03: inbox sweep: `gh` reported no open issues and no open PRs.
+- 2026-10-03: implement of the re-cut started on branch m203-merge-approval-up-front. T1 done: main merged into the branch, the milestone file and ROADMAP resolved to main's versions. Untracked `tsconfig.json` left unstaged.
 
 ## Decisions
 
