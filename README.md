@@ -442,7 +442,7 @@ profile.
   - CI fails.
 
   Bot comments on the PR are logged and listed, and they do not stop the
-  merge.
+  merge unless one needs a fix.
 
   A milestone that merges up front lists its findings, and how each was
   settled, at the end of the run. A guard hook mechanically blocks merges

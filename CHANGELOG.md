@@ -108,7 +108,8 @@
   or decision-log change, the existing reasons that add to the merge
   question, a comment, an unresolved thread, or a commenting or
   changes-requested review on the PR from a non-bot author, and red CI.
-  Bot items are logged and listed and do not route back. Review writes the
+  Bot items are logged and listed and do not route back, unless one needs a
+  fix, which is pushed and then asks. Review writes the
   approval marker only in the same invocation, after CI is green, or the
   PR reports no checks and the profile allows a merge on local green, and
   after a read of the PR conversation just before the marker finds no

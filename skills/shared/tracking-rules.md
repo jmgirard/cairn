@@ -246,10 +246,10 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   ticks, a substantive amendment, an amendment return, or a declined merge question; an unevidenced criterion or an
   unfixed fix-now finding; a top-ranked finding rejected as false, or any finding rejected as false on a user-facing
   milestone; a `spawned:` line that misses a required lens; an IP in `Principles touched:` or a D-entry added on the
-  branch; a Driving RR shortfall, guest mode, a companion, or a `Resolves:` slot; red CI; a PR-conversation item from
-  a non-bot author (a comment, an unresolved thread, or a commenting or changes-requested review) read after CI
-  (`/milestone-review` steps 7 and 8). Bot items are logged and listed, never routed back. Removing or narrowing a case
-  changes IP1. Never
+  branch; a Driving RR shortfall, guest mode, a companion, or a `Resolves:` slot other than `—`; red CI, or a fix
+  pushed for a bot item disposed fix-now; a PR-conversation item from a non-bot author (a comment, an unresolved
+  thread, or a commenting or changes-requested review) read after CI (`/milestone-review` steps 7 and 8). Bot items are
+  logged and listed and do not route back by their presence. Removing or narrowing a case changes IP1. Never
   force-push (the force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records

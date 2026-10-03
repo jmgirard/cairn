@@ -456,8 +456,9 @@ re-enters here, at the step the record shows is next:
    its handoff (tracking-rules, Mandated-substance rule). For each earlier
    milestone of the run that merged up front (its file at the merge commit
    carries a `step-7 approval: … approved up front` line), the presentation also lists
-   its PR and each of its findings verbatim with its disposition and each
-   reject's reason, read from the Review section of its file at the merge
+   its PR, each of its findings verbatim with its disposition and each
+   reject's reason, and each `conversation:` line with its disposition,
+   read from the Review section of its file at the merge
    commit (`git show <merge-sha>:cairn/milestones/<file>`), and the
    question text names those milestones (the end-of-run list, D-145). With a Driving RR:
    repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
@@ -472,7 +473,8 @@ re-enters here, at the step the record shows is next:
    (D-145, D-146) — a fresh PR is opened at step 8 after this chip and is merged
    with no read, so outside the up-front arm the read runs at most once per
    pass through this gate, here (a resume that re-poses the chip is a new
-   pass). When it
+   pass). On the up-front arm no chip is posed, and the read runs once,
+   immediately before the marker. When it
    runs: once, immediately before the merge chip
    is posed — no added wait, not re-run after fix-now commits — and
    unconditional, independent of the step-5 lens's probe gate (one PR's
@@ -482,8 +484,8 @@ re-enters here, at the step the record shows is next:
    GraphQL `reviewThreads` query filtered to `isResolved: false` and paged
    until `hasNextPage` is false (`isResolved` is a field on each thread
    node, so the filter is applied to the returned nodes; the query selects
-   each thread's `path` and `line` and its comments' author login and
-   body). Every unresolved thread, every review in
+   each thread's `path` and `line` and its comments' body and author
+   `login` and `__typename`, a `__typename` of `Bot` marking a bot author). Every unresolved thread, every review in
    state `COMMENTED` or `CHANGES_REQUESTED`, and every conversation comment
    — whatever its author, human or bot — gets a disposition from the agent
    by step 5's rule (reject with reason, fix now, or follow-up), and an
@@ -594,8 +596,11 @@ re-enters here, at the step the record shows is next:
    the marker, never after it. Run the wait above first, then step 7's
    PR-conversation read. The marker is written only when CI is green, or
    the no-checks case applies, and the read finds no item from an author
-   whose `type` is not `Bot`. Bot items are logged with their dispositions
-   and appear in the end-of-run list, and they never route back (D-146).
+   whose `type` is not `Bot`. Bot items are logged as `conversation:`
+   lines with their dispositions and appear in the end-of-run list. A bot
+   item does not route back by its presence (D-146), but one the agent
+   disposes fix-now is fixed as red CI is: fix, re-verify, push, and pose
+   the chip, so the fix, not the item, sends the run back.
    Then write `cairn/.merge-approved` in a separate step as `M<NNN>
    approved up front YYYY-MM-DD per plan <sha> for PR #<N>`, and merge as
    above. The guard reads the slot from the default branch for such a
@@ -767,8 +772,9 @@ re-enters here, at the step the record shows is next:
     next action from its recommendation. The recap leads with what shipped
     and lists each finding that went to a candidate row. For each milestone
     of the run that merged up front, this one included, it lists the PR and
-    each finding verbatim with its disposition and each reject's reason
-    (step 7's end-of-run list, read the same way). Every other close block
+    each finding verbatim with its disposition and each reject's reason,
+    and each `conversation:` line with its disposition (step 7's end-of-run
+    list, read the same way). Every other close block
     that ends a run in which a milestone merged up front carries the same
     list: a stop in this skill (a CI timeout, a decline, a thrash stop) or
     in `/milestone-implement`. The status line
