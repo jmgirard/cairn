@@ -138,7 +138,7 @@ of telling the skill's own tasks from other in-flight work.
       AC5 names.
 - [x] T3: Update the README band paragraph, the CHANGELOG Unreleased band
       bullet, and the DESIGN `hooks/status` paragraph.
-- [ ] T4: Do a live look in the desktop app with the branch's mod loaded. It
+- [x] T4: Do a live look in the desktop app with the branch's mod loaded. It
       covers one skill run with a background subagent, a prompt typed during a
       second wait, and an Esc interrupt of a skill's turn. Record in the work
       log what the band showed, whether the interrupt kept or ended the label,
@@ -176,6 +176,7 @@ of telling the skill's own tasks from other in-flight work.
 - re-audit: AC2 (full) — three findings, all repaired: `tool.call` also writes `step` (now "start or end a step"), "the last `prompt.submit`" could include the judged prompt (now "earlier"), and "over a kept step" misdescribed two cases (now "After a Stop with one task keeps a step"). This is AC2's second re-audit, so further churn goes to the operator.
 - 2026-10-03: AC2 amended to the wording above. `register.tsx` gains the `expanded` atom (`types/index.d.ts` contract entry), and `band.test.tsx` gains the engine-order case and three lifetime cases. The engine-order case ran red on the old hook. Removing the clear at Stop, the clear at turn end, or the cairn-only guard each turned its own case red. README, CHANGELOG, and DESIGN state the interrupt result and the mark. Plugin validate passed, plugin test 632 pass. T4 stays open for one more live look on the fixed mod.
 - 2026-10-03: the AC2 amendment took the plan-owned body to 155 lines. The criteria, Scope, and Tasks text was rewrapped to 79 columns with no word changed, and the Tasks dropped their stale file line references, to land under the cap.
+- 2026-10-03: T4 done. Live look, run 3, on the fixed mod (`d331c2c`), session opened on the branch. Phase 1: the typed `/cairn:milestone-plan` kept its label (`skill.prompt`, then `prompt.submit` origin `composer`, step `milestone-plan`). The Stop during the wait listed `subagent:running` and kept it, the notice turn (the subagent's hand-back, origin `peer`) kept it, and that turn's Stop with an empty list ended it. Phase 2, started by a peer message whose `skill.prompt` came from the Skill tool: the wait's Stop kept the label, and the operator's typed word (origin `composer`, no `turnId`) ended it at 20:36:20. The step values come from the debug log, which records the step the band draws after each event. The temporary debug code is gone, and `.m201-band-debug.log` and its exclude line are deleted. README, CHANGELOG, and DESIGN already state the interrupt result from run 2.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
