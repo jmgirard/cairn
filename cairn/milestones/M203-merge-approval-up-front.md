@@ -1,6 +1,6 @@
 # M203: Approve the merge in the question set
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -91,6 +91,7 @@ own questions".
       and the `hooks/tests` test.
 - [ ] T5: The surfaces in AC5.
 - [ ] T6: Run the verify slot and `cairn_validate`.
+- [ ] T7: Before T1, take RR15 recs 1 to 9 to the step-6 amendment stop. Recs 1 to 5 are route-backs: a substantive amendment, a false-reject, an IP touched or a D-entry written, a degraded review, and a CI fix after the PR opens. Rec 6 binds the approval per milestone, rec 7 is the IP1 wording, and rec 8 has the guard read the slot. Rec 9 fixes the wording of AC2, AC3, T3, and T4. The other choice to offer is dropping the up-front path.
 
 ## Work log
 
@@ -100,7 +101,14 @@ own questions".
 - 2026-10-03: implement started on branch m203-merge-approval-up-front, in the run after M202 merged. Untracked `tsconfig.json` left unstaged.
 - 2026-10-03: T1 escalation offer (ip-touching): the user chose to escalate the IP1 change via `/milestone-brief` before T1 starts.
 - 2026-10-03: blocked on RB15. The brief is committed on this branch, not on main, because the milestone's state already lives on the branch, and a main commit would conflict with it.
+- 2026-10-03: RR15 ingested (Fable, advisory, 16 recommendations). Apply: recs 1 to 9. They add route-backs to the merge question, bind the approval per milestone, add the slot read to the guard, and change the IP1, AC2, AC3, T3, and T4 wording. These widen AC2 to AC4 and change the per-plan approval the user chose, so T7 records them for the step-6 amendment stop. Follow-up row: recs 10 to 13. Rejected as RR15 reasons: rec 14 (stronger marker binding exceeds the stakes, D-043), rec 15 (a D-entry alone, against IP2), and rec 16 (dropping the path, unless recs 1 to 5 do not ship).
 
 ## Decisions
+
+- 2026-10-03 (RR15 Q1): An up-front answer approves the promise as the plan commit carries it, not the code. It satisfies IP1 only if that promise merges unchanged and the cases where the merge question adds information go back to it. The 323-to-1 figure was measured with the read in place. The real gain is an unattended run, because CI waits on the approval (D-138).
+- 2026-10-03 (RR15 Q2, Q6): Six cases pass AC3 as written. The agent rejects a real finding as false. The agent makes a substantive amendment that it judges wording only. The agent narrows the scope. A plan chains several milestones. The review is degraded, with no spawned reviewers. The diff rewrites the gate machinery or an IP. A self-fixed defect return is an acceptable risk. The fix is to send each of these cases back to the merge question.
+- 2026-10-03 (RR15 Q3): The approval binds each milestone, not the plan. One question can answer for several ids and lets the user hold any of them `at the end`. A re-cut asks again.
+- 2026-10-03 (RR15 Q4): The marker was always written by the agent. The guard's PR regex already accepts the `up front` form, so AC4's test is a regression guard. A stronger tie would have the guard read the milestone's `Merge approval:` slot from the base remote's default branch, with the marker and the work-log line citing the plan commit.
+- 2026-10-03 (RR15 Q5): RR15 recommends the IP1 wording "Nothing reaches the default branch without the user's explicit approval at a gate of the run: at the merge question, or in the plan question set for a milestone whose promise, as that plan committed it, then merges unchanged and with every check of the run passed." It rejects a D-entry alone with IP1 unchanged. It does not recommend dropping the up-front path, but only if recommendations 1 to 5 ship with M203.
 
 ## Review
