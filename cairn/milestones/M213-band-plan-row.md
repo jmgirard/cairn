@@ -40,13 +40,13 @@ follow-ons (M212 review)".
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: When the reader finds and parses a ROADMAP (the pane state's
+- [x] AC1: When the reader finds and parses a ROADMAP (the pane state's
       `found` is true) with no `in-progress` or `review` row and no
       workable `planned` row, the band draws one row whose left side is the
       text `No milestone ready` in the theme's gray and whose right side
       ends in the open and close buttons. When no ROADMAP is found, the band
       still draws nothing. `band.test.tsx` cases show both.
-- [ ] AC2: On that row, while no cairn skill's step is set and `isWorking`
+- [x] AC2: On that row, while no cairn skill's step is set and `isWorking`
       is not true, a `Plan` button and the `Status` button draw before the
       open and close buttons at every band width from 40 to 200 columns,
       on the terminal and the desktop surface, where the row's text keeps
@@ -54,7 +54,7 @@ follow-ons (M212 review)".
       in that range. M212's width sweep in `band.test.tsx` gains this row
       as a case, and other cases show the Buttons absent while a step is
       set and while `isWorking` is true.
-- [ ] AC3: A press of `Plan` runs the next step that the pane state holds
+- [x] AC3: A press of `Plan` runs the next step that the pane state holds
       at the press, as M212's next-step press does. When that step is
       planning, the press calls `$.command.run` with command
       `cairn:milestone-plan` and empty args. A press while another action
@@ -62,19 +62,19 @@ follow-ons (M212 review)".
       `/cairn:milestone-plan` to the prompt box and toasts the reason.
       `band.test.tsx` cases cover the run, the in-flight press, and the
       rejection.
-- [ ] AC4: The close button on that row hides the band. A `band.test.tsx`
+- [x] AC4: The close button on that row hides the band. A `band.test.tsx`
       case presses it, shows the band stays hidden after a refresh over the
       same ROADMAP and after a refresh that adds only a `planned` row
       waiting on an undone dependency, and shows the band again, as the
       idle row, after a refresh that finds a workable `planned` row.
-- [ ] AC5: README.md's "The milestone band" section and the `hooks/status/`
+- [x] AC5: README.md's "The milestone band" section and the `hooks/status/`
       paragraph of `cairn/DESIGN.md` describe the row and its `Plan` button,
       and CHANGELOG.md's `## Unreleased` section has an entry for them. The
       two sentences that `grep -n "draws nothing" README.md cairn/DESIGN.md`
       found at plan time saying the band draws nothing with no workable
       planned milestone (README.md:178-179, `cairn/DESIGN.md:162`) no longer
       say so.
-- [ ] AC6: The four verify checks in `cairn/PROFILE.md` exit 0 at the
+- [x] AC6: The four verify checks in `cairn/PROFILE.md` exit 0 at the
       branch head.
 
 ## Coverage
@@ -151,3 +151,12 @@ follow-ons (M212 review)".
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Evidence at `06c9b3b`, 2026-10-04, branch current with `origin/main` (`ac39d7d`).
+
+- AC1: `claude plugin test .` exit 0, 1103 pass. Passing cases: "a found ROADMAP with nothing active or workable draws the empty row (M213 AC1)" (all-waiting, candidates-skeleton, and `noneWorkable` copies of no-active and idle-deps, each with no skill and with milestone-plan, on both surfaces: one `plan-row`, left group the gray `No milestone ready` alone, no track, ends in open then close), its fixture-domain case, and "the band draws nothing where no ROADMAP is found" (no-roadmap with and without a skill).
+- AC2: same run. The M212 width sweep "the action Buttons give way before the title loses its room (M212 AC4)" passes for `all-waiting: plan-row` and `candidates-skeleton: plan-row`, which require both Buttons at all 161 widths 40 to 200 on both surfaces with the text's room at least 10; the unit case shows the fit at 37 and not 36 columns with 25 reserved. Absent while a step is set or `isWorking` is true: "a running cairn skill and a working turn hide Plan and Status on the empty row" (both surfaces) and "with nothing workable, <skill> draws the empty row with no action Buttons (M213)" for all 10 skills.
+- AC3: same run. "<fixture>: Plan runs /cairn:milestone-plan with no arguments, and Status runs /cairn:milestone" (2 fixtures, both surfaces: `commands` equals `{cairn:milestone-plan, ''}` then the status run, no fill or toast), "a refused Plan run appends /cairn:milestone-plan to the prompt box and toasts" (both surfaces), and "a Plan press while a run is in flight reaches no second run" (both surfaces). At T2 a planted press that returns on a null id turned the press cases red with `commands` undefined.
+- AC4: same run. "the close button hides the empty row until a milestone is workable (M213 AC4)" passes on both surfaces: hidden after the press, after a turn end over the same ROADMAP, and after adding M094 waiting on the blocked M092; the idle row for M095 shows after adding M095 with its one dependency done.
+- AC5: README.md lines 180-190 describe the empty row and its `Plan` and `Status` buttons, lines 201-204 its re-show rule; `cairn/DESIGN.md` lines 73, 84-86, and 164-174 describe it; CHANGELOG.md `## Unreleased` `### New` opens with "A Plan button on the empty band". `grep -n "draws nothing" README.md cairn/DESIGN.md` now returns README.md:130 (the running skill), README.md:223 (outside a cairn repo), and cairn/DESIGN.md:174 (no ROADMAP found); the plan-time sentences at README.md:178-179 and DESIGN.md:162 are gone.
+- AC6: at `06c9b3b`: `python3 -m unittest discover -s scripts/tests` exit 0 (397 tests, OK); `python3 -m unittest discover -s hooks/tests` exit 0 (174 tests, OK); `claude plugin validate .claude-plugin/plugin.json` exit 0 (passed with warnings); `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0 (1103 pass, 0 fail), with Claude Code 2.1.287.
