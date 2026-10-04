@@ -6,6 +6,7 @@ import type { BandLine, Span } from './band'
 import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width } from './band'
 import type { BandState, FileSource } from './reader'
 import { loadBand } from './reader'
+import { TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // The milestone band above the prompt (M191, M193 to M201): one row for one
 // `in-progress` or `review` ROADMAP row, refreshed when the session starts,
@@ -165,8 +166,11 @@ export const register: Register = on => {
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
-    const { Box, Button, Text } = $.ui.resolve(e)
-    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable)
+    const elements = $.ui.resolve(e)
+    const { Box, Button, Text } = elements
+    // The track draws on the desktop alone, as its `Svg` element (M204).
+    const Svg = e.surface === 'desktop' ? elements.Svg : undefined
+    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable, Svg !== undefined)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -206,7 +210,10 @@ export const register: Register = on => {
             </Box>
           )}
         </Box>
-        <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP}>
+        <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP} alignItems="center">
+          {line.track !== undefined && Svg !== undefined ? (
+            <Svg source={trackSvg(line.track)} alt={line.track.alt} width={TRACK_PX} height={TRACK_H} />
+          ) : null}
           {spans(line.tail)}
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>

@@ -1,13 +1,13 @@
 # M204: A flow track band: plan, implement, review
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the band every adopter sees above the prompt
-- **Branch/PR:** —
+- **Branch/PR:** m204-flow-track-band
 
 ## Goal
 

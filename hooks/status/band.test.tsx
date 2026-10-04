@@ -1,8 +1,10 @@
 import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
-import { bandLines, idleLines, knownStep, lineText, mark, same, SKILL_LABELS } from './band'
+import type { Flow } from './band'
+import { bandLines, flowOf, idleFlow, idleLines, knownStep, lineText, mark, planFlow, same, SKILL_LABELS } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
+import type { BandRow } from './reader'
 import { listNames, loadBand, memorySource } from './reader'
 
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat`,
@@ -13,10 +15,14 @@ import { listNames, loadBand, memorySource } from './reader'
 // The copy is mutable: an edit case edits a file between two turn ends,
 // and the second turn end reads the edit.
 
-const SURFACES = ['terminal', 'desktop'] as const
-// The implement and review hues, written out by hand (M198).
+// The text row's suites run on the terminal. The desktop draws the track
+// in their place (M204), and its own suites below cover it.
+const SURFACES = ['terminal'] as const
+// The implement and review hues, written out by hand (M198), and the plan
+// hue (M204).
 const ORANGE = 'rgb(194,122,92)'
 const GREEN = 'rgb(106,165,122)'
+const BLUE = 'rgb(110,140,190)'
 // The empty cells' theme key, written out by hand (M198).
 const EMPTY = 'subtle'
 const BAND = {
@@ -1095,7 +1101,7 @@ describe('a press while a turn end reads the ROADMAP (M200 AC1)', () => {
       const copy = copyOf('single-in-progress')
       seat(on, copy)
       await $.turn.complete(turn())
-      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
       expect(await rowKeys(ui)).toEqual(['M002-row'])
       edit(copy.files)
       let release = () => {}
@@ -1156,7 +1162,7 @@ describe('a failed read of a found ROADMAP keeps the rows and alone does not hid
     const copy = copyOf('single-in-progress')
     seat(on, copy)
     await $.turn.complete(turn())
-    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
     await ui.press({ key: 'cairn-close' })
     expect(await lines(ui)).toEqual([ENGINE])
     copy.unreadable = [ROADMAP]
@@ -1173,7 +1179,7 @@ describe('a failed read of a found ROADMAP keeps the rows and alone does not hid
     const copy = copyOf('single-in-progress')
     seat(on, copy)
     await $.turn.complete(turn())
-    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
     copy.unreadable = [ROADMAP]
     await $.turn.complete(turn())
     expect(await rowKeys(ui)).toEqual(['M002-row'])
@@ -1977,7 +1983,7 @@ const NO_ROW = ['idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-c
 const NO_IDLE = ['no-roadmap']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
-const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : ORANGE)
+const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : skill === 'milestone-plan' ? BLUE : ORANGE)
 // Each phase's filled-cell theme key, written out by hand.
 const FILL: Record<string, string> = { 'in-progress': 'claude', review: 'success' }
 const WARNINGS = ['no milestone file', 'no file']
@@ -2532,4 +2538,263 @@ describe("a press stores the idle row's id (M199 AC4)", () => {
     expect(await lines(ui)).toEqual(['next M022 Jumps the queue  /milestone-implement M022', ENGINE])
     await ui.unmount()
   })
+})
+
+// M204: the desktop track, one flow of plan, implement, and review.
+
+// The flow of each fixture whose row drawn with no skill is a milestone row
+// with readable counts, written out by hand: the three fills as
+// checked/total, the pill, and the percent (M204 AC1).
+const FLOWS: Record<string, { fills: [string, string, string]; pill: string; percent: number }> = {
+  'long-title': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
+  mixed: { fills: ['1/1', '0/1', '0/1'], pill: 'no tasks', percent: 33 },
+  'nested-first': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
+  'single-in-progress': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
+  'six-active': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
+  subdirectory: { fills: ['1/1', '2/2', '0/1'], pill: 'Implement 2/2', percent: 66 },
+  'unlabeled-item': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
+  'wide-title': { fills: ['1/1', '1/1', '1/2'], pill: 'Review 1/2', percent: 83 },
+  widest: { fills: ['1/1', '99/100', '0/1'], pill: 'Implement 99/100', percent: 66 },
+}
+
+const fillText = (flow: Flow) => flow.fills.map(f => `${f.num}/${f.den}`)
+const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow
+
+describe('the flow model gives three fills, a pill, and a percent (M204 AC1)', () => {
+  test('the table holds every fixture whose drawn row has readable counts', () => {
+    const domain = Object.keys(FIXTURES).filter(name => {
+      const id = shownId(name)
+      return id !== null && rowOf(name, id).tasksTotal !== null
+    })
+    expect(domain.length).toBeGreaterThan(0)
+    expect([...domain].sort()).toEqual(Object.keys(FLOWS).sort())
+  })
+
+  for (const [name, want] of Object.entries(FLOWS)) {
+    test(`${name}: the drawn row's flow`, () => {
+      const flow = flowOf(rowOf(name, shownId(name) as string)) as Flow
+      expect([fillText(flow), flow.pill, flow.percent]).toEqual([want.fills, want.pill, want.percent])
+    })
+  }
+
+  test('a section of zero items is empty and its pill names it', () => {
+    const tasks = flowOf(rowOf('states-implement', 'M042')) as Flow
+    expect([fillText(tasks), tasks.pill, tasks.percent]).toEqual([['1/1', '0/1', '0/1'], 'no tasks', 33])
+    const criteria = flowOf(rowOf('states-review', 'M052')) as Flow
+    expect([fillText(criteria), criteria.pill, criteria.percent]).toEqual([['1/1', '1/1', '0/1'], 'no criteria', 66])
+  })
+
+  test('an all-checked review row reads 100%, and an all-checked implement row does not', () => {
+    const review = flowOf(rowOf('states-review', 'M053')) as Flow
+    expect([fillText(review), review.pill, review.percent]).toEqual([['1/1', '1/1', '2/2'], 'Review 2/2', 100])
+    const implement = flowOf(rowOf('states-implement', 'M043')) as Flow
+    expect([implement.pill, implement.percent]).toEqual(['Implement 3/3', 66])
+  })
+
+  test('a row whose file cannot be read has no flow', () => {
+    expect(flowOf(rowOf('missing-file', 'M004'))).toBeNull()
+  })
+
+  test('the idle row: plan full, no percent', () => {
+    const flow = idleFlow()
+    expect([fillText(flow), flow.pill, flow.percent, flow.running]).toEqual([['1/1', '0/1', '0/1'], 'Planned', null, false])
+  })
+
+  test('the /milestone-plan skill row: plan running, nothing filled, no percent', () => {
+    const flow = planFlow()
+    expect([fillText(flow), flow.pill, flow.percent, flow.running]).toEqual([['0/1', '0/1', '0/1'], 'Plan', null, true])
+  })
+})
+
+// The track's width in pixels, written out by hand.
+const TRACK_WIDTH = 224
+const DESKTOP_STEPS = [null, 'milestone-plan', 'milestone-implement', 'milestone-review', 'hotfix'] as const
+const UNLABELED = 'Write the docs'
+
+type Expected = { pill: string; filled: string[]; ticks: [number, number]; alt: string[]; right: string | null; running: boolean }
+
+// What a row in the flow draws, from the fixture's counts, or null for a
+// row outside the flow. Derived here, never from band.ts.
+function expectedFlow(name: string, skill: string | null): Expected | null {
+  const id = shownId(name, skill)
+  if (id !== null) {
+    const row = rowOf(name, id)
+    const { tasksChecked: tc, tasksTotal: tt, criteriaChecked: cc, criteriaTotal: ct } = row
+    if (tc === null || tt === null || cc === null || ct === null) return null
+    const ticks: [number, number] = [Math.max(tt - 1, 0), Math.max(ct - 1, 0)]
+    if (row.status === 'in-progress') {
+      const percent = tt === 0 ? 33 : Math.floor((100 * (tt + tc)) / (3 * tt))
+      const counts = tt === 0 ? 'no tasks' : `${tc}/${tt}`
+      return {
+        pill: tt === 0 ? 'no tasks' : `Implement ${tc}/${tt}`,
+        filled: tc > 0 ? ['plan', 'implement'] : ['plan'],
+        ticks,
+        alt: ['implement', counts, `${percent}%`],
+        right: `${percent}%`,
+        running: false,
+      }
+    }
+    const percent = ct === 0 ? 66 : Math.floor((100 * (2 * ct + cc)) / (3 * ct))
+    const counts = ct === 0 ? 'no criteria' : `${cc}/${ct}`
+    return {
+      pill: ct === 0 ? 'no criteria' : `Review ${cc}/${ct}`,
+      filled: cc > 0 ? ['plan', 'implement', 'review'] : ['plan', 'implement'],
+      ticks,
+      alt: ['review', counts, `${percent}%`],
+      right: `${percent}%`,
+      running: false,
+    }
+  }
+  if (skill === null) {
+    const idle = idleId(name)
+    if (idle === null) return null
+    return { pill: 'Planned', filled: ['plan'], ticks: [0, 0], alt: ['plan'], right: `/milestone-implement ${idle}`, running: false }
+  }
+  if (skill !== 'milestone-plan') return null
+  return { pill: 'Plan', filled: [], ticks: [0, 0], alt: ['plan'], right: null, running: true }
+}
+
+const PHASE_COLORS: Record<string, string> = { plan: BLUE, implement: ORANGE, review: GREEN }
+
+function checkSource(source: string, want: Expected) {
+  // Each segment's fill, in its phase's dither, and the dithers' colors.
+  const filled = [...source.matchAll(/<rect class="fill" data-phase="(\w+)"[^>]*fill="url\(#dither-(\w+)\)"/g)]
+  expect(filled.map(m => m[1])).toEqual(want.filled)
+  for (const m of filled) expect(m[2]).toBe(m[1])
+  for (const m of source.matchAll(/<pattern id="dither-(\w+)"[^>]*><rect [^>]*fill="([^"]+)"/g)) {
+    expect(m[2]).toBe(PHASE_COLORS[m[1]])
+  }
+  expect([...source.matchAll(/<pattern id="dither-/g)].length).toBe(3)
+  // The ticks and the two phase-edge marks.
+  const ticks = (phase: string) => [...source.matchAll(new RegExp(`<line class="tick" data-phase="${phase}"`, 'g'))].length
+  expect([ticks('implement'), ticks('review')]).toEqual(want.ticks)
+  expect([...source.matchAll(/<line class="edge"/g)].length).toBe(2)
+  // The pill: its text, inside the track.
+  const pill = /<rect class="pill" x="([\d.]+)"[^>]*width="([\d.]+)"/.exec(source) as RegExpExecArray
+  expect(Number(pill[1])).toBeGreaterThanOrEqual(0)
+  expect(Number(pill[1]) + Number(pill[2])).toBeLessThanOrEqual(TRACK_WIDTH)
+  expect(/<text class="pill-text"[^>]*>([^<]*)<\/text>/.exec(source)?.[1]).toBe(want.pill)
+  expect(source.includes('@media (prefers-color-scheme: dark)')).toBe(true)
+  expect(source.includes('<rect class="running"')).toBe(want.running)
+}
+
+describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
+  for (const name of Object.keys(FIXTURES)) {
+    for (const skill of DESKTOP_STEPS) {
+      for (const title of skill === null ? [null] : [null, UNLABELED]) {
+        test(`${name} under ${skill ?? 'no skill'}${title === null ? '' : ', unlabeled chapter'}`, async ($, on) => {
+          seat(on, copyOf(name))
+          await $.turn.complete(turn())
+          if (skill !== null) await prompt($, skill)
+          if (title !== null) await chapter($, title)
+          const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(200) })) as Ui
+          const want = expectedFlow(name, skill)
+          const svgs = await ui.findAll({ type: 'Svg' })
+          if (want === null) {
+            expect(svgs).toEqual([])
+            await ui.unmount()
+            return
+          }
+          expect(svgs.length).toBe(1)
+          const [svg] = svgs
+          expect(svg.props.width).toBe(TRACK_WIDTH)
+          checkSource(svg.props.source as string, want)
+          const alt = svg.props.alt as string
+          for (const part of want.alt) expect([part, alt.includes(part)]).toEqual([part, true])
+          // The right group: the track, then the percent or the idle
+          // command, then the dim close button.
+          const [first] = await ui.findAll({ key: (await rowKeys(ui))[0] })
+          const right = kids(first)[1]
+          expect(kids(right)[0].type).toBe('Svg')
+          if (want.right !== null) expect(textOf(right).trim()).toBe(want.right)
+          const [button] = await ui.findAll({ type: 'Button' })
+          expect([button.props.label, button.props.dimColor]).toEqual(['✕', true])
+          await ui.unmount()
+        })
+      }
+    }
+  }
+
+  test('the plan running draws a dashed outline in the plan hue', async ($, on) => {
+    seat(on, copyOf('no-active'))
+    await $.turn.complete(turn())
+    await prompt($, 'milestone-plan')
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(200) })) as Ui
+    const [svg] = await ui.findAll({ type: 'Svg' })
+    expect(/<rect class="running"[^>]*stroke="([^"]+)"/.exec(svg.props.source as string)?.[1]).toBe(BLUE)
+    const [first] = await ui.findAll({ key: 'skill-row' })
+    expect(labelOf(first)).toBe('plan')
+    expect(kids(layout(first).head)[0].props.color).toBe(BLUE)
+    await ui.unmount()
+  })
+})
+
+describe('the terminal draws no track (M204 AC3)', () => {
+  for (const name of Object.keys(FIXTURES)) {
+    for (const skill of DESKTOP_STEPS) {
+      for (const title of skill === null ? [null] : [null, UNLABELED]) {
+        test(`${name} under ${skill ?? 'no skill'}${title === null ? '' : ', unlabeled chapter'}`, async ($, on) => {
+          seat(on, copyOf(name))
+          await $.turn.complete(turn())
+          if (skill !== null) await prompt($, skill)
+          if (title !== null) await chapter($, title)
+          for (const columns of [200, 120, 36]) {
+            const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...at(columns) })) as Ui
+            expect(await ui.findAll({ type: 'Svg' })).toEqual([])
+            await ui.unmount()
+          }
+        })
+      }
+    }
+  }
+})
+
+// The least width, in columns, at which each row in the flow draws the
+// track with no skill, written out by hand (M204 AC4). A row needs its head,
+// the gap, 32 columns of track, the gap and the percent or the idle
+// command, the close button's 3, and its text's room (M197). For
+// single-in-progress: `implement M002 ` 15 + `→ T2:` 5 + 2 + 32 + `  44%` 5
+// + 3 + 10 = 72.
+const TRACK_FROM: Record<string, number> = {
+  'idle-deps': 84,
+  'idle-order': 84,
+  'long-title': 72,
+  mixed: 67,
+  'nested-first': 73,
+  'no-active': 84,
+  'repo-at-cut': 84,
+  'single-in-progress': 72,
+  'six-active': 68,
+  subdirectory: 67,
+  'unlabeled-item': 69,
+  'wide-title': 70,
+  widest: 75,
+}
+
+describe('the desktop draws the track from a width written per fixture, and the text form below it (M204 AC4)', () => {
+  test('the table holds every fixture with a row in the flow', () => {
+    const domain = Object.keys(FIXTURES).filter(name => expectedFlow(name, null) !== null)
+    expect([...domain].sort()).toEqual(Object.keys(TRACK_FROM).sort())
+  })
+
+  for (const name of Object.keys(FIXTURES)) {
+    test(`${name}: 36 to 200 columns`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const from = TRACK_FROM[name] ?? Infinity
+      for (let columns = 36; columns <= 200; columns++) {
+        const desktop = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(columns) })) as Ui
+        const drawn = (await desktop.findAll({ type: 'Svg' })).length
+        expect([columns, drawn]).toEqual([columns, columns >= from ? 1 : 0])
+        if (columns < from) {
+          // Below the track, the desktop draws the text form the terminal
+          // draws at the same width.
+          const terminal = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...at(columns) })) as Ui
+          expect([columns, await lines(desktop)]).toEqual([columns, await lines(terminal)])
+          await terminal.unmount()
+        }
+        await desktop.unmount()
+      }
+    })
+  }
 })
