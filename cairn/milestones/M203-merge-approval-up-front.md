@@ -1,6 +1,6 @@
 # M203: Record review findings in fixed formats
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -136,6 +136,8 @@ RR15, RR16, and the review passes go with it. The merge question of
 - 2026-10-03: T3 done: both skills restored to main's text, then review step 5 gains the finding-line format, the `fixed <sha>` suffix, the lens slugs, and the `spawned:` line (none for a degraded pass), step 7 counts amendments from the `substantive amendment:` and `amendment return:` lines and writes `step-7 decline:` on a decline, and implement step 6's sentence carries the prefix. No up-front wording. Verify green, same counts as T2.
 - 2026-10-03: T4 done: CHANGELOG restored to main's text, then one entry added at the top of Unreleased "Changes that affect existing repos" for the formats of AC3 and AC4. Its diff adds 14 lines and removes none.
 - 2026-10-03: T5 done. Verify green, each exit 0: scripts 395 OK (21 skipped), hooks 174 OK, plugin validate passes with warnings, plugin test 632 pass and 0 fail. `cairn_validate` all checks passed. The hand-run `skills/tests` shows main's 4 reds and 1 error (default-branch recipe, lesson graduation, hotfix re-entry), none in the files this milestone changes.
+- claim audit: 12 claims read, 1 corrected — skills/milestone-implement/SKILL.md
+- 2026-10-03: the claim audit found no mismatch and one unclear point: an amendment that carries out an amendment return could write both prefixes and count twice. Implement step 6's sentence now says such an amendment writes only the return's line. The same reader confirmed the match. Status set to review.
 
 ## Decisions
 

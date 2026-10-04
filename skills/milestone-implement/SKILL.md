@@ -133,7 +133,9 @@ run ingestion first (see `/milestone-brief`).
      acceptance-criterion wording is *Substantive* by definition): the
      agent makes the amendment and records it as a dated work-log line
      that carries `substantive amendment:` after its date (the prefix
-     `/milestone-review` step 7 counts) (+ D-entry if cross-cutting); show the amended criterion/scope text
+     `/milestone-review` step 7 counts; an amendment executing an amendment
+     return writes only that return's line, below, so it counts once)
+     (+ D-entry if cross-cutting); show the amended criterion/scope text
      verbatim in a guaranteed-rendered position (durable-record preview).
      **The stop.** If the amendment drops something the user asked for, or
      changes what the user sees from the plan, stop for the user instead:
