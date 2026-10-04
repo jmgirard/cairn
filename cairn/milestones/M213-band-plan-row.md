@@ -146,6 +146,7 @@ follow-ons (M212 review)".
 - 2026-10-04: claim audit: 34 claims read, 5 corrected — README.md (a hidden idle row also shows again as the empty row), CHANGELOG.md (session end re-shows; the `cairn:` command names), cairn/DESIGN.md (session end re-shows), hooks/status/band.ts (header comment: the empty row needs a found ROADMAP and has no id).
 - 2026-10-04: implement complete: all four verify checks exit 0 at the head (`claude plugin test .` 1103 pass); status set to review.
 - 2026-10-04: review: three-lens fan-out, 21 findings: 5 fixed on the branch (eebd0fa), 5 rejected, 11 to the new candidate row "Empty band row follow-ons (M213 review)". ROADMAP: the M211 done row pruned for the line cap, and the reasoning-effort row's re-check note shortened for the byte budget.
+- 2026-10-04: step-7 approval: m213-band-plan-row approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
