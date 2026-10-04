@@ -113,7 +113,7 @@ follow-ons (M212 review)".
       lone space for the row with no id. Cases for AC2's step and
       `isWorking` rules, AC3, and AC4. Check `mark` and `same` need no
       change for AC4.
-- [ ] T3: Live look (question set: one stop). Make a scratch repo outside
+- [x] T3: Live look (question set: one stop). Make a scratch repo outside
       this checkout whose `cairn/ROADMAP.md` has no active or workable row,
       ask the operator to open a new desktop Code session there (LESSONS
       M195: a session keeps the mod it loaded at start), and record what
@@ -141,6 +141,7 @@ follow-ons (M212 review)".
 - 2026-10-04: implement: set in-progress on branch `m213-band-plan-row`. The untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
 - 2026-10-04: T1 done: `band.ts` gains `emptyLines` (key `plan-row`, no id, text `No milestone ready`), a `found` argument to `stepLines`, a zero-width head for an empty id, and the empty row in `actionsFit`; two unit cases in `band.test.tsx` (the row by `found`, and the fit at 37 but not 36 columns with 25 reserved). Minor amendment: the rewrites of drawn cases that assert an empty band draws nothing move to T2, since they need the drawing. `claude plugin test .` 1081 pass.
 - 2026-10-04: T2 done: `register.tsx` draws the empty row when the pane state's `found` is true, labels the planning step `Plan`, runs a planning press with empty args, and draws no head Box for an empty id; `mark` and `same` needed no change (the AC4 case passes on them). Tests: new describes for AC1 (2 fixtures plus 2 `noneWorkable` copies, with and without a skill), AC2/AC3 (press, hide, refusal, in-flight), and AC4; the empty rows join the M197 and M212 width sweeps, the latter requiring the Buttons at all 161 widths; 10 cases that asserted an empty band rewritten. Planted defects went red for their reasons: a press that returns on a null id (8 fail, `commands` undefined), and `actionsFit` without the empty row (20 fail, "empty row Buttons at 0 of 161 widths"). All four verify checks exit 0, `claude plugin test .` 1103 pass.
+- 2026-10-04: T3 done: the operator found opening a session in a scratch folder annoying; the look ran instead in a new desktop Code session in `/Users/jmgirard/github/bsync`, a cairn repo with nothing workable (the plugin is a symlink to this checkout, so the session loaded the branch). The operator reported the band reads `No milestone ready` with Plan, Status, the pane button, and the close button, and looks right. No change asked for.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
