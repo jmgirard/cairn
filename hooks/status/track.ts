@@ -1,0 +1,155 @@
+import type { Flow } from './band'
+import { FLOW_COLORS, FLOW_PHASES } from './band'
+
+// The desktop track (M204): an SVG of one rounded track whose three equal
+// segments run plan, implement, and review. register.tsx draws it as the
+// desktop's `Svg` element, an image, so it cannot read the app's theme
+// keys. In a browser-pane preview, a `prefers-color-scheme` rule inside such
+// an image followed the browser's setting, not the page's (M204). The track
+// uses one set of translucent grays meant for a light and a dark ground
+// instead.
+//
+// Back to front: the ground; a field of 2-pixel specks from the left edge
+// to the head (the active phase's fill edge), sparse at the left and dense
+// near the head, each gray or the active phase's color, the colored share
+// growing toward the head; the item ticks; the two phase-edge marks; and
+// the pill on the head, in the active phase's color, its label bold and its
+// count dimmer. Item ticks fall in the active phase's segment, past the
+// head, and only when the items are SPACING pixels apart or more.
+// The operator picked this look at a live look over a solid dither per
+// segment and two other speck designs (M204).
+
+export const TRACK_PX = 360
+export const TRACK_H = 18
+
+const SEGMENT = TRACK_PX / 3
+const CELL = 2
+const ROWS = TRACK_H / CELL
+// The least spacing of item ticks, in pixels.
+export const SPACING = 6
+const GROUND = 'rgba(128,128,128,0.16)'
+export const GRAY = 'rgb(160,160,160)'
+const MARK = 'rgb(200,200,200)'
+// A speck's strength, by one of three levels.
+const LEVELS = [0.4, 0.65, 0.95]
+const PILL_H = TRACK_H - 2
+// The pill's width per character of its label and its count, and its side
+// padding, an estimate for the system font at the pill's size.
+const LABEL_CHAR = 6.3
+const COUNT_CHAR = 5.6
+const COUNT_GAP = 5
+const PILL_PAD = 16
+
+// A fixed hash of a cell, in [0, 1), so every drawing of a state is the
+// same.
+function hash(x: number, y: number, salt: number): number {
+  let h = (x * 374761393 + y * 668265263 + salt * 2147483647) | 0
+  h = Math.imul(h ^ (h >>> 13), 1274126177)
+  h ^= h >>> 16
+  return ((h >>> 0) % 100000) / 100000
+}
+
+// Two decimals at most, no trailing zeros.
+function n(value: number): string {
+  return String(Math.round(value * 100) / 100)
+}
+
+function escape(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+// The active phase's fill edge, in pixels from the left.
+export function headOf(flow: Flow): number {
+  const index = FLOW_PHASES.indexOf(flow.phase)
+  const fill = flow.fills[index]
+  return SEGMENT * index + (SEGMENT * fill.num) / fill.den
+}
+
+// The x of each item tick: the active segment's inner item edges k with
+// checked < k < n, none when the items are closer than SPACING. The test
+// compares whole numbers, k × den > num × n, so an edge at the head never
+// draws through rounding.
+export function ticksOf(flow: Flow): number[] {
+  const index = FLOW_PHASES.indexOf(flow.phase)
+  const items = index === 0 ? 0 : flow.items[index - 1]
+  const step = SEGMENT / Math.max(items, 1)
+  if (items < 2 || step < SPACING) return []
+  const fill = flow.fills[index]
+  const out: number[] = []
+  for (let k = 1; k < items; k++) {
+    if (k * fill.den > fill.num * items) out.push(SEGMENT * index + step * k)
+  }
+  return out
+}
+
+// A pill text splits into a bold label and a dimmer count: `Implement 3/7`.
+function pillParts(pill: string): [string, string] {
+  const match = /^(.*) (\d+\/\d+)$/.exec(pill)
+  return match === null ? [pill, ''] : [match[1], match[2]]
+}
+
+// The pill's left edge and width: its right edge just past the head, kept
+// inside the track.
+export function pillBox(flow: Flow): { x: number; width: number } {
+  const [label, count] = pillParts(flow.pill)
+  const width = label.length * LABEL_CHAR + (count === '' ? 0 : count.length * COUNT_CHAR + COUNT_GAP) + PILL_PAD
+  const x = Math.min(Math.max(headOf(flow) - width + 6, 1), TRACK_PX - width - 1)
+  return { x, width }
+}
+
+// The specks, one path per color and level.
+function specks(flow: Flow): string {
+  const head = headOf(flow)
+  const paths = new Map<string, string[]>()
+  for (let cx = 0; cx * CELL < head; cx++) {
+    const x = cx * CELL
+    // The last column is cut at the head, so no speck runs past it.
+    const w = n(Math.min(CELL, head - x))
+    const t = x / head
+    const density = 0.22 + 0.7 * Math.pow(t, 1.4)
+    for (let cy = 0; cy < ROWS; cy++) {
+      if (hash(cx, cy, 1) > density) continue
+      const level = Math.floor(hash(cx, cy, 2) * LEVELS.length)
+      const color = hash(cx, cy, 3) < 0.95 * Math.pow(t, 2.2) ? flow.phase : 'gray'
+      const key = `${color}:${level}`
+      const cells = paths.get(key) ?? []
+      cells.push(`M${x} ${cy * CELL}h${w}v${CELL}h-${w}z`)
+      paths.set(key, cells)
+    }
+  }
+  return [...paths.entries()]
+    .map(([key, cells]) => {
+      const [color, level] = key.split(':')
+      const fill = color === 'gray' ? GRAY : FLOW_COLORS[flow.phase]
+      return `<path class="specks" data-color="${color}" d="${cells.join('')}" fill="${fill}" fill-opacity="${LEVELS[Number(level)]}"/>`
+    })
+    .join('')
+}
+
+export function trackSvg(flow: Flow): string {
+  const head = headOf(flow)
+  const marks = [1, 2]
+    .map(i => {
+      const x = SEGMENT * i
+      return `<rect class="edge" x="${n(x - 0.5)}" y="2" width="1" height="${TRACK_H - 4}" fill="${MARK}" fill-opacity="${x < head ? 0.7 : 0.25}"/>`
+    })
+    .join('')
+  const ticks = ticksOf(flow)
+    .map(x => `<rect class="tick" x="${n(x - 0.5)}" y="${TRACK_H / 2 - 3}" width="1" height="6" fill="${GRAY}" fill-opacity="0.4"/>`)
+    .join('')
+  const [label, count] = pillParts(flow.pill)
+  const pill = pillBox(flow)
+  const countSpan = count === '' ? '' : `<tspan dx="${COUNT_GAP}" fill-opacity="0.72" font-weight="500">${escape(count)}</tspan>`
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${TRACK_PX}" height="${TRACK_H}" viewBox="0 0 ${TRACK_PX} ${TRACK_H}">` +
+    `<defs><clipPath id="track"><rect width="${TRACK_PX}" height="${TRACK_H}" rx="${TRACK_H / 2}"/></clipPath></defs>` +
+    `<g clip-path="url(#track)"><rect class="ground" width="${TRACK_PX}" height="${TRACK_H}" fill="${GROUND}"/>` +
+    `${specks(flow)}${ticks}${marks}</g>` +
+    `<rect class="pill" x="${n(pill.x)}" y="1" width="${n(pill.width)}" height="${PILL_H}" rx="${PILL_H / 2}" fill="${FLOW_COLORS[flow.phase]}"/>` +
+    // `textLength` holds the text to the estimated width, so a wider
+    // fallback font squeezes the text rather than running past the pill.
+    `<text class="pill-text" x="${n(pill.x + PILL_PAD / 2)}" y="${TRACK_H / 2}" textLength="${n(pill.width - PILL_PAD)}" lengthAdjust="spacingAndGlyphs" dominant-baseline="central" font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="#fff">` +
+    `<tspan font-weight="650">${escape(label)}</tspan>${countSpan}</text>` +
+    `</svg>`
+  )
+}

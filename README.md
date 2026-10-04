@@ -93,7 +93,38 @@ filled cells take the phase's theme color, and the empty cells take the
 theme's subtle gray. This page shows all ten cells as `█`, because a text
 block cannot show color.
 
-Three labels replace the bar and the counts. With no chapter on the row,
+In the desktop app, the band draws a track in place of the bar, the
+counts, and the `no tasks`, `no criteria`, and `all … checked` labels when
+the window has room for it. The terminal keeps the text row.
+The track is one rounded bar of three equal parts: plan, implement, then
+review. On a milestone row, plan is full. Implement fills by the checked
+tasks, and it is full on a `review` row. Review fills by the checked
+criteria. Small square specks fill the track from its left end to the edge
+of the current phase's fill. They start sparse and gray, and they grow
+dense near the edge, where more of them take the phase's color. A pill on
+that edge names the phase and its counts, such as `Implement 1/3` or
+`Review 1/2`, in the phase's color. A section with no boxes shows
+`no tasks` or `no criteria` in the pill. Two thin marks divide the three
+parts. In the current part, a tick marks each item edge past the fill when
+the items are 6 pixels apart or more. On a milestone row, the percent of
+the whole flow sits to the right of the track. Each part counts for a
+third, and the percent rounds down. So it reads 100% only on a `review`
+row whose criteria are all checked, and a `review` row with no criteria
+reads 66%. The track keeps this look under any skill label and at any
+chapter.
+
+The idle row draws the track with plan full and the pill `Planned`, before
+its command. A `/milestone-plan` skill row with no active milestone draws
+an empty track with the pill `Plan` at its left end. A row whose milestone
+file cannot be read keeps the text row, and so does the skill row of every
+other skill. The track is 360 pixels wide, and the band counts it as 52
+columns. In a narrower window, the row takes the text forms that the
+terminal draws. The track is an image, so it cannot follow your theme's
+colors. It draws in translucent grays meant for a light or a dark
+background, and its phase colors are the fixed label colors below.
+
+In the text row, three labels replace the bar and the counts. With no
+chapter on the row,
 the row then shows the milestone's title as its text.
 `no milestone file` means that the row's `File/Archive` path names no
 regular file the band can read. `no tasks` or `no criteria` means that the
@@ -127,8 +158,9 @@ The band also names the cairn skill that is running. When a cairn skill
 starts, by its plain name or its `cairn:` name, its label takes the place
 of the phase label on the row: `plan`, `implement`, `review`, `hotfix`,
 `triage`, `release`, `status` (for `/milestone`), `brief`, `design`, or
-`init`. The label takes the muted green for `/milestone-review` and the
-muted orange for every other skill. If a `review` row exists, the row is
+`init`. The label takes the muted green for `/milestone-review`, a muted
+blue, `rgb(110,140,190)`, for `/milestone-plan`, and the muted orange for
+every other skill. If a `review` row exists, the row is
 the first one during `/milestone-review`. Every other skill stays on
 the row the band shows with no skill. With no active milestone, a cairn
 skill gets a skill row: its label, its slash command, and nothing at its
@@ -137,9 +169,9 @@ slash command, so that its chapter keeps room.
 
 In the desktop app, each chapter the session marks, for example
 `Consistency gate` or `Post-merge hygiene`, becomes the text of the row,
-after a `→`. A skill row shows the chapter after its slash command. The
-bar shows while the chapter is a task or criterion, one that opens with a
-label such as `T4:` or `AC2:`. At any other chapter a row with counts
+after a `→`. A skill row shows the chapter after its slash command. In the
+text row, the bar shows while the chapter is a task or criterion, one that
+opens with a label such as `T4:` or `AC2:`. At any other chapter a row with counts
 shows the counts alone, and a state label stays as it is. The band reads
 the files again at each chapter, so the counts match the files at that
 chapter. During review, at the post-merge step, that fixture shows:
