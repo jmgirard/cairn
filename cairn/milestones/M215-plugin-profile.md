@@ -42,7 +42,7 @@ unstaged at the user's choice.
 - [x] AC1: `cairn/PROFILE.md`'s first line is `# Toolchain profile: claude-plugin`, and from the repo root `python3 scripts/cairn_validate.py` exits 0 and prints `PASS  profile valid` and `PASS  weight caps`.
 - [x] AC2: The `verify` slot of `cairn/PROFILE.md` names five gating commands, and each exits 0 when run from the repo root: `python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`, `claude plugin validate .claude-plugin/plugin.json`, `claude plugin validate .claude-plugin/marketplace.json`, and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
 - [x] AC3: The `consistency-gate` slot names the claude-plugin profile's three checks (the verify checks pass on the review head, the marketplace validate prints no `plugins[N].version` warning, and `CHANGELOG.md` has an entry for the milestone's user-visible changes) and keeps the statement that this repo has no CI. The `release-walk` slot bumps `version` in `.claude-plugin/plugin.json` and in the `.claude-plugin/marketplace.json` plugin entry.
-- [ ] AC4: The `test-doctrine` slot still states three rules for this repo: no `pytest` in acceptance criteria, `skills/tests` hand-run and gating nothing, and the status mod tested by its `*.test.ts(x)` files under `claude plugin test`.
+- [x] AC4: The `test-doctrine` slot still states three rules for this repo: no `pytest` in acceptance criteria, `skills/tests` hand-run and gating nothing, and the status mod tested by its `*.test.ts(x)` files under `claude plugin test`.
 - [x] AC5: Among the lines that `git grep -n -w generic -- . ':!cairn/DECISIONS.md' ':!cairn/milestones' ':!cairn/legacy' ':!cairn/reviews' ':!*/tests/*' ':!hooks/status/fixtures*'` returns at review, none states that this repo's profile is `generic`, except the "cairn's own profile" candidate row in `cairn/ROADMAP.md` (the row this milestone promotes); and `CLAUDE.md` and `cairn/DESIGN.md` each name `claude-plugin` as this repo's profile.
 
 ## Coverage
@@ -115,3 +115,20 @@ Pass 1, 2026-10-04, on b417323 (main 14ec5a7 not moved, no PR).
 - AC3: consistency-gate lists the three checks and keeps the no-CI paragraph. release-walk bumps `version` in `.claude-plugin/plugin.json` and the marketplace plugin entry.
 - AC4: FAIL. test-doctrine states no `pytest` and the status mod under `claude plugin test`, and calls `skills/tests` a hand-run tripwire, but does not state that it gates nothing (only the verify slot says so).
 - AC5: the sweep returns 33 lines. None states the current profile is `generic` except the promoted row `cairn/ROADMAP.md:41`. `CLAUDE.md:5` and `cairn/DESIGN.md:15` name `claude-plugin`.
+
+Pass 2, 2026-10-04, on 13d2ce1 (main 14ec5a7 not moved).
+
+- AC1: line 1 `# Toolchain profile: claude-plugin`. `cairn_validate` exit 0, `PASS  weight caps`, `PASS  profile valid`.
+- AC2: the five commands each exit 0: scripts 397 OK (21 skipped), hooks 174 OK, plugin validate, marketplace validate, plugin test 1105 pass 0 fail.
+- AC3: unchanged since pass 1 (T5 touched only test-doctrine). Three consistency-gate checks, no-CI note, both version bump sites present.
+- AC4: test-doctrine lines 4-5 (no `pytest`), line 7 (mod tests under `claude plugin test`), line 13 (`skills/tests` "a hand-run tripwire that gates nothing").
+- AC5: sweep returns 33 lines, the same classification as pass 1.
+- Gate: `cairn_validate` exit 0. No principle changed, so `cairn_impact` skipped. Profile consistency-gate: verify passes on the review head (AC2 run), marketplace validate shows 0 `plugins[N].version` warnings, and no `CHANGELOG.md` entry is owed (no user-visible change).
+- spawned: diff-bug (internal tier, docs-only diff)
+- diff-bug #1: the changelog check is not tied to the surface tier — reject (false): the slot asks for an entry only for user-visible changes, and an internal milestone has none.
+- diff-bug #2: PROFILE.md and CLAUDE.md credit the marketplace validate to D-143, which adopted only the plugin validate and the mod test — fix now.
+- diff-bug #3: the template's warning that `claude plugin test .` runs every `*.test.ts(x)` under the folder was dropped — fix now.
+- diff-bug #4: no file states the lowest Claude Code version the test-doctrine names as a dependency — follow-up, added to the candidate row "claude-plugin profile edge cases".
+- diff-bug #5: the gate re-runs verify on the same head as the AC step — reject (planned change): AC3 requires the profile's checks, and the cost is one more run.
+- diff-bug #6: the release-walk repeats steps `/cairn-release` already takes — reject (planned change): it is the shipped template's text, which AC3 requires.
+- diff-bug #7: "Skill and rulebook markdown … owes no test" is broader than D-109 — fix now.
