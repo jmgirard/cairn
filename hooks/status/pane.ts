@@ -54,7 +54,7 @@ const PHASE: Record<string, { label: string; color: string }> = {
   review: { label: 'review', color: FLOW_COLORS.review },
 }
 // The phase each recommended command runs, for the Next pill's color.
-const COMMAND_PHASE: Record<string, FlowPhase> = {
+export const COMMAND_PHASE: Record<string, FlowPhase> = {
   '/milestone-plan': 'plan',
   '/milestone-implement': 'implement',
   '/milestone-review': 'review',

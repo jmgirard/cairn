@@ -3,7 +3,7 @@ import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
 import { flowOf, width } from './band'
-import { CHECKED_MARK, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
 import { listNames } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -295,6 +295,8 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
   test('the domain reaches every recommended command', () => {
     const commands = new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.command))
     expect([...commands].sort()).toEqual(['/milestone-implement', '/milestone-plan', '/milestone-review'])
+    // Each one has a phase for the Next pill's color (M208 review).
+    expect(Object.keys(COMMAND_PHASE).sort()).toEqual([...commands].sort())
     expect(WITH_ROADMAP.some(name => (FIXTURES[name].next?.waiting.length ?? 0) > 0)).toBe(true)
   })
 
@@ -562,6 +564,8 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
     ['pane-full', 'M080-log-head', 'WORK LOG', ORANGE_RGB],
     ['pane-full', 'M081-goal-head', 'GOAL', GREEN_RGB],
     ['pane-full', 'M081-tasks-head', 'TASKS', GREEN_RGB],
+    ['pane-full', 'M081-criteria-head', 'CRITERIA', GREEN_RGB],
+    ['pane-full', 'M081-log-head', 'WORK LOG', GREEN_RGB],
     ['pane-full', 'workable-head', 'WORKABLE', BLUE_RGB],
     ['pane-full', 'waiting-head', 'WAITING', BLUE_RGB],
     ['candidates', 'candidates-head', 'CANDIDATES', BLUE_RGB],
