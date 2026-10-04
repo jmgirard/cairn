@@ -646,6 +646,26 @@ REGISTRY = [
         target=REVIEW,
         block="never the `cairn_next.py` invocation",
     ),
+    # Hotfix 2026-10-04 (D-148): a merge ends the run, and review fences the
+    # plan's next milestone instead of invoking it.
+    Mutation(
+        guard="test_merge_ends_run",
+        test="TestMergeEndsTheRun.test_rulebook_ends_the_run_at_the_merge",
+        target=RULES,
+        block="A merge ends the run:",
+    ),
+    Mutation(
+        guard="test_merge_ends_run",
+        test="TestMergeEndsTheRun.test_review_step_10_hands_over_instead_of_invoking",
+        target=REVIEW,
+        block="`/milestone-implement <next-id>` as the primary",
+    ),
+    Mutation(
+        guard="test_merge_ends_run",
+        test="TestMergeEndsTheRun.test_plan_no_longer_promises_a_run_across_milestones",
+        target=PLAN,
+        block="next milestone of the plan",
+    ),
     Mutation(
         guard="test_section_allow_lists",
         test="TestSectionAllowLists.test_write_mode_legend_defines_core_verbs",
