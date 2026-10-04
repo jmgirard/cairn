@@ -110,16 +110,16 @@ narrow widths before the title loses its room. A CHANGELOG entry.
       and see them red: capture presses with `command.run`, `prompt.fill`,
       and `ui.toast` hooks beneath the mod, keyed Buttons found by
       `findAll`.
-- [ ] T2: In `hooks/status/register.tsx` (the `AbovePrompt` hook, near
+- [x] T2: In `hooks/status/register.tsx` (the `AbovePrompt` hook, near
       :334), draw `cairn-next` and `cairn-status` on the first row from the
       pane value's `next` and the `step` atom and `e.props.isWorking`; a
       press runs `$.command.run`, and a rejection appends to the box and
       toasts.
       Labels are short words that the live look settles.
-- [ ] T3: In `hooks/status/band.ts`, reserve the two Buttons' columns in
+- [x] T3: In `hooks/status/band.ts`, reserve the two Buttons' columns in
       `stepLines`. Drop them at a width where the title loses its room.
       Write the AC4 sweep.
-- [ ] T4: Add the CHANGELOG entry, then run the four verify-slot commands.
+- [x] T4: Add the CHANGELOG entry, then run the four verify-slot commands.
 - [ ] T5: Live look (operator, approved at the question set): a new desktop
       Code session on the branch, idle band with both Buttons, press the
       status Button.
@@ -142,6 +142,9 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 - 2026-10-04: implement started on branch m212-band-buttons; the untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
 - 2026-10-04: implement chose plain Buttons labeled `Resume`, `Review`, or `Start` and `Status`, drawn only when the row is at its fullest form (track at 52 columns, or the long warning label) and the title keeps its room with them counted; plain because an idle row at 120 columns leaves 20 columns and a bracketed pair takes 24; the fullest-form rule because a post-hoc fit check showed buttons at 40 to 47 columns on an idle row and not above, which breaks AC4's one run.
 - 2026-10-04: T1 done: AC1 to AC4 cases written in `band.test.tsx`, and the M194, M197, and M199 cases that list the band's Buttons now expect the two action Buttons at 120 columns with no cairn skill running; `claude plugin test .` red by design, 77 fail (the M212 cases and those updated cases), 1000 pass.
+- 2026-10-04: T2, T3 done: `actionsFit` in `band.ts`, the `cairn-next` and `cairn-status` Buttons and the `run` press handler in `register.tsx`. The AC3 test first asserted the thrown text; the engine skips a hook that throws, so the run rejects at the bottom of the chain with "no implementation for command.run", and the test now asserts that message, the rejection the toast names.
+- 2026-10-04: check discrimination for the AC4 sweep: planting "fullest form not required" reddened 5 idle cases (buttons at 40 to 200 with gaps); planting "action columns not counted" reddened 37 AC4 cases plus the M197 and M206 sweeps; both restored, `git status` clean against 3b1d3ec.
+- 2026-10-04: T4 done: CHANGELOG entry under Unreleased > New; the AC1 cases also assert the labels it names. The audit note's "press does not clear the context" stays out of the entry, because AC6 admits only tested behavior. Verify: scripts 397 OK, hooks 174 OK, validate passed (the known CLAUDE.md warning), `claude plugin test .` 1077 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

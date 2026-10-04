@@ -4,6 +4,14 @@
 
 ### New
 
+- **Buttons on the status band.** While no cairn skill runs and Claude is
+  not working, the band's row carries two buttons before its open and close
+  buttons. The first runs the next step that the pane's Next line names,
+  with its milestone id, and reads `Resume`, `Review`, or `Start`. `Status`
+  runs `/milestone`. A press runs the command as if you typed it. If the run
+  is refused, the command goes after the text in the prompt box and a toast
+  says why. The buttons show only where the title keeps its room beside
+  them, so a band too narrow for them leaves them out.
 - **A fuller look for the cairn pane.** Each active milestone's first line
   ends with the band's percent for it when its file reads, and a long title
   is cut before the percent. Each section starts after a blank row with a

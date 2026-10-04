@@ -2740,6 +2740,9 @@ async function actionKeys(ui: Ui): Promise<string[]> {
 }
 
 const PRESSED = ['single-in-progress', 'states-review', 'idle-order', 'mixed']
+// The next-step Button's label by the next step's action, written out by
+// hand.
+const LABELS: Record<string, string> = { resume: 'Resume', review: 'Review', implement: 'Start' }
 
 describe('the next-step and status Buttons run their commands (M212 AC1)', () => {
   test('the pressed fixtures cover resume, review, and start, and a band row that is not the next step', () => {
@@ -2756,6 +2759,9 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
         await $.turn.complete(turn())
         const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
         expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+        const [next] = await ui.findAll({ key: 'cairn-next' })
+        const [status] = await ui.findAll({ key: 'cairn-status' })
+        expect([next.props.label, status.props.label]).toEqual([LABELS[FIXTURES[name].next?.action as string], 'Status'])
         await ui.press({ key: 'cairn-next' })
         expect(copy.commands).toEqual([nextRun(name)])
         await ui.press({ key: 'cairn-status' })
