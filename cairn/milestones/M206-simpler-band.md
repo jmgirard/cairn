@@ -1,13 +1,13 @@
 # M206: A simpler band: id, title, and the track
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the band draws in every adopter's session
-- **Branch/PR:** —
+- **Branch/PR:** m206-simpler-band
 
 ## Goal
 
