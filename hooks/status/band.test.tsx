@@ -66,6 +66,11 @@ type Copy = {
   // While set, each write of the band's value lands with its root removed,
   // as a value that stores no root (M210).
   dropRoot?: boolean
+  // While set, the key of each value the mod writes, in order (M210).
+  stateSets?: string[]
+  // While set, the next read of the step runs this once before it answers
+  // (M210).
+  afterStepRead?: () => Promise<void>
 }
 
 function copyOf(name: string): Copy {
@@ -85,7 +90,16 @@ function seat(on: On, copy: Copy) {
     return { value: copy.cwd }
   })
   // A shaped value crosses as `{ shape, value }`.
+  on('state.get', async ($, e, next) => {
+    const after = copy.afterStepRead
+    if (after === undefined || e.plugin !== 'cairn' || e.key !== 'step') return next(e)
+    copy.afterStepRead = undefined
+    const result = await next(e)
+    await after()
+    return result
+  })
   on('state.set', async ($, e, next) => {
+    if (e.plugin === 'cairn') copy.stateSets?.push(e.key)
     if (copy.dropRoot !== true || e.plugin !== 'cairn' || e.key !== 'band') return next(e)
     const shaped = e.value as { shape: string; value: object }
     return next({ ...e, value: { ...shaped, value: { ...shaped.value, root: null } } })
@@ -1381,6 +1395,43 @@ describe('a failed read never draws rows from another root (M210 AC3)', () => {
       await $.turn.complete(turn())
       expect(await lines(ui)).toEqual([ENGINE])
       expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the close state is written only on a change, and a session end beats a press (M210 AC4)', () => {
+  for (const surface of SURFACES) {
+    test(`a refresh with nothing hidden writes no close state (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      copy.stateSets = []
+      await $.turn.complete(turn())
+      // The record holds the refresh's own writes, so it is not empty.
+      expect(copy.stateSets).toContain('band')
+      expect(copy.stateSets.filter(key => key === 'dismissed')).toEqual([])
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      await ui.unmount()
+    })
+
+    test(`a session end between a press's reads and its write leaves the band shown (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      let ended = false
+      copy.afterStepRead = async () => {
+        await $.session.end({ reason: 'clear', sessionId: 's1' })
+        ended = true
+      }
+      await ui.press({ key: 'cairn-close' })
+      expect(ended).toBe(true)
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      // With no session end in between, the same press hides the band.
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
       await ui.unmount()
     })
   }

@@ -49,10 +49,12 @@ const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workabl
 // The active ids and statuses, in ROADMAP order, `milestone-review` while
 // it moves the band to another row, and the idle row's id while no row is
 // active, at the last press of the close button; null while the band shows.
-// The tag moved to 4 when the skill's meaning changed (M206 review).
-const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandHidden | null, {
-  shape: 'dismissed-4',
-})
+// The tag moved to 4 when the skill's meaning changed (M206 review). The
+// press writes through `$.state.set`, which takes the tag with the value and
+// a reference written as literals in this file.
+const DISMISSED_REF = { plugin: 'cairn', key: 'dismissed' } as const
+const DISMISSED_SHAPE = 'dismissed-4'
+const dismissed = atom(DISMISSED_REF, null as CairnBandHidden | null, { shape: DISMISSED_SHAPE })
 
 // The running cairn skill, until a main-loop Stop with nothing in flight or
 // an idle typed prompt ends it (the `classic.Stop` and `prompt.submit`
@@ -357,11 +359,15 @@ async function afterWrite($, e, next) {
 }
 
 // The press reads the rows and the step as they are now, not as they were
-// drawn.
+// drawn. It writes only while the close state stands at the version it had
+// before those reads, so a session end that lands between them wins and the
+// band stays shown (M210). Any other write in between drops the press too,
+// and a second press hides the band.
 async function dismiss($) {
+  const held = await $.state.get(DISMISSED_REF)
   const state = await read($, band)
   const current = await read($, step)
-  await update($, dismissed, () => mark(state, current))
+  await $.state.set(DISMISSED_REF, { shape: DISMISSED_SHAPE, value: mark(state, current) }, { ifVersion: held.version })
 }
 
 // A press of the band's open button opens the pane. The press is the
@@ -388,10 +394,13 @@ function notPlaced(reason: string): string {
 // `reconcile` reads the `band` and `step` values is compared, not lost, and
 // it is kept when those reads match it (M200). A hook that changes the rows
 // or the step before the update can still clear a press made against the
-// new state, because the comparison uses the old reads.
+// new state, because the comparison uses the old reads. With nothing to
+// clear, it writes nothing (M210).
 async function reconcile($) {
   const now = mark(await read($, band), await read($, step))
-  await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
+  const hidden = await read($, dismissed)
+  if (hidden === null || same(hidden, now)) return
+  await update($, dismissed, value => (value !== null && !same(value, now) ? null : value))
 }
 
 // A span's style props, leaving out the ones it does not set.

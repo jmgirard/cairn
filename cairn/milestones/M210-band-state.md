@@ -109,7 +109,7 @@ surface tests are features, not defects.
       root equals the stored one, and writes the empty state otherwise. Add
       band tests for AC2 in the describe block at `band.test.tsx:1239`, with
       the edit before the failed read, and for the three AC3 cases.
-- [ ] T3: `dismissed` writes. `reconcile` (`register.tsx:389-392`) reads first
+- [x] T3: `dismissed` writes. `reconcile` (`register.tsx:389-392`) reads first
       and writes only on a change. The press (`register.tsx:358-362`) writes
       only if no `session.end` landed since its reads, by a version-guarded set
       or a session-generation check. Add band tests for both AC4 halves.
@@ -135,6 +135,8 @@ surface tests are features, not defects.
 - 2026-10-04: T1 done. `dirname` returns a `\\host\share` or `//host/share` head unchanged. Two new reader tests failed on their asserted values before the fix. Verify is clean: scripts 397 OK, hooks OK, validate passed with warnings, mod tests 1000 pass.
 - 2026-10-04: T2 implementation choice: the root lives in the band atom's value (`band-4`, and `CairnBandState` gains `root`), and `readCairn` in reader.ts reports the root beside the state. A throw while parsing keeps the rows in the same root, as before, and only a throw from `$.session.cwd()` leaves the root unknown.
 - 2026-10-04: T2 done. Ten new band tests cover AC2 and AC3 on both surfaces. Against the pre-T2 source, those ten failed on their row assertions: the six root cases kept the old row and the four empty-text cases emptied the band. The edit-before-failure test passed there too, as it guards the M200 keep. The harness's `state.set` hook sees a shaped value as `{ shape, value }`. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1012 pass.
+- 2026-10-04: T3 implementation choice: the press takes the close state's version before its reads and writes through `$.state.set` with `ifVersion`, over a session-generation atom. Any write in between drops the press, and a second press hides the band. The engine needs the reference as a literal `const` (`DISMISSED_REF`).
+- 2026-10-04: T3 done. Four new band tests cover AC4 on both surfaces. Before the fix they failed on their assertions: the refresh wrote `dismissed`, and the press hid the band over the session end. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1016 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
