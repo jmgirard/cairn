@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M211: Run edge cases in the skills
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -117,6 +117,8 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: T3 done. records-hygiene §7 now defines a row's title (text before the first `: `) and its group (the row and each row that quotes that title, direct references only), and a group with findings from two or more milestones gets the chip. §1, §2, the budget note, and the ledger were compressed to fit: 54 lines, 3,154 bytes. Review step 9 tests the group and quotes the older title. The `/milestone` §2 bullet matches. D-149 records the change and the D-108 door walk.
 - 2026-10-04: minor amendment: T3 also updated `/cairn-triage`'s restated definition of a finding-absorbing row, found by the old-wording grep. README and DESIGN carry no old wording. The pinned §1 and §2 phrases are kept, and skills/tests is at baseline.
 - 2026-10-04: T4 done. `wc -l -m skills/shared/tracking-rules.md` prints 626 lines / 59,322 chars, and the branch does not change that file. The `/milestone` baseline (now "M211, 2026-10-04"), `test_cost_audit_line.py`, and the `test_mutation_harness.py` block carry those figures. No other site quotes the old seed. Verify clean (397 and 174 OK, validate passes, plugin test 1024 pass), skills/tests at baseline. If a review fix changes the rulebook, re-seed the three sites again.
+- 2026-10-04: claim audit: 31 claims read, 1 corrected — skills/tests/test_cost_audit_line.py (the seed comment said the re-seed followed the re-seed clause, but the branch does not change the rulebook). Also tightened from the reader's notes: skills/milestone/SKILL.md (the baseline is named a catch-up since M166) and skills/shared/records-hygiene.md (the row title leaves out the `- ` and any priority token, still 54 lines / 3,200 bytes). The same reader re-read all three once and found them TRUE. Verify clean, skills/tests at baseline.
+- 2026-10-04: all tasks done and verify clean. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

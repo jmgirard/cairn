@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M208 | A fuller look for the cairn pane | done | M207 | normal | milestones/archive/M208-pane-look.md |
 | M209 | The cairn pane stays where it is put | dropped | — | normal | milestones/archive/M209-pane-keeps-place.md |
 | M210 | The status band keeps the right state | done | — | normal | milestones/archive/M210-band-state.md |
-| M211 | Run edge cases in the skills | in-progress | — | normal | milestones/M211-run-edges.md |
+| M211 | Run edge cases in the skills | review | — | normal | milestones/M211-run-edges.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

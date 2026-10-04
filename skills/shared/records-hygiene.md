@@ -33,20 +33,20 @@ silently outrank a record it does not mention.
 ## 7. A finding-absorbing group of candidate rows is dispositioned, not silently extended
 
 **Rows that name each other count as one group.** A candidate row's title is
-its text before the first `: `. The row and each row that names its title in
-double quotes form its group. Only direct references count, never a chain.
-A group whose rows together carry deferred review findings filed from two or
-more distinct milestones (named in provenance or weighed notes) is
-finding-absorbing, and none of its rows is silently extended again. The
-`/milestone` health audit poses a disposition chip for the group.
-`/milestone-review`'s post-merge pass files new findings as a new row that
-names the older row's title in double quotes. The chip's options: promote a
-bounded milestone for the items that guard shipped behavior, route items the
-user accepts to `cairn/DESIGN.md` Known issues (the review skill's
-accepted-limitations block), prune the rest, or extend once more as an
-explicit choice, never the default. "Extended" means gaining a new provenance
-or weighed note without a disposition. Compressing a row to meet a byte budget
-never substitutes for the disposition (M161, M211).
+its text after the `- ` and any `[high]`/`[low]` token, up to the first `: `.
+The row and each row that names its title in double quotes form its group.
+Only direct references count, never a chain. A group whose rows together carry
+deferred review findings filed from two or more distinct milestones (named in
+provenance or weighed notes) is finding-absorbing, and none of its rows is
+silently extended again. The `/milestone` health audit poses a disposition
+chip for the group. `/milestone-review`'s post-merge pass files new findings
+as a new row that names the older row's title in double quotes. The chip's
+options: promote a bounded milestone for the items that guard shipped
+behavior, route items the user accepts to `cairn/DESIGN.md` Known issues (the
+review skill's accepted-limitations block), prune the rest, or extend once
+more as an explicit choice, never the default. "Extended" means gaining a new
+provenance or weighed note without a disposition. Compressing a row to meet a
+byte budget never substitutes for the disposition (M161, M211).
 
 <!-- Remainder ledger (M146 trim; `git log -- skills/shared/records-hygiene.md`
      holds the full text): §3 dropped with rule-placement, §4 lives in
