@@ -27,7 +27,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - [x] AC4: Over the `pane-full` fixture and an idle fixture with candidate rows, at `bodyColumns` 44, each line's indent plus lead width plus tail width, each counted by `width()` in `band.ts` summed over its spans, is at most 44, where a line with no tail counts 0. The Box keyed with each line's key carries `minWidth: 0`. A `pane.test.tsx` case asserts both on both surfaces.
 - [x] AC5: README's "The cairn pane" section, the pane paragraph of `cairn/DESIGN.md`, and the header comments of `pane.ts` and `register.tsx` describe the new look. CHANGELOG's Unreleased section has an entry for it.
 - [x] AC6: The four commands of the verify slot in `cairn/PROFILE.md` each exit 0.
-- [ ] AC7: At a live look the operator accepts the desktop pane docked at 44 columns and at a wider dock, and the terminal pane.
+- [x] AC7: At a live look the operator accepts the desktop pane docked at 44 columns and at a wider dock, and the terminal pane.
 
 ## Coverage
 
@@ -46,7 +46,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - [x] T3: Draw the meters and the set-off headings and `Next` line in the picked forms. Add the AC2 and AC3 cases.
 - [x] T4: Give the line Box `minWidth: 0`. Add the AC4 case.
 - [x] T5: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `pane.ts` and `register.tsx`.
-- [ ] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal, at the merge question as M205 did.
+- [x] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal, at the merge question as M205 did.
 - [x] T7: Make the look changes the operator names after the declined live look, then hand back to review.
 
 ## Work log
@@ -76,6 +76,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: T7 done. The AC3 cases now assert the accent color per heading, with two M081 review headings added, and the pill color for a review, an implement, and a plan command; the 14 non-orange cases failed on the old colors before the change. README, the DESIGN pane paragraph, the CHANGELOG entry, and the `pane.ts` header comment name the phase colors. Verify: 397, 174, and 994 tests pass, and validate exits 0.
 - 2026-10-04: claim audit: 16 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/pane.test.tsx (the lines T7 added; the earlier lines are under the first claim-audit line)
 - 2026-10-04: implement done again, status `review`, with T6 open: the live look of the phase colors runs at the merge question.
+- 2026-10-04: step-7 approval: m208-pane-look approved for merge, with the operator's live look of the phase colors accepted (T6).
 
 ## Decisions
 
@@ -148,3 +149,4 @@ Review pass 2, 2026-10-04, on `44c2fa5`, after the T7 phase colors. Main had not
 - prior-review #4: phase color now carries meaning for a red-green colorblind reader — follow-up, row "Pane look follow-ons (M208 review)".
 - prior-review #5: the tests assert hard-coded RGB literals — reject, false (pass 1's diff-bug #8 asked for exact color checks).
 - Fixes on 2ddc53a: `claude plugin test .` 998 pass, scripts 397 OK (21 skipped), hooks 174 OK, `claude plugin validate` exit 0, `cairn_validate.py` passes.
+- AC7 evidence: at the merge question of pass 2 the operator accepted the pane after the live look, docked at 44 columns, at a wider dock, and in the terminal, and approved the merge.
