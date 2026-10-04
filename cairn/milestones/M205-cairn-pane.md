@@ -1,13 +1,13 @@
 # M205: A cairn pane in the status mod
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter loads the mod with the plugin (D-143)
-- **Branch/PR:** —
+- **Branch/PR:** m205-cairn-pane
 
 ## Goal
 
@@ -96,3 +96,5 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: question set: command name — `/cairn-pane`.
 - 2026-10-04: plan gate chose to mirror `cairn_next.py` through new `recommend` and `waiting` functions over a recommendation rule in TypeScript alone. One rule in two languages drifts unless a test holds them to the same fixtures. Falsified by a fixture where the two disagree and no test fails.
 - 2026-10-04: plan gate chose a command plus a band button over a pane that opens itself at session start. The user asked for an optional pane. Falsified by the operator opening it at every session start.
+- 2026-10-04: implement started on branch m205-cairn-pane. The untracked `tsconfig.json` at the repo root is not this milestone's and stays unstaged.
+- 2026-10-04: T1 runs as a throwaway `pane-probe` mod in this session's hot-reload folder (`~/.claude/dev-mods/<session>/pane-probe`), not on the branch, so no probe code reaches the PR. It opens a pane at load and through `/pane-probe`, and logs `isPlaced` and the render props to `.git/pane-probe.log`. `claude plugin validate` passed on 2.1.286.
