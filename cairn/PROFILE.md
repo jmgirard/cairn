@@ -15,8 +15,9 @@ lists the one plugin, at the repo root.
 ## verify
 Run by `/milestone-implement` (per task) and `/hotfix` (gate-lite). Two
 stdlib `unittest` suites test the Python scripts and hooks, and three
-`claude plugin` checks cover the manifests and the mod (D-143). All five
-must be green:
+`claude plugin` checks cover the manifests and the mod. The plugin validate
+and the mod test gate since M191 (D-143), the marketplace validate since
+M215. All five must be green:
 
 ```
 python3 -m unittest discover -s scripts/tests
@@ -31,7 +32,9 @@ take a dotted path fine (`python3 -m unittest scripts.tests.test_scripts -k <sub
 to narrow a `discover` run, add `-k <substring>`. The validate checks pass
 with warnings and fail on any error. Do not add `--strict`: it fails on
 warnings, and the root `CLAUDE.md` always draws one. `claude plugin test .`
-runs the status mod's `hooks/status/*.test.ts(x)` files. Without the
+runs every `*.test.ts(x)` file under the repo root, today only the status
+mod's under `hooks/status/`. Keep tests for other runners (vitest, jest) out
+of the repo, because this command runs them too. Without the
 variable, a process that the rollout switch serves "off" refuses to run them
 with "hooks modules are turned off in this process" (M191, observed on
 2.1.286).
@@ -73,8 +76,8 @@ Layered on the universal "What gets a test" rules in tracking-rules:
   `claude-code/testing`. Test what the mod draws or stores, not its internal
   calls. Its reader is held to the Python helpers by the shared fixtures
   (`scripts/tests/test_status_fixtures.py`).
-- Skill and rulebook markdown is prose and owes no test in this repo: a new
-  rule owes no prose guard and no mutation registration. The retained
+- A new skill or rulebook rule owes no prose guard and no mutation
+  registration in this repo. The retained
   `skills/tests` prose-guards are a hand-run tripwire that gates nothing,
   not a coverage obligation (M144, D-108/D-109). The shipped "What gets a test" doctrine
   continues to govern adopting repos. No numeric/oracle doctrine applies.
