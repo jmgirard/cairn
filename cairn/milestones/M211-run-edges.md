@@ -119,6 +119,7 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: T4 done. `wc -l -m skills/shared/tracking-rules.md` prints 626 lines / 59,322 chars, and the branch does not change that file. The `/milestone` baseline (now "M211, 2026-10-04"), `test_cost_audit_line.py`, and the `test_mutation_harness.py` block carry those figures. No other site quotes the old seed. Verify clean (397 and 174 OK, validate passes, plugin test 1024 pass), skills/tests at baseline. If a review fix changes the rulebook, re-seed the three sites again.
 - 2026-10-04: claim audit: 31 claims read, 1 corrected — skills/tests/test_cost_audit_line.py (the seed comment said the re-seed followed the re-seed clause, but the branch does not change the rulebook). Also tightened from the reader's notes: skills/milestone/SKILL.md (the baseline is named a catch-up since M166) and skills/shared/records-hygiene.md (the row title leaves out the `- ` and any priority token, still 54 lines / 3,200 bytes). The same reader re-read all three once and found them TRUE. Verify clean, skills/tests at baseline.
 - 2026-10-04: all tasks done and verify clean. Status set to review.
+- 2026-10-04: step-7 approval: m211-run-edges approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
