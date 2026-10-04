@@ -39,7 +39,7 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 
 - [x] T1: In `reader.ts`, read the candidate rows into the `pane` state, skipping HTML comments as the M205 pane does for boxes, and bump the shape tag in `register.tsx`. Add the three AC3 fixtures and the `candidates` key to every `expected.json`. Add the Python implementation to `test_status_fixtures.py`, compare its row count to `candidate_count`, and regenerate `fixtures.gen.ts`.
 - [x] T2: In `pane.ts`, with no active row, draw the heading and the lines. Add the AC1 and AC2 cases.
-- [ ] T3: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `reader.ts` and `pane.ts`.
+- [x] T3: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `reader.ts` and `pane.ts`.
 
 ## Work log
 
@@ -55,6 +55,7 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 - 2026-10-04: re-audit: AC1 (full) — of the amended ending "its line's text holds the whole short title and carries the `truncate-end` wrap, which draws the ellipsis": name the `-text` element, require both surfaces, and drop the claim about the renderer.
 - 2026-10-04: re-audit: AC1 (full) — of the fixed ending "on both surfaces, the `-text` element holds the whole short title and carries `wrap: 'truncate-end'`; the renderer draws the ellipsis from that prop": "a long title" has no length bar, and the renderer sentence is an unchecked claim. This is the second re-audit line on AC1, so the wording goes to the operator.
 - 2026-10-04: substantive amendment: AC1's last sentence now reads "A case on each of the terminal and desktop surfaces, with a short title longer than the pane's body width, asserts that the `-text` element of its line holds the whole short title and carries `wrap: 'truncate-end'`. The test API cannot see drawn text, so the case checks the prop and not the ellipsis." The operator chose this, the second reader's wording, at the stop. The deliverable is unchanged.
+- 2026-10-04: T3 done: README's pane section, the DESIGN pane paragraph, a CHANGELOG entry, and the `reader.ts` and `pane.ts` header comments describe the Candidates section. A `git grep` for `pane-1` outside the archive finds nothing. Verify: 397, 174, and 953 tests pass, and validate exits 0.
 
 ## Decisions
 

@@ -4,6 +4,12 @@
 
 ### New
 
+- **Candidate rows in the idle cairn pane.** With no `in-progress` or
+  `review` milestone, the cairn pane lists the ROADMAP's candidate rows
+  below the queue, under a `Candidates` heading with their count. Each row
+  takes one line: `↑` for `[high]`, `·` for normal, and `↓` for `[low]`,
+  then the row's text up to its first `: `. Rows inside an HTML comment
+  are not listed.
 - **A simpler band row.** The band's row is now the milestone's id in bold
   and its title on the left, and the flow track and its percent on the
   right, in the terminal and in the desktop app. The phase or skill label,

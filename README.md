@@ -213,6 +213,12 @@ ends in `…`, and the goal wraps. A missing or unreadable
 milestone file shows `no milestone file`. Below the milestones, the pane
 shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
+When no milestone is `in-progress` or `review`, the pane also lists the
+ROADMAP's candidate rows under a `Candidates` heading with their count.
+Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
+`↓` for a `[low]` one, then the row's text up to its first `: `. Rows
+inside an HTML comment, such as the placeholders of a new ROADMAP, are not
+listed.
 The pane reads the files at the same moments as the band. Outside a cairn
 repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command

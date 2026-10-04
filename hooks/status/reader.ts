@@ -8,7 +8,8 @@
 // `workable` reaches through `done_ids` and `_workable` (`canon_id`,
 // `archive_files`, and `sort_by_priority` with its `id_num`). For the cairn
 // pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
-// (M205). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
+// (M205), and reads the candidate rows over `candidate_count`'s section
+// walk in scripts/cairn_scripts.py (M207). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
 // and `\d` also take other Unicode digits, so an id such as `M００５７`
 // reads differently in the two.
 // hooks/status/reader.test.ts holds this reader, and

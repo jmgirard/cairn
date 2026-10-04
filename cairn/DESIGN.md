@@ -188,7 +188,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   The queue is `recommend`, `workable`, and `waiting` in
   `scripts/cairn_next.py`, which `reader.ts` mirrors and
   `scripts/tests/test_status_fixtures.py` holds to each fixture's `pane`
-  and `next` keys. `pane.ts` lays out the lines, and each line's text is
+  and `next` keys. The pane state also holds the candidate rows (M207):
+  `candidateRows` in `reader.ts` reads each line that opens with `- `
+  under a `## Candidates` heading, after HTML comments are removed, as a
+  priority (`high` or `low` for an exact `[high] ` or `[low] ` opening,
+  else `normal`) and the text before the first `: `. Its section walk is
+  `candidate_count`'s, and `test_status_fixtures.py` holds it to each
+  fixture's `candidates` key and to that count. `pane.ts` draws them only
+  while no row is active. `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
