@@ -98,7 +98,7 @@ row is pruned at post-merge hygiene.
       cross-reference (`milestone-review:629`) quote the older row's title.
       Update the `/milestone` §2 bullet. Write the D-entry for the trigger
       change. Grep README and DESIGN for the old wording (LESSONS M112).
-- [ ] T4: Re-seed the baseline last, after every other edit, from
+- [x] T4: Re-seed the baseline last, after every other edit, from
       `wc -l -m` on the final head, in all three sites (LESSONS M149). Run
       the four verify commands.
 
@@ -116,6 +116,7 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: T2 done. Review step 10 always fences `/milestone` when the `release window` advisory fired, and puts it first only when the next action it would fence names a flagged id. Step 9's sentence now says the signal includes which ids. No pin quoted the old text. Verify clean, skills/tests at baseline.
 - 2026-10-04: T3 done. records-hygiene §7 now defines a row's title (text before the first `: `) and its group (the row and each row that quotes that title, direct references only), and a group with findings from two or more milestones gets the chip. §1, §2, the budget note, and the ledger were compressed to fit: 54 lines, 3,154 bytes. Review step 9 tests the group and quotes the older title. The `/milestone` §2 bullet matches. D-149 records the change and the D-108 door walk.
 - 2026-10-04: minor amendment: T3 also updated `/cairn-triage`'s restated definition of a finding-absorbing row, found by the old-wording grep. README and DESIGN carry no old wording. The pinned §1 and §2 phrases are kept, and skills/tests is at baseline.
+- 2026-10-04: T4 done. `wc -l -m skills/shared/tracking-rules.md` prints 626 lines / 59,322 chars, and the branch does not change that file. The `/milestone` baseline (now "M211, 2026-10-04"), `test_cost_audit_line.py`, and the `test_mutation_harness.py` block carry those figures. No other site quotes the old seed. Verify clean (397 and 174 OK, validate passes, plugin test 1024 pass), skills/tests at baseline. If a review fix changes the rulebook, re-seed the three sites again.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
