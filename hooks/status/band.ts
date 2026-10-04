@@ -60,9 +60,9 @@ export const GAP = 2
 // The most columns a row keeps for its text when it picks a form: a shorter
 // text needs only its own width.
 export const TEXT_ROOM = 10
-// The columns the desktop track counts as in the fit (M204). track.ts draws
-// it TRACK_PX wide.
-export const TRACK_COLUMNS = 32
+// The columns the desktop track counts as in the fit (M204), at about 7
+// pixels a column. track.ts draws it TRACK_PX (360) wide.
+export const TRACK_COLUMNS = 52
 // One glyph for every cell, so the bar keeps one width in any font; the
 // empty cells take EMPTY.
 const CELL = '█'
@@ -159,11 +159,9 @@ export type Flow = {
   phase: FlowPhase
   // Plan, implement, review.
   fills: [Fill, Fill, Fill]
-  // The items in the implement and review segments, which set their ticks.
-  // 0 draws none.
+  // The items in the implement and review segments. The active segment's
+  // count sets its ticks; 0 draws none.
   items: [number, number]
-  // True on the /milestone-plan skill row: plan draws running, unfilled.
-  running: boolean
   pill: string
   // The flow's percent, or null on a row that shows none.
   percent: number | null
@@ -206,7 +204,6 @@ export function flowOf(row: BandRow): Flow | null {
     phase,
     fills,
     items: [tasksTotal, criteriaTotal],
-    running: false,
     pill: total === 0 ? `no ${noun}` : `${name} ${checked}/${total}`,
     percent,
     alt: `${phase} ${counts}, ${percent}% through plan, implement, review`,
@@ -219,20 +216,19 @@ export function idleFlow(): Flow {
     phase: 'plan',
     fills: [FULL, NONE, NONE],
     items: [0, 0],
-    running: false,
     pill: 'Planned',
     percent: null,
     alt: 'plan done, implement next',
   }
 }
 
-// The /milestone-plan skill row's flow: plan running, nothing filled.
+// The /milestone-plan skill row's flow: nothing filled, the pill at the
+// left edge.
 export function planFlow(): Flow {
   return {
     phase: 'plan',
     fills: [NONE, NONE, NONE],
     items: [0, 0],
-    running: true,
     pill: 'Plan',
     percent: null,
     alt: 'plan running',
@@ -286,7 +282,7 @@ const gap = (): Span => ({ text: ' '.repeat(GAP) })
 // A skill row: the skill's label, its slash command, the chapter when one
 // is set, and nothing on the right. When the head leaves the chapter less
 // than the room it needs, the slash command goes.
-// On the desktop, a /milestone-plan skill row adds the plan-running track
+// On the desktop, a /milestone-plan skill row adds the unfilled track
 // on the right when it has room (M204).
 export function skillLines(step: CairnStep, columns: number, close = 0, desktop = false): BandLine[] {
   const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]

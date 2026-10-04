@@ -6,6 +6,7 @@ import { bandLines, flowOf, idleFlow, idleLines, knownStep, lineText, mark, plan
 import { FIXTURES, SKILLS } from './fixtures.gen'
 import type { BandRow } from './reader'
 import { listNames, loadBand, memorySource } from './reader'
+import { trackSvg } from './track'
 
 // Each case answers the shipped mod's `$.session.cwd`, `$.fs.stat`,
 // `$.fs.read` and `$.fs.list` calls from an in-memory copy of a fixture,
@@ -2597,85 +2598,119 @@ describe('the flow model gives three fills, a pill, and a percent (M204 AC1)', (
 
   test('the idle row: plan full, no percent', () => {
     const flow = idleFlow()
-    expect([fillText(flow), flow.pill, flow.percent, flow.running]).toEqual([['1/1', '0/1', '0/1'], 'Planned', null, false])
+    expect([fillText(flow), flow.pill, flow.percent]).toEqual([['1/1', '0/1', '0/1'], 'Planned', null])
   })
 
-  test('the /milestone-plan skill row: plan running, nothing filled, no percent', () => {
+  test('the /milestone-plan skill row: nothing filled, no percent', () => {
     const flow = planFlow()
-    expect([fillText(flow), flow.pill, flow.percent, flow.running]).toEqual([['0/1', '0/1', '0/1'], 'Plan', null, true])
+    expect([fillText(flow), flow.pill, flow.percent]).toEqual([['0/1', '0/1', '0/1'], 'Plan', null])
   })
 })
 
-// The track's width in pixels, written out by hand.
-const TRACK_WIDTH = 224
+// The track's width in pixels and a third of it, and the speck gray,
+// written out by hand.
+const TRACK_WIDTH = 360
+const THIRD = 120
+const SPECK_GRAY = 'rgb(160,160,160)'
 const DESKTOP_STEPS = [null, 'milestone-plan', 'milestone-implement', 'milestone-review', 'hotfix'] as const
 const UNLABELED = 'Write the docs'
 
-type Expected = { pill: string; filled: string[]; ticks: [number, number]; alt: string[]; right: string | null; running: boolean }
+// `head` is the active phase's fill edge in pixels, `color` the active
+// phase's hue, and `ticks` the item ticks' x, in pixels.
+type Expected = { pill: string; head: number; color: string; ticks: number[]; alt: string[]; right: string | null }
+
+// The active segment's inner item edges k with checked < k < n, when
+// (THIRD / n) is 6 or more.
+function ticksPast(base: number, items: number, checked: number): number[] {
+  const step = THIRD / items
+  if (items < 2 || step < 6) return []
+  return Array.from({ length: items - 1 }, (_, i) => i + 1)
+    .filter(k => k > checked)
+    .map(k => base + step * k)
+}
 
 // What a row in the flow draws, from the fixture's counts, or null for a
-// row outside the flow. Derived here, never from band.ts.
+// row outside the flow. Derived here, never from band.ts or track.ts.
 function expectedFlow(name: string, skill: string | null): Expected | null {
   const id = shownId(name, skill)
   if (id !== null) {
     const row = rowOf(name, id)
     const { tasksChecked: tc, tasksTotal: tt, criteriaChecked: cc, criteriaTotal: ct } = row
     if (tc === null || tt === null || cc === null || ct === null) return null
-    const ticks: [number, number] = [Math.max(tt - 1, 0), Math.max(ct - 1, 0)]
     if (row.status === 'in-progress') {
       const percent = tt === 0 ? 33 : Math.floor((100 * (tt + tc)) / (3 * tt))
       const counts = tt === 0 ? 'no tasks' : `${tc}/${tt}`
+      const head = THIRD + (tt === 0 ? 0 : (THIRD * tc) / tt)
       return {
         pill: tt === 0 ? 'no tasks' : `Implement ${tc}/${tt}`,
-        filled: tc > 0 ? ['plan', 'implement'] : ['plan'],
-        ticks,
+        head,
+        color: ORANGE,
+        ticks: ticksPast(THIRD, tt, tc),
         alt: ['implement', counts, `${percent}%`],
         right: `${percent}%`,
-        running: false,
       }
     }
     const percent = ct === 0 ? 66 : Math.floor((100 * (2 * ct + cc)) / (3 * ct))
     const counts = ct === 0 ? 'no criteria' : `${cc}/${ct}`
+    const head = 2 * THIRD + (ct === 0 ? 0 : (THIRD * cc) / ct)
     return {
       pill: ct === 0 ? 'no criteria' : `Review ${cc}/${ct}`,
-      filled: cc > 0 ? ['plan', 'implement', 'review'] : ['plan', 'implement'],
-      ticks,
+      head,
+      color: GREEN,
+      ticks: ticksPast(2 * THIRD, ct, cc),
       alt: ['review', counts, `${percent}%`],
       right: `${percent}%`,
-      running: false,
     }
   }
   if (skill === null) {
     const idle = idleId(name)
     if (idle === null) return null
-    return { pill: 'Planned', filled: ['plan'], ticks: [0, 0], alt: ['plan'], right: `/milestone-implement ${idle}`, running: false }
+    return { pill: 'Planned', head: THIRD, color: BLUE, ticks: [], alt: ['plan'], right: `/milestone-implement ${idle}` }
   }
   if (skill !== 'milestone-plan') return null
-  return { pill: 'Plan', filled: [], ticks: [0, 0], alt: ['plan'], right: null, running: true }
+  return { pill: 'Plan', head: 0, color: BLUE, ticks: [], alt: ['plan'], right: null }
 }
 
-const PHASE_COLORS: Record<string, string> = { plan: BLUE, implement: ORANGE, review: GREEN }
+// Every speck cell's left edge and width, with the color it draws in.
+function specksOf(source: string): { x: number; w: number; fill: string; kind: string }[] {
+  return [...source.matchAll(/<path class="specks" data-color="(\w+)" d="([^"]*)" fill="([^"]+)"/g)].flatMap(m =>
+    [...m[2].matchAll(/M([\d.]+) [\d.]+h([\d.]+)/g)].map(cell => ({
+      x: Number(cell[1]),
+      w: Number(cell[2]),
+      fill: m[3],
+      kind: m[1],
+    })),
+  )
+}
 
 function checkSource(source: string, want: Expected) {
-  // Each segment's fill, in its phase's dither, and the dithers' colors.
-  const filled = [...source.matchAll(/<rect class="fill" data-phase="(\w+)"[^>]*fill="url\(#dither-(\w+)\)"/g)]
-  expect(filled.map(m => m[1])).toEqual(want.filled)
-  for (const m of filled) expect(m[2]).toBe(m[1])
-  for (const m of source.matchAll(/<pattern id="dither-(\w+)"[^>]*><rect [^>]*fill="([^"]+)"/g)) {
-    expect(m[2]).toBe(PHASE_COLORS[m[1]])
+  // Specks only between the left edge and the head, in gray or the active
+  // phase's hue, at least one in the hue; none when the head is at 0.
+  const specks = specksOf(source)
+  expect(specks.some(speck => speck.fill === want.color)).toBe(want.head > 0)
+  if (want.head === 0) expect(specks).toEqual([])
+  for (const speck of specks) {
+    expect([speck.x, speck.x >= 0 && speck.x + speck.w <= want.head + 0.005]).toEqual([speck.x, true])
+    expect([speck.kind, speck.fill]).toEqual([speck.kind, speck.kind === 'gray' ? SPECK_GRAY : want.color])
   }
-  expect([...source.matchAll(/<pattern id="dither-/g)].length).toBe(3)
-  // The ticks and the two phase-edge marks.
-  const ticks = (phase: string) => [...source.matchAll(new RegExp(`<line class="tick" data-phase="${phase}"`, 'g'))].length
-  expect([ticks('implement'), ticks('review')]).toEqual(want.ticks)
-  expect([...source.matchAll(/<line class="edge"/g)].length).toBe(2)
-  // The pill: its text, inside the track.
-  const pill = /<rect class="pill" x="([\d.]+)"[^>]*width="([\d.]+)"/.exec(source) as RegExpExecArray
-  expect(Number(pill[1])).toBeGreaterThanOrEqual(0)
-  expect(Number(pill[1]) + Number(pill[2])).toBeLessThanOrEqual(TRACK_WIDTH)
-  expect(/<text class="pill-text"[^>]*>([^<]*)<\/text>/.exec(source)?.[1]).toBe(want.pill)
-  expect(source.includes('@media (prefers-color-scheme: dark)')).toBe(true)
-  expect(source.includes('<rect class="running"')).toBe(want.running)
+  // The item ticks, at the active segment's item edges past the head.
+  const ticks = [...source.matchAll(/<rect class="tick" x="([\d.-]+)"/g)].map(m => Number(m[1]) + 0.5)
+  expect(ticks.length).toBe(want.ticks.length)
+  ticks.forEach((x, i) => expect(Math.abs(x - want.ticks[i])).toBeLessThan(0.01))
+  // The two phase-edge marks, 1 unit wide, centered on the thirds.
+  expect([...source.matchAll(/<rect class="edge" x="([\d.]+)"/g)].map(m => Number(m[1]) + 0.5)).toEqual([THIRD, 2 * THIRD])
+  // The pill: in the active phase's hue, inside the track, with its text.
+  const pill = /<rect class="pill" x="([\d.]+)"[^>]*width="([\d.]+)"[^>]*fill="([^"]+)"/.exec(source) as RegExpExecArray
+  const [left, width] = [Number(pill[1]), Number(pill[2])]
+  expect(left).toBeGreaterThanOrEqual(0)
+  expect(left + width).toBeLessThanOrEqual(TRACK_WIDTH)
+  // Its right edge at the head plus 6, clamped to 1 inside either end.
+  const right = Math.min(Math.max(want.head + 6, width + 1), TRACK_WIDTH - 1)
+  expect(Math.abs(left + width - right)).toBeLessThan(0.02)
+  expect(pill[3]).toBe(want.color)
+  const text = /<text class="pill-text"[^>]*>(.*?)<\/text>/.exec(source)?.[1] ?? ''
+  const parts = [...text.matchAll(/<tspan[^>]*>([^<]*)<\/tspan>/g)].map(m => m[1])
+  expect(parts.join(' ')).toBe(want.pill)
 }
 
 describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
@@ -2700,7 +2735,9 @@ describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
           expect(svg.props.width).toBe(TRACK_WIDTH)
           checkSource(svg.props.source as string, want)
           const alt = svg.props.alt as string
-          for (const part of want.alt) expect([part, alt.includes(part)]).toEqual([part, true])
+          // The alt begins with the phase, then names the counts and percent.
+          expect(alt.startsWith(`${want.alt[0]} `) || alt === want.alt[0]).toBe(true)
+          for (const part of want.alt.slice(1)) expect([part, alt.includes(part)]).toEqual([part, true])
           // The right group: the track, then the percent or the idle
           // command, then the dim close button.
           const [first] = await ui.findAll({ key: (await rowKeys(ui))[0] })
@@ -2715,13 +2752,40 @@ describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
     }
   }
 
-  test('the plan running draws a dashed outline in the plan hue', async ($, on) => {
+  // Rows built directly, for item counts no fixture has: the 6-pixel
+  // spacing at n = 20 (6 apart) and n = 21 (under 6), and heads whose x
+  // rounds near an item edge (7/9 tasks, 11/18 criteria).
+  const built = (status: string, tc: number, tt: number, cc: number, ct: number): BandRow => ({
+    id: 'M900',
+    title: 'Built',
+    status,
+    tasksChecked: tc,
+    tasksTotal: tt,
+    criteriaChecked: cc,
+    criteriaTotal: ct,
+    nextTask: null,
+    nextCriterion: null,
+  })
+  const BUILT: { name: string; row: BandRow; want: Expected }[] = [
+    { name: '20 tasks, 5 checked', row: built('in-progress', 5, 20, 0, 1), want: { pill: 'Implement 5/20', head: 150, color: ORANGE, ticks: ticksPast(THIRD, 20, 5), alt: [], right: null } },
+    { name: '21 tasks, 5 checked', row: built('in-progress', 5, 21, 0, 1), want: { pill: 'Implement 5/21', head: THIRD + (THIRD * 5) / 21, color: ORANGE, ticks: [], alt: [], right: null } },
+    { name: '9 tasks, 7 checked', row: built('in-progress', 7, 9, 0, 1), want: { pill: 'Implement 7/9', head: THIRD + (THIRD * 7) / 9, color: ORANGE, ticks: ticksPast(THIRD, 9, 7), alt: [], right: null } },
+    { name: '18 criteria, 11 checked', row: built('review', 2, 2, 11, 18), want: { pill: 'Review 11/18', head: 2 * THIRD + (THIRD * 11) / 18, color: GREEN, ticks: ticksPast(2 * THIRD, 18, 11), alt: [], right: null } },
+  ]
+  for (const { name, row, want } of BUILT) {
+    test(`a built row: ${name}`, () => {
+      expect(want.ticks.length).toBe(name.startsWith('21') ? 0 : name.startsWith('20') ? 14 : name.startsWith('9') ? 1 : 6)
+      checkSource(trackSvg(flowOf(row) as Flow), want)
+    })
+  }
+
+  test('the /milestone-plan skill row draws the plan pill at the left edge and its label in the plan hue', async ($, on) => {
     seat(on, copyOf('no-active'))
     await $.turn.complete(turn())
     await prompt($, 'milestone-plan')
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(200) })) as Ui
     const [svg] = await ui.findAll({ type: 'Svg' })
-    expect(/<rect class="running"[^>]*stroke="([^"]+)"/.exec(svg.props.source as string)?.[1]).toBe(BLUE)
+    expect(Number(/<rect class="pill" x="([\d.]+)"/.exec(svg.props.source as string)?.[1])).toBeLessThanOrEqual(1)
     const [first] = await ui.findAll({ key: 'skill-row' })
     expect(labelOf(first)).toBe('plan')
     expect(kids(layout(first).head)[0].props.color).toBe(BLUE)
@@ -2751,24 +2815,24 @@ describe('the terminal draws no track (M204 AC3)', () => {
 
 // The least width, in columns, at which each row in the flow draws the
 // track with no skill, written out by hand (M204 AC4). A row needs its head,
-// the gap, 32 columns of track, the gap and the percent or the idle
+// the gap, 52 columns of track, the gap and the percent or the idle
 // command, the close button's 3, and its text's room (M197). For
-// single-in-progress: `implement M002 ` 15 + `→ T2:` 5 + 2 + 32 + `  44%` 5
-// + 3 + 10 = 72.
+// single-in-progress: `implement M002 ` 15 + `→ T2:` 5 + 2 + 52 + `  44%` 5
+// + 3 + 10 = 92.
 const TRACK_FROM: Record<string, number> = {
-  'idle-deps': 84,
-  'idle-order': 84,
-  'long-title': 72,
-  mixed: 67,
-  'nested-first': 73,
-  'no-active': 84,
-  'repo-at-cut': 84,
-  'single-in-progress': 72,
-  'six-active': 68,
-  subdirectory: 67,
-  'unlabeled-item': 69,
-  'wide-title': 70,
-  widest: 75,
+  'idle-deps': 104,
+  'idle-order': 104,
+  'long-title': 92,
+  mixed: 87,
+  'nested-first': 93,
+  'no-active': 104,
+  'repo-at-cut': 104,
+  'single-in-progress': 92,
+  'six-active': 88,
+  subdirectory: 87,
+  'unlabeled-item': 89,
+  'wide-title': 90,
+  widest: 95,
 }
 
 describe('the desktop draws the track from a width written per fixture, and the text form below it (M204 AC4)', () => {
