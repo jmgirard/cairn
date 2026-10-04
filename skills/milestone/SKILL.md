@@ -119,11 +119,12 @@ The script deliberately does not judge these — do them yourself and report:
   `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
   drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
   demand, never from here. A finding-absorbing group — a candidate row and
-  the rows that name its title in double quotes, together carrying deferred
-  review findings filed from two or more distinct milestones — is triaged
-  even though not untouched: pose the disposition chip whose options
-  `skills/shared/records-hygiene.md` §7 states, rather than restating them
-  here; a row meeting both triggers takes the disposition chip.
+  the rows that name its exact title in double quotes (direct references
+  only), together carrying deferred review findings filed from two or more
+  distinct milestones — is triaged even though not untouched: pose the
+  disposition chip whose options `skills/shared/records-hygiene.md` §7
+  states, rather than restating them here; a row or group meeting both
+  triggers takes the disposition chip.
 - **Semantic orphans:** `done` milestones not archived; RRs not ingested;
   uncommitted changes under `cairn/` — in guest mode (tracking-rules
   "Collaboration mode") `cairn/` is excluded and never committed, so this

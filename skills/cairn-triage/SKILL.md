@@ -128,10 +128,11 @@ one of them absorbs is never dropped or merged away in this pass
      fix condition that names future work.
    - **Readiness → `promote`.** The trigger has fired and the work is
      wanted now; the close block hands it on.
-   A finding-absorbing row — one whose records-hygiene §7 group (the row and
-   the rows that name its title in double quotes) carries deferred findings
-   filed from two or more milestones; a weighed note recording that a
-   trigger did not fire is not a filed finding — takes §7's options in this
+   A finding-absorbing row — one that belongs to a records-hygiene §7 group
+   (a row and the rows that name its exact title in double quotes) carrying
+   deferred findings filed from two or more milestones; a weighed note
+   recording that a trigger did not fire is not a filed finding — takes
+   §7's options in this
    vocabulary: `promote` (a bounded milestone for what guards shipped
    behaviour), `route` (accepted limitations to Known issues), `drop` (the
    rest), or `keep` as the explicit choice to extend no further; the

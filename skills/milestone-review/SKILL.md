@@ -630,12 +630,14 @@ re-enters here, at the step the record shows is next:
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
    **Never extend a finding-absorbing candidate row:** when this pass would
-   extend a candidate row whose group (`skills/shared/records-hygiene.md`
-   §7: the row and the rows that name its title in double quotes) already
-   carries deferred review findings filed from two or more distinct
-   milestones, it files this milestone's deferred findings as a new row
-   that names the older row's title in double quotes instead, and names
-   the row in step 10's handoff sentence or close block. The disposition chip of
+   extend a candidate row that belongs to a finding-absorbing group
+   (`skills/shared/records-hygiene.md` §7: a row and the rows that name its
+   exact title in double quotes, together carrying deferred review findings
+   filed from two or more distinct milestones), it files this milestone's
+   deferred findings as a new row instead, and names the row in step 10's
+   handoff sentence or close block. Any row this pass files that
+   cross-references another candidate row names that row's exact title in
+   double quotes, after its own title's `: `, so §7 can group them. The disposition chip of
    `skills/shared/records-hygiene.md` §7 belongs to the `/milestone` health
    audit, which the user runs; review poses no question here. A whole-list
    sweep is `/cairn-triage`, run by the user on demand, never from this
@@ -710,12 +712,13 @@ re-enters here, at the step the record shows is next:
     `cairn_validate.py` run fired the `release window` advisory, the close
     block says so and fences `/milestone`, labeled as the command that
     offers parking the release (its §3), since parking is the user's
-    decision and review poses no chip for it. `/milestone` goes first only
-    when the next action this step would otherwise fence (the plan's next
-    milestone, or `cairn_next.py`'s recommendation) names a milestone the
-    advisory flagged. Each advisory line opens with the flagged id.
-    Otherwise that action stays first and `/milestone` is fenced after it,
-    as `/milestone` §3 rules. This close is a handoff, so
+    decision and review poses no chip for it. `/milestone` goes first after
+    `/clear` only when the next action this step would otherwise fence (the
+    plan's next milestone, or `cairn_next.py`'s recommendation) names a
+    milestone the advisory flagged. Each advisory line opens with the
+    flagged id. Otherwise that action stays first and `/milestone` is fenced
+    after it, as `/milestone` §3 rules for `cairn_next`'s recommendation.
+    This close is a handoff, so
     commands go in fenced blocks, never inline backticks (tracking-rules
     "Copy-run commands"). Do **not** end review with an AskUserQuestion:
     the step-7 merge question was the last chip this phase emits.

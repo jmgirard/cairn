@@ -5505,3 +5505,26 @@ audit misses the case it exists for.
 **Consequences:** A cross-reference that does not quote the title exactly
 stays outside the group. This entry is falsified by an audit where findings
 from two milestones sit in rows that never quote each other's titles.
+
+### D-150 (2026-10-04): Review's amendment-return exit writes an uncounted `amendment routed:` line, and the release-window close leads with `/milestone` only for a flagged release — annotates D-097, narrows D-144's clause that the close block leads with `/milestone` (M211)
+
+**Context:** D-097 gave an amendment return a fixed work-log shape, and
+both review's exit and `/milestone-implement` step 6 told the agent to
+write it, so one return could count twice toward the second-occurrence
+stop. D-144 moved D-050's parking offer to the close block, "which leads
+with `/milestone`", even when the next action is another milestone than
+the flagged release.
+
+**Decision:** At the M211 plan gate, implement step 6 became the one
+writer of `amendment return: AC<N> — "<clause>"`, because only the
+amendment knows the amended clause. Review's exit writes `amendment
+routed: AC<N> — <finding>`, which no count reads, and before routing it
+reads the work log for an `amendment return:` line on the same criterion.
+D-097's shape, track, and stop stand. The close block fences `/milestone`
+whenever the `release window` advisory fires, and puts it first only when
+the next action it would fence names a flagged milestone, as `/milestone`
+§3 already ruled for `cairn_next`'s recommendation.
+
+**Consequences:** The stop counts executed amendments, so a return whose
+amendment never runs does not count. This entry is falsified by such a
+return that must count toward the stop.

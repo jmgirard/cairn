@@ -165,6 +165,19 @@
     clear.
   - A close-button press that lands as the session ends no longer hides
     the band.
+- **Run edge cases in the skills.**
+  - One amendment return counts once. Only `/milestone-implement` writes
+    the counted `amendment return:` line, and `/milestone-review` writes
+    an `amendment routed:` line that no count reads.
+  - When the `release window` advisory fires, the review close block puts
+    `/milestone` first only when the next command names the flagged
+    release. Otherwise the next command stays first and `/milestone`
+    follows it.
+  - The `/milestone` audit counts a candidate row and the rows that quote
+    its exact title as one group. A group with review findings from two or
+    more milestones gets the disposition question, and review quotes the
+    older row's title when it files a row that refers to it.
+  - The rulebook size that `/milestone` reports growth from is re-measured.
 
 ### Changes that affect existing repos
 

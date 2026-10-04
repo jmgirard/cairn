@@ -5,10 +5,11 @@ graduating a ROADMAP candidate, or superseding a decision. It is a module of
 `tracking-rules.md`, conditionally read at the moment the craft applies, so it
 costs nothing to a session not at such a gate.
 
-Budget (maturation exit's module-budget rule, retrofitted M154 from 44 lines /
-2,575 bytes): **under 55 lines and under 4,000 bytes**, hand-read with
-`wc -l -c` at hygiene passes, covered by no validator. Over either figure,
-compress or retire content here — never "let it grow".
+Budget (maturation exit's module-budget rule, retrofitted 2026-08-22, M154,
+from 44 lines / 2,575 bytes plus about one section of headroom): **under 55
+lines and under 4,000 bytes**, hand-read with `wc -l -c` at hygiene passes,
+covered by no validator. Over either figure, compress or retire content
+here — never "let it grow".
 
 ## 1. Candidate rows graduate at completion, never at plan
 
@@ -34,21 +35,20 @@ silently outrank a record it does not mention.
 
 **Rows that name each other count as one group.** A candidate row's title is
 its text after the `- ` and any `[high]`/`[low]` token, up to the first `: `.
-The row and each row that names its title in double quotes form its group.
-Only direct references count, never a chain. A group whose rows together carry
-deferred review findings filed from two or more distinct milestones (named in
+The row and each row that names its exact title in double quotes form its
+group, direct references only. A group whose rows together carry deferred
+review findings filed from two or more distinct milestones (named in
 provenance or weighed notes) is finding-absorbing, and none of its rows is
-silently extended again. The `/milestone` health audit poses a disposition
-chip for the group. `/milestone-review`'s post-merge pass files new findings
-as a new row that names the older row's title in double quotes. The chip's
-options: promote a bounded milestone for the items that guard shipped
-behavior, route items the user accepts to `cairn/DESIGN.md` Known issues (the
+silently extended again. The `/milestone` audit poses a disposition chip for
+the group. `/milestone-review`'s post-merge pass files new findings as a new
+row that names the older row's exact title in double quotes after its own
+`: `. The chip's options: promote a bounded milestone for the items that guard
+shipped behavior, route accepted items to `cairn/DESIGN.md` Known issues (the
 review skill's accepted-limitations block), prune the rest, or extend once
 more as an explicit choice, never the default. "Extended" means gaining a new
-provenance or weighed note without a disposition. Compressing a row to meet a
+provenance or weighed note without a disposition. Compressing a row for a
 byte budget never substitutes for the disposition (M161, M211).
 
-<!-- Remainder ledger (M146 trim; `git log -- skills/shared/records-hygiene.md`
-     holds the full text): §3 dropped with rule-placement, §4 lives in
-     /milestone-implement step 6, §5 retired at M145, §6's remedy lives in
-     tracking-rules "Weight caps". Section numbers stay stable. -->
+<!-- Remainder ledger (M146 trim, full text in git log): §3 dropped with
+     rule-placement, §4 is in /milestone-implement step 6, §5 retired at M145,
+     §6's remedy is in tracking-rules "Weight caps". Numbers stay stable. -->
