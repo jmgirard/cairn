@@ -6,9 +6,12 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // /milestone-review runs and one exists, else the first `in-progress` row,
 // else the first `review` row. With no active row, it shows the idle row
 // for the first workable planned milestone, whether or not a cairn skill
-// runs. Its left side is the bold id and the title. Its right side is the
+// runs, and with none workable, the empty row where a ROADMAP is found
+// (M213). A milestone or idle row's left side is the bold id and the
+// title, and the empty row's is its text alone. Its right side is the
 // flow track and its percent, the idle row's track and command, or a
-// warning label for a row whose counts cannot be read. The track draws as
+// warning label for a row whose counts cannot be read, and on the empty
+// row nothing but the Buttons register.tsx adds. The track draws as
 // an image on the desktop and as braille cells in the terminal (track.ts),
 // at the width the row leaves it.
 
@@ -211,9 +214,9 @@ export function width(text: string): number {
 const spansWidth = (spans: Span[]) => spans.reduce((n, span) => n + width(span.text), 0)
 
 // The columns of the left group's part that does not shrink: the id and
-// the space after it.
+// the space after it, or none on the empty row, which has no id.
 function headWidth(id: string): number {
-  return width(id) + 1
+  return id === '' ? 0 : width(id) + 1
 }
 
 // The columns the title needs to pick a form: its full width, or TEXT_ROOM
@@ -251,24 +254,38 @@ export function idleLines(next: WorkableRow, columns: number, close = 0): BandLi
   return [{ ...line, tail: room(columns, close, line, [command]) >= 0 ? [command] : [] }]
 }
 
+// The empty row's key and text (M213).
+export const EMPTY_KEY = 'plan-row'
+export const EMPTY_TEXT = 'No milestone ready'
+
+// The empty row (M213), for a found ROADMAP with no active and no workable
+// row: no id, the text, and no track or tail. Its right side is the
+// Buttons register.tsx adds.
+export function emptyLines(): BandLine[] {
+  return [{ key: EMPTY_KEY, id: '', title: EMPTY_TEXT, tail: [] }]
+}
+
 // The band's one row, or none: the first `review` row under
 // /milestone-review, else the first `in-progress` row, else the first
 // `review` row; with no active row, an idle row for the first workable
-// planned row, else nothing. `rows` are the active rows in ROADMAP order,
-// and `workable` the workable planned rows in their order. `close` is the
-// columns the close gap and buttons take.
+// planned row, else the empty row where `found` says a ROADMAP was found,
+// else nothing. `rows` are the active rows in ROADMAP order, and `workable`
+// the workable planned rows in their order. `close` is the columns the
+// close gap and buttons take.
 export function stepLines(
   rows: BandRow[],
   step: CairnStep | null,
   columns: number,
   close = 0,
   workable: WorkableRow[] = [],
+  found = false,
 ): BandLine[] {
   const first = (status: string) => rows.find(row => row.status === status)
   const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined
   const row = reviewed ?? first('in-progress') ?? first('review')
   if (row !== undefined) return bandLines(row, columns, close)
-  return workable.length === 0 ? [] : idleLines(workable[0], columns, close)
+  if (workable.length > 0) return idleLines(workable[0], columns, close)
+  return found ? emptyLines() : []
 }
 
 // One milestone's row: the track and its percent, or a warning label when
@@ -291,13 +308,13 @@ const LONG_WARNING = 'no milestone file'
 
 // Whether a line drawn with `reserved` columns taken for the close gap and
 // all the Buttons has room for the action Buttons (M212): the line has its
-// track, or its long warning label, and the title keeps its room. The track
-// gives up its columns to the Buttons down to MIN_TRACK_COLUMNS. A line that
-// has its track or its long label keeps it at every wider band, and the
-// title's room then stays at its need or grows, so the widths that show the
-// Buttons are one run up to any wider band.
+// track, or its long warning label, or is the empty row (M213), and the
+// title keeps its room. The track gives up its columns to the Buttons down
+// to MIN_TRACK_COLUMNS. A line that has its track or its long label keeps it
+// at every wider band, and the title's room then stays at its need or grows,
+// so the widths that show the Buttons are one run up to any wider band.
 export function actionsFit(line: BandLine, columns: number, reserved: number): boolean {
-  const full = line.track !== undefined || line.tail[0]?.text === LONG_WARNING
+  const full = line.track !== undefined || line.tail[0]?.text === LONG_WARNING || line.key === EMPTY_KEY
   if (!full) return false
   const taken = headWidth(line.id) + GAP + spansWidth(line.tail) + (line.track?.columns ?? 0) + reserved
   return columns - taken >= textNeed(line.title)
@@ -309,5 +326,6 @@ export function actionsFit(line: BandLine, columns: number, reserved: number): b
 export function lineText(line: BandLine): string {
   const text = (spans: Span[]) => spans.map(s => s.text).join('')
   const track = line.track === undefined ? '' : `[track ${line.track.columns}]`
-  return `${line.id} ${line.title}${' '.repeat(GAP)}${track}${text(line.tail)}`.trimEnd()
+  const head = line.id === '' ? '' : `${line.id} `
+  return `${head}${line.title}${' '.repeat(GAP)}${track}${text(line.tail)}`.trimEnd()
 }

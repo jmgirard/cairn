@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, and in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -81,7 +81,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   draw, and the band blocks nothing. A row has a left group (the bold id,
   one space, and the title) and a right group: the flow track and its
   percent, the idle row's track and command, or a `warning` label for a
-  row whose counts cannot be read (M206). The phase or skill label, the
+  row whose counts cannot be read (M206). The empty row (M213) has no id,
+  so its left group is the title alone, and its right group only the
+  buttons. The phase or skill label, the
   chapter, the next open box, the skill row, and the ten-cell bar went in
   M206. Off the terminal, only the open and close buttons carry
   `dimColor`, and in the terminal nothing does. The other Text
@@ -159,7 +161,17 @@ transitions, human-gated merges, and a domain verification doctrine.
   whose dependencies are all done, by priority and then id, as `workable` in
   `scripts/cairn_next.py` computes it. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
-  three-digit padding. With an empty list the band draws nothing.
+  three-digit padding. With an empty list and a found ROADMAP (the pane
+  state's `found`), the band draws the empty row (M213): key `plan-row`,
+  no head Box, the gray text `No milestone ready`, and no track or tail.
+  `stepLines` returns it when its `found` argument is true. The pane's next
+  step is then planning, so the next-step Button reads `Plan`, and a press
+  runs `cairn:milestone-plan` with empty args. `actionsFit` keeps the action
+  Buttons on the empty row while its text keeps `TEXT_ROOM`, which with
+  both Buttons, the open button, and the close button is 37 columns or
+  more. `mark` stores no ids and a null idle id for it, so a press hides it
+  until a row becomes active or workable, or the session ends. With no ROADMAP found, the band
+  draws nothing.
   The flow track (M204) is the row's one progress form (M206). `flowOf`
   and `idleFlow` in `band.ts` give the model: three equal segments, plan,
   implement, and review, each a whole-number fraction. Plan is full on a

@@ -14,7 +14,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // starts, at the end of each turn, when a cairn skill's prompt is expanded,
 // and when a step ends. The row is the bold id and the title, then the flow
 // track and its percent (band.ts picks the row and its widths). With no
-// active milestone, an idle row names the next workable planned milestone.
+// active milestone, an idle row names the next workable planned milestone,
+// and with none workable, a found ROADMAP draws the empty row (M213).
 // The track draws as an `Svg` on the desktop and as braille cells in the
 // terminal (track.ts). The running cairn skill draws nothing of its own:
 // /milestone-review picks the row it shows. A skill's step
@@ -98,9 +99,15 @@ const OPEN_GLYPH = '≡'
 const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 
 // The action Buttons (M212): the next step's label by the action that
-// scripts/cairn_next.py names, and the status Button's label and command.
-// A plugin skill runs as `cairn:<name>` (M195).
-const NEXT_LABELS: Record<string, string> = { review: 'Review', resume: 'Resume', implement: 'Start' }
+// scripts/cairn_next.py names, planning among them (M213), and the status
+// Button's label and command. A plugin skill runs as `cairn:<name>` (M195).
+const PLAN_LABEL = 'Plan'
+const NEXT_LABELS: Record<string, string> = {
+  review: 'Review',
+  resume: 'Resume',
+  implement: 'Start',
+  'plan the next milestone': PLAN_LABEL,
+}
 const STATUS_LABEL = 'Status'
 const STATUS_COMMAND = 'cairn:milestone'
 
@@ -281,7 +288,10 @@ export const register: Register = on => {
     const state = await read($, band)
     const { rows, workable } = state
     const current = knownStep(await read($, step))
-    if (rows.length === 0 && workable.length === 0) return next(e)
+    // A row drawn from a found ROADMAP carries the pane's open button
+    // (M205), and with no active or workable row it is the empty row (M213).
+    const { found: canOpen, next: nextStep } = await read($, pane)
+    if (rows.length === 0 && workable.length === 0 && !canOpen) return next(e)
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
@@ -292,15 +302,14 @@ export const register: Register = on => {
     // track is taller than text.
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
-    // A row drawn from a found ROADMAP carries the pane's open button (M205).
-    const { found: canOpen, next: nextStep } = await read($, pane)
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     // The next-step and status Buttons (M212) show while no cairn skill's
     // step is set and no turn is working, on a row that has room for them
     // (band.ts `actionsFit`). The track gives up columns to them; without
     // them the row draws as it did before M212. The next step is the
-    // pane's, which names a milestone whenever the band draws a row.
-    const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
+    // pane's: a milestone's step on a milestone or idle row, and planning
+    // on the empty row (M213).
+    const nextLabel = nextStep == null ? undefined : NEXT_LABELS[nextStep.action]
     const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
     // Each action Button draws with its chrome, so the terminal draws it as
     // `[ label ]`: its label and 4 columns. One space follows each. Both take
@@ -308,9 +317,9 @@ export const register: Register = on => {
     // clashed at a live look.
     const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + 1 + width(STATUS_LABEL) + 4 + 1
     const reserved = close + actionColumns
-    const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable) : []
+    const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable, canOpen) : []
     const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
-    const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable)
+    const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable, canOpen)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -330,16 +339,18 @@ export const register: Register = on => {
     // A shrinking Box also takes `minWidth: 0`, and the id sits in a Box
     // that never shrinks. Without both, the desktop app drew a long text at
     // full width past the edge with no `…`, and the short parts beside it
-    // shrank to nothing (M194).
+    // shrank to nothing (M194). The empty row has no id, so no head (M213).
     const row = (line: BandLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between" {...center}>
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
-          <Box key={`${line.key}-head`} flexShrink={0}>
-            <Text wrap="truncate-end" color={GRAY} bold>
-              {line.id}
-            </Text>
-            <Text wrap="truncate-end">{' '}</Text>
-          </Box>
+          {line.id === '' ? null : (
+            <Box key={`${line.key}-head`} flexShrink={0}>
+              <Text wrap="truncate-end" color={GRAY} bold>
+                {line.id}
+              </Text>
+              <Text wrap="truncate-end">{' '}</Text>
+            </Box>
+          )}
           <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
             <Text wrap="truncate-end" color={GRAY}>
               {line.title}
@@ -357,7 +368,7 @@ export const register: Register = on => {
               key="cairn-next"
               variant="secondary"
               label={nextLabel}
-              onPress={() => pressNext($)}
+              onPress={() => pressNext($, nextLabel)}
             />
           ) : null}
           {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
@@ -442,13 +453,17 @@ let running = false
 
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
-// cairn skill that started since the drawing, or a next step that no longer
-// names a milestone, makes the press do nothing.
-async function pressNext($) {
+// cairn skill that started since the drawing, or no next step, makes the
+// press do nothing. A Button drawn for a milestone (`Start`, `Resume`,
+// `Review`) also does nothing when the next step no longer names one, as
+// in M212 (M213 review). `Plan` runs the next step as it is now, which is
+// planning with no arguments while nothing is workable (M213).
+async function pressNext($, drawn: string | undefined) {
   if (running || knownStep(await read($, step)) !== null) return
   const next = (await read($, pane)).next
-  if (next === null || next.id === null) return
-  await run($, `cairn:${next.command.slice(1)}`, next.id)
+  if (next === null) return
+  if (next.id === null && drawn !== PLAN_LABEL) return
+  await run($, `cairn:${next.command.slice(1)}`, next.id ?? '')
 }
 
 async function pressStatus($) {
