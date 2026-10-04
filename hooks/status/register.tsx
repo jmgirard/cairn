@@ -311,7 +311,6 @@ export const register: Register = on => {
     const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable) : []
     const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
     const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable)
-    const nextRun = nextStep === null ? null : { command: `cairn:${nextStep.command.slice(1)}`, args: nextStep.id ?? '' }
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -353,17 +352,17 @@ export const register: Register = on => {
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
-          {isFirst && acts && nextRun !== null ? (
+          {isFirst && acts ? (
             <Button
               key="cairn-next"
               variant="secondary"
               label={nextLabel}
-              onPress={() => run($, nextRun.command, nextRun.args)}
+              onPress={() => pressNext($)}
             />
           ) : null}
           {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && acts ? (
-            <Button key="cairn-status" variant="secondary" label={STATUS_LABEL} onPress={() => run($, STATUS_COMMAND, '')} />
+            <Button key="cairn-status" variant="secondary" label={STATUS_LABEL} onPress={() => pressStatus($)} />
           ) : null}
           {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && canOpen ? (
@@ -436,10 +435,33 @@ async function openPane($) {
   }
 }
 
-// A press of an action Button runs its command as if the person typed it
-// (M212). A run that rejects puts the command line after the prompt box's
-// draft, so the person can send it, and says why in a toast.
+// True while an action Button's run is in flight, so a second press, such
+// as a double click, does not queue the command again (M212 review). A
+// reload starts it over as false.
+let running = false
+
+// A press of the next-step Button reads the next step and the step as they
+// are now, not as they were drawn, as the close press does (M212 review). A
+// cairn skill that started since the drawing, or a next step that no longer
+// names a milestone, makes the press do nothing.
+async function pressNext($) {
+  if (running || knownStep(await read($, step)) !== null) return
+  const next = (await read($, pane)).next
+  if (next === null || next.id === null) return
+  await run($, `cairn:${next.command.slice(1)}`, next.id)
+}
+
+async function pressStatus($) {
+  if (running || knownStep(await read($, step)) !== null) return
+  await run($, STATUS_COMMAND, '')
+}
+
+// An action Button's command runs as if the person typed it (M212). A run
+// that rejects puts the command line after the prompt box's draft, so the
+// person can send it, and a toast says why and names the command line, for
+// a box that could not take it.
 async function run($, command: string, args: string) {
+  running = true
   try {
     await $.command.run({ command, args })
   } catch (error) {
@@ -450,7 +472,13 @@ async function run($, command: string, args: string) {
       // A fill that rejects leaves the draft as it was; the toast still
       // names the refusal.
     }
-    $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)}`)
+    try {
+      await $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)} (${text})`)
+    } catch {
+      // No toast shows; the press has nothing else to say.
+    }
+  } finally {
+    running = false
   }
 }
 

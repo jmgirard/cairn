@@ -82,6 +82,9 @@ type Copy = {
   // While set, a slash command run beneath the mod throws this message
   // (M212).
   runThrows?: string
+  // While set, a slash command run beneath the mod waits for this promise
+  // before it answers (M212 review).
+  runHold?: Promise<void>
 }
 
 function copyOf(name: string): Copy {
@@ -141,6 +144,7 @@ function seat(on: On, copy: Copy) {
   on('skill.prompt', async ($, e) => ({ text: e.text }))
   on('command.run', async ($, e) => {
     copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
+    if (copy.runHold !== undefined) await copy.runHold
     if (copy.runThrows !== undefined) throw new Error(copy.runThrows)
     return { text: '' }
   })
@@ -2821,14 +2825,49 @@ describe('a refused run appends the command line to the prompt box and toasts (M
       expect(copy.toasts?.length).toBe(1)
       // The press reached the run before it fell back.
       expect(copy.commands).toEqual([nextRun('single-in-progress')])
-      expect(copy.toasts?.[0]).toContain(NO_RUN)
+      expect(copy.toasts?.[0]).toBe(`cairn: ${NO_RUN} (/cairn:milestone-implement M002)`)
       await ui.press({ key: 'cairn-status' })
       expect(copy.fills).toEqual([
         { text: '/cairn:milestone-implement M002', mode: 'append' },
         { text: '/cairn:milestone', mode: 'append' },
       ])
       expect(copy.toasts?.length).toBe(2)
-      expect(copy.toasts?.[1]).toContain(NO_RUN)
+      expect(copy.toasts?.[1]).toBe(`cairn: ${NO_RUN} (/cairn:milestone)`)
+      await ui.unmount()
+    })
+  }
+})
+
+// A press of a drawing made before a cairn skill started cannot be staged
+// here: the kit presses the current drawing, which no longer has the
+// Buttons. The press's own step check is untested for that reason.
+describe('a press while a run is in flight does nothing (M212 review)', () => {
+  for (const surface of SURFACES) {
+    test(`a second press during a held run reaches no second run (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const first = ui.press({ key: 'cairn-next' })
+      try {
+        // Let the first press reach the held run, as untilHeld waits.
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([nextRun('single-in-progress')])
+        await ui.press({ key: 'cairn-next' })
+        await ui.press({ key: 'cairn-status' })
+        expect(copy.commands).toEqual([nextRun('single-in-progress')])
+      } finally {
+        release()
+        await first
+      }
+      // With the run done, a press runs again.
+      copy.runHold = undefined
+      await ui.press({ key: 'cairn-status' })
+      expect(copy.commands).toEqual([nextRun('single-in-progress'), STATUS_RUN])
       await ui.unmount()
     })
   }
