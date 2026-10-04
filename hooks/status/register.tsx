@@ -14,7 +14,8 @@ import { TRACK_H, TRACK_PX, trackSvg } from './track'
 // chapter the session marks, and when a step ends. A running cairn skill
 // shows its label and the last chapter on that row, or on a skill row when
 // no milestone is active. With neither, an idle row names the next workable
-// planned milestone (band.ts picks the row). A skill's step ends at the
+// planned milestone (band.ts picks the row). On the desktop, a row with
+// room draws the flow track as an `Svg` (track.ts, M204). A skill's step ends at the
 // first main-loop Stop with no background work in flight that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,

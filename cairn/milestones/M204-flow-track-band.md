@@ -46,8 +46,8 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 - [x] T3: Add the track as the fit's longest form on the desktop, counted as `TRACK_COLUMNS` and drawn at `TRACK_PX`, and the width sweep with its hand-written thresholds.
 - [x] T4: Draw the `Svg` in `register.tsx` on the desktop only, with the percent or idle command and the close button on the right. Give the `/milestone-plan` label the plan hue, and add the surface walks.
 - [x] T5: Stop for the operator's live look in the desktop app, light and dark, and make the changes asked for.
-- [ ] T6: Update README's band section, DESIGN.md's `hooks/status/` entry, and CHANGELOG.
-- [ ] T7: Run the four verify commands and fix any failure.
+- [x] T6: Update README's band section, DESIGN.md's `hooks/status/` entry, and CHANGELOG.
+- [x] T7: Run the four verify commands and fix any failure.
 
 ## Work log
 
@@ -70,6 +70,8 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 - 2026-10-03: re-audit: AC2 (full) — 7 findings on the repaired wording: alt phase check vacuous (test now uses startsWith), active phase undefined for idle and plan rows, tick x unstated, "no other tick" and "any other row" unbounded, no-skill chapter case misread, edge marks unpositioned (now asserted), the built-cases clause binds an instrument. Second re-audit on AC2, so the wording goes to the operator.
 - 2026-10-03: substantive amendment: Scope's look rewritten to design A (specks to the fill edge, pill at the edge, ticks in the active segment, one palette, no plan outline) and AC2 replaced by the wording the operator accepted at the chip ("Accept wording"); the built-row probes moved from the criterion to T2 as an instrument clause.
 - 2026-10-03: T5 done: the operator chose design A from the browser-pane prototype, not from the band in the desktop app; the in-app look in light and dark (AC5) is asked at the merge question.
+- 2026-10-03: T6: README gains two desktop-track paragraphs and the `/milestone-plan` blue; DESIGN.md's `hooks/status/` entry gains the track; CHANGELOG Unreleased gains "A flow track in the desktop band"; band.ts and register.tsx header comments name the track.
+- 2026-10-03: T7: `scripts/tests` exit 0, `hooks/tests` exit 0, `claude plugin validate` exit 0, `claude plugin test` exit 0 (944 pass, 0 fail); `cairn_validate` all checks passed.
 
 ## Decisions
 

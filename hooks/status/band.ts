@@ -10,7 +10,8 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // title. Its right side holds the bar and the counts, the counts alone, or
 // a state label, in the first of its forms that leaves the text enough
 // room. A running cairn skill with no active milestone gets a skill row.
-// With neither, the first workable planned milestone gets an idle row.
+// With neither, the first workable planned milestone gets an idle row. On
+// the desktop, a row in the flow tries the track first (M204).
 
 // One run of text and its style. The label draws in a fixed muted orange
 // or green. In the desktop app's dark theme, a theme key's `dimColor`

@@ -69,7 +69,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -134,7 +134,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
   `init`. The skill's label takes the place of the phase label on the row.
   It draws in the muted green for
-  `/milestone-review` and the muted orange otherwise. With no active
+  `/milestone-review`, the plan blue `rgb(110,140,190)` for
+  `/milestone-plan` (M204), and the muted orange otherwise. With no active
   milestone, a skill row shows the label, the slash command, and the chapter
   after a `→`. A session without the desktop app's chapter tool, such as one
   in the terminal, sets no chapter: a milestone row shows its next open
@@ -148,6 +149,28 @@ transitions, human-gated merges, and a domain verification doctrine.
   `scripts/cairn_next.py` computes it. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
   three-digit padding. With an empty list the band draws nothing.
+  On the desktop surface alone, the right group's first form is the flow
+  track (M204), drawn as the desktop's `Svg` element, `TRACK_PX` (360)
+  wide and counted as `TRACK_COLUMNS` (52) in the fit. Below that room the
+  row takes the terminal's text forms, and the terminal never draws the
+  track. `flowOf`, `idleFlow`, and `planFlow` in `band.ts` give the model:
+  three equal segments, plan, implement, and review, each a whole-number
+  fraction. Plan is full on a milestone row, implement fills by tasks (full
+  on a `review` row), review by criteria, and a section of zero items is
+  empty. The percent is `floor(100 × sum / 3)` in whole numbers. The idle
+  row has plan full and the pill `Planned`, and a `/milestone-plan` skill
+  row with no active milestone has no fill and the pill `Plan`. A milestone
+  row whose counts cannot be read, and any other skill row, keep the text
+  row. A milestone row keeps the track under any skill and chapter.
+  `track.ts` builds the SVG in the look the operator chose at the M204 live
+  look: a translucent gray ground, 2-pixel specks from the left edge to the
+  active phase's fill edge that thicken and take the phase's color toward
+  the edge, two edge marks at the thirds, item ticks in the active segment
+  past the fill edge when the items are 6 pixels apart or more, and a pill
+  in the phase's color with its right edge 6 past the fill edge. The image
+  follows the system's light or dark setting, not the app's theme, so it
+  uses one set of translucent grays and no `prefers-color-scheme` rule.
+  The track's `alt` names the phase, the counts, and the percent.
   `band.ts` builds the row and `register.tsx` draws it. `reader.ts`
   mirrors the Python ROADMAP and section helpers and
   `cairn_next.workable`, held to them by shared fixtures under
