@@ -1,6 +1,6 @@
 # M203: Record review findings in fixed formats
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M202
 - **Driving RR:** —
@@ -31,14 +31,14 @@ RR15, RR16, and the review passes go with it. The merge question of
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/DECISIONS.md` carries D-145 and D-146 as the branch wrote them, and a new D-entry after
+- [x] AC1: `cairn/DECISIONS.md` carries D-145 and D-146 as the branch wrote them, and a new D-entry after
       them. The new entry records the user's choice of 2026-10-03 to remove the up-front merge approval
       after the review returns the M203 work log records, supersedes D-145 and D-146, and states that IP1
       keeps its text on main, so D-145's change to IP1 never takes effect.
-- [ ] AC2: `git diff main...HEAD -- hooks skills/shared skills/milestone-plan CLAUDE.md README.md
+- [x] AC2: `git diff main...HEAD -- hooks skills/shared skills/milestone-plan CLAUDE.md README.md
       cairn/DESIGN.md` prints nothing, and `git grep -n -i -e "up front" -e "up-front" -- skills hooks
       README.md CLAUDE.md CHANGELOG.md cairn/DESIGN.md` returns no match.
-- [ ] AC3: Step 5 of `skills/milestone-review/SKILL.md` states the finding-line format
+- [x] AC3: Step 5 of `skills/milestone-review/SKILL.md` states the finding-line format
       `<lens> #<rank>: <finding> — <disposition>`, with a reject's reason and its ground (false, style, or
       planned change), a fix-now line's `, fixed <sha>` suffix, the lens slugs `diff-bug`,
       `blame-history`, and `prior-review`, and one `spawned: <lens>, …` line per review pass that spawns
@@ -46,10 +46,10 @@ RR15, RR16, and the review passes go with it. The merge question of
       line `step-7 decline: <what was requested>`. Step 7's merge question states how many amendments
       there were, counted from the `substantive amendment:` and `amendment return:` lines in this
       milestone's work log.
-- [ ] AC4: Step 6 of `skills/milestone-implement/SKILL.md` writes a substantive amendment's work-log line
+- [x] AC4: Step 6 of `skills/milestone-implement/SKILL.md` writes a substantive amendment's work-log line
       with `substantive amendment:` after its date. `git diff main...HEAD --
       skills/milestone-implement/SKILL.md` changes that sentence and no other.
-- [ ] AC5: `git diff main...HEAD -- CHANGELOG.md` adds one entry under Unreleased and changes no other
+- [x] AC5: `git diff main...HEAD -- CHANGELOG.md` adds one entry under Unreleased and changes no other
       line, and the entry describes the formats of AC3 and AC4. The four commands of the
       `cairn/PROFILE.md` verify slot, as written there, each exit 0.
 
@@ -63,14 +63,14 @@ RR15, RR16, and the review passes go with it. The merge question of
 
 ## Tasks
 
-- [ ] T1: Check out the branch and merge main into it. Resolve the milestone file and ROADMAP to main's
+- [x] T1: Check out the branch and merge main into it. Resolve the milestone file and ROADMAP to main's
       versions, which carry the branch's record.
-- [ ] T2: Restore `hooks`, `skills/shared`, `skills/milestone-plan`, `CLAUDE.md`, `README.md`, and
+- [x] T2: Restore `hooks`, `skills/shared`, `skills/milestone-plan`, `CLAUDE.md`, `README.md`, and
       `cairn/DESIGN.md` to main's text, and append the superseding D-entry.
-- [ ] T3: Restore the review and implement skills to main's text, then add AC3's formats, decline line,
+- [x] T3: Restore the review and implement skills to main's text, then add AC3's formats, decline line,
       and amendment count, and AC4's prefix. Word them with no mention of an up-front check.
-- [ ] T4: Replace the branch's CHANGELOG entry with one entry for the formats.
-- [ ] T5: Run the verify slot and `cairn_validate`, and hand-run `skills/tests`.
+- [x] T4: Replace the branch's CHANGELOG entry with one entry for the formats.
+- [x] T5: Run the verify slot and `cairn_validate`, and hand-run `skills/tests`.
 
 ## Work log
 
@@ -131,6 +131,14 @@ RR15, RR16, and the review passes go with it. The merge question of
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 6 findings, all fixed before writing. AC1 held a count in a D-entry and wording that clashed with D-145's heading. AC3's amendment count had no target and its `spawned:` rule missed the degraded pass. AC5's verify command lacked the slot's variable and its CHANGELOG entry was not identifiable. AC2 and AC4: nothing. It noted three kept sentences (review lines 330 and 522, implement line 136) that mention the up-front check and must be reworded for AC2's grep (T3).
 - 2026-10-03: plan chose to reuse the branch and revert, over a fresh branch from main with the formats cherry-picked, because the branch already holds the RB/RR archives and D-145/D-146. Falsified if the PR diff carries up-front text that AC2's diff and grep miss.
 - 2026-10-03: inbox sweep: `gh` reported no open issues and no open PRs.
+- 2026-10-03: implement of the re-cut started on branch m203-merge-approval-up-front. T1 done: main merged into the branch, the milestone file and ROADMAP resolved to main's versions. Untracked `tsconfig.json` left unstaged.
+- 2026-10-03: T2 done: `hooks`, `skills/shared`, `skills/milestone-plan`, `CLAUDE.md`, `README.md`, and `cairn/DESIGN.md` restored to main's text. D-147 supersedes D-145 and D-146 and keeps IP1 as main has it. Verify green (scripts 395 OK, 21 skipped; hooks 174 OK; plugin validate passes with warnings; plugin test 632 pass), `cairn_validate` all checks passed.
+- 2026-10-03: T3 done: both skills restored to main's text, then review step 5 gains the finding-line format, the `fixed <sha>` suffix, the lens slugs, and the `spawned:` line (none for a degraded pass), step 7 counts amendments from the `substantive amendment:` and `amendment return:` lines and writes `step-7 decline:` on a decline, and implement step 6's sentence carries the prefix. No up-front wording. Verify green, same counts as T2.
+- 2026-10-03: T4 done: CHANGELOG restored to main's text, then one entry added at the top of Unreleased "Changes that affect existing repos" for the formats of AC3 and AC4. Its diff adds 14 lines and removes none.
+- 2026-10-03: T5 done. Verify green, each exit 0: scripts 395 OK (21 skipped), hooks 174 OK, plugin validate passes with warnings, plugin test 632 pass and 0 fail. `cairn_validate` all checks passed. The hand-run `skills/tests` shows main's 4 reds and 1 error (default-branch recipe, lesson graduation, hotfix re-entry), none in the files this milestone changes.
+- claim audit: 12 claims read, 1 corrected — skills/milestone-implement/SKILL.md
+- 2026-10-03: the claim audit found no mismatch and one unclear point: an amendment that carries out an amendment return could write both prefixes and count twice. Implement step 6's sentence now says such an amendment writes only the return's line. The same reader confirmed the match. Status set to review.
+- step-7 approval: m203-merge-approval-up-front approved for merge
 
 ## Decisions
 
@@ -234,3 +242,33 @@ RR15, RR16, and the review passes go with it. The merge question of
 - blame-history #5: the `step-7 decline:` prefix and its "so a later pass asks again" sentence are redundant under the one-pass rule. — fix now
 - blame-history #6: the plan-commit recipe leaves the id match to the reader and reads the local default branch. — fix now
 - prior-review #1: the plan question does not say bot items are listed after the merge and do not stop it. — fix now
+- Pass 5 (2026-10-03, the re-cut). No PR exists for the branch, and `origin/main` (09ee926) has not moved since T1's merge.
+- AC1 evidence (2026-10-03): `git diff 927b1de HEAD -- cairn/DECISIONS.md` removes no line and adds one heading, D-147, at line 5435 after D-145 (5335) and D-146 (5394), so both stand as the branch wrote them. D-147's decision records the user's choice of 2026-10-03 at the thrash stop after the review returns the M203 work log records, its heading supersedes D-145 and D-146, and it states that IP1 keeps its text on main, so D-145's change to IP1 never takes effect. Pass.
+- AC2 evidence (2026-10-03): `git diff main...HEAD -- hooks skills/shared skills/milestone-plan CLAUDE.md README.md cairn/DESIGN.md` prints 0 bytes. `git grep -n -i -e "up front" -e "up-front" -- skills hooks README.md CLAUDE.md CHANGELOG.md cairn/DESIGN.md` prints nothing and exits 1. Pass.
+- AC3 evidence (2026-10-03): in `skills/milestone-review/SKILL.md`, step 5 (lines 234-380) states the format `<lens> #<rank>: <finding> — <disposition>` (line 320), a reject's reason and ground "false, style, or planned change" (321), the `, fixed <sha>` suffix (322), the slugs `diff-bug`, `blame-history`, and `prior-review` (323), one `spawned: <lens>, …` line for each pass that spawns reviewers (323-325), and none for a degraded (author-inline) pass (325-326). Step 7 (385-488) writes `step-7 decline: <what was requested>` on a decline (465), and its merge question names how many amendments there were, counted from the work-log lines that carry `substantive amendment:` or `amendment return:` (402-405). The claim audit read each against the text and found them matching. Pass.
+- AC4 evidence (2026-10-03): `git diff main...HEAD -- skills/milestone-implement/SKILL.md` has one hunk (`@@ -132,6 +132,9 @@`) that adds three lines and removes none. All three sit inside step 6's *Substantive* sentence, which now records the amendment as a dated work-log line "that carries `substantive amendment:` after its date". No other sentence changes. Pass.
+- AC5 evidence (2026-10-03): `git diff main...HEAD -U0 -- CHANGELOG.md` has one hunk (`@@ -90,0 +91,14 @@`) that adds 14 lines and removes none. The lines are one bullet, "Review records its findings in fixed line formats", under `## Unreleased` (line 3) in its "Changes that affect existing repos" section (line 89), above `## 1.12.0` (line 224). The entry names the finding-line format, the lens slugs, the reject grounds, the `, fixed <sha>` suffix, the `spawned:` line and the degraded pass, the `step-7 decline:` line, and the `substantive amendment:` prefix with the amendment count. Verify, the slot's four commands with `claude` resolved to the app binary as the slot directs: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 174 OK, `claude plugin validate` passed with warnings, `claude plugin test .` 632 pass and 0 fail, each exit 0. Pass.
+- Pass 5 consistency gate (2026-10-03): `cairn_validate` all checks passed (exit 0). `cairn/DESIGN.md` has no diff against main, so no principle changed and `cairn_impact` is skipped. The `generic` profile names no toolchain checks. Pass.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the amendment count matches the prefix anywhere in a line, so lines that only quote it count too. — fix now (count only a line whose opening text after any date is the prefix), fixed 11f7fa6
+- diff-bug #2: nothing writes `, fixed <sha>` when the fix comes through a floor return. — fix now (the next review pass writes it), fixed 11f7fa6
+- diff-bug #3: `spawned:`, `step-7 decline:`, and `, fixed <sha>` are written but no step reads them. — reject (planned change: AC3 asks for these formats, and D-147 keeps them as a record readable from the files)
+- diff-bug #4: a degraded pass has no lens slug for its findings. — fix now (a lens run inline uses its own slug), fixed 11f7fa6
+- diff-bug #5: the `prior-review` slug is tied to the prior-PR-comments heading only by list order. — fix now (the slugs name their reviewers), fixed 11f7fa6
+- diff-bug #6: one line can amend several criteria, and a re-cut writes neither prefix. — reject (false: the count is of amendments, one line each, and a re-cut is a new plan, not an amendment)
+- diff-bug #7: the text does not say where the `spawned:` line goes. — fix now (the Review section), fixed 11f7fa6
+- diff-bug #8: D-147's lapse list omits D-146's narrowing of M177's grading and its annotation of D-145. — fix now, fixed 11f7fa6
+- diff-bug #9: the header's `Principles touched: IP1` disagrees with the skipped `cairn_impact`. — reject (false: the milestone rules on IP1 through D-147, and `cairn_impact` runs only when a principle's text changes, which it does not)
+- diff-bug #10: four first-cut Review lines name the row "Up-front merge approval follow-ons", which does not exist. — reject (false as a defect: those lines are the removed cut's history, and D-147 records that the items get no row)
+- diff-bug #11: two parentheticals in a row in implement step 6. — reject (style)
+- diff-bug #12: the `step-7 decline:` line's date form is unstated. — reject (false: every reader matches the prefix, so a date does not change the match)
+- blame-history #1: the count reads only prefixed lines while the verbatim rule shows every amendment, so older unprefixed lines go uncounted. — reject (planned change: AC3 fixes the count to the two prefixes, and the verbatim rule still shows every amendment)
+- blame-history #2: the finding-line format does not say whether PR-conversation items use it. — fix now (they keep the `conversation:` line), fixed 11f7fa6
+- blame-history #3: nothing reads `step-7 decline:`, and the guest arm does not say whether it is committed. — reject (planned change as diff-bug #3; false for the guest part, since Session start makes every guest commit an on-disk write)
+- blame-history #4: D-145 and D-146 are not marked superseded. — reject (false: IP4 forbids editing them, and D-147's heading carries the supersession the bounded read finds)
+- blame-history #5: a missing `spawned:` line means a degraded pass or a forgotten line. — fix now (the degraded pass's logged deviation stands in its place), fixed 11f7fa6
+- blame-history #6: `, fixed <sha>` cannot sit in the commit it names, and the ordering text does not place it. — fix now (written with the next tracking commit before step 7), fixed 11f7fa6
+- blame-history #7: review's return exit and implement step 6 can both write an `amendment return:` line, so the count can read one return twice. — follow-up (row "Run edge cases", a pre-existing ambiguity in who writes the line)
+- prior-review #1: the count misses the 2026-10-03 "substantive amendment of AC1 to AC4" line, which lacks the colon (pass-3 diff-bug #11). — fix now (as diff-bug #1; the line stays uncounted, and the merge question shows it verbatim), fixed 11f7fa6
+- Pass 5 fix note: the 11f7fa6 rewording moved step 5's formats to `skills/milestone-review/SKILL.md:318-332` and the amendment count to lines 410-413. Each AC3 string still matches once (`grep -c -F`), the AC2 grep still prints nothing, verify is green, and `skills/tests` shows main's 4 reds and 1 error.
+- prior-review #2: the first cut's `spawned:` lines carry "— pass N", which the format does not allow. — reject (false: those lines are history, and no reader needs a pass id)

@@ -88,6 +88,20 @@
 
 ### Changes that affect existing repos
 
+- **Review records its findings in fixed line formats.**
+  `/milestone-review` now logs each finding in the Review section as
+  `<lens> #<rank>: <finding> — <disposition>`. The lens is `diff-bug`,
+  `blame-history`, or `prior-review`. A reject names its reason and its
+  ground: false, style, or planned change. A fix-now line gains
+  `, fixed <sha>` once its fix is committed. Each review pass that spawns
+  reviewers writes one `spawned: <lens>, …` line, and a degraded
+  (author-inline) pass writes none. A declined merge question writes the
+  work-log line `step-7 decline: <what was requested>`.
+  `/milestone-implement` writes a substantive amendment's work-log line
+  with `substantive amendment:` after its date. The merge question counts
+  the milestone's amendments from those lines and the `amendment return:`
+  lines.
+
 - **One question set, then the agent runs the milestone to the merge
   question.** `/milestone-plan` asks one question set, then invokes
   `/milestone-implement` itself, which invokes `/milestone-review` when its
