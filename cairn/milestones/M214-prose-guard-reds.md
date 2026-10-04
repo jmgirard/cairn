@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M214: Clear the prose-guard reds
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — the hand-run prose-guard suite gates nothing and no adopter runs it   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m214-prose-guard-reds   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -57,7 +57,7 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: In `test_default_branch_parameterized.py`, change the asserted
+- [x] T1: In `test_default_branch_parameterized.py`, change the asserted
       `git ls-remote --symref origin HEAD` and
       `git symbolic-ref --short refs/remotes/origin/HEAD` to the `<base>`
       spellings, and change the matching Mutation `block` at
@@ -87,6 +87,8 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - 2026-10-04: plan gate chose repointing the default-branch guards over deleting them because their subject, the recipe in the rulebook and `/cairn-init`, still ships; falsified by the guards going red again on the next intentional rewording of the recipe.
 - 2026-10-04: plan gate chose deleting the lesson-trim assert over re-anchoring it to a surviving lesson line because LESSONS lines are prunable by rule and any anchor breaks at the next prune; falsified by a graduated family reappearing in LESSONS that only this assert catches.
 - 2026-10-04: plan commit merged the M212 and M213 band-button candidate rows into one to keep ROADMAP under its 60-line and 24,000-byte caps.
+- 2026-10-04: implement start: branch m214-prose-guard-reds cut from main at 854c2c6. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's work and stay unstaged.
+- 2026-10-04: T1 done: the two asserts and the Mutation block now read `<base>`. skills/tests went from 4 failures and 1 error to 2 failures. Verify slot: all four commands exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
