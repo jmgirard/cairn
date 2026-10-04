@@ -3,5 +3,31 @@
   "workable": ["M191"],
   "rows": [],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]}
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
+  "candidates": [
+    {"priority": "normal", "title": "`/hotfix` companion arm"},
+    {"priority": "normal", "title": "Guest-mode R package builds carry `cairn/`"},
+    {"priority": "normal", "title": "`--report` and `--apply` disagree on a workflow file"},
+    {"priority": "normal", "title": "`--apply` refuses two shapes AC2 names editable, both safely"},
+    {"priority": "normal", "title": "Second-driver adoption pass"},
+    {"priority": "normal", "title": "Contributor-facing scaffold"},
+    {"priority": "normal", "title": "Branch-protection compatibility"},
+    {"priority": "normal", "title": "Claim-audit and claim-read edge cases (M182 review findings)"},
+    {"priority": "normal", "title": "Diff-scoped second review after a prose-claim return"},
+    {"priority": "normal", "title": "`/hotfix` has no resume route for an open PR"},
+    {"priority": "normal", "title": "Status mod follow-ons"},
+    {"priority": "normal", "title": "cairn's own profile"},
+    {"priority": "low", "title": "Review-side reclassification of record-binding criterion failures"},
+    {"priority": "low", "title": "Standing-instrument adoption discipline, two plan-gate conduct clauses"},
+    {"priority": "low", "title": "Reasoning-effort dial per spawned agent"},
+    {"priority": "low", "title": "Numeric cap on subagent spawning"},
+    {"priority": "low", "title": "Dedicated `/explore-sources` skill for supply-push exploration"},
+    {"priority": "low", "title": "Citekey resolution + dependent discovery"},
+    {"priority": "low", "title": "Concurrent-cairn-operator hardening"},
+    {"priority": "low", "title": "BC-aware coverage message"},
+    {"priority": "low", "title": "Scaffold-spec version stamp / content-drift detection"},
+    {"priority": "low", "title": "Phase-gated loading of implement-time doctrine"},
+    {"priority": "low", "title": "Action-graded finding vocabulary"},
+    {"priority": "low", "title": "Deferred second tier for hook nudges"}
+  ]
 }

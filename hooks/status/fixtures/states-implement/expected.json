@@ -13,5 +13,6 @@
     {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "file": {"goal": "", "tasks": [], "criteria": [], "log": []}},
     {"id": "M043", "title": "Every task checked", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}, {"text": "T1a: Done, nested.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}], "log": []}}
   ],
-  "next": {"action": "resume", "command": "/milestone-implement", "id": "M040", "waiting": []}
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M040", "waiting": []},
+  "candidates": []
 }

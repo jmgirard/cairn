@@ -60,6 +60,8 @@ export type Fixture = {
   // with no ROADMAP (M205).
   pane: PaneMilestone[]
   next: (NextStep & { waiting: WaitingRow[] }) | null
+  // The pane's candidate rows, as test_status_fixtures.py reads them (M207).
+  candidates: CandidateRow[]
   // Paths that stat as files but whose read fails in the tests.
   unreadable: string[]
 }
@@ -282,20 +284,26 @@ export async function loadCairn(source: FileSource): Promise<{ band: BandState; 
       next: recommend(parsed, workable),
       workable,
       waiting: waitingRows(parsed, archived),
+      candidates: candidateRows(roadmap),
     },
   }
 }
 
-// The cairn pane's state (M205): the active milestones in full, and the
-// queue that scripts/cairn_next.py prints. `found` is false when no ROADMAP
-// is found.
+// The cairn pane's state (M205): the active milestones in full, the
+// queue that scripts/cairn_next.py prints, and the candidate rows (M207).
+// `found` is false when no ROADMAP is found.
 export type PaneState = {
   found: boolean
   milestones: PaneMilestone[]
   next: NextStep | null
   workable: WorkableRow[]
   waiting: WaitingRow[]
+  candidates: CandidateRow[]
 }
+
+// One candidate row of the ROADMAP: its priority token's level, `normal`
+// with no token, and its short title.
+export type CandidateRow = { priority: 'high' | 'normal' | 'low'; title: string }
 
 export type PaneItem = { text: string; checked: boolean }
 
@@ -314,7 +322,7 @@ export type NextStep = { action: string; command: string; id: string | null }
 // as written, with its row's status or `unknown`.
 export type WaitingRow = { id: string; title: string; unmet: string[] }
 
-export const NO_PANE: PaneState = { found: false, milestones: [], next: null, workable: [], waiting: [] }
+export const NO_PANE: PaneState = { found: false, milestones: [], next: null, workable: [], waiting: [], candidates: [] }
 
 // How many work-log lines the pane shows, newest last.
 export const LOG_LINES = 5
@@ -357,6 +365,40 @@ function paneFile(text: string) {
       .slice(-LOG_LINES)
       .map(line => line.replace(LOG_ITEM, '')),
   }
+}
+
+const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
+  ['[high] ', 'high'],
+  ['[low] ', 'low'],
+]
+
+// The candidate rows (M207): each line that opens with `- ` under a
+// `## Candidates` heading, with HTML comments removed first, so the
+// `/cairn-init` skeleton's placeholder rows are not read. The section walk
+// is `candidate_count`'s in scripts/cairn_scripts.py: every `## ` line
+// starts or ends a section. A row's priority is `high` or `low` when its
+// text opens with exactly `[high] ` or `[low] `, else `normal`. Its short
+// title is the text after that token up to the first `: `, or all of it.
+export function candidateRows(roadmap: string): CandidateRow[] {
+  const rows: CandidateRow[] = []
+  let inSection = false
+  for (const line of splitLines(roadmap.replace(COMMENT, ''))) {
+    if (line.startsWith('## ')) {
+      inSection = line.trim().toLowerCase().startsWith('## candidates')
+      continue
+    }
+    if (!inSection || !line.startsWith('- ')) continue
+    let text = line.slice(2)
+    let priority: CandidateRow['priority'] = 'normal'
+    const match = PRIORITY_TOKENS.find(([token]) => text.startsWith(token))
+    if (match !== undefined) {
+      priority = match[1]
+      text = text.slice(match[0].length)
+    }
+    const cut = text.indexOf(': ')
+    rows.push({ priority, title: (cut < 0 ? text : text.slice(0, cut)).trim() })
+  }
+  return rows
 }
 
 // `recommend` in scripts/cairn_next.py, over the rows and the workable list.

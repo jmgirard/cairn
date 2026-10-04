@@ -28,6 +28,47 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": [{"id": "M090", "title": "Waits on a planned milestone", "unmet": ["M091 (planned)"]}, {"id": "M091", "title": "Waits on a blocked milestone", "unmet": ["M092 (blocked)"]}, {"id": "M093", "title": "Waits on an id with no row", "unmet": ["M500 (unknown)"]}]},
+    candidates: [
+    ],
+    unreadable: [],
+  },
+  "candidates": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M031 | Next up | planned | — | normal | milestones/M031-next.md |\n| M030 | Shipped | done | — | normal | milestones/archive/M030-shipped.md |\n\n## Candidates\n\n_A note line that is not a row: it has no dash._\n\n- [high] High row: the text after the first colon and space is not shown — added 2026-01-01\n- Normal row: details — added 2026-01-02\n- [low] Low row: details: a second colon — added 2026-01-03\n- A row with no colon and space, shown whole — added 2026-01-04\n- [HIGH] Upper-case token: reads as normal — added 2026-01-05\n- [high]No space after the token: reads as normal — added 2026-01-06\n- Token in [low] mid-row: reads as normal — added 2026-01-07\n- A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end: details — added 2026-01-08\n- `code: in backticks` keeps the backtick before its colon — added 2026-01-09\n\n## Notes\n\n- A dash line under another heading is not a candidate row.\n",
+    },
+    rows: [
+    ],
+    workable: ["M031"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M031", "waiting": []},
+    candidates: [
+      {"priority": "high", "title": "High row"},
+      {"priority": "normal", "title": "Normal row"},
+      {"priority": "low", "title": "Low row"},
+      {"priority": "normal", "title": "A row with no colon and space, shown whole — added 2026-01-04"},
+      {"priority": "normal", "title": "[HIGH] Upper-case token"},
+      {"priority": "normal", "title": "[high]No space after the token"},
+      {"priority": "normal", "title": "Token in [low] mid-row"},
+      {"priority": "normal", "title": "A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end"},
+      {"priority": "normal", "title": "`code"},
+    ],
+    unreadable: [],
+  },
+  "candidates-skeleton": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n_The only authority on milestone status. Grouped by status, not ID._\n_Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never appended to)_\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n<!-- rows grouped by status, not sorted by ID; keep only the 3 most recent\n     terminal (done or dropped) rows — older ones live in milestones/archive/ + git -->\n\n## Candidates\n<!-- unnumbered ideas; one line each, ordered high → normal → low:\n     - [high] idea — added YYYY-MM-DD — links\n     - idea — added YYYY-MM-DD — links\n     the opening token is `[high]`/`[low]` or absent (`normal`) — tracking-rules \"Candidate priority token\" -->\n<!--\n- [high] A row someone commented out: flush left, so only the comment hides it\n-->\n",
+    },
+    rows: [
+    ],
+    workable: [],
+    pane: [
+    ],
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "idle-deps": {
@@ -44,6 +85,8 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: {"action": "implement", "command": "/milestone-implement", "id": "M040", "waiting": [{"id": "M050", "title": "Waits on a planned milestone", "unmet": ["M002 (planned)"]}, {"id": "M051", "title": "Waits on an id with no row and no archive file", "unmet": ["M077 (unknown)"]}, {"id": "M052", "title": "One dependency met, one not", "unmet": ["M002 (planned)"]}]},
+    candidates: [
+    ],
     unreadable: [],
   },
   "idle-order": {
@@ -57,6 +100,8 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: {"action": "implement", "command": "/milestone-implement", "id": "M500", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "long-title": {
@@ -73,6 +118,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}, {"text": "T2: Draw the band.", "checked": false}], "criteria": [{"text": "AC1: The band cuts the title.", "checked": false}], "log": []}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M060", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "missing-file": {
@@ -88,6 +135,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M004", "title": "Its file was never written", "status": "review", "file": null},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "mixed": {
@@ -113,6 +162,9 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "file": {"goal": "- [x] A box under Goal, which does not count.", "tasks": [], "criteria": [], "log": []}},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M010", "waiting": [{"id": "M011", "title": "Not started", "unmet": ["M010 (review)"]}]},
+    candidates: [
+      {"priority": "high", "title": "A candidate line with - [x] inside it — added 2026-01-01"},
+    ],
     unreadable: [],
   },
   "nested-first": {
@@ -129,6 +181,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M030", "title": "The next task is nested", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Top-level task, done.", "checked": true}, {"text": "T1a: Nested task, open, with extra spaces after the box.", "checked": false}, {"text": "T2: Second top-level task.", "checked": false}], "criteria": [{"text": "AC1: The band names the nested task.", "checked": false}], "log": []}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M030", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "no-active": {
@@ -143,6 +197,8 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "no-roadmap": {
@@ -156,6 +212,8 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: null,
+    candidates: [
+    ],
     unreadable: [],
   },
   "pane-full": {
@@ -178,6 +236,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M082", "title": "A file whose read fails", "status": "review", "file": null},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]},
+    candidates: [
+    ],
     unreadable: ["/cairn/milestones/M082-unreadable.md"],
   },
   "repo-at-cut": {
@@ -191,6 +251,32 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
     ],
     next: {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
+    candidates: [
+      {"priority": "normal", "title": "`/hotfix` companion arm"},
+      {"priority": "normal", "title": "Guest-mode R package builds carry `cairn/`"},
+      {"priority": "normal", "title": "`--report` and `--apply` disagree on a workflow file"},
+      {"priority": "normal", "title": "`--apply` refuses two shapes AC2 names editable, both safely"},
+      {"priority": "normal", "title": "Second-driver adoption pass"},
+      {"priority": "normal", "title": "Contributor-facing scaffold"},
+      {"priority": "normal", "title": "Branch-protection compatibility"},
+      {"priority": "normal", "title": "Claim-audit and claim-read edge cases (M182 review findings)"},
+      {"priority": "normal", "title": "Diff-scoped second review after a prose-claim return"},
+      {"priority": "normal", "title": "`/hotfix` has no resume route for an open PR"},
+      {"priority": "normal", "title": "Status mod follow-ons"},
+      {"priority": "normal", "title": "cairn's own profile"},
+      {"priority": "low", "title": "Review-side reclassification of record-binding criterion failures"},
+      {"priority": "low", "title": "Standing-instrument adoption discipline, two plan-gate conduct clauses"},
+      {"priority": "low", "title": "Reasoning-effort dial per spawned agent"},
+      {"priority": "low", "title": "Numeric cap on subagent spawning"},
+      {"priority": "low", "title": "Dedicated `/explore-sources` skill for supply-push exploration"},
+      {"priority": "low", "title": "Citekey resolution + dependent discovery"},
+      {"priority": "low", "title": "Concurrent-cairn-operator hardening"},
+      {"priority": "low", "title": "BC-aware coverage message"},
+      {"priority": "low", "title": "Scaffold-spec version stamp / content-drift detection"},
+      {"priority": "low", "title": "Phase-gated loading of implement-time doctrine"},
+      {"priority": "low", "title": "Action-graded finding vocabulary"},
+      {"priority": "low", "title": "Deferred second tier for hook nudges"},
+    ],
     unreadable: [],
   },
   "single-in-progress": {
@@ -207,6 +293,9 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M002", "title": "Add the export command", "status": "in-progress", "file": {"goal": "Export things.", "tasks": [{"text": "T1: Write the parser.", "checked": true}, {"text": "T2: Write the command.", "checked": false}, {"text": "T3: Write the docs.", "checked": false}], "criteria": [{"text": "AC1: The export command writes one file per table.", "checked": false}], "log": ["2026-01-02: started."]}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M002", "waiting": []},
+    candidates: [
+      {"priority": "normal", "title": "An idea that is not a row — added 2026-01-01"},
+    ],
     unreadable: [],
   },
   "six-active": {
@@ -238,6 +327,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M076", "title": "Sixth active row", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}, {"text": "AC2: Open.", "checked": false}], "log": []}},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M071", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "states-implement": {
@@ -262,6 +353,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M043", "title": "Every task checked", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}, {"text": "T1a: Done, nested.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}], "log": []}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M040", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "states-review": {
@@ -286,6 +379,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M053", "title": "Every criterion checked", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done, capital X.", "checked": true}], "log": []}},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "subdirectory": {
@@ -303,6 +398,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done, with a capital X.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [], "log": []}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M007", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "unlabeled-item": {
@@ -319,6 +416,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M062", "title": "The next task has no label", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: A labeled task, done.", "checked": true}, {"text": "Write the docs, with no label.", "checked": false}, {"text": "T3: A labeled task after it.", "checked": false}], "criteria": [{"text": "AC1: The item row stays dim.", "checked": false}], "log": []}},
     ],
     next: {"action": "resume", "command": "/milestone-implement", "id": "M062", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "wide-title": {
@@ -335,6 +434,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}], "criteria": [{"text": "AC1: The title reads.", "checked": true}, {"text": "AC2: The emoji stays whole.", "checked": false}], "log": []}},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M061", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
   "widest": {
@@ -359,6 +460,8 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done.", "checked": true}, {"text": "AC3: Done.", "checked": true}, {"text": "AC4: Done.", "checked": true}, {"text": "AC5: Done.", "checked": true}, {"text": "AC6: Done.", "checked": true}, {"text": "AC7: Done.", "checked": true}, {"text": "AC8: Done.", "checked": true}, {"text": "AC9: Done.", "checked": true}, {"text": "AC10: Done.", "checked": true}, {"text": "AC11: Done.", "checked": true}, {"text": "AC12: Done.", "checked": true}, {"text": "AC13: Done.", "checked": true}, {"text": "AC14: Done.", "checked": true}, {"text": "AC15: Done.", "checked": true}, {"text": "AC16: Done.", "checked": true}, {"text": "AC17: Done.", "checked": true}, {"text": "AC18: Done.", "checked": true}, {"text": "AC19: Done.", "checked": true}, {"text": "AC20: Done.", "checked": true}, {"text": "AC21: Done.", "checked": true}, {"text": "AC22: Done.", "checked": true}, {"text": "AC23: Done.", "checked": true}, {"text": "AC24: Done.", "checked": true}, {"text": "AC25: Done.", "checked": true}, {"text": "AC26: Done.", "checked": true}, {"text": "AC27: Done.", "checked": true}, {"text": "AC28: Done.", "checked": true}, {"text": "AC29: Done.", "checked": true}, {"text": "AC30: Done.", "checked": true}, {"text": "AC31: Done.", "checked": true}, {"text": "AC32: Done.", "checked": true}, {"text": "AC33: Done.", "checked": true}, {"text": "AC34: Done.", "checked": true}, {"text": "AC35: Done.", "checked": true}, {"text": "AC36: Done.", "checked": true}, {"text": "AC37: Done.", "checked": true}, {"text": "AC38: Done.", "checked": true}, {"text": "AC39: Done.", "checked": true}, {"text": "AC40: Done.", "checked": true}, {"text": "AC41: Done.", "checked": true}, {"text": "AC42: Done.", "checked": true}, {"text": "AC43: Done.", "checked": true}, {"text": "AC44: Done.", "checked": true}, {"text": "AC45: Done.", "checked": true}, {"text": "AC46: Done.", "checked": true}, {"text": "AC47: Done.", "checked": true}, {"text": "AC48: Done.", "checked": true}, {"text": "AC49: Done.", "checked": true}, {"text": "AC50: Done.", "checked": true}, {"text": "AC51: Done.", "checked": true}, {"text": "AC52: Done.", "checked": true}, {"text": "AC53: Done.", "checked": true}, {"text": "AC54: Done.", "checked": true}, {"text": "AC55: Done.", "checked": true}, {"text": "AC56: Done.", "checked": true}, {"text": "AC57: Done.", "checked": true}, {"text": "AC58: Done.", "checked": true}, {"text": "AC59: Done.", "checked": true}, {"text": "AC60: Done.", "checked": true}, {"text": "AC61: Done.", "checked": true}, {"text": "AC62: Done.", "checked": true}, {"text": "AC63: Done.", "checked": true}, {"text": "AC64: Done.", "checked": true}, {"text": "AC65: Done.", "checked": true}, {"text": "AC66: Done.", "checked": true}, {"text": "AC67: Done.", "checked": true}, {"text": "AC68: Done.", "checked": true}, {"text": "AC69: Done.", "checked": true}, {"text": "AC70: Done.", "checked": true}, {"text": "AC71: Done.", "checked": true}, {"text": "AC72: Done.", "checked": true}, {"text": "AC73: Done.", "checked": true}, {"text": "AC74: Done.", "checked": true}, {"text": "AC75: Done.", "checked": true}, {"text": "AC76: Done.", "checked": true}, {"text": "AC77: Done.", "checked": true}, {"text": "AC78: Done.", "checked": true}, {"text": "AC79: Done.", "checked": true}, {"text": "AC80: Done.", "checked": true}, {"text": "AC81: Done.", "checked": true}, {"text": "AC82: Done.", "checked": true}, {"text": "AC83: Done.", "checked": true}, {"text": "AC84: Done.", "checked": true}, {"text": "AC85: Done.", "checked": true}, {"text": "AC86: Done.", "checked": true}, {"text": "AC87: Done.", "checked": true}, {"text": "AC88: Done.", "checked": true}, {"text": "AC89: Done.", "checked": true}, {"text": "AC90: Done.", "checked": true}, {"text": "AC91: Done.", "checked": true}, {"text": "AC92: Done.", "checked": true}, {"text": "AC93: Done.", "checked": true}, {"text": "AC94: Done.", "checked": true}, {"text": "AC95: Done.", "checked": true}, {"text": "AC96: Done.", "checked": true}, {"text": "AC97: Done.", "checked": true}, {"text": "AC98: Done.", "checked": true}, {"text": "AC99: Done.", "checked": true}, {"text": "AC100: Done.", "checked": true}], "log": []}},
     ],
     next: {"action": "review", "command": "/milestone-review", "id": "M1002", "waiting": []},
+    candidates: [
+    ],
     unreadable: [],
   },
 }

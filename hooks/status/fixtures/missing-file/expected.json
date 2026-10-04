@@ -7,5 +7,6 @@
   "pane": [
     {"id": "M004", "title": "Its file was never written", "status": "review", "file": null}
   ],
-  "next": {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []}
+  "next": {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []},
+  "candidates": []
 }

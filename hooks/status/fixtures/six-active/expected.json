@@ -17,5 +17,6 @@
     {"id": "M075", "title": "Fifth active row", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}, {"text": "T2: Done.", "checked": true}, {"text": "T3: Open.", "checked": false}], "criteria": [{"text": "AC1: Open.", "checked": false}], "log": []}},
     {"id": "M076", "title": "Sixth active row", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}, {"text": "AC2: Open.", "checked": false}], "log": []}}
   ],
-  "next": {"action": "review", "command": "/milestone-review", "id": "M071", "waiting": []}
+  "next": {"action": "review", "command": "/milestone-review", "id": "M071", "waiting": []},
+  "candidates": []
 }

@@ -62,8 +62,9 @@ const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep |
 // started (M201).
 const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { shape: 'expanded-1' })
 
-// What the cairn pane shows, written at each refresh (M205).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-1' })
+// What the cairn pane shows, written at each refresh (M205). The tag moved
+// to 2 when the state gained the candidate rows (M207).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-2' })
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'

@@ -10,7 +10,9 @@ over `_section_body` of `Tasks` and of `Acceptance criteria` for the counts
 AC2). A section's first unchecked line is its first `_AC_ITEM` line
 with an open box, less the box prefix. It holds the pane's milestones to a
 second implementation here, and the pane's next step to
-`cairn_next.recommend` and `cairn_next.waiting` (M205 AC2, AC3). A path an
+`cairn_next.recommend` and `cairn_next.waiting` (M205 AC2, AC3), and the
+pane's candidate rows to a second reader here, whose count it holds to
+`cairn_scripts.candidate_count` (M207 AC3). A path an
 `expected.json` lists under `unreadable` reads as failing on both sides.
 It also fails when the generated module is stale.
 """
@@ -128,6 +130,33 @@ def python_next(start):
     return {**cn.recommend(root, rows), "waiting": cn.waiting(root, rows)}
 
 
+PRIORITY = re.compile(r"\[(high|low)\] ")
+
+
+def python_candidates(start):
+    """The pane's candidate rows for a session started in `start` (M207 AC3):
+    the `- ` lines `candidate_count` walks, read after HTML comments are
+    removed, each its priority and the text before its first `: `."""
+    root = cs.cc.find_cairn_root(str(start))
+    if root is None:
+        return []
+    out = []
+    in_section = False
+    for line in COMMENT.sub("", cs.read_roadmap(root)).splitlines():
+        if line.startswith("## "):
+            in_section = line.strip().lower().startswith("## candidates")
+            continue
+        if not in_section or not line.startswith("- "):
+            continue
+        text = line[2:]
+        m = PRIORITY.match(text)
+        priority = m.group(1) if m else "normal"
+        if m:
+            text = text[m.end():]
+        out.append({"priority": priority, "title": text.split(": ", 1)[0].strip()})
+    return out
+
+
 def python_rows(start, unreadable=()):
     """The rows the band shows for a session started in `start`, by the
     Python helpers."""
@@ -198,6 +227,39 @@ class StatusFixtureAgreement(unittest.TestCase):
                     self.assertEqual(python_workable(start), expected["workable"])
                     self.assertEqual(python_pane(start, unreadable), expected["pane"])
                     self.assertEqual(python_next(start), expected["next"])
+                    self.assertEqual(python_candidates(start), expected["candidates"])
+
+    def test_candidate_rows_match_candidate_count(self):
+        # Where no HTML comment sits in the Candidates section, the pane
+        # reads as many rows as `candidate_count` counts (M207 AC3).
+        checked = []
+        for case_dir in gen_fixtures.cases():
+            roadmap_path = case_dir / "cairn" / "ROADMAP.md"
+            if not roadmap_path.is_file():
+                continue
+            roadmap = roadmap_path.read_text(encoding="utf-8")
+            section = re.search(r"^## Candidates.*?(?=^## |\Z)", roadmap, re.S | re.M | re.I)
+            if section is not None and "<!--" in section.group(0):
+                continue
+            expected = json.loads((case_dir / "expected.json").read_text(encoding="utf-8"))
+            with self.subTest(fixture=case_dir.name):
+                self.assertEqual(len(expected["candidates"]), cs.candidate_count(roadmap))
+            checked.append(case_dir.name)
+        self.assertIn("candidates", checked)
+
+    def test_candidate_fixtures_hold_the_shapes_ac3_names(self):
+        def load(name):
+            return json.loads((FIXTURES / name / "expected.json").read_text(encoding="utf-8"))
+
+        levels = {row["priority"] for row in load("candidates")["candidates"]}
+        self.assertEqual(levels, {"high", "normal", "low"})
+        self.assertNotIn("## Candidates", (FIXTURES / "no-active" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8"))
+        skeleton = (FIXTURES / "candidates-skeleton" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8")
+        # The `/cairn-init` skeleton's comment holds two indented `- `
+        # placeholder lines, and a second comment holds a flush-left row.
+        # `candidate_count` counts all three, and the pane reads none.
+        self.assertEqual(cs.candidate_count(skeleton), 3)
+        self.assertEqual(load("candidates-skeleton")["candidates"], [])
 
     def test_workable_fixtures_are_present_and_discriminating(self):
         # The two idle fixtures exist, and each holds a planned row that a

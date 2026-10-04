@@ -48,6 +48,8 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
       expect(pane.next === null ? null : { ...pane.next, waiting: pane.waiting }).toEqual(fixture.next)
       expect(pane.workable.map(row => row.id)).toEqual(fixture.workable)
       expect(pane.found).toBe(fixture.next !== null)
+      // The candidate rows against test_status_fixtures.py (M207 AC3).
+      expect(pane.candidates).toEqual(fixture.candidates)
     })
   }
 

@@ -366,6 +366,7 @@ const MIXED_REVIEW = DRAWN.mixed[0]
 // Each idle row at 120 columns, written out by hand (M199 AC1, M206 AC4):
 // the id and the title, then the track and the command.
 const IDLE_DRAWN: Record<string, string> = {
+  candidates: 'M031 Next up  [track] /milestone-implement M031',
   'idle-deps': 'M040 Met by a done row and an archive file at another padding  [track] /milestone-implement M040',
   'idle-order': 'M500 Priority in mixed case  [track] /milestone-implement M500',
   'no-active': 'M021 Waiting to start  [track] /milestone-implement M021',

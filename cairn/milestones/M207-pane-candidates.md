@@ -1,13 +1,13 @@
 # M207: Candidate rows in the idle cairn pane
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the pane draws in every adopter's session
-- **Branch/PR:** —
+- **Branch/PR:** m207-pane-candidates
 
 ## Goal
 
@@ -37,7 +37,7 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 
 ## Tasks
 
-- [ ] T1: In `reader.ts`, read the candidate rows into the `pane` state, skipping HTML comments as the M205 pane does for boxes, and bump the shape tag in `register.tsx`. Add the three AC3 fixtures and the `candidates` key to every `expected.json`. Add the Python implementation to `test_status_fixtures.py`, compare its row count to `candidate_count`, and regenerate `fixtures.gen.ts`.
+- [x] T1: In `reader.ts`, read the candidate rows into the `pane` state, skipping HTML comments as the M205 pane does for boxes, and bump the shape tag in `register.tsx`. Add the three AC3 fixtures and the `candidates` key to every `expected.json`. Add the Python implementation to `test_status_fixtures.py`, compare its row count to `candidate_count`, and regenerate `fixtures.gen.ts`.
 - [ ] T2: In `pane.ts`, with no active row, draw the heading and the lines. Add the AC1 and AC2 cases.
 - [ ] T3: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `reader.ts` and `pane.ts`.
 
@@ -48,6 +48,9 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 - 2026-10-04: plan split the request into M207 (candidates), M208 (look, depends on M207), and M209 (placement). The goal tripwire fired, and the three parts ship apart. Placement goes last, because its probe can end the run at the goal-wrong stop.
 - 2026-10-04: criteria audit (full mode, user-facing tier, fresh Opus reader) returned 12 findings over the three files, all taken toward the narrower wording. Here: rows inside HTML comments are skipped, because `candidate_count` counts the skeleton's two placeholders. AC3 binds the reader and `candidate_count`, and the Python mirror moved to T1. The token match is exact, with cases for case, spacing, and position, and a long-title case asserts the ellipsis.
 - 2026-10-04: question set: candidate line. The plan shows a priority mark and the short title (recommended), over adding the date and over counts with high rows only. Falsified if the operator misses the age or the full rows in use.
+- 2026-10-04: implement started on branch `m207-pane-candidates`. The untracked `tsconfig.json` in the tree is not this milestone's and stays unstaged.
+- 2026-10-04: T1 done. `candidateRows` in `reader.ts` and `python_candidates` in `test_status_fixtures.py` read the rows, and the pane state's tag is `pane-2`. New fixtures are `candidates` (three levels, no `: `, `[HIGH]`, `[high]` with no space, mid-row `[low]`, a long title, a colon in backticks) and `candidates-skeleton` (the `/cairn-init` skeleton verbatim, plus a flush-left row in a comment). Every `expected.json` gained `candidates`. With the comment removal turned off, the Python reader returned the commented row on the skeleton fixture. `band.test.tsx` gained the new fixture's idle row. Verify: 397, 174, and 904 tests pass, and validate exits 0.
+- 2026-10-04: implement chose a top-level `- ` match, as Scope says, over `candidate_count`'s indented match, because ROADMAP rows are one top-level line each. Falsified if a real ROADMAP indents its candidate rows.
 
 ## Decisions
 
