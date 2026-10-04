@@ -84,3 +84,29 @@ Make the band's row the milestone id and title on the left and the flow track on
 - AC5 evidence: a grep of README's "The milestone band" section (127 lines) for chapter, skill row, skill or phase label, ten-cell, 10-cell, `█`, and `→` found nothing. In the DESIGN `hooks/status/` bullet (lines 72 to 190), the same grep matched only lines that say these went in M206, and the `warning` labels. The first 40 lines of `band.ts`, `track.ts`, and `register.tsx` matched nothing. Each was also read whole by the implement claim audit (5 slips fixed and re-read). CHANGELOG Unreleased opens with "A simpler band row."
 - AC6 evidence: the operator's answer at the T8 live look (work log, 2026-10-04) accepted the desktop row at full width, the narrow track beside a docked pane, and the terminal braille row, in a new Code session on this branch.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed (coverage complete included). No principle changed, so `cairn_impact` is skipped. The `generic` profile names no toolchain checks. Verify suites at review: `scripts/tests` 395 OK, `hooks/tests` 174 OK, `claude plugin validate` pass, `claude plugin test .` 847 pass.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: surfaces other than terminal and desktop (vscode, mobile) drew the braille track although their tables have `Svg` — fix now, fixed ac9fde8 (the image draws off the terminal)
+- diff-bug #2: any skill's start or end showed a band hidden over a milestone row, though a skill now draws nothing — fix now, fixed ac9fde8 (`mark` keeps `milestone-review` only where it moves the row)
+- diff-bug #3: the `dismissed` shape tag stayed `dismissed-3` after the skill's meaning changed — fix now, fixed ac9fde8 (`dismissed-4`)
+- diff-bug #4: the desktop title-room check uses the code's own 7-pixel column estimate, so it cannot catch a wrong estimate — follow-up, new row "Band follow-ons (M206 review)"
+- diff-bug #5: the terminal sweep accepted the whole or short pill at any width and never checked the one-third rule — fix now, fixed ac9fde8 (the sweep expects the exact pill)
+- diff-bug #6: the `brailleSpans` comment said the pill starts at the head, but the clamp can put it before the head on a short track — fix now, fixed ac9fde8 (comment)
+- diff-bug #7: the desktop short pill draws `1/3` bold, not in the dimmer count style — reject, planned change: the narrow look the operator picked (variant A) drew the count-only pill bold
+- diff-bug #8: the chapter-call tests cannot fail with no chapter hook — reject, false: a re-added hook that refreshes or stores state on the call changes the drawing after the edit made before it, which is what AC4 guards
+- diff-bug #9: DESIGN said only the buttons carry `dimColor`, but the terminal draws them without it — fix now, fixed ac9fde8
+- diff-bug #10: the `SWEPT` comment said 5-character ids — fix now, fixed ac9fde8
+- diff-bug #11: `tsconfig.json` is untracked — reject, false as a defect of this diff: the file was untracked before the milestone began and the branch never touches it
+- blame-history #1: removing the chapter hook also removed the mid-turn refresh, so the track froze until a turn ended — fix now, fixed ac9fde8 (an Edit, Write, or MultiEdit under `cairn/` reads the files again; 6 new cases)
+- blame-history #2: same as diff-bug #2 — fix now, fixed ac9fde8
+- blame-history #3: below about 39 columns the 12-column least track squeezes the title, and the sweeps start at 40 where M197's went to 36 — follow-up, new row "Band follow-ons (M206 review)"
+- blame-history #4: under `/milestone-implement M021`, before the ROADMAP flips, the idle row shows `/milestone-implement M021` — reject, planned change: AC4 draws the idle row under any skill, and the row changes when the status changes
+- blame-history #5: the pane test "no open button with no ROADMAP" passed with nothing drawn — fix now, fixed ac9fde8 (it asserts the band yields the slot)
+- blame-history #6: the terminal track's fixed colors, ground, and white pill are unchecked in ANSI and custom themes — follow-up, new row "Band follow-ons (M206 review)"
+- blame-history #7: same as diff-bug #3 — fix now, fixed ac9fde8
+- prior-review #1: same as blame-history #3 — follow-up, new row
+- prior-review #2: the desktop track now sizes by the column estimate at every width, not only at the cutoff — follow-up, new row
+- prior-review #3: the fixed phase colors and white pill now carry the phase alone — follow-up, new row
+- prior-review #4: same as diff-bug #3 — fix now, fixed ac9fde8
+- prior-review #5: `dismiss` still reads twice and then writes (M200 item) — follow-up, already in "Status mod follow-ons", unchanged by this diff
+- prior-review #6: the M205 pane items stay open — follow-up, already in "Pane follow-ons (M205 review)", unchanged by this diff
+- Settled: 24 findings, 12 fixed now, 8 follow-up, 4 rejected. Two planted defects (no refresh after a write; any skill in `mark`) turned 8 new tests red, then were restored. After the fixes all four gates are green: `scripts/tests` OK, `hooks/tests` OK, validate pass, `claude plugin test .` 853 pass.
