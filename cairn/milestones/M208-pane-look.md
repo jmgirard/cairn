@@ -1,6 +1,6 @@
 # M208: A fuller look for the cairn pane
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M207
 - **Driving RR:** —
@@ -69,6 +69,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: T5 done: README's pane section, the DESIGN pane paragraph, a CHANGELOG entry, and the `pane.ts` and `register.tsx` header comments describe the look, and the M207 entries now name the `CANDIDATES` heading. Minor amendment: T6's live look moves to the merge question, as M205's did, so the run asks for the operator's eyes once.
 - 2026-10-04: claim audit: 44 claims read, 6 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-04: implement done, status `review`, with T6 open: its live look runs at the merge question, and review ticks it there. The corrections say the percent shows only when the file reads, and the empty squares are gray. The agent also renamed the AC4 describe, since the test checks layout props, not the drawn fit. Verify: 397, 174, and 986 tests pass, and validate exits 0.
+- 2026-10-04: step-7 decline: the operator declined the merge after the live look and asked to change the look; the changes were not yet named. Status back to `in-progress`, and T7 below holds the change until the operator names it.
 
 ## Decisions
 
