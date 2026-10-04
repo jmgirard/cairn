@@ -173,9 +173,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   until a row becomes active or workable, or the session ends. With no ROADMAP found, the band
   draws nothing.
   The Clear Button (M216, key `cairn-clear`) draws before the next-step
-  Button while the `ended` value is true. A `classic.Stop` that ends a
-  non-null step sets it. An idle typed prompt that enters, a `skill.prompt`,
-  and `session.end` clear it, and a dropped prompt puts it back while no
+  Button while the `ended` value is true, on a row that draws the action
+  Buttons and has room for it. A `classic.Stop` that ends a non-null step
+  sets it. An idle typed prompt that enters, a cairn skill's
+  `skill.prompt`, and `session.end` clear it, and a dropped prompt puts it back while no
   step is set. The render tries the row with all three action Buttons'
   columns reserved, then with two, then with none, so the row drops Clear
   first. A press runs the built-in `clear` through `run`. `session.end`

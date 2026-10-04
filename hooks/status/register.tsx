@@ -77,7 +77,8 @@ const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { sh
 
 // True from a main-loop Stop that ends a cairn skill's step until the next
 // idle typed prompt that enters, the next cairn skill's prompt, or the
-// session's end (M216). While it is true the band carries the Clear Button.
+// session's end (M216). While it is true, a row that draws the action
+// Buttons carries the Clear Button too, when it has room for it.
 const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: 'ended-1' })
 
 // What the cairn pane shows, written at each refresh (M205). The tag moved
