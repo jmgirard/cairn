@@ -267,7 +267,7 @@ function firstFew(problems: string[]): string[] {
 // Columns at one per code point.
 const cols = (s: string) => [...s].length
 
-const ROW_KEY = /^(M\d+|idle)-row$/
+const ROW_KEY = /^(M\d+|idle|plan)-row$/
 const TRACK = '[track]'
 
 // Whether a right-group child is part of the track: the desktop's `Svg`, or
@@ -297,11 +297,13 @@ function rightText(right: Element): string {
 
 // One row's layout: the row, its two groups, the head Box that keeps its
 // width (the id and the space), and the title's Box that gives way, with
-// its Text.
+// its Text. The empty row (M213) has no head, so its left group holds the
+// title's Box alone.
 function layout(row: Element) {
   const groups = kids(row)
   const [left, right] = groups
-  const [head, textBox] = kids(left)
+  const parts = kids(left)
+  const [head, textBox] = parts.length === 1 ? [undefined, parts[0]] : parts
   return { groups, left, right, head, textBox, text: textBox ? kids(textBox)[0] : undefined }
 }
 
@@ -447,12 +449,19 @@ function idleId(name: string): string | null {
   return shownId(name) === null ? (FIXTURES[name].workable[0] ?? null) : null
 }
 
-// The key of the row a fixture draws, or null for none.
+// The key of the row a fixture draws, or null for none: with no active or
+// workable row, the empty row where a ROADMAP is found (M213).
 function shownKey(name: string, skill: string | null = null): string | null {
   const id = shownId(name, skill)
   if (id !== null) return `${id}-row`
-  return idleId(name) === null ? null : 'idle-row'
+  if (idleId(name) !== null) return 'idle-row'
+  return FIXTURES[name].next === null ? null : 'plan-row'
 }
+
+// The fixtures with a ROADMAP and no active or workable row, written out
+// by hand: each draws the empty row (M213 AC1).
+const EMPTY_FIXTURES = ['all-waiting', 'candidates-skeleton']
+const EMPTY_TEXT = 'No milestone ready'
 
 const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow
 
@@ -494,11 +503,11 @@ const hasRoadmap = (name: string) => FIXTURES[name].next !== null
 const ACTION_KEYS = ['cairn-next', 'cairn-status']
 
 // Whether a fixture's band carries the action Buttons at 120 columns with
-// `skill` running: only with no cairn skill running and a next step that
-// names a milestone, read from the fixture's `next`, which
-// test_status_fixtures.py holds to scripts/cairn_next.py's `recommend`
-// (M212 AC1, AC2). Every skill in SKILLS is a cairn skill.
-const actsAt120 = (name: string, skill: string | null = null) => skill === null && (FIXTURES[name].next?.id ?? null) !== null
+// `skill` running: only with no cairn skill running and a next step, read
+// from the fixture's `next`, which test_status_fixtures.py holds to
+// scripts/cairn_next.py's `recommend` (M212 AC1, AC2). Planning is a next
+// step since M213. Every skill in SKILLS is a cairn skill.
+const actsAt120 = (name: string, skill: string | null = null) => skill === null && FIXTURES[name].next !== null
 
 // The band's Buttons: the open button and then the close button on a row
 // drawn from a found ROADMAP, the close button alone otherwise (M205 AC4),
@@ -568,7 +577,7 @@ function fixedWidth(row: Element): number {
     if (child.type === 'Button') return n + cols(String(child.props.label)) + (child.props.plain ? 0 : 4)
     return n + cols(textOf(child))
   }, 0)
-  return cols(textOf(head)) + Number(right.props.marginLeft ?? 0) + parts
+  return (head === undefined ? 0 : cols(textOf(head))) + Number(right.props.marginLeft ?? 0) + parts
 }
 
 // The room the title keeps in a drawn row at `columns`, and the room it
@@ -842,10 +851,15 @@ describe('the band draws in gray, with the warning label and the track in their 
               // parts are found among the leaves by identity.
               const box = await bandBox(ui)
               const row = below(box, 'Box').find(b => keyOf(b) === key) as Element
-              const { right } = layout(row)
-              const id = key === 'idle-row' ? (idleId(name) as string) : key.replace(/-row$/, '')
-              const title = key === 'idle-row' ? textOf(layout(row).text) : rowOf(name, id).title
-              idAndTitle(row, id, title)
+              const { right, left } = layout(row)
+              if (key === 'plan-row') {
+                // The empty row: the gray text alone, not bold (M213 AC1).
+                expect(below(left, 'Text').map(t => [textOf(t), t.props.color, t.props.bold])).toEqual([[EMPTY_TEXT, GRAY, undefined]])
+              } else {
+                const id = key === 'idle-row' ? (idleId(name) as string) : key.replace(/-row$/, '')
+                const title = key === 'idle-row' ? textOf(layout(row).text) : rowOf(name, id).title
+                idAndTitle(row, id, title)
+              }
               const track = new Set(trackParts(right))
               for (const leaf of leavesOf(box)) {
                 const text = textOf(leaf)
@@ -1026,7 +1040,8 @@ const EDITS: Edit[] = [
       files[ROADMAP] = files[ROADMAP].replace('| Its file was never written | review |', '| Its file was never written | done |')
     },
     before: [DRAWN['missing-file'][0], ENGINE],
-    after: [ENGINE],
+    // Nothing is active or workable then, so the empty row shows (M213).
+    after: [EMPTY_TEXT, ENGINE],
   },
   {
     name: 'a row leaves both statuses',
@@ -1035,7 +1050,7 @@ const EDITS: Edit[] = [
       files[ROADMAP] = files[ROADMAP].replace('| Add the export command | in-progress |', '| Add the export command | done |')
     },
     before: [DRAWN['single-in-progress'][0], ENGINE],
-    after: [ENGINE],
+    after: [EMPTY_TEXT, ENGINE],
   },
   {
     name: 'a check on the nested task grows the percent',
@@ -1478,10 +1493,10 @@ describe('the close state is written only on a change, and a session end beats a
   }
 })
 
-describe('the band draws nothing', () => {
-  for (const name of ['no-roadmap', 'no-active', 'idle-deps']) {
+describe('the band draws nothing where no ROADMAP is found', () => {
+  for (const name of ['no-roadmap']) {
     for (const skill of [null, 'milestone-plan'] as const) {
-      test(`${name} with nothing workable and ${skill ?? 'no skill'}: the mod draws nothing, passes to the engine, and does not throw`, { plugins: [PROBE] }, async ($, on) => {
+      test(`${name} with ${skill ?? 'no skill'}: the mod draws nothing, passes to the engine, and does not throw`, { plugins: [PROBE] }, async ($, on) => {
         seat(on, noneWorkable(name))
         await $.turn.complete(turn())
         if (skill !== null) await prompt($, skill)
@@ -1505,6 +1520,57 @@ describe('the band draws nothing', () => {
   })
 })
 
+// The empty row's checks (M213 AC1): its left group is the gray title in a
+// Box that gives way, with no head and no bold; its right group has no
+// track and no tail; it ends in the open and close buttons.
+async function isEmptyRow(ui: Ui, actions: boolean) {
+  expect(await rowKeys(ui)).toEqual(['plan-row'])
+  const row = await firstRow(ui)
+  const { left, right, head, textBox } = layout(row)
+  expect(head).toBeUndefined()
+  expect([textBox.type, textBox.props.flexShrink, textBox.props.minWidth]).toEqual(['Box', 1, 0])
+  const texts = below(left, 'Text')
+  expect(texts.map(t => [textOf(t), t.props.color, t.props.bold])).toEqual([[EMPTY_TEXT, GRAY, undefined]])
+  expect([left.props.flexShrink, left.props.minWidth]).toEqual([1, 0])
+  expect(trackParts(right)).toEqual([])
+  expect(rowText(row)).toBe(EMPTY_TEXT)
+  const last = kids(right)[kids(right).length - 1]
+  expect(keyOf(last)).toBe('cairn-close')
+  expect(keyOf(kids(right)[kids(right).length - 3])).toBe('cairn-open')
+  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([...(actions ? ACTION_KEYS : []), 'cairn-open', 'cairn-close'])
+}
+
+describe('a found ROADMAP with nothing active or workable draws the empty row (M213 AC1)', () => {
+  test('the hand-written empty fixtures are the fixtures whose next step is planning', () => {
+    const domain = Object.keys(FIXTURES).filter(name => FIXTURES[name].next !== null && FIXTURES[name].next?.id === null)
+    expect(domain.sort()).toEqual([...EMPTY_FIXTURES].sort())
+  })
+
+  const CASES: { name: string; copy: () => Copy }[] = [
+    ...EMPTY_FIXTURES.map(name => ({ name, copy: () => copyOf(name) })),
+    // Fixtures whose planned rows are set to blocked, so nothing is workable.
+    ...['no-active', 'idle-deps'].map(name => ({ name: `${name} with nothing workable`, copy: () => noneWorkable(name) })),
+  ]
+  for (const { name, copy } of CASES) {
+    for (const skill of [null, 'milestone-plan'] as const) {
+      test(`${name} with ${skill ?? 'no skill'}: the empty row above the engine's drawing`, async ($, on) => {
+        seat(on, copy())
+        await $.turn.complete(turn())
+        if (skill !== null) await prompt($, skill)
+        await mountEach(
+          name,
+          BAND,
+          async ui => {
+            await isEmptyRow(ui, skill === null)
+            expect(await lines(ui)).toEqual([EMPTY_TEXT, ENGINE])
+          },
+          $,
+        )
+      })
+    }
+  }
+})
+
 describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
   test('single-in-progress over a plugin beneath', { plugins: [BENEATH] }, async ($, on) => {
     seat(on, copyOf('single-in-progress'))
@@ -1520,10 +1586,16 @@ describe("cairn's rows sit above the band beneath (M193 AC6)", () => {
     )
   })
 
-  test('with nothing active or workable, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
+  test('with nothing active or workable, the empty row sits above the band beneath (M213)', { plugins: [BENEATH] }, async ($, on) => {
     seat(on, noneWorkable('no-active'))
     await $.turn.complete(turn())
-    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW]), $)
+    await mountEach('no-active', BAND, async ui => expect(await lines(ui)).toEqual([EMPTY_TEXT, BENEATH_ROW]), $)
+  })
+
+  test('with no ROADMAP, the band beneath shows alone', { plugins: [BENEATH] }, async ($, on) => {
+    seat(on, copyOf('no-roadmap'))
+    await $.turn.complete(turn())
+    await mountEach('no-roadmap', BAND, async ui => expect(await lines(ui)).toEqual([BENEATH_ROW]), $)
   })
 
   test('the idle row sits above the band beneath (M199)', { plugins: [BENEATH] }, async ($, on) => {
@@ -1699,11 +1771,12 @@ describe('each row fits the band from 40 to 200 columns, the title keeping its r
     expect([WIDTHS.length, WIDTHS[0], WIDTHS[160]]).toEqual([161, 40, 200])
   })
 
-  // Every fixture's row alone, the idle rows, and the warning rows among
-  // them, on both surfaces.
+  // Every fixture's row alone, the idle rows, the empty rows (M213), and the
+  // warning rows among them, on both surfaces.
   const CASES: { name: string; key: string; copy: () => Copy }[] = [
     ...Object.keys(FIXTURES).flatMap(name => FIXTURES[name].rows.map(row => ({ name, key: `${row.id}-row`, copy: () => alone(name, row.id) }))),
     ...Object.keys(IDLE_DRAWN).map(name => ({ name, key: 'idle-row', copy: () => copyOf(name) })),
+    ...EMPTY_FIXTURES.map(name => ({ name, key: 'plan-row', copy: () => copyOf(name) })),
   ]
   for (const { name, key, copy } of CASES) {
     test(`${name}: ${key}`, async ($, on) => {
@@ -1968,7 +2041,7 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
   }
 
   for (const skill of SKILLS) {
-    test(`with nothing workable, ${skill} draws nothing and the band yields to the slot beneath`, { plugins: [PROBE] }, async ($, on) => {
+    test(`with nothing workable, ${skill} draws the empty row with no action Buttons (M213)`, { plugins: [PROBE] }, async ($, on) => {
       seat(on, noneWorkable('no-active'))
       await $.turn.complete(turn())
       await prompt($, skill)
@@ -1976,8 +2049,8 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
         'no-active',
         at(200),
         async ui => {
-          expect(await hasCairn(ui)).toBe(false)
-          expect((await ui.findAll({ type: 'Text' })).map(textOf)).toEqual(['cairn hook: returned', ENGINE])
+          await isEmptyRow(ui, false)
+          expect(textOf((await ui.findAll({ type: 'Text' }))[0])).toBe('cairn hook: returned')
         },
         $,
       )
@@ -2801,6 +2874,115 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
   }
 })
 
+// What a press of `Plan` runs, written out by hand (M213 AC3).
+const PLAN_RUN = { command: 'cairn:milestone-plan', args: '' }
+
+describe('the empty row carries Plan and Status, and a press runs planning (M213 AC2, AC3)', () => {
+  for (const name of EMPTY_FIXTURES) {
+    for (const surface of SURFACES) {
+      test(`${name}: Plan runs /cairn:milestone-plan with no arguments, and Status runs /cairn:milestone (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+        const [next] = await ui.findAll({ key: 'cairn-next' })
+        expect([next.props.label, next.props.variant]).toEqual(['Plan', 'secondary'])
+        await ui.press({ key: 'cairn-next' })
+        expect(copy.commands).toEqual([PLAN_RUN])
+        await ui.press({ key: 'cairn-status' })
+        expect(copy.commands).toEqual([PLAN_RUN, STATUS_RUN])
+        expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+        await ui.unmount()
+      })
+    }
+  }
+
+  for (const surface of SURFACES) {
+    test(`a running cairn skill and a working turn hide Plan and Status on the empty row (${surface})`, async ($, on) => {
+      seat(on, copyOf('all-waiting'))
+      await $.turn.complete(turn())
+      const working = { ...BAND, props: { ...BAND.props, isWorking: true } }
+      const busy = (await $.ui.mount({ plugin: 'cairn', surface, ...working })) as Ui
+      await isEmptyRow(busy, false)
+      await busy.unmount()
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await isEmptyRow(ui, true)
+      await prompt($, 'milestone')
+      await isEmptyRow(ui, false)
+      await $.classic.Stop(stopWith('empty'))
+      await isEmptyRow(ui, true)
+      await ui.unmount()
+    })
+
+    test(`a refused Plan run appends /cairn:milestone-plan to the prompt box and toasts (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      copy.runThrows = 'no such command here'
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await ui.press({ key: 'cairn-next' })
+      expect(copy.commands).toEqual([PLAN_RUN])
+      expect(copy.fills).toEqual([{ text: '/cairn:milestone-plan', mode: 'append' }])
+      expect(copy.toasts).toEqual([`cairn: ${NO_RUN} (/cairn:milestone-plan)`])
+      await ui.unmount()
+    })
+
+    test(`a Plan press while a run is in flight reaches no second run (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const first = ui.press({ key: 'cairn-next' })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([PLAN_RUN])
+        await ui.press({ key: 'cairn-next' })
+        await ui.press({ key: 'cairn-status' })
+        expect(copy.commands).toEqual([PLAN_RUN])
+      } finally {
+        release()
+        await first
+      }
+      copy.runHold = undefined
+      await ui.press({ key: 'cairn-next' })
+      expect(copy.commands).toEqual([PLAN_RUN, PLAN_RUN])
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the close button hides the empty row until a milestone is workable (M213 AC4)', () => {
+  const AW = '/cairn/ROADMAP.md'
+  for (const surface of SURFACES) {
+    test(`a press, a refresh, a waiting row, then a workable row (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['plan-row'])
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      // A planned row waiting on the blocked M092 is not workable.
+      copy.files[AW] = copy.files[AW].replace('| M001 | Shipped |', '| M094 | Also waits | planned | M092 | normal | milestones/M094-waits.md |\n| M001 | Shipped |')
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      // A planned row whose one dependency is done is workable.
+      copy.files[AW] = copy.files[AW].replace('| M001 | Shipped |', '| M095 | Ready now | planned | M001 | normal | milestones/M095-ready.md |\n| M001 | Shipped |')
+      await $.turn.complete(turn())
+      expect(await rowKeys(ui)).toEqual(['idle-row'])
+      expect((await lines(ui))[0].startsWith('M095 Ready now  ')).toBe(true)
+      await ui.unmount()
+    })
+  }
+})
+
 describe('the action Buttons hide while a cairn skill runs or a turn works (M212 AC2)', () => {
   for (const surface of SURFACES) {
     test(`a running cairn skill hides them, and its end brings them back (${surface})`, async ($, on) => {
@@ -2902,13 +3084,16 @@ function shapeOf(node: unknown): unknown {
 }
 
 describe('the action Buttons give way before the title loses its room (M212 AC4)', () => {
-  // The cases of the M197 sweep: every fixture's row alone and the idle rows.
+  // The cases of the M197 sweep: every fixture's row alone, the idle rows,
+  // and the empty rows (M213 AC2).
   const CASES: { name: string; key: string; copy: () => Copy }[] = [
     ...Object.keys(FIXTURES).flatMap(name => FIXTURES[name].rows.map(row => ({ name, key: `${row.id}-row`, copy: () => alone(name, row.id) }))),
     ...Object.keys(IDLE_DRAWN).map(name => ({ name, key: 'idle-row', copy: () => copyOf(name) })),
+    ...EMPTY_FIXTURES.map(name => ({ name, key: 'plan-row', copy: () => copyOf(name) })),
   ]
-  test('the sweep has cases and covers 40 to 200 columns', () => {
+  test('the sweep has cases, the empty rows among them, and covers 40 to 200 columns', () => {
     expect(CASES.length).toBeGreaterThan(20)
+    expect(CASES.filter(c => c.key === 'plan-row').map(c => c.name)).toEqual(EMPTY_FIXTURES)
     expect([WIDTHS.length, WIDTHS[0], WIDTHS[160]]).toEqual([161, 40, 200])
   })
 
@@ -2943,6 +3128,10 @@ describe('the action Buttons give way before the title loses its room (M212 AC4)
         if (JSON.stringify(shown) !== JSON.stringify(run) || !shown.includes(120)) {
           problems.push(`${surface}: Buttons at ${shown[0] ?? 'no width'} to ${shown[shown.length - 1] ?? '-'}, ${shown.length} widths`)
         }
+        // The empty row's text keeps its 10 columns beside the Buttons at
+        // every width from 37 (its 27 fixed columns and 10), so the Buttons
+        // show at every swept width (M213 AC2).
+        if (key === 'plan-row' && shown.length !== WIDTHS.length) problems.push(`${surface}: empty row Buttons at ${shown.length} of ${WIDTHS.length} widths`)
       }
       expect(firstFew(problems)).toEqual([])
     })
