@@ -75,8 +75,8 @@ Layered on the universal "What gets a test" rules in tracking-rules:
   (`scripts/tests/test_status_fixtures.py`).
 - Skill and rulebook markdown is prose and owes no test in this repo: a new
   rule owes no prose guard and no mutation registration. The retained
-  `skills/tests` prose-guards are a hand-run tripwire, not a coverage
-  obligation (M144, D-108/D-109). The shipped "What gets a test" doctrine
+  `skills/tests` prose-guards are a hand-run tripwire that gates nothing,
+  not a coverage obligation (M144, D-108/D-109). The shipped "What gets a test" doctrine
   continues to govern adopting repos. No numeric/oracle doctrine applies.
 - The dependency surface is Python 3 (stdlib only) for the scripts and
   hooks, and the lowest Claude Code version the mod supports. A new one is a

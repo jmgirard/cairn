@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M215: Move this repo to the claude-plugin profile
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -52,7 +52,7 @@ unstaged at the user's choice.
 - AC1 → T1, T4
 - AC2 → T1, T4
 - AC3 → T1
-- AC4 → T1
+- AC4 → T1, T5
 - AC5 → T2, T3
 
 ## Tasks
@@ -75,6 +75,8 @@ unstaged at the user's choice.
       verify commands on its own, checking each exit code (no pipe, no `;`
       chain). The desktop shell has no `claude` on its PATH; use the newest
       app binary that the verify slot names.
+- [x] T5: (review return 1) State in the `test-doctrine` slot that
+      `skills/tests` gates nothing, then re-run the verify commands.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -97,6 +99,8 @@ unstaged at the user's choice.
 - 2026-10-04: claim audit: not owed — internal tier
 - 2026-10-04: implement complete, status set to review.
 - 2026-10-04: review return 1: AC4 fails as written. The `test-doctrine` slot does not state that `skills/tests` gates nothing.
+- 2026-10-04: minor amendment: added T5 for review return 1, Coverage AC4 → T1, T5.
+- 2026-10-04: T5 done: test-doctrine now calls `skills/tests` "a hand-run tripwire that gates nothing". verify green: validate exit 0, scripts 397 OK, hooks 174 OK, both validates exit 0, plugin test 1105 pass. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
