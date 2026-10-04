@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M215: Move this repo to the claude-plugin profile
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — it changes only this repo's own toolchain declaration and the dev docs that restate it   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m215-plugin-profile   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -59,7 +59,7 @@ unstaged at the user's choice.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Rewrite `cairn/PROFILE.md` from `skills/shared/profiles/claude-plugin.md`:
+- [x] T1: Rewrite `cairn/PROFILE.md` from `skills/shared/profiles/claude-plugin.md`:
       the header line, a comment naming the template and M215 (replacing
       the M46 `generic` note), and all seven slots. Keep this repo's notes
       from the current file (verify: the suites, `-k` and `discover` notes,
@@ -89,6 +89,8 @@ unstaged at the user's choice.
 - 2026-10-04: plan gate chose adopting the shipped claude-plugin slots over keeping `generic` with only the header renamed, because verify already runs the profile's plugin checks and the 1.12.0 release commit (c08d01d) already bumped both manifests; falsified by a claude-plugin check this repo cannot pass on its own manifests.
 - 2026-10-04: no `CHANGELOG.md` entry: no adopter-visible change.
 - 2026-10-04: ROADMAP: pruned the M212 terminal row so the file stays under its 60-line cap with the M215 row added.
+- 2026-10-04: implement started on branch m215-plugin-profile. Untracked `cairn-probe.log` and `tsconfig.json` left unstaged (question set).
+- 2026-10-04: T1 done: PROFILE.md rewritten from the claude-plugin template at 113 lines. Dropped the template's native-install path and multi-plugin wording. test-doctrine names Python 3 stdlib as the dependency surface. greenfield-openers summarizes the two openers and this repo's answers. verify green: scripts 397 OK, hooks 174 OK, both validates exit 0, plugin test 1105 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
