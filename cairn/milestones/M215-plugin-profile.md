@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M215: Move this repo to the claude-plugin profile
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -71,7 +71,7 @@ unstaged at the user's choice.
       `claude-plugin` as this repo's profile.
 - [x] T3: Run the AC5 `git grep` and read each hit; fix any line that still
       states this repo runs `generic`.
-- [ ] T4: From the repo root, run `cairn_validate` and each of the five
+- [x] T4: From the repo root, run `cairn_validate` and each of the five
       verify commands on its own, checking each exit code (no pipe, no `;`
       chain). The desktop shell has no `claude` on its PATH; use the newest
       app binary that the verify slot names.
@@ -93,6 +93,9 @@ unstaged at the user's choice.
 - 2026-10-04: T1 done: PROFILE.md rewritten from the claude-plugin template at 113 lines. Dropped the template's native-install path and multi-plugin wording. test-doctrine names Python 3 stdlib as the dependency surface. greenfield-openers summarizes the two openers and this repo's answers. verify green: scripts 397 OK, hooks 174 OK, both validates exit 0, plugin test 1105 pass.
 - 2026-10-04: T2 done: `CLAUDE.md:4-8` and `cairn/DESIGN.md:14-15` name `claude-plugin` as this repo's profile, and CLAUDE.md names the marketplace validate.
 - 2026-10-04: T3 done: the AC5 sweep returned 33 lines. 31 name `generic` as a profile in a list or as an ordinary word, `cairn/PROFILE.md:4` records the past profile, and `cairn/ROADMAP.md:41` is the promoted row. None states the current profile is `generic`, so nothing more to fix.
+- 2026-10-04: T4 done on ba8ee3b: cairn_validate exit 0 (profile valid, weight caps PASS), scripts 397 OK, hooks 174 OK, plugin validate exit 0, marketplace validate exit 0 with no version warning, plugin test 1105 pass 0 fail.
+- 2026-10-04: claim audit: not owed — internal tier
+- 2026-10-04: implement complete, status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
