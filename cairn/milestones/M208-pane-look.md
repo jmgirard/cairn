@@ -126,3 +126,25 @@ Review pass 2, 2026-10-04, on `44c2fa5`, after the T7 phase colors. Main had not
 - AC5 evidence: README.md:213-219 and CHANGELOG.md:9-15 name the phase colors, as do the DESIGN pane paragraph and the `pane.ts` header comment (lines 20-26). The T7 claim audit read 16 claims there with none false.
 - AC6 evidence: on `44c2fa5` the scripts suite ran 397 OK (21 skipped), the hooks suite 174 OK, `claude plugin validate` exited 0, and `claude plugin test .` exited 0 with 994 passing.
 - Consistency gate: `cairn_validate.py` passes, its `release window` check OK. No principle changed. The `generic` profile names no toolchain checks.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: on a review milestone the TASKS accent and meter are green, where the band fills that row's implement segment, which holds the tasks, in orange — reject, planned change (T7 colors a milestone's sections by its phase; the live look decides).
+- diff-bug #2: the WORKABLE heading is plan blue while the pill above it sends a workable row to implement in orange — reject, planned change (T7's recorded mapping and its falsifier; the live look decides).
+- diff-bug #3: pass 1 sent findings to a "Pane look follow-ons (M208 review)" row that was never filed, and diff-bug #9's "`…` draws on orange" is stale — fix now, fixed 2ddc53a (the row is filed, saying "on the pill's color").
+- diff-bug #4: white on the green pill is 2.89:1, under 3:1 even bold — follow-up, row "Pane look follow-ons (M208 review)".
+- diff-bug #5: M081's Criteria and Work log headings had no color case — fix now, fixed 2ddc53a.
+- diff-bug #6: `COMMAND_PHASE[...] ?? 'implement'` would paint a new recommended command orange with no failing test — fix now, fixed 2ddc53a (a case asserts that `COMMAND_PHASE` holds every command the fixtures recommend).
+- diff-bug #7: the CHANGELOG names no RGB values — reject, style.
+- blame-history #1: the promised follow-on row does not exist — fix now, as diff-bug #3.
+- blame-history #2: "Band label colors in other themes" lists neither plan blue nor the pane's uses — follow-up, row "Pane look follow-ons (M208 review)", which names both and points at that row.
+- blame-history #3: the bold pill's contrast reason is thinner on green — follow-up, as diff-bug #4.
+- blame-history #4: pass 1's diff-bug #11 and the T1 pick line still say orange — reject, false (they are history; the T7 work-log lines record the change).
+- blame-history #5: the fallback for an unmapped command — fix now, as diff-bug #6.
+- blame-history #6: the high-priority `↑` stays orange under the plan-blue `CANDIDATES` heading — follow-up, row "Pane look follow-ons (M208 review)".
+- blame-history #7: candidates are not a phase but take plan blue — reject, planned change (T7's recorded mapping).
+- blame-history #8: pass 1's AC3 evidence line says "orange `▎`" — reject, false (pass 1's evidence is history; pass 2's AC3 line holds the current colors).
+- prior-review #1: the missing follow-on row — fix now, as diff-bug #3.
+- prior-review #2: white pill text at 2.9:1 to 3.4:1 — follow-up, as diff-bug #4.
+- prior-review #3: AC3 may still promise the orange pill — reject, false (AC3 binds the set-off form, which Scope names as "a rule or a mark", and the T1 form of gap row, `▎` mark, gray label, and pill still draws; the colors are AC7's live look).
+- prior-review #4: phase color now carries meaning for a red-green colorblind reader — follow-up, row "Pane look follow-ons (M208 review)".
+- prior-review #5: the tests assert hard-coded RGB literals — reject, false (pass 1's diff-bug #8 asked for exact color checks).
+- Fixes on 2ddc53a: `claude plugin test .` 998 pass, scripts 397 OK (21 skipped), hooks 174 OK, `claude plugin validate` exit 0, `cairn_validate.py` passes.
