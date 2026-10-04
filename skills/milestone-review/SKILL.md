@@ -630,9 +630,11 @@ re-enters here, at the step the record shows is next:
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
    **Never extend a finding-absorbing candidate row:** when this pass would
-   extend a candidate row already carrying deferred review findings filed
-   from two or more distinct milestones, it files this milestone's deferred
-   findings as a new row that cross-references that row instead, and names
+   extend a candidate row whose group (`skills/shared/records-hygiene.md`
+   §7: the row and the rows that name its title in double quotes) already
+   carries deferred review findings filed from two or more distinct
+   milestones, it files this milestone's deferred findings as a new row
+   that names the older row's title in double quotes instead, and names
    the row in step 10's handoff sentence or close block. The disposition chip of
    `skills/shared/records-hygiene.md` §7 belongs to the `/milestone` health
    audit, which the user runs; review poses no question here. A whole-list

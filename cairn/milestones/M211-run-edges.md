@@ -93,7 +93,7 @@ row is pruned at post-merge hygiene.
 - [x] T2: Release-window displacement. Align step 10's displacement
       (`milestone-review:700-706`) with `/milestone` §3: `/milestone` leads
       only when the next action names a flagged milestone.
-- [ ] T3: Linked-row groups. Rewrite records-hygiene §7 for groups and compress
+- [x] T3: Linked-row groups. Rewrite records-hygiene §7 for groups and compress
       elsewhere in the module to stay under its budget. Make step 9's
       cross-reference (`milestone-review:629`) quote the older row's title.
       Update the `/milestone` §2 bullet. Write the D-entry for the trigger
@@ -114,6 +114,8 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: the simple-english lint hook counts every existing hit in each edited file (353 in the review skill, 120 in the implement skill). Rewriting the skills to that style is outside M211's scope and would break the prose pins, so only the edited text changes.
 - 2026-10-04: T1 done. Review's exit writes `amendment routed: AC<N> — <finding>` and reads the work log for a prior `amendment return: AC<N>` before it routes. Implement step 6 names itself the one writer. The step-7 count and the thrash rule read `amendment return:` only (unchanged). Pins updated in `test_thrash_rule.py` (2 fixtures, 4 tests) and `test_mutation_harness.py` (5 entries). skills/tests is back to the baseline 4 reds and 1 error. Verify is clean: 397 and 174 OK, validate passes, plugin test 1024 pass.
 - 2026-10-04: T2 done. Review step 10 always fences `/milestone` when the `release window` advisory fired, and puts it first only when the next action it would fence names a flagged id. Step 9's sentence now says the signal includes which ids. No pin quoted the old text. Verify clean, skills/tests at baseline.
+- 2026-10-04: T3 done. records-hygiene §7 now defines a row's title (text before the first `: `) and its group (the row and each row that quotes that title, direct references only), and a group with findings from two or more milestones gets the chip. §1, §2, the budget note, and the ledger were compressed to fit: 54 lines, 3,154 bytes. Review step 9 tests the group and quotes the older title. The `/milestone` §2 bullet matches. D-149 records the change and the D-108 door walk.
+- 2026-10-04: minor amendment: T3 also updated `/cairn-triage`'s restated definition of a finding-absorbing row, found by the old-wording grep. README and DESIGN carry no old wording. The pinned §1 and §2 phrases are kept, and skills/tests is at baseline.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
