@@ -57,7 +57,7 @@ pane, desktop pane support goes to a new candidate row (AC6).
 
 ## Tasks
 
-- [ ] T1: Find out whether the desktop app places a plugin pane. Add a bare pane
+- [x] T1: Find out whether the desktop app places a plugin pane. Add a bare pane
       behind `/cairn-pane` on the branch. Ask the operator to run it in a new
       desktop Code session (LESSONS M195, M201), and log the result. If the
       app places no pane, the second arm of AC6 applies, and T6 skips the look.
@@ -98,3 +98,4 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: plan gate chose a command plus a band button over a pane that opens itself at session start. The user asked for an optional pane. Falsified by the operator opening it at every session start.
 - 2026-10-04: implement started on branch m205-cairn-pane. The untracked `tsconfig.json` at the repo root is not this milestone's and stays unstaged.
 - 2026-10-04: T1 runs as a throwaway `pane-probe` mod in this session's hot-reload folder (`~/.claude/dev-mods/<session>/pane-probe`), not on the branch, so no probe code reaches the PR. It opens a pane at load and through `/pane-probe`, and logs `isPlaced` and the render props to `.git/pane-probe.log`. `claude plugin validate` passed on 2.1.286.
+- 2026-10-04: T1 done. The operator enabled hot reload, and the desktop app placed the probe pane on the right. The log reads `isPlaced: true`, then `surface=desktop placement=dock bodyColumns=44`. The first arm of AC6 applies. The operator saw the band in its text form beside the docked pane. The likely cause is the narrower transcript column, below the width the M204 track needs. A probe log of the band's width will confirm it.
