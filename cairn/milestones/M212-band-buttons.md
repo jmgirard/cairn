@@ -170,3 +170,29 @@ Fresh evidence at 0c47939 (main 9c7afe4 unmoved), 2026-10-04:
 - AC7: at 0c47939, `python3 -m unittest discover -s scripts/tests` exit 0 (397 tests, 21 skipped); `python3 -m unittest discover -s hooks/tests` exit 0 (174); `claude plugin validate .claude-plugin/plugin.json` exit 0, its one warning the known CLAUDE.md-at-root line; `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 1077 pass, 0 fail.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed; the generic profile's consistency-gate names no toolchain checks; no DESIGN principle changed, so `cairn_impact` is skipped.
 - spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a refused press with a draft in the box appends with no separator (`fix the typo/cairn:milestone`), which sends as prose — follow-up ("Band button follow-ons (M212 review)"); AC3 holds as written (the line is appended, the draft stays), and the path needs a refused run while a draft is typed.
+- diff-bug #2: no guard against a second press; a double click queues the skill twice — fix now.
+- diff-bug #3: on `mixed` the `Review` label sits on the M012 row and reviews M010, and the label does not name it — follow-up (same row); AC1 pins the target, the label is a look change.
+- diff-bug #4: `Start` after a merge runs implement without the `/clear` D-148 puts first, and the CHANGELOG does not say so — fix now (CHANGELOG sentence; AC1's exact command list asserts no `/clear` runs).
+- diff-bug #5: no test shows a press-started skill sets the band's step and hides the Buttons; the test `command.run` hook never raises `skill.prompt` — follow-up (same row); fix #2 bounds the double-run case.
+- diff-bug #6: the M206 AC2 desktop sweep now draws only the no-Button row, so the Svg width beside the Buttons is unswept — follow-up (same row).
+- diff-bug #7: Buttons are counted at terminal width (label + 4) on the desktop too, so a native button wider than that goes unseen at the narrowest widths — follow-up (same row).
+- diff-bug #8: the next-step press runs the command captured at draw time, so a press between a ROADMAP change and the redraw runs a stale command — fix now (re-read at press, as `dismiss` does).
+- diff-bug #9: a press before the band redraws with `isWorking: true` still queues behind the turn; `isWorking` is not readable at press — follow-up (same row); fix #8 also skips a press while a cairn skill's step is set.
+- diff-bug #10: a fill that resolves `isFilled: false` still gets a toast implying the box holds the command — fix now (the toast names the command line).
+- diff-bug #11: `$.ui.toast` is not awaited in the async `run` — fix now.
+- diff-bug #12: AC3 asserts the engine's bottom-of-chain message only — fix now (also assert the `cairn: ` prefix and the command line).
+- diff-bug #13: the `nextRun !== null` guard and `?? ''` can never fire — fix now (removed by fix #8's restructure).
+- blame-history #1: the idle row's track now gives columns to the Buttons, changing M206's track rule in the default state — reject (planned change: live look 2, work log) for the rule; its test narrowing is diff-bug #6's follow-up.
+- blame-history #2: `actsAt120` mirrors `canAct` — reject (false): its expectation reads the fixture `next` written from cairn_next.py and the skill state the criterion names, not the mod's code.
+- blame-history #3: same as diff-bug #3 — follow-up.
+- blame-history #4: same as diff-bug #8 — fix now.
+- blame-history #5: same as diff-bug #5 — follow-up.
+- blame-history #6: the idle row shows `/milestone-implement M0xx` beside a `Start` Button that runs it — follow-up (same row).
+- blame-history #7: same as diff-bug #7 — follow-up.
+- blame-history #8: `actionsFit`'s track-or-long-label check is discriminated only at 40 columns by the M194 and M199 cases — follow-up (same row).
+- blame-history #9: same as diff-bug #4 — fix now.
+- prior-review #1: same as diff-bug #8 — fix now.
+- prior-review #2: same as diff-bug #7 — follow-up.
+- prior-review #3: same as diff-bug #6 — follow-up.
+- prior-review #4: `secondary` Buttons not checked in light, colorblind, or ANSI themes — follow-up (same row, beside "Band label colors in other themes").
