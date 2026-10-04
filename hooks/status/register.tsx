@@ -33,8 +33,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // closes it, or from the band's open button, which a row drawn from a found
 // ROADMAP carries beside the close button. It shows the active milestones
 // in full and the queue that scripts/cairn_next.py prints (pane.ts), from
-// the same refreshes as the band. Each head line ends with the band's
-// percent for its row, so the pane reads the `band` value too (M208).
+// the same refreshes as the band. A head line whose file reads ends with
+// the band's percent for its row, so the pane reads the `band` value too
+// (M208).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.

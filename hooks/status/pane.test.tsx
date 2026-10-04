@@ -433,7 +433,7 @@ async function mountPane($, surface: (typeof SURFACES)[number], bodyColumns = 60
 async function boxOf(ui: Ui, key: string): Promise<Element | undefined> {
   return (await ui.findAll({ key }))[0]
 }
-// The Text children of a line's lead or tail Box.
+// The Text children of a line's lead, text, or tail Box.
 async function partOf(ui: Ui, key: string): Promise<Element[]> {
   const box = await boxOf(ui, key)
   return box === undefined ? [] : kids(box)
@@ -584,7 +584,9 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
   }
 })
 
-describe('every line fits a 44-column dock (M208 AC4)', () => {
+// The test computes no layout, so it checks the widths the line keeps and
+// the prop that lets the line shrink; the live look shows the drawing.
+describe("each line's lead and tail fit a 44-column dock, and the line may shrink (M208 AC4)", () => {
   for (const surface of SURFACES) {
     for (const fixture of ['pane-full', 'candidates']) {
       test(`${fixture} (${surface})`, async ($, on) => {

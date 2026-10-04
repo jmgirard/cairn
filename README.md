@@ -207,7 +207,7 @@ of 110 columns or more, and otherwise it sits above the prompt.
 
 For each `in-progress` or `review` milestone, the pane shows the phase,
 id, and title, with the band's percent for the milestone at the end of
-that line, and the goal from the milestone file. It lists every task
+that line when its file reads, and the goal from the milestone file. It lists every task
 and acceptance criterion, `✓` for a checked box and `○` for an open one,
 and the five newest work-log lines. Each item takes one line, a long item
 ends in `…`, and the goal wraps. Each section starts after a blank row

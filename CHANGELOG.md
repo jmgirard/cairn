@@ -5,11 +5,12 @@
 ### New
 
 - **A fuller look for the cairn pane.** Each active milestone's first line
-  ends with the band's percent for it, and a long title is cut before the
-  percent. Each section starts after a blank row with an orange `▎` and its
-  name in gray capitals. The `TASKS` and `CRITERIA` headings show their
-  count and eight squares, `■` for the checked share and `□` for the rest,
-  in the phase color. The next command sits in an orange pill.
+  ends with the band's percent for it when its file reads, and a long title
+  is cut before the percent. Each section starts after a blank row with an
+  orange `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
+  headings show their count and eight squares, `■` in the phase color for
+  the checked share and `□` in gray for the rest. The next command sits in
+  an orange pill.
 - **Candidate rows in the idle cairn pane.** With no `in-progress` or
   `review` milestone, the cairn pane lists the ROADMAP's candidate rows
   below the queue, under a `CANDIDATES` heading with their count. Each row
