@@ -194,7 +194,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   priority (`high` or `low` for an exact `[high] ` or `[low] ` opening,
   else `normal`) and the text before the first `: `. Its section walk is
   `candidate_count`'s, and `test_status_fixtures.py` holds it to each
-  fixture's `candidates` key and to that count. `pane.ts` draws them only
+  fixture's `candidates` key and to that count. The pane draws them only
   while no row is active. `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look).
