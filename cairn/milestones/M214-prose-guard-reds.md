@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M214: Clear the prose-guard reds
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -69,7 +69,7 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - [x] T3: Delete `test_partial_coverage_was_trimmed_not_deleted` from
       `test_lesson_graduation.py`. Leave the file's other tests, including
       the absence assert and its positive control.
-- [ ] T4: From the repo root, run `skills/tests` and each `verify` command
+- [x] T4: From the repo root, run `skills/tests` and each `verify` command
       on its own, checking each exit code (no pipe, no `;` chain).
 
 ## Work log
@@ -91,6 +91,8 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - 2026-10-04: T1 done: the two asserts and the Mutation block now read `<base>`. skills/tests went from 4 failures and 1 error to 2 failures. Verify slot: all four commands exit 0.
 - 2026-10-04: T2 done: the guard asserts the text up to `pull ff-only` and the text from `), and in a throwaway worktree` on. The existing Mutation entry covers the second passage. An in-memory edit that drops `ff-only` turns the first passage false. Only test files changed, so the verify slot result from T1 stands.
 - 2026-10-04: T3 done: the method is deleted. A grep of skills, scripts, and hooks finds no other reference to it, and the file's other tests stay.
+- 2026-10-04: T4 done: skills/tests ran 665 tests, OK. scripts/tests 397 OK (21 skipped), hooks/tests 174 OK, plugin validate exit 0, plugin test 1105 tests exit 0. The branch diff shows one removed `def test_` line.
+- 2026-10-04: claim audit: not owed — internal tier
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
