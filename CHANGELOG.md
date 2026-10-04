@@ -15,8 +15,11 @@
   pill shows the counts alone, such as `1/3`, when the whole pill would
   take more than a third of the track. The terminal draws the track as
   braille characters on the theme's `userMessageBackground` color, with
-  the same pill and percent. A hidden idle row stays hidden through a
-  skill's start and end. This replaces the row that the two band entries
+  the same pill and percent. A hidden band stays hidden through a cairn
+  skill's start and end, unless `/milestone-review` moves it to another
+  row. The band also reads the files again after Claude edits or writes a
+  file under `cairn/`, so a box checked in a long turn moves the track
+  before the turn ends. This replaces the row that the two band entries
   below describe.
 - **A cairn pane.** The new `/cairn-pane` command opens a pane that shows
   more than the band, and the same command closes it. The band's `≡`

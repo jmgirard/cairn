@@ -101,7 +101,8 @@ for a third, and the percent rounds down. So it reads 100% only on a
 `review` row whose criteria are all checked, and a `review` row with no
 criteria reads 66%.
 
-In the desktop app the track is an image. Two thin marks divide the three
+In the desktop app, and on any other surface that can draw an image, the
+track is an image. Two thin marks divide the three
 parts. In the current part, a tick marks each item edge past the fill when
 the items are 6 pixels apart or more. The image cannot follow your theme's
 colors, so it draws in translucent grays meant for a light or a dark
@@ -178,11 +179,10 @@ hides the band. Until the session ends, the band stays hidden while the
 list of active milestones stays the same: their ids, their statuses, and
 their ROADMAP order. For example, a milestone that moves from `implement`
 to `review`, or a milestone that becomes active or leaves both statuses,
-shows the band again. While a milestone is active, a cairn skill that
-starts or ends also shows it again, but the same skill run again does
-not. While none is active, a hidden idle row stays hidden through any
-skill's start and end, and shows again when another milestone takes its
-place. A checked box or an edited title does not bring the band back. A
+shows the band again. A cairn skill that starts or ends keeps it hidden,
+unless `/milestone-review` moves the band to another row, a `review` row
+when an `in-progress` row would show without it. A hidden idle row shows
+again when another milestone takes its place. A checked box or an edited title does not bring the band back. A
 session end shows a hidden band again, whatever its reason. In the desktop
 app, a `/clear` stops the session, and the band draws again at your next
 message. If the band finds the ROADMAP but cannot read it, the band keeps
@@ -190,8 +190,10 @@ its row. The failed read alone does not hide or show it.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
-end of each turn. It also reads them when a cairn skill starts or ends. A
-box you check or a status you change shows after the next of these.
+end of each turn. It also reads them when a cairn skill starts or ends,
+and after Claude edits or writes a file under a `cairn/` directory, so a
+box Claude checks moves the track inside a long turn. A box you check or a
+status you change shows after the next of these.
 Outside a cairn repo, it draws nothing. It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
 

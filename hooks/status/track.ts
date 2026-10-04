@@ -199,7 +199,8 @@ const DOTS = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 // The terminal track `cells` columns wide: the specks as braille dots, the
 // pill (one space each side of its text), and a mark at each third past the
 // head. The pill ends at the head's cell, or starts there when that would
-// leave no speck before it, and stays inside the track. The last speck
+// leave no speck before it. Either way it is then kept inside the track, so
+// on a short track the head can fall inside the pill. The last speck
 // before the pill or the head always draws in the phase's color, so a short
 // track still shows its fill. A track too short for the whole pill in a
 // third of it shows the short text. Runs of one style merge into one span.

@@ -82,7 +82,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   percent, the idle row's track and command, or a `warning` label for a
   row whose counts cannot be read (M206). The phase or skill label, the
   chapter, the next open box, the skill row, and the ten-cell bar went in
-  M206. Only the open and close buttons carry `dimColor`. The other Text
+  M206. Off the terminal, only the open and close buttons carry
+  `dimColor`, and in the terminal nothing does. The other Text
   leaves take the theme key `inactive`, the theme's gray, but for the
   space leaves, the `warning` labels, and the terminal track's cells.
   `band.ts` measures the parts that never shrink at one column per code
@@ -91,11 +92,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   (12). The room is 10 columns, or less for a shorter title. The engine
   cuts the title. The row ends in a plain `role: 'dismiss'` close button: `×` in the
   terminal, and a `✕` dim at rest on other surfaces. A press stores the
-  active ids and statuses, the running skill while a row is active, and the
-  idle row's id while none is, in the `dismissed` state value. The band
-  then passes to `next(e)` until that value changes, so a skill's start or
-  end shows a band hidden over a milestone row and keeps a hidden idle row
-  hidden. `mark` and `same` in
+  active ids and statuses, `milestone-review` while that skill moves the
+  band from the first `in-progress` row to the first `review` row, and the
+  idle row's id while no row is active, in the `dismissed` state value
+  (shape `dismissed-4`). The band then passes to `next(e)` until that value
+  changes, so any other skill's start or end keeps a hidden band hidden
+  (M206 review). An Edit, Write, or MultiEdit call that went through, on a
+  path under a `cairn/` directory, reads the files again, so the track
+  moves inside a long turn. `mark` and `same` in
   `band.ts` build and compare that value, and `mark` reads the step through
   `knownStep`, as the drawing does. A refresh decides whether to clear
   `dismissed` inside its `update` callback, so a press made while
@@ -142,8 +146,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `floor(100 × sum / 3)` in whole numbers. The pill is the phase and its
   counts, `no tasks` or `no criteria` for zero items, or `Planned` on the
   idle row. Its short text, the counts alone or `none`, shows when the
-  whole pill would take more than a third of the track. On the desktop the
-  track is the `Svg` element, `min(TRACK_PX (360), columns × 7)` pixels
+  whole pill would take more than a third of the track. Off the terminal
+  the track is the `Svg` element, `min(TRACK_PX (360), columns × 7)` pixels
   wide. In the terminal `brailleSpans` in `track.ts` draws it as braille
   cells on the theme key `userMessageBackground`: dots in `inactive` or the
   phase's color, denser toward the fill edge, the last speck before the
@@ -312,5 +316,5 @@ within each type and are never reused.
   `band.test.tsx` do not check their closing Stop, and no case covers the
   first gap or a session end with the mark set. Each gap leaves a wrong
   step until the next Stop or typed prompt, which can change the row shown
-  during `/milestone-review` or show a band hidden over a milestone row
+  during `/milestone-review` or show a band hidden over the row it moves
   (corrected M206: the band no longer draws a skill label).

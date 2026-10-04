@@ -25,8 +25,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,
-// or order, the running skill while a row is active, or the idle row's id
-// change, or the session ends (M200, M206). A found ROADMAP that cannot be read keeps the rows, and the
+// or order, the row /milestone-review moves the band to, or the idle row's
+// id change, or the session ends (M200, M206). A found ROADMAP that cannot be read keeps the rows, and the
 // close state is compared against them and the current step.
 //
 // The cairn pane (M205) opens from the `/cairn-pane` command, which also
@@ -41,11 +41,12 @@ const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workabl
   shape: 'band-3',
 })
 
-// The active ids and statuses, in ROADMAP order, the running skill while a
-// row is active, and the idle row's id while none is, at the last press of
-// the close button; null while the band shows.
+// The active ids and statuses, in ROADMAP order, `milestone-review` while
+// it moves the band to another row, and the idle row's id while no row is
+// active, at the last press of the close button; null while the band shows.
+// The tag moved to 4 when the skill's meaning changed (M206 review).
 const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandHidden | null, {
-  shape: 'dismissed-3',
+  shape: 'dismissed-4',
 })
 
 // The running cairn skill, until a main-loop Stop with nothing in flight or
@@ -212,6 +213,15 @@ export const register: Register = on => {
     return result
   })
 
+  // A file the session writes under a `cairn/` directory, such as a
+  // milestone file whose box was just checked, reads the files again, so the
+  // track moves inside a long turn (M206 review: the chapter hook, which
+  // M206 removed, had done this at each chapter). The tool's own call goes
+  // through first, and a refused or failed call reads nothing.
+  on('tool.call', { tool: 'Edit' }, afterWrite)
+  on('tool.call', { tool: 'Write' }, afterWrite)
+  on('tool.call', { tool: 'MultiEdit' }, afterWrite)
+
   // Every session end, a `/clear` or a resume among them, ends the step and
   // shows a band that a press hid, whatever its reason (M200).
   on('session.end', async ($, e, next) => {
@@ -232,10 +242,11 @@ export const register: Register = on => {
     if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    // The track draws as the desktop's `Svg` element (M204), and as braille
-    // cells elsewhere (M206). With the image, the row centers its parts,
-    // since the track is taller than text.
-    const Svg = e.surface === 'desktop' ? $.ui.resolve(e).Svg : undefined
+    // The track draws as the `Svg` element on every surface whose table has
+    // one, the desktop app's among them (M204), and as braille cells in the
+    // terminal (M206). With the image, the row centers its parts, since the
+    // track is taller than text.
+    const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
     // A row drawn from a found ROADMAP carries the pane's open button (M205).
     const canOpen = (await read($, pane)).found
@@ -316,6 +327,15 @@ export const register: Register = on => {
       </Box>
     )
   })
+}
+
+// After an Edit, Write, or MultiEdit call that went through, a path under a
+// `cairn/` directory reads the files again.
+async function afterWrite($, e, next) {
+  const result = await next(e)
+  if (result?.deny !== undefined || result?.isError === true) return result
+  if (typeof e.file_path === 'string' && /(^|[\\/])cairn[\\/]/.test(e.file_path)) await refresh($)
+  return result
 }
 
 // The press reads the rows and the step as they are now, not as they were

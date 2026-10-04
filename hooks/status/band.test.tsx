@@ -537,9 +537,10 @@ const isBraille = (ch: string) => (ch.codePointAt(0) as number) >= BLANK && (ch.
 // What is wrong with a terminal track drawn as these spans, for a row of
 // this status and these counts (M206 AC3): every cell outside the pill is a
 // braille cell on GROUND; one pill in the phase's hue, white and bold,
-// showing `checked/total`, or `no tasks`, `no criteria`, or `none`; at least
-// one cell before the pill carries dots in the phase's hue; and the cells
-// add up to `columns`.
+// showing `checked/total`, or `no tasks`, `no criteria`, or `none`, its
+// whole text only where that text and its two spaces take a third of the
+// track or less (M206 review); at least one cell before the pill carries
+// dots in the phase's hue; and the cells add up to `columns`.
 function trackProblems(spans: Span[], status: string, checked: number, total: number, columns: number): string[] {
   const out: string[] = []
   const hue = HUE[status]
@@ -556,8 +557,10 @@ function trackProblems(spans: Span[], status: string, checked: number, total: nu
   const shown = pill.text.trim()
   const noun = status === 'in-progress' ? 'tasks' : 'criteria'
   const name = status === 'in-progress' ? 'Implement' : 'Review'
-  const allowed = total === 0 ? [`no ${noun}`, 'none'] : [`${checked}/${total}`, `${name} ${checked}/${total}`]
-  if (!allowed.includes(shown)) out.push(`pill ${shown}`)
+  const whole = total === 0 ? `no ${noun}` : `${name} ${checked}/${total}`
+  const short = total === 0 ? 'none' : `${checked}/${total}`
+  const expected = (cols(whole) + 2) * 3 <= columns ? whole : short
+  if (shown !== expected) out.push(`pill ${shown}, not ${expected}`)
   const dotted = spans.slice(0, at).some(s => s.color === hue && [...s.text].some(ch => isBraille(ch) && ch.codePointAt(0) !== BLANK))
   if (!dotted) out.push('no dots in the hue before the pill')
   const width = spans.reduce((n, s) => n + cols(s.text), 0)
@@ -1203,14 +1206,26 @@ describe("the close button's mark (M200 AC4, M206 AC4)", () => {
     expect(same(gone, none)).toBe(true)
   })
 
-  test('the mark holds the skill only while a row is active, and the idle id only while none is', async () => {
-    const idle = FIXTURES['no-active']
-    const idleState = (await loadBand(memorySource(idle.files, idle.cwd)))!
+  // The mark holds `milestone-review` only while it moves the band to
+  // another row, and the idle id only while no row is active (M206 review).
+  test('the mark holds the skill only where it moves the row, and the idle id only while no row is active', async () => {
+    const state = async (name: string) => (await loadBand(memorySource(FIXTURES[name].files, FIXTURES[name].cwd)))!
+    const idleState = await state('no-active')
     for (const skill of SKILLS) expect([skill, mark(idleState, { skill })]).toEqual([skill, { marks: [], skill: null, idle: 'M021' }])
-    const active = FIXTURES['single-in-progress']
-    const activeState = (await loadBand(memorySource(active.files, active.cwd)))!
-    expect(mark(activeState, { skill: 'hotfix' })).toEqual({ marks: [{ id: 'M002', status: 'in-progress' }], skill: 'hotfix', idle: null })
-    expect(mark(activeState, null)).toEqual({ marks: [{ id: 'M002', status: 'in-progress' }], skill: null, idle: null })
+    const activeState = await state('single-in-progress')
+    const m002 = [{ id: 'M002', status: 'in-progress' }]
+    for (const skill of SKILLS) expect([skill, mark(activeState, { skill })]).toEqual([skill, { marks: m002, skill: null, idle: null }])
+    expect(mark(activeState, null)).toEqual({ marks: m002, skill: null, idle: null })
+    // On mixed, /milestone-review moves the band from the in-progress row
+    // to the review row, so its mark differs from the plain one.
+    const mixedState = await state('mixed')
+    expect(mixedState.rows.some(row => row.status === 'in-progress')).toBe(true)
+    expect(mark(mixedState, { skill: 'milestone-review' }).skill).toBe('milestone-review')
+    expect(mark(mixedState, { skill: 'milestone-implement' }).skill).toBeNull()
+    // With review rows only, the review skill shows the same row.
+    const reviewState = await state('states-review')
+    expect(reviewState.rows.length > 0 && reviewState.rows.every(row => row.status === 'review')).toBe(true)
+    expect(mark(reviewState, { skill: 'milestone-review' }).skill).toBeNull()
   })
 
   test('a stored skill not in the list reads as no step', () => {
@@ -1521,8 +1536,8 @@ function trackFor(id: string, title: string, percent: number, columns: number, c
 }
 
 // The fixture rows the rendered sweeps draw alone: partial, all-checked,
-// and zero-item counts on an in-progress and a review row, 5-character ids,
-// and long and wide titles.
+// and zero-item counts on an in-progress and a review row, 4- and
+// 5-character ids, and long and wide titles.
 const SWEPT: [string, string][] = [
   ['single-in-progress', 'M002'],
   ['states-implement', 'M043'],
@@ -2094,29 +2109,69 @@ describe("a press stores the idle row's id (M199 AC4)", () => {
     }
   }
 
+  // A skill draws nothing, so over a milestone row its start and its end
+  // keep a hidden band hidden, but for /milestone-review moving the band to
+  // another row (M206 review).
   for (const surface of SURFACES) {
-    test(`over a milestone row, a skill's step that ends shows the band again (${surface})`, async ($, on) => {
+    test(`over a milestone row, a skill's start and its end keep the band hidden (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
       await prompt($, 'milestone-plan')
       await ui.press({ key: 'cairn-close' })
       expect(await lines(ui)).toEqual([ENGINE])
+      await prompt($, 'hotfix')
+      expect(await lines(ui)).toEqual([ENGINE])
       await $.classic.Stop(stopWith('empty'))
-      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      expect(await lines(ui)).toEqual([ENGINE])
       await ui.unmount()
     })
 
-    test(`over a milestone row, another skill that starts shows the band again (${surface})`, async ($, on) => {
-      seat(on, copyOf('single-in-progress'))
+    test(`over mixed, /milestone-review moving the band to the review row shows it again (${surface})`, async ($, on) => {
+      seat(on, copyOf('mixed'))
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
-      await prompt($, 'milestone-plan')
+      const plain = await rowKeys(ui)
       await ui.press({ key: 'cairn-close' })
-      await prompt($, 'cairn:milestone-plan')
       expect(await lines(ui)).toEqual([ENGINE])
-      await prompt($, 'hotfix')
-      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      await prompt($, 'milestone-implement')
+      expect(await lines(ui)).toEqual([ENGINE])
+      await prompt($, 'milestone-review')
+      const reviewed = await rowKeys(ui)
+      expect(reviewed).toEqual(['M010-row'])
+      expect(reviewed).not.toEqual(plain)
+      await ui.unmount()
+    })
+  }
+
+  // A write under a `cairn/` directory reads the files again inside a turn,
+  // as a chapter did before M206 (M206 review). The tools answer beneath
+  // the mod, so nothing is written.
+  const WRITES: { name: string; tool: string; path: string; answer: object; reads: boolean }[] = [
+    { name: 'an Edit of the milestone file', tool: 'Edit', path: M002, answer: { result: 'ok' }, reads: true },
+    { name: 'a Write of the milestone file', tool: 'Write', path: M002, answer: { result: 'ok' }, reads: true },
+    { name: 'a MultiEdit of the milestone file', tool: 'MultiEdit', path: M002, answer: { result: 'ok' }, reads: true },
+    { name: 'an Edit outside cairn/', tool: 'Edit', path: '/src/main.ts', answer: { result: 'ok' }, reads: false },
+    { name: 'a refused Edit of the milestone file', tool: 'Edit', path: M002, answer: { deny: 'refused beneath' }, reads: false },
+    { name: 'a failed Edit of the milestone file', tool: 'Edit', path: M002, answer: { result: 'failed', isError: true }, reads: false },
+  ]
+  for (const { name, tool, path, answer, reads } of WRITES) {
+    test(`${name} ${reads ? 'reads' : 'does not read'} the files again`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      on('tool.call', { tool }, async () => answer)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
+      const before = await lines(ui)
+      expect(before[0].endsWith(' 44%')).toBe(true)
+      copy.files[M002] = copy.files[M002].replace('- [ ] T2:', '- [x] T2:')
+      await $.tool.call({ tool, file_path: path })
+      const after = await lines(ui)
+      if (reads) {
+        expect(after[0].endsWith(' 55%')).toBe(true)
+      } else {
+        expect(after).toEqual(before)
+      }
       await ui.unmount()
     })
   }

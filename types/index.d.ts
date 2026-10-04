@@ -27,11 +27,10 @@ export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[
 export type CairnBandMark = { id: string; status: string }
 
 // What the close button stores at a press: the active ids and statuses in
-// ROADMAP order, the running cairn skill's bare name while a row is active,
-// and the idle row's id while none is (M206). The skill is null when no
-// cairn skill runs, when no row is active, or when the running step names a
-// skill the cairn list has since dropped, as a step stored before a reload
-// can (M200).
+// ROADMAP order, `milestone-review` while that skill runs and moves the band
+// to another row, else null, and the idle row's id while no row is active
+// (M206). A step stored before a reload that names a skill the cairn list
+// has since dropped reads as no step (M200).
 export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null; idle: string | null }
 
 // The running cairn skill's bare name (`milestone-plan`). A main-loop Stop

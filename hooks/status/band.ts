@@ -84,19 +84,22 @@ export function knownStep(step: CairnStep | null): CairnStep | null {
 
 // What the close button stores at a press, and what a refresh and the
 // drawing compare it with: the ids and statuses of the active rows, in
-// ROADMAP order, the running skill while a row is active, and the idle
-// row's id while none is (M206). The step is read through knownStep, as the
-// drawing reads it (M200). The workable list is left out while a row is
-// active, so a planned row added then keeps the band hidden too. The skill
-// is left out while no row is active, so a skill's start or end keeps a
-// hidden idle row hidden.
+// ROADMAP order, `milestone-review` while that skill runs and moves the band
+// off the row it shows with no skill, and the idle row's id while no row is
+// active (M206). The step is read through knownStep, as the drawing reads it
+// (M200). The workable list is left out while a row is active, so a planned
+// row added then keeps the band hidden too. Any other skill draws nothing,
+// so its start or end keeps a hidden band hidden (M206 review).
 export function mark(state: BandState, step: CairnStep | null): CairnBandHidden {
   const current = knownStep(step)
   const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
   const active = state.rows.length > 0
+  const first = (status: string) => state.rows.find(row => row.status === status)
+  const plain = first('in-progress') ?? first('review')
+  const reviewed = current?.skill === 'milestone-review' ? first('review') : undefined
   return {
     marks,
-    skill: active && current !== null ? current.skill : null,
+    skill: reviewed !== undefined && reviewed !== plain ? 'milestone-review' : null,
     idle: active ? null : (state.workable[0]?.id ?? null),
   }
 }

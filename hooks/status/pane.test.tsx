@@ -337,14 +337,17 @@ describe("the band's open button opens the pane (M205 AC4)", () => {
       await ui.unmount()
     })
 
-    // With no ROADMAP, a running cairn skill draws no row and so no open
-    // button (M206 removed the skill row).
-    test(`a running skill with no ROADMAP draws no open button (${surface})`, async ($, on) => {
+    // With no ROADMAP, a running cairn skill draws no row, so the band yields
+    // the slot and draws neither button (M206 removed the skill row, which
+    // drew the close button alone here).
+    test(`a running skill with no ROADMAP yields the slot (${surface})`, async ($, on) => {
       seat(on, copyOf('no-roadmap'))
       await $.turn.complete(turn())
       await $.skill.prompt({ skill: 'cairn:milestone-plan', text: 'the plan prompt' })
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await ui.findAll({ key: 'cairn-stack' })).toEqual([])
       expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([])
+      expect(JSON.stringify(await ui.findAll({ type: 'Text' }))).toContain('engine slot')
       await ui.unmount()
     })
   }
