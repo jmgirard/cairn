@@ -148,9 +148,9 @@ same one included, or a session end, a `/clear` included, also ends it.
 A subagent that loads a cairn skill also counts, because the skill event
 does not say which agent loaded it.
 
-A skill that waits on a one-shot wakeup (`ScheduleWakeup`) stays while
-the wakeup is pending. A prompt you type that a hook blocks or drops
-keeps the skill too.
+When Claude stops while a one-shot wakeup (`ScheduleWakeup`) is pending,
+the skill stays. A prompt you type that a hook blocks or drops keeps the
+skill too.
 
 The rule has three limits. A recurring scheduled task, such as one that
 `/loop` starts, does not keep the skill, so a skill that waits on one

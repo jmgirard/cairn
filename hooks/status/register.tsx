@@ -43,8 +43,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
-// The band's value keeps the repo root its rows came from, null when no
-// ROADMAP was found; the tag moved to 4 with the root (M210).
+// The band's value keeps the repo root of the last read, null when no
+// ROADMAP was found or the working directory could not be read; the tag
+// moved to 4 with the root (M210).
 type StoredBand = BandState & { root: string | null }
 const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [], root: null } as StoredBand, {
   shape: 'band-4',

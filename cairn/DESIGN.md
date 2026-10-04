@@ -116,7 +116,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   a `/clear` stops the session's process, and the band draws again at the
   next message (M200 live look). When the ROADMAP is found but its read
   fails, or its text is empty or only whitespace, `loadCairn` returns null
-  (M210). `readCairn` returns the same state with the root it found. The
+  (M210). `readCairn` returns the same state with the root it found, and a
+  null state when a throw ends the read of a found ROADMAP. The
   `band` value stores that root (shape `band-4`, M210), and a failed read
   keeps the rows only when the stored root equals the found one. A failed
   read in another root, a throw from `$.session.cwd()`, and stored rows with

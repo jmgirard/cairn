@@ -158,7 +158,8 @@
     (`\\server\share`).
   - A cairn skill that waits on a one-shot wakeup (`ScheduleWakeup`) keeps
     its step, and a typed prompt that a hook drops no longer ends it.
-  - A refresh writes the close state only when it changes it.
+  - A refresh writes the close state only when there is a hidden state to
+    clear.
   - A close-button press that lands as the session ends no longer hides
     the band.
 

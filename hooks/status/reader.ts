@@ -266,8 +266,8 @@ export async function loadCairn(source: FileSource): Promise<{ band: BandState; 
 }
 
 // The same read with the root it found (M210): `root` is null when no
-// ROADMAP is found, and `state` is null when a found one cannot be read or
-// a throw ends the read. A throw from `source.cwd()` is not caught, since
+// ROADMAP is found, and `state` is null when a found one cannot be read,
+// its text is empty or only whitespace, or a throw ends the read. A throw from `source.cwd()` is not caught, since
 // it leaves the root unknown.
 export async function readCairn(
   source: FileSource,
