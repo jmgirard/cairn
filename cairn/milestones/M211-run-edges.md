@@ -90,7 +90,7 @@ row is pruned at post-merge hygiene.
       only `amendment return:`. Update the pins in `test_thrash_rule.py` and
       `test_mutation_harness.py`, then hand-run `skills/tests` and compare
       with the 4 reds and 1 error of the last hygiene pass.
-- [ ] T2: Release-window displacement. Align step 10's displacement
+- [x] T2: Release-window displacement. Align step 10's displacement
       (`milestone-review:700-706`) with `/milestone` §3: `/milestone` leads
       only when the next action names a flagged milestone.
 - [ ] T3: Linked-row groups. Rewrite records-hygiene §7 for groups and compress
@@ -113,6 +113,7 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: implement started on branch m211-run-edges, cut from main in sync with origin. The untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
 - 2026-10-04: the simple-english lint hook counts every existing hit in each edited file (353 in the review skill, 120 in the implement skill). Rewriting the skills to that style is outside M211's scope and would break the prose pins, so only the edited text changes.
 - 2026-10-04: T1 done. Review's exit writes `amendment routed: AC<N> — <finding>` and reads the work log for a prior `amendment return: AC<N>` before it routes. Implement step 6 names itself the one writer. The step-7 count and the thrash rule read `amendment return:` only (unchanged). Pins updated in `test_thrash_rule.py` (2 fixtures, 4 tests) and `test_mutation_harness.py` (5 entries). skills/tests is back to the baseline 4 reds and 1 error. Verify is clean: 397 and 174 OK, validate passes, plugin test 1024 pass.
+- 2026-10-04: T2 done. Review step 10 always fences `/milestone` when the `release window` advisory fired, and puts it first only when the next action it would fence names a flagged id. Step 9's sentence now says the signal includes which ids. No pin quoted the old text. Verify clean, skills/tests at baseline.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

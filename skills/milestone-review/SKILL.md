@@ -662,8 +662,8 @@ re-enters here, at the step the record shows is next:
    in a guaranteed-rendered position (Mandated-substance rule).
    Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
    the completed hygiene edits, before the docs-only commit — it must pass,
-   and whether its `release window` advisory fired is the signal step 10's
-   displacement clause reads. Docs-only commit:
+   and whether its `release window` advisory fired, and for which ids, is
+   the signal step 10's displacement clause reads. Docs-only commit:
    `review M<NNN>: done`; push (owner mode; the guest arm above leaves the
    pass on disk — status `done` is the `blocked → done` transition the
    rulebook admits for a handed-off PR the maintainers merged).
@@ -706,9 +706,14 @@ re-enters here, at the step the record shows is next:
     never the `cairn_next.py` invocation, which the skill has already run
     for the user. One displacement (D-050): when step 9's
     `cairn_validate.py` run fired the `release window` advisory, the close
-    block says so and puts `/milestone` first, labeled as the command that
+    block says so and fences `/milestone`, labeled as the command that
     offers parking the release (its §3), since parking is the user's
-    decision and review poses no chip for it. This close is a handoff, so
+    decision and review poses no chip for it. `/milestone` goes first only
+    when the next action this step would otherwise fence (the plan's next
+    milestone, or `cairn_next.py`'s recommendation) names a milestone the
+    advisory flagged. Each advisory line opens with the flagged id.
+    Otherwise that action stays first and `/milestone` is fenced after it,
+    as `/milestone` §3 rules. This close is a handoff, so
     commands go in fenced blocks, never inline backticks (tracking-rules
     "Copy-run commands"). Do **not** end review with an AskUserQuestion:
     the step-7 merge question was the last chip this phase emits.
