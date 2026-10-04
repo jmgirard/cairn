@@ -315,16 +315,22 @@ re-enters here, at the step the record shows is next:
 
    Every reported finding and its disposition is logged in the Review
    section, surfaced, never silently dropped (IP3), and the merge question
-   lists each disposition in plain words (step 7). Each finding's line
-   names its lens, its rank in that lens, and its disposition
-   (`<lens> #<rank>: <finding> — <disposition>`, a reject's reason and its
-   ground — false, style, or planned change — included; a fix-now line
-   gains `, fixed <sha>` once its fix is committed). The lens slugs are
-   `diff-bug`, `blame-history`, and `prior-review`. Each review pass that
-   spawns reviewers writes one line naming the lenses it spawned
-   (`spawned: <lens>, …`); a degraded (author-inline) pass spawns none and
-   writes no `spawned:` line, so the record shows which passes had fresh
-   reviewers. **The actioned list is
+   lists each disposition in plain words (step 7). Each reviewer finding's
+   Review-section line names its lens, its rank in that lens, and its
+   disposition (`<lens> #<rank>: <finding> — <disposition>`, a reject's
+   reason and its ground — false, style, or planned change — included; a
+   fix-now line gains `, fixed <sha>` once its fix is committed, written
+   with the next tracking commit before step 7's merge question, or by the
+   next review pass when the fix came through a floor return).
+   PR-conversation items keep step 7's `conversation:` line. The lens slugs
+   are `diff-bug`, `blame-history`, and `prior-review`, for the diff-bug,
+   blame-history, and prior-PR-comments reviewers; a lens run inline uses
+   its own slug. Each review pass that spawns reviewers writes one Review
+   section line naming the lenses it spawned (`spawned: <lens>, …`); a
+   degraded (author-inline) pass spawns none and writes no `spawned:` line,
+   its logged deviation (tracking-rules' freshness-spawns clause) standing
+   in its place, so the record shows which passes had fresh reviewers.
+   **The actioned list is
    the findings settled fix-now or follow-up.** Fix-now work is committed
    on the branch after step 6's checkpoint and before step 7's merge
    question is posed, so step 8's push carries it (the M105 squash lesson), with the
@@ -402,7 +408,9 @@ re-enters here, at the step the record shows is next:
    Each criterion or scope amendment the work log records for this
    milestone appears verbatim in this presentation, and the chip's question
    text names how many there were, counted from this milestone's work-log
-   lines that carry `substantive amendment:` or `amendment return:`, so no
+   lines that carry `substantive amendment:` or `amendment return:` as
+   their opening text after any date (a line that only quotes a prefix
+   is not counted), so no
    promise changed in the run
    reaches the merge unseen. Where the run merged an earlier milestone of
    the same plan, the chip's question text also cites that milestone's

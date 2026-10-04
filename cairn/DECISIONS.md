@@ -5456,6 +5456,7 @@ because its falsifier fired.
 **Consequences:** Each milestone of a run waits for the user at its merge
 question, and CI waits on that answer (D-138). The narrowings of D-138 and
 D-144 and the annotation of D-043 that D-145 and D-146 made lapse with
-them. The follow-on items of RR15, RR16, and the review passes get no
+them, as do D-146's narrowing of M177's grading for the up-front read and
+its annotation of D-145. The follow-on items of RR15, RR16, and the review passes get no
 candidate row. A later proposal to approve a merge before the diff exists
 starts from this entry and RR16.
