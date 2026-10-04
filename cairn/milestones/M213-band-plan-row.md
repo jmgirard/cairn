@@ -145,6 +145,7 @@ follow-ons (M212 review)".
 - 2026-10-04: T4 done: README's band section (the opening sentence, a new empty-row paragraph replacing "the band draws nothing", and the close button's re-show rule), DESIGN's `hooks/status/` paragraph (lineage, the right-group sentence, and the empty-row description replacing "With an empty list the band draws nothing"), and a CHANGELOG `### New` entry.
 - 2026-10-04: claim audit: 34 claims read, 5 corrected — README.md (a hidden idle row also shows again as the empty row), CHANGELOG.md (session end re-shows; the `cairn:` command names), cairn/DESIGN.md (session end re-shows), hooks/status/band.ts (header comment: the empty row needs a found ROADMAP and has no id).
 - 2026-10-04: implement complete: all four verify checks exit 0 at the head (`claude plugin test .` 1103 pass); status set to review.
+- 2026-10-04: review: three-lens fan-out, 21 findings: 5 fixed on the branch (eebd0fa), 5 rejected, 11 to the new candidate row "Empty band row follow-ons (M213 review)". ROADMAP: the M211 done row pruned for the line cap, and the reasoning-effort row's re-check note shortened for the byte budget.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -160,3 +161,31 @@ Evidence at `06c9b3b`, 2026-10-04, branch current with `origin/main` (`ac39d7d`)
 - AC4: same run. "the close button hides the empty row until a milestone is workable (M213 AC4)" passes on both surfaces: hidden after the press, after a turn end over the same ROADMAP, and after adding M094 waiting on the blocked M092; the idle row for M095 shows after adding M095 with its one dependency done.
 - AC5: README.md lines 180-190 describe the empty row and its `Plan` and `Status` buttons, lines 201-204 its re-show rule; `cairn/DESIGN.md` lines 73, 84-86, and 164-174 describe it; CHANGELOG.md `## Unreleased` `### New` opens with "A Plan button on the empty band". `grep -n "draws nothing" README.md cairn/DESIGN.md` now returns README.md:130 (the running skill), README.md:223 (outside a cairn repo), and cairn/DESIGN.md:174 (no ROADMAP found); the plan-time sentences at README.md:178-179 and DESIGN.md:162 are gone.
 - AC6: at `06c9b3b`: `python3 -m unittest discover -s scripts/tests` exit 0 (397 tests, OK); `python3 -m unittest discover -s hooks/tests` exit 0 (174 tests, OK); `claude plugin validate .claude-plugin/plugin.json` exit 0 (passed with warnings); `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0 (1103 pass, 0 fail), with Claude Code 2.1.287.
+
+Consistency gate: `cairn_validate.py` all checks passed; no IP/GP changed, so no `cairn_impact` run; the `generic` profile's consistency-gate names no toolchain checks.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: `refresh` writes `band` then `pane`, so a render between them can draw `Plan` on an idle row or the empty row after a found→not-found move, for one frame — follow-up, "Empty band row follow-ons (M213 review)".
+- diff-bug #2: a stale `Start`/`Resume`/`Review` press now runs planning when the re-read step names no milestone, where M212 did nothing — fix now, fixed eebd0fa.
+- diff-bug #3: a `cairn/ROADMAP.md` in a parent folder makes a nested non-cairn repo show the empty row and `Plan` — follow-up (the nearest-above search is documented and older than M213).
+- diff-bug #4: the empty row's close mark equals the no-ROADMAP mark, so a hide lasts through a ROADMAP leaving and coming back — follow-up.
+- diff-bug #5: the right group's margin and its leading gap Text both draw on the empty row, 4 blank columns before `[ Plan ]` — reject, planned change: the operator accepted the drawing at the T3 live look.
+- diff-bug #6: `NEXT_LABELS` keys on the prose action string `plan the next milestone` — reject, false as a silent risk: the press cases assert the `Plan` label, so a rewording fails them.
+- diff-bug #7: no test stages a render between the two writes or asserts `Plan` never labels a milestone row — follow-up, with diff-bug #1.
+- diff-bug #8: the AC4 case does not show a hidden empty row re-shown by an active row, or kept hidden by a skill, both README claims — fix now, fixed eebd0fa.
+- diff-bug #9: AC2's "at no other width" is vacuous in 40 to 200 since the threshold is 37 — reject, planned change: AC2 as written is met, and the unit case holds the 36/37 boundary.
+- diff-bug #10: the CHANGELOG entry leaves out the 37-column condition — fix now, fixed eebd0fa.
+- blame-history #1: M213 dropped M212's null-id guard, so a stale milestone-labelled press runs planning — fix now, fixed eebd0fa (the guard holds again for `Start`/`Resume`/`Review`; `Plan` keeps AC3's run-the-re-read-step rule).
+- blame-history #2: a non-empty ROADMAP that parses to no rows (a cut write, a renamed header) draws the empty row — follow-up.
+- blame-history #3: the empty row's close mark carries no repo identity — follow-up (same as diff-bug #4).
+- blame-history #4: the `pane` read moved above the `dismissed` read — reject, false: the reviewer traced no behavior change, and the guard's outcome is unchanged for every state.
+- blame-history #5: unwrapped prose lines in README and CHANGELOG — reject, style.
+- prior-review #1: the M208 two-write race now flashes a whole row — follow-up (same as diff-bug #1).
+- prior-review #2: with the null-id guard gone, a `Plan` press after a milestone turns workable starts that milestone, and a stale `Start` runs planning — fix now for `Start`, fixed eebd0fa; the `Plan` half is the planned AC3 behavior, its falsifier in the work log, recorded in the follow-up row.
+- prior-review #3: a refused press appends with no separator to a draft, now for `/cairn:milestone-plan` too — follow-up (open in "Band button follow-ons (M212 review)").
+- prior-review #4: the hide case starts the skill by a typed prompt, not a press-started skill — follow-up (open in "Band button follow-ons (M212 review)").
+- prior-review #5: Buttons are counted at terminal width on the desktop, and the empty row has no track to give back — follow-up.
+- prior-review #6: the desktop look beside the Buttons is unswept for the empty row — follow-up.
+
+Fix-now re-verify at eebd0fa: all four verify checks exit 0, `claude plugin test .` 1105 pass. The stale-press guard cannot be staged in the test kit (it presses the current drawing), as M212 recorded.
