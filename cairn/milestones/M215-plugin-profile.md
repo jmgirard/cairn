@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M215: Move this repo to the claude-plugin profile
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -39,11 +39,11 @@ unstaged at the user's choice.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `cairn/PROFILE.md`'s first line is `# Toolchain profile: claude-plugin`, and from the repo root `python3 scripts/cairn_validate.py` exits 0 and prints `PASS  profile valid` and `PASS  weight caps`.
-- [ ] AC2: The `verify` slot of `cairn/PROFILE.md` names five gating commands, and each exits 0 when run from the repo root: `python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`, `claude plugin validate .claude-plugin/plugin.json`, `claude plugin validate .claude-plugin/marketplace.json`, and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
-- [ ] AC3: The `consistency-gate` slot names the claude-plugin profile's three checks (the verify checks pass on the review head, the marketplace validate prints no `plugins[N].version` warning, and `CHANGELOG.md` has an entry for the milestone's user-visible changes) and keeps the statement that this repo has no CI. The `release-walk` slot bumps `version` in `.claude-plugin/plugin.json` and in the `.claude-plugin/marketplace.json` plugin entry.
+- [x] AC1: `cairn/PROFILE.md`'s first line is `# Toolchain profile: claude-plugin`, and from the repo root `python3 scripts/cairn_validate.py` exits 0 and prints `PASS  profile valid` and `PASS  weight caps`.
+- [x] AC2: The `verify` slot of `cairn/PROFILE.md` names five gating commands, and each exits 0 when run from the repo root: `python3 -m unittest discover -s scripts/tests`, `python3 -m unittest discover -s hooks/tests`, `claude plugin validate .claude-plugin/plugin.json`, `claude plugin validate .claude-plugin/marketplace.json`, and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`.
+- [x] AC3: The `consistency-gate` slot names the claude-plugin profile's three checks (the verify checks pass on the review head, the marketplace validate prints no `plugins[N].version` warning, and `CHANGELOG.md` has an entry for the milestone's user-visible changes) and keeps the statement that this repo has no CI. The `release-walk` slot bumps `version` in `.claude-plugin/plugin.json` and in the `.claude-plugin/marketplace.json` plugin entry.
 - [ ] AC4: The `test-doctrine` slot still states three rules for this repo: no `pytest` in acceptance criteria, `skills/tests` hand-run and gating nothing, and the status mod tested by its `*.test.ts(x)` files under `claude plugin test`.
-- [ ] AC5: Among the lines that `git grep -n -w generic -- . ':!cairn/DECISIONS.md' ':!cairn/milestones' ':!cairn/legacy' ':!cairn/reviews' ':!*/tests/*' ':!hooks/status/fixtures*'` returns at review, none states that this repo's profile is `generic`, except the "cairn's own profile" candidate row in `cairn/ROADMAP.md` (the row this milestone promotes); and `CLAUDE.md` and `cairn/DESIGN.md` each name `claude-plugin` as this repo's profile.
+- [x] AC5: Among the lines that `git grep -n -w generic -- . ':!cairn/DECISIONS.md' ':!cairn/milestones' ':!cairn/legacy' ':!cairn/reviews' ':!*/tests/*' ':!hooks/status/fixtures*'` returns at review, none states that this repo's profile is `generic`, except the "cairn's own profile" candidate row in `cairn/ROADMAP.md` (the row this milestone promotes); and `CLAUDE.md` and `cairn/DESIGN.md` each name `claude-plugin` as this repo's profile.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -96,9 +96,18 @@ unstaged at the user's choice.
 - 2026-10-04: T4 done on ba8ee3b: cairn_validate exit 0 (profile valid, weight caps PASS), scripts 397 OK, hooks 174 OK, plugin validate exit 0, marketplace validate exit 0 with no version warning, plugin test 1105 pass 0 fail.
 - 2026-10-04: claim audit: not owed — internal tier
 - 2026-10-04: implement complete, status set to review.
+- 2026-10-04: review return 1: AC4 fails as written. The `test-doctrine` slot does not state that `skills/tests` gates nothing.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Pass 1, 2026-10-04, on b417323 (main 14ec5a7 not moved, no PR).
+
+- AC1: PROFILE.md line 1 is `# Toolchain profile: claude-plugin`. `cairn_validate` exit 0 with `PASS  weight caps` and `PASS  profile valid`.
+- AC2: the verify slot's command block lists the five commands. Each exit 0 from the repo root: scripts 397 OK (21 skipped), hooks 174 OK, plugin validate, marketplace validate, plugin test 1105 pass 0 fail.
+- AC3: consistency-gate lists the three checks and keeps the no-CI paragraph. release-walk bumps `version` in `.claude-plugin/plugin.json` and the marketplace plugin entry.
+- AC4: FAIL. test-doctrine states no `pytest` and the status mod under `claude plugin test`, and calls `skills/tests` a hand-run tripwire, but does not state that it gates nothing (only the verify slot says so).
+- AC5: the sweep returns 33 lines. None states the current profile is `generic` except the promoted row `cairn/ROADMAP.md:41`. `CLAUDE.md:5` and `cairn/DESIGN.md:15` name `claude-plugin`.
