@@ -66,6 +66,7 @@ Make the band's row the milestone id and title on the left and the flow track on
 - 2026-10-04: re-audit: AC4 (full) — 4 findings: the command cannot fit at 40 columns, the close-state clause bound the stored value, the idle cases named no width, and the terminal track was implied. All taken, and the re-entry reader runs.
 - 2026-10-04: re-audit: AC4 (full) — re-entry reader found 2 more: the idle track had no least width, and the cases did not vary width or title or check a skill's start and end. Second line on AC4, so its wording went to the operator.
 - 2026-10-04: substantive amendment: AC3 and AC4 narrowed at the operator's selection. AC3 tests the braille track, ground, dot color, pill count, percent, and title room, and the dot pattern is judged at the live look. AC4 tests the idle row's command and track at 200 columns and a hidden idle row through a skill's start and end.
+- 2026-10-04: checkpoint, half done: T2 to T5 code and T7 docs written, Python suites green. `band.test.tsx` still tests the old forms and is red until the T6 rewrite lands (delegated to an Opus agent). The idle row also draws its track in the terminal. A running skill with nothing active or workable now yields the band slot.
 
 ## Decisions
 

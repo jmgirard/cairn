@@ -69,37 +69,33 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
   `plugin.json`. It draws one row. If `/milestone-review` runs and a
   `review` milestone exists, the row is the first one. Else it is the
   first `in-progress` milestone, else the first `review` one. The row
-  gives no sign of the others. The phase's section is `## Tasks` in implement and
-  `## Acceptance criteria` in review. The row sits above what the hooks
-  beneath draw, and the band blocks nothing. A row has a left group (phase
-  or skill label, one space, id, and one text) and a right group (bar and
-  counts, counts alone, or a state label). The text is the running skill's
-  chapter, else the section's first open box, else the title. A chapter or
-  an open box follows a `→`. The bar shows with no chapter or with a chapter
-  that opens with a positional label (`T2:`, `AC3:`), and not at any other
-  chapter. It draws ten `█` cells: the filled ones in the phase's theme key
-  (`claude` or `success`), the empty ones in the theme key `subtle`. The
-  phase or skill label takes a fixed raw color, `rgb(194,122,92)` or
-  `rgb(106,165,122)`. In the desktop app's dark theme, `dimColor` turned the
-  theme's orange brown at a live look (M198). Only the close button
-  carries `dimColor`. The other Text leaves take the theme key `inactive`, the
-  theme's gray, but for the space leaves and the `warning` labels. `band.ts`
-  measures the parts that never shrink at one column per code point. The
-  right group takes the first of its forms that leaves the text its room,
-  else its last form. The room is 10 columns, or less for a shorter text. A
-  skill row drops its slash command by the same measure. The engine cuts the
-  text. The row ends in a plain `role: 'dismiss'` close button: `×` in the
+  gives no sign of the others. The row sits above what the hooks beneath
+  draw, and the band blocks nothing. A row has a left group (the bold id,
+  one space, and the title) and a right group: the flow track and its
+  percent, the idle row's track and command, or a `warning` label for a
+  row whose counts cannot be read (M206). The phase or skill label, the
+  chapter, the next open box, the skill row, and the ten-cell bar went in
+  M206. Only the open and close buttons carry `dimColor`. The other Text
+  leaves take the theme key `inactive`, the theme's gray, but for the
+  space leaves, the `warning` labels, and the terminal track's cells.
+  `band.ts` measures the parts that never shrink at one column per code
+  point. The track takes the columns the row leaves after the title's
+  room, at most `TRACK_COLUMNS` (52) and at least `MIN_TRACK_COLUMNS`
+  (12). The room is 10 columns, or less for a shorter title. The engine
+  cuts the title. The row ends in a plain `role: 'dismiss'` close button: `×` in the
   terminal, and a `✕` dim at rest on other surfaces. A press stores the
-  active ids and statuses, the running skill, and the idle row's id or null
-  in the `dismissed` state value. The band then passes to `next(e)` until
-  that list, the skill, or the idle id changes. `mark` and `same` in
+  active ids and statuses, the running skill while a row is active, and the
+  idle row's id while none is, in the `dismissed` state value. The band
+  then passes to `next(e)` until that value changes, so a skill's start or
+  end shows a band hidden over a milestone row and keeps a hidden idle row
+  hidden. `mark` and `same` in
   `band.ts` build and compare that value, and `mark` reads the step through
   `knownStep`, as the drawing does. A refresh decides whether to clear
   `dismissed` inside its `update` callback, so a press made while
@@ -111,11 +107,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   next message (M200 live look). When the ROADMAP is found but its read
   fails, `loadBand` returns null and the refresh keeps the band's rows. When
   no ROADMAP is found, the band empties. A `skill.prompt` hook stores a
-  cairn skill, by its bare or `cairn:` name, in the `step` state value.
-  While a cairn skill runs, a `tool.call` hook on
-  the desktop app's chapter tool stores the title of each main-loop chapter
-  that went through. Every main-loop chapter that went through reads the
-  files again. A `classic.Stop` with no `agent_id`, whose answer from
+  cairn skill, by its bare or `cairn:` name, in the `step` state value
+  (shape `step-2`, with no chapter since M206). A `classic.Stop` with no `agent_id`, whose answer from
   beneath carries no `block`, clears `step` when its `background_tasks` is
   empty or absent (M201). So does a `prompt.submit` with origin kind
   `composer` or `bridge` and no `turnId`, unless the `expanded` state value
@@ -128,40 +121,36 @@ transitions, human-gated merges, and a domain verification doctrine.
   in flight, a blocked Stop, and a subagent's Stop keep it, and so do a
   `task-notification` prompt and every `turn.complete`, which reads the
   files again and clears `expanded`. The hooks do not read `session_crons`, so a skill that
-  waits through `ScheduleWakeup` or a cron loses its step at that Stop. `SKILL_LABELS` in
-  `band.ts` gives each skill's label, held to the `skills/*/SKILL.md` list
-  that `gen_fixtures.py` writes: `plan`, `implement`, `review`, `hotfix`,
-  `triage`, `release`, `status` (for `milestone`), `brief`, `design`, and
-  `init`. The skill's label takes the place of the phase label on the row.
-  It draws in the muted green for
-  `/milestone-review`, the plan blue `rgb(110,140,190)` for
-  `/milestone-plan` (M204), and the muted orange otherwise. With no active
-  milestone, a skill row shows the label, the slash command, and the chapter
-  after a `→`. A session without the desktop app's chapter tool, such as one
-  in the terminal, sets no chapter: a milestone row shows its next open
-  item, and a skill row shows the label and the command only. The skill
+  waits through `ScheduleWakeup` or a cron loses its step at that Stop.
+  `CAIRN_SKILLS` in `band.ts` lists the cairn skills, held to the
+  `skills/*/SKILL.md` list that `gen_fixtures.py` writes. The skill
   event carries no agent id, so a subagent that loads a cairn skill sets it
-  too. With no active milestone and no running skill, an idle row names the
-  first row of the workable list: `next`, the bold id, and the title, all in
-  `inactive`, and `/milestone-implement <id>` in the right group, which it
-  drops by the skill row's measure. The workable list is the `planned` rows
+  too. With no active milestone, whether or not a skill runs, an idle row
+  names the first row of the workable list: the bold id and the title, a
+  track with plan full and the pill `Planned`, and
+  `/milestone-implement <id>`. A narrow row drops the track, then the
+  command. The workable list is the `planned` rows
   whose dependencies are all done, by priority and then id, as `workable` in
   `scripts/cairn_next.py` computes it. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
   three-digit padding. With an empty list the band draws nothing.
-  On the desktop surface alone, the right group's first form is the flow
-  track (M204), drawn as the desktop's `Svg` element, `TRACK_PX` (360)
-  wide and counted as `TRACK_COLUMNS` (52) in the fit. Below that room the
-  row takes the terminal's text forms, and the terminal never draws the
-  track. `flowOf`, `idleFlow`, and `planFlow` in `band.ts` give the model:
-  three equal segments, plan, implement, and review, each a whole-number
-  fraction. Plan is full on a milestone row, implement fills by tasks (full
-  on a `review` row), review by criteria, and a section of zero items is
-  empty. The percent is `floor(100 × sum / 3)` in whole numbers. The idle
-  row has plan full and the pill `Planned`, and a `/milestone-plan` skill
-  row with no active milestone has no fill and the pill `Plan`. A milestone
-  row whose counts cannot be read, and any other skill row, keep the text
-  row. A milestone row keeps the track under any skill and chapter.
+  The flow track (M204) is the row's one progress form (M206). `flowOf`
+  and `idleFlow` in `band.ts` give the model: three equal segments, plan,
+  implement, and review, each a whole-number fraction. Plan is full on a
+  milestone row, implement fills by tasks (full on a `review` row), review
+  by criteria, and a section of zero items is empty. The percent is
+  `floor(100 × sum / 3)` in whole numbers. The pill is the phase and its
+  counts, `no tasks` or `no criteria` for zero items, or `Planned` on the
+  idle row. Its short text, the counts alone or `none`, shows when the
+  whole pill would take more than a third of the track. On the desktop the
+  track is the `Svg` element, `min(TRACK_PX (360), columns × 7)` pixels
+  wide. In the terminal `brailleSpans` in `track.ts` draws it as braille
+  cells on the theme key `userMessageBackground`: dots in `inactive` or the
+  phase's color, denser toward the fill edge, the last speck before the
+  pill in the phase's color, the pill in white bold on the phase's color,
+  and a `subtle` mark at each third past the fill edge. The operator picked
+  the shorter image track and the braille look from browser prototypes
+  (M206).
   `track.ts` builds the SVG in the look the operator chose at the M204 live
   look: a translucent gray ground, 2-pixel specks from the left edge to the
   active phase's fill edge that thicken and take the phase's color toward
@@ -322,4 +311,6 @@ within each type and are never reused.
   hooks module above cairn blocks still ends the step. The keep cases in
   `band.test.tsx` do not check their closing Stop, and no case covers the
   first gap or a session end with the mark set. Each gap leaves a wrong
-  label until the next Stop or typed prompt.
+  step until the next Stop or typed prompt, which can change the row shown
+  during `/milestone-review` or show a band hidden over a milestone row
+  (corrected M206: the band no longer draws a skill label).
