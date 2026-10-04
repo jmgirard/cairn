@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M212: Buttons on the status band
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the band draws in every adopter's session   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m212-band-buttons   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -42,7 +42,7 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: At 120 columns, while the band is drawn, the mod's `step` value
+- [x] AC1: At 120 columns, while the band is drawn, the mod's `step` value
       names no cairn skill (`knownStep` is null), and the `AbovePrompt` props
       carry `isWorking: false`, the band's first row carries a next-step
       Button (key `cairn-next`) and a status Button (key `cairn-status`). A
@@ -54,14 +54,14 @@ narrow widths before the title loses its room. A CHANGELOG entry.
       `idle-order`, and `mixed` fixtures. In `mixed` the band shows M012 and
       `recommend` names M010. Each case presses each Button. It asserts the
       `command` and `args` that a `command.run` hook beneath the mod receives.
-- [ ] AC2: The first row carries neither action Button while the `step`
+- [x] AC2: The first row carries neither action Button while the `step`
       value names a cairn skill or while `isWorking` is true, and the open
       and close Buttons stay. Evidence: two `band.test.tsx` cases on both
       surfaces over `single-in-progress`. The first case starts a cairn
       skill. It finds neither action key and finds `cairn-open` and
       `cairn-close`. It ends the step and finds both action keys again. The
       second case draws with `isWorking: true` and finds neither action key.
-- [ ] AC3: When `$.command.run` rejects, the press puts the command line
+- [x] AC3: When `$.command.run` rejects, the press puts the command line
       (`/cairn:<command> <id>` or `/cairn:milestone`) in the prompt box with
       `mode: 'append'`, so a typed draft stays. It also shows one toast that
       contains the rejection's message. Evidence: a `band.test.tsx` case on
@@ -69,7 +69,7 @@ narrow widths before the title loses its room. A CHANGELOG entry.
       throws. It asserts the `text` and `mode` that a `prompt.fill` hook
       beneath receives. It asserts the toast that a `ui.toast` hook beneath
       receives.
-- [ ] AC4: The sweep domain is every column count from 40 to 200, over each
+- [x] AC4: The sweep domain is every column count from 40 to 200, over each
       case of the M197 sweep (`each row fits the band from 40 to 200
       columns`): each fixture row drawn alone, and each `IDLE_DRAWN` idle
       row. At each point the first row carries both action Buttons, or it
@@ -79,14 +79,14 @@ narrow widths before the title loses its room. A CHANGELOG entry.
       width wherever it sits in the row. In each case the widths with both
       Buttons are one run that includes 120 and ends at 200. Evidence: a
       `band.test.tsx` sweep on both surfaces.
-- [ ] AC5: In a new desktop Code session over this repo with an active
+- [x] AC5: In a new desktop Code session over this repo with an active
       milestone, the band shows both action Buttons while idle, and a press
       of the status Button runs `/cairn:milestone`. Evidence: a live look by
       the operator.
-- [ ] AC6: The `## Unreleased` section of `CHANGELOG.md` gains one entry for
+- [x] AC6: The `## Unreleased` section of `CHANGELOG.md` gains one entry for
       the Buttons, and each behavior it states is one that the AC1 to AC3
       cases or the AC4 sweep assert.
-- [ ] AC7: The four verify-slot commands in `cairn/PROFILE.md` exit 0 on the
+- [x] AC7: The four verify-slot commands in `cairn/PROFILE.md` exit 0 on the
       review head.
 
 ## Coverage
@@ -106,21 +106,21 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Write the AC1 to AC3 cases in `hooks/status/band.test.tsx` first
+- [x] T1: Write the AC1 to AC3 cases in `hooks/status/band.test.tsx` first
       and see them red: capture presses with `command.run`, `prompt.fill`,
       and `ui.toast` hooks beneath the mod, keyed Buttons found by
       `findAll`.
-- [ ] T2: In `hooks/status/register.tsx` (the `AbovePrompt` hook, near
+- [x] T2: In `hooks/status/register.tsx` (the `AbovePrompt` hook, near
       :334), draw `cairn-next` and `cairn-status` on the first row from the
       pane value's `next` and the `step` atom and `e.props.isWorking`; a
       press runs `$.command.run`, and a rejection appends to the box and
       toasts.
       Labels are short words that the live look settles.
-- [ ] T3: In `hooks/status/band.ts`, reserve the two Buttons' columns in
+- [x] T3: In `hooks/status/band.ts`, reserve the two Buttons' columns in
       `stepLines`. Drop them at a width where the title loses its room.
       Write the AC4 sweep.
-- [ ] T4: Add the CHANGELOG entry, then run the four verify-slot commands.
-- [ ] T5: Live look (operator, approved at the question set): a new desktop
+- [x] T4: Add the CHANGELOG entry, then run the four verify-slot commands.
+- [x] T5: Live look (operator, approved at the question set): a new desktop
       Code session on the branch, idle band with both Buttons, press the
       status Button.
 
@@ -139,9 +139,63 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 - 2026-10-04: audit note, no change: the next-step press after a merge runs the next milestone's implement without the `/clear` that D-148's close block puts first; the press is the operator's own act, so the CHANGELOG entry says the press does not clear the context.
 - 2026-10-04: plan gate chose `mode: 'append'` for the fallback fill over `replace` because `replace` wipes a typed draft; falsified by a live look where the appended command does not run as typed.
 - 2026-10-04: plan gate chose fixed `cairn:<skill>` names over looking each name up in `$.command.list()` because the mod ships inside the plugin, whose skills are `cairn:<name>` (M195 lesson); falsified by an install where the band loads and a `cairn:` command is unknown (AC3's fallback then fills the box).
+- 2026-10-04: implement started on branch m212-band-buttons; the untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
+- 2026-10-04: implement chose plain Buttons labeled `Resume`, `Review`, or `Start` and `Status`, drawn only when the row is at its fullest form (track at 52 columns, or the long warning label) and the title keeps its room with them counted; plain because an idle row at 120 columns leaves 20 columns and a bracketed pair takes 24; the fullest-form rule because a post-hoc fit check showed buttons at 40 to 47 columns on an idle row and not above, which breaks AC4's one run.
+- 2026-10-04: T1 done: AC1 to AC4 cases written in `band.test.tsx`, and the M194, M197, and M199 cases that list the band's Buttons now expect the two action Buttons at 120 columns with no cairn skill running; `claude plugin test .` red by design, 77 fail (the M212 cases and those updated cases), 1000 pass.
+- 2026-10-04: T2, T3 done: `actionsFit` in `band.ts`, the `cairn-next` and `cairn-status` Buttons and the `run` press handler in `register.tsx`. The AC3 test first asserted the thrown text; the engine skips a hook that throws, so the run rejects at the bottom of the chain with "no implementation for command.run", and the test now asserts that message, the rejection the toast names.
+- 2026-10-04: check discrimination for the AC4 sweep: planting "fullest form not required" reddened 5 idle cases (buttons at 40 to 200 with gaps); planting "action columns not counted" reddened 37 AC4 cases plus the M197 and M206 sweeps; both restored, `git status` clean against 3b1d3ec.
+- 2026-10-04: T4 done: CHANGELOG entry under Unreleased > New; the AC1 cases also assert the labels it names. The audit note's "press does not clear the context" stays out of the entry, because AC6 admits only tested behavior. Verify: scripts 397 OK, hooks 174 OK, validate passed (the known CLAUDE.md warning), `claude plugin test .` 1077 pass.
+- 2026-10-04: live look 1 (operator, new desktop Code session): the Status press ran and the buttons showed, but "these look more like text than buttons". Implement dropped `plain` and gave the next-step Button `variant="primary"` and Status `variant="secondary"`; each now takes its label plus 4 columns, with no space between the two, so an idle row at 120 columns (20 columns free) still fits `Start` and `Status`. Mod tests 1077 pass; a second live look follows.
+- 2026-10-04: claim audit: 44 claims read, 3 corrected — register.tsx (the fill-catch comment named the wrong cause: a fill with no box resolves `isFilled: false`, it does not reject), band.test.tsx (two comments said cairn_next.py wrote the fixtures' `next`; gen_fixtures.py copies it and test_status_fixtures.py holds it to `recommend`).
+- 2026-10-04: claim audit re-read (same reader, one pass): the 3 corrected comments and the new `actionColumns` comment read true at 2ef5b5d.
+- 2026-10-04: live look 2: "i dont see the text or buttons now". Bracketed Buttons take 21 columns, and the fullest-form rule wanted a 52-column track beside them, about 99 columns for the M212 row, so a desktop band near 92 to 98 columns dropped them. Implement changed the rule: the row is laid out with the Buttons' columns reserved, so the track gives way down to its 12-column least width, and `actionsFit` asks only that the row has its track or long warning label and the title keeps its room. The M206 AC2 desktop sweep now draws with `isWorking: true` (the row without Buttons, whose track rule is unchanged). Mod tests 1077 pass at 22a72a0.
+- 2026-10-04: check discrimination after the change: skipping the room check reddened 26 AC4 cases plus the M197 and M206 AC3 sweeps; dropping the track-or-long-label check reddened only M194 AC1 and M199 AC1 at 40 columns, because with the track giving way first the run of widths stays unbroken, so that check no longer guards AC4 and only keeps the Buttons off a row that lost its track; both restored.
+- 2026-10-04: live look 3: the Buttons show, but "Colors clash" and "Buttons touch" (operator's screenshot: `Resume` drawn as a white primary button against the orange Implement pill, flush with `Status`). Implement gave both Buttons `variant="secondary"` and put one space between them (action columns now label + 5 each). Mod tests 1077 pass.
+- 2026-10-04: T5 done: live look 4 (operator, new desktop Code session at 26e01f2): "Looks right", both Buttons gray and spaced, the Status press still runs `/cairn:milestone` (first seen at live look 1). Verify at 26e01f2: scripts OK, hooks OK, validate passed, `claude plugin test .` 1077 pass; cairn_validate all checks passed. Status → review.
+- 2026-10-04: step-7 approval: m212-band-buttons approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Fresh evidence at 0c47939 (main 9c7afe4 unmoved), 2026-10-04:
+
+- AC1: `claude plugin test .` exit 0; the 9 cases of "the next-step and status Buttons run their commands (M212 AC1)" pass: the fixture check (resume, review, implement, review; mixed shows M012 and the next step names M010) and single-in-progress, states-review, idle-order, mixed on terminal and desktop at 120 columns, each pressing both Buttons and asserting the `command` and `args` the `command.run` hook beneath receives (`cairn:` + the fixture's next command, its id; `cairn:milestone`, empty).
+- AC2: the 4 cases of "the action Buttons hide while a cairn skill runs or a turn works (M212 AC2)" pass, on both surfaces over single-in-progress: after the `milestone-implement` skill prompt no action key, Buttons `cairn-open` and `cairn-close`, both action keys back after a Stop with nothing in flight; with `isWorking: true` no action key and the open and close Buttons.
+- AC3: the 2 cases of "a refused run appends the command line to the prompt box and toasts (M212 AC3)" pass, one per surface: with a `command.run` hook beneath that throws, the run rejects ("no implementation for command.run"); the `prompt.fill` hook beneath receives `/cairn:milestone-implement M002` then `/cairn:milestone`, each `mode: 'append'`, and the `ui.toast` hook beneath one toast per press containing that message.
+- AC4: the 38 cases of "the action Buttons give way before the title loses its room (M212 AC4)" pass: the domain check (more than 20 cases; 161 widths, 40 to 200) and the 37 cases built as the M197 sweep builds them (each fixture row alone, each `IDLE_DRAWN` idle row), each over 40 to 200 columns on both surfaces: both Buttons with the title room at or above the smaller of its width and 10 (`fixedWidth` counts each non-plain Button as label + 4), or neither and a tree equal to the `isWorking: true` drawing; the widths with Buttons one run that includes 120 and ends at 200. Two planted defects reddened it during implement (work log).
+- AC5: live looks by the operator in new desktop Code sessions on this repo with M212 active: look 1 (plain Buttons, 525dc89) the Status press ran `/cairn:milestone`; look 4 at 26e01f2, the code this head carries, the operator answered "Looks right" to "Both gray, spaced, and Status still runs" and sent a screenshot of the row at look 3 showing `Resume` and `Status` after the track.
+- AC6: `git diff main...HEAD -- CHANGELOG.md` adds one entry, "Buttons on the status band", under `## Unreleased` > `### New`. Each statement against its test: shown while no cairn skill runs and Claude is not working (AC2 cases); two buttons before the open and close buttons (`buttonKeys` order in the M194, M197, M199 cases); the next step with its milestone id and the labels `Resume`, `Review`, `Start` (AC1 cases assert labels); `Status` runs `/milestone` (AC1); a refused run appends to the prompt box and toasts (AC3); shown only where the title keeps its room (AC4 sweep).
+- AC7: at 0c47939, `python3 -m unittest discover -s scripts/tests` exit 0 (397 tests, 21 skipped); `python3 -m unittest discover -s hooks/tests` exit 0 (174); `claude plugin validate .claude-plugin/plugin.json` exit 0, its one warning the known CLAUDE.md-at-root line; `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 1077 pass, 0 fail.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; the generic profile's consistency-gate names no toolchain checks; no DESIGN principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a refused press with a draft in the box appends with no separator (`fix the typo/cairn:milestone`), which sends as prose — follow-up ("Band button follow-ons (M212 review)"); AC3 holds as written (the line is appended, the draft stays), and the path needs a refused run while a draft is typed.
+- diff-bug #2: no guard against a second press; a double click queues the skill twice — fix now, fixed 32497ef.
+- diff-bug #3: on `mixed` the `Review` label sits on the M012 row and reviews M010, and the label does not name it — follow-up (same row); AC1 pins the target, the label is a look change.
+- diff-bug #4: `Start` after a merge runs implement without the `/clear` D-148 puts first, and the CHANGELOG does not say so — fix now (CHANGELOG sentence; AC1's exact command list asserts no `/clear` runs), fixed 32497ef.
+- diff-bug #5: no test shows a press-started skill sets the band's step and hides the Buttons; the test `command.run` hook never raises `skill.prompt` — follow-up (same row); fix #2 bounds the double-run case.
+- diff-bug #6: the M206 AC2 desktop sweep now draws only the no-Button row, so the Svg width beside the Buttons is unswept — follow-up (same row).
+- diff-bug #7: Buttons are counted at terminal width (label + 4) on the desktop too, so a native button wider than that goes unseen at the narrowest widths — follow-up (same row).
+- diff-bug #8: the next-step press runs the command captured at draw time, so a press between a ROADMAP change and the redraw runs a stale command — fix now (re-read at press, as `dismiss` does), fixed 32497ef.
+- diff-bug #9: a press before the band redraws with `isWorking: true` still queues behind the turn; `isWorking` is not readable at press — follow-up (same row); fix #8 also skips a press while a cairn skill's step is set.
+- diff-bug #10: a fill that resolves `isFilled: false` still gets a toast implying the box holds the command — fix now (the toast names the command line), fixed 32497ef.
+- diff-bug #11: `$.ui.toast` is not awaited in the async `run` — fix now, fixed 32497ef.
+- diff-bug #12: AC3 asserts the engine's bottom-of-chain message only — fix now (also assert the `cairn: ` prefix and the command line), fixed 32497ef.
+- diff-bug #13: the `nextRun !== null` guard and `?? ''` can never fire — fix now (removed by fix #8's restructure), fixed 32497ef.
+- blame-history #1: the idle row's track now gives columns to the Buttons, changing M206's track rule in the default state — reject (planned change: live look 2, work log) for the rule; its test narrowing is diff-bug #6's follow-up.
+- blame-history #2: `actsAt120` mirrors `canAct` — reject (false): its expectation reads the fixture `next` written from cairn_next.py and the skill state the criterion names, not the mod's code.
+- blame-history #3: same as diff-bug #3 — follow-up.
+- blame-history #4: same as diff-bug #8 — fix now, fixed 32497ef.
+- blame-history #5: same as diff-bug #5 — follow-up.
+- blame-history #6: the idle row shows `/milestone-implement M0xx` beside a `Start` Button that runs it — follow-up (same row).
+- blame-history #7: same as diff-bug #7 — follow-up.
+- blame-history #8: `actionsFit`'s track-or-long-label check is discriminated only at 40 columns by the M194 and M199 cases — follow-up (same row).
+- blame-history #9: same as diff-bug #4 — fix now, fixed 32497ef.
+- prior-review #1: same as diff-bug #8 — fix now, fixed 32497ef.
+- prior-review #2: same as diff-bug #7 — follow-up.
+- prior-review #3: same as diff-bug #6 — follow-up.
+- prior-review #4: `secondary` Buttons not checked in light, colorblind, or ANSI themes — follow-up (same row, beside "Band label colors in other themes").
+- Fix-now evidence at 32497ef: a new case per surface holds a run and presses `cairn-next` and `cairn-status` during it, and only one run reaches beneath. Planting "no in-flight check" turned both cases red with a 5 s timeout, the second press entering the held run (the second run the case forbids); restored. AC3's toast assertion is now exact (`cairn: no implementation for command.run (/cairn:milestone-implement M002)`). The press's step check has no test: the kit presses the current drawing, which lacks the Buttons once a skill starts. Verify: scripts, hooks, validate exit 0; `claude plugin test .` 1079 pass; cairn_validate all checks passed.
+- Follow-up row, filed at post-merge hygiene with the M209 row's prune so the ROADMAP stays under 60 lines: "Band button follow-ons (M212 review)", carrying diff-bug #1, #3, #5, #6, #7, #9 and blame-history #6, #8 and prior-review #4.

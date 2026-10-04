@@ -3,7 +3,7 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
+import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { NO_ROADMAP, paneLines } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
@@ -96,6 +96,13 @@ const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 // drawn from a found ROADMAP also leaves free (M205).
 const OPEN_GLYPH = '≡'
 const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
+
+// The action Buttons (M212): the next step's label by the action that
+// scripts/cairn_next.py names, and the status Button's label and command.
+// A plugin skill runs as `cairn:<name>` (M195).
+const NEXT_LABELS: Record<string, string> = { review: 'Review', resume: 'Resume', implement: 'Start' }
+const STATUS_LABEL = 'Status'
+const STATUS_COMMAND = 'cairn:milestone'
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -286,9 +293,24 @@ export const register: Register = on => {
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
     // A row drawn from a found ROADMAP carries the pane's open button (M205).
-    const canOpen = (await read($, pane)).found
+    const { found: canOpen, next: nextStep } = await read($, pane)
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
-    const lines = stepLines(rows, current, e.props.bodyColumns, close, workable)
+    // The next-step and status Buttons (M212) show while no cairn skill's
+    // step is set and no turn is working, on a row that has room for them
+    // (band.ts `actionsFit`). The track gives up columns to them; without
+    // them the row draws as it did before M212. The next step is the
+    // pane's, which names a milestone whenever the band draws a row.
+    const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
+    const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
+    // Each action Button draws with its chrome, so the terminal draws it as
+    // `[ label ]`: its label and 4 columns. One space follows each. Both take
+    // the `secondary` look: an accent color beside the track's phase colors
+    // clashed at a live look.
+    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + 1 + width(STATUS_LABEL) + 4 + 1
+    const reserved = close + actionColumns
+    const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable) : []
+    const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
+    const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -330,6 +352,19 @@ export const register: Register = on => {
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
+          {isFirst && acts ? (
+            <Button
+              key="cairn-next"
+              variant="secondary"
+              label={nextLabel}
+              onPress={() => pressNext($)}
+            />
+          ) : null}
+          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
+          {isFirst && acts ? (
+            <Button key="cairn-status" variant="secondary" label={STATUS_LABEL} onPress={() => pressStatus($)} />
+          ) : null}
+          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && canOpen ? (
             <Button
               key="cairn-open"
@@ -397,6 +432,53 @@ async function openPane($) {
     if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
   } catch (error) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+// True while an action Button's run is in flight, so a second press, such
+// as a double click, does not queue the command again (M212 review). A
+// reload starts it over as false.
+let running = false
+
+// A press of the next-step Button reads the next step and the step as they
+// are now, not as they were drawn, as the close press does (M212 review). A
+// cairn skill that started since the drawing, or a next step that no longer
+// names a milestone, makes the press do nothing.
+async function pressNext($) {
+  if (running || knownStep(await read($, step)) !== null) return
+  const next = (await read($, pane)).next
+  if (next === null || next.id === null) return
+  await run($, `cairn:${next.command.slice(1)}`, next.id)
+}
+
+async function pressStatus($) {
+  if (running || knownStep(await read($, step)) !== null) return
+  await run($, STATUS_COMMAND, '')
+}
+
+// An action Button's command runs as if the person typed it (M212). A run
+// that rejects puts the command line after the prompt box's draft, so the
+// person can send it, and a toast says why and names the command line, for
+// a box that could not take it.
+async function run($, command: string, args: string) {
+  running = true
+  try {
+    await $.command.run({ command, args })
+  } catch (error) {
+    const text = args === '' ? `/${command}` : `/${command} ${args}`
+    try {
+      await $.prompt.fill({ text, mode: 'append' })
+    } catch {
+      // A fill that rejects leaves the draft as it was; the toast still
+      // names the refusal.
+    }
+    try {
+      await $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)} (${text})`)
+    } catch {
+      // No toast shows; the press has nothing else to say.
+    }
+  } finally {
+    running = false
   }
 }
 
