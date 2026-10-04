@@ -5460,3 +5460,24 @@ them, as do D-146's narrowing of M177's grading for the up-front read and
 its annotation of D-145. The follow-on items of RR15, RR16, and the review passes get no
 candidate row. A later proposal to approve a merge before the diff exists
 starts from this entry and RR16.
+
+### D-148 (2026-10-04): A merge ends the run, and the plan's next milestone starts from its typed command after a `/clear` — supersedes D-144's clause that review invokes the next workable milestone of the same plan (hotfix)
+
+**Context:** D-144 let a run go on after a merge to the next workable
+milestone of the same plan, through a Skill-tool call, and rejected a stop
+after each merge. In use, the user found that a fresh context for each
+milestone is worth one typed command.
+
+**Decision:** At the user's choice of 2026-10-04, taken as a hotfix by
+user override, a merge ends the run. `/milestone-review` step 10 still
+finds the plan's next workable milestone from the plan commit's subject,
+and the close block fences `/clear` and `/milestone-implement <id>` for it
+as the primary next command. Implement reads the question set's grants
+from the work log, so the plan's question set still covers that milestone
+and no new one is asked. Rejected: a chip after the merge that asks
+whether to go on, because the close block already hands over and a chip
+adds a stop with no choice the typed command lacks.
+
+**Consequences:** A run is one milestone: the plan question set, implement,
+review, and the merge question. The rest of D-144 stands. A later proposal
+to go on past a merge starts from this entry.

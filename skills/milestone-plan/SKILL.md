@@ -362,7 +362,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    commit files + rows together, directly to main, no branch, no PR
    (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`, naming every
    milestone ID the plan created, since `/milestone-review` step 10 reads
-   this subject to find the next milestone of the run; push. A session
+   this subject to find the next milestone of the plan; push. A session
    dying mid-plan must not leave a half-planned ghost.
    **Guest arm** (tracking-rules "Collaboration mode"): in guest mode there
    is no plan commit and no push — the milestone files and ROADMAP rows are
@@ -375,7 +375,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    through the Skill tool for the first workable milestone this plan
    created: status `planned`, every `Depends on:` milestone `done`, in
    ROADMAP order. The run goes on from there with no further question until
-   the merge question.
+   the merge question. The merge ends the run, and each later milestone of
+   the plan starts from its typed command after a `/clear`.
    **Close block instead** when another milestone is `in-progress`, when the
    user asked for a plan alone, or when no milestone of the plan is workable
    (a release parked as `blocked`, an unmet dependency): recap (the plan

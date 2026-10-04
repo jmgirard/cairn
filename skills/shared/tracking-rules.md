@@ -342,7 +342,7 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 ## Context hygiene
 
 Stateless resume makes conversation context disposable. Only the user can `/clear`. Skills mark the seams in their
-recaps and never assume continuation. A run (next section) crosses phase and milestone seams in one session. At each
+recaps and never assume continuation. A run (next section) crosses phase seams in one session, and a merge ends it. At each
 seam everything load-bearing is on disk: the plan commit, a checkpoint commit, the post-merge hygiene commit. The next
 skill re-reads its state from those files, never from recall, and gathers its evidence by command; review runs its
 reviewers in fresh subagents. **Stop points are commit points are safe-clear points**: never tidy mid-task. Finish the
@@ -355,8 +355,8 @@ so fix the file.
 ## Question gates and phase closes
 
 A milestone **run** is one `/milestone-plan` question set, then `/milestone-implement`, `/milestone-review`, and the
-merge, each skill invoking the next through the Skill tool. After a merge, the run goes on to the next workable
-milestone that the same plan created. User interaction in a run happens at two gates, each a single exchange whose chip
+merge, each skill invoking the next through the Skill tool. A merge ends the run: the next workable milestone that the
+same plan created starts from its typed command after a `/clear` (D-148). User interaction in a run happens at two gates, each a single exchange whose chip
 is posed in the same turn as its presentation (the Mandated-substance rule below):
 
 - **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a
@@ -399,9 +399,8 @@ notices itself inviting the user to redirect it or offering to wait deletes that
 decision that is not on the stop list is decided, recorded in a work-log line, and acted on. Nothing here overrides
 confirmation before a risky or destructive action.
 
-Inside a run, a phase ends with a call to the next skill through the Skill tool: plan to implement, implement to
-review, and review to the implement phase of the next workable milestone of the same plan. The **close block** ends
-the run: at a stop on the list above, after a merge that leaves no workable milestone of the plan, and at the end of a
+Inside a run, a phase ends with a call to the next skill through the Skill tool: plan to implement, and implement to
+review. The **close block** ends the run: at a stop on the list above, after every merge, and at the end of a
 skill outside the run. It is never a chip. The turn's final rendered text carries: an outcome recap (one or two
 sentences, plain words); a status table or line (unit of work, status, branch/PR and check results, where they exist);
 where the unit of work has a branch or an open PR, a **CI line**, one plain-language sentence stating whether the
@@ -416,7 +415,8 @@ course or `/clear` are both safe at this point. No chip is posed to route to the
 command, and the block's fixed shape is itself the signal that a boundary was reached. Decision chips, the merge
 question and the stops above among them, are unaffected: a gate is a choice, and a close is a handoff. Outside a run,
 a decision arising mid-skill (a continue-or-stop choice, an acceptance over a produced proposal) is a gate and keeps
-its chip. The close that ends a run after a merge recommends `/clear` plus the next action.
+its chip. The close that ends a run after a merge recommends `/clear` plus the next action. If the same plan
+has a next workable milestone, that action is `/milestone-implement <id>`.
 
 ## Output & interaction discipline
 

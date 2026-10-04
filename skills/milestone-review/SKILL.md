@@ -22,9 +22,8 @@ the consistency gate, the independent review, the merge question, post-merge
 hygiene (session start implicit).
 Inside a run (tracking-rules "Question gates and phase closes") review poses
 `AskUserQuestion` only at the merge question and at a stop on the rulebook's
-list. It settles every finding itself (step 5) and, after the merge, invokes
-`/milestone-implement` for the next workable milestone of the same plan
-(step 10).
+list. It settles every finding itself (step 5). A merge ends the run, and
+the close block names the plan's next workable milestone (step 10).
 
 ## Session start
 
@@ -412,10 +411,7 @@ re-enters here, at the step the record shows is next:
    their opening text after any date (a line that only quotes a prefix
    is not counted), so no
    promise changed in the run
-   reaches the merge unseen. Where the run merged an earlier milestone of
-   the same plan, the chip's question text also cites that milestone's
-   archive summary path, which holds the records step 9 previewed before
-   its handoff (tracking-rules, Mandated-substance rule). With a Driving RR:
+   reaches the merge unseen. With a Driving RR:
    repeat the measured-vs-projected pairs in the merge chip's question text, compact, and verbatim in the chat above, and a shortfall past the milestone's stated tolerance (an unstated
    tolerance is strict — any shortfall counts) adds an explicit chip option
    **"accept shortfall, recorded as such"** — the maintainer decides seeing
@@ -680,9 +676,10 @@ re-enters here, at the step the record shows is next:
    recap leads with what shipped, in plain words; hygiene mechanics
    compress to one line.
 
-10. **The next milestone of the plan, or the close block — no chip.**
-    (tracking-rules "Question gates and phase closes".) After the step-9
-    hygiene commit lands (guest arm: after its on-disk pass), find the plan this milestone came from: the
+10. **The close block — no chip.**
+    (tracking-rules "Question gates and phase closes".) A merge ends the run (D-148):
+    review never invokes the next milestone, so it starts in a fresh context.
+    After the step-9 hygiene commit lands (guest arm: after its on-disk pass), find the plan this milestone came from: the
     newest default-branch commit whose subject reads `plan M<NNN>[, M<NNN>…]: …`
     and names this milestone's id (`git log --format=%s --grep='^plan '
     <default-branch>`, newest first; `/milestone-plan` step 6 names every id
@@ -690,14 +687,10 @@ re-enters here, at the step the record shows is next:
     ROADMAP order as `/milestone-plan` step 7 picks it, the first other id
     in that subject whose ROADMAP status is `planned` and whose `Depends
     on:` milestones are all `done`, with no milestone `in-progress`. If one
-    exists, state in one or two sentences what shipped, then invoke
-    `/milestone-implement <next-id>` through the Skill tool: the run goes on
-    with no new question set. In guest mode steps 9–10 run later, after the
-    maintainers merge (step 8's guest arm); that is not a run, so step 10
-    takes the close block. A release-window advisory from step 9 (see the
-    displacement clause below) or any stop also ends the run.
-    **Otherwise the close block ends the run.** M<NNN> is archived and all
-    state is on disk, so the natural next step is a fresh context: run
+    exists, the close block fences `/clear`, then `/milestone-implement <next-id>` as the primary
+    next command, labeled as the plan's next milestone. Its question set
+    already ran, so no new one is asked.
+    Otherwise run
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_next.py"` and take the
     next action from its recommendation. The recap leads with what shipped
     and lists each finding that went to a candidate row, the status line

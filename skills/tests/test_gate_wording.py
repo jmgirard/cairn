@@ -52,13 +52,13 @@ class TestMergeGateIsAChip(unittest.TestCase):
 class TestPhaseCloseBlock(unittest.TestCase):
     def test_rule_states_close_block_never_a_chip(self):
         # M202 (D-144): the close block ends the run (not every phase), and
-        # is still never a chip.
+        # is still never a chip. Hotfix 2026-10-04 (D-148): every merge
+        # ends the run.
         text = read("shared", "tracking-rules.md").lower()
         self.assertRegex(
             text,
             r"the \*\*close block\*\* ends\s+the run: at a stop on the list "
-            r"above, after a merge that leaves no workable milestone of the "
-            r"plan",
+            r"above, after every merge",
         )
         self.assertIn("skill outside the run. it is never a chip.", text)
 

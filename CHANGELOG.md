@@ -176,9 +176,10 @@
   rejects a finding that is false, a style or linter item, or a complaint
   about a planned change, with the reason. It fixes a real finding inside
   the milestone's scope on the branch, and it sends the rest to candidate
-  rows. The merge question lists each finding's outcome. After a merge,
-  review starts the next milestone of the same plan that is ready to
-  start. Between the two questions the run stops only for a short list in
+  rows. The merge question lists each finding's outcome. A merge ends the
+  run. The closing message gives `/clear` and the command that starts the
+  next milestone of the same plan, so each milestone starts in a fresh
+  context. Between the two questions the run stops only for a short list in
   the rulebook, such as needing your eyes or hands, an action the question
   set did not cover, repeated review failures, or a CI wait that times
   out. Typing `/milestone-implement` or `/milestone-review` with the

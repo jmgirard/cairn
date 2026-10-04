@@ -35,8 +35,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   the session on Fable (D-014).
 - The milestone run (M202): `/milestone-plan` asks the one question set,
   then invokes `/milestone-implement` through the Skill tool, which invokes
-  `/milestone-review`; review asks the merge question and, after the merge,
-  invokes implement for the next workable milestone of the same plan. The
+  `/milestone-review`; review asks the merge question, and the merge ends
+  the run. The close block names the plan's next workable milestone, which
+  the user starts after a `/clear` (D-148). The
   agent decides everything else with a work-log line and stops only at the
   rulebook's closed stop list. The three skills stay separate, so typed
   `/milestone-implement` or `/milestone-review` resumes a stopped run.

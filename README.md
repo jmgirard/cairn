@@ -259,11 +259,12 @@ flowchart LR
     implement --> review["/milestone-review (merge question)"]
     review --> merged["merged"]
     review -->|criteria unmet| implement
-    merged -->|next milestone of the plan| implement
+    merged -->|/clear, then the next milestone of the plan| implement
 ```
 
-Each skill starts the next one itself. After a merge, the run goes on to the
-next milestone of the same plan that is ready to start. Between the two
+Each skill starts the next one itself, up to the merge. A merge ends the run.
+The closing message gives `/clear` and the command that starts the next
+milestone of the same plan, so each milestone starts in a fresh context. Between the two
 questions Claude stops only for a short list of reasons: it needs your eyes
 or hands, an action the question set did not cover, a goal found wrong,
 repeated review failures, a CI wait that times out, and a few others that
