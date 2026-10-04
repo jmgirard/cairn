@@ -6,9 +6,12 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // /milestone-review runs and one exists, else the first `in-progress` row,
 // else the first `review` row. With no active row, it shows the idle row
 // for the first workable planned milestone, whether or not a cairn skill
-// runs, and with none workable, the empty row (M213). Its left side is the bold id and the title. Its right side is the
+// runs, and with none workable, the empty row where a ROADMAP is found
+// (M213). A milestone or idle row's left side is the bold id and the
+// title, and the empty row's is its text alone. Its right side is the
 // flow track and its percent, the idle row's track and command, or a
-// warning label for a row whose counts cannot be read. The track draws as
+// warning label for a row whose counts cannot be read, and on the empty
+// row nothing but the Buttons register.tsx adds. The track draws as
 // an image on the desktop and as braille cells in the terminal (track.ts),
 // at the width the row leaves it.
 

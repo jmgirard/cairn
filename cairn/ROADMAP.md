@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M213 | A Plan button on the empty band | in-progress | — | normal | milestones/M213-band-plan-row.md |
+| M213 | A Plan button on the empty band | review | — | normal | milestones/M213-band-plan-row.md |
 | M211 | Run edge cases in the skills | done | — | normal | milestones/archive/M211-run-edges.md |
 | M212 | Buttons on the status band | done | — | normal | milestones/archive/M212-band-buttons.md |
 ## Candidates

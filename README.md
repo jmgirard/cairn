@@ -199,8 +199,9 @@ to `review`, or a milestone that becomes active or leaves both statuses,
 shows the band again. A cairn skill that starts or ends keeps it hidden,
 unless `/milestone-review` moves the band to another row, a `review` row
 when an `in-progress` row would show without it. A hidden idle row shows
-again when another milestone takes its place. A hidden empty row shows
-again when a milestone becomes active or workable. A checked box or an edited title does not bring the band back. A
+again when another milestone takes its place, or when no milestone is
+workable any more and the empty row takes its place. A hidden empty row
+shows again when a milestone becomes active or workable. A checked box or an edited title does not bring the band back. A
 session end shows a hidden band again, whatever its reason. In the desktop
 app, a `/clear` stops the session, and the band draws again at your next
 message. If the band finds the ROADMAP but cannot read it, or the file is

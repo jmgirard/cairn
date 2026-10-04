@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M213: A Plan button on the empty band
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -119,7 +119,7 @@ follow-ons (M212 review)".
       M195: a session keeps the mod it loaded at start), and record what
       they saw in one work-log line. A change the look asks for is made
       here, with its tests.
-- [ ] T4: Docs. README's band section and the DESIGN paragraph per AC5,
+- [x] T4: Docs. README's band section and the DESIGN paragraph per AC5,
       plus the DESIGN `hooks/status/` lineage line (`… and the empty-band
       row in M213`). CHANGELOG `## Unreleased` entry under `### New`. Run
       the claim audit over the branch-added prose claims. Run all four
@@ -142,6 +142,9 @@ follow-ons (M212 review)".
 - 2026-10-04: T1 done: `band.ts` gains `emptyLines` (key `plan-row`, no id, text `No milestone ready`), a `found` argument to `stepLines`, a zero-width head for an empty id, and the empty row in `actionsFit`; two unit cases in `band.test.tsx` (the row by `found`, and the fit at 37 but not 36 columns with 25 reserved). Minor amendment: the rewrites of drawn cases that assert an empty band draws nothing move to T2, since they need the drawing. `claude plugin test .` 1081 pass.
 - 2026-10-04: T2 done: `register.tsx` draws the empty row when the pane state's `found` is true, labels the planning step `Plan`, runs a planning press with empty args, and draws no head Box for an empty id; `mark` and `same` needed no change (the AC4 case passes on them). Tests: new describes for AC1 (2 fixtures plus 2 `noneWorkable` copies, with and without a skill), AC2/AC3 (press, hide, refusal, in-flight), and AC4; the empty rows join the M197 and M212 width sweeps, the latter requiring the Buttons at all 161 widths; 10 cases that asserted an empty band rewritten. Planted defects went red for their reasons: a press that returns on a null id (8 fail, `commands` undefined), and `actionsFit` without the empty row (20 fail, "empty row Buttons at 0 of 161 widths"). All four verify checks exit 0, `claude plugin test .` 1103 pass.
 - 2026-10-04: T3 done: the operator found opening a session in a scratch folder annoying; the look ran instead in a new desktop Code session in `/Users/jmgirard/github/bsync`, a cairn repo with nothing workable (the plugin is a symlink to this checkout, so the session loaded the branch). The operator reported the band reads `No milestone ready` with Plan, Status, the pane button, and the close button, and looks right. No change asked for.
+- 2026-10-04: T4 done: README's band section (the opening sentence, a new empty-row paragraph replacing "the band draws nothing", and the close button's re-show rule), DESIGN's `hooks/status/` paragraph (lineage, the right-group sentence, and the empty-row description replacing "With an empty list the band draws nothing"), and a CHANGELOG `### New` entry.
+- 2026-10-04: claim audit: 34 claims read, 5 corrected — README.md (a hidden idle row also shows again as the empty row), CHANGELOG.md (session end re-shows; the `cairn:` command names), cairn/DESIGN.md (session end re-shows), hooks/status/band.ts (header comment: the empty row needs a found ROADMAP and has no id).
+- 2026-10-04: implement complete: all four verify checks exit 0 at the head (`claude plugin test .` 1103 pass); status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

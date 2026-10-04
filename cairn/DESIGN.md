@@ -170,7 +170,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   Buttons on the empty row while its text keeps `TEXT_ROOM`, which with
   both Buttons, the open button, and the close button is 37 columns or
   more. `mark` stores no ids and a null idle id for it, so a press hides it
-  until a row becomes active or workable. With no ROADMAP found, the band
+  until a row becomes active or workable, or the session ends. With no ROADMAP found, the band
   draws nothing.
   The flow track (M204) is the row's one progress form (M206). `flowOf`
   and `idleFlow` in `band.ts` give the model: three equal segments, plan,
