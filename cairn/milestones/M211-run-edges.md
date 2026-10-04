@@ -134,3 +134,30 @@ Evidence, 2026-10-04, branch head 319a0be, main unmoved at c9d302d:
 - AC4: §7 defines the title and group, direct references only, two or more distinct milestones, and the chip for the group. Review step 9 (:632-637) tests the group and names the older title in double quotes. The `/milestone` §2 bullet (:120-125) states the same group and trigger and cites §7 for the rest. `wc -l -c` prints 54 / 3200, under 55 and 4,000. Pass.
 - AC5: `python3 -m unittest discover -s scripts/tests` exit 0 (397, OK, 21 skipped); `-s hooks/tests` exit 0 (174 OK); `claude plugin validate` exit 0 (passed with warnings); `claude plugin test .` exit 0 (1024 pass, 0 fail). Pass.
 - Gate: `cairn_validate.py` all checks passed. `generic` profile has no toolchain checks. No principle changed, so no impact report. skills/tests (hand-run, non-gating) holds the baseline 4 reds and 1 error.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: a group forms only when a row quotes the exact title, and only step 9's already-absorbing branch said to quote it, so rows filed earlier never group (ROADMAP's "Band follow-ons" quotes "Desktop track follow-ons" without its "(M204 review)") — fix now: step 9 now has every cross-referencing row it files quote the exact title after its own `: `, fixed 2ef61b7. Judged not floor-qualifying: AC4 holds as written and the gap is one missing instruction.
+- diff-bug #2: the second-occurrence stop now reads only executed amendments, so a routed return whose amendment never runs does not count — follow-up: this is the falsifier the plan gate recorded and D-150 states. It goes to the new candidate row at hygiene.
+- diff-bug #3: implement step 1 reads only `review return <n>:`, so a cold resume does not read `amendment routed:` — follow-up (the gap predates M211; review invokes implement in the same session), new candidate row.
+- diff-bug #4: step 9 and triage tested only a row's own group, but §7 bars extending any row of a firing group, and overlapping groups can draw several chips over the same rows — fix now for membership (step 9 and triage now say "belongs to a finding-absorbing group"), fixed 2ef61b7. Overlapping chips go to the new candidate row as a follow-up.
+- diff-bug #5: a quoted reference placed before the new row's own `: ` puts quotes in its title — fix now: §7 and step 9 place it after the row's own `: `, fixed 2ef61b7.
+- diff-bug #6: §7 did not say "exact" — fix now, fixed 2ef61b7.
+- diff-bug #7: the stop matches on `AC<N>` alone, which a renumbering amendment shifts — follow-up (predates M211), new candidate row.
+- diff-bug #8: no D-entry records T1's or T2's narrowing — fix now: D-150 annotates D-097 and narrows D-144's lead clause, fixed 2ef61b7.
+- diff-bug #9: no CHANGELOG entry for a user-facing milestone — fix now: Unreleased Fixes entry, fixed 2ef61b7.
+- diff-bug #10: the module budget header dropped the stated headroom and the retrofit date — fix now: both restored, ledger compressed to stay at 54 lines / 3,175 bytes, fixed 2ef61b7.
+- diff-bug #11: "`/milestone` goes first" was unclear next to the `/clear` fence — fix now: "first after `/clear`", fixed 2ef61b7.
+- diff-bug #12: the `/milestone` §2 bullet omitted "direct references only" and mixed row and group — fix now, fixed 2ef61b7.
+- diff-bug #13: a row with no `: ` has no defined title — follow-up, new candidate row.
+- blame-history #1: two behavior changes had no D-entry, against D-097's and D-144's wording — fix now, same as diff-bug #8, fixed 2ef61b7.
+- blame-history #2: `amendment routed:` adds a line type where M130 already meant implement to be the writer — reject (planned change): the plan gate chose one writer plus a routed line, with its falsifier logged.
+- blame-history #3: exact-quote grouping misses real rows, and triage rewrites can change a title and dissolve a group — fix now for the filing gap (as diff-bug #1), fixed 2ef61b7. Triage rewrites go to the new candidate row as a follow-up.
+- blame-history #4: the baseline re-seed sits oddly beside the retained "only when a later pass changes the file" clause — reject (planned change): AC1 calls for this catch-up, and the skill line and test comment name it as one.
+- blame-history #5: step 10 cited `/milestone` §3 for the plan-next case §3 does not state — fix now: the cite is scoped to `cairn_next`'s recommendation, fixed 2ef61b7.
+- blame-history #6: the budget header lost D-122's headroom wording — fix now, same as diff-bug #10, fixed 2ef61b7.
+- blame-history #7: the §2 compression left the IP4 rationale thinner — reject (style): the rule and its scope are unchanged.
+- prior-review #1: the new step 9, step 10, and §7 rules have no prose pins — reject (planned change): the plan scoped pin work to the pins that quote changed text, and the suite gates nothing (D-109).
+- prior-review #2: the Review section lacked a per-finding list — reject (false): this list is that record.
+- prior-review #3: "review poses no chip for it" disagrees with M160's parking chip — reject (false): D-144 moved the parking offer to the close block, and the text is not changed by this branch.
+- Re-check after fixes: verify clean (397 and 174 OK, validate passes, plugin test 1024 pass), `cairn_validate.py` all checks passed, `wc -l -m` of the rulebook still 626 / 59322 (AC1 holds), records-hygiene 54 / 3175 (AC4 holds), skills/tests at baseline.
