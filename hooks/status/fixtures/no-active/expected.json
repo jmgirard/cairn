@@ -1,5 +1,7 @@
 {
   "cwd": "",
   "workable": ["M021"],
-  "rows": []
+  "rows": [],
+  "pane": [],
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []}
 }

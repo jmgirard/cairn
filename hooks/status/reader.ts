@@ -6,8 +6,9 @@
 // and `workable` in scripts/cairn_next.py over the rows `cairn_scripts.rows`
 // parses (its Depends-on cells through `parse_depends`), with what
 // `workable` reaches through `done_ids` and `_workable` (`canon_id`,
-// `archive_files`, and `sort_by_priority` with its `id_num`). The
-// mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
+// `archive_files`, and `sort_by_priority` with its `id_num`). For the cairn
+// pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
+// (M205). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
 // and `\d` also take other Unicode digits, so an id such as `M００５７`
 // reads differently in the two.
 // hooks/status/reader.test.ts holds this reader, and
@@ -54,6 +55,13 @@ export type Fixture = {
   rows: BandRow[]
   // The ordered ids of the workable planned rows, as cairn_next.py lists them.
   workable: string[]
+  // The pane's milestones, and `recommend` with `waiting` beside it, as
+  // scripts/tests/test_status_fixtures.py computes them; `next` is null
+  // with no ROADMAP (M205).
+  pane: PaneMilestone[]
+  next: (NextStep & { waiting: WaitingRow[] }) | null
+  // Paths that stat as files but whose read fails in the tests.
+  unreadable: string[]
 }
 
 export const ACTIVE: readonly string[] = ['in-progress', 'review']
@@ -240,12 +248,20 @@ export async function findRoot(source: FileSource, cwd: string): Promise<string 
 // found but cannot be read (M200). `read_roadmap` in
 // scripts/cairn_scripts.py reads an unreadable ROADMAP as empty instead.
 export async function loadBand(source: FileSource): Promise<BandState | null> {
+  const loaded = await loadCairn(source)
+  return loaded === null ? null : loaded.band
+}
+
+// The band's state and the pane's from one read of the files (M205). Null
+// when a ROADMAP is found but cannot be read.
+export async function loadCairn(source: FileSource): Promise<{ band: BandState; pane: PaneState } | null> {
   const root = await findRoot(source, await source.cwd())
-  if (root === null) return { rows: [], workable: [] }
+  if (root === null) return { band: { rows: [], workable: [] }, pane: NO_PANE }
   const roadmap = await source.read(join(root, 'cairn/ROADMAP.md'))
   if (roadmap === null) return null
   const parsed = parseRoadmapRows(roadmap)
   const out: BandRow[] = []
+  const milestones: PaneMilestone[] = []
   for (const row of parsed) {
     if (!ACTIVE.includes(row.status)) continue
     // A regular file only, as Python's os.path.isfile: a path to a pipe or
@@ -254,8 +270,121 @@ export async function loadBand(source: FileSource): Promise<BandState | null> {
     const text = (await source.isFile(path)) ? await source.read(path) : null
     const fields = text === null ? NO_FILE : fileFields(text)
     out.push({ id: row.id, title: row.title, status: row.status, ...fields })
+    milestones.push({ id: row.id, title: row.title, status: row.status, file: text === null ? null : paneFile(text) })
   }
-  return { rows: out, workable: workableRows(parsed, await archivedIds(source, root)) }
+  const archived = await archivedIds(source, root)
+  const workable = workableRows(parsed, archived)
+  return {
+    band: { rows: out, workable },
+    pane: {
+      found: true,
+      milestones,
+      next: recommend(parsed, workable),
+      workable,
+      waiting: waitingRows(parsed, archived),
+    },
+  }
+}
+
+// The cairn pane's state (M205): the active milestones in full, and the
+// queue that scripts/cairn_next.py prints. `found` is false when no ROADMAP
+// is found.
+export type PaneState = {
+  found: boolean
+  milestones: PaneMilestone[]
+  next: NextStep | null
+  workable: WorkableRow[]
+  waiting: WaitingRow[]
+}
+
+export type PaneItem = { text: string; checked: boolean }
+
+// `file` is null when the milestone file is missing or its read fails.
+export type PaneMilestone = {
+  id: string
+  title: string
+  status: string
+  file: { goal: string; tasks: PaneItem[]; criteria: PaneItem[]; log: string[] } | null
+}
+
+// `recommend` in scripts/cairn_next.py: `id` is null for planning.
+export type NextStep = { action: string; command: string; id: string | null }
+
+// `waiting` in scripts/cairn_next.py: `unmet` holds each undone dependency
+// as written, with its row's status or `unknown`.
+export type WaitingRow = { id: string; title: string; unmet: string[] }
+
+export const NO_PANE: PaneState = { found: false, milestones: [], next: null, workable: [], waiting: [] }
+
+// How many work-log lines the pane shows, newest last.
+export const LOG_LINES = 5
+
+const COMMENT = /<!--[\s\S]*?-->/g
+const ITEM_BOX = /^\s*-\s*\[[ xX]\]\s*/
+const LOG_ITEM = /^- /
+
+// A section's lines with HTML comments removed, as the template's owner
+// notes are.
+function sectionText(text: string, heading: string): string[] {
+  return splitLines(sectionBody(text, heading).join('\n').replace(COMMENT, ''))
+}
+
+// A section's checkbox items. A non-blank indented line that is not itself
+// an item continues the item above it, so a wrapped task reads whole.
+export function sectionItems(text: string, heading: string): PaneItem[] {
+  const items: PaneItem[] = []
+  let current: PaneItem | null = null
+  for (const line of sectionText(text, heading)) {
+    if (AC_ITEM.test(line)) {
+      current = { text: line.replace(ITEM_BOX, ''), checked: CHECKED.test(line) }
+      items.push(current)
+    } else if (current !== null && /^\s/.test(line) && line.trim() !== '') {
+      current.text = `${current.text} ${line.trim()}`
+    } else {
+      current = null
+    }
+  }
+  return items
+}
+
+function paneFile(text: string) {
+  return {
+    goal: sectionText(text, 'Goal').join('\n').trim(),
+    tasks: sectionItems(text, 'Tasks'),
+    criteria: sectionItems(text, 'Acceptance criteria'),
+    log: sectionText(text, 'Work log')
+      .filter(line => LOG_ITEM.test(line))
+      .slice(-LOG_LINES)
+      .map(line => line.replace(LOG_ITEM, '')),
+  }
+}
+
+// `recommend` in scripts/cairn_next.py, over the rows and the workable list.
+export function recommend(rows: RoadmapRow[], workable: WorkableRow[]): NextStep {
+  const review = rows.find(row => row.status === 'review')
+  if (review !== undefined) return { action: 'review', command: '/milestone-review', id: review.id }
+  const active = rows.find(row => row.status === 'in-progress')
+  if (active !== undefined) return { action: 'resume', command: '/milestone-implement', id: active.id }
+  if (workable.length > 0) return { action: 'implement', command: '/milestone-implement', id: workable[0].id }
+  return { action: 'plan the next milestone', command: '/milestone-plan', id: null }
+}
+
+// `waiting` in scripts/cairn_next.py: the planned rows with a dependency
+// not yet done, in ROADMAP order. A later row with the same id wins the
+// status lookup, as the Python dict does.
+export function waitingRows(rows: RoadmapRow[], archived: string[]): WaitingRow[] {
+  const done = new Set([...rows.filter(row => row.status === 'done').map(row => canonId(row.id)), ...archived])
+  const byId = new Map<string, RoadmapRow>()
+  for (const row of rows) byId.set(canonId(row.id), row)
+  const out: WaitingRow[] = []
+  for (const row of rows) {
+    if (row.status !== 'planned') continue
+    const unmet = parseDepends(row.depends)
+      .filter(dep => !done.has(canonId(dep)))
+      .map(dep => `${dep} (${byId.get(canonId(dep))?.status ?? 'unknown'})`)
+    if (unmet.length > 0) out.push({ id: row.id, title: row.title, unmet })
+  }
+  return out
 }
 
 // The names directly under `dir` in a set of absolute file paths: a file's
@@ -267,12 +396,14 @@ export function listNames(paths: string[], dir: string): string[] | null {
   return names.size === 0 ? null : [...names]
 }
 
-// An in-memory file source over absolute paths, for the tests.
-export function memorySource(files: Record<string, string>, cwd: string): FileSource {
+// An in-memory file source over absolute paths, for the tests. A path in
+// `unreadable` stats as a file, and its read fails.
+export function memorySource(files: Record<string, string>, cwd: string, unreadable: string[] = []): FileSource {
   return {
     cwd: async () => cwd,
     isFile: async path => Object.prototype.hasOwnProperty.call(files, path),
-    read: async path => (Object.prototype.hasOwnProperty.call(files, path) ? files[path] : null),
+    read: async path =>
+      Object.prototype.hasOwnProperty.call(files, path) && !unreadable.includes(path) ? files[path] : null,
     list: async dir => listNames(Object.keys(files), dir),
   }
 }

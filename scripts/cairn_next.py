@@ -31,31 +31,49 @@ def workable(root, rows):
     return _workable(rows, done_ids(root, rows))
 
 
-def render(root):
-    rows = cs.rows(cs.read_roadmap(root))
+def recommend(root, rows):
+    """The single recommended action, in precedence order: the first review
+    row, else the first in-progress row, else the first workable row, else
+    planning. A dict of `action`, `command`, and `id` (None for planning).
+    The cairn pane (hooks/status/reader.ts) mirrors this (M205)."""
+    review = [r for r in rows if r["status"] == "review"]
+    in_progress = [r for r in rows if r["status"] == "in-progress"]
+    ready = workable(root, rows)
+    if review:
+        return {"action": "review", "command": "/milestone-review", "id": review[0]["id"]}
+    if in_progress:
+        return {"action": "resume", "command": "/milestone-implement", "id": in_progress[0]["id"]}
+    if ready:
+        return {"action": "implement", "command": "/milestone-implement", "id": ready[0]["id"]}
+    return {"action": "plan the next milestone", "command": "/milestone-plan", "id": None}
+
+
+def waiting(root, rows):
+    """Planned rows with a dependency not yet done, in ROADMAP order. Each is
+    a dict of `id`, `title`, and `unmet`, the undone dependencies as written,
+    each with its row's status or `unknown`. The cairn pane mirrors this
+    (M205)."""
     by_id = {cs.canon_id(r["id"]): r for r in rows}
     done = done_ids(root, rows)
+    return [
+        {"id": r["id"], "title": r["title"], "unmet": _unmet_list(r, done, by_id)}
+        for r in rows
+        if r["status"] == "planned" and not _deps_done(r, done)
+    ]
+
+
+def render(root):
+    rows = cs.rows(cs.read_roadmap(root))
     lines = [f"cairn next — {root}", ""]
 
-    in_progress = [r for r in rows if r["status"] == "in-progress"]
-    review = [r for r in rows if r["status"] == "review"]
     blocked = [r for r in rows if r["status"] == "blocked"]
 
     ready = workable(root, rows)
 
-    # Single recommended action, in precedence order.
-    if review:
-        r = review[0]
-        rec = f"review {r['id']} → /milestone-review {r['id']}"
-    elif in_progress:
-        r = in_progress[0]
-        rec = f"resume {r['id']} → /milestone-implement {r['id']}"
-    elif ready:
-        r = ready[0]
-        rec = f"implement {r['id']} → /milestone-implement {r['id']}"
-    else:
-        rec = "plan the next milestone → /milestone-plan"
-    lines.append(f"Recommended: {rec}")
+    rec = recommend(root, rows)
+    target = f"{rec['command']} {rec['id']}" if rec["id"] else rec["command"]
+    label = f"{rec['action']} {rec['id']}" if rec["id"] else rec["action"]
+    lines.append(f"Recommended: {label} → {target}")
     lines.append("")
 
     lines.append("Workable planned (dependencies satisfied):")
@@ -65,11 +83,11 @@ def render(root):
     else:
         lines.append("  none")
 
-    stuck = [r for r in rows if r["status"] == "planned" and not _deps_done(r, done)]
+    stuck = waiting(root, rows)
     if stuck:
         lines.append("Blocked by dependencies:")
         for r in stuck:
-            lines.append(f"  {r['id']} — {_unmet(r, done, by_id)}")
+            lines.append(f"  {r['id']} — waiting on " + ", ".join(r["unmet"]))
 
     if blocked:
         lines.append("Externally blocked (see work-log):")
@@ -88,7 +106,7 @@ def _workable(rows, done):
     )
 
 
-def _unmet(row, done, by_id):
+def _unmet_list(row, done, by_id):
     parts = []
     for dep in row["depends"]:
         dep_c = cs.canon_id(dep)
@@ -96,7 +114,7 @@ def _unmet(row, done, by_id):
             continue
         state = by_id[dep_c]["status"] if dep_c in by_id else "unknown"
         parts.append(f"{dep} ({state})")
-    return "waiting on " + ", ".join(parts)
+    return parts
 
 
 def main(argv):

@@ -1,0 +1,16 @@
+{
+  "cwd": "",
+  "unreadable": ["/cairn/milestones/M082-unreadable.md"],
+  "workable": ["M085"],
+  "rows": [
+    {"id": "M080", "title": "A long work log and wrapped tasks", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 1, "criteriaTotal": 3, "nextTask": "T2: The second task.", "nextCriterion": "AC9: A box inside a comment, which the pane leaves out. -->"},
+    {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
+    {"id": "M082", "title": "A file whose read fails", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null}
+  ],
+  "pane": [
+    {"id": "M080", "title": "A long work log and wrapped tasks", "status": "in-progress", "file": {"goal": "Show a long work log and tasks that wrap over lines.", "tasks": [{"text": "T1: The first task, wrapped over three lines of text.", "checked": true}, {"text": "T2: The second task.", "checked": false}, {"text": "T3: The third task.", "checked": false}], "criteria": [{"text": "AC1: The first criterion, wrapped over two lines.", "checked": true}, {"text": "AC2: The second criterion.", "checked": false}], "log": ["2026-01-03: third line.", "2026-01-04: fourth line.", "2026-01-05: fifth line.", "2026-01-06: sixth line.", "2026-01-07: seventh line, the newest."]}},
+    {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "file": {"goal": "The first paragraph of the goal.\n\nThe second paragraph, with a  comment inside it.", "tasks": [{"text": "T1: Only task.", "checked": true}], "criteria": [{"text": "AC1: Only criterion.", "checked": true}], "log": ["2026-02-01: created."]}},
+    {"id": "M082", "title": "A file whose read fails", "status": "review", "file": null}
+  ],
+  "next": {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]}
+}

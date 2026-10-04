@@ -4,8 +4,9 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width } from './band'
-import type { BandState, FileSource } from './reader'
-import { loadBand } from './reader'
+import { NO_ROADMAP, paneLines } from './pane'
+import type { BandState, FileSource, PaneState } from './reader'
+import { loadCairn, NO_PANE } from './reader'
 import { TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // The milestone band above the prompt (M191, M193 to M201): one row for one
@@ -26,6 +27,12 @@ import { TRACK_H, TRACK_PX, trackSvg } from './track'
 // or order, the running skill, or the idle row's id change, or the session
 // ends (M200). A found ROADMAP that cannot be read keeps the rows, and the
 // close state is compared against them and the current step.
+//
+// The cairn pane (M205) opens from the `/cairn-pane` command, which also
+// closes it, or from the band's open button, which a row drawn from a found
+// ROADMAP carries beside the close button. It shows the active milestones
+// in full and the queue that scripts/cairn_next.py prints (pane.ts), from
+// the same refreshes as the band.
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -53,6 +60,14 @@ const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep |
 // started (M201).
 const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { shape: 'expanded-1' })
 
+// What the cairn pane shows, written at each refresh (M205).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-1' })
+
+// The pane's id, its title, and the command that opens and closes it.
+const PANE = 'cairn'
+const PANE_TITLE = 'cairn'
+const PANE_COMMAND = 'cairn-pane'
+
 // The desktop app's chapter tool. In a session without it, such as one in
 // the terminal, the chapter stays null.
 const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
@@ -66,12 +81,76 @@ const DESKTOP_CLOSE_GLYPH = '✕'
 // The columns the row's close gap and one-glyph label take on either
 // surface, which the row leaves free when it picks its form.
 const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
+// The open button's one-glyph label and the space after it, which a row
+// drawn from a found ROADMAP also leaves free (M205).
+const OPEN_GLYPH = '≡'
+const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     const result = await next(e)
     await refresh($)
+    // The band does not depend on the command: a refused registration
+    // leaves the band as the refresh drew it.
+    try {
+      await $.command.register({ name: PANE_COMMAND, description: 'Open or close the cairn pane' })
+    } catch {
+      // No `/cairn-pane` in this session. The band's open button still opens the pane.
+    }
     return result
+  })
+
+  // `/cairn-pane` closes an open pane, and otherwise reads the files and
+  // opens it, or says why it did not (M205 AC1).
+  // Only a pane the person can see is closed: one that waits undrawn, or
+  // sits behind another pane's tab, is opened again instead (M205 review).
+  // A hook that refuses the open or the close gives a line, not an error.
+  on('command.run', { command: PANE_COMMAND }, async $ => {
+    try {
+      const mine = (await $.ui.panes()).find(open => open.id === PANE)
+      if (mine !== undefined && mine.isPlaced && mine.isShown) {
+        await $.ui.close({ id: PANE })
+        return { text: 'cairn pane closed' }
+      }
+      await refresh($)
+      if (!(await read($, pane)).found) return { text: NO_ROADMAP }
+      const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+      return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
+    } catch (error) {
+      return { text: `cairn pane: ${error instanceof Error ? error.message : String(error)}` }
+    }
+  })
+
+  on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
+    const { Box, Text } = $.ui.resolve(e)
+    const lines = paneLines(await read($, pane))
+    // A line's lead keeps its width, and its text takes the room left: cut
+    // to one line with an ellipsis, or wrapped for the goal's lines.
+    // A Text drops its `key`, so each line's key sits on a Box.
+    return (
+      <Box key="cairn-pane" flexDirection="column">
+        {lines.map(line => (
+          <Box key={line.key} paddingLeft={line.indent}>
+            {line.lead.length === 0 ? null : (
+              <Box key={`${line.key}-lead`} flexShrink={0}>
+                {line.lead.map(span => (
+                  <Text wrap="truncate-end" {...style(span)}>
+                    {span.text}
+                  </Text>
+                ))}
+              </Box>
+            )}
+            {line.text === null ? null : (
+              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
+                <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
+                  {line.text.text}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        ))}
+      </Box>
+    )
   })
 
   // A turn end reads the tracking files again and ends no step (M201). A
@@ -172,7 +251,10 @@ export const register: Register = on => {
     // There the row centers its parts, since the track is taller than text.
     const Svg = e.surface === 'desktop' ? $.ui.resolve(e).Svg : undefined
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
-    const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable, Svg !== undefined)
+    // A row drawn from a found ROADMAP carries the pane's open button (M205).
+    const canOpen = (await read($, pane)).found
+    const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
+    const lines = stepLines(rows, current, e.props.bodyColumns, close, workable, Svg !== undefined)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -220,6 +302,16 @@ export const register: Register = on => {
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
+          {isFirst && canOpen ? (
+            <Button
+              key="cairn-open"
+              plain
+              {...(e.surface === 'terminal' ? {} : { dimColor: true })}
+              label={OPEN_GLYPH}
+              onPress={() => openPane($)}
+            />
+          ) : null}
+          {isFirst && canOpen ? <Text wrap="truncate-end">{' '.repeat(OPEN_COLUMNS - width(OPEN_GLYPH))}</Text> : null}
           {isFirst ? (
             <Button
               key="cairn-close"
@@ -254,6 +346,23 @@ async function dismiss($) {
   await update($, dismissed, () => mark(state, current))
 }
 
+// A press of the band's open button opens the pane. The press is the
+// person's own act, so the surface places the pane at any width.
+// A press has no output line, so an open the surface does not place, or one
+// a hook refuses, says why in a toast.
+async function openPane($) {
+  try {
+    const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+    if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
+  } catch (error) {
+    $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+function notPlaced(reason: string): string {
+  return `cairn pane not placed: ${reason}`
+}
+
 // A change to the active ids, statuses, or order, to the running skill, or
 // to the idle row's id brings the band back, and it stays until the next
 // press. The end of a skill's step is a change to the running skill. The
@@ -275,21 +384,22 @@ function style(span: Span) {
   return props
 }
 
-// No ROADMAP found empties the band. A found ROADMAP that cannot be read
-// keeps the rows as they were (M200). Any throw from `loadBand`, its
+// No ROADMAP found empties the band and the pane. A found ROADMAP that
+// cannot be read keeps the rows and the pane as they were (M200). Any throw from `loadCairn`, its
 // parsing included, keeps them too. Of the calls `fsSource` makes, only
 // `$.session.cwd()` is not caught. The close state is then compared
 // against the kept rows and the current step.
 async function refresh($) {
-  let state: BandState | null = null
+  let state: { band: BandState; pane: PaneState } | null = null
   try {
-    state = await loadBand(fsSource($))
+    state = await loadCairn(fsSource($))
   } catch {
     state = null
   }
   if (state !== null) {
     const next = state
-    await update($, band, () => next)
+    await update($, band, () => next.band)
+    await update($, pane, () => next.pane)
   }
   await reconcile($)
 }

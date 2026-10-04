@@ -1,5 +1,7 @@
 {
   "cwd": "",
   "rows": [],
-  "workable": ["M040", "M041", "M042", "M043", "M002"]
+  "workable": ["M040", "M041", "M042", "M043", "M002"],
+  "pane": [],
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M040", "waiting": [{"id": "M050", "title": "Waits on a planned milestone", "unmet": ["M002 (planned)"]}, {"id": "M051", "title": "Waits on an id with no row and no archive file", "unmet": ["M077 (unknown)"]}, {"id": "M052", "title": "One dependency met, one not", "unmet": ["M002 (planned)"]}]}
 }

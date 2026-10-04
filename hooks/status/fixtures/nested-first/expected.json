@@ -3,5 +3,9 @@
   "workable": [],
   "rows": [
     {"id": "M030", "title": "The next task is nested", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1a: Nested task, open, with extra spaces after the box.", "nextCriterion": "AC1: The band names the nested task."}
-  ]
+  ],
+  "pane": [
+    {"id": "M030", "title": "The next task is nested", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Top-level task, done.", "checked": true}, {"text": "T1a: Nested task, open, with extra spaces after the box.", "checked": false}, {"text": "T2: Second top-level task.", "checked": false}], "criteria": [{"text": "AC1: The band names the nested task.", "checked": false}], "log": []}}
+  ],
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M030", "waiting": []}
 }

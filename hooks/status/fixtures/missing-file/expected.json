@@ -3,5 +3,9 @@
   "workable": [],
   "rows": [
     {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null}
-  ]
+  ],
+  "pane": [
+    {"id": "M004", "title": "Its file was never written", "status": "review", "file": null}
+  ],
+  "next": {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []}
 }

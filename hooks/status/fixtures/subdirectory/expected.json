@@ -3,5 +3,9 @@
   "workable": [],
   "rows": [
     {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null}
-  ]
+  ],
+  "pane": [
+    {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done, with a capital X.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [], "log": []}}
+  ],
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M007", "waiting": []}
 }

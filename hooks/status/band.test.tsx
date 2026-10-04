@@ -59,7 +59,7 @@ type Copy = {
 
 function copyOf(name: string): Copy {
   const fixture = FIXTURES[name]
-  return { cwd: fixture.cwd, files: { ...fixture.files } }
+  return { cwd: fixture.cwd, files: { ...fixture.files }, unreadable: [...fixture.unreadable] }
 }
 
 // How the chapter tool beneath the mod answers a call: it marks the
@@ -339,14 +339,30 @@ function alone(name: string, id: string): Copy {
   return copy
 }
 
-// The row's right group ends in the close button, the band's only Button.
-async function closesFirst(ui: Ui) {
+// Whether a fixture has a ROADMAP the reader finds: its next step is null
+// only where none is found (M205).
+const hasRoadmap = (name: string) => FIXTURES[name].next !== null
+
+// The band's Buttons: the open button and then the close button on a row
+// drawn from a found ROADMAP, the close button alone otherwise (M205 AC4).
+const buttonKeys = (name: string) => (hasRoadmap(name) ? ['cairn-open', 'cairn-close'] : ['cairn-close'])
+
+// The row's right group ends in the close button, and the open button sits
+// two places before it where the fixture has a ROADMAP.
+async function closesFirst(ui: Ui, name: string) {
   const [first] = await ui.findAll({ key: (await rowKeys(ui))[0] })
   const right = kids(first)[1]
   const last = kids(right)[kids(right).length - 1]
   expect(last.type).toBe('Button')
   expect(keyOf(last)).toBe('cairn-close')
-  expect((await ui.findAll({ type: 'Button' })).length).toBe(1)
+  if (hasRoadmap(name)) expect(keyOf(kids(right)[kids(right).length - 3])).toBe('cairn-open')
+  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(buttonKeys(name))
+}
+
+// The close Button.
+async function closeButton(ui: Ui): Promise<Element> {
+  const [button] = await ui.findAll({ key: 'cairn-close' })
+  return button
 }
 
 // The text of a row's first head Text: its phase or skill label.
@@ -387,7 +403,7 @@ describe('one row while the band shows (M197 AC5)', () => {
             return
           }
           expect(await rowKeys(ui)).toEqual([id === null ? 'idle-row' : `${id}-row`])
-          await closesFirst(ui)
+          await closesFirst(ui, name)
         },
         $,
       )
@@ -406,7 +422,7 @@ describe('one row while the band shows (M197 AC5)', () => {
             expect(await rowKeys(ui)).toEqual([id === null ? 'skill-row' : `${id}-row`])
             const [row] = await ui.findAll({ key: (await rowKeys(ui))[0] })
             expect(labelOf(row)).toBe(LABELS[skill])
-            await closesFirst(ui)
+            await closesFirst(ui, name)
           },
           $,
         )
@@ -608,9 +624,10 @@ describe('the row carries style props (M193 AC3)', () => {
   }
 
   // M010's head `review M010 → AC3:` is 18 columns, its text gets 10, the
-  // margin 2, the bar form 24, and the close gap and label 3: 57 columns
-  // keep its bar, and 56 drop it.
-  for (const columns of [56, 57, 120]) {
+  // margin 2, the bar form 24, and the buttons 5 (the open glyph and its
+  // space 2, the close gap and label 3, M205): 59 columns keep its bar, and
+  // 58 drop it.
+  for (const columns of [58, 59, 120]) {
     test(`mixed: M010 alone at ${columns} columns`, async ($, on) => {
       seat(on, alone('mixed', 'M010'))
       await $.turn.complete(turn())
@@ -629,7 +646,7 @@ describe('the row carries style props (M193 AC3)', () => {
           const [row] = await ui.findAll({ key: 'M010-row' })
           expect(rowText(row).endsWith('  2/3 criteria')).toBe(true)
           const filled = leaf('██████')
-          if (columns < 57) {
+          if (columns < 59) {
             expect(filled).toBeUndefined()
             expect(rowText(row)).toBe('review M010 → AC3: Third criterion.  2/3 criteria')
           } else {
@@ -685,7 +702,7 @@ const MIXED_LEFT: Record<string, string> = {
 }
 
 describe('each row is a left and a right group (M194 AC1)', () => {
-  for (const columns of [56, 57, 120]) {
+  for (const columns of [58, 59, 120]) {
     for (const row of FIXTURES.mixed.rows) {
       test(`mixed: ${row.id} alone at ${columns} columns`, async ($, on) => {
         seat(on, alone('mixed', row.id))
@@ -703,10 +720,10 @@ describe('each row is a left and a right group (M194 AC1)', () => {
             expect(right.props.marginLeft).toBe(2)
             expect(textOf(left)).toBe(MIXED_LEFT[row.id])
             shrinks(drawn)
-            // The right group: the bar at 57 columns or more, and the counts
+            // The right group: the bar at 59 columns or more, and the counts
             // or the state label, then the close button.
             const hasBar = below(right, 'Text').some(t => /█/.test(textOf(t)))
-            expect(hasBar).toBe(row.id === 'M010' && columns >= 57)
+            expect(hasBar).toBe(row.id === 'M010' && columns >= 59)
             const last = kids(right)[kids(right).length - 1]
             expect(last.type).toBe('Button')
             expect(keyOf(last)).toBe('cairn-close')
@@ -773,8 +790,8 @@ describe('the close button (M194 AC2)', () => {
         const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
         expect(await lines(ui)).toEqual([SHOWN[name], ENGINE])
         const buttons = await ui.findAll({ type: 'Button' })
-        expect(buttons.map(keyOf)).toEqual(['cairn-close'])
-        const [button] = buttons
+        expect(buttons.map(keyOf)).toEqual(buttonKeys(name))
+        const button = await closeButton(ui)
         expect(button.props.role).toBe('dismiss')
         expect(button.props.plain).toBe(PLAIN[surface])
         expect(button.props.dimColor).toBe(DIM[surface])
@@ -1347,10 +1364,10 @@ describe('a running skill puts its label on the row, or gets a skill row with no
           expect(await lines(ui)).toEqual([...drawn, ENGINE])
           const [row] = await ui.findAll({ key: 'skill-row' })
           if (drawn[0] === skillRow(skill)) {
-            // Nothing on the right side but the close button.
+            // Nothing on the right side but the buttons.
             const [, right] = kids(row)
             expect(textOf(right).trim()).toBe('')
-            expect(below(right, 'Button').length).toBe(1)
+            expect(below(right, 'Button').map(keyOf)).toEqual(buttonKeys(fixture))
           } else {
             expect(row).toBeUndefined()
           }
@@ -1534,8 +1551,8 @@ describe('the close button works with skill rows (M195 AC5)', () => {
       async (ui, $) => {
         await prompt($, 'milestone-plan')
         const [row] = await ui.findAll({ key: 'skill-row' })
-        expect(below(row, 'Button').map(keyOf)).toEqual(['cairn-close'])
-        expect((await ui.findAll({ type: 'Button' })).length).toBe(1)
+        expect(below(row, 'Button').map(keyOf)).toEqual(buttonKeys('no-active'))
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(buttonKeys('no-active'))
       },
       $,
       on,
@@ -1731,6 +1748,8 @@ describe('each sampled row fits the band from 36 to 120 columns in the terminal 
 // Each change of form, at the narrowest width that keeps the earlier form,
 // worked out by hand at one column per code point. `left` reads the row's
 // left group, and `right` its right group without the close button.
+// `buttons 5` is the open glyph and its space 2 and the close gap and label
+// 3 (M205): every fixture here has a ROADMAP.
 type Switch = {
   name: string
   fixture: string
@@ -1745,78 +1764,78 @@ type Switch = {
 }
 
 const SWITCHES: Switch[] = [
-  // Head `implement M002 → T2:` 20, text 10, margin 2, bar form 21, close 3.
+  // Head `implement M002 → T2:` 20, text 10, margin 2, bar form 21, buttons 5.
   {
     name: 'the bar and counts give way to the counts with their noun',
     fixture: 'single-in-progress',
     key: 'M002-row',
-    at: 56,
+    at: 58,
     part: 'right',
     before: '██████████  1/3 tasks',
     after: '1/3 tasks',
   },
-  // Head 20, text 10, margin 2, `1/3 tasks` 9, close 3.
+  // Head 20, text 10, margin 2, `1/3 tasks` 9, buttons 5.
   {
     name: 'in the loop, the counts with their noun give way to the bare counts',
     fixture: 'single-in-progress',
     key: 'M002-row',
-    at: 44,
+    at: 46,
     part: 'right',
     before: '1/3 tasks',
     after: '1/3',
   },
-  // Head `implement M002 → ` 17, text 10 of 13, margin 2, `1/3 tasks` 9, close 3.
+  // Head `implement M002 → ` 17, text 10 of 13, margin 2, `1/3 tasks` 9, buttons 5.
   {
     name: 'out of the loop, the counts with their noun give way to the bare counts',
     fixture: 'single-in-progress',
     step: ['milestone-implement', 'Question gate'],
     key: 'M002-row',
-    at: 41,
+    at: 43,
     part: 'right',
     before: '1/3 tasks',
     after: '1/3',
   },
   // A text shorter than 10 needs only its own width: head 20, text ` Go.` 4,
-  // margin 2, bar form 21, close 3.
+  // margin 2, bar form 21, buttons 5.
   {
     name: 'a short text keeps the bar down to its own width',
     fixture: 'single-in-progress',
     step: ['milestone-implement', 'T3: Go.'],
     key: 'M002-row',
-    at: 50,
+    at: 52,
     part: 'right',
     before: '██████████  1/3 tasks',
     after: '1/3 tasks',
   },
   // M053 as the only active row: head `review M053 ` 12, text 10, margin 2,
-  // label 22, close 3.
+  // label 22, buttons 5.
   {
     name: 'all N criteria checked gives way to N/N checked',
     fixture: 'states-review',
     alone: 'M053',
     key: 'M053-row',
-    at: 49,
+    at: 51,
     part: 'right',
     before: 'all 2 criteria checked',
     after: '2/2 checked',
   },
-  // Head `review M004 ` 12, text 10, margin 2, label 17, close 3.
+  // Head `review M004 ` 12, text 10, margin 2, label 17, buttons 5.
   {
     name: 'no milestone file gives way to no file',
     fixture: 'missing-file',
     key: 'M004-row',
-    at: 44,
+    at: 46,
     part: 'right',
     before: 'no milestone file',
     after: 'no file',
   },
-  // Head `plan /milestone-plan → ` 23, text 10 of 13, margin 2, close 3.
+  // Head `plan /milestone-plan → ` 23, text 10 of 13, margin 2, buttons 5.
   {
     name: 'a skill row drops its slash command',
     fixture: 'no-active',
     step: ['milestone-plan', 'Question gate'],
     key: 'skill-row',
-    at: 38,
+    at: 40,
     part: 'left',
     before: 'plan /milestone-plan → Question gate',
     after: 'plan → Question gate',
@@ -1968,7 +1987,7 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
           expect(await rowKeys(ui)).toEqual([key])
           const [row] = await ui.findAll({ key })
           expect(labelOf(row)).toBe(label)
-          await closesFirst(ui)
+          await closesFirst(ui, 'six-active')
         },
         $,
       )
@@ -1979,9 +1998,9 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
 // The fixtures with no active row, written out by hand. With no skill
 // running, each draws its idle row or nothing (M199). Under a running skill
 // each of them draws a skill row.
-const NO_ROW = ['idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
+const NO_ROW = ['all-waiting', 'idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
 // The fixtures among them that draw nothing with no skill running.
-const NO_IDLE = ['no-roadmap']
+const NO_IDLE = ['all-waiting', 'no-roadmap']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
 const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : skill === 'milestone-plan' ? BLUE : ORANGE)
@@ -2064,7 +2083,7 @@ describe('the band draws in gray, with a muted hue on the label and the theme hu
               if (idle !== null) expect(textOf(head[2])).toBe(idle)
 
               // The close Button keeps its M197 props.
-              const [button] = await ui.findAll({ type: 'Button' })
+              const button = await closeButton(ui)
               expect(button.props.plain).toBe(PLAIN[surface])
               expect(button.props.dimColor).toBe(DIM[surface])
               expect(button.props.label).toBe(CLOSE[surface])
@@ -2099,7 +2118,7 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
         BAND,
         async ui => {
           expect(await lines(ui)).toEqual([text, ENGINE])
-          await closesFirst(ui)
+          await closesFirst(ui, name)
         },
         $,
       )
@@ -2116,7 +2135,7 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
           const [row] = await lines(ui)
           expect(row.startsWith(`next ${id} `)).toBe(true)
           expect(row).not.toContain('/milestone-implement')
-          await closesFirst(ui)
+          await closesFirst(ui, name)
         },
         $,
       )
@@ -2550,6 +2569,7 @@ const FLOWS: Record<string, { fills: [string, string, string]; pill: string; per
   'long-title': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
   mixed: { fills: ['1/1', '0/1', '0/1'], pill: 'no tasks', percent: 33 },
   'nested-first': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
+  'pane-full': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
   'single-in-progress': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
   'six-active': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
   subdirectory: { fills: ['1/1', '2/2', '0/1'], pill: 'Implement 2/2', percent: 66 },
@@ -2726,7 +2746,7 @@ async function desktopProps(ui: Ui) {
   expect([left.props.flexShrink, left.props.minWidth, head.props.flexShrink]).toEqual([1, 0, 0])
   if (textBox !== undefined) expect([textBox.props.flexShrink, textBox.props.minWidth]).toEqual([1, 0])
   for (const leaf of leavesOf(await bandBox(ui))) expect([textOf(leaf), leaf.props.dimColor]).toEqual([textOf(leaf), undefined])
-  const [button] = await ui.findAll({ type: 'Button' })
+  const button = await closeButton(ui)
   expect([button.props.label, button.props.dimColor, button.props.plain]).toEqual(['✕', true, true])
 }
 
@@ -2766,7 +2786,7 @@ describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
           const right = kids(first)[1]
           expect(kids(right)[0].type).toBe('Svg')
           if (want.right !== null) expect(textOf(right).trim()).toBe(want.right)
-          const [button] = await ui.findAll({ type: 'Button' })
+          const button = await closeButton(ui)
           expect([button.props.label, button.props.dimColor]).toEqual(['✕', true])
           await ui.unmount()
         })
@@ -2838,23 +2858,26 @@ describe('the terminal draws no track (M204 AC3)', () => {
 // The least width, in columns, at which each row in the flow draws the
 // track with no skill, written out by hand (M204 AC4). A row needs its head,
 // the gap, 52 columns of track, the gap and the percent or the idle
-// command, the close button's 3, and its text's room (M197). For
+// command, the buttons' 5 (the open glyph and its space 2, M205, and the
+// close gap and label 3), and its text's room (M197). For
 // single-in-progress: `implement M002 ` 15 + `→ T2:` 5 + 2 + 52 + `  44%` 5
-// + 3 + 10 = 92.
+// + 5 + 10 = 94.
 const TRACK_FROM: Record<string, number> = {
-  'idle-deps': 104,
-  'idle-order': 104,
-  'long-title': 92,
-  mixed: 87,
-  'nested-first': 93,
-  'no-active': 104,
-  'repo-at-cut': 104,
-  'single-in-progress': 92,
-  'six-active': 88,
-  subdirectory: 87,
-  'unlabeled-item': 89,
-  'wide-title': 90,
-  widest: 95,
+  'idle-deps': 106,
+  'idle-order': 106,
+  'long-title': 94,
+  mixed: 89,
+  'nested-first': 95,
+  'no-active': 106,
+  // `implement M080 ` 15 + `→ T2:` 5 + 2 + 52 + `  44%` 5 + 5 + 10 = 94.
+  'pane-full': 94,
+  'repo-at-cut': 106,
+  'single-in-progress': 94,
+  'six-active': 90,
+  subdirectory: 89,
+  'unlabeled-item': 91,
+  'wide-title': 92,
+  widest: 97,
 }
 
 describe('the desktop draws the track from a width written per fixture, and the text form below it (M204 AC4)', () => {
