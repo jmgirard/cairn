@@ -12,6 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M216 | A Clear button when a cairn skill ends | planned | — | normal | milestones/M216-band-clear.md |
 | M215 | Move this repo to the claude-plugin profile | done | — | normal | milestones/archive/M215-plugin-profile.md |
 | M214 | Clear the prose-guard reds | done | — | normal | milestones/archive/M214-prose-guard-reds.md |
 | M213 | A Plan button on the empty band | done | — | normal | milestones/archive/M213-band-plan-row.md |
