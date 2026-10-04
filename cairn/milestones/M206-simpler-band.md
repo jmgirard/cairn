@@ -40,12 +40,12 @@ Make the band's row the milestone id and title on the left and the flow track on
 ## Tasks
 
 - [x] T1: Build browser-pane prototypes of 2 or 3 narrow desktop tracks and 2 terminal tracks, each in a dark and a light block (LESSONS M201, M204). The operator picks one of each, and a work-log line records the picks.
-- [ ] T2: In `band.ts`, make the left group the bold id and the title on every milestone row and on the idle row. Drop the head label, the arrow, the step body, and the `next` label. Keep the warning label for a row with no readable counts. Remove the skill row from `stepLines`, and draw the idle row while a skill runs.
-- [ ] T3: Remove the chapter. `CairnStep` in `types/index.d.ts` loses `chapter`, and the `step` atom takes a new shape tag. The chapter-tool `tool.call` hook in `register.tsx` goes. `SKILL_LABELS` shrinks to the cairn skill names that `cairnSkill` and the fixture test need. `mark` sets the idle id whether or not a skill runs.
-- [ ] T4: Build the desktop narrow track. `track.ts` takes a width, and below a width set from the T1 pick the pill shows only its count. `band.ts` picks the track width from the room the row leaves. Add the AC2 sweep.
-- [ ] T5: Build the terminal braille-speck track from the same `Flow` model as spans, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
-- [ ] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
-- [ ] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
+- [x] T2: In `band.ts`, make the left group the bold id and the title on every milestone row and on the idle row. Drop the head label, the arrow, the step body, and the `next` label. Keep the warning label for a row with no readable counts. Remove the skill row from `stepLines`, and draw the idle row while a skill runs.
+- [x] T3: Remove the chapter. `CairnStep` in `types/index.d.ts` loses `chapter`, and the `step` atom takes a new shape tag. The chapter-tool `tool.call` hook in `register.tsx` goes. `SKILL_LABELS` shrinks to the cairn skill names that `cairnSkill` and the fixture test need. `mark` sets the idle id whether or not a skill runs.
+- [x] T4: Build the desktop narrow track. `track.ts` takes a width, and below a width set from the T1 pick the pill shows only its count. `band.ts` picks the track width from the room the row leaves. Add the AC2 sweep.
+- [x] T5: Build the terminal braille-speck track from the same `Flow` model as spans, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
+- [x] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
+- [x] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
 - [ ] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
 
 ## Work log
@@ -67,6 +67,7 @@ Make the band's row the milestone id and title on the left and the flow track on
 - 2026-10-04: re-audit: AC4 (full) — re-entry reader found 2 more: the idle track had no least width, and the cases did not vary width or title or check a skill's start and end. Second line on AC4, so its wording went to the operator.
 - 2026-10-04: substantive amendment: AC3 and AC4 narrowed at the operator's selection. AC3 tests the braille track, ground, dot color, pill count, percent, and title room, and the dot pattern is judged at the live look. AC4 tests the idle row's command and track at 200 columns and a hidden idle row through a skill's start and end.
 - 2026-10-04: checkpoint, half done: T2 to T5 code and T7 docs written, Python suites green. `band.test.tsx` still tests the old forms and is red until the T6 rewrite lands (delegated to an Opus agent). The idle row also draws its track in the terminal. A running skill with nothing active or workable now yields the band slot.
+- 2026-10-04: T6 delegated to an Opus agent: `band.test.tsx` rewritten (79 test blocks, 847 mod tests pass across 3 files). Seven planted defects each went red in the expected suite and were restored. I removed the pane test's skill-row case and its chapter event, which tested removed behavior. All four verify gates are green. T2 to T7 checked.
 
 ## Decisions
 

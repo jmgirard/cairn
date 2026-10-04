@@ -15,7 +15,6 @@ import { listNames } from './reader'
 const SURFACES = ['terminal', 'desktop'] as const
 const PANE = 'cairn'
 const COMMAND = 'cairn-pane'
-const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 const PANE_VIEW = {
   component: 'Pane',
   requestId: PANE,
@@ -95,7 +94,6 @@ function seat(on: On, copy: Copy) {
   on('classic.Stop', async () => ({}))
   on('prompt.submit', async ($, e) => ({ text: e.text, origin: e.origin }))
   on('skill.prompt', async ($, e) => ({ text: e.text }))
-  on('tool.call', { tool: CHAPTER_TOOL }, async () => ({ result: 'Chapter marked' }))
   on('ui.render', { component: 'AbovePrompt' }, async () => ({ type: 'Text', props: {}, children: ['engine slot'] }))
   on('ui.open', async ($, e) => {
     if (copy.refuse !== undefined) return { deny: copy.refuse }
@@ -339,13 +337,14 @@ describe("the band's open button opens the pane (M205 AC4)", () => {
       await ui.unmount()
     })
 
-    test(`a skill row with no ROADMAP has no open button (${surface})`, async ($, on) => {
+    // With no ROADMAP, a running cairn skill draws no row and so no open
+    // button (M206 removed the skill row).
+    test(`a running skill with no ROADMAP draws no open button (${surface})`, async ($, on) => {
       seat(on, copyOf('no-roadmap'))
       await $.turn.complete(turn())
       await $.skill.prompt({ skill: 'cairn:milestone-plan', text: 'the plan prompt' })
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
-      expect((await ui.findAll({ key: 'skill-row' })).length).toBe(1)
-      expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(['cairn-close'])
+      expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([])
       await ui.unmount()
     })
   }
@@ -366,7 +365,6 @@ const EVENTS: Event[] = [
   { name: 'session start', act: $ => $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true }) },
   { name: 'turn end', act: $ => $.turn.complete(turn()) },
   { name: 'cairn skill prompt', act: $ => $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' }) },
-  { name: 'marked chapter', act: $ => $.tool.call({ tool: CHAPTER_TOOL, title: 'T2: Write the command' }) },
   {
     name: 'Stop that ends a step',
     before: $ => $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' }),
