@@ -40,24 +40,24 @@ row is pruned at post-merge hygiene.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: The rulebook-mass baseline in `skills/milestone/SKILL.md` and the
+- [x] AC1: The rulebook-mass baseline in `skills/milestone/SKILL.md` and the
       two hand-run pins (`skills/tests/test_cost_audit_line.py`,
       `skills/tests/test_mutation_harness.py`) state the figures that
       `wc -l -m skills/shared/tracking-rules.md` prints on the milestone
       branch's final head, and the skill line names M211 and its date as the
       re-seed, catching up the deliberate rulebook changes made since M166.
-- [ ] AC2: `/milestone-review` step 10 puts `/milestone` first for a fired
+- [x] AC2: `/milestone-review` step 10 puts `/milestone` first for a fired
       `release window` advisory only when the next action it would otherwise
       fence (the plan's next milestone, or `cairn_next.py`'s recommendation)
       names a milestone the advisory flagged. Otherwise that action stays
       first and `/milestone` is fenced after it, as `/milestone` §3 rules.
-- [ ] AC3: In `skills/`, only `/milestone-implement` step 6 instructs writing
+- [x] AC3: In `skills/`, only `/milestone-implement` step 6 instructs writing
       a work-log line opening `amendment return:`. `/milestone-review`'s
       amendment-return exit instructs a line opening `amendment routed:`,
       which neither the step-7 amendment count nor the amendment-return count
       reads. The hand-run pins in `skills/tests` that quote the changed text
       are updated to match.
-- [ ] AC4: `skills/shared/records-hygiene.md` §7 counts a candidate row and
+- [x] AC4: `skills/shared/records-hygiene.md` §7 counts a candidate row and
       the rows that name its title in double quotes (direct references only)
       as one group, and a group whose rows together cite deferred review
       findings from two or more distinct milestones gets the disposition
@@ -65,7 +65,7 @@ row is pruned at post-merge hygiene.
       title in double quotes, and the `/milestone` §2 bullet that cites §7
       says the same as §7. The module stays under 55 lines and 4,000 bytes
       (`wc -l -c`).
-- [ ] AC5: The `verify` slot of `cairn/PROFILE.md` is clean: all four commands
+- [x] AC5: The `verify` slot of `cairn/PROFILE.md` is clean: all four commands
       exit 0, each exit code checked.
 
 ## Coverage
@@ -125,3 +125,12 @@ row is pruned at post-merge hygiene.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Evidence, 2026-10-04, branch head 319a0be, main unmoved at c9d302d:
+
+- AC1: `wc -l -m skills/shared/tracking-rules.md` prints 626 / 59322. `skills/milestone/SKILL.md:102`, `test_cost_audit_line.py:67`, and `test_mutation_harness.py:120` carry "626 lines / 59,322 chars". The skill line names "M211, 2026-10-04, a catch-up of the changes since M166". No site still quotes 467 / 43,454. Pass.
+- AC2: `skills/milestone-review/SKILL.md:707-718` fences `/milestone` when the advisory fired, puts it first only when the plan's next milestone or `cairn_next.py`'s recommendation names a flagged id, and otherwise keeps that action first with `/milestone` after it, citing `/milestone` §3 (`skills/milestone/SKILL.md:258-263`, which agrees). Pass.
+- AC3: `grep -rn 'amendment return:' skills --include='*.md'` finds the one write instruction at `milestone-implement/SKILL.md:193-198`. Review lines 369, 376, 388, and 416 describe implement's line, the stop's read, and the step-7 count. Review's exit instructs `amendment routed: AC<N> — <finding>` (:367), and the step-7 count (:416) and the thrash rule read only `amendment return:`/`substantive amendment:`. `test_thrash_rule` and the mutation entries quoting the changed text pass. Pass.
+- AC4: §7 defines the title and group, direct references only, two or more distinct milestones, and the chip for the group. Review step 9 (:632-637) tests the group and names the older title in double quotes. The `/milestone` §2 bullet (:120-125) states the same group and trigger and cites §7 for the rest. `wc -l -c` prints 54 / 3200, under 55 and 4,000. Pass.
+- AC5: `python3 -m unittest discover -s scripts/tests` exit 0 (397, OK, 21 skipped); `-s hooks/tests` exit 0 (174 OK); `claude plugin validate` exit 0 (passed with warnings); `claude plugin test .` exit 0 (1024 pass, 0 fail). Pass.
+- Gate: `cairn_validate.py` all checks passed. `generic` profile has no toolchain checks. No principle changed, so no impact report. skills/tests (hand-run, non-gating) holds the baseline 4 reds and 1 error.
