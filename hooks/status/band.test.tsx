@@ -2,7 +2,7 @@ import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
 import type { Flow, Span } from './band'
-import { bandLines, CAIRN_SKILLS, flowOf, idleFlow, idleLines, knownStep, lineText, mark, same, stepLines } from './band'
+import { actionsFit, bandLines, CAIRN_SKILLS, flowOf, idleFlow, idleLines, knownStep, lineText, mark, same, stepLines } from './band'
 import { FIXTURES, SKILLS } from './fixtures.gen'
 import type { BandRow } from './reader'
 import { listNames, loadBand, memorySource } from './reader'
@@ -1655,6 +1655,25 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
     expect(lineText(idleLines(long, 57, 3)[0])).toBe('M001 A title well over ten columns  /milestone-implement M001')
     expect(lineText(idleLines(long, 45, 3)[0])).toBe('M001 A title well over ten columns  /milestone-implement M001')
     expect(lineText(idleLines(long, 44, 3)[0])).toBe('M001 A title well over ten columns')
+  })
+
+  test('with nothing active or workable, a found ROADMAP gives the empty row and none gives nothing (M213 AC1)', () => {
+    expect(stepLines([], null, 120, 5, [], true).map(lineText)).toEqual(['No milestone ready'])
+    expect(stepLines([], null, 120, 5, [], true).map(line => [line.key, line.id, line.track])).toEqual([['plan-row', '', undefined]])
+    expect(stepLines([], null, 120, 5, [], false)).toEqual([])
+    expect(stepLines([], null, 120, 5)).toEqual([])
+    // A workable row still gives the idle row, found or not.
+    expect(stepLines([], null, 120, 5, [{ id: 'M001', title: 'Go' }], true).map(line => line.key)).toEqual(['idle-row'])
+  })
+
+  test('the empty row keeps the action Buttons while its text keeps 10 columns, and no narrower (M213 AC2)', () => {
+    // The close gap and label 3, the open button and its space 2, `[ Plan ]`
+    // and a space 9, `[ Status ]` and a space 11: 25 reserved. With the gap
+    // of 2, 27 columns are taken, so 37 leaves the text its 10.
+    const [line] = stepLines([], null, 37, 25, [], true)
+    expect(actionsFit(line, 37, 25)).toBe(true)
+    expect(actionsFit(line, 36, 25)).toBe(false)
+    expect(actionsFit(line, 200, 25)).toBe(true)
   })
 
   test('an active row draws its milestone row, though a planned row is workable', async ($, on) => {

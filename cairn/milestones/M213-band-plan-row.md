@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M213: A Plan button on the empty band
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the band draws in every adopter's session   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m213-band-plan-row   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -95,7 +95,7 @@ follow-ons (M212 review)".
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Model, tests first. Use the fixtures that already reach the
+- [x] T1: Model, tests first. Use the fixtures that already reach the
       state (`all-waiting`, `no-active`, `idle-deps`, per the audit), and
       add one only if none fits. Rewrite the cases that assert the band
       draws nothing in that state (`describe('the band draws nothing')`
@@ -137,6 +137,9 @@ follow-ons (M212 review)".
 - 2026-10-04: plan gate chose the text `No milestone ready` over `Nothing planned` because a `planned` row waiting on a dependency or a `blocked` row makes "nothing planned" false; falsified by the live look reading the text as wrong for the repo's real state.
 - 2026-10-04: plan gate chose to reuse M212's next-step press, which runs the next step re-read at the press, over a plan-only press that does nothing once the next step changes, because the planning next step already comes from `recommend` (`reader.ts:445`) and M212's buttons follow the same rule; falsified by a live press on `Plan` that starts a milestone the operator did not mean to start.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader) returned 8 findings, all taken toward the narrower promise: AC3's stale-press no-op cases cannot be staged by the test kit and a reused press runs the re-read step, so AC3 now states M212's rule and tests the run, the in-flight press, and the rejection; AC2's "wherever" now names M212's 40 to 200 column sweep on both surfaces; AC1 now requires a parsed ROADMAP (`found` true); AC1's fixture clause (an instrument) is dropped and T1 uses existing fixtures; T1 now rewrites the cases that assert the band draws nothing; Coverage notes T3 maps to no criterion; AC4 adds the waiting-row refresh that keeps the band hidden. AC5, AC6, and the IP check returned nothing.
+
+- 2026-10-04: implement: set in-progress on branch `m213-band-plan-row`. The untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
+- 2026-10-04: T1 done: `band.ts` gains `emptyLines` (key `plan-row`, no id, text `No milestone ready`), a `found` argument to `stepLines`, a zero-width head for an empty id, and the empty row in `actionsFit`; two unit cases in `band.test.tsx` (the row by `found`, and the fit at 37 but not 36 columns with 25 reserved). Minor amendment: the rewrites of drawn cases that assert an empty band draws nothing move to T2, since they need the drawing. `claude plugin test .` 1081 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
