@@ -152,6 +152,7 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 - 2026-10-04: check discrimination after the change: skipping the room check reddened 26 AC4 cases plus the M197 and M206 AC3 sweeps; dropping the track-or-long-label check reddened only M194 AC1 and M199 AC1 at 40 columns, because with the track giving way first the run of widths stays unbroken, so that check no longer guards AC4 and only keeps the Buttons off a row that lost its track; both restored.
 - 2026-10-04: live look 3: the Buttons show, but "Colors clash" and "Buttons touch" (operator's screenshot: `Resume` drawn as a white primary button against the orange Implement pill, flush with `Status`). Implement gave both Buttons `variant="secondary"` and put one space between them (action columns now label + 5 each). Mod tests 1077 pass.
 - 2026-10-04: T5 done: live look 4 (operator, new desktop Code session at 26e01f2): "Looks right", both Buttons gray and spaced, the Status press still runs `/cairn:milestone` (first seen at live look 1). Verify at 26e01f2: scripts OK, hooks OK, validate passed, `claude plugin test .` 1077 pass; cairn_validate all checks passed. Status → review.
+- 2026-10-04: step-7 approval: m212-band-buttons approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
