@@ -1,6 +1,6 @@
 # M207: Candidate rows in the idle cairn pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 - 2026-10-04: re-audit: AC1 (full) — of the fixed ending "on both surfaces, the `-text` element holds the whole short title and carries `wrap: 'truncate-end'`; the renderer draws the ellipsis from that prop": "a long title" has no length bar, and the renderer sentence is an unchecked claim. This is the second re-audit line on AC1, so the wording goes to the operator.
 - 2026-10-04: substantive amendment: AC1's last sentence now reads "A case on each of the terminal and desktop surfaces, with a short title longer than the pane's body width, asserts that the `-text` element of its line holds the whole short title and carries `wrap: 'truncate-end'`. The test API cannot see drawn text, so the case checks the prop and not the ellipsis." The operator chose this, the second reader's wording, at the stop. The deliverable is unchanged.
 - 2026-10-04: T3 done: README's pane section, the DESIGN pane paragraph, a CHANGELOG entry, and the `reader.ts` and `pane.ts` header comments describe the Candidates section. A `git grep` for `pane-1` outside the archive finds nothing. Verify: 397, 174, and 953 tests pass, and validate exits 0.
+- 2026-10-04: claim audit: 41 claims read, 2 corrected — scripts/tests/test_status_fixtures.py
+- 2026-10-04: implement done, status `review`. The two corrections were docstrings: the count agreement holds only where no HTML comment sits in the section, and the Python reader takes flush-left rows only. The scripts suite passes after them (397 tests).
 
 ## Decisions
 

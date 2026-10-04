@@ -12,7 +12,8 @@ with an open box, less the box prefix. It holds the pane's milestones to a
 second implementation here, and the pane's next step to
 `cairn_next.recommend` and `cairn_next.waiting` (M205 AC2, AC3), and the
 pane's candidate rows to a second reader here, whose count it holds to
-`cairn_scripts.candidate_count` (M207 AC3). A path an
+`cairn_scripts.candidate_count` where no HTML comment sits in the
+Candidates section (M207 AC3). A path an
 `expected.json` lists under `unreadable` reads as failing on both sides.
 It also fails when the generated module is stale.
 """
@@ -135,8 +136,10 @@ PRIORITY = re.compile(r"\[(high|low)\] ")
 
 def python_candidates(start):
     """The pane's candidate rows for a session started in `start` (M207 AC3):
-    the `- ` lines `candidate_count` walks, read after HTML comments are
-    removed, each its priority and the text before its first `: `."""
+    the lines that open with `- ` in the section `candidate_count` walks
+    (not the indented ones it also counts), read after HTML comments are
+    removed, each its priority and the text after the token before its
+    first `: `."""
     root = cs.cc.find_cairn_root(str(start))
     if root is None:
         return []
