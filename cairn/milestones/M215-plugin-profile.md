@@ -67,9 +67,9 @@ unstaged at the user's choice.
       no CI; test-doctrine: no `pytest`, the status fixtures). Drop the
       template text that only serves other repos (the native-install path,
       the multi-plugin wording) to stay under the 120-line cap.
-- [ ] T2: Change `CLAUDE.md:4-9` and `cairn/DESIGN.md:14-15` to name
+- [x] T2: Change `CLAUDE.md:4-9` and `cairn/DESIGN.md:14-15` to name
       `claude-plugin` as this repo's profile.
-- [ ] T3: Run the AC5 `git grep` and read each hit; fix any line that still
+- [x] T3: Run the AC5 `git grep` and read each hit; fix any line that still
       states this repo runs `generic`.
 - [ ] T4: From the repo root, run `cairn_validate` and each of the five
       verify commands on its own, checking each exit code (no pipe, no `;`
@@ -91,6 +91,8 @@ unstaged at the user's choice.
 - 2026-10-04: ROADMAP: pruned the M212 terminal row so the file stays under its 60-line cap with the M215 row added.
 - 2026-10-04: implement started on branch m215-plugin-profile. Untracked `cairn-probe.log` and `tsconfig.json` left unstaged (question set).
 - 2026-10-04: T1 done: PROFILE.md rewritten from the claude-plugin template at 113 lines. Dropped the template's native-install path and multi-plugin wording. test-doctrine names Python 3 stdlib as the dependency surface. greenfield-openers summarizes the two openers and this repo's answers. verify green: scripts 397 OK, hooks 174 OK, both validates exit 0, plugin test 1105 pass.
+- 2026-10-04: T2 done: `CLAUDE.md:4-8` and `cairn/DESIGN.md:14-15` name `claude-plugin` as this repo's profile, and CLAUDE.md names the marketplace validate.
+- 2026-10-04: T3 done: the AC5 sweep returned 33 lines. 31 name `generic` as a profile in a list or as an ordinary word, `cairn/PROFILE.md:4` records the past profile, and `cairn/ROADMAP.md:41` is the promoted row. None states the current profile is `generic`, so nothing more to fix.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
