@@ -37,7 +37,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - AC4 → T4
 - AC5 → T5
 - AC6 → T2, T3, T4, T5
-- AC7 → T1, T6
+- AC7 → T1, T6, T7
 
 ## Tasks
 
@@ -47,6 +47,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - [x] T4: Give the line Box `minWidth: 0`. Add the AC4 case.
 - [x] T5: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `pane.ts` and `register.tsx`.
 - [ ] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal, at the merge question as M205 did.
+- [ ] T7: Make the look changes the operator names after the declined live look, then hand back to review.
 
 ## Work log
 
