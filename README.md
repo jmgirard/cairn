@@ -216,7 +216,8 @@ headings show their count and eight squares, `■` for the checked share
 and `□` for the rest. The next command sits in a pill. The `▎` and `■`
 marks of a milestone draw in its phase's color, orange for implement and
 green for review. The `▎` marks of the queue draw in the plan blue, and
-the pill draws in the color of the phase that its command runs. The percent counts boxes as the band does, so a box inside an HTML
+the pill draws in the color of the phase that its command runs. The
+percent counts boxes as the band does, so a box inside an HTML
 comment counts there but not in the `TASKS` and `CRITERIA` counts, and
 the two can differ. A missing or unreadable
 milestone file shows `no milestone file`. Below the milestones, the pane

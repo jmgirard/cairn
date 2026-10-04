@@ -116,3 +116,13 @@ Review pass 1, 2026-10-04, on `f4efffd`. Main had not moved since the branch was
 - prior-review #2: the stale `minWidth: 0` item — follow-up, as blame-history #6.
 - prior-review #3: fixed colors and the ambiguous-width `▎`, `■`, `□` — follow-up, row "Pane look follow-ons (M208 review)".
 - prior-review #4: the M207 heading literal changed — reject, false, as blame-history #9.
+
+Review pass 2, 2026-10-04, on `44c2fa5`, after the T7 phase colors. Main had not moved (`ea647c6`), and no PR existed.
+
+- AC1 evidence: `claude plugin test .` passes 994 of 994, with the three AC1 cases and the 44-column tail case passing on both surfaces. T7 left the head line and its gray percent unchanged.
+- AC2 evidence: "partly checked and all checked" and "all open" pass on both surfaces: `■` in orange on M080 (implement) and in green on M081 (review), `□` in `subtle`.
+- AC3 evidence: the nine heading cases pass on both surfaces, each asserting the gap row, the `▎` in its phase color (orange for M080's four headings, green for M081's Goal and Tasks, plan blue `rgb(110,140,190)` for Workable, Waiting, and Candidates), and the gray bold label. The pill cases assert ` /milestone-review M081 ` on green, ` /milestone-implement M002 ` on orange, and ` /milestone-plan ` on blue, each bold white. The 14 non-orange cases failed on the old colors before T7.
+- AC4 evidence: the AC4 cases over `pane-full` and `candidates` pass on both surfaces. T7 changed no width.
+- AC5 evidence: README.md:213-219 and CHANGELOG.md:9-15 name the phase colors, as do the DESIGN pane paragraph and the `pane.ts` header comment (lines 20-26). The T7 claim audit read 16 claims there with none false.
+- AC6 evidence: on `44c2fa5` the scripts suite ran 397 OK (21 skipped), the hooks suite 174 OK, `claude plugin validate` exited 0, and `claude plugin test .` exited 0 with 994 passing.
+- Consistency gate: `cairn_validate.py` passes, its `release window` check OK. No principle changed. The `generic` profile names no toolchain checks.
