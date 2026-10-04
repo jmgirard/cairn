@@ -147,3 +147,29 @@ Review head: d81ee7c (main's hygiene stamp 9ee1ad5 merged in, a ROADMAP-only cha
 - AC6: the Clear paragraph sits at README.md:192 under `### The milestone band`. `cairn/DESIGN.md` names it in the `hooks/status/` bullet (:73 history, :175-183 paragraph). CHANGELOG.md:7 `## Unreleased` opens with the entry. Verify at d81ee7c: scripts 397 OK (exit 0), hooks 174 OK (exit 0), plugin validate exit 0, marketplace validate exit 0, mod test exit 0.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so `cairn_impact` was skipped. Profile slot: verify green (AC6 line), the marketplace validate output has no `plugins[N].version` warning, and CHANGELOG has the entry with no milestone number.
 - spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `pressClear` does not read `ended` again at the press, so a stale drawing can queue `/clear` — fix now, fixed 4034d0e
+- diff-bug #2: a band closed before a skill ends stays hidden, so Clear does not show — follow-up, "Clear button follow-ons (M216 review)"
+- diff-bug #3: `session.end` sets `running` false, and an old run that settles late clears a newer run's guard — fix now (run numbers, test planted red), fixed 4034d0e
+- diff-bug #4: `classic.Stop` reads the step and writes `ended` apart, so a skill prompt between them leaves a stale `ended` — follow-up, same row
+- diff-bug #5: the drop branch checks the step and writes `ended` apart — follow-up, same row
+- diff-bug #6: the Stop tests the raw step, not `knownStep` — fix now, fixed 4034d0e
+- diff-bug #7: a subagent that loads a cairn skill sets a step, and the main-loop Stop then shows Clear — follow-up, same row
+- diff-bug #8: a dropped typed cairn slash command loses Clear — follow-up, same row
+- diff-bug #9: the step-set AC2 case cannot fail through `ended`, because no action Button draws while a step is set — reject (false as a defect): the case pins AC2's deliverable clause, which holds
+- diff-bug #10: no case shows a Stop with an agent id, a block, or background work leaving `ended` false — reject (false as a defect): those Stops keep the step, and with a step set no action Button draws, so `ended` has nothing to show; M201 and M210 cases cover the step rules
+- diff-bug #11: the AC4 sweep would mis-measure if the two-Button threshold sat at 40 columns — fix now (asserts it sits above), fixed 4034d0e
+- diff-bug #12: CHANGELOG says the band carries Clear after any skill, with no row condition — fix now, fixed 4034d0e
+- diff-bug #13: the no-Clear path draws as before, and `ended` survives a reload and not a `/clear` — noted, no defect
+- blame-history #1: same as diff-bug #1 — fix now, fixed 4034d0e
+- blame-history #2: same as diff-bug #3 — fix now, fixed 4034d0e
+- blame-history #3: a skill that stops to ask a question would show Clear mid-run — reject (false): a chip's answer comes back inside the AskUserQuestion call, so the turn does not end and no Stop fires; a stop that ends the turn is a close block, a commit point
+- blame-history #4: the drop restore has an untested edge where a skill starts during `next` — follow-up, same row as diff-bug #5
+- blame-history #5: the fit loop keeps M212's and M213's rules — noted, no defect
+- blame-history #6: README and DESIGN still say the empty row's Buttons need 37 columns — reject (false): that text is about the two Buttons and stays true, and the new paragraph says Clear drops first
+- blame-history #7: no older assertion weakened, and the `actionKeys` helpers filter to two keys — noted, no defect
+- blame-history #8: the types declaration matches the atom — noted, no defect
+- prior-review #1: same as diff-bug #1 — fix now, fixed 4034d0e
+- prior-review #2: no case presses a stale Clear — follow-up, same row (the kit presses the current drawing, as M212 recorded)
+- prior-review #3: the width rule is swept on one fixture — reject (planned change): the plan audit narrowed AC4 to the rule and one fixture; desktop column width is already in "Band button follow-ons (M212, M213 review)"
+- prior-review #4: a rejecting `next(e)` loses Clear, and a render between the `step` and `ended` writes can draw it for a frame — follow-up, same row
+- Return floor: none of the 25 findings shows a criterion failing, and the stale-press window is one redraw wide, so no finding returns status. Verify after the fixes: all five checks exit 0, mod tests 1133 pass.
