@@ -118,7 +118,7 @@ surface tests are features, not defects.
       `prompt.submit` (`register.tsx:206-215`) leaves the step when the result
       carries `drop` and keeps the end ahead of the turn's `skill.prompt`.
       `seat()` gains a drop flag. Add band tests for AC5 and AC6.
-- [ ] T5: Docs and gate. README, `cairn/DESIGN.md`, CHANGELOG, and the
+- [x] T5: Docs and gate. README, `cairn/DESIGN.md`, CHANGELOG, and the
       `register.tsx` and `reader.ts` comments describe the changed behaviors.
       Grep for the old wording (LESSONS M112). Run the four verify commands.
 
@@ -139,6 +139,7 @@ surface tests are features, not defects.
 - 2026-10-04: T3 done. Four new band tests cover AC4 on both surfaces. Before the fix they failed on their assertions: the refresh wrote `dismissed`, and the press hid the band over the session end. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1016 pass.
 - 2026-10-04: T4 implementation choice: an idle typed prompt still ends the step before `next`, so a skill prompt of its turn sets the new step as before. On a `drop` the prompt puts back the step it ended, unless something set a step meanwhile. This keeps the M201 slash-command test green, which a clear after `next` would break.
 - 2026-10-04: T4 done. Seven new band tests: five cron cases for AC5, and a dropped prompt for each of `composer` and `bridge` for AC6. Before the fix, the two keep cases and the two drop cases failed on their row assertions, and the three end cases passed as controls. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1023 pass.
+- 2026-10-04: T5 done. CHANGELOG gains an Unreleased "Fixes" entry. The README band section moves the wakeup and dropped-prompt cases out of the limits and adds the same-repo keep, the empty ROADMAP, the press at a session end, and the share root. The DESIGN band bullet and the `register.tsx` and `reader.ts` comments describe the M210 behavior. A grep for `session_crons`, `ScheduleWakeup`, `cannot be read`, and `blocks or drops` found no other site. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1023 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

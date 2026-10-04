@@ -250,7 +250,7 @@ export async function findRoot(source: FileSource, cwd: string): Promise<string 
 
 // One row per `in-progress` or `review` milestone, in ROADMAP order, and
 // the workable list. Empty when no ROADMAP is found, and null when one is
-// found but cannot be read (M200). `read_roadmap` in
+// found but cannot be read (M200) or is empty (M210). `read_roadmap` in
 // scripts/cairn_scripts.py reads an unreadable ROADMAP as empty instead.
 export async function loadBand(source: FileSource): Promise<BandState | null> {
   const loaded = await loadCairn(source)

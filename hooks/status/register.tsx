@@ -18,16 +18,20 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // The track draws as an `Svg` on the desktop and as braille cells in the
 // terminal (track.ts). The running cairn skill draws nothing of its own:
 // /milestone-review picks the row it shows. A skill's step
-// ends at the first main-loop Stop with no background work in flight that no hook
+// ends at the first main-loop Stop with no background work in flight and no
+// one-shot wakeup pending (M210) that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,
-// Stop, or turn end, as a typed cairn slash command's is. So the step holds while the skill waits on background work and
+// Stop, or turn end, as a typed cairn slash command's is. A typed prompt
+// that a hook beneath drops leaves the step (M210). So the step holds while the skill waits on background work and
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,
 // or order, the row /milestone-review moves the band to, or the idle row's
-// id change, or the session ends (M200, M206). A found ROADMAP that cannot be read keeps the rows, and the
-// close state is compared against them and the current step.
+// id change, or the session ends (M200, M206). A found ROADMAP that cannot
+// be read, or is empty, keeps the rows when they came from the same repo
+// root (M210), and the close state is compared against them and the
+// current step.
 //
 // The cairn pane (M205) opens from the `/cairn-pane` command, which also
 // closes it, or from the band's open button, which a row drawn from a found

@@ -145,6 +145,23 @@
   kinds of deliverable gets a question about which one is primary, and the
   project-type question for an empty repo lists the new profile.
 
+### Fixes
+
+- **The status band keeps the right rows, steps, and close state.**
+  - A failed or empty ROADMAP read keeps the band's rows only when they
+    came from the same repo. After the session moves to another repo, or
+    when its working directory cannot be read, the band and the pane show
+    nothing rather than the old repo's rows.
+  - An empty or whitespace-only ROADMAP now counts as a failed read, so a
+    write caught half done no longer empties the band.
+  - On Windows, the ROADMAP search stops at a network share's root
+    (`\\server\share`).
+  - A cairn skill that waits on a one-shot wakeup (`ScheduleWakeup`) keeps
+    its step, and a typed prompt that a hook drops no longer ends it.
+  - A refresh writes the close state only when it changes it.
+  - A close-button press that lands as the session ends no longer hides
+    the band.
+
 ### Changes that affect existing repos
 
 - **Review records its findings in fixed line formats.**
