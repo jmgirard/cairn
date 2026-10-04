@@ -131,8 +131,8 @@ The band draws nothing of the running cairn skill. It keeps track of the
 skill for two things: the row it shows during `/milestone-review`, and
 when a hidden band shows again (below). A cairn skill counts from its
 start, by its plain name or its `cairn:` name. It stays until Claude stops
-with no background work in flight, such as after the skill's closing
-summary. A question chip the skill asks you waits
+with no background work in flight and no one-shot wakeup pending, such as
+after the skill's closing summary. A question chip the skill asks you waits
 inside the turn, so the skill stays while you answer it. A question asked
 in plain text ends the turn. With no background work in flight, the skill
 ends with it, and otherwise your typed answer ends it. When Claude ends a turn
@@ -152,13 +152,14 @@ When Claude stops while a one-shot wakeup (`ScheduleWakeup`) is pending,
 the skill stays. A prompt you type that a hook blocks or drops keeps the
 skill too.
 
-The rule has three limits. A recurring scheduled task, such as one that
-`/loop` starts, does not keep the skill, so a skill that waits on one
-ends when Claude stops. Background work that the skill did not start,
+The rule has three limits. A recurring scheduled task, such as a `/loop`
+with a fixed interval, does not keep the skill, so a skill that waits on
+one ends when Claude stops. Background work that the skill did not start,
 such as a server or a monitor started earlier, keeps a finished skill
 until your next prompt, because the band does not tell the skill's own
 work from other work. A one-shot wakeup that the skill did not set also
-keeps a finished skill, for the same reason.
+keeps a finished skill, for the same reason. A `/loop` with no interval
+schedules one-shot wakeups, so it keeps a finished skill this way.
 
 With no milestone active, the band shows an idle row for the next
 milestone you can start, whether or not a cairn skill runs. That milestone

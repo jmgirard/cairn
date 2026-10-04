@@ -2119,6 +2119,29 @@ describe('an idle typed prompt that a hook drops leaves the step (M210 AC6)', ()
       )
     })
   }
+
+  // M210 review: the refresh before `next` clears a hide made while
+  // /milestone-review moved the band, so the drop puts that back too.
+  test('a dropped prompt keeps a band hidden while /milestone-review runs', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      async (ui, $, copy) => {
+        await prompt($, 'milestone-review')
+        await $.classic.Stop(stopWith('one'))
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        copy.dropSubmit = 'refused by a hook'
+        await $.prompt.submit(submitWith('composer'))
+        expect(await lines(ui)).toEqual([ENGINE])
+        // The same prompt entering ends the step, which shows the band.
+        copy.dropSubmit = undefined
+        await $.prompt.submit(submitWith('composer'))
+        expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
 })
 
 describe('an idle typed prompt ends a kept step, and a notice turn keeps it (M201 AC2)', () => {

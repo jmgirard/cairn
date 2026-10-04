@@ -102,12 +102,16 @@ transitions, human-gated merges, and a domain verification doctrine.
   path under a `cairn/` directory, reads the files again, so the track
   moves inside a long turn. `mark` and `same` in
   `band.ts` build and compare that value, and `mark` reads the step through
-  `knownStep`, as the drawing does. A refresh decides whether to clear
-  `dismissed` inside its `update` callback, so a press made while
-  `reconcile` reads the `band` and `step` values is kept when those reads
-  match it. A hook that changes the rows or the step before that `update`
-  can still clear a press made against the new state. A refresh writes
-  `dismissed` only when it holds a value to clear (M210). A press takes
+  `knownStep`, as the drawing does. A refresh reads `dismissed` with
+  `$.state.get` and clears it with `$.state.set` at that version, reading
+  again on a miss, so a press made while `reconcile` reads the `band` and
+  `step` values is kept when those reads match it. A hook that changes the
+  rows or the step before that clear can still clear a press made against
+  the new state. A refresh writes `dismissed` only when it holds a value to
+  clear (M210, made exact at the M210 review). The failed-read path in
+  `refresh` decides keep or empty and writes `band` at one version the same
+  way. A dropped prompt puts back the close state its own refresh cleared
+  as well as the step (M210 review). A press takes
   `dismissed`'s version with `$.state.get` before it reads `band` and
   `step`, and writes through `$.state.set` with `ifVersion`, so a session
   end between the reads and the write wins (M210). Any other write in

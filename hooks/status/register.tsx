@@ -47,9 +47,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // ROADMAP was found or the working directory could not be read; the tag
 // moved to 4 with the root (M210).
 type StoredBand = BandState & { root: string | null }
-const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [], root: null } as StoredBand, {
-  shape: 'band-4',
-})
+const BAND_REF = { plugin: 'cairn', key: 'band' } as const
+const BAND_SHAPE = 'band-4'
+const band = atom(BAND_REF, { rows: [], workable: [], root: null } as StoredBand, { shape: BAND_SHAPE })
 
 // The active ids and statuses, in ROADMAP order, `milestone-review` while
 // it moves the band to another row, and the idle row's id while no row is
@@ -222,11 +222,15 @@ export const register: Register = on => {
     await update($, expanded, () => false)
     if (!typed || e.turnId !== undefined || fresh) return next(e)
     const before = await read($, step)
+    const hiddenBefore = await read($, dismissed)
     await update($, step, () => null)
     await refresh($)
     const result = await next(e)
+    // The refresh above can clear a hide made against the old step, so a
+    // drop puts back the close state as well (M210 review).
     if (result?.drop !== undefined && before !== null) {
       await update($, step, current => current ?? before)
+      if (hiddenBefore !== null) await update($, dismissed, current => current ?? hiddenBefore)
       await reconcile($)
     }
     return result
@@ -403,17 +407,22 @@ function notPlaced(reason: string): string {
 // A change to the active ids, statuses, or order, to the running skill, or
 // to the idle row's id brings the band back, and it stays until the next
 // press. The end of a skill's step is a change to the running skill. The
-// decision reads the close state inside the update, so a press made while
-// `reconcile` reads the `band` and `step` values is compared, not lost, and
-// it is kept when those reads match it (M200). A hook that changes the rows
-// or the step before the update can still clear a press made against the
-// new state, because the comparison uses the old reads. With nothing to
-// clear, it writes nothing (M210).
+// decision reads the close state at a version and clears it only at that
+// version, so a press made while `reconcile` reads the `band` and `step`
+// values is compared, not lost, and it is kept when those reads match it
+// (M200, M210 review). A hook that changes the rows or the step before the
+// clear can still clear a press made against the new state, because the
+// comparison uses the old reads. With nothing to clear, it writes nothing
+// (M210).
 async function reconcile($) {
   const now = mark(await read($, band), await read($, step))
-  const hidden = await read($, dismissed)
-  if (hidden === null || same(hidden, now)) return
-  await update($, dismissed, value => (value !== null && !same(value, now) ? null : value))
+  for (let tries = 0; tries < 3; tries += 1) {
+    const held = await $.state.get(DISMISSED_REF)
+    const hidden = held.value !== undefined && held.value.shape === DISMISSED_SHAPE ? held.value.value : null
+    if (hidden === null || same(hidden, now)) return
+    const done = await $.state.set(DISMISSED_REF, { shape: DISMISSED_SHAPE, value: null }, { ifVersion: held.version })
+    if (done.isSet) return
+  }
 }
 
 // A span's style props, leaving out the ones it does not set.
@@ -445,10 +454,19 @@ async function refresh($) {
     await update($, band, () => ({ ...next.band, root }))
     await update($, pane, () => next.pane)
   } else {
-    const kept = (await read($, band)).root
-    if (kept === null || root === null || kept !== root) {
-      await update($, band, () => ({ rows: [], workable: [], root }))
-      await update($, pane, () => NO_PANE)
+    // The keep-or-empty decision and the write stand at one version, so a
+    // good read that lands in between is decided again, not overwritten
+    // (M210 review). Keeping writes nothing.
+    for (let tries = 0; tries < 3; tries += 1) {
+      const held = await $.state.get(BAND_REF)
+      const kept = held.value !== undefined && held.value.shape === BAND_SHAPE ? held.value.value.root : null
+      if (kept !== null && root !== null && kept === root) break
+      const empty = { rows: [], workable: [], root }
+      const done = await $.state.set(BAND_REF, { shape: BAND_SHAPE, value: empty }, { ifVersion: held.version })
+      if (done.isSet) {
+        await update($, pane, () => NO_PANE)
+        break
+      }
     }
   }
   await reconcile($)
