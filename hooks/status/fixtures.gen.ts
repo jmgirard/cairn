@@ -35,7 +35,7 @@ export const FIXTURES: Record<string, Fixture> = {
   "candidates": {
     cwd: "/",
     files: {
-      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M031 | Next up | planned | — | normal | milestones/M031-next.md |\n| M030 | Shipped | done | — | normal | milestones/archive/M030-shipped.md |\n\n## Candidates\n\n_A note line that is not a row: it has no dash._\n\n- [high] High row: the text after the first colon and space is not shown — added 2026-01-01\n- Normal row: details — added 2026-01-02\n- [low] Low row: details: a second colon — added 2026-01-03\n- A row with no colon and space, shown whole — added 2026-01-04\n- [HIGH] Upper-case token: reads as normal — added 2026-01-05\n- [high]No space after the token: reads as normal — added 2026-01-06\n- Token in [low] mid-row: reads as normal — added 2026-01-07\n- A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end: details — added 2026-01-08\n- `code: in backticks` keeps the backtick before its colon — added 2026-01-09\n\n## Notes\n\n- A dash line under another heading is not a candidate row.\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n_A milestone title may hold `<!--` in backticks, with no end in this section._\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M031 | Next up | planned | — | normal | milestones/M031-next.md |\n| M030 | Shipped | done | — | normal | milestones/archive/M030-shipped.md |\n\n## Candidates\n\n_A note line that is not a row: it has no dash._\n\n- [high] High row: the text after the first colon and space is not shown — added 2026-01-01\n- Normal row: details — added 2026-01-02\n- [low] Low row: details: a second colon — added 2026-01-03\n- A row with no colon and space, shown whole — added 2026-01-04\n- [HIGH] Upper-case token, shown whole — added 2026-01-05\n- [high]No space after the token, shown whole — added 2026-01-06\n- Token in [low] mid-row, shown whole — added 2026-01-07\n- A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end: details — added 2026-01-08\n- `code: in backticks` keeps the backtick before its colon — added 2026-01-09\n\n## Notes\n\n- A dash line under another heading is not a candidate row.\n- A closing `-->` marker here ends nothing in the Candidates section.\n",
     },
     rows: [
     ],
@@ -48,9 +48,9 @@ export const FIXTURES: Record<string, Fixture> = {
       {"priority": "normal", "title": "Normal row"},
       {"priority": "low", "title": "Low row"},
       {"priority": "normal", "title": "A row with no colon and space, shown whole — added 2026-01-04"},
-      {"priority": "normal", "title": "[HIGH] Upper-case token"},
-      {"priority": "normal", "title": "[high]No space after the token"},
-      {"priority": "normal", "title": "Token in [low] mid-row"},
+      {"priority": "normal", "title": "[HIGH] Upper-case token, shown whole — added 2026-01-05"},
+      {"priority": "normal", "title": "[high]No space after the token, shown whole — added 2026-01-06"},
+      {"priority": "normal", "title": "Token in [low] mid-row, shown whole — added 2026-01-07"},
       {"priority": "normal", "title": "A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end"},
       {"priority": "normal", "title": "`code"},
     ],

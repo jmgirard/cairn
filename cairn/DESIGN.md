@@ -189,12 +189,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   `scripts/cairn_next.py`, which `reader.ts` mirrors and
   `scripts/tests/test_status_fixtures.py` holds to each fixture's `pane`
   and `next` keys. The pane state also holds the candidate rows (M207):
-  `candidateRows` in `reader.ts` reads each line that opens with `- `
-  under a `## Candidates` heading, after HTML comments are removed, as a
-  priority (`high` or `low` for an exact `[high] ` or `[low] ` opening,
-  else `normal`) and the text before the first `: `. Its section walk is
-  `candidate_count`'s, and `test_status_fixtures.py` holds it to each
-  fixture's `candidates` key and to that count. The pane draws them only
+  `candidateRows` in `reader.ts` reads each flush-left line that opens
+  with `- ` under a `## Candidates` heading, after HTML comments are
+  removed from that section, as a priority (`high` or `low` for an exact
+  `[high] ` or `[low] ` opening, else `normal`) and the text before the
+  first `: `. It walks the sections `candidate_count` walks, but that
+  count also takes indented lines and lines inside comments.
+  `test_status_fixtures.py` holds the reader to each fixture's `candidates`
+  key, and to that count where no comment sits in the section. The pane draws them only
   while no row is active. `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look).

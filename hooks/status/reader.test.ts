@@ -2,6 +2,7 @@ import { describe, expect, test } from 'claude-code/testing'
 
 import { FIXTURES } from './fixtures.gen'
 import {
+  candidateRows,
   canonId,
   dirname,
   findRoot,
@@ -180,6 +181,29 @@ describe('the workable list (M199 AC1)', () => {
       '| M006 | F | Planned | — | low | m |',
     ])
     expect(workableRows(rows, []).map(r => r.id)).toEqual(['M006'])
+  })
+})
+
+describe('candidate rows (M207 review)', () => {
+  const rows = [
+    { priority: 'high', title: 'High row' },
+    { priority: 'normal', title: 'Normal row' },
+  ]
+
+  test('CRLF line breaks read as LF ones', () => {
+    const lf = '# Roadmap\n\n## Candidates\n\n- [high] High row: x\n- Normal row: y\n'
+    expect(candidateRows(lf)).toEqual(rows)
+    expect(candidateRows(lf.replace(/\n/g, '\r\n'))).toEqual(rows)
+  })
+
+  test("a comment opened in another section hides no candidate row", () => {
+    const text = '## Milestones\n\n`<!--` in a title\n\n## Candidates\n\n- [high] High row: x\n- Normal row: y\n\n## Notes\n\n`-->`\n'
+    expect(candidateRows(text)).toEqual(rows)
+  })
+
+  test('a comment inside the section hides the rows it holds', () => {
+    const text = '## Candidates\n<!--\n- [low] Hidden: x\n-->\n- [high] High row: x\n- Normal row: y\n'
+    expect(candidateRows(text)).toEqual(rows)
   })
 })
 

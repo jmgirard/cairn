@@ -318,9 +318,9 @@ const CANDIDATE_LINES = [
   '· Normal row',
   '↓ Low row',
   '· A row with no colon and space, shown whole — added 2026-01-04',
-  '· [HIGH] Upper-case token',
-  '· [high]No space after the token',
-  '· Token in [low] mid-row',
+  '· [HIGH] Upper-case token, shown whole — added 2026-01-05',
+  '· [high]No space after the token, shown whole — added 2026-01-06',
+  '· Token in [low] mid-row, shown whole — added 2026-01-07',
   '· A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end',
   '· `code',
 ]
@@ -353,6 +353,14 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       expect(textOf(await markOf(1))).toBe(PRIORITY_MARK.normal.text)
       expect(textOf(await markOf(2))).toBe(PRIORITY_MARK.low.text)
       expect((await markOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      // The high mark is bold, the normal mark has no color, and only a
+      // low row's title is gray.
+      expect((await markOf(0)).props.bold).toBe(true)
+      expect((await markOf(1)).props.color).toBe(undefined)
+      const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
+      expect((await titleOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      expect((await titleOf(0)).props.color).toBe(undefined)
+      expect((await titleOf(1)).props.color).toBe(undefined)
       // The three marks differ.
       expect(new Set([PRIORITY_MARK.high.text, PRIORITY_MARK.normal.text, PRIORITY_MARK.low.text]).size).toBe(3)
       await ui.unmount()

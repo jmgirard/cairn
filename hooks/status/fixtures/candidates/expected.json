@@ -9,9 +9,9 @@
     {"priority": "normal", "title": "Normal row"},
     {"priority": "low", "title": "Low row"},
     {"priority": "normal", "title": "A row with no colon and space, shown whole — added 2026-01-04"},
-    {"priority": "normal", "title": "[HIGH] Upper-case token"},
-    {"priority": "normal", "title": "[high]No space after the token"},
-    {"priority": "normal", "title": "Token in [low] mid-row"},
+    {"priority": "normal", "title": "[HIGH] Upper-case token, shown whole — added 2026-01-05"},
+    {"priority": "normal", "title": "[high]No space after the token, shown whole — added 2026-01-06"},
+    {"priority": "normal", "title": "Token in [low] mid-row, shown whole — added 2026-01-07"},
     {"priority": "normal", "title": "A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end"},
     {"priority": "normal", "title": "`code"}
   ]

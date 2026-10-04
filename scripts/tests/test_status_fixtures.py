@@ -136,27 +136,34 @@ PRIORITY = re.compile(r"\[(high|low)\] ")
 
 def python_candidates(start):
     """The pane's candidate rows for a session started in `start` (M207 AC3):
-    the lines that open with `- ` in the section `candidate_count` walks
-    (not the indented ones it also counts), read after HTML comments are
-    removed, each its priority and the text after the token before its
-    first `: `."""
+    the lines that open with `- ` in the sections `candidate_count` walks
+    (not the indented ones it also counts), each section read after its own
+    HTML comments are removed, each row its priority and the text after the
+    token before its first `: `."""
     root = cs.cc.find_cairn_root(str(start))
     if root is None:
         return []
-    out = []
-    in_section = False
-    for line in COMMENT.sub("", cs.read_roadmap(root)).splitlines():
+    sections = []
+    current = None
+    for line in cs.read_roadmap(root).splitlines():
         if line.startswith("## "):
-            in_section = line.strip().lower().startswith("## candidates")
+            current = [] if line.strip().lower().startswith("## candidates") else None
+            if current is not None:
+                sections.append(current)
             continue
-        if not in_section or not line.startswith("- "):
-            continue
-        text = line[2:]
-        m = PRIORITY.match(text)
-        priority = m.group(1) if m else "normal"
-        if m:
-            text = text[m.end():]
-        out.append({"priority": priority, "title": text.split(": ", 1)[0].strip()})
+        if current is not None:
+            current.append(line)
+    out = []
+    for section in sections:
+        for line in COMMENT.sub("", "\n".join(section)).splitlines():
+            if not line.startswith("- "):
+                continue
+            text = line[2:]
+            m = PRIORITY.match(text)
+            priority = m.group(1) if m else "normal"
+            if m:
+                text = text[m.end():]
+            out.append({"priority": priority, "title": text.split(": ", 1)[0].strip()})
     return out
 
 

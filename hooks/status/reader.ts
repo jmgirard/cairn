@@ -8,8 +8,8 @@
 // `workable` reaches through `done_ids` and `_workable` (`canon_id`,
 // `archive_files`, and `sort_by_priority` with its `id_num`). For the cairn
 // pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
-// (M205), and reads the candidate rows over `candidate_count`'s section
-// walk in scripts/cairn_scripts.py (M207). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
+// (M205), and reads the candidate rows in the sections that
+// `candidate_count` in scripts/cairn_scripts.py walks (M207). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
 // and `\d` also take other Unicode digits, so an id such as `M００５７`
 // reads differently in the two.
 // hooks/status/reader.test.ts holds this reader, and
@@ -373,22 +373,29 @@ const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
   ['[low] ', 'low'],
 ]
 
-// The candidate rows (M207): each line that opens with `- ` under a
-// `## Candidates` heading, with HTML comments removed first, so the
-// `/cairn-init` skeleton's placeholder rows are not read. The section walk
-// is `candidate_count`'s in scripts/cairn_scripts.py: every `## ` line
-// starts or ends a section. A row's priority is `high` or `low` when its
-// text opens with exactly `[high] ` or `[low] `, else `normal`. Its short
-// title is the text after that token up to the first `: `, or all of it.
+// The candidate rows (M207): each flush-left line that opens with `- `
+// under a `## Candidates` heading. HTML comments are removed from each such
+// section's body before it is read, so the `/cairn-init` skeleton's
+// placeholder rows are not read, and a `<!--` in another section hides
+// nothing here. Every `## ` line starts or ends a section, as in
+// `candidate_count` in scripts/cairn_scripts.py, which also counts indented
+// lines and lines inside comments. A row's priority is `high` or `low` when
+// its text opens with exactly `[high] ` or `[low] `, else `normal`. Its
+// short title is the text after that token up to the first `: `, or all of it.
 export function candidateRows(roadmap: string): CandidateRow[] {
-  const rows: CandidateRow[] = []
-  let inSection = false
-  for (const line of splitLines(roadmap.replace(COMMENT, ''))) {
+  const bodies: string[][] = []
+  let body: string[] | null = null
+  for (const line of splitLines(roadmap)) {
     if (line.startsWith('## ')) {
-      inSection = line.trim().toLowerCase().startsWith('## candidates')
+      body = line.trim().toLowerCase().startsWith('## candidates') ? [] : null
+      if (body !== null) bodies.push(body)
       continue
     }
-    if (!inSection || !line.startsWith('- ')) continue
+    if (body !== null) body.push(line)
+  }
+  const rows: CandidateRow[] = []
+  for (const line of bodies.flatMap(lines => splitLines(lines.join('\n').replace(COMMENT, '')))) {
+    if (!line.startsWith('- ')) continue
     let text = line.slice(2)
     let priority: CandidateRow['priority'] = 'normal'
     const match = PRIORITY_TOKENS.find(([token]) => text.startsWith(token))
