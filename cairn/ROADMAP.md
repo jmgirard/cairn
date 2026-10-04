@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M201 | A band label that holds through background waits | done | — | normal | milestones/archive/M201-band-label-background-waits.md |
 | M202 | One question set, then the agent runs the milestone to the merge question | done | — | normal | milestones/archive/M202-one-question-set-run.md |
 | M203 | Record review findings in fixed formats | done | M202 | normal | milestones/archive/M203-merge-approval-up-front.md |
-| M204 | A flow track band: plan, implement, review | in-progress | — | normal | milestones/M204-flow-track-band.md |
+| M204 | A flow track band: plan, implement, review | review | — | normal | milestones/M204-flow-track-band.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

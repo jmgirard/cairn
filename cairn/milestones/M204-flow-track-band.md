@@ -1,6 +1,6 @@
 # M204: A flow track band: plan, implement, review
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -72,6 +72,8 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 - 2026-10-03: T5 done: the operator chose design A from the browser-pane prototype, not from the band in the desktop app; the in-app look in light and dark (AC5) is asked at the merge question.
 - 2026-10-03: T6: README gains two desktop-track paragraphs and the `/milestone-plan` blue; DESIGN.md's `hooks/status/` entry gains the track; CHANGELOG Unreleased gains "A flow track in the desktop band"; band.ts and register.tsx header comments name the track.
 - 2026-10-03: T7: `scripts/tests` exit 0, `hooks/tests` exit 0, `claude plugin validate` exit 0, `claude plugin test` exit 0 (944 pass, 0 fail); `cairn_validate` all checks passed.
+- 2026-10-03: claim audit: 68 claims read, 4 corrected — README.md, CHANGELOG.md (the 100% case and a review row with no criteria, the percent on milestone rows only, ticks between the items left, the `no tasks` pill); the same reader re-read the four as true; a 0.005-pixel rounding note in track.ts was left as is.
+- 2026-10-03: implement done: all tasks checked, mod tests 944 pass after the doc fixes; status set to review.
 
 ## Decisions
 

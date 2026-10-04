@@ -9,9 +9,11 @@
   review, in place of the bar and the counts. Small specks fill it from
   the left to the current phase's edge, gray at first and in the phase's
   color near the edge. A pill on the edge names the phase and its counts,
-  such as `Implement 1/3`. Ticks mark the items left in the current phase
-  when they are 6 pixels apart or more, and the percent of the whole flow sits at the right. The idle row and a
-  `/milestone-plan` skill row with no active milestone draw the track too.
+  such as `Implement 1/3`, or `no tasks` when the section has no boxes.
+  Ticks mark the edges between the items left in the current phase when
+  they are 6 pixels apart or more. A milestone row shows the percent of
+  the whole flow at the right. The idle row and a `/milestone-plan` skill
+  row with no active milestone draw the track too.
   In a narrow window, and in the terminal, the band keeps its text row.
   The `/milestone-plan` label now draws in a muted blue.
 - **A milestone band above the prompt.** The plugin now ships a Claude Code

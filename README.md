@@ -105,10 +105,12 @@ that edge names the phase and its counts, such as `Implement 1/3` or
 `Review 2/3`, in the phase's color. A section with no boxes shows
 `no tasks` or `no criteria` in the pill. Two thin marks divide the three
 parts. In the current part, a tick marks each item edge past the fill when
-the items are 6 pixels apart or more. The percent of the whole flow sits
-to the right of the track. Each part counts for a third, and the percent
-rounds down, so it reads 100% only when every criterion is checked. The
-track keeps this look under any skill label and at any chapter.
+the items are 6 pixels apart or more. On a milestone row, the percent of
+the whole flow sits to the right of the track. Each part counts for a
+third, and the percent rounds down. So it reads 100% only on a `review`
+row whose criteria are all checked, and a `review` row with no criteria
+reads 66%. The track keeps this look under any skill label and at any
+chapter.
 
 The idle row draws the track with plan full and the pill `Planned`, before
 its command. A `/milestone-plan` skill row with no active milestone draws
