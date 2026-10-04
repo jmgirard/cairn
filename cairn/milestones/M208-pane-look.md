@@ -1,6 +1,6 @@
 # M208: A fuller look for the cairn pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M207
 - **Driving RR:** —
@@ -74,6 +74,8 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: T7 change named: the operator said everything looks good except that the colors should be phase-matched.
 - 2026-10-04: implement chose the phase-color mapping from the band's `FLOW_COLORS`. A milestone's `▎` marks take its phase's color, as its meters already did. The `▎` marks of Workable, Waiting, and Candidates take plan's blue, since their rows are planned or not yet planned. The Next pill takes the color of the phase its command runs: plan blue, implement orange, review green. The head line's percent stays gray, as the band's is. Falsified if the operator reads the queue's blue as a milestone state at the live look.
 - 2026-10-04: T7 done. The AC3 cases now assert the accent color per heading, with two M081 review headings added, and the pill color for a review, an implement, and a plan command; the 14 non-orange cases failed on the old colors before the change. README, the DESIGN pane paragraph, the CHANGELOG entry, and the `pane.ts` header comment name the phase colors. Verify: 397, 174, and 994 tests pass, and validate exits 0.
+- 2026-10-04: claim audit: 16 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/pane.test.tsx (the lines T7 added; the earlier lines are under the first claim-audit line)
+- 2026-10-04: implement done again, status `review`, with T6 open: the live look of the phase colors runs at the merge question.
 
 ## Decisions
 
