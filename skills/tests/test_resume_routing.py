@@ -192,9 +192,15 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         )
 
     def test_two_way_check_runs_against_the_baseline(self):
+        # Two passages around the guest-arm sync clause (M185), which this
+        # guard does not pin (M214).
         self.assertIn(
             "a test the merged diff carries is run on the default branch, checked "
-            "out and brought up to date (fetch, pull ff-only), and in a "
+            "out and brought up to date (fetch, pull ff-only",
+            self.step1,
+        )
+        self.assertIn(
+            "), and in a "
             "throwaway worktree of the "
             "baseline created outside the repo (`git worktree add --detach "
             "/tmp/<repo>-verify <baseRefOid>`) with only the test file "

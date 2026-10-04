@@ -62,7 +62,7 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
       `git symbolic-ref --short refs/remotes/origin/HEAD` to the `<base>`
       spellings, and change the matching Mutation `block` at
       `test_mutation_harness.py:305` the same way.
-- [ ] T2: Repoint `test_two_way_check_runs_against_the_baseline` to the
+- [x] T2: Repoint `test_two_way_check_runs_against_the_baseline` to the
       current `/hotfix` step-1 text: assert the passage before the guest-arm
       parenthetical and the passage after it as two `assertIn` calls, so the
       guest-arm wording is not pinned here.
@@ -89,6 +89,7 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - 2026-10-04: plan commit merged the M212 and M213 band-button candidate rows into one to keep ROADMAP under its 60-line and 24,000-byte caps.
 - 2026-10-04: implement start: branch m214-prose-guard-reds cut from main at 854c2c6. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's work and stay unstaged.
 - 2026-10-04: T1 done: the two asserts and the Mutation block now read `<base>`. skills/tests went from 4 failures and 1 error to 2 failures. Verify slot: all four commands exit 0.
+- 2026-10-04: T2 done: the guard asserts the text up to `pull ff-only` and the text from `), and in a throwaway worktree` on. The existing Mutation entry covers the second passage. An in-memory edit that drops `ff-only` turns the first passage false. Only test files changed, so the verify slot result from T1 stands.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
