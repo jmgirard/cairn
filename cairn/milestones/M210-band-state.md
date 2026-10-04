@@ -46,41 +46,41 @@ surface tests are features, not defects.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `dirname` in `hooks/status/reader.ts` returns the UNC share roots
+- [x] AC1: `dirname` in `hooks/status/reader.ts` returns the UNC share roots
       `\\srv\share` and `//srv/share` unchanged and maps `\\srv\share\` and
       `\\srv\share\a` to `\\srv\share`, so `findRoot` started in
       `\\srv\share\a\b` probes no path above `\\srv\share`. A `reader.test.ts`
       test asserts each form and the list of paths `findRoot` probes.
-- [ ] AC2: In the same repo root, a refresh whose ROADMAP read fails keeps the
+- [x] AC2: In the same repo root, a refresh whose ROADMAP read fails keeps the
       rows drawn before the failure, and a ROADMAP whose text is empty or only
       whitespace counts as a failed read. A `band.test.tsx` test edits the
       ROADMAP, makes the read fail, refreshes, and asserts that the band and
       the pane still draw the pre-edit row, then draw the edited row after the
       read succeeds again. A second test asserts the same keep for an empty
       ROADMAP text.
-- [ ] AC3: The band state stores the repo root its rows came from. A refresh
+- [x] AC3: The band state stores the repo root its rows came from. A refresh
       whose read fails draws the empty state in the band and the pane, never
       rows from another root, when the working directory is in a different
       repo root, when reading the working directory throws, or when no root is
       stored with the drawn rows. `band.test.tsx` tests cover each of the
       three cases.
-- [ ] AC4: `reconcile` writes `dismissed` only when its value changes: a test
+- [x] AC4: `reconcile` writes `dismissed` only when its value changes: a test
       asserts that a refresh with nothing hidden performs no `state.set` on
       `dismissed`. A close-button press whose `band` and `step` reads come
       before a `session.end` and whose write comes after it leaves `dismissed`
       null: a test starts with `dismissed` null and places the `session.end`
       between the reads and the write.
-- [ ] AC5: At a `classic.Stop` with no background tasks, a running cairn skill
+- [x] AC5: At a `classic.Stop` with no background tasks, a running cairn skill
       keeps its step while `session_crons` holds at least one one-shot
       (non-recurring) entry, and the step ends when the crons are all
       recurring, empty, or absent. `band.test.tsx` tests cover one-shot only,
       one-shot plus recurring, recurring only, empty, and absent.
-- [ ] AC6: An idle typed prompt (no `turnId`, `expanded` unset) that a hook
+- [x] AC6: An idle typed prompt (no `turnId`, `expanded` unset) that a hook
       beneath the mod drops (its `prompt.submit` result carries `drop`) leaves
       the step unchanged. One that goes through ends the step before any
       `skill.prompt` of its turn can set a new one. `band.test.tsx` tests
       assert both.
-- [ ] AC7: The `verify` slot of `cairn/PROFILE.md` is clean: all four commands
+- [x] AC7: The `verify` slot of `cairn/PROFILE.md` is clean: all four commands
       exit 0, each exit code checked.
 
 ## Coverage
@@ -148,3 +148,13 @@ surface tests are features, not defects.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Evidence from one fresh run on head 9ca56cb, 2026-10-04 (`claude plugin test .`: 1023 pass, 0 fail).
+
+- AC1: `reader.test.ts` "dirname stops at a UNC share root (M210 AC1)" asserts `\\srv\share` and `//srv/share` unchanged, and `\\srv\share\` and `\\srv\share\a` mapped to `\\srv\share`. "findRoot probes no path above a UNC share root (M210 AC1)" asserts the three probed paths from `\\srv\share\a\b`, the last at `\\srv\share`. Both pass. Both failed on their values before the fix (T1).
+- AC2: the "same root keeps the rows drawn before it (M210 AC2)" block passes 6 of 6 over terminal and desktop. The edit test asserts the pre-edit band row and pane title through the failed read, then the edited row and title, with no pre-edit title, after a good read. The empty and whitespace-only tests assert the band row and pane title are kept.
+- AC3: the "never draws rows from another root (M210 AC3)" block passes 6 of 6 over terminal and desktop: the moved root, the throwing working directory, and rows stored with no root. Each draws only the engine slot in the band and no pre-edit title in the pane. All six failed against the pre-T2 source (T2).
+- AC4: the "(M210 AC4)" block passes 4 of 4. With nothing hidden, a refresh's recorded writes include `band` and no `dismissed`. A `session.end` run between the press's step read and its write leaves the band drawn, and a second press then hides it. The band shows only when `dismissed` does not match the current mark, and a press that landed would have written that mark. Both failed before the fix (T3).
+- AC5: the "(M210 AC5)" block passes 5 of 5, each on both surfaces: one-shot and one-shot with recurring keep the step, and recurring, empty, and absent end it. A closing empty Stop ends the step in every case.
+- AC6: the "(M210 AC6)" block passes 2 of 2 (`composer`, `bridge`), each on both surfaces. A dropped idle prompt keeps the review row, and the same prompt entering ends it. The M201 test "a typed cairn slash command's own skill prompt sets the new step" passes, so the step still ends before a skill prompt of the turn sets a new one.
+- AC7: `verify.sh` over the four slot commands: scripts 397 OK (21 skipped), hooks 174 OK, `claude plugin validate` passed with warnings (exit 0), `claude plugin test .` 1023 pass. Each exit code is 0 and was checked.
