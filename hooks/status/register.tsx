@@ -303,9 +303,10 @@ export const register: Register = on => {
     const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
     const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
     // Each action Button draws with its chrome, so the terminal draws it as
-    // `[ label ]`: its label and 4 columns. The two sit side by side, with
-    // one space before the open button.
-    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + width(STATUS_LABEL) + 4 + 1
+    // `[ label ]`: its label and 4 columns. One space follows each. Both take
+    // the `secondary` look: an accent color beside the track's phase colors
+    // clashed at a live look.
+    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + 1 + width(STATUS_LABEL) + 4 + 1
     const reserved = close + actionColumns
     const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable) : []
     const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
@@ -355,11 +356,12 @@ export const register: Register = on => {
           {isFirst && acts && nextRun !== null ? (
             <Button
               key="cairn-next"
-              variant="primary"
+              variant="secondary"
               label={nextLabel}
               onPress={() => run($, nextRun.command, nextRun.args)}
             />
           ) : null}
+          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && acts ? (
             <Button key="cairn-status" variant="secondary" label={STATUS_LABEL} onPress={() => run($, STATUS_COMMAND, '')} />
           ) : null}
