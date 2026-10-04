@@ -49,6 +49,7 @@ Make a cairn pane that the operator moved to another column or resized in the de
 - 2026-10-04: plan routed the placement bug through a milestone and not `/hotfix`, because its cause is unknown and a regression test needs the probe first.
 - 2026-10-04: question set: snap-back. The operator sees the pane go back after switching to another session in the desktop app and back. The probe tests that switch first, and the turn end as the mod's own refresh.
 - 2026-10-04: criteria audit (full mode, user-facing tier, fresh Opus reader) returned 12 findings over M207 to M209, all taken. Here: AC2 holds only while the pane is open and shown, so AC3's opens of a closed pane stand. AC2 names the calls the mod makes and what the test's mocks record for each. A turn end follows a checked box. Any put-back with no mod call stops the run. AC3 names the M205 cases in `pane.test.tsx`. The goal names the two events as the whole domain.
+- 2026-10-04: operator note after the plan commit: only the cairn pane goes back after a session switch. The app's own panes keep their column and width. T1 therefore also logs each event that reaches the mod at the session's return (a `session.start`, a new `ui.render`, a re-seat of the pane), and compares a pane opened with `columns` against one opened without.
 - 2026-10-04: the T1 probe and the T4 live look are stops for the operator's eyes on the closed list. An upstream report is an outward action, asked only at the goal-wrong stop.
 
 ## Decisions
