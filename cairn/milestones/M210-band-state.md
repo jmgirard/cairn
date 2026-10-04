@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M210: The status band keeps the right state
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the status mod ships in the plugin and draws in every adopter's session   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m210-band-state   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -99,7 +99,7 @@ surface tests are features, not defects.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: UNC roots. `dirname` (`reader.ts:225-232`) treats a `\\host\share`
+- [x] T1: UNC roots. `dirname` (`reader.ts:225-232`) treats a `\\host\share`
       or `//host/share` head as a root. Add reader tests for each AC1 form and
       for the `findRoot` probe list (`memorySource`).
 - [ ] T2: Root-aware rows. `loadCairn` exposes the root it found and treats an
@@ -131,6 +131,8 @@ surface tests are features, not defects.
 - 2026-10-04: criteria audit (full): a fresh Opus reader returned 6 findings on M210 (AC1 share-root forms, the no-root case between AC2 and AC3, AC4's universal writer clause and the press-version conflict, AC5's mixed and absent cron cases, AC6's universal "goes through" clause), each fixed toward the narrower wording above.
 - 2026-10-04: plan gate chose the seven clear defects over adding the bare-skill-name fix because a typed `/hotfix` may reach `skill.prompt` bare; falsified by a live check showing typed cairn commands always arrive as `cairn:<name>`.
 - 2026-10-04: plan chose to treat an empty or whitespace ROADMAP text as a failed read over a delayed re-read of any empty result, because the re-read adds a timer to the refresh path; falsified by a real session where a ROADMAP cut mid-table empties the band.
+- 2026-10-04: implement started on m210-band-state. The untracked `cairn-probe.log` and `tsconfig.json` in the tree are unrelated and stay unstaged.
+- 2026-10-04: T1 done. `dirname` returns a `\\host\share` or `//host/share` head unchanged. Two new reader tests failed on their asserted values before the fix. Verify is clean: scripts 397 OK, hooks OK, validate passed with warnings, mod tests 1000 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

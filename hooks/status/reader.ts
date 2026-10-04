@@ -224,6 +224,8 @@ function fileFields(text: string) {
 
 export function dirname(path: string): string {
   const trimmed = path.length > 1 ? path.replace(/[\\/]+$/, '') : path
+  // A UNC share root (`\\host\share`) is a root, as a drive is (M210).
+  if (/^[\\/]{2}[^\\/]+[\\/][^\\/]+$/.test(trimmed)) return trimmed
   const cut = Math.max(trimmed.lastIndexOf('/'), trimmed.lastIndexOf('\\'))
   if (cut < 0) return trimmed
   if (cut === 0) return trimmed[0]
