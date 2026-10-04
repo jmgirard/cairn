@@ -425,6 +425,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
 const view = (bodyColumns: number) => ({ ...PANE_VIEW, props: { ...PANE_VIEW.props, bodyColumns } })
 const ORANGE_RGB = 'rgb(194,122,92)'
 const GREEN_RGB = 'rgb(106,165,122)'
+const BLUE_RGB = 'rgb(110,140,190)'
 const WHITE_RGB = 'rgb(255,255,255)'
 
 async function mountPane($, surface: (typeof SURFACES)[number], bodyColumns = 60) {
@@ -552,17 +553,21 @@ describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => 
 })
 
 describe('section headings and Next in the set-off form (M208 AC3)', () => {
-  const HEADS: [string, string, string][] = [
-    ['pane-full', 'M080-goal-head', 'GOAL'],
-    ['pane-full', 'M080-tasks-head', 'TASKS'],
-    ['pane-full', 'M080-criteria-head', 'CRITERIA'],
-    ['pane-full', 'M080-log-head', 'WORK LOG'],
-    ['pane-full', 'workable-head', 'WORKABLE'],
-    ['pane-full', 'waiting-head', 'WAITING'],
-    ['candidates', 'candidates-head', 'CANDIDATES'],
+  // The accent takes the phase color: the milestone's own for its sections
+  // (M080 in implement, M081 in review), and plan's for the queue.
+  const HEADS: [string, string, string, string][] = [
+    ['pane-full', 'M080-goal-head', 'GOAL', ORANGE_RGB],
+    ['pane-full', 'M080-tasks-head', 'TASKS', ORANGE_RGB],
+    ['pane-full', 'M080-criteria-head', 'CRITERIA', ORANGE_RGB],
+    ['pane-full', 'M080-log-head', 'WORK LOG', ORANGE_RGB],
+    ['pane-full', 'M081-goal-head', 'GOAL', GREEN_RGB],
+    ['pane-full', 'M081-tasks-head', 'TASKS', GREEN_RGB],
+    ['pane-full', 'workable-head', 'WORKABLE', BLUE_RGB],
+    ['pane-full', 'waiting-head', 'WAITING', BLUE_RGB],
+    ['candidates', 'candidates-head', 'CANDIDATES', BLUE_RGB],
   ]
   for (const surface of SURFACES) {
-    for (const [fixture, key, label] of HEADS) {
+    for (const [fixture, key, label, accent] of HEADS) {
       test(`${key} on ${fixture} (${surface})`, async ($, on) => {
         seat(on, copyOf(fixture))
         await $.turn.complete(turn())
@@ -573,22 +578,30 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
         const ui = await mountPane($, surface)
         const lead = await partOf(ui, `${key}-lead`)
         expect(textOf(lead[0])).toBe('▎')
-        expect(lead[0].props.color).toBe(ORANGE_RGB)
+        expect(lead[0].props.color).toBe(accent)
         expect(textOf(lead[2])).toBe(label)
         expect(lead[2].props).toEqual(expect.objectContaining({ color: 'inactive', bold: true }))
         await ui.unmount()
       })
     }
 
-    test(`the Next command sits in an orange pill (${surface})`, async ($, on) => {
-      seat(on, copyOf('pane-full'))
-      await $.turn.complete(turn())
-      const ui = await mountPane($, surface)
-      const [pill] = await partOf(ui, 'next-text')
-      expect(textOf(pill)).toBe(' /milestone-review M081 ')
-      expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: ORANGE_RGB, color: WHITE_RGB, bold: true }))
-      await ui.unmount()
-    })
+    // The pill takes the color of the phase its command runs.
+    const PILLS: [string, string, string][] = [
+      ['pane-full', ' /milestone-review M081 ', GREEN_RGB],
+      ['single-in-progress', ' /milestone-implement M002 ', ORANGE_RGB],
+      ['all-waiting', ' /milestone-plan ', BLUE_RGB],
+    ]
+    for (const [fixture, command, color] of PILLS) {
+      test(`the Next command sits in a pill of its phase's color on ${fixture} (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [pill] = await partOf(ui, 'next-text')
+        expect(textOf(pill)).toBe(command)
+        expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: color, color: WHITE_RGB, bold: true }))
+        await ui.unmount()
+      })
+    }
   }
 })
 

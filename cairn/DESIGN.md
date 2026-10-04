@@ -206,9 +206,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   Each head line's tail is the band's percent for the row, from `flowOf`
   over the `band` value's counts, which `ui.render` reads beside `pane`.
   The rest of the M208 look is the operator's pick from browser
-  prototypes: a blank row, an orange `▎`, and a gray bold uppercase label
-  for each section heading, eight `■`/`□` squares in the phase color beside
-  the Tasks and Criteria counts, and the Next command in an orange pill.
+  prototypes: a blank row, a `▎`, and a gray bold uppercase label for each
+  section heading, eight `■`/`□` squares beside the Tasks and Criteria
+  counts, and the Next command in a pill. At the live look the operator
+  asked for the phase colors (`FLOW_COLORS`): a milestone's `▎` marks and
+  `■` squares take its phase's color, the queue's `▎` marks take plan's
+  blue, and the pill takes the color of the phase its command runs.
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),

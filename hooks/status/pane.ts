@@ -1,5 +1,6 @@
 import type { Span } from './band'
-import { flowOf, GRAY, GREEN, ORANGE } from './band'
+import type { FlowPhase } from './band'
+import { FLOW_COLORS, flowOf, GRAY, ORANGE } from './band'
 import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
 import { PILL_TEXT } from './track'
 
@@ -16,10 +17,13 @@ import { PILL_TEXT } from './track'
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
 // on one screen.
-// The operator picked the look at the M208 prototypes: a blank row, an
-// orange `▎`, and a gray uppercase label for each section heading, eight
-// squares beside the Tasks and Criteria counts, the Next command in an
-// orange pill, and the percent alone on the head line, with no track.
+// The operator picked the look at the M208 prototypes: a blank row, a
+// `▎`, and a gray uppercase label for each section heading, eight squares
+// beside the Tasks and Criteria counts, the Next command in a pill, and the
+// percent alone on the head line, with no track. At the live look the
+// operator asked for the phase colors: a milestone's marks and meters take
+// its phase's color, the queue's take plan's, and the pill takes the color
+// of the phase its command runs.
 
 export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; tail?: Span[]; wraps?: true }
 
@@ -34,8 +38,8 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: '·' },
   low: { text: '↓', color: GRAY },
 }
-// A section heading's accent mark (M208).
-export const ACCENT: Span = { text: '▎', color: ORANGE }
+// A section heading's accent mark, in the phase's color (M208).
+export const ACCENT_MARK = '▎'
 // The meter's squares, filled and empty, and how many it draws (M208).
 export const METER_FULL = '■'
 export const METER_EMPTY = '□'
@@ -46,9 +50,17 @@ export const METER_EMPTY_KEY = 'subtle'
 const WARNING = 'warning'
 
 const PHASE: Record<string, { label: string; color: string }> = {
-  'in-progress': { label: 'implement', color: ORANGE },
-  review: { label: 'review', color: GREEN },
+  'in-progress': { label: 'implement', color: FLOW_COLORS.implement },
+  review: { label: 'review', color: FLOW_COLORS.review },
 }
+// The phase each recommended command runs, for the Next pill's color.
+const COMMAND_PHASE: Record<string, FlowPhase> = {
+  '/milestone-plan': 'plan',
+  '/milestone-implement': 'implement',
+  '/milestone-review': 'review',
+}
+// The queue's headings are about planned work and candidates.
+const QUEUE_COLOR = FLOW_COLORS.plan
 
 const line = (key: string, indent: number, lead: Span[], text: Span | null = null): PaneLine => ({
   key,
@@ -77,18 +89,23 @@ export function meter(checked: number, total: number, color: string): Span[] {
   ].filter(span => span.text !== '')
 }
 
-// A section heading and the blank row before it: the accent, the label in
-// gray uppercase, and its count and meter where it has them.
-function heading(key: string, label: string, after: Span[] = []): PaneLine[] {
+// A section heading and the blank row before it: the accent in `color`,
+// the label in gray uppercase, and its count and meter where it has them.
+function heading(key: string, label: string, color: string, after: Span[] = []): PaneLine[] {
   return [
     gap(`${key}-gap`),
-    line(key, 0, [ACCENT, { text: ' ' }, { text: label.toUpperCase(), color: GRAY, bold: true }, ...after]),
+    line(key, 0, [
+      { text: ACCENT_MARK, color },
+      { text: ' ' },
+      { text: label.toUpperCase(), color: GRAY, bold: true },
+      ...after,
+    ]),
   ]
 }
 
 function counted(key: string, label: string, list: PaneItem[], color: string): PaneLine[] {
   const checked = list.filter(item => item.checked).length
-  return heading(key, label, [
+  return heading(key, label, color, [
     { text: ' ' },
     { text: `${checked}/${list.length}`, color: GRAY },
     { text: ' ' },
@@ -123,7 +140,7 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
   const out: PaneLine[] = [head]
   if (file === null) return [...out, line(`${row.id}-nofile`, 2, [], { text: NO_FILE, color: WARNING })]
   if (file.goal !== '') {
-    out.push(...heading(`${row.id}-goal-head`, 'Goal'))
+    out.push(...heading(`${row.id}-goal-head`, 'Goal', phase.color))
     // A blank line between paragraphs draws as one space, so it keeps its row.
     file.goal.split('\n').forEach((text, i) =>
       out.push({ ...line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text }), wraps: true }),
@@ -138,7 +155,7 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
     out.push(...items(`${row.id}-criterion`, file.criteria))
   }
   if (file.log.length > 0) {
-    out.push(...heading(`${row.id}-log-head`, 'Work log'))
+    out.push(...heading(`${row.id}-log-head`, 'Work log', phase.color))
     file.log.forEach((text, i) => out.push(line(`${row.id}-log-${i}`, 2, [], { text, color: GRAY })))
   }
   return out
@@ -161,20 +178,20 @@ export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
       line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
         text: ` ${target} `,
         color: PILL_TEXT,
-        backgroundColor: ORANGE,
-        // Bold, as the band's pill is, since white on this orange is about 3.4:1.
+        backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
+        // Bold, as the band's pill is, since white on these colors is 2.9:1 to 3.4:1.
         bold: true,
       }),
     )
   }
   if (state.workable.length > 0) {
-    out.push(...heading('workable-head', 'Workable'))
+    out.push(...heading('workable-head', 'Workable', QUEUE_COLOR))
     for (const row of state.workable) {
       out.push(line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }))
     }
   }
   if (state.waiting.length > 0) {
-    out.push(...heading('waiting-head', 'Waiting'))
+    out.push(...heading('waiting-head', 'Waiting', QUEUE_COLOR))
     for (const row of state.waiting) {
       out.push(
         line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], {
@@ -186,7 +203,7 @@ export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
   // With no active milestone, the ROADMAP's candidate rows (M207).
   if (state.milestones.length === 0 && state.candidates.length > 0) {
     out.push(
-      ...heading('candidates-head', 'Candidates', [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
+      ...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
     )
     state.candidates.forEach((row, i) =>
       out.push(

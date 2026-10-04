@@ -47,7 +47,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - [x] T4: Give the line Box `minWidth: 0`. Add the AC4 case.
 - [x] T5: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `pane.ts` and `register.tsx`.
 - [ ] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal, at the merge question as M205 did.
-- [ ] T7: Make the look changes the operator names after the declined live look, then hand back to review.
+- [x] T7: Make the look changes the operator names after the declined live look, then hand back to review.
 
 ## Work log
 
@@ -71,6 +71,9 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: claim audit: 44 claims read, 6 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-04: implement done, status `review`, with T6 open: its live look runs at the merge question, and review ticks it there. The corrections say the percent shows only when the file reads, and the empty squares are gray. The agent also renamed the AC4 describe, since the test checks layout props, not the drawn fit. Verify: 397, 174, and 986 tests pass, and validate exits 0.
 - 2026-10-04: step-7 decline: the operator declined the merge after the live look and asked to change the look; the changes were not yet named. Status back to `in-progress`, and T7 below holds the change until the operator names it.
+- 2026-10-04: T7 change named: the operator said everything looks good except that the colors should be phase-matched.
+- 2026-10-04: implement chose the phase-color mapping from the band's `FLOW_COLORS`. A milestone's `▎` marks take its phase's color, as its meters already did. The `▎` marks of Workable, Waiting, and Candidates take plan's blue, since their rows are planned or not yet planned. The Next pill takes the color of the phase its command runs: plan blue, implement orange, review green. The head line's percent stays gray, as the band's is. Falsified if the operator reads the queue's blue as a milestone state at the live look.
+- 2026-10-04: T7 done. The AC3 cases now assert the accent color per heading, with two M081 review headings added, and the pill color for a review, an implement, and a plan command; the 14 non-orange cases failed on the old colors before the change. README, the DESIGN pane paragraph, the CHANGELOG entry, and the `pane.ts` header comment name the phase colors. Verify: 397, 174, and 994 tests pass, and validate exits 0.
 
 ## Decisions
 
