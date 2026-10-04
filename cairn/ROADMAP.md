@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-04 (M215 done, PR #222; skills/tests green, 665 tests)_
+_Last hygiene check: 2026-10-04 (M216 in progress, band/pane follow-on groups left by user)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
