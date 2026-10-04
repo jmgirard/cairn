@@ -131,8 +131,8 @@ The band draws nothing of the running cairn skill. It keeps track of the
 skill for two things: the row it shows during `/milestone-review`, and
 when a hidden band shows again (below). A cairn skill counts from its
 start, by its plain name or its `cairn:` name. It stays until Claude stops
-with no background work in flight, such as after the skill's closing
-summary. A question chip the skill asks you waits
+with no background work in flight and no one-shot wakeup pending, such as
+after the skill's closing summary. A question chip the skill asks you waits
 inside the turn, so the skill stays while you answer it. A question asked
 in plain text ends the turn. With no background work in flight, the skill
 ends with it, and otherwise your typed answer ends it. When Claude ends a turn
@@ -148,12 +148,18 @@ same one included, or a session end, a `/clear` included, also ends it.
 A subagent that loads a cairn skill also counts, because the skill event
 does not say which agent loaded it.
 
-The rule has three limits. A skill that waits through `ScheduleWakeup` or
-a scheduled task, and not through background work, ends when Claude
-stops. Background work that the skill did not start, such as a server or
-a monitor started earlier, keeps a finished skill until your next prompt,
-because the band does not tell the skill's own work from other work. A
-prompt you type that a hook blocks or drops still ends the skill.
+When Claude stops while a one-shot wakeup (`ScheduleWakeup`) is pending,
+the skill stays. A prompt you type that a hook blocks or drops keeps the
+skill too.
+
+The rule has three limits. A recurring scheduled task, such as a `/loop`
+with a fixed interval, does not keep the skill, so a skill that waits on
+one ends when Claude stops. Background work that the skill did not start,
+such as a server or a monitor started earlier, keeps a finished skill
+until your next prompt, because the band does not tell the skill's own
+work from other work. A one-shot wakeup that the skill did not set also
+keeps a finished skill, for the same reason. A `/loop` with no interval
+schedules one-shot wakeups, so it keeps a finished skill this way.
 
 With no milestone active, the band shows an idle row for the next
 milestone you can start, whether or not a cairn skill runs. That milestone
@@ -185,11 +191,18 @@ when an `in-progress` row would show without it. A hidden idle row shows
 again when another milestone takes its place. A checked box or an edited title does not bring the band back. A
 session end shows a hidden band again, whatever its reason. In the desktop
 app, a `/clear` stops the session, and the band draws again at your next
-message. If the band finds the ROADMAP but cannot read it, the band keeps
-its row. The failed read alone does not hide or show it.
+message. If the band finds the ROADMAP but cannot read it, or the file is
+empty, the band keeps its row. It keeps the row only when the row came from
+the same repo. The failed read alone does not hide or show it. After the
+session moves to another repo, a failed read shows no row. A working
+directory that cannot be read also shows no row. So the band never shows
+another repo's milestones. A press
+of the close button that lands as the session ends does nothing, so the
+band shows after the session end.
 
 The band finds the ROADMAP in the session's working directory or the nearest
-directory above it. It reads the files when the session starts and at the
+directory above it. On Windows, the search stops at a network share's root
+(`\\server\share`). It reads the files when the session starts and at the
 end of each turn. It also reads them when a cairn skill starts or ends,
 and after Claude edits or writes a file under a `cairn/` directory, so a
 box Claude checks moves the track inside a long turn. A box you check or a

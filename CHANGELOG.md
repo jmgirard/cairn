@@ -83,8 +83,9 @@
   a running one ends, it also shows again. If a new milestone takes the idle
   row's place, it shows again too. Every session end also shows it again. In
   the desktop app, a `/clear` stops the session, and the band draws again at
-  your next message. If the ROADMAP is found but cannot be read, the band
-  keeps its row, and the failed read alone does not hide or show it. The
+  your next message. If the ROADMAP is found but cannot be read, or is
+  empty, the band keeps a row that came from the same repo, and the failed
+  read alone does not hide or show it. The
   band also names the running cairn skill: `plan`, `implement`, `review`,
   `hotfix`, `triage`, `release`, `status`, `brief`, `design`, or `init`. The
   skill's label takes the place of the phase label on the row. If a `review`
@@ -103,11 +104,11 @@
   turn that Claude ends to wait for background work keeps it, and so do the
   turns that the work's notices start. An interrupt with Esc keeps it until
   your next prompt, or until Claude next stops with no background work in
-  flight. Three limits remain. A skill that
-  waits through `ScheduleWakeup` or a scheduled task loses its label when
-  Claude stops. Background work that the skill did not start keeps a
-  finished skill's label until your next prompt. A prompt that a hook
-  blocks or drops still ends the label. A chapter marked after the skill
+  flight, or while a one-shot wakeup (`ScheduleWakeup`) is pending. A
+  prompt that a hook blocks or drops keeps it. Two limits remain. A skill
+  that waits on a recurring scheduled task loses its label when Claude
+  stops. Background work or a one-shot wakeup that the skill did not start
+  keeps a finished skill's label until your next prompt. A chapter marked after the skill
   ended does not show. A subagent that loads a cairn skill also sets the
   label, because the skill event does not say which agent loaded it. The
   phase or skill label draws in a fixed muted orange or green. The bar's
@@ -144,6 +145,26 @@
   Python markers and before a `Dockerfile`. A repo with markers for two
   kinds of deliverable gets a question about which one is primary, and the
   project-type question for an empty repo lists the new profile.
+
+### Fixes
+
+- **The status band keeps the right rows, steps, and close state.**
+  - A failed or empty ROADMAP read keeps the band's rows only when they
+    came from the same repo. After the session moves to another repo, or
+    when its working directory cannot be read, the band and the pane show
+    nothing rather than the old repo's rows.
+  - An empty or whitespace-only ROADMAP now counts as a failed read, so a
+    write caught before any text lands no longer empties the band. A
+    ROADMAP cut partway through still reads as a shorter file.
+  - On Windows, the ROADMAP search stops at a network share's root
+    (`\\server\share`).
+  - A cairn skill that waits on a one-shot wakeup (`ScheduleWakeup`) keeps
+    its step, and a typed prompt that a hook drops no longer ends it or
+    shows a band you hid.
+  - A refresh writes the close state only when there is a hidden state to
+    clear.
+  - A close-button press that lands as the session ends no longer hides
+    the band.
 
 ### Changes that affect existing repos
 

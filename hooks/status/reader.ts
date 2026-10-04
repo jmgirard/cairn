@@ -224,6 +224,8 @@ function fileFields(text: string) {
 
 export function dirname(path: string): string {
   const trimmed = path.length > 1 ? path.replace(/[\\/]+$/, '') : path
+  // A UNC share root (`\\host\share`) is a root, as a drive is (M210).
+  if (/^[\\/]{2}[^\\/]+[\\/][^\\/]+$/.test(trimmed)) return trimmed
   const cut = Math.max(trimmed.lastIndexOf('/'), trimmed.lastIndexOf('\\'))
   if (cut < 0) return trimmed
   if (cut === 0) return trimmed[0]
@@ -248,7 +250,7 @@ export async function findRoot(source: FileSource, cwd: string): Promise<string 
 
 // One row per `in-progress` or `review` milestone, in ROADMAP order, and
 // the workable list. Empty when no ROADMAP is found, and null when one is
-// found but cannot be read (M200). `read_roadmap` in
+// found but cannot be read (M200) or is empty (M210). `read_roadmap` in
 // scripts/cairn_scripts.py reads an unreadable ROADMAP as empty instead.
 export async function loadBand(source: FileSource): Promise<BandState | null> {
   const loaded = await loadCairn(source)
@@ -256,12 +258,36 @@ export async function loadBand(source: FileSource): Promise<BandState | null> {
 }
 
 // The band's state and the pane's from one read of the files (M205). Null
-// when a ROADMAP is found but cannot be read.
+// when a ROADMAP is found but cannot be read, or its text is empty or only
+// whitespace, as a write half done can leave it (M210).
 export async function loadCairn(source: FileSource): Promise<{ band: BandState; pane: PaneState } | null> {
   const root = await findRoot(source, await source.cwd())
-  if (root === null) return { band: { rows: [], workable: [] }, pane: NO_PANE }
+  return root === null ? emptyCairn() : loadAt(source, root)
+}
+
+// The same read with the root it found (M210): `root` is null when no
+// ROADMAP is found, and `state` is null when a found one cannot be read,
+// its text is empty or only whitespace, or a throw ends the read. A throw
+// from `source.cwd()` is not caught, since it leaves the root unknown.
+export async function readCairn(
+  source: FileSource,
+): Promise<{ root: string | null; state: { band: BandState; pane: PaneState } | null }> {
+  const root = await findRoot(source, await source.cwd())
+  if (root === null) return { root, state: emptyCairn() }
+  try {
+    return { root, state: await loadAt(source, root) }
+  } catch {
+    return { root, state: null }
+  }
+}
+
+function emptyCairn(): { band: BandState; pane: PaneState } {
+  return { band: { rows: [], workable: [] }, pane: NO_PANE }
+}
+
+async function loadAt(source: FileSource, root: string): Promise<{ band: BandState; pane: PaneState } | null> {
   const roadmap = await source.read(join(root, 'cairn/ROADMAP.md'))
-  if (roadmap === null) return null
+  if (roadmap === null || roadmap.trim() === '') return null
   const parsed = parseRoadmapRows(roadmap)
   const out: BandRow[] = []
   const milestones: PaneMilestone[] = []

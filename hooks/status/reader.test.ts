@@ -274,4 +274,30 @@ describe('reader details', () => {
     expect(dirname('/')).toBe('/')
     expect(dirname('C:\\a')).toBe('C:\\')
   })
+
+  test('dirname stops at a UNC share root (M210 AC1)', () => {
+    expect(dirname('\\\\srv\\share')).toBe('\\\\srv\\share')
+    expect(dirname('//srv/share')).toBe('//srv/share')
+    expect(dirname('\\\\srv\\share\\')).toBe('\\\\srv\\share')
+    expect(dirname('\\\\srv\\share\\a')).toBe('\\\\srv\\share')
+  })
+
+  test('findRoot probes no path above a UNC share root (M210 AC1)', async () => {
+    const probed: string[] = []
+    const source = {
+      cwd: async () => '\\\\srv\\share\\a\\b',
+      isFile: async (path: string) => {
+        probed.push(path)
+        return false
+      },
+      read: async () => null,
+      list: async () => null,
+    }
+    expect(await findRoot(source, await source.cwd())).toBeNull()
+    expect(probed).toEqual([
+      '\\\\srv\\share\\a\\b/cairn/ROADMAP.md',
+      '\\\\srv\\share\\a/cairn/ROADMAP.md',
+      '\\\\srv\\share/cairn/ROADMAP.md',
+    ])
+  })
 })

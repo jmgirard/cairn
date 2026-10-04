@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, and the pane's percent, headings, meters, and Next pill in M208).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, and in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -102,22 +102,42 @@ transitions, human-gated merges, and a domain verification doctrine.
   path under a `cairn/` directory, reads the files again, so the track
   moves inside a long turn. `mark` and `same` in
   `band.ts` build and compare that value, and `mark` reads the step through
-  `knownStep`, as the drawing does. A refresh decides whether to clear
-  `dismissed` inside its `update` callback, so a press made while
-  `reconcile` reads the `band` and `step` values is kept when those reads
-  match it. A hook that changes the rows or the step before that `update`
-  can still clear a press made against the new state. Every `session.end`
+  `knownStep`, as the drawing does. A refresh reads `dismissed` with
+  `$.state.get` and clears it with `$.state.set` at that version, reading
+  again on a miss, so a press made while `reconcile` reads the `band` and
+  `step` values is kept when those reads match it. A hook that changes the
+  rows or the step before that clear can still clear a press made against
+  the new state. A refresh writes `dismissed` only when it holds a value to
+  clear (M210, made exact at the M210 review). The failed-read path in
+  `refresh` decides keep or empty and writes `band` at one version the same
+  way. A dropped prompt puts back the close state its own refresh cleared
+  as well as the step (M210 review). A press takes
+  `dismissed`'s version with `$.state.get` before it reads `band` and
+  `step`, and writes through `$.state.set` with `ifVersion`, so a session
+  end between the reads and the write wins (M210). Any other write in
+  between drops the press too. Every `session.end`
   sets `dismissed` to null, with no branch on the reason. In the desktop app
   a `/clear` stops the session's process, and the band draws again at the
   next message (M200 live look). When the ROADMAP is found but its read
-  fails, `loadBand` returns null and the refresh keeps the band's rows. When
-  no ROADMAP is found, the band empties. A `skill.prompt` hook stores a
+  fails, or its text is empty or only whitespace, `loadCairn` returns null
+  (M210). `readCairn` returns the same state with the root it found, and a
+  null state when a throw ends the read of a found ROADMAP. The
+  `band` value stores that root (shape `band-4`, M210), and a failed read
+  keeps the rows only when the stored root equals the found one. A failed
+  read in another root, a throw from `$.session.cwd()`, and stored rows with
+  no root empty the band and the pane. A throw while parsing a found
+  ROADMAP keeps the rows of the same root. When no ROADMAP is found, the
+  band empties. `dirname` treats a UNC share root (`\\host\share` or
+  `//host/share`) as a root, so the walk stops there (M210). A `skill.prompt` hook stores a
   cairn skill, by its bare or `cairn:` name, in the `step` state value
   (shape `step-2`, with no chapter since M206). A `classic.Stop` with no `agent_id`, whose answer from
   beneath carries no `block`, clears `step` when its `background_tasks` is
-  empty or absent (M201). So does a `prompt.submit` with origin kind
+  empty or absent (M201) and its `session_crons` holds no entry with
+  `recurring` false (M210). So does a `prompt.submit` with origin kind
   `composer` or `bridge` and no `turnId`, unless the `expanded` state value
-  is set. A cairn `skill.prompt` sets `expanded`, and every `classic.Stop`,
+  is set. That hook clears `step` before `next`, and when `next` resolves
+  to a `drop` it puts back the step it cleared, unless a step was set
+  meanwhile (M210). A cairn `skill.prompt` sets `expanded`, and every `classic.Stop`,
   `turn.complete`, and `prompt.submit` clears it. The engine raises a typed
   slash command's `skill.prompt` before its `prompt.submit` (M201 live
   look), so that prompt keeps the step the command just set. An interrupted
@@ -125,8 +145,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   the step. Every `session.end` clears it too. A Stop that lists work
   in flight, a blocked Stop, and a subagent's Stop keep it, and so do a
   `task-notification` prompt and every `turn.complete`, which reads the
-  files again and clears `expanded`. The hooks do not read `session_crons`, so a skill that
-  waits through `ScheduleWakeup` or a cron loses its step at that Stop.
+  files again and clears `expanded`. A recurring cron does not keep the
+  step, so a skill that waits on one loses its step at that Stop. A
+  one-shot cron that the skill did not create keeps a finished skill's step.
   `CAIRN_SKILLS` in `band.ts` lists the cairn skills, held to the
   `skills/*/SKILL.md` list that `gen_fixtures.py` writes. The skill
   event carries no agent id, so a subagent that loads a cairn skill sets it

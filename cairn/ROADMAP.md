@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M207 | Candidate rows in the idle cairn pane | done | — | normal | milestones/archive/M207-pane-candidates.md |
 | M208 | A fuller look for the cairn pane | done | M207 | normal | milestones/archive/M208-pane-look.md |
 | M209 | The cairn pane stays where it is put | dropped | — | normal | milestones/archive/M209-pane-keeps-place.md |
-| M210 | The status band keeps the right state | planned | — | normal | milestones/M210-band-state.md |
+| M210 | The status band keeps the right state | review | — | normal | milestones/M210-band-state.md |
 | M211 | Run edge cases in the skills | planned | — | normal | milestones/M211-run-edges.md |
 ## Candidates
 

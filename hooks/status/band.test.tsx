@@ -61,6 +61,18 @@ type Copy = {
   beforeSubmit?: () => Promise<void>
   // The origin kind and turn id of each prompt that reached beneath the mod.
   submitted?: { kind: string; turnId: string | undefined }[]
+  // While set, the session's working directory read rejects (M210).
+  cwdThrows?: boolean
+  // While set, each write of the band's value lands with its root removed,
+  // as a value that stores no root (M210).
+  dropRoot?: boolean
+  // While set, the key of each value the mod writes, in order (M210).
+  stateSets?: string[]
+  // While set, the next read of the step runs this once before it answers
+  // (M210).
+  afterStepRead?: () => Promise<void>
+  // While set, a prompt beneath the mod is dropped with this reason (M210).
+  dropSubmit?: string
 }
 
 function copyOf(name: string): Copy {
@@ -75,7 +87,25 @@ function copyOf(name: string): Copy {
 // chapter tool since M206, so a chapter call reaches this one.
 function seat(on: On, copy: Copy) {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
-  on('session.cwd', async () => ({ value: copy.cwd }))
+  on('session.cwd', async () => {
+    if (copy.cwdThrows === true) throw new Error('no working directory')
+    return { value: copy.cwd }
+  })
+  // A shaped value crosses as `{ shape, value }`.
+  on('state.get', async ($, e, next) => {
+    const after = copy.afterStepRead
+    if (after === undefined || e.plugin !== 'cairn' || e.key !== 'step') return next(e)
+    copy.afterStepRead = undefined
+    const result = await next(e)
+    await after()
+    return result
+  })
+  on('state.set', async ($, e, next) => {
+    if (e.plugin === 'cairn') copy.stateSets?.push(e.key)
+    if (copy.dropRoot !== true || e.plugin !== 'cairn' || e.key !== 'band') return next(e)
+    const shaped = e.value as { shape: string; value: object }
+    return next({ ...e, value: { ...shaped, value: { ...shaped.value, root: null } } })
+  })
   on('fs.stat', async ($, e, next) =>
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
@@ -96,6 +126,7 @@ function seat(on: On, copy: Copy) {
   on('prompt.submit', async ($, e) => {
     copy.submitted = [...(copy.submitted ?? []), { kind: e.origin.kind, turnId: e.turnId }]
     if (copy.beforeSubmit !== undefined) await copy.beforeSubmit()
+    if (copy.dropSubmit !== undefined) return { drop: copy.dropSubmit }
     return { text: e.text, origin: e.origin }
   })
   on('skill.prompt', async ($, e) => ({ text: e.text }))
@@ -1270,6 +1301,145 @@ describe('a failed read of a found ROADMAP keeps the rows and alone does not hid
   }
 })
 
+// The cairn pane, as the band's tests read it beside the band.
+const PANE_VIEW = {
+  component: 'Pane',
+  requestId: 'cairn',
+  props: { title: 'cairn', isFocused: false, bodyColumns: 60, placement: 'dock', scroll: { offset: 0, bodyRows: 200 }, view: {} },
+} as const
+
+async function paneText($, surface: (typeof SURFACES)[number]): Promise<string> {
+  const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+  const [root] = await ui.findAll({ key: 'cairn-pane' })
+  const text = root === undefined ? '' : textOf(root)
+  await ui.unmount()
+  return text
+}
+
+const BEFORE = 'Add the export command'
+const EDITED = 'Add the import command'
+const OTHER_ROADMAP = '/other/cairn/ROADMAP.md'
+
+describe('a failed read in the same root keeps the rows drawn before it (M210 AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`an edit made before a failed read shows only once a read succeeds (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      copy.files[ROADMAP] = copy.files[ROADMAP].replace(BEFORE, EDITED)
+      copy.unreadable = [ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      expect(await paneText($, surface)).toContain(BEFORE)
+      copy.unreadable = []
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([`M002 ${EDITED}  [track] 44%`, ENGINE])
+      const pane = await paneText($, surface)
+      expect(pane).toContain(EDITED)
+      expect(pane).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    for (const [name, text] of [['empty', ''], ['whitespace-only', ' \n\t\n']] as const) {
+      test(`an ${name} ROADMAP text keeps the rows (${surface})`, async ($, on) => {
+        const copy = copyOf('single-in-progress')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        copy.files[ROADMAP] = text
+        await $.turn.complete(turn())
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        expect(await paneText($, surface)).toContain(BEFORE)
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe('a failed read never draws rows from another root (M210 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`a failed read after a move to another repo root empties the band and the pane (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.cwd = '/other'
+      copy.files[OTHER_ROADMAP] = copy.files[ROADMAP]
+      copy.unreadable = [OTHER_ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    test(`a working-directory read that throws empties the band and the pane (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.cwdThrows = true
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    test(`rows stored with no root are not kept through a failed read (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.dropRoot = true
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.unreadable = [ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the close state is written only on a change, and a session end beats a press (M210 AC4)', () => {
+  for (const surface of SURFACES) {
+    test(`a refresh with nothing hidden writes no close state (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      copy.stateSets = []
+      await $.turn.complete(turn())
+      // The record holds the refresh's own writes, so it is not empty.
+      expect(copy.stateSets).toContain('band')
+      expect(copy.stateSets.filter(key => key === 'dismissed')).toEqual([])
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      await ui.unmount()
+    })
+
+    test(`a session end between a press's reads and its write leaves the band shown (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      let ended = false
+      copy.afterStepRead = async () => {
+        await $.session.end({ reason: 'clear', sessionId: 's1' })
+        ended = true
+      }
+      await ui.press({ key: 'cairn-close' })
+      expect(ended).toBe(true)
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      // With no session end in between, the same press hides the band.
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await ui.unmount()
+    })
+  }
+})
+
 describe('the band draws nothing', () => {
   for (const name of ['no-roadmap', 'no-active', 'idle-deps']) {
     for (const skill of [null, 'milestone-plan'] as const) {
@@ -1812,14 +1982,21 @@ function turnWith(reason: 'answer' | 'aborted' | 'refusal' | 'error', agentId?: 
 const TASK = { id: 'b1', type: 'subagent', status: 'running', description: 'a background reviewer', agent_type: 'general-purpose' }
 
 // A Stop as the engine raises it: its in-flight list empty, left out, or
-// holding TASK, and an agent id when it fires inside a subagent.
-function stopWith(tasks: 'empty' | 'absent' | 'one', agentId?: string) {
+// holding TASK, an agent id when it fires inside a subagent, and the
+// session's crons when given (M210).
+function stopWith(tasks: 'empty' | 'absent' | 'one', agentId?: string, crons?: (typeof ONE_SHOT)[]) {
   return {
     stop_hook_active: false,
     ...(tasks === 'absent' ? {} : { background_tasks: tasks === 'one' ? [TASK] : [] }),
     ...(agentId === undefined ? {} : { agent_id: agentId }),
+    ...(crons === undefined ? {} : { session_crons: crons }),
   }
 }
+
+// A one-shot wakeup, as ScheduleWakeup schedules one, and a recurring cron,
+// as `/loop` schedules one, as a Stop lists them (M210).
+const ONE_SHOT = { id: 'c1', schedule: '30 14 4 10 *', recurring: false, prompt: 'resume the review' }
+const RECURRING = { id: 'c2', schedule: '*/5 * * * *', recurring: true, prompt: '/loop check the deploy' }
 
 // A prompt as the engine submits one: where it came from, and the running
 // turn's id when it was typed over or delivered into that turn.
@@ -1889,6 +2066,82 @@ describe("a cairn skill's step ends at a main-loop Stop with nothing in flight (
       )
     })
   }
+})
+
+describe("a one-shot cron keeps a cairn skill's step through a Stop (M210 AC5)", () => {
+  const CASES: { name: string; crons: (typeof ONE_SHOT)[] | undefined; keeps: boolean }[] = [
+    { name: 'a one-shot cron', crons: [ONE_SHOT], keeps: true },
+    { name: 'a one-shot and a recurring cron', crons: [ONE_SHOT, RECURRING], keeps: true },
+    { name: 'a recurring cron', crons: [RECURRING], keeps: false },
+    { name: 'an empty cron list', crons: [], keeps: false },
+    { name: 'no cron list', crons: undefined, keeps: false },
+  ]
+  for (const { name, crons, keeps } of CASES) {
+    test(`a Stop with no task in flight and ${name} ${keeps ? 'keeps' : 'ends'} the step`, async ($, on) => {
+      await eachSurface(
+        'mixed',
+        async (ui, $) => {
+          await prompt($, 'milestone-review')
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          await $.classic.Stop(stopWith('empty', undefined, crons))
+          expect(await lines(ui)).toEqual(keeps ? [MIXED_REVIEW, ENGINE] : [SHOWN.mixed, ENGINE])
+          await $.classic.Stop(stopWith('empty'))
+          expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+})
+
+// The case where the prompt enters and a skill prompt of its turn sets the
+// new step is "a typed cairn slash command's own skill prompt sets the new
+// step" below.
+describe('an idle typed prompt that a hook drops leaves the step (M210 AC6)', () => {
+  for (const kind of ['composer', 'bridge'] as const) {
+    test(`a dropped ${kind} prompt keeps the step, and one that enters ends it`, async ($, on) => {
+      await eachSurface(
+        'mixed',
+        async (ui, $, copy) => {
+          await prompt($, 'milestone-review')
+          await $.classic.Stop(stopWith('one'))
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          copy.dropSubmit = 'refused by a hook'
+          expect((await $.prompt.submit(submitWith(kind))).drop).toBe('refused by a hook')
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          copy.dropSubmit = undefined
+          await $.prompt.submit(submitWith(kind))
+          expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+
+  // M210 review: the refresh before `next` clears a hide made while
+  // /milestone-review moved the band, so the drop puts that back too.
+  test('a dropped prompt keeps a band hidden while /milestone-review runs', async ($, on) => {
+    await eachSurface(
+      'mixed',
+      async (ui, $, copy) => {
+        await prompt($, 'milestone-review')
+        await $.classic.Stop(stopWith('one'))
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+        copy.dropSubmit = 'refused by a hook'
+        await $.prompt.submit(submitWith('composer'))
+        expect(await lines(ui)).toEqual([ENGINE])
+        // The same prompt entering ends the step, which shows the band.
+        copy.dropSubmit = undefined
+        await $.prompt.submit(submitWith('composer'))
+        expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+      },
+      $,
+      on,
+    )
+  })
 })
 
 describe('an idle typed prompt ends a kept step, and a notice turn keeps it (M201 AC2)', () => {

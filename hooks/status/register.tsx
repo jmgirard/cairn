@@ -6,7 +6,7 @@ import type { BandLine, Span } from './band'
 import { cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { NO_ROADMAP, paneLines } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
-import { loadCairn, NO_PANE } from './reader'
+import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // The milestone band above the prompt (M191, M193 to M201, M206): one row
@@ -18,16 +18,20 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // The track draws as an `Svg` on the desktop and as braille cells in the
 // terminal (track.ts). The running cairn skill draws nothing of its own:
 // /milestone-review picks the row it shows. A skill's step
-// ends at the first main-loop Stop with no background work in flight that no hook
+// ends at the first main-loop Stop with no background work in flight and no
+// one-shot wakeup pending (M210) that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,
-// Stop, or turn end, as a typed cairn slash command's is. So the step holds while the skill waits on background work and
+// Stop, or turn end, as a typed cairn slash command's is. A typed prompt
+// that a hook beneath drops leaves the step (M210). So the step holds while the skill waits on background work and
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,
 // or order, the row /milestone-review moves the band to, or the idle row's
-// id change, or the session ends (M200, M206). A found ROADMAP that cannot be read keeps the rows, and the
-// close state is compared against them and the current step.
+// id change, or the session ends (M200, M206). A found ROADMAP that cannot
+// be read, or is empty, keeps the rows when they came from the same repo
+// root (M210), and the close state is compared against them and the
+// current step.
 //
 // The cairn pane (M205) opens from the `/cairn-pane` command, which also
 // closes it, or from the band's open button, which a row drawn from a found
@@ -39,17 +43,23 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
-const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [] } as BandState, {
-  shape: 'band-3',
-})
+// The band's value keeps the repo root of the last read, null when no
+// ROADMAP was found or the working directory could not be read; the tag
+// moved to 4 with the root (M210).
+type StoredBand = BandState & { root: string | null }
+const BAND_REF = { plugin: 'cairn', key: 'band' } as const
+const BAND_SHAPE = 'band-4'
+const band = atom(BAND_REF, { rows: [], workable: [], root: null } as StoredBand, { shape: BAND_SHAPE })
 
 // The active ids and statuses, in ROADMAP order, `milestone-review` while
 // it moves the band to another row, and the idle row's id while no row is
 // active, at the last press of the close button; null while the band shows.
-// The tag moved to 4 when the skill's meaning changed (M206 review).
-const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandHidden | null, {
-  shape: 'dismissed-4',
-})
+// The tag moved to 4 when the skill's meaning changed (M206 review). The
+// press writes through `$.state.set`, which takes the tag with the value and
+// a reference written as literals in this file.
+const DISMISSED_REF = { plugin: 'cairn', key: 'dismissed' } as const
+const DISMISSED_SHAPE = 'dismissed-4'
+const dismissed = atom(DISMISSED_REF, null as CairnBandHidden | null, { shape: DISMISSED_SHAPE })
 
 // The running cairn skill, until a main-loop Stop with nothing in flight or
 // an idle typed prompt ends it (the `classic.Stop` and `prompt.submit`
@@ -181,13 +191,15 @@ export const register: Register = on => {
   // blocked the stop (M201). A Stop with work in flight keeps the step
   // through the wait, and so does a blocked Stop, after which the turn goes
   // on. A Stop inside a subagent carries an `agent_id` and keeps the step.
-  // A skill that waits through ScheduleWakeup or a cron lists nothing here,
-  // so its step ends at that Stop.
+  // A one-shot entry in `session_crons`, as ScheduleWakeup makes, also keeps
+  // the step, so a skill that waits on a wakeup keeps it (M210). A recurring
+  // cron, as `/loop` makes, does not, since it would keep the step for good.
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
     await update($, expanded, () => false)
     if (e.agent_id !== undefined || result?.block !== undefined) return result
-    if ((e.background_tasks ?? []).length === 0) {
+    const waking = (e.session_crons ?? []).some(cron => cron.recurring === false)
+    if ((e.background_tasks ?? []).length === 0 && !waking) {
       await update($, step, () => null)
       await refresh($)
     }
@@ -201,17 +213,27 @@ export const register: Register = on => {
   // it. A typed cairn slash command keeps the step its own skill prompt set:
   // the engine expands the command first, so the prompt finds `expanded`
   // set. Were the skill prompt to run beneath instead, the step would end
-  // before `next` and the skill prompt would set the new one. A prompt that
-  // a hook beneath blocks or drops has already ended the step.
+  // before `next` and the skill prompt would set the new one. So the step
+  // ends before `next`, and a prompt that a hook beneath drops puts it back,
+  // unless something set a new step meanwhile (M210).
   on('prompt.submit', async ($, e, next) => {
     const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
     const fresh = await read($, expanded)
     await update($, expanded, () => false)
-    if (typed && e.turnId === undefined && !fresh) {
-      await update($, step, () => null)
-      await refresh($)
+    if (!typed || e.turnId !== undefined || fresh) return next(e)
+    const before = await read($, step)
+    const hiddenBefore = await read($, dismissed)
+    await update($, step, () => null)
+    await refresh($)
+    const result = await next(e)
+    // The refresh above can clear a hide made against the old step, so a
+    // drop puts back the close state as well (M210 review).
+    if (result?.drop !== undefined && before !== null) {
+      await update($, step, current => current ?? before)
+      if (hiddenBefore !== null) await update($, dismissed, current => current ?? hiddenBefore)
+      await reconcile($)
     }
-    return next(e)
+    return result
   })
 
   // A cairn skill's prompt starts its step, the same skill run again
@@ -354,11 +376,15 @@ async function afterWrite($, e, next) {
 }
 
 // The press reads the rows and the step as they are now, not as they were
-// drawn.
+// drawn. It writes only while the close state stands at the version it had
+// before those reads, so a session end that lands between them wins and the
+// band stays shown (M210). Any other write in between drops the press too,
+// and a second press hides the band.
 async function dismiss($) {
+  const held = await $.state.get(DISMISSED_REF)
   const state = await read($, band)
   const current = await read($, step)
-  await update($, dismissed, () => mark(state, current))
+  await $.state.set(DISMISSED_REF, { shape: DISMISSED_SHAPE, value: mark(state, current) }, { ifVersion: held.version })
 }
 
 // A press of the band's open button opens the pane. The press is the
@@ -381,14 +407,22 @@ function notPlaced(reason: string): string {
 // A change to the active ids, statuses, or order, to the running skill, or
 // to the idle row's id brings the band back, and it stays until the next
 // press. The end of a skill's step is a change to the running skill. The
-// decision reads the close state inside the update, so a press made while
-// `reconcile` reads the `band` and `step` values is compared, not lost, and
-// it is kept when those reads match it (M200). A hook that changes the rows
-// or the step before the update can still clear a press made against the
-// new state, because the comparison uses the old reads.
+// decision reads the close state at a version and clears it only at that
+// version, so a press made while `reconcile` reads the `band` and `step`
+// values is compared, not lost, and it is kept when those reads match it
+// (M200, M210 review). A hook that changes the rows or the step before the
+// clear can still clear a press made against the new state, because the
+// comparison uses the old reads. With nothing to clear, it writes nothing
+// (M210).
 async function reconcile($) {
   const now = mark(await read($, band), await read($, step))
-  await update($, dismissed, hidden => (hidden !== null && !same(hidden, now) ? null : hidden))
+  for (let tries = 0; tries < 3; tries += 1) {
+    const held = await $.state.get(DISMISSED_REF)
+    const hidden = held.value !== undefined && held.value.shape === DISMISSED_SHAPE ? held.value.value : null
+    if (hidden === null || same(hidden, now)) return
+    const done = await $.state.set(DISMISSED_REF, { shape: DISMISSED_SHAPE, value: null }, { ifVersion: held.version })
+    if (done.isSet) return
+  }
 }
 
 // A span's style props, leaving out the ones it does not set.
@@ -401,21 +435,39 @@ function style(span: Span) {
 }
 
 // No ROADMAP found empties the band and the pane. A found ROADMAP that
-// cannot be read keeps the rows and the pane as they were (M200). Any throw from `loadCairn`, its
-// parsing included, keeps them too. Of the calls `fsSource` makes, only
-// `$.session.cwd()` is not caught. The close state is then compared
-// against the kept rows and the current step.
+// cannot be read, or whose text is empty or only whitespace, keeps the rows
+// and the pane as they were (M200), and so does a throw while parsing it,
+// but only when the kept rows came from the same root (M210). A failed read
+// in another root, a throw from `$.session.cwd()`, and kept rows with no
+// root all empty the band and the pane, so no row from another repo shows.
+// The close state is then compared against the rows and the current step.
 async function refresh($) {
-  let state: { band: BandState; pane: PaneState } | null = null
+  let got: { root: string | null; state: { band: BandState; pane: PaneState } | null } | null
   try {
-    state = await loadCairn(fsSource($))
+    got = await readCairn(fsSource($))
   } catch {
-    state = null
+    got = null
   }
-  if (state !== null) {
-    const next = state
-    await update($, band, () => next.band)
+  const root = got === null ? null : got.root
+  if (got !== null && got.state !== null) {
+    const next = got.state
+    await update($, band, () => ({ ...next.band, root }))
     await update($, pane, () => next.pane)
+  } else {
+    // The keep-or-empty decision and the write stand at one version, so a
+    // good read that lands in between is decided again, not overwritten
+    // (M210 review). Keeping writes nothing.
+    for (let tries = 0; tries < 3; tries += 1) {
+      const held = await $.state.get(BAND_REF)
+      const kept = held.value !== undefined && held.value.shape === BAND_SHAPE ? held.value.value.root : null
+      if (kept !== null && root !== null && kept === root) break
+      const empty = { rows: [], workable: [], root }
+      const done = await $.state.set(BAND_REF, { shape: BAND_SHAPE, value: empty }, { ifVersion: held.version })
+      if (done.isSet) {
+        await update($, pane, () => NO_PANE)
+        break
+      }
+    }
   }
   await reconcile($)
 }
