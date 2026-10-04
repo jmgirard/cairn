@@ -1,13 +1,13 @@
 # M206: A simpler band: id, title, and the track
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the band draws in every adopter's session
-- **Branch/PR:** —
+- **Branch/PR:** m206-simpler-band
 
 ## Goal
 
@@ -21,12 +21,12 @@ Make the band's row the milestone id and title on the left and the flow track on
 
 ## Acceptance criteria
 
-- [ ] AC1: On the terminal and desktop surfaces, a milestone row's left group is the bold id, one space, and the milestone's title. It has no phase or skill label, no `→`, and no chapter or open-item text. A row whose counts cannot be read keeps its `no milestone file` or `no file` warning label on the right. `band.test.tsx` cases assert this on both surfaces for an `in-progress` row and a `review` row, each with an unchecked next item. The cases run with no cairn skill, with `/milestone-review`, and with `/milestone-implement` running, and assert the warning label at widths 40 and 200.
-- [ ] AC2: On the desktop surface, a milestone row whose counts can be read draws the flow track as an `Svg` at every `bodyColumns` width from 40 to 200. At each of those widths the title keeps min(title width, 10) columns. The track is 360 pixels wide where that room allows, and narrower where it does not. A `band.test.tsx` sweep over every width from 40 to 200 asserts the `Svg` element, its width, and the title's room. The sweep covers titles shorter and longer than 10 columns, and partial, all-checked, and zero-item counts, on an `in-progress` and a `review` row.
-- [ ] AC3: On the terminal surface, a milestone row whose counts can be read draws a track of `█` cells in three segments, plan, implement, and review. It does so at every `bodyColumns` width from 40 to 200, and the title keeps min(title width, 10) columns. Filled cells take their segment's color from `FLOW_COLORS` (the plan blue, the implement orange, and the review green), and empty cells take `subtle`. After the track comes the active phase's count, `checked/total`, or `no tasks` or `no criteria` for a section with no items. A `band.test.tsx` sweep over every width from 40 to 200 asserts the cells, their colors, the count text, and the title's room, over the same titles and counts as AC2.
-- [ ] AC4: The band draws no skill row. With no active milestone, it draws the idle row whether or not a cairn skill runs, or nothing when no planned milestone is workable. The idle row's left group is the bold id and the title, with no `next` label. It keeps its `/milestone-implement <id>` command, and on the desktop its track where the row has room for it. With no active row, the close state records the idle id whether or not a skill runs, so a skill that starts or ends does not show a hidden idle row again. `register.tsx` has no `tool.call` hook for the chapter tool. `band.test.tsx` cases assert the idle row, the empty band, and the close state on both surfaces, with no skill running and with each skill in `SKILL_LABELS` running. They also assert that a chapter call leaves a milestone row and the idle row unchanged on both surfaces.
-- [ ] AC5: README's "The milestone band" section, the `hooks/status/` bullet of `cairn/DESIGN.md`, and the header comments of `band.ts`, `track.ts`, and `register.tsx` describe the new row. They contain no claim that the band draws a phase or skill label, a chapter, a skill row, or the ten-cell bar. CHANGELOG's Unreleased section has an entry for the change.
-- [ ] AC6: At a live look the operator accepts the desktop row at full width, the narrow desktop track at the docked-pane width of 44 columns, and the terminal row.
+- [x] AC1: On the terminal and desktop surfaces, a milestone row's left group is the bold id, one space, and the milestone's title. It has no phase or skill label, no `→`, and no chapter or open-item text. A row whose counts cannot be read keeps its `no milestone file` or `no file` warning label on the right. `band.test.tsx` cases assert this on both surfaces for an `in-progress` row and a `review` row, each with an unchecked next item. The cases run with no cairn skill, with `/milestone-review`, and with `/milestone-implement` running, and assert the warning label at widths 40 and 200.
+- [x] AC2: On the desktop surface, a milestone row whose counts can be read draws the flow track as an `Svg` at every `bodyColumns` width from 40 to 200. At each of those widths the title keeps min(title width, 10) columns. The track is 360 pixels wide where that room allows, and narrower where it does not. A `band.test.tsx` sweep over every width from 40 to 200 asserts the `Svg` element, its width, and the title's room. The sweep covers titles shorter and longer than 10 columns, and partial, all-checked, and zero-item counts, on an `in-progress` and a `review` row.
+- [x] AC3: On the terminal surface, a milestone row whose counts can be read draws the flow track at every `bodyColumns` width from 40 to 200. The track is a run of braille cells whose `backgroundColor` is the theme key `userMessageBackground`, with dots in the active phase's `FLOW_COLORS` color before the fill edge. A pill in that color shows the active phase's `checked/total` count, or `no tasks`, `no criteria`, or `none` for a section with no items, and the percent follows the track. The title keeps min(title width, 10) columns. A `band.test.tsx` sweep over every width from 40 to 200, with and without the open button, asserts each of these over AC2's titles and its partial, all-checked, and zero-item counts, on an `in-progress` and a `review` row.
+- [x] AC4: The band draws no skill row. With no active milestone, it draws the idle row whether or not a cairn skill runs, or nothing when no planned milestone is workable. The idle row's left group is the bold id and the title, with no `next` label, and at 200 columns it shows `/milestone-implement <id>` and the track. A press that hides the idle row keeps it hidden through a cairn skill's start and its end. `register.tsx` has no `tool.call` hook for the chapter tool. `band.test.tsx` cases assert each of these on both surfaces, the skill cases once for each directory under `skills/` that holds a `SKILL.md`, and assert that a chapter call leaves a milestone row and the idle row unchanged.
+- [x] AC5: README's "The milestone band" section, the `hooks/status/` bullet of `cairn/DESIGN.md`, and the header comments of `band.ts`, `track.ts`, and `register.tsx` describe the new row. They contain no claim that the band draws a phase or skill label, a chapter, a skill row, or the ten-cell bar. CHANGELOG's Unreleased section has an entry for the change.
+- [x] AC6: At a live look the operator accepts the desktop row at full width, the narrow desktop track at the docked-pane width of 44 columns, and the terminal row.
 
 ## Coverage
 
@@ -39,14 +39,14 @@ Make the band's row the milestone id and title on the left and the flow track on
 
 ## Tasks
 
-- [ ] T1: Build browser-pane prototypes of 2 or 3 narrow desktop tracks and 2 terminal cell tracks, each in a dark and a light block (LESSONS M201, M204). The operator picks one of each, and a work-log line records the picks.
-- [ ] T2: In `band.ts`, make the left group the bold id and the title on every milestone row and on the idle row. Drop the head label, the arrow, the step body, and the `next` label. Keep the warning label for a row with no readable counts. Remove the skill row from `stepLines`, and draw the idle row while a skill runs.
-- [ ] T3: Remove the chapter. `CairnStep` in `types/index.d.ts` loses `chapter`, and the `step` atom takes a new shape tag. The chapter-tool `tool.call` hook in `register.tsx` goes. `SKILL_LABELS` shrinks to the cairn skill names that `cairnSkill` and the fixture test need. `mark` sets the idle id whether or not a skill runs.
-- [ ] T4: Build the desktop narrow track. `track.ts` takes a width, and below a width set from the T1 pick the pill shows only its count. `band.ts` picks the track width from the room the row leaves. Add the AC2 sweep.
-- [ ] T5: Build the terminal cell track from the same `Flow` model as spans of `█` cells, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
-- [ ] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
-- [ ] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
-- [ ] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
+- [x] T1: Build browser-pane prototypes of 2 or 3 narrow desktop tracks and 2 terminal tracks, each in a dark and a light block (LESSONS M201, M204). The operator picks one of each, and a work-log line records the picks.
+- [x] T2: In `band.ts`, make the left group the bold id and the title on every milestone row and on the idle row. Drop the head label, the arrow, the step body, and the `next` label. Keep the warning label for a row with no readable counts. Remove the skill row from `stepLines`, and draw the idle row while a skill runs.
+- [x] T3: Remove the chapter. `CairnStep` in `types/index.d.ts` loses `chapter`, and the `step` atom takes a new shape tag. The chapter-tool `tool.call` hook in `register.tsx` goes. `SKILL_LABELS` shrinks to the cairn skill names that `cairnSkill` and the fixture test need. `mark` sets the idle id whether or not a skill runs.
+- [x] T4: Build the desktop narrow track. `track.ts` takes a width, and below a width set from the T1 pick the pill shows only its count. `band.ts` picks the track width from the room the row leaves. Add the AC2 sweep.
+- [x] T5: Build the terminal braille-speck track from the same `Flow` model as spans, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
+- [x] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
+- [x] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
+- [x] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
 
 ## Work log
 
@@ -59,7 +59,55 @@ Make the band's row the milestone id and title on the left and the flow track on
 - 2026-10-04: question set: skill row — the operator said the row adds little without a button to run the skill, so the plan removes skill rows. A pressable next-command button stays in "Status mod follow-ons".
 - 2026-10-04: plan chose to remove the chapter hook and state over keeping them unused, because nothing draws a chapter after this milestone. Falsified if another surface needs the chapter.
 - 2026-10-04: the T1 and T8 live looks are stops for the operator's eyes on the closed list. No outward action or dependency change is foreseen.
+- 2026-10-04: T1 picks: the narrow desktop track is variant A (the image track drawn shorter, the pill cut to its count when tight, the percent kept). The operator rejected two terminal looks (block segments, line segments) and picked T3, braille specks on a gray ground with the pill at the fill edge, from a second round (shade ramp and line slider lost).
+- 2026-10-04: implement chose the theme key `userMessageBackground` for the terminal ground. Every built-in theme in 2.1.286 defines it (read from the binary's strings). Falsified if a terminal theme draws the ground darker than the specks.
+- 2026-10-04: re-audit: AC3 (full) — 6 findings on the braille wording: the zero-item short pill, sparse blank cells, the pill's place at the edge, a theme lacking the key, unprobed clauses, and T1/T5 still naming block cells.
+- 2026-10-04: re-audit: AC3 (full) — re-entry reader found 4 more: the pill and the blank-cell clauses can contradict near the track's start, the cell count and narrow rule have no stated rule, the open button's width is not varied, and an all-blank track passes. Second line on AC3, so its wording goes to the operator.
+- 2026-10-04: re-audit: AC4 (full) — 4 findings: the command cannot fit at 40 columns, the close-state clause bound the stored value, the idle cases named no width, and the terminal track was implied. All taken, and the re-entry reader runs.
+- 2026-10-04: re-audit: AC4 (full) — re-entry reader found 2 more: the idle track had no least width, and the cases did not vary width or title or check a skill's start and end. Second line on AC4, so its wording went to the operator.
+- 2026-10-04: substantive amendment: AC3 and AC4 narrowed at the operator's selection. AC3 tests the braille track, ground, dot color, pill count, percent, and title room, and the dot pattern is judged at the live look. AC4 tests the idle row's command and track at 200 columns and a hidden idle row through a skill's start and end.
+- 2026-10-04: checkpoint, half done: T2 to T5 code and T7 docs written, Python suites green. `band.test.tsx` still tests the old forms and is red until the T6 rewrite lands (delegated to an Opus agent). The idle row also draws its track in the terminal. A running skill with nothing active or workable now yields the band slot.
+- 2026-10-04: T6 delegated to an Opus agent: `band.test.tsx` rewritten (79 test blocks, 847 mod tests pass across 3 files). Seven planted defects each went red in the expected suite and were restored. I removed the pane test's skill-row case and its chapter event, which tested removed behavior. All four verify gates are green. T2 to T7 checked.
+- 2026-10-04: T8 live look: the operator accepted the desktop row at full width, the narrow track beside a docked pane, and the terminal braille row in a new session.
+- 2026-10-04: claim audit: 140 claims read, 5 corrected — README.md, hooks/status/band.ts, hooks/status/track.ts, hooks/status/band.test.tsx (plus one stale register.tsx comment it noted); the same reader re-read all six as correct.
+- 2026-10-04: implement done, status review. All four verify gates green (847 mod tests).
+- 2026-10-04: step-7 approval: m206-simpler-band approved for merge
 
 ## Decisions
 
 ## Review
+
+- 2026-10-04 sync: branch up to date with origin/main, no PR yet (resume route d).
+- AC1 evidence: `claude plugin test .` exit 0, 847 pass. The 19 tests named "M206 AC1" pass: M002 (in-progress) and M010 (review), each with an open next item, under no skill, `/milestone-review`, and `/milestone-implement`, on terminal and desktop. The left group holds only the bold id, a space, and the title. M040 and M004 show the warning label at 40 and 200.
+- AC2 evidence: same run, the 35 tests named "M206 AC2" pass. A unit sweep through `stepLines` covers 2 ids, 2 titles (under and over 10 columns), and 6 counts (partial, all checked, zero items, on `in-progress` and `review`), with close 3 and 5, at every width 40 to 200. A rendered desktop sweep over 10 fixture rows checks the `Svg`, its width min(360, columns × 7), and the title room min(title, 10). Plants `MIN_TRACK_COLUMNS = 16` and `PX_PER_COLUMN = 8` went red (T6 log).
+- AC3 evidence: same run, the 34 tests named "M206 AC3" pass. A unit sweep through `bandLines` and `brailleSpans` uses AC2's ids, titles, and counts, with close 3 (no open button) and 5, at every width 40 to 200. A rendered terminal sweep over 10 fixture rows uses the open button. Each checks the braille cells on `userMessageBackground`, phase-colored dots before the pill, the pill's count or `no tasks`/`no criteria`/`none` on the phase color, the percent after the track, and the title room. The plant that dropped the braille `backgroundColor` turned all 34 red.
+- AC4 evidence: same run, the 55 tests named "M206 AC4" pass. `CAIRN_SKILLS` equals the 10 `skills/*/SKILL.md` directories. On both surfaces, the no-active idle row at 200 columns shows bold M021, the title, no `next`, `/milestone-implement M021`, and the track (a 360-pixel `Svg` with `Planned`, or 52 braille cells). This holds with no skill and with each of the 10 skills. With nothing workable, each skill leaves the band yielding to the slot beneath. A press keeps the idle row hidden through each skill's start and its Stop. A chapter call leaves the M002, M010, and idle rows' drawn trees unchanged. `grep -n "tool.call\|mark_chapter" hooks/status/register.tsx` returns nothing.
+- AC5 evidence: a grep of README's "The milestone band" section (127 lines) for chapter, skill row, skill or phase label, ten-cell, 10-cell, `█`, and `→` found nothing. In the DESIGN `hooks/status/` bullet (lines 72 to 190), the same grep matched only lines that say these went in M206, and the `warning` labels. The first 40 lines of `band.ts`, `track.ts`, and `register.tsx` matched nothing. Each was also read whole by the implement claim audit (5 slips fixed and re-read). CHANGELOG Unreleased opens with "A simpler band row."
+- AC6 evidence: the operator's answer at the T8 live look (work log, 2026-10-04) accepted the desktop row at full width, the narrow track beside a docked pane, and the terminal braille row, in a new Code session on this branch.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed (coverage complete included). No principle changed, so `cairn_impact` is skipped. The `generic` profile names no toolchain checks. Verify suites at review: `scripts/tests` 395 OK, `hooks/tests` 174 OK, `claude plugin validate` pass, `claude plugin test .` 847 pass.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: surfaces other than terminal and desktop (vscode, mobile) drew the braille track although their tables have `Svg` — fix now, fixed ac9fde8 (the image draws off the terminal)
+- diff-bug #2: any skill's start or end showed a band hidden over a milestone row, though a skill now draws nothing — fix now, fixed ac9fde8 (`mark` keeps `milestone-review` only where it moves the row)
+- diff-bug #3: the `dismissed` shape tag stayed `dismissed-3` after the skill's meaning changed — fix now, fixed ac9fde8 (`dismissed-4`)
+- diff-bug #4: the desktop title-room check uses the code's own 7-pixel column estimate, so it cannot catch a wrong estimate — follow-up, new row "Band follow-ons (M206 review)"
+- diff-bug #5: the terminal sweep accepted the whole or short pill at any width and never checked the one-third rule — fix now, fixed ac9fde8 (the sweep expects the exact pill)
+- diff-bug #6: the `brailleSpans` comment said the pill starts at the head, but the clamp can put it before the head on a short track — fix now, fixed ac9fde8 (comment)
+- diff-bug #7: the desktop short pill draws `1/3` bold, not in the dimmer count style — reject, planned change: the narrow look the operator picked (variant A) drew the count-only pill bold
+- diff-bug #8: the chapter-call tests cannot fail with no chapter hook — reject, false: a re-added hook that refreshes or stores state on the call changes the drawing after the edit made before it, which is what AC4 guards
+- diff-bug #9: DESIGN said only the buttons carry `dimColor`, but the terminal draws them without it — fix now, fixed ac9fde8
+- diff-bug #10: the `SWEPT` comment said 5-character ids — fix now, fixed ac9fde8
+- diff-bug #11: `tsconfig.json` is untracked — reject, false as a defect of this diff: the file was untracked before the milestone began and the branch never touches it
+- blame-history #1: removing the chapter hook also removed the mid-turn refresh, so the track froze until a turn ended — fix now, fixed ac9fde8 (an Edit, Write, or MultiEdit under `cairn/` reads the files again; 6 new cases)
+- blame-history #2: same as diff-bug #2 — fix now, fixed ac9fde8
+- blame-history #3: below about 39 columns the 12-column least track squeezes the title, and the sweeps start at 40 where M197's went to 36 — follow-up, new row "Band follow-ons (M206 review)"
+- blame-history #4: under `/milestone-implement M021`, before the ROADMAP flips, the idle row shows `/milestone-implement M021` — reject, planned change: AC4 draws the idle row under any skill, and the row changes when the status changes
+- blame-history #5: the pane test "no open button with no ROADMAP" passed with nothing drawn — fix now, fixed ac9fde8 (it asserts the band yields the slot)
+- blame-history #6: the terminal track's fixed colors, ground, and white pill are unchecked in ANSI and custom themes — follow-up, new row "Band follow-ons (M206 review)"
+- blame-history #7: same as diff-bug #3 — fix now, fixed ac9fde8
+- prior-review #1: same as blame-history #3 — follow-up, new row
+- prior-review #2: the desktop track now sizes by the column estimate at every width, not only at the cutoff — follow-up, new row
+- prior-review #3: the fixed phase colors and white pill now carry the phase alone — follow-up, new row
+- prior-review #4: same as diff-bug #3 — fix now, fixed ac9fde8
+- prior-review #5: `dismiss` still reads twice and then writes (M200 item) — follow-up, already in "Status mod follow-ons", unchanged by this diff
+- prior-review #6: the M205 pane items stay open — follow-up, already in "Pane follow-ons (M205 review)", unchanged by this diff
+- Settled: 24 findings, 12 fixed now, 8 follow-up, 4 rejected. Two planted defects (no refresh after a write; any skill in `mark`) turned 8 new tests red, then were restored. After the fixes all four gates are green: `scripts/tests` OK, `hooks/tests` OK, validate pass, `claude plugin test .` 853 pass.

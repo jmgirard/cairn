@@ -4,6 +4,23 @@
 
 ### New
 
+- **A simpler band row.** The band's row is now the milestone's id in bold
+  and its title on the left, and the flow track and its percent on the
+  right, in the terminal and in the desktop app. The phase or skill label,
+  the `→` with the chapter or the next open task, the skill row, the
+  `next` label of the idle row, and the ten-cell bar with its counts forms
+  are gone. With no active milestone the band shows the idle row whether
+  or not a cairn skill runs. In a narrow desktop window the track gets
+  shorter, down to 12 columns, so that the title keeps 10 columns, and its
+  pill shows the counts alone, such as `1/3`, when the whole pill would
+  take more than a third of the track. The terminal draws the track as
+  braille characters on the theme's `userMessageBackground` color, with
+  the same pill and percent. A hidden band stays hidden through a cairn
+  skill's start and end, unless `/milestone-review` moves it to another
+  row. The band also reads the files again after Claude edits or writes a
+  file under `cairn/`, so a box checked in a long turn moves the track
+  before the turn ends. This replaces the row that the two band entries
+  below describe.
 - **A cairn pane.** The new `/cairn-pane` command opens a pane that shows
   more than the band, and the same command closes it. The band's `≡`
   button, before its close button, also opens it on a row drawn from a

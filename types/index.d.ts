@@ -27,17 +27,16 @@ export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[
 export type CairnBandMark = { id: string; status: string }
 
 // What the close button stores at a press: the active ids and statuses in
-// ROADMAP order, the running cairn skill's bare name, and the idle row's id
-// or null. The skill is null when no cairn skill runs or when the running
-// step's skill has no label, as a step stored before a reload can name a
-// skill the label map has since dropped (M200).
+// ROADMAP order, `milestone-review` while that skill runs and moves the band
+// to another row, else null, and the idle row's id while no row is active
+// (M206). A step stored before a reload that names a skill the cairn list
+// has since dropped reads as no step (M200).
 export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null; idle: string | null }
 
-// The running cairn skill's bare name (`milestone-plan`), and the title of
-// the last chapter the main loop marked since its prompt was expanded. A
-// main-loop Stop with no background work in flight, or a prompt the operator
-// types while the session is idle, ends it (M201).
-export type CairnStep = { skill: string; chapter: string | null }
+// The running cairn skill's bare name (`milestone-plan`). A main-loop Stop
+// with no background work in flight, or a prompt the operator types while
+// the session is idle, ends it (M201).
+export type CairnStep = { skill: string }
 
 // One checkbox item of a milestone file's Tasks or Acceptance criteria,
 // less its box, with a wrapped item's lines joined (M205).

@@ -73,132 +73,66 @@ Run `/milestone` any time you're unsure where things stand.
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
 one row for the milestone in flight, or between milestones for the next one
-you can start. With no cairn skill running, the milestone in flight is the
-first `in-progress` row of `cairn/ROADMAP.md`, else its first `review`
-row. The row gives no sign of the other active milestones. The phase, one
-space, the id, and one text sit at the left of the row. A 10-cell progress
-bar and the checked and total checkboxes of the phase's section sit at its
-right edge. During `implement` that section is `## Tasks`. During `review`
-it is `## Acceptance criteria`. The text is the section's first unchecked
-task or criterion after a `→`, with its `T2:` or `AC3:` label in bold. One
-of the band's test fixtures gives this row when M010 is its only active
-milestone, shown here with the left and right parts two spaces apart:
+you can start. The milestone in flight is the first `in-progress` row of
+`cairn/ROADMAP.md`, else its first `review` row. While `/milestone-review`
+runs, it is the first `review` row when one exists. The row gives no sign
+of the other active milestones. The id in bold and the milestone's title
+sit at the left of the row. The flow track and the percent sit at its
+right edge. One of the band's test fixtures gives this row when M010 is
+its only active milestone, shown here with the track as `[track]`:
 
 ```text
-review M010 → AC3: Third criterion.  ██████████  2/3 criteria
+M010 Nested tasks and a capital X  [track] 88%
 ```
 
-The bar draws every cell with `█`, so it keeps one width in any font. The
-filled cells take the phase's theme color, and the empty cells take the
-theme's subtle gray. This page shows all ten cells as `█`, because a text
-block cannot show color.
-
-In the desktop app, the band draws a track in place of the bar, the
-counts, and the `no tasks`, `no criteria`, and `all … checked` labels when
-the window has room for it. The terminal keeps the text row.
 The track is one rounded bar of three equal parts: plan, implement, then
 review. On a milestone row, plan is full. Implement fills by the checked
-tasks, and it is full on a `review` row. Review fills by the checked
-criteria. Small square specks fill the track from its left end to the edge
-of the current phase's fill. They start sparse and gray, and they grow
-dense near the edge, where more of them take the phase's color. A pill on
-that edge names the phase and its counts, such as `Implement 1/3` or
-`Review 1/2`, in the phase's color. A section with no boxes shows
-`no tasks` or `no criteria` in the pill. Two thin marks divide the three
+boxes of `## Tasks`, and it is full on a `review` row. Review fills by the
+checked boxes of `## Acceptance criteria`. Specks fill the track from its
+left end to the edge of the current phase's fill. They start sparse and
+gray, and they grow dense near the edge, where more of them take the
+phase's color: `rgb(110,140,190)` blue for plan, `rgb(194,122,92)` orange
+for implement, and `rgb(106,165,122)` green for review. These colors are
+fixed and do not follow your theme. A pill on that edge names the phase
+and its counts, such as `Implement 1/3` or `Review 1/2`, in the phase's
+color. A section with no boxes shows `no tasks` or `no criteria` in the
+pill. The percent of the whole flow follows the track. Each part counts
+for a third, and the percent rounds down. So it reads 100% only on a
+`review` row whose criteria are all checked, and a `review` row with no
+criteria reads 66%.
+
+In the desktop app, and on any other surface that can draw an image, the
+track is an image. Two thin marks divide the three
 parts. In the current part, a tick marks each item edge past the fill when
-the items are 6 pixels apart or more. On a milestone row, the percent of
-the whole flow sits to the right of the track. Each part counts for a
-third, and the percent rounds down. So it reads 100% only on a `review`
-row whose criteria are all checked, and a `review` row with no criteria
-reads 66%. The track keeps this look under any skill label and at any
-chapter.
+the items are 6 pixels apart or more. The image cannot follow your theme's
+colors, so it draws in translucent grays meant for a light or a dark
+background. In the terminal the track is a run of braille characters on
+your theme's `userMessageBackground` color. Its dots are the specks, a dim
+mark divides the parts past the fill, and the pill is white text on the
+phase's color.
 
-The idle row draws the track with plan full and the pill `Planned`, before
-its command. A `/milestone-plan` skill row with no active milestone draws
-an empty track with the pill `Plan` at its left end. A row whose milestone
-file cannot be read keeps the text row, and so does the skill row of every
-other skill. The track is 360 pixels wide, and the band counts it as 52
-columns. In a narrower window, the row takes the text forms that the
-terminal draws. The track is an image, so it cannot follow your theme's
-colors. It draws in translucent grays meant for a light or a dark
-background, and its phase colors are the fixed label colors below.
+The desktop app draws the track at 7 pixels a column, up to 52 columns and
+at most 360 pixels. The terminal draws it at most 52 characters wide. In a narrower window the track gets shorter, so that the
+title keeps 10 columns, or its full width when the title is shorter. The
+track keeps at least 12 columns. When the whole pill would take more than
+a third of the track, the pill shows the counts alone, such as `1/3`, or
+`none` for a section with no boxes. The band counts one column per
+character, so a short title of wide characters, such as CJK characters or
+emoji, can get less room than it draws. A title too long for the width is
+cut at its end, and the right part stays at the right edge.
 
-In the text row, three labels replace the bar and the counts. With no
-chapter on the row,
-the row then shows the milestone's title as its text.
-`no milestone file` means that the row's `File/Archive` path names no
-regular file the band can read. `no tasks` or `no criteria` means that the
-section is missing or holds no checkboxes. `all 3 tasks checked` or
-`all 2 criteria checked` means that every box in the section is checked.
+A row whose `File/Archive` path names no regular file the band can read
+shows `no milestone file` in place of the track, or `no file` in a narrow
+window, in your theme's warning color. The rest of the row draws in the
+theme's gray. If another plugin draws a band in the same place, its rows
+show under cairn's.
 
-The phase label is drawn in a muted orange or green: `rgb(194,122,92)` for
-`implement` and `rgb(106,165,122)` for `review`. These two colors are fixed
-and do not follow your theme. The bar's filled cells draw in your theme's
-full Claude orange or success green, by the phase. This holds also when a
-skill's label of another color stands in for the phase label. Some themes
-change the filled cells' colors, but not the label's: the colorblind themes
-draw success in blue, and the ANSI themes draw Claude orange as bright red.
-The empty cells draw in the theme's subtle gray. In the ANSI themes that
-gray is the same as the rest of the row. The rest of the row draws in the
-theme's gray, with the id and a `T2:` or `AC3:` label in bold.
-`no milestone file` and its short form `no file` take the theme's warning
-color. In a narrow window the right part takes the first shorter form that
-leaves the text 10 columns. A text shorter than 10 columns needs only its
-full width. If no form leaves that room, the right part takes its shortest
-form. The band counts one column per character, so a short text of wide
-characters, such as CJK characters or emoji, can get less room than it
-draws. The bar and counts give way to the counts with their noun
-(`2/3 criteria`), and then to the bare counts (`2/3`).
-`all 2 criteria checked` gives way to `2/2 checked`, and `no milestone file`
-to `no file`. A text too long for the width is cut at its end, and the right
-part stays at the right edge. If another plugin draws a band in the same
-place, its rows show under cairn's.
-
-The band also names the cairn skill that is running. When a cairn skill
-starts, by its plain name or its `cairn:` name, its label takes the place
-of the phase label on the row: `plan`, `implement`, `review`, `hotfix`,
-`triage`, `release`, `status` (for `/milestone`), `brief`, `design`, or
-`init`. The label takes the muted green for `/milestone-review`, a muted
-blue, `rgb(110,140,190)`, for `/milestone-plan`, and the muted orange for
-every other skill. If a `review` row exists, the row is
-the first one during `/milestone-review`. Every other skill stays on
-the row the band shows with no skill. With no active milestone, a cairn
-skill gets a skill row: its label, its slash command, and nothing at its
-right edge but the close button. In a narrow window a skill row drops its
-slash command, so that its chapter keeps room.
-
-In the desktop app, each chapter the session marks, for example
-`Consistency gate` or `Post-merge hygiene`, becomes the text of the row,
-after a `→`. A skill row shows the chapter after its slash command. In the
-text row, the bar shows while the chapter is a task or criterion, one that
-opens with a label such as `T4:` or `AC2:`. At any other chapter a row with counts
-shows the counts alone, and a state label stays as it is. The band reads
-the files again at each chapter, so the counts match the files at that
-chapter. During review, at the post-merge step, that fixture shows:
-
-```text
-review M010 → Post-merge hygiene  2/3 criteria
-```
-
-During planning, the `plan` label goes on the in-progress row of another
-fixture, here at the chapter `Investigation`:
-
-```text
-plan M002 → Investigation  1/3 tasks
-```
-
-With no milestone active, the band shows a skill row:
-
-```text
-plan /milestone-plan → Question gate
-```
-
-Chapters come from the desktop app's chapter tool,
-`mcp__ccd_session__mark_chapter`. In a session without that tool, such as
-one in the terminal, a milestone row shows its next open box, and a skill
-row shows its label and slash command only. The skill and its chapter
-stay until Claude stops with no background work in flight, such as after
-the skill's closing summary. A question chip the skill asks you waits
+The band draws nothing of the running cairn skill. It keeps track of the
+skill for two things: the row it shows during `/milestone-review`, and
+when a hidden band shows again (below). A cairn skill counts from its
+start, by its plain name or its `cairn:` name. It stays until Claude stops
+with no background work in flight, such as after the skill's closing
+summary. A question chip the skill asks you waits
 inside the turn, so the skill stays while you answer it. A question asked
 in plain text ends the turn. With no background work in flight, the skill
 ends with it, and otherwise your typed answer ends it. When Claude ends a turn
@@ -210,47 +144,45 @@ does a message from another session. An interrupt with Esc keeps it too,
 because an interrupted turn has no stop, so the skill stays until your
 next prompt or until Claude next stops with no background work in flight.
 A cairn skill that starts again, the
-same one included, or a session end, a `/clear` included, also ends them.
-A chapter marked after the skill ended does not show. A subagent that
-loads a cairn skill also sets the label, because the skill event does not
-say which agent loaded it.
+same one included, or a session end, a `/clear` included, also ends it.
+A subagent that loads a cairn skill also counts, because the skill event
+does not say which agent loaded it.
 
 The rule has three limits. A skill that waits through `ScheduleWakeup` or
-a scheduled task, and not through background work, loses its label when
-Claude stops. Background work that the skill did not start, such as a
-server or a monitor started earlier, keeps a finished skill's label until
-your next prompt, because the band does not tell the skill's own work from
-other work. A prompt you type that a hook blocks or drops still ends the
-label.
+a scheduled task, and not through background work, ends when Claude
+stops. Background work that the skill did not start, such as a server or
+a monitor started earlier, keeps a finished skill until your next prompt,
+because the band does not tell the skill's own work from other work. A
+prompt you type that a hook blocks or drops still ends the skill.
 
-With no milestone active and no cairn skill running, the band shows an
-idle row for the next milestone you can start. That milestone is the first
-`planned` row whose `Depends on` milestones are all done, by priority and
-then by id, the one `cairn_next.py` recommends. A dependency is done when
-its row is `done` or its file is in `cairn/milestones/archive/`. The idle
-row draws `next`, the id in bold, and the title in the theme's gray, and
-the command that starts the milestone at the right edge:
+With no milestone active, the band shows an idle row for the next
+milestone you can start, whether or not a cairn skill runs. That milestone
+is the first `planned` row whose `Depends on` milestones are all done, by
+priority and then by id, the one `cairn_next.py` recommends. A dependency
+is done when its row is `done` or its file is in
+`cairn/milestones/archive/`. The idle row draws the id in bold and the
+title, then a track with plan full and the pill `Planned`, and the command
+that starts the milestone at the right edge:
 
 ```text
-next M021 Waiting to start  /milestone-implement M021
+M021 Waiting to start  [track] /milestone-implement M021
 ```
 
-In a narrow window the idle row drops its command, so that the title
-keeps room. With no workable planned milestone, the band draws nothing.
+In a narrow window the idle row drops its track, and then its command, so
+that the title keeps room. With no workable planned milestone, the band
+draws nothing.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
 app a `✕` that is dim at rest. On a row drawn from a ROADMAP, a `≡`
-button before it opens the cairn pane (below). The row can be a milestone row, a skill
-row, or the idle row. Pressing the button hides the band. Until the
-session ends, the band stays hidden while three things stay the same. The
-first is the list of active milestones: their ids, their statuses, and
-their ROADMAP order. The second is the running cairn skill. The third is
-the milestone the idle row names. When any of them changes, the band shows
-again. For example, a milestone moves from `implement` to `review`, or a
-milestone becomes active or leaves both statuses. Another cairn skill can
-start, or a skill's turn can end. A new planned milestone can take the
-idle row's place. A checked box, an edited title, or a new chapter does
-not bring the band back, and the same skill run again does not either. A
+button before it opens the cairn pane (below). Pressing the close button
+hides the band. Until the session ends, the band stays hidden while the
+list of active milestones stays the same: their ids, their statuses, and
+their ROADMAP order. For example, a milestone that moves from `implement`
+to `review`, or a milestone that becomes active or leaves both statuses,
+shows the band again. A cairn skill that starts or ends keeps it hidden,
+unless `/milestone-review` moves the band to another row, a `review` row
+when an `in-progress` row would show without it. A hidden idle row shows
+again when another milestone takes its place. A checked box or an edited title does not bring the band back. A
 session end shows a hidden band again, whatever its reason. In the desktop
 app, a `/clear` stops the session, and the band draws again at your next
 message. If the band finds the ROADMAP but cannot read it, the band keeps
@@ -258,11 +190,11 @@ its row. The failed read alone does not hide or show it.
 
 The band finds the ROADMAP in the session's working directory or the nearest
 directory above it. It reads the files when the session starts and at the
-end of each turn. It also reads them when a cairn skill starts and at each
-chapter. A box you check or a status you change shows after the next of
-these. Outside a cairn repo, it draws only the skill row of
-a running cairn skill, such as `/cairn-init` in a new repo.
-It also gives way while Claude Code shows a survey there. The band draws on
+end of each turn. It also reads them when a cairn skill starts or ends,
+and after Claude edits or writes a file under a `cairn/` directory, so a
+box Claude checks moves the track inside a long turn. A box you check or a
+status you change shows after the next of these.
+Outside a cairn repo, it draws nothing. It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
 
 ### The cairn pane

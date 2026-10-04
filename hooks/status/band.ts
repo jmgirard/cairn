@@ -1,125 +1,107 @@
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { BandRow, BandState, WorkableRow } from './reader'
 
-// The band's one row, as a plain description that register.tsx draws. It
-// shows one active milestone: the first `review` row while
+// The band's one row, as a plain description that register.tsx draws
+// (M206). It shows one active milestone: the first `review` row while
 // /milestone-review runs and one exists, else the first `in-progress` row,
-// else the first `review` row. Its left side names the phase, or the
-// running cairn skill in its place, then the id and one text: the skill's
-// last chapter, else the phase's next open task or criterion, else the
-// title. Its right side holds the bar and the counts, the counts alone, or
-// a state label, in the first of its forms that leaves the text enough
-// room. A running cairn skill with no active milestone gets a skill row.
-// With neither, the first workable planned milestone gets an idle row. On
-// the desktop, a row in the flow tries the track first (M204).
+// else the first `review` row. With no active row, it shows the idle row
+// for the first workable planned milestone, whether or not a cairn skill
+// runs. Its left side is the bold id and the title. Its right side is the
+// flow track and its percent, the idle row's track and command, or a
+// warning label for a row whose counts cannot be read. The track draws as
+// an image on the desktop and as braille cells in the terminal (track.ts),
+// at the width the row leaves it.
 
-// One run of text and its style. The label draws in a fixed muted orange
-// or green. In the desktop app's dark theme, a theme key's `dimColor`
-// turned the orange brown at a live look (M198). The filled cells take the
-// phase's theme key at full strength. The rest of the row draws in
-// `inactive`, the theme's gray, but for the empty cells (EMPTY) and the
-// warning labels. Theme keys follow the person's theme, a custom one included.
-export type Span = { text: string; color?: string; bold?: boolean }
+// One run of text and its style. The row draws in `inactive`, the theme's
+// gray, but for the warning labels and the terminal track's cells.
+export type Span = { text: string; color?: string; backgroundColor?: string; bold?: boolean }
 
 export const GRAY = 'inactive'
 export const ORANGE = 'rgb(194,122,92)'
 export const GREEN = 'rgb(106,165,122)'
-// The plan phase's hue in the track and the /milestone-plan label (M204).
+// The plan phase's hue in the track (M204).
 export const BLUE = 'rgb(110,140,190)'
-// The empty cells: the theme key `subtle`. The 2.1.286 light, dark, and
-// colorblind themes set it fainter than `inactive`, and the ANSI themes set
-// it equal.
-// A dim cell with no color drew close to the orange's brightness at a live
-// look (M198).
-const EMPTY = 'subtle'
 
-// A step: a chapter or an open item. `label` is its positional label
-// (`T2:`, `AC3:`), or null when it has none; `rest` is the text after it.
-export type Step = { kind: 'step'; label: string | null; rest: string }
+// The track and the columns it takes: an image of about PX_PER_COLUMN
+// pixels a column on the desktop, one braille cell a column in the
+// terminal.
+export type TrackPart = { flow: Flow; columns: number }
 
-// The title, or a step. The engine cuts the text to the room the right
-// group leaves, so the text is whole here. A skill row with no chapter has
-// none.
-export type Body = Step | { kind: 'title'; title: string } | null
+// `track`, when set, draws before the tail.
+export type BandLine = { key: string; id: string; title: string; tail: Span[]; track?: TrackPart }
 
-// `track`, set on the desktop when the row has room for it, draws before
-// the tail (M204).
-export type BandLine = { key: string; head: Span[]; body: Body; tail: Span[]; track?: Flow }
-
-// `color` is the label's hue and `fill` the filled cells' theme key, at full
-// strength so the cells stand apart from the empty ones.
-type Phase = { label: string; color: string; fill: string; noun: string }
+type Phase = { noun: string }
 
 const PHASES: Record<string, Phase> = {
-  'in-progress': { label: 'implement', color: ORANGE, fill: 'claude', noun: 'tasks' },
-  review: { label: 'review', color: GREEN, fill: 'success', noun: 'criteria' },
+  'in-progress': { noun: 'tasks' },
+  review: { noun: 'criteria' },
 }
 
-export const BAR_CELLS = 10
 // The columns between the left and the right group.
 export const GAP = 2
-// The most columns a row keeps for its text when it picks a form: a shorter
-// text needs only its own width.
+// The most columns a row keeps for its title when it picks a form: a
+// shorter title needs only its own width.
 export const TEXT_ROOM = 10
-// The columns the desktop track counts as in the fit (M204), at about 7
-// pixels a column. track.ts draws it TRACK_PX (360) wide.
+// The most and least columns the track takes. The desktop counts the full
+// TRACK_PX (360) image as TRACK_COLUMNS, at about PX_PER_COLUMN pixels a
+// column (M204). On a milestone row, below MIN_TRACK_COLUMNS the track
+// keeps that width and the title takes less room. The idle row drops its
+// track instead.
 export const TRACK_COLUMNS = 52
-// One glyph for every cell, so the bar keeps one width in any font; the
-// empty cells take EMPTY.
-const CELL = '█'
-export const ARROW = '→ '
-const POSITIONAL = /^(T|AC)\d+[a-z]*:/
+export const MIN_TRACK_COLUMNS = 12
+export const PX_PER_COLUMN = 7
 
-// The band's label for each cairn skill, by its directory under `skills/`.
-// fixtures.gen.ts lists those directories, and a test holds this map to
-// that list.
-export const SKILL_LABELS: Record<string, string> = {
-  'milestone-plan': 'plan',
-  'milestone-implement': 'implement',
-  'milestone-review': 'review',
-  hotfix: 'hotfix',
-  'cairn-triage': 'triage',
-  'cairn-release': 'release',
-  milestone: 'status',
-  'milestone-brief': 'brief',
-  'design-interview': 'design',
-  'cairn-init': 'init',
-}
-
-// A skill's label color: the review phase's for /milestone-review, the plan
-// hue for /milestone-plan (M204), the implement phase's for every other
-// skill.
-function skillColor(skill: string): string {
-  if (skill === 'milestone-plan') return BLUE
-  return skill === 'milestone-review' ? PHASES.review.color : PHASES['in-progress'].color
-}
+// The cairn skills, by their directories under `skills/`. fixtures.gen.ts
+// lists those directories, and a test holds this list to that one. A
+// running skill shows nothing of its own (M206): /milestone-review picks the
+// row, and a skill's start or end can show a band hidden over a milestone
+// row.
+export const CAIRN_SKILLS: readonly string[] = [
+  'milestone-plan',
+  'milestone-implement',
+  'milestone-review',
+  'hotfix',
+  'cairn-triage',
+  'cairn-release',
+  'milestone',
+  'milestone-brief',
+  'design-interview',
+  'cairn-init',
+]
 
 // A skill's bare name when it is a cairn skill, from its bare name or its
 // `cairn:` name; null for any other skill.
 export function cairnSkill(name: string): string | null {
   const bare = name.startsWith('cairn:') ? name.slice('cairn:'.length) : name
-  return Object.prototype.hasOwnProperty.call(SKILL_LABELS, bare) ? bare : null
+  return CAIRN_SKILLS.includes(bare) ? bare : null
 }
 
-// The step, or null when its skill has no label, as a step stored before a
-// reload can name a skill the label map has since dropped.
+// The step, or null when its skill is not a cairn skill, as a step stored
+// before a reload can name a skill the list has since dropped.
 export function knownStep(step: CairnStep | null): CairnStep | null {
-  return step !== null && Object.prototype.hasOwnProperty.call(SKILL_LABELS, step.skill) ? step : null
+  return step !== null && CAIRN_SKILLS.includes(step.skill) ? step : null
 }
 
 // What the close button stores at a press, and what a refresh and the
 // drawing compare it with: the ids and statuses of the active rows, in
-// ROADMAP order, the running skill, and the idle row's id when the band
-// draws one (no active row and no running skill), else null. The step is
-// read through knownStep, as the drawing reads it (M200). The chapter is
-// left out, so a new chapter alone keeps the band hidden, and so is the
-// workable list while a row is active or a skill runs, so a planned row
-// added then keeps it hidden too.
+// ROADMAP order, `milestone-review` while that skill runs and moves the band
+// off the row it shows with no skill, and the idle row's id while no row is
+// active (M206). The step is read through knownStep, as the drawing reads it
+// (M200). The workable list is left out while a row is active, so a planned
+// row added then keeps the band hidden too. Any other skill draws nothing,
+// so its start or end keeps a hidden band hidden (M206 review).
 export function mark(state: BandState, step: CairnStep | null): CairnBandHidden {
   const current = knownStep(step)
   const marks: CairnBandMark[] = state.rows.map(row => ({ id: row.id, status: row.status }))
-  const idle = state.rows.length === 0 && current === null ? (state.workable[0]?.id ?? null) : null
-  return { marks, skill: current === null ? null : current.skill, idle }
+  const active = state.rows.length > 0
+  const first = (status: string) => state.rows.find(row => row.status === status)
+  const plain = first('in-progress') ?? first('review')
+  const reviewed = current?.skill === 'milestone-review' ? first('review') : undefined
+  return {
+    marks,
+    skill: reviewed !== undefined && reviewed !== plain ? 'milestone-review' : null,
+    idle: active ? null : (state.workable[0]?.id ?? null),
+  }
 }
 
 export function same(a: CairnBandHidden, b: CairnBandHidden): boolean {
@@ -135,18 +117,8 @@ export function phaseOf(row: BandRow): Phase {
   return PHASES[row.status]
 }
 
-// Filled cells round down, so the bar is never full while a box is open; an
-// all-checked section shows a label instead.
-export function bar(checked: number, total: number, color: string): Span[] {
-  const filled = Math.floor((BAR_CELLS * checked) / total)
-  return [
-    { text: CELL.repeat(filled), color },
-    { text: CELL.repeat(BAR_CELLS - filled), color: EMPTY },
-  ]
-}
-
-// The desktop track (M204): one flow of three equal segments, plan, then
-// implement, then review. track.ts draws it as an SVG; the model is here.
+// The flow track (M204): one flow of three equal segments, plan, then
+// implement, then review. track.ts draws it; the model is here.
 export type FlowPhase = 'plan' | 'implement' | 'review'
 export const FLOW_PHASES: readonly FlowPhase[] = ['plan', 'implement', 'review']
 export const FLOW_COLORS: Record<FlowPhase, string> = { plan: BLUE, implement: ORANGE, review: GREEN }
@@ -164,6 +136,10 @@ export type Flow = {
   // count sets its ticks; 0 draws none.
   items: [number, number]
   pill: string
+  // The pill's text on a track too short for `pill`: the count alone,
+  // `none` for a section with no items, or `Planned` on the idle flow
+  // (M206).
+  short: string
   // The flow's percent, or null on a row that shows none.
   percent: number | null
   // What the drawing says, for a reader that cannot see it.
@@ -206,6 +182,7 @@ export function flowOf(row: BandRow): Flow | null {
     fills,
     items: [tasksTotal, criteriaTotal],
     pill: total === 0 ? `no ${noun}` : `${name} ${checked}/${total}`,
+    short: total === 0 ? 'none' : `${checked}/${total}`,
     percent,
     alt: `${phase} ${counts}, ${percent}% through plan, implement, review`,
   }
@@ -218,201 +195,102 @@ export function idleFlow(): Flow {
     fills: [FULL, NONE, NONE],
     items: [0, 0],
     pill: 'Planned',
+    short: 'Planned',
     percent: null,
     alt: 'plan done, implement next',
   }
 }
 
-// The /milestone-plan skill row's flow: nothing filled, the pill at the
-// left edge.
-export function planFlow(): Flow {
-  return {
-    phase: 'plan',
-    fills: [NONE, NONE, NONE],
-    items: [0, 0],
-    pill: 'Plan',
-    percent: null,
-    alt: 'plan running',
-  }
-}
-
-// A chapter or an open item, its positional label split off.
-function stepOf(text: string): Step {
-  const label = POSITIONAL.exec(text)?.[0] ?? null
-  return { kind: 'step', label, rest: label === null ? text : text.slice(label.length) }
-}
-
-// Columns at one per code point: true for the band's own glyphs (`█`, `→`,
-// `×`) and ASCII. A wide character in a text, such as a CJK character or
-// an emoji, is undercounted.
+// Columns at one per code point: true for ASCII and the band's own glyphs.
+// A wide character in a title, such as a CJK character or an emoji, is
+// undercounted.
 export function width(text: string): number {
   return [...text].length
 }
 
 const spansWidth = (spans: Span[]) => spans.reduce((n, span) => n + width(span.text), 0)
 
-// The columns of a row's parts that do not shrink, less the right group:
-// the head, and a step's arrow and label after it.
-function headWidth(head: Span[], body: Body): number {
-  const step = body?.kind === 'step' ? width(ARROW) + width(body.label ?? '') : 0
-  return spansWidth(head) + step
+// The columns of the left group's part that does not shrink: the id and
+// the space after it.
+function headWidth(id: string): number {
+  return width(id) + 1
 }
 
-// The columns the text needs to pick a form: its full width, or TEXT_ROOM
+// The columns the title needs to pick a form: its full width, or TEXT_ROOM
 // when that is less.
-function textNeed(body: Body): number {
-  const text = body === null ? '' : body.kind === 'title' ? body.title : body.rest
-  return Math.min(width(text), TEXT_ROOM)
+function textNeed(title: string): number {
+  return Math.min(width(title), TEXT_ROOM)
 }
 
-// The first form that leaves the text the room it needs, else the last.
-// `close` is the columns the row's close gap and label take.
-function fit(columns: number, close: number, head: number, need: number, forms: Span[][]): Span[] {
-  const room = (form: Span[]) => columns - head - GAP - spansWidth(form) - close
-  return forms.find(form => room(form) >= need) ?? forms[forms.length - 1]
+// The columns a row leaves the right group, less `tail` and the title's
+// need. `close` is the columns the row's close gap and buttons take.
+function room(columns: number, close: number, line: { id: string; title: string }, tail: Span[]): number {
+  return columns - headWidth(line.id) - textNeed(line.title) - GAP - spansWidth(tail) - close
 }
 
-// Whether the track and `tail` after it leave the text the room it needs:
-// the track is the longest form, tried before the text forms (M204).
-function trackFits(columns: number, close: number, head: number, need: number, tail: Span[]): boolean {
-  return columns - head - GAP - TRACK_COLUMNS - spansWidth(tail) - close >= need
+// The track's columns in that room: at most TRACK_COLUMNS, and at least
+// MIN_TRACK_COLUMNS.
+function trackColumns(left: number): number {
+  return Math.max(MIN_TRACK_COLUMNS, Math.min(TRACK_COLUMNS, left))
 }
 
-const gap = (): Span => ({ text: ' '.repeat(GAP) })
+// The space between the track and what follows it.
+const SPACE: Span = { text: ' ' }
 
-// A skill row: the skill's label, its slash command, the chapter when one
-// is set, and nothing on the right. When the head leaves the chapter less
-// than the room it needs, the slash command goes.
-// On the desktop, a /milestone-plan skill row adds the unfilled track
-// on the right when it has room (M204).
-export function skillLines(step: CairnStep, columns: number, close = 0, desktop = false): BandLine[] {
-  const label: Span[] = [{ text: SKILL_LABELS[step.skill], color: skillColor(step.skill) }, { text: ' ' }]
-  const full: Span[] = [...label, { text: `/${step.skill}`, color: GRAY }, { text: ' ' }]
-  const body: Body = step.chapter === null ? null : stepOf(step.chapter)
-  const fits = columns - headWidth(full, body) - GAP - close >= textNeed(body)
-  const head = fits ? full : label
-  const line: BandLine = { key: 'skill-row', head, body, tail: [] }
-  if (desktop && step.skill === 'milestone-plan' && trackFits(columns, close, headWidth(head, body), textNeed(body), [])) {
-    line.track = planFlow()
-  }
-  return [line]
-}
-
-// The idle row: `next`, the bold id, and the title, all in gray, and the
-// command that starts the milestone on the right. When the head leaves the
-// title less than the room it needs, the command goes.
-export const IDLE_LABEL = 'next'
-
-// On the desktop, the track (plan full) comes before the command when the
-// row has room for both (M204).
-export function idleLines(next: WorkableRow, columns: number, close = 0, desktop = false): BandLine[] {
-  const head: Span[] = [
-    { text: IDLE_LABEL, color: GRAY },
-    { text: ' ' },
-    { text: next.id, color: GRAY, bold: true },
-    { text: ' ' },
-  ]
-  const body: Body = { kind: 'title', title: next.title }
+// The idle row: the bold id and the title, and on the right the track
+// (plan full) and the command that starts the milestone. Where the row
+// leaves the track too little room, the track goes, and then the command.
+export function idleLines(next: WorkableRow, columns: number, close = 0): BandLine[] {
+  const line = { key: 'idle-row', id: next.id, title: next.title }
   const command: Span = { text: `/milestone-implement ${next.id}`, color: GRAY }
-  const width = headWidth(head, body)
-  const need = textNeed(body)
-  const withTrack = [gap(), command]
-  if (desktop && trackFits(columns, close, width, need, withTrack)) {
-    return [{ key: 'idle-row', head, body, tail: withTrack, track: idleFlow() }]
+  const withTrack = [SPACE, command]
+  const left = room(columns, close, line, withTrack)
+  if (left >= MIN_TRACK_COLUMNS) {
+    return [{ ...line, tail: withTrack, track: { flow: idleFlow(), columns: trackColumns(left) } }]
   }
-  const tail = fit(columns, close, width, need, [[command], []])
-  return [{ key: 'idle-row', head, body, tail }]
+  return [{ ...line, tail: room(columns, close, line, [command]) >= 0 ? [command] : [] }]
 }
 
 // The band's one row, or none: the first `review` row under
 // /milestone-review, else the first `in-progress` row, else the first
-// `review` row; with no active row, a skill row while a cairn skill runs,
-// else an idle row for the first workable planned row, else nothing.
-// `rows` are the active rows in ROADMAP order, and `workable` the workable
-// planned rows in their order. `close` is the columns the close gap and
-// label take.
+// `review` row; with no active row, an idle row for the first workable
+// planned row, else nothing. `rows` are the active rows in ROADMAP order,
+// and `workable` the workable planned rows in their order. `close` is the
+// columns the close gap and buttons take.
 export function stepLines(
   rows: BandRow[],
   step: CairnStep | null,
   columns: number,
   close = 0,
   workable: WorkableRow[] = [],
-  desktop = false,
 ): BandLine[] {
   const first = (status: string) => rows.find(row => row.status === status)
   const reviewed = step?.skill === 'milestone-review' ? first('review') : undefined
   const row = reviewed ?? first('in-progress') ?? first('review')
-  if (row !== undefined) {
-    return bandLines(row, columns, step === null ? null : step.chapter, close, step === null ? null : step.skill, desktop)
-  }
-  if (step !== null) return skillLines(step, columns, close, desktop)
-  return workable.length === 0 ? [] : idleLines(workable[0], columns, close, desktop)
+  if (row !== undefined) return bandLines(row, columns, close)
+  return workable.length === 0 ? [] : idleLines(workable[0], columns, close)
 }
 
-// One milestone's row. A chapter, when given, takes the place of the next
-// open item, and a skill, when given, puts its label in place of the
-// phase's. `close` is the columns the close gap and label take.
-export function bandLines(
-  row: BandRow,
-  columns: number,
-  chapter: string | null = null,
-  close = 0,
-  skill: string | null = null,
-  desktop = false,
-): BandLine[] {
-  const phase = phaseOf(row)
-  const isTasks = phase.noun === 'tasks'
-  const checked = isTasks ? row.tasksChecked : row.criteriaChecked
-  const total = isTasks ? row.tasksTotal : row.criteriaTotal
-  const next = isTasks ? row.nextTask : row.nextCriterion
-  const text = chapter ?? next
-  const body: Body = text === null ? { kind: 'title', title: row.title } : stepOf(text)
-
-  // The right group's forms, longest first: a state label that stands
-  // alone, or the counts. The bar comes before the counts while the row is
-  // in its task or criterion loop: no chapter, or a chapter with a
-  // positional label.
-  let forms: Span[][]
-  if (checked === null || total === null) {
-    forms = [[{ text: 'no milestone file', color: 'warning' }], [{ text: 'no file', color: 'warning' }]]
-  } else if (total === 0) {
-    forms = [[{ text: `no ${phase.noun}`, color: GRAY }]]
-  } else if (next === null) {
-    forms = [[{ text: `all ${total} ${phase.noun} checked`, color: GRAY }], [{ text: `${total}/${total} checked`, color: GRAY }]]
-  } else {
-    const counts: Span[] = [{ text: `${checked}/${total} ${phase.noun}`, color: GRAY }]
-    const bare: Span[] = [{ text: `${checked}/${total}`, color: GRAY }]
-    const inLoop = chapter === null || POSITIONAL.test(chapter)
-    forms = inLoop ? [[...bar(checked, total, phase.fill), { text: '  ' }, ...counts], counts, bare] : [counts, bare]
+// One milestone's row: the track and its percent, or a warning label when
+// its counts cannot be read. The track keeps its least width even where
+// that leaves the title less than its room.
+export function bandLines(row: BandRow, columns: number, close = 0): BandLine[] {
+  const line = { key: `${row.id}-row`, id: row.id, title: row.title }
+  const flow = flowOf(row)
+  if (flow === null) {
+    const long: Span[] = [{ text: 'no milestone file', color: 'warning' }]
+    const short: Span[] = [{ text: 'no file', color: 'warning' }]
+    return [{ ...line, tail: room(columns, close, line, long) >= 0 ? long : short }]
   }
-
-  const head: Span[] = [
-    skill === null ? { text: phase.label, color: phase.color } : { text: SKILL_LABELS[skill], color: skillColor(skill) },
-    { text: ' ' },
-    { text: row.id, color: GRAY, bold: true },
-    { text: ' ' },
-  ]
-  // On the desktop, a row with readable counts tries the track and its
-  // percent first, under any skill label and any chapter (M204).
-  const width = headWidth(head, body)
-  const need = textNeed(body)
-  const flow = desktop ? flowOf(row) : null
-  if (flow !== null) {
-    const withTrack: Span[] = [gap(), { text: `${flow.percent}%`, color: GRAY }]
-    if (trackFits(columns, close, width, need, withTrack)) {
-      return [{ key: `${row.id}-row`, head, body, tail: withTrack, track: flow }]
-    }
-  }
-  const tail = fit(columns, close, width, need, forms)
-  return [{ key: `${row.id}-row`, head, body, tail }]
+  const tail: Span[] = [SPACE, { text: `${flow.percent}%`, color: GRAY }]
+  return [{ ...line, tail, track: { flow, columns: trackColumns(room(columns, close, line, tail)) } }]
 }
 
 // A line's text with the two groups GAP spaces apart (the least gap a row
-// draws; a wide row spreads them further), for the tests. A skill row has
-// no right group, so its text ends at its body.
+// draws; a wide row spreads them further), for the tests. The track draws
+// as `[track N]`, N its columns.
 export function lineText(line: BandLine): string {
   const text = (spans: Span[]) => spans.map(s => s.text).join('')
-  const body =
-    line.body === null ? '' : line.body.kind === 'title' ? line.body.title : `${ARROW}${line.body.label ?? ''}${line.body.rest}`
-  return `${text(line.head)}${body}${' '.repeat(GAP)}${text(line.tail)}`.trimEnd()
+  const track = line.track === undefined ? '' : `[track ${line.track.columns}]`
+  return `${line.id} ${line.title}${' '.repeat(GAP)}${track}${text(line.tail)}`.trimEnd()
 }

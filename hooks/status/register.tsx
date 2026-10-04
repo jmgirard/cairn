@@ -3,29 +3,30 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { ARROW, cairnSkill, GAP, GRAY, knownStep, mark, same, stepLines, width } from './band'
+import { cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { NO_ROADMAP, paneLines } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { loadCairn, NO_PANE } from './reader'
-import { TRACK_H, TRACK_PX, trackSvg } from './track'
+import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
-// The milestone band above the prompt (M191, M193 to M201): one row for one
-// `in-progress` or `review` ROADMAP row, refreshed when the session starts,
-// at the end of each turn, when a cairn skill's prompt is expanded, at each
-// chapter the session marks, and when a step ends. A running cairn skill
-// shows its label and the last chapter on that row, or on a skill row when
-// no milestone is active. With neither, an idle row names the next workable
-// planned milestone (band.ts picks the row). On the desktop, a row with
-// room draws the flow track as an `Svg` (track.ts, M204). A skill's step
+// The milestone band above the prompt (M191, M193 to M201, M206): one row
+// for one `in-progress` or `review` ROADMAP row, refreshed when the session
+// starts, at the end of each turn, when a cairn skill's prompt is expanded,
+// and when a step ends. The row is the bold id and the title, then the flow
+// track and its percent (band.ts picks the row and its widths). With no
+// active milestone, an idle row names the next workable planned milestone.
+// The track draws as an `Svg` on the desktop and as braille cells in the
+// terminal (track.ts). The running cairn skill draws nothing of its own:
+// /milestone-review picks the row it shows. A skill's step
 // ends at the first main-loop Stop with no background work in flight that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,
-// Stop, or turn end, as a typed cairn slash command's is. So the label holds while the skill waits on background work and
+// Stop, or turn end, as a typed cairn slash command's is. So the step holds while the skill waits on background work and
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,
-// or order, the running skill, or the idle row's id change, or the session
-// ends (M200). A found ROADMAP that cannot be read keeps the rows, and the
+// or order, the row /milestone-review moves the band to, or the idle row's
+// id change, or the session ends (M200, M206). A found ROADMAP that cannot be read keeps the rows, and the
 // close state is compared against them and the current step.
 //
 // The cairn pane (M205) opens from the `/cairn-pane` command, which also
@@ -40,18 +41,19 @@ const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workabl
   shape: 'band-3',
 })
 
-// The active ids and statuses, in ROADMAP order, the running skill, and the
-// idle row's id, at the last press of the close button; null while the band
-// shows.
+// The active ids and statuses, in ROADMAP order, `milestone-review` while
+// it moves the band to another row, and the idle row's id while no row is
+// active, at the last press of the close button; null while the band shows.
+// The tag moved to 4 when the skill's meaning changed (M206 review).
 const dismissed = atom({ plugin: 'cairn', key: 'dismissed' } as const, null as CairnBandHidden | null, {
-  shape: 'dismissed-3',
+  shape: 'dismissed-4',
 })
 
-// The running cairn skill and the last chapter marked since its prompt was
-// expanded, until a main-loop Stop with nothing in flight or an idle typed
-// prompt ends it (the `classic.Stop` and `prompt.submit` hooks). A typed
-// prompt that finds `expanded` set keeps it; null while no cairn skill runs.
-const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-1' })
+// The running cairn skill, until a main-loop Stop with nothing in flight or
+// an idle typed prompt ends it (the `classic.Stop` and `prompt.submit`
+// hooks). A typed prompt that finds `expanded` set keeps it; null while no
+// cairn skill runs. The chapter it once held went in M206.
+const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep | null, { shape: 'step-2' })
 
 // True from a cairn skill's prompt until the next prompt, Stop, turn end, or
 // session end.
@@ -67,10 +69,6 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 const PANE = 'cairn'
 const PANE_TITLE = 'cairn'
 const PANE_COMMAND = 'cairn-pane'
-
-// The desktop app's chapter tool. In a session without it, such as one in
-// the terminal, the chapter stays null.
-const CHAPTER_TOOL = 'mcp__ccd_session__mark_chapter'
 
 // The close button's label. The desktop app draws a dismiss Button in the
 // band as its label text, so a long label reads as text there. On the
@@ -201,31 +199,28 @@ export const register: Register = on => {
     return next(e)
   })
 
-  // A cairn skill's prompt starts its step with no chapter, the same skill
-  // run again included. The event carries no agent id, so a subagent that
-  // loads a cairn skill starts a step too. The text passes through as is.
+  // A cairn skill's prompt starts its step, the same skill run again
+  // included. The event carries no agent id, so a subagent that loads a
+  // cairn skill starts a step too. The text passes through as is.
   on('skill.prompt', async ($, e, next) => {
     const result = await next(e)
     const skill = cairnSkill(e.skill)
     if (skill !== null) {
-      await update($, step, () => ({ skill, chapter: null }))
+      await update($, step, () => ({ skill }))
       await update($, expanded, () => true)
       await refresh($)
     }
     return result
   })
 
-  // A chapter the main loop marks becomes the step's chapter once the call
-  // went through, while a cairn skill runs, and the tracking files are read
-  // again. An empty title sets no chapter.
-  on('tool.call', { tool: CHAPTER_TOOL }, async ($, e, next) => {
-    const result = await next(e)
-    if (e.agentId !== undefined || result?.deny !== undefined || result?.isError === true) return result
-    const title = typeof e.title === 'string' && e.title !== '' ? e.title : null
-    if (title !== null) await update($, step, current => (current === null ? null : { ...current, chapter: title }))
-    await refresh($)
-    return result
-  })
+  // A file the session writes under a `cairn/` directory, such as a
+  // milestone file whose box was just checked, reads the files again, so the
+  // track moves inside a long turn (M206 review: the chapter hook, which
+  // M206 removed, had done this at each chapter). The tool's own call goes
+  // through first, and a refused or failed call reads nothing.
+  on('tool.call', { tool: 'Edit' }, afterWrite)
+  on('tool.call', { tool: 'Write' }, afterWrite)
+  on('tool.call', { tool: 'MultiEdit' }, afterWrite)
 
   // Every session end, a `/clear` or a resume among them, ends the step and
   // shows a band that a press hid, whatever its reason (M200).
@@ -242,62 +237,58 @@ export const register: Register = on => {
     const state = await read($, band)
     const { rows, workable } = state
     const current = knownStep(await read($, step))
-    if (rows.length === 0 && current === null && workable.length === 0) return next(e)
+    if (rows.length === 0 && workable.length === 0) return next(e)
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
     const { Box, Button, Text } = $.ui.resolve(e)
-    // The track draws on the desktop alone, as its `Svg` element (M204).
-    // There the row centers its parts, since the track is taller than text.
-    const Svg = e.surface === 'desktop' ? $.ui.resolve(e).Svg : undefined
+    // The track draws as the `Svg` element on every surface whose table has
+    // one, the desktop app's among them (M204), and as braille cells in the
+    // terminal (M206). With the image, the row centers its parts, since the
+    // track is taller than text.
+    const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
     // A row drawn from a found ROADMAP carries the pane's open button (M205).
     const canOpen = (await read($, pane)).found
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
-    const lines = stepLines(rows, current, e.props.bodyColumns, close, workable, Svg !== undefined)
+    const lines = stepLines(rows, current, e.props.bodyColumns, close, workable)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
           {span.text}
         </Text>
       ))
+    const track = (line: BandLine) => {
+      if (line.track === undefined) return null
+      if (Svg === undefined) return spans(brailleSpans(line.track.flow, line.track.columns))
+      const px = Math.min(TRACK_PX, line.track.columns * PX_PER_COLUMN)
+      return <Svg source={trackSvg(line.track.flow, px)} alt={line.track.flow.alt} width={px} height={TRACK_H} />
+    }
 
-    // Two groups: the phase, id, and text on the left, which give way first,
-    // and the bar and counts or the state label on the right, which keep
-    // their width. The engine cuts the text to the room that is left.
-    // A shrinking Box also takes `minWidth: 0`, and the short parts sit in a
-    // Box that never shrinks. Without both, the desktop app drew a long text
-    // at full width past the edge with no `…`, and the arrow and label
-    // beside it shrank to nothing. A step's arrow, its positional label, and
-    // the text draw in the theme's gray with no dimColor, the label bold.
+    // Two groups: the bold id and the title on the left, where the title
+    // gives way first, and the track and the tail on the right, which keep
+    // their width. The engine cuts the title to the room that is left.
+    // A shrinking Box also takes `minWidth: 0`, and the id sits in a Box
+    // that never shrinks. Without both, the desktop app drew a long text at
+    // full width past the edge with no `…`, and the short parts beside it
+    // shrank to nothing (M194).
     const row = (line: BandLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between" {...center}>
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
           <Box key={`${line.key}-head`} flexShrink={0}>
-            {spans(line.head)}
-            {line.body?.kind === 'step' ? (
-              <Text wrap="truncate-end" color={GRAY}>
-                {ARROW}
-              </Text>
-            ) : null}
-            {line.body?.kind === 'step' && line.body.label !== null ? (
-              <Text wrap="truncate-end" color={GRAY} bold>
-                {line.body.label}
-              </Text>
-            ) : null}
+            <Text wrap="truncate-end" color={GRAY} bold>
+              {line.id}
+            </Text>
+            <Text wrap="truncate-end">{' '}</Text>
           </Box>
-          {line.body === null ? null : (
-            <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
-              <Text wrap="truncate-end" color={GRAY}>
-                {line.body.kind === 'title' ? line.body.title : line.body.rest}
-              </Text>
-            </Box>
-          )}
+          <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
+            <Text wrap="truncate-end" color={GRAY}>
+              {line.title}
+            </Text>
+          </Box>
         </Box>
         <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP} {...center}>
-          {line.track !== undefined && Svg !== undefined ? (
-            <Svg source={trackSvg(line.track)} alt={line.track.alt} width={TRACK_PX} height={TRACK_H} />
-          ) : null}
+          {track(line)}
           {spans(line.tail)}
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
@@ -336,6 +327,15 @@ export const register: Register = on => {
       </Box>
     )
   })
+}
+
+// After an Edit, Write, or MultiEdit call that went through, a path under a
+// `cairn/` directory reads the files again.
+async function afterWrite($, e, next) {
+  const result = await next(e)
+  if (result?.deny !== undefined || result?.isError === true) return result
+  if (typeof e.file_path === 'string' && /(^|[\\/])cairn[\\/]/.test(e.file_path)) await refresh($)
+  return result
 }
 
 // The press reads the rows and the step as they are now, not as they were
@@ -378,8 +378,9 @@ async function reconcile($) {
 
 // A span's style props, leaving out the ones it does not set.
 function style(span: Span) {
-  const props: { color?: string; bold?: boolean } = {}
+  const props: { color?: string; backgroundColor?: string; bold?: boolean } = {}
   if (span.color !== undefined) props.color = span.color
+  if (span.backgroundColor !== undefined) props.backgroundColor = span.backgroundColor
   if (span.bold) props.bold = true
   return props
 }
