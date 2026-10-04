@@ -196,13 +196,18 @@ AMENDMENT_FIXTURE = normalize("""\
    re-review, the amendment the only work convened; status is set to
    `in-progress` for that amendment alone, and review invokes
    `/milestone-implement <id>` through the Skill tool for it. Its
-   work-log line carries a fixed
-   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
-   these lines are counted per milestone on their own track: never reset by
-   a re-cut, and never added to the defect-return count (D-097 narrows
-   D-064). A second amendment return naming the same AC<N> on one milestone
-   stops (the repeated review-failure stop of the rulebook's list): no
-   further round is convened, and the disposition goes to the user.
+   work-log line carries a fixed shape — `amendment routed: AC<N> —
+   <finding>` — which no count reads. The amendment that executes it writes
+   the counted line, `amendment return: AC<N> — "<amended clause,
+   verbatim>"` (`/milestone-implement` step 6, its one writer), so one
+   return counts once. These lines are counted per milestone on their own
+   track: never reset by a re-cut, and never added to the defect-return
+   count (D-097 narrows D-064). A second amendment return naming the same
+   AC<N> on one milestone stops (the repeated review-failure stop of the
+   rulebook's list): before routing, review reads the work log, and an
+   `amendment return: AC<N>` line already there for that criterion means
+   this return is the second. No further round is convened, and the
+   disposition goes to the user.
 """.lower())
 
 WIDENING_FIXTURE = normalize("""\
@@ -213,9 +218,10 @@ WIDENING_FIXTURE = normalize("""\
    than decided by a procedure over that domain. That discriminator is
    `/milestone-plan` step 4's, and the repair such a return takes is the one
    step 4 states; read it there rather than here. A return reclassified this
-   way carries the fixed work-log shape above, counts on the amendment-return
-   track under its second-occurrence stop, and never increments the
-   defect-return count the thrash rule reads.
+   way is routed with the `amendment routed:` line above, its amendment's
+   `amendment return:` line counts on the amendment-return track under its
+   second-occurrence stop, and it never increments the defect-return count
+   the thrash rule reads.
 """.lower())
 
 IMPLEMENT_M139_FIXTURE = normalize("""\
@@ -615,38 +621,51 @@ class TestReturnFloor(unittest.TestCase):
 
     def test_implement_step_6_writes_the_amendment_return_shape(self):
         # M130 review D6: the fixed shape was stated only in the skill that
-        # never writes it; the producing skill now names it too.
+        # never writes it; the producing skill now names it too. M211: it is
+        # the one writer, so one return counts once.
         t = implement()
         self.assertRegex(
             t,
             r"amendment executing an amendment return from `/milestone-review` "
-            r"writes\s+its work-log line in that skill's fixed shape",
+            r"writes\s+its work-log line in the fixed shape",
         )
         self.assertIn(
             '`amendment return: ac<n> — "<amended clause, verbatim>"`', t
+        )
+        self.assertRegex(
+            t,
+            r"this\s+step is its one writer: review's exit writes "
+            r"`amendment routed:`, which\s+no count reads",
         )
 
     def test_amendment_return_work_log_line_has_a_fixed_shape(self):
         # The fixed shape is what makes the second-occurrence stop decidable
         # from the work log: the positional id names "the same criterion" and
-        # the verbatim clause survives renumbering (M130 plan audit).
+        # the verbatim clause survives renumbering (M130 plan audit). M211:
+        # review writes the uncounted `amendment routed:` line, and names
+        # implement as the writer of the counted one.
+        t = review()
         self.assertRegex(
-            review(),
-            r'`amendment return: ac<n> — "<amended clause, verbatim>"`',
+            t, r"`amendment routed: ac<n> —\s+<finding>` — which no count reads"
+        )
+        self.assertRegex(
+            t,
+            r'`amendment return: ac<n> — "<amended clause,\s+verbatim>"` '
+            r"\(`/milestone-implement` step 6, its one writer\)",
         )
 
     def test_amendment_returns_count_on_their_own_track(self):
         self.assertRegex(
             review(),
-            r"counted per milestone on their own track: never reset by\s+a "
-            r"re-cut, and never added to the defect-return count",
+            r"counted per milestone on their own\s+track: never reset by a "
+            r"re-cut, and never added to the defect-return\s+count",
         )
 
     def test_second_amendment_return_on_the_same_id_stops(self):
         self.assertRegex(
             review(),
-            r"a second amendment return naming the same ac<n> on one "
-            r"milestone\s+stops",
+            r"a second amendment return naming the same\s+ac<n> on one "
+            r"milestone stops",
         )
 
 

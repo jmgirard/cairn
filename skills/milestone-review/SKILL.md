@@ -364,13 +364,18 @@ re-enters here, at the step the record shows is next:
    re-review, the amendment the only work convened; status is set to
    `in-progress` for that amendment alone, and review invokes
    `/milestone-implement <id>` through the Skill tool for it. Its
-   work-log line carries a fixed
-   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
-   these lines are counted per milestone on their own track: never reset by
-   a re-cut, and never added to the defect-return count (D-097 narrows
-   D-064). A second amendment return naming the same AC<N> on one milestone
-   stops (the repeated review-failure stop of the rulebook's list): no
-   further round is convened, and the disposition goes to the user.
+   work-log line carries a fixed shape — `amendment routed: AC<N> —
+   <finding>` — which no count reads. The amendment that executes it writes
+   the counted line, `amendment return: AC<N> — "<amended clause,
+   verbatim>"` (`/milestone-implement` step 6, its one writer), so one
+   return counts once. These lines are counted per milestone on their own
+   track: never reset by a re-cut, and never added to the defect-return
+   count (D-097 narrows D-064). A second amendment return naming the same
+   AC<N> on one milestone stops (the repeated review-failure stop of the
+   rulebook's list): before routing, review reads the work log, and an
+   `amendment return: AC<N>` line already there for that criterion means
+   this return is the second. No further round is convened, and the
+   disposition goes to the user.
 
    **Widening test (M139).** A finding demonstrating an acceptance criterion
    failing *inside* the domain its promise quantifies over is an amendment
@@ -379,9 +384,10 @@ re-enters here, at the step the record shows is next:
    than decided by a procedure over that domain. That discriminator is
    `/milestone-plan` step 4's, and the repair such a return takes is the one
    step 4 states; read it there rather than here. A return reclassified this
-   way carries the fixed work-log shape above, counts on the amendment-return
-   track under its second-occurrence stop, and never increments the
-   defect-return count the thrash rule reads.
+   way is routed with the `amendment routed:` line above, its amendment's
+   `amendment return:` line counts on the amendment-return track under its
+   second-occurrence stop, and it never increments the defect-return count
+   the thrash rule reads.
 
 6. Checkpoint commit on the branch — the pre-merge-question checkpoint;
    fix-now work step 5 settles lands after it and is committed before the

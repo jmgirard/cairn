@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M211: Run edge cases in the skills
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the skills' conduct is what the plugin delivers to adopters   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m211-run-edges   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -82,7 +82,7 @@ row is pruned at post-merge hygiene.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: One writer for `amendment return:`. The review exit
+- [x] T1: One writer for `amendment return:`. The review exit
       (`skills/milestone-review/SKILL.md:366-372`) writes
       `amendment routed: AC<N> — <finding>` instead. Implement step 6
       (`skills/milestone-implement/SKILL.md:193-196`) stays the writer. Check
@@ -110,6 +110,9 @@ row is pruned at post-merge hygiene.
 - 2026-10-04: criteria audit (full): a fresh Opus reader returned 4 findings on M211 (AC1's re-seed clause, AC2's "the" flagged release, AC3's grep-as-promise and missed test pins, AC4's undefined grouping and the module's one spare line), each fixed toward the narrower wording above.
 - 2026-10-04: plan gate chose linked-row groups over filing unfixed findings in DESIGN.md Known issues, because Known issues would move the growth and drop the promotion triggers; falsified by an audit where findings from two milestones sit in rows that never quote each other's titles.
 - 2026-10-04: plan chose `/milestone-implement` as the one writer of `amendment return:` over review, because only the amendment knows the amended clause verbatim; falsified by a return whose amendment never runs yet must count toward the stop.
+- 2026-10-04: implement started on branch m211-run-edges, cut from main in sync with origin. The untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
+- 2026-10-04: the simple-english lint hook counts every existing hit in each edited file (353 in the review skill, 120 in the implement skill). Rewriting the skills to that style is outside M211's scope and would break the prose pins, so only the edited text changes.
+- 2026-10-04: T1 done. Review's exit writes `amendment routed: AC<N> — <finding>` and reads the work log for a prior `amendment return: AC<N>` before it routes. Implement step 6 names itself the one writer. The step-7 count and the thrash rule read `amendment return:` only (unchanged). Pins updated in `test_thrash_rule.py` (2 fixtures, 4 tests) and `test_mutation_harness.py` (5 entries). skills/tests is back to the baseline 4 reds and 1 error. Verify is clean: 397 and 174 OK, validate passes, plugin test 1024 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
