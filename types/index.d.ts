@@ -39,6 +39,32 @@ export type CairnBandHidden = { marks: CairnBandMark[]; skill: string | null; id
 // types while the session is idle, ends it (M201).
 export type CairnStep = { skill: string; chapter: string | null }
 
+// One checkbox item of a milestone file's Tasks or Acceptance criteria,
+// less its box, with a wrapped item's lines joined (M205).
+export type CairnPaneItem = { text: string; checked: boolean }
+
+// One active milestone as the cairn pane shows it. `file` is null when the
+// milestone file is missing or its read fails; `log` holds the newest five
+// work-log lines, less their `- `.
+export type CairnPaneMilestone = {
+  id: string
+  title: string
+  status: string
+  file: { goal: string; tasks: CairnPaneItem[]; criteria: CairnPaneItem[]; log: string[] } | null
+}
+
+// What the cairn pane shows (M205): `found` is false when no ROADMAP is
+// found. `next` is `recommend` in scripts/cairn_next.py, its `id` null for
+// planning, and `waiting` is its `waiting`, each row's undone dependencies
+// as written with their status.
+export type CairnPaneState = {
+  found: boolean
+  milestones: CairnPaneMilestone[]
+  next: { action: string; command: string; id: string | null } | null
+  workable: CairnWorkableRow[]
+  waiting: { id: string; title: string; unmet: string[] }[]
+}
+
 declare module 'claude-code' {
   interface PluginState {
     // Each value is kept under a shape tag (register.tsx), so a value an
@@ -52,6 +78,8 @@ declare module 'claude-code' {
       // True from a cairn skill's prompt until the next prompt, Stop, turn
       // end, or session end (M201).
       expanded: Shaped<boolean>
+      // What the cairn pane shows, written at each refresh (M205).
+      pane: Shaped<CairnPaneState>
     }
   }
 }

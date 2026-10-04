@@ -68,15 +68,15 @@ pane, desktop pane support goes to a new candidate row (AC6).
       keys to `gen_fixtures.py` and the `expected.json` files. Add the four
       new fixture shapes that AC2 and AC3 name, and extend
       `test_status_fixtures.py`.
-- [ ] T3: `register.tsx`. Register the command at `session.start`. Serve it
+- [x] T3: `register.tsx`. Register the command at `session.start`. Serve it
       with a `command.run` hook that opens or closes the pane. Add the open
       button to the band rows that a found ROADMAP draws. Keep the pane's
       data in the state that each refresh writes. Change the band tests that
       assert one Button to the `cairn-open` and `cairn-close` keys.
-- [ ] T4: Write a `pane.ts` layout module that turns the state into the
+- [x] T4: Write a `pane.ts` layout module that turns the state into the
       pane's lines for a given width. Add a `ui.render` hook for
       `{ component: "Pane" }` that draws them on both surfaces.
-- [ ] T5: Write the `claude plugin test` cases for AC1 to AC5 in a new
+- [x] T5: Write the `claude plugin test` cases for AC1 to AC5 in a new
       `hooks/status/pane.test.tsx`.
 - [ ] T6: Live look. First, prototype two or three pane looks in the browser
       pane (LESSONS M204). Then ask the operator to open the chosen look in a
@@ -100,3 +100,5 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: T1 runs as a throwaway `pane-probe` mod in this session's hot-reload folder (`~/.claude/dev-mods/<session>/pane-probe`), not on the branch, so no probe code reaches the PR. It opens a pane at load and through `/pane-probe`, and logs `isPlaced` and the render props to `.git/pane-probe.log`. `claude plugin validate` passed on 2.1.286.
 - 2026-10-04: T1 done. The operator enabled hot reload, and the desktop app placed the probe pane on the right. The log reads `isPlaced: true`, then `surface=desktop placement=dock bodyColumns=44`. The first arm of AC6 applies. The operator saw the band in its text form beside the docked pane. The likely cause is the narrower transcript column, below the width the M204 track needs. A probe log of the band's width will confirm it.
 - 2026-10-04: T2 done. `cairn_next.py` gains `recommend` and `waiting`, and `render()` prints the same text as main on this repo and all 18 old fixtures. `reader.ts` gains `loadCairn`, which reads the band and pane state in one pass, and `loadBand` wraps it. Two fixtures were added: `pane-full` (long log, wrapped items, a goal of two paragraphs, an unreadable file, waiting rows) and `all-waiting`. The `next` key also carries `waiting`, and the workable ids stay in the existing `workable` key. Choice: the pane drops HTML comments from a section before it reads items, so a box inside a comment is not an item. The band and the validator still count it (`pane-full` M080 has 3 criteria in the band and 2 in the pane). Gates: scripts/tests 395 OK, hooks/tests OK, plugin validate passed, plugin test 1042 pass.
+- 2026-10-04: T2 plants, each restored: `LOG_LINES` 6 and dropping the wrap join each failed the `pane-full` reader case, and `recommend` skipping review rows failed the Python fixture test on 4 fixtures.
+- 2026-10-04: T3 to T5 done. New `hooks/status/pane.ts` (layout), a `pane` state atom (shape `pane-1`) written at each refresh, `/cairn-pane` registered after the session-start refresh in a try, so a refused registration leaves the band drawn. The open button is the glyph `≡` and one space, 2 columns, on the first row when a ROADMAP is found. It moves every band width threshold by 2: the band tests' worked sums now add `buttons 5`, and their one-Button checks name `cairn-open` and `cairn-close`. New `hooks/status/pane.test.tsx` holds 88 cases for AC1 to AC5. Gates: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1130 pass.
