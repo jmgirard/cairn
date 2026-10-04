@@ -71,6 +71,7 @@ Make the band's row the milestone id and title on the left and the flow track on
 - 2026-10-04: T8 live look: the operator accepted the desktop row at full width, the narrow track beside a docked pane, and the terminal braille row in a new session.
 - 2026-10-04: claim audit: 140 claims read, 5 corrected — README.md, hooks/status/band.ts, hooks/status/track.ts, hooks/status/band.test.tsx (plus one stale register.tsx comment it noted); the same reader re-read all six as correct.
 - 2026-10-04: implement done, status review. All four verify gates green (847 mod tests).
+- 2026-10-04: step-7 approval: m206-simpler-band approved for merge
 
 ## Decisions
 
