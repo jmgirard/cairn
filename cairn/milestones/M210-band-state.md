@@ -158,3 +158,36 @@ Evidence from one fresh run on head 9ca56cb, 2026-10-04 (`claude plugin test .`:
 - AC5: the "(M210 AC5)" block passes 5 of 5, each on both surfaces: one-shot and one-shot with recurring keep the step, and recurring, empty, and absent end it. A closing empty Stop ends the step in every case.
 - AC6: the "(M210 AC6)" block passes 2 of 2 (`composer`, `bridge`), each on both surfaces. A dropped idle prompt keeps the review row, and the same prompt entering ends it. The M201 test "a typed cairn slash command's own skill prompt sets the new step" passes, so the step still ends before a skill prompt of the turn sets a new one.
 - AC7: `verify.sh` over the four slot commands: scripts 397 OK (21 skipped), hooks 174 OK, `claude plugin validate` passed with warnings (exit 0), `claude plugin test .` 1023 pass. Each exit code is 0 and was checked.
+
+Consistency gate: `cairn_validate.py` passed with no FAIL and no WARN (exit 0). No principle was changed, so `cairn_impact` did not run. The generic profile's consistency-gate slot names no toolchain checks.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: a dropped idle prompt shows a band hidden while /milestone-review moved it, because the refresh before `next` clears `dismissed` and the drop put back only the step — fix now, fixed 6c41ad5 (the drop also puts back the close state; new test "a dropped prompt keeps a band hidden while /milestone-review runs", red before the fix).
+- diff-bug #2: a `/loop` with no interval schedules one-shot wakeups, so the README's `/loop` example of a recurring task was wrong — fix now, fixed 6c41ad5 (README names a fixed-interval `/loop` and says a self-paced one keeps a finished skill).
+- diff-bug #3: a found but empty ROADMAP with no stored rows writes `NO_PANE`, so `/cairn-pane` says `no cairn ROADMAP found` — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #4: the first failed refresh after a hot reload from pre-M210 code empties a valid pane once — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #5: the failed-read path read `band.root` and then wrote, so an overlapping good read could be overwritten — fix now, fixed 6c41ad5 (`$.state.get` and an `ifVersion` set, read again on a miss, and keeping writes nothing).
+- diff-bug #6: `reconcile` could write `dismissed` back unchanged when a press landed between its read and its `update` — fix now, fixed 6c41ad5 (`$.state.get` and an `ifVersion` clear, read again on a miss).
+- diff-bug #7: a press that loses the version race does nothing and says nothing — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #8: a press drawn before a session end and pressed after it hides the band in the new session — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #9: the stored root is compared as an exact string, so a trailing separator or a case change empties the band on a failed read — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #10: `dirname` treats any `//a/b` head, and `\\?\UNC\srv` before the share, as a share root — follow-up, "Band state follow-ons (M210 review)".
+- diff-bug #11: the band contract now carries the repo's absolute path to every plugin — reject, false: any plugin already reads it through `$.session.cwd()`, so no new value is exposed.
+- diff-bug #12: a ROADMAP deleted and recreated reads as no ROADMAP found, and the CHANGELOG's "write caught half done" implied more than the empty-text rule covers — fix now for the CHANGELOG wording, fixed 6c41ad5; the deleted-file gap predates M210 and is a follow-up, "Band state follow-ons (M210 review)".
+- blame-history #1: the same dropped-prompt hide as diff-bug #1 — fix now, fixed 6c41ad5.
+- blame-history #2: a transient `$.session.cwd()` throw now blanks the band and clears a hide — reject, planned change: AC3 asks for exactly this.
+- blame-history #3: an emptied ROADMAP keeps old rows in the same root, where the Python reader reads it as empty — reject, planned change: AC2 asks for it, and the `loadBand` comment records the divergence.
+- blame-history #4: the older Unreleased CHANGELOG band entry says a wakeup loses the label, a dropped prompt ends it, and an unreadable ROADMAP keeps the row with no root qualifier — fix now, fixed 6c41ad5.
+- blame-history #5: the README's first statement of the step rule did not mention a pending wakeup — fix now, fixed 6c41ad5.
+- blame-history #6: a one-shot wakeup that the skill did not create keeps a finished skill's step — reject, planned change: Scope Out names it, and it stays in "Status mod follow-ons".
+- blame-history #7: the `DISMISSED_REF` const might break validate's literal-reference rule — reject, false: `claude plugin validate` and `claude plugin test` both pass on the head.
+- prior-review #1: the same CHANGELOG overclaim as diff-bug #12 — fix now, fixed 6c41ad5.
+- prior-review #2: no live look at a real `session_crons` payload or a real `drop` — reject, planned change: the question set chose tests only.
+- prior-review #3: the same silent losing press as diff-bug #7 — follow-up, "Band state follow-ons (M210 review)".
+- prior-review #4: the "Pane follow-ons (M205 review)" row's "after a move the pane keeps the old repo" item is now fixed, and "Status mod follow-ons" still says a cron wait loses the step — fix now at post-merge hygiene, which trims both rows.
+- prior-review #5: ragged line wraps in the new comments and prose — reject, style.
+- prior-review #6: `band` and `pane` are still written at every good refresh — follow-up, already held by "Pane follow-ons (M205 review)" ("`refresh` writes band and pane in two updates") and by M200's items, so no new text.
+- prior-review #7: a `next(e)` that rejects leaves the step cleared — follow-up, "Band state follow-ons (M210 review)"; the clear before `next` predates M210.
+
+After the fixes, `verify.sh` on 6c41ad5: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1024 pass, each exit code 0.
