@@ -93,6 +93,7 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - 2026-10-04: T3 done: the method is deleted. A grep of skills, scripts, and hooks finds no other reference to it, and the file's other tests stay.
 - 2026-10-04: T4 done: skills/tests ran 665 tests, OK. scripts/tests 397 OK (21 skipped), hooks/tests 174 OK, plugin validate exit 0, plugin test 1105 tests exit 0. The branch diff shows one removed `def test_` line.
 - 2026-10-04: claim audit: not owed — internal tier
+- 2026-10-04: step-7 approval: m214-prose-guard-reds approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
