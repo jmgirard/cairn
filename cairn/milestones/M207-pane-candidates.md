@@ -58,6 +58,7 @@ When no milestone is active, show the ROADMAP's candidate rows in the cairn pane
 - 2026-10-04: T3 done: README's pane section, the DESIGN pane paragraph, a CHANGELOG entry, and the `reader.ts` and `pane.ts` header comments describe the Candidates section. A `git grep` for `pane-1` outside the archive finds nothing. Verify: 397, 174, and 953 tests pass, and validate exits 0.
 - 2026-10-04: claim audit: 41 claims read, 2 corrected — scripts/tests/test_status_fixtures.py
 - 2026-10-04: implement done, status `review`. The two corrections were docstrings: the count agreement holds only where no HTML comment sits in the section, and the Python reader takes flush-left rows only. The scripts suite passes after them (397 tests).
+- 2026-10-04: step-7 approval: m207-pane-candidates approved for merge
 
 ## Decisions
 
