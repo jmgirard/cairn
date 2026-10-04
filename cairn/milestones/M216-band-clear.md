@@ -39,33 +39,33 @@ review)".
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: A main-loop Stop that ends a cairn skill's step makes the
+- [x] AC1: A main-loop Stop that ends a cairn skill's step makes the
       band's first row draw a `Clear` Button (key `cairn-clear`) before
       the next-step Button. It draws only where the row draws the
       next-step and `Status` Buttons and has room for all three (AC4).
       `band.test.tsx` cases show it present after such a Stop. They show
       it absent, with the other two present, in a session where no cairn
       skill ran and in a session whose step an idle typed prompt ended.
-- [ ] AC2: The `Clear` Button is gone after a prompt that the operator
+- [x] AC2: The `Clear` Button is gone after a prompt that the operator
       types while the session is idle and that no hook beneath drops, and
       after the session ends. No `cairn-clear` draws while a cairn skill's
       step is set. One `band.test.tsx` case per clause shows it.
-- [ ] AC3: A press of `Clear` calls `$.command.run` with command `clear`
+- [x] AC3: A press of `Clear` calls `$.command.run` with command `clear`
       and empty args. A press while another action Button's run is in
       flight calls nothing. If the run rejects, the press appends `/clear`
       to the prompt box and shows a toast that names it. `band.test.tsx`
       cases cover the run, the in-flight press, and the rejection.
-- [ ] AC4: The row counts `Clear`'s columns (its label, 4 chrome columns,
+- [x] AC4: The row counts `Clear`'s columns (its label, 4 chrome columns,
       and one space) when it decides whether the action Buttons fit. Where
       all three do not fit but the next-step and `Status` Buttons do, it
       draws those two as in M212. `band.test.tsx` cases on a milestone-row
       fixture, on the terminal and the desktop surface, show the widest
       width that drops `Clear` and one column wider, which draws it.
-- [ ] AC5: In a new desktop Code session in a real cairn repo, after a
+- [x] AC5: In a new desktop Code session in a real cairn repo, after a
       cairn skill ends, the operator sees the `Clear` Button. A press
       either clears the conversation, or puts `/clear` in the prompt box
       and shows the toast.
-- [ ] AC6: README.md's "The milestone band" section, the `hooks/status/`
+- [x] AC6: README.md's "The milestone band" section, the `hooks/status/`
       lines of `cairn/DESIGN.md`, and CHANGELOG.md's `## Unreleased`
       section describe the `Clear` Button. The five verify commands in
       `cairn/PROFILE.md` exit 0 at the branch head.
@@ -136,3 +136,14 @@ review)".
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Review head: d81ee7c (main's hygiene stamp 9ee1ad5 merged in, a ROADMAP-only change). Mod tests 1131 pass, 0 fail.
+
+- AC1: `claude plugin test .` exit 0. "a Clear Button shows after a cairn skill ends (M216 AC1)": 8 pass, 0 fail, both surfaces. The cases show Clear present after an ending Stop, ordered before `cairn-next`, and absent with next and status present in a no-skill session and after an idle typed prompt ended the step.
+- AC2: same run. "the Clear Button goes at an idle typed prompt, a session end, or a running skill (M216 AC2)": 8 pass, 0 fail. The cases cover an idle composer and bridge prompt that enters (gone) and one a hook drops (kept), a session end (gone), and no `cairn-clear` while a skill's step is set.
+- AC3: same run. "a press of Clear runs /clear (M216 AC3)": 8 pass, 0 fail. The cases show a press reaching beneath as `{ command: 'clear', args: '' }`, a press during a held run reaching no second run, a rejection giving the fill `/clear` (append) and the toast `cairn: no implementation for command.run (/clear)`, and a session end freeing a run that never settles.
+- AC4: `register.tsx:343` reserves `width(CLEAR_LABEL) + 4 + 1` and tries three, then two, then none. "the row drops Clear first when it lacks room (M216 AC4)": 2 pass, 0 fail, on single-in-progress on the terminal and the desktop. Each sweep shows the width below the first three-Button width drawing next and status alone, and every wider width drawing all three.
+- AC5: operator's live look, recorded in the work log on 2026-10-04 (T3). In a new desktop Code session in this repo on m216-band-clear, after `/cairn:milestone` ended, Clear showed and a press cleared the conversation.
+- AC6: the Clear paragraph sits at README.md:192 under `### The milestone band`. `cairn/DESIGN.md` names it in the `hooks/status/` bullet (:73 history, :175-183 paragraph). CHANGELOG.md:7 `## Unreleased` opens with the entry. Verify at d81ee7c: scripts 397 OK (exit 0), hooks 174 OK (exit 0), plugin validate exit 0, marketplace validate exit 0, mod test exit 0.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so `cairn_impact` was skipped. Profile slot: verify green (AC6 line), the marketplace validate output has no `plugins[N].version` warning, and CHANGELOG has the entry with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
