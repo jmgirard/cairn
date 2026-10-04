@@ -21,7 +21,8 @@ import { FLOW_COLORS, FLOW_PHASES } from './band'
 //
 // The track is TRACK_PX wide where the row has room, and shorter where it
 // does not. A track too short for the whole pill shows the pill's short
-// text, its count alone (M206, the operator's pick from three narrow looks).
+// text: its count alone, `none` for a section with no boxes, or `Planned`
+// on the idle row (M206, the operator's pick from three narrow looks).
 //
 // In the terminal the track is a run of braille cells on the theme's
 // `userMessageBackground` ground, with the same specks as dots and the pill

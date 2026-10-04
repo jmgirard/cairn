@@ -214,7 +214,8 @@ const ROW_KEY = /^(M\d+|idle)-row$/
 const TRACK = '[track]'
 
 // Whether a right-group child is part of the track: the desktop's `Svg`, or
-// a terminal Text with a ground color (a braille cell run or the pill).
+// a terminal Text with a background color (a braille cell run on the
+// ground, or the pill on the phase color).
 function isTrack(node: Element): boolean {
   return node.type === 'Svg' || (node.type === 'Text' && node.props.backgroundColor !== undefined)
 }

@@ -21,7 +21,7 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // ends at the first main-loop Stop with no background work in flight that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,
-// Stop, or turn end, as a typed cairn slash command's is. So the label holds while the skill waits on background work and
+// Stop, or turn end, as a typed cairn slash command's is. So the step holds while the skill waits on background work and
 // through the turns that the work's notices start (M201). The row sits
 // above whatever the hooks beneath draw in the same slot. It ends in a
 // close button, which hides the band until the active rows' ids, statuses,

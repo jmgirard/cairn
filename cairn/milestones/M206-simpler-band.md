@@ -1,6 +1,6 @@
 # M206: A simpler band: id, title, and the track
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,7 +46,7 @@ Make the band's row the milestone id and title on the left and the flow track on
 - [x] T5: Build the terminal braille-speck track from the same `Flow` model as spans, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
 - [x] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
 - [x] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
-- [ ] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
+- [x] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
 
 ## Work log
 
@@ -68,6 +68,9 @@ Make the band's row the milestone id and title on the left and the flow track on
 - 2026-10-04: substantive amendment: AC3 and AC4 narrowed at the operator's selection. AC3 tests the braille track, ground, dot color, pill count, percent, and title room, and the dot pattern is judged at the live look. AC4 tests the idle row's command and track at 200 columns and a hidden idle row through a skill's start and end.
 - 2026-10-04: checkpoint, half done: T2 to T5 code and T7 docs written, Python suites green. `band.test.tsx` still tests the old forms and is red until the T6 rewrite lands (delegated to an Opus agent). The idle row also draws its track in the terminal. A running skill with nothing active or workable now yields the band slot.
 - 2026-10-04: T6 delegated to an Opus agent: `band.test.tsx` rewritten (79 test blocks, 847 mod tests pass across 3 files). Seven planted defects each went red in the expected suite and were restored. I removed the pane test's skill-row case and its chapter event, which tested removed behavior. All four verify gates are green. T2 to T7 checked.
+- 2026-10-04: T8 live look: the operator accepted the desktop row at full width, the narrow track beside a docked pane, and the terminal braille row in a new session.
+- 2026-10-04: claim audit: 140 claims read, 5 corrected — README.md, hooks/status/band.ts, hooks/status/track.ts, hooks/status/band.test.tsx (plus one stale register.tsx comment it noted); the same reader re-read all six as correct.
+- 2026-10-04: implement done, status review. All four verify gates green (847 mod tests).
 
 ## Decisions
 

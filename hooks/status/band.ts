@@ -44,8 +44,9 @@ export const GAP = 2
 export const TEXT_ROOM = 10
 // The most and least columns the track takes. The desktop counts the full
 // TRACK_PX (360) image as TRACK_COLUMNS, at about PX_PER_COLUMN pixels a
-// column (M204). Below MIN_TRACK_COLUMNS, the track keeps that width and
-// the title takes less room.
+// column (M204). On a milestone row, below MIN_TRACK_COLUMNS the track
+// keeps that width and the title takes less room. The idle row drops its
+// track instead.
 export const TRACK_COLUMNS = 52
 export const MIN_TRACK_COLUMNS = 12
 export const PX_PER_COLUMN = 7
@@ -132,8 +133,9 @@ export type Flow = {
   // count sets its ticks; 0 draws none.
   items: [number, number]
   pill: string
-  // The pill's text on a track too short for `pill`: the count alone, or
-  // `none` for a section with no items (M206).
+  // The pill's text on a track too short for `pill`: the count alone,
+  // `none` for a section with no items, or `Planned` on the idle flow
+  // (M206).
   short: string
   // The flow's percent, or null on a row that shows none.
   percent: number | null

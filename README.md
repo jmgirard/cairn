@@ -110,9 +110,8 @@ your theme's `userMessageBackground` color. Its dots are the specks, a dim
 mark divides the parts past the fill, and the pill is white text on the
 phase's color.
 
-The track is at most 360 pixels wide in the desktop app, which the band
-counts as 52 columns at 7 pixels a column, and at most 52 characters in
-the terminal. In a narrower window the track gets shorter, so that the
+The desktop app draws the track at 7 pixels a column, up to 52 columns and
+at most 360 pixels. The terminal draws it at most 52 characters wide. In a narrower window the track gets shorter, so that the
 title keeps 10 columns, or its full width when the title is shorter. The
 track keeps at least 12 columns. When the whole pill would take more than
 a third of the track, the pill shows the counts alone, such as `1/3`, or
