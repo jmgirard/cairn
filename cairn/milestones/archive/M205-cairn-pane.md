@@ -1,0 +1,11 @@
+# M205: A cairn pane in the status mod
+
+**Status:** done (2026-10-04, PR #212 https://github.com/jmgirard/cairn/pull/212)
+
+**Goal:** Give the status mod an optional pane that shows the active milestones in full and the planned queue with the next command.
+
+**Outcome:** The mod registers `/cairn-pane` after the `session.start` refresh. The command opens a `Pane` with id `cairn`, closes it only when it is placed and shown, prints `no cairn ROADMAP found` with no ROADMAP, and prints a reason when an open is not placed or is refused. A plain `≡` button, 2 columns before the close button, opens the pane from a band row drawn from a ROADMAP, with a toast when the open is not placed. Every band width threshold rose by 2. `loadCairn` in `reader.ts` reads band and pane state in one pass, and a `pane` atom (shape `pane-1`) holds it. Per active row it holds the goal, the Tasks and criteria items with wrapped lines joined and HTML comments dropped, and the five newest work-log lines. The queue mirrors new `recommend` and `waiting` functions in `scripts/cairn_next.py`, whose printed output is unchanged. `pane.ts` lays out one line per item with an ellipsis, and the goal wraps. Fixtures `pane-full` and `all-waiting` were added, and each `expected.json` gained `pane`, `next`, and `unreadable` keys, held to a second Python implementation in `test_status_fixtures.py`. `pane.test.tsx` has 92 cases. Mod tests went from 1042 to 1136. README, CHANGELOG, and DESIGN describe the pane.
+
+**Decisions:** A T1 probe mod in the session's hot-reload folder showed that the desktop app docks a pane at 44 columns. The band then falls below the track's width and draws its text row. The operator picked one line per item over three looks where items wrap in full (browser prototypes). The pane drops comment boxes, which the band still counts. The desktop look (AC6) was accepted at the merge question.
+
+**Review:** Three lenses gave 29 findings. 7 were fixed: the command closed an unplaced or hidden pane, a refused open threw, the AC5 cases mounted a new pane after each event, the test mocks hid the unplaced case, a Python path match broke for subdirectory roots, and a README and a header comment were wrong. 17 went to the new row "Pane follow-ons (M205 review)". 5 were rejected. A claim audit read 54 claims and corrected 2.
