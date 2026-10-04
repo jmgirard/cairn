@@ -87,3 +87,38 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 - AC5: open — the operator chose design A from a browser-pane prototype (work log); the look in the desktop app, light and dark, is asked at the merge question.
 - AC6: the branch's added README lines name the three equal parts, specks, pill, ticks, percent, the narrower-window fallback, and that the terminal keeps the text row; DESIGN.md's `hooks/status/` entry names the three segments, specks, pill, ticks, percent, the fallback below the track's room, and that the terminal never draws the track; CHANGELOG Unreleased opens with "A flow track in the desktop band" (`git diff origin/main...HEAD` greps, each term ≥ 1 hit). The claim audit's 4 corrections are in.
 - AC7: from the repo root, each exit checked: `python3 -m unittest discover -s scripts/tests` exit 0 (395 tests, OK, 21 skipped), `python3 -m unittest discover -s hooks/tests` exit 0 (OK), `claude plugin validate .claude-plugin/plugin.json` exit 0 (one root CLAUDE.md warning, as on main), `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0 (944 pass, 0 fail).
+- Consistency gate: `cairn_validate` exit 0; no principle changed, so no `cairn_impact`; the generic profile's consistency-gate slot names no toolchain checks.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: an 18px track makes the row taller, so left text sits high while the right group is centered — fix now, fixed 49ca73c (row and right group centered on the desktop only)
+- diff-bug #2: the pill text uses per-character estimates and can spill past the pill in a wider font — fix now, fixed 49ca73c (`textLength` with `spacingAndGlyphs`)
+- diff-bug #3: `elements.Svg` read from an un-narrowed resolve would fail a strict type check — fix now, fixed 49ca73c
+- diff-bug #4: desktop rows outside the flow are checked only for no `Svg` — fix now, fixed 49ca73c (the walk compares them to the terminal's rows and checks the `✕`)
+- diff-bug #5: README and CHANGELOG say the track replaces only the bar and counts, but it also replaces `no tasks` and `all … checked` — fix now, fixed 49ca73c
+- diff-bug #6: DESIGN says every alt names counts and percent and omits the pill clamp — fix now, fixed 49ca73c
+- diff-bug #7: the system-versus-app theme claim was stated as fact from a browser preview — fix now, fixed 49ca73c (hedged in track.ts and DESIGN)
+- diff-bug #8: checked above total overflows a segment — reject, false: the reader counts checked boxes among the section's boxes, so checked never exceeds total
+- diff-bug #9: `TRACK_COLUMNS` 52 assumes about 7 pixels a column, unchecked — follow-up, row "Desktop track follow-ons"
+- diff-bug #10: edge marks faint on light, and a scrub could drop `clipPath` — follow-up, row "Desktop track follow-ons"
+- diff-bug #11: the speck loop copies its array per cell — fix now, fixed 49ca73c
+- diff-bug #12: a header comment line too long — fix now, fixed 49ca73c
+- diff-bug #13: AC5 is open at review — reject, planned change: the plan's work log puts the in-app look at the merge question
+- blame-history #1: desktop leaf colors and `dimColor` (M198) no longer checked — fix now, fixed 49ca73c (`desktopProps` checks every leaf)
+- blame-history #2: M194's `minWidth: 0` and `flexShrink` no longer checked on the desktop — fix now, fixed 49ca73c (plant: an uncentered row failed 152 tests)
+- blame-history #3: the desktop `✕`, `dimColor`, and `plain` checked only on track rows — fix now, fixed 49ca73c
+- blame-history #4: press, refresh, and session-end flows no longer run with a desktop render — follow-up, row "Desktop track follow-ons"
+- blame-history #5: README's "Three labels replace the bar" conflicts with the desktop — fix now, fixed 49ca73c ("In the text row")
+- blame-history #6: `/milestone-plan` blue changes M198's "every other skill" rule — reject, planned change (question set: colors)
+- blame-history #7: `alignItems` added on every surface — fix now, fixed 49ca73c (desktop only)
+- blame-history #8: the 7-pixel column estimate and the 18px height are unchecked against the app — follow-up, row "Desktop track follow-ons"
+- blame-history #9: the `✕` docs and the desktop-only track agree — reject, false: the reviewer found no conflict
+- prior-review #1: "grays that read on light or dark" is unverified in the app — fix now, fixed 49ca73c ("meant for")
+- prior-review #2: white pill text on the phase colors, about 3:1 — follow-up, row "Desktop track follow-ons"
+- prior-review #3: fixed grays unchecked in other themes — follow-up, row "Desktop track follow-ons"
+- prior-review #4: column and pill-width estimates — follow-up, row "Desktop track follow-ons" (pill spill fixed by diff-bug #2)
+- prior-review #5: a 360px `Svg` could overrun a narrow window — follow-up, row "Desktop track follow-ons" (the fit guards it in columns)
+- prior-review #6: ragged wraps in README and register.tsx — fix now, fixed 49ca73c
+- prior-review #7: README's `Review 2/3` example matches no tested case — fix now, fixed 49ca73c (`Review 1/2`, the wide-title pill AC1 asserts)
+- prior-review #8: DESIGN's system-versus-app claim — fix now, fixed 49ca73c (hedged)
+- prior-review #9: DESIGN's history line is long — reject, style
+- prior-review #10: CHANGELOG's tick wording drifts from README — reject, false: the claim reader read it as true against track.ts
+- Totals: 32 findings — 18 fixed now, 8 to the new candidate row "Desktop track follow-ons", 6 rejected. No finding shows a criterion failing, so no return.
