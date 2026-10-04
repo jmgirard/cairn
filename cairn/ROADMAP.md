@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-03 (M203 done via PR #210 and archived, one review item to the "Run edge cases" row, M200 row pruned. Validate green. Byte budgets and `records-hygiene.md` hand-read under cap. skills/tests 663 with the same 4 reds and 1 error as main, non-gating (D-109). The M72 merge-guard lesson corrected, none added or retired.)_
+_Last hygiene check: 2026-10-04 (M204 done via PR #211 and archived, eight review items to the new "Desktop track follow-ons" row, M201 row pruned. Validate green. Byte budgets and both doctrine modules hand-read under cap. skills/tests 663 with the same 4 reds and 1 error as main, non-gating (D-109). The M201 live-look lesson extended, none added or retired.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,10 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M201 | A band label that holds through background waits | done | — | normal | milestones/archive/M201-band-label-background-waits.md |
 | M202 | One question set, then the agent runs the milestone to the merge question | done | — | normal | milestones/archive/M202-one-question-set-run.md |
 | M203 | Record review findings in fixed formats | done | M202 | normal | milestones/archive/M203-merge-approval-up-front.md |
-| M204 | A flow track band: plan, implement, review | review | — | normal | milestones/M204-flow-track-band.md |
+| M204 | A flow track band: plan, implement, review | done | — | normal | milestones/archive/M204-flow-track-band.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
