@@ -21,12 +21,12 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 
 ## Acceptance criteria
 
-- [ ] AC1: The head line of each active milestone whose milestone file can be read ends with the percent that the band computes for the same row (`flowOf` in `band.ts`), and draws no flow track. A milestone with no readable file draws no percent on its head line and keeps its `no milestone file` line. `pane.test.tsx` cases assert this on both surfaces for an `in-progress` row, for a `review` row whose `## Acceptance criteria` holds an open box inside an HTML comment and at least one checked box outside it, so that the band's percent differs from the percent over the pane's items, and for a row with no file. A case at `bodyColumns` 44 with a title longer than the pane asserts that the percent sits in a `<id>-head-tail` Box with `flexShrink: 0` after the `<id>-head-text` Box. The AC7 live look shows that the percent stays whole when the title is cut.
-- [ ] AC2: The `Tasks` and `Criteria` headings each draw a meter beside their `checked/total` count, in the form the operator picked at T1. `pane.test.tsx` cases assert the meter for a partly checked, an all-checked, and an all-open section on both surfaces. If the operator picks no meter at T1, the headings draw none, and a case asserts that.
-- [ ] AC3: Each section heading (`Goal`, `Tasks`, `Criteria`, `Work log`, `Workable`, `Waiting`, `Candidates`) and the `Next` line draw in the set-off form the operator picked at T1. `pane.test.tsx` cases assert the form for each of these headings and the `Next` line on both surfaces. If the operator picks no set-off form at T1, they draw as before, and a case asserts that.
-- [ ] AC4: Over the `pane-full` fixture and an idle fixture with candidate rows, at `bodyColumns` 44, each line's indent plus lead width plus tail width, each counted by `width()` in `band.ts` summed over its spans, is at most 44, where a line with no tail counts 0. The Box keyed with each line's key carries `minWidth: 0`. A `pane.test.tsx` case asserts both on both surfaces.
-- [ ] AC5: README's "The cairn pane" section, the pane paragraph of `cairn/DESIGN.md`, and the header comments of `pane.ts` and `register.tsx` describe the new look. CHANGELOG's Unreleased section has an entry for it.
-- [ ] AC6: The four commands of the verify slot in `cairn/PROFILE.md` each exit 0.
+- [x] AC1: The head line of each active milestone whose milestone file can be read ends with the percent that the band computes for the same row (`flowOf` in `band.ts`), and draws no flow track. A milestone with no readable file draws no percent on its head line and keeps its `no milestone file` line. `pane.test.tsx` cases assert this on both surfaces for an `in-progress` row, for a `review` row whose `## Acceptance criteria` holds an open box inside an HTML comment and at least one checked box outside it, so that the band's percent differs from the percent over the pane's items, and for a row with no file. A case at `bodyColumns` 44 with a title longer than the pane asserts that the percent sits in a `<id>-head-tail` Box with `flexShrink: 0` after the `<id>-head-text` Box. The AC7 live look shows that the percent stays whole when the title is cut.
+- [x] AC2: The `Tasks` and `Criteria` headings each draw a meter beside their `checked/total` count, in the form the operator picked at T1. `pane.test.tsx` cases assert the meter for a partly checked, an all-checked, and an all-open section on both surfaces. If the operator picks no meter at T1, the headings draw none, and a case asserts that.
+- [x] AC3: Each section heading (`Goal`, `Tasks`, `Criteria`, `Work log`, `Workable`, `Waiting`, `Candidates`) and the `Next` line draw in the set-off form the operator picked at T1. `pane.test.tsx` cases assert the form for each of these headings and the `Next` line on both surfaces. If the operator picks no set-off form at T1, they draw as before, and a case asserts that.
+- [x] AC4: Over the `pane-full` fixture and an idle fixture with candidate rows, at `bodyColumns` 44, each line's indent plus lead width plus tail width, each counted by `width()` in `band.ts` summed over its spans, is at most 44, where a line with no tail counts 0. The Box keyed with each line's key carries `minWidth: 0`. A `pane.test.tsx` case asserts both on both surfaces.
+- [x] AC5: README's "The cairn pane" section, the pane paragraph of `cairn/DESIGN.md`, and the header comments of `pane.ts` and `register.tsx` describe the new look. CHANGELOG's Unreleased section has an entry for it.
+- [x] AC6: The four commands of the verify slot in `cairn/PROFILE.md` each exit 0.
 - [ ] AC7: At a live look the operator accepts the desktop pane docked at 44 columns and at a wider dock, and the terminal pane.
 
 ## Coverage
@@ -73,3 +73,39 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 ## Decisions
 
 ## Review
+
+Review pass 1, 2026-10-04, on `f4efffd`. Main had not moved since the branch was cut, and no PR existed.
+
+- AC1 evidence: `claude plugin test .` passes 986 of 986. "an in-progress row, a review row, and a row with no file" asserts M080's tail `  44%`, no M082 tail with its `no milestone file` line kept, no `Svg`, and no braille on the three head lines. "a review row takes the band's count, not the pane's items" asserts `review M002  Add the export command  77%` while the pane holds 2 criteria (83% over its items). "at 44 columns a long title leaves the percent in its own unshrinking Box" asserts the lead, text, and tail Box order and the tail's `flexShrink: 0`. All pass on terminal and desktop. The live look under AC7 is the drawing check.
+- AC2 evidence: "partly checked and all checked" asserts `▎ TASKS 1/3 ■■■□□□□□` with orange filled squares and `subtle` empty ones, and `▎ TASKS 1/1 ■■■■■■■■` in green. "all open" asserts `▎ CRITERIA 0/1 □□□□□□□□` in `subtle` with no filled square. Both pass on both surfaces. The operator picked the squares at T1.
+- AC3 evidence: seven heading cases (`GOAL`, `TASKS`, `CRITERIA`, `WORK LOG`, `WORKABLE`, `WAITING`, `CANDIDATES`) assert the gap row before each, the orange `▎`, and the gray bold uppercase label. "the Next command sits in an orange pill" asserts ` /milestone-review M081 ` on orange in bold white. All pass on both surfaces. The operator picked the accent form at T1.
+- AC4 evidence: the AC4 cases over `pane-full` and `candidates` at `bodyColumns` 44 assert, for every line, indent plus lead plus tail width at most 44 and `minWidth: 0` on the line Box, on both surfaces. A plant without `minWidth: 0` and with a shrinking tail failed these and the AC1 44-column case at implement.
+- AC5 evidence: README.md:208-220 describes the look in "The cairn pane", `cairn/DESIGN.md` describes it in the pane paragraph and the `hooks/status/` bullet, the `pane.ts` and `register.tsx` header comments describe it, and CHANGELOG.md:7 is the Unreleased entry.
+- AC6 evidence: on `f4efffd` the scripts suite ran 397 OK (21 skipped), the hooks suite 174 OK, `claude plugin validate` exited 0 with the CLAUDE.md warning main has, and `claude plugin test .` exited 0 with 986 passing.
+- Consistency gate: `cairn_validate.py` passes. No principle changed. The `generic` profile names no toolchain checks.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the Next pill's white on orange is about 3.4:1 and not bold, where the band's pill is bold — fix now, fixed f4efffd.
+- diff-bug #2: `refresh` writes band and pane apart, so a redraw between them can drop a head line's percent for one frame — follow-up, row "Pane look follow-ons (M208 review)", beside the same item in "Pane follow-ons (M205 review)".
+- diff-bug #3: the no-track check looked only for an `Svg`, which the terminal never draws — fix now, fixed f4efffd (no braille on the head lines either).
+- diff-bug #4: duplicate ids share the first band row's percent — follow-up, row "Pane look follow-ons (M208 review)", beside the duplicate-id item in "Pane follow-ons (M205 review)".
+- diff-bug #5: `minWidth: 0` on the line Box may do nothing in a column parent, so DESIGN credited the cut to it — fix now, fixed f4efffd (DESIGN names the tail's `flexShrink: 0` and the text Box's `minWidth: 0`, and the live look as the drawing check).
+- diff-bug #6: the AC1 44-column case and the AC4 cases cannot fail on width, since the render ignores `bodyColumns` — reject, planned change (AC4's amended wording, its re-audit lines, and the renamed describe record this).
+- diff-bug #7: the M205 AC2 test matched band rows by id alone — fix now, fixed f4efffd.
+- diff-bug #8: the all-open meter case checked no colors — fix now, fixed f4efffd.
+- diff-bug #9: a cut command loses its trailing pad, so `…` draws on orange — follow-up, row "Pane look follow-ons (M208 review)".
+- diff-bug #10: the percent counts a commented box and the meter does not, so one row can read `77%` over `1/2` — fix now for the docs, fixed f4efffd (README says so); the split itself is AC1's.
+- diff-bug #11: the pill is orange for a review command too — reject, planned change (the operator's pick).
+- diff-bug #12: the DESIGN `hooks/status/` history stopped at M206 — fix now, fixed f4efffd (M207 and M208 added).
+- blame-history #1: two progress numbers on one row — fix now for the docs, as diff-bug #10.
+- blame-history #2: more fixed orange and green, wider than M198's use — follow-up, row "Pane look follow-ons (M208 review)", beside "Band label colors in other themes".
+- blame-history #3: empty squares used `inactive` where the band's marks use `subtle` — fix now, fixed f4efffd.
+- blame-history #4: a blank row before every heading costs rows at the dock — reject, planned change (the operator's pick).
+- blame-history #5: the live look is not done — reject, planned change (T6 runs it at this merge question).
+- blame-history #6: the "Pane follow-ons (M205 review)" row still lists the `minWidth: 0` item — follow-up, trimmed at post-merge hygiene.
+- blame-history #7: the percent depends on two writes, and an empty band draws no percent — follow-up, as diff-bug #2.
+- blame-history #8: the pill's padding sits inside the cut text — follow-up, as diff-bug #9.
+- blame-history #9: README and CHANGELOG now say `CANDIDATES` where the M207 archive says `Candidates` — reject, false (the archive is history, and the CHANGELOG section is unreleased).
+- prior-review #1: the percent and the counts disagree on screen — fix now for the docs, as diff-bug #10.
+- prior-review #2: the stale `minWidth: 0` item — follow-up, as blame-history #6.
+- prior-review #3: fixed colors and the ambiguous-width `▎`, `■`, `□` — follow-up, row "Pane look follow-ons (M208 review)".
+- prior-review #4: the M207 heading literal changed — reject, false, as blame-history #9.
