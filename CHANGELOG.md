@@ -5,8 +5,8 @@
 ### New
 
 - **A Clear button when a cairn skill ends.** After a cairn skill finishes,
-  the band carries a `Clear` button before its other buttons, and a press
-  runs `/clear`. The button goes away when you send a prompt while Claude is
+  a band row that carries the next-step and `Status` buttons also carries a
+  `Clear` button before them, and a press runs `/clear`. The button goes away when you send a prompt while Claude is
   idle and no hook drops it, when a cairn skill starts, or when the session
   ends. If the session refuses the run,
   `/clear` goes into the prompt box and a toast says why. Where the row has

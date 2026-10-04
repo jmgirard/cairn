@@ -3278,6 +3278,47 @@ describe('a press of Clear runs /clear (M216 AC3)', () => {
       expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
       await ui.unmount()
     })
+
+    // M216 review: a run from before a session end that settles late does
+    // not free the press guard while a newer run is in flight.
+    test(`a late-settling run from before a session end keeps a newer run's guard (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let releaseOld = () => {}
+      let releaseNew = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        releaseOld = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      const old = ui.press({ key: CLEAR_KEY })
+      for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+      copy.runHold = new Promise<void>(resolve => {
+        releaseNew = resolve
+      })
+      const fresh = ui.press({ key: 'cairn-status' })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+        releaseOld()
+        await old
+        // A press while the newer run is held reaches no run. Without the
+        // guard it would reach a third run and wait on the hold, so the
+        // press is not awaited here.
+        const third = ui.press({ key: 'cairn-status' })
+        for (let i = 0; i < 40 && (copy.commands ?? []).length < 3; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+        releaseNew()
+        await third
+      } finally {
+        releaseOld()
+        releaseNew()
+        await fresh
+      }
+      await ui.unmount()
+    })
   }
 })
 
@@ -3303,7 +3344,10 @@ describe('the row drops Clear first when it lacks room (M216 AC4)', () => {
       expect(counts[firstThree - 1]).toBe(2)
       expect(counts.slice(firstThree).every(n => n === 3)).toBe(true)
       // Clear takes its label, 4 chrome columns, and one space: 10 columns.
+      // The two-Button threshold sits above the sweep's floor, so both
+      // thresholds are measured, not cut off at 40 columns (M216 review).
       const firstTwo = counts.indexOf(2)
+      expect(firstTwo).toBeGreaterThan(0)
       expect(firstThree - firstTwo).toBe(10)
     })
   }

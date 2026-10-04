@@ -223,7 +223,7 @@ export const register: Register = on => {
     if (e.agent_id !== undefined || result?.block !== undefined) return result
     const waking = (e.session_crons ?? []).some(cron => cron.recurring === false)
     if ((e.background_tasks ?? []).length === 0 && !waking) {
-      if ((await read($, step)) !== null) await update($, ended, () => true)
+      if (knownStep(await read($, step)) !== null) await update($, ended, () => true)
       await update($, step, () => null)
       await refresh($)
     }
@@ -488,8 +488,12 @@ async function openPane($) {
 
 // True while an action Button's run is in flight, so a second press, such
 // as a double click, does not queue the command again (M212 review). A
-// reload starts it over as false.
+// reload starts it over as false. Each run takes the next number in
+// `runs`, and only the latest run clears `running` as it settles, so a run
+// from before a session end that settles late does not free a newer run's
+// press (M216 review).
 let running = false
+let runs = 0
 
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
@@ -512,9 +516,11 @@ async function pressStatus($) {
 }
 
 // A press of Clear runs the built-in `/clear` (M216), under the same checks
-// as the other action Buttons.
+// as the other action Buttons. It also reads `ended` as it is now, so a
+// press of a drawing made before a typed prompt, a skill, or a session end
+// cleared it does nothing (M216 review).
 async function pressClear($) {
-  if (running || knownStep(await read($, step)) !== null) return
+  if (running || knownStep(await read($, step)) !== null || !(await read($, ended))) return
   await run($, CLEAR_COMMAND, '')
 }
 
@@ -524,6 +530,8 @@ async function pressClear($) {
 // a box that could not take it.
 async function run($, command: string, args: string) {
   running = true
+  runs += 1
+  const mine = runs
   try {
     await $.command.run({ command, args })
   } catch (error) {
@@ -540,7 +548,7 @@ async function run($, command: string, args: string) {
       // No toast shows; the press has nothing else to say.
     }
   } finally {
-    running = false
+    if (runs === mine) running = false
   }
 }
 

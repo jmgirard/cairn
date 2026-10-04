@@ -179,9 +179,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `skill.prompt`, and `session.end` clear it, and a dropped prompt puts it back while no
   step is set. The render tries the row with all three action Buttons'
   columns reserved, then with two, then with none, so the row drops Clear
-  first. A press runs the built-in `clear` through `run`. `session.end`
-  also sets `running` to false, because the run of a `/clear` that ends
-  the session may never settle.
+  first. A press reads `ended` again and runs the built-in `clear` through
+  `run`. `session.end` also sets `running` to false, because the run of a
+  `/clear` that ends the session may never settle. Each run takes a number,
+  and only the latest run clears `running` as it settles.
   The flow track (M204) is the row's one progress form (M206). `flowOf`
   and `idleFlow` in `band.ts` give the model: three equal segments, plan,
   implement, and review, each a whole-number fraction. Plan is full on a
