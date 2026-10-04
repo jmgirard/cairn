@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M204 | A flow track band: plan, implement, review | done | — | normal | milestones/archive/M204-flow-track-band.md |
 | M205 | A cairn pane in the status mod | done | — | normal | milestones/archive/M205-cairn-pane.md |
 | M206 | A simpler band: id, title, and the track | done | — | normal | milestones/archive/M206-simpler-band.md |
-| M207 | Candidate rows in the idle cairn pane | planned | — | normal | milestones/M207-pane-candidates.md |
+| M207 | Candidate rows in the idle cairn pane | review | — | normal | milestones/M207-pane-candidates.md |
 | M208 | A fuller look for the cairn pane | planned | M207 | normal | milestones/M208-pane-look.md |
 | M209 | The cairn pane stays where it is put | planned | — | normal | milestones/M209-pane-keeps-place.md |
 ## Candidates

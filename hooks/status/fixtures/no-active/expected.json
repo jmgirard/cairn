@@ -3,5 +3,6 @@
   "workable": ["M021"],
   "rows": [],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []}
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []},
+  "candidates": []
 }

@@ -7,5 +7,6 @@
   "pane": [
     {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}, {"text": "T2: Draw the band.", "checked": false}], "criteria": [{"text": "AC1: The band cuts the title.", "checked": false}], "log": []}}
   ],
-  "next": {"action": "resume", "command": "/milestone-implement", "id": "M060", "waiting": []}
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M060", "waiting": []},
+  "candidates": []
 }

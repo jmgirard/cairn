@@ -12,5 +12,6 @@
     {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "file": {"goal": "The first paragraph of the goal.\n\nThe second paragraph, with a  comment inside it.", "tasks": [{"text": "T1: Only task.", "checked": true}], "criteria": [{"text": "AC1: Only criterion.", "checked": true}], "log": ["2026-02-01: created."]}},
     {"id": "M082", "title": "A file whose read fails", "status": "review", "file": null}
   ],
-  "next": {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]}
+  "next": {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]},
+  "candidates": []
 }

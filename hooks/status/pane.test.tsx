@@ -2,7 +2,7 @@ import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
-import { CHECKED_MARK, NO_FILE, NO_ROADMAP, OPEN_MARK } from './pane'
+import { CHECKED_MARK, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
 import { listNames } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -307,6 +307,107 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         for (const row of next.waiting) {
           expect(textAt(lines, `waiting-${row.id}`)).toBe(`${row.id}  ${row.title} · on ${row.unmet.join(', ')}`)
         }
+      })
+    }
+  }
+})
+
+// The candidates fixture's lines, written out by hand from its ROADMAP.
+const CANDIDATE_LINES = [
+  '↑ High row',
+  '· Normal row',
+  '↓ Low row',
+  '· A row with no colon and space, shown whole — added 2026-01-04',
+  '· [HIGH] Upper-case token, shown whole — added 2026-01-05',
+  '· [high]No space after the token, shown whole — added 2026-01-06',
+  '· Token in [low] mid-row, shown whole — added 2026-01-07',
+  '· A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end',
+  '· `code',
+]
+
+describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`the candidates fixture's heading, count, marks, and titles (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'candidates-head')).toBe('Candidates 9')
+      const rows = keysLike(lines, /^candidate-\d+$/)
+      expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_LINES)
+      // The section comes after the queue.
+      const at = (key: string) => lines.findIndex(([k]) => k === key)
+      expect(at('candidates-head')).toBeGreaterThan(at('next'))
+      expect(at('candidates-head')).toBeGreaterThan(at('workable-M031'))
+    })
+
+    test(`each priority's mark (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+      const markOf = async (i: number) => {
+        const [lead] = await ui.findAll({ key: `candidate-${i}-lead` })
+        return kids(lead)[0]
+      }
+      expect(textOf(await markOf(0))).toBe(PRIORITY_MARK.high.text)
+      expect((await markOf(0)).props.color).toBe(PRIORITY_MARK.high.color)
+      expect(textOf(await markOf(1))).toBe(PRIORITY_MARK.normal.text)
+      expect(textOf(await markOf(2))).toBe(PRIORITY_MARK.low.text)
+      expect((await markOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      // The high mark is bold, the normal mark has no color, and only a
+      // low row's title is gray.
+      expect((await markOf(0)).props.bold).toBe(true)
+      expect((await markOf(1)).props.color).toBe(undefined)
+      const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
+      expect((await titleOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      expect((await titleOf(0)).props.color).toBe(undefined)
+      expect((await titleOf(1)).props.color).toBe(undefined)
+      // The three marks differ.
+      expect(new Set([PRIORITY_MARK.high.text, PRIORITY_MARK.normal.text, PRIORITY_MARK.low.text]).size).toBe(3)
+      await ui.unmount()
+    })
+
+    test(`a long title is kept whole and cut by the truncate-end wrap (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+      const [box] = await ui.findAll({ key: 'candidate-7-text' })
+      const text = kids(box)[0]
+      expect(textOf(text)).toBe(CANDIDATE_LINES[7].slice(2))
+      expect(textOf(text).length).toBeGreaterThan(PANE_VIEW.props.bodyColumns)
+      expect(text.props.wrap).toBe('truncate-end')
+      await ui.unmount()
+    })
+
+    test(`the skeleton's commented rows draw no section (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates-skeleton'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(keysLike(lines, /^candidate/)).toEqual([])
+    })
+  }
+
+  // Every fixture: the section draws only with no active row and at least
+  // one candidate row, and then holds every row (M207 AC2).
+  test('the domain holds an active fixture with candidate rows and an idle one without', () => {
+    expect(WITH_ROADMAP.some(name => FIXTURES[name].pane.length > 0 && FIXTURES[name].candidates.length > 0)).toBe(true)
+    expect(WITH_ROADMAP.some(name => FIXTURES[name].pane.length === 0 && FIXTURES[name].candidates.length === 0)).toBe(true)
+  })
+
+  for (const name of WITH_ROADMAP) {
+    for (const surface of SURFACES) {
+      test(`${name}: candidates only while idle (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const lines = await paneLines($, surface)
+        const { pane, candidates } = FIXTURES[name]
+        if (pane.length > 0 || candidates.length === 0) {
+          expect(keysLike(lines, /^candidate/)).toEqual([])
+          return
+        }
+        expect(textAt(lines, 'candidates-head')).toBe(`Candidates ${candidates.length}`)
+        expect(keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))).toEqual(
+          candidates.map(row => `${PRIORITY_MARK[row.priority].text} ${row.title}`),
+        )
       })
     }
   }

@@ -6,7 +6,7 @@ read the fixture directories through this generated module. Each fixture
 directory becomes one entry: its files keyed by absolute in-memory path
 (the fixture directory is `/`), the session's working directory, and the
 rows and the ordered workable ids its `expected.json` states, the
-pane's milestones and next step (M205), and the paths whose read fails in
+pane's milestones and next step (M205), its candidate rows (M207), and the paths whose read fails in
 the tests (`unreadable`, empty when the key is absent). The module
 also lists the plugin's skill names, one per `skills/*/SKILL.md`, which
 the band's label map is held to (M195).
@@ -82,6 +82,10 @@ def render():
             out.append(f"      {json.dumps(milestone, ensure_ascii=False)},\n")
         out.append("    ],\n")
         out.append(f"    next: {json.dumps(expected['next'], ensure_ascii=False)},\n")
+        out.append("    candidates: [\n")
+        for row in expected["candidates"]:
+            out.append(f"      {json.dumps(row, ensure_ascii=False)},\n")
+        out.append("    ],\n")
         out.append(f"    unreadable: {json.dumps(expected.get('unreadable', []))},\n")
         out.append("  },\n")
     out.append("}\n")

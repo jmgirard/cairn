@@ -7,5 +7,6 @@
   "pane": [
     {"id": "M062", "title": "The next task has no label", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: A labeled task, done.", "checked": true}, {"text": "Write the docs, with no label.", "checked": false}, {"text": "T3: A labeled task after it.", "checked": false}], "criteria": [{"text": "AC1: The item row stays dim.", "checked": false}], "log": []}}
   ],
-  "next": {"action": "resume", "command": "/milestone-implement", "id": "M062", "waiting": []}
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M062", "waiting": []},
+  "candidates": []
 }

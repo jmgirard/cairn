@@ -13,5 +13,6 @@
     {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [], "log": []}},
     {"id": "M053", "title": "Every criterion checked", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done, capital X.", "checked": true}], "log": []}}
   ],
-  "next": {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []}
+  "next": {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []},
+  "candidates": []
 }

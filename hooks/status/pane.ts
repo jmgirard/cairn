@@ -1,13 +1,14 @@
 import type { Span } from './band'
 import { GRAY, GREEN, ORANGE } from './band'
-import type { PaneItem, PaneMilestone, PaneState } from './reader'
+import type { CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
 // draws. For each active milestone: its phase, id, and title, its goal,
 // its tasks and criteria with their boxes, and its newest work-log lines.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
-// dependencies. A line's `lead` keeps its width. Its `text` is cut to one
+// dependencies. With no active milestone, the ROADMAP's candidate rows
+// follow, each a priority mark and its short title (M207). A line's `lead` keeps its width. Its `text` is cut to one
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
 // on one screen.
@@ -19,6 +20,12 @@ export const NO_FILE = 'no milestone file'
 export const NO_ACTIVE = 'no active milestone'
 export const CHECKED_MARK = '✓'
 export const OPEN_MARK = '○'
+// A candidate row's mark for each priority (M207).
+export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
+  high: { text: '↑', color: ORANGE, bold: true },
+  normal: { text: '·' },
+  low: { text: '↓', color: GRAY },
+}
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
 
@@ -115,6 +122,21 @@ export function paneLines(state: PaneState): PaneLine[] {
         }),
       )
     }
+  }
+  // With no active milestone, the ROADMAP's candidate rows (M207).
+  if (state.milestones.length === 0 && state.candidates.length > 0) {
+    out.push(gap('candidates-gap'))
+    out.push(heading('candidates-head', 'Candidates ', `${state.candidates.length}`))
+    state.candidates.forEach((row, i) =>
+      out.push(
+        line(
+          `candidate-${i}`,
+          2,
+          [PRIORITY_MARK[row.priority], { text: ' ' }],
+          row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
+        ),
+      ),
+    )
   }
   return out
 }

@@ -7,5 +7,6 @@
   "pane": [
     {"id": "M002", "title": "Add the export command", "status": "in-progress", "file": {"goal": "Export things.", "tasks": [{"text": "T1: Write the parser.", "checked": true}, {"text": "T2: Write the command.", "checked": false}, {"text": "T3: Write the docs.", "checked": false}], "criteria": [{"text": "AC1: The export command writes one file per table.", "checked": false}], "log": ["2026-01-02: started."]}}
   ],
-  "next": {"action": "resume", "command": "/milestone-implement", "id": "M002", "waiting": []}
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M002", "waiting": []},
+  "candidates": [{"priority": "normal", "title": "An idea that is not a row — added 2026-01-01"}]
 }

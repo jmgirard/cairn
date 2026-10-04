@@ -55,13 +55,15 @@ export type CairnPaneMilestone = {
 // What the cairn pane shows (M205): `found` is false when no ROADMAP is
 // found. `next` is `recommend` in scripts/cairn_next.py, its `id` null for
 // planning, and `waiting` is its `waiting`, each row's undone dependencies
-// as written with their status.
+// as written with their status. `candidates` holds the ROADMAP's candidate
+// rows, each its priority and the text before its first `: ` (M207).
 export type CairnPaneState = {
   found: boolean
   milestones: CairnPaneMilestone[]
   next: { action: string; command: string; id: string | null } | null
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
+  candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
 }
 
 declare module 'claude-code' {
