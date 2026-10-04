@@ -41,10 +41,10 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 
 ## Tasks
 
-- [ ] T1: Add the flow model to `band.ts` (fills, pill, percent for milestone, idle, and plan-skill rows) and the plan hue, with its tests.
-- [ ] T2: Add the SVG builder: rounded track, dither pattern per phase color, item ticks, phase-edge marks, pill clamped inside the track, light and dark palettes, and `alt`, with tests over its source.
-- [ ] T3: Add the track as the fit's longest form on the desktop, counted as `TRACK_COLUMNS` and drawn at `TRACK_PX`, and the width sweep with its hand-written thresholds.
-- [ ] T4: Draw the `Svg` in `register.tsx` on the desktop only, with the percent or idle command and the close button on the right. Give the `/milestone-plan` label the plan hue, and add the surface walks.
+- [x] T1: Add the flow model to `band.ts` (fills, pill, percent for milestone, idle, and plan-skill rows) and the plan hue, with its tests.
+- [x] T2: Add the SVG builder: rounded track, dither pattern per phase color, item ticks, phase-edge marks, pill clamped inside the track, light and dark palettes, and `alt`, with tests over its source.
+- [x] T3: Add the track as the fit's longest form on the desktop, counted as `TRACK_COLUMNS` and drawn at `TRACK_PX`, and the width sweep with its hand-written thresholds.
+- [x] T4: Draw the `Svg` in `register.tsx` on the desktop only, with the percent or idle command and the close button on the right. Give the `/milestone-plan` label the plan hue, and add the surface walks.
 - [ ] T5: Stop for the operator's live look in the desktop app, light and dark, and make the changes asked for.
 - [ ] T6: Update README's band section, DESIGN.md's `hooks/status/` entry, and CHANGELOG.
 - [ ] T7: Run the four verify commands and fix any failure.
@@ -60,6 +60,10 @@ On the desktop surface, draw the band's progress as one rounded track whose thre
 - 2026-10-03: plan gate chose `prefers-color-scheme` inside the SVG over one fixed palette because an image cannot read theme keys; falsified by the SVG following the OS theme instead of the app's at the live look.
 - 2026-10-03: collision check: band milestones M191-M201 are done and archived, none used `Svg`; candidate rows "Band label colors in other themes" and "Status mod follow-ons" are adjacent and stay; no D-entry blocks the change. Inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 13 findings, all fixed by narrowing: AC1 domain to drawn rows with readable counts; zero-item fill defined as empty and "only 100% case" dropped; AC2 fills, ticks, and alt limited to what each row has, run at 200 columns, more step states, `TRACK_PX` pinned, pill bounds and dark rule asserted; AC3 drops `vscode` and `mobile`, which raise no `AbovePrompt`; AC3 desktop cases move to AC2/AC4; AC4 thresholds written by hand; AC5 bounded to in-Scope asks; integer percent.
+- 2026-10-03: implement: branch cut from origin/main at 396eb97; the untracked `tsconfig.json` in the tree is not this milestone's and stays unstaged.
+- 2026-10-03: T1-T4: `flowOf`, `idleFlow`, `planFlow`, and `percentOf` in band.ts; the SVG builder in a new `hooks/status/track.ts` (`TRACK_PX` 224, `TRACK_H` 18, `TRACK_COLUMNS` 32 in band.ts); `register.tsx` draws `Svg` on the desktop only; `/milestone-plan` label in `rgb(110,140,190)`. Chose a separate track.ts over growing band.ts because the SVG markup is its own concern. Old suites' `SURFACES` is now terminal alone and three desktop mounts became terminal, per AC3. Mod tests 600 → 940, all pass.
+- 2026-10-03: T1-T4 plants: `TRACK_COLUMNS` 31 failed AC4, a review dither in orange failed AC2, a rounded-up percent failed AC1/AC2, n ticks instead of n−1 failed AC2; each restored.
+- 2026-10-03: pre-look in the browser pane: a 2-pixel checkerboard read as a grid, not noise, so the dither became a 24×18 tile of seeded noise blocks; the SVG as an `<img>` followed the browser's dark preference, not the page's `color-scheme`, so the app-versus-OS question goes to the live look.
 
 ## Decisions
 

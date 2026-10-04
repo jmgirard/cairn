@@ -38,17 +38,40 @@ function escape(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
-// A 6-pixel tile: the color at partial strength, three solid 2-pixel
-// blocks, and two faint light blocks, so a fill reads as pixel texture.
+// The dither tile: BLOCKS_X by BLOCKS_Y blocks of BLOCK pixels. Each block
+// draws the color at one of LEVELS strengths, or a faint light block, in a
+// fixed order from a small seeded generator, so a fill reads as pixel noise
+// and every drawing of it is the same.
+const BLOCK = 2
+const BLOCKS_X = 12
+const BLOCKS_Y = 9
+const LEVELS = [0.45, 0.65, 0.85, 1]
+
+function noise(): number[] {
+  let seed = 204
+  const out: number[] = []
+  for (let i = 0; i < BLOCKS_X * BLOCKS_Y; i++) {
+    seed = (seed * 1103515245 + 12345) % 2147483648
+    out.push(Math.floor((seed / 2147483648) * 10))
+  }
+  return out
+}
+const NOISE = noise()
+
 function dither(phase: string, color: string): string {
+  const width = BLOCKS_X * BLOCK
+  const height = BLOCKS_Y * BLOCK
+  const blocks = NOISE.map((value, i) => {
+    const x = (i % BLOCKS_X) * BLOCK
+    const y = Math.floor(i / BLOCKS_X) * BLOCK
+    // Values 0 to 7 pick a strength of the color; 8 and 9 a light block.
+    const paint = value < 8 ? `fill="${color}" fill-opacity="${LEVELS[value % 4]}"` : 'fill="#fff" fill-opacity="0.2"'
+    return `<rect x="${x}" y="${y}" width="${BLOCK}" height="${BLOCK}" ${paint}/>`
+  })
   return (
-    `<pattern id="dither-${phase}" width="6" height="6" patternUnits="userSpaceOnUse">` +
-    `<rect width="6" height="6" fill="${color}" fill-opacity="0.55"/>` +
-    `<rect x="0" y="0" width="2" height="2" fill="${color}"/>` +
-    `<rect x="4" y="2" width="2" height="2" fill="${color}"/>` +
-    `<rect x="2" y="4" width="2" height="2" fill="${color}"/>` +
-    `<rect x="2" y="0" width="2" height="2" fill="#fff" fill-opacity="0.18"/>` +
-    `<rect x="0" y="4" width="2" height="2" fill="#fff" fill-opacity="0.12"/>` +
+    `<pattern id="dither-${phase}" width="${width}" height="${height}" patternUnits="userSpaceOnUse">` +
+    `<rect width="${width}" height="${height}" fill="${color}" fill-opacity="0.5"/>` +
+    blocks.join('') +
     `</pattern>`
   )
 }
