@@ -73,6 +73,15 @@ type Copy = {
   afterStepRead?: () => Promise<void>
   // While set, a prompt beneath the mod is dropped with this reason (M210).
   dropSubmit?: string
+  // The command and argument of each slash command run that reached beneath
+  // the mod, the text and mode of each prompt-box fill, and the text of
+  // each toast (M212).
+  commands?: { command: string; args: string }[]
+  fills?: { text: string; mode: string }[]
+  toasts?: string[]
+  // While set, a slash command run beneath the mod throws this message
+  // (M212).
+  runThrows?: string
 }
 
 function copyOf(name: string): Copy {
@@ -130,6 +139,18 @@ function seat(on: On, copy: Copy) {
     return { text: e.text, origin: e.origin }
   })
   on('skill.prompt', async ($, e) => ({ text: e.text }))
+  on('command.run', async ($, e) => {
+    copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
+    if (copy.runThrows !== undefined) throw new Error(copy.runThrows)
+    return { text: '' }
+  })
+  on('prompt.fill', async ($, e) => {
+    copy.fills = [...(copy.fills ?? []), { text: e.text, mode: e.mode }]
+    return { isFilled: true }
+  })
+  on('ui.toast', async ($, e) => {
+    copy.toasts = [...(copy.toasts ?? []), e.text]
+  })
   on('tool.call', { tool: CHAPTER_TOOL }, async () => ({ result: 'Chapter marked' }))
   on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
   // The engine's own drawing of the band slot, which the mod draws its rows
@@ -464,19 +485,31 @@ function alone(name: string, id: string): Copy {
 // only where none is found (M205).
 const hasRoadmap = (name: string) => FIXTURES[name].next !== null
 
+// The next-step and status Buttons (M212).
+const ACTION_KEYS = ['cairn-next', 'cairn-status']
+
+// Whether a fixture's band carries the action Buttons at 120 columns with
+// `skill` running: only with no cairn skill running and a next step that
+// names a milestone, read from the fixture's `next`, which
+// scripts/cairn_next.py wrote (M212 AC1, AC2). Every skill in SKILLS is a
+// cairn skill.
+const actsAt120 = (name: string, skill: string | null = null) => skill === null && (FIXTURES[name].next?.id ?? null) !== null
+
 // The band's Buttons: the open button and then the close button on a row
-// drawn from a found ROADMAP, the close button alone otherwise (M205 AC4).
-const buttonKeys = (name: string) => (hasRoadmap(name) ? ['cairn-open', 'cairn-close'] : ['cairn-close'])
+// drawn from a found ROADMAP, the close button alone otherwise (M205 AC4),
+// and the two action Buttons before them where `actions` is set (M212).
+const buttonKeys = (name: string, actions = false) =>
+  hasRoadmap(name) ? [...(actions ? ACTION_KEYS : []), 'cairn-open', 'cairn-close'] : ['cairn-close']
 
 // The row's right group ends in the close button, and the open button sits
 // two places before it where the fixture has a ROADMAP.
-async function closesFirst(ui: Ui, name: string) {
+async function closesFirst(ui: Ui, name: string, actions = false) {
   const right = kids(await firstRow(ui))[1]
   const last = kids(right)[kids(right).length - 1]
   expect(last.type).toBe('Button')
   expect(keyOf(last)).toBe('cairn-close')
   if (hasRoadmap(name)) expect(keyOf(kids(right)[kids(right).length - 3])).toBe('cairn-open')
-  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(buttonKeys(name))
+  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(buttonKeys(name, actions))
 }
 
 // The close Button.
@@ -635,7 +668,7 @@ describe('one row while the band shows (M197 AC5)', () => {
               return
             }
             expect(await rowKeys(ui)).toEqual([key])
-            await closesFirst(ui, name)
+            await closesFirst(ui, name, actsAt120(name, skill))
           },
           $,
         )
@@ -911,7 +944,7 @@ describe('the close button (M194 AC2)', () => {
         const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
         expect(await lines(ui)).toEqual([SHOWN[name], ENGINE])
         const buttons = await ui.findAll({ type: 'Button' })
-        expect(buttons.map(keyOf)).toEqual(buttonKeys(name))
+        expect(buttons.map(keyOf)).toEqual(buttonKeys(name, actsAt120(name)))
         const button = await closeButton(ui)
         expect(button.props.role).toBe('dismiss')
         expect(button.props.plain).toBe(PLAIN[surface])
@@ -1556,7 +1589,7 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
         view,
         async ui => {
           expect(await rowKeys(ui)).toEqual([key])
-          await closesFirst(ui, 'six-active')
+          await closesFirst(ui, 'six-active', actsAt120('six-active', skill))
         },
         $,
       )
@@ -1579,7 +1612,7 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
         BAND,
         async ui => {
           expect(await lines(ui)).toEqual([text, ENGINE])
-          await closesFirst(ui, name)
+          await closesFirst(ui, name, actsAt120(name))
         },
         $,
       )
@@ -2689,4 +2722,153 @@ describe('the desktop draws the track as an Svg, and the terminal as braille (M2
     const want = expectedFlow('no-active', null) as Expected
     checkSource(trackSvg(idleFlow(), 84), want, 84, 'Planned')
   })
+})
+
+// The command and argument a press of the next-step Button runs, read from
+// the fixture's `next`, which scripts/cairn_next.py wrote: `cairn:` and the
+// command without its slash, and the milestone id (M212 AC1).
+function nextRun(name: string): { command: string; args: string } {
+  const next = FIXTURES[name].next as { command: string; id: string }
+  return { command: `cairn:${next.command.slice(1)}`, args: next.id }
+}
+const STATUS_RUN = { command: 'cairn:milestone', args: '' }
+
+// The action Buttons' keys as drawn.
+async function actionKeys(ui: Ui): Promise<string[]> {
+  return (await ui.findAll({ type: 'Button' })).map(keyOf).filter((k): k is string => ACTION_KEYS.includes(k ?? ''))
+}
+
+const PRESSED = ['single-in-progress', 'states-review', 'idle-order', 'mixed']
+
+describe('the next-step and status Buttons run their commands (M212 AC1)', () => {
+  test('the pressed fixtures cover resume, review, and start, and a band row that is not the next step', () => {
+    expect(PRESSED.map(name => FIXTURES[name].next?.action)).toEqual(['resume', 'review', 'implement', 'review'])
+    // On mixed the band shows M012 and the next step names M010.
+    expect([shownId('mixed'), FIXTURES.mixed.next?.id]).toEqual(['M012', 'M010'])
+  })
+
+  for (const name of PRESSED) {
+    for (const surface of SURFACES) {
+      test(`${name}: each press runs its command (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+        await ui.press({ key: 'cairn-next' })
+        expect(copy.commands).toEqual([nextRun(name)])
+        await ui.press({ key: 'cairn-status' })
+        expect(copy.commands).toEqual([nextRun(name), STATUS_RUN])
+        expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe('the action Buttons hide while a cairn skill runs or a turn works (M212 AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`a running cairn skill hides them, and its end brings them back (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone-implement')
+      expect(await actionKeys(ui)).toEqual([])
+      expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(['cairn-open', 'cairn-close'])
+      await $.classic.Stop(stopWith('empty'))
+      expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+      await ui.unmount()
+    })
+
+    test(`a working turn hides them (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const working = { ...BAND, props: { ...BAND.props, isWorking: true } }
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...working })) as Ui
+      expect(await actionKeys(ui)).toEqual([])
+      expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual(['cairn-open', 'cairn-close'])
+      await ui.unmount()
+    })
+  }
+})
+
+describe('a refused run appends the command line to the prompt box and toasts (M212 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`each Button falls back when the run throws (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.runThrows = 'no such command here'
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await ui.press({ key: 'cairn-next' })
+      expect(copy.fills).toEqual([{ text: '/cairn:milestone-implement M002', mode: 'append' }])
+      expect(copy.toasts?.length).toBe(1)
+      expect(copy.toasts?.[0]).toContain('no such command here')
+      await ui.press({ key: 'cairn-status' })
+      expect(copy.fills).toEqual([
+        { text: '/cairn:milestone-implement M002', mode: 'append' },
+        { text: '/cairn:milestone', mode: 'append' },
+      ])
+      expect(copy.toasts?.length).toBe(2)
+      expect(copy.toasts?.[1]).toContain('no such command here')
+      await ui.unmount()
+    })
+  }
+})
+
+// A drawn element as plain data, its function props left out, so two
+// drawings of one row compare whole.
+function shapeOf(node: unknown): unknown {
+  if (node === null || typeof node !== 'object') return node
+  const el = node as Element
+  const props = Object.fromEntries(Object.entries(el.props ?? {}).filter(([, v]) => typeof v !== 'function'))
+  return { type: el.type, key: keyOf(el), props, children: (el.children ?? []).map(shapeOf) }
+}
+
+describe('the action Buttons give way before the title loses its room (M212 AC4)', () => {
+  // The cases of the M197 sweep: every fixture's row alone and the idle rows.
+  const CASES: { name: string; key: string; copy: () => Copy }[] = [
+    ...Object.keys(FIXTURES).flatMap(name => FIXTURES[name].rows.map(row => ({ name, key: `${row.id}-row`, copy: () => alone(name, row.id) }))),
+    ...Object.keys(IDLE_DRAWN).map(name => ({ name, key: 'idle-row', copy: () => copyOf(name) })),
+  ]
+  test('the sweep has cases and covers 40 to 200 columns', () => {
+    expect(CASES.length).toBeGreaterThan(20)
+    expect([WIDTHS.length, WIDTHS[0], WIDTHS[160]]).toEqual([161, 40, 200])
+  })
+
+  for (const { name, key, copy } of CASES) {
+    test(`${name}: ${key}`, async ($, on) => {
+      seat(on, copy())
+      await $.turn.complete(turn())
+      const problems: string[] = []
+      for (const surface of SURFACES) {
+        const shown: number[] = []
+        for (const columns of WIDTHS) {
+          const view = at(columns)
+          const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...view })) as Ui
+          const [row] = await ui.findAll({ key })
+          const acts = await actionKeys(ui)
+          await ui.unmount()
+          if (acts.length === 2) {
+            shown.push(columns)
+            const { room, need } = titleRoom(row, columns, textOf(layout(row).text))
+            if (room < need) problems.push(`${surface} at ${columns}: room ${room} < ${need}`)
+          } else if (acts.length === 0) {
+            const working = { ...view, props: { ...view.props, isWorking: true } }
+            const still = (await $.ui.mount({ plugin: 'cairn', surface, ...working })) as Ui
+            const [plain] = await still.findAll({ key })
+            await still.unmount()
+            if (JSON.stringify(shapeOf(row)) !== JSON.stringify(shapeOf(plain))) problems.push(`${surface} at ${columns}: tree differs`)
+          } else {
+            problems.push(`${surface} at ${columns}: ${acts.join(', ')} alone`)
+          }
+        }
+        const run = shown.length === 0 ? [] : WIDTHS.filter(c => c >= shown[0])
+        if (JSON.stringify(shown) !== JSON.stringify(run) || !shown.includes(120)) {
+          problems.push(`${surface}: Buttons at ${shown[0] ?? 'no width'} to ${shown[shown.length - 1] ?? '-'}, ${shown.length} widths`)
+        }
+      }
+      expect(firstFew(problems)).toEqual([])
+    })
+  }
 })

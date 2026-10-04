@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M212: Buttons on the status band
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the band draws in every adopter's session   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m212-band-buttons   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -106,7 +106,7 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Write the AC1 to AC3 cases in `hooks/status/band.test.tsx` first
+- [x] T1: Write the AC1 to AC3 cases in `hooks/status/band.test.tsx` first
       and see them red: capture presses with `command.run`, `prompt.fill`,
       and `ui.toast` hooks beneath the mod, keyed Buttons found by
       `findAll`.
@@ -139,6 +139,9 @@ narrow widths before the title loses its room. A CHANGELOG entry.
 - 2026-10-04: audit note, no change: the next-step press after a merge runs the next milestone's implement without the `/clear` that D-148's close block puts first; the press is the operator's own act, so the CHANGELOG entry says the press does not clear the context.
 - 2026-10-04: plan gate chose `mode: 'append'` for the fallback fill over `replace` because `replace` wipes a typed draft; falsified by a live look where the appended command does not run as typed.
 - 2026-10-04: plan gate chose fixed `cairn:<skill>` names over looking each name up in `$.command.list()` because the mod ships inside the plugin, whose skills are `cairn:<name>` (M195 lesson); falsified by an install where the band loads and a `cairn:` command is unknown (AC3's fallback then fills the box).
+- 2026-10-04: implement started on branch m212-band-buttons; the untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
+- 2026-10-04: implement chose plain Buttons labeled `Resume`, `Review`, or `Start` and `Status`, drawn only when the row is at its fullest form (track at 52 columns, or the long warning label) and the title keeps its room with them counted; plain because an idle row at 120 columns leaves 20 columns and a bracketed pair takes 24; the fullest-form rule because a post-hoc fit check showed buttons at 40 to 47 columns on an idle row and not above, which breaks AC4's one run.
+- 2026-10-04: T1 done: AC1 to AC4 cases written in `band.test.tsx`, and the M194, M197, and M199 cases that list the band's Buttons now expect the two action Buttons at 120 columns with no cairn skill running; `claude plugin test .` red by design, 77 fail (the M212 cases and those updated cases), 1000 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
