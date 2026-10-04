@@ -1806,7 +1806,11 @@ describe('the desktop draws the track at every width from 40 to 200 columns (M20
       const row = rowOf(name, id)
       const problems: string[] = []
       for (const columns of WIDTHS) {
-        const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(columns) })) as Ui
+        // Drawn while a turn works, so the row has no action Buttons and the
+        // track takes the columns this rule gives it; the M212 AC4 sweep
+        // covers the row with them.
+        const view = { ...at(columns), props: { ...at(columns).props, isWorking: true } }
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...view })) as Ui
         const [drawn] = await ui.findAll({ key: `${id}-row` })
         const { right } = layout(drawn)
         const svgs = below(drawn, 'Svg')

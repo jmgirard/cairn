@@ -289,14 +289,15 @@ export function bandLines(row: BandRow, columns: number, close = 0): BandLine[] 
 // The warning label of a row whose counts cannot be read, at its full width.
 const LONG_WARNING = 'no milestone file'
 
-// Whether a drawn line has room for the action Buttons (M212): the line is
-// at its fullest form, its track at TRACK_COLUMNS or its long warning label,
-// and the title keeps its room with `reserved` columns taken for the close
-// gap and all the Buttons. A line keeps its fullest form at every wider
-// band, and the title's room then grows with the band, so the widths that
-// show the Buttons are one run up to any wider band.
+// Whether a line drawn with `reserved` columns taken for the close gap and
+// all the Buttons has room for the action Buttons (M212): the line has its
+// track, or its long warning label, and the title keeps its room. The track
+// gives up its columns to the Buttons down to MIN_TRACK_COLUMNS. A line that
+// has its track or its long label keeps it at every wider band, and the
+// title's room then stays at its need or grows, so the widths that show the
+// Buttons are one run up to any wider band.
 export function actionsFit(line: BandLine, columns: number, reserved: number): boolean {
-  const full = line.track === undefined ? line.tail[0]?.text === LONG_WARNING : line.track.columns === TRACK_COLUMNS
+  const full = line.track !== undefined || line.tail[0]?.text === LONG_WARNING
   if (!full) return false
   const taken = headWidth(line.id) + GAP + spansWidth(line.tail) + (line.track?.columns ?? 0) + reserved
   return columns - taken >= textNeed(line.title)

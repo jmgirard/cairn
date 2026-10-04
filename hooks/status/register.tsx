@@ -295,20 +295,21 @@ export const register: Register = on => {
     // A row drawn from a found ROADMAP carries the pane's open button (M205).
     const { found: canOpen, next: nextStep } = await read($, pane)
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
-    const lines = stepLines(rows, current, e.props.bodyColumns, close, workable)
     // The next-step and status Buttons (M212) show while no cairn skill's
     // step is set and no turn is working, on a row that has room for them
-    // (band.ts `actionsFit`); the rest of the row draws as it does without
-    // them. The next step is the pane's, which names a milestone whenever
-    // the band draws a row.
+    // (band.ts `actionsFit`). The track gives up columns to them; without
+    // them the row draws as it did before M212. The next step is the
+    // pane's, which names a milestone whenever the band draws a row.
     const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
     const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
     // Each action Button draws with its chrome, so the terminal draws it as
     // `[ label ]`: its label and 4 columns. The two sit side by side, with
     // one space before the open button.
     const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + width(STATUS_LABEL) + 4 + 1
-    const acts =
-      canAct && lines.length > 0 && actionsFit(lines[0], e.props.bodyColumns, close + actionColumns)
+    const reserved = close + actionColumns
+    const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable) : []
+    const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
+    const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable)
     const nextRun = nextStep === null ? null : { command: `cairn:${nextStep.command.slice(1)}`, args: nextStep.id ?? '' }
     const spans = (list: Span[]) =>
       list.map(span => (
