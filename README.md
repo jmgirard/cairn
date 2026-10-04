@@ -73,7 +73,7 @@ Run `/milestone` any time you're unsure where things stand.
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
 one row for the milestone in flight, or between milestones for the next one
-you can start. The milestone in flight is the first `in-progress` row of
+you can start, or a row to start planning when there is no such milestone. The milestone in flight is the first `in-progress` row of
 `cairn/ROADMAP.md`, else its first `review` row. While `/milestone-review`
 runs, it is the first `review` row when one exists. The row gives no sign
 of the other active milestones. The id in bold and the milestone's title
@@ -175,8 +175,19 @@ M021 Waiting to start  [track] /milestone-implement M021
 ```
 
 In a narrow window the idle row drops its track, and then its command, so
-that the title keeps room. With no workable planned milestone, the band
-draws nothing.
+that the title keeps room.
+
+With no active milestone and no workable planned milestone, the band shows
+the empty row: `No milestone ready` in gray, with no id and no track. A
+planned milestone that waits on a dependency, or a `blocked` one, does not
+make a milestone workable, so the empty row shows then too. The row
+carries two buttons before its `≡` and close buttons. They show while no
+cairn skill runs and Claude is not working, in a band 37 columns wide or
+more. `Plan` runs `/cairn:milestone-plan` with no
+arguments, and `Status` runs `/cairn:milestone`. A press runs the command
+as if you typed it, and a second press while the first run is going does
+nothing. If the run is refused, the command goes after the text in the
+prompt box, and a toast says why.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
 app a `✕` that is dim at rest. On a row drawn from a ROADMAP, a `≡`
@@ -188,7 +199,8 @@ to `review`, or a milestone that becomes active or leaves both statuses,
 shows the band again. A cairn skill that starts or ends keeps it hidden,
 unless `/milestone-review` moves the band to another row, a `review` row
 when an `in-progress` row would show without it. A hidden idle row shows
-again when another milestone takes its place. A checked box or an edited title does not bring the band back. A
+again when another milestone takes its place. A hidden empty row shows
+again when a milestone becomes active or workable. A checked box or an edited title does not bring the band back. A
 session end shows a hidden band again, whatever its reason. In the desktop
 app, a `/clear` stops the session, and the band draws again at your next
 message. If the band finds the ROADMAP but cannot read it, or the file is
