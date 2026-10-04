@@ -69,7 +69,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, and the pane's percent, headings, meters, and Next pill in M208).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -199,7 +199,19 @@ transitions, human-gated merges, and a domain verification doctrine.
   key, and to that count where no comment sits in the section. The pane draws them only
   while no row is active. `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
-  M205 live look).
+  M205 live look). A line's lead and tail Boxes keep their width with
+  `flexShrink: 0`, and its text Box shrinks with `minWidth: 0`, so a long
+  text is cut before the tail; the line Box also carries `minWidth: 0`
+  (LESSONS M194), and the live look is what shows the cut (M208).
+  Each head line's tail is the band's percent for the row, from `flowOf`
+  over the `band` value's counts, which `ui.render` reads beside `pane`.
+  The rest of the M208 look is the operator's pick from browser
+  prototypes: a blank row, a `▎`, and a gray bold uppercase label for each
+  section heading, eight `■`/`□` squares beside the Tasks and Criteria
+  counts, and the Next command in a pill. At the live look the operator
+  asked for the phase colors (`FLOW_COLORS`): a milestone's `▎` marks and
+  `■` squares take its phase's color, the queue's `▎` marks take plan's
+  blue, and the pill takes the color of the phase its command runs.
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),

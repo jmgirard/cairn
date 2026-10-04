@@ -33,7 +33,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // closes it, or from the band's open button, which a row drawn from a found
 // ROADMAP carries beside the close button. It shows the active milestones
 // in full and the queue that scripts/cairn_next.py prints (pane.ts), from
-// the same refreshes as the band.
+// the same refreshes as the band. A head line whose file reads ends with
+// the band's percent for its row, so the pane reads the `band` value too
+// (M208).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -122,14 +124,17 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const { Box, Text } = $.ui.resolve(e)
-    const lines = paneLines(await read($, pane))
-    // A line's lead keeps its width, and its text takes the room left: cut
-    // to one line with an ellipsis, or wrapped for the goal's lines.
-    // A Text drops its `key`, so each line's key sits on a Box.
+    const lines = paneLines(await read($, pane), (await read($, band)).rows)
+    // A line's lead and tail keep their width, and its text takes the room
+    // left between them: cut to one line with an ellipsis, or wrapped for
+    // the goal's lines. The line Box may shrink below its content's width,
+    // so a long text is cut rather than pushing the tail past the edge
+    // (M208, LESSONS M194). A Text drops its `key`, so each line's key sits
+    // on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
         {lines.map(line => (
-          <Box key={line.key} paddingLeft={line.indent}>
+          <Box key={line.key} paddingLeft={line.indent} minWidth={0}>
             {line.lead.length === 0 ? null : (
               <Box key={`${line.key}-lead`} flexShrink={0}>
                 {line.lead.map(span => (
@@ -144,6 +149,15 @@ export const register: Register = on => {
                 <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
                   {line.text.text}
                 </Text>
+              </Box>
+            )}
+            {line.tail === undefined ? null : (
+              <Box key={`${line.key}-tail`} flexShrink={0}>
+                {line.tail.map(span => (
+                  <Text wrap="truncate-end" {...style(span)}>
+                    {span.text}
+                  </Text>
+                ))}
               </Box>
             )}
           </Box>

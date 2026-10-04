@@ -2,7 +2,8 @@ import { describe, expect, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
-import { CHECKED_MARK, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
+import { flowOf, width } from './band'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
 import { listNames } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -238,7 +239,12 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
         // The milestones in ROADMAP order, and no others.
         expect(keysLike(lines, /-head$/).filter(k => /^M\d+-head$/.test(k))).toEqual(want.map(row => `${row.id}-head`))
         for (const row of want) {
-          expect(textAt(lines, `${row.id}-head`)).toBe(`${PHASE_LABEL[row.status]} ${row.id}  ${row.title}`)
+          // The head line ends with the band's percent for a row whose file
+          // reads (M208 AC1).
+          const band = FIXTURES[name].rows.find(b => b.id === row.id && b.status === row.status)
+          const percent = row.file === null || band === undefined ? null : flowOf(band)?.percent
+          const tail = percent === null || percent === undefined ? '' : `  ${percent}%`
+          expect(textAt(lines, `${row.id}-head`)).toBe(`${PHASE_LABEL[row.status]} ${row.id}  ${row.title}${tail}`)
           const file = row.file
           if (file === null) {
             expect(textAt(lines, `${row.id}-nofile`)).toBe(NO_FILE)
@@ -289,6 +295,8 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
   test('the domain reaches every recommended command', () => {
     const commands = new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.command))
     expect([...commands].sort()).toEqual(['/milestone-implement', '/milestone-plan', '/milestone-review'])
+    // Each one has a phase for the Next pill's color (M208 review).
+    expect(Object.keys(COMMAND_PHASE).sort()).toEqual([...commands].sort())
     expect(WITH_ROADMAP.some(name => (FIXTURES[name].next?.waiting.length ?? 0) > 0)).toBe(true)
   })
 
@@ -300,7 +308,8 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         const lines = await paneLines($, surface)
         const next = FIXTURES[name].next
         if (next === null) throw new Error('a fixture with a ROADMAP has a next step')
-        expect(textAt(lines, 'next')).toBe(`Next  ${next.id === null ? next.command : `${next.command} ${next.id}`}`)
+        // The command sits in a pill, one space of padding each side (M208).
+        expect(textAt(lines, 'next')).toBe(`Next   ${next.id === null ? next.command : `${next.command} ${next.id}`} `)
         // Every id opens with `M`, and the heading lines' keys end in `head`.
         expect(keysLike(lines, /^workable-M/)).toEqual(FIXTURES[name].workable.map(id => `workable-${id}`))
         expect(keysLike(lines, /^waiting-M/)).toEqual(next.waiting.map(row => `waiting-${row.id}`))
@@ -331,7 +340,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       seat(on, copyOf('candidates'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'candidates-head')).toBe('Candidates 9')
+      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 9')
       const rows = keysLike(lines, /^candidate-\d+$/)
       expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_LINES)
       // The section comes after the queue.
@@ -404,10 +413,222 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
           expect(keysLike(lines, /^candidate/)).toEqual([])
           return
         }
-        expect(textAt(lines, 'candidates-head')).toBe(`Candidates ${candidates.length}`)
+        expect(textAt(lines, 'candidates-head')).toBe(`▎ CANDIDATES ${candidates.length}`)
         expect(keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))).toEqual(
           candidates.map(row => `${PRIORITY_MARK[row.priority].text} ${row.title}`),
         )
+      })
+    }
+  }
+})
+
+// M208: the operator's picked look. The values below are written out by
+// hand from the fixtures.
+const view = (bodyColumns: number) => ({ ...PANE_VIEW, props: { ...PANE_VIEW.props, bodyColumns } })
+const ORANGE_RGB = 'rgb(194,122,92)'
+const GREEN_RGB = 'rgb(106,165,122)'
+const BLUE_RGB = 'rgb(110,140,190)'
+const WHITE_RGB = 'rgb(255,255,255)'
+
+async function mountPane($, surface: (typeof SURFACES)[number], bodyColumns = 60) {
+  return (await $.ui.mount({ plugin: 'cairn', surface, ...view(bodyColumns) })) as Ui
+}
+async function boxOf(ui: Ui, key: string): Promise<Element | undefined> {
+  return (await ui.findAll({ key }))[0]
+}
+// The Text children of a line's lead, text, or tail Box.
+async function partOf(ui: Ui, key: string): Promise<Element[]> {
+  const box = await boxOf(ui, key)
+  return box === undefined ? [] : kids(box)
+}
+
+describe('the head line ends with the band percent (M208 AC1)', () => {
+  // M002 as a review row: one checked criterion, one open, and one open box
+  // inside a comment, which the band counts and the pane's items do not.
+  // Band: review 1/3, so floor(100 × (1 + 1 + 1/3) / 3) = 77. Over the
+  // pane's items it would be 1/2, so 83.
+  const REVIEW_FILE = [
+    '# M002: Add the export command',
+    '',
+    '## Goal',
+    '',
+    'Export things.',
+    '',
+    '## Acceptance criteria',
+    '',
+    '- [x] AC1: done.',
+    '<!--',
+    '- [ ] AC9: hidden in a comment.',
+    '-->',
+    '- [ ] AC2: open.',
+    '',
+    '## Tasks',
+    '',
+    '- [x] T1: Write the parser.',
+    '',
+  ].join('\n')
+  const reviewCopy = () => {
+    const copy = copyOf('single-in-progress')
+    copy.files['/cairn/ROADMAP.md'] = copy.files['/cairn/ROADMAP.md'].replace(
+      '| M002 | Add the export command | in-progress |',
+      '| M002 | Add the export command | review |',
+    )
+    copy.files[M002] = REVIEW_FILE
+    return copy
+  }
+
+  for (const surface of SURFACES) {
+    test(`an in-progress row, a review row, and a row with no file (${surface})`, async ($, on) => {
+      // pane-full: M080 in-progress, tasks 1/3, so floor(100 × (1 + 1/3) / 3) = 44.
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      expect((await partOf(ui, 'M080-head-tail')).map(textOf).join('')).toBe('  44%')
+      // M082's file cannot be read: no percent, and its warning line stays.
+      expect(await boxOf(ui, 'M082-head-tail')).toBe(undefined)
+      expect(textOf((await partOf(ui, 'M082-nofile-text'))[0])).toBe(NO_FILE)
+      // No track on any head line: no desktop Svg and no terminal braille.
+      expect(await ui.findAll({ type: 'Svg' })).toEqual([])
+      for (const id of ['M080', 'M081', 'M082']) {
+        expect([id, /[⠀-⣿]/.test(textOf((await boxOf(ui, `${id}-head`)) as Element))]).toEqual([id, false])
+      }
+      await ui.unmount()
+    })
+
+    test(`a review row takes the band's count, not the pane's items (${surface})`, async ($, on) => {
+      seat(on, reviewCopy())
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'M002-head')).toBe('review M002  Add the export command  77%')
+      // The pane's own items hold two criteria, one checked.
+      expect(keysLike(lines, /^M002-criterion-\d+$/).length).toBe(2)
+    })
+
+    test(`at 44 columns a long title leaves the percent in its own unshrinking Box (${surface})`, async ($, on) => {
+      seat(on, copyOf('long-title'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface, 44)
+      const head = await boxOf(ui, 'M060-head')
+      if (head === undefined) throw new Error('no M060 head line')
+      expect(kids(head).map(keyOf)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail'])
+      expect(kids(head)[2].props.flexShrink).toBe(0)
+      const title = textOf(kids(await boxOf(ui, 'M060-head-text') as Element)[0])
+      expect(title.length).toBeGreaterThan(44)
+      expect((await partOf(ui, 'M060-head-tail')).map(textOf).join('')).toMatch(/^ {2}\d+%$/)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`partly checked and all checked (${surface})`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      // M080 tasks 1/3: three of eight filled, in the implement color.
+      expect(textAt(lines, 'M080-tasks-head')).toBe('▎ TASKS 1/3 ■■■□□□□□')
+      // M081 tasks 1/1: all eight filled.
+      expect(textAt(lines, 'M081-tasks-head')).toBe('▎ TASKS 1/1 ■■■■■■■■')
+      const ui = await mountPane($, surface)
+      const lead = await partOf(ui, 'M080-tasks-head-lead')
+      expect(lead.find(t => textOf(t) === '■■■')?.props.color).toBe(ORANGE_RGB)
+      expect(lead.find(t => textOf(t) === '□□□□□')?.props.color).toBe('subtle')
+      const review = await partOf(ui, 'M081-tasks-head-lead')
+      expect(review.find(t => textOf(t) === '■■■■■■■■')?.props.color).toBe(GREEN_RGB)
+      await ui.unmount()
+    })
+
+    test(`all open (${surface})`, async ($, on) => {
+      // single-in-progress criteria 0/1: none filled.
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'M002-criteria-head')).toBe('▎ CRITERIA 0/1 □□□□□□□□')
+      const ui = await mountPane($, surface)
+      const lead = await partOf(ui, 'M002-criteria-head-lead')
+      expect(lead.find(t => textOf(t) === '□□□□□□□□')?.props.color).toBe('subtle')
+      expect(lead.some(t => textOf(t).includes('■'))).toBe(false)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('section headings and Next in the set-off form (M208 AC3)', () => {
+  // The accent takes the phase color: the milestone's own for its sections
+  // (M080 in implement, M081 in review), and plan's for the queue.
+  const HEADS: [string, string, string, string][] = [
+    ['pane-full', 'M080-goal-head', 'GOAL', ORANGE_RGB],
+    ['pane-full', 'M080-tasks-head', 'TASKS', ORANGE_RGB],
+    ['pane-full', 'M080-criteria-head', 'CRITERIA', ORANGE_RGB],
+    ['pane-full', 'M080-log-head', 'WORK LOG', ORANGE_RGB],
+    ['pane-full', 'M081-goal-head', 'GOAL', GREEN_RGB],
+    ['pane-full', 'M081-tasks-head', 'TASKS', GREEN_RGB],
+    ['pane-full', 'M081-criteria-head', 'CRITERIA', GREEN_RGB],
+    ['pane-full', 'M081-log-head', 'WORK LOG', GREEN_RGB],
+    ['pane-full', 'workable-head', 'WORKABLE', BLUE_RGB],
+    ['pane-full', 'waiting-head', 'WAITING', BLUE_RGB],
+    ['candidates', 'candidates-head', 'CANDIDATES', BLUE_RGB],
+  ]
+  for (const surface of SURFACES) {
+    for (const [fixture, key, label, accent] of HEADS) {
+      test(`${key} on ${fixture} (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const lines = await paneLines($, surface)
+        // A blank row comes right before the heading.
+        const at = lines.findIndex(([k]) => k === key)
+        expect(lines[at - 1]).toEqual([`${key}-gap`, ' '])
+        const ui = await mountPane($, surface)
+        const lead = await partOf(ui, `${key}-lead`)
+        expect(textOf(lead[0])).toBe('▎')
+        expect(lead[0].props.color).toBe(accent)
+        expect(textOf(lead[2])).toBe(label)
+        expect(lead[2].props).toEqual(expect.objectContaining({ color: 'inactive', bold: true }))
+        await ui.unmount()
+      })
+    }
+
+    // The pill takes the color of the phase its command runs.
+    const PILLS: [string, string, string][] = [
+      ['pane-full', ' /milestone-review M081 ', GREEN_RGB],
+      ['single-in-progress', ' /milestone-implement M002 ', ORANGE_RGB],
+      ['all-waiting', ' /milestone-plan ', BLUE_RGB],
+    ]
+    for (const [fixture, command, color] of PILLS) {
+      test(`the Next command sits in a pill of its phase's color on ${fixture} (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [pill] = await partOf(ui, 'next-text')
+        expect(textOf(pill)).toBe(command)
+        expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: color, color: WHITE_RGB, bold: true }))
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+// The test computes no layout, so it checks the widths the line keeps and
+// the prop that lets the line shrink; the live look shows the drawing.
+describe("each line's lead and tail fit a 44-column dock, and the line may shrink (M208 AC4)", () => {
+  for (const surface of SURFACES) {
+    for (const fixture of ['pane-full', 'candidates']) {
+      test(`${fixture} (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface, 44)
+        const [root] = await ui.findAll({ key: 'cairn-pane' })
+        const lines = kids(root)
+        expect(lines.length).toBeGreaterThan(10)
+        for (const line of lines) {
+          const key = keyOf(line) ?? ''
+          const indent = (line.props.paddingLeft as number | undefined) ?? 0
+          const sum = async (part: string) => (await partOf(ui, `${key}-${part}`)).map(t => width(textOf(t))).reduce((a, b) => a + b, 0)
+          expect([key, indent + (await sum('lead')) + (await sum('tail')) <= 44]).toEqual([key, true])
+          expect([key, line.props.minWidth]).toEqual([key, 0])
+        }
+        await ui.unmount()
       })
     }
   }

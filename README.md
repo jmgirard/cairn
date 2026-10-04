@@ -206,15 +206,25 @@ conversation. In the terminal it docks beside a fullscreen conversation
 of 110 columns or more, and otherwise it sits above the prompt.
 
 For each `in-progress` or `review` milestone, the pane shows the phase,
-id, and title, and the goal from the milestone file. It lists every task
+id, and title, with the band's percent for the milestone at the end of
+that line when its file reads, and the goal from the milestone file. It lists every task
 and acceptance criterion, `✓` for a checked box and `○` for an open one,
 and the five newest work-log lines. Each item takes one line, a long item
-ends in `…`, and the goal wraps. A missing or unreadable
+ends in `…`, and the goal wraps. Each section starts after a blank row
+with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
+headings show their count and eight squares, `■` for the checked share
+and `□` for the rest. The next command sits in a pill. The `▎` and `■`
+marks of a milestone draw in its phase's color, orange for implement and
+green for review. The `▎` marks of the queue draw in the plan blue, and
+the pill draws in the color of the phase that its command runs. The
+percent counts boxes as the band does, so a box inside an HTML
+comment counts there but not in the `TASKS` and `CRITERIA` counts, and
+the two can differ. A missing or unreadable
 milestone file shows `no milestone file`. Below the milestones, the pane
 shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
-ROADMAP's candidate rows under a `Candidates` heading with their count.
+ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
 `↓` for a `[low]` one, then the row's text up to its first `: `. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not

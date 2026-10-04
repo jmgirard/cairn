@@ -4,9 +4,18 @@
 
 ### New
 
+- **A fuller look for the cairn pane.** Each active milestone's first line
+  ends with the band's percent for it when its file reads, and a long title
+  is cut before the percent. Each section starts after a blank row with a
+  `▎` and its name in gray capitals. The `TASKS` and `CRITERIA` headings
+  show their count and eight squares, `■` for the checked share and `□` in
+  gray for the rest. The next command sits in a pill. The `▎` and `■` marks
+  of a milestone draw in its phase's color, the `▎` marks of the queue
+  draw in the plan blue, and the pill draws in the color of the phase that
+  its command runs.
 - **Candidate rows in the idle cairn pane.** With no `in-progress` or
   `review` milestone, the cairn pane lists the ROADMAP's candidate rows
-  below the queue, under a `Candidates` heading with their count. Each row
+  below the queue, under a `CANDIDATES` heading with their count. Each row
   takes one line: `↑` for `[high]`, `·` for normal, and `↓` for `[low]`,
   then the row's text up to its first `: `. Rows inside an HTML comment
   are not listed.
