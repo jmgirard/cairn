@@ -126,9 +126,9 @@ Pass 2, 2026-10-04, on 13d2ce1 (main 14ec5a7 not moved).
 - Gate: `cairn_validate` exit 0. No principle changed, so `cairn_impact` skipped. Profile consistency-gate: verify passes on the review head (AC2 run), marketplace validate shows 0 `plugins[N].version` warnings, and no `CHANGELOG.md` entry is owed (no user-visible change).
 - spawned: diff-bug (internal tier, docs-only diff)
 - diff-bug #1: the changelog check is not tied to the surface tier — reject (false): the slot asks for an entry only for user-visible changes, and an internal milestone has none.
-- diff-bug #2: PROFILE.md and CLAUDE.md credit the marketplace validate to D-143, which adopted only the plugin validate and the mod test — fix now.
-- diff-bug #3: the template's warning that `claude plugin test .` runs every `*.test.ts(x)` under the folder was dropped — fix now.
+- diff-bug #2: PROFILE.md and CLAUDE.md credit the marketplace validate to D-143, which adopted only the plugin validate and the mod test — fix now, fixed c0add10.
+- diff-bug #3: the template's warning that `claude plugin test .` runs every `*.test.ts(x)` under the folder was dropped — fix now, fixed c0add10.
 - diff-bug #4: no file states the lowest Claude Code version the test-doctrine names as a dependency — follow-up, added to the candidate row "claude-plugin profile edge cases".
 - diff-bug #5: the gate re-runs verify on the same head as the AC step — reject (planned change): AC3 requires the profile's checks, and the cost is one more run.
 - diff-bug #6: the release-walk repeats steps `/cairn-release` already takes — reject (planned change): it is the shipped template's text, which AC3 requires.
-- diff-bug #7: "Skill and rulebook markdown … owes no test" is broader than D-109 — fix now.
+- diff-bug #7: "Skill and rulebook markdown … owes no test" is broader than D-109 — fix now, fixed c0add10.
