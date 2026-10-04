@@ -12,9 +12,9 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M215 | Move this repo to the claude-plugin profile | planned | — | normal | milestones/M215-plugin-profile.md |
 | M214 | Clear the prose-guard reds | done | — | normal | milestones/archive/M214-prose-guard-reds.md |
 | M213 | A Plan button on the empty band | done | — | normal | milestones/archive/M213-band-plan-row.md |
-| M212 | Buttons on the status band | done | — | normal | milestones/archive/M212-band-buttons.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
