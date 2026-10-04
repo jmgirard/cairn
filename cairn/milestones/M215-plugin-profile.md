@@ -101,6 +101,7 @@ unstaged at the user's choice.
 - 2026-10-04: review return 1: AC4 fails as written. The `test-doctrine` slot does not state that `skills/tests` gates nothing.
 - 2026-10-04: minor amendment: added T5 for review return 1, Coverage AC4 → T1, T5.
 - 2026-10-04: T5 done: test-doctrine now calls `skills/tests` "a hand-run tripwire that gates nothing". verify green: validate exit 0, scripts 397 OK, hooks 174 OK, both validates exit 0, plugin test 1105 pass. Status set to review.
+- 2026-10-04: step-7 approval: m215-plugin-profile approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
