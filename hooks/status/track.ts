@@ -3,10 +3,11 @@ import { FLOW_COLORS, FLOW_PHASES } from './band'
 
 // The desktop track (M204): an SVG of one rounded track whose three equal
 // segments run plan, implement, and review. register.tsx draws it as the
-// desktop's `Svg` element, an image, so it cannot read the app's theme keys,
-// and a `prefers-color-scheme` rule inside it follows the system setting,
-// not the app's. It uses one set of translucent grays that reads on a light
-// and a dark ground instead.
+// desktop's `Svg` element, an image, so it cannot read the app's theme
+// keys. In a browser-pane preview, a `prefers-color-scheme` rule inside such
+// an image followed the browser's setting, not the page's (M204). The track
+// uses one set of translucent grays meant for a light and a dark ground
+// instead.
 //
 // Back to front: the ground; a field of 2-pixel specks from the left edge
 // to the head (the active phase's fill edge), sparse at the left and dense
@@ -111,7 +112,9 @@ function specks(flow: Flow): string {
       const level = Math.floor(hash(cx, cy, 2) * LEVELS.length)
       const color = hash(cx, cy, 3) < 0.95 * Math.pow(t, 2.2) ? flow.phase : 'gray'
       const key = `${color}:${level}`
-      paths.set(key, [...(paths.get(key) ?? []), `M${x} ${cy * CELL}h${w}v${CELL}h-${w}z`])
+      const cells = paths.get(key) ?? []
+      cells.push(`M${x} ${cy * CELL}h${w}v${CELL}h-${w}z`)
+      paths.set(key, cells)
     }
   }
   return [...paths.entries()]
@@ -143,7 +146,9 @@ export function trackSvg(flow: Flow): string {
     `<g clip-path="url(#track)"><rect class="ground" width="${TRACK_PX}" height="${TRACK_H}" fill="${GROUND}"/>` +
     `${specks(flow)}${ticks}${marks}</g>` +
     `<rect class="pill" x="${n(pill.x)}" y="1" width="${n(pill.width)}" height="${PILL_H}" rx="${PILL_H / 2}" fill="${FLOW_COLORS[flow.phase]}"/>` +
-    `<text class="pill-text" x="${n(pill.x + PILL_PAD / 2)}" y="${TRACK_H / 2}" dominant-baseline="central" font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="#fff">` +
+    // `textLength` holds the text to the estimated width, so a wider
+    // fallback font squeezes the text rather than running past the pill.
+    `<text class="pill-text" x="${n(pill.x + PILL_PAD / 2)}" y="${TRACK_H / 2}" textLength="${n(pill.width - PILL_PAD)}" lengthAdjust="spacingAndGlyphs" dominant-baseline="central" font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="#fff">` +
     `<tspan font-weight="650">${escape(label)}</tspan>${countSpan}</text>` +
     `</svg>`
   )

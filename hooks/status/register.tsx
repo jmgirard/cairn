@@ -15,8 +15,8 @@ import { TRACK_H, TRACK_PX, trackSvg } from './track'
 // shows its label and the last chapter on that row, or on a skill row when
 // no milestone is active. With neither, an idle row names the next workable
 // planned milestone (band.ts picks the row). On the desktop, a row with
-// room draws the flow track as an `Svg` (track.ts, M204). A skill's step ends at the
-// first main-loop Stop with no background work in flight that no hook
+// room draws the flow track as an `Svg` (track.ts, M204). A skill's step
+// ends at the first main-loop Stop with no background work in flight that no hook
 // beneath blocks, or at a prompt the operator types while the session is
 // idle, unless a cairn skill's prompt was expanded since the last prompt,
 // Stop, or turn end, as a typed cairn slash command's is. So the label holds while the skill waits on background work and
@@ -167,10 +167,11 @@ export const register: Register = on => {
     const hidden = await read($, dismissed)
     if (hidden !== null && same(hidden, mark(state, current))) return next(e)
     const beneath = await next(e)
-    const elements = $.ui.resolve(e)
-    const { Box, Button, Text } = elements
+    const { Box, Button, Text } = $.ui.resolve(e)
     // The track draws on the desktop alone, as its `Svg` element (M204).
-    const Svg = e.surface === 'desktop' ? elements.Svg : undefined
+    // There the row centers its parts, since the track is taller than text.
+    const Svg = e.surface === 'desktop' ? $.ui.resolve(e).Svg : undefined
+    const center = Svg === undefined ? {} : { alignItems: 'center' as const }
     const lines = stepLines(rows, current, e.props.bodyColumns, CLOSE_COLUMNS, workable, Svg !== undefined)
     const spans = (list: Span[]) =>
       list.map(span => (
@@ -188,7 +189,7 @@ export const register: Register = on => {
     // beside it shrank to nothing. A step's arrow, its positional label, and
     // the text draw in the theme's gray with no dimColor, the label bold.
     const row = (line: BandLine, isFirst: boolean) => (
-      <Box key={line.key} justifyContent="space-between">
+      <Box key={line.key} justifyContent="space-between" {...center}>
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
           <Box key={`${line.key}-head`} flexShrink={0}>
             {spans(line.head)}
@@ -211,7 +212,7 @@ export const register: Register = on => {
             </Box>
           )}
         </Box>
-        <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP} alignItems="center">
+        <Box key={`${line.key}-right`} flexShrink={0} marginLeft={GAP} {...center}>
           {line.track !== undefined && Svg !== undefined ? (
             <Svg source={trackSvg(line.track)} alt={line.track.alt} width={TRACK_PX} height={TRACK_H} />
           ) : null}

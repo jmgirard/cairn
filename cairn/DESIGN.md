@@ -167,10 +167,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   active phase's fill edge that thicken and take the phase's color toward
   the edge, two edge marks at the thirds, item ticks in the active segment
   past the fill edge when the items are 6 pixels apart or more, and a pill
-  in the phase's color with its right edge 6 past the fill edge. The image
-  follows the system's light or dark setting, not the app's theme, so it
-  uses one set of translucent grays and no `prefers-color-scheme` rule.
-  The track's `alt` names the phase, the counts, and the percent.
+  in the phase's color with its right edge 6 past the fill edge, clamped 1
+  inside the track. An image cannot read the app's theme keys, and in a
+  browser-pane preview such an image's `prefers-color-scheme` rule followed
+  the browser, not the page, so the track uses one set of translucent grays
+  and no such rule. The track's `alt` opens with the phase, and a milestone
+  row's alt also names the counts and the percent.
   `band.ts` builds the row and `register.tsx` draws it. `reader.ts`
   mirrors the Python ROADMAP and section helpers and
   `cairn_next.workable`, held to them by shared fixtures under

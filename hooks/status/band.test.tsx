@@ -2713,6 +2713,23 @@ function checkSource(source: string, want: Expected) {
   expect(parts.join(' ')).toBe(want.pill)
 }
 
+// The desktop row's props, which the text-row suites now check on the
+// terminal alone (M204 review): the row and its right group centered, the
+// left group and its text Box shrinking with `minWidth: 0` (M194), the head
+// not shrinking, no Text leaf dim (M198), and the dim, plain `✕` (M197).
+async function desktopProps(ui: Ui) {
+  if (!(await hasCairn(ui))) return
+  const keys = await rowKeys(ui)
+  const [row] = await ui.findAll({ key: keys[0] })
+  const { left, right, head, textBox } = layout(row)
+  expect([row.props.alignItems, right.props.alignItems]).toEqual(['center', 'center'])
+  expect([left.props.flexShrink, left.props.minWidth, head.props.flexShrink]).toEqual([1, 0, 0])
+  if (textBox !== undefined) expect([textBox.props.flexShrink, textBox.props.minWidth]).toEqual([1, 0])
+  for (const leaf of leavesOf(await bandBox(ui))) expect([textOf(leaf), leaf.props.dimColor]).toEqual([textOf(leaf), undefined])
+  const [button] = await ui.findAll({ type: 'Button' })
+  expect([button.props.label, button.props.dimColor, button.props.plain]).toEqual(['✕', true, true])
+}
+
 describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
   for (const name of Object.keys(FIXTURES)) {
     for (const skill of DESKTOP_STEPS) {
@@ -2725,8 +2742,13 @@ describe('the desktop draws the track for a row in the flow (M204 AC2)', () => {
           const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...at(200) })) as Ui
           const want = expectedFlow(name, skill)
           const svgs = await ui.findAll({ type: 'Svg' })
+          await desktopProps(ui)
           if (want === null) {
             expect(svgs).toEqual([])
+            // A row outside the flow draws the terminal's text row.
+            const terminal = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...at(200) })) as Ui
+            expect(await lines(ui)).toEqual(await lines(terminal))
+            await terminal.unmount()
             await ui.unmount()
             return
           }

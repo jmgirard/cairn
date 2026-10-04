@@ -6,7 +6,8 @@
 
 - **A flow track in the desktop band.** In the desktop app, the band now
   draws one rounded track of three equal parts, plan, implement, and
-  review, in place of the bar and the counts. Small specks fill it from
+  review, in place of the bar, the counts, and the `no tasks` and
+  `all … checked` labels. Small specks fill it from
   the left to the current phase's edge, gray at first and in the phase's
   color near the edge. A pill on the edge names the phase and its counts,
   such as `Implement 1/3`, or `no tasks` when the section has no boxes.
