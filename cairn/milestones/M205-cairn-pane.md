@@ -122,3 +122,37 @@ Evidence run 2026-10-04 on `m205-cairn-pane` at 1d4d74d, which contains `origin/
 - AC6: no evidence yet. The operator's desktop look is asked at the merge question.
 
 Consistency gate: `cairn_validate.py` all checks passed. No principle changed, so `cairn_impact` was skipped. The profile's consistency-gate slot names no toolchain checks.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: `/cairn-pane` closes the pane whenever `$.ui.panes()` lists it, so a second run closes an unplaced pane or one behind another tab — fix now, fixed 64fe152 (closes only when `isPlaced` and `isShown`, else opens).
+- diff-bug #2: the test's `ui.open` and `ui.panes` mocks drop unplaced panes and report every pane placed, which hid #1 — fix now, fixed 64fe152.
+- diff-bug #3: a ROADMAP with a duplicate id gives duplicate pane line keys — follow-up, row "Pane follow-ons (M205 review)".
+- diff-bug #4: the desktop may draw the plain `≡` Button as a native button wider than the 2 columns reserved — follow-up, same row.
+- diff-bug #5: the AC5 cases mount a new pane after each event, so they prove the state changed, not that an open pane redraws — fix now, fixed 64fe152 (one mount across the event).
+- diff-bug #6: a found but unreadable ROADMAP before any good refresh makes the command print `no cairn ROADMAP found` — follow-up, same row.
+- diff-bug #7: a throw from the refresh skips the command's registration, and a module reload may drop it — follow-up, same row.
+- diff-bug #8: a refused `$.ui.open` or `$.ui.close` throws from the command, and the button ignores an unplaced open — fix now, fixed 64fe152 (a `cairn pane:` line, and a toast from the button).
+- diff-bug #9: the band counts a box inside an HTML comment and the pane does not — follow-up, same row.
+- diff-bug #10: whitespace parity gaps between JS and Python (BOM, `\x1f`) — follow-up, same row.
+- diff-bug #11: the Python test matched `unreadable` paths as `/cairn/` plus the row path, wrong for a fixture whose root is a subdirectory — fix now, fixed 64fe152.
+- diff-bug #12: `CairnPaneState` in `types/index.d.ts` and `PaneState` in `reader.ts` are separate copies — follow-up, same row.
+- diff-bug #13: `refresh` writes `band` and `pane` in two updates, so one drawing can mix them — follow-up, same row.
+- diff-bug #14: `render()` lists the archive three times — follow-up, same row.
+- diff-bug #15: README said the command prints `no cairn ROADMAP found` outside a repo, but with a pane open it closes it — fix now, fixed 64fe152 (README and CHANGELOG).
+- blame-history #1: a throw in the new pane parsing now keeps the band's old rows too — follow-up, same row.
+- blame-history #2: band and pane counts differ on comment boxes — follow-up, same as diff-bug #9.
+- blame-history #3: every band threshold rose by 2 columns, so a 92 to 93 column desktop loses the track — reject, planned change (AC4's button).
+- blame-history #4: the `≡` button opens and does not toggle — reject, planned change (AC4 says the press opens).
+- blame-history #5: registration after a throwing refresh — follow-up, same as diff-bug #7.
+- blame-history #6: the command's `found` can be stale after a failed read — follow-up, same as diff-bug #6.
+- blame-history #7: the archive listed three times — follow-up, same as diff-bug #14.
+- blame-history #8: the type copies, and `reader.ts`'s header named only `workable` — fix now for the header, fixed 64fe152; the copies are follow-up, same as diff-bug #12.
+- blame-history #9: the README's 110-column claim is not traced — reject, false: the API's `UiOpenResult` doc states the 110-column dock rule, and the claim audit read it there.
+- prior-review #1: the pane joins the M200 deferred items (equal-value writes, stale rows after a move) — follow-up, same row, cross-referencing "Status mod follow-ons".
+- prior-review #2: the lead's span Texts have no key — reject, style: the band's `spans()` draws the same way and its live looks drew correctly.
+- prior-review #3: the pane's line Box has no `minWidth: 0` — follow-up, same row.
+- prior-review #4: the `pane-1` shape tag needs a bump on a later layout change — reject, false: the reviewer reports no defect now.
+- prior-review #5: the fixed phase colors and `warning` key carry the theme gap into the pane — follow-up, same row, cross-referencing "Band label colors in other themes".
+
+After the fixes: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1136 pass (4 new). A plant of the old toggle rule failed the two new AC1 cases.
