@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-04 (M208 done via PR #215 and archived. Its follow-up findings are in the "Pane look follow-ons (M208 review)" row, the `minWidth: 0` item was trimmed from "Pane follow-ons (M205 review)", and the M205 row was pruned. Validate green. Byte budgets and both doctrine modules were hand-read under cap. skills/tests 663 with the same 4 reds and 1 error, non-gating (D-109). No lesson added or retired.)_
+_Last hygiene check: 2026-10-04 (M209 dropped and archived. Hotfix #216 merged (D-148). Validate green. Byte budgets and both doctrine modules under cap. No open issues, external PRs, or outside merges.)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
