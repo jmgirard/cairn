@@ -45,8 +45,8 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - [x] T2: Give `PaneLine` a tail part and draw it in register.tsx as a `<key>-tail` Box with `flexShrink: 0`. Pass each active row's band counts to the pane, and end each head line with `flowOf`'s percent. Add the AC1 cases, with an in-memory review row whose criteria hold a comment box and a checked box.
 - [x] T3: Draw the meters and the set-off headings and `Next` line in the picked forms. Add the AC2 and AC3 cases.
 - [x] T4: Give the line Box `minWidth: 0`. Add the AC4 case.
-- [ ] T5: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `pane.ts` and `register.tsx`.
-- [ ] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal.
+- [x] T5: Update README, the DESIGN pane paragraph, the CHANGELOG, and the header comments of `pane.ts` and `register.tsx`.
+- [ ] T6: Do the live look in a new Code session (LESSONS M195), docked at 44 columns, at a wider dock, and in the terminal, at the merge question as M205 did.
 
 ## Work log
 
@@ -66,6 +66,7 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: substantive amendment: AC4 now reads "Over the `pane-full` fixture and an idle fixture with candidate rows, at `bodyColumns` 44, each line's indent plus lead width plus tail width, each counted by `width()` in `band.ts` summed over its spans, is at most 44, where a line with no tail counts 0. The Box keyed with each line's key carries `minWidth: 0`. A `pane.test.tsx` case asserts both on both surfaces." It follows from the AC1 amendment the operator chose, and the deliverable is unchanged.
 - 2026-10-04: T2, T3, T4 done. `PaneLine` gained `tail`, drawn as a `<key>-tail` Box with `flexShrink: 0`, and the line Box carries `minWidth: 0`. `paneLines` takes the band rows and ends each head line with `flowOf`'s percent. Headings are a gap line, an orange `▎`, and a gray bold uppercase label, with the count and eight `■`/`□` squares for Tasks and Criteria in the phase color. Next shows ` <command> ` in an orange pill with white text. Mod tests: 986 pass. A plant with no `minWidth: 0` and a shrinking tail failed the AC1 44-column case and all four AC4 cases, and was restored.
 - 2026-10-04: implement chose to pass the band rows to `paneLines` at render over storing a percent in the pane state, so the fixtures and the Python mirror stay unchanged. Falsified if the band and pane values drift apart in use, since `refresh` writes them in two updates.
+- 2026-10-04: T5 done: README's pane section, the DESIGN pane paragraph, a CHANGELOG entry, and the `pane.ts` and `register.tsx` header comments describe the look, and the M207 entries now name the `CANDIDATES` heading. Minor amendment: T6's live look moves to the merge question, as M205's did, so the run asks for the operator's eyes once.
 
 ## Decisions
 

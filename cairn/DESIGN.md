@@ -199,7 +199,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   key, and to that count where no comment sits in the section. The pane draws them only
   while no row is active. `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
-  M205 live look).
+  M205 live look). A line's lead and tail keep their width, and the line
+  Box carries `minWidth: 0`, so a long text is cut before the tail (M208).
+  Each head line's tail is the band's percent for the row, from `flowOf`
+  over the `band` value's counts, which `ui.render` reads beside `pane`.
+  The rest of the M208 look is the operator's pick from browser
+  prototypes: a blank row, an orange `▎`, and a gray bold uppercase label
+  for each section heading, eight `■`/`□` squares in the phase color beside
+  the Tasks and Criteria counts, and the Next command in an orange pill.
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
