@@ -41,9 +41,9 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: From the repo root, `python3 -m unittest discover -s skills/tests` exits 0 and reports no failures and no errors.
-- [ ] AC2: The branch removes one test method from `skills/tests`, `test_partial_coverage_was_trimmed_not_deleted`, and no other: `git diff <default-branch>...HEAD -- skills/tests` shows no other removed `def test_` line.
-- [ ] AC3: The active profile's `verify` slot is clean: both gating suites, `claude plugin validate`, and `claude plugin test` (`cairn/PROFILE.md`).
+- [x] AC1: From the repo root, `python3 -m unittest discover -s skills/tests` exits 0 and reports no failures and no errors.
+- [x] AC2: The branch removes one test method from `skills/tests`, `test_partial_coverage_was_trimmed_not_deleted`, and no other: `git diff <default-branch>...HEAD -- skills/tests` shows no other removed `def test_` line.
+- [x] AC3: The active profile's `verify` slot is clean: both gating suites, `claude plugin validate`, and `claude plugin test` (`cairn/PROFILE.md`).
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -99,3 +99,8 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+- 2026-10-04 AC1: from the repo root at d58db09, `python3 -m unittest discover -s skills/tests` exit 0, Ran 665 tests, OK (no failures, no errors).
+- 2026-10-04 AC2: `git diff main...HEAD -- skills/tests | grep -E '^-\s*def test_'` prints one line, `def test_partial_coverage_was_trimmed_not_deleted(self):`.
+- 2026-10-04 AC3: verify slot at d58db09, each exit code checked: scripts/tests exit 0 (397 tests, OK, 21 skipped), hooks/tests exit 0 (174, OK), `claude plugin validate` exit 0 (passed with warnings), `claude plugin test .` exit 0 (1105 tests, 0 fail), Claude Code 2.1.287.
+- 2026-10-04 consistency gate: `cairn_validate` exit 0, all checks passed. No principle changed, so `cairn_impact` is skipped. The generic profile's consistency-gate slot names no toolchain checks.
