@@ -4,6 +4,18 @@
 
 ### New
 
+- **A cairn pane.** The new `/cairn-pane` command opens a pane that shows
+  more than the band, and the same command closes it. The band's `≡`
+  button, before its close button, also opens it on a row drawn from a
+  ROADMAP. For each `in-progress` or `review` milestone, the pane shows the
+  phase, id, and title, the goal, every task and acceptance criterion with
+  `✓` or `○`, and the five newest work-log lines. Below them it shows the
+  next command, the workable planned milestones, and the planned ones that
+  wait on others, as `scripts/cairn_next.py` gives them. Each item takes
+  one line, a long item ends in `…`, and the goal wraps.
+  Outside a cairn repo the command prints `no cairn ROADMAP found`.
+  `scripts/cairn_next.py` gains `recommend` and `waiting`, and its output
+  is unchanged.
 - **A flow track in the desktop band.** In the desktop app, the band now
   draws one rounded track of three equal parts, plan, implement, and
   review, in place of the bar, the counts, and the `no tasks` and

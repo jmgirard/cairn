@@ -81,7 +81,7 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - [ ] T6: Live look. First, prototype two or three pane looks in the browser
       pane (LESSONS M204). Then ask the operator to open the chosen look in a
       new desktop Code session.
-- [ ] T7: Write the README, CHANGELOG, and DESIGN text against the code.
+- [x] T7: Write the README, CHANGELOG, and DESIGN text against the code.
       Run the verify slot.
 
 ## Work log
@@ -104,3 +104,4 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: T3 to T5 done. New `hooks/status/pane.ts` (layout), a `pane` state atom (shape `pane-1`) written at each refresh, `/cairn-pane` registered after the session-start refresh in a try, so a refused registration leaves the band drawn. The open button is the glyph `≡` and one space, 2 columns, on the first row when a ROADMAP is found. It moves every band width threshold by 2: the band tests' worked sums now add `buttons 5`, and their one-Button checks name `cairn-open` and `cairn-close`. New `hooks/status/pane.test.tsx` holds 88 cases for AC1 to AC5. Gates: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1130 pass.
 - 2026-10-04: T3 to T5 plants, each restored: a command that never closes failed AC1's toggle case, no `pane` write at refresh failed 307 cases, a chapter hook with no refresh failed AC5's chapter case, an open button that opens nothing failed both AC4 press cases, and dropped waiting rows failed 10 AC3 cases.
 - 2026-10-04: T6 browser look: four looks of this repo's real pane at 44 columns, dark and light, served from the scratchpad. The operator picked D, one line per item: items, log lines, titles, and queue rows are cut with an ellipsis, and the goal wraps. Rejected: A (items wrap in full, M205 alone ran several screens tall), B (next command first, thin rules), C (card with a phase-colored edge and a command pill). Two cases pin the wrap props. The probe mod and its log were removed. Its band-width log never reloaded, so the cause of the text-form band beside the docked pane rests on the thresholds alone: the track needs 94 columns after the open button.
+- 2026-10-04: T7 done. README gains "The cairn pane" and a sentence on the `≡` button, CHANGELOG a New entry, and DESIGN a pane paragraph in the `hooks/status/` entry, each written against the code read this session. The question-set chip said Esc closes the pane, but the API says the close mark or ctrl+x x closes it, so the README names the close mark only. Verify slot: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1132 pass. cairn_validate green.

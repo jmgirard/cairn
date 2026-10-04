@@ -239,7 +239,8 @@ In a narrow window the idle row drops its command, so that the title
 keeps room. With no workable planned milestone, the band draws nothing.
 
 The row ends in a close button: `×` in the terminal, and in the desktop
-app a `✕` that is dim at rest. The row can be a milestone row, a skill
+app a `✕` that is dim at rest. On a row drawn from a ROADMAP, a `≡`
+button before it opens the cairn pane (below). The row can be a milestone row, a skill
 row, or the idle row. Pressing the button hides the band. Until the
 session ends, the band stays hidden while three things stay the same. The
 first is the list of active milestones: their ids, their statuses, and
@@ -263,6 +264,25 @@ these. Outside a cairn repo, it draws only the skill row of
 a running cairn skill, such as `/cairn-init` in a new repo.
 It also gives way while Claude Code shows a survey there. The band draws on
 the terminal and in the desktop app.
+
+### The cairn pane
+
+The `/cairn-pane` command opens a pane that shows more than the band. Run
+it again to close the pane, or use the pane's own close mark. The band's
+`≡` button also opens it. In the desktop app the pane docks beside the
+conversation. In the terminal it docks beside a fullscreen conversation
+of 110 columns or more, and otherwise it sits above the prompt.
+
+For each `in-progress` or `review` milestone, the pane shows the phase,
+id, and title, and the goal from the milestone file. It lists every task
+and acceptance criterion, `✓` for a checked box and `○` for an open one,
+and the five newest work-log lines. Each item takes one line, a long item
+ends in `…`, and the goal wraps. A missing or unreadable
+milestone file shows `no milestone file`. Below the milestones, the pane
+shows the next command, the workable planned milestones, and the planned
+milestones that wait on others, as `scripts/cairn_next.py` gives them.
+The pane reads the files at the same moments as the band. Outside a cairn
+repo, the command opens no pane and prints `no cairn ROADMAP found`.
 
 Mods are on by default from Claude Code 2.1.287
 ([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),

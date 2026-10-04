@@ -69,7 +69,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -178,6 +178,26 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn_next.workable`, held to them by shared fixtures under
   `hooks/status/fixtures/` (`gen_fixtures.py` writes `fixtures.gen.ts` for
   the `claude plugin test` cases).
+  The cairn pane (M205) is a `Pane` with id `cairn`. A `/cairn-pane`
+  command, registered after the `session.start` refresh, closes it when
+  `$.ui.panes()` lists it open, and otherwise opens it, prints
+  `no cairn ROADMAP found` when the reader finds none, or prints the
+  engine's reason when the open is not placed. The band's first row also
+  carries an open button, a plain `≡` and one space before the close
+  button, when a ROADMAP is found, so every fit leaves 2 more columns free
+  there. `loadCairn` in `reader.ts` reads the band's state and the pane's
+  in one pass, and each refresh writes the `pane` state value beside
+  `band`. For each active row the pane state holds the goal, the
+  `## Tasks` and `## Acceptance criteria` checkbox items, a wrapped item's
+  indented lines joined, and the newest five `## Work log` lines that open
+  with `- `. HTML comments are dropped from a section before it is read, so
+  a box inside a comment is not a pane item, though the band counts it.
+  The queue is `recommend`, `workable`, and `waiting` in
+  `scripts/cairn_next.py`, which `reader.ts` mirrors and
+  `scripts/tests/test_status_fixtures.py` holds to each fixture's `pane`
+  and `next` keys. `pane.ts` lays out the lines, and each line's text is
+  cut to one line with an ellipsis, but for the goal, which wraps (the
+  M205 live look).
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
