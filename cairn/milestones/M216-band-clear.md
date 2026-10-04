@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M216: A Clear button when a cairn skill ends
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the band draws in every adopter's session   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m216-band-clear   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -86,13 +86,13 @@ review)".
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: State, tests first. Add an `ended` atom in `register.tsx`
+- [x] T1: State, tests first. Add an `ended` atom in `register.tsx`
       (shape `ended-1`), true when `classic.Stop` sets a non-null step to
       null. `prompt.submit` clears it on an idle typed prompt and puts it
       back on a drop, as it does the step (M210). `skill.prompt` and
       `session.end` clear it. Write the AC1 and AC2 cases first. The
       skill-step case asserts on `cairn-clear` while the step is set.
-- [ ] T2: Drawing and press, tests first. Draw `cairn-clear` before
+- [x] T2: Drawing and press, tests first. Draw `cairn-clear` before
       `cairn-next` while `ended` is true and the M212 show rules hold. Try
       the row with three Buttons' columns reserved, then with two, then
       with none (`actionsFit`, `register.tsx:316-322`). `pressClear` runs
@@ -121,6 +121,11 @@ review)".
 - 2026-10-04: plan gate chose a press that runs /clear at once over one that fills the prompt box, because the button shows only at a saved stop point (user's choice); falsified by a clear that loses unsaved work in a real session.
 - 2026-10-04: plan chose dropping Clear first when the row is narrow over all-or-none Buttons, because Start and Status already fit from 37 columns and Clear must not take them away; falsified by an operator who misses Clear at a narrow width.
 - 2026-10-04: collision sweep: no ROADMAP row, archive, or D-entry names a Clear button. D-148 makes the run's end a /clear point, which this serves. Inbox: 0 open issues, 0 open PRs.
+- 2026-10-04: implement started on m216-band-clear. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-04: T1 and T2 landed in one checkpoint, because the AC1 and AC2 cases observe the drawn `cairn-clear` and need T2's drawing. New `ended` atom (`ended-1`), declared in `types/index.d.ts` (plugin validate failed until it was). 26 new mod cases. A dropped typed prompt puts `ended` back only while no step is set. Mod tests 1105 to 1131, all five verify checks exit 0.
+- 2026-10-04: check discrimination: with the Stop's `ended` write planted out, 24 of the 26 new cases and the M213 empty-row case went red. The two absence cases stayed green, as they assert no Clear. Restored, then green.
+- 2026-10-04: AC4's sweep on single-in-progress shows the Clear threshold 10 columns above the two-Button threshold on both surfaces. One M213 case (`isEmptyRow` after a skill's Stop) now expects Clear first.
+- 2026-10-04: the T2 edit to `register.tsx` and some tracking edits went through a python script, not the Edit tool, against the rulebook's file-edit rule. Later edits use Edit.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

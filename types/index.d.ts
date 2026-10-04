@@ -80,6 +80,10 @@ declare module 'claude-code' {
       // True from a cairn skill's prompt until the next prompt, Stop, turn
       // end, or session end (M201).
       expanded: Shaped<boolean>
+      // True from a Stop that ends a cairn skill's step until the next idle
+      // typed prompt, cairn skill, or session end; the band then carries
+      // the Clear Button (M216).
+      ended: Shaped<boolean>
       // What the cairn pane shows, written at each refresh (M205).
       pane: Shaped<CairnPaneState>
     }
