@@ -191,9 +191,11 @@ run ingestion first (see `/milestone-brief`).
      the stop, and with it present no further reader is spawned for that
      criterion. An
      amendment executing an amendment return from `/milestone-review` writes
-     its work-log line in that skill's fixed shape —
+     its work-log line in the fixed shape
      `amendment return: AC<N> — "<amended clause, verbatim>"` — the line the
-     amendment-return count and its second-occurrence stop read (M130).
+     amendment-return count and its second-occurrence stop read (M130). This
+     step is its one writer: review's exit writes `amendment routed:`, which
+     no count reads.
      An amendment executing a return reclassified under `/milestone-review`'s
      widening test takes the narrowing repair `/milestone-plan` step 4's
      bounded-promise rule states; a wider enumeration is not an admissible

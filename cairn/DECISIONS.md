@@ -5481,3 +5481,50 @@ adds a stop with no choice the typed command lacks.
 **Consequences:** A run is one milestone: the plan question set, implement,
 review, and the merge question. The rest of D-144 stands. A later proposal
 to go on past a merge starts from this entry.
+
+### D-149 (2026-10-04): The finding-absorbing trigger of records-hygiene §7 counts a candidate row and the rows that name its title in double quotes as one group — extends M161's per-row trigger, passes D-108's door on a shipped-behavior trigger (M211)
+
+**Context:** M161 counted deferred review findings per candidate row. Review
+step 9 then filed each later milestone's findings as a new row that
+cross-references the older one, so the findings spread over rows that point
+at each other, and no single row reached two milestones. The `/milestone`
+audit posed no disposition chip, and each unfixed review finding added a
+ROADMAP line toward the 60-line cap (M202 review).
+
+**Decision:** At the M211 plan gate the user chose linked-row groups. A
+candidate row's title is its text before the first `: `. The row and each
+row that names that title in double quotes form its group, direct
+references only. A group whose rows together carry findings from two or
+more distinct milestones takes the §7 disposition chip. Review step 9
+names the older row's title in double quotes, so its new row joins the
+group. Rejected: filing unfixed findings in DESIGN.md Known issues, because
+that moves the growth and drops the promotion triggers. D-108's door is
+passed because the trigger is a defect in shipped behavior: the `/milestone`
+audit misses the case it exists for.
+
+**Consequences:** A cross-reference that does not quote the title exactly
+stays outside the group. This entry is falsified by an audit where findings
+from two milestones sit in rows that never quote each other's titles.
+
+### D-150 (2026-10-04): Review's amendment-return exit writes an uncounted `amendment routed:` line, and the release-window close leads with `/milestone` only for a flagged release — annotates D-097, narrows D-144's clause that the close block leads with `/milestone` (M211)
+
+**Context:** D-097 gave an amendment return a fixed work-log shape, and
+both review's exit and `/milestone-implement` step 6 told the agent to
+write it, so one return could count twice toward the second-occurrence
+stop. D-144 moved D-050's parking offer to the close block, "which leads
+with `/milestone`", even when the next action is another milestone than
+the flagged release.
+
+**Decision:** At the M211 plan gate, implement step 6 became the one
+writer of `amendment return: AC<N> — "<clause>"`, because only the
+amendment knows the amended clause. Review's exit writes `amendment
+routed: AC<N> — <finding>`, which no count reads, and before routing it
+reads the work log for an `amendment return:` line on the same criterion.
+D-097's shape, track, and stop stand. The close block fences `/milestone`
+whenever the `release window` advisory fires, and puts it first only when
+the next action it would fence names a flagged milestone, as `/milestone`
+§3 already ruled for `cairn_next`'s recommendation.
+
+**Consequences:** The stop counts executed amendments, so a return whose
+amendment never runs does not count. This entry is falsified by such a
+return that must count toward the stop.

@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="467 lines / 43,454 chars",
+        block="626 lines / 59,322 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2508,25 +2508,37 @@ REGISTRY += [
         guard="test_thrash_rule",
         test="TestReturnFloor.test_implement_step_6_writes_the_amendment_return_shape",
         target="skills/milestone-implement/SKILL.md",
-        block="amendment executing an amendment return from `/milestone-review` writes\n     its work-log line in that skill's fixed shape",
+        block="amendment executing an amendment return from `/milestone-review` writes\n     its work-log line in the fixed shape",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_implement_step_6_writes_the_amendment_return_shape",
+        target="skills/milestone-implement/SKILL.md",
+        block="This\n     step is its one writer: review's exit writes `amendment routed:`, which\n     no count reads.",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestReturnFloor.test_amendment_return_work_log_line_has_a_fixed_shape",
         target=REVIEW,
-        block='`amendment return: AC<N> — "<amended clause, verbatim>"`',
+        block="`amendment routed: AC<N> —\n   <finding>` — which no count reads",
+    ),
+    Mutation(
+        guard="test_thrash_rule",
+        test="TestReturnFloor.test_amendment_return_work_log_line_has_a_fixed_shape",
+        target=REVIEW,
+        block='`amendment return: AC<N> — "<amended clause,\n   verbatim>"` (`/milestone-implement` step 6, its one writer)',
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestReturnFloor.test_amendment_returns_count_on_their_own_track",
         target=REVIEW,
-        block="counted per milestone on their own track: never reset by\n   a re-cut, and never added to the defect-return count",
+        block="counted per milestone on their own\n   track: never reset by a re-cut, and never added to the defect-return\n   count",
     ),
     Mutation(
         guard="test_thrash_rule",
         test="TestReturnFloor.test_second_amendment_return_on_the_same_id_stops",
         target=REVIEW,
-        block="A second amendment return naming the same AC<N> on one milestone\n   stops",
+        block="A second amendment return naming the same\n   AC<N> on one milestone stops",
     ),
 ]
 

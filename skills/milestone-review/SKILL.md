@@ -364,13 +364,18 @@ re-enters here, at the step the record shows is next:
    re-review, the amendment the only work convened; status is set to
    `in-progress` for that amendment alone, and review invokes
    `/milestone-implement <id>` through the Skill tool for it. Its
-   work-log line carries a fixed
-   shape — `amendment return: AC<N> — "<amended clause, verbatim>"` — and
-   these lines are counted per milestone on their own track: never reset by
-   a re-cut, and never added to the defect-return count (D-097 narrows
-   D-064). A second amendment return naming the same AC<N> on one milestone
-   stops (the repeated review-failure stop of the rulebook's list): no
-   further round is convened, and the disposition goes to the user.
+   work-log line carries a fixed shape — `amendment routed: AC<N> —
+   <finding>` — which no count reads. The amendment that executes it writes
+   the counted line, `amendment return: AC<N> — "<amended clause,
+   verbatim>"` (`/milestone-implement` step 6, its one writer), so one
+   return counts once. These lines are counted per milestone on their own
+   track: never reset by a re-cut, and never added to the defect-return
+   count (D-097 narrows D-064). A second amendment return naming the same
+   AC<N> on one milestone stops (the repeated review-failure stop of the
+   rulebook's list): before routing, review reads the work log, and an
+   `amendment return: AC<N>` line already there for that criterion means
+   this return is the second. No further round is convened, and the
+   disposition goes to the user.
 
    **Widening test (M139).** A finding demonstrating an acceptance criterion
    failing *inside* the domain its promise quantifies over is an amendment
@@ -379,9 +384,10 @@ re-enters here, at the step the record shows is next:
    than decided by a procedure over that domain. That discriminator is
    `/milestone-plan` step 4's, and the repair such a return takes is the one
    step 4 states; read it there rather than here. A return reclassified this
-   way carries the fixed work-log shape above, counts on the amendment-return
-   track under its second-occurrence stop, and never increments the
-   defect-return count the thrash rule reads.
+   way is routed with the `amendment routed:` line above, its amendment's
+   `amendment return:` line counts on the amendment-return track under its
+   second-occurrence stop, and it never increments the defect-return count
+   the thrash rule reads.
 
 6. Checkpoint commit on the branch — the pre-merge-question checkpoint;
    fix-now work step 5 settles lands after it and is committed before the
@@ -624,10 +630,14 @@ re-enters here, at the step the record shows is next:
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
    **Never extend a finding-absorbing candidate row:** when this pass would
-   extend a candidate row already carrying deferred review findings filed
-   from two or more distinct milestones, it files this milestone's deferred
-   findings as a new row that cross-references that row instead, and names
-   the row in step 10's handoff sentence or close block. The disposition chip of
+   extend a candidate row that belongs to a finding-absorbing group
+   (`skills/shared/records-hygiene.md` §7: a row and the rows that name its
+   exact title in double quotes, together carrying deferred review findings
+   filed from two or more distinct milestones), it files this milestone's
+   deferred findings as a new row instead, and names the row in step 10's
+   handoff sentence or close block. Any row this pass files that
+   cross-references another candidate row names that row's exact title in
+   double quotes, after its own title's `: `, so §7 can group them. The disposition chip of
    `skills/shared/records-hygiene.md` §7 belongs to the `/milestone` health
    audit, which the user runs; review poses no question here. A whole-list
    sweep is `/cairn-triage`, run by the user on demand, never from this
@@ -656,8 +666,8 @@ re-enters here, at the step the record shows is next:
    in a guaranteed-rendered position (Mandated-substance rule).
    Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
    the completed hygiene edits, before the docs-only commit — it must pass,
-   and whether its `release window` advisory fired is the signal step 10's
-   displacement clause reads. Docs-only commit:
+   and whether its `release window` advisory fired, and for which ids, is
+   the signal step 10's displacement clause reads. Docs-only commit:
    `review M<NNN>: done`; push (owner mode; the guest arm above leaves the
    pass on disk — status `done` is the `blocked → done` transition the
    rulebook admits for a handed-off PR the maintainers merged).
@@ -700,9 +710,15 @@ re-enters here, at the step the record shows is next:
     never the `cairn_next.py` invocation, which the skill has already run
     for the user. One displacement (D-050): when step 9's
     `cairn_validate.py` run fired the `release window` advisory, the close
-    block says so and puts `/milestone` first, labeled as the command that
+    block says so and fences `/milestone`, labeled as the command that
     offers parking the release (its §3), since parking is the user's
-    decision and review poses no chip for it. This close is a handoff, so
+    decision and review poses no chip for it. `/milestone` goes first after
+    `/clear` only when the next action this step would otherwise fence (the
+    plan's next milestone, or `cairn_next.py`'s recommendation) names a
+    milestone the advisory flagged. Each advisory line opens with the
+    flagged id. Otherwise that action stays first and `/milestone` is fenced
+    after it, as `/milestone` §3 rules for `cairn_next`'s recommendation.
+    This close is a handoff, so
     commands go in fenced blocks, never inline backticks (tracking-rules
     "Copy-run commands"). Do **not** end review with an AskUserQuestion:
     the step-7 merge question was the last chip this phase emits.
