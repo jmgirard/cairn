@@ -84,7 +84,7 @@ function milestoneLines(row: PaneMilestone): PaneLine[] {
   return out
 }
 
-// One blank row between groups.
+// One blank row before each milestone after the first, and before Next.
 const gap = (key: string) => line(key, 0, [], { text: ' ' })
 
 export function paneLines(state: PaneState): PaneLine[] {
@@ -117,9 +117,4 @@ export function paneLines(state: PaneState): PaneLine[] {
     }
   }
   return out
-}
-
-// A line's text as one string, for tests and the alt text.
-export function paneText(line: PaneLine): string {
-  return [...line.lead, ...(line.text === null ? [] : [line.text])].map(span => span.text).join('')
 }

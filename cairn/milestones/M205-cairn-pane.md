@@ -1,6 +1,6 @@
 # M205: A cairn pane in the status mod
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -106,3 +106,5 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: T6 browser look: four looks of this repo's real pane at 44 columns, dark and light, served from the scratchpad. The operator picked D, one line per item: items, log lines, titles, and queue rows are cut with an ellipsis, and the goal wraps. Rejected: A (items wrap in full, M205 alone ran several screens tall), B (next command first, thin rules), C (card with a phase-colored edge and a command pill). Two cases pin the wrap props. The probe mod and its log were removed. Its band-width log never reloaded, so the cause of the text-form band beside the docked pane rests on the thresholds alone: the track needs 94 columns after the open button.
 - 2026-10-04: T7 done. README gains "The cairn pane" and a sentence on the `≡` button, CHANGELOG a New entry, and DESIGN a pane paragraph in the `hooks/status/` entry, each written against the code read this session. The question-set chip said Esc closes the pane, but the API says the close mark or ctrl+x x closes it, so the README names the close mark only. Verify slot: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1132 pass. cairn_validate green.
 - 2026-10-04: T6 closed. The operator was asked to open the pane in a new desktop Code session and resumed the run with no report of that look. No answer is recorded here, and AC6's acceptance goes to the merge question, as M204's in-app look did.
+- 2026-10-04: claim audit: 54 claims read, 2 corrected — hooks/status/register.tsx, hooks/status/pane.ts
+- 2026-10-04: after the audit, the unused `paneText` in `pane.ts` was deleted and its blank-row comment narrowed to what the code does. The desktop dock claim in the README rests on the T1 probe log (`placement=dock`), not on the API docs. Verify slot: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1132 pass. Status set to review.

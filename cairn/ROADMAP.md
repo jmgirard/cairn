@@ -15,7 +15,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 | M202 | One question set, then the agent runs the milestone to the merge question | done | — | normal | milestones/archive/M202-one-question-set-run.md |
 | M203 | Record review findings in fixed formats | done | M202 | normal | milestones/archive/M203-merge-approval-up-front.md |
 | M204 | A flow track band: plan, implement, review | done | — | normal | milestones/archive/M204-flow-track-band.md |
-| M205 | A cairn pane in the status mod | in-progress | — | normal | milestones/M205-cairn-pane.md |
+| M205 | A cairn pane in the status mod | review | — | normal | milestones/M205-cairn-pane.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

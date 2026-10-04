@@ -366,7 +366,7 @@ function style(span: Span) {
 }
 
 // No ROADMAP found empties the band and the pane. A found ROADMAP that
-// cannot be read keeps the rows and the pane as they were (M200). Any throw from `loadBand`, its
+// cannot be read keeps the rows and the pane as they were (M200). Any throw from `loadCairn`, its
 // parsing included, keeps them too. Of the calls `fsSource` makes, only
 // `$.session.cwd()` is not caught. The close state is then compared
 // against the kept rows and the current step.
