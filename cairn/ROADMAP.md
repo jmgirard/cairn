@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-04 (M213 done, PR #220; its item left "Status mod follow-ons"; M211 pruned; skills/tests same 4 reds, 1 error)_
+_Last hygiene check: 2026-10-04 (M214 done, PR #221; skills/tests green, 665 tests)_
 
 Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
 not an R package, so R-specific gates don't apply.
@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M214 | Clear the prose-guard reds | review | — | normal | milestones/M214-prose-guard-reds.md |
+| M214 | Clear the prose-guard reds | done | — | normal | milestones/archive/M214-prose-guard-reds.md |
 | M213 | A Plan button on the empty band | done | — | normal | milestones/archive/M213-band-plan-row.md |
 | M212 | Buttons on the status band | done | — | normal | milestones/archive/M212-band-buttons.md |
 ## Candidates
