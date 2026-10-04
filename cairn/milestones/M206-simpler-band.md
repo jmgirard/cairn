@@ -1,0 +1,65 @@
+# M206: A simpler band: id, title, and the track
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — the band draws in every adopter's session
+- **Branch/PR:** —
+
+## Goal
+
+Make the band's row the milestone id and title on the left and the flow track on the right, on every surface and at every width.
+
+## Scope
+
+**In:** A milestone row's left group becomes the bold id and the title. The phase or skill label, the `→`, the chapter, and the next open item go. The flow track is the only progress form. On the desktop, a row too narrow for the 360-pixel track draws a shorter image track. When the pill is tight, it shows only its count. The terminal draws a track of `█` cells in three segments with the count after it. This takes in the "Terminal flow track" candidate row. The ten-cell bar and the counts-only forms are deleted. The skill row goes, so a running cairn skill with no active milestone changes nothing the band draws. The idle row drops its `next` label. The chapter-tool hook and the step's chapter go. A row with no milestone file keeps its warning label. README, DESIGN, CHANGELOG, and the mod's header comments follow.
+
+**Out:** A pressable button that runs the next command stays in "Status mod follow-ons". The pane is unchanged, so its items stay in "Pane follow-ons (M205 review)". The track's colors in light, colorblind, and ANSI themes stay in "Desktop track follow-ons (M204 review)" and "Band label colors in other themes". The track's column-to-pixel estimate also stays in "Desktop track follow-ons".
+
+## Acceptance criteria
+
+- [ ] AC1: On the terminal and desktop surfaces, a milestone row's left group is the bold id, one space, and the milestone's title. It has no phase or skill label, no `→`, and no chapter or open-item text. A row whose counts cannot be read keeps its `no milestone file` or `no file` warning label on the right. `band.test.tsx` cases assert this on both surfaces for an `in-progress` row and a `review` row, each with an unchecked next item. The cases run with no cairn skill, with `/milestone-review`, and with `/milestone-implement` running, and assert the warning label at widths 40 and 200.
+- [ ] AC2: On the desktop surface, a milestone row whose counts can be read draws the flow track as an `Svg` at every `bodyColumns` width from 40 to 200. At each of those widths the title keeps min(title width, 10) columns. The track is 360 pixels wide where that room allows, and narrower where it does not. A `band.test.tsx` sweep over every width from 40 to 200 asserts the `Svg` element, its width, and the title's room. The sweep covers titles shorter and longer than 10 columns, and partial, all-checked, and zero-item counts, on an `in-progress` and a `review` row.
+- [ ] AC3: On the terminal surface, a milestone row whose counts can be read draws a track of `█` cells in three segments, plan, implement, and review. It does so at every `bodyColumns` width from 40 to 200, and the title keeps min(title width, 10) columns. Filled cells take their segment's color from `FLOW_COLORS` (the plan blue, the implement orange, and the review green), and empty cells take `subtle`. After the track comes the active phase's count, `checked/total`, or `no tasks` or `no criteria` for a section with no items. A `band.test.tsx` sweep over every width from 40 to 200 asserts the cells, their colors, the count text, and the title's room, over the same titles and counts as AC2.
+- [ ] AC4: The band draws no skill row. With no active milestone, it draws the idle row whether or not a cairn skill runs, or nothing when no planned milestone is workable. The idle row's left group is the bold id and the title, with no `next` label. It keeps its `/milestone-implement <id>` command, and on the desktop its track where the row has room for it. With no active row, the close state records the idle id whether or not a skill runs, so a skill that starts or ends does not show a hidden idle row again. `register.tsx` has no `tool.call` hook for the chapter tool. `band.test.tsx` cases assert the idle row, the empty band, and the close state on both surfaces, with no skill running and with each skill in `SKILL_LABELS` running. They also assert that a chapter call leaves a milestone row and the idle row unchanged on both surfaces.
+- [ ] AC5: README's "The milestone band" section, the `hooks/status/` bullet of `cairn/DESIGN.md`, and the header comments of `band.ts`, `track.ts`, and `register.tsx` describe the new row. They contain no claim that the band draws a phase or skill label, a chapter, a skill row, or the ten-cell bar. CHANGELOG's Unreleased section has an entry for the change.
+- [ ] AC6: At a live look the operator accepts the desktop row at full width, the narrow desktop track at the docked-pane width of 44 columns, and the terminal row.
+
+## Coverage
+
+- AC1 → T2, T6
+- AC2 → T1, T4
+- AC3 → T1, T5
+- AC4 → T2, T3, T6, T7
+- AC5 → T7
+- AC6 → T8
+
+## Tasks
+
+- [ ] T1: Build browser-pane prototypes of 2 or 3 narrow desktop tracks and 2 terminal cell tracks, each in a dark and a light block (LESSONS M201, M204). The operator picks one of each, and a work-log line records the picks.
+- [ ] T2: In `band.ts`, make the left group the bold id and the title on every milestone row and on the idle row. Drop the head label, the arrow, the step body, and the `next` label. Keep the warning label for a row with no readable counts. Remove the skill row from `stepLines`, and draw the idle row while a skill runs.
+- [ ] T3: Remove the chapter. `CairnStep` in `types/index.d.ts` loses `chapter`, and the `step` atom takes a new shape tag. The chapter-tool `tool.call` hook in `register.tsx` goes. `SKILL_LABELS` shrinks to the cairn skill names that `cairnSkill` and the fixture test need. `mark` sets the idle id whether or not a skill runs.
+- [ ] T4: Build the desktop narrow track. `track.ts` takes a width, and below a width set from the T1 pick the pill shows only its count. `band.ts` picks the track width from the room the row leaves. Add the AC2 sweep.
+- [ ] T5: Build the terminal cell track from the same `Flow` model as spans of `█` cells, its cell count set from the room. Delete `BAR_CELLS`, `bar`, and the counts forms. Add the AC3 sweep.
+- [ ] T6: Rewrite or delete the `band.test.tsx` cases for the removed forms: the phase and skill labels, chapters, the skill row, `next`, and the ten-cell bar. Add the AC1 and AC4 cases.
+- [ ] T7: Update README (its close-button paragraph too), the DESIGN bullet, the CHANGELOG, and the header comments of `band.ts`, `track.ts`, and `register.tsx`.
+- [ ] T8: Do the live look in the app at desktop full width, at the docked pane's 44 columns, and in the terminal. A mod edit needs a new Code session (LESSONS M193).
+
+## Work log
+
+- 2026-10-04: created by /milestone-plan.
+- 2026-10-04: collision sweep: the "Terminal flow track" candidate row is absorbed (pruned at post-merge hygiene). "Status mod follow-ons" and "Band label colors in other themes" hold items about chapters, skill rows, labels, and the ten-cell bar that this milestone makes moot, so hygiene trims them. No D-entry conflicts (D-143 read). Inbox: 0 open issues, 0 open PRs.
+- 2026-10-04: criteria audit (full mode, user-facing tier, fresh Opus reader) returned 9 findings, all taken toward the narrower wording. The tests use rows with an open item under three skill states. A title-room floor holds at 40 columns. The sweeps vary title length and counts. The terminal colors name `FLOW_COLORS`. The warning label is kept. The docs criterion binds the docs, not the review's audit. The pick is recorded in the work log. AC4's track and command are stated per row.
+- 2026-10-04: AC4 changed after the question set and went back through the full audit. It returned 4 findings, all taken: the close state records the idle id under a running skill, the idle track holds only where it fits, every skill in `SKILL_LABELS` is probed, and AC5 names the skill row.
+- 2026-10-04: question set: terminal form — a three-segment cell track (recommended) over count text only and over keeping the old bar there. Falsified if the cell track reads worse than the count text at the terminal live look.
+- 2026-10-04: question set: narrow desktop — a shorter image track (recommended) over the terminal's cell track on the desktop. Falsified if no prototype reads at 44 columns.
+- 2026-10-04: question set: skill row — the operator said the row adds little without a button to run the skill, so the plan removes skill rows. A pressable next-command button stays in "Status mod follow-ons".
+- 2026-10-04: plan chose to remove the chapter hook and state over keeping them unused, because nothing draws a chapter after this milestone. Falsified if another surface needs the chapter.
+- 2026-10-04: the T1 and T8 live looks are stops for the operator's eyes on the closed list. No outward action or dependency change is foreseen.
+
+## Decisions
+
+## Review
