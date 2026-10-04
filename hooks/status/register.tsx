@@ -186,13 +186,15 @@ export const register: Register = on => {
   // blocked the stop (M201). A Stop with work in flight keeps the step
   // through the wait, and so does a blocked Stop, after which the turn goes
   // on. A Stop inside a subagent carries an `agent_id` and keeps the step.
-  // A skill that waits through ScheduleWakeup or a cron lists nothing here,
-  // so its step ends at that Stop.
+  // A one-shot entry in `session_crons`, as ScheduleWakeup makes, also keeps
+  // the step, so a skill that waits on a wakeup keeps it (M210). A recurring
+  // cron, as `/loop` makes, does not, since it would keep the step for good.
   on('classic.Stop', async ($, e, next) => {
     const result = await next(e)
     await update($, expanded, () => false)
     if (e.agent_id !== undefined || result?.block !== undefined) return result
-    if ((e.background_tasks ?? []).length === 0) {
+    const waking = (e.session_crons ?? []).some(cron => cron.recurring === false)
+    if ((e.background_tasks ?? []).length === 0 && !waking) {
       await update($, step, () => null)
       await refresh($)
     }
@@ -206,17 +208,23 @@ export const register: Register = on => {
   // it. A typed cairn slash command keeps the step its own skill prompt set:
   // the engine expands the command first, so the prompt finds `expanded`
   // set. Were the skill prompt to run beneath instead, the step would end
-  // before `next` and the skill prompt would set the new one. A prompt that
-  // a hook beneath blocks or drops has already ended the step.
+  // before `next` and the skill prompt would set the new one. So the step
+  // ends before `next`, and a prompt that a hook beneath drops puts it back,
+  // unless something set a new step meanwhile (M210).
   on('prompt.submit', async ($, e, next) => {
     const typed = e.origin.kind === 'composer' || e.origin.kind === 'bridge'
     const fresh = await read($, expanded)
     await update($, expanded, () => false)
-    if (typed && e.turnId === undefined && !fresh) {
-      await update($, step, () => null)
-      await refresh($)
+    if (!typed || e.turnId !== undefined || fresh) return next(e)
+    const before = await read($, step)
+    await update($, step, () => null)
+    await refresh($)
+    const result = await next(e)
+    if (result?.drop !== undefined && before !== null) {
+      await update($, step, current => current ?? before)
+      await reconcile($)
     }
-    return next(e)
+    return result
   })
 
   // A cairn skill's prompt starts its step, the same skill run again

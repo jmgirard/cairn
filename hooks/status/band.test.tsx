@@ -71,6 +71,8 @@ type Copy = {
   // While set, the next read of the step runs this once before it answers
   // (M210).
   afterStepRead?: () => Promise<void>
+  // While set, a prompt beneath the mod is dropped with this reason (M210).
+  dropSubmit?: string
 }
 
 function copyOf(name: string): Copy {
@@ -124,6 +126,7 @@ function seat(on: On, copy: Copy) {
   on('prompt.submit', async ($, e) => {
     copy.submitted = [...(copy.submitted ?? []), { kind: e.origin.kind, turnId: e.turnId }]
     if (copy.beforeSubmit !== undefined) await copy.beforeSubmit()
+    if (copy.dropSubmit !== undefined) return { drop: copy.dropSubmit }
     return { text: e.text, origin: e.origin }
   })
   on('skill.prompt', async ($, e) => ({ text: e.text }))
@@ -1979,14 +1982,21 @@ function turnWith(reason: 'answer' | 'aborted' | 'refusal' | 'error', agentId?: 
 const TASK = { id: 'b1', type: 'subagent', status: 'running', description: 'a background reviewer', agent_type: 'general-purpose' }
 
 // A Stop as the engine raises it: its in-flight list empty, left out, or
-// holding TASK, and an agent id when it fires inside a subagent.
-function stopWith(tasks: 'empty' | 'absent' | 'one', agentId?: string) {
+// holding TASK, an agent id when it fires inside a subagent, and the
+// session's crons when given (M210).
+function stopWith(tasks: 'empty' | 'absent' | 'one', agentId?: string, crons?: (typeof ONE_SHOT)[]) {
   return {
     stop_hook_active: false,
     ...(tasks === 'absent' ? {} : { background_tasks: tasks === 'one' ? [TASK] : [] }),
     ...(agentId === undefined ? {} : { agent_id: agentId }),
+    ...(crons === undefined ? {} : { session_crons: crons }),
   }
 }
+
+// A one-shot wakeup, as ScheduleWakeup schedules one, and a recurring cron,
+// as `/loop` schedules one, as a Stop lists them (M210).
+const ONE_SHOT = { id: 'c1', schedule: '30 14 4 10 *', recurring: false, prompt: 'resume the review' }
+const RECURRING = { id: 'c2', schedule: '*/5 * * * *', recurring: true, prompt: '/loop check the deploy' }
 
 // A prompt as the engine submits one: where it came from, and the running
 // turn's id when it was typed over or delivered into that turn.
@@ -2049,6 +2059,59 @@ describe("a cairn skill's step ends at a main-loop Stop with nothing in flight (
           await act($, copy)
           expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
           await $.classic.Stop(stopWith('empty'))
+          expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+})
+
+describe("a one-shot cron keeps a cairn skill's step through a Stop (M210 AC5)", () => {
+  const CASES: { name: string; crons: (typeof ONE_SHOT)[] | undefined; keeps: boolean }[] = [
+    { name: 'a one-shot cron', crons: [ONE_SHOT], keeps: true },
+    { name: 'a one-shot and a recurring cron', crons: [ONE_SHOT, RECURRING], keeps: true },
+    { name: 'a recurring cron', crons: [RECURRING], keeps: false },
+    { name: 'an empty cron list', crons: [], keeps: false },
+    { name: 'no cron list', crons: undefined, keeps: false },
+  ]
+  for (const { name, crons, keeps } of CASES) {
+    test(`a Stop with no task in flight and ${name} ${keeps ? 'keeps' : 'ends'} the step`, async ($, on) => {
+      await eachSurface(
+        'mixed',
+        async (ui, $) => {
+          await prompt($, 'milestone-review')
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          await $.classic.Stop(stopWith('empty', undefined, crons))
+          expect(await lines(ui)).toEqual(keeps ? [MIXED_REVIEW, ENGINE] : [SHOWN.mixed, ENGINE])
+          await $.classic.Stop(stopWith('empty'))
+          expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
+        },
+        $,
+        on,
+      )
+    })
+  }
+})
+
+// The case where the prompt enters and a skill prompt of its turn sets the
+// new step is "a typed cairn slash command's own skill prompt sets the new
+// step" below.
+describe('an idle typed prompt that a hook drops leaves the step (M210 AC6)', () => {
+  for (const kind of ['composer', 'bridge'] as const) {
+    test(`a dropped ${kind} prompt keeps the step, and one that enters ends it`, async ($, on) => {
+      await eachSurface(
+        'mixed',
+        async (ui, $, copy) => {
+          await prompt($, 'milestone-review')
+          await $.classic.Stop(stopWith('one'))
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          copy.dropSubmit = 'refused by a hook'
+          expect((await $.prompt.submit(submitWith(kind))).drop).toBe('refused by a hook')
+          expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+          copy.dropSubmit = undefined
+          await $.prompt.submit(submitWith(kind))
           expect(await lines(ui)).toEqual([SHOWN.mixed, ENGINE])
         },
         $,

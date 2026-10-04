@@ -113,7 +113,7 @@ surface tests are features, not defects.
       and writes only on a change. The press (`register.tsx:358-362`) writes
       only if no `session.end` landed since its reads, by a version-guarded set
       or a session-generation check. Add band tests for both AC4 halves.
-- [ ] T4: Step lifetime. `classic.Stop` (`register.tsx:186-195`) holds the step
+- [x] T4: Step lifetime. `classic.Stop` (`register.tsx:186-195`) holds the step
       on a one-shot `session_crons` entry, and `stopWith` gains cron variants.
       `prompt.submit` (`register.tsx:206-215`) leaves the step when the result
       carries `drop` and keeps the end ahead of the turn's `skill.prompt`.
@@ -137,6 +137,8 @@ surface tests are features, not defects.
 - 2026-10-04: T2 done. Ten new band tests cover AC2 and AC3 on both surfaces. Against the pre-T2 source, those ten failed on their row assertions: the six root cases kept the old row and the four empty-text cases emptied the band. The edit-before-failure test passed there too, as it guards the M200 keep. The harness's `state.set` hook sees a shaped value as `{ shape, value }`. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1012 pass.
 - 2026-10-04: T3 implementation choice: the press takes the close state's version before its reads and writes through `$.state.set` with `ifVersion`, over a session-generation atom. Any write in between drops the press, and a second press hides the band. The engine needs the reference as a literal `const` (`DISMISSED_REF`).
 - 2026-10-04: T3 done. Four new band tests cover AC4 on both surfaces. Before the fix they failed on their assertions: the refresh wrote `dismissed`, and the press hid the band over the session end. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1016 pass.
+- 2026-10-04: T4 implementation choice: an idle typed prompt still ends the step before `next`, so a skill prompt of its turn sets the new step as before. On a `drop` the prompt puts back the step it ended, unless something set a step meanwhile. This keeps the M201 slash-command test green, which a clear after `next` would break.
+- 2026-10-04: T4 done. Seven new band tests: five cron cases for AC5, and a dropped prompt for each of `composer` and `bridge` for AC6. Before the fix, the two keep cases and the two drop cases failed on their row assertions, and the three end cases passed as controls. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1023 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
