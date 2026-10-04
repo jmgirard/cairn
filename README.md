@@ -189,6 +189,13 @@ as if you typed it, and a second press while the first run is going does
 nothing. If the run is refused, the command goes after the text in the
 prompt box, and a toast says why.
 
+When a cairn skill ends, a `Clear` button shows before the other buttons,
+on the empty row and on a milestone row. A skill ends at a stop where its
+work is committed, so the press runs `/clear` at once. The button goes
+away when you type a prompt, when a cairn skill starts, or when the session
+ends. A `/clear` that the session refuses goes into the prompt box, as
+above. Where the row has no room for three buttons, it drops `Clear` first.
+
 The row ends in a close button: `×` in the terminal, and in the desktop
 app a `✕` that is dim at rest. On a row drawn from a ROADMAP, a `≡`
 button before it opens the cairn pane (below). Pressing the close button

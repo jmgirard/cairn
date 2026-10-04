@@ -105,7 +105,7 @@ review)".
       to its end, looks at the row, and presses `Clear`. If the press only
       fills the prompt box, stop and ask the user, since the question set
       chose a clear at once.
-- [ ] T4: Docs and gate. Describe the Button in README.md (near :187),
+- [x] T4: Docs and gate. Describe the Button in README.md (near :187),
       the `hooks/status/` lines of `cairn/DESIGN.md` (:73 and :170), and
       CHANGELOG.md's `## Unreleased`. Run the five verify commands.
 
@@ -126,6 +126,7 @@ review)".
 - 2026-10-04: check discrimination: with the Stop's `ended` write planted out, 24 of the 26 new cases and the M213 empty-row case went red. The two absence cases stayed green, as they assert no Clear. Restored, then green.
 - 2026-10-04: AC4's sweep on single-in-progress shows the Clear threshold 10 columns above the two-Button threshold on both surfaces. One M213 case (`isEmptyRow` after a skill's Stop) now expects Clear first.
 - 2026-10-04: the T2 edit to `register.tsx` and some tracking edits went through a python script, not the Edit tool, against the rulebook's file-edit rule. Later edits use Edit.
+- 2026-10-04: T4 done before T3 so the live look sees the finished branch. README (a paragraph after the empty row's buttons), DESIGN (the `hooks/status/` history line and a paragraph after the empty row), and CHANGELOG `## Unreleased` describe the Button. Scripts and hooks suites exit 0, and the hand-run `skills/tests` stays at 665 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
