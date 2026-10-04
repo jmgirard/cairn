@@ -8,8 +8,11 @@ validator uses: `cairn_scripts.rows` for the ROADMAP rows, and `_AC_ITEM`
 over `_section_body` of `Tasks` and of `Acceptance criteria` for the counts
 (M193 AC5), and its ordered workable ids to `cairn_next.workable` (M199
 AC2). A section's first unchecked line is its first `_AC_ITEM` line
-with an open box, less the box prefix. It also fails when the generated
-module is stale.
+with an open box, less the box prefix. It holds the pane's milestones to a
+second implementation here, and the pane's next step to
+`cairn_next.recommend` and `cairn_next.waiting` (M205 AC2, AC3). A path an
+`expected.json` lists under `unreadable` reads as failing on both sides.
+It also fails when the generated module is stale.
 """
 
 import json
@@ -56,7 +59,77 @@ def section_fields(text, heading):
     return checked, len(items), first
 
 
-def python_rows(start):
+def read_milestone(root, relpath, unreadable):
+    """The milestone file's text, or None when it is missing or the fixture
+    marks its read as failing (`unreadable` holds paths from the fixture
+    root, as `/cairn/...`)."""
+    path = os.path.join(root, "cairn", relpath)
+    if not os.path.isfile(path) or "/cairn/" + relpath in unreadable:
+        return None
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+COMMENT = re.compile(r"<!--.*?-->", re.S)
+ITEM_BOX = re.compile(r"^\s*-\s*\[[ xX]\]\s*")
+LOG_LINES = 5
+
+
+def section_text(text, heading):
+    """A section's lines with HTML comments removed."""
+    return COMMENT.sub("", "\n".join(cv._section_body(text, heading))).splitlines()
+
+
+def section_items(text, heading):
+    """A section's checkbox items; a non-blank indented line that is not an
+    item continues the item above it."""
+    items = []
+    current = None
+    for line in section_text(text, heading):
+        if cv._AC_ITEM.match(line):
+            current = {"text": ITEM_BOX.sub("", line, count=1), "checked": bool(CHECKED.match(line))}
+            items.append(current)
+        elif current is not None and line[:1].isspace() and line.strip():
+            current["text"] += " " + line.strip()
+        else:
+            current = None
+    return items
+
+
+def python_pane(start, unreadable=()):
+    """The pane's milestones for a session started in `start` (M205 AC2)."""
+    root = cs.cc.find_cairn_root(str(start))
+    if root is None:
+        return []
+    out = []
+    for row in cs.rows(cs.read_roadmap(root)):
+        if row["status"] not in ACTIVE:
+            continue
+        text = read_milestone(root, row["relpath"], unreadable)
+        file = None
+        if text is not None:
+            log = [line for line in section_text(text, "Work log") if line.startswith("- ")]
+            file = {
+                "goal": "\n".join(section_text(text, "Goal")).strip(),
+                "tasks": section_items(text, "Tasks"),
+                "criteria": section_items(text, "Acceptance criteria"),
+                "log": [line[2:] for line in log[-LOG_LINES:]],
+            }
+        out.append({"id": row["id"], "title": row["title"], "status": row["status"], "file": file})
+    return out
+
+
+def python_next(start):
+    """`cairn_next.recommend` and `cairn_next.waiting` for a session started
+    in `start`, or None outside a cairn repo (M205 AC3)."""
+    root = cs.cc.find_cairn_root(str(start))
+    if root is None:
+        return None
+    rows = cs.rows(cs.read_roadmap(root))
+    return {**cn.recommend(root, rows), "waiting": cn.waiting(root, rows)}
+
+
+def python_rows(start, unreadable=()):
     """The rows the band shows for a session started in `start`, by the
     Python helpers."""
     root = cs.cc.find_cairn_root(str(start))
@@ -68,11 +141,9 @@ def python_rows(start):
     for row in cs.rows(roadmap):
         if row["status"] not in ACTIVE:
             continue
-        path = os.path.join(root, "cairn", row["relpath"])
         fields = dict(NO_FILE)
-        if os.path.isfile(path):
-            with open(path, encoding="utf-8") as f:
-                text = f.read()
+        text = read_milestone(root, row["relpath"], unreadable)
+        if text is not None:
             t_checked, t_total, t_first = section_fields(text, "Tasks")
             c_checked, c_total, c_first = section_fields(text, "Acceptance criteria")
             fields = {
@@ -121,8 +192,11 @@ class StatusFixtureAgreement(unittest.TestCase):
                     copy = pathlib.Path(tmp) / case_dir.name
                     shutil.copytree(case_dir, copy)
                     start = copy / expected["cwd"] if expected["cwd"] else copy
-                    self.assertEqual(python_rows(start), expected["rows"])
+                    unreadable = expected.get("unreadable", [])
+                    self.assertEqual(python_rows(start, unreadable), expected["rows"])
                     self.assertEqual(python_workable(start), expected["workable"])
+                    self.assertEqual(python_pane(start, unreadable), expected["pane"])
+                    self.assertEqual(python_next(start), expected["next"])
 
     def test_workable_fixtures_are_present_and_discriminating(self):
         # The two idle fixtures exist, and each holds a planned row that a

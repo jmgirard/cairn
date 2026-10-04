@@ -6,5 +6,12 @@
     {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null},
     {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
     {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null}
-  ]
+  ],
+  "pane": [
+    {"id": "M050", "title": "Its file was never written", "status": "review", "file": null},
+    {"id": "M051", "title": "No criteria section", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: An open task, which the review phase does not show.", "checked": false}], "criteria": [], "log": []}},
+    {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [], "log": []}},
+    {"id": "M053", "title": "Every criterion checked", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done, capital X.", "checked": true}], "log": []}}
+  ],
+  "next": {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []}
 }

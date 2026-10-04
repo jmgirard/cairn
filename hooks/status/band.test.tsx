@@ -59,7 +59,7 @@ type Copy = {
 
 function copyOf(name: string): Copy {
   const fixture = FIXTURES[name]
-  return { cwd: fixture.cwd, files: { ...fixture.files } }
+  return { cwd: fixture.cwd, files: { ...fixture.files }, unreadable: [...fixture.unreadable] }
 }
 
 // How the chapter tool beneath the mod answers a call: it marks the
@@ -1979,9 +1979,9 @@ describe('one row whatever maxRows is (M197 AC5)', () => {
 // The fixtures with no active row, written out by hand. With no skill
 // running, each draws its idle row or nothing (M199). Under a running skill
 // each of them draws a skill row.
-const NO_ROW = ['idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
+const NO_ROW = ['all-waiting', 'idle-deps', 'idle-order', 'no-active', 'no-roadmap', 'repo-at-cut']
 // The fixtures among them that draw nothing with no skill running.
-const NO_IDLE = ['no-roadmap']
+const NO_IDLE = ['all-waiting', 'no-roadmap']
 // Each phase's hue and each skill's label hue, written out by hand.
 const PHASE_HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
 const skillHue = (skill: string) => (skill === 'milestone-review' ? GREEN : skill === 'milestone-plan' ? BLUE : ORANGE)
@@ -2550,6 +2550,7 @@ const FLOWS: Record<string, { fills: [string, string, string]; pill: string; per
   'long-title': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
   mixed: { fills: ['1/1', '0/1', '0/1'], pill: 'no tasks', percent: 33 },
   'nested-first': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
+  'pane-full': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
   'single-in-progress': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', percent: 44 },
   'six-active': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', percent: 50 },
   subdirectory: { fills: ['1/1', '2/2', '0/1'], pill: 'Implement 2/2', percent: 66 },
@@ -2848,6 +2849,8 @@ const TRACK_FROM: Record<string, number> = {
   mixed: 87,
   'nested-first': 93,
   'no-active': 104,
+  // `implement M080 ` 15 + `→ T2:` 5 + 2 + 52 + `  44%` 5 + 3 + 10 = 92.
+  'pane-full': 92,
   'repo-at-cut': 104,
   'single-in-progress': 92,
   'six-active': 88,

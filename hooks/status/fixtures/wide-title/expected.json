@@ -3,5 +3,9 @@
   "workable": [],
   "rows": [
     {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole."}
-  ]
+  ],
+  "pane": [
+    {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}], "criteria": [{"text": "AC1: The title reads.", "checked": true}, {"text": "AC2: The emoji stays whole.", "checked": false}], "log": []}}
+  ],
+  "next": {"action": "review", "command": "/milestone-review", "id": "M061", "waiting": []}
 }

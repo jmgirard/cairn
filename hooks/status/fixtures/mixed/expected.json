@@ -6,5 +6,12 @@
     {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
     {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
     {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null}
-  ]
+  ],
+  "pane": [
+    {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Top-level task.", "checked": true}, {"text": "T1a: Nested task with a capital X.", "checked": true}, {"text": "T1b: Nested task, open.", "checked": false}, {"text": "T2: Second top-level task.", "checked": false}, {"text": "T3: A task under an H3, still inside Tasks.", "checked": true}], "criteria": [{"text": "AC1: First criterion.", "checked": true}, {"text": "AC2: Second criterion.", "checked": true}, {"text": "AC3: Third criterion.", "checked": false}], "log": ["[x] A box after Tasks, which does not count.", "2026-01-03: work."]}},
+    {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "file": {"goal": "", "tasks": [], "criteria": [{"text": "AC1: A checked criterion above the Tasks section.", "checked": true}], "log": ["2026-01-04: started."]}},
+    {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "file": null},
+    {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "file": {"goal": "- [x] A box under Goal, which does not count.", "tasks": [], "criteria": [], "log": []}}
+  ],
+  "next": {"action": "review", "command": "/milestone-review", "id": "M010", "waiting": [{"id": "M011", "title": "Not started", "unmet": ["M010 (review)"]}]}
 }

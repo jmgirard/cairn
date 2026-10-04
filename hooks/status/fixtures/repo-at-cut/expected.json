@@ -1,5 +1,7 @@
 {
   "cwd": "",
   "workable": ["M191"],
-  "rows": []
+  "rows": [],
+  "pane": [],
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]}
 }

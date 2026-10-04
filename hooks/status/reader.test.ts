@@ -6,6 +6,7 @@ import {
   dirname,
   findRoot,
   loadBand,
+  loadCairn,
   memorySource,
   parseDepends,
   parseRoadmapRows,
@@ -28,15 +29,45 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
 
   for (const [name, fixture] of Object.entries(FIXTURES)) {
     test(`${name}: rows, counts and next items match expected.json`, async () => {
-      const { rows } = await loaded(memorySource(fixture.files, fixture.cwd))
+      const { rows } = await loaded(memorySource(fixture.files, fixture.cwd, fixture.unreadable))
       expect(rows).toEqual(fixture.rows)
     })
 
     test(`${name}: the workable list matches expected.json`, async () => {
-      const { workable } = await loaded(memorySource(fixture.files, fixture.cwd))
+      const { workable } = await loaded(memorySource(fixture.files, fixture.cwd, fixture.unreadable))
       expect(workable.map(row => row.id)).toEqual(fixture.workable)
     })
+
+    // The pane's data against the values the Python helpers and
+    // `cairn_next.py` give for the same fixture (M205 AC2, AC3).
+    test(`${name}: the pane's milestones and next step match expected.json`, async () => {
+      const loaded = await loadCairn(memorySource(fixture.files, fixture.cwd, fixture.unreadable))
+      if (loaded === null) throw new Error('loadCairn gave null for a readable ROADMAP')
+      const { pane } = loaded
+      expect(pane.milestones).toEqual(fixture.pane)
+      expect(pane.next === null ? null : { ...pane.next, waiting: pane.waiting }).toEqual(fixture.next)
+      expect(pane.workable.map(row => row.id)).toEqual(fixture.workable)
+      expect(pane.found).toBe(fixture.next !== null)
+    })
   }
+
+  test('the pane fixtures hold the shapes M205 names', () => {
+    const full = FIXTURES['pane-full']
+    const long = full.pane.find(row => row.id === 'M080')?.file
+    // More than five log lines in the file, five shown, the newest last.
+    expect(full.files['/cairn/milestones/M080-long-log.md'].split('\n- 2026-').length - 1).toBeGreaterThan(5)
+    expect(long?.log.length).toBe(5)
+    expect(long?.log[4]).toBe('2026-01-07: seventh line, the newest.')
+    // A wrapped task reads whole.
+    expect(long?.tasks[0].text).toBe('T1: The first task, wrapped over three lines of text.')
+    // A goal of several paragraphs keeps its blank line.
+    expect(full.pane.find(row => row.id === 'M081')?.file?.goal).toContain('\n\n')
+    // The unreadable file shows no parts.
+    expect(full.unreadable).toEqual(['/cairn/milestones/M082-unreadable.md'])
+    expect(full.pane.find(row => row.id === 'M082')?.file).toBe(null)
+    // Every planned row waits, so the next step is planning.
+    expect(FIXTURES['all-waiting'].next).toEqual(expect.objectContaining({ command: '/milestone-plan', id: null }))
+  })
 
   test('no-roadmap expects an empty result', async () => {
     const fixture = FIXTURES['no-roadmap']

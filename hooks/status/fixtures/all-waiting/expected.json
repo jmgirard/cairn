@@ -1,0 +1,7 @@
+{
+  "cwd": "",
+  "workable": [],
+  "rows": [],
+  "pane": [],
+  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": [{"id": "M090", "title": "Waits on a planned milestone", "unmet": ["M091 (planned)"]}, {"id": "M091", "title": "Waits on a blocked milestone", "unmet": ["M092 (blocked)"]}, {"id": "M093", "title": "Waits on an id with no row", "unmet": ["M500 (unknown)"]}]}
+}

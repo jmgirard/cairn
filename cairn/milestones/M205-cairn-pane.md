@@ -61,7 +61,7 @@ pane, desktop pane support goes to a new candidate row (AC6).
       behind `/cairn-pane` on the branch. Ask the operator to run it in a new
       desktop Code session (LESSONS M195, M201), and log the result. If the
       app places no pane, the second arm of AC6 applies, and T6 skips the look.
-- [ ] T2: Reader and fixtures. Factor `recommend` and `waiting` out of
+- [x] T2: Reader and fixtures. Factor `recommend` and `waiting` out of
       `render()` in `scripts/cairn_next.py`. Extend `hooks/status/reader.ts`
       to read the goal, the item lists, the work-log tail, the recommended
       command, and the waiting rows. Add the `pane`, `next`, and `unreadable`
@@ -99,3 +99,4 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: implement started on branch m205-cairn-pane. The untracked `tsconfig.json` at the repo root is not this milestone's and stays unstaged.
 - 2026-10-04: T1 runs as a throwaway `pane-probe` mod in this session's hot-reload folder (`~/.claude/dev-mods/<session>/pane-probe`), not on the branch, so no probe code reaches the PR. It opens a pane at load and through `/pane-probe`, and logs `isPlaced` and the render props to `.git/pane-probe.log`. `claude plugin validate` passed on 2.1.286.
 - 2026-10-04: T1 done. The operator enabled hot reload, and the desktop app placed the probe pane on the right. The log reads `isPlaced: true`, then `surface=desktop placement=dock bodyColumns=44`. The first arm of AC6 applies. The operator saw the band in its text form beside the docked pane. The likely cause is the narrower transcript column, below the width the M204 track needs. A probe log of the band's width will confirm it.
+- 2026-10-04: T2 done. `cairn_next.py` gains `recommend` and `waiting`, and `render()` prints the same text as main on this repo and all 18 old fixtures. `reader.ts` gains `loadCairn`, which reads the band and pane state in one pass, and `loadBand` wraps it. Two fixtures were added: `pane-full` (long log, wrapped items, a goal of two paragraphs, an unreadable file, waiting rows) and `all-waiting`. The `next` key also carries `waiting`, and the workable ids stay in the existing `workable` key. Choice: the pane drops HTML comments from a section before it reads items, so a box inside a comment is not an item. The band and the validator still count it (`pane-full` M080 has 3 criteria in the band and 2 in the pane). Gates: scripts/tests 395 OK, hooks/tests OK, plugin validate passed, plugin test 1042 pass.
