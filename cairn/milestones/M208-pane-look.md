@@ -1,13 +1,13 @@
 # M208: A fuller look for the cairn pane
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M207
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the pane draws in every adopter's session
-- **Branch/PR:** —
+- **Branch/PR:** m208-pane-look
 
 ## Goal
 
@@ -55,6 +55,8 @@ Give the cairn pane a fuller look, picked by the operator from browser prototype
 - 2026-10-04: criteria audit (full mode, user-facing tier, fresh Opus reader) returned 12 findings over M207 to M209, all taken. Here: AC1 draws the band's own track and percent, with a review-row case whose comment box makes the two counts differ. AC4's sweep starts at the 44-column dock, since a head line with a track needs about 32 columns before its title. AC4 binds lead widths and `minWidth: 0` and leaves the drawing to AC7. AC2 and AC3 cover a pick of none.
 - 2026-10-04: question set: additions. The operator chose all three: the flow track on each milestone, meters by the counts, and set-off headings with the `Next` line. Falsified if the live look shows the pane too busy to read.
 - 2026-10-04: question set: look pick. The run stops once at T1 for the operator to pick from browser prototypes (recommended), over the agent picking and showing the look only at the merge. The T1 pick and the T6 live look are stops for the operator's eyes on the closed list.
+- 2026-10-04: implement started on branch `m208-pane-look`. The untracked `tsconfig.json` stays unstaged.
+- 2026-10-04: T1 prototypes served from the scratchpad on port 8765: three variants (square meters with solid rules; thin bars with accent marks; braille meters with dotted leaders), each in desktop dark and light at 44 columns, terminal dark, and an idle pane with candidates. The real `trackSvg` and `brailleSpans` output is drawn there. At 44 columns the track on the head line left the title no room, so the page also compares the track on its own line under the head line. Stopping for the operator's pick.
 
 ## Decisions
 
