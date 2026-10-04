@@ -19,9 +19,10 @@ export type CairnBandRow = {
 // A planned milestone whose dependencies are all done.
 export type CairnWorkableRow = { id: string; title: string }
 
-// The active milestones in ROADMAP order, and the workable planned
-// milestones by priority and then id.
-export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[] }
+// The active milestones in ROADMAP order, the workable planned milestones
+// by priority and then id, and the repo root the rows came from, null when
+// no ROADMAP was found (M210).
+export type CairnBandState = { rows: CairnBandRow[]; workable: CairnWorkableRow[]; root: string | null }
 
 // One active milestone's id and status, as the close button stores them.
 export type CairnBandMark = { id: string; status: string }

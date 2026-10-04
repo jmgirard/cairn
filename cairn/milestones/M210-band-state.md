@@ -102,7 +102,7 @@ surface tests are features, not defects.
 - [x] T1: UNC roots. `dirname` (`reader.ts:225-232`) treats a `\\host\share`
       or `//host/share` head as a root. Add reader tests for each AC1 form and
       for the `findRoot` probe list (`memorySource`).
-- [ ] T2: Root-aware rows. `loadCairn` exposes the root it found and treats an
+- [x] T2: Root-aware rows. `loadCairn` exposes the root it found and treats an
       empty or whitespace ROADMAP text as a failed read (`reader.ts:263-265`).
       The band state stores `root` under a new `shape` tag (LESSONS M193).
       `refresh` (`register.tsx:408-421`) keeps rows only when the failed read's
@@ -133,6 +133,8 @@ surface tests are features, not defects.
 - 2026-10-04: plan chose to treat an empty or whitespace ROADMAP text as a failed read over a delayed re-read of any empty result, because the re-read adds a timer to the refresh path; falsified by a real session where a ROADMAP cut mid-table empties the band.
 - 2026-10-04: implement started on m210-band-state. The untracked `cairn-probe.log` and `tsconfig.json` in the tree are unrelated and stay unstaged.
 - 2026-10-04: T1 done. `dirname` returns a `\\host\share` or `//host/share` head unchanged. Two new reader tests failed on their asserted values before the fix. Verify is clean: scripts 397 OK, hooks OK, validate passed with warnings, mod tests 1000 pass.
+- 2026-10-04: T2 implementation choice: the root lives in the band atom's value (`band-4`, and `CairnBandState` gains `root`), and `readCairn` in reader.ts reports the root beside the state. A throw while parsing keeps the rows in the same root, as before, and only a throw from `$.session.cwd()` leaves the root unknown.
+- 2026-10-04: T2 done. Ten new band tests cover AC2 and AC3 on both surfaces. Against the pre-T2 source, those ten failed on their row assertions: the six root cases kept the old row and the four empty-text cases emptied the band. The edit-before-failure test passed there too, as it guards the M200 keep. The harness's `state.set` hook sees a shaped value as `{ shape, value }`. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1012 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

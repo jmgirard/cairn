@@ -6,7 +6,7 @@ import type { BandLine, Span } from './band'
 import { cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { NO_ROADMAP, paneLines } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
-import { loadCairn, NO_PANE } from './reader'
+import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // The milestone band above the prompt (M191, M193 to M201, M206): one row
@@ -39,8 +39,11 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
-const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [] } as BandState, {
-  shape: 'band-3',
+// The band's value keeps the repo root its rows came from, null when no
+// ROADMAP was found; the tag moved to 4 with the root (M210).
+type StoredBand = BandState & { root: string | null }
+const band = atom({ plugin: 'cairn', key: 'band' } as const, { rows: [], workable: [], root: null } as StoredBand, {
+  shape: 'band-4',
 })
 
 // The active ids and statuses, in ROADMAP order, `milestone-review` while
@@ -401,21 +404,30 @@ function style(span: Span) {
 }
 
 // No ROADMAP found empties the band and the pane. A found ROADMAP that
-// cannot be read keeps the rows and the pane as they were (M200). Any throw from `loadCairn`, its
-// parsing included, keeps them too. Of the calls `fsSource` makes, only
-// `$.session.cwd()` is not caught. The close state is then compared
-// against the kept rows and the current step.
+// cannot be read, or whose text is empty or only whitespace, keeps the rows
+// and the pane as they were (M200), and so does a throw while parsing it,
+// but only when the kept rows came from the same root (M210). A failed read
+// in another root, a throw from `$.session.cwd()`, and kept rows with no
+// root all empty the band and the pane, so no row from another repo shows.
+// The close state is then compared against the rows and the current step.
 async function refresh($) {
-  let state: { band: BandState; pane: PaneState } | null = null
+  let got: { root: string | null; state: { band: BandState; pane: PaneState } | null } | null
   try {
-    state = await loadCairn(fsSource($))
+    got = await readCairn(fsSource($))
   } catch {
-    state = null
+    got = null
   }
-  if (state !== null) {
-    const next = state
-    await update($, band, () => next.band)
+  const root = got === null ? null : got.root
+  if (got !== null && got.state !== null) {
+    const next = got.state
+    await update($, band, () => ({ ...next.band, root }))
     await update($, pane, () => next.pane)
+  } else {
+    const kept = (await read($, band)).root
+    if (kept === null || root === null || kept !== root) {
+      await update($, band, () => ({ rows: [], workable: [], root }))
+      await update($, pane, () => NO_PANE)
+    }
   }
   await reconcile($)
 }

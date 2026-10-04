@@ -61,6 +61,11 @@ type Copy = {
   beforeSubmit?: () => Promise<void>
   // The origin kind and turn id of each prompt that reached beneath the mod.
   submitted?: { kind: string; turnId: string | undefined }[]
+  // While set, the session's working directory read rejects (M210).
+  cwdThrows?: boolean
+  // While set, each write of the band's value lands with its root removed,
+  // as a value that stores no root (M210).
+  dropRoot?: boolean
 }
 
 function copyOf(name: string): Copy {
@@ -75,7 +80,16 @@ function copyOf(name: string): Copy {
 // chapter tool since M206, so a chapter call reaches this one.
 function seat(on: On, copy: Copy) {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
-  on('session.cwd', async () => ({ value: copy.cwd }))
+  on('session.cwd', async () => {
+    if (copy.cwdThrows === true) throw new Error('no working directory')
+    return { value: copy.cwd }
+  })
+  // A shaped value crosses as `{ shape, value }`.
+  on('state.set', async ($, e, next) => {
+    if (copy.dropRoot !== true || e.plugin !== 'cairn' || e.key !== 'band') return next(e)
+    const shaped = e.value as { shape: string; value: object }
+    return next({ ...e, value: { ...shaped, value: { ...shaped.value, root: null } } })
+  })
   on('fs.stat', async ($, e, next) =>
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
@@ -1265,6 +1279,108 @@ describe('a failed read of a found ROADMAP keeps the rows and alone does not hid
       await $.turn.complete(turn())
       expect(await rowKeys(ui)).toEqual(['M002-row'])
       expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      await ui.unmount()
+    })
+  }
+})
+
+// The cairn pane, as the band's tests read it beside the band.
+const PANE_VIEW = {
+  component: 'Pane',
+  requestId: 'cairn',
+  props: { title: 'cairn', isFocused: false, bodyColumns: 60, placement: 'dock', scroll: { offset: 0, bodyRows: 200 }, view: {} },
+} as const
+
+async function paneText($, surface: (typeof SURFACES)[number]): Promise<string> {
+  const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+  const [root] = await ui.findAll({ key: 'cairn-pane' })
+  const text = root === undefined ? '' : textOf(root)
+  await ui.unmount()
+  return text
+}
+
+const BEFORE = 'Add the export command'
+const EDITED = 'Add the import command'
+const OTHER_ROADMAP = '/other/cairn/ROADMAP.md'
+
+describe('a failed read in the same root keeps the rows drawn before it (M210 AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`an edit made before a failed read shows only once a read succeeds (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      copy.files[ROADMAP] = copy.files[ROADMAP].replace(BEFORE, EDITED)
+      copy.unreadable = [ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      expect(await paneText($, surface)).toContain(BEFORE)
+      copy.unreadable = []
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([`M002 ${EDITED}  [track] 44%`, ENGINE])
+      const pane = await paneText($, surface)
+      expect(pane).toContain(EDITED)
+      expect(pane).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    for (const [name, text] of [['empty', ''], ['whitespace-only', ' \n\t\n']] as const) {
+      test(`an ${name} ROADMAP text keeps the rows (${surface})`, async ($, on) => {
+        const copy = copyOf('single-in-progress')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        copy.files[ROADMAP] = text
+        await $.turn.complete(turn())
+        expect(await lines(ui)).toEqual([...DRAWN['single-in-progress'], ENGINE])
+        expect(await paneText($, surface)).toContain(BEFORE)
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe('a failed read never draws rows from another root (M210 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`a failed read after a move to another repo root empties the band and the pane (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.cwd = '/other'
+      copy.files[OTHER_ROADMAP] = copy.files[ROADMAP]
+      copy.unreadable = [OTHER_ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    test(`a working-directory read that throws empties the band and the pane (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.cwdThrows = true
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
+      await ui.unmount()
+    })
+
+    test(`rows stored with no root are not kept through a failed read (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.dropRoot = true
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['M002-row'])
+      copy.unreadable = [ROADMAP]
+      await $.turn.complete(turn())
+      expect(await lines(ui)).toEqual([ENGINE])
+      expect(await paneText($, surface)).not.toContain(BEFORE)
       await ui.unmount()
     })
   }
