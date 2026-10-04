@@ -104,3 +104,18 @@ suite note, which `/milestone-review` post-merge hygiene rewrites.
 - 2026-10-04 AC2: `git diff main...HEAD -- skills/tests | grep -E '^-\s*def test_'` prints one line, `def test_partial_coverage_was_trimmed_not_deleted(self):`.
 - 2026-10-04 AC3: verify slot at d58db09, each exit code checked: scripts/tests exit 0 (397 tests, OK, 21 skipped), hooks/tests exit 0 (174, OK), `claude plugin validate` exit 0 (passed with warnings), `claude plugin test .` exit 0 (1105 tests, 0 fail), Claude Code 2.1.287.
 - 2026-10-04 consistency gate: `cairn_validate` exit 0, all checks passed. No principle changed, so `cairn_impact` is skipped. The generic profile's consistency-gate slot names no toolchain checks.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the two hotfix `assertIn` calls check neither order nor adjacency, so deleting the guest-arm clause stays green — reject, planned change (T2 unpins the guest-arm wording on purpose).
+- diff-bug #2: the hotfix guard's first passage has no Mutation entry of its own — reject, planned change (Scope Out excludes new harness entries, and D-109 owes none).
+- diff-bug #3: Scope says the deleted test pinned LESSONS lines "that later prunes removed", but of its four strings `trimmed M92/M98` is still in LESSONS, `trimmed M98` and the `OLDEST un-re-read` line were pruned (8a4270c), and the `git rebase main` line was rewritten by the M203 correction (1f65cdc) — fix now: this line is the correct account. Scope is plan-owned and stays as written.
+- diff-bug #4: the ROADMAP hygiene stamp still says "same 4 reds, 1 error" — reject, planned change (Scope Out leaves the stamp to post-merge hygiene).
+- blame-history #1: the deleted assert was the only check that the two M98 trims held — reject, planned change (D-051 binds at retirement time, and LESSONS lines stay prunable).
+- blame-history #2: repointing that assert re-pins a claim M203 found false — reject, false (it supports the deletion and names no defect).
+- blame-history #3: the M185 guest-arm sync clause has no guard in `skills/tests`, and the second passage relies on its closing paren — reject, planned change (unguarded since M185 merged, and D-109 owes no new guard).
+- blame-history #4: the `<base>` repoints match M185's intentional rewrite — reject, false (no defect named).
+- blame-history #5: the reds sat for a month, and the M214 work log traces them to intentional rewordings — reject, false (no defect named).
+- prior-review #1: the hotfix guard's first passage has no Mutation entry — reject, planned change (same as diff-bug #2).
+- prior-review #2: a split anchored on `), and in a` is fragile and leaves the guest arm unguarded — reject, planned change (same as blame-history #3).
+- prior-review #3: the M165 lesson's "two test files pin specific lesson lines" is stale in count — reject, false: `test_lesson_graduation.py:76` and `test_records_hygiene_graduation.py` both still pin the `"green" is only as wide` line.
+- prior-review #4: the `<base>` repoints contradict no prior review — reject, false (no defect named).
+- return floor: no finding shows a criterion failing or a defect in what the skills, hooks, or scripts do, so there is no return.
