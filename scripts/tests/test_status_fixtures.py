@@ -61,10 +61,9 @@ def section_fields(text, heading):
 
 def read_milestone(root, relpath, unreadable):
     """The milestone file's text, or None when it is missing or the fixture
-    marks its read as failing (`unreadable` holds paths from the fixture
-    root, as `/cairn/...`)."""
-    path = os.path.join(root, "cairn", relpath)
-    if not os.path.isfile(path) or "/cairn/" + relpath in unreadable:
+    marks its read as failing (`unreadable` holds absolute paths)."""
+    path = os.path.normpath(os.path.join(root, "cairn", relpath))
+    if not os.path.isfile(path) or path in unreadable:
         return None
     with open(path, encoding="utf-8") as f:
         return f.read()
@@ -192,7 +191,9 @@ class StatusFixtureAgreement(unittest.TestCase):
                     copy = pathlib.Path(tmp) / case_dir.name
                     shutil.copytree(case_dir, copy)
                     start = copy / expected["cwd"] if expected["cwd"] else copy
-                    unreadable = expected.get("unreadable", [])
+                    # The fixture's paths are from its own root, which the
+                    # copy now sits at, whatever directory the walk finds.
+                    unreadable = [os.path.normpath(str(copy) + path) for path in expected.get("unreadable", [])]
                     self.assertEqual(python_rows(start, unreadable), expected["rows"])
                     self.assertEqual(python_workable(start), expected["workable"])
                     self.assertEqual(python_pane(start, unreadable), expected["pane"])

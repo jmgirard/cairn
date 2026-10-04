@@ -13,7 +13,9 @@
   next command, the workable planned milestones, and the planned ones that
   wait on others, as `scripts/cairn_next.py` gives them. Each item takes
   one line, a long item ends in `…`, and the goal wraps.
-  Outside a cairn repo the command prints `no cairn ROADMAP found`.
+  Outside a cairn repo, with no pane open, the command prints
+  `no cairn ROADMAP found`. A refused or unplaced open prints its reason,
+  and the band's button shows that reason in a toast.
   `scripts/cairn_next.py` gains `recommend` and `waiting`, and its output
   is unchanged.
 - **A flow track in the desktop band.** In the desktop app, the band now

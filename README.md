@@ -282,7 +282,9 @@ milestone file shows `no milestone file`. Below the milestones, the pane
 shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
 The pane reads the files at the same moments as the band. Outside a cairn
-repo, the command opens no pane and prints `no cairn ROADMAP found`.
+repo, with no pane open, the command opens no pane and prints `no cairn
+ROADMAP found`. A pane that is already open says the same, and the command
+closes it.
 
 Mods are on by default from Claude Code 2.1.287
 ([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),

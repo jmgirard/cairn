@@ -53,8 +53,16 @@ type Copy = {
   open: string[]
   opens: { id: string; title?: string }[]
   closes: string[]
-  // When set, an open answers that the pane waits undrawn, for this reason.
+  // When set, an open answers that the pane waits undrawn, for this reason,
+  // and the pane stays listed with `isPlaced` false, as the API keeps it.
   notPlaced?: string
+  // The open ids that wait undrawn, and those behind another pane's tab.
+  unplaced?: string[]
+  hidden?: string[]
+  // The toasts that reached beneath the mod.
+  toasts?: string[]
+  // When set, every open is refused with this reason.
+  refuse?: string
 }
 
 function copyOf(name: string): Copy {
@@ -90,9 +98,15 @@ function seat(on: On, copy: Copy) {
   on('tool.call', { tool: CHAPTER_TOOL }, async () => ({ result: 'Chapter marked' }))
   on('ui.render', { component: 'AbovePrompt' }, async () => ({ type: 'Text', props: {}, children: ['engine slot'] }))
   on('ui.open', async ($, e) => {
+    if (copy.refuse !== undefined) return { deny: copy.refuse }
     copy.opens.push({ id: e.id, title: e.title })
-    if (copy.notPlaced !== undefined) return { value: { isPlaced: false, reason: copy.notPlaced } }
     if (!copy.open.includes(e.id)) copy.open.push(e.id)
+    copy.hidden = (copy.hidden ?? []).filter(id => id !== e.id)
+    if (copy.notPlaced !== undefined) {
+      copy.unplaced = [...(copy.unplaced ?? []).filter(id => id !== e.id), e.id]
+      return { value: { isPlaced: false, reason: copy.notPlaced } }
+    }
+    copy.unplaced = (copy.unplaced ?? []).filter(id => id !== e.id)
     return { value: { isPlaced: true } }
   })
   on('ui.close', async ($, e) => {
@@ -101,8 +115,18 @@ function seat(on: On, copy: Copy) {
     return { value: undefined }
   })
   on('ui.panes', async () => ({
-    value: copy.open.map(id => ({ id, title: id, isShown: true, isFocused: false, isPlaced: true })),
+    value: copy.open.map(id => ({
+      id,
+      title: id,
+      isShown: !(copy.hidden ?? []).includes(id),
+      isFocused: false,
+      isPlaced: !(copy.unplaced ?? []).includes(id),
+    })),
   }))
+  on('ui.toast', async ($, e) => {
+    copy.toasts = [...(copy.toasts ?? []), e.text]
+    return { value: undefined }
+  })
 }
 
 function textOf(node: unknown): string {
@@ -167,6 +191,35 @@ describe('/cairn-pane opens and closes the pane (M205 AC1)', () => {
     const result = await $.command.run({ command: COMMAND })
     expect(copy.opens.map(open => open.id)).toEqual([PANE])
     expect(result.text).toContain('the attached surfaces place no panes')
+    // The unplaced pane stays listed. A second run opens it again rather
+    // than closing a pane nobody saw (M205 review).
+    copy.notPlaced = undefined
+    const second = await $.command.run({ command: COMMAND })
+    expect(copy.closes).toEqual([])
+    expect(copy.opens.map(open => open.id)).toEqual([PANE, PANE])
+    expect(second.text).toBe('cairn pane opened')
+  })
+
+  test('a pane behind another tab is opened again, not closed', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    copy.hidden = [PANE]
+    const result = await $.command.run({ command: COMMAND })
+    expect(copy.closes).toEqual([])
+    expect(copy.opens.length).toBe(2)
+    expect(result.text).toBe('cairn pane opened')
+  })
+
+  test('a refused open gives a line, not an error', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    copy.refuse = 'opens are refused here'
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true })
+    const result = await $.command.run({ command: COMMAND })
+    expect(result.text.startsWith('cairn pane: ')).toBe(true)
+    expect(result.text).toContain('opens are refused here')
   })
 })
 
@@ -271,6 +324,18 @@ describe("the band's open button opens the pane (M205 AC4)", () => {
       await ui.press({ key: 'cairn-open' })
       expect(copy.opens.map(open => open.id)).toEqual([PANE])
       expect(copy.open).toEqual([PANE])
+      expect(copy.toasts ?? []).toEqual([])
+      await ui.unmount()
+    })
+
+    test(`a press the surface does not place says why in a toast (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.notPlaced = 'the attached surfaces place no panes'
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await ui.press({ key: 'cairn-open' })
+      expect(copy.toasts).toEqual(['cairn pane not placed: the attached surfaces place no panes'])
       await ui.unmount()
     })
 
@@ -323,17 +388,22 @@ const EVENTS: Event[] = [
 
 describe('an open pane draws again at each refresh the band takes (M205 AC5)', () => {
   for (const event of EVENTS) {
+    // One pane stays mounted across the event, so the case shows that the
+    // drawing already open changes, not only a new one (M205 review).
     test(`the ${event.name} shows an edit made before it`, async ($, on) => {
       const copy = copyOf('single-in-progress')
       seat(on, copy)
       await $.turn.complete(turn())
       if (event.before !== undefined) await event.before($)
-      expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBe(T2_OPEN)
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...PANE_VIEW })) as Ui
+      const t2 = async () => textOf((await ui.findAll({ key: 'M002-task-1' }))[0])
+      expect(await t2()).toBe(T2_OPEN)
       tick(copy)
       // The edit alone draws nothing new.
-      expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBe(T2_OPEN)
+      expect(await t2()).toBe(T2_OPEN)
       await event.act($)
-      expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBe(T2_DONE)
+      expect(await t2()).toBe(T2_DONE)
+      await ui.unmount()
     })
   }
 })

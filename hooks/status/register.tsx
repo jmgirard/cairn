@@ -102,15 +102,23 @@ export const register: Register = on => {
 
   // `/cairn-pane` closes an open pane, and otherwise reads the files and
   // opens it, or says why it did not (M205 AC1).
+  // Only a pane the person can see is closed: one that waits undrawn, or
+  // sits behind another pane's tab, is opened again instead (M205 review).
+  // A hook that refuses the open or the close gives a line, not an error.
   on('command.run', { command: PANE_COMMAND }, async $ => {
-    if ((await $.ui.panes()).some(open => open.id === PANE)) {
-      await $.ui.close({ id: PANE })
-      return { text: 'cairn pane closed' }
+    try {
+      const mine = (await $.ui.panes()).find(open => open.id === PANE)
+      if (mine !== undefined && mine.isPlaced && mine.isShown) {
+        await $.ui.close({ id: PANE })
+        return { text: 'cairn pane closed' }
+      }
+      await refresh($)
+      if (!(await read($, pane)).found) return { text: NO_ROADMAP }
+      const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+      return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
+    } catch (error) {
+      return { text: `cairn pane: ${error instanceof Error ? error.message : String(error)}` }
     }
-    await refresh($)
-    if (!(await read($, pane)).found) return { text: NO_ROADMAP }
-    const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
-    return { text: opened.isPlaced ? 'cairn pane opened' : `cairn pane not placed: ${opened.reason}` }
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
@@ -340,8 +348,19 @@ async function dismiss($) {
 
 // A press of the band's open button opens the pane. The press is the
 // person's own act, so the surface places the pane at any width.
+// A press has no output line, so an open the surface does not place, or one
+// a hook refuses, says why in a toast.
 async function openPane($) {
-  await $.ui.open({ id: PANE, title: PANE_TITLE })
+  try {
+    const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+    if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
+  } catch (error) {
+    $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+function notPlaced(reason: string): string {
+  return `cairn pane not placed: ${reason}`
 }
 
 // A change to the active ids, statuses, or order, to the running skill, or
