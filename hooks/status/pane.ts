@@ -1,19 +1,26 @@
 import type { Span } from './band'
-import { GRAY, GREEN, ORANGE } from './band'
-import type { CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
+import { flowOf, GRAY, GREEN, ORANGE } from './band'
+import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
+import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. For each active milestone: its phase, id, and title, its goal,
-// its tasks and criteria with their boxes, and its newest work-log lines.
+// draws. For each active milestone: its phase, id, and title, with the
+// band's percent for the row at the end of the line (M208), its goal, its
+// tasks and criteria with their boxes, and its newest work-log lines.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
 // dependencies. With no active milestone, the ROADMAP's candidate rows
-// follow, each a priority mark and its short title (M207). A line's `lead` keeps its width. Its `text` is cut to one
+// follow, each a priority mark and its short title (M207).
+// A line's `lead` and `tail` keep their width. Its `text` is cut to one
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
 // on one screen.
+// The operator picked the look at the M208 prototypes: a blank row, an
+// orange `▎`, and a gray uppercase label for each section heading, eight
+// squares beside the Tasks and Criteria counts, the Next command in an
+// orange pill, and the percent alone on the head line, with no track.
 
-export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; wraps?: true }
+export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; tail?: Span[]; wraps?: true }
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -26,6 +33,12 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: '·' },
   low: { text: '↓', color: GRAY },
 }
+// A section heading's accent mark (M208).
+export const ACCENT: Span = { text: '▎', color: ORANGE }
+// The meter's squares, filled and empty, and how many it draws (M208).
+export const METER_FULL = '■'
+export const METER_EMPTY = '□'
+export const METER_CELLS = 8
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
 
@@ -41,8 +54,44 @@ const line = (key: string, indent: number, lead: Span[], text: Span | null = nul
   text,
 })
 
-const heading = (key: string, text: string, count: string | null = null): PaneLine =>
-  line(key, 0, [{ text, bold: true }], count === null ? null : { text: count, color: GRAY })
+// One blank row, before each section heading, each milestone after the
+// first, and Next.
+const gap = (key: string) => line(key, 0, [], { text: ' ' })
+
+// The filled share of the meter: none only with no box checked, and all
+// only with every box checked.
+export function meterFill(checked: number, total: number): number {
+  if (total === 0 || checked === 0) return 0
+  if (checked >= total) return METER_CELLS
+  return Math.min(METER_CELLS - 1, Math.max(1, Math.round((METER_CELLS * checked) / total)))
+}
+
+export function meter(checked: number, total: number, color: string): Span[] {
+  const fill = meterFill(checked, total)
+  return [
+    { text: METER_FULL.repeat(fill), color },
+    { text: METER_EMPTY.repeat(METER_CELLS - fill), color: GRAY },
+  ].filter(span => span.text !== '')
+}
+
+// A section heading and the blank row before it: the accent, the label in
+// gray uppercase, and its count and meter where it has them.
+function heading(key: string, label: string, after: Span[] = []): PaneLine[] {
+  return [
+    gap(`${key}-gap`),
+    line(key, 0, [ACCENT, { text: ' ' }, { text: label.toUpperCase(), color: GRAY, bold: true }, ...after]),
+  ]
+}
+
+function counted(key: string, label: string, list: PaneItem[], color: string): PaneLine[] {
+  const checked = list.filter(item => item.checked).length
+  return heading(key, label, [
+    { text: ' ' },
+    { text: `${checked}/${list.length}`, color: GRAY },
+    { text: ' ' },
+    ...meter(checked, list.length, color),
+  ])
+}
 
 function items(prefix: string, list: PaneItem[]): PaneLine[] {
   return list.map((item, i) =>
@@ -55,66 +104,72 @@ function items(prefix: string, list: PaneItem[]): PaneLine[] {
   )
 }
 
-const count = (list: PaneItem[]) => `${list.filter(item => item.checked).length}/${list.length}`
-
-function milestoneLines(row: PaneMilestone): PaneLine[] {
+function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine[] {
   const phase = PHASE[row.status] ?? { label: row.status, color: GRAY }
-  const out: PaneLine[] = [
-    line(
-      `${row.id}-head`,
-      0,
-      [{ text: phase.label, color: phase.color, bold: true }, { text: ' ' }, { text: row.id, bold: true }, { text: '  ' }],
-      { text: row.title },
-    ),
-  ]
+  const head = line(
+    `${row.id}-head`,
+    0,
+    [{ text: phase.label, color: phase.color, bold: true }, { text: ' ' }, { text: row.id, bold: true }, { text: '  ' }],
+    { text: row.title },
+  )
   const file = row.file
+  // The band's percent for the row, from its own counts, which count a box
+  // inside an HTML comment where the pane's items do not.
+  const flow = file === null || band === undefined ? null : flowOf(band)
+  if (flow !== null && flow.percent !== null) head.tail = [{ text: '  ' }, { text: `${flow.percent}%`, color: GRAY }]
+  const out: PaneLine[] = [head]
   if (file === null) return [...out, line(`${row.id}-nofile`, 2, [], { text: NO_FILE, color: WARNING })]
   if (file.goal !== '') {
-    out.push(heading(`${row.id}-goal-head`, 'Goal'))
+    out.push(...heading(`${row.id}-goal-head`, 'Goal'))
     // A blank line between paragraphs draws as one space, so it keeps its row.
     file.goal.split('\n').forEach((text, i) =>
       out.push({ ...line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text }), wraps: true }),
     )
   }
   if (file.tasks.length > 0) {
-    out.push(heading(`${row.id}-tasks-head`, 'Tasks ', count(file.tasks)))
+    out.push(...counted(`${row.id}-tasks-head`, 'Tasks', file.tasks, phase.color))
     out.push(...items(`${row.id}-task`, file.tasks))
   }
   if (file.criteria.length > 0) {
-    out.push(heading(`${row.id}-criteria-head`, 'Criteria ', count(file.criteria)))
+    out.push(...counted(`${row.id}-criteria-head`, 'Criteria', file.criteria, phase.color))
     out.push(...items(`${row.id}-criterion`, file.criteria))
   }
   if (file.log.length > 0) {
-    out.push(heading(`${row.id}-log-head`, 'Work log'))
+    out.push(...heading(`${row.id}-log-head`, 'Work log'))
     file.log.forEach((text, i) => out.push(line(`${row.id}-log-${i}`, 2, [], { text, color: GRAY })))
   }
   return out
 }
 
-// One blank row before each milestone after the first, and before Next.
-const gap = (key: string) => line(key, 0, [], { text: ' ' })
-
-export function paneLines(state: PaneState): PaneLine[] {
+// The pane's lines from its state and the band's rows, whose counts give
+// each head line its percent.
+export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
   state.milestones.forEach((row, i) => {
     if (i > 0) out.push(gap(`${row.id}-gap`))
-    out.push(...milestoneLines(row))
+    out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
-    out.push(line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], { text: target }))
+    out.push(
+      line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
+        text: ` ${target} `,
+        color: PILL_TEXT,
+        backgroundColor: ORANGE,
+      }),
+    )
   }
   if (state.workable.length > 0) {
-    out.push(heading('workable-head', 'Workable'))
+    out.push(...heading('workable-head', 'Workable'))
     for (const row of state.workable) {
       out.push(line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }))
     }
   }
   if (state.waiting.length > 0) {
-    out.push(heading('waiting-head', 'Waiting'))
+    out.push(...heading('waiting-head', 'Waiting'))
     for (const row of state.waiting) {
       out.push(
         line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], {
@@ -125,8 +180,9 @@ export function paneLines(state: PaneState): PaneLine[] {
   }
   // With no active milestone, the ROADMAP's candidate rows (M207).
   if (state.milestones.length === 0 && state.candidates.length > 0) {
-    out.push(gap('candidates-gap'))
-    out.push(heading('candidates-head', 'Candidates ', `${state.candidates.length}`))
+    out.push(
+      ...heading('candidates-head', 'Candidates', [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
+    )
     state.candidates.forEach((row, i) =>
       out.push(
         line(
