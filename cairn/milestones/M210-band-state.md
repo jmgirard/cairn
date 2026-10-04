@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M210: The status band keeps the right state
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -140,6 +140,7 @@ surface tests are features, not defects.
 - 2026-10-04: T4 implementation choice: an idle typed prompt still ends the step before `next`, so a skill prompt of its turn sets the new step as before. On a `drop` the prompt puts back the step it ended, unless something set a step meanwhile. This keeps the M201 slash-command test green, which a clear after `next` would break.
 - 2026-10-04: T4 done. Seven new band tests: five cron cases for AC5, and a dropped prompt for each of `composer` and `bridge` for AC6. Before the fix, the two keep cases and the two drop cases failed on their row assertions, and the three end cases passed as controls. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1023 pass.
 - 2026-10-04: claim audit: 64 claims read, 5 corrected — types/index.d.ts, hooks/status/register.tsx, hooks/status/reader.ts, cairn/DESIGN.md, README.md, CHANGELOG.md. The same reader's re-read of the five is pending. Open concern, unclaimed by any line: a prompt that a hook drops puts back the step but not a `dismissed` cleared by the refresh before `next`. So a band hidden while `/milestone-review` moved it can show again.
+- 2026-10-04: claim audit re-read: the same reader found all 5 corrected claims hold, and one comment line was rewrapped.
 - 2026-10-04: T5 done. CHANGELOG gains an Unreleased "Fixes" entry. The README band section moves the wakeup and dropped-prompt cases out of the limits and adds the same-repo keep, the empty ROADMAP, the press at a session end, and the share root. The DESIGN band bullet and the `register.tsx` and `reader.ts` comments describe the M210 behavior. A grep for `session_crons`, `ScheduleWakeup`, `cannot be read`, and `blocks or drops` found no other site. Verify is clean: scripts 397 OK, hooks 174 OK, validate passed with warnings, mod tests 1023 pass.
 
 ## Decisions
