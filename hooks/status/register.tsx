@@ -101,11 +101,12 @@ const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 // The action Buttons (M212): the next step's label by the action that
 // scripts/cairn_next.py names, planning among them (M213), and the status
 // Button's label and command. A plugin skill runs as `cairn:<name>` (M195).
+const PLAN_LABEL = 'Plan'
 const NEXT_LABELS: Record<string, string> = {
   review: 'Review',
   resume: 'Resume',
   implement: 'Start',
-  'plan the next milestone': 'Plan',
+  'plan the next milestone': PLAN_LABEL,
 }
 const STATUS_LABEL = 'Status'
 const STATUS_COMMAND = 'cairn:milestone'
@@ -367,7 +368,7 @@ export const register: Register = on => {
               key="cairn-next"
               variant="secondary"
               label={nextLabel}
-              onPress={() => pressNext($)}
+              onPress={() => pressNext($, nextLabel)}
             />
           ) : null}
           {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
@@ -453,12 +454,15 @@ let running = false
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
 // cairn skill that started since the drawing, or no next step, makes the
-// press do nothing. Planning names no milestone, so it runs with no
-// arguments (M213).
-async function pressNext($) {
+// press do nothing. A Button drawn for a milestone (`Start`, `Resume`,
+// `Review`) also does nothing when the next step no longer names one, as
+// in M212 (M213 review). `Plan` runs the next step as it is now, which is
+// planning with no arguments while nothing is workable (M213).
+async function pressNext($, drawn: string | undefined) {
   if (running || knownStep(await read($, step)) !== null) return
   const next = (await read($, pane)).next
   if (next === null) return
+  if (next.id === null && drawn !== PLAN_LABEL) return
   await run($, `cairn:${next.command.slice(1)}`, next.id ?? '')
 }
 

@@ -7,7 +7,8 @@
 - **A Plan button on the empty band.** With no `in-progress` or `review`
   milestone and no planned milestone you can start, the band used to draw
   nothing. It now shows `No milestone ready` in gray. While no cairn skill
-  runs and Claude is not working, the row carries `Plan`, which runs
+  runs and Claude is not working, in a band 37 columns wide or more, the
+  row carries `Plan`, which runs
   `/cairn:milestone-plan`, and `Status`, which runs `/cairn:milestone`,
   before its open and close buttons. The close button hides the row until a
   milestone becomes active or workable, or the session ends. Outside a cairn repo the band still draws

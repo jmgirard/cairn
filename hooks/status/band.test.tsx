@@ -2980,6 +2980,26 @@ describe('the close button hides the empty row until a milestone is workable (M2
       expect((await lines(ui))[0].startsWith('M095 Ready now  ')).toBe(true)
       await ui.unmount()
     })
+
+    // README: a hidden empty row also shows again when a milestone becomes
+    // active, and a cairn skill's start and end keep it hidden (M213 review).
+    test(`a skill keeps a hidden empty row hidden, and an active row shows the band (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await rowKeys(ui)).toEqual(['plan-row'])
+      await ui.press({ key: 'cairn-close' })
+      expect(await lines(ui)).toEqual([ENGINE])
+      await prompt($, 'milestone-plan')
+      expect(await lines(ui)).toEqual([ENGINE])
+      await $.classic.Stop(stopWith('empty'))
+      expect(await lines(ui)).toEqual([ENGINE])
+      copy.files[AW] = copy.files[AW].replace('| Blocked outside | blocked |', '| Blocked outside | in-progress |')
+      await $.turn.complete(turn())
+      expect(await rowKeys(ui)).toEqual(['M092-row'])
+      await ui.unmount()
+    })
   }
 })
 
