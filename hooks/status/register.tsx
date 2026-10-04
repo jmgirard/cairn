@@ -303,7 +303,10 @@ export const register: Register = on => {
     // the band draws a row.
     const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
     const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
-    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 1 + width(STATUS_LABEL) + 1
+    // Each action Button draws with its chrome, so the terminal draws it as
+    // `[ label ]`: its label and 4 columns. The two sit side by side, with
+    // one space before the open button.
+    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + width(STATUS_LABEL) + 4 + 1
     const acts =
       canAct && lines.length > 0 && actionsFit(lines[0], e.props.bodyColumns, close + actionColumns)
     const nextRun = nextStep === null ? null : { command: `cairn:${nextStep.command.slice(1)}`, args: nextStep.id ?? '' }
@@ -349,11 +352,15 @@ export const register: Register = on => {
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
           {isFirst && acts && nextRun !== null ? (
-            <Button key="cairn-next" plain label={nextLabel} onPress={() => run($, nextRun.command, nextRun.args)} />
+            <Button
+              key="cairn-next"
+              variant="primary"
+              label={nextLabel}
+              onPress={() => run($, nextRun.command, nextRun.args)}
+            />
           ) : null}
-          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && acts ? (
-            <Button key="cairn-status" plain label={STATUS_LABEL} onPress={() => run($, STATUS_COMMAND, '')} />
+            <Button key="cairn-status" variant="secondary" label={STATUS_LABEL} onPress={() => run($, STATUS_COMMAND, '')} />
           ) : null}
           {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && canOpen ? (
@@ -437,7 +444,8 @@ async function run($, command: string, args: string) {
     try {
       await $.prompt.fill({ text, mode: 'append' })
     } catch {
-      // No prompt box takes it; the toast still names the refusal.
+      // A fill that rejects leaves the draft as it was; the toast still
+      // names the refusal.
     }
     $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)}`)
   }

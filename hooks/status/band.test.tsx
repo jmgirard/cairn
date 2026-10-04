@@ -492,8 +492,8 @@ const ACTION_KEYS = ['cairn-next', 'cairn-status']
 // Whether a fixture's band carries the action Buttons at 120 columns with
 // `skill` running: only with no cairn skill running and a next step that
 // names a milestone, read from the fixture's `next`, which
-// scripts/cairn_next.py wrote (M212 AC1, AC2). Every skill in SKILLS is a
-// cairn skill.
+// test_status_fixtures.py holds to scripts/cairn_next.py's `recommend`
+// (M212 AC1, AC2). Every skill in SKILLS is a cairn skill.
 const actsAt120 = (name: string, skill: string | null = null) => skill === null && (FIXTURES[name].next?.id ?? null) !== null
 
 // The band's Buttons: the open button and then the close button on a row
@@ -2726,8 +2726,9 @@ describe('the desktop draws the track as an Svg, and the terminal as braille (M2
 })
 
 // The command and argument a press of the next-step Button runs, read from
-// the fixture's `next`, which scripts/cairn_next.py wrote: `cairn:` and the
-// command without its slash, and the milestone id (M212 AC1).
+// the fixture's `next`, held by test_status_fixtures.py to
+// scripts/cairn_next.py's `recommend`: `cairn:` and the command without its
+// slash, and the milestone id (M212 AC1).
 function nextRun(name: string): { command: string; args: string } {
   const next = FIXTURES[name].next as { command: string; id: string }
   return { command: `cairn:${next.command.slice(1)}`, args: next.id }
