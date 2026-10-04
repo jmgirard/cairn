@@ -3,7 +3,7 @@ import type { Register } from 'claude-code'
 
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
-import { cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
+import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { NO_ROADMAP, paneLines } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
@@ -96,6 +96,13 @@ const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 // drawn from a found ROADMAP also leaves free (M205).
 const OPEN_GLYPH = '≡'
 const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
+
+// The action Buttons (M212): the next step's label by the action that
+// scripts/cairn_next.py names, and the status Button's label and command.
+// A plugin skill runs as `cairn:<name>` (M195).
+const NEXT_LABELS: Record<string, string> = { review: 'Review', resume: 'Resume', implement: 'Start' }
+const STATUS_LABEL = 'Status'
+const STATUS_COMMAND = 'cairn:milestone'
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -286,9 +293,20 @@ export const register: Register = on => {
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
     // A row drawn from a found ROADMAP carries the pane's open button (M205).
-    const canOpen = (await read($, pane)).found
+    const { found: canOpen, next: nextStep } = await read($, pane)
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     const lines = stepLines(rows, current, e.props.bodyColumns, close, workable)
+    // The next-step and status Buttons (M212) show while no cairn skill's
+    // step is set and no turn is working, on a row that has room for them
+    // (band.ts `actionsFit`); the rest of the row draws as it does without
+    // them. The next step is the pane's, which names a milestone whenever
+    // the band draws a row.
+    const nextLabel = nextStep?.id == null ? undefined : NEXT_LABELS[nextStep.action]
+    const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
+    const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 1 + width(STATUS_LABEL) + 1
+    const acts =
+      canAct && lines.length > 0 && actionsFit(lines[0], e.props.bodyColumns, close + actionColumns)
+    const nextRun = nextStep === null ? null : { command: `cairn:${nextStep.command.slice(1)}`, args: nextStep.id ?? '' }
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -330,6 +348,14 @@ export const register: Register = on => {
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
+          {isFirst && acts && nextRun !== null ? (
+            <Button key="cairn-next" plain label={nextLabel} onPress={() => run($, nextRun.command, nextRun.args)} />
+          ) : null}
+          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
+          {isFirst && acts ? (
+            <Button key="cairn-status" plain label={STATUS_LABEL} onPress={() => run($, STATUS_COMMAND, '')} />
+          ) : null}
+          {isFirst && acts ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && canOpen ? (
             <Button
               key="cairn-open"
@@ -397,6 +423,23 @@ async function openPane($) {
     if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
   } catch (error) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+  }
+}
+
+// A press of an action Button runs its command as if the person typed it
+// (M212). A run that rejects puts the command line after the prompt box's
+// draft, so the person can send it, and says why in a toast.
+async function run($, command: string, args: string) {
+  try {
+    await $.command.run({ command, args })
+  } catch (error) {
+    const text = args === '' ? `/${command}` : `/${command} ${args}`
+    try {
+      await $.prompt.fill({ text, mode: 'append' })
+    } catch {
+      // No prompt box takes it; the toast still names the refusal.
+    }
+    $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 

@@ -278,12 +278,28 @@ export function bandLines(row: BandRow, columns: number, close = 0): BandLine[] 
   const line = { key: `${row.id}-row`, id: row.id, title: row.title }
   const flow = flowOf(row)
   if (flow === null) {
-    const long: Span[] = [{ text: 'no milestone file', color: 'warning' }]
+    const long: Span[] = [{ text: LONG_WARNING, color: 'warning' }]
     const short: Span[] = [{ text: 'no file', color: 'warning' }]
     return [{ ...line, tail: room(columns, close, line, long) >= 0 ? long : short }]
   }
   const tail: Span[] = [SPACE, { text: `${flow.percent}%`, color: GRAY }]
   return [{ ...line, tail, track: { flow, columns: trackColumns(room(columns, close, line, tail)) } }]
+}
+
+// The warning label of a row whose counts cannot be read, at its full width.
+const LONG_WARNING = 'no milestone file'
+
+// Whether a drawn line has room for the action Buttons (M212): the line is
+// at its fullest form, its track at TRACK_COLUMNS or its long warning label,
+// and the title keeps its room with `reserved` columns taken for the close
+// gap and all the Buttons. A line keeps its fullest form at every wider
+// band, and the title's room then grows with the band, so the widths that
+// show the Buttons are one run up to any wider band.
+export function actionsFit(line: BandLine, columns: number, reserved: number): boolean {
+  const full = line.track === undefined ? line.tail[0]?.text === LONG_WARNING : line.track.columns === TRACK_COLUMNS
+  if (!full) return false
+  const taken = headWidth(line.id) + GAP + spansWidth(line.tail) + (line.track?.columns ?? 0) + reserved
+  return columns - taken >= textNeed(line.title)
 }
 
 // A line's text with the two groups GAP spaces apart (the least gap a row

@@ -150,6 +150,7 @@ function seat(on: On, copy: Copy) {
   })
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
+    return { value: undefined }
   })
   on('tool.call', { tool: CHAPTER_TOOL }, async () => ({ result: 'Chapter marked' }))
   on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
@@ -2792,6 +2793,10 @@ describe('the action Buttons hide while a cairn skill runs or a turn works (M212
   }
 })
 
+// The engine skips a hook that throws, so the run goes on to the bottom of
+// the chain, which rejects with this message: the rejection the toast names.
+const NO_RUN = 'no implementation for command.run'
+
 describe('a refused run appends the command line to the prompt box and toasts (M212 AC3)', () => {
   for (const surface of SURFACES) {
     test(`each Button falls back when the run throws (${surface})`, async ($, on) => {
@@ -2803,14 +2808,16 @@ describe('a refused run appends the command line to the prompt box and toasts (M
       await ui.press({ key: 'cairn-next' })
       expect(copy.fills).toEqual([{ text: '/cairn:milestone-implement M002', mode: 'append' }])
       expect(copy.toasts?.length).toBe(1)
-      expect(copy.toasts?.[0]).toContain('no such command here')
+      // The press reached the run before it fell back.
+      expect(copy.commands).toEqual([nextRun('single-in-progress')])
+      expect(copy.toasts?.[0]).toContain(NO_RUN)
       await ui.press({ key: 'cairn-status' })
       expect(copy.fills).toEqual([
         { text: '/cairn:milestone-implement M002', mode: 'append' },
         { text: '/cairn:milestone', mode: 'append' },
       ])
       expect(copy.toasts?.length).toBe(2)
-      expect(copy.toasts?.[1]).toContain('no such command here')
+      expect(copy.toasts?.[1]).toContain(NO_RUN)
       await ui.unmount()
     })
   }
