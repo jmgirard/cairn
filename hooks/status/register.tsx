@@ -116,7 +116,8 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const { Box, Text } = $.ui.resolve(e)
     const lines = paneLines(await read($, pane))
-    // A line's lead keeps its width, and its text wraps in the room left.
+    // A line's lead keeps its width, and its text takes the room left: cut
+    // to one line with an ellipsis, or wrapped for the goal's lines.
     // A Text drops its `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
@@ -125,13 +126,17 @@ export const register: Register = on => {
             {line.lead.length === 0 ? null : (
               <Box key={`${line.key}-lead`} flexShrink={0}>
                 {line.lead.map(span => (
-                  <Text {...style(span)}>{span.text}</Text>
+                  <Text wrap="truncate-end" {...style(span)}>
+                    {span.text}
+                  </Text>
                 ))}
               </Box>
             )}
             {line.text === null ? null : (
               <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
-                <Text {...style(line.text)}>{line.text.text}</Text>
+                <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
+                  {line.text.text}
+                </Text>
               </Box>
             )}
           </Box>

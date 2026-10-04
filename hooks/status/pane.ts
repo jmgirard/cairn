@@ -7,10 +7,12 @@ import type { PaneItem, PaneMilestone, PaneState } from './reader'
 // its tasks and criteria with their boxes, and its newest work-log lines.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
-// dependencies. A line's `lead` keeps its width, and its `text` wraps to the
-// pane's width.
+// dependencies. A line's `lead` keeps its width. Its `text` is cut to one
+// line with an ellipsis, but for the goal's lines, which wrap: the operator
+// picked one line per item at the M205 live look, so a long task list fits
+// on one screen.
 
-export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null }
+export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; wraps?: true }
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -63,7 +65,9 @@ function milestoneLines(row: PaneMilestone): PaneLine[] {
   if (file.goal !== '') {
     out.push(heading(`${row.id}-goal-head`, 'Goal'))
     // A blank line between paragraphs draws as one space, so it keeps its row.
-    file.goal.split('\n').forEach((text, i) => out.push(line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text })))
+    file.goal.split('\n').forEach((text, i) =>
+      out.push({ ...line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text }), wraps: true }),
+    )
   }
   if (file.tasks.length > 0) {
     out.push(heading(`${row.id}-tasks-head`, 'Tasks ', count(file.tasks)))

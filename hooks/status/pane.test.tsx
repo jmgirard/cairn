@@ -208,6 +208,25 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
     }
   }
 
+  // The operator picked one line per item at the live look: each item, log
+  // line, and title is cut with an ellipsis, and the goal's lines wrap.
+  for (const surface of SURFACES) {
+    test(`items cut to one line, the goal wraps (${surface})`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+      const wrapOf = async (key: string) => {
+        const [box] = await ui.findAll({ key: `${key}-text` })
+        return kids(box)[0].props.wrap
+      }
+      for (const key of ['M080-head', 'M080-task-0', 'M080-criterion-0', 'M080-log-4', 'waiting-M083', 'workable-M085', 'next']) {
+        expect([key, await wrapOf(key)]).toEqual([key, 'truncate-end'])
+      }
+      for (const key of ['M081-goal-0', 'M081-goal-1', 'M081-goal-2']) expect([key, await wrapOf(key)]).toEqual([key, 'wrap'])
+      await ui.unmount()
+    })
+  }
+
   test('with no ROADMAP, an open pane says that none was found', async ($, on) => {
     seat(on, copyOf('no-roadmap'))
     await $.turn.complete(turn())
