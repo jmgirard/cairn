@@ -40,6 +40,8 @@ export const ACCENT: Span = { text: '▎', color: ORANGE }
 export const METER_FULL = '■'
 export const METER_EMPTY = '□'
 export const METER_CELLS = 8
+// The empty squares' theme key, as the band's terminal track marks use (M208 review).
+export const METER_EMPTY_KEY = 'subtle'
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
 
@@ -71,7 +73,7 @@ export function meter(checked: number, total: number, color: string): Span[] {
   const fill = meterFill(checked, total)
   return [
     { text: METER_FULL.repeat(fill), color },
-    { text: METER_EMPTY.repeat(METER_CELLS - fill), color: GRAY },
+    { text: METER_EMPTY.repeat(METER_CELLS - fill), color: METER_EMPTY_KEY },
   ].filter(span => span.text !== '')
 }
 
@@ -160,6 +162,8 @@ export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
         text: ` ${target} `,
         color: PILL_TEXT,
         backgroundColor: ORANGE,
+        // Bold, as the band's pill is, since white on this orange is about 3.4:1.
+        bold: true,
       }),
     )
   }

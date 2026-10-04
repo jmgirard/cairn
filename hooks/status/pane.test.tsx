@@ -241,7 +241,7 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
         for (const row of want) {
           // The head line ends with the band's percent for a row whose file
           // reads (M208 AC1).
-          const band = FIXTURES[name].rows.find(b => b.id === row.id)
+          const band = FIXTURES[name].rows.find(b => b.id === row.id && b.status === row.status)
           const percent = row.file === null || band === undefined ? null : flowOf(band)?.percent
           const tail = percent === null || percent === undefined ? '' : `  ${percent}%`
           expect(textAt(lines, `${row.id}-head`)).toBe(`${PHASE_LABEL[row.status]} ${row.id}  ${row.title}${tail}`)
@@ -484,8 +484,11 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       // M082's file cannot be read: no percent, and its warning line stays.
       expect(await boxOf(ui, 'M082-head-tail')).toBe(undefined)
       expect(textOf((await partOf(ui, 'M082-nofile-text'))[0])).toBe(NO_FILE)
-      // No track on any head line.
+      // No track on any head line: no desktop Svg and no terminal braille.
       expect(await ui.findAll({ type: 'Svg' })).toEqual([])
+      for (const id of ['M080', 'M081', 'M082']) {
+        expect([id, /[⠀-⣿]/.test(textOf((await boxOf(ui, `${id}-head`)) as Element))]).toEqual([id, false])
+      }
       await ui.unmount()
     })
 
@@ -527,7 +530,7 @@ describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => 
       const ui = await mountPane($, surface)
       const lead = await partOf(ui, 'M080-tasks-head-lead')
       expect(lead.find(t => textOf(t) === '■■■')?.props.color).toBe(ORANGE_RGB)
-      expect(lead.find(t => textOf(t) === '□□□□□')?.props.color).toBe('inactive')
+      expect(lead.find(t => textOf(t) === '□□□□□')?.props.color).toBe('subtle')
       const review = await partOf(ui, 'M081-tasks-head-lead')
       expect(review.find(t => textOf(t) === '■■■■■■■■')?.props.color).toBe(GREEN_RGB)
       await ui.unmount()
@@ -539,6 +542,11 @@ describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => 
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
       expect(textAt(lines, 'M002-criteria-head')).toBe('▎ CRITERIA 0/1 □□□□□□□□')
+      const ui = await mountPane($, surface)
+      const lead = await partOf(ui, 'M002-criteria-head-lead')
+      expect(lead.find(t => textOf(t) === '□□□□□□□□')?.props.color).toBe('subtle')
+      expect(lead.some(t => textOf(t).includes('■'))).toBe(false)
+      await ui.unmount()
     })
   }
 })
@@ -578,7 +586,7 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
       const ui = await mountPane($, surface)
       const [pill] = await partOf(ui, 'next-text')
       expect(textOf(pill)).toBe(' /milestone-review M081 ')
-      expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: ORANGE_RGB, color: WHITE_RGB }))
+      expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: ORANGE_RGB, color: WHITE_RGB, bold: true }))
       await ui.unmount()
     })
   }

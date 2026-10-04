@@ -214,7 +214,9 @@ ends in `…`, and the goal wraps. Each section starts after a blank row
 with an orange `▎` and its name in gray capitals. The `TASKS` and
 `CRITERIA` headings show their count and eight squares, `■` for the
 checked share and `□` for the rest. The next command sits in an orange
-pill. A missing or unreadable
+pill. The percent counts boxes as the band does, so a box inside an HTML
+comment counts there but not in the `TASKS` and `CRITERIA` counts, and
+the two can differ. A missing or unreadable
 milestone file shows `no milestone file`. Below the milestones, the pane
 shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
