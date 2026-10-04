@@ -42,7 +42,7 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - [x] AC3: Below the active milestones, the pane shows the slash command that a new `recommend(root, rows)` in `scripts/cairn_next.py` returns. The command carries an id when `recommend` names one. It shows the workable planned milestones in the order of `workable`, and the planned milestones that a new `waiting(root, rows)` returns. `render()` prints from those two functions. On every fixture with a ROADMAP, the pane's command and ids equal those of `cairn_next.py`. A `next` key in `expected.json` holds them. `scripts/tests/test_status_fixtures.py` compares that key to the Python functions, and `claude plugin test` cases compare it to the pane. One new fixture has only planned rows that wait on dependencies, so `recommend` returns `/milestone-plan`.
 - [x] AC4: A band row drawn from a found ROADMAP carries an open button beside the close button. A press of the open button opens pane `cairn`. A skill row drawn with no ROADMAP carries no open button. `claude plugin test` cases press the button on the terminal and desktop surfaces and assert that the pane opened.
 - [x] AC5: An open pane draws again from the files at each of six events. These are session start, turn end, a cairn skill prompt, a marked chapter, a Stop that ends a step, and an idle typed prompt that ends a step. A `claude plugin test` case for each event changes a fixture's milestone file before the event. It asserts that the next drawing shows the changed content.
-- [ ] AC6: The operator runs `/cairn-pane` in a new desktop Code session on this repo. If the app places the pane, the pane draws this repo's state and the operator accepts its look. If the app places no pane, the command prints the engine's reason, and a ROADMAP candidate row holds desktop pane support.
+- [x] AC6: The operator runs `/cairn-pane` in a new desktop Code session on this repo. If the app places the pane, the pane draws this repo's state and the operator accepts its look. If the app places no pane, the command prints the engine's reason, and a ROADMAP candidate row holds desktop pane support.
 - [x] AC7: The verify slot in `cairn/PROFILE.md` runs clean. README, CHANGELOG, and DESIGN describe the pane, its command, and its open button.
 
 ## Coverage
@@ -108,6 +108,7 @@ pane, desktop pane support goes to a new candidate row (AC6).
 - 2026-10-04: T6 closed. The operator was asked to open the pane in a new desktop Code session and resumed the run with no report of that look. No answer is recorded here, and AC6's acceptance goes to the merge question, as M204's in-app look did.
 - 2026-10-04: claim audit: 54 claims read, 2 corrected — hooks/status/register.tsx, hooks/status/pane.ts
 - 2026-10-04: after the audit, the unused `paneText` in `pane.ts` was deleted and its blank-row comment narrowed to what the code does. The desktop dock claim in the README rests on the T1 probe log (`placement=dock`), not on the API docs. Verify slot: scripts/tests OK, hooks/tests OK, plugin validate passed, plugin test 1132 pass. Status set to review.
+- 2026-10-04: step-7 approval: m205-cairn-pane approved for merge
 
 ## Review
 
@@ -120,6 +121,7 @@ Evidence run 2026-10-04 on `m205-cairn-pane` at 1d4d74d, which contains `origin/
 - AC5 evidence: the plugin run passed all 6 "M205 AC5" cases, one per event: session start, turn end, cairn skill prompt, marked chapter, a Stop that ends a step, and an idle typed prompt that ends a step. Each ticks T2 in `single-in-progress` before the event and asserts the old line before it and the new line after it.
 - AC7 evidence: verify slot clean: `scripts/tests` 395 OK (21 skipped), `hooks/tests` 174 OK, `claude plugin validate` passed with warnings, `claude plugin test` 1132 pass and 0 fail. README ("The cairn pane" and the `≡` sentence), CHANGELOG ("A cairn pane"), and DESIGN (the `hooks/status/` pane paragraph) name the pane, `/cairn-pane`, and the `≡` open button.
 - AC6: no evidence yet. The operator's desktop look is asked at the merge question.
+- AC6 evidence: at the merge question on 2026-10-04 the operator answered "Look accepted, merge": the pane was opened with `/cairn-pane` in a new desktop Code session and its look accepted. The desktop places the pane (T1 probe: `isPlaced: true`, `placement=dock`).
 
 Consistency gate: `cairn_validate.py` all checks passed. No principle changed, so `cairn_impact` was skipped. The profile's consistency-gate slot names no toolchain checks.
 
