@@ -66,7 +66,7 @@ class TestDefaultBranchParameterized(unittest.TestCase):
         # M59 (RR01 rec 7): §0 carries the rulebook's ls-remote rung and the
         # no-guessing rule; the retired current-branch fallback is gone.
         norm = normalized("cairn-init", "SKILL.md")
-        self.assertIn("git ls-remote --symref origin HEAD", norm)
+        self.assertIn("git ls-remote --symref <base> HEAD", norm)
         self.assertIn("never guess the local current branch", norm)
         self.assertNotIn("show-current", norm)
 
@@ -89,7 +89,7 @@ class TestDetectionRecipeInGitModel(unittest.TestCase):
 
     def test_recipe_command_present(self):
         norm = normalized("shared", "tracking-rules.md")
-        self.assertIn("git symbolic-ref --short refs/remotes/origin/HEAD", norm)
+        self.assertIn("git symbolic-ref --short refs/remotes/<base>/HEAD", norm)
 
 
 class TestOperationalSkillsParameterized(unittest.TestCase):

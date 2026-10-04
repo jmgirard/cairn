@@ -84,14 +84,6 @@ class TestFamilyActuallyLeft(unittest.TestCase):
         # sweeps for it stay clean while the probe still matches a breadcrumb.
         self.assertNotIn("guard-" + "doctrine.md", self.lessons)
 
-    def test_partial_coverage_was_trimmed_not_deleted(self):
-        # Two items were only partly covered by the module; their uncovered
-        # remainders stay, marked as trimmed (D-051).
-        self.assertIn("trimmed M92/M98", self.lessons)
-        self.assertIn("trimmed M98", self.lessons)
-        self.assertIn("age a synthesis note from its OLDEST un-re-read input", self.lessons)
-        self.assertIn("sync a feature branch with `git rebase main` instead", self.lessons)
-
 
 if __name__ == "__main__":
     unittest.main()

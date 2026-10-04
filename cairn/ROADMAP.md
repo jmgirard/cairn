@@ -12,7 +12,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M214 | Clear the prose-guard reds | planned | — | normal | milestones/M214-prose-guard-reds.md |
+| M214 | Clear the prose-guard reds | review | — | normal | milestones/M214-prose-guard-reds.md |
 | M213 | A Plan button on the empty band | done | — | normal | milestones/archive/M213-band-plan-row.md |
 | M212 | Buttons on the status band | done | — | normal | milestones/archive/M212-band-buttons.md |
 ## Candidates

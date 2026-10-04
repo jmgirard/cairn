@@ -302,7 +302,7 @@ REGISTRY = [
         guard="test_default_branch_parameterized",
         test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
         target="skills/cairn-init/SKILL.md",
-        block="git ls-remote --symref origin HEAD",
+        block="git ls-remote --symref <base> HEAD",
     ),
     Mutation(
         guard="test_default_branch_parameterized",
