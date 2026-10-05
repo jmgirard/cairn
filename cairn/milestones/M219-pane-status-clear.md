@@ -160,6 +160,7 @@ cover that path, and review files the gap in the same row.
 - 2026-10-05: T7 done: the probe look is the AC5 look. "Mod pane placement (upstream)" gains the first-click item, merged into that row to keep ROADMAP.md under 60 lines. Three rows were trimmed, to 23,998 bytes. An upstream report draft is in `pane-click-issue-draft.md`, local and excluded from git.
 - 2026-10-05: T6 done. README, DESIGN, CHANGELOG, and the `register.tsx` layout comment describe the Next-line placement. README and DESIGN state the focus-only first click. That prose was written against the probe log and the code in this session, after the one claim-audit pass.
 - 2026-10-05: T8 done. Verify: all five exit 0, mod tests 1244. Status set to review.
+- 2026-10-05: step-7 approval: m219-pane-status-clear approved for merge
 
 ## Decisions
 
