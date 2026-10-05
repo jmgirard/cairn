@@ -119,6 +119,7 @@ idle, because `$.command.run` queues.
 - 2026-10-04: T4 live look: in a new Code session in bsync (nothing workable), the operator pressed the pane's `Plan` Button, the planning command started, and the operator accepted the Next line's look.
 - 2026-10-04: claim audit: 30 claims read, 1 corrected — hooks/status/register.tsx (the header comment called the pane's Button the band's own; it now says the pane's Button shares the band's label and press).
 - 2026-10-04: the claim reader re-read the corrected comment once and found it true. T5: all 5 verify commands exit 0 (mod tests 1193 pass, 0 fail). Status set to review.
+- 2026-10-04: step-7 approval: m218-pane-next-button approved for merge
 
 ## Decisions
 
