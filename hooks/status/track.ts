@@ -47,7 +47,7 @@ export const SPACING = 6
 const GROUND = 'rgba(128,128,128,0.16)'
 const GRAY = 'rgb(160,160,160)'
 const MARK = 'rgb(200,200,200)'
-export const PHASE_FILLS: Record<FlowPhase, string> = {
+const PHASE_FILLS: Record<FlowPhase, string> = {
   plan: 'rgb(71,103,158)',
   implement: 'rgb(152,85,57)',
   review: 'rgb(68,113,81)',
@@ -203,8 +203,9 @@ export function trackSvg(flow: Flow, width = TRACK_PX): string {
 
 // The terminal track's ground and the pill's text color as theme keys, and
 // its blank cell and its mark at each third as braille characters, the
-// mark drawn in `MARK_KEY` and the specks in the phase's key or `SPECK_KEY`. The pill's text is `inverseText`
-// on the phase's key (M217): white in the light themes, black in the dark.
+// mark drawn in `MARK_KEY` and the specks in the phase's key or
+// `SPECK_KEY`. The pill's text is `inverseText` on the phase's key (M217):
+// white in the light themes, black in the dark.
 export const BRAILLE_GROUND = 'userMessageBackground'
 export const BRAILLE_BLANK = '⠀'
 export const BRAILLE_MARK = '⡇'

@@ -202,8 +202,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   plan, `claude` for implement, and `success` for review, so they change
   with the theme: the light theme changes plan and review, and the
   colorblind and ANSI themes change all three. M198 found the dim `claude`
-  drew brown on the desktop dark theme, so the keys draw at full strength. The operator picked
-  the shorter image track and the braille look from browser prototypes
+  drew brown on the desktop dark theme, so the keys draw at full strength.
+  The operator picked the shorter image track and the braille look from browser prototypes
   (M206).
   `track.ts` builds the SVG in the look the operator chose at the M204 live
   look: a translucent gray ground, 2-pixel specks from the left edge to the

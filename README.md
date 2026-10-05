@@ -92,9 +92,10 @@ checked boxes of `## Acceptance criteria`. Specks fill the track from its
 left end to the edge of the current phase's fill. They start sparse and
 gray, and they grow dense near the edge, where more of them take the
 phase's color: blue or teal for plan, orange for implement, and green for
-review. A pill on that edge names the phase and its counts, such as
-`Implement 1/3` or `Review 1/2`, in the phase's color. A section with no boxes shows `no tasks` or `no criteria` in the
-pill. The percent of the whole flow follows the track. Each part counts
+review (blue in the colorblind themes). A pill on that edge names the
+phase and its counts, such as `Implement 1/3` or `Review 1/2`, in the
+phase's color. A section with no boxes shows `no tasks` or `no criteria`
+in the pill. The percent of the whole flow follows the track. Each part counts
 for a third, and the percent rounds down. So it reads 100% only on a
 `review` row whose criteria are all checked, and a `review` row with no
 criteria reads 66%.

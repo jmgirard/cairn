@@ -2876,12 +2876,17 @@ describe('the desktop pill text reads on its fill (M217 AC3)', () => {
       // The fill is opaque: no opacity on the pill.
       expect(rect).not.toMatch(/opacity/)
       const fill = rgbOf(/ fill="([^"]+)"/.exec(rect)?.[1] ?? '')
-      const text = /<text class="pill-text"[^>]*fill="([^"]+)"[^>]*>(.*?)<\/text>/.exec(source) as RegExpExecArray
-      const label = rgbOf(text[1])
+      const text = /<text class="pill-text"([^>]*)>(.*?)<\/text>/.exec(source) as RegExpExecArray
+      // The text element carries no opacity, so its fill is the label color.
+      expect(text[1]).not.toMatch(/opacity/)
+      const label = rgbOf(/ fill="([^"]+)"/.exec(text[1])?.[1] ?? '')
       expect([phase, contrast(label, fill) >= 4.5]).toEqual([phase, true])
       const spans = [...text[2].matchAll(/<tspan([^>]*)>([^<]*)<\/tspan>/g)]
       expect(spans.length).toBe(counted ? 2 : 1)
       for (const [, attrs] of spans) {
+        // A tspan takes the label color: no fill of its own and no opacity
+        // other than its fill-opacity (M217 review).
+        expect([attrs, / fill="/.test(attrs), / opacity="/.test(attrs)]).toEqual([attrs, false, false])
         // A tspan's own fill-opacity composites the label color over the fill.
         const opacity = Number(/fill-opacity="([\d.]+)"/.exec(attrs)?.[1] ?? 1)
         expect([phase, attrs, contrast(over(label, opacity, fill), fill) >= 4.5]).toEqual([phase, attrs, true])
