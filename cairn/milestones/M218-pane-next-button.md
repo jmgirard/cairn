@@ -39,7 +39,7 @@ idle, because `$.command.run` queues.
 
 ## Acceptance criteria
 
-- [ ] AC1: The fixtures with a next step are `WITH_ROADMAP` in
+- [x] AC1: The fixtures with a next step are `WITH_ROADMAP` in
       `pane.test.tsx`. For each one, on the terminal and desktop surfaces,
       with no cairn skill's step set, the pane's Next line draws the pill.
       After the pill it draws one Button with key `cairn-pane-next` and
@@ -47,27 +47,27 @@ idle, because `$.command.run` queues.
       `implement`, `Resume` for `resume`, and `Review` for `review`. It is
       `Plan` for `plan the next milestone`. Mod tests assert the key, the
       variant, the label, and the order.
-- [ ] AC2: For one fixture with a next step, on the terminal and desktop
+- [x] AC2: For one fixture with a next step, on the terminal and desktop
       surfaces, after a cairn skill's prompt starts its step, the pane draws
       no element with key `cairn-pane-next`, and the pill still draws. After
       a Stop with nothing in flight ends the step, the Button is back. A mod
       test asserts both states.
-- [ ] AC3: On the terminal and desktop surfaces, a press of
+- [x] AC3: On the terminal and desktop surfaces, a press of
       `cairn-pane-next` runs `$.command.run`. The command is `cairn:` plus
       the next step's command less its `/`. The args are the next step's id,
       or `''` for planning. Mod tests press the Button for one fixture of
       each action and read the command and args that reached beneath. A
       second press while the first run is held runs no command, and a mod
       test asserts this.
-- [ ] AC4: On the terminal and desktop surfaces, the Box around
+- [x] AC4: On the terminal and desktop surfaces, the Box around
       `cairn-pane-next` has `flexShrink` 0. The pill's Box keeps
       `flexShrink` 1 and `minWidth` 0. A mod test asserts these props.
-- [ ] AC5: At a live look in the desktop app, in a real cairn repo, the
+- [x] AC5: At a live look in the desktop app, in a real cairn repo, the
       operator presses the pane's Button, sees its command start, and
       accepts the look of the Next line.
-- [ ] AC6: README.md and `cairn/DESIGN.md` describe the pane's Button.
+- [x] AC6: README.md and `cairn/DESIGN.md` describe the pane's Button.
       CHANGELOG.md's unreleased section has an entry for it.
-- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -123,3 +123,37 @@ idle, because `$.command.run` queues.
 ## Decisions
 
 ## Review
+
+Evidence at review head b222c89, main unmoved at d1bfdbc (2026-10-04).
+
+- AC1: `claude plugin test .` ran 1193 tests, 0 fail. The "M218 AC1" describe passed 41 cases: the domain check plus each of the 20 `WITH_ROADMAP` fixtures on terminal and desktop, asserting one Button `cairn-pane-next`, its label from a hand-written map, `variant` `secondary`, and the line order `next-lead`, `next-text`, `next-action`.
+- AC2: same run. The "M218 AC2" describe passed 2 cases (terminal, desktop) on `single-in-progress`: no `cairn-pane-next` after a `cairn:milestone-implement` skill prompt with the pill text unchanged, and the Button back after a Stop with no background tasks. A planted-defect run at implement (the Button ignoring the step) failed both.
+- AC3: same run. The "M218 AC3" describe passed 11 cases: a press per action fixture (`single-in-progress` resume, `states-review` review, `idle-order` implement, `all-waiting` planning) on both surfaces, each reaching exactly `runOf(name)` beneath; the hand-written runs for planning (`cairn:milestone-plan`, `''`) and M002; and the held-run second press reaching no second run on both surfaces.
+- AC4: same run. The "M218 AC4" describe passed 2 cases: `next-action` has `flexShrink` 0, and `next-text` has `flexShrink` 1 and `minWidth` 0, on both surfaces. The planted `flexShrink` 1 failed both at implement.
+- AC5: at the T4 live look (work log, 2026-10-04), in a new Code session in bsync, the operator pressed the pane's `Plan` Button, saw the planning command start, and chose "Works, look is right" at the live-look chip.
+- AC6: README.md:256-260 describes the button after the pill, its labels, and its press. `cairn/DESIGN.md`:271-278 describes `cairn-pane-next`, the `next-action` Box, and `pressNext`. CHANGELOG.md's `## Unreleased` section opens with "A Next button in the cairn pane."
+- AC7: from the repo root at b222c89, each exit code read separately: `scripts/tests` 0, `hooks/tests` 0 (174 tests OK), plugin validate 0, marketplace validate 0, `claude plugin test .` 0 (1193 pass).
+
+Consistency gate: `cairn_validate` all checks passed. No IP/GP changed, so no `cairn_impact` run. Profile slot: verify green at b222c89 (AC7); the marketplace validate printed no `plugins[N].version` warning; CHANGELOG.md has the entry, with no milestone number.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: a press queued during a working turn can still run after that turn starts a cairn skill — follow-up, new row "Pane button follow-ons (M218 review)".
+- diff-bug #2: nothing shows the held-run test fails without the `running` guard, and no press after the release shows `running` clears — fix now.
+- diff-bug #3: `NEXT_LABELS[action]` returns an inherited property such as `toString` for an action of that name — fix now (an own-key lookup at both sites).
+- diff-bug #4: `PaneLine.action` is documented as a general Button, but the renderer gives every such line key `cairn-pane-next` and `pressNext` — fix now (the field's comment narrows to the Next line).
+- diff-bug #5: a press while a run is in flight does nothing and says nothing, now reachable during a whole working turn — follow-up, new row "Pane button follow-ons (M218 review)".
+- diff-bug #6: the `drawn` check is coarse, so a stale `Start` can run another milestone's command — follow-up, held by "Band button follow-ons (M212, M213 review)" ("`Review` can act on a milestone the row does not show"), which the shared `pressNext` carries to the pane.
+- diff-bug #7: README and CHANGELOG say "while no cairn skill runs", but a step outlasts its skill while background work runs — fix now.
+- diff-bug #8: the AC1 order check does not assert the action Box's props — reject, false: the AC4 test asserts them.
+- blame-history #1: the pane drops the band's `isWorking` half of the show condition — reject, planned change (Scope Out, plan work log).
+- blame-history #2: the pane inherits the band's open press follow-ons through `pressNext` and adds a second press surface — follow-up, new row "Pane button follow-ons (M218 review)".
+- blame-history #3: the pill is now cut first, so the M208 lost-pad `…` shows more often in a narrow pane — follow-up, new row "Pane button follow-ons (M218 review)".
+- blame-history #4: the label map moved byte-identical with no other importer — noted, no defect.
+- blame-history #5: the M205 text test and the M208 pill stand — noted, no defect.
+- blame-history #6: the docs carry no stale text — noted, no defect.
+- prior-review #1: at a 44-column dock a `Resume` or `Review` label cuts a 27-column pill — follow-up, new row "Pane button follow-ons (M218 review)".
+- prior-review #2: the pane's Button is counted at terminal width, and a wider native desktop button is unmeasured — follow-up, new row "Pane button follow-ons (M218 review)".
+- prior-review #3: the AC2 test starts the skill by a skill prompt, not by a press — follow-up, new row "Pane button follow-ons (M218 review)".
+- prior-review #4: a refused press appends with no separator, and the press-time step check cannot be staged in the test kit — follow-up, held by "Band button follow-ons (M212, M213 review)", from the shared `run`.
+- prior-review #5: the pane's gray `secondary` Button is not named in the theme row — follow-up, new row "Pane button follow-ons (M218 review)".
