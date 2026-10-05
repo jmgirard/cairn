@@ -105,9 +105,9 @@ rows.
       color on itself. Then, for each phase, parse the pill's fill and its
       label and count fills from the built SVG, composite any opacity over
       the fill, and assert that each ratio is at least 4.5.
-- [ ] T4: Run AC2's grep. Move or replace any raw color it still prints
+- [x] T4: Run AC2's grep. Move or replace any raw color it still prints
       outside the palette block in `register.tsx`, `band.ts`, or `pane.ts`.
-- [ ] T5: Write `cairn/references/wcag22.md` from the source-note template.
+- [x] T5: Write `cairn/references/wcag22.md` from the source-note template.
       Record the relative-luminance and contrast-ratio definitions and SC
       1.4.3's 4.5:1 minimum, with section anchors. Add its `INDEX.md` line.
 - [ ] T6: Update README.md (the band paragraphs near README.md:94-112 and
@@ -133,5 +133,8 @@ rows.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader): 11 findings, all taken toward the narrower promise. The Goal narrowed to "wherever the surface can read it". AC1 names both pills and pins `↑` to the implement key. AC2 takes 3 to 8 digit hex and is bounded by `// palette` comments. AC3 requires an opaque fill and checks the count only where drawn, since the plan pill has none. AC5 dropped `do not follow your theme`. T1 and T2 land together, T1 rewrites the pane.ts:182 comment, and T2 names the specks and `#fff`.
 - 2026-10-04: implement started on branch m217-theme-colors. The untracked `cairn-probe.log` and `tsconfig.json` from earlier sessions stay unstaged.
 - 2026-10-04: T1-T3: `FLOW_COLORS` is `planMode`/`claude`/`success`, the terminal pill text `inverseText`, the pane `↑` the implement key. `track.ts` holds the desktop palette between `// palette` comments: fills rgb(71,103,158), rgb(152,85,57), rgb(68,113,81), white label, count opacity raised from 0.72 to 0.85 so the count also reaches 4.5:1 (label about 5.6:1, count about 4.6:1, from the scratchpad computation). The band and pane tests carry the keys and fills by hand; the new AC3 test computes the WCAG ratio from the built SVG per phase. Mod tests 1133 to 1137, all five verify commands exit 0.
+- 2026-10-04: AC3 test plant: count opacity back to 0.72 and the plan fill back to rgb(110,140,190) turned all three AC3 tests red on their contrast assertions (plan label, implement and review counts), 24 fails in all; `track.ts` restored from daf86e7.
+- 2026-10-04: T4: AC2's grep prints only track.ts:47-55, inside the `// palette` comments at :40 and :56; nothing to move.
+- 2026-10-04: T5: `cairn/references/wcag22.md` written from the W3C Recommendation of 2024-12-12, read by curl at `#contrast-minimum`, `#dfn-contrast-ratio`, `#dfn-relative-luminance`; INDEX line added; cairn_validate green.
 
 ## Decisions
