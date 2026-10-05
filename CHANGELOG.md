@@ -4,6 +4,13 @@
 
 ### New
 
+- **A Clear button when a cairn skill ends.** After a cairn skill finishes,
+  a band row that carries the next-step and `Status` buttons also carries a
+  `Clear` button before them, and a press runs `/clear`. The button goes away when you send a prompt while Claude is
+  idle and no hook drops it, when a cairn skill starts, or when the session
+  ends. If the session refuses the run,
+  `/clear` goes into the prompt box and a toast says why. Where the row has
+  no room for three buttons, it drops `Clear` first.
 - **A Plan button on the empty band.** With no `in-progress` or `review`
   milestone and no planned milestone you can start, the band used to draw
   nothing. It now shows `No milestone ready` in gray. While no cairn skill

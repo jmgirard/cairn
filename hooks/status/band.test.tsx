@@ -1523,7 +1523,7 @@ describe('the band draws nothing where no ROADMAP is found', () => {
 // The empty row's checks (M213 AC1): its left group is the gray title in a
 // Box that gives way, with no head and no bold; its right group has no
 // track and no tail; it ends in the open and close buttons.
-async function isEmptyRow(ui: Ui, actions: boolean) {
+async function isEmptyRow(ui: Ui, actions: boolean, clear = false) {
   expect(await rowKeys(ui)).toEqual(['plan-row'])
   const row = await firstRow(ui)
   const { left, right, head, textBox } = layout(row)
@@ -1537,7 +1537,9 @@ async function isEmptyRow(ui: Ui, actions: boolean) {
   const last = kids(right)[kids(right).length - 1]
   expect(keyOf(last)).toBe('cairn-close')
   expect(keyOf(kids(right)[kids(right).length - 3])).toBe('cairn-open')
-  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([...(actions ? ACTION_KEYS : []), 'cairn-open', 'cairn-close'])
+  // A skill's end adds the Clear Button before them (M216).
+  const acts = actions ? [...(clear ? ['cairn-clear'] : []), ...ACTION_KEYS] : []
+  expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([...acts, 'cairn-open', 'cairn-close'])
 }
 
 describe('a found ROADMAP with nothing active or workable draws the empty row (M213 AC1)', () => {
@@ -2911,7 +2913,7 @@ describe('the empty row carries Plan and Status, and a press runs planning (M213
       await prompt($, 'milestone')
       await isEmptyRow(ui, false)
       await $.classic.Stop(stopWith('empty'))
-      await isEmptyRow(ui, true)
+      await isEmptyRow(ui, true, true)
       await ui.unmount()
     })
 
@@ -3090,6 +3092,263 @@ describe('a press while a run is in flight does nothing (M212 review)', () => {
       await ui.press({ key: 'cairn-status' })
       expect(copy.commands).toEqual([nextRun('single-in-progress'), STATUS_RUN])
       await ui.unmount()
+    })
+  }
+})
+
+// The Clear Button (M216), and what a press of it runs, written out by hand.
+const CLEAR_KEY = 'cairn-clear'
+const CLEAR_RUN = { command: 'clear', args: '' }
+
+// The action Buttons' keys as drawn, the Clear Button among them.
+async function allActionKeys(ui: Ui): Promise<string[]> {
+  return (await ui.findAll({ type: 'Button' })).map(keyOf).filter((k): k is string => [CLEAR_KEY, ...ACTION_KEYS].includes(k ?? ''))
+}
+
+// A cairn skill runs and a main-loop Stop with nothing in flight ends it.
+async function skillEnds($) {
+  await prompt($, 'milestone')
+  await $.classic.Stop(stopWith('empty'))
+}
+
+const WITH_CLEAR = [CLEAR_KEY, ...ACTION_KEYS]
+
+describe('a Clear Button shows after a cairn skill ends (M216 AC1)', () => {
+  for (const surface of SURFACES) {
+    test(`a Stop that ends a skill's step draws Clear before the next-step Button (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+      const [clear] = await ui.findAll({ key: CLEAR_KEY })
+      expect([clear.props.label, clear.props.variant]).toEqual(['Clear', 'secondary'])
+      const right = kids(await firstRow(ui))[1]
+      const order = kids(right).map(keyOf).filter((k): k is string => /^cairn-/.test(k ?? ''))
+      expect(order).toEqual([...WITH_CLEAR, 'cairn-open', 'cairn-close'])
+      await ui.unmount()
+    })
+
+    test(`no Clear in a session where no cairn skill ran (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      await $.classic.Stop(stopWith('empty'))
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await allActionKeys(ui)).toEqual(ACTION_KEYS)
+      await ui.unmount()
+    })
+
+    test(`no Clear when an idle typed prompt ended the step, and the Stop after it (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await prompt($, 'milestone')
+      // A Stop with work in flight keeps the step, and the typed prompt ends it.
+      await $.classic.Stop(stopWith('one'))
+      await $.prompt.submit(submitWith('composer'))
+      expect(await allActionKeys(ui)).toEqual(ACTION_KEYS)
+      await $.classic.Stop(stopWith('empty'))
+      expect(await allActionKeys(ui)).toEqual(ACTION_KEYS)
+      await ui.unmount()
+    })
+
+    test(`the empty row carries Clear too (${surface})`, async ($, on) => {
+      seat(on, copyOf('all-waiting'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      expect(await rowKeys(ui)).toEqual(['plan-row'])
+      expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the Clear Button goes at an idle typed prompt, a session end, or a running skill (M216 AC2)', () => {
+  for (const surface of SURFACES) {
+    for (const kind of ['composer', 'bridge'] as const) {
+      test(`an idle ${kind} prompt that enters ends it, and a dropped one keeps it (${surface})`, async ($, on) => {
+        const copy = copyOf('single-in-progress')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        await skillEnds($)
+        copy.dropSubmit = 'refused by a hook'
+        expect((await $.prompt.submit(submitWith(kind))).drop).toBe('refused by a hook')
+        expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+        copy.dropSubmit = undefined
+        await $.prompt.submit(submitWith(kind))
+        expect(await allActionKeys(ui)).toEqual(ACTION_KEYS)
+        await ui.unmount()
+      })
+    }
+
+    test(`a session end ends it (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+      expect(await allActionKeys(ui)).toEqual(ACTION_KEYS)
+      await ui.unmount()
+    })
+
+    test(`no Clear while a cairn skill's step is set, and its end brings it back (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      await prompt($, 'milestone-implement')
+      expect(await ui.findAll({ key: CLEAR_KEY })).toEqual([])
+      await $.classic.Stop(stopWith('empty'))
+      expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+      await ui.unmount()
+    })
+  }
+})
+
+describe('a press of Clear runs /clear (M216 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`a press runs clear with empty args (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      await ui.press({ key: CLEAR_KEY })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+      await ui.unmount()
+    })
+
+    test(`a Clear press while a run is in flight reaches no second run (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      const first = ui.press({ key: 'cairn-status' })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([STATUS_RUN])
+        await ui.press({ key: CLEAR_KEY })
+        expect(copy.commands).toEqual([STATUS_RUN])
+      } finally {
+        release()
+        await first
+      }
+      copy.runHold = undefined
+      await ui.press({ key: CLEAR_KEY })
+      expect(copy.commands).toEqual([STATUS_RUN, CLEAR_RUN])
+      await ui.unmount()
+    })
+
+    test(`a refused clear appends /clear to the prompt box and toasts (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.runThrows = 'no such command here'
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      await ui.press({ key: CLEAR_KEY })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      expect(copy.fills).toEqual([{ text: '/clear', mode: 'append' }])
+      expect(copy.toasts).toEqual([`cairn: ${NO_RUN} (/clear)`])
+      await ui.unmount()
+    })
+
+    test(`a session end frees a press whose run never settled (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.runHold = new Promise<void>(() => {})
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      void ui.press({ key: CLEAR_KEY })
+      for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+      copy.runHold = undefined
+      await ui.press({ key: 'cairn-status' })
+      expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+      await ui.unmount()
+    })
+
+    // M216 review: a run from before a session end that settles late does
+    // not free the press guard while a newer run is in flight.
+    test(`a late-settling run from before a session end keeps a newer run's guard (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let releaseOld = () => {}
+      let releaseNew = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        releaseOld = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      const old = ui.press({ key: CLEAR_KEY })
+      for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+      copy.runHold = new Promise<void>(resolve => {
+        releaseNew = resolve
+      })
+      const fresh = ui.press({ key: 'cairn-status' })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+        releaseOld()
+        await old
+        // A press while the newer run is held reaches no run. Without the
+        // guard it would reach a third run and wait on the hold, so the
+        // press is not awaited here.
+        const third = ui.press({ key: 'cairn-status' })
+        for (let i = 0; i < 40 && (copy.commands ?? []).length < 3; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+        releaseNew()
+        await third
+      } finally {
+        releaseOld()
+        releaseNew()
+        await fresh
+      }
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the row drops Clear first when it lacks room (M216 AC4)', () => {
+  for (const surface of SURFACES) {
+    test(`single-in-progress: two Buttons below a width, three from it up (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      await skillEnds($)
+      const counts: number[] = []
+      for (const columns of WIDTHS) {
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...at(columns) })) as Ui
+        const acts = await allActionKeys(ui)
+        await ui.unmount()
+        if (acts.length === 3) expect(acts).toEqual(WITH_CLEAR)
+        if (acts.length === 2) expect(acts).toEqual(ACTION_KEYS)
+        counts.push(acts.length)
+      }
+      const firstThree = counts.indexOf(3)
+      // The widest width that drops Clear draws the other two, and one column
+      // wider draws all three, as does every width above it.
+      expect(firstThree).toBeGreaterThan(0)
+      expect(counts[firstThree - 1]).toBe(2)
+      expect(counts.slice(firstThree).every(n => n === 3)).toBe(true)
+      // Clear takes its label, 4 chrome columns, and one space: 10 columns.
+      // The two-Button threshold sits above the sweep's floor, so both
+      // thresholds are measured, not cut off at 40 columns (M216 review).
+      const firstTwo = counts.indexOf(2)
+      expect(firstTwo).toBeGreaterThan(0)
+      expect(firstThree - firstTwo).toBe(10)
     })
   }
 })

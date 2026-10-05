@@ -75,6 +75,12 @@ const step = atom({ plugin: 'cairn', key: 'step' } as const, null as CairnStep |
 // started (M201).
 const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { shape: 'expanded-1' })
 
+// True from a main-loop Stop that ends a cairn skill's step until the next
+// idle typed prompt that enters, the next cairn skill's prompt, or the
+// session's end (M216). While it is true, a row that draws the action
+// Buttons carries the Clear Button too, when it has room for it.
+const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: 'ended-1' })
+
 // What the cairn pane shows, written at each refresh (M205). The tag moved
 // to 2 when the state gained the candidate rows (M207).
 const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-2' })
@@ -110,6 +116,9 @@ const NEXT_LABELS: Record<string, string> = {
 }
 const STATUS_LABEL = 'Status'
 const STATUS_COMMAND = 'cairn:milestone'
+// The Clear Button's label and the built-in command it runs (M216).
+const CLEAR_LABEL = 'Clear'
+const CLEAR_COMMAND = 'clear'
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -214,6 +223,7 @@ export const register: Register = on => {
     if (e.agent_id !== undefined || result?.block !== undefined) return result
     const waking = (e.session_crons ?? []).some(cron => cron.recurring === false)
     if ((e.background_tasks ?? []).length === 0 && !waking) {
+      if (knownStep(await read($, step)) !== null) await update($, ended, () => true)
       await update($, step, () => null)
       await refresh($)
     }
@@ -237,7 +247,9 @@ export const register: Register = on => {
     if (!typed || e.turnId !== undefined || fresh) return next(e)
     const before = await read($, step)
     const hiddenBefore = await read($, dismissed)
+    const endedBefore = await read($, ended)
     await update($, step, () => null)
+    await update($, ended, () => false)
     await refresh($)
     const result = await next(e)
     // The refresh above can clear a hide made against the old step, so a
@@ -246,6 +258,11 @@ export const register: Register = on => {
       await update($, step, current => current ?? before)
       if (hiddenBefore !== null) await update($, dismissed, current => current ?? hiddenBefore)
       await reconcile($)
+    }
+    // A drop also puts back the Clear Button that a skill's end left, unless
+    // a skill started meanwhile (M216).
+    if (result?.drop !== undefined && endedBefore && (await read($, step)) === null) {
+      await update($, ended, () => true)
     }
     return result
   })
@@ -258,6 +275,7 @@ export const register: Register = on => {
     const skill = cairnSkill(e.skill)
     if (skill !== null) {
       await update($, step, () => ({ skill }))
+      await update($, ended, () => false)
       await update($, expanded, () => true)
       await refresh($)
     }
@@ -280,6 +298,10 @@ export const register: Register = on => {
     await update($, step, () => null)
     await update($, expanded, () => false)
     await update($, dismissed, () => null)
+    await update($, ended, () => false)
+    // A `/clear` from the Clear Button ends the session, and its run may
+    // never settle, so the end frees the action Buttons (M216).
+    running = false
     return result
   })
 
@@ -315,11 +337,25 @@ export const register: Register = on => {
     // `[ label ]`: its label and 4 columns. One space follows each. Both take
     // the `secondary` look: an accent color beside the track's phase colors
     // clashed at a live look.
+    // The Clear Button (M216) shows with them after a cairn skill ends, and
+    // the row drops it first when the three do not fit.
     const actionColumns = nextLabel === undefined ? 0 : width(nextLabel) + 4 + 1 + width(STATUS_LABEL) + 4 + 1
-    const reserved = close + actionColumns
-    const withActs = canAct ? stepLines(rows, current, e.props.bodyColumns, reserved, workable, canOpen) : []
-    const acts = withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)
-    const lines = acts ? withActs : stepLines(rows, current, e.props.bodyColumns, close, workable, canOpen)
+    const clearColumns = width(CLEAR_LABEL) + 4 + 1
+    const tries = !canAct ? [] : (await read($, ended)) ? [actionColumns + clearColumns, actionColumns] : [actionColumns]
+    let acts = false
+    let clears = false
+    let lines: BandLine[] = []
+    for (const taken of tries) {
+      const reserved = close + taken
+      const withActs = stepLines(rows, current, e.props.bodyColumns, reserved, workable, canOpen)
+      if (withActs.length > 0 && actionsFit(withActs[0], e.props.bodyColumns, reserved)) {
+        acts = true
+        clears = taken > actionColumns
+        lines = withActs
+        break
+      }
+    }
+    if (!acts) lines = stepLines(rows, current, e.props.bodyColumns, close, workable, canOpen)
     const spans = (list: Span[]) =>
       list.map(span => (
         <Text wrap="truncate-end" {...style(span)}>
@@ -363,6 +399,10 @@ export const register: Register = on => {
           {isFirst ? (
             <Text wrap="truncate-end">{' '.repeat(GAP)}</Text>
           ) : null}
+          {isFirst && clears ? (
+            <Button key="cairn-clear" variant="secondary" label={CLEAR_LABEL} onPress={() => pressClear($)} />
+          ) : null}
+          {isFirst && clears ? <Text wrap="truncate-end">{' '}</Text> : null}
           {isFirst && acts ? (
             <Button
               key="cairn-next"
@@ -448,8 +488,12 @@ async function openPane($) {
 
 // True while an action Button's run is in flight, so a second press, such
 // as a double click, does not queue the command again (M212 review). A
-// reload starts it over as false.
+// reload starts it over as false. Each run takes the next number in
+// `runs`, and only the latest run clears `running` as it settles, so a run
+// from before a session end that settles late does not free a newer run's
+// press (M216 review).
 let running = false
+let runs = 0
 
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
@@ -471,12 +515,23 @@ async function pressStatus($) {
   await run($, STATUS_COMMAND, '')
 }
 
+// A press of Clear runs the built-in `/clear` (M216), under the same checks
+// as the other action Buttons. It also reads `ended` as it is now, so a
+// press of a drawing made before a typed prompt, a skill, or a session end
+// cleared it does nothing (M216 review).
+async function pressClear($) {
+  if (running || knownStep(await read($, step)) !== null || !(await read($, ended))) return
+  await run($, CLEAR_COMMAND, '')
+}
+
 // An action Button's command runs as if the person typed it (M212). A run
 // that rejects puts the command line after the prompt box's draft, so the
 // person can send it, and a toast says why and names the command line, for
 // a box that could not take it.
 async function run($, command: string, args: string) {
   running = true
+  runs += 1
+  const mine = runs
   try {
     await $.command.run({ command, args })
   } catch (error) {
@@ -493,7 +548,7 @@ async function run($, command: string, args: string) {
       // No toast shows; the press has nothing else to say.
     }
   } finally {
-    running = false
+    if (runs === mine) running = false
   }
 }
 
