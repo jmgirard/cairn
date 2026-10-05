@@ -158,11 +158,11 @@ Pass 1, 2026-10-04, on branch head 05fa1d0 (main dc3cc7c, not moved since the br
 - Consistency gate: `cairn_validate` exit 0, all checks passed (coverage complete included). No principle changed, so `cairn_impact` skipped. Profile gate: verify green on the review head (AC6); the marketplace validate prints no `plugins[N].version` warning; CHANGELOG.md:7 covers the change with no milestone number in it.
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: in light-daltonized the terminal and pane implement pill is white `inverseText` on `claude` rgb(255,153,51), 2.13:1, below the old 2.9-3.4:1 (light theme 3.15:1) — follow-up, new row "Theme color follow-ons (M217 review)" (Scope Out left pill contrast to the theme).
-- diff-bug #2: the AC3 test ignores opacity on `<text>`, an `opacity` or `fill` on a tspan, so a later edit could dim the count with the test green — fix now.
+- diff-bug #2: the AC3 test ignores opacity on `<text>`, an `opacity` or `fill` on a tspan, so a later edit could dim the count with the test green — fix now, fixed 3a2afb8 (a planted `opacity="0.7"` on the count tspan turned the implement and review pill tests red, then restored).
 - diff-bug #3: no test shows the desktop resolves `planMode`/`inverseText`/`success` — reject (false): the operator saw the pane and band on the desktop in light and dark at the live look.
-- diff-bug #4: `PHASE_FILLS` is exported and nothing imports it — fix now.
-- diff-bug #5: README.md:94 says "green for review" while the colorblind themes draw it blue — fix now.
-- diff-bug #6: edited lines run past the wrap width (track.ts:206, CHANGELOG, README) — fix now, with prior-review #1.
+- diff-bug #4: `PHASE_FILLS` is exported and nothing imports it — fix now, fixed 3a2afb8.
+- diff-bug #5: README.md:94 says "green for review" while the colorblind themes draw it blue — fix now, fixed 3a2afb8.
+- diff-bug #6: edited lines run past the wrap width (track.ts:206, CHANGELOG, README) — fix now, with prior-review #1, fixed 3a2afb8.
 - blame-history #1: the terminal pill text changed from M206's white to `inverseText` (black in dark themes) and no dark terminal theme was looked at — reject (planned change): T1 named `inverseText`, and the operator saw it in the desktop dark appearance.
 - blame-history #2: the desktop track's plan fill is blue and implement a darker orange, while the pane on the same desktop draws teal `planMode` and `claude` orange, undoing M204's one hue per phase — follow-up, "Theme color follow-ons (M217 review)".
 - blame-history #3: the darker desktop track stands out less on dark grounds — reject (planned change): accepted at the live look.
@@ -171,6 +171,7 @@ Pass 1, 2026-10-04, on branch head 05fa1d0 (main dc3cc7c, not moved since the br
 - blame-history #6: ROADMAP candidate rows still describe fixed colors — reject (planned change): post-merge hygiene trims the promoted rows.
 - blame-history #7: DESIGN does not say light keeps `claude` unchanged — reject (false): "the light theme changes plan and review" says it.
 - blame-history #8: the test changes strengthen the pins — reject (false): reports no defect.
-- prior-review #1: ragged wraps in README.md:96, track.ts:206, CHANGELOG.md:12, DESIGN.md:205 reintroduce M198 R5 and M204 #6 — fix now.
+- prior-review #1: ragged wraps in README.md:96, track.ts:206, CHANGELOG.md:12, DESIGN.md:205 reintroduce M198 R5 and M204 #6 — fix now, fixed 3a2afb8.
+- After the fixes: all five verify commands exit 0 (mod tests 1137 pass), the AC2 grep still prints only track.ts:47-55, `cairn_validate` passes. The two follow-ups are filed at post-merge hygiene as "Theme color follow-ons (M217 review)", because a new row now would put ROADMAP.md at the 60-line cap; the hygiene pass frees a line by dropping the M214 terminal row.
 - prior-review #2: plan teal and review blue may be close in the colorblind themes — reject (planned change): the plan gate weighed this (work log), and in the tables light-daltonized is rgb(51,102,102) against rgb(0,102,153), dark-daltonized rgb(102,153,153) against rgb(51,153,255); the operator accepted a colorblind theme at the live look.
 - prior-review #3: the `↑` takes the implement key under the plan-colored heading — reject (planned change): AC1 calls for it.
