@@ -3,7 +3,8 @@ import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
 import { flowOf, width } from './band'
-import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout } from './pane'
+import type { PaneState } from './reader'
 import { listNames } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -63,6 +64,11 @@ type Copy = {
   toasts?: string[]
   // When set, every open is refused with this reason.
   refuse?: string
+  // The command and args of each slash command run that reached beneath the
+  // mod, and while set, a promise each run waits for before it answers
+  // (M218).
+  commands?: { command: string; args: string }[]
+  runHold?: Promise<void>
 }
 
 function copyOf(name: string): Copy {
@@ -125,6 +131,11 @@ function seat(on: On, copy: Copy) {
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
     return { value: undefined }
+  })
+  on('command.run', async ($, e) => {
+    copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
+    if (copy.runHold !== undefined) await copy.runHold
+    return { text: '' }
   })
 }
 
@@ -674,6 +685,158 @@ describe("the band's open button opens the pane (M205 AC4)", () => {
       expect(await ui.findAll({ key: 'cairn-stack' })).toEqual([])
       expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([])
       expect(JSON.stringify(await ui.findAll({ type: 'Text' }))).toContain('engine slot')
+      await ui.unmount()
+    })
+  }
+})
+
+// M218: the Next line's Button. Its label by the next step's action, and
+// one fixture of each action, written out by hand.
+const PANE_NEXT = 'cairn-pane-next'
+const ACTION_LABELS: Record<string, string> = {
+  implement: 'Start',
+  resume: 'Resume',
+  review: 'Review',
+  'plan the next milestone': 'Plan',
+}
+const BY_ACTION: [string, string][] = [
+  ['single-in-progress', 'resume'],
+  ['states-review', 'review'],
+  ['idle-order', 'implement'],
+  ['all-waiting', 'plan the next milestone'],
+]
+// What a press runs for a fixture: `cairn:` and the command less its slash,
+// and the id, or no args for planning.
+function runOf(name: string): { command: string; args: string } {
+  const next = FIXTURES[name].next as { command: string; id: string | null }
+  return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '' }
+}
+
+describe("the Next line carries the next step's Button (M218 AC1)", () => {
+  test('the fixtures reach every action', () => {
+    expect([...new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.action))].sort()).toEqual(Object.keys(ACTION_LABELS).sort())
+    expect(BY_ACTION.map(([name]) => FIXTURES[name].next?.action)).toEqual(BY_ACTION.map(([, action]) => action))
+  })
+
+  // An action named like an object property has no label, so its line
+  // carries no action (M218 review).
+  test('an action outside the map, an inherited property name among them, has no label', () => {
+    for (const action of Object.keys(ACTION_LABELS)) expect([action, nextLabel(action)]).toEqual([action, ACTION_LABELS[action]])
+    for (const action of ['toString', 'constructor', '__proto__', 'hasOwnProperty', 'blocked']) {
+      expect([action, nextLabel(action)]).toEqual([action, undefined])
+      const state: PaneState = {
+        found: true,
+        milestones: [],
+        next: { action, command: '/milestone-plan', id: null, waiting: [] },
+        workable: [],
+        waiting: [],
+        candidates: [],
+      }
+      const next = layout(state, [], true).find(line => line.key === 'next')
+      expect([action, next?.action]).toEqual([action, undefined])
+    }
+  })
+
+  for (const name of WITH_ROADMAP) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const buttons = await ui.findAll({ type: 'Button' })
+        expect(buttons.map(keyOf)).toEqual([PANE_NEXT])
+        const want = ACTION_LABELS[FIXTURES[name].next?.action as string]
+        expect([buttons[0].props.label, buttons[0].props.variant]).toEqual([want, 'secondary'])
+        // The Button comes after the pill, in the Next line's last Box.
+        const line = (await boxOf(ui, 'next')) as Element
+        expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action'])
+        expect(kids(kids(line)[2]).map(keyOf)).toEqual([PANE_NEXT])
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe("a running cairn skill hides the pane's Button (M218 AC2)", () => {
+  for (const surface of SURFACES) {
+    test(`the Button goes at a skill's prompt and comes back at its Stop (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const pill = async () => textOf((await partOf(ui, 'next-text'))[0])
+      expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
+      await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+      expect(await ui.findAll({ key: PANE_NEXT })).toEqual([])
+      expect(await pill()).toBe(' /milestone-implement M002 ')
+      await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+      expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
+      expect(await pill()).toBe(' /milestone-implement M002 ')
+      await ui.unmount()
+    })
+  }
+})
+
+describe("a press of the pane's Button runs the next command (M218 AC3)", () => {
+  for (const [name] of BY_ACTION) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        await ui.press({ key: PANE_NEXT })
+        expect(copy.commands).toEqual([runOf(name)])
+        await ui.unmount()
+      })
+    }
+  }
+
+  // The runs written out by hand for two of them.
+  test('the runs for planning and for a milestone', () => {
+    expect(runOf('all-waiting')).toEqual({ command: 'cairn:milestone-plan', args: '' })
+    expect(runOf('single-in-progress')).toEqual({ command: 'cairn:milestone-implement', args: 'M002' })
+  })
+
+  for (const surface of SURFACES) {
+    test(`a second press during a held run reaches no second run (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const first = ui.press({ key: PANE_NEXT })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+        await ui.press({ key: PANE_NEXT })
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+      } finally {
+        release()
+        await first
+      }
+      // The settled run frees the Button, so the next press runs again
+      // (M218 review).
+      copy.runHold = undefined
+      await ui.press({ key: PANE_NEXT })
+      expect(copy.commands).toEqual([runOf('single-in-progress'), runOf('single-in-progress')])
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the pill gives way before the Button (M218 AC4)', () => {
+  for (const surface of SURFACES) {
+    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const action = (await boxOf(ui, 'next-action')) as Element
+      expect(action.props.flexShrink).toBe(0)
+      const pill = (await boxOf(ui, 'next-text')) as Element
+      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
       await ui.unmount()
     })
   }

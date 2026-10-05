@@ -4,6 +4,13 @@
 
 ### New
 
+- **A Next button in the cairn pane.** The pane's Next line keeps its
+  colored pill and now carries a button after it: `Start`, `Resume`,
+  `Review`, or `Plan`, the same label as the band's next-step button. A
+  press runs the same command. The button shows while no cairn skill runs
+  or waits on its background work.
+  A press while Claude works outside a cairn skill runs the command when
+  Claude is idle.
 - **Band and pane colors follow your theme.** In the terminal band and the
   cairn pane, the phase colors are now your Claude Code theme's own colors:
   `planMode` for plan, `claude` for implement, and `success` for review,
