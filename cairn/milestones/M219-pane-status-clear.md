@@ -120,6 +120,7 @@ cover that path, and review files the gap in the same row.
 - 2026-10-04: T3 done. README's pane section, DESIGN's `hooks/status/` entry and pane paragraph, a CHANGELOG Unreleased entry, and the `pane.ts` and `register.tsx` header comments describe the `actions` line. Verify: all five exit 0.
 - 2026-10-04: claim audit: 30 claims read, 6 corrected — CHANGELOG.md, README.md, cairn/DESIGN.md, hooks/status/pane.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-04: the corrections narrow "after a cairn skill ends" to the `ended` span, from a Stop that ends a step to the next idle typed prompt, cairn skill prompt, or session end. They also fix a test comment on `acts`. The same reader re-read all six as accurate. It noted that the user docs leave out two edge cases, a prompt typed mid-turn and a step that an idle typed prompt ends. They stay out, as M216's own wording does. Verify: all five exit 0.
+- 2026-10-05: live look (AC4): the operator reported "something is off" with no detail yet. The run waits for the description before a fix.
 
 ## Decisions
 
