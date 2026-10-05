@@ -137,5 +137,6 @@ rows.
 - 2026-10-04: T4: AC2's grep prints only track.ts:47-55, inside the `// palette` comments at :40 and :56; nothing to move.
 - 2026-10-04: T5: `cairn/references/wcag22.md` written from the W3C Recommendation of 2024-12-12, read by curl at `#contrast-minimum`, `#dfn-contrast-ratio`, `#dfn-relative-luminance`; INDEX line added; cairn_validate green.
 - 2026-10-04: T6: README (band and pane color paragraphs), DESIGN (terminal track, desktop palette, pane colors), and a CHANGELOG Unreleased New entry, written against track.ts, band.ts, pane.ts and the theme tables read from Claude Code 2.1.287 this session. AC5's grep prints nothing.
+- 2026-10-04: the T6 commit (1a5e707) went in with the scripts suite red: `TestShippedPageStateLedger` pins every references page and lacked `wcag22.md` since T5. Fixed by pinning it as `ok` (dated direct-read claim) with its justification comment; scripts suite exit 0.
 
 ## Decisions
