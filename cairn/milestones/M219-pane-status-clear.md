@@ -177,27 +177,28 @@ Review pass 1, 2026-10-05, on `beb769b` (branch current with `origin/main` `b671
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so no `cairn_impact`. The profile slot: verify green on the review head. The marketplace validate prints "Validation passed" with no `plugins[N].version` warning. CHANGELOG has the entry, with no milestone number.
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: the pane shows Clear during a turn outside a cairn skill (no `isWorking`), so a press queues `/clear` after that turn, where the band hides Clear — follow-up (the queueing is Scope Out; README wording fixed now, see blame-history #2)
-- diff-bug #2: Status and Clear draw when the next action has no label, unlike the band's `canAct` and the docs' "after that button" — fix now (buttons only with a label)
-- diff-bug #3: CHANGELOG lacks the desktop two-click note — fix now
-- diff-bug #4: README's first-click sentence is garbled and states one probe's finding broadly — fix now (reworded)
+- diff-bug #2: Status and Clear draw when the next action has no label, unlike the band's `canAct` and the docs' "after that button" — fix now (buttons only with a label), fixed 60765d7
+- diff-bug #3: CHANGELOG lacks the desktop two-click note — fix now, fixed 60765d7
+- diff-bug #4: README's first-click sentence is garbled and states one probe's finding broadly — fix now (reworded), fixed 60765d7
 - diff-bug #5: below about 38 columns the fixed Boxes push the line past the edge — follow-up
-- diff-bug #6: test gaps: no pure `paneLines` test of `buttons`, the not-ended `next-status` Box unasserted, no stale pane Clear press, the M218 AC1 test no longer pins the pane's only Button — the last fixed now (a pane-wide Button check in the M219 AC1 test), the rest follow-up
-- diff-bug #7: the Goal and T1/T2 still describe the dropped row, and DESIGN carries history prose — Goal and tasks rejected (planned: the work log supersedes them, never edited in place); DESIGN fixed now
+- diff-bug #6: test gaps: no pure `paneLines` test of `buttons`, the not-ended `next-status` Box unasserted, no stale pane Clear press, the M218 AC1 test no longer pins the pane's only Button — the last fixed now (a pane-wide Button check in the M219 AC1 test), fixed 60765d7, the rest follow-up
+- diff-bug #7: the Goal and T1/T2 still describe the dropped row, and DESIGN carries history prose — Goal and tasks rejected (planned: the work log supersedes them, never edited in place); DESIGN fixed now, fixed 60765d7
 - blame-history #1: "Pane button follow-ons (M218 review)" still says the pane has no Status or Clear Button — reject (planned change: post-merge hygiene trims a promoted item, records-hygiene §1)
-- blame-history #2: README and CHANGELOG say any prompt removes Clear, but a prompt typed mid-turn keeps it — fix now ("while Claude is idle")
+- blame-history #2: README and CHANGELOG say any prompt removes Clear, but a prompt typed mid-turn keeps it — fix now ("while Claude is idle"), fixed 60765d7
 - blame-history #3: pane and band differ on when Status and Clear show (no label, a closed band, `next` null) — the label part fixed now (diff-bug #2), a closed band showing pane Clear follow-up, `next` null rejected (false: `recommend` never returns null for a found ROADMAP)
 - blame-history #4: four unrelated ROADMAP rows were trimmed, and the work log's 23,998 is not the branch's size — trims noted (no content lost, per the lens), the figure rejected (false: it was the size at that edit, before the status change)
 - blame-history #5: "Mod pane placement (upstream)" now holds two topics — noted (both upstream pane faults, merged to keep the 60-line cap)
-- blame-history #6: the M218 AC1 test is weaker — fix now (as diff-bug #6)
+- blame-history #6: the M218 AC1 test is weaker — fix now (as diff-bug #6), fixed 60765d7
 - blame-history #7: the labels moved to `pane.ts` — noted (no behavior change)
 - blame-history #8: stale Goal and task text — reject (planned, as diff-bug #7)
-- blame-history #9: CHANGELOG long line and an ambiguous "Both", and the DESIGN list's chained clauses — the first two fixed now, the third rejected (style)
+- blame-history #9: CHANGELOG long line and an ambiguous "Both", and the DESIGN list's chained clauses — the first two fixed now, fixed 60765d7, the third rejected (style)
 - blame-history #10: untracked `cairn-probe.log` and `tsconfig.json` — noted (predate the milestone)
 - prior-review #1: the pill is cut harder at a 44-column dock, and no test bounds it — follow-up (with diff-bug #5)
 - prior-review #2: the stale ROADMAP row, and the gray Buttons unchecked in other themes — row rejected (as blame-history #1), the theme item follow-up
 - prior-review #3: the theme gap now covers two more pane Buttons — follow-up
 - prior-review #4: the AC2 test starts the skill by a prompt, not a press — follow-up
 - prior-review #5: no pane test of Clear during a held run, or of a press after the release — follow-up
-- prior-review #6: the M218 AC1 test is weaker — fix now (as diff-bug #6)
+- prior-review #6: the M218 AC1 test is weaker — fix now (as diff-bug #6), fixed 60765d7
 - prior-review #7: the refused-press and queued-press items now cover Status and Clear — follow-up
 - Follow-ups go to a new row, "Pane Status and Clear follow-ons (M219 review)", at post-merge hygiene, because "Pane button follow-ons (M218 review)" heads a finding-absorbing group (records-hygiene §7). No finding shows a criterion failing or a load-bearing defect, so no return.
+- Fix-now re-verify after 60765d7: all five verify commands exit 0, mod tests 1244. A planted return to the old label behavior turned the no-label test red (1 fail), and it was restored.
