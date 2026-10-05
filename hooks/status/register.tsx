@@ -4,7 +4,8 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import { nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL } from './pane'
+import type { PaneButton } from './pane'
+import { CLEAR_LABEL, nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL, STATUS_LABEL } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
@@ -42,7 +43,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // the band's percent for its row, so the pane reads the `band` value too
 // (M208). While no cairn skill's step is set, the Next line carries a
 // Button with the band's next-step label after its pill, and a press runs
-// `pressNext`, as the band's does (M218).
+// `pressNext`, as the band's does (M218). At the same times, the line
+// carries Status after that Button, with Clear before Status while `ended`
+// is true, and a press runs `pressStatus` or `pressClear` (M219).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -110,12 +113,16 @@ const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 
 // The action Buttons (M212): the next step's label, from pane.ts's
 // `nextLabel`, which the pane's Next Button reads too (M218), and the status
-// Button's label and command. A plugin skill runs as `cairn:<name>` (M195).
-const STATUS_LABEL = 'Status'
+// Button's command. A plugin skill runs as `cairn:<name>` (M195).
 const STATUS_COMMAND = 'cairn:milestone'
-// The Clear Button's label and the built-in command it runs (M216).
-const CLEAR_LABEL = 'Clear'
+// The built-in command the Clear Button runs (M216). The Status and Clear
+// labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
+// The key and label of each Button after the Next line's action (M219).
+const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
+  clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
+  status: { key: 'cairn-pane-status', label: STATUS_LABEL },
+}
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -158,14 +165,17 @@ export const register: Register = on => {
     // (M218). A pane gets no `isWorking` prop, so it also shows during a
     // turn outside a cairn skill, and a press then waits for the session to
     // be idle, as `$.command.run` queues.
+    // After that Button, the Next line shows Status at the same times, and
+    // Clear before Status while `ended` is true (M219).
     const acts = knownStep(await read($, step)) === null
-    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts)
+    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended))
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218). A Text drops its
+    // does not shrink, so the pill is cut first (M218), and so do Clear and
+    // Status after it, each in its own such Box (M219). A Text drops its
     // `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
@@ -206,6 +216,19 @@ export const register: Register = on => {
                 />
               </Box>
             )}
+            {(line.buttons ?? []).map(kind => {
+              const button = PANE_BUTTONS[kind]
+              return (
+                <Box key={`${line.key}-${kind}`} flexShrink={0} marginLeft={1}>
+                  <Button
+                    key={button.key}
+                    variant="secondary"
+                    label={button.label}
+                    onPress={() => (kind === 'clear' ? pressClear($) : pressStatus($))}
+                  />
+                </Box>
+              )
+            })}
           </Box>
         ))}
       </Box>

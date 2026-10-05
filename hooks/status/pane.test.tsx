@@ -153,6 +153,11 @@ function kids(node: Element): Element[] {
   return (node.children ?? []).filter((c): c is Element => c !== null && typeof c === 'object')
 }
 
+// The Buttons under a node, in order (M219).
+function buttonsIn(node: Element): Element[] {
+  return kids(node).flatMap(child => (child.type === 'Button' ? [child] : buttonsIn(child)))
+}
+
 // The pane's lines in order, each its key and its text.
 async function paneLines($, surface: (typeof SURFACES)[number]): Promise<[string, string][]> {
   const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
@@ -734,6 +739,9 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
       }
       const next = layout(state, [], true).find(line => line.key === 'next')
       expect([action, next?.action]).toEqual([action, undefined])
+      // Nor Status and Clear, which show only with the next-step Button
+      // (M219 review).
+      expect([action, layout(state, [], true, true).find(line => line.key === 'next')?.buttons]).toEqual([action, undefined])
     }
   })
 
@@ -743,13 +751,15 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
         seat(on, copyOf(name))
         await $.turn.complete(turn())
         const ui = await mountPane($, surface)
-        const buttons = await ui.findAll({ type: 'Button' })
-        expect(buttons.map(keyOf)).toEqual([PANE_NEXT])
+        // The Next line's first Button: Status follows it (M219).
+        const buttons = buttonsIn((await boxOf(ui, 'next')) as Element)
+        expect(keyOf(buttons[0])).toBe(PANE_NEXT)
+        expect(buttons.filter(button => keyOf(button) === PANE_NEXT).length).toBe(1)
         const want = ACTION_LABELS[FIXTURES[name].next?.action as string]
         expect([buttons[0].props.label, buttons[0].props.variant]).toEqual([want, 'secondary'])
-        // The Button comes after the pill, in the Next line's last Box.
+        // The Button comes after the pill, in the Box after the pill's.
         const line = (await boxOf(ui, 'next')) as Element
-        expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action'])
+        expect(kids(line).map(keyOf).slice(0, 3)).toEqual(['next-lead', 'next-text', 'next-action'])
         expect(kids(kids(line)[2]).map(keyOf)).toEqual([PANE_NEXT])
         await ui.unmount()
       })
@@ -835,6 +845,134 @@ describe('the pill gives way before the Button (M218 AC4)', () => {
       const ui = await mountPane($, surface)
       const action = (await boxOf(ui, 'next-action')) as Element
       expect(action.props.flexShrink).toBe(0)
+      const pill = (await boxOf(ui, 'next-text')) as Element
+      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
+      await ui.unmount()
+    })
+  }
+})
+
+// M219: the Next line's Status and Clear Buttons, with their keys and
+// labels written out by hand.
+const PANE_STATUS = 'cairn-pane-status'
+const PANE_CLEAR = 'cairn-pane-clear'
+const STATUS_RUN = { command: 'cairn:milestone', args: '' }
+const CLEAR_RUN = { command: 'clear', args: '' }
+
+// The keys of the Next line's Buttons, in order, or null with no Next line.
+async function nextKeys(ui: Ui): Promise<string[] | null> {
+  const line = await boxOf(ui, 'next')
+  return line === undefined ? null : buttonsIn(line).map(button => keyOf(button) as string)
+}
+
+// A cairn skill runs and its Stop ends the step, which leaves `ended` set.
+async function endSkill($) {
+  await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+  await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+}
+
+describe('the Next line carries the Status Button after Next (M219 AC1)', () => {
+  for (const name of WITH_ROADMAP) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
+        expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
+        // No other line of the pane carries a Button (M219 review).
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS])
+        const [status] = await ui.findAll({ key: PANE_STATUS })
+        expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
+        // The Buttons come after the pill, each in its own Box.
+        const line = (await boxOf(ui, 'next')) as Element
+        expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action', 'next-status'])
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe('a running skill hides Status, and its end adds Clear (M219 AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`skill prompt, Stop, then an idle typed prompt (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
+      await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+      expect(await ui.findAll({ key: PANE_STATUS })).toEqual([])
+      expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
+      await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+      expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+      const [clear] = await ui.findAll({ key: PANE_CLEAR })
+      expect([clear.props.variant, clear.props.label]).toEqual(['secondary', 'Clear'])
+      await $.prompt.submit({ text: 'a typed prompt', wait: false, origin: { kind: 'composer' } })
+      expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
+      expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
+      await ui.unmount()
+    })
+  }
+})
+
+describe('a press of Status or Clear runs its command (M219 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`Status runs the status skill (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      await ui.press({ key: PANE_STATUS })
+      expect(copy.commands).toEqual([STATUS_RUN])
+      await ui.unmount()
+    })
+
+    test(`Clear, drawn after a Stop ends a step, runs clear (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await endSkill($)
+      const ui = await mountPane($, surface)
+      await ui.press({ key: PANE_CLEAR })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await ui.unmount()
+    })
+
+    test(`a Status press while a Next run is held runs nothing (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const first = ui.press({ key: PANE_NEXT })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+        await ui.press({ key: PANE_STATUS })
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+      } finally {
+        release()
+        await first
+      }
+      await ui.unmount()
+    })
+  }
+})
+
+describe('the pill gives way before Clear and Status (M219 AC4)', () => {
+  for (const surface of SURFACES) {
+    test(`the Buttons' Boxes do not shrink, and the pill's does (${surface})`, async ($, on) => {
+      seat(on, copyOf('single-in-progress'))
+      await $.turn.complete(turn())
+      await endSkill($)
+      const ui = await mountPane($, surface)
+      for (const key of ['next-clear', 'next-status']) {
+        const box = (await boxOf(ui, key)) as Element
+        expect([key, box.props.flexShrink]).toEqual([key, 0])
+      }
       const pill = (await boxOf(ui, 'next-text')) as Element
       expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
       await ui.unmount()

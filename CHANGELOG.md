@@ -4,6 +4,16 @@
 
 ### New
 
+- **Status and Clear buttons in the cairn pane.** The pane's Next line
+  carries a `Status` button after its next-step button, which runs
+  `/cairn:milestone`. When a cairn skill finishes, the line also carries a
+  `Clear` button before `Status`, which runs `/clear`. When you send a
+  prompt while Claude is idle, or start another cairn skill, Clear goes
+  away. The two buttons show with the next-step button, while no cairn
+  skill runs or waits on its background work. A press acts as the band's
+  button of the same name. In the desktop app, a click on the pane while
+  it does not have keyboard focus only gives it focus. A button then takes
+  a second click.
 - **A Next button in the cairn pane.** The pane's Next line keeps its
   colored pill and now carries a button after it: `Start`, `Resume`,
   `Review`, or `Plan`, the same label as the band's next-step button. A

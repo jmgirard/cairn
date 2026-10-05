@@ -26,11 +26,15 @@ import { PILL_TEXT } from './track'
 // of the phase its command runs. The colors are theme keys (M217).
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the pill, which register.tsx draws as a Button
-// (M218).
+// (M218). After that Button the line carries Status, and Clear before it
+// while `ended` is true, which register.tsx draws as Buttons (M219).
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
 // with the one key `cairn-pane-next` and the next-step press.
+// The Next line's `buttons` name the Buttons that register.tsx draws after
+// its action Button, in order (M219). No other line carries them.
+export type PaneButton = 'clear' | 'status'
 export type PaneLine = {
   key: string
   indent: number
@@ -39,6 +43,7 @@ export type PaneLine = {
   tail?: Span[]
   wraps?: true
   action?: string
+  buttons?: PaneButton[]
 }
 
 // The next-step Button's label by the action that scripts/cairn_next.py
@@ -57,6 +62,11 @@ export const NEXT_LABELS: Record<string, string> = {
 export function nextLabel(action: string): string | undefined {
   return Object.prototype.hasOwnProperty.call(NEXT_LABELS, action) ? NEXT_LABELS[action] : undefined
 }
+
+// The Status and Clear Buttons' labels (M212, M216). The band and the
+// pane's Next line read these (M219).
+export const STATUS_LABEL = 'Status'
+export const CLEAR_LABEL = 'Clear'
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -194,8 +204,12 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 
 // The pane's lines from its state and the band's rows, whose counts give
 // each head line its percent. `acts` is true while no cairn skill's step is
-// set, and then the Next line carries its action label (M218).
-export function paneLines(state: PaneState, band: BandRow[] = [], acts = false): PaneLine[] {
+// set, and then the Next line carries its action label (M218) and the
+// Status Button after it (M219). `ended` is true from a
+// Stop that ends a cairn skill's step until the next idle typed prompt,
+// cairn skill prompt, or session end, and then the Clear Button comes
+// before Status (M219).
+export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, ended = false): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
@@ -215,7 +229,12 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false):
       bold: true,
     })
     const label = nextLabel(state.next.action)
-    if (acts && label !== undefined) next.action = label
+    // Status and Clear follow the next-step Button and show only with it, as
+    // the band's show only with a next-step label (M219 review).
+    if (acts && label !== undefined) {
+      next.action = label
+      next.buttons = ended ? ['clear', 'status'] : ['status']
+    }
     out.push(next)
   }
   if (state.workable.length > 0) {
