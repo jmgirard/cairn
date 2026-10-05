@@ -38,7 +38,7 @@ cover that path, and review files the gap in the same row.
 
 ## Acceptance criteria
 
-- [ ] AC1: The fixtures with a ROADMAP are `WITH_ROADMAP` in
+- [x] AC1: The fixtures with a ROADMAP are `WITH_ROADMAP` in
       `pane.test.tsx`. For each one, on the terminal and desktop surfaces,
       with no cairn skill's step set and no cairn skill ended, the Next line
       draws its Buttons after the pill. Mod tests assert that the Next line's
@@ -47,7 +47,7 @@ cover that path, and review files the gap in the same row.
       `cairn-pane-status`]; that the pane has no element with key
       `cairn-pane-clear`; and that `cairn-pane-status` has `variant`
       `secondary` and label `Status`.
-- [ ] AC2: For one fixture with a next step, on the terminal and desktop
+- [x] AC2: For one fixture with a next step, on the terminal and desktop
       surfaces, after a cairn skill's prompt starts its step, the pane draws
       no element with key `cairn-pane-status` or `cairn-pane-clear`. After a
       Stop with nothing in flight ends the step, the Next line's Button keys
@@ -56,27 +56,27 @@ cover that path, and review files the gap in the same row.
       and label `Clear`. After an idle typed prompt that follows, they are
       exactly [`cairn-pane-next`, `cairn-pane-status`]. A mod test asserts
       the three states in order.
-- [ ] AC3: On the terminal and desktop surfaces, a press of
+- [x] AC3: On the terminal and desktop surfaces, a press of
       `cairn-pane-status` runs `$.command.run` with the command
       `cairn:milestone` and the args `''`. A press of `cairn-pane-clear`,
       drawn after a Stop ends a step, runs the command `clear` with the args
       `''`. Mod tests press each Button and read the command and args that
       reached beneath. A press of `cairn-pane-status` while a run started by
       `cairn-pane-next` is held runs no command, and a mod test asserts this.
-- [ ] AC4: On the terminal and desktop surfaces, after a Stop ends a step,
+- [x] AC4: On the terminal and desktop surfaces, after a Stop ends a step,
       the Boxes `next-clear` and `next-status` have `flexShrink` 0, and the
       pill's Box `next-text` keeps `flexShrink` 1 and `minWidth` 0. A mod
       test asserts these props.
-- [ ] AC5: At a live look in the desktop app, in a real cairn repo, each
+- [x] AC5: At a live look in the desktop app, in a real cairn repo, each
       press of the pane's Status or Clear Button that reaches the mod runs
       its command once. A Status press starts the status skill. After that
       skill ends, a Clear press clears the conversation. A first click that
       only gives the pane keyboard focus reaches no press, and the row "Mod
       pane placement (upstream)" holds it. The operator accepts the look of
       the Next line.
-- [ ] AC6: README.md and `cairn/DESIGN.md` describe the pane's Status and
+- [x] AC6: README.md and `cairn/DESIGN.md` describe the pane's Status and
       Clear Buttons. CHANGELOG.md's unreleased section has an entry for them.
-- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -164,3 +164,40 @@ cover that path, and review files the gap in the same row.
 ## Decisions
 
 ## Review
+
+Review pass 1, 2026-10-05, on `beb769b` (branch current with `origin/main` `b671def`; resume route (d), no PR).
+
+- AC1 evidence: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 1244 tests, 0 fail. The 40 cases of "the Next line carries the Status Button after Next (M219 AC1)" (20 `WITH_ROADMAP` fixtures × terminal and desktop) pass. Each asserts the child Boxes `next-lead`, `next-text`, `next-action`, `next-status`, the Button keys [`cairn-pane-next`, `cairn-pane-status`], no `cairn-pane-clear`, and Status `secondary`/`Status`.
+- AC2 evidence: same run. Both cases of "a running skill hides Status, and its end adds Clear (M219 AC2)" pass, asserting the three states in order. A planted swap of the Clear and Status order turned both red at T1 (work log).
+- AC3 evidence: same run. The 6 cases of "a press of Status or Clear runs its command (M219 AC3)" pass: Status → `cairn:milestone` `''`, Clear after a Stop → `clear` `''`, and a Status press during a held Next run reaches no run. Planted swapped presses and a `pressStatus` without its `running` check turned them red at T2 (work log).
+- AC4 evidence: same run. Both cases of "the pill gives way before Clear and Status (M219 AC4)" pass, asserting `flexShrink` 0 on `next-clear` and `next-status` and 1/0 on `next-text`.
+- AC5 evidence: `m219-probe.log` (local, from the probe look in bsync, desktop, 2026-10-05) shows one `ui.press element=cairn-pane-status` followed by one `run start cairn:milestone #1`, and later one `ui.press element=cairn-pane-clear` followed by one `run start clear #2`. The first clicks logged only a `focused=true` render, with no press, which AC5 leaves to "Mod pane placement (upstream)". The operator accepted the Next line's look at the 2026-10-05 chip (work log).
+- AC6 evidence: README.md lines 257-266 describe the Status and Clear buttons on the Next line. `cairn/DESIGN.md` lines 73 and 280-288 describe them. CHANGELOG.md's `## Unreleased` `### New` opens with "Status and Clear buttons in the cairn pane."
+- AC7 evidence: from the repo root, `python3 -m unittest discover -s scripts/tests` exit 0 (397 tests, OK, skipped 21), `python3 -m unittest discover -s hooks/tests` exit 0 (174, OK), `claude plugin validate .claude-plugin/plugin.json` exit 0, `claude plugin validate .claude-plugin/marketplace.json` exit 0, and the mod test above exit 0.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so no `cairn_impact`. The profile slot: verify green on the review head. The marketplace validate prints "Validation passed" with no `plugins[N].version` warning. CHANGELOG has the entry, with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the pane shows Clear during a turn outside a cairn skill (no `isWorking`), so a press queues `/clear` after that turn, where the band hides Clear — follow-up (the queueing is Scope Out; README wording fixed now, see blame-history #2)
+- diff-bug #2: Status and Clear draw when the next action has no label, unlike the band's `canAct` and the docs' "after that button" — fix now (buttons only with a label)
+- diff-bug #3: CHANGELOG lacks the desktop two-click note — fix now
+- diff-bug #4: README's first-click sentence is garbled and states one probe's finding broadly — fix now (reworded)
+- diff-bug #5: below about 38 columns the fixed Boxes push the line past the edge — follow-up
+- diff-bug #6: test gaps: no pure `paneLines` test of `buttons`, the not-ended `next-status` Box unasserted, no stale pane Clear press, the M218 AC1 test no longer pins the pane's only Button — the last fixed now (a pane-wide Button check in the M219 AC1 test), the rest follow-up
+- diff-bug #7: the Goal and T1/T2 still describe the dropped row, and DESIGN carries history prose — Goal and tasks rejected (planned: the work log supersedes them, never edited in place); DESIGN fixed now
+- blame-history #1: "Pane button follow-ons (M218 review)" still says the pane has no Status or Clear Button — reject (planned change: post-merge hygiene trims a promoted item, records-hygiene §1)
+- blame-history #2: README and CHANGELOG say any prompt removes Clear, but a prompt typed mid-turn keeps it — fix now ("while Claude is idle")
+- blame-history #3: pane and band differ on when Status and Clear show (no label, a closed band, `next` null) — the label part fixed now (diff-bug #2), a closed band showing pane Clear follow-up, `next` null rejected (false: `recommend` never returns null for a found ROADMAP)
+- blame-history #4: four unrelated ROADMAP rows were trimmed, and the work log's 23,998 is not the branch's size — trims noted (no content lost, per the lens), the figure rejected (false: it was the size at that edit, before the status change)
+- blame-history #5: "Mod pane placement (upstream)" now holds two topics — noted (both upstream pane faults, merged to keep the 60-line cap)
+- blame-history #6: the M218 AC1 test is weaker — fix now (as diff-bug #6)
+- blame-history #7: the labels moved to `pane.ts` — noted (no behavior change)
+- blame-history #8: stale Goal and task text — reject (planned, as diff-bug #7)
+- blame-history #9: CHANGELOG long line and an ambiguous "Both", and the DESIGN list's chained clauses — the first two fixed now, the third rejected (style)
+- blame-history #10: untracked `cairn-probe.log` and `tsconfig.json` — noted (predate the milestone)
+- prior-review #1: the pill is cut harder at a 44-column dock, and no test bounds it — follow-up (with diff-bug #5)
+- prior-review #2: the stale ROADMAP row, and the gray Buttons unchecked in other themes — row rejected (as blame-history #1), the theme item follow-up
+- prior-review #3: the theme gap now covers two more pane Buttons — follow-up
+- prior-review #4: the AC2 test starts the skill by a prompt, not a press — follow-up
+- prior-review #5: no pane test of Clear during a held run, or of a press after the release — follow-up
+- prior-review #6: the M218 AC1 test is weaker — fix now (as diff-bug #6)
+- prior-review #7: the refused-press and queued-press items now cover Status and Clear — follow-up
+- Follow-ups go to a new row, "Pane Status and Clear follow-ons (M219 review)", at post-merge hygiene, because "Pane button follow-ons (M218 review)" heads a finding-absorbing group (records-hygiene §7). No finding shows a criterion failing or a load-bearing defect, so no return.
