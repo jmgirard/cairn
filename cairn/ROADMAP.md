@@ -3,8 +3,7 @@
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-10-04 (M216 done, PR #223; skills/tests green, 665 tests)_
 
-Note: this repo dogfoods the tracking file formats by hand; it is a plugin,
-not an R package, so R-specific gates don't apply.
+Note: this repo dogfoods the tracking file formats by hand; it is a plugin, not an R package, so R-specific gates don't apply.
 
 ## Milestones
 
@@ -12,6 +11,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M217 | Band and pane colors that follow the theme | planned | — | normal | milestones/M217-theme-colors.md |
 | M216 | A Clear button when a cairn skill ends | done | — | normal | milestones/archive/M216-band-clear.md |
 | M215 | Move this repo to the claude-plugin profile | done | — | normal | milestones/archive/M215-plugin-profile.md |
 | M214 | Clear the prose-guard reds | done | — | normal | milestones/archive/M214-prose-guard-reds.md |
