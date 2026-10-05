@@ -9,7 +9,7 @@ _Released 1.0.0 2026-07-16 (tag v1.0.0) · 1.1.0 2026-07-19 (tag v1.1.0) · 1.1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M219 | Status and Clear buttons in the cairn pane | planned | — | normal | milestones/M219-pane-status-clear.md |
+| M219 | Status and Clear buttons in the cairn pane | in-progress | — | normal | milestones/M219-pane-status-clear.md |
 | M218 | A Next button in the cairn pane | done | — | normal | milestones/archive/M218-pane-next-button.md |
 | M217 | Band and pane colors that follow the theme | done | — | normal | milestones/archive/M217-theme-colors.md |
 | M216 | A Clear button when a cairn skill ends | done | — | normal | milestones/archive/M216-band-clear.md |

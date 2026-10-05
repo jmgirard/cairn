@@ -1,13 +1,13 @@
 # M219: Status and Clear buttons in the cairn pane
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m219-pane-status-clear
 
 ## Goal
 
@@ -80,7 +80,7 @@ cover that path, and review files the gap in the same row.
 
 ## Tasks
 
-- [ ] T1: Write the AC1 and AC2 tests first in `pane.test.tsx`. Change the
+- [x] T1: Write the AC1 and AC2 tests first in `pane.test.tsx`. Change the
       M218 AC1 test, which asserts that the pane's only Button is
       `cairn-pane-next` (`pane.test.tsx:746`), to read the Next line's
       Buttons alone. In `pane.ts`, give `paneLines` a flag for `ended`.
@@ -113,6 +113,9 @@ cover that path, and review files the gap in the same row.
 - 2026-10-04: collision check: the plan absorbs the Status-or-Clear item of candidate "Pane button follow-ons (M218 review)", and post-merge hygiene trims it. The GitHub inbox has no open issues or PRs. D-143 (the mod ships in the plugin) has no conflict. No D-entry rejects the change.
 - 2026-10-04: the new row put ROADMAP.md at 24,117 bytes, over its 24,000 budget. The plan cut two `[low]` rows' asides, to 23,998 bytes.
 - 2026-10-04: the plain-English lint hook keeps 12 hits on this file. They are cairn's required `—` slot markers and question-set separators, and three long sentences in the audited criteria, which stay as the audit read them.
+- 2026-10-04: implement started on branch m219-pane-status-clear. The untracked `cairn-probe.log` and `tsconfig.json` predate the milestone and stay unstaged.
+- 2026-10-04: minor amendment: T1 also draws the `actions` line's Buttons in `register.tsx`, because the AC1 and AC2 tests mount the pane. T2 keeps the presses and their tests.
+- 2026-10-04: T1 done. `paneLines` takes `ended` and adds `actions` (indent 6, the Next lead's width) with `['clear', 'status']` or `['status']`. `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`. The M218 AC1 test reads the Next line's Buttons alone. The press goes through an inline `onPress` to the top-level `pressClear` or `pressStatus` (LESSONS M191). A planted swap of the Clear and Status order turned both AC2 cases red, and it was restored. Verify: all five exit 0, mod tests 1237.
 
 ## Decisions
 

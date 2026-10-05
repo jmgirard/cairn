@@ -1,6 +1,6 @@
 import type { Span } from './band'
 import type { FlowPhase } from './band'
-import { FLOW_COLORS, flowOf, GRAY } from './band'
+import { FLOW_COLORS, flowOf, GRAY, width } from './band'
 import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
 import { PILL_TEXT } from './track'
 
@@ -31,6 +31,9 @@ import { PILL_TEXT } from './track'
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
 // with the one key `cairn-pane-next` and the next-step press.
+// The `actions` line's `buttons` name the Buttons that register.tsx draws on
+// it, in order (M219). No other line carries them.
+export type PaneButton = 'clear' | 'status'
 export type PaneLine = {
   key: string
   indent: number
@@ -39,6 +42,7 @@ export type PaneLine = {
   tail?: Span[]
   wraps?: true
   action?: string
+  buttons?: PaneButton[]
 }
 
 // The next-step Button's label by the action that scripts/cairn_next.py
@@ -57,6 +61,17 @@ export const NEXT_LABELS: Record<string, string> = {
 export function nextLabel(action: string): string | undefined {
   return Object.prototype.hasOwnProperty.call(NEXT_LABELS, action) ? NEXT_LABELS[action] : undefined
 }
+
+// The Status and Clear Buttons' labels (M212, M216). The band and the
+// pane's `actions` line read these (M219).
+export const STATUS_LABEL = 'Status'
+export const CLEAR_LABEL = 'Clear'
+
+// The Next line's lead, a bold `Next` and two spaces. The `actions` line is
+// indented by its width, so its Buttons sit under the pill (M219).
+const NEXT_LEAD = 'Next'
+const NEXT_GAP = '  '
+const ACTIONS_INDENT = width(NEXT_LEAD) + width(NEXT_GAP)
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -194,8 +209,10 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 
 // The pane's lines from its state and the band's rows, whose counts give
 // each head line its percent. `acts` is true while no cairn skill's step is
-// set, and then the Next line carries its action label (M218).
-export function paneLines(state: PaneState, band: BandRow[] = [], acts = false): PaneLine[] {
+// set, and then the Next line carries its action label (M218) and the
+// `actions` line follows it with the Status Button. `ended` is true after a
+// cairn skill ends, and then the Clear Button comes before Status (M219).
+export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, ended = false): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
@@ -206,7 +223,7 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false):
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
-    const next = line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
+    const next = line('next', 0, [{ text: NEXT_LEAD, bold: true }, { text: NEXT_GAP }], {
       text: ` ${target} `,
       color: PILL_TEXT,
       backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
@@ -217,6 +234,7 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false):
     const label = nextLabel(state.next.action)
     if (acts && label !== undefined) next.action = label
     out.push(next)
+    if (acts) out.push({ ...line('actions', ACTIONS_INDENT, []), buttons: ended ? ['clear', 'status'] : ['status'] })
   }
   if (state.workable.length > 0) {
     out.push(...heading('workable-head', 'Workable', QUEUE_COLOR))
