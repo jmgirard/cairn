@@ -1,6 +1,6 @@
 # M219: Status and Clear buttons in the cairn pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,10 +67,13 @@ cover that path, and review files the gap in the same row.
       the Boxes `next-clear` and `next-status` have `flexShrink` 0, and the
       pill's Box `next-text` keeps `flexShrink` 1 and `minWidth` 0. A mod
       test asserts these props.
-- [ ] AC5: At a live look in the desktop app, in a real cairn repo, one
-      press of the pane's Status Button starts the status skill. After that
-      skill ends, one press of the pane's Clear Button clears the
-      conversation. The operator accepts the look of the Next line.
+- [ ] AC5: At a live look in the desktop app, in a real cairn repo, each
+      press of the pane's Status or Clear Button that reaches the mod runs
+      its command once. A Status press starts the status skill. After that
+      skill ends, a Clear press clears the conversation. A first click that
+      only gives the pane keyboard focus reaches no press, and the row "Mod
+      pane placement (upstream)" holds it. The operator accepts the look of
+      the Next line.
 - [ ] AC6: README.md and `cairn/DESIGN.md` describe the pane's Status and
       Clear Buttons. CHANGELOG.md's unreleased section has an entry for them.
 - [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
@@ -105,18 +108,18 @@ cover that path, and review files the gap in the same row.
       each in a Box keyed `next-<kind>` with `flexShrink` 0 and
       `marginLeft` 1, and drop the `actions` line. Rewrite the M219 AC1 and
       AC2 tests and the M218 AC1 test for it, and add the AC4 test.
-- [ ] T5: Probe the double click: temporary logging to `m219-probe.log` at
+- [x] T5: Probe the double click: temporary logging to `m219-probe.log` at
       the plugin root, of each pane render's `isFocused`, each `ui.press`,
       each press function's checks, and each run. The operator repeats the
       look and the log shows where a first click goes. Where the cause is in
       the mod, fix it. Remove the probe before review.
-- [ ] T6: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
+- [x] T6: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
       comments for the Next-line placement.
-- [ ] T7: Live look (AC5): the operator opens a new Code session in a real
+- [x] T7: Live look (AC5): the operator opens a new Code session in a real
       cairn repo whose state shows a Next line (LESSONS M195, M213). The
       operator opens the pane and presses Status once. After the status
       skill ends, the operator presses Clear once.
-- [ ] T8: Run every `verify` command from the repo root and check each exit
+- [x] T8: Run every `verify` command from the repo root and check each exit
       code.
 
 ## Work log
@@ -151,6 +154,12 @@ cover that path, and review files the gap in the same row.
 - 2026-10-05: re-audit: AC5 (full) — "one press" can bind the desktop host. A click that focuses the pane can redraw it and retire the press handle (`ButtonProps.onPress`: a handle "for the drawing's life"), which the mod cannot change. This is AC5's second line, so its wording goes to the operator once T5's probe shows where the first click goes.
 - 2026-10-05: AC3's wording is unchanged, and the first reader returned nothing on it.
 - 2026-10-05: T4 done. `paneLines` sets `next.buttons`, and `register.tsx` draws `next-clear` and `next-status` after `next-action`. Mod tests 1244, exit 0. T5's probe code is in this commit, marked PROBE, and is removed before review.
+- 2026-10-05: T5 done. At the probe look in bsync (desktop, docked pane 47 columns), each first click logged a render with `focused=true` and no `ui.press`. The second click logged `ui.press` for `cairn-pane-status` and then for `cairn-pane-clear`, and each ran its command once (`run start cairn:milestone #1`, `run start clear #2`). After each run the pane rendered `focused=false`. The cause is the desktop host, so the mod has no fix. The probe code is removed. The log stays local in `m219-probe.log`, excluded from git.
+- 2026-10-05: question set at the probe stop: how AC5 treats the first click. The operator chose to count presses that reach the mod and file the focus-only click upstream. The alternative, refocusing the pane after each press, was declined because it takes the keyboard from the prompt. A host change that raises a press on a focusing click falsifies the choice. The operator also accepted the Next line's look.
+- 2026-10-05: substantive amendment: AC5 is reworded at the operator's choice, so no further re-audit reader runs (its second line exists).
+- 2026-10-05: T7 done: the probe look is the AC5 look. "Mod pane placement (upstream)" gains the first-click item, merged into that row to keep ROADMAP.md under 60 lines. Three rows were trimmed, to 23,998 bytes. An upstream report draft is in `pane-click-issue-draft.md`, local and excluded from git.
+- 2026-10-05: T6 done. README, DESIGN, CHANGELOG, and the `register.tsx` layout comment describe the Next-line placement. README and DESIGN state the focus-only first click. That prose was written against the probe log and the code in this session, after the one claim-audit pass.
+- 2026-10-05: T8 done. Verify: all five exit 0, mod tests 1244. Status set to review.
 
 ## Decisions
 

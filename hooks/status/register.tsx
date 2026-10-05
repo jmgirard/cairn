@@ -169,13 +169,13 @@ export const register: Register = on => {
     // Clear before Status while `ended` is true (M219).
     const acts = knownStep(await read($, step)) === null
     const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended))
-    await probe($, `pane render focused=${e.props.isFocused} cols=${e.props.bodyColumns} acts=${acts} buttons=${JSON.stringify(lines.find(l => l.key === 'next')?.buttons)}`)
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218). A Text drops its
+    // does not shrink, so the pill is cut first (M218), and so do Clear and
+    // Status after it, each in its own such Box (M219). A Text drops its
     // `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
@@ -233,13 +233,6 @@ export const register: Register = on => {
         ))}
       </Box>
     )
-  })
-
-  // PROBE (M219, temporary): each press that reaches the mod, before its
-  // closure runs.
-  on('ui.press', async ($, e, next) => {
-    await probe($, `ui.press element=${e.element} requestId=${e.requestId} component=${e.component} surface=${e.surface}`)
-    return next(e)
   })
 
   // A turn end reads the tracking files again and ends no step (M201). A
@@ -545,21 +538,7 @@ let runs = 0
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
 // planning with no arguments while nothing is workable (M213).
-// PROBE (M219, temporary, removed before review): appends a timestamped line
-// to `m219-probe.log` at the plugin root, to find where a pane press's first
-// click goes at the live look.
-const probeLines: string[] = []
-async function probe($, text: string) {
-  probeLines.push(`${new Date().toISOString()} ${text}`)
-  try {
-    await $.fs.write(`${$.plugin.root}/m219-probe.log`, `${probeLines.join('\n')}\n`)
-  } catch {
-    // No log; the probe says nothing.
-  }
-}
-
 async function pressNext($, drawn: string | undefined) {
-  await probe($, `pressNext drawn=${drawn} running=${running} step=${JSON.stringify(await read($, step))}`)
   if (running || knownStep(await read($, step)) !== null) return
   const next = (await read($, pane)).next
   if (next === null) return
@@ -568,7 +547,6 @@ async function pressNext($, drawn: string | undefined) {
 }
 
 async function pressStatus($) {
-  await probe($, `pressStatus running=${running} step=${JSON.stringify(await read($, step))}`)
   if (running || knownStep(await read($, step)) !== null) return
   await run($, STATUS_COMMAND, '')
 }
@@ -578,7 +556,6 @@ async function pressStatus($) {
 // press of a drawing made before a typed prompt, a skill, or a session end
 // cleared it does nothing (M216 review).
 async function pressClear($) {
-  await probe($, `pressClear running=${running} step=${JSON.stringify(await read($, step))} ended=${await read($, ended)}`)
   if (running || knownStep(await read($, step)) !== null || !(await read($, ended))) return
   await run($, CLEAR_COMMAND, '')
 }
@@ -591,12 +568,9 @@ async function run($, command: string, args: string) {
   running = true
   runs += 1
   const mine = runs
-  await probe($, `run start ${command} ${args} #${mine}`)
   try {
     await $.command.run({ command, args })
-    await probe($, `run settled ${command} #${mine}`)
   } catch (error) {
-    await probe($, `run rejected ${command} #${mine} ${error instanceof Error ? error.message : String(error)}`)
     const text = args === '' ? `/${command}` : `/${command} ${args}`
     try {
       await $.prompt.fill({ text, mode: 'append' })
