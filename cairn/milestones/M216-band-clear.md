@@ -128,6 +128,7 @@ review)".
 - 2026-10-04: the T2 edit to `register.tsx` and some tracking edits went through a python script, not the Edit tool, against the rulebook's file-edit rule. Later edits use Edit.
 - 2026-10-04: T4 done before T3 so the live look sees the finished branch. README (a paragraph after the empty row's buttons), DESIGN (the `hooks/status/` history line and a paragraph after the empty row), and CHANGELOG `## Unreleased` describe the Button. Scripts and hooks suites exit 0, and the hand-run `skills/tests` stays at 665 OK.
 - 2026-10-04: live look (T3): in a new desktop Code session in this repo on m216-band-clear, the operator ran `/cairn:milestone` to its end. Clear showed before the other Buttons, and a press cleared the conversation (operator's answer at the stop chip).
+- 2026-10-04: step-7 approval: m216-band-clear approved for merge
 - 2026-10-04: claim audit: 40 claims read, 9 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx, types/index.d.ts, cairn/DESIGN.md
 - 2026-10-04: the 9 corrections: "goes away when you type a prompt" narrowed to an idle prompt no hook drops; Clear shows on any row with the next-step and Status Buttons, the idle row included; the README no longer says a skill's end means committed work; three comments now say Clear needs the action Buttons and room; DESIGN names a cairn skill's prompt. The same reader re-read all 9 as correct. Verify: all five checks exit 0 (mod tests 1131).
 
