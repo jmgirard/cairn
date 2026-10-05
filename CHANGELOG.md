@@ -4,6 +4,15 @@
 
 ### New
 
+- **Band and pane colors follow your theme.** In the terminal band and the
+  cairn pane, the phase colors are now your Claude Code theme's own colors:
+  `planMode` for plan, `claude` for implement, and `success` for review,
+  with the pill text in `inverseText`. They now change with the theme,
+  where before they were fixed: the light theme changes the plan and
+  review colors, and the colorblind and ANSI themes change all three. The
+  desktop track is an image and cannot read the theme, so it keeps one
+  palette with darker phase colors. Its pill's white label and count now have a contrast of at
+  least 4.5:1 on the pill, the WCAG 2.2 minimum for text.
 - **A Clear button when a cairn skill ends.** After a cairn skill finishes,
   a band row that carries the next-step and `Status` buttons also carries a
   `Clear` button before them, and a press runs `/clear`. The button goes away when you send a prompt while Claude is

@@ -1440,6 +1440,8 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # against, hence `exempt`.
     # M189 adds the Opus 5.5 prompting guide: full page read directly from
     # the shelf copy, dated verification claim, hence `ok`.
+    # M217 adds the WCAG 2.2 note: its three definitions read directly from
+    # the W3C Recommendation, dated verification claim, hence `ok`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1468,6 +1470,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "spec-kit.md": "ok",
         "task-master.md": "ok",
         "wait-mechanisms.md": "exempt",
+        "wcag22.md": "ok",
     }
 
     def test_every_shipped_page_keeps_its_pinned_state(self):

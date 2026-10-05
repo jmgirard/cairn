@@ -1,4 +1,5 @@
 import type { Flow, Span } from './band'
+import type { FlowPhase } from './band'
 import { FLOW_COLORS, FLOW_PHASES } from './band'
 
 // The flow track (M204, M206), the band's one progress form. On the
@@ -6,8 +7,8 @@ import { FLOW_COLORS, FLOW_PHASES } from './band'
 // plan, implement, and review. register.tsx draws it as the desktop's `Svg`
 // element, an image, so it cannot read the app's theme keys. In a
 // browser-pane preview, a `prefers-color-scheme` rule inside such an image
-// followed the browser's setting, not the page's (M204). The track uses one
-// set of translucent grays meant for a light and a dark ground instead.
+// followed the browser's setting, not the page's (M204). The track draws
+// from one palette meant for a light and a dark ground instead (M217).
 //
 // Back to front: the ground; a field of 2-pixel specks from the left edge
 // to the head (the active phase's fill edge), sparse at the left and dense
@@ -26,8 +27,8 @@ import { FLOW_COLORS, FLOW_PHASES } from './band'
 //
 // In the terminal the track is a run of braille cells on the theme's
 // `userMessageBackground` ground, with the same specks as dots and the pill
-// as white text on the phase color (`brailleSpans`, M206, the operator's
-// pick from five terminal looks).
+// as `inverseText` text on the phase's theme key (`brailleSpans`, M206, the
+// operator's pick from five terminal looks, in theme keys since M217).
 
 export const TRACK_PX = 360
 export const TRACK_H = 18
@@ -36,9 +37,24 @@ const CELL = 2
 const ROWS = TRACK_H / CELL
 // The least spacing of item ticks, in pixels.
 export const SPACING = 6
+// palette
+// The desktop track's colors, the only raw colors the mod draws (M217). The
+// image cannot read theme keys, so the ground, the gray specks, and the
+// marks are translucent grays for a light or a dark ground. The phase fills
+// keep the M204 hues, darker, so the pill's white label and its count at
+// COUNT_OPACITY reach the WCAG 2.2 text contrast of 4.5:1 on the fill
+// whatever the app's ground (the band tests compute it).
 const GROUND = 'rgba(128,128,128,0.16)'
-export const GRAY = 'rgb(160,160,160)'
+const GRAY = 'rgb(160,160,160)'
 const MARK = 'rgb(200,200,200)'
+const PHASE_FILLS: Record<FlowPhase, string> = {
+  plan: 'rgb(71,103,158)',
+  implement: 'rgb(152,85,57)',
+  review: 'rgb(68,113,81)',
+}
+const PILL_LABEL = 'rgb(255,255,255)'
+// palette end
+const COUNT_OPACITY = 0.85
 // A speck's strength, by one of three levels.
 const LEVELS = [0.4, 0.65, 0.95]
 const PILL_H = TRACK_H - 2
@@ -128,7 +144,7 @@ export function pillBox(flow: Flow, width = TRACK_PX): { x: number; width: numbe
   return { x, width: w }
 }
 
-// The specks, one path per color and level.
+// The specks, one path per color and level, in the desktop palette.
 function specks(flow: Flow, width: number): string {
   const head = headOf(flow, width)
   const paths = new Map<string, string[]>()
@@ -150,7 +166,7 @@ function specks(flow: Flow, width: number): string {
   return [...paths.entries()]
     .map(([key, cells]) => {
       const [color, level] = key.split(':')
-      const fill = color === 'gray' ? GRAY : FLOW_COLORS[flow.phase]
+      const fill = color === 'gray' ? GRAY : PHASE_FILLS[flow.phase]
       return `<path class="specks" data-color="${color}" d="${cells.join('')}" fill="${fill}" fill-opacity="${LEVELS[Number(level)]}"/>`
     })
     .join('')
@@ -170,29 +186,32 @@ export function trackSvg(flow: Flow, width = TRACK_PX): string {
     .join('')
   const [label, count] = pillParts(pillText(flow, width))
   const pill = pillBox(flow, width)
-  const countSpan = count === '' ? '' : `<tspan dx="${COUNT_GAP}" fill-opacity="0.72" font-weight="500">${escape(count)}</tspan>`
+  const countSpan = count === '' ? '' : `<tspan dx="${COUNT_GAP}" fill-opacity="${COUNT_OPACITY}" font-weight="500">${escape(count)}</tspan>`
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" width="${n(width)}" height="${TRACK_H}" viewBox="0 0 ${n(width)} ${TRACK_H}">` +
     `<defs><clipPath id="track"><rect width="${n(width)}" height="${TRACK_H}" rx="${TRACK_H / 2}"/></clipPath></defs>` +
     `<g clip-path="url(#track)"><rect class="ground" width="${n(width)}" height="${TRACK_H}" fill="${GROUND}"/>` +
     `${specks(flow, width)}${ticks}${marks}</g>` +
-    `<rect class="pill" x="${n(pill.x)}" y="1" width="${n(pill.width)}" height="${PILL_H}" rx="${PILL_H / 2}" fill="${FLOW_COLORS[flow.phase]}"/>` +
+    `<rect class="pill" x="${n(pill.x)}" y="1" width="${n(pill.width)}" height="${PILL_H}" rx="${PILL_H / 2}" fill="${PHASE_FILLS[flow.phase]}"/>` +
     // `textLength` holds the text to the estimated width, so a wider
     // fallback font squeezes the text rather than running past the pill.
-    `<text class="pill-text" x="${n(pill.x + PILL_PAD / 2)}" y="${TRACK_H / 2}" textLength="${n(pill.width - PILL_PAD)}" lengthAdjust="spacingAndGlyphs" dominant-baseline="central" font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="#fff">` +
+    `<text class="pill-text" x="${n(pill.x + PILL_PAD / 2)}" y="${TRACK_H / 2}" textLength="${n(pill.width - PILL_PAD)}" lengthAdjust="spacingAndGlyphs" dominant-baseline="central" font-family="-apple-system,system-ui,sans-serif" font-size="10.5" fill="${PILL_LABEL}">` +
     `<tspan font-weight="650">${escape(label)}</tspan>${countSpan}</text>` +
     `</svg>`
   )
 }
 
-// The terminal track's ground, its blank cell, its mark at each third, and
-// the pill's text color.
+// The terminal track's ground and the pill's text color as theme keys, and
+// its blank cell and its mark at each third as braille characters, the
+// mark drawn in `MARK_KEY` and the specks in the phase's key or
+// `SPECK_KEY`. The pill's text is `inverseText` on the phase's key (M217):
+// white in the light themes, black in the dark.
 export const BRAILLE_GROUND = 'userMessageBackground'
 export const BRAILLE_BLANK = '⠀'
 export const BRAILLE_MARK = '⡇'
 const MARK_KEY = 'subtle'
 const SPECK_KEY = 'inactive'
-export const PILL_TEXT = 'rgb(255,255,255)'
+export const PILL_TEXT = 'inverseText'
 // The eight dots of a braille cell, as bits of its code point.
 const DOTS = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80]
 

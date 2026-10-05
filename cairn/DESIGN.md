@@ -196,9 +196,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   wide. In the terminal `brailleSpans` in `track.ts` draws it as braille
   cells on the theme key `userMessageBackground`: dots in `inactive` or the
   phase's color, denser toward the fill edge, the last speck before the
-  pill in the phase's color, the pill in white bold on the phase's color,
-  and a `subtle` mark at each third past the fill edge. The operator picked
-  the shorter image track and the braille look from browser prototypes
+  pill in the phase's color, the pill in bold `inverseText` on the phase's
+  color, and a `subtle` mark at each third past the fill edge. The phase
+  colors are theme keys (`FLOW_COLORS` in `band.ts`, M217): `planMode` for
+  plan, `claude` for implement, and `success` for review, so they change
+  with the theme: the light theme changes plan and review, and the
+  colorblind and ANSI themes change all three. M198 found the dim `claude`
+  drew brown on the desktop dark theme, so the keys draw at full strength.
+  The operator picked the shorter image track and the braille look from browser prototypes
   (M206).
   `track.ts` builds the SVG in the look the operator chose at the M204 live
   look: a translucent gray ground, 2-pixel specks from the left edge to the
@@ -208,8 +213,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   in the phase's color with its right edge 6 past the fill edge, clamped 1
   inside the track. An image cannot read the app's theme keys, and in a
   browser-pane preview such an image's `prefers-color-scheme` rule followed
-  the browser, not the page, so the track uses one set of translucent grays
-  and no such rule. The track's `alt` opens with the phase, and a milestone
+  the browser, not the page, so the track draws from one palette and no
+  such rule. The palette, between `// palette` comments in `track.ts`
+  (M217), holds the mod's only raw colors: translucent grays, and the
+  `PHASE_FILLS` that keep the M204 hues, darker, so the pill's white label
+  and its count at 0.85 opacity reach WCAG 2.2's 4.5:1 text contrast on the
+  fill (`references/wcag22.md`), which a band test computes from the built
+  SVG. The track's `alt` opens with the phase, and a milestone
   row's alt also names the counts and the percent.
   `band.ts` builds the row and `register.tsx` draws it. `reader.ts`
   mirrors the Python ROADMAP and section helpers and
@@ -256,7 +266,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   counts, and the Next command in a pill. At the live look the operator
   asked for the phase colors (`FLOW_COLORS`): a milestone's `▎` marks and
   `■` squares take its phase's color, the queue's `▎` marks take plan's
-  blue, and the pill takes the color of the phase its command runs.
+  color, and the pill takes the color of the phase its command runs, with
+  `inverseText` text. All are the theme keys of `FLOW_COLORS` (M217), and a
+  high-priority candidate's `↑` takes the implement key.
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),

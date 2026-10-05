@@ -91,12 +91,11 @@ boxes of `## Tasks`, and it is full on a `review` row. Review fills by the
 checked boxes of `## Acceptance criteria`. Specks fill the track from its
 left end to the edge of the current phase's fill. They start sparse and
 gray, and they grow dense near the edge, where more of them take the
-phase's color: `rgb(110,140,190)` blue for plan, `rgb(194,122,92)` orange
-for implement, and `rgb(106,165,122)` green for review. These colors are
-fixed and do not follow your theme. A pill on that edge names the phase
-and its counts, such as `Implement 1/3` or `Review 1/2`, in the phase's
-color. A section with no boxes shows `no tasks` or `no criteria` in the
-pill. The percent of the whole flow follows the track. Each part counts
+phase's color: blue or teal for plan, orange for implement, and green for
+review (blue in the colorblind themes). A pill on that edge names the
+phase and its counts, such as `Implement 1/3` or `Review 1/2`, in the
+phase's color. A section with no boxes shows `no tasks` or `no criteria`
+in the pill. The percent of the whole flow follows the track. Each part counts
 for a third, and the percent rounds down. So it reads 100% only on a
 `review` row whose criteria are all checked, and a `review` row with no
 criteria reads 66%.
@@ -105,11 +104,18 @@ In the desktop app, and on any other surface that can draw an image, the
 track is an image. Two thin marks divide the three
 parts. In the current part, a tick marks each item edge past the fill when
 the items are 6 pixels apart or more. The image cannot follow your theme's
-colors, so it draws in translucent grays meant for a light or a dark
-background. In the terminal the track is a run of braille characters on
-your theme's `userMessageBackground` color. Its dots are the specks, a dim
-mark divides the parts past the fill, and the pill is white text on the
-phase's color.
+colors, so it draws from one fixed palette meant for a light or a dark
+background: translucent grays, and the phase colors `rgb(71,103,158)` blue,
+`rgb(152,85,57)` orange, and `rgb(68,113,81)` green. The pill's white text
+has a contrast of at least 4.5:1 on its color, the WCAG 2.2 minimum for
+text, whatever the background. In the terminal the track is a run of
+braille characters on your theme's `userMessageBackground` color. Its dots
+are the specks, a dim mark divides the parts past the fill, and the pill is
+bold text in your theme's `inverseText` color on the phase's color. There
+the phase colors are your Claude Code theme's own keys: `planMode` (teal)
+for plan, `claude` (orange) for implement, and `success` (green) for
+review. The colorblind themes draw `success` in blue, and the ANSI themes
+use your terminal's own colors.
 
 The desktop app draws the track at 7 pixels a column, up to 52 columns and
 at most 360 pixels. The terminal draws it at most 52 characters wide. In a narrower window the track gets shorter, so that the
@@ -248,9 +254,11 @@ ends in `…`, and the goal wraps. Each section starts after a blank row
 with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
 headings show their count and eight squares, `■` for the checked share
 and `□` for the rest. The next command sits in a pill. The `▎` and `■`
-marks of a milestone draw in its phase's color, orange for implement and
-green for review. The `▎` marks of the queue draw in the plan blue, and
-the pill draws in the color of the phase that its command runs. The
+marks of a milestone draw in its phase's color, the theme's `claude`
+orange for implement and `success` green for review. The `▎` marks of the
+queue draw in the plan color, `planMode`, and the pill draws in the color
+of the phase that its command runs, with `inverseText` text. A
+high-priority candidate's `↑` draws in the implement color. The
 percent counts boxes as the band does, so a box inside an HTML
 comment counts there but not in the `TASKS` and `CRITERIA` counts, and
 the two can differ. A missing or unreadable
