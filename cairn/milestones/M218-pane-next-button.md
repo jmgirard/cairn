@@ -1,6 +1,6 @@
 # M218: A Next button in the cairn pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -95,10 +95,10 @@ idle, because `$.command.run` queues.
       `pressNext($, label)`.
 - [x] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
       comments of `pane.ts` and `register.tsx`.
-- [ ] T4: Live look (AC5): the operator opens a new Code session in a real
+- [x] T4: Live look (AC5): the operator opens a new Code session in a real
       cairn repo whose state shows a Next line (LESSONS M195, M213), opens
       the pane, and presses the Button.
-- [ ] T5: Run every `verify` command from the repo root and check each exit
+- [x] T5: Run every `verify` command from the repo root and check each exit
       code.
 
 ## Work log
@@ -116,6 +116,9 @@ idle, because `$.command.run` queues.
 - 2026-10-04: T1+T2 landed in one commit, the code written before its tests in one pass (a deviation from tests-first). `NEXT_LABELS` and `PLAN_LABEL` moved to `pane.ts`. `paneLines` takes an `acts` flag, and `register.tsx` passes true while `knownStep` reads no step. The Button sits in a `next-action` Box with `marginLeft` 1 rather than a space Text, so the Next line's text stays as the M205 AC3 test reads it. Mod tests went from 1136+ to 1193, all 5 verify commands exit 0.
 - 2026-10-04: correction to the T1+T2 line: "1136+" was not measured. The suite now runs 1193 tests. A planted-defect run (the Button ignoring the step, its Box with `flexShrink` 1) failed exactly the 4 AC2 and AC4 cases, 1189 pass, and the files were restored with `git checkout`.
 - 2026-10-04: T3: README's pane section, DESIGN's status-mod entry and history list, a CHANGELOG entry, and the `register.tsx` header comment describe the Button (the `pane.ts` header changed at T1).
+- 2026-10-04: T4 live look: in a new Code session in bsync (nothing workable), the operator pressed the pane's `Plan` Button, the planning command started, and the operator accepted the Next line's look.
+- 2026-10-04: claim audit: 30 claims read, 1 corrected — hooks/status/register.tsx (the header comment called the pane's Button the band's own; it now says the pane's Button shares the band's label and press).
+- 2026-10-04: the claim reader re-read the corrected comment once and found it true. T5: all 5 verify commands exit 0 (mod tests 1193 pass, 0 fail). Status set to review.
 
 ## Decisions
 
