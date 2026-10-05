@@ -142,6 +142,7 @@ rows.
 - 2026-10-04: T7 live look (the granted stop): the operator looked at the band and pane in a new Code session with the app in light and dark appearance and in a terminal in a light and a colorblind theme, and chose "Accept the colors" at the chip.
 - 2026-10-04: T8: all five verify commands exit 0 from the repo root: scripts 397 tests OK (21 skipped), hooks 174 OK, both validates pass, mod tests 1137 pass.
 - 2026-10-04: claim audit: 40 claims read, 2 corrected — hooks/status/track.ts, hooks/status/band.ts, CHANGELOG.md (the terminal-track constants comment called braille characters theme keys; "the light theme recolors them" was false for `claude`, which light keeps at rgb(215,119,87); DESIGN.md got the same fix). The re-read cleared band.ts and CHANGELOG and refined the track comment's speck wording, applied as given. Mod tests 1137 pass after the comment edits.
+- 2026-10-04: step-7 approval: m217-theme-colors approved for merge
 
 ## Decisions
 
