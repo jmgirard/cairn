@@ -87,7 +87,7 @@ cover that path, and review files the gap in the same row.
       While `acts` is true, add the `actions` line after `next`. It carries
       the Buttons to draw, in order. Move `STATUS_LABEL` and `CLEAR_LABEL`
       beside `NEXT_LABELS`, so the band and pane read one place.
-- [ ] T2: Write the AC3 tests first, with the press pattern of the M218 AC3
+- [x] T2: Write the AC3 tests first, with the press pattern of the M218 AC3
       tests (`copy.runHold`, `copy.commands`). In the pane's `ui.render` hook
       (`register.tsx:155-213`), read `ended`. Draw each Button of the
       `actions` line in a Box with `flexShrink` 0. Its `onPress` is
@@ -116,6 +116,7 @@ cover that path, and review files the gap in the same row.
 - 2026-10-04: implement started on branch m219-pane-status-clear. The untracked `cairn-probe.log` and `tsconfig.json` predate the milestone and stay unstaged.
 - 2026-10-04: minor amendment: T1 also draws the `actions` line's Buttons in `register.tsx`, because the AC1 and AC2 tests mount the pane. T2 keeps the presses and their tests.
 - 2026-10-04: T1 done. `paneLines` takes `ended` and adds `actions` (indent 6, the Next lead's width) with `['clear', 'status']` or `['status']`. `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`. The M218 AC1 test reads the Next line's Buttons alone. The press goes through an inline `onPress` to the top-level `pressClear` or `pressStatus` (LESSONS M191). A planted swap of the Clear and Status order turned both AC2 cases red, and it was restored. Verify: all five exit 0, mod tests 1237.
+- 2026-10-04: T2 done. Six AC3 tests press Status, Clear after a Stop, and Status during a held Next run, on both surfaces. Planted swapped presses turned the 4 press cases red. A `pressStatus` with no `running` check turned the 2 held-run cases red. Both were restored. Verify: all five exit 0, mod tests 1243.
 
 ## Decisions
 

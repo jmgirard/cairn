@@ -929,6 +929,53 @@ describe('a running skill hides the actions line, and its end adds Clear (M219 A
   }
 })
 
+describe('a press of Status or Clear runs its command (M219 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`Status runs the status skill (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      await ui.press({ key: PANE_STATUS })
+      expect(copy.commands).toEqual([STATUS_RUN])
+      await ui.unmount()
+    })
+
+    test(`Clear, drawn after a Stop ends a step, runs clear (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await endSkill($)
+      const ui = await mountPane($, surface)
+      await ui.press({ key: PANE_CLEAR })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await ui.unmount()
+    })
+
+    test(`a Status press while a Next run is held runs nothing (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const first = ui.press({ key: PANE_NEXT })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+        await ui.press({ key: PANE_STATUS })
+        expect(copy.commands).toEqual([runOf('single-in-progress')])
+      } finally {
+        release()
+        await first
+      }
+      await ui.unmount()
+    })
+  }
+})
+
 // M002's task T2 is open in the fixture, and each case ticks it before the
 // event, so the drawing after the event shows it checked.
 const M002 = '/cairn/milestones/M002-export.md'
