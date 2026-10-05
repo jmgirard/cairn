@@ -138,5 +138,6 @@ rows.
 - 2026-10-04: T5: `cairn/references/wcag22.md` written from the W3C Recommendation of 2024-12-12, read by curl at `#contrast-minimum`, `#dfn-contrast-ratio`, `#dfn-relative-luminance`; INDEX line added; cairn_validate green.
 - 2026-10-04: T6: README (band and pane color paragraphs), DESIGN (terminal track, desktop palette, pane colors), and a CHANGELOG Unreleased New entry, written against track.ts, band.ts, pane.ts and the theme tables read from Claude Code 2.1.287 this session. AC5's grep prints nothing.
 - 2026-10-04: the T6 commit (1a5e707) went in with the scripts suite red: `TestShippedPageStateLedger` pins every references page and lacked `wcag22.md` since T5. Fixed by pinning it as `ok` (dated direct-read claim) with its justification comment; scripts suite exit 0.
+- 2026-10-04: T7 preview: the desktop track for plan, implement, and review, before (M204 colors, count 0.72) and after (M217 palette), drawn by `trackSvg` on the app's light grounds rgb(250,249,245) and white and dark grounds rgb(38,38,36) and rgb(48,48,46), in the browser pane from the scratchpad. The after pills keep their hues, draw darker, and their label and count read on every ground; the dark-ground pills stand out less than before. Live look next.
 
 ## Decisions
