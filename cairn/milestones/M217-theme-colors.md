@@ -1,13 +1,13 @@
 # M217: Band and pane colors that follow the theme
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the status band and the cairn pane ship to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m217-theme-colors
 
 ## Goal
 
@@ -82,7 +82,7 @@ rows.
 
 ## Tasks
 
-- [ ] T1: In `band.ts`, `FLOW_COLORS` (band.ts:127) takes theme keys:
+- [x] T1: In `band.ts`, `FLOW_COLORS` (band.ts:127) takes theme keys:
       `planMode` for plan, `claude` for implement, `success` for review.
       Remove `ORANGE`, `GREEN`, and `BLUE` (band.ts:23-26). The terminal
       pill's text (`PILL_TEXT`, track.ts:195, :227) takes `inverseText`. The
@@ -92,14 +92,14 @@ rows.
       spans carry its key over the existing fixtures. The SVG draws its fills
       from `FLOW_COLORS` today (track.ts:153, :179), so T1 and T2 land in one
       commit.
-- [ ] T2: In `track.ts`, gather every raw color the SVG draws into one
+- [x] T2: In `track.ts`, gather every raw color the SVG draws into one
       palette block, marked by `// palette` start and end comments, that only
       the SVG reads. These are `GROUND`, `GRAY`, `MARK` (track.ts:39-41), the
       phase fills of the specks and the pill (track.ts:153, :179), and the
       pill text and count (`#fff`, track.ts:182).
       Choose phase fills near the old hues and dark enough that the white
       label and count reach 4.5:1 on them.
-- [ ] T3: Add the contrast test to the mod tests. Write a WCAG
+- [x] T3: Add the contrast test to the mod tests. Write a WCAG
       relative-luminance and contrast-ratio helper, and check it first
       against the definition's endpoints: 21:1 for black on white, 1:1 for a
       color on itself. Then, for each phase, parse the pill's fill and its
@@ -131,5 +131,7 @@ rows.
 - 2026-10-04: plan gate chose `planMode` for plan over the `suggestion` or `permission` blue (M204's hue), because the colorblind themes draw `success` in a near blue. Falsified by the operator rejecting the teal at the live look.
 - 2026-10-04: plan gate chose one desktop palette whose white pill text reaches 4.5:1 on the fill over a palette per app theme, because the image gets no theme signal and text on the fill does not depend on the ground. Falsified by the mod API gaining a light or dark signal.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader): 11 findings, all taken toward the narrower promise. The Goal narrowed to "wherever the surface can read it". AC1 names both pills and pins `↑` to the implement key. AC2 takes 3 to 8 digit hex and is bounded by `// palette` comments. AC3 requires an opaque fill and checks the count only where drawn, since the plan pill has none. AC5 dropped `do not follow your theme`. T1 and T2 land together, T1 rewrites the pane.ts:182 comment, and T2 names the specks and `#fff`.
+- 2026-10-04: implement started on branch m217-theme-colors. The untracked `cairn-probe.log` and `tsconfig.json` from earlier sessions stay unstaged.
+- 2026-10-04: T1-T3: `FLOW_COLORS` is `planMode`/`claude`/`success`, the terminal pill text `inverseText`, the pane `↑` the implement key. `track.ts` holds the desktop palette between `// palette` comments: fills rgb(71,103,158), rgb(152,85,57), rgb(68,113,81), white label, count opacity raised from 0.72 to 0.85 so the count also reaches 4.5:1 (label about 5.6:1, count about 4.6:1, from the scratchpad computation). The band and pane tests carry the keys and fills by hand; the new AC3 test computes the WCAG ratio from the built SVG per phase. Mod tests 1133 to 1137, all five verify commands exit 0.
 
 ## Decisions

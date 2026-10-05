@@ -20,10 +20,6 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 export type Span = { text: string; color?: string; backgroundColor?: string; bold?: boolean }
 
 export const GRAY = 'inactive'
-export const ORANGE = 'rgb(194,122,92)'
-export const GREEN = 'rgb(106,165,122)'
-// The plan phase's hue in the track (M204).
-export const BLUE = 'rgb(110,140,190)'
 
 // The track and the columns it takes: an image of about PX_PER_COLUMN
 // pixels a column on the desktop, one braille cell a column in the
@@ -124,7 +120,11 @@ export function phaseOf(row: BandRow): Phase {
 // implement, then review. track.ts draws it; the model is here.
 export type FlowPhase = 'plan' | 'implement' | 'review'
 export const FLOW_PHASES: readonly FlowPhase[] = ['plan', 'implement', 'review']
-export const FLOW_COLORS: Record<FlowPhase, string> = { plan: BLUE, implement: ORANGE, review: GREEN }
+// Each phase's color as a Claude Code theme key (M217), so the light,
+// colorblind, and ANSI themes recolor it: `planMode` for plan, `claude` for
+// implement, and `success` for review. The desktop track is an image and
+// cannot read theme keys, so it draws from its own palette (track.ts).
+export const FLOW_COLORS: Record<FlowPhase, string> = { plan: 'planMode', implement: 'claude', review: 'success' }
 
 // A segment's fill as a whole-number fraction, so the percent needs no
 // floating point.

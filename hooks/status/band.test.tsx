@@ -20,16 +20,24 @@ import { brailleSpans, trackSvg } from './track'
 // desktop and braille cells in the terminal (M206), so the row suites run
 // on both.
 const SURFACES = ['terminal', 'desktop'] as const
-// The implement, review, and plan hues, written out by hand (M198, M204).
-const ORANGE = 'rgb(194,122,92)'
-const GREEN = 'rgb(106,165,122)'
-const BLUE = 'rgb(110,140,190)'
+// The desktop track's implement, review, and plan fills, written out by
+// hand (M217).
+const ORANGE = 'rgb(152,85,57)'
+const GREEN = 'rgb(68,113,81)'
+const BLUE = 'rgb(71,103,158)'
+// The terminal's theme keys for implement, review, and plan, written out by
+// hand (M217).
+const IMPLEMENT_KEY = 'claude'
+const REVIEW_KEY = 'success'
+const PLAN_KEY = 'planMode'
+// Each phase's theme key, by the track's segment index.
+const PHASE_KEYS = [PLAN_KEY, IMPLEMENT_KEY, REVIEW_KEY]
 // The terminal track's ground and the pill's text color, written out by
-// hand (M206).
+// hand (M206, M217).
 const GROUND = 'userMessageBackground'
-const WHITE = 'rgb(255,255,255)'
-// Each status's hue in the track.
-const HUE: Record<string, string> = { 'in-progress': ORANGE, review: GREEN }
+const PILL_TEXT_KEY = 'inverseText'
+// Each status's theme key in the terminal track.
+const HUE: Record<string, string> = { 'in-progress': IMPLEMENT_KEY, review: REVIEW_KEY }
 const GRAY = 'inactive'
 const WARNINGS = ['no milestone file', 'no file']
 const BAND = {
@@ -632,7 +640,7 @@ function trackProblems(spans: Span[], status: string, checked: number, total: nu
     if (span.backgroundColor !== GROUND) out.push(`ground ${span.backgroundColor}`)
     if (![...span.text].every(isBraille)) out.push(`not braille: ${span.text}`)
   }
-  if (pill.color !== WHITE || pill.bold !== true) out.push(`pill style ${pill.color} ${pill.bold}`)
+  if (pill.color !== PILL_TEXT_KEY || pill.bold !== true) out.push(`pill style ${pill.color} ${pill.bold}`)
   const shown = pill.text.trim()
   const noun = status === 'in-progress' ? 'tasks' : 'criteria'
   const name = status === 'in-progress' ? 'Implement' : 'Review'
@@ -2030,7 +2038,8 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
           } else {
             expect(parts.every(p => p.type === 'Text')).toBe(true)
             const spans = parts.map(spanOf)
-            const pill = spans.filter(s => s.backgroundColor === BLUE)
+            const pill = spans.filter(s => s.backgroundColor === PLAN_KEY)
+            expect(pill.map(s => [s.color, s.bold])).toEqual([[PILL_TEXT_KEY, true]])
             expect(pill.map(s => s.text.trim())).toEqual(['Planned'])
             for (const span of spans) if (span !== pill[0]) expect([span.text, span.backgroundColor]).toEqual([span.text, GROUND])
             expect(spans.reduce((n, s) => n + cols(s.text), 0)).toBe(52)
@@ -2788,7 +2797,8 @@ describe('the desktop draws the track as an Svg, and the terminal as braille (M2
         // The terminal's track: braille cells on the ground, and the pill in
         // the phase's hue.
         const cells = trackParts(layout(await firstRow(terminal)).right).map(spanOf)
-        const pills = cells.filter(s => s.backgroundColor === want.color)
+        const pills = cells.filter(s => s.backgroundColor === PHASE_KEYS[want.index])
+        expect(pills.map(s => s.color)).toEqual([PILL_TEXT_KEY])
         // A pill that takes more than a third of the 52 cells shows its
         // short text.
         expect(pills.map(s => s.text.trim())).toEqual([cols(` ${want.pill} `) * 3 <= 52 ? want.pill : want.short])
@@ -2825,6 +2835,59 @@ describe('the desktop draws the track as an Svg, and the terminal as braille (M2
     const want = expectedFlow('no-active', null) as Expected
     checkSource(trackSvg(idleFlow(), 84), want, 84, 'Planned')
   })
+})
+
+// The WCAG 2.2 contrast ratio (cairn/references/wcag22.md): each sRGB
+// channel linearized, the relative luminance 0.2126 R + 0.7152 G + 0.0722 B,
+// and the ratio (L1 + 0.05) / (L2 + 0.05), the lighter over the darker.
+type Rgb = [number, number, number]
+function rgbOf(color: string): Rgb {
+  const match = /^rgb\((\d+),(\d+),(\d+)\)$/.exec(color)
+  if (match === null) throw new Error(`not an opaque rgb() color: ${color}`)
+  return [Number(match[1]), Number(match[2]), Number(match[3])]
+}
+function luminance([r, g, b]: Rgb): number {
+  const lin = (c: number) => (c / 255 <= 0.04045 ? c / 255 / 12.92 : Math.pow((c / 255 + 0.055) / 1.055, 2.4))
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+}
+function contrast(a: Rgb, b: Rgb): number {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+  return (hi + 0.05) / (lo + 0.05)
+}
+// A color at `alpha` over an opaque ground.
+const over = (fg: Rgb, alpha: number, ground: Rgb): Rgb => fg.map((c, i) => alpha * c + (1 - alpha) * ground[i]) as Rgb
+
+describe('the desktop pill text reads on its fill (M217 AC3)', () => {
+  test('the contrast helper gives the definition endpoints', () => {
+    expect(Math.abs(contrast([0, 0, 0], [255, 255, 255]) - 21)).toBeLessThan(1e-9)
+    expect(contrast([152, 85, 57], [152, 85, 57])).toBe(1)
+  })
+  // One flow per phase: the idle plan pill (no count), and an implement and
+  // a review pill with counts.
+  const PHASE_FLOWS: { phase: string; flow: Flow; counted: boolean }[] = [
+    { phase: 'plan', flow: idleFlow(), counted: false },
+    { phase: 'implement', flow: flowOf(built('M900', 'Built', 'in-progress', 3, 7)) as Flow, counted: true },
+    { phase: 'review', flow: flowOf(built('M900', 'Built', 'review', 2, 5)) as Flow, counted: true },
+  ]
+  for (const { phase, flow, counted } of PHASE_FLOWS) {
+    test(`the ${phase} pill`, () => {
+      const source = trackSvg(flow)
+      const rect = /<rect class="pill"[^>]*>/.exec(source)?.[0] ?? ''
+      // The fill is opaque: no opacity on the pill.
+      expect(rect).not.toMatch(/opacity/)
+      const fill = rgbOf(/ fill="([^"]+)"/.exec(rect)?.[1] ?? '')
+      const text = /<text class="pill-text"[^>]*fill="([^"]+)"[^>]*>(.*?)<\/text>/.exec(source) as RegExpExecArray
+      const label = rgbOf(text[1])
+      expect([phase, contrast(label, fill) >= 4.5]).toEqual([phase, true])
+      const spans = [...text[2].matchAll(/<tspan([^>]*)>([^<]*)<\/tspan>/g)]
+      expect(spans.length).toBe(counted ? 2 : 1)
+      for (const [, attrs] of spans) {
+        // A tspan's own fill-opacity composites the label color over the fill.
+        const opacity = Number(/fill-opacity="([\d.]+)"/.exec(attrs)?.[1] ?? 1)
+        expect([phase, attrs, contrast(over(label, opacity, fill), fill) >= 4.5]).toEqual([phase, attrs, true])
+      }
+    })
+  }
 })
 
 // The command and argument a press of the next-step Button runs, read from

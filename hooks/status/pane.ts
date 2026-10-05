@@ -1,6 +1,6 @@
 import type { Span } from './band'
 import type { FlowPhase } from './band'
-import { FLOW_COLORS, flowOf, GRAY, ORANGE } from './band'
+import { FLOW_COLORS, flowOf, GRAY } from './band'
 import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
 import { PILL_TEXT } from './track'
 
@@ -23,7 +23,7 @@ import { PILL_TEXT } from './track'
 // percent alone on the head line, with no track. At the live look the
 // operator asked for the phase colors: a milestone's marks and meters take
 // its phase's color, the queue's take plan's, and the pill takes the color
-// of the phase its command runs.
+// of the phase its command runs. The colors are theme keys (M217).
 
 export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; tail?: Span[]; wraps?: true }
 
@@ -34,7 +34,7 @@ export const CHECKED_MARK = '✓'
 export const OPEN_MARK = '○'
 // A candidate row's mark for each priority (M207).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
-  high: { text: '↑', color: ORANGE, bold: true },
+  high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
   normal: { text: '·' },
   low: { text: '↓', color: GRAY },
 }
@@ -179,7 +179,8 @@ export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
         text: ` ${target} `,
         color: PILL_TEXT,
         backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
-        // Bold, as the band's pill is, since white on these colors is 2.9:1 to 3.4:1.
+        // Bold, as the band's pill is. The text and fill are the theme's own
+        // keys (M217), so their contrast is the theme's.
         bold: true,
       }),
     )
