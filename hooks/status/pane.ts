@@ -27,7 +27,7 @@ import { PILL_TEXT } from './track'
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the pill, which register.tsx draws as a Button
 // (M218). An `actions` line under it carries Status, and Clear before it
-// after a cairn skill ends, which register.tsx draws as Buttons (M219).
+// while `ended` is true, which register.tsx draws as Buttons (M219).
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
@@ -211,8 +211,10 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // The pane's lines from its state and the band's rows, whose counts give
 // each head line its percent. `acts` is true while no cairn skill's step is
 // set, and then the Next line carries its action label (M218) and the
-// `actions` line follows it with the Status Button. `ended` is true after a
-// cairn skill ends, and then the Clear Button comes before Status (M219).
+// `actions` line follows it with the Status Button. `ended` is true from a
+// Stop that ends a cairn skill's step until the next idle typed prompt,
+// cairn skill prompt, or session end, and then the Clear Button comes
+// before Status (M219).
 export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, ended = false): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []

@@ -902,7 +902,7 @@ describe('the actions line carries the Status Button (M219 AC1)', () => {
     const actions = lines.find(line => line.key === 'actions')
     expect(actions?.indent).toBe((next?.lead ?? []).map(span => width(span.text)).reduce((a, b) => a + b, 0))
     expect(actions?.indent).toBe(6)
-    // With no step check, no actions line.
+    // With `acts` false (a cairn skill's step set), no actions line.
     expect(layout({ found: true, milestones: [], next: state.next as PaneState['next'], workable: [], waiting: [], candidates: [] }, [], false).map(l => l.key)).not.toContain('actions')
   })
 })

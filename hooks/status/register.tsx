@@ -166,7 +166,7 @@ export const register: Register = on => {
     // turn outside a cairn skill, and a press then waits for the session to
     // be idle, as `$.command.run` queues.
     // The `actions` line under it shows Status at the same times, and Clear
-    // before it after a cairn skill ends (M219).
+    // before it while `ended` is true (M219).
     const acts = knownStep(await read($, step)) === null
     const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended))
     // A line's lead and tail keep their width, and its text takes the room
