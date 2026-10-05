@@ -110,7 +110,7 @@ rows.
 - [x] T5: Write `cairn/references/wcag22.md` from the source-note template.
       Record the relative-luminance and contrast-ratio definitions and SC
       1.4.3's 4.5:1 minimum, with section anchors. Add its `INDEX.md` line.
-- [ ] T6: Update README.md (the band paragraphs near README.md:94-112 and
+- [x] T6: Update README.md (the band paragraphs near README.md:94-112 and
       the pane paragraph near :251-253) and `cairn/DESIGN.md` (near :197-210
       and :257-259). Add a CHANGELOG.md unreleased entry. Write each one
       against the shipped code.
@@ -136,5 +136,6 @@ rows.
 - 2026-10-04: AC3 test plant: count opacity back to 0.72 and the plan fill back to rgb(110,140,190) turned all three AC3 tests red on their contrast assertions (plan label, implement and review counts), 24 fails in all; `track.ts` restored from daf86e7.
 - 2026-10-04: T4: AC2's grep prints only track.ts:47-55, inside the `// palette` comments at :40 and :56; nothing to move.
 - 2026-10-04: T5: `cairn/references/wcag22.md` written from the W3C Recommendation of 2024-12-12, read by curl at `#contrast-minimum`, `#dfn-contrast-ratio`, `#dfn-relative-luminance`; INDEX line added; cairn_validate green.
+- 2026-10-04: T6: README (band and pane color paragraphs), DESIGN (terminal track, desktop palette, pane colors), and a CHANGELOG Unreleased New entry, written against track.ts, band.ts, pane.ts and the theme tables read from Claude Code 2.1.287 this session. AC5's grep prints nothing.
 
 ## Decisions
