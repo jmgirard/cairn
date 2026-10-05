@@ -139,12 +139,14 @@ Consistency gate: `cairn_validate` all checks passed. No IP/GP changed, so no `c
 spawned: diff-bug, blame-history, prior-review
 
 - diff-bug #1: a press queued during a working turn can still run after that turn starts a cairn skill — follow-up, new row "Pane button follow-ons (M218 review)".
-- diff-bug #2: nothing shows the held-run test fails without the `running` guard, and no press after the release shows `running` clears — fix now.
-- diff-bug #3: `NEXT_LABELS[action]` returns an inherited property such as `toString` for an action of that name — fix now (an own-key lookup at both sites).
-- diff-bug #4: `PaneLine.action` is documented as a general Button, but the renderer gives every such line key `cairn-pane-next` and `pressNext` — fix now (the field's comment narrows to the Next line).
+- diff-bug #2: nothing shows the held-run test fails without the `running` guard, and no press after the release shows `running` clears — fix now, fixed 0628ab0 (a press after the release now runs again; with the guard planted out, each held-run test, the band's two included, failed by its 5-second timeout, the second press waiting behind the held run).
+- diff-bug #3: `NEXT_LABELS[action]` returns an inherited property such as `toString` for an action of that name — fix now, fixed 0628ab0 (`nextLabel` reads own keys only, at both sites; its test failed on its assertion with the plain lookup planted back).
+- diff-bug #4: `PaneLine.action` is documented as a general Button, but the renderer gives every such line key `cairn-pane-next` and `pressNext` — fix now, fixed 0628ab0 (the field's comment narrows to the Next line).
 - diff-bug #5: a press while a run is in flight does nothing and says nothing, now reachable during a whole working turn — follow-up, new row "Pane button follow-ons (M218 review)".
 - diff-bug #6: the `drawn` check is coarse, so a stale `Start` can run another milestone's command — follow-up, held by "Band button follow-ons (M212, M213 review)" ("`Review` can act on a milestone the row does not show"), which the shared `pressNext` carries to the pane.
-- diff-bug #7: README and CHANGELOG say "while no cairn skill runs", but a step outlasts its skill while background work runs — fix now.
+- diff-bug #7: README and CHANGELOG say "while no cairn skill runs", but a step outlasts its skill while background work runs — fix now, fixed 0628ab0 ("runs or waits on its background work").
+
+After the fixes, at 0628ab0, all 5 verify commands exit 0, and the mod suite runs 1194 tests with 0 failures.
 - diff-bug #8: the AC1 order check does not assert the action Box's props — reject, false: the AC4 test asserts them.
 - blame-history #1: the pane drops the band's `isWorking` half of the show condition — reject, planned change (Scope Out, plan work log).
 - blame-history #2: the pane inherits the band's open press follow-ons through `pressNext` and adds a second press surface — follow-up, new row "Pane button follow-ons (M218 review)".
