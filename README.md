@@ -253,7 +253,11 @@ and the five newest work-log lines. Each item takes one line, a long item
 ends in `…`, and the goal wraps. Each section starts after a blank row
 with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
 headings show their count and eight squares, `■` for the checked share
-and `□` for the rest. The next command sits in a pill. The `▎` and `■`
+and `□` for the rest. The next command sits in a pill. While no cairn
+skill runs, a button after the pill reads `Start`, `Resume`, `Review`, or
+`Plan`, the label of the band's next-step button, and a press runs the
+command as that button does. A press while Claude works outside a cairn
+skill runs the command when Claude is idle. The `▎` and `■`
 marks of a milestone draw in its phase's color, the theme's `claude`
 orange for implement and `success` green for review. The `▎` marks of the
 queue draw in the plan color, `planMode`, and the pill draws in the color

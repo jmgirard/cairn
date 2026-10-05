@@ -40,7 +40,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // in full and the queue that scripts/cairn_next.py prints (pane.ts), from
 // the same refreshes as the band. A head line whose file reads ends with
 // the band's percent for its row, so the pane reads the `band` value too
-// (M208).
+// (M208). While no cairn skill's step is set, the Next line carries the
+// band's next-step Button after its pill, and a press runs `pressNext`
+// (M218).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.

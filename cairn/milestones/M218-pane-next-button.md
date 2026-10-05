@@ -93,7 +93,7 @@ idle, because `$.command.run` queues.
       label after the pill. It is a `secondary` Button with key
       `cairn-pane-next`, in a Box with `flexShrink` 0. Its `onPress` is
       `pressNext($, label)`.
-- [ ] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
+- [x] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
       comments of `pane.ts` and `register.tsx`.
 - [ ] T4: Live look (AC5): the operator opens a new Code session in a real
       cairn repo whose state shows a Next line (LESSONS M195, M213), opens
@@ -114,6 +114,8 @@ idle, because `$.command.run` queues.
 - 2026-10-04: collision check: candidate "Status mod follow-ons" absorbed in part (its pane-button item), trimmed at post-merge hygiene; no open issues or PRs; no D-entry rejects the change.
 - 2026-10-04: implement start: branch m218-pane-next-button cut from origin/main at d1bfdbc. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-04: T1+T2 landed in one commit, the code written before its tests in one pass (a deviation from tests-first). `NEXT_LABELS` and `PLAN_LABEL` moved to `pane.ts`. `paneLines` takes an `acts` flag, and `register.tsx` passes true while `knownStep` reads no step. The Button sits in a `next-action` Box with `marginLeft` 1 rather than a space Text, so the Next line's text stays as the M205 AC3 test reads it. Mod tests went from 1136+ to 1193, all 5 verify commands exit 0.
+- 2026-10-04: correction to the T1+T2 line: "1136+" was not measured. The suite now runs 1193 tests. A planted-defect run (the Button ignoring the step, its Box with `flexShrink` 1) failed exactly the 4 AC2 and AC4 cases, 1189 pass, and the files were restored with `git checkout`.
+- 2026-10-04: T3: README's pane section, DESIGN's status-mod entry and history list, a CHANGELOG entry, and the `register.tsx` header comment describe the Button (the `pane.ts` header changed at T1).
 
 ## Decisions
 
