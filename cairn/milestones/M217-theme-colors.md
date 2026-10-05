@@ -114,12 +114,12 @@ rows.
       the pane paragraph near :251-253) and `cairn/DESIGN.md` (near :197-210
       and :257-259). Add a CHANGELOG.md unreleased entry. Write each one
       against the shipped code.
-- [ ] T7: Draw the desktop track for each phase in a dark and a light block
+- [x] T7: Draw the desktop track for each phase in a dark and a light block
       in the browser pane, served from the scratchpad, and check it. Then do
       the live look in this repo: the desktop app in light and dark
       appearance, and a terminal session in a light theme and a colorblind
       theme.
-- [ ] T8: Run every `verify` command from the repo root, check each exit
+- [x] T8: Run every `verify` command from the repo root, check each exit
       code, and fix any red.
 
 ## Work log
@@ -139,5 +139,7 @@ rows.
 - 2026-10-04: T6: README (band and pane color paragraphs), DESIGN (terminal track, desktop palette, pane colors), and a CHANGELOG Unreleased New entry, written against track.ts, band.ts, pane.ts and the theme tables read from Claude Code 2.1.287 this session. AC5's grep prints nothing.
 - 2026-10-04: the T6 commit (1a5e707) went in with the scripts suite red: `TestShippedPageStateLedger` pins every references page and lacked `wcag22.md` since T5. Fixed by pinning it as `ok` (dated direct-read claim) with its justification comment; scripts suite exit 0.
 - 2026-10-04: T7 preview: the desktop track for plan, implement, and review, before (M204 colors, count 0.72) and after (M217 palette), drawn by `trackSvg` on the app's light grounds rgb(250,249,245) and white and dark grounds rgb(38,38,36) and rgb(48,48,46), in the browser pane from the scratchpad. The after pills keep their hues, draw darker, and their label and count read on every ground; the dark-ground pills stand out less than before. Live look next.
+- 2026-10-04: T7 live look (the granted stop): the operator looked at the band and pane in a new Code session with the app in light and dark appearance and in a terminal in a light and a colorblind theme, and chose "Accept the colors" at the chip.
+- 2026-10-04: T8: all five verify commands exit 0 from the repo root: scripts 397 tests OK (21 skipped), hooks 174 OK, both validates pass, mod tests 1137 pass.
 
 ## Decisions
