@@ -257,7 +257,11 @@ and `□` for the rest. The next command sits in a pill. While no cairn
 skill runs or waits on its background work, a button after the pill reads `Start`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
 command as that button does. A press while Claude works outside a cairn
-skill runs the command when Claude is idle. The `▎` and `■`
+skill runs the command when Claude is idle. At the same times, a row under
+the Next line carries a `Status` button, which runs `/cairn:milestone`.
+After a cairn skill ends, that row also carries a `Clear` button before
+`Status`, which runs `/clear`. Each acts as the band's button of the same
+name. The `▎` and `■`
 marks of a milestone draw in its phase's color, the theme's `claude`
 orange for implement and `success` green for review. The `▎` marks of the
 queue draw in the plan color, `planMode`, and the pill draws in the color

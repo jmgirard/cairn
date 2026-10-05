@@ -26,7 +26,8 @@ import { PILL_TEXT } from './track'
 // of the phase its command runs. The colors are theme keys (M217).
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the pill, which register.tsx draws as a Button
-// (M218).
+// (M218). An `actions` line under it carries Status, and Clear before it
+// after a cairn skill ends, which register.tsx draws as Buttons (M219).
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it

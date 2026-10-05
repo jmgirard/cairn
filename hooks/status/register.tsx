@@ -43,7 +43,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // the band's percent for its row, so the pane reads the `band` value too
 // (M208). While no cairn skill's step is set, the Next line carries a
 // Button with the band's next-step label after its pill, and a press runs
-// `pressNext`, as the band's does (M218).
+// `pressNext`, as the band's does (M218). At the same times, the `actions`
+// line under it carries Status, with Clear before it while `ended` is true,
+// and a press runs `pressStatus` or `pressClear` (M219).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.

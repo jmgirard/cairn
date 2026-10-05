@@ -92,7 +92,7 @@ cover that path, and review files the gap in the same row.
       (`register.tsx:155-213`), read `ended`. Draw each Button of the
       `actions` line in a Box with `flexShrink` 0. Its `onPress` is
       `pressClear($)` or `pressStatus($)`.
-- [ ] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
+- [x] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
       comments of `pane.ts` and `register.tsx`.
 - [ ] T4: Live look (AC4): the operator opens a new Code session in a real
       cairn repo whose state shows a Next line (LESSONS M195, M213). The
@@ -117,6 +117,7 @@ cover that path, and review files the gap in the same row.
 - 2026-10-04: minor amendment: T1 also draws the `actions` line's Buttons in `register.tsx`, because the AC1 and AC2 tests mount the pane. T2 keeps the presses and their tests.
 - 2026-10-04: T1 done. `paneLines` takes `ended` and adds `actions` (indent 6, the Next lead's width) with `['clear', 'status']` or `['status']`. `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`. The M218 AC1 test reads the Next line's Buttons alone. The press goes through an inline `onPress` to the top-level `pressClear` or `pressStatus` (LESSONS M191). A planted swap of the Clear and Status order turned both AC2 cases red, and it was restored. Verify: all five exit 0, mod tests 1237.
 - 2026-10-04: T2 done. Six AC3 tests press Status, Clear after a Stop, and Status during a held Next run, on both surfaces. Planted swapped presses turned the 4 press cases red. A `pressStatus` with no `running` check turned the 2 held-run cases red. Both were restored. Verify: all five exit 0, mod tests 1243.
+- 2026-10-04: T3 done. README's pane section, DESIGN's `hooks/status/` entry and pane paragraph, a CHANGELOG Unreleased entry, and the `pane.ts` and `register.tsx` header comments describe the `actions` line. Verify: all five exit 0.
 
 ## Decisions
 

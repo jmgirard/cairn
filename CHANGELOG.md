@@ -4,6 +4,11 @@
 
 ### New
 
+- **Status and Clear buttons in the cairn pane.** A row under the pane's
+  Next line carries a `Status` button, which runs `/cairn:milestone`. After
+  a cairn skill ends, the row also carries a `Clear` button before it,
+  which runs `/clear`. Both show while no cairn skill runs or waits on its
+  background work, and a press acts as the band's button of the same name.
 - **A Next button in the cairn pane.** The pane's Next line keeps its
   colored pill and now carries a button after it: `Start`, `Resume`,
   `Review`, or `Plan`, the same label as the band's next-step button. A
