@@ -3,7 +3,8 @@ import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
 import { flowOf, width } from './band'
-import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK } from './pane'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout } from './pane'
+import type { PaneState } from './reader'
 import { listNames } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -717,6 +718,25 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
     expect(BY_ACTION.map(([name]) => FIXTURES[name].next?.action)).toEqual(BY_ACTION.map(([, action]) => action))
   })
 
+  // An action named like an object property has no label, so its line
+  // carries no action (M218 review).
+  test('an action outside the map, an inherited property name among them, has no label', () => {
+    for (const action of Object.keys(ACTION_LABELS)) expect([action, nextLabel(action)]).toEqual([action, ACTION_LABELS[action]])
+    for (const action of ['toString', 'constructor', '__proto__', 'hasOwnProperty', 'blocked']) {
+      expect([action, nextLabel(action)]).toEqual([action, undefined])
+      const state: PaneState = {
+        found: true,
+        milestones: [],
+        next: { action, command: '/milestone-plan', id: null, waiting: [] },
+        workable: [],
+        waiting: [],
+        candidates: [],
+      }
+      const next = layout(state, [], true).find(line => line.key === 'next')
+      expect([action, next?.action]).toEqual([action, undefined])
+    }
+  })
+
   for (const name of WITH_ROADMAP) {
     for (const surface of SURFACES) {
       test(`${name} (${surface})`, async ($, on) => {
@@ -797,6 +817,11 @@ describe("a press of the pane's Button runs the next command (M218 AC3)", () => 
         release()
         await first
       }
+      // The settled run frees the Button, so the next press runs again
+      // (M218 review).
+      copy.runHold = undefined
+      await ui.press({ key: PANE_NEXT })
+      expect(copy.commands).toEqual([runOf('single-in-progress'), runOf('single-in-progress')])
       await ui.unmount()
     })
   }

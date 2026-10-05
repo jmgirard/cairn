@@ -4,7 +4,7 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import { NEXT_LABELS, NO_ROADMAP, paneLines, PLAN_LABEL } from './pane'
+import { nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
@@ -109,7 +109,7 @@ const OPEN_GLYPH = '≡'
 const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 
 // The action Buttons (M212): the next step's label, from pane.ts's
-// NEXT_LABELS, which the pane's Next Button reads too (M218), and the status
+// `nextLabel`, which the pane's Next Button reads too (M218), and the status
 // Button's label and command. A plugin skill runs as `cairn:<name>` (M195).
 const STATUS_LABEL = 'Status'
 const STATUS_COMMAND = 'cairn:milestone'
@@ -344,7 +344,7 @@ export const register: Register = on => {
     // them the row draws as it did before M212. The next step is the
     // pane's: a milestone's step on a milestone or idle row, and planning
     // on the empty row (M213).
-    const nextLabel = nextStep == null ? undefined : NEXT_LABELS[nextStep.action]
+    const nextLabel = nextStep == null ? undefined : labelOf(nextStep.action)
     const canAct = canOpen && nextLabel !== undefined && current === null && e.props.isWorking !== true
     // Each action Button draws with its chrome, so the terminal draws it as
     // `[ label ]`: its label and 4 columns. One space follows each. Both take

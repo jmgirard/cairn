@@ -28,8 +28,9 @@ import { PILL_TEXT } from './track'
 // next-step label after the pill, which register.tsx draws as a Button
 // (M218).
 
-// A line's `action`, when set, is the label of a Button drawn after its
-// tail.
+// The Next line's `action`, when set, is the label of the next-step Button
+// drawn after its tail. No other line carries one: register.tsx draws it
+// with the one key `cairn-pane-next` and the next-step press.
 export type PaneLine = {
   key: string
   indent: number
@@ -49,6 +50,12 @@ export const NEXT_LABELS: Record<string, string> = {
   resume: 'Resume',
   implement: 'Start',
   'plan the next milestone': PLAN_LABEL,
+}
+
+// An action's label, read from the map's own keys only, so an action named
+// like an object property, such as `toString`, has none (M218 review).
+export function nextLabel(action: string): string | undefined {
+  return Object.prototype.hasOwnProperty.call(NEXT_LABELS, action) ? NEXT_LABELS[action] : undefined
 }
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
@@ -207,7 +214,7 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false):
       // keys (M217), so their contrast is the theme's.
       bold: true,
     })
-    const label = NEXT_LABELS[state.next.action]
+    const label = nextLabel(state.next.action)
     if (acts && label !== undefined) next.action = label
     out.push(next)
   }
