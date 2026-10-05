@@ -201,8 +201,9 @@ export function trackSvg(flow: Flow, width = TRACK_PX): string {
   )
 }
 
-// The terminal track's ground, its blank cell, its mark at each third, and
-// the pill's text color, all theme keys. The pill's text is `inverseText`
+// The terminal track's ground and the pill's text color as theme keys, and
+// its blank cell and its mark at each third as braille characters, the
+// mark drawn in `MARK_KEY` and the specks in the phase's key or `SPECK_KEY`. The pill's text is `inverseText`
 // on the phase's key (M217): white in the light themes, black in the dark.
 export const BRAILLE_GROUND = 'userMessageBackground'
 export const BRAILLE_BLANK = '⠀'

@@ -7,8 +7,9 @@
 - **Band and pane colors follow your theme.** In the terminal band and the
   cairn pane, the phase colors are now your Claude Code theme's own colors:
   `planMode` for plan, `claude` for implement, and `success` for review,
-  with the pill text in `inverseText`. The light, colorblind, and ANSI
-  themes recolor them, where before they were fixed. The desktop track is
+  with the pill text in `inverseText`. They now change with the theme,
+  where before they were fixed: the light theme changes the plan and
+  review colors, and the colorblind and ANSI themes change all three. The desktop track is
   an image and cannot read the theme, so it keeps one palette with darker
   phase colors. Its pill's white label and count now have a contrast of at
   least 4.5:1 on the pill, the WCAG 2.2 minimum for text.

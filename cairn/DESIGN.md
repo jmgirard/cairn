@@ -199,8 +199,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   pill in the phase's color, the pill in bold `inverseText` on the phase's
   color, and a `subtle` mark at each third past the fill edge. The phase
   colors are theme keys (`FLOW_COLORS` in `band.ts`, M217): `planMode` for
-  plan, `claude` for implement, and `success` for review, so the light,
-  colorblind, and ANSI themes recolor them. M198 found the dim `claude`
+  plan, `claude` for implement, and `success` for review, so they change
+  with the theme: the light theme changes plan and review, and the
+  colorblind and ANSI themes change all three. M198 found the dim `claude`
   drew brown on the desktop dark theme, so the keys draw at full strength. The operator picked
   the shorter image track and the braille look from browser prototypes
   (M206).

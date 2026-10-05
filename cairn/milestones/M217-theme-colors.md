@@ -1,6 +1,6 @@
 # M217: Band and pane colors that follow the theme
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -141,5 +141,6 @@ rows.
 - 2026-10-04: T7 preview: the desktop track for plan, implement, and review, before (M204 colors, count 0.72) and after (M217 palette), drawn by `trackSvg` on the app's light grounds rgb(250,249,245) and white and dark grounds rgb(38,38,36) and rgb(48,48,46), in the browser pane from the scratchpad. The after pills keep their hues, draw darker, and their label and count read on every ground; the dark-ground pills stand out less than before. Live look next.
 - 2026-10-04: T7 live look (the granted stop): the operator looked at the band and pane in a new Code session with the app in light and dark appearance and in a terminal in a light and a colorblind theme, and chose "Accept the colors" at the chip.
 - 2026-10-04: T8: all five verify commands exit 0 from the repo root: scripts 397 tests OK (21 skipped), hooks 174 OK, both validates pass, mod tests 1137 pass.
+- 2026-10-04: claim audit: 40 claims read, 2 corrected — hooks/status/track.ts, hooks/status/band.ts, CHANGELOG.md (the terminal-track constants comment called braille characters theme keys; "the light theme recolors them" was false for `claude`, which light keeps at rgb(215,119,87); DESIGN.md got the same fix). The re-read cleared band.ts and CHANGELOG and refined the track comment's speck wording, applied as given. Mod tests 1137 pass after the comment edits.
 
 ## Decisions

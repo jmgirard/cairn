@@ -120,9 +120,10 @@ export function phaseOf(row: BandRow): Phase {
 // implement, then review. track.ts draws it; the model is here.
 export type FlowPhase = 'plan' | 'implement' | 'review'
 export const FLOW_PHASES: readonly FlowPhase[] = ['plan', 'implement', 'review']
-// Each phase's color as a Claude Code theme key (M217), so the light,
-// colorblind, and ANSI themes recolor it: `planMode` for plan, `claude` for
-// implement, and `success` for review. The desktop track is an image and
+// Each phase's color as a Claude Code theme key (M217), so it changes with
+// the theme: `planMode` for plan, `claude` for implement, and `success` for
+// review. The light theme changes plan and review, and the colorblind and
+// ANSI themes change all three. The desktop track is an image and
 // cannot read theme keys, so it draws from its own palette (track.ts).
 export const FLOW_COLORS: Record<FlowPhase, string> = { plan: 'planMode', implement: 'claude', review: 'success' }
 
