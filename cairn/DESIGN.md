@@ -277,13 +277,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   first. A press is the band's `pressNext`. A pane gets no `isWorking`
   prop, so the Button also shows during a turn outside a cairn skill, and
   `$.command.run` queues such a press until the session is idle.
-  At the same times, `paneLines` gives the Next line `buttons` (M219):
+  At the same times, with that label, `paneLines` gives the Next line `buttons` (M219):
   `status`, with `clear` before it while the `ended` atom (M216) is true.
   The pane's `ui.render` reads `ended`, and draws each after `next-action`
   as a `secondary` Button, key `cairn-pane-status` or `cairn-pane-clear`,
   in a Box keyed `next-status` or `next-clear` with `flexShrink: 0` and
-  `marginLeft: 1`. A first live look put them on a row of their own, and
-  the operator moved them onto the Next line. In the desktop app, a click
+  `marginLeft: 1`. In the desktop app, a click
   on a pane without keyboard focus only gives it focus, and no `ui.press`
   reaches the mod (M219 probe). A pane Button then takes a second click.
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the

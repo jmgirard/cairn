@@ -229,8 +229,12 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, 
       bold: true,
     })
     const label = nextLabel(state.next.action)
-    if (acts && label !== undefined) next.action = label
-    if (acts) next.buttons = ended ? ['clear', 'status'] : ['status']
+    // Status and Clear follow the next-step Button and show only with it, as
+    // the band's show only with a next-step label (M219 review).
+    if (acts && label !== undefined) {
+      next.action = label
+      next.buttons = ended ? ['clear', 'status'] : ['status']
+    }
     out.push(next)
   }
   if (state.workable.length > 0) {

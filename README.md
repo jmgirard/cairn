@@ -261,10 +261,12 @@ skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
 `/cairn:milestone`. When a cairn skill finishes, the line also carries a
 `Clear` button before `Status`, which runs `/clear`. When you send a prompt
-or start another cairn skill, Clear goes away. Each acts as the band's
-button of the same name. In a narrow pane, the pill is cut first. In the
-desktop app, a click on a pane without the keyboard only gives it the
-keyboard. Then press the button again. The `▎` and `■`
+while Claude is idle, or start another cairn skill, Clear goes away. Each
+press runs the command of the band's button of the same name. As with the
+next-step button, a press while Claude works outside a cairn skill runs
+when Claude is idle. In a narrow pane, the pill is cut first. In the
+desktop app, a click on the pane while it does not have keyboard focus only
+gives it focus. Then press the button again. The `▎` and `■`
 marks of a milestone draw in its phase's color, the theme's `claude`
 orange for implement and `success` green for review. The `▎` marks of the
 queue draw in the plan color, `planMode`, and the pill draws in the color
