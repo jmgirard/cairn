@@ -15,12 +15,13 @@ The cairn pane carries the band's Status and Clear buttons on a row of their own
 
 ## Scope
 
-**In:** A new pane line with key `actions` comes right after the Next
-line, indented under the pill. It holds the Clear Button, key
-`cairn-pane-clear`, after a cairn skill ends (the `ended` atom, M216),
-then the Status Button, key `cairn-pane-status`. Both are `secondary` and
-use the band's labels, `Clear` and `Status`. The line shows while no cairn
-skill's step is set, as the Next Button does (M218). A press runs the band's
+**In:** The pane's Next line carries more Buttons after the M218 Next
+Button. The Clear Button, key `cairn-pane-clear`, shows while the `ended`
+atom (M216) is true. The Status Button, key `cairn-pane-status`, comes last. Each sits in its own Box
+that does not shrink, so the pill is cut first. Both are `secondary` and use
+the band's labels, `Clear` and `Status`. They show while no cairn skill's
+step is set, as the Next Button does (M218). The operator moved them here
+from a row of their own at the first live look (work log). A press runs the band's
 press (`pressClear` or `pressStatus` in `register.tsx`), so it runs the same
 command and does nothing in the same cases. README, DESIGN, CHANGELOG, and
 the header comments of `pane.ts` and `register.tsx` describe it.
@@ -39,20 +40,22 @@ cover that path, and review files the gap in the same row.
 
 - [ ] AC1: The fixtures with a ROADMAP are `WITH_ROADMAP` in
       `pane.test.tsx`. For each one, on the terminal and desktop surfaces,
-      with no cairn skill's step set and no cairn skill ended, the pane draws
-      a line with key `actions` directly after the Next line. The line holds
-      one Button, with key `cairn-pane-status`, `variant` `secondary`, and
-      label `Status`, and no element with key `cairn-pane-clear`. Mod tests
-      assert the line's place, that its Button keys are exactly
-      [`cairn-pane-status`], and the variant and label.
+      with no cairn skill's step set and no cairn skill ended, the Next line
+      draws its Buttons after the pill. Mod tests assert that the Next line's
+      child Boxes are `next-lead`, `next-text`, `next-action`, then
+      `next-status`; that its Button keys are exactly [`cairn-pane-next`,
+      `cairn-pane-status`]; that the pane has no element with key
+      `cairn-pane-clear`; and that `cairn-pane-status` has `variant`
+      `secondary` and label `Status`.
 - [ ] AC2: For one fixture with a next step, on the terminal and desktop
       surfaces, after a cairn skill's prompt starts its step, the pane draws
       no element with key `cairn-pane-status` or `cairn-pane-clear`. After a
-      Stop with nothing in flight ends the step, the `actions` line draws a
-      Button with key `cairn-pane-clear`, `variant` `secondary`, and label
-      `Clear`, then `cairn-pane-status`. After an idle typed prompt that
-      follows, the line draws `cairn-pane-status` and no `cairn-pane-clear`.
-      A mod test asserts the three states in order.
+      Stop with nothing in flight ends the step, the Next line's Button keys
+      are exactly [`cairn-pane-next`, `cairn-pane-clear`,
+      `cairn-pane-status`], and `cairn-pane-clear` has `variant` `secondary`
+      and label `Clear`. After an idle typed prompt that follows, they are
+      exactly [`cairn-pane-next`, `cairn-pane-status`]. A mod test asserts
+      the three states in order.
 - [ ] AC3: On the terminal and desktop surfaces, a press of
       `cairn-pane-status` runs `$.command.run` with the command
       `cairn:milestone` and the args `''`. A press of `cairn-pane-clear`,
@@ -60,23 +63,27 @@ cover that path, and review files the gap in the same row.
       `''`. Mod tests press each Button and read the command and args that
       reached beneath. A press of `cairn-pane-status` while a run started by
       `cairn-pane-next` is held runs no command, and a mod test asserts this.
-- [ ] AC4: At a live look in the desktop app, in a real cairn repo, the
-      operator presses the pane's Status Button and sees the status skill
-      start. After that skill ends, the operator sees the pane's Clear
-      Button, presses it, and sees the conversation clear. The operator
-      accepts the look of the Next and actions lines.
-- [ ] AC5: README.md and `cairn/DESIGN.md` describe the pane's Status and
+- [ ] AC4: On the terminal and desktop surfaces, after a Stop ends a step,
+      the Boxes `next-clear` and `next-status` have `flexShrink` 0, and the
+      pill's Box `next-text` keeps `flexShrink` 1 and `minWidth` 0. A mod
+      test asserts these props.
+- [ ] AC5: At a live look in the desktop app, in a real cairn repo, one
+      press of the pane's Status Button starts the status skill. After that
+      skill ends, one press of the pane's Clear Button clears the
+      conversation. The operator accepts the look of the Next line.
+- [ ] AC6: README.md and `cairn/DESIGN.md` describe the pane's Status and
       Clear Buttons. CHANGELOG.md's unreleased section has an entry for them.
-- [ ] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
-- AC1 → T1, T2
-- AC2 → T1, T2
+- AC1 → T1, T2, T4
+- AC2 → T1, T2, T4
 - AC3 → T2
 - AC4 → T4
-- AC5 → T3
-- AC6 → T5
+- AC5 → T5, T7
+- AC6 → T3, T6
+- AC7 → T8
 
 ## Tasks
 
@@ -94,11 +101,22 @@ cover that path, and review files the gap in the same row.
       `pressClear($)` or `pressStatus($)`.
 - [x] T3: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
       comments of `pane.ts` and `register.tsx`.
-- [ ] T4: Live look (AC4): the operator opens a new Code session in a real
+- [x] T4: Move Clear and Status onto the Next line after `next-action`,
+      each in a Box keyed `next-<kind>` with `flexShrink` 0 and
+      `marginLeft` 1, and drop the `actions` line. Rewrite the M219 AC1 and
+      AC2 tests and the M218 AC1 test for it, and add the AC4 test.
+- [ ] T5: Probe the double click: temporary logging to `m219-probe.log` at
+      the plugin root, of each pane render's `isFocused`, each `ui.press`,
+      each press function's checks, and each run. The operator repeats the
+      look and the log shows where a first click goes. Where the cause is in
+      the mod, fix it. Remove the probe before review.
+- [ ] T6: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the header
+      comments for the Next-line placement.
+- [ ] T7: Live look (AC5): the operator opens a new Code session in a real
       cairn repo whose state shows a Next line (LESSONS M195, M213). The
-      operator opens the pane and presses Status. After the status skill
-      ends, the operator presses Clear.
-- [ ] T5: Run every `verify` command from the repo root and check each exit
+      operator opens the pane and presses Status once. After the status
+      skill ends, the operator presses Clear once.
+- [ ] T8: Run every `verify` command from the repo root and check each exit
       code.
 
 ## Work log
@@ -121,6 +139,18 @@ cover that path, and review files the gap in the same row.
 - 2026-10-04: claim audit: 30 claims read, 6 corrected — CHANGELOG.md, README.md, cairn/DESIGN.md, hooks/status/pane.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-04: the corrections narrow "after a cairn skill ends" to the `ended` span, from a Stop that ends a step to the next idle typed prompt, cairn skill prompt, or session end. They also fix a test comment on `acts`. The same reader re-read all six as accurate. It noted that the user docs leave out two edge cases, a prompt typed mid-turn and a step that an idle typed prompt ends. They stay out, as M216's own wording does. Verify: all five exit 0.
 - 2026-10-05: live look (AC4): the operator reported "something is off" with no detail yet. The run waits for the description before a fix.
+- 2026-10-05: live look (AC4 as then numbered): the operator reported "the status button was bumped to the next line below the plan button. each button had to be clicked twice to work". Plan was not pressed.
+- 2026-10-05: question set at the live-look stop: where Status and Clear go — on the Next line after Plan (operator override of the plan's row under Next). The Goal's "on a row of their own under the Next line" clause is superseded by this choice. The Goal is not edited in place.
+- 2026-10-05: substantive amendment: Scope In, AC1, and AC2 move the Buttons onto the Next line. New AC4 holds their Boxes' `flexShrink`. The live look becomes AC5 and asks for one press each. Docs become AC6 and verify AC7. T4 (the move), T5 (a double-click probe), and T6 (docs again) are new, and the look and verify become T7 and T8.
+- 2026-10-05: re-audit: AC1 (full) — one-press placement after the pill not asserted, and the pane-wide no-Clear check dropped. Both were fixed by naming the child Boxes and the pane-wide check.
+- 2026-10-05: re-audit: AC2 (full) — nothing
+- 2026-10-05: re-audit: AC4 (full) — the Boxes had no keys. Fixed by naming `next-clear` and `next-status`.
+- 2026-10-05: re-audit: AC5 (full) — two clicks passed the old wording. Fixed to one press each.
+- 2026-10-05: re-audit: AC1 (full) — nothing
+- 2026-10-05: re-audit: AC4 (full) — nothing. It noted that the not-ended `next-status` Box is unasserted, and the code is the same literal in both states.
+- 2026-10-05: re-audit: AC5 (full) — "one press" can bind the desktop host. A click that focuses the pane can redraw it and retire the press handle (`ButtonProps.onPress`: a handle "for the drawing's life"), which the mod cannot change. This is AC5's second line, so its wording goes to the operator once T5's probe shows where the first click goes.
+- 2026-10-05: AC3's wording is unchanged, and the first reader returned nothing on it.
+- 2026-10-05: T4 done. `paneLines` sets `next.buttons`, and `register.tsx` draws `next-clear` and `next-status` after `next-action`. Mod tests 1244, exit 0. T5's probe code is in this commit, marked PROBE, and is removed before review.
 
 ## Decisions
 
