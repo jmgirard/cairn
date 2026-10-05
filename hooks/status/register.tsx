@@ -4,7 +4,7 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import { NO_ROADMAP, paneLines } from './pane'
+import { NEXT_LABELS, NO_ROADMAP, paneLines, PLAN_LABEL } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
@@ -89,6 +89,8 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 const PANE = 'cairn'
 const PANE_TITLE = 'cairn'
 const PANE_COMMAND = 'cairn-pane'
+// The key of the Next line's Button (M218).
+const PANE_NEXT = 'cairn-pane-next'
 
 // The close button's label. The desktop app draws a dismiss Button in the
 // band as its label text, so a long label reads as text there. On the
@@ -104,16 +106,9 @@ const CLOSE_COLUMNS = GAP + width(CLOSE_GLYPH)
 const OPEN_GLYPH = '≡'
 const OPEN_COLUMNS = width(OPEN_GLYPH) + 1
 
-// The action Buttons (M212): the next step's label by the action that
-// scripts/cairn_next.py names, planning among them (M213), and the status
+// The action Buttons (M212): the next step's label, from pane.ts's
+// NEXT_LABELS, which the pane's Next Button reads too (M218), and the status
 // Button's label and command. A plugin skill runs as `cairn:<name>` (M195).
-const PLAN_LABEL = 'Plan'
-const NEXT_LABELS: Record<string, string> = {
-  review: 'Review',
-  resume: 'Resume',
-  implement: 'Start',
-  'plan the next milestone': PLAN_LABEL,
-}
 const STATUS_LABEL = 'Status'
 const STATUS_COMMAND = 'cairn:milestone'
 // The Clear Button's label and the built-in command it runs (M216).
@@ -156,14 +151,20 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
-    const { Box, Text } = $.ui.resolve(e)
-    const lines = paneLines(await read($, pane), (await read($, band)).rows)
+    const { Box, Button, Text } = $.ui.resolve(e)
+    // The Next line's Button shows while no cairn skill's step is set
+    // (M218). A pane gets no `isWorking` prop, so it also shows during a
+    // turn outside a cairn skill, and a press then waits for the session to
+    // be idle, as `$.command.run` queues.
+    const acts = knownStep(await read($, step)) === null
+    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts)
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
-    // (M208, LESSONS M194). A Text drops its `key`, so each line's key sits
-    // on a Box.
+    // (M208, LESSONS M194). The action Button sits after them in a Box that
+    // does not shrink, so the pill is cut first (M218). A Text drops its
+    // `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
         {lines.map(line => (
@@ -191,6 +192,16 @@ export const register: Register = on => {
                     {span.text}
                   </Text>
                 ))}
+              </Box>
+            )}
+            {line.action === undefined ? null : (
+              <Box key={`${line.key}-action`} flexShrink={0} marginLeft={1}>
+                <Button
+                  key={PANE_NEXT}
+                  variant="secondary"
+                  label={line.action}
+                  onPress={() => pressNext($, line.action)}
+                />
               </Box>
             )}
           </Box>

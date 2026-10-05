@@ -1,13 +1,13 @@
 # M218: A Next button in the cairn pane
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m218-pane-next-button
 
 ## Goal
 
@@ -81,13 +81,13 @@ idle, because `$.command.run` queues.
 
 ## Tasks
 
-- [ ] T1: Write the AC1 and AC2 tests first in `pane.test.tsx`. In
+- [x] T1: Write the AC1 and AC2 tests first in `pane.test.tsx`. In
       `hooks/status/`, move `NEXT_LABELS` and `PLAN_LABEL`
       (`register.tsx:110-116`) to `pane.ts` or `band.ts`. The band and the
       pane then read one map. Give `PaneLine` an optional action label. If
       no cairn skill's step is set and the action has a label, set it on the
       `next` line (`pane.ts:174-187`).
-- [ ] T2: Write the AC3 and AC4 tests first. Use the press pattern of
+- [x] T2: Write the AC3 and AC4 tests first. Use the press pattern of
       `band.test.tsx`, a `command.run` hook beneath that records the run. In
       the pane's `ui.render` hook (`register.tsx:158-200`), draw the action
       label after the pill. It is a `secondary` Button with key
@@ -112,6 +112,8 @@ idle, because `$.command.run` queues.
 - 2026-10-04: criteria audit (full mode, fresh Opus reader) returned 5 findings, each decided toward the narrower promise. AC3 drops its step-set press case, because the test kit presses the current drawing, which then has no Button (band.test.tsx:3132-3134). The step check stays `pressNext`'s own, shared with the band. AC3 names both surfaces. AC4 drops the fixture and the 44 columns, which change nothing in the asserted props. AC2 narrows to the one fixture and the surfaces its test sweeps. AC6 leaves out the header comments, which T3 still updates and which no user reads. AC1, AC5, and AC7 had no finding.
 - 2026-10-04: the new row put ROADMAP.md at 60 lines and 24,291 bytes. The plan removed the stale R-package note line, which PROFILE.md replaces since M215, and cut two candidate rows' asides, to 58 lines and 23,966 bytes.
 - 2026-10-04: collision check: candidate "Status mod follow-ons" absorbed in part (its pane-button item), trimmed at post-merge hygiene; no open issues or PRs; no D-entry rejects the change.
+- 2026-10-04: implement start: branch m218-pane-next-button cut from origin/main at d1bfdbc. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-04: T1+T2 landed in one commit, the code written before its tests in one pass (a deviation from tests-first). `NEXT_LABELS` and `PLAN_LABEL` moved to `pane.ts`. `paneLines` takes an `acts` flag, and `register.tsx` passes true while `knownStep` reads no step. The Button sits in a `next-action` Box with `marginLeft` 1 rather than a space Text, so the Next line's text stays as the M205 AC3 test reads it. Mod tests went from 1136+ to 1193, all 5 verify commands exit 0.
 
 ## Decisions
 

@@ -24,8 +24,32 @@ import { PILL_TEXT } from './track'
 // operator asked for the phase colors: a milestone's marks and meters take
 // its phase's color, the queue's take plan's, and the pill takes the color
 // of the phase its command runs. The colors are theme keys (M217).
+// While no cairn skill runs, the Next line also carries the band's
+// next-step label after the pill, which register.tsx draws as a Button
+// (M218).
 
-export type PaneLine = { key: string; indent: number; lead: Span[]; text: Span | null; tail?: Span[]; wraps?: true }
+// A line's `action`, when set, is the label of a Button drawn after its
+// tail.
+export type PaneLine = {
+  key: string
+  indent: number
+  lead: Span[]
+  text: Span | null
+  tail?: Span[]
+  wraps?: true
+  action?: string
+}
+
+// The next-step Button's label by the action that scripts/cairn_next.py
+// names (M212), planning among them (M213). The band and the pane read
+// this one map (M218).
+export const PLAN_LABEL = 'Plan'
+export const NEXT_LABELS: Record<string, string> = {
+  review: 'Review',
+  resume: 'Resume',
+  implement: 'Start',
+  'plan the next milestone': PLAN_LABEL,
+}
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -162,8 +186,9 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 }
 
 // The pane's lines from its state and the band's rows, whose counts give
-// each head line its percent.
-export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
+// each head line its percent. `acts` is true while no cairn skill's step is
+// set, and then the Next line carries its action label (M218).
+export function paneLines(state: PaneState, band: BandRow[] = [], acts = false): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
@@ -174,16 +199,17 @@ export function paneLines(state: PaneState, band: BandRow[] = []): PaneLine[] {
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
-    out.push(
-      line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
-        text: ` ${target} `,
-        color: PILL_TEXT,
-        backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
-        // Bold, as the band's pill is. The text and fill are the theme's own
-        // keys (M217), so their contrast is the theme's.
-        bold: true,
-      }),
-    )
+    const next = line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
+      text: ` ${target} `,
+      color: PILL_TEXT,
+      backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
+      // Bold, as the band's pill is. The text and fill are the theme's own
+      // keys (M217), so their contrast is the theme's.
+      bold: true,
+    })
+    const label = NEXT_LABELS[state.next.action]
+    if (acts && label !== undefined) next.action = label
+    out.push(next)
   }
   if (state.workable.length > 0) {
     out.push(...heading('workable-head', 'Workable', QUEUE_COLOR))
