@@ -306,7 +306,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `pressClear`.
   A cairn pane shown at a `/clear` is open after it (M222). A press
   of a Clear, `Plan`, or `Implement` Button ends the session with reason
-  `clear` in the same process, and nothing closes the pane (M222 probe). A
+  `clear` in the same process, and nothing closes the pane (M222 probe). The
+  host's state starts empty under the new session id, and no
+  `session.start` fires, so a `classic.SessionStart` hook with source
+  `clear` refreshes the band and the pane. A
   typed `/clear` in the desktop app ends the process with reason `other`,
   and the next process starts with no pane at the first message after the
   clear. So at an `other` end with the pane listed, shown, and placed, the

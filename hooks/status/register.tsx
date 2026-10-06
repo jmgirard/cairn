@@ -152,6 +152,15 @@ export const register: Register = on => {
     return result
   })
 
+  // A `/clear` that stays in the same process raises no `session.start`, and
+  // the host's state starts empty under the new session id, so the band and
+  // an open pane read the files again here (M222).
+  on('classic.SessionStart', async ($, e, next) => {
+    const result = await next(e)
+    if (e.source === 'clear') await refresh($)
+    return result
+  })
+
   // `/cairn-pane` closes an open pane, and otherwise reads the files and
   // opens it, or says why it did not (M205 AC1).
   // Only a pane the person can see is closed: one that waits undrawn, or

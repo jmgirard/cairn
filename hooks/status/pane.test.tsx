@@ -114,6 +114,7 @@ function seat(on: On, copy: Copy) {
   on('session.start', async ($, e) => ({ cwd: e.cwd }))
   on('turn.complete', async () => ({ text: '' }))
   on('classic.Stop', async () => ({}))
+  on('classic.SessionStart', async () => ({}))
   on('prompt.submit', async ($, e) => ({ text: e.text, origin: e.origin }))
   on('skill.prompt', async ($, e) => ({ text: e.text }))
   on('ui.render', { component: 'AbovePrompt' }, async () => ({ type: 'Text', props: {}, children: ['engine slot'] }))
@@ -1080,6 +1081,8 @@ type Event = { name: string; before?: ($) => Promise<void>; act: ($) => Promise<
 const EVENTS: Event[] = [
   { name: 'session start', act: $ => $.session.start({ cwd: '/', surface: 'terminal', isInteractive: true }) },
   { name: 'turn end', act: $ => $.turn.complete(turn()) },
+  // A press of a Clear Button raises no `session.start`, only this (M222).
+  { name: 'session start after a clear', act: $ => $.classic.SessionStart({ source: 'clear' }) },
   { name: 'cairn skill prompt', act: $ => $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' }) },
   {
     name: 'Stop that ends a step',

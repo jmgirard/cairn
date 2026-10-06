@@ -129,6 +129,11 @@ declined a terminal live look.
       also brings the pane back, in README.md, in `cairn/DESIGN.md` near the
       M219 pane text, and in CHANGELOG.md's Unreleased section. Run
       `verify`.
+- [x] T6: A press of a Clear Button leaves the pane open but showing `no
+      cairn ROADMAP found` until the next prompt, as the host's state starts
+      empty under the new session id. Refresh at `classic.SessionStart`
+      with source `clear`, test first in the M205 AC5 event list. Run
+      `verify`.
 - [ ] T5: Live look in a new desktop Code session in a cairn repo, since
       a Code session keeps the mod it loaded at its start (LESSONS M195).
       Try each clear that AC4 names.
@@ -167,6 +172,8 @@ declined a terminal live look.
 - 2026-10-06: claim audit pass (fresh Opus reader): 33 claims read, 7 wrong, all corrected toward the narrower claim. A typed `/clear` reopens only a pane that was shown, the app-quit cost is stated as a condition that was not checked, the reopen needs a found ROADMAP, and a press keeps the process, not the session. The reader's re-read found 5 holding and 2 still wrong (the README and CHANGELOG lead sentences), now "shown at a `/clear`".
 - claim audit: 33 claims read, 7 corrected — README.md, CHANGELOG.md, hooks/status/register.tsx
 - 2026-10-06: T5 operator look, typed `/clear` (new desktop session in this repo): the pane closed at the clear and opened again when the operator sent "hi" in the new session. That meets AC4 for a typed `/clear`. No Clear Button showed, because the band and pane draw it only after a cairn skill's step ends, and `Plan` or `Implement` show only with no active milestone. The press cases go next: Clear after a short cairn skill here, and `Plan` in a throwaway repo with one done row at the session scratchpad's `m222-look`.
+- 2026-10-06: T5 operator look, the band's or pane's Clear Button after `/cairn:milestone`: the pane stayed open but showed `no cairn ROADMAP found` until the operator typed "hi", then filled again. The pane draws that line when its state's `found` is false, which is the empty state, and the mod refreshes only at `session.start`, a turn end, a Stop, or a prompt, none of which a press raises. So the host's state starts empty under the new session id. Minor amendment: discovered sub-task T6 before T5 refreshes at `classic.SessionStart` with source `clear`, which T1 saw 0.1 s after a press's end.
+- 2026-10-06: T6 the `session start after a clear` case in the M205 AC5 event list failed against `register.tsx` (the T2 tick did not show), then passed with a `classic.SessionStart` hook that refreshes when the source is `clear`. DESIGN names the hook. verify: 1303 mod tests pass, and the other four commands exit 0.
 
 ## Decisions
 
