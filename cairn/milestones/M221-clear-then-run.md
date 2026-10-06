@@ -97,11 +97,11 @@ returns to `planned` for a re-cut.
       a file in `.git/info/exclude` (LESSONS M201). The operator turns on
       hot reload and presses each Button. Record which way runs the second
       command in the cleared conversation, and remove the probe mod.
-- [ ] T2: Write the AC1 to AC4 tests first. The pane harness gains a
+- [x] T2: Write the AC1 to AC4 tests first. The pane harness gains a
       `session.end` hook beneath the mod, and `runThrows` where AC4 needs it.
       Change the Plan and Implement cases of the M212, M213, and M218 press
       tests to the two-command lists.
-- [ ] T3: In `register.tsx`, make `pressNext` run `clear` and then the
+- [x] T3: In `register.tsx`, make `pressNext` run `clear` and then the
       command for `Plan` and `Implement`, by the way T1 found. Keep the
       guards of `running`, the step, and `ended`, so a second press adds
       nothing.
@@ -128,3 +128,5 @@ returns to `planned` for a re-cut.
 - 2026-10-06: implement started on m221-clear-then-run. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
 - 2026-10-06: T1 probe written at `~/.claude/dev-mods/81d5525c-eb5f-4258-92f2-398cb5647ae8/clear-probe/` (validates). Its band row has `A: await` (await the `clear` run, then run `cairn:milestone`) and `B: hold` (hold `cairn:milestone`, start `clear` unawaited, run the held command from `session.end` with reason `clear`). Each step is logged to `m221-probe.log` (in `.git/info/exclude`). Each press clears this session's conversation, so the run resumes from `/milestone-implement M221`, which reads the log and the operator's report to finish T1.
 - 2026-10-06: T1 done. The operator pressed both probe Buttons, and each cleared the conversation and then ran `/cairn:milestone` in it. B showed its run after a short delay. The log shows that `session.end` with reason `clear` arrives before the `clear` run resolves, in A as in B. Chose the held-command way (B, with the `clear` run still awaited for its refusal), because AC4's stale-command case holds only when the command waits for the clear's session end. In the test harness a run resolves at once, so the await way runs the command before any session end. The probe mod is removed.
+- 2026-10-06: T2 done. The band tests gain the M221 AC1 to AC4 cases. The pane harness gains a `session.end` hook and the AC1 and AC2 cases. AC4 is band only, so the pane harness needs no `runThrows`. The M212 AC1 Implement case, the M213 Plan cases, and the M218 AC3 Implement and Plan cases now expect `clear` first. Before T3, 51 tests failed, and each was a changed or new M221 case.
+- 2026-10-06: T3 done. For `implement` and `plan the next milestone`, `pressNext` holds the command and runs `clear`. If that run rejects, the press drops the held command. At a session end with reason `clear`, the `session.end` hook runs the held command unawaited. Any other session end drops it. While a command is held, the action Buttons do nothing, as during a run in flight. All 1287 mod tests pass. Two planted defects failed 32 of the new cases: a held command run at each session end, and a press guard that ignores a held command.

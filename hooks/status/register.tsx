@@ -119,6 +119,10 @@ const STATUS_COMMAND = 'cairn:milestone'
 // The built-in command the Clear Button runs (M216). The Status and Clear
 // labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
+// The next steps whose Button runs `/clear` first and its command in the
+// cleared conversation (M221): `Implement` and `Plan`. A resumed run and a
+// review keep their conversation.
+const CLEARS_FIRST = ['implement', 'plan the next milestone']
 // The key and label of each Button after the Next line's action (M219).
 const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
   clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
@@ -339,6 +343,14 @@ export const register: Register = on => {
     // A `/clear` from the Clear Button ends the session, and its run may
     // never settle, so the end frees the action Buttons (M216).
     running = false
+    // A `Plan` or `Implement` press's command runs now when this end is its
+    // `/clear`, and any other end drops it (M221). The run is not awaited,
+    // so the session end does not wait on the command. It takes the next
+    // run number, so the `/clear` run that settles after this end does not
+    // free a press made while the command runs.
+    const queued = held
+    held = null
+    if (e.reason === 'clear' && queued !== null) void run($, queued.command, queued.args)
     return result
   })
 
@@ -533,6 +545,12 @@ async function openPane($) {
 let running = false
 let runs = 0
 
+// The command a `Plan` or `Implement` press holds from the press until the
+// next session end, which runs it when the end's reason is `clear` (M221).
+// While it is set, a press does nothing, as while a run is in flight. A
+// refused `/clear` drops it. A reload starts it over as null.
+let held: { command: string; args: string } | null = null
+
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
 // cairn skill that started since the drawing, or no next step, makes the
@@ -540,16 +558,32 @@ let runs = 0
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
 // planning with no arguments while nothing is workable (M213).
+// `Plan` and `Implement` run `/clear` first and hold the command for the
+// session end it brings (M221). The press is the person's consent to drop
+// the conversation, as a press of Clear is (M216).
 async function pressNext($, drawn: string | undefined) {
-  if (running || knownStep(await read($, step)) !== null) return
+  if (busy() || knownStep(await read($, step)) !== null) return
   const next = (await read($, pane)).next
   if (next === null) return
   if (next.id === null && drawn !== PLAN_LABEL) return
-  await run($, `cairn:${next.command.slice(1)}`, next.id ?? '')
+  const command = `cairn:${next.command.slice(1)}`
+  const args = next.id ?? ''
+  if (!CLEARS_FIRST.includes(next.action)) {
+    await run($, command, args)
+    return
+  }
+  const mine = { command, args }
+  held = mine
+  if (!(await run($, CLEAR_COMMAND, '')) && held === mine) held = null
+}
+
+// True while a run is in flight or a command waits for its `/clear`.
+function busy(): boolean {
+  return running || held !== null
 }
 
 async function pressStatus($) {
-  if (running || knownStep(await read($, step)) !== null) return
+  if (busy() || knownStep(await read($, step)) !== null) return
   await run($, STATUS_COMMAND, '')
 }
 
@@ -558,20 +592,21 @@ async function pressStatus($) {
 // press of a drawing made before a typed prompt, a skill, or a session end
 // cleared it does nothing (M216 review).
 async function pressClear($) {
-  if (running || knownStep(await read($, step)) !== null || !(await read($, ended))) return
+  if (busy() || knownStep(await read($, step)) !== null || !(await read($, ended))) return
   await run($, CLEAR_COMMAND, '')
 }
 
 // An action Button's command runs as if the person typed it (M212). A run
 // that rejects puts the command line after the prompt box's draft, so the
 // person can send it, and a toast says why and names the command line, for
-// a box that could not take it.
-async function run($, command: string, args: string) {
+// a box that could not take it. It answers false for a run that rejects.
+async function run($, command: string, args: string): Promise<boolean> {
   running = true
   runs += 1
   const mine = runs
   try {
     await $.command.run({ command, args })
+    return true
   } catch (error) {
     const text = args === '' ? `/${command}` : `/${command} ${args}`
     try {
@@ -585,6 +620,7 @@ async function run($, command: string, args: string) {
     } catch {
       // No toast shows; the press has nothing else to say.
     }
+    return false
   } finally {
     if (runs === mine) running = false
   }

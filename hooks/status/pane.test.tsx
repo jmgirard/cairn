@@ -137,6 +137,9 @@ function seat(on: On, copy: Copy) {
     if (copy.runHold !== undefined) await copy.runHold
     return { text: '' }
   })
+  // The session end a `/clear` brings, which runs the command a Plan or
+  // Implement press holds (M221).
+  on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
 }
 
 function textOf(node: unknown): string {
@@ -717,6 +720,18 @@ function runOf(name: string): { command: string; args: string } {
   return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '' }
 }
 
+// The next actions whose Button runs `/clear` first, and its command only
+// at the session end the clear brings (M221).
+const CLEARS_FIRST = ['implement', 'plan the next milestone']
+const CLEAR_END = { reason: 'clear', sessionId: 's1' } as const
+
+// Waits until `n` slash command runs reached beneath the mod, for at most
+// `tries` waits of 5 ms, and then once more, so the last run settles (M221).
+async function untilRuns(copy: Copy, n: number, tries = 200) {
+  for (let i = 0; i < tries && (copy.commands ?? []).length < n; i++) await new Promise(resolve => setTimeout(resolve, 5))
+  await new Promise(resolve => setTimeout(resolve, 5))
+}
+
 describe("the Next line carries the next step's Button (M218 AC1)", () => {
   test('the fixtures reach every action', () => {
     expect([...new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.action))].sort()).toEqual(Object.keys(ACTION_LABELS).sort())
@@ -795,7 +810,15 @@ describe("a press of the pane's Button runs the next command (M218 AC3)", () => 
         await $.turn.complete(turn())
         const ui = await mountPane($, surface)
         await ui.press({ key: PANE_NEXT })
-        expect(copy.commands).toEqual([runOf(name)])
+        // Plan and Implement run `/clear`, and their command at the clear's
+        // session end (M221).
+        if (CLEARS_FIRST.includes(FIXTURES[name].next?.action as string)) {
+          await $.session.end(CLEAR_END)
+          await untilRuns(copy, 2)
+          expect(copy.commands).toEqual([CLEAR_RUN, runOf(name)])
+        } else {
+          expect(copy.commands).toEqual([runOf(name)])
+        }
         await ui.unmount()
       })
     }
@@ -959,6 +982,42 @@ describe('a press of Status or Clear runs its command (M219 AC3)', () => {
       }
       await ui.unmount()
     })
+  }
+})
+
+// The pane fixtures whose next action is planning or implement (M221 AC1,
+// AC2).
+const PANE_CLEAR_FIRST = WITH_ROADMAP.filter(name => CLEARS_FIRST.includes(FIXTURES[name].next?.action as string))
+
+describe("the pane's Plan and Implement run /clear and then their command (M221 AC1, AC2)", () => {
+  test('the cases reach both actions', () => {
+    expect([...new Set(PANE_CLEAR_FIRST.map(name => FIXTURES[name].next?.action))].sort()).toEqual([...CLEARS_FIRST].sort())
+  })
+
+  for (const name of PANE_CLEAR_FIRST) {
+    for (const surface of SURFACES) {
+      test(`${name}: clear, no second press adds a run, then the command at the clear's end (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        // A skill that ended leaves Clear drawn too, so every action Button
+        // is pressed below.
+        await endSkill($)
+        const ui = await mountPane($, surface)
+        expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+        const [next] = await ui.findAll({ key: PANE_NEXT })
+        expect(next.props.label).toBe(ACTION_LABELS[FIXTURES[name].next?.action as string])
+        await ui.press({ key: PANE_NEXT })
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        for (const key of [PANE_NEXT, PANE_CLEAR, PANE_STATUS]) await ui.press({ key })
+        await untilRuns(copy, 2, 10)
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, runOf(name)])
+        await ui.unmount()
+      })
+    }
   }
 })
 

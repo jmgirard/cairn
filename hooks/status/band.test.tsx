@@ -2931,6 +2931,20 @@ function nextRun(name: string): { command: string; args: string } {
 }
 const STATUS_RUN = { command: 'cairn:milestone', args: '' }
 
+// The next actions whose Button runs `/clear` first, and its command only
+// at the session end the clear brings (M221).
+const CLEARS_FIRST = ['implement', 'plan the next milestone']
+
+// Waits until `n` slash command runs reached beneath the mod, for at most
+// `tries` waits of 5 ms, and then once more, so the last run settles (M221).
+async function untilRuns(copy: Copy, n: number, tries = 200) {
+  for (let i = 0; i < tries && (copy.commands ?? []).length < n; i++) await new Promise(resolve => setTimeout(resolve, 5))
+  await new Promise(resolve => setTimeout(resolve, 5))
+}
+
+// The session end a `/clear` brings.
+const CLEAR_END = { reason: 'clear', sessionId: 's1' } as const
+
 // The action Buttons' keys as drawn.
 async function actionKeys(ui: Ui): Promise<string[]> {
   return (await ui.findAll({ type: 'Button' })).map(keyOf).filter((k): k is string => ACTION_KEYS.includes(k ?? ''))
@@ -2960,9 +2974,16 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
         const [status] = await ui.findAll({ key: 'cairn-status' })
         expect([next.props.label, status.props.label]).toEqual([LABELS[FIXTURES[name].next?.action as string], 'Status'])
         await ui.press({ key: 'cairn-next' })
-        expect(copy.commands).toEqual([nextRun(name)])
+        // Implement runs `/clear` and then its command at the clear's
+        // session end (M221).
+        const runs = CLEARS_FIRST.includes(FIXTURES[name].next?.action as string) ? [CLEAR_RUN, nextRun(name)] : [nextRun(name)]
+        if (runs.length === 2) {
+          await $.session.end(CLEAR_END)
+          await untilRuns(copy, 2)
+        }
+        expect(copy.commands).toEqual(runs)
         await ui.press({ key: 'cairn-status' })
-        expect(copy.commands).toEqual([nextRun(name), STATUS_RUN])
+        expect(copy.commands).toEqual([...runs, STATUS_RUN])
         expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
         await ui.unmount()
       })
@@ -2985,9 +3006,12 @@ describe('the empty row carries Plan and Status, and a press runs planning (M213
         const [next] = await ui.findAll({ key: 'cairn-next' })
         expect([next.props.label, next.props.variant]).toEqual(['Plan', 'secondary'])
         await ui.press({ key: 'cairn-next' })
-        expect(copy.commands).toEqual([PLAN_RUN])
+        // Plan runs `/clear`, and planning at the clear's session end (M221).
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, PLAN_RUN])
         await ui.press({ key: 'cairn-status' })
-        expect(copy.commands).toEqual([PLAN_RUN, STATUS_RUN])
+        expect(copy.commands).toEqual([CLEAR_RUN, PLAN_RUN, STATUS_RUN])
         expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
         await ui.unmount()
       })
@@ -3011,16 +3035,17 @@ describe('the empty row carries Plan and Status, and a press runs planning (M213
       await ui.unmount()
     })
 
-    test(`a refused Plan run appends /cairn:milestone-plan to the prompt box and toasts (${surface})`, async ($, on) => {
+    // Plan's first run is `/clear` (M221), so a refusal names it.
+    test(`a refused Plan run appends /clear to the prompt box and toasts (${surface})`, async ($, on) => {
       const copy = copyOf('all-waiting')
       copy.runThrows = 'no such command here'
       seat(on, copy)
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
       await ui.press({ key: 'cairn-next' })
-      expect(copy.commands).toEqual([PLAN_RUN])
-      expect(copy.fills).toEqual([{ text: '/cairn:milestone-plan', mode: 'append' }])
-      expect(copy.toasts).toEqual([`cairn: ${NO_RUN} (/cairn:milestone-plan)`])
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      expect(copy.fills).toEqual([{ text: '/clear', mode: 'append' }])
+      expect(copy.toasts).toEqual([`cairn: ${NO_RUN} (/clear)`])
       await ui.unmount()
     })
 
@@ -3036,17 +3061,21 @@ describe('the empty row carries Plan and Status, and a press runs planning (M213
       const first = ui.press({ key: 'cairn-next' })
       try {
         for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
-        expect(copy.commands).toEqual([PLAN_RUN])
+        expect(copy.commands).toEqual([CLEAR_RUN])
         await ui.press({ key: 'cairn-next' })
         await ui.press({ key: 'cairn-status' })
-        expect(copy.commands).toEqual([PLAN_RUN])
+        expect(copy.commands).toEqual([CLEAR_RUN])
       } finally {
         release()
         await first
       }
+      // The clear's session end runs planning (M221), and with that run
+      // settled, a press runs again.
       copy.runHold = undefined
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
       await ui.press({ key: 'cairn-next' })
-      expect(copy.commands).toEqual([PLAN_RUN, PLAN_RUN])
+      expect(copy.commands).toEqual([CLEAR_RUN, PLAN_RUN, CLEAR_RUN])
       await ui.unmount()
     })
   }
@@ -3411,6 +3440,115 @@ describe('a press of Clear runs /clear (M216 AC3)', () => {
         releaseNew()
         await fresh
       }
+      await ui.unmount()
+    })
+  }
+})
+
+// The fixtures whose band Button is Plan, and those whose band Button is
+// Implement, with what each press runs after `/clear` (M221 AC1, AC2).
+const CLEAR_FIRST_CASES: { name: string; label: string; run: () => { command: string; args: string } }[] = [
+  ...EMPTY_FIXTURES.map(name => ({ name, label: 'Plan', run: () => PLAN_RUN })),
+  ...Object.keys(IDLE_DRAWN).map(name => ({ name, label: 'Implement', run: () => nextRun(name) })),
+]
+
+describe('Plan and Implement run /clear and then their command at its session end (M221 AC1, AC2)', () => {
+  test('the Implement runs name the idle row ids', () => {
+    expect(Object.keys(IDLE_DRAWN).map(name => [FIXTURES[name].next?.action, nextRun(name).args])).toEqual(
+      Object.keys(IDLE_DRAWN).map(name => ['implement', idleId(name)]),
+    )
+    expect(nextRun('no-active')).toEqual({ command: 'cairn:milestone-implement', args: 'M021' })
+  })
+
+  for (const { name, label, run } of CLEAR_FIRST_CASES) {
+    for (const surface of SURFACES) {
+      test(`${name}: ${label} runs clear, no second press adds a run, and the clear's end runs the command (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        // A skill that ended leaves Clear drawn too, so every action Button
+        // is pressed below.
+        await skillEnds($)
+        expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+        const [next] = await ui.findAll({ key: 'cairn-next' })
+        expect(next.props.label).toBe(label)
+        await ui.press({ key: 'cairn-next' })
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        for (const key of WITH_CLEAR) await ui.press({ key })
+        await untilRuns(copy, 2, 10)
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, run()])
+        expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+        await ui.unmount()
+      })
+    }
+  }
+})
+
+describe('a refused clear or another session end drops the held command (M221 AC4)', () => {
+  for (const name of ['all-waiting', 'no-active']) {
+    for (const surface of SURFACES) {
+      test(`${name}: a refused clear runs nothing at the clear's end, and names /clear (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        copy.runThrows = 'no such command here'
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        await ui.press({ key: 'cairn-next' })
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2, 10)
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        expect(copy.fills).toEqual([{ text: '/clear', mode: 'append' }])
+        expect(copy.toasts).toEqual([`cairn: ${NO_RUN} (/clear)`])
+        await ui.unmount()
+      })
+
+      test(`${name}: a resume's session end drops the command, so a later clear's end runs nothing (${surface})`, async ($, on) => {
+        const copy = copyOf(name)
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        await ui.press({ key: 'cairn-next' })
+        await $.session.end({ reason: 'resume', sessionId: 's1' })
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2, 10)
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+        await ui.unmount()
+      })
+    }
+  }
+
+  // The control: with neither, the same press's clear end runs the command,
+  // so the two cases above run nothing for the reason they name.
+  test('the control: the same press with neither runs the command', async ($, on) => {
+    const copy = copyOf('no-active')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: SURFACES[0], ...BAND })) as Ui
+    await ui.press({ key: 'cairn-next' })
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN, nextRun('no-active')])
+    await ui.unmount()
+  })
+})
+
+describe('a Clear press runs only clear, at its session end too (M221 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`Clear, then the clear's session end (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await skillEnds($)
+      await ui.press({ key: CLEAR_KEY })
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
       await ui.unmount()
     })
   }
