@@ -9,6 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M222 | The cairn pane stays open across /clear | planned | — | normal | milestones/M222-pane-across-clear.md |
 | M221 | Plan and Implement clear the conversation first | done | — | normal | milestones/archive/M221-clear-then-run.md |
 ## Candidates
 
