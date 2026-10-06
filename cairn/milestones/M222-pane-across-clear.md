@@ -1,6 +1,6 @@
 # M222: The cairn pane stays open across /clear
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
