@@ -395,23 +395,26 @@ within each type and are never reused.
   corrected M163.)
 - Single-author, single-environment: every workflow has been exercised only
   by the author, on macOS + Claude Code with the full model roster. The first
-  external-repo pass ran at M163 (corrected M163) — `/cairn-init`'s migration
-  path plus a full milestone loop on bsync, an r-package repo with a
-  precursor tracking system, solo-driven with a 4-entry friction ledger — so
-  "only on repos shaped around cairn's assumptions" no longer holds (bsync
-  is the same author's repo, so the single-author claim itself stands); what
-  remains unrun is a second person driving an adoption (author-blind
-  friction; ROADMAP candidate) and any non-macOS environment. The supported collaboration
-  model — one operator per repo, in owner mode or in guest mode (D-137),
-  contributions from people who do not run cairn — and the enforcement
-  boundary it implies are stated in the rulebook's "Git and approval model"
-  and "Collaboration mode" (D-043, M72, M184); two concurrent cairn
-  operators remain unsupported (ROADMAP candidate).
+  external-repo pass ran at M163 on bsync, the same author's r-package repo
+  (corrected M163). Unrun: a second person driving an adoption and any
+  non-macOS environment. Two concurrent cairn operators are unsupported. Both
+  gaps are ROADMAP candidates. The rulebook's "Git and approval model" and
+  "Collaboration mode" state the supported model (D-043, D-137).
 - Hooks are unverified on Windows: stock Windows lacks `python3` on PATH (it
   is `py`/`python`), so `hooks.json` chains a best-effort `py -3` launcher
   fallback after each `python3` invocation (M61) — a no-op on macOS/Linux
   (every hook exits 0 and denies via JSON stdout), but no Windows run has
   verified it.
+- The claude-plugin profile has gaps found at the M192 and M215 reviews,
+  with no fix planned. The release walk bumps every plugin to one version
+  and one `v<version>` tag, and cannot bump an entry whose `source` is
+  another repo. A plugin with no `plugin.json`, or one only in a subfolder
+  with no root marketplace, is neither validated nor detected. The verify
+  commands and binary paths are POSIX and macOS only. The test-doctrine
+  names the lowest Claude Code version the mod supports as a dependency,
+  but cairn's own repo states no such version. If an adopter's real plugin
+  repo hits one, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-06; added 2026-10-01 — M192 review (R10), M215 review.
 - Conduct rules (question gates, phase closes, chapter markers, AC fencing)
   are enforced as prose: since M144 the prose-guard tests are retained but
   hand-run and gate nothing (D-109), so wording drift is caught by PR diff
