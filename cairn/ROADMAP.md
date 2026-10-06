@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-06 (status pass after M222 T6: validate green, no inbox items, orphans, or outside merges, byte and module budgets met)_
+_Last hygiene check: 2026-10-06 (M222 merged as PR #229: validate green, byte budgets met, no lesson added (DESIGN holds the clear facts), doctrine modules untouched, prose guards green)_
 
 ## Milestones
 
@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M222 | The cairn pane stays open across /clear | review | — | normal | milestones/M222-pane-across-clear.md |
+| M222 | The cairn pane stays open across /clear | done | — | normal | milestones/archive/M222-pane-across-clear.md |
 | M221 | Plan and Implement clear the conversation first | done | — | normal | milestones/archive/M221-clear-then-run.md |
 ## Candidates
 
