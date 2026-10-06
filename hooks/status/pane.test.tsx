@@ -699,7 +699,7 @@ describe("the band's open button opens the pane (M205 AC4)", () => {
 // one fixture of each action, written out by hand.
 const PANE_NEXT = 'cairn-pane-next'
 const ACTION_LABELS: Record<string, string> = {
-  implement: 'Start',
+  implement: 'Implement',
   resume: 'Resume',
   review: 'Review',
   'plan the next milestone': 'Plan',

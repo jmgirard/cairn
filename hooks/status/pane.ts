@@ -53,7 +53,7 @@ export const PLAN_LABEL = 'Plan'
 export const NEXT_LABELS: Record<string, string> = {
   review: 'Review',
   resume: 'Resume',
-  implement: 'Start',
+  implement: 'Implement',
   'plan the next milestone': PLAN_LABEL,
 }
 

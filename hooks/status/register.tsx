@@ -534,7 +534,7 @@ let runs = 0
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
 // cairn skill that started since the drawing, or no next step, makes the
-// press do nothing. A Button drawn for a milestone (`Start`, `Resume`,
+// press do nothing. A Button drawn for a milestone (`Implement`, `Resume`,
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
 // planning with no arguments while nothing is workable (M213).

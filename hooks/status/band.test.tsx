@@ -431,13 +431,13 @@ const SHOWN: Record<string, string> = {
 const MIXED_REVIEW = DRAWN.mixed[0]
 
 // Each idle row at 120 columns, written out by hand (M199 AC1, M206 AC4):
-// the id and the title, then the track and the command.
+// the id and the title, then the track. The row draws no command (M220).
 const IDLE_DRAWN: Record<string, string> = {
-  candidates: 'M031 Next up  [track] /milestone-implement M031',
-  'idle-deps': 'M040 Met by a done row and an archive file at another padding  [track] /milestone-implement M040',
-  'idle-order': 'M500 Priority in mixed case  [track] /milestone-implement M500',
-  'no-active': 'M021 Waiting to start  [track] /milestone-implement M021',
-  'repo-at-cut': 'M191 Milestone status band, a Claude Code mod inside the cairn plugin  [track] /milestone-implement M191',
+  candidates: 'M031 Next up  [track]',
+  'idle-deps': 'M040 Met by a done row and an archive file at another padding  [track]',
+  'idle-order': 'M500 Priority in mixed case  [track]',
+  'no-active': 'M021 Waiting to start  [track]',
+  'repo-at-cut': 'M191 Milestone status band, a Claude Code mod inside the cairn plugin  [track]',
 }
 
 // The id of the row the band shows on a fixture, read from the fixture's
@@ -1691,7 +1691,7 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
   })
 
   for (const [name, text] of Object.entries(IDLE_DRAWN)) {
-    test(`${name}: the idle row with its track and command at 120 columns`, async ($, on) => {
+    test(`${name}: the idle row with its track and the Implement Button at 120 columns (M220 AC1)`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       await mountEach(
@@ -1699,13 +1699,17 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
         BAND,
         async ui => {
           expect(await lines(ui)).toEqual([text, ENGINE])
+          expect(textOf(await firstRow(ui))).not.toContain('/milestone-implement')
+          expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+          const [next] = await ui.findAll({ key: 'cairn-next' })
+          expect(next.props.label).toBe('Implement')
           await closesFirst(ui, name, actsAt120(name))
         },
         $,
       )
     })
 
-    test(`${name}: the idle row leaves its track and command out at 40 columns`, async ($, on) => {
+    test(`${name}: at 40 columns the idle row keeps its track, with no command and no action Buttons (M220)`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       const id = idleId(name) as string
@@ -1716,7 +1720,8 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
           const [row] = await lines(ui)
           expect(row.startsWith(`${id} `)).toBe(true)
           expect(row).not.toContain('/milestone-implement')
-          expect(row).not.toContain(TRACK)
+          expect(row.endsWith(TRACK)).toBe(true)
+          expect(await actionKeys(ui)).toEqual([])
           await closesFirst(ui, name)
         },
         $,
@@ -1724,20 +1729,41 @@ describe('the idle row names the next workable milestone (M199 AC1)', () => {
     })
   }
 
-  test('the track and the command stay while the title keeps its room, and go at one column less', () => {
-    // The head `M001 ` takes 5 columns, the gap 2, the space and the command
-    // 26, the least track 12, and the close gap and label 3.
+  test('the track stays while the title keeps its room, and goes at one column less (M220)', () => {
+    // The head `M001 ` takes 5 columns, the gap 2, the least track 12, and
+    // the close gap and label 3. The row draws no command.
     const short = { id: 'M001', title: 'Go' }
-    expect(lineText(idleLines(short, 50, 3)[0])).toBe('M001 Go  [track 12] /milestone-implement M001')
-    expect(lineText(idleLines(short, 49, 3)[0])).toBe('M001 Go  /milestone-implement M001')
-    expect(lineText(idleLines(short, 37, 3)[0])).toBe('M001 Go  /milestone-implement M001')
-    expect(lineText(idleLines(short, 36, 3)[0])).toBe('M001 Go')
+    expect(lineText(idleLines(short, 24, 3)[0])).toBe('M001 Go  [track 12]')
+    expect(lineText(idleLines(short, 23, 3)[0])).toBe('M001 Go')
     const long = { id: 'M001', title: 'A title well over ten columns' }
-    expect(lineText(idleLines(long, 58, 3)[0])).toBe('M001 A title well over ten columns  [track 12] /milestone-implement M001')
-    expect(lineText(idleLines(long, 57, 3)[0])).toBe('M001 A title well over ten columns  /milestone-implement M001')
-    expect(lineText(idleLines(long, 45, 3)[0])).toBe('M001 A title well over ten columns  /milestone-implement M001')
-    expect(lineText(idleLines(long, 44, 3)[0])).toBe('M001 A title well over ten columns')
+    expect(lineText(idleLines(long, 32, 3)[0])).toBe('M001 A title well over ten columns  [track 12]')
+    expect(lineText(idleLines(long, 31, 3)[0])).toBe('M001 A title well over ten columns')
+    for (const line of [...idleLines(short, 120, 3), ...idleLines(short, 10, 3)]) expect(line.tail).toEqual([])
   })
+
+  for (const surface of SURFACES) {
+    test(`no-active: a cairn skill's step, a working turn, and 50 columns each leave no Implement Button and no command (M220 AC3, ${surface})`, async ($, on) => {
+      seat(on, copyOf('no-active'))
+      await $.turn.complete(turn())
+      const bare = async (ui: Ui) => {
+        expect(await rowKeys(ui)).toEqual(['idle-row'])
+        expect(await ui.findAll({ key: 'cairn-next' })).toEqual([])
+        expect(textOf(await firstRow(ui))).not.toContain('/milestone-implement')
+      }
+      const working = { ...BAND, props: { ...BAND.props, isWorking: true } }
+      const busy = (await $.ui.mount({ plugin: 'cairn', surface, ...working })) as Ui
+      await bare(busy)
+      await busy.unmount()
+      const narrow = (await $.ui.mount({ plugin: 'cairn', surface, ...at(50) })) as Ui
+      await bare(narrow)
+      await narrow.unmount()
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      expect(await actionKeys(ui)).toEqual(ACTION_KEYS)
+      await prompt($, 'milestone')
+      await bare(ui)
+      await ui.unmount()
+    })
+  }
 
   test('with nothing active or workable, a found ROADMAP gives the empty row and none gives nothing (M213 AC1)', () => {
     expect(stepLines([], null, 120, 5, [], true).map(lineText)).toEqual(['No milestone ready'])
@@ -2044,7 +2070,7 @@ describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
             for (const span of spans) if (span !== pill[0]) expect([span.text, span.backgroundColor]).toEqual([span.text, GROUND])
             expect(spans.reduce((n, s) => n + cols(s.text), 0)).toBe(52)
           }
-          expect(rightText(right).trim()).toBe(`${TRACK} /milestone-implement M021`)
+          expect(rightText(right).trim()).toBe(TRACK)
         },
         $,
       )
@@ -2582,7 +2608,7 @@ describe("a press stores the idle row's id (M199 AC4)", () => {
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
     await ui.press({ key: 'cairn-close' })
     await IDLE_CLOSES[2].change($, copy.files)
-    expect(await lines(ui)).toEqual(['M022 Jumps the queue  [track] /milestone-implement M022', ENGINE])
+    expect(await lines(ui)).toEqual(['M022 Jumps the queue  [track]', ENGINE])
     await ui.unmount()
   })
 })
@@ -2689,7 +2715,7 @@ function expectedFlow(name: string, skill: string | null): Expected | null {
   if (id === null) {
     const idle = idleId(name)
     if (idle === null) return null
-    return { pill: 'Planned', short: 'Planned', index: 0, fill: 1, items: 0, checked: 0, color: BLUE, alt: ['plan'], right: `/milestone-implement ${idle}` }
+    return { pill: 'Planned', short: 'Planned', index: 0, fill: 1, items: 0, checked: 0, color: BLUE, alt: ['plan'], right: '' }
   }
   const row = rowOf(name, id)
   if (row.tasksTotal === null || row.criteriaTotal === null) return null
@@ -2787,11 +2813,11 @@ describe('the desktop draws the track as an Svg, and the terminal as braille (M2
         // The alt begins with the phase, then names the counts and percent.
         expect(alt.startsWith(`${want.alt[0]} `) || alt === want.alt[0]).toBe(true)
         for (const part of want.alt.slice(1)) expect([part, alt.includes(part)]).toEqual([part, true])
-        // The right group: the track, then the percent or the idle command,
-        // then the dim close button.
+        // The right group: the track, then the percent (none on the idle
+        // row, M220), then the dim close button.
         const right = kids(await firstRow(ui))[1]
         expect(kids(right)[0].type).toBe('Svg')
-        expect(rightText(right).trim()).toBe(`${TRACK} ${want.right}`)
+        expect(rightText(right).trim()).toBe(`${TRACK} ${want.right}`.trim())
         const button = await closeButton(ui)
         expect([button.props.label, button.props.dimColor]).toEqual(['✕', true])
         // The terminal's track: braille cells on the ground, and the pill in
@@ -2913,10 +2939,10 @@ async function actionKeys(ui: Ui): Promise<string[]> {
 const PRESSED = ['single-in-progress', 'states-review', 'idle-order', 'mixed']
 // The next-step Button's label by the next step's action, written out by
 // hand.
-const LABELS: Record<string, string> = { resume: 'Resume', review: 'Review', implement: 'Start' }
+const LABELS: Record<string, string> = { resume: 'Resume', review: 'Review', implement: 'Implement' }
 
 describe('the next-step and status Buttons run their commands (M212 AC1)', () => {
-  test('the pressed fixtures cover resume, review, and start, and a band row that is not the next step', () => {
+  test('the pressed fixtures cover resume, review, and implement, and a band row that is not the next step', () => {
     expect(PRESSED.map(name => FIXTURES[name].next?.action)).toEqual(['resume', 'review', 'implement', 'review'])
     // On mixed the band shows M012 and the next step names M010.
     expect([shownId('mixed'), FIXTURES.mixed.next?.id]).toEqual(['M012', 'M010'])

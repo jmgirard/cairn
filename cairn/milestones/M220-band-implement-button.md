@@ -1,13 +1,13 @@
 # M220: An Implement button in place of the idle row's command
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the status band and pane ship to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m220-band-implement-button
 
 ## Goal
 
@@ -70,14 +70,14 @@ follow-ons (M212, M213 review)" cover it.
 
 ## Tasks
 
-- [ ] T1: Write the AC1 to AC3 tests first. Change the tests that expect the
+- [x] T1: Write the AC1 to AC3 tests first. Change the tests that expect the
       command text or `Start`: `IDLE_DRAWN` (`band.test.tsx:435-441`), the
       200-column idle test (`band.test.tsx:2019-2047`), the line at
       `band.test.tsx:2585`, `expectedFlow`'s `right`
       (`band.test.tsx:2692`), the `idleLines` width tests
       (`band.test.tsx:1731-1738`), `LABELS` (`band.test.tsx:2916`), and
       `ACTION_LABELS` (`pane.test.tsx:702`).
-- [ ] T2: In `band.ts`, make `idleLines` return the track alone where it has
+- [x] T2: In `band.ts`, make `idleLines` return the track alone where it has
       room and an empty tail otherwise (`band.ts:245-256`). In `pane.ts`,
       set `NEXT_LABELS.implement` to `Implement`. Check that `actionsFit` and
       the row loop in `register.tsx:366-392` still read the idle line
@@ -101,3 +101,5 @@ follow-ons (M212, M213 review)" cover it.
 - 2026-10-06: question set: live look — the operator will look in a fresh session in another cairn repo before review. The operator can stop the run it starts.
 - 2026-10-06: plan gate chose one shared label map over a band-only label because the band and pane share it since M218; falsified by a pane reader who needs `Start` there.
 - 2026-10-06: plan gate chose no fallback text over keeping the command when the Buttons hide, at the operator's choice; falsified by a session where the next step is hard to find mid-turn.
+- 2026-10-06: implement started on m220-band-implement-button. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
+- 2026-10-06: T1, T2: the tests changed first (57 red), then `idleLines` dropped the command and `NEXT_LABELS.implement` became `Implement`. With the command's 26 columns free, the track now stays at 40 columns, so the M199 40-column test now asserts the track and no action Buttons. The `idleLines` width test covers where the track goes. Mod tests 1246 pass.

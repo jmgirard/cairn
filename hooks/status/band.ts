@@ -9,7 +9,7 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // runs, and with none workable, the empty row where a ROADMAP is found
 // (M213). A milestone or idle row's left side is the bold id and the
 // title, and the empty row's is its text alone. Its right side is the
-// flow track and its percent, the idle row's track and command, or a
+// flow track and its percent, the idle row's track alone (M220), or a
 // warning label for a row whose counts cannot be read, and on the empty
 // row nothing but the Buttons register.tsx adds. The track draws as
 // an image on the desktop and as braille cells in the terminal (track.ts),
@@ -242,17 +242,16 @@ function trackColumns(left: number): number {
 const SPACE: Span = { text: ' ' }
 
 // The idle row: the bold id and the title, and on the right the track
-// (plan full) and the command that starts the milestone. Where the row
-// leaves the track too little room, the track goes, and then the command.
+// (plan full). Where the row leaves the track too little room, the track
+// goes. The row draws no command: the `Implement` Button register.tsx adds
+// starts the milestone (M220).
 export function idleLines(next: WorkableRow, columns: number, close = 0): BandLine[] {
   const line = { key: 'idle-row', id: next.id, title: next.title }
-  const command: Span = { text: `/milestone-implement ${next.id}`, color: GRAY }
-  const withTrack = [SPACE, command]
-  const left = room(columns, close, line, withTrack)
+  const left = room(columns, close, line, [])
   if (left >= MIN_TRACK_COLUMNS) {
-    return [{ ...line, tail: withTrack, track: { flow: idleFlow(), columns: trackColumns(left) } }]
+    return [{ ...line, tail: [], track: { flow: idleFlow(), columns: trackColumns(left) } }]
   }
-  return [{ ...line, tail: room(columns, close, line, [command]) >= 0 ? [command] : [] }]
+  return [{ ...line, tail: [] }]
 }
 
 // The empty row's key and text (M213).
