@@ -4,6 +4,12 @@
 
 ### New
 
+- **Plan and Implement clear the conversation first.** A press of `Plan`
+  or `Implement`, on the band or in the pane, runs `/clear` and then its
+  command in the cleared conversation. The press does not ask first. If
+  the session refuses `/clear`, the command does not run, and `/clear` goes
+  into the prompt box with a toast. `Resume`, `Review`, `Status`, and
+  `Clear` still run their one command.
 - **An Implement button on the band's idle row.** The idle row no longer
   draws `/milestone-implement <id>` as text. Its next-step button, which
   read `Start`, now reads `Implement`, and a press runs that command. The

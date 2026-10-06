@@ -105,7 +105,7 @@ returns to `planned` for a re-cut.
       command for `Plan` and `Implement`, by the way T1 found. Keep the
       guards of `running`, the step, and `ended`, so a second press adds
       nothing.
-- [ ] T4: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the
+- [x] T4: Update README.md, `cairn/DESIGN.md`, CHANGELOG.md, and the
       `register.tsx` comments.
 - [ ] T5: Live look (AC5): in a fresh Code session in ackwards (empty row),
       the operator presses `Plan`. In a fresh session in openac (idle row,
@@ -130,3 +130,4 @@ returns to `planned` for a re-cut.
 - 2026-10-06: T1 done. The operator pressed both probe Buttons, and each cleared the conversation and then ran `/cairn:milestone` in it. B showed its run after a short delay. The log shows that `session.end` with reason `clear` arrives before the `clear` run resolves, in A as in B. Chose the held-command way (B, with the `clear` run still awaited for its refusal), because AC4's stale-command case holds only when the command waits for the clear's session end. In the test harness a run resolves at once, so the await way runs the command before any session end. The probe mod is removed.
 - 2026-10-06: T2 done. The band tests gain the M221 AC1 to AC4 cases. The pane harness gains a `session.end` hook and the AC1 and AC2 cases. AC4 is band only, so the pane harness needs no `runThrows`. The M212 AC1 Implement case, the M213 Plan cases, and the M218 AC3 Implement and Plan cases now expect `clear` first. Before T3, 51 tests failed, and each was a changed or new M221 case.
 - 2026-10-06: T3 done. For `implement` and `plan the next milestone`, `pressNext` holds the command and runs `clear`. If that run rejects, the press drops the held command. At a session end with reason `clear`, the `session.end` hook runs the held command unawaited. Any other session end drops it. While a command is held, the action Buttons do nothing, as during a run in flight. All 1287 mod tests pass. Two planted defects failed 32 of the new cases: a held command run at each session end, and a press guard that ignores a held command.
+- 2026-10-06: T4 done. README (idle row, empty row, pane), DESIGN (the band paragraph and the module list), CHANGELOG (Unreleased, New), and the `register.tsx` header say that `Plan` and `Implement` run `/clear` first. The README and DESIGN text state the consent point. The plugin install is a symlink to this checkout, so a fresh session loads the branch's mod for T5. ackwards recommends planning and openac recommends `implement M21`, as T5 needs.
