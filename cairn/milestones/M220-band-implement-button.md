@@ -32,32 +32,32 @@ follow-ons (M212, M213 review)" cover it.
 
 ## Acceptance criteria
 
-- [ ] AC1: For each fixture that the idle-domain check at
+- [x] AC1: For each fixture that the idle-domain check at
       `band.test.tsx:1688-1690` lists, on the terminal and desktop surfaces,
       at a band width of 120 columns with no cairn skill's step set and no
       turn working, the row draws a Button with key `cairn-next` and label
       `Implement`, then a Button with key `cairn-status`, and no text that
       reads `/milestone-implement`. Mod tests assert the Button keys, the
       label, and the absent text.
-- [ ] AC2: While the pane's Next Button shows, it reads `Implement` on every
+- [x] AC2: While the pane's Next Button shows, it reads `Implement` on every
       `WITH_ROADMAP` fixture whose next action is `implement`. The M218 pane
       test's `ACTION_LABELS` map, and the band test's `LABELS` map, map
       `implement` to `Implement`.
-- [ ] AC3: For the `no-active` fixture, on the terminal and desktop
+- [x] AC3: For the `no-active` fixture, on the terminal and desktop
       surfaces, in three cases the idle row draws no `cairn-next` Button and
       no text that reads `/milestone-implement`: while a cairn skill's step is
       set, while a turn is working (`isWorking: true`), and at a band width of
       50 columns. Mod tests assert the three cases.
-- [ ] AC4: At a live look in the desktop app, in a fresh Code session in a
+- [x] AC4: At a live look in the desktop app, in a fresh Code session in a
       cairn repo other than this one, with a workable planned milestone and
       no active one, the operator sees the idle row's `Implement` Button with
       no command text beside it. The operator presses it and sees
       `/cairn:milestone-implement <id>` start for that milestone. The operator can
       then stop the run, and accepts the look.
-- [ ] AC5: README.md and `cairn/DESIGN.md` describe the idle row's
+- [x] AC5: README.md and `cairn/DESIGN.md` describe the idle row's
       `Implement` Button, and neither file says that the idle row draws the
       command. CHANGELOG.md's unreleased section has an entry for it.
-- [ ] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -109,3 +109,17 @@ follow-ons (M212, M213 review)" cover it.
 - 2026-10-06: T4 live look (openac, M21): the operator pressed Implement, `/cairn:milestone-implement M21` ran, and the row showed no command text. The agent reads this report as the operator's acceptance of the look.
 - 2026-10-06: T5: all five verify commands exit 0 (scripts and hooks suites OK, both validates pass, mod tests 1246 pass).
 - 2026-10-06: the operator approved deleting the M217 done row (its file is archived), which brings the ROADMAP under its line cap. Status set to review.
+- 2026-10-06: review started on route (d): no PR yet, main unmoved since the branch was cut.
+
+## Review
+
+Evidence (2026-10-06, review head before fix-now commits; mod tests 1246 pass, 0 fail):
+
+- AC1: the five `the idle row with its track and the Implement Button at 120 columns (M220 AC1)` tests pass, one per fixture in `IDLE_DRAWN`. The idle-domain check (`the hand-written idle rows cover every fixture that draws one`) passes. Each test mounts terminal and desktop, asserts action keys `cairn-next`, `cairn-status`, label `Implement`, and no `/milestone-implement` text.
+- AC2: the M218 AC1 tests (42 pass) read `ACTION_LABELS`, which maps `implement` to `Implement` (`pane.test.tsx:702`). `the fixtures reach every action` checks `nextLabel` against the map, and the per-fixture tests check the drawn label. The band's `LABELS` map reads `Implement`, and its 8 `each press runs its command` tests pass.
+- AC3: both `no-active: a cairn skill's step, a working turn, and 50 columns each leave no Implement Button and no command (M220 AC3, terminal|desktop)` tests pass.
+- AC4: the work log records the operator's openac look: the Buttons showed, the press ran `/cairn:milestone-implement M21`, and the row had no command text.
+- AC5: README.md:182 and DESIGN.md:158-159 describe the `Implement` Button. A grep for the idle command block, `track and command`, and `` `Start` `` in README.md and DESIGN.md finds nothing. CHANGELOG.md's Unreleased New section opens with the entry.
+- AC6: scripts suite OK (397, 21 skipped), hooks suite OK, both `claude plugin validate` exit 0, mod tests exit 0.
+
+Gate: `cairn_validate` exit 0. Marketplace validate prints no `plugins[N].version` warning. The CHANGELOG entry carries no milestone number.

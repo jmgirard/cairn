@@ -364,7 +364,8 @@ export const register: Register = on => {
     // The next-step and status Buttons (M212) show while no cairn skill's
     // step is set and no turn is working, on a row that has room for them
     // (band.ts `actionsFit`). The track gives up columns to them; without
-    // them the row draws as it did before M212. The next step is the
+    // them the row draws its track or label alone, and the idle row draws
+    // no command in their place (M220). The next step is the
     // pane's: a milestone's step on a milestone or idle row, and planning
     // on the empty row (M213).
     const nextLabel = nextStep == null ? undefined : labelOf(nextStep.action)
