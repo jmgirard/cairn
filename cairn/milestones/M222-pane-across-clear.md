@@ -87,7 +87,7 @@ declined a terminal live look.
 
 ## Tasks
 
-- [ ] T1: Probe. Write the logging mod `cairn-probe` in the session's
+- [x] T1: Probe. Write the logging mod `cairn-probe` in the session's
       hot-reload folder, with a pane and the three ways the Scope names.
       Its log goes to a file in `.git/info/exclude` (LESSONS M201, M205).
       The operator enables hot reload, opens the probe pane, and runs a
@@ -125,6 +125,7 @@ declined a terminal live look.
 - 2026-10-06: T1 second clear (typed `/clear`, mode `after`, 106 columns): the end again had reason `other`, and the next process (`5o1m`) got `classic.SessionStart` with source `startup`, not `clear`. Its opens at `session.start` and at the first band render both returned `isPlaced: true`, and `$.ui.panes()` listed the probe pane as shown, with no `ui.close` logged. The operator reported that the pane was gone after the clear. The app's layout still listed a `plugin` pane open beside `tasks` and `terminal`, so the open may land behind a tab or undrawn. The operator's look at that tab decides the next step.
 - 2026-10-06: T1 operator look: the probe pane was in the plugin tab, but it appeared only after the operator's first message following the clear. The log agrees: each new process started when that message was sent (first clear 4 min after the end, second clear 14 s after it), and `prompt.submit` followed `session.start` by 0.3 s. So the desktop app starts the next process only at the next message, and between the clear and that message no process exists to open the pane. Mode `after` reopens the pane at that start, which is the earliest point the mod can reach.
 - 2026-10-06: stop answered: the operator chose to narrow the Goal and AC4 to a pane that is open again when the next session starts (in the desktop app, at the first message after the clear), and to continue. Proposed Goal: "A cairn pane that is open when the conversation is cleared is open again when the next session starts, which in the desktop app is at the first message after the clear." Proposed AC4 clause: "each leave the pane shown after the first message that follows the clear." The amendment waits for T1's Clear Button press, because a typed `/clear` ended with reason `other`, which AC3 says must not reopen the pane, and M221's held run relies on a press giving reason `clear`. The amended criteria must say how a typed `/clear` is told apart from the other ends, and they get the fresh-Opus re-audit before they are written.
+- 2026-10-06: T1 Clear Button press (pane's Clear, mode `after`, 106 columns): the end came with reason `clear` in the same process (`5o1m`), then `classic.SessionStart` with source `clear` 0.1 s later. No `ui.close` was logged, and `$.ui.panes()` listed the probe pane as shown right after `next(e)`, before mode `after` reopened it 7 ms later. The operator saw the pane stay. So an in-process clear does not close a mod pane, and `register.tsx` does not close its pane at `session.end`. Only a typed `/clear` loses the pane, because the desktop app ends that process with reason `other` and starts a new one at the next message. T1 is done: close origin none, kept by doing nothing for a press, reopened at the next `session.start` for a typed `/clear`, at 106 columns.
 
 ## Decisions
 
