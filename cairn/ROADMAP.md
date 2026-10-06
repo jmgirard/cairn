@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-06 (status pass during M222 T5: validate green, no inbox items, orphans, or outside merges, byte and module budgets met)_
+_Last hygiene check: 2026-10-06 (status pass after M222 T6: validate green, no inbox items, orphans, or outside merges, byte and module budgets met)_
 
 ## Milestones
 
