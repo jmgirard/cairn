@@ -125,7 +125,7 @@ declined a terminal live look.
       `session.start`, open the pane when that cwd's flag is set, and clear
       the flag. Keep the M221 held-run code in the `session.end` hook. A
       reopen that is not placed waits with no toast. Run `verify`.
-- [ ] T4: Describe the change, and that an `other` end such as an app quit
+- [x] T4: Describe the change, and that an `other` end such as an app quit
       also brings the pane back, in README.md, in `cairn/DESIGN.md` near the
       M219 pane text, and in CHANGELOG.md's Unreleased section. Run
       `verify`.
@@ -163,6 +163,7 @@ declined a terminal live look.
 - 2026-10-06: stop answered: the second reader's narrowings to AC1, AC4, and AC7 went to the operator as the repeat-churn stop, and the operator accepted them as shown.
 - 2026-10-06: T2 added 11 cases in `pane.test.tsx` with `mock.store(on)` and a `panesOf` helper that both the `ui.panes` stub and the cases read, since the test-side `$` has no `$.ui.panes()`. Against the old `register.tsx`, the AC7 same-cwd case and the once-only case failed, and the other 9 passed. The another-cwd case uses `/sub`, which still finds the fixture's ROADMAP, so only the cwd key keeps the pane closed.
 - 2026-10-06: T3 chose a store key `reopen` holding a list of cwds, marked before `next(e)` at an `other` end when the pane is listed, shown, and placed, and read at `session.start` after the refresh. The start clears its cwd's mark and opens only when the refresh found a ROADMAP. Store and pane failures are caught, because the band and the other suites do not answer `$.store`. verify: 1302 mod tests pass, both unittest suites and both validates exit 0.
+- 2026-10-06: T4 added the reopen to README.md's pane section, to `cairn/DESIGN.md` after the M219 pane text and in the `hooks/status/` component line, and to a new Unreleased section in CHANGELOG.md, since 2.0.0 was cut today. Each names the app-quit cost and the desktop app as the surface checked live. verify: all five commands exit 0.
 
 ## Decisions
 

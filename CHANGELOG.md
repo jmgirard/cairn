@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### New
+
+- **The cairn pane comes back after `/clear`.** A cairn pane that is open
+  at a `/clear` is open again after it. A press of a Clear, `Plan`, or
+  `Implement` Button keeps the pane. After a typed `/clear` in the desktop
+  app, the pane opens again at your next message, in the same folder. An
+  app quit or a closed terminal also brings the pane back at the next
+  session in that folder. The desktop app is the surface checked live.
+
 ## 2.0.0 (2026-10-06)
 
 ### Changes that affect existing repos
