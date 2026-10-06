@@ -16,7 +16,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // and when a step ends. The row is the bold id and the title, then the flow
 // track and its percent (band.ts picks the row and its widths). With no
 // active milestone, an idle row names the next workable planned milestone,
-// and with none workable, a found ROADMAP draws the empty row (M213).
+// and its `Implement` Button, not a command, starts it (M220). With none
+// workable, a found ROADMAP draws the empty row (M213).
 // The track draws as an `Svg` on the desktop and as braille cells in the
 // terminal (track.ts). The running cairn skill draws nothing of its own:
 // /milestone-review picks the row it shows. A skill's step
@@ -364,7 +365,8 @@ export const register: Register = on => {
     // The next-step and status Buttons (M212) show while no cairn skill's
     // step is set and no turn is working, on a row that has room for them
     // (band.ts `actionsFit`). The track gives up columns to them; without
-    // them the row draws as it did before M212. The next step is the
+    // them the row draws its track or label alone, and the idle row draws
+    // no command in their place (M220). The next step is the
     // pane's: a milestone's step on a milestone or idle row, and planning
     // on the empty row (M213).
     const nextLabel = nextStep == null ? undefined : labelOf(nextStep.action)
@@ -534,7 +536,7 @@ let runs = 0
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
 // cairn skill that started since the drawing, or no next step, makes the
-// press do nothing. A Button drawn for a milestone (`Start`, `Resume`,
+// press do nothing. A Button drawn for a milestone (`Implement`, `Resume`,
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
 // planning with no arguments while nothing is workable (M213).

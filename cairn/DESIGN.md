@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -80,7 +80,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   gives no sign of the others. The row sits above what the hooks beneath
   draw, and the band blocks nothing. A row has a left group (the bold id,
   one space, and the title) and a right group: the flow track and its
-  percent, the idle row's track and command, or a `warning` label for a
+  percent, the idle row's track alone, or a `warning` label for a
   row whose counts cannot be read (M206). The empty row (M213) has no id,
   so its left group is the title alone, and its right group only the
   buttons. The phase or skill label, the
@@ -155,11 +155,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   event carries no agent id, so a subagent that loads a cairn skill sets it
   too. With no active milestone, whether or not a skill runs, an idle row
   names the first row of the workable list: the bold id and the title, a
-  track with plan full and the pill `Planned`, and
-  `/milestone-implement <id>`. A narrow row drops the track, then the
-  command. The workable list is the `planned` rows
-  whose dependencies are all done, by priority and then id, as `workable` in
-  `scripts/cairn_next.py` computes it. A done id is a `done` row or an
+  track with plan full and the pill `Planned`, and no command (M220): its
+  `Implement` Button starts the milestone. A narrow row drops the track.
+  The workable list is the `planned` rows whose dependencies are all done,
+  by priority and then id, as `workable` in `scripts/cairn_next.py`
+  computes it. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
   three-digit padding. With an empty list and a found ROADMAP (the pane
   state's `found`), the band draws the empty row (M213): key `plan-row`,
