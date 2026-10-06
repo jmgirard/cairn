@@ -135,6 +135,7 @@ returns to `planned` for a re-cut.
 - 2026-10-06: T6 done at a41f0ca. The two unittest suites, both `claude plugin validate` runs, and `claude plugin test .` (1287 pass, 0 fail) each exited 0.
 - 2026-10-06: claim audit: 66 claims read, 2 corrected — README.md, hooks/status/band.test.tsx
 - 2026-10-06: the corrections: the README's Plan refusal now names `/clear` only for a refused clear and `/cairn:milestone-plan` for a refused planning run, and the AC4 control's comment and name now say it covers `no-active` on one surface. The same reader re-read both and found them true. The mod tests pass after the change (1287, 0 fail). Status set to `review`.
+- 2026-10-06: step-7 approval: m221-clear-then-run approved for merge
 
 ## Review
 
