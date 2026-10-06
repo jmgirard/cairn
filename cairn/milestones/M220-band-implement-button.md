@@ -1,6 +1,6 @@
 # M220: An Implement button in place of the idle row's command
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -108,3 +108,4 @@ follow-ons (M212, M213 review)" cover it.
 - 2026-10-06: T4 live look (openac, M21): the operator reports that the idle row shows the Implement and Status Buttons. The press and the look's acceptance are still to come.
 - 2026-10-06: T4 live look (openac, M21): the operator pressed Implement, `/cairn:milestone-implement M21` ran, and the row showed no command text. The agent reads this report as the operator's acceptance of the look.
 - 2026-10-06: T5: all five verify commands exit 0 (scripts and hooks suites OK, both validates pass, mod tests 1246 pass).
+- 2026-10-06: the operator approved deleting the M217 done row (its file is archived), which brings the ROADMAP under its line cap. Status set to review.

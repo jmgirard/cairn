@@ -9,10 +9,9 @@ _Released (each tagged `v<version>`) 1.0.0 2026-07-16 · 1.1.0 2026-07-19 · 1.1
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M220 | An Implement button in place of the idle row's command | in-progress | — | normal | milestones/M220-band-implement-button.md |
+| M220 | An Implement button in place of the idle row's command | review | — | normal | milestones/M220-band-implement-button.md |
 | M219 | Status and Clear buttons in the cairn pane | done | — | normal | milestones/archive/M219-pane-status-clear.md |
 | M218 | A Next button in the cairn pane | done | — | normal | milestones/archive/M218-pane-next-button.md |
-| M217 | Band and pane colors that follow the theme | done | — | normal | milestones/archive/M217-theme-colors.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
