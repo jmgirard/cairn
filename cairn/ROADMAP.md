@@ -9,8 +9,8 @@ _Released (each tagged `v<version>`) 1.0.0 2026-07-16 · 1.1.0 2026-07-19 · 1.1
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M221 | Plan and Implement clear the conversation first | planned | — | normal | milestones/M221-clear-then-run.md |
 | M220 | An Implement button in place of the idle row's command | done | — | normal | milestones/archive/M220-band-implement-button.md |
-| M219 | Status and Clear buttons in the cairn pane | done | — | normal | milestones/archive/M219-pane-status-clear.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
