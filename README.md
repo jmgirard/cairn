@@ -181,11 +181,12 @@ M021 Waiting to start  [track]
 
 After the track, an `Implement` button and a `Status` button show while no
 cairn skill runs and Claude is not working, where the row has room for
-them. A press of `Implement` runs `/cairn:milestone-implement` with the
+them. After a cairn skill ends, a `Clear` button also shows before them.
+A press of `Implement` runs `/cairn:milestone-implement` with the
 milestone's id, as if you typed it. The row draws no command as text, so
-while the buttons do not show, the row shows only the id, the title, and
-the track. In a narrow window the idle row drops its track, so that the
-title keeps room.
+while the buttons do not show, the row shows the id, the title, the track,
+and the `≡` and close buttons. In a narrow window the idle row drops its
+track, so that the title keeps room.
 
 With no active milestone and no workable planned milestone, the band shows
 the empty row: `No milestone ready` in gray, with no id and no track. A

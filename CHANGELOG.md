@@ -7,10 +7,12 @@
 - **An Implement button on the band's idle row.** The idle row no longer
   draws `/milestone-implement <id>` as text. Its next-step button, which
   read `Start`, now reads `Implement`, and a press runs that command. The
-  button shows where it showed before: while no cairn skill runs, Claude
-  is not working, and the row has room. When it does not show, the row
-  shows only the id, the title, and the track. The pane's next-step button
-  reads `Implement` too.
+  button shows while no cairn skill runs, Claude is not working, and the
+  row has room. With no command on the row, it has room in windows 22
+  columns narrower than before. When it does not show, the row has no
+  command: it shows the id, the title, the track where it fits, and the
+  open and close buttons. The pane's next-step button reads `Implement`
+  too.
 - **Status and Clear buttons in the cairn pane.** The pane's Next line
   carries a `Status` button after its next-step button, which runs
   `/cairn:milestone`. When a cairn skill finishes, the line also carries a
