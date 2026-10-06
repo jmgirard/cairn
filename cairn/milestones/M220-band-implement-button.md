@@ -127,26 +127,26 @@ Gate: `cairn_validate` exit 0. Marketplace validate prints no `plugins[N].versio
 spawned: diff-bug, blame-history, prior-review
 
 - diff-bug #1: CHANGELOG's M218 and M212 entries in Unreleased still say `Start` — rejected (false): the Unreleased section records each change in order, as the M206 entry says the M199 `next` label is gone, and the M220 entry states the rename.
-- diff-bug #2: the new CHANGELOG entry compares against unreleased state, and "22 columns" holds only for 4-character ids — fix now: the number is gone; "which read `Start`" stays under the same ordering convention.
+- diff-bug #2: the new CHANGELOG entry compares against unreleased state, and "22 columns" holds only for 4-character ids — fix now: the number is gone; "which read `Start`" stays under the same ordering convention., fixed 1de13c1
 - diff-bug #3: at a 44-column dock the pane's Next line leaves its pill about 3 columns — follow-up: "Implement button follow-ons (M220 review)".
 - diff-bug #4: no test sums the pane's Next-line Buttons against 44 columns — follow-up: the same row.
-- diff-bug #5: DESIGN.md:73's `hooks/status/` list does not name M220 — fix now.
-- diff-bug #6: the `register.tsx` header comment does not describe the Implement Button — fix now.
-- diff-bug #7: DESIGN.md:158-159 runs past the wrap width — fix now.
+- diff-bug #5: DESIGN.md:73's `hooks/status/` list does not name M220 — fix now., fixed 1de13c1
+- diff-bug #6: the `register.tsx` header comment does not describe the Implement Button — fix now., fixed 1de13c1
+- diff-bug #7: DESIGN.md:158-159 runs past the wrap width — fix now., fixed 1de13c1
 - diff-bug #8: the AC3 test's working and 50-column mounts have no positive control of their own — rejected (false): the same test's third mount, on the same fixture and state, shows `ACTION_KEYS` first, and the reviewer confirmed the old code fails the 50-column case.
 - diff-bug #9: the 40-column test keeps its track only for the fixtures' id lengths — noted: correct for every fixture the domain check lists.
 - blame-history #1: the idle row shows no command while the Buttons hide, which undoes M199's always-shown command — rejected (planned change): the plan gate chose it.
 - blame-history #2: the track now stays down to 24 columns, which changes M206's narrow-window rule — rejected (planned change): it follows from dropping the command, and the work log records it.
 - blame-history #3: the wider label moves `actionsFit` on milestone rows — rejected (false): `cairn_next.py` names `implement` only when no milestone is active, so only the idle row draws it.
-- blame-history #4: the `register.tsx:366-367` comment says the row draws as before M212 — fix now.
+- blame-history #4: the `register.tsx:366-367` comment says the row draws as before M212 — fix now., fixed 1de13c1
 - blame-history #5: the rename reverses M212's `Start` — noted: the plan gate chose it.
 - blame-history #6: the branch drops the M217 done row — noted: the operator approved it.
 - blame-history #7: hand-written expectations changed with the code — noted: the new assertions are independent.
 - prior-review #1: the pane pill at 44 columns — follow-up: "Implement button follow-ons (M220 review)" (same as diff-bug #3).
-- prior-review #2: "Band button follow-ons (M212, M213 review)" still says the idle command repeats `Start` — fix now.
+- prior-review #2: "Band button follow-ons (M212, M213 review)" still says the idle command repeats `Start` — fix now., fixed 53b4d28
 - prior-review #3: Button fit between 40 and 120 columns is untested with the longer label — follow-up: "Implement button follow-ons (M220 review)".
 - prior-review #4: "22 columns narrower" may be 26 — rejected (false): 26 is the track's threshold, and the Buttons' moved 22 for a 4-character id; the number is gone (diff-bug #2).
 - prior-review #5: the 24-39 column range is covered only by the `idleLines` unit test — noted.
 
 Fix-now verify (after the fixes): all five verify commands exit 0, mod tests 1246 pass; `cairn_validate` exit 0.
-
+- 2026-10-06: step-7 approval: m220-band-implement-button approved for merge (with the M218 done row dropped to fit the follow-up row)
