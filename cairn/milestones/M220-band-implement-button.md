@@ -85,10 +85,10 @@ follow-ons (M212, M213 review)" cover it.
 - [x] T3: Update README.md (`README.md:170-183`, `README.md:257`),
       `cairn/DESIGN.md` (`DESIGN.md:83`, `DESIGN.md:156-159`), CHANGELOG.md,
       and the header comments of `band.ts` and `register.tsx`.
-- [ ] T4: Live look (AC4): the operator opens a fresh Code session in
+- [x] T4: Live look (AC4): the operator opens a fresh Code session in
       another cairn repo whose state shows an idle row, such as the
       HiTOP-DAT repo, and presses `Implement` (LESSONS M195, M213).
-- [ ] T5: Run every `verify` command from the repo root and check each exit
+- [x] T5: Run every `verify` command from the repo root and check each exit
       code.
 
 ## Work log
@@ -106,3 +106,5 @@ follow-ons (M212, M213 review)" cover it.
 - 2026-10-06: T3: README (the idle row's text block and the pane's label list), DESIGN (the right group and the idle row), CHANGELOG (a New entry), and the `register.tsx` press comment now name `Implement` and no idle command. The `band.ts` header and `idleLines` comments changed in T2.
 - 2026-10-06: claim audit: 28 claims read, 3 corrected — CHANGELOG.md (the button now has room 22 columns narrower than before, not "where it showed before"; the row keeps its open and close buttons), README.md (the same, and the `Clear` button after a skill ends)
 - 2026-10-06: T4 live look (openac, M21): the operator reports that the idle row shows the Implement and Status Buttons. The press and the look's acceptance are still to come.
+- 2026-10-06: T4 live look (openac, M21): the operator pressed Implement, `/cairn:milestone-implement M21` ran, and the row showed no command text. The agent reads this report as the operator's acceptance of the look.
+- 2026-10-06: T5: all five verify commands exit 0 (scripts and hooks suites OK, both validates pass, mod tests 1246 pass).
