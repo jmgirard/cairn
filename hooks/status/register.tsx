@@ -16,7 +16,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // and when a step ends. The row is the bold id and the title, then the flow
 // track and its percent (band.ts picks the row and its widths). With no
 // active milestone, an idle row names the next workable planned milestone,
-// and with none workable, a found ROADMAP draws the empty row (M213).
+// and its `Implement` Button, not a command, starts it (M220). With none
+// workable, a found ROADMAP draws the empty row (M213).
 // The track draws as an `Svg` on the desktop and as braille cells in the
 // terminal (track.ts). The running cairn skill draws nothing of its own:
 // /milestone-review picks the row it shows. A skill's step

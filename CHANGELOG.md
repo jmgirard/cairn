@@ -8,8 +8,8 @@
   draws `/milestone-implement <id>` as text. Its next-step button, which
   read `Start`, now reads `Implement`, and a press runs that command. The
   button shows while no cairn skill runs, Claude is not working, and the
-  row has room. With no command on the row, it has room in windows 22
-  columns narrower than before. When it does not show, the row has no
+  row has room. With no command on the row, it now fits in narrower
+  windows than before. When it does not show, the row has no
   command: it shows the id, the title, the track where it fits, and the
   open and close buttons. The pane's next-step button reads `Implement`
   too.
