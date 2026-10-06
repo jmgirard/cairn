@@ -1,6 +1,6 @@
 # M221: Plan and Implement clear the conversation first
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -133,3 +133,5 @@ returns to `planned` for a re-cut.
 - 2026-10-06: T4 done. README (idle row, empty row, pane), DESIGN (the band paragraph and the module list), CHANGELOG (Unreleased, New), and the `register.tsx` header say that `Plan` and `Implement` run `/clear` first. The README and DESIGN text state the consent point. The plugin install is a symlink to this checkout, so a fresh session loads the branch's mod for T5. ackwards recommends planning and openac recommends `implement M21`, as T5 needs.
 - 2026-10-06: T5 done. The operator reported that in fresh desktop sessions `Plan` and `Implement` both cleared the conversation and then ran the next step, and accepted the look. The band did not show in a new session until the first message. That is the desktop app starting the session's process at the first message, as DESIGN records for `/clear` (M200 live look), and it is outside M221.
 - 2026-10-06: T6 done at a41f0ca. The two unittest suites, both `claude plugin validate` runs, and `claude plugin test .` (1287 pass, 0 fail) each exited 0.
+- 2026-10-06: claim audit: 66 claims read, 2 corrected — README.md, hooks/status/band.test.tsx
+- 2026-10-06: the corrections: the README's Plan refusal now names `/clear` only for a refused clear and `/cairn:milestone-plan` for a refused planning run, and the AC4 control's comment and name now say it covers `no-active` on one surface. The same reader re-read both and found them true. The mod tests pass after the change (1287, 0 fail). Status set to `review`.

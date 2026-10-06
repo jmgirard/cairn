@@ -3522,9 +3522,10 @@ describe('a refused clear or another session end drops the held command (M221 AC
     }
   }
 
-  // The control: with neither, the same press's clear end runs the command,
+  // The control: with neither, a no-active press's clear end runs the
+  // command (the AC1 and AC2 tests cover the other fixtures and surfaces),
   // so the two cases above run nothing for the reason they name.
-  test('the control: the same press with neither runs the command', async ($, on) => {
+  test('the control: a no-active press with neither runs the command', async ($, on) => {
     const copy = copyOf('no-active')
     seat(on, copy)
     await $.turn.complete(turn())
