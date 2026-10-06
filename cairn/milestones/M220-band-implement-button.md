@@ -82,7 +82,7 @@ follow-ons (M212, M213 review)" cover it.
       set `NEXT_LABELS.implement` to `Implement`. Check that `actionsFit` and
       the row loop in `register.tsx:366-392` still read the idle line
       correctly.
-- [ ] T3: Update README.md (`README.md:170-183`, `README.md:257`),
+- [x] T3: Update README.md (`README.md:170-183`, `README.md:257`),
       `cairn/DESIGN.md` (`DESIGN.md:83`, `DESIGN.md:156-159`), CHANGELOG.md,
       and the header comments of `band.ts` and `register.tsx`.
 - [ ] T4: Live look (AC4): the operator opens a fresh Code session in
@@ -103,3 +103,4 @@ follow-ons (M212, M213 review)" cover it.
 - 2026-10-06: plan gate chose no fallback text over keeping the command when the Buttons hide, at the operator's choice; falsified by a session where the next step is hard to find mid-turn.
 - 2026-10-06: implement started on m220-band-implement-button. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
 - 2026-10-06: T1, T2: the tests changed first (57 red), then `idleLines` dropped the command and `NEXT_LABELS.implement` became `Implement`. With the command's 26 columns free, the track now stays at 40 columns, so the M199 40-column test now asserts the track and no action Buttons. The `idleLines` width test covers where the track goes. Mod tests 1246 pass.
+- 2026-10-06: T3: README (the idle row's text block and the pane's label list), DESIGN (the right group and the idle row), CHANGELOG (a New entry), and the `register.tsx` press comment now name `Implement` and no idle command. The `band.ts` header and `idleLines` comments changed in T2.

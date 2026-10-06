@@ -80,7 +80,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   gives no sign of the others. The row sits above what the hooks beneath
   draw, and the band blocks nothing. A row has a left group (the bold id,
   one space, and the title) and a right group: the flow track and its
-  percent, the idle row's track and command, or a `warning` label for a
+  percent, the idle row's track alone, or a `warning` label for a
   row whose counts cannot be read (M206). The empty row (M213) has no id,
   so its left group is the title alone, and its right group only the
   buttons. The phase or skill label, the
@@ -155,9 +155,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   event carries no agent id, so a subagent that loads a cairn skill sets it
   too. With no active milestone, whether or not a skill runs, an idle row
   names the first row of the workable list: the bold id and the title, a
-  track with plan full and the pill `Planned`, and
-  `/milestone-implement <id>`. A narrow row drops the track, then the
-  command. The workable list is the `planned` rows
+  track with plan full and the pill `Planned`, and no command (M220): its
+  `Implement` Button starts the milestone. A narrow row drops the track. The workable list is the `planned` rows
   whose dependencies are all done, by priority and then id, as `workable` in
   `scripts/cairn_next.py` computes it. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
