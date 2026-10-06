@@ -181,6 +181,7 @@ declined a terminal live look.
 - 2026-10-06: amendment routed: AC5 — the criterion asked the docs to say a pane open at a `/clear` is open again after it, which is false for a pane behind a tab or undrawn at a typed `/clear` (AC7 binds only a shown pane); the claim audit already narrowed the docs to "shown".
 - re-audit: AC5 (full) — nothing; the shipped README, DESIGN, and CHANGELOG text meets the amended wording.
 - 2026-10-06: amendment return: AC5 — "each state that a cairn pane shown at a `/clear` is open after it". The docs did not change, so this is wording only and took no stop.
+- 2026-10-06: step-7 approval: m222-pane-across-clear approved for merge
 
 ## Decisions
 
