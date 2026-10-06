@@ -1,13 +1,13 @@
 # M221: Plan and Implement clear the conversation first
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the band and pane Buttons ship to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m221-clear-then-run
 
 ## Goal
 
@@ -125,3 +125,5 @@ returns to `planned` for a re-cut.
 - 2026-10-06: plan gate chose the plain labels over `Clear + Plan` labels because they take 8 fewer columns; falsified by an operator who presses `Plan` and did not expect the clear.
 - 2026-10-06: checkpoint: the ROADMAP is at 60 lines and 24112 bytes with the M221 row, over its caps. The plan waits on the operator's approval to drop the M219 done row before validate passes and the plan is pushed.
 - 2026-10-06: the operator gave standing approval to drop archived done rows to meet the ROADMAP caps; the M219 row went.
+- 2026-10-06: implement started on m221-clear-then-run. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
+- 2026-10-06: T1 probe written at `~/.claude/dev-mods/81d5525c-eb5f-4258-92f2-398cb5647ae8/clear-probe/` (validates). Its band row has `A: await` (await the `clear` run, then run `cairn:milestone`) and `B: hold` (hold `cairn:milestone`, start `clear` unawaited, run the held command from `session.end` with reason `clear`). Each step is logged to `m221-probe.log` (in `.git/info/exclude`). Each press clears this session's conversation, so the run resumes from `/milestone-implement M221`, which reads the log and the operator's report to finish T1.

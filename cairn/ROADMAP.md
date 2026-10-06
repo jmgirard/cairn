@@ -9,7 +9,7 @@ _Released (each tagged `v<version>`) 1.0.0 2026-07-16 · 1.1.0 2026-07-19 · 1.1
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M221 | Plan and Implement clear the conversation first | planned | — | normal | milestones/M221-clear-then-run.md |
+| M221 | Plan and Implement clear the conversation first | in-progress | — | normal | milestones/M221-clear-then-run.md |
 | M220 | An Implement button in place of the idle row's command | done | — | normal | milestones/archive/M220-band-implement-button.md |
 ## Candidates
 
