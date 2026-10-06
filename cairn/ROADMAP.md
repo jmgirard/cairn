@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-06 (M220 done, PR #227; skills/tests green, 665)_
+_Last hygiene check: 2026-10-06 (M221 done, PR #228. skills/tests 665 ok)_
 
 ## Milestones
 
@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 1.12.0 (2026-09-07), each tagged `v<version>`. `
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M221 | Plan and Implement clear the conversation first | review | — | normal | milestones/M221-clear-then-run.md |
+| M221 | Plan and Implement clear the conversation first | done | — | normal | milestones/archive/M221-clear-then-run.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
