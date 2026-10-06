@@ -38,7 +38,7 @@ returns to `planned` for a re-cut.
 
 ## Acceptance criteria
 
-- [ ] AC1: For each fixture in `EMPTY_FIXTURES` (band) and each
+- [x] AC1: For each fixture in `EMPTY_FIXTURES` (band) and each
       `WITH_ROADMAP` pane fixture whose next action is
       `plan the next milestone`, on the terminal and desktop surfaces, a
       press of `cairn-next` (band) or `cairn-pane-next` (pane) labeled
@@ -47,35 +47,35 @@ returns to `planned` for a re-cut.
       `cairn:milestone-plan` with args `''`. A second press of any action
       Button between the press and that session end adds no command. Mod
       tests assert both.
-- [ ] AC2: For each fixture that the band's idle-domain check
+- [x] AC2: For each fixture that the band's idle-domain check
       (`IDLE_DRAWN`) lists, and each pane fixture whose next action is
       `implement`, on the terminal and desktop surfaces, a press of the
       Button labeled `Implement`, followed by the same session end, leaves
       exactly `clear` with `''`, then `cairn:milestone-implement` with the
       next step's id. Mod tests assert the list.
-- [ ] AC3: The Resume, Review, and Status cases of the M212, M213, and M218
+- [x] AC3: The Resume, Review, and Status cases of the M212, M213, and M218
       press tests pass with their expected lists unchanged, and the Plan and
       Implement cases change as AC1 and AC2 state. A Clear press followed by
       `$.session.end({ reason: 'clear' })` leaves only `clear`, and the M216
       press tests pass unchanged.
-- [ ] AC4: On the band, on both surfaces, for one empty-row and one
+- [x] AC4: On the band, on both surfaces, for one empty-row and one
       idle-row fixture: when the `clear` run rejects and
       `$.session.end({ reason: 'clear' })` follows, the commands beneath are
       only `clear`, the prompt box gets `/clear` appended, and a toast names
       it. After a press, `$.session.end({ reason: 'resume' })` and then
       `$.session.end({ reason: 'clear' })` leave only `clear`. Mod tests
       assert both cases.
-- [ ] AC5: At a live look in the desktop app, in a fresh Code session in a
+- [x] AC5: At a live look in the desktop app, in a fresh Code session in a
       cairn repo whose band shows the empty row, the operator presses `Plan`
       and sees the conversation clear and `/cairn:milestone-plan` start in
       the cleared conversation. In a fresh session in a cairn repo whose band
       shows an idle row, the operator presses `Implement` and sees the same
       with `/cairn:milestone-implement <id>`, and can then stop the run. The
       operator accepts the look.
-- [ ] AC6: README.md and `cairn/DESIGN.md` say that `Plan` and `Implement`
+- [x] AC6: README.md and `cairn/DESIGN.md` say that `Plan` and `Implement`
       clear the conversation before they run, and CHANGELOG.md's Unreleased
       section has an entry for it.
-- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -135,3 +135,16 @@ returns to `planned` for a re-cut.
 - 2026-10-06: T6 done at a41f0ca. The two unittest suites, both `claude plugin validate` runs, and `claude plugin test .` (1287 pass, 0 fail) each exited 0.
 - 2026-10-06: claim audit: 66 claims read, 2 corrected — README.md, hooks/status/band.test.tsx
 - 2026-10-06: the corrections: the README's Plan refusal now names `/clear` only for a refused clear and `/cairn:milestone-plan` for a refused planning run, and the AC4 control's comment and name now say it covers `no-active` on one surface. The same reader re-read both and found them true. The mod tests pass after the change (1287, 0 fail). Status set to `review`.
+
+## Review
+
+Evidence at fc61a0c, after `git fetch`: the branch contains `origin/main`, and no PR exists. One fresh `claude plugin test .` run: 1287 pass, 0 fail.
+
+- AC1 (evidence): the M221 AC1/AC2 band block passes for `all-waiting` and `candidates-skeleton` (the `EMPTY_FIXTURES`) on both surfaces, 4 tests. Each presses `Plan`, then every action Button (Clear, next, Status), sees only `clear`, then after `$.session.end({ reason: 'clear' })` sees `clear` with `''`, then `cairn:milestone-plan` with `''`. The pane block passes for both plan fixtures on both surfaces.
+- AC2 (evidence): the same band block passes for the 5 `IDLE_DRAWN` fixtures on both surfaces, 10 tests, each ending with `clear`, then `cairn:milestone-implement` with the idle row's id. A domain test holds each fixture's next action as `implement` and its args as the idle id. The pane block passes for the 5 implement fixtures on both surfaces, and its domain test holds both actions covered (15 pane tests in all).
+- AC3 (evidence): the M212 AC1 (9), M212 AC3 (2), M212 review (2), M213 AC2/AC3 (10), M218 AC3 (11), and M216 (28) tests pass. `git diff main...HEAD` removes `expect(copy.commands)` lines only in the M212 AC1, M213, and M218 AC3 blocks. The Resume and Review fixtures keep `[nextRun(name)]` and `[runOf(name)]` in the unchanged branch, and only the Implement and Plan cases now expect `clear` first. No M216 test line changed. The M221 AC3 test passes on both surfaces: a Clear press and the clear's session end leave only `clear`.
+- AC4 (evidence): the M221 AC4 block passes, 9 tests: for `all-waiting` (empty row) and `no-active` (idle row) on both surfaces, a rejected `clear` then the clear's session end leaves only `clear`, the fill `/clear` with mode `append`, and the toast naming `(/clear)`. A press, a `resume` end, then a `clear` end leaves only `clear`. The control (no-active, no refusal, no resume end) leaves `clear`, then the command. Two planted defects at T3 turned the resume cases and the AC1/AC2 cases red.
+- AC5 (evidence): the operator's report in this session, 2026-10-06: in fresh desktop Code sessions, `Plan` and `Implement` both cleared the conversation and then ran the next step. The band showed only after a first message, which the T5 work-log line records as the desktop app's own behavior. The operator accepted the look.
+- AC6 (evidence): README.md:185 and :202 say `Implement` and `Plan` run `/clear` and then their command. cairn/DESIGN.md:186 says they clear the conversation before they run. CHANGELOG.md:7, inside `## Unreleased`, has the entry "Plan and Implement clear the conversation first".
+- AC7 (evidence): at fc61a0c, `scripts/tests` (397 tests), `hooks/tests` (174 tests), `claude plugin validate` on the plugin manifest (passed with warnings) and on the marketplace manifest (passed), and `claude plugin test .` (1287 pass) each exited 0.
+- Gate: `cairn_validate.py` exited 0 with all checks passed. No principle changed, so `cairn_impact` was skipped. Profile gate: the verify checks passed at fc61a0c, the marketplace validate output has no `version` warning, and CHANGELOG `## Unreleased` has this change's entry with no milestone number.
