@@ -99,6 +99,15 @@ const PANE_TITLE = 'cairn'
 const PANE_COMMAND = 'cairn-pane'
 // The key of the Next line's Button (M218).
 const PANE_NEXT = 'cairn-pane-next'
+// The store key that holds the project roots whose session ended with reason
+// `other` while the pane was open and shown (M222). A typed `/clear` in the
+// desktop app ends the process that way, and the next process starts with no
+// pane at the first message after the clear, so its `session.start` opens
+// the pane again. The key is `$.session.root()`, which a shell `cd` does not
+// move, so it matches the folder the next session starts in (M222 review). An app quit or a signal that ends the session with reason
+// `other` also brings the pane back at the next session in that folder. The
+// API does not say which ends those are, and none was checked live.
+const REOPEN_KEY = 'reopen'
 
 // The close button's label. The desktop app draws a dismiss Button in the
 // band as its label text, so a long label reads as text there. On the
@@ -140,6 +149,18 @@ export const register: Register = on => {
     } catch {
       // No `/cairn-pane` in this session. The band's open button still opens the pane.
     }
+    // After the registration, so a slow open does not hold `/cairn-pane`
+    // back (M222 review).
+    await reopen($)
+    return result
+  })
+
+  // A `/clear` that stays in the same process raises no `session.start`, and
+  // the host's state starts empty under the new session id, so the band and
+  // an open pane read the files again here (M222).
+  on('classic.SessionStart', async ($, e, next) => {
+    const result = await next(e)
+    if (e.source === 'clear') await refresh($)
     return result
   })
 
@@ -339,6 +360,10 @@ export const register: Register = on => {
     // rejecting `next(e)` below cannot leave it set (M221 review).
     const queued = heldRun
     heldRun = null
+    // An `other` end marks this folder for a reopen at the next start
+    // (M222). A `clear` end needs nothing, as no pane closes when the clear
+    // stays in the same process.
+    if (e.reason === 'other') await markReopen($)
     const result = await next(e)
     await update($, step, () => null)
     await update($, expanded, () => false)
@@ -644,6 +669,40 @@ async function fallBack($, text: string, why: string) {
   } catch {
     // No toast shows; the press has nothing else to say.
   }
+}
+
+// Marks the session's folder for a reopen when the pane is open and shown
+// (M222). A store or pane call that fails marks nothing.
+async function markReopen($) {
+  try {
+    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    if (mine === undefined || !mine.isShown || !mine.isPlaced) return
+    const cwd = await $.session.root()
+    const held = await reopenList($)
+    if (!held.includes(cwd)) await $.store.set(REOPEN_KEY, [...held, cwd])
+  } catch {
+    // No mark: the next start opens no pane.
+  }
+}
+
+// At the first start in a marked folder, clears the mark and, when the
+// refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
+// with no toast, and a refused one gives nothing.
+async function reopen($) {
+  try {
+    const cwd = await $.session.root()
+    const held = await reopenList($)
+    if (!held.includes(cwd)) return
+    await $.store.set(REOPEN_KEY, held.filter(each => each !== cwd))
+    if ((await read($, pane)).found) await $.ui.open({ id: PANE, title: PANE_TITLE })
+  } catch {
+    // No reopen.
+  }
+}
+
+async function reopenList($): Promise<string[]> {
+  const held = await $.store.get(REOPEN_KEY)
+  return Array.isArray(held) ? held.filter((each): each is string => typeof each === 'string') : []
 }
 
 function notPlaced(reason: string): string {

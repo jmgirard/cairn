@@ -306,6 +306,18 @@ repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command
 closes it.
 
+A cairn pane that is shown at a `/clear` is open after it. A press of a
+Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
+and the pane stays. A typed `/clear` in the desktop app starts a new
+session at your next message, and a pane that was shown opens again then,
+in the same folder. A pane behind another pane's tab, or waiting undrawn,
+does not open again. An app quit or a closed terminal that ends the session
+with reason `other` (not checked) also brings the pane back at the next
+session in that folder. In a terminal narrower than 110 columns, that pane
+waits undrawn until you open it. This was checked live in the desktop app
+only, for a typed `/clear` and both Clear Buttons. A `Plan` or `Implement`
+press clears through the same call as the Clear Buttons.
+
 Mods are on by default from Claude Code 2.1.287
 ([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),
 so that is the version the band needs with no setup. An earlier version

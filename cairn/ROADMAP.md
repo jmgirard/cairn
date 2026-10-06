@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-06 (triage: split Mod pane placement (upstream), routed claude-plugin profile edge cases to Known issues, compressed the Single-author known issue, no drops, no decision entry, validate green)_
+_Last hygiene check: 2026-10-06 (status pass after M222 T6: validate green, no inbox items, orphans, or outside merges, byte and module budgets met)_
 
 ## Milestones
 
@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M222 | The cairn pane stays open across /clear | planned | — | normal | milestones/M222-pane-across-clear.md |
+| M222 | The cairn pane stays open across /clear | review | — | normal | milestones/M222-pane-across-clear.md |
 | M221 | Plan and Implement clear the conversation first | done | — | normal | milestones/archive/M221-clear-then-run.md |
 ## Candidates
 
@@ -44,3 +44,4 @@ _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, u
 - [low] Phase-gated loading of implement-time doctrine: the conditional modules already load at their moments (D-031); the delta is whether any always-loaded rulebook section is genuinely single-phase and could move behind a phase moment — measured 2026-08-04 as immaterial and the rulebook has since shrunk (M146). Promote when a measured `cairn_cost` reading attributes a material share of session tokens to rulebook sections the session's phase never uses — never on a count of lines — added 2026-08-04 — M133 (references/impeccable.md)
 - [low] Action-graded finding vocabulary: impeccable grades each finding by the action it requires (auto / mention / route) where cairn's CHECK-FAIL / advisory-WARN grades severity and leaves the action to the reader; parked until a tier actually misleads an operator; adjacent to the standing-instrument row, not covered by it. Promote when an operator acts wrongly on a validate or audit finding because its tier did not say what to do — never on a count of advisories — added 2026-08-04 — M133 (references/impeccable.md)
 - [low] Deferred second tier for hook nudges: defer taste-tier findings to one deduplicated Stop-event pass that stays silent when clean (memory_guard/idea_guard fire unconditionally per event today; the Stop slot is held by stop_guard.py, so this shares or extends it); the memory guard's half is content-gating — inspect the write and fire only on durable-state signals, silent on pure per-user prefs (M19's hook). Promote when the unconditional nudge is observed drowning a session — never on a count of firings — added 2026-08-04 — M133 (references/impeccable.md); absorbs Content-gated memory guard, added 2026-07-11 — M19 Out
+- [low] Pane reopen edges: since M222, an `other` end with the cairn pane shown marks the project root in `$.store`, and the next `session.start` there opens the pane. Review found gaps it left: any start in that root takes the mark, a `-p` run included (the desktop reports `isInteractive` false, so that cannot gate it); the read-then-write of the store key has no version check, so ends in several sessions at once can lose a mark; marks never expire; `markReopen` runs before `next(e)` inside the end's time budget; an in-process `/resume` may leave the band and pane empty until the next prompt, as a press did before T6; and tests skip a reopen with no ROADMAP, two marked roots, and a `classic.SessionStart` that is not a clear. Promote when one of these shows in a real session — added 2026-10-06 — M222 Review

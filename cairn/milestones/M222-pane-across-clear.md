@@ -1,17 +1,20 @@
 # M222: The cairn pane stays open across /clear
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m222-pane-across-clear
 
 ## Goal
 
-A cairn pane that is open when the conversation is cleared is open again after the clear.
+A cairn pane that is open when the conversation is cleared is open after the clear:
+left open by the mod where the clear stays in the same process, and opened
+again when the next session starts in the same folder, which in the desktop
+app is at the first message after a typed `/clear`.
 
 ## Scope
 
@@ -36,76 +39,102 @@ M219), and a `Plan` or `Implement` press that clears first (M221). A pane
 that is open at the clear is open after it, whether it was shown, behind
 another pane's tab, or waiting undrawn. README, DESIGN, CHANGELOG, and the
 comments describe the change. Only the desktop app gets a live look, and
-tests cover the terminal.
+tests cover the mod's side in the terminal.
 
 **Out:** If T1 finds that the app closes the pane in a way the mod can
 neither stop nor undo, implement stops with the goal-wrong stop. The plan
 gate chose to drop the milestone then and to add a candidate row that
 waits for a change in the app. Nothing is posted anywhere. The pane's
 column and width after the clear are the open row "Mod pane placement
-(upstream)". Session ends for other reasons (`resume`, exit, logout) keep
-today's behavior, because the request named only `/clear`. The plan gate
+(upstream)". Session ends for `resume`, `prompt_input_exit` (/exit, ctrl+c,
+ctrl+d), and `logout` keep today's behavior, because the request named only
+`/clear`. An `other` end with the pane open reopens it at the next session in
+that folder. So an app quit, a closed terminal, or another signal that ends
+with `other` also brings the pane back (the operator's choice). The plan gate
 declined a terminal live look.
 
 ## Acceptance criteria
 
-- [ ] AC1: When the cairn pane is open at a `session.end` whose reason is
-      `clear`, it is open after the clear, and shown if it was shown. The
-      `claude plugin test` cases in `hooks/status/pane.test.tsx` use stubs
-      that close the pane in the order and with the origin that T1
-      recorded. The cases drive that end with the pane shown, behind
-      another pane's tab, and waiting undrawn. Each case asserts that
-      `$.ui.panes()` lists `cairn` after the clear's events. The shown case
-      also asserts that `isShown` and `isPlaced` are true.
-- [ ] AC2: A `clear` end with no cairn pane open leaves none open. A test
+- [x] AC1: When the cairn pane is open at a `session.end` whose reason is
+      `clear`, the mod neither closes nor hides it. T1 saw that a press in
+      the desktop app then leaves the pane open and shown. The `claude
+      plugin test` cases in `hooks/status/pane.test.tsx` drive that end with
+      the pane shown, behind another pane's tab, and waiting undrawn, with
+      stubs that close no pane. Each case asserts that `$.ui.panes()` lists
+      `cairn` after the clear's events. The shown case also asserts that
+      `isShown` and `isPlaced` are true.
+- [x] AC2: A `clear` end with no cairn pane open leaves none open. A test
       case with the same stubs asserts that `$.ui.panes()` does not list
       `cairn` after the clear's events.
-- [ ] AC3: A `session.end` whose reason is `resume`, `prompt_input_exit`,
-      `logout`, or `other` neither keeps nor opens the pane. One test case
-      per reason closes the pane in its stubs as at a clear. Each case
-      asserts that `$.ui.panes()` does not list `cairn` after the end.
-- [ ] AC4: The operator uses a desktop Code session whose window is at
-      least as wide as the one in which T1 saw a reopened pane drawn. With
-      the cairn pane open and shown, four clears each leave the pane shown
-      after the clear. They are a typed `/clear`, a press of the band's
-      Clear Button, a press of the pane's Clear Button, and a press of a
-      `Plan` or `Implement` Button that clears first. The operator sees
-      this at a live look and accepts it.
-- [ ] AC5: README.md, `cairn/DESIGN.md`, and CHANGELOG.md's Unreleased
-      section each state that a cairn pane open at a `/clear` is open again
-      after it. Each names the desktop app as the surface checked live.
-- [ ] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC3: After a `session.end` whose reason is `resume`,
+      `prompt_input_exit`, or `logout`, the next `session.start` opens no
+      cairn pane. One test case per reason ends the session with the pane
+      open, empties the open panes between the end and the next
+      `session.start`, so the case sees only what the mod opens, and then
+      starts a session in the same cwd. Each case asserts that
+      `$.ui.panes()` does not list `cairn`.
+- [x] AC4: The operator uses a desktop Code session in a window no
+      narrower than T1's (its probe read 106 columns). With the cairn pane
+      open and shown, three clears each leave the pane shown once the first
+      message after the clear is sent. They are a typed `/clear`, a press
+      of the band's Clear Button, and a press of the pane's Clear Button.
+      The operator sees this at a live look and accepts it. A `Plan` or
+      `Implement` press runs `/clear` through the same call as the Clear
+      Button, and the tests cover it.
+- [x] AC5: README.md, `cairn/DESIGN.md`, and CHANGELOG.md's Unreleased
+      section each state that a cairn pane shown at a `/clear` is open after
+      it. Each names the desktop app as the surface checked live.
+- [x] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: When the cairn pane is open and shown at a `session.end` whose
+      reason is `other`, which is how the desktop app ends a session at a
+      typed `/clear`, the next `session.start` in the same cwd opens it.
+      Test cases end with reason `other`, empty the open panes, and start a
+      new session. The case with the pane open at the end and the same cwd
+      asserts that `$.ui.panes()` lists `cairn`. The cases with another cwd,
+      or with no pane open at the end, assert that it does not.
 
 ## Coverage
 
-- AC1 → T1, T2, T3
+- AC1 → T1, T2
 - AC2 → T2, T3
 - AC3 → T2, T3
 - AC4 → T1, T5
 - AC5 → T4
 - AC6 → T3, T4
+- AC7 → T1, T2, T3
 
 ## Tasks
 
-- [ ] T1: Probe. Write the logging mod `cairn-probe` in the session's
+- [x] T1: Probe. Write the logging mod `cairn-probe` in the session's
       hot-reload folder, with a pane and the three ways the Scope names.
       Its log goes to a file in `.git/info/exclude` (LESSONS M201, M205).
       The operator enables hot reload, opens the probe pane, and runs a
       typed `/clear` and a Clear Button press. Write one work-log line with
       the close origin, the event order, the way that kept or reopened the
       pane, and the window width. If no way works, take the goal-wrong stop.
-- [ ] T2: Tests first. In `pane.test.tsx`, make the `session.end` and
-      `ui.close` stubs close the pane as T1 recorded. A flag turns this on,
-      so the other suites keep their stubs. Add the AC1, AC2, and AC3
-      cases, and see the AC1 cases fail against the current `register.tsx`.
-- [ ] T3: Implement the way T1 found in `register.tsx`, beside the M221
-      held-run code in the `session.end` hook, so that the held command
-      still runs. A reopen that is not placed waits with no toast. Run
-      `verify`.
-- [ ] T4: Describe the change in README.md, in `cairn/DESIGN.md` near the
+- [x] T2: Tests first. In `pane.test.tsx`, install `mock.store(on)` in the
+      stubs and add a way to empty the open panes between a session end and
+      the next start. Add the AC1, AC2, AC3, and AC7 cases, and a case in
+      which an `other` reopen, a close, a `prompt_input_exit` end, and a
+      start list no `cairn`. The another-cwd case changes the cwd that
+      `$.session.cwd()` gives, which the flag keys on. See the AC7 reopen
+      case fail against the current `register.tsx`. The other cases pass
+      against it and guard what must not change.
+- [x] T3: In `register.tsx`, store a flag for the cwd at a `session.end`
+      whose reason is `other` with the pane open and shown. At each
+      `session.start`, open the pane when that cwd's flag is set, and clear
+      the flag. Keep the M221 held-run code in the `session.end` hook. A
+      reopen that is not placed waits with no toast. Run `verify`.
+- [x] T4: Describe the change, and that an `other` end such as an app quit
+      also brings the pane back, in README.md, in `cairn/DESIGN.md` near the
       M219 pane text, and in CHANGELOG.md's Unreleased section. Run
       `verify`.
-- [ ] T5: Live look in a new desktop Code session in a cairn repo, since
+- [x] T6: A press of a Clear Button leaves the pane open but showing `no
+      cairn ROADMAP found` until the next prompt, as the host's state starts
+      empty under the new session id. Refresh at `classic.SessionStart`
+      with source `clear`, test first in the M205 AC5 event list. Run
+      `verify`.
+- [x] T5: Live look in a new desktop Code session in a cairn repo, since
       a Code session keeps the mod it loaded at its start (LESSONS M195).
       Try each clear that AC4 names.
 
@@ -119,7 +148,90 @@ declined a terminal live look.
 - 2026-10-06: question set: a terminal live look — declined, desktop only, and tests cover the terminal.
 - 2026-10-06: plan chose a live probe before any code over building from the API docs alone, because the docs do not say what closes a pane at `/clear`. M209 and M221 used the same probe. Falsified by a doc or a type that states the close mechanism.
 - 2026-10-06: plan chose to keep the behavior of other session ends over a reopen on every end, because the request named only `/clear`. Falsified by the operator asking for the pane after a resume.
+- 2026-10-06: implement started on m222-pane-across-clear. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
+- 2026-10-06: T1 probe written at `~/.claude/dev-mods/a9a59434-d86a-4bc2-91e4-5e3eb7bac7dc/cairn-probe/` (validates). `/cprobe` opens its pane, and `/cprobe-mode` or the pane's mode Buttons set `none`, `keep`, `end`, or `after`. The pane has a Clear Button. Each event goes to `m222-probe.log` (in `.git/info/exclude`). Each clear wipes this conversation, so the run resumes from `/milestone-implement M222`, which reads the log and the operator's report to finish T1.
+- 2026-10-06: T1 first clear (typed `/clear`, mode `none`): `session.end` came with reason `other`, which the API defines as a signal, not `clear`. The pane was still listed after `next(e)`, and no `ui.close` or `session.start` was logged. The next session had a new id and did not load the probe from the old id's hot-reload folder, so the desktop app starts a new process at a typed `/clear`. The probe moved to `.claude/skills/cairn-probe/` (in `.git/info/exclude`), which loads in every process here. It now appends to the log and keeps its mode and an open-at-end flag in `$.store`, so mode `after` tries a reopen at the new process's `session.start`.
+- 2026-10-06: T1 second clear (typed `/clear`, mode `after`, 106 columns): the end again had reason `other`, and the next process (`5o1m`) got `classic.SessionStart` with source `startup`, not `clear`. Its opens at `session.start` and at the first band render both returned `isPlaced: true`, and `$.ui.panes()` listed the probe pane as shown, with no `ui.close` logged. The operator reported that the pane was gone after the clear. The app's layout still listed a `plugin` pane open beside `tasks` and `terminal`, so the open may land behind a tab or undrawn. The operator's look at that tab decides the next step.
+- 2026-10-06: T1 operator look: the probe pane was in the plugin tab, but it appeared only after the operator's first message following the clear. The log agrees: each new process started when that message was sent (first clear 4 min after the end, second clear 14 s after it), and `prompt.submit` followed `session.start` by 0.3 s. So the desktop app starts the next process only at the next message, and between the clear and that message no process exists to open the pane. Mode `after` reopens the pane at that start, which is the earliest point the mod can reach.
+- 2026-10-06: stop answered: the operator chose to narrow the Goal and AC4 to a pane that is open again when the next session starts (in the desktop app, at the first message after the clear), and to continue. Proposed Goal: "A cairn pane that is open when the conversation is cleared is open again when the next session starts, which in the desktop app is at the first message after the clear." Proposed AC4 clause: "each leave the pane shown after the first message that follows the clear." The amendment waits for T1's Clear Button press, because a typed `/clear` ended with reason `other`, which AC3 says must not reopen the pane, and M221's held run relies on a press giving reason `clear`. The amended criteria must say how a typed `/clear` is told apart from the other ends, and they get the fresh-Opus re-audit before they are written.
+- 2026-10-06: T1 Clear Button press (pane's Clear, mode `after`, 106 columns): the end came with reason `clear` in the same process (`5o1m`), then `classic.SessionStart` with source `clear` 0.1 s later. No `ui.close` was logged, and `$.ui.panes()` listed the probe pane as shown right after `next(e)`, before mode `after` reopened it 7 ms later. The operator saw the pane stay. So an in-process clear does not close a mod pane, and `register.tsx` does not close its pane at `session.end`. Only a typed `/clear` loses the pane, because the desktop app ends that process with reason `other` and starts a new one at the next message. T1 is done: close origin none, kept by doing nothing for a press, reopened at the next `session.start` for a typed `/clear`, at 106 columns.
+- 2026-10-06: stop answered: the operator chose to treat an `other` end with the pane open as a typed `/clear` and reopen the pane at the next session start in the same folder, accepting that an app quit or another signal also brings it back. This narrows the plan's choice to keep the behavior of other ends: `resume`, `prompt_input_exit`, and `logout` keep it, and `other` does not.
+- 2026-10-06: substantive amendment: the Goal now reads "A cairn pane that is open when the conversation is cleared is open after the clear: left open by the mod where the clear stays in the same process, and opened again when the next session starts in the same folder, which in the desktop app is at the first message after a typed `/clear`." The Scope's Out line names the `other` cost. AC1 now promises the mod's side only, AC3 asserts at the next start, AC4 waits for the first message, and AC7 is new (texts as in the criteria). T2 and T3 follow, and AC1 no longer needs T3.
+- re-audit: AC1 (full) — 2 findings: narrow to the mod's own property; the stub-driven assertions are a guard, not red-first.
+- re-audit: AC3 (full) — 5 findings: assert at the next start, empty panes between end and start instead of closing in the end stub, split `other` into AC7, add a one-shot case to T2.
+- re-audit: AC4 (full) — 2 findings: point at T1's window, not a number; name the held command as the first message for a press.
+- re-audit: AC7 (full) — first audited as part of AC3's findings; its wording came from finding 4.
+- re-audit: AC1 (full) — 1 finding: say T1 saw the result only for a desktop press.
+- re-audit: AC3 (full) — nothing (one optional reason phrase, taken).
+- re-audit: AC4 (full) — 1 finding: "once the first message after the clear is sent".
+- re-audit: AC7 (full) — 1 finding: narrow to a pane open and shown at the end.
+- 2026-10-06: stop answered: the second reader's narrowings to AC1, AC4, and AC7 went to the operator as the repeat-churn stop, and the operator accepted them as shown.
+- 2026-10-06: T2 added 11 cases in `pane.test.tsx` with `mock.store(on)` and a `panesOf` helper that both the `ui.panes` stub and the cases read, since the test-side `$` has no `$.ui.panes()`. Against the old `register.tsx`, the AC7 same-cwd case and the once-only case failed, and the other 9 passed. The another-cwd case uses `/sub`, which still finds the fixture's ROADMAP, so only the cwd key keeps the pane closed.
+- 2026-10-06: T3 chose a store key `reopen` holding a list of cwds, marked before `next(e)` at an `other` end when the pane is listed, shown, and placed, and read at `session.start` after the refresh. The start clears its cwd's mark and opens only when the refresh found a ROADMAP. Store and pane failures are caught, because the band and the other suites do not answer `$.store`. verify: 1302 mod tests pass, both unittest suites and both validates exit 0.
+- 2026-10-06: T4 added the reopen to README.md's pane section, to `cairn/DESIGN.md` after the M219 pane text and in the `hooks/status/` component line, and to a new Unreleased section in CHANGELOG.md, since 2.0.0 was cut today. Each names the app-quit cost and the desktop app as the surface checked live. verify: all five commands exit 0.
+- 2026-10-06: claim audit pass (fresh Opus reader): 33 claims read, 7 wrong, all corrected toward the narrower claim. A typed `/clear` reopens only a pane that was shown, the app-quit cost is stated as a condition that was not checked, the reopen needs a found ROADMAP, and a press keeps the process, not the session. The reader's re-read found 5 holding and 2 still wrong (the README and CHANGELOG lead sentences), now "shown at a `/clear`".
+- claim audit: 33 claims read, 7 corrected — README.md, CHANGELOG.md, hooks/status/register.tsx
+- 2026-10-06: T5 operator look, typed `/clear` (new desktop session in this repo): the pane closed at the clear and opened again when the operator sent "hi" in the new session. That meets AC4 for a typed `/clear`. No Clear Button showed, because the band and pane draw it only after a cairn skill's step ends, and `Plan` or `Implement` show only with no active milestone. The press cases go next: Clear after a short cairn skill here, and `Plan` in a throwaway repo with one done row at the session scratchpad's `m222-look`.
+- 2026-10-06: T5 operator look, the band's or pane's Clear Button after `/cairn:milestone`: the pane stayed open but showed `no cairn ROADMAP found` until the operator typed "hi", then filled again. The pane draws that line when its state's `found` is false, which is the empty state, and the mod refreshes only at `session.start`, a turn end, a Stop, or a prompt, none of which a press raises. So the host's state starts empty under the new session id. Minor amendment: discovered sub-task T6 before T5 refreshes at `classic.SessionStart` with source `clear`, which T1 saw 0.1 s after a press's end.
+- 2026-10-06: T6 the `session start after a clear` case in the M205 AC5 event list failed against `register.tsx` (the T2 tick did not show), then passed with a `classic.SessionStart` hook that refreshes when the source is `clear`. DESIGN names the hook. verify: 1303 mod tests pass, and the other four commands exit 0.
+- 2026-10-06: T5 operator look after T6, Clear Button press in a new desktop session: the pane's contents disappeared very briefly and then came back, with no prompt typed. The operator called this great. The `Plan` press in `m222-look` is the one AC4 clear not yet seen.
+- 2026-10-06: stop answered: a `Plan` or `Implement` Button cannot show in this repo while M222 is active, and the operator declined a session in a throwaway folder. The operator chose to narrow AC4 to three clears, since a press of either runs `/clear` through the same `run($, CLEAR_COMMAND, '')` call as the Clear Button (`register.tsx` lines 608 and 627).
+- 2026-10-06: substantive amendment: AC4 now reads as in the criteria (three clears, and the `Plan` or `Implement` press covered by the shared call and the tests). AC4 already has two re-audit lines, so no reader ran, and the operator accepted the text at the stop.
+- 2026-10-06: T5 done: the operator confirmed both Clear presses (band and pane) kept the pane and its contents after T6, and the typed `/clear` reopened it at the next message. The operator accepted the look.
+- 2026-10-06: amendment routed: AC5 — the criterion asked the docs to say a pane open at a `/clear` is open again after it, which is false for a pane behind a tab or undrawn at a typed `/clear` (AC7 binds only a shown pane); the claim audit already narrowed the docs to "shown".
+- re-audit: AC5 (full) — nothing; the shipped README, DESIGN, and CHANGELOG text meets the amended wording.
+- 2026-10-06: amendment return: AC5 — "each state that a cairn pane shown at a `/clear` is open after it". The docs did not change, so this is wording only and took no stop.
+- 2026-10-06: step-7 approval: m222-pane-across-clear approved for merge
 
 ## Decisions
 
 ## Review
+
+Fresh evidence, 2026-10-06, on `m222-pane-across-clear` with `main` unmoved (origin/main 8e4296f is an ancestor).
+
+- AC1: `claude plugin test` passes the three cases "a pane shown / behind another pane's tab / waiting undrawn at a clear end is listed after it" (stubs close no pane; the shown case asserts `isShown` and `isPlaced`). `register.tsx` closes no pane at `session.end`. T1 saw the desktop press keep the pane.
+- AC2: "a clear end with no pane open leaves none open" passes.
+- AC3: the `resume`, `prompt_input_exit`, and `logout` cases each empty the panes, start in the same cwd, and assert no `cairn`; all pass.
+- AC4: the work log records the operator's live look in a desktop session in this repo after T6: a typed `/clear` closed the pane and it opened again at the next message ("hi"); both the band's and the pane's Clear presses kept the pane, its contents gone for a moment and then back. The operator accepted it. The window was this repo's usual one; T1's probe read 106 columns.
+- AC5: README.md:309 and :317, CHANGELOG.md Unreleased lines 7-13, and `cairn/DESIGN.md`:307 and :323 state that a pane shown at a `/clear` is open after it and name the desktop app as checked live (amended wording, re-audit nothing).
+- AC6: `python3 -m unittest discover -s scripts/tests` (397 tests) and `-s hooks/tests` (174 tests) exit 0; `claude plugin validate` on plugin.json and marketplace.json exit 0 with no warning; `claude plugin test .` exits 0 with 1303 pass, 0 fail.
+- AC7: the four AC7 cases pass: same cwd lists `cairn`, another cwd (`/sub`, same ROADMAP) does not, no pane at the end does not, and the once-only case does not reopen after a close and a `prompt_input_exit` end.
+- Gate: `cairn_validate.py` exits 0 with every check PASS. No principle changed, so no impact report.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the mark keys on `$.session.cwd()`, which a shell `cd` moves, so a session that changed folder marks a path the next start never matches — fix now: keyed on `$.session.root()`, with a shell-cd case that fails on the old code, fixed 243a81e
+- diff-bug #2: any `session.start` in the folder, a `-p` run included, takes the mark — follow-up (row "Pane reopen edges"); an `isInteractive` gate cannot work, since T1 logged the desktop start with `isInteractive` false
+- diff-bug #3: the mark is per folder, so a second session in the folder can take it — reject, planned change: AC7 and the docs name the next session in that folder
+- diff-bug #4: the store read-then-write has no version check across processes — follow-up (row "Pane reopen edges")
+- diff-bug #5: `markReopen` runs before `next(e)` in the end's time budget — follow-up (row "Pane reopen edges")
+- diff-bug #6: no test pins the shown-and-placed check at an `other` end — fix now: hidden and unplaced cases, fixed 243a81e
+- diff-bug #7: no test says a `clear` end marks nothing — fix now: a clear end then a start lists no pane, fixed 243a81e
+- diff-bug #8: the AC1 cases are a guard that passes on `main` — reject, planned change: T2 and the AC1 audit named them a guard
+- diff-bug #9: no test for a reopen with no ROADMAP or two marked folders — follow-up (row "Pane reopen edges")
+- diff-bug #10: marks never expire — follow-up (row "Pane reopen edges")
+- diff-bug #11: an in-process `/resume` may leave the band and pane empty until the next prompt — follow-up (row "Pane reopen edges"); it predates M222
+- diff-bug #12: the clear refresh runs after `next(e)`, lengthening the blank moment — reject, false as a defect: the operator saw the contents back at once and accepted it
+- diff-bug #13: no double refresh between the two start hooks — noted, no request
+- diff-bug #14: `reopen` runs before `/cairn-pane` registers — fix now: moved after the registration, fixed 243a81e
+- diff-bug #15: README and CHANGELOG say `Plan` and `Implement` were checked live — fix now: both name the typed `/clear` and both Clear Buttons as checked live, fixed 243a81e
+- diff-bug #16: a `-p` run ends with `other` and marks nothing only because no pane is listed — noted, no request
+- diff-bug #17: some new lines run past the comment wrap — reject, style
+- blame-history #1: any start takes the mark — follow-up (row "Pane reopen edges") (as diff-bug #2)
+- blame-history #2: marks never expire — follow-up (row "Pane reopen edges") (as diff-bug #10)
+- blame-history #3: unversioned store write — follow-up (row "Pane reopen edges") (as diff-bug #4)
+- blame-history #4: `reopen` before registration undoes M205 and M213's independence — fix now (as diff-bug #14), fixed 243a81e
+- blame-history #5: `markReopen` before `next(e)` — follow-up (row "Pane reopen edges") (as diff-bug #5)
+- blame-history #6: the narrowing of other ends' behavior sits only in the work log, not Decisions — reject, false: the work-log stop answers record it, and it binds no other milestone
+- blame-history #7: the clear refresh can interleave with the held command's refresh — reject, false: the reviewer found no corruption, and `refresh` writes through versioned `update` calls
+- blame-history #8: docs overstate the live check — fix now (as diff-bug #15), fixed 243a81e
+- blame-history #9: two reset paths for a press-clear — reject, false: the reviewer found no contradiction
+- blame-history #10: the probe log is not committed — reject, planned change: T1 put the log in `.git/info/exclude`, and the work log is the record
+- prior-review #1: unversioned store write — follow-up (row "Pane reopen edges") (as diff-bug #4)
+- prior-review #2: `reopen` clears the mark before the open and swallows failures — reject, planned change: T3 asks for a silent reopen, and clearing first keeps it to once
+- prior-review #3: `markReopen` before `next(e)` — follow-up (row "Pane reopen edges") (as diff-bug #5)
+- prior-review #4: any start takes the mark — follow-up (row "Pane reopen edges") (as diff-bug #2)
+- prior-review #5: DESIGN's Known issues bullet lacks these gaps — reject, false: the gaps have a candidate row, which is their home
+- prior-review #6: the AC1 tests mostly show no close — reject, planned change (as diff-bug #8)
+- prior-review #7: untested paths, a non-clear `classic.SessionStart` among them — follow-up (row "Pane reopen edges"); the shown and clear-end cases are fixed now
+- prior-review #8: the `classic.SessionStart` refresh has no `try` — reject, false: `refresh` catches its read, as the `session.start` hook relies on
+- prior-review #9: `reopen` reads the ROADMAP again — reject, false: `read($, pane)` reads the state value, not a file
+- verify after the fixes: `claude plugin test .` 1307 pass, 0 fail; both unittest suites and both validates exit 0

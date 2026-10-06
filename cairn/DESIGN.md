@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -304,6 +304,26 @@ transitions, human-gated merges, and a domain verification doctrine.
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the
   band and the pane read one place. A press is the band's `pressStatus` or
   `pressClear`.
+  A cairn pane shown at a `/clear` is open after it (M222). A press
+  of a Clear, `Plan`, or `Implement` Button ends the session with reason
+  `clear` in the same process, and nothing closes the pane (M222 probe). The
+  host's state starts empty under the new session id, and no
+  `session.start` fires, so a `classic.SessionStart` hook with source
+  `clear` refreshes the band and the pane. A
+  typed `/clear` in the desktop app ends the process with reason `other`,
+  and the next process starts with no pane at the first message after the
+  clear. So at an `other` end with the pane listed, shown, and placed, the
+  `session.end` hook adds `$.session.root()`, which a shell `cd` does not
+  move, to the store key `reopen`, and
+  the next `session.start` in that folder clears the mark and opens the
+  pane after its refresh, when a ROADMAP is found. A reopen that is not
+  placed waits with no toast. A pane behind another pane's tab or waiting
+  undrawn at the `other` end is not marked. An app quit or a signal that
+  ends with `other` also brings the pane back at the next session in that
+  folder. The API does not say which ends those are, and none was checked.
+  `resume`, `prompt_input_exit`, and `logout` ends mark nothing. The desktop
+  app is the surface checked live, and tests cover the mod's side in the
+  terminal.
 - `scripts/` + python3 tools (M10) — the deterministic scripts layer, one
   writing mode among its readers (below):
   `cairn_status` (snapshot), `cairn_next` (Depends-on readiness),
