@@ -1,13 +1,13 @@
 # M222: The cairn pane stays open across /clear
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m222-pane-across-clear
 
 ## Goal
 
@@ -119,6 +119,8 @@ declined a terminal live look.
 - 2026-10-06: question set: a terminal live look — declined, desktop only, and tests cover the terminal.
 - 2026-10-06: plan chose a live probe before any code over building from the API docs alone, because the docs do not say what closes a pane at `/clear`. M209 and M221 used the same probe. Falsified by a doc or a type that states the close mechanism.
 - 2026-10-06: plan chose to keep the behavior of other session ends over a reopen on every end, because the request named only `/clear`. Falsified by the operator asking for the pane after a resume.
+- 2026-10-06: implement started on m222-pane-across-clear. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
+- 2026-10-06: T1 probe written at `~/.claude/dev-mods/a9a59434-d86a-4bc2-91e4-5e3eb7bac7dc/cairn-probe/` (validates). `/cprobe` opens its pane, and `/cprobe-mode` or the pane's mode Buttons set `none`, `keep`, `end`, or `after`. The pane has a Clear Button. Each event goes to `m222-probe.log` (in `.git/info/exclude`). Each clear wipes this conversation, so the run resumes from `/milestone-implement M222`, which reads the log and the operator's report to finish T1.
 
 ## Decisions
 
