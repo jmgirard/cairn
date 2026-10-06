@@ -89,7 +89,7 @@ returns to `planned` for a re-cut.
 
 ## Tasks
 
-- [ ] T1: Live probe. Load the plugin-authoring skill and write a throwaway
+- [x] T1: Live probe. Load the plugin-authoring skill and write a throwaway
       mod in this session's hot-reload folder (LESSONS M205) with two
       Buttons: one awaits `$.command.run({ command: 'clear' })` and then
       runs a harmless command, and one holds the command and runs it from
@@ -127,3 +127,4 @@ returns to `planned` for a re-cut.
 - 2026-10-06: the operator gave standing approval to drop archived done rows to meet the ROADMAP caps; the M219 row went.
 - 2026-10-06: implement started on m221-clear-then-run. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
 - 2026-10-06: T1 probe written at `~/.claude/dev-mods/81d5525c-eb5f-4258-92f2-398cb5647ae8/clear-probe/` (validates). Its band row has `A: await` (await the `clear` run, then run `cairn:milestone`) and `B: hold` (hold `cairn:milestone`, start `clear` unawaited, run the held command from `session.end` with reason `clear`). Each step is logged to `m221-probe.log` (in `.git/info/exclude`). Each press clears this session's conversation, so the run resumes from `/milestone-implement M221`, which reads the log and the operator's report to finish T1.
+- 2026-10-06: T1 done. The operator pressed both probe Buttons, and each cleared the conversation and then ran `/cairn:milestone` in it. B showed its run after a short delay. The log shows that `session.end` with reason `clear` arrives before the `clear` run resolves, in A as in B. Chose the held-command way (B, with the `clear` run still awaited for its refusal), because AC4's stale-command case holds only when the command waits for the clear's session end. In the test harness a run resolves at once, so the await way runs the command before any session end. The probe mod is removed.
