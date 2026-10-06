@@ -313,7 +313,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   typed `/clear` in the desktop app ends the process with reason `other`,
   and the next process starts with no pane at the first message after the
   clear. So at an `other` end with the pane listed, shown, and placed, the
-  `session.end` hook adds `$.session.cwd()` to the store key `reopen`, and
+  `session.end` hook adds `$.session.root()`, which a shell `cd` does not
+  move, to the store key `reopen`, and
   the next `session.start` in that folder clears the mark and opens the
   pane after its refresh, when a ROADMAP is found. A reopen that is not
   placed waits with no toast. A pane behind another pane's tab or waiting

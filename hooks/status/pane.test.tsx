@@ -62,6 +62,9 @@ type Copy = {
   hidden?: string[]
   // The toasts that reached beneath the mod.
   toasts?: string[]
+  // The project root `$.session.root()` answers, when it differs from the
+  // cwd (M222 review).
+  root?: string
   // When set, every open is refused with this reason.
   refuse?: string
   // The command and args of each slash command run that reached beneath the
@@ -100,6 +103,7 @@ function panesOf(copy: Copy) {
 function seat(on: On, copy: Copy) {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
   on('session.cwd', async () => ({ value: copy.cwd }))
+  on('session.root', async () => ({ value: copy.root ?? copy.cwd }))
   on('fs.stat', async ($, e, next) =>
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
@@ -1204,6 +1208,40 @@ describe('an other end with the pane shown opens it at the next start in the sam
     newProcess(copy)
     await $.session.start(NEW_START)
     expect(panesOf(copy).map(open => open.id)).toContain(PANE)
+  })
+
+  test('a shell cd before the end still lists the pane at the next start in the root', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    copy.root = copy.cwd
+    copy.cwd = '/sub'
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    copy.cwd = copy.root
+    copy.root = undefined
+    await $.session.start(NEW_START)
+    expect(panesOf(copy).map(open => open.id)).toContain(PANE)
+  })
+
+  for (const state of ['hidden', 'unplaced'] as const) {
+    test(`a pane ${state} at the end lists none at the next start`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      await openPane($, on, copy)
+      copy[state] = [PANE]
+      await $.session.end(OTHER_END)
+      newProcess(copy)
+      await $.session.start(NEW_START)
+      expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+    })
+  }
+
+  test('a clear end marks nothing for the next start', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(CLEAR_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
   })
 
   test('another cwd lists no pane at the next start', async ($, on) => {

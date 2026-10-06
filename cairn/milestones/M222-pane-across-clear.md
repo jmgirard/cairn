@@ -196,3 +196,41 @@ Fresh evidence, 2026-10-06, on `m222-pane-across-clear` with `main` unmoved (ori
 - AC6: `python3 -m unittest discover -s scripts/tests` (397 tests) and `-s hooks/tests` (174 tests) exit 0; `claude plugin validate` on plugin.json and marketplace.json exit 0 with no warning; `claude plugin test .` exits 0 with 1303 pass, 0 fail.
 - AC7: the four AC7 cases pass: same cwd lists `cairn`, another cwd (`/sub`, same ROADMAP) does not, no pane at the end does not, and the once-only case does not reopen after a close and a `prompt_input_exit` end.
 - Gate: `cairn_validate.py` exits 0 with every check PASS. No principle changed, so no impact report.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the mark keys on `$.session.cwd()`, which a shell `cd` moves, so a session that changed folder marks a path the next start never matches — fix now: keyed on `$.session.root()`, with a shell-cd case that fails on the old code
+- diff-bug #2: any `session.start` in the folder, a `-p` run included, takes the mark — follow-up (row "Pane reopen edges"); an `isInteractive` gate cannot work, since T1 logged the desktop start with `isInteractive` false
+- diff-bug #3: the mark is per folder, so a second session in the folder can take it — reject, planned change: AC7 and the docs name the next session in that folder
+- diff-bug #4: the store read-then-write has no version check across processes — follow-up (row "Pane reopen edges")
+- diff-bug #5: `markReopen` runs before `next(e)` in the end's time budget — follow-up (row "Pane reopen edges")
+- diff-bug #6: no test pins the shown-and-placed check at an `other` end — fix now: hidden and unplaced cases
+- diff-bug #7: no test says a `clear` end marks nothing — fix now: a clear end then a start lists no pane
+- diff-bug #8: the AC1 cases are a guard that passes on `main` — reject, planned change: T2 and the AC1 audit named them a guard
+- diff-bug #9: no test for a reopen with no ROADMAP or two marked folders — follow-up (row "Pane reopen edges")
+- diff-bug #10: marks never expire — follow-up (row "Pane reopen edges")
+- diff-bug #11: an in-process `/resume` may leave the band and pane empty until the next prompt — follow-up (row "Pane reopen edges"); it predates M222
+- diff-bug #12: the clear refresh runs after `next(e)`, lengthening the blank moment — reject, false as a defect: the operator saw the contents back at once and accepted it
+- diff-bug #13: no double refresh between the two start hooks — noted, no request
+- diff-bug #14: `reopen` runs before `/cairn-pane` registers — fix now: moved after the registration
+- diff-bug #15: README and CHANGELOG say `Plan` and `Implement` were checked live — fix now: both name the typed `/clear` and both Clear Buttons as checked live
+- diff-bug #16: a `-p` run ends with `other` and marks nothing only because no pane is listed — noted, no request
+- diff-bug #17: some new lines run past the comment wrap — reject, style
+- blame-history #1: any start takes the mark — follow-up (row "Pane reopen edges") (as diff-bug #2)
+- blame-history #2: marks never expire — follow-up (row "Pane reopen edges") (as diff-bug #10)
+- blame-history #3: unversioned store write — follow-up (row "Pane reopen edges") (as diff-bug #4)
+- blame-history #4: `reopen` before registration undoes M205 and M213's independence — fix now (as diff-bug #14)
+- blame-history #5: `markReopen` before `next(e)` — follow-up (row "Pane reopen edges") (as diff-bug #5)
+- blame-history #6: the narrowing of other ends' behavior sits only in the work log, not Decisions — reject, false: the work-log stop answers record it, and it binds no other milestone
+- blame-history #7: the clear refresh can interleave with the held command's refresh — reject, false: the reviewer found no corruption, and `refresh` writes through versioned `update` calls
+- blame-history #8: docs overstate the live check — fix now (as diff-bug #15)
+- blame-history #9: two reset paths for a press-clear — reject, false: the reviewer found no contradiction
+- blame-history #10: the probe log is not committed — reject, planned change: T1 put the log in `.git/info/exclude`, and the work log is the record
+- prior-review #1: unversioned store write — follow-up (row "Pane reopen edges") (as diff-bug #4)
+- prior-review #2: `reopen` clears the mark before the open and swallows failures — reject, planned change: T3 asks for a silent reopen, and clearing first keeps it to once
+- prior-review #3: `markReopen` before `next(e)` — follow-up (row "Pane reopen edges") (as diff-bug #5)
+- prior-review #4: any start takes the mark — follow-up (row "Pane reopen edges") (as diff-bug #2)
+- prior-review #5: DESIGN's Known issues bullet lacks these gaps — reject, false: the gaps have a candidate row, which is their home
+- prior-review #6: the AC1 tests mostly show no close — reject, planned change (as diff-bug #8)
+- prior-review #7: untested paths, a non-clear `classic.SessionStart` among them — follow-up (row "Pane reopen edges"); the shown and clear-end cases are fixed now
+- prior-review #8: the `classic.SessionStart` refresh has no `try` — reject, false: `refresh` catches its read, as the `session.start` hook relies on
+- prior-review #9: `reopen` reads the ROADMAP again — reject, false: `read($, pane)` reads the state value, not a file
+- verify after the fixes: `claude plugin test .` 1307 pass, 0 fail; both unittest suites and both validates exit 0

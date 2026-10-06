@@ -315,7 +315,8 @@ does not open again. An app quit or a closed terminal that ends the session
 with reason `other` (not checked) also brings the pane back at the next
 session in that folder. In a terminal narrower than 110 columns, that pane
 waits undrawn until you open it. This was checked live in the desktop app
-only.
+only, for a typed `/clear` and both Clear Buttons. A `Plan` or `Implement`
+press clears through the same call as the Clear Buttons.
 
 Mods are on by default from Claude Code 2.1.287
 ([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),

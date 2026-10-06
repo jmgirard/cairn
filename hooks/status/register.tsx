@@ -99,11 +99,12 @@ const PANE_TITLE = 'cairn'
 const PANE_COMMAND = 'cairn-pane'
 // The key of the Next line's Button (M218).
 const PANE_NEXT = 'cairn-pane-next'
-// The store key that holds the folders whose session ended with reason
+// The store key that holds the project roots whose session ended with reason
 // `other` while the pane was open and shown (M222). A typed `/clear` in the
 // desktop app ends the process that way, and the next process starts with no
 // pane at the first message after the clear, so its `session.start` opens
-// the pane again. An app quit or a signal that ends the session with reason
+// the pane again. The key is `$.session.root()`, which a shell `cd` does not
+// move, so it matches the folder the next session starts in (M222 review). An app quit or a signal that ends the session with reason
 // `other` also brings the pane back at the next session in that folder. The
 // API does not say which ends those are, and none was checked live.
 const REOPEN_KEY = 'reopen'
@@ -141,7 +142,6 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     const result = await next(e)
     await refresh($)
-    await reopen($)
     // The band does not depend on the command: a refused registration
     // leaves the band as the refresh drew it.
     try {
@@ -149,6 +149,9 @@ export const register: Register = on => {
     } catch {
       // No `/cairn-pane` in this session. The band's open button still opens the pane.
     }
+    // After the registration, so a slow open does not hold `/cairn-pane`
+    // back (M222 review).
+    await reopen($)
     return result
   })
 
@@ -674,7 +677,7 @@ async function markReopen($) {
   try {
     const mine = (await $.ui.panes()).find(open => open.id === PANE)
     if (mine === undefined || !mine.isShown || !mine.isPlaced) return
-    const cwd = await $.session.cwd()
+    const cwd = await $.session.root()
     const held = await reopenList($)
     if (!held.includes(cwd)) await $.store.set(REOPEN_KEY, [...held, cwd])
   } catch {
@@ -687,7 +690,7 @@ async function markReopen($) {
 // with no toast, and a refused one gives nothing.
 async function reopen($) {
   try {
-    const cwd = await $.session.cwd()
+    const cwd = await $.session.root()
     const held = await reopenList($)
     if (!held.includes(cwd)) return
     await $.store.set(REOPEN_KEY, held.filter(each => each !== cwd))

@@ -10,7 +10,9 @@
   app, a pane that was shown opens again at your next message, in the same
   folder. An app quit or a closed terminal that ends the session with
   reason `other` (not checked) also brings the pane back at the next
-  session in that folder. The desktop app is the surface checked live.
+  session in that folder. The desktop app is the surface checked live, for
+  a typed `/clear` and both Clear Buttons. A `Plan` or `Implement` press
+  clears through the same call.
 
 ## 2.0.0 (2026-10-06)
 
