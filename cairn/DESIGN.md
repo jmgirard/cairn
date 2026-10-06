@@ -313,8 +313,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `session.end` hook adds `$.session.cwd()` to the store key `reopen`, and
   the next `session.start` in that folder clears the mark and opens the
   pane after its refresh, when a ROADMAP is found. A reopen that is not
-  placed waits with no toast. An app quit or another signal also ends with
-  `other`, so the pane comes back at the next session in that folder too.
+  placed waits with no toast. A pane behind another pane's tab or waiting
+  undrawn at the `other` end is not marked. An app quit or a signal that
+  ends with `other` also brings the pane back at the next session in that
+  folder. The API does not say which ends those are, and none was checked.
   `resume`, `prompt_input_exit`, and `logout` ends mark nothing. The desktop
   app is the surface checked live, and tests cover the mod's side in the
   terminal.

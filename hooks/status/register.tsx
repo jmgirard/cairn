@@ -103,8 +103,9 @@ const PANE_NEXT = 'cairn-pane-next'
 // `other` while the pane was open and shown (M222). A typed `/clear` in the
 // desktop app ends the process that way, and the next process starts with no
 // pane at the first message after the clear, so its `session.start` opens
-// the pane again. An app quit or another signal ends with `other` too, and
-// brings the pane back at the next session in that folder.
+// the pane again. An app quit or a signal that ends the session with reason
+// `other` also brings the pane back at the next session in that folder. The
+// API does not say which ends those are, and none was checked live.
 const REOPEN_KEY = 'reopen'
 
 // The close button's label. The desktop app draws a dismiss Button in the
@@ -672,8 +673,8 @@ async function markReopen($) {
   }
 }
 
-// Opens the pane once at the start that follows a marked end in the same
-// folder, and clears the mark (M222). A reopen that is not placed waits
+// At the first start in a marked folder, clears the mark and, when the
+// refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
 // with no toast, and a refused one gives nothing.
 async function reopen($) {
   try {
