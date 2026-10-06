@@ -431,3 +431,60 @@ within each type and are never reused.
   step until the next Stop or typed prompt, which can change the row shown
   during `/milestone-review` or show a band hidden over the row it moves
   (corrected M206: the band no longer draws a skill label).
+- The status mod's band and pane have small gaps, accepted at the M191 to
+  M221 reviews with no fix planned. On 2026-10-06 they moved here from
+  fourteen ROADMAP candidate rows, and the git history of `cairn/ROADMAP.md`
+  holds each row's full text. If a gap shows in a real session, it becomes
+  a `/hotfix` or a candidate row.
+  Reading the ROADMAP: a file cut mid-table during a write reads as
+  shorter, and a file deleted and recreated reads as absent. An empty or
+  unreadable file before any good read prints `no cairn ROADMAP found`.
+  So do the first failed read after a reload from pre-M210 code and the
+  `pane-2` tag after a reload, until the next refresh. A pane parse
+  throw keeps the band's old rows, and a throwing refresh skips the
+  command's registration. Duplicate ids give duplicate pane keys and share
+  one percent. The pane matches `## Candidates (dropped)` and draws a bare
+  mark for an empty title. It shows the date and links of a row with no
+  `: `.
+  `cairn_status` counts commented and indented candidate rows, and the pane
+  does not. The band counts a box in an HTML comment, and the pane does not.
+  JS and Python differ on a BOM, on `\x1f`, and on trim.
+  Session state: the stored root is compared as an exact string, and
+  `dirname` takes `//a/b` and `\\?\UNC\srv` heads as share roots. A
+  bare-named project skill such as `hotfix` sets the band's skill.
+  Background work or a one-shot wakeup that the skill did not start keeps
+  a finished skill's step. A rejecting `next(e)` clears the step and loses
+  Clear. A subagent's cairn skill shows Clear, a dropped cairn command loses
+  it, and a closed band hides it. The Stop and drop branches write `ended`
+  apart.
+  Presses: a press that loses the version race, or comes mid-run, says
+  nothing. A press drawn before a session end hides the band after it. A
+  press before the `isWorking` redraw queues. A press queued outside a cairn
+  skill can run after the turn starts one. A pane Plan or Implement press
+  in a working turn queues its `/clear`. Two quick presses can pass
+  `busy`. A `/clear` with no clear end holds the queued command, and a
+  reload before the end loses it. A refused press with a draft sends
+  `draft/cairn:…` as prose. `Review` can act on a hidden milestone, and
+  `Plan` starts a milestone that just turned workable. Pane Clear shows
+  outside a cairn skill and with the band closed.
+  Layout: `refresh` writes band and pane apart, so a frame can drop a head
+  line's percent or show `Plan` or the empty row out of date. Under about
+  39 columns a band title gets less than its 10 columns, and under about 38
+  the pane's Boxes overflow. At the 44-column dock the Next pill gets about
+  3 columns, and `Resume` or `Review` cuts it. A cut Next command loses its
+  pad, so `…` draws on the pill's color. Desktop Buttons count at terminal
+  width, and the track uses a 7-pixel column estimate (`TRACK_COLUMNS`, 52)
+  that no test ties to the app. The engine's scrub can drop the track's
+  `clipPath`. The `▎`, `■`, `□`, and `↑ · ↓` marks are ambiguous width in
+  CJK terminals.
+  Colors: nobody checked the gray Buttons or the terminal track in other
+  themes. In the light colorblind theme the implement pill is 2.1:1
+  (light: 3.2:1). The desktop track's plan blue and implement orange differ
+  from the pane's `planMode` teal and `claude` orange.
+  Tests: none covers the `vscode` and `mobile` surfaces, presses a stale
+  Clear, or starts a skill by a press. The M206 desktop sweep has no Button
+  rows and starts at 40 columns. The press, refresh, and session-end suites
+  draw on the terminal only. M219's Review lists four more gaps.
+  Code: `CairnPaneState` and `PaneState` are hand-kept copies, and
+  `render()` lists the archive three times. The desktop can draw `≡` as a
+  native button over its 2 reserved columns.
