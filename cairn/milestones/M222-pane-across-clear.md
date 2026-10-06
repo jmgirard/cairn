@@ -166,6 +166,7 @@ declined a terminal live look.
 - 2026-10-06: T4 added the reopen to README.md's pane section, to `cairn/DESIGN.md` after the M219 pane text and in the `hooks/status/` component line, and to a new Unreleased section in CHANGELOG.md, since 2.0.0 was cut today. Each names the app-quit cost and the desktop app as the surface checked live. verify: all five commands exit 0.
 - 2026-10-06: claim audit pass (fresh Opus reader): 33 claims read, 7 wrong, all corrected toward the narrower claim. A typed `/clear` reopens only a pane that was shown, the app-quit cost is stated as a condition that was not checked, the reopen needs a found ROADMAP, and a press keeps the process, not the session. The reader's re-read found 5 holding and 2 still wrong (the README and CHANGELOG lead sentences), now "shown at a `/clear`".
 - claim audit: 33 claims read, 7 corrected — README.md, CHANGELOG.md, hooks/status/register.tsx
+- 2026-10-06: T5 operator look, typed `/clear` (new desktop session in this repo): the pane closed at the clear and opened again when the operator sent "hi" in the new session. That meets AC4 for a typed `/clear`. No Clear Button showed, because the band and pane draw it only after a cairn skill's step ends, and `Plan` or `Implement` show only with no active milestone. The press cases go next: Clear after a short cairn skill here, and `Plan` in a throwaway repo with one done row at the session scratchpad's `m222-look`.
 
 ## Decisions
 
