@@ -186,9 +186,12 @@ A press of `Implement` runs `/clear` and then, in the cleared
 conversation, `/cairn:milestone-implement` with the milestone's id, as if
 you typed both. It does not ask first, because the press is your consent
 to drop the conversation, as a press of `Clear` is. The second command
-starts when the session that `/clear` ends is over. If the session refuses
-`/clear`, the second command does not run, and `/clear` goes after the text
-in the prompt box with a toast that says why. The row draws no command as text, so
+starts when the session that `/clear` ends is over. Until then, a press of
+a next-step, `Status`, or `Clear` button does nothing. If the session refuses `/clear`, the
+second command does not run, and `/clear` goes after the text in the
+prompt box with a toast that says why. If the session ends for another
+reason first, such as a resume, the second command does not run, and its
+command line goes into the prompt box with a toast. The row draws no command as text, so
 while the buttons do not show, the row shows the id, the title, the track,
 and the `≡` and close buttons. In a narrow window the idle row drops its
 track, so that the title keeps room.

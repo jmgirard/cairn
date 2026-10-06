@@ -3488,6 +3488,56 @@ describe('Plan and Implement run /clear and then their command at its session en
   }
 })
 
+// M221 review: in the desktop app the clear's session end arrives while its
+// run is still pending (T1). The held command runs at that end, and the
+// clear run that settles later does not free a press during it.
+describe('the clear session end arrives while its run is pending (M221 review)', () => {
+  for (const surface of SURFACES) {
+    test(`no-active: the command runs at the end, and the clear settling first does not free a press (${surface})`, async ($, on) => {
+      const copy = copyOf('no-active')
+      let releaseClear = () => {}
+      let releaseHeld = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        releaseClear = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const first = ui.press({ key: 'cairn-next' })
+      try {
+        await untilRuns(copy, 1)
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        // The held command's run waits on a hold of its own.
+        copy.runHold = new Promise<void>(resolve => {
+          releaseHeld = resolve
+        })
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, nextRun('no-active')])
+        // The clear's run settles while the held command's run is held.
+        releaseClear()
+        await first
+        // A press now reaches no run. Without the run-number guard it would
+        // reach a third run and wait on the hold, so it is not awaited here.
+        const pressed = ui.press({ key: 'cairn-status' })
+        await untilRuns(copy, 3, 10)
+        expect(copy.commands).toEqual([CLEAR_RUN, nextRun('no-active')])
+        releaseHeld()
+        await pressed
+      } finally {
+        releaseClear()
+        releaseHeld()
+        await first
+      }
+      copy.runHold = undefined
+      await untilRuns(copy, 3, 10)
+      await ui.press({ key: 'cairn-status' })
+      expect(copy.commands).toEqual([CLEAR_RUN, nextRun('no-active'), STATUS_RUN])
+      await ui.unmount()
+    })
+  }
+})
+
 describe('a refused clear or another session end drops the held command (M221 AC4)', () => {
   for (const name of ['all-waiting', 'no-active']) {
     for (const surface of SURFACES) {
@@ -3506,7 +3556,9 @@ describe('a refused clear or another session end drops the held command (M221 AC
         await ui.unmount()
       })
 
-      test(`${name}: a resume's session end drops the command, so a later clear's end runs nothing (${surface})`, async ($, on) => {
+      // M221 review: the dropped command goes to the prompt box with a
+      // toast, as a refused run's does, and the Buttons are free again.
+      test(`${name}: a resume's session end drops the command and says so, a later clear's end runs nothing, and a press runs again (${surface})`, async ($, on) => {
         const copy = copyOf(name)
         seat(on, copy)
         await $.turn.complete(turn())
@@ -3516,7 +3568,12 @@ describe('a refused clear or another session end drops the held command (M221 AC
         await $.session.end(CLEAR_END)
         await untilRuns(copy, 2, 10)
         expect(copy.commands).toEqual([CLEAR_RUN])
-        expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
+        const run = CLEAR_FIRST_CASES.find(c => c.name === name)?.run() as { command: string; args: string }
+        const text = run.args === '' ? `/${run.command}` : `/${run.command} ${run.args}`
+        expect(copy.fills).toEqual([{ text, mode: 'append' }])
+        expect(copy.toasts).toEqual([`cairn: the session ended before /clear (${text})`])
+        await ui.press({ key: 'cairn-status' })
+        expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
         await ui.unmount()
       })
     }

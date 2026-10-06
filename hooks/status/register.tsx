@@ -5,7 +5,7 @@ import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import type { PaneButton } from './pane'
-import { CLEAR_LABEL, nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL, STATUS_LABEL } from './pane'
+import { CLEAR_LABEL, CLEARS_FIRST, nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL, STATUS_LABEL } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
@@ -121,10 +121,8 @@ const STATUS_COMMAND = 'cairn:milestone'
 // The built-in command the Clear Button runs (M216). The Status and Clear
 // labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
-// The next steps whose Button runs `/clear` first and its command in the
-// cleared conversation (M221): `Implement` and `Plan`. A resumed run and a
-// review keep their conversation.
-const CLEARS_FIRST = ['implement', 'plan the next milestone']
+// `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
+// sits in pane.ts beside the label map.
 // The key and label of each Button after the Next line's action (M219).
 const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
   clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
@@ -337,6 +335,10 @@ export const register: Register = on => {
   // Every session end, a `/clear` or a resume among them, ends the step and
   // shows a band that a press hid, whatever its reason (M200).
   on('session.end', async ($, e, next) => {
+    // A `Plan` or `Implement` press's held command is taken first, so a
+    // rejecting `next(e)` below cannot leave it set (M221 review).
+    const queued = heldRun
+    heldRun = null
     const result = await next(e)
     await update($, step, () => null)
     await update($, expanded, () => false)
@@ -345,14 +347,16 @@ export const register: Register = on => {
     // A `/clear` from the Clear Button ends the session, and its run may
     // never settle, so the end frees the action Buttons (M216).
     running = false
-    // A `Plan` or `Implement` press's command runs now when this end is its
-    // `/clear`, and any other end drops it (M221). The run is not awaited,
-    // so the session end does not wait on the command. It takes the next
-    // run number, so the `/clear` run that settles after this end does not
-    // free a press made while the command runs.
-    const queued = held
-    held = null
-    if (e.reason === 'clear' && queued !== null) void run($, queued.command, queued.args)
+    // The held command runs now when this end is its `/clear` (M221). The
+    // run is not awaited, so the session end does not wait on the command.
+    // It takes the next run number, so the `/clear` run that settles after
+    // this end does not free a press made while the command runs. Any other
+    // end drops the command, and the prompt box and a toast say so, as for
+    // a refused run (M221 review).
+    if (queued !== null) {
+      if (e.reason === 'clear') void run($, queued.command, queued.args)
+      else void fallBack($, lineOf(queued.command, queued.args), 'the session ended before /clear')
+    }
     return result
   })
 
@@ -551,7 +555,7 @@ let runs = 0
 // next session end, which runs it when the end's reason is `clear` (M221).
 // While it is set, a press does nothing, as while a run is in flight. A
 // refused `/clear` drops it. A reload starts it over as null.
-let held: { command: string; args: string } | null = null
+let heldRun: { command: string; args: string } | null = null
 
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
@@ -562,7 +566,10 @@ let held: { command: string; args: string } | null = null
 // planning with no arguments while nothing is workable (M213).
 // `Plan` and `Implement` run `/clear` first and hold the command for the
 // session end it brings (M221). The press is the person's consent to drop
-// the conversation, as a press of Clear is (M216).
+// the conversation, as a press of Clear is (M216), so it clears only when
+// the drawn label is the next step's label as it is now: a `Resume` or
+// `Review` drawing whose next step has since become planning or implement
+// runs the command and keeps the conversation (M221 review).
 async function pressNext($, drawn: string | undefined) {
   if (busy() || knownStep(await read($, step)) !== null) return
   const next = (await read($, pane)).next
@@ -570,18 +577,18 @@ async function pressNext($, drawn: string | undefined) {
   if (next.id === null && drawn !== PLAN_LABEL) return
   const command = `cairn:${next.command.slice(1)}`
   const args = next.id ?? ''
-  if (!CLEARS_FIRST.includes(next.action)) {
+  if (!CLEARS_FIRST.includes(next.action) || drawn !== labelOf(next.action)) {
     await run($, command, args)
     return
   }
   const mine = { command, args }
-  held = mine
-  if (!(await run($, CLEAR_COMMAND, '')) && held === mine) held = null
+  heldRun = mine
+  if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
 }
 
 // True while a run is in flight or a command waits for its `/clear`.
 function busy(): boolean {
-  return running || held !== null
+  return running || heldRun !== null
 }
 
 async function pressStatus($) {
@@ -610,21 +617,32 @@ async function run($, command: string, args: string): Promise<boolean> {
     await $.command.run({ command, args })
     return true
   } catch (error) {
-    const text = args === '' ? `/${command}` : `/${command} ${args}`
-    try {
-      await $.prompt.fill({ text, mode: 'append' })
-    } catch {
-      // A fill that rejects leaves the draft as it was; the toast still
-      // names the refusal.
-    }
-    try {
-      await $.ui.toast(`cairn: ${error instanceof Error ? error.message : String(error)} (${text})`)
-    } catch {
-      // No toast shows; the press has nothing else to say.
-    }
+    await fallBack($, lineOf(command, args), error instanceof Error ? error.message : String(error))
     return false
   } finally {
     if (runs === mine) running = false
+  }
+}
+
+// A command's line as the person would type it.
+function lineOf(command: string, args: string): string {
+  return args === '' ? `/${command}` : `/${command} ${args}`
+}
+
+// Puts a command line that did not run after the prompt box's draft, and
+// toasts why (M212). A held command that a session end dropped goes the
+// same way (M221 review).
+async function fallBack($, text: string, why: string) {
+  try {
+    await $.prompt.fill({ text, mode: 'append' })
+  } catch {
+    // A fill that rejects leaves the draft as it was; the toast still
+    // names the refusal.
+  }
+  try {
+    await $.ui.toast(`cairn: ${why} (${text})`)
+  } catch {
+    // No toast shows; the press has nothing else to say.
   }
 }
 

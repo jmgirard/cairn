@@ -69,6 +69,9 @@ type Copy = {
   // (M218).
   commands?: { command: string; args: string }[]
   runHold?: Promise<void>
+  // While set, a slash command run beneath the mod throws this message
+  // (M221 review).
+  runThrows?: string
 }
 
 function copyOf(name: string): Copy {
@@ -135,6 +138,7 @@ function seat(on: On, copy: Copy) {
   on('command.run', async ($, e) => {
     copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
     if (copy.runHold !== undefined) await copy.runHold
+    if (copy.runThrows !== undefined) throw new Error(copy.runThrows)
     return { text: '' }
   })
   // The session end a `/clear` brings, which runs the command a Plan or
@@ -1018,6 +1022,25 @@ describe("the pane's Plan and Implement run /clear and then their command (M221 
         await ui.unmount()
       })
     }
+  }
+
+  // M221 review: a refused clear in the pane runs nothing at the clear's
+  // end, and the toast names /clear, as on the band.
+  for (const surface of SURFACES) {
+    test(`all-waiting: a refused clear runs nothing at the clear's end (${surface})`, async ($, on) => {
+      const copy = copyOf('all-waiting')
+      copy.runThrows = 'no such command here'
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      await ui.press({ key: PANE_NEXT })
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      expect(copy.toasts?.length).toBe(1)
+      expect(copy.toasts?.[0]).toMatch(/^cairn: .* \(\/clear\)$/)
+      await ui.unmount()
+    })
   }
 })
 

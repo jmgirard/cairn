@@ -184,16 +184,21 @@ transitions, human-gated merges, and a domain verification doctrine.
   `/clear` that ends the session may never settle. Each run takes a number,
   and only the latest run clears `running` as it settles.
   `Plan` and `Implement` clear the conversation before they run (M221):
-  for the next actions in `CLEARS_FIRST`, `pressNext` stores the command
-  and its args in the module's `held` value and runs `clear` through `run`.
-  `session.end` takes `held` and, when the reason is `clear`, runs it
-  through `run`, unawaited. Any other end drops it. A `clear` run that
-  rejects drops it too, so the refusal names `/clear`. While `held` is set,
+  for the next actions in pane.ts's `CLEARS_FIRST`, when the drawn label
+  is still the next step's label, `pressNext` stores the command and its
+  args in the module's `heldRun` value and runs `clear` through `run`.
+  `session.end` takes `heldRun` before it calls `next(e)` and, when the
+  reason is `clear`, runs it through `run`, unawaited. Any other end drops
+  it and puts its command line in the prompt box with a toast, as `run`
+  does for a refused run (`fallBack`). A `clear` run that rejects drops it
+  too, and `run`'s own refusal names `/clear`. While `heldRun` is set,
   `busy` makes every action press do nothing. A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
-  a press of Clear is (IP3). `Resume`, `Review`, `Status`, and Clear run
-  their one command.
+  a press of Clear is, which is how the plan gate settled the IP3 point. A
+  `Resume` or `Review` drawing whose next step has since become planning or
+  implement runs the command without the clear. `Resume`, `Review`,
+  `Status`, and Clear run their one command.
   The flow track (M204) is the row's one progress form (M206). `flowOf`
   and `idleFlow` in `band.ts` give the model: three equal segments, plan,
   implement, and review, each a whole-number fraction. Plan is full on a

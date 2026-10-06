@@ -148,3 +148,43 @@ Evidence at fc61a0c, after `git fetch`: the branch contains `origin/main`, and n
 - AC6 (evidence): README.md:185 and :202 say `Implement` and `Plan` run `/clear` and then their command. cairn/DESIGN.md:186 says they clear the conversation before they run. CHANGELOG.md:7, inside `## Unreleased`, has the entry "Plan and Implement clear the conversation first".
 - AC7 (evidence): at fc61a0c, `scripts/tests` (397 tests), `hooks/tests` (174 tests), `claude plugin validate` on the plugin manifest (passed with warnings) and on the marketplace manifest (passed), and `claude plugin test .` (1287 pass) each exited 0.
 - Gate: `cairn_validate.py` exited 0 with all checks passed. No principle changed, so `cairn_impact` was skipped. Profile gate: the verify checks passed at fc61a0c, the marketplace validate output has no `version` warning, and CHANGELOG `## Unreleased` has this change's entry with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a `/clear` run that settles with no clear session end leaves `held` set, so the action Buttons do nothing until some session end — follow-up, row "Clear-then-run follow-ons (M221 review)". Dropping it at the settle breaks a host whose end follows the settle, and the probe covered only the desktop order.
+- diff-bug #2: such a stale command runs at a later, unrelated `/clear` — follow-up, the same row (it follows from #1).
+- diff-bug #3: a non-clear session end drops the held command with no word, against IP3 — fix now: the prompt box gets its command line and a toast says the session ended before `/clear`.
+- diff-bug #4: a reload between the press and the end loses the command, and Scope names a row for it — follow-up, the same row.
+- diff-bug #5: no test has the clear's session end arrive while its run is pending, the live order — fix now: a test with separate holds for the clear and the command.
+- diff-bug #6: two quick presses can both pass `busy` before `heldRun` is set — follow-up, the same row (the race predates M221).
+- diff-bug #7: a drawn `Resume` or `Review` whose next step became planning or implement clears the conversation — fix now: the press clears only when the drawn label is the next step's label. No test, because the kit presses the current drawing (as M212 noted for the step check).
+- diff-bug #8: a clear that rejects after its end would fill `/clear` into the new conversation — reject (false): a clear that ended the session resolved in each probe run, and a refused clear ends no session.
+- diff-bug #9: a pane press during a turn holds the command for the rest of the turn — follow-up, the same row.
+- diff-bug #10: the held run's refusal path uses the ending session's handle, untested — reject (planned change): the held-command way runs from the `session.end` hook by design, and the live look ran the command through that handle. The refusal is `run`'s catch, which M212 AC3 tests.
+- diff-bug #11: local `held` names in `dismiss`, `reconcile`, and `refresh` shadow the module value — fix now: renamed `heldRun`.
+- diff-bug #12: the negative checks wait about 55 ms — reject (false): the planted defects at T3 turned these checks red.
+- diff-bug #13: AC4 has no pane case, though the CHANGELOG names the pane — fix now: a pane refused-clear test.
+- diff-bug #14: no test shows the Buttons free after a resume end — fix now: the resume cases press Status after.
+- diff-bug #15: `CLEARS_FIRST` is untyped and copied in three places — fix now: it moved to pane.ts beside the label map. The test copies stay, written by hand, as an expectation independent of the code.
+- diff-bug #16: the README idle paragraph omits the dead window and the refused command — fix now.
+- diff-bug #17: the CHANGELOG omits the dead window and the other-end drop — fix now.
+- diff-bug #18: DESIGN's "drops it too, so the refusal names `/clear`" states a wrong cause — fix now.
+- diff-bug #19: DESIGN cites IP3 for consent, which IP3 does not say — fix now: the text now says the plan gate settled the IP3 point this way.
+- diff-bug #20: the plan did not offer the `ip-touching` escalation — reject (planned change): the plan put the IP3 point to the operator at the question set, who chose consent by press. This is a plan-phase gap, shown at the merge question.
+- diff-bug #21: two README lines run past the wrap width — reject (style).
+- blame-history #1: a settled clear no longer frees the Buttons without a session end — follow-up, the same row (as diff-bug #1).
+- blame-history #2: the held command is not re-read when it runs — follow-up, the same row's pane-turn item. In an idle session nothing changes the next step between the press and the end.
+- blame-history #3: a pane press in a non-cairn turn queues a conversation-dropping `/clear` — follow-up, the same row.
+- blame-history #4: the clear decision follows the re-read action, not the drawn label — fix now (as diff-bug #7).
+- blame-history #5: the consent rests on labels that do not name the clear — reject (planned change): the plan gate chose the plain labels.
+- blame-history #6: any clear end runs the held command, such as a typed `/clear` while the Button's waits — follow-up, the same row's pane-turn item (only a queued clear leaves that window).
+- blame-history #7: the hook takes the held command after `next(e)` and four awaits — fix now: it takes it first.
+- blame-history #8a: the M213 in-flight test asserts a second clear, not a freed Plan — reject (false): a freed Plan press runs `clear` first, so that entry is the freed press.
+- blame-history #8b: no test makes the held command's run reject — reject (false): it runs through `run`, whose refusal M212 AC3 tests.
+- blame-history #8c: `CLEARS_FIRST` copied as literals — fix now (as diff-bug #15).
+- blame-history #9: the double-press race predates M221 and costs more now — follow-up, the same row.
+- prior-review #1: a pane press while Claude works queues `/clear`, as the M218 and M219 rows note — follow-up, the same row.
+- prior-review #2: a rejecting `next(e)` leaves `held` set — fix now (as blame-history #7). Its settle-without-end part is diff-bug #1.
+- prior-review #3: the held command runs without the as-it-is-now re-read — follow-up (as blame-history #2).
+- prior-review #4: `CLEARS_FIRST` defined three times — fix now (as diff-bug #15).
+- prior-review #5: no test of a pane press in a non-cairn turn, or of a stale Clear press — follow-up: the first in the same row, the second already in "Clear button follow-ons (M216 review)".
+- prior-review #6: `untilRuns` polls with 5 ms waits — reject (false): the existing hold tests use the same polling, and the plants turned the new checks red.
+- Return floor: no finding shows a criterion failing, and the fix-now items are edge paths off the accepted live path, so status stays `review`.
