@@ -306,7 +306,7 @@ repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command
 closes it.
 
-A cairn pane that is open at a `/clear` is open after it. A press of a
+A cairn pane that is shown at a `/clear` is open after it. A press of a
 Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
 and the pane stays. A typed `/clear` in the desktop app starts a new
 session at your next message, and a pane that was shown opens again then,

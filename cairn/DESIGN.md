@@ -304,7 +304,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the
   band and the pane read one place. A press is the band's `pressStatus` or
   `pressClear`.
-  A cairn pane open at a `/clear` is open again after it (M222). A press
+  A cairn pane shown at a `/clear` is open after it (M222). A press
   of a Clear, `Plan`, or `Implement` Button ends the session with reason
   `clear` in the same process, and nothing closes the pane (M222 probe). A
   typed `/clear` in the desktop app ends the process with reason `other`,

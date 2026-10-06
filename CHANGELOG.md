@@ -4,7 +4,7 @@
 
 ### New
 
-- **The cairn pane comes back after `/clear`.** A cairn pane that is open
+- **The cairn pane comes back after `/clear`.** A cairn pane that is shown
   at a `/clear` is open after it. A press of a Clear, `Plan`, or
   `Implement` Button keeps the pane. After a typed `/clear` in the desktop
   app, a pane that was shown opens again at your next message, in the same
