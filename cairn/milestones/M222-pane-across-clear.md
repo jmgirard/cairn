@@ -75,12 +75,12 @@ declined a terminal live look.
       `$.ui.panes()` does not list `cairn`.
 - [ ] AC4: The operator uses a desktop Code session in a window no
       narrower than T1's (its probe read 106 columns). With the cairn pane
-      open and shown, four clears each leave the pane shown once the first
-      message after the clear is sent (for a `Plan` or `Implement` press,
-      that message is its held command). They are a typed `/clear`, a press
-      of the band's Clear Button, a press of the pane's Clear Button, and a
-      press of a `Plan` or `Implement` Button that clears first. The
-      operator sees this at a live look and accepts it.
+      open and shown, three clears each leave the pane shown once the first
+      message after the clear is sent. They are a typed `/clear`, a press
+      of the band's Clear Button, and a press of the pane's Clear Button.
+      The operator sees this at a live look and accepts it. A `Plan` or
+      `Implement` press runs `/clear` through the same call as the Clear
+      Button, and the tests cover it.
 - [ ] AC5: README.md, `cairn/DESIGN.md`, and CHANGELOG.md's Unreleased
       section each state that a cairn pane open at a `/clear` is open again
       after it. Each names the desktop app as the surface checked live.
@@ -134,7 +134,7 @@ declined a terminal live look.
       empty under the new session id. Refresh at `classic.SessionStart`
       with source `clear`, test first in the M205 AC5 event list. Run
       `verify`.
-- [ ] T5: Live look in a new desktop Code session in a cairn repo, since
+- [x] T5: Live look in a new desktop Code session in a cairn repo, since
       a Code session keeps the mod it loaded at its start (LESSONS M195).
       Try each clear that AC4 names.
 
@@ -175,6 +175,9 @@ declined a terminal live look.
 - 2026-10-06: T5 operator look, the band's or pane's Clear Button after `/cairn:milestone`: the pane stayed open but showed `no cairn ROADMAP found` until the operator typed "hi", then filled again. The pane draws that line when its state's `found` is false, which is the empty state, and the mod refreshes only at `session.start`, a turn end, a Stop, or a prompt, none of which a press raises. So the host's state starts empty under the new session id. Minor amendment: discovered sub-task T6 before T5 refreshes at `classic.SessionStart` with source `clear`, which T1 saw 0.1 s after a press's end.
 - 2026-10-06: T6 the `session start after a clear` case in the M205 AC5 event list failed against `register.tsx` (the T2 tick did not show), then passed with a `classic.SessionStart` hook that refreshes when the source is `clear`. DESIGN names the hook. verify: 1303 mod tests pass, and the other four commands exit 0.
 - 2026-10-06: T5 operator look after T6, Clear Button press in a new desktop session: the pane's contents disappeared very briefly and then came back, with no prompt typed. The operator called this great. The `Plan` press in `m222-look` is the one AC4 clear not yet seen.
+- 2026-10-06: stop answered: a `Plan` or `Implement` Button cannot show in this repo while M222 is active, and the operator declined a session in a throwaway folder. The operator chose to narrow AC4 to three clears, since a press of either runs `/clear` through the same `run($, CLEAR_COMMAND, '')` call as the Clear Button (`register.tsx` lines 608 and 627).
+- 2026-10-06: substantive amendment: AC4 now reads as in the criteria (three clears, and the `Plan` or `Implement` press covered by the shared call and the tests). AC4 already has two re-audit lines, so no reader ran, and the operator accepted the text at the stop.
+- 2026-10-06: T5 done: the operator confirmed both Clear presses (band and pane) kept the pane and its contents after T6, and the typed `/clear` reopened it at the next message. The operator accepted the look.
 
 ## Decisions
 
