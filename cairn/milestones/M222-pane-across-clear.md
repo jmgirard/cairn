@@ -121,6 +121,7 @@ declined a terminal live look.
 - 2026-10-06: plan chose to keep the behavior of other session ends over a reopen on every end, because the request named only `/clear`. Falsified by the operator asking for the pane after a resume.
 - 2026-10-06: implement started on m222-pane-across-clear. Untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, as they are not milestone work.
 - 2026-10-06: T1 probe written at `~/.claude/dev-mods/a9a59434-d86a-4bc2-91e4-5e3eb7bac7dc/cairn-probe/` (validates). `/cprobe` opens its pane, and `/cprobe-mode` or the pane's mode Buttons set `none`, `keep`, `end`, or `after`. The pane has a Clear Button. Each event goes to `m222-probe.log` (in `.git/info/exclude`). Each clear wipes this conversation, so the run resumes from `/milestone-implement M222`, which reads the log and the operator's report to finish T1.
+- 2026-10-06: T1 first clear (typed `/clear`, mode `none`): `session.end` came with reason `other`, which the API defines as a signal, not `clear`. The pane was still listed after `next(e)`, and no `ui.close` or `session.start` was logged. The next session had a new id and did not load the probe from the old id's hot-reload folder, so the desktop app starts a new process at a typed `/clear`. The probe moved to `.claude/skills/cairn-probe/` (in `.git/info/exclude`), which loads in every process here. It now appends to the log and keeps its mode and an open-at-end flag in `$.store`, so mode `after` tries a reopen at the new process's `session.start`.
 
 ## Decisions
 
