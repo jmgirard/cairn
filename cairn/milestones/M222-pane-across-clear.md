@@ -55,7 +55,7 @@ declined a terminal live look.
 
 ## Acceptance criteria
 
-- [ ] AC1: When the cairn pane is open at a `session.end` whose reason is
+- [x] AC1: When the cairn pane is open at a `session.end` whose reason is
       `clear`, the mod neither closes nor hides it. T1 saw that a press in
       the desktop app then leaves the pane open and shown. The `claude
       plugin test` cases in `hooks/status/pane.test.tsx` drive that end with
@@ -63,17 +63,17 @@ declined a terminal live look.
       stubs that close no pane. Each case asserts that `$.ui.panes()` lists
       `cairn` after the clear's events. The shown case also asserts that
       `isShown` and `isPlaced` are true.
-- [ ] AC2: A `clear` end with no cairn pane open leaves none open. A test
+- [x] AC2: A `clear` end with no cairn pane open leaves none open. A test
       case with the same stubs asserts that `$.ui.panes()` does not list
       `cairn` after the clear's events.
-- [ ] AC3: After a `session.end` whose reason is `resume`,
+- [x] AC3: After a `session.end` whose reason is `resume`,
       `prompt_input_exit`, or `logout`, the next `session.start` opens no
       cairn pane. One test case per reason ends the session with the pane
       open, empties the open panes between the end and the next
       `session.start`, so the case sees only what the mod opens, and then
       starts a session in the same cwd. Each case asserts that
       `$.ui.panes()` does not list `cairn`.
-- [ ] AC4: The operator uses a desktop Code session in a window no
+- [x] AC4: The operator uses a desktop Code session in a window no
       narrower than T1's (its probe read 106 columns). With the cairn pane
       open and shown, three clears each leave the pane shown once the first
       message after the clear is sent. They are a typed `/clear`, a press
@@ -81,11 +81,11 @@ declined a terminal live look.
       The operator sees this at a live look and accepts it. A `Plan` or
       `Implement` press runs `/clear` through the same call as the Clear
       Button, and the tests cover it.
-- [ ] AC5: README.md, `cairn/DESIGN.md`, and CHANGELOG.md's Unreleased
-      section each state that a cairn pane open at a `/clear` is open again
-      after it. Each names the desktop app as the surface checked live.
-- [ ] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
-- [ ] AC7: When the cairn pane is open and shown at a `session.end` whose
+- [x] AC5: README.md, `cairn/DESIGN.md`, and CHANGELOG.md's Unreleased
+      section each state that a cairn pane shown at a `/clear` is open after
+      it. Each names the desktop app as the surface checked live.
+- [x] AC6: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: When the cairn pane is open and shown at a `session.end` whose
       reason is `other`, which is how the desktop app ends a session at a
       typed `/clear`, the next `session.start` in the same cwd opens it.
       Test cases end with reason `other`, empty the open panes, and start a
@@ -178,7 +178,21 @@ declined a terminal live look.
 - 2026-10-06: stop answered: a `Plan` or `Implement` Button cannot show in this repo while M222 is active, and the operator declined a session in a throwaway folder. The operator chose to narrow AC4 to three clears, since a press of either runs `/clear` through the same `run($, CLEAR_COMMAND, '')` call as the Clear Button (`register.tsx` lines 608 and 627).
 - 2026-10-06: substantive amendment: AC4 now reads as in the criteria (three clears, and the `Plan` or `Implement` press covered by the shared call and the tests). AC4 already has two re-audit lines, so no reader ran, and the operator accepted the text at the stop.
 - 2026-10-06: T5 done: the operator confirmed both Clear presses (band and pane) kept the pane and its contents after T6, and the typed `/clear` reopened it at the next message. The operator accepted the look.
+- 2026-10-06: amendment routed: AC5 — the criterion asked the docs to say a pane open at a `/clear` is open again after it, which is false for a pane behind a tab or undrawn at a typed `/clear` (AC7 binds only a shown pane); the claim audit already narrowed the docs to "shown".
+- re-audit: AC5 (full) — nothing; the shipped README, DESIGN, and CHANGELOG text meets the amended wording.
+- 2026-10-06: amendment return: AC5 — "each state that a cairn pane shown at a `/clear` is open after it". The docs did not change, so this is wording only and took no stop.
 
 ## Decisions
 
 ## Review
+
+Fresh evidence, 2026-10-06, on `m222-pane-across-clear` with `main` unmoved (origin/main 8e4296f is an ancestor).
+
+- AC1: `claude plugin test` passes the three cases "a pane shown / behind another pane's tab / waiting undrawn at a clear end is listed after it" (stubs close no pane; the shown case asserts `isShown` and `isPlaced`). `register.tsx` closes no pane at `session.end`. T1 saw the desktop press keep the pane.
+- AC2: "a clear end with no pane open leaves none open" passes.
+- AC3: the `resume`, `prompt_input_exit`, and `logout` cases each empty the panes, start in the same cwd, and assert no `cairn`; all pass.
+- AC4: the work log records the operator's live look in a desktop session in this repo after T6: a typed `/clear` closed the pane and it opened again at the next message ("hi"); both the band's and the pane's Clear presses kept the pane, its contents gone for a moment and then back. The operator accepted it. The window was this repo's usual one; T1's probe read 106 columns.
+- AC5: README.md:309 and :317, CHANGELOG.md Unreleased lines 7-13, and `cairn/DESIGN.md`:307 and :323 state that a pane shown at a `/clear` is open after it and name the desktop app as checked live (amended wording, re-audit nothing).
+- AC6: `python3 -m unittest discover -s scripts/tests` (397 tests) and `-s hooks/tests` (174 tests) exit 0; `claude plugin validate` on plugin.json and marketplace.json exit 0 with no warning; `claude plugin test .` exits 0 with 1303 pass, 0 fail.
+- AC7: the four AC7 cases pass: same cwd lists `cairn`, another cwd (`/sub`, same ROADMAP) does not, no pane at the end does not, and the once-only case does not reopen after a close and a `prompt_input_exit` end.
+- Gate: `cairn_validate.py` exits 0 with every check PASS. No principle changed, so no impact report.
