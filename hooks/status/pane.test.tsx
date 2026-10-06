@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'claude-code/testing'
+import { describe, expect, mock, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
@@ -85,6 +85,18 @@ function turn() {
   return { answer: '', durationMs: 1, isAborted: false, turnId: `t${turnCount}`, reason: 'answer' as const }
 }
 
+// What `$.ui.panes()` answers the mod: the open panes, each shown unless it
+// sits behind another pane's tab, and placed unless it waits undrawn.
+function panesOf(copy: Copy) {
+  return copy.open.map(id => ({
+    id,
+    title: id,
+    isShown: !(copy.hidden ?? []).includes(id),
+    isFocused: false,
+    isPlaced: !(copy.unplaced ?? []).includes(id),
+  }))
+}
+
 function seat(on: On, copy: Copy) {
   const has = (path: string) => Object.prototype.hasOwnProperty.call(copy.files, path)
   on('session.cwd', async () => ({ value: copy.cwd }))
@@ -122,15 +134,7 @@ function seat(on: On, copy: Copy) {
     copy.open = copy.open.filter(id => id !== e.id)
     return { value: undefined }
   })
-  on('ui.panes', async () => ({
-    value: copy.open.map(id => ({
-      id,
-      title: id,
-      isShown: !(copy.hidden ?? []).includes(id),
-      isFocused: false,
-      isPlaced: !(copy.unplaced ?? []).includes(id),
-    })),
-  }))
+  on('ui.panes', async () => ({ value: panesOf(copy) }))
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
     return { value: undefined }
@@ -1116,4 +1120,122 @@ describe('an open pane draws again at each refresh the band takes (M205 AC5)', (
       await ui.unmount()
     })
   }
+})
+
+// The pane across a `/clear` (M222). A press of a Clear Button ends the
+// session with reason `clear` in the same process, and nothing closes the
+// pane. A typed `/clear` in the desktop app ends the process with reason
+// `other`, and the next process starts with no pane at the first message
+// after the clear. Each case answers `$.store` from memory, which outlives
+// the process as the engine's store does, and empties the open panes
+// between an end and the next start, so it sees only what the mod opens.
+// The panes a case reads are what `$.ui.panes()` answers the mod.
+const NEW_START = { cwd: '/', surface: 'desktop', isInteractive: true } as const
+const listed = (copy: Copy) => copy.open.includes(PANE)
+const newProcess = (copy: Copy) => {
+  copy.open = []
+  copy.hidden = []
+  copy.unplaced = []
+}
+
+async function openPane($, on, copy: Copy) {
+  mock.store(on)
+  seat(on, copy)
+  await $.session.start(NEW_START)
+  await $.command.run({ command: COMMAND })
+  expect(listed(copy)).toBe(true)
+}
+
+describe('a clear end leaves the pane open (M222 AC1, AC2)', () => {
+  const STATES = [
+    { name: 'shown', set: (copy: Copy) => copy },
+    { name: "behind another pane's tab", set: (copy: Copy) => { copy.hidden = [PANE] } },
+    { name: 'waiting undrawn', set: (copy: Copy) => { copy.unplaced = [PANE] } },
+  ]
+  for (const state of STATES) {
+    test(`a pane ${state.name} at a clear end is listed after it`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      await openPane($, on, copy)
+      state.set(copy)
+      await $.session.end(CLEAR_END)
+      expect(copy.closes).toEqual([])
+      const mine = panesOf(copy).find(open => open.id === PANE)
+      expect(mine).toBeDefined()
+      if (state.name === 'shown') {
+        expect(mine?.isShown).toBe(true)
+        expect(mine?.isPlaced).toBe(true)
+      }
+    })
+  }
+
+  test('a clear end with no pane open leaves none open', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    mock.store(on)
+    seat(on, copy)
+    await $.session.start(NEW_START)
+    await $.session.end(CLEAR_END)
+    expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+  })
+})
+
+describe('an end of another kind opens no pane at the next start (M222 AC3)', () => {
+  for (const reason of ['resume', 'prompt_input_exit', 'logout'] as const) {
+    test(`after a ${reason} end, the next start opens no pane`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      await openPane($, on, copy)
+      await $.session.end({ reason, sessionId: 's1' })
+      newProcess(copy)
+      await $.session.start(NEW_START)
+      expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+    })
+  }
+})
+
+describe('an other end with the pane shown opens it at the next start in the same cwd (M222 AC7)', () => {
+  const OTHER_END = { reason: 'other', sessionId: 's1' } as const
+
+  test('the same cwd lists the pane at the next start', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(panesOf(copy).map(open => open.id)).toContain(PANE)
+  })
+
+  test('another cwd lists no pane at the next start', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    copy.cwd = '/sub'
+    await $.session.start({ ...NEW_START, cwd: '/sub' })
+    expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+  })
+
+  test('no pane open at the end lists none at the next start', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    mock.store(on)
+    seat(on, copy)
+    await $.session.start(NEW_START)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+  })
+
+  test('the reopen happens once: a close and a later exit end list no pane', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(listed(copy)).toBe(true)
+    await $.command.run({ command: COMMAND })
+    expect(listed(copy)).toBe(false)
+    await $.session.end({ reason: 'prompt_input_exit', sessionId: 's2' })
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
+  })
 })

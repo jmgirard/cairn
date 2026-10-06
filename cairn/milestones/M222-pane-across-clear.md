@@ -112,7 +112,7 @@ declined a terminal live look.
       typed `/clear` and a Clear Button press. Write one work-log line with
       the close origin, the event order, the way that kept or reopened the
       pane, and the window width. If no way works, take the goal-wrong stop.
-- [ ] T2: Tests first. In `pane.test.tsx`, install `mock.store(on)` in the
+- [x] T2: Tests first. In `pane.test.tsx`, install `mock.store(on)` in the
       stubs and add a way to empty the open panes between a session end and
       the next start. Add the AC1, AC2, AC3, and AC7 cases, and a case in
       which an `other` reopen, a close, a `prompt_input_exit` end, and a
@@ -120,7 +120,7 @@ declined a terminal live look.
       `$.session.cwd()` gives, which the flag keys on. See the AC7 reopen
       case fail against the current `register.tsx`. The other cases pass
       against it and guard what must not change.
-- [ ] T3: In `register.tsx`, store a flag for the cwd at a `session.end`
+- [x] T3: In `register.tsx`, store a flag for the cwd at a `session.end`
       whose reason is `other` with the pane open and shown. At each
       `session.start`, open the pane when that cwd's flag is set, and clear
       the flag. Keep the M221 held-run code in the `session.end` hook. A
@@ -161,6 +161,8 @@ declined a terminal live look.
 - re-audit: AC4 (full) — 1 finding: "once the first message after the clear is sent".
 - re-audit: AC7 (full) — 1 finding: narrow to a pane open and shown at the end.
 - 2026-10-06: stop answered: the second reader's narrowings to AC1, AC4, and AC7 went to the operator as the repeat-churn stop, and the operator accepted them as shown.
+- 2026-10-06: T2 added 11 cases in `pane.test.tsx` with `mock.store(on)` and a `panesOf` helper that both the `ui.panes` stub and the cases read, since the test-side `$` has no `$.ui.panes()`. Against the old `register.tsx`, the AC7 same-cwd case and the once-only case failed, and the other 9 passed. The another-cwd case uses `/sub`, which still finds the fixture's ROADMAP, so only the cwd key keeps the pane closed.
+- 2026-10-06: T3 chose a store key `reopen` holding a list of cwds, marked before `next(e)` at an `other` end when the pane is listed, shown, and placed, and read at `session.start` after the refresh. The start clears its cwd's mark and opens only when the refresh found a ROADMAP. Store and pane failures are caught, because the band and the other suites do not answer `$.store`. verify: 1302 mod tests pass, both unittest suites and both validates exit 0.
 
 ## Decisions
 
