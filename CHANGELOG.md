@@ -1,256 +1,44 @@
 # Changelog
 
-## Unreleased
-
-### New
-
-- **Plan and Implement clear the conversation first.** A press of `Plan`
-  or `Implement`, on the band or in the pane, runs `/clear` and then its
-  command in the cleared conversation. The press does not ask first. Until
-  the command starts, the next-step, `Status`, and `Clear` buttons do
-  nothing. If the session refuses
-  `/clear`, the command does not run, and `/clear` goes into the prompt box
-  with a toast. If the session ends for another reason first, the command
-  goes into the prompt box with a toast instead of running. `Resume`,
-  `Review`, `Status`, and `Clear` still run their one command.
-- **An Implement button on the band's idle row.** The idle row no longer
-  draws `/milestone-implement <id>` as text. Its next-step button, which
-  read `Start`, now reads `Implement`, and a press runs that command. The
-  button shows while no cairn skill runs, Claude is not working, and the
-  row has room. With no command on the row, it now fits in narrower
-  windows than before. When it does not show, the row has no
-  command: it shows the id, the title, the track where it fits, and the
-  open and close buttons. The pane's next-step button reads `Implement`
-  too.
-- **Status and Clear buttons in the cairn pane.** The pane's Next line
-  carries a `Status` button after its next-step button, which runs
-  `/cairn:milestone`. When a cairn skill finishes, the line also carries a
-  `Clear` button before `Status`, which runs `/clear`. When you send a
-  prompt while Claude is idle, or start another cairn skill, Clear goes
-  away. The two buttons show with the next-step button, while no cairn
-  skill runs or waits on its background work. A press acts as the band's
-  button of the same name. In the desktop app, a click on the pane while
-  it does not have keyboard focus only gives it focus. A button then takes
-  a second click.
-- **A Next button in the cairn pane.** The pane's Next line keeps its
-  colored pill and now carries a button after it: `Start`, `Resume`,
-  `Review`, or `Plan`, the same label as the band's next-step button. A
-  press runs the same command. The button shows while no cairn skill runs
-  or waits on its background work.
-  A press while Claude works outside a cairn skill runs the command when
-  Claude is idle.
-- **Band and pane colors follow your theme.** In the terminal band and the
-  cairn pane, the phase colors are now your Claude Code theme's own colors:
-  `planMode` for plan, `claude` for implement, and `success` for review,
-  with the pill text in `inverseText`. They now change with the theme,
-  where before they were fixed: the light theme changes the plan and
-  review colors, and the colorblind and ANSI themes change all three. The
-  desktop track is an image and cannot read the theme, so it keeps one
-  palette with darker phase colors. Its pill's white label and count now have a contrast of at
-  least 4.5:1 on the pill, the WCAG 2.2 minimum for text.
-- **A Clear button when a cairn skill ends.** After a cairn skill finishes,
-  a band row that carries the next-step and `Status` buttons also carries a
-  `Clear` button before them, and a press runs `/clear`. The button goes away when you send a prompt while Claude is
-  idle and no hook drops it, when a cairn skill starts, or when the session
-  ends. If the session refuses the run,
-  `/clear` goes into the prompt box and a toast says why. Where the row has
-  no room for three buttons, it drops `Clear` first.
-- **A Plan button on the empty band.** With no `in-progress` or `review`
-  milestone and no planned milestone you can start, the band used to draw
-  nothing. It now shows `No milestone ready` in gray. While no cairn skill
-  runs and Claude is not working, in a band 37 columns wide or more, the
-  row carries `Plan`, which runs
-  `/cairn:milestone-plan`, and `Status`, which runs `/cairn:milestone`,
-  before its open and close buttons. The close button hides the row until a
-  milestone becomes active or workable, or the session ends. Outside a cairn repo the band still draws
-  nothing.
-- **Buttons on the status band.** While no cairn skill runs and Claude is
-  not working, the band's row carries two buttons before its open and close
-  buttons. The first runs the next step that the pane's Next line names,
-  with its milestone id, and reads `Resume`, `Review`, or `Start`. `Status`
-  runs `/milestone`. A press runs the command as if you typed it. It does
-  not run `/clear` first, so after a merge you may want to clear before you
-  press `Start`. A second press while the first run is going does nothing.
-  If the run is refused, the command goes after the text in the prompt box
-  and a toast says why and names the command. The buttons show only where the title keeps its room beside
-  them, so a band too narrow for them leaves them out.
-- **A fuller look for the cairn pane.** Each active milestone's first line
-  ends with the band's percent for it when its file reads, and a long title
-  is cut before the percent. Each section starts after a blank row with a
-  `▎` and its name in gray capitals. The `TASKS` and `CRITERIA` headings
-  show their count and eight squares, `■` for the checked share and `□` in
-  gray for the rest. The next command sits in a pill. The `▎` and `■` marks
-  of a milestone draw in its phase's color, the `▎` marks of the queue
-  draw in the plan blue, and the pill draws in the color of the phase that
-  its command runs.
-- **Candidate rows in the idle cairn pane.** With no `in-progress` or
-  `review` milestone, the cairn pane lists the ROADMAP's candidate rows
-  below the queue, under a `CANDIDATES` heading with their count. Each row
-  takes one line: `↑` for `[high]`, `·` for normal, and `↓` for `[low]`,
-  then the row's text up to its first `: `. Rows inside an HTML comment
-  are not listed.
-- **A simpler band row.** The band's row is now the milestone's id in bold
-  and its title on the left, and the flow track and its percent on the
-  right, in the terminal and in the desktop app. The phase or skill label,
-  the `→` with the chapter or the next open task, the skill row, the
-  `next` label of the idle row, and the ten-cell bar with its counts forms
-  are gone. With no active milestone the band shows the idle row whether
-  or not a cairn skill runs. In a narrow desktop window the track gets
-  shorter, down to 12 columns, so that the title keeps 10 columns, and its
-  pill shows the counts alone, such as `1/3`, when the whole pill would
-  take more than a third of the track. The terminal draws the track as
-  braille characters on the theme's `userMessageBackground` color, with
-  the same pill and percent. A hidden band stays hidden through a cairn
-  skill's start and end, unless `/milestone-review` moves it to another
-  row. The band also reads the files again after Claude edits or writes a
-  file under `cairn/`, so a box checked in a long turn moves the track
-  before the turn ends. This replaces the row that the two band entries
-  below describe.
-- **A cairn pane.** The new `/cairn-pane` command opens a pane that shows
-  more than the band, and the same command closes it. The band's `≡`
-  button, before its close button, also opens it on a row drawn from a
-  ROADMAP. For each `in-progress` or `review` milestone, the pane shows the
-  phase, id, and title, the goal, every task and acceptance criterion with
-  `✓` or `○`, and the five newest work-log lines. Below them it shows the
-  next command, the workable planned milestones, and the planned ones that
-  wait on others, as `scripts/cairn_next.py` gives them. Each item takes
-  one line, a long item ends in `…`, and the goal wraps.
-  Outside a cairn repo, with no pane open, the command prints
-  `no cairn ROADMAP found`. A refused or unplaced open prints its reason,
-  and the band's button shows that reason in a toast.
-  `scripts/cairn_next.py` gains `recommend` and `waiting`, and its output
-  is unchanged.
-- **A flow track in the desktop band.** In the desktop app, the band now
-  draws one rounded track of three equal parts, plan, implement, and
-  review, in place of the bar, the counts, and the `no tasks` and
-  `all … checked` labels. Small specks fill it from
-  the left to the current phase's edge, gray at first and in the phase's
-  color near the edge. A pill on the edge names the phase and its counts,
-  such as `Implement 1/3`, or `no tasks` when the section has no boxes.
-  Ticks mark the edges between the items left in the current phase when
-  they are 6 pixels apart or more. A milestone row shows the percent of
-  the whole flow at the right. The idle row and a `/milestone-plan` skill
-  row with no active milestone draw the track too.
-  In a narrow window, and in the terminal, the band keeps its text row.
-  The `/milestone-plan` label now draws in a muted blue.
-- **A milestone band above the prompt.** The plugin now ships a Claude Code
-  mod (`hooks/status/register.tsx`, named under a new `modules` key in
-  `hooks/hooks.json`). In a cairn-tracked repo it draws one row for one
-  active milestone, the first `in-progress` one, else the first `review`
-  one. The row shows the phase, the id, one text, a
-  progress bar, and the checked and total boxes of the phase's section.
-  That section is `## Tasks` during implement and `## Acceptance criteria`
-  during review. The text is the section's first unchecked box after a
-  `→`, with its `T2:` or `AC3:` label in bold. A missing milestone file, a
-  section with no boxes, or a fully checked section shows a label in place
-  of the bar and the counts. With no chapter on the row, the text is then
-  the milestone's title. The phase, id, and text sit at the left of a row,
-  and the bar and counts or the label at its right edge. A long text is
-  cut at its end, so the counts stay at the right edge. A close button at
-  the end of the row hides the band: `×` in the terminal, and a `✕` that is
-  dim at rest in the desktop app. If the active milestones' ids, statuses,
-  or ROADMAP order change, it shows again. If another cairn skill starts, or
-  a running one ends, it also shows again. If a new milestone takes the idle
-  row's place, it shows again too. Every session end also shows it again. In
-  the desktop app, a `/clear` stops the session, and the band draws again at
-  your next message. If the ROADMAP is found but cannot be read, or is
-  empty, the band keeps a row that came from the same repo, and the failed
-  read alone does not hide or show it. The
-  band also names the running cairn skill: `plan`, `implement`, `review`,
-  `hotfix`, `triage`, `release`, `status`, `brief`, `design`, or `init`. The
-  skill's label takes the place of the phase label on the row. If a `review`
-  milestone exists, the row is the first one during `/milestone-review`.
-  With no active milestone, a skill gets a skill row with its label and
-  slash command. In the desktop app, each chapter the session marks, such as
-  `Post-merge hygiene`, becomes the row's text, and the band reads the files
-  again. The bar shows while that chapter opens with a `T4:` or `AC2:`
-  label. At any other chapter a row with counts shows the counts alone, and
-  a state label stays as it is. A skill row shows the chapter after its
-  slash command. In a session without the desktop app's chapter tool, such
-  as one in the terminal, a skill row shows its label and slash command
-  only. The milestone row there shows its next open item. The skill stays
-  until Claude stops with no background work in flight, you type a prompt
-  while Claude is idle, a cairn skill starts again, or the session ends. A
-  turn that Claude ends to wait for background work keeps it, and so do the
-  turns that the work's notices start. An interrupt with Esc keeps it until
-  your next prompt, or until Claude next stops with no background work in
-  flight, or while a one-shot wakeup (`ScheduleWakeup`) is pending. A
-  prompt that a hook blocks or drops keeps it. Two limits remain. A skill
-  that waits on a recurring scheduled task loses its label when Claude
-  stops. Background work or a one-shot wakeup that the skill did not start
-  keeps a finished skill's label until your next prompt. A chapter marked after the skill
-  ended does not show. A subagent that loads a cairn skill also sets the
-  label, because the skill event does not say which agent loaded it. The
-  phase or skill label draws in a fixed muted orange or green. The bar's
-  filled cells draw in your Claude Code theme's full orange or green, and
-  the empty cells in its subtle gray. The colorblind themes draw the green
-  in blue, and the ANSI
-  themes draw the orange as bright red and the subtle gray as the row's
-  gray. The rest of the row draws in the theme's gray, with
-  `no milestone file` and its short form `no file` in the warning color. One
-  space follows the phase label. The bar draws all ten cells with `█`. In a
-  narrow window the right part takes a shorter form, so that the text keeps
-  room: `2/3 tasks`, then `2/3`, and `2/2 checked` or `no file` for the
-  labels. A skill row drops its slash command. Another plugin's band in the
-  same place shows under cairn's row. At session start and at the end of
-  each turn, the band reads the files again. With no active milestone and no
-  cairn skill running, it draws an idle row for the next milestone you can
-  start: `next`, the id, the title, and `/milestone-implement <id>` at the
-  right edge, all in gray. That milestone is the first `planned` row whose
-  dependencies are all done, by priority and then by id, as `cairn_next.py`
-  picks it. A narrow window drops the command. With no workable milestone,
-  the band draws nothing. Outside a cairn repo, it draws only
-  a running cairn skill's skill row. It needs Claude Code 2.1.287 or later,
-  where mods are on by default, or an earlier version with hooks modules
-  turned on. See "The milestone band" in the README.
-- **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code
-  plugin, a marketplace, or a mod can now declare it. Its verify step runs
-  `claude plugin validate` on each plugin's `.claude-plugin/plugin.json` and
-  on the marketplace file. Where the repo has `*.test.ts` or `*.test.tsx`
-  files, it also runs `claude plugin test`. It says where to find the
-  `claude` binary when a desktop app shell has none on its PATH. The release
-  walk bumps `version` in each plugin manifest and each marketplace entry
-  that carries one. `/cairn-init` selects it when `.claude-plugin/plugin.json`
-  or `.claude-plugin/marketplace.json` is at the repo root, after the R and
-  Python markers and before a `Dockerfile`. A repo with markers for two
-  kinds of deliverable gets a question about which one is primary, and the
-  project-type question for an empty repo lists the new profile.
-
-### Fixes
-
-- **The status band keeps the right rows, steps, and close state.**
-  - A failed or empty ROADMAP read keeps the band's rows only when they
-    came from the same repo. After the session moves to another repo, or
-    when its working directory cannot be read, the band and the pane show
-    nothing rather than the old repo's rows.
-  - An empty or whitespace-only ROADMAP now counts as a failed read, so a
-    write caught before any text lands no longer empties the band. A
-    ROADMAP cut partway through still reads as a shorter file.
-  - On Windows, the ROADMAP search stops at a network share's root
-    (`\\server\share`).
-  - A cairn skill that waits on a one-shot wakeup (`ScheduleWakeup`) keeps
-    its step, and a typed prompt that a hook drops no longer ends it or
-    shows a band you hid.
-  - A refresh writes the close state only when there is a hidden state to
-    clear.
-  - A close-button press that lands as the session ends no longer hides
-    the band.
-- **Run edge cases in the skills.**
-  - One amendment return counts once. Only `/milestone-implement` writes
-    the counted `amendment return:` line, and `/milestone-review` writes
-    an `amendment routed:` line that no count reads.
-  - When the `release window` advisory fires, the review close block puts
-    `/milestone` first only when the next command names the flagged
-    release. Otherwise the next command stays first and `/milestone`
-    follows it.
-  - The `/milestone` audit counts a candidate row and the rows that quote
-    its exact title as one group. A group with review findings from two or
-    more milestones gets the disposition question, and review quotes the
-    older row's title when it files a row that refers to it.
-  - The rulebook size that `/milestone` reports growth from is re-measured.
+## 2.0.0 (2026-10-06)
 
 ### Changes that affect existing repos
 
+- **One question set, then the agent runs the milestone to the merge
+  question.** `/milestone-plan` asks one question set, then invokes
+  `/milestone-implement` itself. When its tasks pass, implement invokes
+  `/milestone-review`. The set asks only what you alone can settle. That
+  is what to work on, open choices about what you will get, and files,
+  access, or looks that implement or review will need. It also asks
+  permission for foreseen outward actions and dependency changes. The
+  agent decides criteria wording,
+  criteria-audit findings, splits, approach, test scope, and changelog
+  entries, and logs each in the milestone's work log. Implement asks no
+  question round of its own. It stops only at a listed stop, such as an
+  action the question set did not cover or an amendment that changes what
+  you get. Review settles each reviewer finding itself. It rejects a
+  finding that is false, a style or linter item, or a complaint about a
+  planned change, with the reason. It fixes a real finding inside the
+  milestone's scope on the branch, and it sends the rest to candidate
+  rows. The merge question lists each finding's outcome. A merge ends the
+  run. The closing message gives `/clear` and the command that starts the
+  next milestone of the same plan, so each milestone starts in a fresh
+  context. Typing `/milestone-implement` or `/milestone-review` with the
+  milestone id resumes a stopped run. The routing section that
+  `/cairn-init` writes into a new `CLAUDE.md` describes the run. Repair
+  never rewrites a section a repo already has, so an existing section keeps
+  its old wording until you edit it by hand.
+- **The pull request opens after you approve the merge, not before the
+  review.** `/milestone-review` no longer pushes the branch or opens a
+  draft PR at its start. After you approve at the merge question, it
+  pushes the branch and opens a ready PR. The PR body carries the
+  `Closes`/`Refs` lines. Then review waits on CI and merges. A
+  `pull_request`-triggered CI suite so first runs on the head that merges,
+  not on every push before your approval. The cost is that the CI wait
+  comes after your approval. The merge question names the branch and the
+  default branch. `/hotfix` does the same for a fix it authors: after your
+  approval, it pushes and opens the PR. If an issue exists, the PR body
+  carries `Fixes #N`. An adopted PR's path is unchanged.
 - **Review records its findings in fixed line formats.**
   `/milestone-review` now logs each finding in the Review section as
   `<lens> #<rank>: <finding> — <disposition>`. The lens is `diff-bug`,
@@ -264,126 +52,151 @@
   with `substantive amendment:` after its date. The merge question counts
   the milestone's amendments from those lines and the `amendment return:`
   lines.
-
-- **One question set, then the agent runs the milestone to the merge
-  question.** `/milestone-plan` asks one question set, then invokes
-  `/milestone-implement` itself, which invokes `/milestone-review` when its
-  tasks pass. The set asks only what you alone can settle: what to work on,
-  open choices about what you will get, files, access, or looks that
-  implement or review will need, and permission for foreseen outward
-  actions and dependency changes. The agent decides criteria wording,
-  criteria-audit findings, splits, approach, test scope, and changelog
-  entries, and logs each in the milestone's work log. Implement asks no
-  question round of its own. It stops only at a listed stop, such as an
-  action the question set did not cover or an amendment that changes what
-  you get. Review settles each reviewer finding itself. It
-  rejects a finding that is false, a style or linter item, or a complaint
-  about a planned change, with the reason. It fixes a real finding inside
-  the milestone's scope on the branch, and it sends the rest to candidate
-  rows. The merge question lists each finding's outcome. A merge ends the
-  run. The closing message gives `/clear` and the command that starts the
-  next milestone of the same plan, so each milestone starts in a fresh
-  context. Between the two questions the run stops only for a short list in
-  the rulebook, such as needing your eyes or hands, an action the question
-  set did not cover, repeated review failures, or a CI wait that times
-  out. Typing `/milestone-implement` or `/milestone-review` with the
-  milestone id resumes a stopped run. The routing section that
-  `/cairn-init` writes into a new `CLAUDE.md` describes the run. Repair
-  never rewrites a section a repo already has, so an existing section keeps
-  its old wording until you edit it by hand.
-
 - **A plugin repo with no `cairn/PROFILE.md` now infers `claude-plugin`.**
-  This applies when the repo has no R or Python marker. Before, it inferred
-  `generic`, or `docker-image` when a `Dockerfile` was present, so its verify
-  step now runs the `claude plugin` checks. `/cairn-init` repair writes the
-  same profile when it backfills the file.
-
+  If the repo has no R or Python marker, this rule applies. Before, it
+  inferred `generic`, or `docker-image` if a `Dockerfile` was present. Its
+  verify step now runs the `claude plugin` checks. If `/cairn-init` repair
+  backfills the file, it writes the same profile.
 - **Subagent titles no longer open with a model tag, and the session sets
   the model on every spawn.** The rulebook drops the rule that every Agent
-  description starts with a one-letter tag (S, O, or F in brackets) for
-  Sonnet, Opus, or Fable. Each skill now names the model a role calls for
-  in words, for example "a fresh-context Opus reader". A new "Set the model
-  on every spawn" bullet in the rulebook's "Model and agent strategy"
-  section tells the session to pass that model as the Agent tool's `model`
-  setting, Explore fan-outs included. A spawn that sets no model takes the
-  agent type's or the harness's default instead.
-
-- **Between gates, a session no longer ends its turn while work is still
-  owed.** The rulebook's "Question gates and phase closes" section gains an
-  early-stop bullet, taken from Anthropic's *Prompting Claude Opus 5.5*
-  guide (`cairn/references/prompting-opus-5-5.md`): four turn endings are
-  named as unwanted while a task, check, or record is unfinished (a recap
-  that names the next step instead of taking it, an offer to carry on, a
-  list of non-blocking decisions, and stopping to report because the turn
-  was long), and the wanted stops are the ones where nothing can move
-  without the user or a guard blocks the session (gate chips, escalation
-  offers, confirmations before risky actions, hygiene checkpoints, the
-  phase close block, timeout stops, named external blockers, hook
-  denials). The effort notes and the Opus 5 guide page carry dated
-  observations that Opus 5.5's `medium` is a different amount of thinking
-  from Opus 5's.
-
-- **The pull request opens after you approve the merge, not before the
-  review.** `/milestone-review` step 2 no longer pushes the branch or
-  opens a draft PR; step 8 pushes and runs `gh pr create` (ready, never a
-  draft, the `Closes`/`Refs` lines in its body) after the step-7 approval
-  and before the merge marker and CI wait, so a `pull_request`-triggered
-  suite first runs on the head that merges rather than on every
-  pre-approval push. The step-7 chip names the branch and the default
-  branch (`Merge <branch> into <default-branch>`), its work-log line
-  names the branch (`step-7 approval: <branch> approved for merge`), and
-  the resume routes read the line by its prefix.
-  `/hotfix` makes the same move for an authored fix: step 5 pushes
-  nothing, step 6 pushes and opens the PR (`Fixes #N` when an issue
-  exists) on approval; an adopted PR's path is unchanged. In guest mode
-  the handoff is now the push plus the `gh pr create` against the base
-  repo, with no ready-marking step. The PR-conversation read runs only
-  where a PR already exists (a return from an earlier review, an adopted
-  hotfix PR); a PR opened fresh at the gate is merged with no read. The
-  cost is a serial CI wait at the gate; the rulebook's "A branch push
-  starts CI" bullet states the rule and names D-138.
+  description starts with a one-letter tag for the model: S, O, or F in
+  brackets. Each skill now names the model that a role calls for in words,
+  for example "a fresh-context Opus reader". The session passes that model
+  as the Agent tool's `model` setting. A spawn that sets no model gets the
+  default of the agent type or the harness.
+- **Inside a run, the session no longer ends its turn while work is still
+  owed.** The rulebook names four unwanted turn endings while a task,
+  check, or record is unfinished. They are a recap that names the next
+  step and does not take it, an offer to carry on, a list of decisions
+  that need no stop, and a stop to report because the turn was long. The
+  run stops only where it needs you or a guard blocks it.
+- **Closing messages say whether the next command waits on CI.** Where the
+  work has a branch or an open PR, the closing message carries one plain
+  sentence about CI. It says whether the next command waits on CI itself
+  and what you do meanwhile.
+- **User-facing prose is read against the code before review.** In a
+  milestone whose `Surface tier:` is `user-facing`, `/milestone-implement`
+  starts a fresh-context reader. The reader takes the lines that the
+  branch adds outside `cairn/` and reads each claim about what the code
+  does against the code. False claims get corrected. The work log gets
+  `claim audit: <N> claims read, <K> corrected — <files>`, or
+  `claim audit: not owed — <reason>`. Before the release commit,
+  `/cairn-release` reads each behavior claim in the consolidated changelog
+  section against what it describes.
+- **File edits go through the Write and Edit tools.** While a cairn skill
+  runs, the session edits repo files with those tools. It does not use
+  shell redirection or scripts. The desktop app's per-turn "Edited N
+  files" card so lists every file that a turn changed.
 
 ### New
 
-- **Guest collaboration mode: run cairn in a repo you don't own, with
+- **A milestone band above the prompt.** The plugin now ships a Claude Code
+  mod (`hooks/status/register.tsx`, named under a new `modules` key in
+  `hooks/hooks.json`). In a cairn-tracked repo it draws one row above the
+  prompt for the milestone in flight: the first `in-progress` row of the
+  ROADMAP, else the first `review` row. While `/milestone-review` runs, it
+  shows the first `review` row instead. The row shows the id in bold and
+  the title at the left. At the right it shows a flow track of three equal
+  parts, plan, implement, and review, and the percent of the whole flow.
+  Implement fills by the checked boxes of `## Tasks`, and review by the
+  checked boxes of `## Acceptance criteria`. A pill on the edge of the fill
+  names the phase and its counts, such as `Implement 1/3`. In the desktop
+  app the track is an image. In the terminal it is braille characters in
+  your Claude Code theme's colors. The fill and the pill take the color of
+  the current phase: `planMode` for plan, `claude` for implement, and
+  `success` for review. With no active milestone, the row
+  names the next milestone you can start, as `scripts/cairn_next.py` picks
+  it. With none, it shows `No milestone ready`. While no cairn skill runs
+  and Claude is not working, the row carries two buttons where it has room
+  for them. The next-step
+  button reads `Implement`, `Resume`, `Review`, or `Plan`, and `Status`
+  runs `/cairn:milestone`. After a cairn skill ends, a `Clear` button shows
+  before them. In a narrow row, `Clear` goes first. `Plan` and
+  `Implement` run `/clear` first and then their
+  command in the cleared conversation, and they do not ask first. As if
+  you typed it, each other button runs its one command. If the run is
+  refused, the command goes into the prompt box and a toast says why. A
+  close button hides the band. The band comes back when the list of active
+  milestones changes, when the next workable milestone changes, or when
+  the session ends. A `≡` button opens the cairn pane. The band reads the
+  files at session start, at the end of each turn, and at a cairn skill's
+  start or end. It also reads them after Claude edits or writes a file
+  under `cairn/`. It never shows another repo's milestones. It needs Claude Code 2.1.287 or
+  later, where mods are on by default, or an earlier version with hooks
+  modules turned on. See "The milestone band" in the README.
+- **A cairn pane.** The new `/cairn-pane` command opens a pane that shows
+  more than the band, and the same command closes it. The band's `≡`
+  button also opens it. For each `in-progress` or `review` milestone, the
+  pane shows the phase, id, title, percent, and goal. It lists every task
+  and acceptance criterion with `✓` or `○`, and the five newest work-log
+  lines. Below them it shows the next command in a pill and the workable
+  planned milestones. It also shows the planned ones that wait on others,
+  as `scripts/cairn_next.py` gives them. With no active milestone, it also
+  lists the ROADMAP's candidate rows, marked `↑`, `·`, or `↓` by priority.
+  The Next line carries the same next-step, `Status`, and `Clear` buttons
+  as the band. A press acts as the band's button of the same name. The
+  pane's buttons also show while Claude works outside a cairn skill, and a
+  press then waits for the turn to end.
+  Outside a cairn repo, with no pane open, the command prints
+  `no cairn ROADMAP found`. `scripts/cairn_next.py` gains `recommend` and
+  `waiting`, and its output is unchanged. See "The cairn pane" in the
+  README.
+- **A `claude-plugin` toolchain profile.** A repo that builds a Claude Code
+  plugin, a marketplace, or a mod can now declare it. Its verify step runs
+  `claude plugin validate` on each plugin's `.claude-plugin/plugin.json` and
+  on the marketplace file. Where the repo has `*.test.ts` or `*.test.tsx`
+  files, it also runs `claude plugin test`. It says where to find the
+  `claude` binary when a desktop app shell has none on its PATH. The release
+  walk bumps `version` in each plugin manifest and each marketplace entry
+  that carries one. `/cairn-init` selects it when `.claude-plugin/plugin.json`
+  or `.claude-plugin/marketplace.json` is at the repo root, after the R and
+  Python markers and before a `Dockerfile`. A repo with markers for two
+  kinds of deliverable gets a question about which one is primary. The
+  project-type question for an empty repo lists the new profile.
+- **Guest collaboration mode: run cairn in a repo you do not own, with
   `cairn/` kept local.** A second header line in `cairn/PROFILE.md`,
-  `# Collaboration mode: guest` (absent means owner, today's rules),
-  switches the mode. `/cairn-init` asks which mode applies, recommending
-  from `gh repo view --json viewerPermission`, and in guest mode writes
-  `cairn/` to `.git/info/exclude` instead of appending the CLAUDE.md
-  section, adding the `.gitignore`/`.Rbuildignore` entries, offering the
-  CI `paths-ignore` edit, or committing and pushing the scaffold.
-  `cairn_validate`'s `profile valid` check fails a mode outside
-  `owner|guest`, and its `scaffold present` check in guest mode requires
-  the exclude line (resolved through `git rev-parse --git-path`, so a
-  worktree reads its main repo's file), drops the ignore-entry
-  requirements, and fails while any `cairn/` file is still tracked (an
-  exclude line covers untracked files only). The session
-  hook injects the CLAUDE.md routing section from the plugin's own
-  template in guest mode, and the commit guard denies a `git commit` it
-  sees carrying a `cairn/` path on every branch (the misses its docstring
-  lists stand, a pathspec commit of a tracked `cairn/` file among them),
-  its nudge naming the `<slug>` branch shape. The rulebook's new "Collaboration mode" section states the guest
-  rules (tracking written to disk in the turn that changes the code, never
-  committed; no cairn vocabulary in branches, commits, or PRs;
-  `/cairn-release` and `/cairn-triage` stop; adopting a third party's PR
-  via `/hotfix` unsupported), and the plan, implement, and `/milestone`
-  skills carry their guest arms. The base remote in guest mode is
-  `upstream` when that remote exists, else `origin`
-  (`cairn_common.base_remote`; the hooks' default-branch detection reads
-  the base remote's HEAD, so a guest's default branch is the upstream
-  repo's, not the fork's). A milestone or hotfix branch is cut from
-  `<base>/<default-branch>` (a milestone branch synced by rebase), pushed
-  to the fork, and its PR opened against the base repo as a draft
-  (`gh pr create --repo <base-repo> --head <fork-owner>:<branch> --draft`).
-  cairn never merges in guest mode: `/milestone-review` and `/hotfix` end
-  with a handoff gate — hand the PR to the maintainers or decline, no merge
-  option — that marks the PR ready and sets the milestone `blocked` (a
-  hotfix has no milestone row, so its PR is the record); `/milestone` then routes a handed-off
-  milestone by its PR's state (merged → review's on-disk hygiene, the new
-  `blocked → done` transition; closed → a chip; changes requested →
-  `/milestone-implement`). The r-package consistency gate justifies the
-  `check()` NOTE for the `cairn` directory by the mode.
+  `# Collaboration mode: guest`, switches the mode. With no such line, the
+  repo is in owner mode and the earlier rules apply. `/cairn-init` asks
+  which mode applies and recommends one from
+  `gh repo view --json viewerPermission`. In guest mode it writes `cairn/`
+  to git's exclude file and writes nothing else outside `cairn/`: no
+  CLAUDE.md section, no ignore entries, no CI edit, and no scaffold commit.
+  `cairn_validate` checks the mode. In guest mode it requires the exclude
+  line and fails while any `cairn/` file is tracked. The session hook
+  injects the routing section from the plugin's own template. The commit
+  guard denies a `git commit` that it sees carrying a `cairn/` path.
+  You get tracking on disk in the turn that changes the code, and it is
+  never committed. Branches, commits, and PRs carry no cairn vocabulary,
+  and the milestone branch is named `<slug>` alone. The base remote is
+  `upstream` when it exists, else `origin`. Branches are cut from its
+  default branch and pushed to your fork, and the PR targets the base
+  repo. cairn never merges in guest mode. `/milestone-review` and `/hotfix`
+  end with a handoff gate. You hand the branch to the maintainers, which
+  pushes it and opens a ready PR against the base repo, or you decline. A
+  handed-off milestone is set `blocked`, and `/milestone` routes it by its
+  PR's state: a merged PR to the closing hygiene, a closed PR to a
+  question, and a PR with changes requested to `/milestone-implement`.
+  `/cairn-release` and `/cairn-triage` stop in guest mode, and `/hotfix`
+  does not adopt a third party's PR. In guest mode, DESIGN.md principles
+  are your working model of the maintainers' constraints. They come from
+  the maintainers' public contributor docs, and their feedback corrects
+  them. The r-package consistency gate explains the `check()` NOTE for the
+  `cairn` directory by the mode.
+
+### Fixes
+
+- **Run edge cases in the skills.**
+  - One amendment return counts once. Only `/milestone-implement` writes
+    the counted `amendment return:` line, and `/milestone-review` writes
+    an `amendment routed:` line that no count reads.
+  - When the `release window` advisory fires, the review close block puts
+    `/milestone` first only when the next command names the flagged
+    release. Otherwise the next command stays first and `/milestone`
+    follows it.
+  - The `/milestone` audit counts a candidate row and the rows that quote
+    its exact title as one group. A group with review findings from two or
+    more milestones gets the disposition question. When review files a row
+    that refers to an older row, it quotes the older row's title.
 
 ## 1.12.0 (2026-09-07)
 

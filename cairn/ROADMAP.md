@@ -5,7 +5,7 @@ _Last hygiene check: 2026-10-06 (14 status-mod candidate rows moved to DESIGN.md
 
 ## Milestones
 
-_Released 1.0.0 (2026-07-16) to 1.12.0 (2026-09-07), each tagged `v<version>`. `git tag` holds each date, and 1.5.0 was cut retroactively at edb6942._
+_Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `git tag` holds each date, and 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
