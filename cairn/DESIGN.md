@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -166,7 +166,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   no head Box, the gray text `No milestone ready`, and no track or tail.
   `stepLines` returns it when its `found` argument is true. The pane's next
   step is then planning, so the next-step Button reads `Plan`, and a press
-  runs `cairn:milestone-plan` with empty args. `actionsFit` keeps the action
+  runs `clear` and then `cairn:milestone-plan` with empty args (M221). `actionsFit` keeps the action
   Buttons on the empty row while its text keeps `TEXT_ROOM`, which with
   both Buttons, the open button, and the close button is 37 columns or
   more. `mark` stores no ids and a null idle id for it, so a press hides it
@@ -183,6 +183,22 @@ transitions, human-gated merges, and a domain verification doctrine.
   `run`. `session.end` also sets `running` to false, because the run of a
   `/clear` that ends the session may never settle. Each run takes a number,
   and only the latest run clears `running` as it settles.
+  `Plan` and `Implement` clear the conversation before they run (M221):
+  for the next actions in pane.ts's `CLEARS_FIRST`, when the drawn label
+  is still the next step's label, `pressNext` stores the command and its
+  args in the module's `heldRun` value and runs `clear` through `run`.
+  `session.end` takes `heldRun` before it calls `next(e)` and, when the
+  reason is `clear`, runs it through `run`, unawaited. Any other end drops
+  it and puts its command line in the prompt box with a toast, as `run`
+  does for a refused run (`fallBack`). A `clear` run that rejects drops it
+  too, and `run`'s own refusal names `/clear`. While `heldRun` is set,
+  `busy` makes every action press do nothing. A live probe (M221 T1) showed
+  that the session end of a Button's `/clear` arrives before that run
+  resolves. The press is the person's consent to drop the conversation, as
+  a press of Clear is, which is how the plan gate settled the IP3 point. A
+  `Resume` or `Review` drawing whose next step has since become planning or
+  implement runs the command without the clear. `Resume`, `Review`,
+  `Status`, and Clear run their one command.
   The flow track (M204) is the row's one progress form (M206). `flowOf`
   and `idleFlow` in `band.ts` give the model: three equal segments, plan,
   implement, and review, each a whole-number fraction. Plan is full on a

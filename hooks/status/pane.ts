@@ -57,6 +57,11 @@ export const NEXT_LABELS: Record<string, string> = {
   'plan the next milestone': PLAN_LABEL,
 }
 
+// The actions whose next-step Button runs `/clear` first and its command in
+// the cleared conversation (M221): `Implement` and `Plan`. A resumed run
+// and a review keep their conversation. Each is a key of `NEXT_LABELS`.
+export const CLEARS_FIRST: readonly string[] = ['implement', 'plan the next milestone']
+
 // An action's label, read from the map's own keys only, so an action named
 // like an object property, such as `toString`, has none (M218 review).
 export function nextLabel(action: string): string | undefined {

@@ -182,8 +182,16 @@ M021 Waiting to start  [track]
 After the track, an `Implement` button and a `Status` button show while no
 cairn skill runs and Claude is not working, where the row has room for
 them. After a cairn skill ends, a `Clear` button also shows before them.
-A press of `Implement` runs `/cairn:milestone-implement` with the
-milestone's id, as if you typed it. The row draws no command as text, so
+A press of `Implement` runs `/clear` and then, in the cleared
+conversation, `/cairn:milestone-implement` with the milestone's id, as if
+you typed both. It does not ask first, because the press is your consent
+to drop the conversation, as a press of `Clear` is. The second command
+starts when the session that `/clear` ends is over. Until then, a press of
+a next-step, `Status`, or `Clear` button does nothing. If the session refuses `/clear`, the
+second command does not run, and `/clear` goes after the text in the
+prompt box with a toast that says why. If the session ends for another
+reason first, such as a resume, the second command does not run, and its
+command line goes into the prompt box with a toast. The row draws no command as text, so
 while the buttons do not show, the row shows the id, the title, the track,
 and the `≡` and close buttons. In a narrow window the idle row drops its
 track, so that the title keeps room.
@@ -194,11 +202,15 @@ planned milestone that waits on a dependency, or a `blocked` one, does not
 make a milestone workable, so the empty row shows then too. The row
 carries two buttons before its `≡` and close buttons. They show while no
 cairn skill runs and Claude is not working, in a band 37 columns wide or
-more. `Plan` runs `/cairn:milestone-plan` with no
-arguments, and `Status` runs `/cairn:milestone`. A press runs the command
-as if you typed it, and a second press while the first run is going does
-nothing. If the run is refused, the command goes after the text in the
-prompt box, and a toast says why.
+more. `Plan` runs `/clear` and then `/cairn:milestone-plan` with no
+arguments in the cleared conversation, as `Implement` does with its
+command. `Status` runs `/cairn:milestone`. A press runs the command
+as if you typed it. A second press while the first run is going does
+nothing. So does a press while `Plan` waits for its `/clear` to end the
+session. If the run is refused, the command goes after the text in the
+prompt box, and a toast says why. If the session refuses `Plan`'s
+`/clear`, `/clear` goes there and planning does not run. If the planning
+run itself is refused, `/cairn:milestone-plan` goes there.
 
 When a cairn skill ends, a `Clear` button shows on any row that carries
 the next-step and `Status` buttons, before them. A press runs `/clear` at
@@ -261,7 +273,7 @@ headings show their count and eight squares, `■` for the checked share
 and `□` for the rest. The next command sits in a pill. While no cairn
 skill runs or waits on its background work, a button after the pill reads `Implement`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
-command as that button does. A press while Claude works outside a cairn
+command as that button does, so `Plan` and `Implement` run `/clear` first. A press while Claude works outside a cairn
 skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
 `/cairn:milestone`. When a cairn skill finishes, the line also carries a
