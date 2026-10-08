@@ -58,7 +58,7 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
       `cairn_next.py` prints an "Externally blocked" line that ends with
       ` (PR #<n>)` for a numbered row and has no suffix for an unnumbered
       row. A `scripts/tests` case shows both.
-- [ ] AC4: The operator looks at the desktop app's docked pane in the
+- [x] AC4: The operator looks at the desktop app's docked pane in the
       guest-mode insight checkout (`~/github/insight`, four handed-off
       PRs). The Blocked section draws each row's id, title, and number on
       one line. The operator accepts this at the merge question.
@@ -120,6 +120,8 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - 2026-10-08: minor amendment: T5 now prepares the live look, and review runs it before the merge question, where the question set placed it. The plugin loads from this checkout through the `~/.claude/skills/cairn` symlink, so a new desktop Code session in `~/github/insight` draws the branch's mod.
 - 2026-10-08: claim audit: 44 claims read, 2 corrected — CHANGELOG.md, README.md (both now say the number comes from a GitHub pull request URL before any `companion:` entry; the same reader re-read both as true). The reader also caught a dropped space in `gen_fixtures.py`'s `unreadable:` line, restored and regenerated. verify: all five checks exit 0.
 - 2026-10-08: implement done; status set to `review`.
+- 2026-10-08: merge question: the operator asked whether the pane reports unanswered comments or Copilot reviews. It does not, and M224 as planned does not either. The operator chose to add those counts to M224, which is amended on main after this merge.
+- 2026-10-08: step-7 approval: m223-pane-blocked-list approved for merge
 
 ## Decisions
 
@@ -159,4 +161,5 @@ Fresh run on 74b9ebd, 2026-10-08. The branch contains `origin/main` (505c070), s
 - prior-review #6: the case lists are written twice — reject (as diff-bug #8).
 - prior-review #7: `CairnPaneState` in `types/index.d.ts` and `PaneState` in `reader.ts` are two copies — follow-up, same row (pre-existing, and M223 kept them equal).
 - prior-review #8: ragged wraps — fix now, fixed 77e89b0 (as diff-bug #13).
+- AC4 evidence: at the merge question on 2026-10-08, the operator opened a new desktop Code session in `~/github/insight`, ran `/cairn-pane`, and answered "looks right" to the described Blocked section (M007 with no number, M006 `#1250`, M005 `#1247`, one line each).
 - fix-now re-run on the fixed tree: all five verify commands exit 0. `scripts/tests` ran 400 tests and `claude plugin test .` ran 1442 tests, all passing. `cairn_validate` passes, and `cairn_next.py` on insight prints the same three lines as before.
