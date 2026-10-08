@@ -9,6 +9,8 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M223 | The pane lists blocked milestones and their PRs | planned | — | normal | milestones/M223-pane-blocked-list.md |
+| M224 | The pane shows each handed-off PR's review state | planned | M223 | normal | milestones/M224-pane-pr-state.md |
 | M222 | The cairn pane stays open across /clear | done | — | normal | milestones/archive/M222-pane-across-clear.md |
 | M221 | Plan and Implement clear the conversation first | done | — | normal | milestones/archive/M221-clear-then-run.md |
 ## Candidates
