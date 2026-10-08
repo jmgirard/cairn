@@ -456,6 +456,94 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
   }
 })
 
+// The blocked-prs fixture's lines, written out by hand from its milestone
+// files (M223 AC1, AC2): one URL, the first of two URLs, a URL only after a
+// `companion:` entry, a URL with a trailing path, no URL, a failed read, and
+// a missing file.
+const BLOCKED_LINES = [
+  'M101  One pull request URL  #12',
+  'M102  Two pull request URLs  #34',
+  'M103  A URL only after a companion entry',
+  'M104  A URL with a trailing path  #90',
+  'M105  A branch with no URL',
+  'M106  A file whose read fails',
+  'M107  A missing file',
+]
+const blockedLine = (row: { id: string; title: string; pr: number | null }) =>
+  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}`
+
+describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', () => {
+  test('the domain holds blocked rows with and without an active milestone, and fixtures with none', () => {
+    expect(FIXTURES['blocked-prs'].pane.length).toBe(0)
+    expect(FIXTURES['blocked-prs'].unreadable).toEqual(['/cairn/milestones/M106-unreadable.md'])
+    expect(Object.keys(FIXTURES['blocked-prs'].files)).not.toContain('/cairn/milestones/M107-missing.md')
+    expect(FIXTURES['blocked-active'].pane.length).toBeGreaterThan(0)
+    expect(FIXTURES['blocked-active'].blocked.length).toBeGreaterThan(0)
+    expect(WITH_ROADMAP.some(name => FIXTURES[name].blocked.length === 0)).toBe(true)
+  })
+
+  for (const surface of SURFACES) {
+    test(`blocked-prs: the heading, each row, and its number (${surface})`, async ($, on) => {
+      seat(on, copyOf('blocked-prs'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'blocked-head')).toBe('▎ BLOCKED 7')
+      expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(BLOCKED_LINES)
+      // After the queue's place and before the candidates.
+      const at = (key: string) => lines.findIndex(([k]) => k === key)
+      expect(at('blocked-head')).toBeGreaterThan(at('next'))
+      expect(at('candidates-head')).toBeGreaterThan(at('blocked-M107'))
+    })
+
+    test(`blocked-active: the section beside an active milestone (${surface})`, async ($, on) => {
+      seat(on, copyOf('blocked-active'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'M110-head')).toBeDefined()
+      expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(['M111  Handed to the maintainers  #1250'])
+      const at = (key: string) => lines.findIndex(([k]) => k === key)
+      expect(at('blocked-head')).toBeGreaterThan(at('next'))
+    })
+
+    test(`all-waiting: the section follows the Waiting rows (${surface})`, async ($, on) => {
+      seat(on, copyOf('all-waiting'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      const at = (key: string) => lines.findIndex(([k]) => k === key)
+      expect(at('blocked-head')).toBeGreaterThan(at('waiting-M093'))
+      expect(textAt(lines, 'blocked-M092')).toBe('M092  Blocked outside')
+    })
+
+    test(`the number sits in the line's tail (${surface})`, async ($, on) => {
+      seat(on, copyOf('blocked-active'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+      const [tail] = await ui.findAll({ key: 'blocked-M111-tail' })
+      expect(textOf(tail)).toBe('  #1250')
+      await ui.unmount()
+    })
+  }
+
+  // Every fixture: the section holds each blocked row in ROADMAP order, and
+  // a fixture with none draws no section.
+  for (const name of WITH_ROADMAP) {
+    for (const surface of SURFACES) {
+      test(`${name}: blocked rows (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const lines = await paneLines($, surface)
+        const { blocked } = FIXTURES[name]
+        if (blocked.length === 0) {
+          expect(keysLike(lines, /^blocked/)).toEqual([])
+          return
+        }
+        expect(textAt(lines, 'blocked-head')).toBe(`▎ BLOCKED ${blocked.length}`)
+        expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(blocked.map(blockedLine))
+      })
+    }
+  }
+})
+
 // M208: the operator's picked look. The values below are written out by
 // hand from the fixtures.
 const view = (bodyColumns: number) => ({ ...PANE_VIEW, props: { ...PANE_VIEW.props, bodyColumns } })
@@ -764,6 +852,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
         workable: [],
         waiting: [],
         candidates: [],
+        blocked: [],
       }
       const next = layout(state, [], true).find(line => line.key === 'next')
       expect([action, next?.action]).toEqual([action, undefined])

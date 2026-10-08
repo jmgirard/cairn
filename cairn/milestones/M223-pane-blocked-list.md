@@ -1,13 +1,13 @@
 # M223: The pane lists blocked milestones and their PRs
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m223-pane-blocked-list
 
 ## Goal
 
@@ -78,20 +78,20 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 
 ## Tasks
 
-- [ ] T1: Fixtures and tests first. Add fixtures under
+- [x] T1: Fixtures and tests first. Add fixtures under
       `hooks/status/fixtures/` for the AC1 and AC2 row shapes, with and
       without an active milestone. Extend `gen_fixtures.py` and each
       `expected.json` with a `blocked` key. The `all-waiting` and
       `no-active` fixtures already hold blocked rows with no URL. Add the
       `pane.test.tsx` cases and the `scripts/tests` print case. Make sure
       that they fail against the current code.
-- [ ] T2: Add the `blocked` helper to `scripts/cairn_next.py` beside
+- [x] T2: Add the `blocked` helper to `scripts/cairn_next.py` beside
       `waiting` (line 51), and the suffix to `render`'s "Externally
       blocked" lines. Add the second implementation in
       `test_status_fixtures.py`. Mirror the helper in `reader.ts`'s
       `loadAt` (line 288) and `PaneState`, and in the `cairn.pane` contract
       in `types/index.d.ts`.
-- [ ] T3: Draw the section in `pane.ts`'s `paneLines` (line 217), with the
+- [x] T3: Draw the section in `pane.ts`'s `paneLines` (line 217), with the
       queue's heading and color and the number in the line's `tail`. Move
       the pane atom's shape tag in `register.tsx` (line 94). Run `verify`.
 - [ ] T4: Describe the section in README.md's "The cairn pane", in
@@ -109,6 +109,11 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - 2026-10-08: question set: a band note for a PR that needs the operator — declined, pane only.
 - 2026-10-08: plan chose to list all `blocked` rows over only rows with a PR, because an owner-mode blocked row also waits on someone. Falsified by an operator who finds the rows with no PR to be noise.
 - 2026-10-08: plan chose to draw the section in every state over only while idle, because a guest often implements one PR while others wait. Falsified by the section pushing the active milestone's tasks off a 44-column pane in a real session.
+
+- 2026-10-08: implement started on branch `m223-pane-blocked-list`. The untracked `cairn-probe.log` and `tsconfig.json` at the repo root are not this milestone's and stay unstaged.
+- 2026-10-08: T1: fixtures `blocked-prs` (seven blocked rows, one per URL and file shape, no active row, one candidate row so the Candidates order shows) and `blocked-active` (one in-progress row beside one blocked row). An `expected.json` `blocked` key defaults to empty, as `unreadable` does, so only `no-active` and `all-waiting` gained one. Before T2, 22 Python subtests failed with `cairn_next` having no `blocked`, the print case failed on the missing suffix, and 16 mod cases failed on the missing section. Two band tables (`EMPTY_FIXTURES`, `FLOWS`) list fixtures by hand and took the new ones.
+- 2026-10-08: T2: `blocked`, `pr_number`, and `read_file` in `scripts/cairn_next.py`. The `read` argument lets the fixture test fail the reads the fixtures mark `unreadable`. `prNumber` in `reader.ts` mirrors `pr_number` with `[0-9]` in place of `\d`. One case list of nine header forms (fragment, issue URL, a URL in the body) runs on both sides. `cairn_next.py` on `~/github/insight` printed `(PR #1250)` and `(PR #1247)`, and no suffix for M007, whose header names only a branch.
+- 2026-10-08: T3: the section draws after Waiting with the queue's color and a row count, and the number sits in the line's tail in gray. Pane shape tag `pane-3`. verify: all five checks exit 0, with 1434 mod tests.
 
 ## Decisions
 

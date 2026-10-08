@@ -9,9 +9,15 @@ Read-only; exits 0 on success, 2 outside a cairn repo.
     python3 scripts/cairn_next.py [ROOT]
 """
 
+import os
+import re
 import sys
 
 import cairn_scripts as cs
+
+# A milestone header's `Branch/PR` line, and a pull request URL in it (M223).
+BRANCH_PR = re.compile(r"^\s*-\s*\*\*Branch/PR:\*\*(.*)$")
+PR_URL = re.compile(r"https://github\.com/[^/\s]+/[^/\s]+/pull/([0-9]+)")
 
 
 def done_ids(root, rows):
@@ -62,11 +68,50 @@ def waiting(root, rows):
     ]
 
 
+def read_file(path):
+    """A regular file's text, or None when it is not one or its read fails."""
+    if not os.path.isfile(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            return f.read()
+    except (OSError, UnicodeDecodeError):
+        return None
+
+
+def pr_number(text):
+    """The number of the pull request that a milestone file's first
+    `Branch/PR` header line names: the first `https://github.com/<owner>/
+    <repo>/pull/<n>` URL before any `companion:` entry, or None (M223)."""
+    for line in text.splitlines():
+        m = BRANCH_PR.match(line)
+        if m:
+            url = PR_URL.search(m.group(1).split("companion:", 1)[0])
+            return int(url.group(1)) if url else None
+    return None
+
+
+def blocked(root, rows, read=None):
+    """The `blocked` rows in ROADMAP order. Each is a dict of `id`, `title`,
+    and `pr`, the number `pr_number` reads from the row's milestone file, or
+    None when the file is missing or its read fails. `read` takes a path and
+    gives its text or None (`read_file` by default). The cairn pane
+    (hooks/status/reader.ts) mirrors this (M223)."""
+    read = read or read_file
+    out = []
+    for r in rows:
+        if r["status"] != "blocked":
+            continue
+        text = read(os.path.join(root, "cairn", r["relpath"]))
+        out.append({"id": r["id"], "title": r["title"], "pr": None if text is None else pr_number(text)})
+    return out
+
+
 def render(root):
     rows = cs.rows(cs.read_roadmap(root))
     lines = [f"cairn next — {root}", ""]
 
-    blocked = [r for r in rows if r["status"] == "blocked"]
+    held = blocked(root, rows)
 
     ready = workable(root, rows)
 
@@ -89,10 +134,11 @@ def render(root):
         for r in stuck:
             lines.append(f"  {r['id']} — waiting on " + ", ".join(r["unmet"]))
 
-    if blocked:
+    if held:
         lines.append("Externally blocked (see work-log):")
-        for r in blocked:
-            lines.append(f"  {r['id']} — {r['title']}")
+        for r in held:
+            suffix = "" if r["pr"] is None else f" (PR #{r['pr']})"
+            lines.append(f"  {r['id']} — {r['title']}{suffix}")
     return "\n".join(lines)
 
 

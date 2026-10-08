@@ -1,0 +1,15 @@
+{
+  "cwd": "",
+  "workable": [],
+  "rows": [
+    {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."}
+  ],
+  "pane": [
+    {"id": "M110", "title": "Work in hand", "status": "in-progress", "file": {"goal": "Implement one fix while another waits on review.", "tasks": [{"text": "T1: Write the test.", "checked": true}, {"text": "T2: Write the fix.", "checked": false}], "criteria": [{"text": "AC1: The fix works.", "checked": false}], "log": ["2026-01-10: created."]}}
+  ],
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M110", "waiting": []},
+  "candidates": [],
+  "blocked": [
+    {"id": "M111", "title": "Handed to the maintainers", "pr": 1250}
+  ]
+}

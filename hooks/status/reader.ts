@@ -9,7 +9,8 @@
 // `archive_files`, and `sort_by_priority` with its `id_num`). For the cairn
 // pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
 // (M205), and reads the candidate rows in the sections that
-// `candidate_count` in scripts/cairn_scripts.py walks (M207). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
+// `candidate_count` in scripts/cairn_scripts.py walks (M207), and mirrors
+// `blocked` and `pr_number` in scripts/cairn_next.py (M223). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
 // and `\d` also take other Unicode digits, so an id such as `M００５７`
 // reads differently in the two.
 // hooks/status/reader.test.ts holds this reader, and
@@ -63,6 +64,9 @@ export type Fixture = {
   next: (NextStep & { waiting: WaitingRow[] }) | null
   // The pane's candidate rows, as test_status_fixtures.py reads them (M207).
   candidates: CandidateRow[]
+  // The pane's blocked rows, as `blocked` in scripts/cairn_next.py reads
+  // them (M223).
+  blocked: BlockedRow[]
   // Paths that stat as files but whose read fails in the tests.
   unreadable: string[]
 }
@@ -291,12 +295,18 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
   const parsed = parseRoadmapRows(roadmap)
   const out: BandRow[] = []
   const milestones: PaneMilestone[] = []
+  const blocked: BlockedRow[] = []
   for (const row of parsed) {
-    if (!ACTIVE.includes(row.status)) continue
+    const active = ACTIVE.includes(row.status)
+    if (!active && row.status !== 'blocked') continue
     // A regular file only, as Python's os.path.isfile: a path to a pipe or
     // a device would otherwise stall the read at every turn end.
     const path = join(root, `cairn/${row.relpath}`)
     const text = (await source.isFile(path)) ? await source.read(path) : null
+    if (!active) {
+      blocked.push({ id: row.id, title: row.title, pr: text === null ? null : prNumber(text) })
+      continue
+    }
     const fields = text === null ? NO_FILE : fileFields(text)
     out.push({ id: row.id, title: row.title, status: row.status, ...fields })
     milestones.push({ id: row.id, title: row.title, status: row.status, file: text === null ? null : paneFile(text) })
@@ -312,13 +322,33 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
       workable,
       waiting: waitingRows(parsed, archived),
       candidates: candidateRows(roadmap),
+      blocked,
     },
   }
 }
 
+// A milestone header's `Branch/PR` line, and a pull request URL in it, as
+// `BRANCH_PR` and `PR_URL` in scripts/cairn_next.py (M223).
+const BRANCH_PR = /^\s*-\s*\*\*Branch\/PR:\*\*(.*)$/
+const PR_URL = /https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/pull\/([0-9]+)/
+
+// `pr_number` in scripts/cairn_next.py: the number of the pull request that
+// the first `Branch/PR` header line names, from the first URL before any
+// `companion:` entry, or null.
+export function prNumber(text: string): number | null {
+  for (const line of splitLines(text)) {
+    const match = BRANCH_PR.exec(line)
+    if (match === null) continue
+    const url = PR_URL.exec(match[1].split('companion:')[0])
+    return url === null ? null : Number(url[1])
+  }
+  return null
+}
+
 // The cairn pane's state (M205): the active milestones in full, the
-// queue that scripts/cairn_next.py prints, and the candidate rows (M207).
-// `found` is false when no ROADMAP is found.
+// queue that scripts/cairn_next.py prints, the candidate rows (M207), and
+// the blocked rows with their pull request numbers (M223). `found` is
+// false when no ROADMAP is found.
 export type PaneState = {
   found: boolean
   milestones: PaneMilestone[]
@@ -326,6 +356,7 @@ export type PaneState = {
   workable: WorkableRow[]
   waiting: WaitingRow[]
   candidates: CandidateRow[]
+  blocked: BlockedRow[]
 }
 
 // One candidate row of the ROADMAP: its priority token's level, `normal`
@@ -349,7 +380,20 @@ export type NextStep = { action: string; command: string; id: string | null }
 // as written, with its row's status or `unknown`.
 export type WaitingRow = { id: string; title: string; unmet: string[] }
 
-export const NO_PANE: PaneState = { found: false, milestones: [], next: null, workable: [], waiting: [], candidates: [] }
+// `blocked` in scripts/cairn_next.py (M223): a `blocked` row, and the
+// number of the pull request its milestone file's `Branch/PR` header names,
+// or null.
+export type BlockedRow = { id: string; title: string; pr: number | null }
+
+export const NO_PANE: PaneState = {
+  found: false,
+  milestones: [],
+  next: null,
+  workable: [],
+  waiting: [],
+  candidates: [],
+  blocked: [],
+}
 
 // How many work-log lines the pane shows, newest last.
 export const LOG_LINES = 5

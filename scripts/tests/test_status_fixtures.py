@@ -13,7 +13,8 @@ second implementation here, and the pane's next step to
 `cairn_next.recommend` and `cairn_next.waiting` (M205 AC2, AC3), and the
 pane's candidate rows to a second reader here, whose count it holds to
 `cairn_scripts.candidate_count` where no HTML comment sits in the
-Candidates section (M207 AC3). A path an
+Candidates section (M207 AC3). It holds the pane's blocked rows and their
+pull request numbers to `cairn_next.blocked` (M223 AC3). A path an
 `expected.json` lists under `unreadable` reads as failing on both sides.
 It also fails when the generated module is stale.
 """
@@ -131,6 +132,16 @@ def python_next(start):
     return {**cn.recommend(root, rows), "waiting": cn.waiting(root, rows)}
 
 
+def python_blocked(start, unreadable=()):
+    """`cairn_next.blocked` for a session started in `start`, its file reads
+    failing for the paths in `unreadable` (M223 AC3)."""
+    root = cs.cc.find_cairn_root(str(start))
+    if root is None:
+        return []
+    rows = cs.rows(cs.read_roadmap(root))
+    return cn.blocked(root, rows, read=lambda path: None if os.path.normpath(path) in unreadable else cn.read_file(path))
+
+
 PRIORITY = re.compile(r"\[(high|low)\] ")
 
 
@@ -238,6 +249,46 @@ class StatusFixtureAgreement(unittest.TestCase):
                     self.assertEqual(python_pane(start, unreadable), expected["pane"])
                     self.assertEqual(python_next(start), expected["next"])
                     self.assertEqual(python_candidates(start), expected["candidates"])
+                    self.assertEqual(python_blocked(start, unreadable), expected.get("blocked", []))
+
+    def test_pr_number_header_forms(self):
+        # The forms reader.test.ts gives `prNumber`, held to `pr_number`.
+        def header(value):
+            return f"# M1: x\n\n- **Status:** blocked\n- **Branch/PR:** {value}\n\n## Goal\n"
+
+        cases = [
+            ("b, https://github.com/o/r/pull/7", 7),
+            ("b, https://github.com/o/r/pull/7, https://github.com/o/r/pull/8", 7),
+            ("b, https://github.com/o/r/pull/7/files", 7),
+            ("b, https://github.com/o/r/pull/7#discussion_r1", 7),
+            ("b, companion: /x b https://github.com/o/s/pull/9", None),
+            ("b, https://github.com/o/r/pull/7, companion: /x b https://github.com/o/s/pull/9", 7),
+            ("b, https://github.com/o/r/issues/7", None),
+            ("b", None),
+        ]
+        for value, want in cases:
+            with self.subTest(value=value):
+                self.assertEqual(cn.pr_number(header(value)), want)
+        self.assertIsNone(cn.pr_number("# M1: x\n\nhttps://github.com/o/r/pull/7 in the body\n"))
+
+    def test_blocked_fixtures_hold_the_row_shapes(self):
+        # The row shapes M223 AC1 and AC2 name, stated apart from the
+        # helper: the numbers and the null rows, with an active milestone
+        # beside a blocked row in one fixture and none in the other.
+        def load(name):
+            return json.loads((FIXTURES / name / "expected.json").read_text(encoding="utf-8"))
+
+        prs = {row["id"]: row["pr"] for row in load("blocked-prs")["blocked"]}
+        self.assertEqual(
+            prs,
+            {"M101": 12, "M102": 34, "M103": None, "M104": 90, "M105": None, "M106": None, "M107": None},
+        )
+        self.assertFalse((FIXTURES / "blocked-prs" / "cairn" / "milestones" / "M107-missing.md").exists())
+        self.assertIn("/cairn/milestones/M106-unreadable.md", load("blocked-prs")["unreadable"])
+        self.assertEqual(load("blocked-prs")["pane"], [])
+        active = load("blocked-active")
+        self.assertEqual([row["id"] for row in active["pane"]], ["M110"])
+        self.assertEqual(active["blocked"], [{"id": "M111", "title": "Handed to the maintainers", "pr": 1250}])
 
     def test_candidate_rows_match_candidate_count(self):
         # Where no HTML comment sits in the Candidates section, the pane

@@ -58,6 +58,9 @@ export type CairnPaneMilestone = {
 // planning, and `waiting` is its `waiting`, each row's undone dependencies
 // as written with their status. `candidates` holds the ROADMAP's candidate
 // rows, each its priority and the text before its first `: ` (M207).
+// `blocked` holds the `blocked` rows in ROADMAP order, each with the number
+// of the pull request its milestone file's `Branch/PR` header names, or
+// null (M223).
 export type CairnPaneState = {
   found: boolean
   milestones: CairnPaneMilestone[]
@@ -65,6 +68,7 @@ export type CairnPaneState = {
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
   candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
+  blocked: { id: string; title: string; pr: number | null }[]
 }
 
 declare module 'claude-code' {

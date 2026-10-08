@@ -30,7 +30,63 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": [{"id": "M090", "title": "Waits on a planned milestone", "unmet": ["M091 (planned)"]}, {"id": "M091", "title": "Waits on a blocked milestone", "unmet": ["M092 (blocked)"]}, {"id": "M093", "title": "Waits on an id with no row", "unmet": ["M500 (unknown)"]}]},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+      {"id": "M092", "title": "Blocked outside", "pr": null},
+    ],
+    unreadable:[],
+  },
+  "blocked-active": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M110 | Work in hand | in-progress | — | normal | milestones/M110-active.md |\n| M111 | Handed to the maintainers | blocked | — | normal | milestones/M111-handed.md |\n",
+      "/cairn/milestones/M110-active.md": "# M110: Work in hand\n\n- **Status:** in-progress\n- **Branch/PR:** work-in-hand\n\n## Goal\n\nImplement one fix while another waits on review.\n\n## Acceptance criteria\n\n- [ ] AC1: The fix works.\n\n## Tasks\n\n- [x] T1: Write the test.\n- [ ] T2: Write the fix.\n\n## Work log\n\n- 2026-01-10: created.\n",
+      "/cairn/milestones/M111-handed.md": "# M111: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/1250\n\n## Goal\n\nA fix that waits on the maintainers' review.\n",
+    },
+    rows: [
+      {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."},
+    ],
+    workable: [],
+    pane: [
+      {"id": "M110", "title": "Work in hand", "status": "in-progress", "file": {"goal": "Implement one fix while another waits on review.", "tasks": [{"text": "T1: Write the test.", "checked": true}, {"text": "T2: Write the fix.", "checked": false}], "criteria": [{"text": "AC1: The fix works.", "checked": false}], "log": ["2026-01-10: created."]}},
+    ],
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M110", "waiting": []},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M111", "title": "Handed to the maintainers", "pr": 1250},
+    ],
+    unreadable:[],
+  },
+  "blocked-prs": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M101 | One pull request URL | blocked | — | normal | milestones/M101-one.md |\n| M102 | Two pull request URLs | blocked | — | normal | milestones/M102-two.md |\n| M103 | A URL only after a companion entry | blocked | — | normal | milestones/M103-companion.md |\n| M104 | A URL with a trailing path | blocked | — | normal | milestones/M104-trailing.md |\n| M105 | A branch with no URL | blocked | — | normal | milestones/M105-none.md |\n| M106 | A file whose read fails | blocked | — | normal | milestones/M106-unreadable.md |\n| M107 | A missing file | blocked | — | normal | milestones/M107-missing.md |\n| M100 | Shipped | done | — | normal | milestones/archive/M100-shipped.md |\n\n## Candidates\n\n- An idea for later: the section after Blocked — added 2026-01-11\n",
+      "/cairn/milestones/M101-one.md": "# M101: One pull request URL\n\n- **Status:** blocked\n- **Branch/PR:** fix-one, https://github.com/upstream/repo/pull/12\n\n## Goal\n\nA handed-off fix with one pull request.\n",
+      "/cairn/milestones/M102-two.md": "# M102: Two pull request URLs\n\n- **Status:** blocked\n- **Branch/PR:** fix-two, https://github.com/upstream/repo/pull/34, https://github.com/upstream/repo/pull/56\n\n## Goal\n\nA handed-off fix whose header names two pull requests.\n",
+      "/cairn/milestones/M103-companion.md": "# M103: A URL only after a companion entry\n\n- **Status:** blocked\n- **Branch/PR:** fix-three, companion: /work/site fix-three https://github.com/upstream/site/pull/78\n\n## Goal\n\nA fix whose only pull request URL belongs to a companion checkout.\n",
+      "/cairn/milestones/M104-trailing.md": "# M104: A URL with a trailing path\n\n- **Status:** blocked\n- **Branch/PR:** fix-four, https://github.com/upstream/repo/pull/90/files\n\n## Goal\n\nA handed-off fix whose URL points at the pull request's files tab.\n",
+      "/cairn/milestones/M105-none.md": "# M105: A branch with no URL\n\n- **Status:** blocked\n- **Branch/PR:** fix-five\n\n## Goal\n\nA blocked milestone whose header names a branch and no pull request.\n",
+      "/cairn/milestones/M106-unreadable.md": "# M106: A file whose read fails\n\n- **Status:** blocked\n- **Branch/PR:** fix-six, https://github.com/upstream/repo/pull/66\n\n## Goal\n\nThe tests read this file as failing, so its number never shows.\n",
+    },
+    rows: [
+    ],
+    workable: [],
+    pane: [
+    ],
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    candidates: [
+      {"priority": "normal", "title": "An idea for later"},
+    ],
+    blocked: [
+      {"id": "M101", "title": "One pull request URL", "pr": 12},
+      {"id": "M102", "title": "Two pull request URLs", "pr": 34},
+      {"id": "M103", "title": "A URL only after a companion entry", "pr": null},
+      {"id": "M104", "title": "A URL with a trailing path", "pr": 90},
+      {"id": "M105", "title": "A branch with no URL", "pr": null},
+      {"id": "M106", "title": "A file whose read fails", "pr": null},
+      {"id": "M107", "title": "A missing file", "pr": null},
+    ],
+    unreadable:["/cairn/milestones/M106-unreadable.md"],
   },
   "candidates": {
     cwd: "/",
@@ -54,7 +110,9 @@ export const FIXTURES: Record<string, Fixture> = {
       {"priority": "normal", "title": "A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end"},
       {"priority": "normal", "title": "`code"},
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "candidates-skeleton": {
     cwd: "/",
@@ -69,7 +127,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "idle-deps": {
     cwd: "/",
@@ -87,7 +147,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "implement", "command": "/milestone-implement", "id": "M040", "waiting": [{"id": "M050", "title": "Waits on a planned milestone", "unmet": ["M002 (planned)"]}, {"id": "M051", "title": "Waits on an id with no row and no archive file", "unmet": ["M077 (unknown)"]}, {"id": "M052", "title": "One dependency met, one not", "unmet": ["M002 (planned)"]}]},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "idle-order": {
     cwd: "/",
@@ -102,7 +164,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "implement", "command": "/milestone-implement", "id": "M500", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "long-title": {
     cwd: "/",
@@ -120,7 +184,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "resume", "command": "/milestone-implement", "id": "M060", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "missing-file": {
     cwd: "/",
@@ -137,7 +203,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "mixed": {
     cwd: "/",
@@ -165,7 +233,9 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
       {"priority": "high", "title": "A candidate line with - [x] inside it — added 2026-01-01"},
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "nested-first": {
     cwd: "/",
@@ -183,7 +253,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "resume", "command": "/milestone-implement", "id": "M030", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "no-active": {
     cwd: "/",
@@ -199,7 +271,10 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+      {"id": "M018", "title": "Held by a blocker", "pr": null},
+    ],
+    unreadable:[],
   },
   "no-roadmap": {
     cwd: "/",
@@ -214,7 +289,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: null,
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "pane-full": {
     cwd: "/",
@@ -238,7 +315,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]},
     candidates: [
     ],
-    unreadable: ["/cairn/milestones/M082-unreadable.md"],
+    blocked: [
+    ],
+    unreadable:["/cairn/milestones/M082-unreadable.md"],
   },
   "repo-at-cut": {
     cwd: "/",
@@ -277,7 +356,9 @@ export const FIXTURES: Record<string, Fixture> = {
       {"priority": "low", "title": "Action-graded finding vocabulary"},
       {"priority": "low", "title": "Deferred second tier for hook nudges"},
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "single-in-progress": {
     cwd: "/",
@@ -296,7 +377,9 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
       {"priority": "normal", "title": "An idea that is not a row — added 2026-01-01"},
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "six-active": {
     cwd: "/",
@@ -329,7 +412,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M071", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "states-implement": {
     cwd: "/",
@@ -355,7 +440,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "resume", "command": "/milestone-implement", "id": "M040", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "states-review": {
     cwd: "/",
@@ -381,7 +468,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "subdirectory": {
     cwd: "/pkg/src",
@@ -400,7 +489,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "resume", "command": "/milestone-implement", "id": "M007", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "unlabeled-item": {
     cwd: "/",
@@ -418,7 +509,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "resume", "command": "/milestone-implement", "id": "M062", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "wide-title": {
     cwd: "/",
@@ -436,7 +529,9 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M061", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
   "widest": {
     cwd: "/",
@@ -462,6 +557,8 @@ export const FIXTURES: Record<string, Fixture> = {
     next: {"action": "review", "command": "/milestone-review", "id": "M1002", "waiting": []},
     candidates: [
     ],
-    unreadable: [],
+    blocked: [
+    ],
+    unreadable:[],
   },
 }
