@@ -33,7 +33,7 @@ export const FIXTURES: Record<string, Fixture> = {
     blocked: [
       {"id": "M092", "title": "Blocked outside", "pr": null},
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "blocked-active": {
     cwd: "/",
@@ -55,7 +55,7 @@ export const FIXTURES: Record<string, Fixture> = {
     blocked: [
       {"id": "M111", "title": "Handed to the maintainers", "pr": 1250},
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "blocked-prs": {
     cwd: "/",
@@ -86,7 +86,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M106", "title": "A file whose read fails", "pr": null},
       {"id": "M107", "title": "A missing file", "pr": null},
     ],
-    unreadable:["/cairn/milestones/M106-unreadable.md"],
+    unreadable: ["/cairn/milestones/M106-unreadable.md"],
   },
   "candidates": {
     cwd: "/",
@@ -112,7 +112,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "candidates-skeleton": {
     cwd: "/",
@@ -129,7 +129,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "idle-deps": {
     cwd: "/",
@@ -149,7 +149,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "idle-order": {
     cwd: "/",
@@ -166,7 +166,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "long-title": {
     cwd: "/",
@@ -186,7 +186,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "missing-file": {
     cwd: "/",
@@ -205,7 +205,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "mixed": {
     cwd: "/",
@@ -235,7 +235,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "nested-first": {
     cwd: "/",
@@ -255,7 +255,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "no-active": {
     cwd: "/",
@@ -274,7 +274,7 @@ export const FIXTURES: Record<string, Fixture> = {
     blocked: [
       {"id": "M018", "title": "Held by a blocker", "pr": null},
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "no-roadmap": {
     cwd: "/",
@@ -291,7 +291,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "pane-full": {
     cwd: "/",
@@ -317,7 +317,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:["/cairn/milestones/M082-unreadable.md"],
+    unreadable: ["/cairn/milestones/M082-unreadable.md"],
   },
   "repo-at-cut": {
     cwd: "/",
@@ -358,7 +358,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "single-in-progress": {
     cwd: "/",
@@ -379,7 +379,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "six-active": {
     cwd: "/",
@@ -414,7 +414,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "states-implement": {
     cwd: "/",
@@ -442,7 +442,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "states-review": {
     cwd: "/",
@@ -470,7 +470,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "subdirectory": {
     cwd: "/pkg/src",
@@ -491,7 +491,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "unlabeled-item": {
     cwd: "/",
@@ -511,7 +511,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "wide-title": {
     cwd: "/",
@@ -531,7 +531,7 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
   "widest": {
     cwd: "/",
@@ -559,6 +559,6 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     blocked: [
     ],
-    unreadable:[],
+    unreadable: [],
   },
 }

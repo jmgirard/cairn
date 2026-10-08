@@ -91,7 +91,7 @@ def render():
         for row in expected.get("blocked", []):
             out.append(f"      {json.dumps(row, ensure_ascii=False)},\n")
         out.append("    ],\n")
-        out.append(f"    unreadable:{json.dumps(expected.get('unreadable', []))},\n")
+        out.append(f"    unreadable: {json.dumps(expected.get('unreadable', []))},\n")
         out.append("  },\n")
     out.append("}\n")
     return "".join(out)

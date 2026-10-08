@@ -304,8 +304,8 @@ listed.
 Whenever a milestone is `blocked`, the pane lists it under a `BLOCKED`
 heading with the count, after the queue and before the candidates, with
 or without an active milestone. Each line shows the id and title, and
-then `#<n>` when the milestone file's `Branch/PR` header names a pull
-request URL. In guest mode, a milestone you handed to the maintainers is
+then `#<n>`, the number of the first GitHub pull request URL in the
+milestone file's `Branch/PR` header, before any `companion:` entry. In guest mode, a milestone you handed to the maintainers is
 `blocked` with its PR in that header, so the section lists the PRs that
 wait on review. `scripts/cairn_next.py` prints the same number after each
 "Externally blocked" line, as `(PR #<n>)`.

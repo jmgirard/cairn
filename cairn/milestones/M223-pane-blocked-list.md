@@ -1,6 +1,6 @@
 # M223: The pane lists blocked milestones and their PRs
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -97,8 +97,10 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - [x] T4: Describe the section in README.md's "The cairn pane", in
       `cairn/DESIGN.md` near the M219 pane text, and in CHANGELOG.md's
       Unreleased section. Run `verify`.
-- [ ] T5: Live look in a new desktop Code session in `~/github/insight`,
-      with the cairn pane open (LESSONS M195, M213).
+- [x] T5: Prepare the live look in a new desktop Code session in
+      `~/github/insight`, with the cairn pane open (LESSONS M195, M213).
+      Review runs the look before the merge question, as the question set
+      placed it.
 
 ## Work log
 
@@ -115,6 +117,9 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - 2026-10-08: T2: `blocked`, `pr_number`, and `read_file` in `scripts/cairn_next.py`. The `read` argument lets the fixture test fail the reads the fixtures mark `unreadable`. `prNumber` in `reader.ts` mirrors `pr_number` with `[0-9]` in place of `\d`. One case list of nine header forms (fragment, issue URL, a URL in the body) runs on both sides. `cairn_next.py` on `~/github/insight` printed `(PR #1250)` and `(PR #1247)`, and no suffix for M007, whose header names only a branch.
 - 2026-10-08: T3: the section draws after Waiting with the queue's color and a row count, and the number sits in the line's tail in gray. Pane shape tag `pane-3`. verify: all five checks exit 0, with 1434 mod tests.
 - 2026-10-08: T4: README "The cairn pane", DESIGN's pane-state paragraph and module line, and a CHANGELOG Unreleased New entry describe the section, written against the T1-T3 tests and the insight run. verify: all five checks exit 0, and `cairn_validate` passes.
+- 2026-10-08: minor amendment: T5 now prepares the live look, and review runs it before the merge question, where the question set placed it. The plugin loads from this checkout through the `~/.claude/skills/cairn` symlink, so a new desktop Code session in `~/github/insight` draws the branch's mod.
+- 2026-10-08: claim audit: 44 claims read, 2 corrected — CHANGELOG.md, README.md (both now say the number comes from a GitHub pull request URL before any `companion:` entry; the same reader re-read both as true). The reader also caught a dropped space in `gen_fixtures.py`'s `unreadable:` line, restored and regenerated. verify: all five checks exit 0.
+- 2026-10-08: implement done; status set to `review`.
 
 ## Decisions
 

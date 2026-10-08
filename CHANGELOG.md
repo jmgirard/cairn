@@ -7,7 +7,8 @@
 - **The cairn pane lists blocked milestones and their PRs.** A `BLOCKED`
   section after the queue shows each `blocked` milestone, with or without
   an active one. A line ends with `#<n>` when the milestone file's
-  `Branch/PR` header names a pull request URL. In guest mode, this lists
+  `Branch/PR` header names a GitHub pull request URL before any
+  `companion:` entry. In guest mode, this lists
   the PRs you handed to the maintainers. `scripts/cairn_next.py` prints
   the same number after each "Externally blocked" line.
 
