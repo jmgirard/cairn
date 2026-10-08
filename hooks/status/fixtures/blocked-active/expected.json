@@ -1,6 +1,6 @@
 {
   "cwd": "",
-  "workable": [],
+  "workable": ["M112"],
   "rows": [
     {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."}
   ],

@@ -270,6 +270,15 @@ class StatusFixtureAgreement(unittest.TestCase):
             with self.subTest(value=value):
                 self.assertEqual(cn.pr_number(header(value)), want)
         self.assertIsNone(cn.pr_number("# M1: x\n\nhttps://github.com/o/r/pull/7 in the body\n"))
+        # A BOM before the dash reads no number on either side, and a tab does.
+        self.assertIsNone(cn.pr_number("﻿- **Branch/PR:** b, https://github.com/o/r/pull/7\n"))
+        self.assertEqual(cn.pr_number("\t- **Branch/PR:** b, https://github.com/o/r/pull/7\n"), 7)
+        # Only the first Branch/PR line counts, only above the first `## `
+        # heading, and a number past 15 digits reads as none.
+        self.assertIsNone(cn.pr_number("- **Branch/PR:** b\n- **Branch/PR:** c, https://github.com/o/r/pull/7\n"))
+        self.assertIsNone(cn.pr_number("# M1: x\n\n## Review\n\n- **Branch/PR:** b, https://github.com/o/r/pull/7\n"))
+        self.assertEqual(cn.pr_number(header("b, https://github.com/o/r/pull/123456789012345")), 123456789012345)
+        self.assertIsNone(cn.pr_number(header("b, https://github.com/o/r/pull/1234567890123456")))
 
     def test_blocked_fixtures_hold_the_row_shapes(self):
         # The row shapes M223 AC1 and AC2 name, stated apart from the

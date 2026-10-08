@@ -503,6 +503,9 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(['M111  Handed to the maintainers  #1250'])
       const at = (key: string) => lines.findIndex(([k]) => k === key)
       expect(at('blocked-head')).toBeGreaterThan(at('next'))
+      // After the Workable rows (M223 review).
+      expect(at('workable-M112')).toBeGreaterThan(at('next'))
+      expect(at('blocked-head')).toBeGreaterThan(at('workable-M112'))
     })
 
     test(`all-waiting: the section follows the Waiting rows (${surface})`, async ($, on) => {
@@ -693,6 +696,8 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
     ['pane-full', 'workable-head', 'WORKABLE', PLAN_KEY],
     ['pane-full', 'waiting-head', 'WAITING', PLAN_KEY],
     ['candidates', 'candidates-head', 'CANDIDATES', PLAN_KEY],
+    ['blocked-prs', 'blocked-head', 'BLOCKED', PLAN_KEY],
+    ['blocked-active', 'blocked-head', 'BLOCKED', PLAN_KEY],
   ]
   for (const surface of SURFACES) {
     for (const [fixture, key, label, accent] of HEADS) {
@@ -737,7 +742,7 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
 // the prop that lets the line shrink; the live look shows the drawing.
 describe("each line's lead and tail fit a 44-column dock, and the line may shrink (M208 AC4)", () => {
   for (const surface of SURFACES) {
-    for (const fixture of ['pane-full', 'candidates']) {
+    for (const fixture of ['pane-full', 'candidates', 'blocked-prs', 'blocked-active']) {
       test(`${fixture} (${surface})`, async ($, on) => {
         seat(on, copyOf(fixture))
         await $.turn.complete(turn())

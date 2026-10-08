@@ -107,7 +107,7 @@ export const COMMAND_PHASE: Record<string, FlowPhase> = {
   '/milestone-implement': 'implement',
   '/milestone-review': 'review',
 }
-// The queue's headings are about planned work and candidates.
+// The queue's headings are about planned, blocked, and candidate work.
 const QUEUE_COLOR = FLOW_COLORS.plan
 
 const line = (key: string, indent: number, lead: Span[], text: Span | null = null): PaneLine => ({

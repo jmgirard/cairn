@@ -280,7 +280,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   line. The pane draws a `BLOCKED` section after the queue in every
   state, the number in the line's tail. A guest-mode handoff sets its
   milestone `blocked` with the PR URL in its header, so the section lists
-  the PRs that wait on maintainers. `pane.ts` lays out the lines, and each line's text is
+  the PRs that wait on maintainers. The header is the text before the
+  first `## ` heading, and a number has at most 15 digits, so both sides
+  read it the same.
+  `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with
   `flexShrink: 0`, and its text Box shrinks with `minWidth: 0`, so a long
@@ -474,8 +477,9 @@ within each type and are never reused.
   Reading the ROADMAP: a file cut mid-table during a write reads as
   shorter, and a file deleted and recreated reads as absent. An empty or
   unreadable file before any good read prints `no cairn ROADMAP found`.
-  So do the first failed read after a reload from pre-M210 code and the
-  `pane-2` tag after a reload, until the next refresh. A pane parse
+  So do the first failed read after a reload from pre-M210 code and a
+  moved pane shape tag (`pane-3` since M223) after a reload, until the
+  next refresh (corrected M223). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare

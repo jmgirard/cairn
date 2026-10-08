@@ -10,9 +10,10 @@
 // pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
 // (M205), and reads the candidate rows in the sections that
 // `candidate_count` in scripts/cairn_scripts.py walks (M207), and mirrors
-// `blocked` and `pr_number` in scripts/cairn_next.py (M223). The mirror reads ASCII digits only, where Python's `isdigit`, `isdecimal`,
-// and `\d` also take other Unicode digits, so an id such as `M００５７`
-// reads differently in the two.
+// `blocked` and `pr_number` in scripts/cairn_next.py (M223). The mirror
+// reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
+// also take other Unicode digits, so an id such as `M００５７` reads
+// differently in the two.
 // hooks/status/reader.test.ts holds this reader, and
 // scripts/tests/test_status_fixtures.py the Python helpers, to the same
 // fixtures.
@@ -328,15 +329,19 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
 }
 
 // A milestone header's `Branch/PR` line, and a pull request URL in it, as
-// `BRANCH_PR` and `PR_URL` in scripts/cairn_next.py (M223).
-const BRANCH_PR = /^\s*-\s*\*\*Branch\/PR:\*\*(.*)$/
-const PR_URL = /https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/pull\/([0-9]+)/
+// `BRANCH_PR` and `PR_URL` in scripts/cairn_next.py (M223), with spaces and
+// tabs spelled out, since `\s` takes different characters in the two. A
+// number has at most 15 digits, so `Number` reads it exactly.
+const BRANCH_PR = /^[ \t]*-[ \t]*\*\*Branch\/PR:\*\*(.*)$/
+const PR_URL = /https:\/\/github\.com\/[^/ \t]+\/[^/ \t]+\/pull\/([0-9]{1,15})(?![0-9])/
 
 // `pr_number` in scripts/cairn_next.py: the number of the pull request that
 // the first `Branch/PR` header line names, from the first URL before any
-// `companion:` entry, or null.
+// `companion:` entry, or null. The header is the text before the first
+// `## ` heading.
 export function prNumber(text: string): number | null {
   for (const line of splitLines(text)) {
+    if (line.startsWith('## ')) return null
     const match = BRANCH_PR.exec(line)
     if (match === null) continue
     const url = PR_URL.exec(match[1].split('companion:')[0])

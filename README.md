@@ -301,14 +301,17 @@ Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
 `↓` for a `[low]` one, then the row's text up to its first `: `. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
 listed.
+
 Whenever a milestone is `blocked`, the pane lists it under a `BLOCKED`
 heading with the count, after the queue and before the candidates, with
 or without an active milestone. Each line shows the id and title, and
 then `#<n>`, the number of the first GitHub pull request URL in the
-milestone file's `Branch/PR` header, before any `companion:` entry. In guest mode, a milestone you handed to the maintainers is
-`blocked` with its PR in that header, so the section lists the PRs that
-wait on review. `scripts/cairn_next.py` prints the same number after each
-"Externally blocked" line, as `(PR #<n>)`.
+milestone file's `Branch/PR` header, before any `companion:` entry. In
+guest mode, a milestone you handed to the maintainers is `blocked` with
+its PR in that header, so the section lists the PRs that wait on review.
+`scripts/cairn_next.py` prints the same number after each "Externally
+blocked" line, as `(PR #<n>)`.
+
 The pane reads the files at the same moments as the band. Outside a cairn
 repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command

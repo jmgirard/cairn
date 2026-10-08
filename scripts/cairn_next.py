@@ -3,7 +3,9 @@
 
 Surfaces the most sensible next action (resume in-progress / review /
 start a workable planned milestone), lists planned milestones whose
-dependencies are all done, and lists those still blocked by dependencies.
+dependencies are all done, lists those still blocked by dependencies, and
+lists the `blocked` milestones, each with the number of the pull request
+its header names (M223).
 Read-only; exits 0 on success, 2 outside a cairn repo.
 
     python3 scripts/cairn_next.py [ROOT]
@@ -16,8 +18,11 @@ import sys
 import cairn_scripts as cs
 
 # A milestone header's `Branch/PR` line, and a pull request URL in it (M223).
-BRANCH_PR = re.compile(r"^\s*-\s*\*\*Branch/PR:\*\*(.*)$")
-PR_URL = re.compile(r"https://github\.com/[^/\s]+/[^/\s]+/pull/([0-9]+)")
+# Spaces and tabs are spelled out, since Python's `\s` and JavaScript's take
+# different characters, and hooks/status/reader.ts mirrors these.
+BRANCH_PR = re.compile(r"^[ \t]*-[ \t]*\*\*Branch/PR:\*\*(.*)$")
+# At most 15 digits, so the number is exact in JavaScript too.
+PR_URL = re.compile(r"https://github\.com/[^/ \t]+/[^/ \t]+/pull/([0-9]{1,15})(?![0-9])")
 
 
 def done_ids(root, rows):
@@ -82,8 +87,11 @@ def read_file(path):
 def pr_number(text):
     """The number of the pull request that a milestone file's first
     `Branch/PR` header line names: the first `https://github.com/<owner>/
-    <repo>/pull/<n>` URL before any `companion:` entry, or None (M223)."""
+    <repo>/pull/<n>` URL before any `companion:` entry, or None (M223). The
+    header is the text before the first `## ` heading."""
     for line in text.splitlines():
+        if line.startswith("## "):
+            return None
         m = BRANCH_PR.match(line)
         if m:
             url = PR_URL.search(m.group(1).split("companion:", 1)[0])

@@ -7,8 +7,8 @@ directory becomes one entry: its files keyed by absolute in-memory path
 (the fixture directory is `/`), the session's working directory, and the
 rows and the ordered workable ids its `expected.json` states, the
 pane's milestones and next step (M205), its candidate rows (M207), its
-blocked rows (M223, empty when the key is absent), and the paths whose read fails in
-the tests (`unreadable`, empty when the key is absent). The module
+blocked rows (M223, empty when the key is absent), and the paths whose
+read fails in the tests (`unreadable`, empty when the key is absent). The module
 also lists the plugin's skill names, one per `skills/*/SKILL.md`, which
 the band's label map is held to (M195).
 

@@ -38,14 +38,14 @@ export const FIXTURES: Record<string, Fixture> = {
   "blocked-active": {
     cwd: "/",
     files: {
-      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M110 | Work in hand | in-progress | — | normal | milestones/M110-active.md |\n| M111 | Handed to the maintainers | blocked | — | normal | milestones/M111-handed.md |\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M110 | Work in hand | in-progress | — | normal | milestones/M110-active.md |\n| M111 | Handed to the maintainers | blocked | — | normal | milestones/M111-handed.md |\n| M112 | Ready to start next | planned | — | normal | milestones/M112-next.md |\n",
       "/cairn/milestones/M110-active.md": "# M110: Work in hand\n\n- **Status:** in-progress\n- **Branch/PR:** work-in-hand\n\n## Goal\n\nImplement one fix while another waits on review.\n\n## Acceptance criteria\n\n- [ ] AC1: The fix works.\n\n## Tasks\n\n- [x] T1: Write the test.\n- [ ] T2: Write the fix.\n\n## Work log\n\n- 2026-01-10: created.\n",
       "/cairn/milestones/M111-handed.md": "# M111: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/1250\n\n## Goal\n\nA fix that waits on the maintainers' review.\n",
     },
     rows: [
       {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."},
     ],
-    workable: [],
+    workable: ["M112"],
     pane: [
       {"id": "M110", "title": "Work in hand", "status": "in-progress", "file": {"goal": "Implement one fix while another waits on review.", "tasks": [{"text": "T1: Write the test.", "checked": true}, {"text": "T2: Write the fix.", "checked": false}], "criteria": [{"text": "AC1: The fix works.", "checked": false}], "log": ["2026-01-10: created."]}},
     ],
