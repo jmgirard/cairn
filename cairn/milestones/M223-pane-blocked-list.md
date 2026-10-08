@@ -94,7 +94,7 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - [x] T3: Draw the section in `pane.ts`'s `paneLines` (line 217), with the
       queue's heading and color and the number in the line's `tail`. Move
       the pane atom's shape tag in `register.tsx` (line 94). Run `verify`.
-- [ ] T4: Describe the section in README.md's "The cairn pane", in
+- [x] T4: Describe the section in README.md's "The cairn pane", in
       `cairn/DESIGN.md` near the M219 pane text, and in CHANGELOG.md's
       Unreleased section. Run `verify`.
 - [ ] T5: Live look in a new desktop Code session in `~/github/insight`,
@@ -114,6 +114,7 @@ the Next line's recommendation, which `scripts/cairn_next.py` decides.
 - 2026-10-08: T1: fixtures `blocked-prs` (seven blocked rows, one per URL and file shape, no active row, one candidate row so the Candidates order shows) and `blocked-active` (one in-progress row beside one blocked row). An `expected.json` `blocked` key defaults to empty, as `unreadable` does, so only `no-active` and `all-waiting` gained one. Before T2, 22 Python subtests failed with `cairn_next` having no `blocked`, the print case failed on the missing suffix, and 16 mod cases failed on the missing section. Two band tables (`EMPTY_FIXTURES`, `FLOWS`) list fixtures by hand and took the new ones.
 - 2026-10-08: T2: `blocked`, `pr_number`, and `read_file` in `scripts/cairn_next.py`. The `read` argument lets the fixture test fail the reads the fixtures mark `unreadable`. `prNumber` in `reader.ts` mirrors `pr_number` with `[0-9]` in place of `\d`. One case list of nine header forms (fragment, issue URL, a URL in the body) runs on both sides. `cairn_next.py` on `~/github/insight` printed `(PR #1250)` and `(PR #1247)`, and no suffix for M007, whose header names only a branch.
 - 2026-10-08: T3: the section draws after Waiting with the queue's color and a row count, and the number sits in the line's tail in gray. Pane shape tag `pane-3`. verify: all five checks exit 0, with 1434 mod tests.
+- 2026-10-08: T4: README "The cairn pane", DESIGN's pane-state paragraph and module line, and a CHANGELOG Unreleased New entry describe the section, written against the T1-T3 tests and the insight run. verify: all five checks exit 0, and `cairn_validate` passes.
 
 ## Decisions
 
