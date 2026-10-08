@@ -21,7 +21,8 @@ through `$.process.run`. The type file calls `$.process.run` "CLI only",
 and the M191 archive once said that tests cannot fake it. The mod then
 reads each Blocked line's PR with `gh pr view <url> --json
 state,reviewDecision`. The URL names the PR's repo, so the call needs no
-`--repo`. Each line shows a state word and, for three states, a Button.
+`--repo`. The reader keeps each row's PR URL beside its number (M223
+keeps only the number), and M225 reads it too. Each line shows a state word and, for three states, a Button.
 The Buttons follow the routes that `/milestone` gives a handed-off PR
 (`skills/milestone/SKILL.md`, the blocked-with-a-PR bullet). The reads
 happen at two moments: the pane's open, and a press of a `Refresh` Button
@@ -34,8 +35,8 @@ in the pane only. The mod writes nothing to GitHub and nothing under
 `cairn/`. `/milestone` still owns status changes, such as `blocked` to
 `done`. If T1 finds that tests cannot answer `$.process.run`, or that the
 desktop app cannot run `gh`, implement takes the goal-wrong stop. The
-unresolved-thread count that `/milestone` reports needs a GraphQL call and
-stays out.
+unresolved threads and unanswered comments are M225 (planned 2026-10-08,
+depends on M224), which also reads each OPEN PR with a GraphQL call.
 
 ## Acceptance criteria
 
@@ -126,6 +127,7 @@ stays out.
 - 2026-10-08: AC3 re-audit after the answers removed the timer: 3 findings, all taken. Every trigger test records no clock call, `$.clock.sleep` is banned too, and one open reads once. Then the plan dropped the read at a session start with the pane closed, because nobody sees it. The four triggers are all pane opens or a press.
 - 2026-10-08: plan chose `gh` reads in the mod over a Button that runs `/milestone`, because a model turn costs tokens and time. Falsified by T1 finding that the desktop app cannot run `gh` from a mod.
 - 2026-10-08: plan chose reads on demand over a 15-minute timer, at the operator's word. Falsified by the operator asking for the pane to notice changes on its own.
+- 2026-10-08: plan amendment before start (M223 merge question): the operator asked for unresolved threads and unanswered comments per PR. They became M225, which depends on this milestone. Scope In now keeps each row's PR URL for both reads, and Scope Out points to M225. The criteria do not change.
 
 ## Decisions
 
