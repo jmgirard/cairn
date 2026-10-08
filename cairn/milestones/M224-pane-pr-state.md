@@ -1,13 +1,13 @@
 # M224: The pane shows each handed-off PR's review state
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M223
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m224-pane-pr-state
 
 ## Goal
 
@@ -128,6 +128,9 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: plan chose `gh` reads in the mod over a Button that runs `/milestone`, because a model turn costs tokens and time. Falsified by T1 finding that the desktop app cannot run `gh` from a mod.
 - 2026-10-08: plan chose reads on demand over a 15-minute timer, at the operator's word. Falsified by the operator asking for the pane to notice changes on its own.
 - 2026-10-08: plan amendment before start (M223 merge question): the operator asked for unresolved threads and unanswered comments per PR. They became M225, which depends on this milestone. Scope In now keeps each row's PR URL for both reads, and Scope Out points to M225. The criteria do not change.
+- 2026-10-08: started implement on branch m224-pane-pr-state. The untracked `cairn-probe.log` and `tsconfig.json` at the repo root are not this milestone's and stay unstaged.
+- 2026-10-08: T1 probe, test half: a `claude plugin test` hook on `process.run` answers the mod's call with `{ value: { exitCode, stdout, stderr } }`, and the mod sees the argv. A hook that throws is skipped, so the mod's call rejects with "no implementation for process.run", as it does with no hook. The test's own `$` has no `process` noun, so the call must come from the mod. The probe code was removed.
+- 2026-10-08: T1 probe, desktop half: a throwaway mod `m224probe` in this session's hot-reload folder logs `PATH` and `gh pr view` on insight PR 1250 (bare `gh` and `/opt/homebrew/bin/gh`) to `m224-probe.log`, which `.git/info/exclude` lists. Waiting for the operator to enable hot reload.
 
 ## Decisions
 
