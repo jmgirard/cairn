@@ -135,28 +135,28 @@ Fresh run on 74b9ebd, 2026-10-08. The branch contains `origin/main` (505c070), s
 - consistency gate: `cairn_validate` passes. The profile gate's three checks pass: verify is green on the review head, the marketplace validate prints no `plugins[N].version` warning, and the CHANGELOG Unreleased entry names no milestone number. No principle changed, so `cairn_impact` was skipped.
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: the `companion:` cut gives no number when an owner-mode primary PR URL is written after a companion entry — follow-up, row "Blocked-row PR number edges (M223 review)".
-- diff-bug #2: DESIGN Known issues still named the `pane-2` tag — fix now (corrected in place).
-- diff-bug #3: `\s` takes different characters in Python and JavaScript (`\x1f`, a BOM) — fix now: both regexes spell out space and tab, with a BOM case and a tab case on both sides.
-- diff-bug #4: a number past 2^53 reads differently on the two sides — fix now: the URL takes at most 15 digits and a longer number reads as none, tested on both sides.
+- diff-bug #2: DESIGN Known issues still named the `pane-2` tag — fix now, fixed 77e89b0 (corrected in place).
+- diff-bug #3: `\s` takes different characters in Python and JavaScript (`\x1f`, a BOM) — fix now, fixed 77e89b0: both regexes spell out space and tab, with a BOM case and a tab case on both sides.
+- diff-bug #4: a number past 2^53 reads differently on the two sides — fix now, fixed 77e89b0: the URL takes at most 15 digits and a longer number reads as none, tested on both sides.
 - diff-bug #5: a non-UTF-8 milestone file can give a number in the pane and none in `cairn_next.py` — follow-up, same row.
-- diff-bug #6: a `Branch/PR` line quoted below the header also counted — fix now: both sides stop at the first `## ` heading, tested on both sides.
+- diff-bug #6: a `Branch/PR` line quoted below the header also counted — fix now, fixed 77e89b0: both sides stop at the first `## ` heading, tested on both sides.
 - diff-bug #7: `Companion:` capitalized, an upper-case host, and `www.github.com` are not matched — reject (planned change: AC1 names the exact URL form, and the template spells `companion:` in lower case).
 - diff-bug #8: the header-form cases are two hand-kept lists, and the T2 work-log line's "one case list runs on both sides" overstates it — reject (test structure: both lists state their expectations by hand, and the blocked-prs fixture ties the sides together). The work-log line means one list copied to both sides.
-- diff-bug #9: no case for two `Branch/PR` lines with no URL in the first — fix now: added on both sides.
-- diff-bug #10: the order of Workable before Blocked was not tested — fix now: `blocked-active` gained a workable row M112, and the case asserts the order.
+- diff-bug #9: no case for two `Branch/PR` lines with no URL in the first — fix now, fixed 77e89b0: added on both sides.
+- diff-bug #10: the order of Workable before Blocked was not tested — fix now, fixed 77e89b0: `blocked-active` gained a workable row M112, and the case asserts the order.
 - diff-bug #11: duplicate ids give duplicate `blocked-<id>` keys — reject (false as new: DESIGN Known issues already records duplicate pane keys).
-- diff-bug #12: the `pane.ts` queue-color comment did not name Blocked — fix now.
-- diff-bug #13: the new README, DESIGN, and `reader.ts` text was not wrapped — fix now (rewrapped, with a blank line before the README paragraph).
+- diff-bug #12: the `pane.ts` queue-color comment did not name Blocked — fix now, fixed 77e89b0.
+- diff-bug #13: the new README, DESIGN, and `reader.ts` text was not wrapped — fix now, fixed 77e89b0 (rewrapped, with a blank line before the README paragraph).
 - blame-history #1: the same companion-order gap as diff-bug #1 — follow-up, same row.
 - blame-history #2: blocked rows now read their files at every refresh — reject (planned change: the scope reads the header, and the regular-file guard stays).
-- blame-history #3: the M205 record says `cairn_next.py`'s output is unchanged, and the module docstring did not name blocked rows — fix now (docstring). The new suffix is planned, and no consumer parses those lines.
-- blame-history #4: README paragraph glued to the candidates paragraph, and long lines — fix now (as diff-bug #13).
-- prior-review #1: the 44-column width sweep did not include the blocked fixtures — fix now: `blocked-prs` and `blocked-active` added.
-- prior-review #2: no heading case for `blocked-head` — fix now: two HEADS rows added.
-- prior-review #3: after a reload, the moved shape tag shows `no cairn ROADMAP found` until the next refresh — fix now (the Known issues text now names the moved tag, as diff-bug #2).
+- blame-history #3: the M205 record says `cairn_next.py`'s output is unchanged, and the module docstring did not name blocked rows — fix now, fixed 77e89b0 (docstring). The new suffix is planned, and no consumer parses those lines.
+- blame-history #4: README paragraph glued to the candidates paragraph, and long lines — fix now, fixed 77e89b0 (as diff-bug #13).
+- prior-review #1: the 44-column width sweep did not include the blocked fixtures — fix now, fixed 77e89b0: `blocked-prs` and `blocked-active` added.
+- prior-review #2: no heading case for `blocked-head` — fix now, fixed 77e89b0: two HEADS rows added.
+- prior-review #3: after a reload, the moved shape tag shows `no cairn ROADMAP found` until the next refresh — fix now, fixed 77e89b0 (the Known issues text now names the moved tag, as diff-bug #2).
 - prior-review #4: duplicate ids give duplicate keys — reject (as diff-bug #11).
-- prior-review #5: the `\s` difference — fix now (as diff-bug #3).
+- prior-review #5: the `\s` difference — fix now, fixed 77e89b0 (as diff-bug #3).
 - prior-review #6: the case lists are written twice — reject (as diff-bug #8).
 - prior-review #7: `CairnPaneState` in `types/index.d.ts` and `PaneState` in `reader.ts` are two copies — follow-up, same row (pre-existing, and M223 kept them equal).
-- prior-review #8: ragged wraps — fix now (as diff-bug #13).
+- prior-review #8: ragged wraps — fix now, fixed 77e89b0 (as diff-bug #13).
 - fix-now re-run on the fixed tree: all five verify commands exit 0. `scripts/tests` ran 400 tests and `claude plugin test .` ran 1442 tests, all passing. `cairn_validate` passes, and `cairn_next.py` on insight prints the same three lines as before.
