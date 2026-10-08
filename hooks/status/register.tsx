@@ -90,8 +90,9 @@ const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { sh
 const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: 'ended-1' })
 
 // What the cairn pane shows, written at each refresh (M205). The tag moved
-// to 2 when the state gained the candidate rows (M207).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-2' })
+// to 2 when the state gained the candidate rows (M207), and to 3 when it
+// gained the blocked rows (M223).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-3' })
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'

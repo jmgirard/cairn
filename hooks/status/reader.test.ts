@@ -11,6 +11,7 @@ import {
   memorySource,
   parseDepends,
   parseRoadmapRows,
+  prNumber,
   sectionFields,
   workableRows,
 } from './reader'
@@ -51,8 +52,35 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
       expect(pane.found).toBe(fixture.next !== null)
       // The candidate rows against test_status_fixtures.py (M207 AC3).
       expect(pane.candidates).toEqual(fixture.candidates)
+      // The blocked rows and their numbers against `cairn_next.blocked`
+      // (M223 AC3).
+      expect(pane.blocked).toEqual(fixture.blocked)
     })
   }
+
+  // `prNumber` over the header forms beyond the fixtures (M223 AC1).
+  test('prNumber reads the first URL of the first Branch/PR line, before any companion entry', () => {
+    const header = (value: string) => `# M1: x\n\n- **Status:** blocked\n- **Branch/PR:** ${value}\n\n## Goal\n`
+    expect(prNumber(header('b, https://github.com/o/r/pull/7'))).toBe(7)
+    expect(prNumber(header('b, https://github.com/o/r/pull/7, https://github.com/o/r/pull/8'))).toBe(7)
+    expect(prNumber(header('b, https://github.com/o/r/pull/7/files'))).toBe(7)
+    expect(prNumber(header('b, https://github.com/o/r/pull/7#discussion_r1'))).toBe(7)
+    expect(prNumber(header('b, companion: /x b https://github.com/o/s/pull/9'))).toBe(null)
+    expect(prNumber(header('b, https://github.com/o/r/pull/7, companion: /x b https://github.com/o/s/pull/9'))).toBe(7)
+    expect(prNumber(header('b, https://github.com/o/r/issues/7'))).toBe(null)
+    expect(prNumber(header('b'))).toBe(null)
+    expect(prNumber('# M1: x\n\nhttps://github.com/o/r/pull/7 in the body\n')).toBe(null)
+    // A BOM before the dash: JavaScript's `\s` takes it and Python's does
+    // not, so both sides spell out spaces and tabs and read no number.
+    expect(prNumber(`${String.fromCharCode(0xfeff)}- **Branch/PR:** b, https://github.com/o/r/pull/7\n`)).toBe(null)
+    expect(prNumber('\t- **Branch/PR:** b, https://github.com/o/r/pull/7\n')).toBe(7)
+    // Only the first Branch/PR line counts, only above the first `## `
+    // heading, and a number past 15 digits reads as none.
+    expect(prNumber('- **Branch/PR:** b\n- **Branch/PR:** c, https://github.com/o/r/pull/7\n')).toBe(null)
+    expect(prNumber('# M1: x\n\n## Review\n\n- **Branch/PR:** b, https://github.com/o/r/pull/7\n')).toBe(null)
+    expect(prNumber(header('b, https://github.com/o/r/pull/123456789012345'))).toBe(123456789012345)
+    expect(prNumber(header('b, https://github.com/o/r/pull/1234567890123456'))).toBe(null)
+  })
 
   test('the pane fixtures hold the shapes M205 names', () => {
     const full = FIXTURES['pane-full']

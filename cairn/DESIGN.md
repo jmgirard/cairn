@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -268,7 +268,22 @@ transitions, human-gated merges, and a domain verification doctrine.
   count also takes indented lines and lines inside comments.
   `test_status_fixtures.py` holds the reader to each fixture's `candidates`
   key, and to that count where no comment sits in the section. The pane draws them only
-  while no row is active. `pane.ts` lays out the lines, and each line's text is
+  while no row is active. The pane state also holds the `blocked` rows
+  (M223), in ROADMAP order, each with the number of the pull request that
+  its milestone file's first `Branch/PR` header line names. The number
+  comes from the first `https://github.com/<owner>/<repo>/pull/<n>` URL
+  before any `companion:` entry, and a missing file, a failed read, or no
+  such URL gives none. `blocked` and `pr_number` in
+  `scripts/cairn_next.py` compute the same list, which `reader.ts`
+  mirrors and `test_status_fixtures.py` holds to each fixture's `blocked`
+  key. `cairn_next.py` prints the number after each "Externally blocked"
+  line. The pane draws a `BLOCKED` section after the queue in every
+  state, the number in the line's tail. A guest-mode handoff sets its
+  milestone `blocked` with the PR URL in its header, so the section lists
+  the PRs that wait on maintainers. The header is the text before the
+  first `## ` heading, and a number has at most 15 digits, so both sides
+  read it the same.
+  `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with
   `flexShrink: 0`, and its text Box shrinks with `minWidth: 0`, so a long
@@ -462,8 +477,9 @@ within each type and are never reused.
   Reading the ROADMAP: a file cut mid-table during a write reads as
   shorter, and a file deleted and recreated reads as absent. An empty or
   unreadable file before any good read prints `no cairn ROADMAP found`.
-  So do the first failed read after a reload from pre-M210 code and the
-  `pane-2` tag after a reload, until the next refresh. A pane parse
+  So do the first failed read after a reload from pre-M210 code and a
+  moved pane shape tag (`pane-3` since M223) after a reload, until the
+  next refresh (corrected M223). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare

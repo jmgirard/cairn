@@ -11,8 +11,10 @@ import { PILL_TEXT } from './track'
 // newest work-log lines.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
-// dependencies. With no active milestone, the ROADMAP's candidate rows
-// follow, each a priority mark and its short title (M207).
+// dependencies. Then the blocked milestones, each with the number of the
+// pull request its header names (M223). With no active milestone, the
+// ROADMAP's candidate rows follow, each a priority mark and its short title
+// (M207).
 // A line's `lead` and `tail` keep their width. Its `text` is cut to one
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
@@ -105,7 +107,7 @@ export const COMMAND_PHASE: Record<string, FlowPhase> = {
   '/milestone-implement': 'implement',
   '/milestone-review': 'review',
 }
-// The queue's headings are about planned work and candidates.
+// The queue's headings are about planned, blocked, and candidate work.
 const QUEUE_COLOR = FLOW_COLORS.plan
 
 const line = (key: string, indent: number, lead: Span[], text: Span | null = null): PaneLine => ({
@@ -256,6 +258,19 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, 
           text: `${row.title} · on ${row.unmet.join(', ')}`,
         }),
       )
+    }
+  }
+  // The blocked rows, each with its pull request's number when its
+  // milestone file's header names one, whether or not a milestone is
+  // active (M223).
+  if (state.blocked.length > 0) {
+    out.push(
+      ...heading('blocked-head', 'Blocked', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.blocked.length}`, color: GRAY }]),
+    )
+    for (const row of state.blocked) {
+      const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
+      if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
+      out.push(held)
     }
   }
   // With no active milestone, the ROADMAP's candidate rows (M207).

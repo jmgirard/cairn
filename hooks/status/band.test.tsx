@@ -468,7 +468,7 @@ function shownKey(name: string, skill: string | null = null): string | null {
 
 // The fixtures with a ROADMAP and no active or workable row, written out
 // by hand: each draws the empty row (M213 AC1).
-const EMPTY_FIXTURES = ['all-waiting', 'candidates-skeleton']
+const EMPTY_FIXTURES = ['all-waiting', 'blocked-prs', 'candidates-skeleton']
 const EMPTY_TEXT = 'No milestone ready'
 
 const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow
@@ -2619,6 +2619,7 @@ describe("a press stores the idle row's id (M199 AC4)", () => {
 // with readable counts, written out by hand: the three fills as
 // checked/total, the pill, its short text, and the percent (M204 AC1, M206).
 const FLOWS: Record<string, { fills: [string, string, string]; pill: string; short: string; percent: number }> = {
+  'blocked-active': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', short: '1/2', percent: 50 },
   'long-title': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', short: '1/2', percent: 50 },
   mixed: { fills: ['1/1', '0/1', '0/1'], pill: 'no tasks', short: 'none', percent: 33 },
   'nested-first': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', short: '1/3', percent: 44 },

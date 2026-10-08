@@ -302,6 +302,26 @@ class TestNext(ScriptCase):
         self.assertIn("Blocked by dependencies:", out)
         self.assertIn("M03 — waiting on M02 (planned)", out)
 
+    def test_externally_blocked_line_names_its_pull_request(self):
+        # M223 AC3: a blocked row whose header names a pull request URL ends
+        # its line with the number, and one with no URL has no suffix.
+        self.tree.rows += [
+            ("M05", "Handed off", "blocked", "—", "normal", "milestones/M05-handed.md"),
+            ("M06", "Held", "blocked", "—", "normal", "milestones/M06-held.md"),
+        ]
+        self.tree.files["milestones/M05-handed.md"] = (
+            "# M05: Handed off\n\n- **Status:** blocked   <!-- mirror -->\n"
+            "- **Branch/PR:** handed, https://github.com/up/repo/pull/1250\n\n## Goal\nx\n"
+        )
+        self.tree.files["milestones/M06-held.md"] = (
+            "# M06: Held\n\n- **Status:** blocked   <!-- mirror -->\n- **Branch/PR:** held\n\n## Goal\nx\n"
+        )
+        out = run("cairn_next.py", self.tree.build()).stdout
+        self.assertIn("Externally blocked (see work-log):", out)
+        lines = out.splitlines()
+        self.assertIn("  M05 — Handed off (PR #1250)", lines)
+        self.assertIn("  M06 — Held", lines)
+
 
 class TestValidateClean(ScriptCase):
     def test_clean_tree_passes(self):
