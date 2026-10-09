@@ -162,6 +162,18 @@ The script deliberately does not judge these — do them yourself and report:
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.
+- **Open hotfix PRs**, in owner and guest mode: read the open PRs you
+  opened with one call, `gh pr list --repo <base-repo> --state open
+  --author @me --limit 100 --json
+  number,title,url,headRefName,reviewDecision` (the rulebook's slug recipe
+  gives `<base-repo>`). Keep each PR whose `headRefName` starts with
+  `hotfix-`, and report its number, title, and review decision. Show an
+  empty `reviewDecision` as `none`. If the call returns 100 PRs, say that
+  the list can be cut at that limit. This bullet carries no disposition to
+  §3, names no next command, and writes nothing to GitHub. If the read
+  fails, name the cause and report no PR. The cause is a missing or
+  unauthenticated `gh`, a repo with no remote, or another cause that the
+  error names. A failed read is a reported gap, never an audit `FAIL`.
 - **Untriaged inboxes:** open GitHub issues and external PRs carrying no
   candidate row or hotfix disposition yet. Guest mode (tracking-rules
   "Collaboration mode") skips this bullet: the inboxes are the maintainers'

@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M227: The status report lists open hotfix PRs
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — `/milestone` is a shipped skill that every cairn operator runs   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m227-status-hotfix-prs   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -93,7 +93,7 @@ so the report names the review decision only.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the "Open hotfix PRs" bullet in `skills/milestone/SKILL.md`
+- [x] T1: Write the "Open hotfix PRs" bullet in `skills/milestone/SKILL.md`
       §2, after the blocked-milestone PR bullets. It uses the rulebook's
       `<base-repo>` slug recipe.
 - [ ] T2: Change the §2 inbox bullet's "already reported" clause and the
@@ -117,3 +117,5 @@ so the report names the review decision only.
 - 2026-10-09: created by /milestone-plan, split from M226's plan. The operator asked at the question set for the status report to list open hotfix PRs now. It ships apart from the pane, so it is its own milestone.
 - 2026-10-09: question set: `/milestone` report of open hotfix PRs — include now. Live look — yes, in parameters.
 - 2026-10-09: criteria audit (full mode, fresh Opus reader): 8 findings, 7 fixed. AC2's search joins lines, because one phrase wraps. AC1 shows an empty decision as `none`, notes a list cut at 100, adds other read failures, and says "no disposition, no next command". AC3 names the linked checkout on the branch and checks against a literal `easystats/parameters` call. T2 drops the README check that no criterion backs. Kept: AC3's need for an open hotfix PR, which holds today with 5. AC4 clean.
+- 2026-10-09: implement started on branch `m227-status-hotfix-prs`, cut from the pushed main. The untracked `cairn-probe.log` and `tsconfig.json` belong to no task and stay unstaged.
+- 2026-10-09: T1 done. The "Open hotfix PRs" bullet sits after the blocked-milestone PR bullet in `skills/milestone/SKILL.md` §2. Choice: it calls a failed read a reported gap, never an audit `FAIL`, the same as the inbox bullet. Verify green: scripts 401, hooks 174, plugin test 1765, both validates; prose guards 669.
