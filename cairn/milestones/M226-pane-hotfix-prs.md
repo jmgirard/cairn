@@ -43,7 +43,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: In a repo whose base remote resolves, each pane open (the
+- [x] AC1: In a repo whose base remote resolves, each pane open (the
       `/cairn-pane` command, the band's open button, and the session-start
       reopen) and each Refresh press runs exactly one `gh pr list --repo
       <base remote URL> --state open --author @me --limit 100 --json
@@ -52,18 +52,18 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       remote` lists it, else `origin`. Tests with a fake `$.process.run`
       match the `gh` argv in three cases: an owner-mode repo, a guest-mode
       repo with an `upstream` remote, and a guest-mode repo without one.
-- [ ] AC2: The pane draws a Hotfixes section after every other section
+- [x] AC2: The pane draws a Hotfixes section after every other section
       except Candidates, and before Candidates. It has one line for each
       PR from that call whose head branch starts with `hotfix-`. The line
       shows the PR's `#<number>` and its title. A test's fake reply holds
       a `hotfix-*` PR, an `m226-*` PR, and a PR on another branch. The
       test draws only the `hotfix-*` line.
-- [ ] AC3: Each hotfix line shows the same state word and counts line
+- [x] AC3: Each hotfix line shows the same state word and counts line
       that a blocked line shows for the same `gh pr view` and `gh api
       graphql` replies. No hotfix line carries a Button. A test covers an
       open PR with counts, a changes-requested PR, and a merged PR. It
       shows each word, the counts line, and no Button on any of the lines.
-- [ ] AC4: If the list call rejects, exits non-zero, or prints stdout
+- [x] AC4: If the list call rejects, exits non-zero, or prints stdout
       that is not a JSON array, the pane keeps the hotfix lines of the
       last good read from the same repo root. A good read replaces the
       kept lines, an empty array included. The pane skips an array entry
@@ -75,7 +75,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       two are a kept read from another root and a repo with no remote. In each
       case, the pane's other lines are equal to `paneLines` of the same
       state with no hotfix read.
-- [ ] AC5: The Hotfixes heading carries a Refresh Button whose key
+- [x] AC5: The Hotfixes heading carries a Refresh Button whose key
       differs from the Blocked heading's. A Refresh press on either
       heading runs the list call and the PR reads again, in a repo whose
       base remote resolves. One test presses each heading's Refresh and
@@ -87,7 +87,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       The pane's Hotfixes section lists exactly the `hotfix-` PRs it prints. At
       least one such PR is open, and each line shows a word other than
       `unknown`.
-- [ ] AC7: README's cairn pane section and DESIGN.md's `hooks/status/`
+- [x] AC7: README's cairn pane section and DESIGN.md's `hooks/status/`
       text describe the Hotfixes section. This repo's verify passes:
       `python3 -m unittest` over `scripts/tests` and `hooks/tests`,
       `claude plugin validate` on the plugin and marketplace manifests,
@@ -173,3 +173,14 @@ review)" and "Pane count edges (M225 review)" candidate rows.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Pass 2, on dcfe338 after review return 1 (no CHANGELOG entry), 2026-10-09.
+
+- AC1: `claude plugin test .`: 5 "M226 AC1" cases pass. They match the `gh pr list` argv for owner mode (`origin` with `upstream` present), guest mode with `upstream`, and guest mode without it. They show exactly one list call for `/cairn-pane`, the band's open button, and the session-start reopen, and none at a turn end. The Refresh press is in the AC5 case.
+- AC2: the "M226 AC2" case passes. A reply with a `hotfix-*`, an `m226-*`, and a `feature-x` PR draws only `hotfix-1265`, after `blocked-head` and directly before `candidates-head-gap`.
+- AC3: 2 "M226 AC3" cases pass. In review, changes requested, and merged words, the count line `2 unresolved threads · 1 unanswered`, and no Button on any hotfix line. The second case shows the hotfix count line equal to M111's blocked count line for the same replies.
+- AC4: 8 "M226 AC4" cases pass: rejected call, non-zero exit with `[]`, non-JSON, non-array JSON, entries with missing fields, empty array, a kept read from another root, and no remote. Non-hotfix lines equal the no-read baseline in each. Plants at implement turned the keep and root cases red (work log).
+- AC5: the "M226 AC5" case passes: Blocked heading key `cairn-pane-refresh`, Hotfixes heading key `cairn-pane-refresh-hotfixes`, and each press runs one more list call and one more `gh pr view` of the hotfix URL.
+- AC6: pending. The live look in parameters runs at the merge question.
+- AC7: README pane section (hotfix paragraph) and DESIGN.md `hooks/status/` text (M226 paragraph and list entry) describe the section. Verify on dcfe338: 401 script tests OK, 174 hooks tests OK, plugin validate passed with the usual CLAUDE.md warning, marketplace validate passed, 1756 mod tests pass, 0 fail.
+- Gate: `cairn_validate` all checks passed. No principle changed, so `cairn_impact` is skipped. Marketplace validate shows no `plugins[N].version` warning. CHANGELOG has the Unreleased entry (T6).
