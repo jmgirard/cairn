@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M227: The status report lists open hotfix PRs
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -43,7 +43,7 @@ so the report names the review decision only.
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `skills/milestone/SKILL.md` §2 has an "Open hotfix PRs"
+- [x] AC1: `skills/milestone/SKILL.md` §2 has an "Open hotfix PRs"
       bullet, in owner and guest mode. It runs one `gh pr list --repo
       <base-repo> --state open --author @me --limit 100 --json
       number,title,url,headRefName,reviewDecision` call. It keeps the PRs
@@ -54,7 +54,7 @@ so the report names the review decision only.
       says that the list can be cut. The read fails if `gh` is missing or
       unauthenticated, if the repo has no remote, or for another cause.
       Then the bullet names the cause and reports no PR.
-- [ ] AC2: The §2 inbox bullet no longer says that a `hotfix-*` PR is
+- [x] AC2: The §2 inbox bullet no longer says that a `hotfix-*` PR is
       "already reported two bullets up", and it points at the new bullet
       instead. The `/hotfix` guest handoff text in `skills/hotfix/SKILL.md`
       no longer says `/milestone` "reports nothing for it", and says that
@@ -63,7 +63,7 @@ so the report names the review decision only.
       first: `tr -s ' \n' ' ' < <file> | grep -c '<phrase>'` prints 0 for
       each phrase, over `skills/milestone/SKILL.md` and
       `skills/hotfix/SKILL.md`. The same search before the change prints 1.
-- [ ] AC3: The hand-run prose guards in `skills/tests` pass, and this
+- [x] AC3: The hand-run prose guards in `skills/tests` pass, and this
       repo's verify passes: `python3 -m unittest` over `scripts/tests` and
       `hooks/tests`, `claude plugin validate` on the plugin and marketplace
       manifests, and `claude plugin test`.
@@ -114,3 +114,17 @@ so the report names the review decision only.
 - 2026-10-09: substantive amendment: at the stop the user chose "Drop the live look". AC3 (the `/milestone` run in parameters) and T4 come out, and the old AC4 is now AC3 with its wording unchanged, mapped to T3. No criterion wording changed, so no re-audit ran. A candidate row holds the live look.
 - 2026-10-09: claim audit: 13 claims read, 1 corrected — skills/milestone/SKILL.md, skills/hotfix/SKILL.md
 - 2026-10-09: the corrected claim: the inbox bullet now says a hotfix PR "you opened" is reported by the new bullet. The reader's re-read found it true. Someone else's `hotfix-*` PR is still dropped from the inbox and reported nowhere, a gap older than M227, so the live-look candidate row records it. Verify green again after the fix, and status set to `review`.
+- 2026-10-09: review return 1: the consistency gate's changelog check fails. `CHANGELOG.md` has no Unreleased entry for the new "Open hotfix PRs" report in `/milestone`. Status back to `in-progress`.
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
+
+Pass 1, on 367b0b9, 2026-10-09.
+
+- AC1: `skills/milestone/SKILL.md:165` in §2 (`## 2. Health audit` at :54, `## 3. Route` at :245) opens the "Open hotfix PRs" bullet, in owner and guest mode. The joined-line search for the AC's full `gh pr list` call prints 1. The bullet keeps `hotfix-` heads, reports number, title, and review decision, shows an empty decision as `none`, says a 100-PR result can be cut, carries no §3 disposition or next command, writes nothing to GitHub, and on a failed read names the cause and reports no PR.
+- AC2: the joined-line search prints 0 for "already reported two bullets up" and "reports nothing for it" in both files on HEAD. On main it prints 1 for each phrase in its own file. The inbox bullet points at the new bullet (:188), and the `/hotfix` handoff says §2 reports the open PR in that bullet (`skills/hotfix/SKILL.md:259-260`).
+- AC3: on 367b0b9, each exits 0: prose guards (669 tests), scripts (401), hooks (174), plugin validate, marketplace validate, and plugin test (1765 pass, 0 fail).
+- Gate: `cairn_validate` exits 0. No principle changed, so `cairn_impact` is skipped. The marketplace validate output has no `version` warning. FAIL: `CHANGELOG.md` Unreleased has no entry for this change (review return 1).
