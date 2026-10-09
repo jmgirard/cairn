@@ -108,7 +108,7 @@ kept unchanged. M224's state words and Buttons are M224's.
       tag (LESSONS M193, M210).
 - [x] T3: Draw the count line in `pane.ts` with the Box widths of LESSONS
       M194. Run `verify`.
-- [ ] T4: Describe the counts in README.md's "The cairn pane", in
+- [x] T4: Describe the counts in README.md's "The cairn pane", in
       `cairn/DESIGN.md`, and in CHANGELOG.md's Unreleased section. Run
       `verify`.
 - [ ] T5: Live look in a new desktop Code session in `~/github/insight`
@@ -130,6 +130,7 @@ kept unchanged. M224's state words and Buttons are M224's.
 - 2026-10-09: T1 done: `counts.test.ts` covers the AC2 axes, the shape check, and the argv; `pane.test.tsx` adds the AC1, AC3, and AC4 register cases and records `gh api graphql` calls in M224's trigger tests, now over an OPEN PR. `counts.ts` was written in the same sitting; against the M224 register and pane code with `countPr` and `prCounts` stubbed to zero counts, `claude plugin test .` gave 68 fail, 1666 pass, every failure in an M225 case or an extended M224 trigger case.
 - 2026-10-09: T2 done. `readPrs` runs the count query after a `gh pr view` whose word is open, with the same 15 s timeout. The `prs` atom holds `{ word, counts }` under the tag `prs-2`, and `CairnPrRead` joins the state contract. Words and counts are written once, after every call settles.
 - 2026-10-09: T3 done. `paneLines` adds `blocked-<id>-counts` at indent 4, gray, with the count text in the line's text part, so a narrow pane cuts it. The Refresh test reads the held state from the terminal surface, because the desktop pane holds the press. All five verify commands exit 0, and the mod tests give 1734 pass.
+- 2026-10-09: T4 done. README's pane section, DESIGN's `hooks/status/` text, and a CHANGELOG Unreleased entry describe the two counts, the anchor rule, that bots count, the newest-100 limit, the double count, and when the counts are read, each written against `counts.ts`, `pane.ts`, and `readPrs` as read this session. The added sentences pass the simple-english sentence and dash checks. All five verify commands exit 0, and `cairn_validate` passes.
 
 ## Decisions
 
