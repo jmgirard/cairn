@@ -40,7 +40,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 
 ## Acceptance criteria
 
-- [ ] AC1: For each Blocked line with a PR number, the mod reads the PR
+- [x] AC1: For each Blocked line with a PR number, the mod reads the PR
       with `gh pr view <url> --json state,reviewDecision` through
       `$.process.run`. The line shows one state word. MERGED shows
       `merged`, and CLOSED shows `closed`. OPEN with CHANGES_REQUESTED
@@ -49,14 +49,14 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
       `in review`. A line not yet read shows no state word and no Button.
       Register tests answer the `gh` call with each of these seven shapes,
       one case each, and one case runs before any read.
-- [ ] AC2: A `merged` line carries a `Finish` Button that runs
+- [x] AC2: A `merged` line carries a `Finish` Button that runs
       `/cairn:milestone-review <id>`. A `changes requested` line carries a
       `Revise` Button that runs `/cairn:milestone-implement <id>`. A
       `closed` line carries a `Check` Button that runs `/cairn:milestone`.
       No Button runs `/clear` first. `approved` and `in review` lines carry
       no Button. Register tests press each Button and assert the command it
       submits, and find no Button on the other two lines.
-- [ ] AC3: The mod reads the PR states when the pane opens and at a press
+- [x] AC3: The mod reads the PR states when the pane opens and at a press
       of the `Blocked` heading's `Refresh` Button. The pane opens by the
       `/cairn-pane` command, by the band's open button, or by the
       session-start reopen (M222), and each open reads the states once.
@@ -64,7 +64,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
       call, and it runs no `gh` call at a `turn.complete`. Register tests
       cover each of the four triggers and a turn-complete case. Each of
       these five tests records no such clock call.
-- [ ] AC4: A line shows `unknown` and no Button in four cases. In the
+- [x] AC4: A line shows `unknown` and no Button in four cases. In the
       first two, the `gh` call rejects or exits non-zero. In the other two,
       it prints text that is not JSON, or JSON whose `state` is not MERGED,
       CLOSED, or OPEN.
@@ -74,11 +74,11 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
       guest-mode insight checkout (`~/github/insight`). Each handed-off PR
       shows the state word read from GitHub, and its Button where AC2 gives
       one. The operator accepts this at the merge question.
-- [ ] AC6: README's pane section, `cairn/DESIGN.md`'s pane text, and
+- [x] AC6: README's pane section, `cairn/DESIGN.md`'s pane text, and
       CHANGELOG.md's Unreleased section describe the state words, the three
       line Buttons, the `Refresh` Button, and when the states are read.
       Each claim is read against the code at implement time.
-- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -145,3 +145,31 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 ## Decisions
 
 ## Review
+
+Review head 64a5f56 (plus this record). Default branch unchanged since the cut (origin/main 5f2d674).
+
+- AC1: `claude plugin test .` on 64a5f56, describe "each blocked line shows its pull request state (M224 AC1)": 8 pass, 0 fail. Seven cases answer `gh` with MERGED, CLOSED, OPEN with CHANGES_REQUESTED, APPROVED, REVIEW_REQUIRED, an empty decision, and no decision. Each asserts the argv `gh pr view <url> --json state,reviewDecision` and the line text with the hand-written word. One case before any read finds no word and no Button.
+- AC2: same run, describe "the merged, changes-requested, and closed lines carry a Button (M224 AC2)": 6 pass, 0 fail. Finish, Revise, and Check presses submit exactly `cairn:milestone-review M111`, `cairn:milestone-implement M111`, and `cairn:milestone` with no `clear` before them. The `approved` and `in review` lines carry no Button, with their exact text. A review-added case shows a press during a running cairn skill runs nothing, and it fails with the step check removed (planted on the branch, then restored).
+- AC3: same run, the AC3 describes: 7 pass, 0 fail. The `/cairn-pane` command, the band's open button, the session-start reopen, and the Refresh press each record exactly one `gh` call for the one URL, and a turn-complete case records none. Each of these five records no `clock.sleep`, `clock.after`, or `clock.every` call. Two review-added cases show a close and a refused open run no `gh`. `grep -n "\$.clock" hooks/status/*.ts*` finds no call in the mod.
+- AC4: same run, describe "a failed read shows `unknown` and no Button (M224 AC4)": 4 pass, 0 fail. On blocked-prs, M101's call rejects, exits 1, prints non-JSON text, or prints JSON with state DRAFT. M101 shows `#12  unknown` with no Button, M102 and M104 still read `merged` with M102's Finish, M103 and M105 draw as before, and the command returns `cairn pane opened`, so the hook did not throw.
+- AC5: the operator looked at the docked pane in their insight desktop session (work log, T6). The M006 line ends `#1250  in review`, which matches `gh pr view` for PR 1250 at review time (OPEN, empty decision). Insight has no line that AC2 gives a Button. Acceptance is asked at the merge question, and the box waits for it.
+- AC6: README "The cairn pane" gains the read paragraph and the six-word table, DESIGN's pane text names `readPrs`, `prWord`, `PR_BUTTON`, the four reads, and the Refresh Button, and CHANGELOG Unreleased gains one entry naming the words, the three line Buttons, Refresh, and when the states are read, with no milestone number. The implement-time claim audit read 46 claims and corrected 3 (work log), and the review fixes rewrote the two DESIGN sentences they changed.
+- AC7: on 64a5f56, every `verify` command exited 0. `scripts/tests` ran 401 tests, OK with 21 skipped. `hooks/tests` ran 174, OK. Both `claude plugin validate` runs passed with warnings, and `claude plugin test .` ran 1469 pass, 0 fail.
+- Gate: `cairn_validate` exit 0, all checks passed. The marketplace validate shows no `plugins[N].version` warning. CHANGELOG has the entry. No IP or GP changed, so `cairn_impact` is skipped. Coverage is complete per `cairn_validate`.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: line Buttons run while a cairn skill runs — fix now, fixed d1f0b44 (also blame-history #1, prior-review #1)
+- diff-bug #2: an in-process `/clear` empties the words of a pane that stays open — follow-up, row "Pane PR-state edges (M224 review)" (also blame-history #2)
+- diff-bug #3: the in-flight guard drops a read started during another — fix now, fixed 64a5f56 (newest read writes, every read runs)
+- diff-bug #4: `/cairn-pane` and the reopen wait on `gh` before they return — follow-up, same row (also blame-history #3, prior-review #2)
+- diff-bug #5: the approved and in-review no-Button case did not check the word — fix now, fixed 64a5f56
+- diff-bug #6: untested paths: close, refused open, busy press, changed-word press, read race — fix now for close and refused open, fixed 64a5f56, and follow-up for the rest, same row
+- diff-bug #7: no test calls `prWord` directly, as T3 says — fix now, fixed 64a5f56 (table test)
+- diff-bug #8: the word list is typed in two places — fix now, fixed 64a5f56 (`PrWord = CairnPrWord`)
+- diff-bug #9: README and CHANGELOG leave out the dropped read — fix now, fixed 64a5f56 by diff-bug #3's fix, so the claims hold
+- diff-bug #10: Refresh shows only while a row has a PR URL — reject, planned change: Refresh reads PR states, and with no URL there is nothing to read
+- diff-bug #11: Button keys assume unique ids — reject, false: ROADMAP ids are unique by the ID rule, and M223's `blocked-<id>` line keys rest on the same fact
+- diff-bug #12: the clock recorder has no positive control — follow-up, same row
+- blame-history #4: a reopen that is not placed still reads — reject, planned change: AC3 has each open read, and the waiting pane draws the words once placed
+- blame-history #5: the M219 no-other-Button case builds Refresh from fixture data — reject, false: the fixture's `url` comes from expected.json, held to `cairn_next.py`, not from the pane code. The running-step case it asked for is added (diff-bug #1)
+- prior-review #3: the read has no run number, so a late read can write — fix now, fixed 64a5f56 (`prReads`). The hang part is rejected, false: the types say a call still running at its timeout rejects
+- prior-review #4: the `BLOCKED_COMMANDS` comment about `/clear` can confuse — reject, style: the comment is true
