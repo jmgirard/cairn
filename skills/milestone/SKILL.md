@@ -187,9 +187,8 @@ The script deliberately does not judge these — do them yourself and report:
   its milestone and reported by the `review` and `blocked` bullets above,
   and a hotfix PR you opened is reported by the "Open hotfix PRs" bullet
   above. Only what survives that filter is inbox; without it the audit
-  re-reports the milestone PR you are reviewing right now and can propose adopting a PR this session authored.
-  Then
-  apply the search-first rule to every hit before proposing anything: sweep
+  re-reports the milestone PR you are reviewing right now and can propose
+  adopting a PR this session authored. Then apply the search-first rule to every hit before proposing anything: sweep
   the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
   so an item already covered is cross-referenced, never duplicated as a
   second row. Carry one proposed disposition per item to §3, where the user
