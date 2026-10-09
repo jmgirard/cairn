@@ -142,13 +142,14 @@ Pass 2, on 1e5d8a0 after review return 1, 2026-10-09. The default branch has not
 - Gate: `cairn_validate` exits 0. `cairn_impact` skipped (no principle changed). No marketplace `version` warning. `CHANGELOG.md` Unreleased has the entry (T4), and a fresh reader found its 12 claims true.
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: the inbox drops a `hotfix-*` PR that someone else opened, and the new bullet reads only `--author @me`, so that PR shows nowhere — follow-up, the "Live look" candidate row (older than M227)
-- diff-bug #2: the `/hotfix` guest handoff says §2 "filters `hotfix-*` PRs out of its inbox", but guest mode skips the inbox — fix now
+- diff-bug #2: the `/hotfix` guest handoff says §2 "filters `hotfix-*` PRs out of its inbox", but guest mode skips the inbox — fix now, fixed b52cc27
 - diff-bug #3: "with one call" leaves out the slug lookup's `gh repo view` — reject, planned change (AC1 names one `gh pr list` call, and "another cause that the error names" covers a failed lookup)
 - diff-bug #4: `--author` uses GitHub search, which can miss a PR opened seconds before — follow-up, the "Live look" candidate row
 - diff-bug #5: `url` is fetched but not reported — reject, planned change (AC1 fixes the field list)
 - diff-bug #6: a guest milestone slug that starts with `hotfix-` would show in two bullets — follow-up, the "Live look" candidate row
 - diff-bug #7: the bullet names no command for a reported hotfix PR — reject, planned change (Scope Out)
-- blame-history #1: same as diff-bug #2 — fix now, with it
+- blame-history #1: same as diff-bug #2 — fix now, with it, fixed b52cc27
+- After b52cc27: AC2's search still prints 0 for each phrase in each file, and the `/hotfix` text still says §2 reports the open PR. Verify exits 0 on all five checks, and the prose guards pass.
 - blame-history #2: one rewritten inbox line runs past 100 characters — reject, style; it is rewrapped anyway in the diff-bug #2 commit
 - blame-history #3, #4, #6: no regression of M74's inbox filter, M185's handoff, or the adopted-PR model — noted, no finding
 - blame-history #5: owner-mode hits will be rare, because an owner hotfix PR opens only after approval — reject, planned change (AC1 names owner and guest mode)
