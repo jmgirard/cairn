@@ -34,6 +34,14 @@
   a typed `/clear` and both Clear Buttons. A `Plan` or `Implement` press
   clears through the same call.
 
+### Fixes
+
+- **`/hotfix` follows the repo's own conventions.** It reads the
+  Conventions section of `cairn/DESIGN.md` and applies each per-change rule
+  there, for example a development-version bump on every PR. The approval
+  gate shows the bump. When the section states no such rule, `/hotfix`
+  bumps no version.
+
 ## 2.0.0 (2026-10-06)
 
 ### Changes that affect existing repos
