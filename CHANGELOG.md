@@ -4,6 +4,18 @@
 
 ### New
 
+- **The cairn pane shows each blocked milestone's PR state.** After its
+  `#<n>`, a `BLOCKED` line shows `merged`, `closed`, `changes requested`,
+  `approved`, or `in review`, read with `gh pr view <url> --json
+  state,reviewDecision`, or `unknown` when the read fails. A `merged` line
+  carries a `Finish` Button that runs `/cairn:milestone-review <id>`, a
+  `changes requested` line a `Revise` Button that runs
+  `/cairn:milestone-implement <id>`, and a `closed` line a `Check` Button
+  that runs `/cairn:milestone`. None of them runs `/clear` first. The pane
+  reads the states each time it opens and when you press `Refresh` on the
+  `BLOCKED` heading, never on a timer. The read needs `gh` on the
+  session's `PATH`.
+
 - **The cairn pane lists blocked milestones and their PRs.** A `BLOCKED`
   section after the queue shows each `blocked` milestone, with or without
   an active one. A line ends with `#<n>` when the milestone file's

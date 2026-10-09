@@ -111,7 +111,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - [x] T4: Draw the state word and the line Buttons in `pane.ts` and
       `register.tsx`, with the Box widths of LESSONS M194. Reuse the
       Status Button's submit path for the three commands. Run `verify`.
-- [ ] T5: Describe the states, Buttons, and reads in README.md's "The cairn
+- [x] T5: Describe the states, Buttons, and reads in README.md's "The cairn
       pane", in `cairn/DESIGN.md`, and in CHANGELOG.md's Unreleased
       section. Run `verify`.
 - [ ] T6: Live look in a new desktop Code session in `~/github/insight`
@@ -136,6 +136,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: T2 tests written: 21 new register cases fail against the M223 code, and the two silent cases (a line not yet read, a turn end) pass. The Python URL cases pass with the new `pr_url`. Unticked until `verify` is green after T3.
 - 2026-10-08: T3 done. `readPrs` in register.tsx runs one `gh pr view <url> --json state,reviewDecision` per distinct URL, side by side, with a 15 s timeout each. The command, the band's open button, and the reopen call it after their open, and so does the Refresh press after a file refresh. A guard skips a read that starts while one runs. The words go to a new `prs` atom (tag `prs-1`), keyed by URL, and the pane atom's tag moved to `pane-4` for the URL. `prWord` in pane.ts maps a result to a word.
 - 2026-10-08: T4 done. A blocked line's tail gains the word after its number, colored by the review color for merged and approved, the warning key for changes requested, gray otherwise. The line's Button sits in its own no-shrink Box, as the Next line's do, and its key ends in the milestone id. A press reads the word as it is now and runs its command through `run`, the Status path, with no `/clear`. It checks only that no run is in flight, so it does not wait for a cairn skill's step to end. The M219 "no other Button" case now allows the Blocked heading's Refresh. `verify` green: 401 script tests, 174 hook tests, both validates, 1465 mod tests.
+- 2026-10-08: T5 done. README's pane section gains a paragraph and a table of the six words, their GitHub states, and their Buttons. DESIGN's pane text gains `readPrs`, `prWord`, and `PR_BUTTON`, and CHANGELOG's Unreleased section gains one entry. Each claim was written from this session's read of pane.ts and register.tsx. `verify` green, `cairn_validate` all checks passed.
 
 ## Decisions
 

@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -283,6 +283,30 @@ transitions, human-gated merges, and a domain verification doctrine.
   the PRs that wait on maintainers. The header is the text before the
   first `## ` heading, and a number has at most 15 digits, so both sides
   read it the same.
+  Each blocked row also keeps that pull request's URL up to its number
+  (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
+  from it. `readPrs` in `register.tsx` runs one `gh pr view <url> --json
+  state,reviewDecision` per distinct URL through `$.process.run`, side
+  by side, with a 15-second timeout each, and writes the words to the
+  `prs` state value by URL. It runs after each pane open (the
+  `/cairn-pane` command, the band's open button, the session-start
+  reopen) and at a press of the `Refresh` Button on the `BLOCKED`
+  heading, which first reads the files again. No timer and no turn end
+  starts a read, at the operator's word, and a read that starts while
+  another runs does nothing. `prWord` in `pane.ts` maps each result:
+  MERGED to `merged`, CLOSED to `closed`, OPEN by its review decision to
+  `changes requested`, `approved`, or `in review` for any other or none,
+  and a rejected call, a non-zero exit, text that is not a JSON object, or
+  another `state` to `unknown`. The word follows the number in the
+  line's tail. `PR_BUTTON` gives a `merged` line a `Finish` Button that
+  runs `/cairn:milestone-review <id>`, a `changes requested` line a
+  `Revise` Button that runs `/cairn:milestone-implement <id>`, and a
+  `closed` line a `Check` Button that runs `/cairn:milestone`, the
+  routes `/milestone` gives a handed-off PR. No line Button clears first.
+  A press reads the word as it is now and runs through `run`, the Status
+  Button's path, while no other run is in flight. A test answers the mod's
+  `$.process.run` with an `on('process.run')` hook (M224 probe), and a
+  desktop Code session's mod runs `gh` from the app's `PATH`.
   `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with
