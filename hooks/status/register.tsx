@@ -4,8 +4,22 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import type { PaneButton } from './pane'
-import { CLEAR_LABEL, CLEARS_FIRST, nextLabel as labelOf, NO_ROADMAP, paneLines, PLAN_LABEL, STATUS_LABEL } from './pane'
+import type { PaneButton, PrWord } from './pane'
+import {
+  CHECK_LABEL,
+  CLEAR_LABEL,
+  CLEARS_FIRST,
+  FINISH_LABEL,
+  nextLabel as labelOf,
+  NO_ROADMAP,
+  paneLines,
+  PLAN_LABEL,
+  PR_BUTTON,
+  prWord,
+  REFRESH_LABEL,
+  REVISE_LABEL,
+  STATUS_LABEL,
+} from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
 import { NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
@@ -49,6 +63,12 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // `pressNext`, as the band's does (M218). At the same times, the line
 // carries Status after that Button, with Clear before Status while `ended`
 // is true, and a press runs `pressStatus` or `pressClear` (M219).
+// Each open of the pane, by the command, the band's open button, or the
+// session-start reopen, reads the blocked rows' pull request states once
+// with `gh`, and so does a press of the Blocked heading's Refresh Button
+// (`readPrs`). A blocked line then shows its state word, and a merged,
+// changes-requested, or closed line carries a Button for its next step
+// (M224).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -90,9 +110,15 @@ const expanded = atom({ plugin: 'cairn', key: 'expanded' } as const, false, { sh
 const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: 'ended-1' })
 
 // What the cairn pane shows, written at each refresh (M205). The tag moved
-// to 2 when the state gained the candidate rows (M207), and to 3 when it
-// gained the blocked rows (M223).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-3' })
+// to 2 when the state gained the candidate rows (M207), to 3 when it
+// gained the blocked rows (M223), and to 4 when each blocked row gained its
+// pull request's URL (M224).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-4' })
+
+// Each blocked row's pull request state word by its URL, written by the
+// read at a pane open or a Refresh press (M224). A URL with no entry has
+// not been read, and its line shows no word.
+const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrWord>, { shape: 'prs-1' })
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'
@@ -133,11 +159,31 @@ const STATUS_COMMAND = 'cairn:milestone'
 const CLEAR_COMMAND = 'clear'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
 // sits in pane.ts beside the label map.
-// The key and label of each Button after the Next line's action (M219).
+// The key and label of each Button after the Next line's action (M219),
+// of the Blocked heading's Refresh, and of a blocked line's Button, whose
+// key ends in its milestone id (M224).
 const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
   clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
   status: { key: 'cairn-pane-status', label: STATUS_LABEL },
+  refresh: { key: 'cairn-pane-refresh', label: REFRESH_LABEL },
+  finish: { key: 'cairn-pane-finish', label: FINISH_LABEL },
+  revise: { key: 'cairn-pane-revise', label: REVISE_LABEL },
+  check: { key: 'cairn-pane-check', label: CHECK_LABEL },
 }
+
+// The command each blocked line's Button runs, and whether the milestone's
+// id is its argument (M224). None runs `/clear` first, as the Review and
+// Resume Buttons keep the conversation.
+const BLOCKED_COMMANDS: Partial<Record<PaneButton, { command: string; withId: boolean }>> = {
+  finish: { command: 'cairn:milestone-review', withId: true },
+  revise: { command: 'cairn:milestone-implement', withId: true },
+  check: { command: STATUS_COMMAND, withId: false },
+}
+
+// How long one `gh pr view` call may run, well under the ten minutes
+// `$.process.run` allows. The calls run side by side, and a call still
+// running then rejects and reads as `unknown` (M224).
+const GH_TIMEOUT_MS = 15_000
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -166,7 +212,8 @@ export const register: Register = on => {
   })
 
   // `/cairn-pane` closes an open pane, and otherwise reads the files and
-  // opens it, or says why it did not (M205 AC1).
+  // opens it, or says why it did not (M205 AC1). After the open, it reads
+  // the pull request states, so its line comes once they are read (M224).
   // Only a pane the person can see is closed: one that waits undrawn, or
   // sits behind another pane's tab, is opened again instead (M205 review).
   // A hook that refuses the open or the close gives a line, not an error.
@@ -180,6 +227,7 @@ export const register: Register = on => {
       await refresh($)
       if (!(await read($, pane)).found) return { text: NO_ROADMAP }
       const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+      await readPrs($)
       return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
     } catch (error) {
       return { text: `cairn pane: ${error instanceof Error ? error.message : String(error)}` }
@@ -195,7 +243,7 @@ export const register: Register = on => {
     // After that Button, the Next line shows Status at the same times, and
     // Clear before Status while `ended` is true (M219).
     const acts = knownStep(await read($, step)) === null
-    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended))
+    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended), await read($, prs))
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -245,13 +293,14 @@ export const register: Register = on => {
             )}
             {(line.buttons ?? []).map(kind => {
               const button = PANE_BUTTONS[kind]
+              const target = line.target
               return (
                 <Box key={`${line.key}-${kind}`} flexShrink={0} marginLeft={1}>
                   <Button
-                    key={button.key}
+                    key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"
                     label={button.label}
-                    onPress={() => (kind === 'clear' ? pressClear($) : pressStatus($))}
+                    onPress={() => pressPane($, kind, target)}
                   />
                 </Box>
               )
@@ -558,14 +607,91 @@ async function dismiss($) {
 // A press of the band's open button opens the pane. The press is the
 // person's own act, so the surface places the pane at any width.
 // A press has no output line, so an open the surface does not place, or one
-// a hook refuses, says why in a toast.
+// a hook refuses, says why in a toast. An open that does not throw reads
+// the pull request states (M224).
 async function openPane($) {
   try {
     const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
     if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
   } catch (error) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+    return
   }
+  await readPrs($)
+}
+
+// True while a read of the pull request states is in flight, so an open or
+// a Refresh press made meanwhile starts no second read (M224). A reload
+// starts it over as false.
+let readingPrs = false
+
+// Reads each blocked row's pull request with one `gh pr view` call per URL,
+// side by side, and writes each state word by its URL (M224). The URL
+// names the repo, so the call needs no `--repo`. A call that rejects, as
+// when `gh` cannot start or outruns its timeout, reads as `unknown`, as a
+// bad result does (pane.ts `prWord`), and the read never throws. It runs
+// only at a pane open and a Refresh press: no timer and no turn end starts
+// one, since the operator does not want repeating tasks.
+async function readPrs($) {
+  if (readingPrs) return
+  readingPrs = true
+  try {
+    const urls: string[] = []
+    for (const row of (await read($, pane)).blocked) {
+      if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
+    }
+    if (urls.length === 0) return
+    const words = await Promise.all(
+      urls.map(async url => {
+        try {
+          const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
+          return prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
+        } catch {
+          return prWord(null)
+        }
+      }),
+    )
+    const out: Record<string, PrWord> = {}
+    urls.forEach((url, i) => {
+      out[url] = words[i]
+    })
+    await update($, prs, () => out)
+  } catch {
+    // No write: the lines keep the words they had.
+  } finally {
+    readingPrs = false
+  }
+}
+
+// A press of a pane Button (M219, M224).
+async function pressPane($, kind: PaneButton, target: string | undefined) {
+  if (kind === 'clear') return pressClear($)
+  if (kind === 'status') return pressStatus($)
+  if (kind === 'refresh') return pressRefresh($)
+  if (target !== undefined) return pressBlocked($, kind, target)
+}
+
+// A press of the Blocked heading's Refresh reads the files and then the
+// pull request states again (M224).
+async function pressRefresh($) {
+  await refresh($)
+  await readPrs($)
+}
+
+// A press of a blocked line's Button runs its command as a typed command
+// would, through the Status Button's path, with no `/clear` first (M224).
+// It reads the row's state word as it is now, not as it was drawn, and
+// does nothing when that word no longer carries this Button, or while
+// another Button's run is in flight.
+async function pressBlocked($, kind: PaneButton, id: string) {
+  if (busy()) return
+  const row = (await read($, pane)).blocked.find(each => each.id === id)
+  if (row === undefined || row.url === null) return
+  const words = await read($, prs)
+  const word = Object.prototype.hasOwnProperty.call(words, row.url) ? words[row.url] : undefined
+  const route = BLOCKED_COMMANDS[kind]
+  if (word === undefined || PR_BUTTON[word] !== kind || route === undefined) return
+  await run($, route.command, route.withId ? id : '')
 }
 
 // True while an action Button's run is in flight, so a second press, such
@@ -688,17 +814,22 @@ async function markReopen($) {
 
 // At the first start in a marked folder, clears the mark and, when the
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
-// with no toast, and a refused one gives nothing.
+// with no toast, and a refused one gives nothing. An open reads the pull
+// request states (M224).
 async function reopen($) {
   try {
     const cwd = await $.session.root()
     const held = await reopenList($)
     if (!held.includes(cwd)) return
     await $.store.set(REOPEN_KEY, held.filter(each => each !== cwd))
-    if ((await read($, pane)).found) await $.ui.open({ id: PANE, title: PANE_TITLE })
+    if (!(await read($, pane)).found) return
+    await $.ui.open({ id: PANE, title: PANE_TITLE })
   } catch {
     // No reopen.
+    return
   }
+  // The reopen is an open, so it reads the pull request states (M224).
+  await readPrs($)
 }
 
 async function reopenList($): Promise<string[]> {

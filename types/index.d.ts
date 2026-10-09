@@ -60,7 +60,7 @@ export type CairnPaneMilestone = {
 // rows, each its priority and the text before its first `: ` (M207).
 // `blocked` holds the `blocked` rows in ROADMAP order, each with the number
 // of the pull request its milestone file's `Branch/PR` header names, or
-// null (M223).
+// null (M223), and that pull request's URL up to its number, or null (M224).
 export type CairnPaneState = {
   found: boolean
   milestones: CairnPaneMilestone[]
@@ -68,8 +68,12 @@ export type CairnPaneState = {
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
   candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
-  blocked: { id: string; title: string; pr: number | null }[]
+  blocked: { id: string; title: string; pr: number | null; url: string | null }[]
 }
+
+// The state word of a blocked milestone's pull request, as the pane last
+// read it from `gh pr view` (M224).
+export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
 
 declare module 'claude-code' {
   interface PluginState {
@@ -91,6 +95,10 @@ declare module 'claude-code' {
       ended: Shaped<boolean>
       // What the cairn pane shows, written at each refresh (M205).
       pane: Shaped<CairnPaneState>
+      // Each blocked milestone's pull request state word by its URL, as the
+      // last read at a pane open or a Refresh press found it (M224). A URL
+      // with no entry has not been read.
+      prs: Shaped<Record<string, CairnPrWord>>
     }
   }
 }

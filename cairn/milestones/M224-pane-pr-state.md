@@ -99,16 +99,16 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
       result and `PATH` to a file in `.git/info/exclude` (LESSONS M201,
       M205). The operator enables hot reload. Write one work-log line with
       both results. If either fails, take the goal-wrong stop.
-- [ ] T2: Tests first. Add the AC1 to AC4 register cases, with a
+- [x] T2: Tests first. Add the AC1 to AC4 register cases, with a
       `process.run` answer per case and a clock-call recorder. Make sure
       that they fail against the M223 code.
-- [ ] T3: Add the read in `register.tsx`: one `$.process.run` per
+- [x] T3: Add the read in `register.tsx`: one `$.process.run` per
       numbered line, run in parallel with a timeout. The pane's open paths
       call it (`command.run` near line 172, the band's open button, and
       `reopen`), and so does the `Refresh` press. Keep the states in their own
       atom with its own shape tag (LESSONS M193, M210). Map each result to
       a state word in a pure function that the tests call.
-- [ ] T4: Draw the state word and the line Buttons in `pane.ts` and
+- [x] T4: Draw the state word and the line Buttons in `pane.ts` and
       `register.tsx`, with the Box widths of LESSONS M194. Reuse the
       Status Button's submit path for the three commands. Run `verify`.
 - [ ] T5: Describe the states, Buttons, and reads in README.md's "The cairn
@@ -134,6 +134,8 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: T1 done. In the desktop session, the probe mod's `$.process.run` ran bare `gh` and `/opt/homebrew/bin/gh` at two session starts. Both exited 0 with `{"reviewDecision":"","state":"OPEN"}` for insight PR 1250. The mod's `PATH` holds `/opt/homebrew/bin`, so the mod calls bare `gh`. Both probe halves passed, so no goal-wrong stop. The probe mod was deleted.
 - 2026-10-08: T2 implementation choice: each blocked row keeps its PR URL as `url` beside `pr`. `cairn_next.blocked` gains it too, through a new `pr_url`, so the fixtures' expected.json stays the one oracle for both readers.
 - 2026-10-08: T2 tests written: 21 new register cases fail against the M223 code, and the two silent cases (a line not yet read, a turn end) pass. The Python URL cases pass with the new `pr_url`. Unticked until `verify` is green after T3.
+- 2026-10-08: T3 done. `readPrs` in register.tsx runs one `gh pr view <url> --json state,reviewDecision` per distinct URL, side by side, with a 15 s timeout each. The command, the band's open button, and the reopen call it after their open, and so does the Refresh press after a file refresh. A guard skips a read that starts while one runs. The words go to a new `prs` atom (tag `prs-1`), keyed by URL, and the pane atom's tag moved to `pane-4` for the URL. `prWord` in pane.ts maps a result to a word.
+- 2026-10-08: T4 done. A blocked line's tail gains the word after its number, colored by the review color for merged and approved, the warning key for changes requested, gray otherwise. The line's Button sits in its own no-shrink Box, as the Next line's do, and its key ends in the milestone id. A press reads the word as it is now and runs its command through `run`, the Status path, with no `/clear`. It checks only that no run is in flight, so it does not wait for a cairn skill's step to end. The M219 "no other Button" case now allows the Blocked heading's Refresh. `verify` green: 401 script tests, 174 hook tests, both validates, 1465 mod tests.
 
 ## Decisions
 

@@ -1010,8 +1010,11 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         const ui = await mountPane($, surface)
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
-        // No other line of the pane carries a Button (M219 review).
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS])
+        // No other line of the pane carries a Button (M219 review), but for
+        // the Blocked heading's Refresh while a blocked row has a pull
+        // request URL (M224). Before any read, no blocked line carries one.
+        const refresh = FIXTURES[name].blocked.some(row => row.url !== null) ? ['cairn-pane-refresh'] : []
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS, ...refresh])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
