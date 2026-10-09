@@ -3,7 +3,7 @@ import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
 import { flowOf, width } from './band'
-import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout } from './pane'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout, prWord } from './pane'
 import type { PaneState } from './reader'
 import { listNames } from './reader'
 
@@ -1501,17 +1501,67 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
     expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M111' }])
   })
 
-  for (const answer of [prView('OPEN', 'APPROVED'), prView('OPEN', 'REVIEW_REQUIRED')]) {
-    test(`an ${answer.stdout.trim()} line carries no Button`, async ($, on) => {
-      gh(on, () => answer)
+  const PLAIN = [
+    { answer: prView('OPEN', 'APPROVED'), word: 'approved' },
+    { answer: prView('OPEN', 'REVIEW_REQUIRED'), word: 'in review' },
+  ]
+  for (const each of PLAIN) {
+    test(`an \`${each.word}\` line carries no Button`, async ($, on) => {
+      gh(on, () => each.answer)
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
       const line = await blockedView($, 'blocked-M111')
-      expect(line.text).not.toBe(LINE_1250)
+      expect(line.text).toBe(`${LINE_1250}  ${each.word}`)
       expect(line.buttons).toEqual([])
     })
   }
+})
+
+// `prWord` over shapes beyond the register cases (M224 review): a JSON
+// value that is not an object, an object with no state, and a state in
+// another case all read as `unknown`.
+describe('prWord reads only the shapes it names', () => {
+  test('a rejected call, a non-object, and an unknown state read as unknown', () => {
+    const ok = (stdout: string) => ({ exitCode: 0, stdout })
+    expect(prWord(null)).toBe('unknown')
+    expect(prWord({ exitCode: 1, stdout: '{"state":"MERGED"}' })).toBe('unknown')
+    expect(prWord(ok('null'))).toBe('unknown')
+    expect(prWord(ok('[]'))).toBe('unknown')
+    expect(prWord(ok('"MERGED"'))).toBe('unknown')
+    expect(prWord(ok('{}'))).toBe('unknown')
+    expect(prWord(ok('{"state":"open"}'))).toBe('unknown')
+    expect(prWord(ok('{"state":"MERGED","reviewDecision":"CHANGES_REQUESTED"}'))).toBe('merged')
+    expect(prWord(ok('{"state":"OPEN","reviewDecision":"SOMETHING_NEW"}'))).toBe('in review')
+  })
+})
+
+// Paths that run no `gh` call (M224 review): a close of a shown pane, and
+// an open that a hook refuses.
+describe('a close or a refused open reads no state (M224 AC3)', () => {
+  test('/cairn-pane that closes a shown pane runs no gh call', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    calls.calls.length = 0
+    const closed = await $.command.run({ command: COMMAND })
+    expect(closed.text).toBe('cairn pane closed')
+    expect(calls.calls).toEqual([])
+  })
+
+  test('a refused open runs no gh call, by the command or the band', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    const copy = copyOf('blocked-active')
+    copy.refuse = 'opens are refused here'
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-open' })
+    await ui.unmount()
+    expect(calls.calls).toEqual([])
+  })
 })
 
 describe('the states are read at each pane open and at a Refresh press, and never on a timer (M224 AC3)', () => {

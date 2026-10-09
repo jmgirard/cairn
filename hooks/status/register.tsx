@@ -620,10 +620,11 @@ async function openPane($) {
   await readPrs($)
 }
 
-// True while a read of the pull request states is in flight, so an open or
-// a Refresh press made meanwhile starts no second read (M224). A reload
-// starts it over as false.
-let readingPrs = false
+// Each read of the pull request states takes the next number, and only the
+// newest read started writes its words, so an older read that settles
+// later does not put back older words (M224 review). A reload starts it
+// over at 0.
+let prReads = 0
 
 // Reads each blocked row's pull request with one `gh pr view` call per URL,
 // side by side, and writes each state word by its URL (M224). The URL
@@ -631,10 +632,11 @@ let readingPrs = false
 // when `gh` cannot start or outruns its timeout, reads as `unknown`, as a
 // bad result does (pane.ts `prWord`), and the read never throws. It runs
 // only at a pane open and a Refresh press: no timer and no turn end starts
-// one, since the operator does not want repeating tasks.
+// one, since the operator does not want repeating tasks. A read that
+// starts while another runs still runs, with the newest URLs.
 async function readPrs($) {
-  if (readingPrs) return
-  readingPrs = true
+  prReads += 1
+  const mine = prReads
   try {
     const urls: string[] = []
     for (const row of (await read($, pane)).blocked) {
@@ -655,11 +657,9 @@ async function readPrs($) {
     urls.forEach((url, i) => {
       out[url] = words[i]
     })
-    await update($, prs, () => out)
+    if (mine === prReads) await update($, prs, () => out)
   } catch {
     // No write: the lines keep the words they had.
-  } finally {
-    readingPrs = false
   }
 }
 

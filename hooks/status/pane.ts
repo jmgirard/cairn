@@ -1,3 +1,4 @@
+import type { CairnPrWord } from '../../types'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
@@ -54,8 +55,9 @@ export type PaneLine = {
 }
 
 // A blocked milestone's pull request state, as `prWord` reads it from a
-// `gh pr view <url> --json state,reviewDecision` call (M224).
-export type PrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
+// `gh pr view <url> --json state,reviewDecision` call (M224). The state
+// contract holds the one list of words.
+export type PrWord = CairnPrWord
 
 // The state word of one `gh pr view` result, null for a call that
 // rejected. A non-zero exit, text that is not a JSON object, or a `state`

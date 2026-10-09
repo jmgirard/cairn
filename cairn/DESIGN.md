@@ -292,8 +292,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   `/cairn-pane` command, the band's open button, the session-start
   reopen) and at a press of the `Refresh` Button on the `BLOCKED`
   heading, which first reads the files again. No timer and no turn end
-  starts a read, at the operator's word, and a read that starts while
-  another runs does nothing. `prWord` in `pane.ts` maps each result:
+  starts a read, at the operator's word. A read that starts while another
+  runs still runs, and only the newest read started writes its words
+  (M224 review). `prWord` in `pane.ts` maps each result:
   MERGED to `merged`, CLOSED to `closed`, OPEN by its review decision to
   `changes requested`, `approved`, or `in review` for any other or none,
   and a rejected call, a non-zero exit, text that is not a JSON object, or
