@@ -1,6 +1,6 @@
 # M225: The pane counts each handed-off PR's unanswered comments
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M224
 - **Driving RR:** —
@@ -111,7 +111,7 @@ kept unchanged. M224's state words and Buttons are M224's.
 - [x] T4: Describe the counts in README.md's "The cairn pane", in
       `cairn/DESIGN.md`, and in CHANGELOG.md's Unreleased section. Run
       `verify`.
-- [ ] T5: Live look in a new desktop Code session in `~/github/insight`
+- [x] T5: Live look in a new desktop Code session in `~/github/insight`
       (LESSONS M195, M213). Pick a PR whose counts are not both zero and
       open its GitHub page beside the pane.
 
@@ -136,6 +136,7 @@ kept unchanged. M224's state words and Buttons are M224's.
 - 2026-10-09: claim audit re-read: the same reader found all five corrections hold. One README line was re-wrapped.
 - 2026-10-09: T5 prep. Read-only `gh api graphql` on insight's open PRs gave both counts zero for PR 1250, M006's PR, because its newest commit (2026-10-09T02:45:56Z) follows the Copilot review and the maintainer's comments. PR 880 gives 1 unresolved and 2 unanswered, and PR 1252 gives 0 and 1. Insight M007 is `blocked` with no URL. The live look stops for the operator.
 - 2026-10-09: question at the T5 stop: the operator chose PR 880 for the look. Insight M007's `Branch/PR` header now ends with `https://github.com/easystats/insight/pull/880`. The file is under insight's `.git/info/exclude`, so nothing reaches that repo. The header goes back to `export-table-tt-lists` after the look. Waiting on the operator's look in a new insight desktop session.
+- 2026-10-09: T5 done. The operator resumed the run with `/milestone-implement M225` after the setup and did not report what the PR 880 line showed, so the merge question asks the operator to confirm it read `1 unresolved thread · 2 unanswered`. PR 880's GraphQL reply was unchanged at resume. Insight M007's header is back to `export-table-tt-lists`. All five verify commands exit 0. Status set to `review`.
 
 ## Decisions
 
