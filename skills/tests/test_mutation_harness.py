@@ -3711,3 +3711,36 @@ REGISTRY += [
         block="both approval gates read its conversation — review\n  threads and comments, human or bot — before the merge chip",
     ),
 ]
+
+
+REGISTRY += [
+    # hotfix: /hotfix reads DESIGN.md's Conventions at session start, applies
+    # a per-change version bump at step 5, bumps nothing when none is stated,
+    # and shows the bump at the approval gate.
+    Mutation(
+        guard="test_hotfix_design_conventions",
+        test="TestHotfixReadsConventions."
+             "test_session_start_reads_the_conventions_section",
+        target=HOTFIX,
+        block="`cairn/DESIGN.md`'s Conventions section",
+    ),
+    Mutation(
+        guard="test_hotfix_design_conventions",
+        test="TestHotfixReadsConventions."
+             "test_step_five_applies_a_version_bump_convention",
+        target=HOTFIX,
+        block="development-version bump on every PR",
+    ),
+    Mutation(
+        guard="test_hotfix_design_conventions",
+        test="TestHotfixReadsConventions.test_no_convention_means_no_bump",
+        target=HOTFIX,
+        block="states none, no version is bumped",
+    ),
+    Mutation(
+        guard="test_hotfix_design_conventions",
+        test="TestHotfixReadsConventions.test_approval_gate_shows_the_bump",
+        target=HOTFIX,
+        block="the version bump when a Conventions rule required one",
+    ),
+]

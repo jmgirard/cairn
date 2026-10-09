@@ -15,8 +15,10 @@ command with the variable empty.
 
 Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it (especially: work tiers, git model). Read `cairn/ROADMAP.md` to check
-whether an existing milestone already covers this, and `cairn/DECISIONS.md`
-for standing constraints. If an un-ingested RR sits in `cairn/reviews/`,
+whether an existing milestone already covers this, `cairn/DECISIONS.md`
+for standing constraints, and `cairn/DESIGN.md`'s Conventions section
+for the repo's per-change rules, which step 5 applies.
+If an un-ingested RR sits in `cairn/reviews/`,
 handle ingestion first (see `/milestone-brief`).
 Phase header: `# Hotfix: <slug>` → `## <step>`.
 Chapter markers: mark a chapter at each phase transition and at each numbered step
@@ -146,6 +148,11 @@ a bare PR number resolves against the fork.
    `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
    under the current development version (no milestone/issue jargon in the
    user-facing text).
+   Then apply each per-change rule DESIGN.md's Conventions section states,
+   for example a development-version bump on every PR (counted from the
+   default branch's version at push time) or a NEWS heading format. Where
+   the Conventions section states none, no version is bumped: cairn never
+   bumps one on its own cadence (D-041).
    *Authoring a fix:* nothing is pushed and no PR is opened here — step 6
    pushes and opens the PR after the approval chip, so a
    `pull_request`-triggered suite first runs on the head that merges
@@ -154,8 +161,9 @@ a bare PR number resolves against the fork.
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
    user-facing-text rule and edit it in place rather than appending a
-   duplicate; if none is present, add one. Push the test and the entry to the
-   PR's head branch — this works on a fork when the contributor left
+   duplicate; if none is present, add one. Hold the PR to the same
+   Conventions rules, adding a missing version bump. Push the test, the
+   entry, and any convention edits to the PR's head branch — this works on a fork when the contributor left
    "allow edits by maintainers" on (GitHub's default).
    **When the head branch cannot be pushed to:** ask the contributor on the
    PR to add the missing pieces — it is their work and their credit.
@@ -172,7 +180,8 @@ a bare PR number resolves against the fork.
    is still missing — that is the one gate this path exists to enforce.
 
 6. **Approval gate:** present the diff, the regression-test evidence, and
-   the changelog line (when the `changelog` slot declares a file); then,
+   the changelog line (when the `changelog` slot declares a file), and
+   the version bump when a Conventions rule required one; then,
    only when a PR already exists — an adopted PR, or the PR-reference
    re-entry of an authored fix — run the PR-conversation read
    `/milestone-review` step 7 states — the
