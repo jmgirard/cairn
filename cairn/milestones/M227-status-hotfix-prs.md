@@ -98,7 +98,7 @@ so the report names the review decision only.
       `<base-repo>` slug recipe.
 - [x] T2: Change the §2 inbox bullet's "already reported" clause and the
       `/hotfix` guest handoff sentence (`skills/hotfix/SKILL.md:259`).
-- [ ] T3: Run the `skills/tests` prose guards and verify. Fix a guard
+- [x] T3: Run the `skills/tests` prose guards and verify. Fix a guard
       that pins the old wording.
 - [ ] T4: Run `/milestone` in a parameters session and compare its
       report with the AC1 call's output.
@@ -120,3 +120,5 @@ so the report names the review decision only.
 - 2026-10-09: implement started on branch `m227-status-hotfix-prs`, cut from the pushed main. The untracked `cairn-probe.log` and `tsconfig.json` belong to no task and stay unstaged.
 - 2026-10-09: T1 done. The "Open hotfix PRs" bullet sits after the blocked-milestone PR bullet in `skills/milestone/SKILL.md` §2. Choice: it calls a failed read a reported gap, never an audit `FAIL`, the same as the inbox bullet. Verify green: scripts 401, hooks 174, plugin test 1765, both validates; prose guards 669.
 - 2026-10-09: T2 done. The inbox bullet now says that the `review` and `blocked` bullets report a milestone PR and the "Open hotfix PRs" bullet reports a hotfix PR. The `/hotfix` guest handoff says that §2 reports the open PR. The joined-line search prints 0 for both phrases in both files, and it printed 1 before. Suites and prose guards green.
+- 2026-10-09: T3 done. No prose guard pins the old wording. Exit 0 for each: prose guards, scripts, hooks, plugin and marketplace validate, plugin test (1765 pass), and `cairn_validate`.
+- 2026-10-09: T4 stopped before the run. `gh pr list --repo easystats/parameters --author @me --state open --limit 100` prints no PR, because #1261 to #1265 merged after the plan. `gh search prs --author @me --state open` finds no `hotfix-` head branch in any repo. AC3's setup does not hold, so the user picks how AC3 changes.
