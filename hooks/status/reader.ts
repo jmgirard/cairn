@@ -355,6 +355,20 @@ function prMatch(text: string): RegExpExecArray | null {
   return null
 }
 
+// The collaboration mode that a `cairn/PROFILE.md` text declares, as
+// `collaboration_mode` in hooks/cairn_common.py reads it (M226): the value
+// of the first `# Collaboration mode:` line before the first `## ` slot
+// heading, lowercased, with the key matched in any case and a leading BOM
+// skipped. A text with no such line reads as `owner`.
+export function collaborationMode(text: string): string {
+  for (const each of splitLines(text.replace(/^﻿/, ''))) {
+    if (each.startsWith('## ')) break
+    const found = /^#\s*Collaboration mode:\s*(\S+)/i.exec(each)
+    if (found !== null) return found[1].toLowerCase()
+  }
+  return 'owner'
+}
+
 // `pr_number` in scripts/cairn_next.py: the number of that pull request, or
 // null.
 export function prNumber(text: string): number | null {

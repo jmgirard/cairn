@@ -1388,26 +1388,57 @@ describe('an other end with the pane shown opens it at the next start in the sam
 // `graph` answers them by the URL that the call's owner, repo, and number
 // name, by default with a reply whose counts are both zero. Its answer may
 // be a promise, which holds the call until it settles.
+// The `git` calls and the `gh pr list` calls of M226 are recorded apart too,
+// in `git` and `lists`. `git` answers from `remotes`, a remote's URL by its
+// name, and by default the repo has no remote, so no list call runs.
+// `list` answers each `gh pr list` call.
 type GhAnswer = { exitCode: number; stdout: string } | 'reject'
-type Gh = { calls: (readonly string[])[]; graphql: (readonly string[])[]; clocks: string[] }
+type Gh = {
+  calls: (readonly string[])[]
+  graphql: (readonly string[])[]
+  git: (readonly string[])[]
+  lists: (readonly string[])[]
+  clocks: string[]
+}
+type GhRepo = { remotes?: Record<string, string>; list?: () => GhAnswer }
 const URL_1250 = 'https://github.com/upstream/repo/pull/1250'
 const LINE_1250 = 'M111  Handed to the maintainers  #1250'
 
 // The value of a `name=value` argument in a recorded argv.
 const argOf = (argv: readonly string[], name: string) => argv.find(a => a.startsWith(`${name}=`))?.slice(name.length + 1)
 
-function gh(on: On, answer: (url: string) => GhAnswer, graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0, 0)): Gh {
-  const out: Gh = { calls: [], graphql: [], clocks: [] }
+function gh(
+  on: On,
+  answer: (url: string) => GhAnswer,
+  graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0, 0),
+  repo: GhRepo = {},
+): Gh {
+  const out: Gh = { calls: [], graphql: [], git: [], lists: [], clocks: [] }
+  const remotes = repo.remotes ?? {}
+  const value = (got: { exitCode: number; stdout: string }) => ({
+    value: { exitCode: got.exitCode, stdout: got.stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
+  })
   on('process.run', async ($, e) => {
+    if (e.argv[0] === 'git') {
+      out.git.push(e.argv)
+      if (e.argv[1] === 'remote' && e.argv.length === 2) return value({ exitCode: 0, stdout: Object.keys(remotes).map(n => `${n}\n`).join('') })
+      const name = e.argv[3]
+      const has = Object.prototype.hasOwnProperty.call(remotes, name)
+      return value(has ? { exitCode: 0, stdout: `${remotes[name]}\n` } : { exitCode: 2, stdout: '' })
+    }
+    if (e.argv[1] === 'pr' && e.argv[2] === 'list') {
+      out.lists.push(e.argv)
+      const got = (repo.list ?? (() => ({ exitCode: 0, stdout: '[]\n' })))()
+      if (got === 'reject') throw new Error('gh cannot start')
+      return value(got)
+    }
     const isGraph = e.argv[1] === 'api'
     if (isGraph) out.graphql.push(e.argv)
     else out.calls.push(e.argv)
     const url = `https://github.com/${argOf(e.argv, 'owner')}/${argOf(e.argv, 'repo')}/pull/${argOf(e.argv, 'number')}`
     const got = isGraph ? await graph(url) : answer(e.argv[3])
     if (got === 'reject') throw new Error('gh cannot start')
-    return {
-      value: { exitCode: got.exitCode, stdout: got.stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
-    }
+    return value(got)
   })
   for (const name of ['clock.sleep', 'clock.after', 'clock.every'] as const) {
     on(name, async () => {
@@ -1946,4 +1977,259 @@ describe('a failed count read draws no count line and leaves the state word (M22
       expect(await countsOf($)).toBe(undefined)
     })
   }
+})
+
+// The open hotfix pull requests (M226). A case answers the mod's `git` calls
+// from the remotes it names and its `gh pr list` calls from `list`, as `gh`
+// above records them. The blocked-prs fixture holds blocked rows and a
+// candidate row, and most cases answer its blocked pull requests as
+// merged. The lines each case expects are written out by hand.
+const ORIGIN = 'https://github.com/fork/repo.git'
+const UPSTREAM = 'git@github.com:upstream/repo.git'
+const GUEST_PROFILE = '# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n'
+const listCall = (url: string) => [
+  'gh', 'pr', 'list', '--repo', url, '--state', 'open', '--author', '@me', '--limit', '100', '--json', 'number,title,url,headRefName',
+]
+const prUrl = (n: number) => `https://github.com/upstream/repo/pull/${n}`
+const pr = (n: number, branch: string, title = `Fix ${n}`) => ({ number: n, title, url: prUrl(n), headRefName: branch })
+const listReply = (entries: unknown[]): GhAnswer => ({ exitCode: 0, stdout: `${JSON.stringify(entries)}\n` })
+const HOTFIX_KEY = /^hotfix(es-head(-gap)?|-\d+(-counts)?)$/
+const keysOf = async $ => (await linesAt($)).map(line => line.key)
+const withoutHotfixes = (lines: { key: string }[]) => lines.filter(line => !HOTFIX_KEY.test(line.key))
+
+async function pressKey($, key: string) {
+  const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+  await ui.press({ key })
+  await ui.unmount()
+}
+
+describe('each pane open and Refresh press lists the open pull requests on the base remote once (M226 AC1)', () => {
+  const MODES = [
+    { name: 'an owner-mode repo uses origin', profile: null, remotes: { origin: ORIGIN, upstream: UPSTREAM }, url: ORIGIN },
+    { name: 'a guest-mode repo with upstream uses upstream', profile: GUEST_PROFILE, remotes: { origin: ORIGIN, upstream: UPSTREAM }, url: UPSTREAM },
+    { name: 'a guest-mode repo without upstream uses origin', profile: GUEST_PROFILE, remotes: { origin: ORIGIN }, url: ORIGIN },
+  ]
+  for (const mode of MODES) {
+    test(mode.name, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, { remotes: mode.remotes })
+      const copy = copyOf('blocked-prs')
+      if (mode.profile !== null) copy.files['/cairn/PROFILE.md'] = mode.profile
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      expect(calls.lists).toEqual([listCall(mode.url)])
+    })
+  }
+
+  test("the band's open button lists once", async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN } })
+    seat(on, copyOf('blocked-prs'))
+    await $.turn.complete(turn())
+    expect(calls.lists).toEqual([])
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-open' })
+    await ui.unmount()
+    expect(calls.lists).toEqual([listCall(ORIGIN)])
+  })
+
+  test('the session-start reopen lists once, and a turn end lists nothing', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN } })
+    const copy = copyOf('blocked-prs')
+    await openPane($, on, copy)
+    await $.session.end({ reason: 'other', sessionId: 's1' })
+    newProcess(copy)
+    calls.lists.length = 0
+    await $.session.start(NEW_START)
+    expect(listed(copy)).toBe(true)
+    expect(calls.lists).toEqual([listCall(ORIGIN)])
+    await $.turn.complete(turn())
+    expect(calls.lists).toEqual([listCall(ORIGIN)])
+  })
+})
+
+describe('the Hotfixes section lists the hotfix-* pull requests before the candidates (M226 AC2)', () => {
+  test('only the hotfix-* entry draws, after Blocked and before Candidates', async ($, on) => {
+    const list = () => listReply([pr(1265, 'hotfix-clmm', 'Return only fixed effects'), pr(1300, 'm226-pane'), pr(1301, 'feature-x')])
+    gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0, 0), { remotes: { origin: ORIGIN }, list })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const keys = await keysOf($)
+    expect(keys.filter(key => HOTFIX_KEY.test(key))).toEqual(['hotfixes-head-gap', 'hotfixes-head', 'hotfix-1265'])
+    expect(keys.indexOf('blocked-head')).toBeLessThan(keys.indexOf('hotfixes-head'))
+    expect(keys.indexOf('hotfixes-head')).toBeLessThan(keys.indexOf('candidates-head'))
+    expect(keys.slice(keys.indexOf('hotfix-1265') + 1)[0]).toBe('candidates-head-gap')
+    expect((await blockedView($, 'hotfixes-head')).text).toBe('▎ HOTFIXES 1')
+    expect((await blockedView($, 'hotfix-1265')).text).toBe('#1265  Return only fixed effects  in review')
+  })
+})
+
+describe('each hotfix line shows the word and counts a blocked line shows, and no Button (M226 AC3)', () => {
+  test('an open PR with counts, a changes-requested PR, and a merged PR', async ($, on) => {
+    const list = () => listReply([pr(1265, 'hotfix-a'), pr(1264, 'hotfix-b'), pr(1263, 'hotfix-c')])
+    const views: Record<string, GhAnswer> = {
+      [prUrl(1265)]: prView('OPEN', 'REVIEW_REQUIRED'),
+      [prUrl(1264)]: prView('OPEN', 'CHANGES_REQUESTED'),
+      [prUrl(1263)]: prView('MERGED', 'APPROVED'),
+    }
+    const calls = gh(on, url => views[url] ?? prView('MERGED'), url => (url === prUrl(1265) ? countsReply(2, 1) : countsReply(0, 0)), {
+      remotes: { origin: ORIGIN },
+      list,
+    })
+    // blocked-active's M111 is not in `views`, so it reads as merged here.
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const lines = await linesAt($)
+    const textOf_ = (key: string) => lines.find(line => line.key === key)?.text
+    expect(textOf_('hotfix-1265')).toBe('#1265  Fix 1265  in review')
+    expect(textOf_('hotfix-1264')).toBe('#1264  Fix 1264  changes requested')
+    expect(textOf_('hotfix-1263')).toBe('#1263  Fix 1263  merged')
+    expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads · 1 unanswered')
+    expect(textOf_('hotfix-1264-counts')).toBe(undefined)
+    expect(textOf_('hotfix-1263-counts')).toBe(undefined)
+    for (const key of ['hotfix-1265', 'hotfix-1264', 'hotfix-1263']) expect((await blockedView($, key)).buttons).toEqual([])
+    // A merged one gets no count query, as a merged blocked line gets none.
+    expect(calls.graphql.map(argv => argOf(argv, 'number'))).not.toContain('1263')
+    expect(calls.graphql.map(argv => argOf(argv, 'number'))).toContain('1264')
+  })
+
+  test('a hotfix line shows the same word and counts as a blocked line with the same replies', async ($, on) => {
+    const copy = copyOf('blocked-active')
+    gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(1, 3), {
+      remotes: { origin: ORIGIN },
+      list: () => listReply([pr(1265, 'hotfix-a')]),
+    })
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const lines = await linesAt($)
+    const textOf_ = (key: string) => lines.find(line => line.key === key)?.text ?? ''
+    expect(textOf_('blocked-M111')).toBe(`${LINE_1250}  changes requested`)
+    expect(textOf_('hotfix-1265').endsWith('  changes requested')).toBe(true)
+    expect(textOf_('hotfix-1265-counts')).toBe(textOf_('blocked-M111-counts'))
+    expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread · 3 unanswered')
+  })
+})
+
+describe('a failed list keeps the last good read for the root, and an empty one draws none (M226 AC4)', () => {
+  const GOOD = () => listReply([pr(1265, 'hotfix-a')])
+  const FAILS: { name: string; answer: GhAnswer }[] = [
+    { name: 'a call that rejects', answer: 'reject' },
+    { name: 'a non-zero exit', answer: { exitCode: 1, stdout: '[]\n' } },
+    { name: 'text that is not JSON', answer: { exitCode: 0, stdout: 'HTTP 502\n' } },
+    { name: 'JSON that is not an array', answer: { exitCode: 0, stdout: '{"number":1265}\n' } },
+  ]
+  // Opens with no remote for the baseline lines, then lists once with a
+  // good reply, and answers the next list with `next`.
+  async function setUp($, on, next: () => GhAnswer) {
+    const remotes: Record<string, string> = {}
+    let answer = GOOD
+    const calls = gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), undefined, { remotes, list: () => answer() })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(calls.lists).toEqual([])
+    const baseline = await linesAt($)
+    expect(baseline.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])
+    remotes.origin = ORIGIN
+    await pressKey($, 'cairn-pane-refresh')
+    expect((await keysOf($)).includes('hotfix-1265')).toBe(true)
+    answer = next
+    await pressKey($, 'cairn-pane-refresh')
+    expect(calls.lists.length).toBe(2)
+    return baseline
+  }
+
+  for (const fail of FAILS) {
+    test(`${fail.name} keeps the hotfix line`, async ($, on) => {
+      const baseline = await setUp($, on, () => fail.answer)
+      const lines = await linesAt($)
+      expect(lines.find(line => line.key === 'hotfix-1265')?.text).toBe('#1265  Fix 1265  in review')
+      expect(withoutHotfixes(lines)).toEqual(baseline)
+    })
+  }
+
+  test('an entry with a missing field is skipped', async ($, on) => {
+    const { url: _url, ...noUrl } = pr(1262, 'hotfix-b')
+    const { headRefName: _head, ...noBranch } = pr(1261, 'hotfix-c')
+    const baseline = await setUp($, on, () =>
+      listReply([
+        noUrl,
+        noBranch,
+        { ...pr(1260, 'hotfix-d'), number: '1260' },
+        null,
+        'hotfix-e',
+        pr(1259, 'hotfix-f'),
+        // A repeated entry draws once, so no two lines share a key (M226 review).
+        pr(1259, 'hotfix-f'),
+      ]),
+    )
+    const lines = await linesAt($)
+    expect(lines.filter(line => HOTFIX_KEY.test(line.key)).map(line => line.key)).toEqual([
+      'hotfixes-head-gap',
+      'hotfixes-head',
+      'hotfix-1259',
+    ])
+    expect(withoutHotfixes(lines)).toEqual(baseline)
+  })
+
+  test('an empty array replaces the kept lines and draws no section', async ($, on) => {
+    const baseline = await setUp($, on, () => listReply([]))
+    expect(await linesAt($)).toEqual(baseline)
+  })
+
+  test('a kept read from another root is not drawn', async ($, on) => {
+    const remotes: Record<string, string> = { origin: ORIGIN }
+    let answer = GOOD
+    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes, list: () => answer() })
+    const copy = copyOf('blocked-prs')
+    for (const path of Object.keys(copy.files)) copy.files[`/other${path}`] = copy.files[path]
+    copy.unreadable.push(...copy.unreadable.map(path => `/other${path}`))
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await keysOf($)).includes('hotfix-1265')).toBe(true)
+    copy.cwd = '/other'
+    await $.turn.complete(turn())
+    const moved = await linesAt($)
+    expect(moved.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])
+    answer = () => 'reject'
+    const viewsOf1265 = () => calls.calls.filter(argv => argv[3] === prUrl(1265)).length
+    const before = viewsOf1265()
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await linesAt($)).toEqual(moved)
+    // The read itself drops the other root's list, so its URL is not read
+    // again, apart from the drawing's root check (M226 review).
+    expect(viewsOf1265()).toBe(before)
+  })
+
+  test('a repo with no remote runs no list call and draws no section', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { list: GOOD })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(calls.git).toEqual([['git', 'remote', 'get-url', 'origin']])
+    expect(calls.lists).toEqual([])
+    expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
+  })
+})
+
+describe("the Hotfixes heading's Refresh has its own key, and either heading's press lists again (M226 AC5)", () => {
+  test('each Refresh press runs the list call', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([pr(1265, 'hotfix-a')]) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
+    expect((await blockedView($, 'hotfixes-head')).buttons).toEqual(['cairn-pane-refresh-hotfixes'])
+    expect(calls.lists.length).toBe(1)
+    await pressKey($, 'cairn-pane-refresh-hotfixes')
+    expect(calls.lists.length).toBe(2)
+    expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(2)
+    await pressKey($, 'cairn-pane-refresh')
+    expect(calls.lists.length).toBe(3)
+    expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(3)
+  })
 })
