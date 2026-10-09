@@ -1479,6 +1479,28 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
     })
   }
 
+  // A press while a cairn skill's step runs does nothing, as the Next,
+  // Status, and Clear presses do (M224 review). The Button stays drawn.
+  test('a press while a cairn skill runs runs nothing', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-finish-M111'])
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await ui.press({ key: 'cairn-pane-finish-M111' })
+    await ui.unmount()
+    expect(copy.commands ?? []).toEqual([])
+    // After the step ends, the same press runs its command.
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+    const after = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await after.press({ key: 'cairn-pane-finish-M111' })
+    await after.unmount()
+    expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M111' }])
+  })
+
   for (const answer of [prView('OPEN', 'APPROVED'), prView('OPEN', 'REVIEW_REQUIRED')]) {
     test(`an ${answer.stdout.trim()} line carries no Button`, async ($, on) => {
       gh(on, () => answer)
