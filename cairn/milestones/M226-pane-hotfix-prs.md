@@ -130,7 +130,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       AC5.
 - [x] T4: Describe the section in README's cairn pane section and in the
       DESIGN.md `hooks/status/` text. Run verify.
-- [ ] T5: Prepare the live look in parameters. The look runs at the
+- [x] T5: Prepare the live look in parameters. The look runs at the
       merge question in a new Code session there, because a desktop
       session keeps the mod it loaded at its start.
 
@@ -154,6 +154,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - 2026-10-09: T2 and T3 land in one commit, because the list read and the drawing share the new atom and tests. `readHotfixes` runs inside `readPrs` before the per-URL reads, and the list is written with the words, by the newest read only. `collaborationMode` in `reader.ts` mirrors `cairn_common.collaboration_mode`. The `pane` shape tag stays at 4, because the pane state did not change: the list sits in its own `hotfixes` atom (`hotfixes-1`). The hotfix heading's Refresh carries the target `hotfixes`, so its key is `cairn-pane-refresh-hotfixes`. The test fake `gh` now answers `git` and `gh pr list` calls apart, with no remote by default, so the M224 and M225 tests run unchanged.
 - 2026-10-09: tests: 17 new cases for AC1 to AC5, and mod tests went to 1756. Four planted defects at once (no keep on a failed list, no root check at drawing, no `hotfix-` filter, guest mode ignored) turned 7 of them red, and the files were restored.
 - 2026-10-09: T4: README's pane section gained a hotfix paragraph, and DESIGN.md's `hooks/status/` text gained the read and drawing and an M226 entry in its list. Verify green: 401 script tests, hooks suite, both validates, 1756 mod tests.
+- 2026-10-09: T5: look prepared. `~/.claude/skills/cairn` links to this checkout, so a new desktop Code session in parameters loads the branch's mod while it is checked out. In parameters, `gh pr list --repo https://github.com/easystats/parameters.git --author @me --state open` shows 5 `hotfix-*` PRs (#1261 to #1265). The look runs at the merge question.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

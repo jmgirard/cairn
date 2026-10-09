@@ -86,9 +86,11 @@ export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number; una
 // as `gh pr list` gave it (M226).
 export type CairnHotfixPr = { number: number; title: string; url: string }
 
-// The last good `gh pr list` read of the hotfix pull requests, and the repo
-// root it was read for (M226). `root` is null before any read and when no
-// ROADMAP root was known.
+// The hotfix list that the last read wrote, and the repo root it is for
+// (M226): a good `gh pr list` read's result, the list kept after a failed
+// call in the same root, or empty when no call ran or the kept list was
+// for another root. `root` is null before any read and when no ROADMAP
+// root was known.
 export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[] }
 
 declare module 'claude-code' {
@@ -115,9 +117,9 @@ declare module 'claude-code' {
       // by its URL, as the last read at a pane open or a Refresh press found
       // them (M224, M225). A URL with no entry has not been read.
       prs: Shaped<Record<string, CairnPrRead>>
-      // The open hotfix pull requests by the repo root they were read for,
-      // as the last good read at a pane open or a Refresh press found them
-      // (M226). Their words and counts sit in `prs` by URL.
+      // The open hotfix pull requests and the repo root they are for, as
+      // the last read at a pane open or a Refresh press wrote them (M226).
+      // Their words and counts sit in `prs` by URL.
       hotfixes: Shaped<CairnHotfixRead>
     }
   }

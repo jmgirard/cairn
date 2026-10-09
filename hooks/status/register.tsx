@@ -74,8 +74,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // (M224). The same read counts each open pull request's unresolved review
 // threads and unanswered reviews and comments, which draw on a line under
 // it (M225). The same read lists the operator's open pull requests on the
-// base remote with one `gh pr list` call, and the pane draws the ones from
-// `hotfix-*` branches, each with its word and counts (M226).
+// base remote with one `gh pr list` call and keeps the ones from
+// `hotfix-*` branches, which the pane draws, each with its word and counts
+// (M226).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -128,8 +129,8 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 // open pull request's counts, or null; the tag moved to 2 with them (M225).
 const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
 
-// The open hotfix pull requests of the last good list read, and the repo
-// root they were read for (M226). The pane draws them only while the band's
+// The hotfix list that the last read wrote, and the repo root it is for
+// (M226, `readHotfixes` says when it is kept or empty). The pane draws them only while the band's
 // root is that root, so a failed read after a `cd` shows no other repo's.
 const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [] } as CairnHotfixRead, {
   shape: 'hotfixes-1',

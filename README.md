@@ -357,9 +357,11 @@ lists each PR from a `hotfix-` branch under a `HOTFIXES` heading with the
 count, after `BLOCKED` and before the candidates. Each line shows `#<n>`
 and the PR's title, and after a read the same word and count line that a
 blocked line shows. A hotfix line has no Button, because no command
-resumes an open hotfix PR yet. The heading has its own `Refresh`. When
-the list call fails, the pane keeps the last list it read for the same
-repo. With no remote, or with no open hotfix PR, there is no section.
+resumes an open hotfix PR yet. The heading has a `Refresh` of its own,
+which reads everything again, as the `BLOCKED` heading's does. When the
+list call fails, the pane keeps the last list it read for the same repo.
+When the base remote has no URL, or the call lists no open hotfix PR,
+there is no section.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's

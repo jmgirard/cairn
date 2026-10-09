@@ -1982,7 +1982,7 @@ describe('a failed count read draws no count line and leaves the state word (M22
 // The open hotfix pull requests (M226). A case answers the mod's `git` calls
 // from the remotes it names and its `gh pr list` calls from `list`, as `gh`
 // above records them. The blocked-prs fixture holds blocked rows and a
-// candidate row, and its blocked pull requests read as merged. The lines
+// candidate row, and most cases answer its blocked pull requests as merged. The lines
 // each case expects are written out by hand.
 const ORIGIN = 'https://github.com/fork/repo.git'
 const UPSTREAM = 'git@github.com:upstream/repo.git'
@@ -2076,8 +2076,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
       remotes: { origin: ORIGIN },
       list,
     })
-    // blocked-active's M111 reads the same answers as hotfix 1265, so its
-    // line is the blocked form of the same reads.
+    // blocked-active's M111 is not in `views`, so it reads as merged here.
     const copy = copyOf('blocked-active')
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
