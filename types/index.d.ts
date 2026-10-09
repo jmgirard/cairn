@@ -75,6 +75,13 @@ export type CairnPaneState = {
 // read it from `gh pr view` (M224).
 export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
 
+// One read of a blocked milestone's pull request: its state word (M224),
+// and for an open one, its unresolved review threads and the reviews and
+// comments from others newer than its author's last comment or review and
+// its newest commit (M225). `counts` is null for a pull request that is not open, or
+// whose count read failed.
+export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number; unanswered: number } | null }
+
 declare module 'claude-code' {
   interface PluginState {
     // Each value is kept under a shape tag (register.tsx), so a value an
@@ -95,10 +102,10 @@ declare module 'claude-code' {
       ended: Shaped<boolean>
       // What the cairn pane shows, written at each refresh (M205).
       pane: Shaped<CairnPaneState>
-      // Each blocked milestone's pull request state word by its URL, as the
-      // last read at a pane open or a Refresh press found it (M224). A URL
-      // with no entry has not been read.
-      prs: Shaped<Record<string, CairnPrWord>>
+      // Each blocked milestone's pull request state word, and its counts,
+      // by its URL, as the last read at a pane open or a Refresh press found
+      // them (M224, M225). A URL with no entry has not been read.
+      prs: Shaped<Record<string, CairnPrRead>>
     }
   }
 }

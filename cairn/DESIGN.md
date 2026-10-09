@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved and unanswered counts in M225).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -287,8 +287,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one `gh pr view <url> --json
   state,reviewDecision` per distinct URL through `$.process.run`, side
-  by side, with a 15-second timeout each, and writes the words to the
-  `prs` state value by URL. It runs after each pane open (the
+  by side, with a 15-second timeout each, and writes each word, with its
+  counts since M225, to the `prs` state value by URL. It runs after each pane open (the
   `/cairn-pane` command, the band's open button, the session-start
   reopen) and at a press of the `Refresh` Button on the `BLOCKED`
   heading, which first reads the files again. No timer and no turn end
@@ -310,6 +310,29 @@ transitions, human-gated merges, and a domain verification doctrine.
   review). The Buttons stay drawn while a step runs. A test answers the mod's
   `$.process.run` with an `on('process.run')` hook (M224 probe), and a
   desktop Code session's mod runs `gh` from the app's `PATH`.
+  In the same read, each URL whose word is in `OPEN_WORDS` gets one `gh
+  api graphql` call with the same timeout (M225, `counts.ts`). The query
+  names the URL's owner, repo, and number, and returns the PR author's
+  login, `reviewThreads(last: 100)`, `reviews(last: 100)`,
+  `comments(last: 100)`, and `commits(last: 1)`. `prCounts` checks the
+  reply's shape, and `countPr` gives two counts. The first is the threads
+  with `isResolved` false. The second is the COMMENTED or
+  CHANGES_REQUESTED reviews and the conversation comments strictly after
+  the anchor, by anyone but the PR author. A null author counts as another
+  person. The anchor is the latest of the author's newest such review,
+  the author's newest conversation comment, and the `committedDate` of
+  the PR's newest commit. That commit can be anyone's. The times compare
+  as ISO-8601 UTC text, and a commit time given with an offset is first
+  converted to UTC (M225 review). GitHub gives no reply link for a review or a
+  conversation comment, so the anchor rule stands in for per-item reply
+  tracking. Bots are others, so one Copilot review can count in both
+  counts. The counts cover the newest 100 of each kind. A failed call or
+  reply leaves the counts null. The `prs` value holds `{ word, counts }`
+  per URL under the tag `prs-2`. It is written once every call settles, so
+  a `Refresh` keeps the earlier counts drawn until then. When a count is
+  above zero, `paneLines` draws `blocked-<id>-counts` at indent 4 under
+  the line. The counts sit in the line's text part, which a narrow pane
+  cuts.
   `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with

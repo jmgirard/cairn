@@ -331,6 +331,24 @@ each line shows one word after its number:
 
 None of the `Finish`, `Revise`, or `Check` Buttons runs `/clear` first. A
 line not yet read shows no word.
+
+For a PR that GitHub reports as OPEN, the same read also runs one `gh api
+graphql` query, and the pane draws a line under the PR such as `3
+unresolved threads · 2 unanswered`. The first count is the review threads
+not marked resolved. The second count is the reviews that comment or
+request changes, and the conversation comments. It counts only the items
+from anyone but the PR author. Each item must come after the author's
+latest comment or review, and after the PR's newest commit. That commit
+can be anyone's, and the time used is its committed date. GitHub does not link a reply to a review or to a
+conversation comment. So one comment or review by the author clears every
+earlier item, and so does a newer commit on the PR.
+Bots count as other people, so a Copilot review counts, and one Copilot
+review can show in both counts: as a review in the second, and as its
+unresolved threads in the first. Each count covers the newest 100
+threads, reviews, and comments. A part that is zero is left out, and with both zero there is no line.
+When the query fails, the line is left out, and the state word and its
+Button stay.
+
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
 status.
