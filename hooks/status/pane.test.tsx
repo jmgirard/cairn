@@ -1982,8 +1982,8 @@ describe('a failed count read draws no count line and leaves the state word (M22
 // The open hotfix pull requests (M226). A case answers the mod's `git` calls
 // from the remotes it names and its `gh pr list` calls from `list`, as `gh`
 // above records them. The blocked-prs fixture holds blocked rows and a
-// candidate row, and most cases answer its blocked pull requests as merged. The lines
-// each case expects are written out by hand.
+// candidate row, and most cases answer its blocked pull requests as
+// merged. The lines each case expects are written out by hand.
 const ORIGIN = 'https://github.com/fork/repo.git'
 const UPSTREAM = 'git@github.com:upstream/repo.git'
 const GUEST_PROFILE = '# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n'

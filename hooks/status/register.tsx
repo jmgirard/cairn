@@ -130,8 +130,9 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
 
 // The hotfix list that the last read wrote, and the repo root it is for
-// (M226, `readHotfixes` says when it is kept or empty). The pane draws them only while the band's
-// root is that root, so a failed read after a `cd` shows no other repo's.
+// (M226, `readHotfixes` says when it is kept or empty). The pane draws
+// them only while the band's root is that root, so a failed read after a
+// `cd` shows no other repo's.
 const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [] } as CairnHotfixRead, {
   shape: 'hotfixes-1',
 })
