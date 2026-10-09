@@ -63,15 +63,7 @@ so the report names the review decision only.
       first: `tr -s ' \n' ' ' < <file> | grep -c '<phrase>'` prints 0 for
       each phrase, over `skills/milestone/SKILL.md` and
       `skills/hotfix/SKILL.md`. The same search before the change prints 1.
-- [ ] AC3: A `/milestone` run happens in a session in the parameters
-      repo (`/Users/jmgirard/github/parameters`, guest mode). This cairn
-      checkout, which `~/.claude/skills/cairn` links to, has the M227
-      branch checked out at the time. At the same time, `gh pr list
-      --repo easystats/parameters --author @me --state open --limit 100`
-      prints at least one PR with a `hotfix-` head branch. The run
-      reports exactly those PRs, each with its number, title, and review
-      decision.
-- [ ] AC4: The hand-run prose guards in `skills/tests` pass, and this
+- [ ] AC3: The hand-run prose guards in `skills/tests` pass, and this
       repo's verify passes: `python3 -m unittest` over `scripts/tests` and
       `hooks/tests`, `claude plugin validate` on the plugin and marketplace
       manifests, and `claude plugin test`.
@@ -83,8 +75,7 @@ so the report names the review decision only.
 
 - AC1 → T1
 - AC2 → T2
-- AC3 → T4
-- AC4 → T3
+- AC3 → T3
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -100,8 +91,6 @@ so the report names the review decision only.
       `/hotfix` guest handoff sentence (`skills/hotfix/SKILL.md:259`).
 - [x] T3: Run the `skills/tests` prose guards and verify. Fix a guard
       that pins the old wording.
-- [ ] T4: Run `/milestone` in a parameters session and compare its
-      report with the AC1 call's output.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -122,3 +111,4 @@ so the report names the review decision only.
 - 2026-10-09: T2 done. The inbox bullet now says that the `review` and `blocked` bullets report a milestone PR and the "Open hotfix PRs" bullet reports a hotfix PR. The `/hotfix` guest handoff says that §2 reports the open PR. The joined-line search prints 0 for both phrases in both files, and it printed 1 before. Suites and prose guards green.
 - 2026-10-09: T3 done. No prose guard pins the old wording. Exit 0 for each: prose guards, scripts, hooks, plugin and marketplace validate, plugin test (1765 pass), and `cairn_validate`.
 - 2026-10-09: T4 stopped before the run. `gh pr list --repo easystats/parameters --author @me --state open --limit 100` prints no PR, because #1261 to #1265 merged after the plan. `gh search prs --author @me --state open` finds no `hotfix-` head branch in any repo. AC3's setup does not hold, so the user picks how AC3 changes.
+- 2026-10-09: substantive amendment: at the stop the user chose "Drop the live look". AC3 (the `/milestone` run in parameters) and T4 come out, and the old AC4 is now AC3 with its wording unchanged, mapped to T3. No criterion wording changed, so no re-audit ran. A candidate row holds the live look.
