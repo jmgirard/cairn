@@ -133,3 +133,24 @@ Pass 1, on 367b0b9, 2026-10-09.
 - AC2: the joined-line search prints 0 for "already reported two bullets up" and "reports nothing for it" in both files on HEAD. On main it prints 1 for each phrase in its own file. The inbox bullet points at the new bullet (:188), and the `/hotfix` handoff says §2 reports the open PR in that bullet (`skills/hotfix/SKILL.md:259-260`).
 - AC3: on 367b0b9, each exits 0: prose guards (669 tests), scripts (401), hooks (174), plugin validate, marketplace validate, and plugin test (1765 pass, 0 fail).
 - Gate: `cairn_validate` exits 0. No principle changed, so `cairn_impact` is skipped. The marketplace validate output has no `version` warning. FAIL: `CHANGELOG.md` Unreleased has no entry for this change (review return 1).
+
+Pass 2, on 1e5d8a0 after review return 1, 2026-10-09. The default branch has not moved.
+
+- AC1: the bullet at `skills/milestone/SKILL.md:165` in §2 is unchanged since pass 1, and the joined-line search for the full `gh pr list` call prints 1. Each clause of AC1 reads as in pass 1.
+- AC2: the joined-line search prints 0 for each phrase in each file on 1e5d8a0. On main it prints 1 for each phrase in its own file. The inbox bullet points at the new bullet, and the `/hotfix` handoff says §2 reports the open PR.
+- AC3: on 1e5d8a0, each exits 0: prose guards (669 tests), scripts (401), hooks (174), plugin validate, marketplace validate, and plugin test (1765 pass, 0 fail).
+- Gate: `cairn_validate` exits 0. `cairn_impact` skipped (no principle changed). No marketplace `version` warning. `CHANGELOG.md` Unreleased has the entry (T4), and a fresh reader found its 12 claims true.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the inbox drops a `hotfix-*` PR that someone else opened, and the new bullet reads only `--author @me`, so that PR shows nowhere — follow-up, the "Live look" candidate row (older than M227)
+- diff-bug #2: the `/hotfix` guest handoff says §2 "filters `hotfix-*` PRs out of its inbox", but guest mode skips the inbox — fix now
+- diff-bug #3: "with one call" leaves out the slug lookup's `gh repo view` — reject, planned change (AC1 names one `gh pr list` call, and "another cause that the error names" covers a failed lookup)
+- diff-bug #4: `--author` uses GitHub search, which can miss a PR opened seconds before — follow-up, the "Live look" candidate row
+- diff-bug #5: `url` is fetched but not reported — reject, planned change (AC1 fixes the field list)
+- diff-bug #6: a guest milestone slug that starts with `hotfix-` would show in two bullets — follow-up, the "Live look" candidate row
+- diff-bug #7: the bullet names no command for a reported hotfix PR — reject, planned change (Scope Out)
+- blame-history #1: same as diff-bug #2 — fix now, with it
+- blame-history #2: one rewritten inbox line runs past 100 characters — reject, style; it is rewrapped anyway in the diff-bug #2 commit
+- blame-history #3, #4, #6: no regression of M74's inbox filter, M185's handoff, or the adopted-PR model — noted, no finding
+- blame-history #5: owner-mode hits will be rare, because an owner hotfix PR opens only after approval — reject, planned change (AC1 names owner and guest mode)
+- prior-review #1: the same over-long line — reject, style; rewrapped with the fix
+- prior-review: no PR review comments exist (`pulls/comments` returned `[]`), and M226's changelog return does not recur
