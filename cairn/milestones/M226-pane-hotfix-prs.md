@@ -80,7 +80,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       heading runs the list call and the PR reads again, in a repo whose
       base remote resolves. One test presses each heading's Refresh and
       sees the list call run.
-- [ ] AC6: A live look happens in a new desktop Code session in the
+- [x] AC6: A live look happens in a new desktop Code session in the
       parameters repo (`/Users/jmgirard/github/parameters`, guest mode).
       At the time of the look, one call prints the open PRs: `gh pr list
       --repo easystats/parameters --author @me --state open --limit 100`.
@@ -160,6 +160,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - 2026-10-09: claim audit: 60 claims read, 6 corrected — README.md, types/index.d.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx. The same reader re-read the 6 and found them right.
 - 2026-10-09: review return 1: consistency gate failed. `CHANGELOG.md` has no Unreleased entry for the pane's Hotfixes section, which the profile's consistency-gate slot requires. All other gate checks and the AC1 to AC5 and AC7 runs were green (1756 mod tests, 401 script tests, 174 hooks tests, both validates, cairn_validate).
 - 2026-10-09: T6 added for review return 1 (minor amendment, no criterion changed). The CHANGELOG entry went under Unreleased, New, first. Its claims match README's hotfix paragraph, which the claim audit read against the code.
+- 2026-10-09: step-7 approval: m226-pane-hotfix-prs approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -182,6 +183,7 @@ Pass 2, on dcfe338 after review return 1 (no CHANGELOG entry), 2026-10-09.
 - AC4: 8 "M226 AC4" cases pass: rejected call, non-zero exit with `[]`, non-JSON, non-array JSON, entries with missing fields, empty array, a kept read from another root, and no remote. Non-hotfix lines equal the no-read baseline in each. Plants at implement turned the keep and root cases red (work log).
 - AC5: the "M226 AC5" case passes: Blocked heading key `cairn-pane-refresh`, Hotfixes heading key `cairn-pane-refresh-hotfixes`, and each press runs one more list call and one more `gh pr view` of the hotfix URL.
 - AC6: pending. The live look in parameters runs at the merge question.
+- AC6: the operator ran `/cairn-pane` in a new desktop Code session in parameters at the merge question and answered that it matched: HOTFIXES 5 with #1265, #1264, #1263, #1262, and #1261, each with a word other than `unknown`. At the same time, `gh pr list --repo easystats/parameters --author @me --state open --limit 100` printed exactly those 5 PRs, all on `hotfix-` branches.
 - AC7: README pane section (hotfix paragraph) and DESIGN.md `hooks/status/` text (M226 paragraph and list entry) describe the section. Verify on dcfe338: 401 script tests OK, 174 hooks tests OK, plugin validate passed with the usual CLAUDE.md warning, marketplace validate passed, 1756 mod tests pass, 0 fail.
 - Gate: `cairn_validate` all checks passed. No principle changed, so `cairn_impact` is skipped. Marketplace validate shows no `plugins[N].version` warning. CHANGELOG has the Unreleased entry (T6).
 - spawned: diff-bug, blame-history, prior-review
