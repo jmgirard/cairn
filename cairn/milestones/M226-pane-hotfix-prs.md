@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M226: The pane lists open hotfix PRs
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane is shipped plugin surface that every cairn operator sees   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m226-pane-hotfix-prs   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -113,7 +113,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Probe the call through the mod's `$.process.run`. Make sure
+- [x] T1: Probe the call through the mod's `$.process.run`. Make sure
       that `gh pr list --repo` takes an https and an ssh remote URL, and
       that `--author @me` works. The plan's audit ran both forms in a
       shell with gh 2.102.
@@ -150,6 +150,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - 2026-10-09: plan gate chose a live `gh pr list` read over a record that `/hotfix` writes under `cairn/`, because the hotfix skill already says the PR is the record and a second record can go stale; falsified by a hotfix PR that `gh pr list --author @me` does not return, such as one opened under another account.
 - 2026-10-09: criteria audit (full mode, fresh Opus reader): 7 findings, all fixed toward the narrower promise. AC1 names the open paths and skips the call with no remote. The call gains `--limit 100`. AC2 places the section before Candidates. AC3 adds a merged reply. AC4 names the non-zero exit, entries with missing fields, the root, and the baseline for "unchanged". AC5 gives each Refresh its own key and tests both. AC6 requires exactly the listed PRs, at least one, with no `unknown`. AC7 clean.
 - 2026-10-09: question set: which PRs — `hotfix-*` only. Buttons — none on hotfix lines. `/milestone` report — include now, split to M227 because it ships alone. Live look — yes, in a new Code session in parameters at the merge question.
+- 2026-10-09: T1: gh 2.102 in a shell took `--repo` as an https URL (`.git` suffix included) and an ssh URL, and `--author @me` gave the 5 parameters hotfix PRs. The mod's `$.process.run` running `gh` from the app's PATH is M224's T1 probe, so no new mod probe ran. In parameters, `origin` is `easystats/parameters` itself.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
