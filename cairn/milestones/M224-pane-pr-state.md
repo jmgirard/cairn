@@ -92,7 +92,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 
 ## Tasks
 
-- [ ] T1: Probe. First, a `claude plugin test` case answers
+- [x] T1: Probe. First, a `claude plugin test` case answers
       `$.process.run` with `{ value: { exitCode, stdout, stderr } }` and
       with a throw (LESSONS M191). Second, a throwaway mod in the session's
       hot-reload folder runs `gh pr view` on one insight PR. It logs the
@@ -131,6 +131,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: started implement on branch m224-pane-pr-state. The untracked `cairn-probe.log` and `tsconfig.json` at the repo root are not this milestone's and stay unstaged.
 - 2026-10-08: T1 probe, test half: a `claude plugin test` hook on `process.run` answers the mod's call with `{ value: { exitCode, stdout, stderr } }`, and the mod sees the argv. A hook that throws is skipped, so the mod's call rejects with "no implementation for process.run", as it does with no hook. The test's own `$` has no `process` noun, so the call must come from the mod. The probe code was removed.
 - 2026-10-08: T1 probe, desktop half: a throwaway mod `m224probe` in this session's hot-reload folder logs `PATH` and `gh pr view` on insight PR 1250 (bare `gh` and `/opt/homebrew/bin/gh`) to `m224-probe.log`, which `.git/info/exclude` lists. Waiting for the operator to enable hot reload.
+- 2026-10-08: T1 done. In the desktop session, the probe mod's `$.process.run` ran bare `gh` and `/opt/homebrew/bin/gh` at two session starts. Both exited 0 with `{"reviewDecision":"","state":"OPEN"}` for insight PR 1250. The mod's `PATH` holds `/opt/homebrew/bin`, so the mod calls bare `gh`. Both probe halves passed, so no goal-wrong stop. The probe mod was deleted.
 
 ## Decisions
 
