@@ -4,6 +4,17 @@
 
 ### New
 
+- **The cairn pane lists your open hotfix PRs.** A `/hotfix` run has no
+  ROADMAP row, so the pane finds its PR on GitHub. Each time the pane
+  opens, and at each `Refresh` press, it runs one `gh pr list --state open
+  --author @me --limit 100` call on the base remote: `upstream` in guest
+  mode when the repo has that remote, else `origin`. Each PR from a
+  `hotfix-` branch takes a line under a `HOTFIXES` heading, after
+  `BLOCKED` and before the candidates. The line shows `#<n>`, the title,
+  and the same state word and count line that a blocked PR gets. A hotfix
+  line has no Button. When the list call fails, the pane keeps the last
+  list it read for the same repo.
+
 - **The cairn pane counts each open PR's unresolved threads and unanswered
   reviews and comments.** Under a `BLOCKED` line whose PR is open, a line
   such as `3 unresolved threads · 2 unanswered` shows two counts. The

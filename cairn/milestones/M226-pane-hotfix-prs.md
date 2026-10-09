@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M226: The pane lists open hotfix PRs
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -133,6 +133,8 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - [x] T5: Prepare the live look in parameters. The look runs at the
       merge question in a new Code session there, because a desktop
       session keeps the mod it loaded at its start.
+- [x] T6: Add the `CHANGELOG.md` Unreleased entry for the Hotfixes
+      section (review return 1).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -157,6 +159,7 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - 2026-10-09: T5: look prepared. `~/.claude/skills/cairn` links to this checkout, so a new desktop Code session in parameters loads the branch's mod while it is checked out. In parameters, `gh pr list --repo https://github.com/easystats/parameters.git --author @me --state open` shows 5 `hotfix-*` PRs (#1261 to #1265). The look runs at the merge question.
 - 2026-10-09: claim audit: 60 claims read, 6 corrected — README.md, types/index.d.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx. The same reader re-read the 6 and found them right.
 - 2026-10-09: review return 1: consistency gate failed. `CHANGELOG.md` has no Unreleased entry for the pane's Hotfixes section, which the profile's consistency-gate slot requires. All other gate checks and the AC1 to AC5 and AC7 runs were green (1756 mod tests, 401 script tests, 174 hooks tests, both validates, cairn_validate).
+- 2026-10-09: T6 added for review return 1 (minor amendment, no criterion changed). The CHANGELOG entry went under Unreleased, New, first. Its claims match README's hotfix paragraph, which the claim audit read against the code.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
