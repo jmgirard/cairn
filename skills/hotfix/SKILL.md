@@ -256,8 +256,8 @@ a bare PR number resolves against the fork.
    nothing waits on it here; the fenced next command is `/hotfix` with the
    PR reference, whose step 1 re-derives the PR's state (a hotfix has no
    milestone row to set `blocked`, so the PR itself is the record;
-   `/milestone` §2 filters `hotfix-*` PRs out of its inbox and reports
-   nothing for it). Step 7's issue
+   `/milestone` §2 filters `hotfix-*` PRs out of its inbox and reports the
+   open PR in its "Open hotfix PRs" bullet). Step 7's issue
    close is theirs — the `Fixes` keyword closes it at their merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing

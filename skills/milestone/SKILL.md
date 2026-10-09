@@ -183,8 +183,10 @@ The script deliberately does not judge these — do them yourself and report:
   `gh pr list --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`
   field is for: a PR you opened, or one whose head branch is `m<nnn>-*` or
-  `hotfix-*`, is cairn's own in-flight work — already tracked by its
-  milestone and already reported two bullets up. Only what survives that
+  `hotfix-*`, is cairn's own in-flight work. A milestone PR is tracked by
+  its milestone and reported by the `review` and `blocked` bullets above,
+  and a hotfix PR is reported by the "Open hotfix PRs" bullet above. Only
+  what survives that
   filter is inbox; without it the audit re-reports the milestone PR you are
   reviewing right now and can propose adopting a PR this session authored.
   Then

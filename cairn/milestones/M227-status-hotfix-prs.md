@@ -96,7 +96,7 @@ so the report names the review decision only.
 - [x] T1: Write the "Open hotfix PRs" bullet in `skills/milestone/SKILL.md`
       §2, after the blocked-milestone PR bullets. It uses the rulebook's
       `<base-repo>` slug recipe.
-- [ ] T2: Change the §2 inbox bullet's "already reported" clause and the
+- [x] T2: Change the §2 inbox bullet's "already reported" clause and the
       `/hotfix` guest handoff sentence (`skills/hotfix/SKILL.md:259`).
 - [ ] T3: Run the `skills/tests` prose guards and verify. Fix a guard
       that pins the old wording.
@@ -119,3 +119,4 @@ so the report names the review decision only.
 - 2026-10-09: criteria audit (full mode, fresh Opus reader): 8 findings, 7 fixed. AC2's search joins lines, because one phrase wraps. AC1 shows an empty decision as `none`, notes a list cut at 100, adds other read failures, and says "no disposition, no next command". AC3 names the linked checkout on the branch and checks against a literal `easystats/parameters` call. T2 drops the README check that no criterion backs. Kept: AC3's need for an open hotfix PR, which holds today with 5. AC4 clean.
 - 2026-10-09: implement started on branch `m227-status-hotfix-prs`, cut from the pushed main. The untracked `cairn-probe.log` and `tsconfig.json` belong to no task and stay unstaged.
 - 2026-10-09: T1 done. The "Open hotfix PRs" bullet sits after the blocked-milestone PR bullet in `skills/milestone/SKILL.md` §2. Choice: it calls a failed read a reported gap, never an audit `FAIL`, the same as the inbox bullet. Verify green: scripts 401, hooks 174, plugin test 1765, both validates; prose guards 669.
+- 2026-10-09: T2 done. The inbox bullet now says that the `review` and `blocked` bullets report a milestone PR and the "Open hotfix PRs" bullet reports a hotfix PR. The `/hotfix` guest handoff says that §2 reports the open PR. The joined-line search prints 0 for both phrases in both files, and it printed 1 before. Suites and prose guards green.
