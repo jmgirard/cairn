@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-09 (M225 merged as PR #233: validate green, byte budgets met, no lesson added, M222 row pruned, doctrine modules untouched and in budget, prose guards green)_
+_Last hygiene check: 2026-10-09 (M226 merged as PR #234: validate green, byte budgets met, no lesson added, M223 row pruned, doctrine modules untouched, prose guards green)_
 
 ## Milestones
 
@@ -9,11 +9,10 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M226 | The pane lists open hotfix PRs | review | — | normal | milestones/M226-pane-hotfix-prs.md |
 | M227 | The status report lists open hotfix PRs | planned | — | normal | milestones/M227-status-hotfix-prs.md |
-| M223 | The pane lists blocked milestones and their PRs | done | — | normal | milestones/archive/M223-pane-blocked-list.md |
 | M224 | The pane shows each handed-off PR's review state | done | M223 | normal | milestones/archive/M224-pane-pr-state.md |
 | M225 | The pane counts each handed-off PR's unanswered comments | done | M224 | normal | milestones/archive/M225-pane-pr-comments.md |
+| M226 | The pane lists open hotfix PRs | done | — | normal | milestones/archive/M226-pane-hotfix-prs.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
