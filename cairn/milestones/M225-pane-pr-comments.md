@@ -153,25 +153,25 @@ Evidence gathered 2026-10-09 on 619b58e, main at 4e840a3 (not moved). `claude pl
 - AC7: all five `verify` commands exit 0: the two unittest suites (401 tests with 21 skipped, and 174), both `claude plugin validate` runs, and `claude plugin test .` (1734 pass).
 - Consistency gate: `cairn_validate.py` all checks passed. No principle changed, so no `cairn_impact` run. The marketplace validate prints no `plugins[N].version` warning. CHANGELOG's Unreleased section has this milestone's entry with no milestone number.
 - spawned: diff-bug, blame-history, prior-review
-- diff-bug #1: `committedDate` is a GitTimestamp that GitHub's schema says is not converted to UTC, so an offset time misorders against UTC review and comment times — fix now: `counts.ts` converts an offset commit time to UTC before the text compare, with a test (11:00+02:00 against a 10:30Z comment). Nine commit times read from insight PRs 734, 880, and 1123 all ended in `Z`.
+- diff-bug #1: `committedDate` is a GitTimestamp that GitHub's schema says is not converted to UTC, so an offset time misorders against UTC review and comment times — fix now: `counts.ts` converts an offset commit time to UTC before the text compare, with a test (11:00+02:00 against a 10:30Z comment), fixed 7f2f661. Nine commit times read from insight PRs 734, 880, and 1123 all ended in `Z`.
 - diff-bug #2: the anchor uses the newest commit's committed date, not its push time — follow-up to "Pane count edges (M225 review)". AC2 names `committedDate`, and README states the committed date is the time used.
 - diff-bug #3: a bot or a reviewer's suggestion commit clears earlier items — follow-up to "Pane count edges (M225 review)". The rule is AC2's and the docs say the commit can be anyone's.
 - diff-bug #4: fractional seconds would sort wrong as text — follow-up to "Pane count edges (M225 review)". No reply seen carries them, and a commit time with them now converts to whole seconds.
 - diff-bug #5: threads the PR author opened count as unresolved — reject, planned change: AC2 counts every thread with `isResolved` false, and the docs say "review threads not marked resolved".
-- diff-bug #6: the `GH_TIMEOUT_MS` comment named only `gh pr view` — fix now: it names both calls, what each timeout gives, and the doubled wait.
+- diff-bug #6: the `GH_TIMEOUT_MS` comment named only `gh pr view` — fix now: it names both calls, what each timeout gives, and the doubled wait, fixed 7f2f661.
 - diff-bug #7: an open PR's two calls run in turn, so a read can wait up to 30 s — follow-up to "Pane count edges (M225 review)".
 - diff-bug #8: a PR whose author account is deleted shows no counts — reject, planned change: AC4 makes a null PR author fail the read.
 - diff-bug #9: no test for an offset time, fractional seconds, or a non-author commit between reviews — offset part fixed now with diff-bug #1; the rest follow-up to "Pane count edges (M225 review)".
 - blame-history #1: each line's word now waits on its count query — follow-up to "Pane count edges (M225 review)", with diff-bug #7.
 - blame-history #2: M224's trigger tests moved from MERGED to OPEN — reject, false: `merged` and its Button stay covered by the M224 AC1 and AC2 tests, and the Refresh test still ends on `merged`.
 - blame-history #3: no test that only the newest read writes — follow-up, already in "Pane PR-state edges (M224 review)" ("an older read that settles after a newer one").
-- blame-history #4: DESIGN's M224 text said `readPrs` writes only the words — fix now: it says each word with its counts.
+- blame-history #4: DESIGN's M224 text said `readPrs` writes only the words — fix now: it says each word with its counts, fixed 7f2f661.
 - blame-history #5: the M225 DESIGN text sits between the M224 text and the layout text — reject, false: the layout text already followed the M224 PR-read text on main, and the M225 text extends that read.
 - blame-history #6: unwrapped README lines and a ragged CHANGELOG wrap — reject, style.
 - prior-review #1: the open and reopen wait grows from 15 s to up to 30 s — follow-up to "Pane count edges (M225 review)", with diff-bug #7.
 - prior-review #2: no test of an older read settling after a newer one — follow-up, already in "Pane PR-state edges (M224 review)".
 - prior-review #3: no positive control that the clock recorder catches a clock call — follow-up, already in "Pane PR-state edges (M224 review)".
-- prior-review #4: the counts shape was declared twice, and `OPEN_WORDS` is a third list of open words — fix now: `PrCounts` is the contract type, and a register test per open word checks that each gets a query.
+- prior-review #4: the counts shape was declared twice, and `OPEN_WORDS` is a third list of open words — fix now: `PrCounts` is the contract type, and a register test per open word checks that each gets a query, fixed 7f2f661.
 - prior-review #5: line presses in flight or after a word change stay untested — follow-up, already in "Pane PR-state edges (M224 review)".
 - prior-review #6: an in-process `/clear` now also drops the count line — follow-up, already in "Pane PR-state edges (M224 review)".
 - prior-review #7: `counts.ts` keeps its own copy of the PR URL pattern — follow-up to "Pane count edges (M225 review)".
