@@ -701,10 +701,10 @@ async function readPrs($) {
     urls.forEach((url, i) => {
       out[url] = reads[i]
     })
-    if (mine === prReads) {
-      await update($, prs, () => out)
-      await update($, hotfixes, () => listed)
-    }
+    // Each write checks again that no newer read started, so a newer read
+    // that settles between the two writes keeps its list (M226 review).
+    if (mine === prReads) await update($, prs, () => out)
+    if (mine === prReads) await update($, hotfixes, () => listed)
   } catch {
     // No write: the lines keep the words they had.
   }
@@ -779,7 +779,8 @@ async function git($, root: string, args: string[]): Promise<string | null> {
   }
 }
 
-// A press of a pane Button (M219, M224).
+// A press of a pane Button (M219, M224). Either heading's Refresh goes to
+// `pressRefresh`, whatever its target (M226).
 async function pressPane($, kind: PaneButton, target: string | undefined) {
   if (kind === 'clear') return pressClear($)
   if (kind === 'status') return pressStatus($)
@@ -787,8 +788,8 @@ async function pressPane($, kind: PaneButton, target: string | undefined) {
   if (target !== undefined) return pressBlocked($, kind, target)
 }
 
-// A press of the Blocked heading's Refresh reads the files and then the
-// pull request states again (M224).
+// A press of the Blocked or Hotfixes heading's Refresh reads the files,
+// then the hotfix list and the pull request states again (M224, M226).
 async function pressRefresh($) {
   await refresh($)
   await readPrs($)

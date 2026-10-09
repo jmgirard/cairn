@@ -360,6 +360,8 @@ blocked line shows. A hotfix line has no Button, because no command
 resumes an open hotfix PR yet. The heading has a `Refresh` of its own,
 which reads everything again, as the `BLOCKED` heading's does. When the
 list call fails, the pane keeps the last list it read for the same repo.
+The call reads at most 100 of your open PRs, so with more than that, some
+hotfix PRs can be left out.
 When the base remote has no URL, or the call lists no open hotfix PR,
 there is no section.
 

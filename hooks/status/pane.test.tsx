@@ -2155,7 +2155,16 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     const { url: _url, ...noUrl } = pr(1262, 'hotfix-b')
     const { headRefName: _head, ...noBranch } = pr(1261, 'hotfix-c')
     const baseline = await setUp($, on, () =>
-      listReply([noUrl, noBranch, { ...pr(1260, 'hotfix-d'), number: '1260' }, null, 'hotfix-e', pr(1259, 'hotfix-f')]),
+      listReply([
+        noUrl,
+        noBranch,
+        { ...pr(1260, 'hotfix-d'), number: '1260' },
+        null,
+        'hotfix-e',
+        pr(1259, 'hotfix-f'),
+        // A repeated entry draws once, so no two lines share a key (M226 review).
+        pr(1259, 'hotfix-f'),
+      ]),
     )
     const lines = await linesAt($)
     expect(lines.filter(line => HOTFIX_KEY.test(line.key)).map(line => line.key)).toEqual([
@@ -2174,7 +2183,7 @@ describe('a failed list keeps the last good read for the root, and an empty one 
   test('a kept read from another root is not drawn', async ($, on) => {
     const remotes: Record<string, string> = { origin: ORIGIN }
     let answer = GOOD
-    gh(on, () => prView('OPEN', ''), undefined, { remotes, list: () => answer() })
+    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes, list: () => answer() })
     const copy = copyOf('blocked-prs')
     for (const path of Object.keys(copy.files)) copy.files[`/other${path}`] = copy.files[path]
     copy.unreadable.push(...copy.unreadable.map(path => `/other${path}`))
@@ -2187,8 +2196,13 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     const moved = await linesAt($)
     expect(moved.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])
     answer = () => 'reject'
+    const viewsOf1265 = () => calls.calls.filter(argv => argv[3] === prUrl(1265)).length
+    const before = viewsOf1265()
     await pressKey($, 'cairn-pane-refresh')
     expect(await linesAt($)).toEqual(moved)
+    // The read itself drops the other root's list, so its URL is not read
+    // again, apart from the drawing's root check (M226 review).
+    expect(viewsOf1265()).toBe(before)
   })
 
   test('a repo with no remote runs no list call and draws no section', async ($, on) => {

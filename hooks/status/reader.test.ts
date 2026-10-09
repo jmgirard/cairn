@@ -4,6 +4,7 @@ import { FIXTURES } from './fixtures.gen'
 import {
   candidateRows,
   canonId,
+  collaborationMode,
   dirname,
   findRoot,
   loadBand,
@@ -344,4 +345,26 @@ describe('reader details', () => {
       '\\\\srv\\share/cairn/ROADMAP.md',
     ])
   })
+})
+
+// `collaborationMode` against `collaboration_mode` in hooks/cairn_common.py
+// (M226 review). Each expected value is what the Python reader gave for the
+// same PROFILE.md text on 2026-10-09, written out by hand.
+describe('collaborationMode reads the mode as cairn_common does (M226)', () => {
+  const CASES: [string, string, string][] = [
+    ['an empty file', '', 'owner'],
+    ['a guest line', '# Collaboration mode: guest\n', 'guest'],
+    ['the key and value in other cases', '# collaboration MODE:   Guest\n', 'guest'],
+    ['a leading BOM', '﻿# Collaboration mode: guest\n', 'guest'],
+    ['a line after the first slot heading', '# Toolchain profile: x\n\n## verify\n# Collaboration mode: guest\n', 'owner'],
+    ['an owner line', '# Collaboration mode: owner\n', 'owner'],
+    ['no spaces', '#Collaboration mode:guest\n', 'guest'],
+    ['an indented line', '  # Collaboration mode: guest\n', 'owner'],
+    ['two lines, the first wins', '# Toolchain profile: x\n# Collaboration mode: guest\n# Collaboration mode: owner\n', 'guest'],
+  ]
+  for (const [name, text, mode] of CASES) {
+    test(`${name} reads as ${mode}`, () => {
+      expect(collaborationMode(text)).toBe(mode)
+    })
+  }
 })

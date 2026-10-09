@@ -118,8 +118,9 @@ export const HOTFIX_PREFIX = 'hotfix-'
 // null for a call that rejected, exited non-zero, or printed something
 // other than a JSON array (M226). An entry that is not an object, or has no
 // string `headRefName`, no string `url`, or no integer `number`, is
-// skipped, and so is one whose branch does not start with `hotfix-`. A
-// title that is not a string reads as empty.
+// skipped, and so is one whose branch does not start with `hotfix-`, and a
+// second entry with a URL or number already kept, so no two lines share a
+// key (M226 review). A title that is not a string reads as empty.
 export function hotfixPrs(result: { exitCode: number; stdout: string } | null): HotfixPr[] | null {
   if (result === null || result.exitCode !== 0) return null
   let list: unknown
@@ -135,6 +136,7 @@ export function hotfixPrs(result: { exitCode: number; stdout: string } | null): 
     const { number, title, url, headRefName } = entry as Record<string, unknown>
     if (typeof headRefName !== 'string' || !headRefName.startsWith(HOTFIX_PREFIX)) continue
     if (typeof url !== 'string' || typeof number !== 'number' || !Number.isInteger(number)) continue
+    if (out.some(pr => pr.url === url || pr.number === number)) continue
     out.push({ number, title: typeof title === 'string' ? title : '', url })
   }
   return out

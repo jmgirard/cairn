@@ -355,8 +355,6 @@ function prMatch(text: string): RegExpExecArray | null {
   return null
 }
 
-// `pr_number` in scripts/cairn_next.py: the number of that pull request, or
-// null.
 // The collaboration mode that a `cairn/PROFILE.md` text declares, as
 // `collaboration_mode` in hooks/cairn_common.py reads it (M226): the value
 // of the first `# Collaboration mode:` line before the first `## ` slot
@@ -371,6 +369,8 @@ export function collaborationMode(text: string): string {
   return 'owner'
 }
 
+// `pr_number` in scripts/cairn_next.py: the number of that pull request, or
+// null.
 export function prNumber(text: string): number | null {
   const url = prMatch(text)
   return url === null ? null : Number(url[1])
