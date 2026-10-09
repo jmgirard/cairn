@@ -1,16 +1,17 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { CairnBandHidden, CairnStep } from '../../types'
+import type { CairnBandHidden, CairnHotfixRead, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prCounts } from './counts'
-import type { PaneButton, PrRead } from './pane'
+import type { HotfixPr, PaneButton, PrRead } from './pane'
 import {
   CHECK_LABEL,
   CLEAR_LABEL,
   CLEARS_FIRST,
   FINISH_LABEL,
+  hotfixPrs,
   nextLabel as labelOf,
   NO_ROADMAP,
   OPEN_WORDS,
@@ -23,7 +24,7 @@ import {
   STATUS_LABEL,
 } from './pane'
 import type { BandState, FileSource, PaneState } from './reader'
-import { NO_PANE, readCairn } from './reader'
+import { collaborationMode, join, NO_PANE, readCairn } from './reader'
 import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 
 // The milestone band above the prompt (M191, M193 to M201, M206): one row
@@ -72,7 +73,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // changes-requested, or closed line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
 // threads and unanswered reviews and comments, which draw on a line under
-// it (M225).
+// it (M225). The same read lists the operator's open pull requests on the
+// base remote with one `gh pr list` call, and the pane draws the ones from
+// `hotfix-*` branches, each with its word and counts (M226).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -124,6 +127,13 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 // not been read, and its line shows no word. Each entry also holds the
 // open pull request's counts, or null; the tag moved to 2 with them (M225).
 const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
+
+// The open hotfix pull requests of the last good list read, and the repo
+// root they were read for (M226). The pane draws them only while the band's
+// root is that root, so a failed read after a `cd` shows no other repo's.
+const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [] } as CairnHotfixRead, {
+  shape: 'hotfixes-1',
+})
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'
@@ -250,7 +260,10 @@ export const register: Register = on => {
     // After that Button, the Next line shows Status at the same times, and
     // Clear before Status while `ended` is true (M219).
     const acts = knownStep(await read($, step)) === null
-    const lines = paneLines(await read($, pane), (await read($, band)).rows, acts, await read($, ended), await read($, prs))
+    const shown = await read($, band)
+    const held = await read($, hotfixes)
+    const listed = held.root !== null && held.root === shown.root ? held.prs : []
+    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -646,6 +659,8 @@ let prReads = 0
 // fails leaves the counts null, so its line draws no counts, and the state
 // word stands (M225). Words and counts are written together when every call
 // has settled, so a Refresh keeps the earlier counts drawn until then.
+// Before them, `readHotfixes` lists the open hotfix pull requests, whose
+// URLs join the blocked rows' (M226). The list is written with the words.
 async function readPrs($) {
   prReads += 1
   const mine = prReads
@@ -654,7 +669,14 @@ async function readPrs($) {
     for (const row of (await read($, pane)).blocked) {
       if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
     }
-    if (urls.length === 0) return
+    const listed = await readHotfixes($)
+    for (const pr of listed.prs) {
+      if (!urls.includes(pr.url)) urls.push(pr.url)
+    }
+    if (urls.length === 0) {
+      if (mine === prReads) await update($, hotfixes, () => listed)
+      return
+    }
     const reads = await Promise.all(
       urls.map(async (url): Promise<PrRead> => {
         let word: PrRead['word']
@@ -677,9 +699,81 @@ async function readPrs($) {
     urls.forEach((url, i) => {
       out[url] = reads[i]
     })
-    if (mine === prReads) await update($, prs, () => out)
+    if (mine === prReads) {
+      await update($, prs, () => out)
+      await update($, hotfixes, () => listed)
+    }
   } catch {
     // No write: the lines keep the words they had.
+  }
+}
+
+// The hotfix list to write, read with one `gh pr list` call on the base
+// remote of the band's repo root (M226). The base remote is the one
+// `base_remote` in hooks/cairn_common.py picks: `upstream` in guest mode
+// when `git remote` lists it, else `origin`. The call names the remote's
+// URL, which `gh` takes as `--repo` (M226 T1), and runs in the root. With
+// no root or no URL for the base remote, it runs no call, and the list is
+// empty. A call that fails keeps the last good list when it was read for
+// the same root, and is empty otherwise. A good read replaces it, an empty
+// one included.
+async function readHotfixes($): Promise<CairnHotfixRead> {
+  const root = (await read($, band)).root
+  if (root === null) return { root: null, prs: [] }
+  const url = await baseRemoteUrl($, root)
+  if (url === null) return { root, prs: [] }
+  let got: HotfixPr[] | null
+  try {
+    got = hotfixPrs(await $.process.run(listArgv(url), { cwd: root, timeoutMs: GH_TIMEOUT_MS }))
+  } catch {
+    got = null
+  }
+  if (got !== null) return { root, prs: got }
+  const held = await read($, hotfixes)
+  return held.root === root ? held : { root, prs: [] }
+}
+
+// The `gh pr list` call for the operator's open pull requests on a remote
+// (M226). A list longer than the limit is cut at it.
+const LIST_LIMIT = 100
+function listArgv(url: string): string[] {
+  return [
+    'gh',
+    'pr',
+    'list',
+    '--repo',
+    url,
+    '--state',
+    'open',
+    '--author',
+    '@me',
+    '--limit',
+    `${LIST_LIMIT}`,
+    '--json',
+    'number,title,url,headRefName',
+  ]
+}
+
+// The base remote's URL for a root, or null when `git remote get-url`
+// fails or prints nothing (M226).
+async function baseRemoteUrl($, root: string): Promise<string | null> {
+  let base = 'origin'
+  const profile = await readText($, join(root, 'cairn/PROFILE.md'))
+  if (profile !== null && collaborationMode(profile) === 'guest') {
+    const names = await git($, root, ['remote'])
+    if (names !== null && names.split(/\s+/).includes('upstream')) base = 'upstream'
+  }
+  const url = (await git($, root, ['remote', 'get-url', base]))?.trim() ?? ''
+  return url === '' ? null : url
+}
+
+// A git call's stdout in a root, or null when it rejects or exits non-zero.
+async function git($, root: string, args: string[]): Promise<string | null> {
+  try {
+    const got = await $.process.run(['git', ...args], { cwd: root, timeoutMs: GH_TIMEOUT_MS })
+    return got.exitCode === 0 ? got.stdout : null
+  } catch {
+    return null
   }
 }
 

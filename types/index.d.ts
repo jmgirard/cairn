@@ -82,6 +82,15 @@ export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved'
 // whose count read failed.
 export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number; unanswered: number } | null }
 
+// One open pull request that the operator opened from a `hotfix-*` branch,
+// as `gh pr list` gave it (M226).
+export type CairnHotfixPr = { number: number; title: string; url: string }
+
+// The last good `gh pr list` read of the hotfix pull requests, and the repo
+// root it was read for (M226). `root` is null before any read and when no
+// ROADMAP root was known.
+export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[] }
+
 declare module 'claude-code' {
   interface PluginState {
     // Each value is kept under a shape tag (register.tsx), so a value an
@@ -106,6 +115,10 @@ declare module 'claude-code' {
       // by its URL, as the last read at a pane open or a Refresh press found
       // them (M224, M225). A URL with no entry has not been read.
       prs: Shaped<Record<string, CairnPrRead>>
+      // The open hotfix pull requests by the repo root they were read for,
+      // as the last good read at a pane open or a Refresh press found them
+      // (M226). Their words and counts sit in `prs` by URL.
+      hotfixes: Shaped<CairnHotfixRead>
     }
   }
 }

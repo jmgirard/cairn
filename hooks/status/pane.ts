@@ -1,4 +1,4 @@
-import type { CairnPrRead, CairnPrWord } from '../../types'
+import type { CairnHotfixPr, CairnPrRead, CairnPrWord } from '../../types'
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
@@ -17,7 +17,9 @@ import { PILL_TEXT } from './track'
 // pull request its header names (M223), and after a read, that pull
 // request's state word and a Button for three of the words (M224), and for
 // an open one with counts above zero, a line under it with its unresolved
-// threads and unanswered reviews and comments (M225). With no
+// threads and unanswered reviews and comments (M225). After a read, the
+// open pull requests that the operator opened from `hotfix-*` branches,
+// each with the same word and counts and no Button (M226). With no
 // active milestone, the ROADMAP's candidate rows follow, each a priority
 // mark and its short title (M207).
 // A line's `lead` and `tail` keep their width. Its `text` is cut to one
@@ -43,7 +45,9 @@ import { PILL_TEXT } from './track'
 // tail and any action Button, in order: Clear and Status on the Next line
 // (M219), Refresh on the Blocked heading, and one of Finish, Revise, or
 // Check on a blocked line (M224). A blocked line's `target` is its
-// milestone id, which its Button's key and press carry.
+// milestone id, which its Button's key and press carry. The Hotfixes
+// heading's Refresh has the target `hotfixes`, so its key differs from the
+// Blocked heading's (M226).
 export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
@@ -101,6 +105,39 @@ export function prWord(result: { exitCode: number; stdout: string } | null): PrW
   if (reviewDecision === 'CHANGES_REQUESTED') return 'changes requested'
   if (reviewDecision === 'APPROVED') return 'approved'
   return 'in review'
+}
+
+// An open pull request from a `hotfix-*` branch (M226).
+export type HotfixPr = CairnHotfixPr
+
+// The head branch prefix of a hotfix (tracking-rules git model).
+export const HOTFIX_PREFIX = 'hotfix-'
+
+// The hotfix pull requests of one `gh pr list --json
+// number,title,url,headRefName` result, in the order it lists them, or
+// null for a call that rejected, exited non-zero, or printed something
+// other than a JSON array (M226). An entry that is not an object, or has no
+// string `headRefName`, no string `url`, or no integer `number`, is
+// skipped, and so is one whose branch does not start with `hotfix-`. A
+// title that is not a string reads as empty.
+export function hotfixPrs(result: { exitCode: number; stdout: string } | null): HotfixPr[] | null {
+  if (result === null || result.exitCode !== 0) return null
+  let list: unknown
+  try {
+    list = JSON.parse(result.stdout)
+  } catch {
+    return null
+  }
+  if (!Array.isArray(list)) return null
+  const out: HotfixPr[] = []
+  for (const entry of list) {
+    if (entry === null || typeof entry !== 'object') continue
+    const { number, title, url, headRefName } = entry as Record<string, unknown>
+    if (typeof headRefName !== 'string' || !headRefName.startsWith(HOTFIX_PREFIX)) continue
+    if (typeof url !== 'string' || typeof number !== 'number' || !Number.isInteger(number)) continue
+    out.push({ number, title: typeof title === 'string' ? title : '', url })
+  }
+  return out
 }
 
 // The Button a blocked line carries for its state word (M224), from the
@@ -294,13 +331,15 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // Stop that ends a cairn skill's step until the next idle typed prompt,
 // cairn skill prompt, or session end, and then the Clear Button comes
 // before Status (M219). `prs` holds each pull request's state word by its
-// URL, from the last read (M224), with its counts (M225).
+// URL, from the last read (M224), with its counts (M225). `hotfixes` holds
+// the open hotfix pull requests of the last read for this root (M226).
 export function paneLines(
   state: PaneState,
   band: BandRow[] = [],
   acts = false,
   ended = false,
   prs: Record<string, PrRead> = {},
+  hotfixes: HotfixPr[] = [],
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
@@ -375,6 +414,24 @@ export function paneLines(
       // since a 44-column dock leaves no room for them in the tail (M225).
       const counts = got?.counts == null ? null : countsText(got.counts)
       if (counts !== null) out.push(line(`blocked-${row.id}-counts`, 4, [], { text: counts, color: GRAY }))
+    }
+  }
+  // The open hotfix pull requests, after the Blocked rows and before the
+  // candidates, each its number and title, and after a read its state word
+  // and counts as a blocked line shows them, with no Button (M226). No
+  // command resumes an open hotfix pull request, so no word routes one.
+  if (hotfixes.length > 0) {
+    const head = heading('hotfixes-head', 'Hotfixes', QUEUE_COLOR, [{ text: ' ' }, { text: `${hotfixes.length}`, color: GRAY }])
+    head[1].buttons = ['refresh']
+    head[1].target = 'hotfixes'
+    out.push(...head)
+    for (const pr of hotfixes) {
+      const held = line(`hotfix-${pr.number}`, 2, [{ text: `#${pr.number}`, bold: true }, { text: '  ' }], { text: pr.title })
+      const got = Object.prototype.hasOwnProperty.call(prs, pr.url) ? prs[pr.url] : undefined
+      if (got !== undefined) held.tail = [{ text: '  ' }, { text: got.word, color: prColor(got.word) }]
+      out.push(held)
+      const counts = got?.counts == null ? null : countsText(got.counts)
+      if (counts !== null) out.push(line(`hotfix-${pr.number}-counts`, 4, [], { text: counts, color: GRAY }))
     }
   }
   // With no active milestone, the ROADMAP's candidate rows (M207).

@@ -117,13 +117,13 @@ review)" and "Pane count edges (M225 review)" candidate rows.
       that `gh pr list --repo` takes an https and an ssh remote URL, and
       that `--author @me` works. The plan's audit ran both forms in a
       shell with gh 2.102.
-- [ ] T2: In `hooks/status/register.tsx`, add the base-remote read. It
+- [x] T2: In `hooks/status/register.tsx`, add the base-remote read. It
       reads the collaboration mode from `cairn/PROFILE.md`. Then it runs
       `git remote` and `git remote get-url`. Add the list read. Add a
       `hotfixes` atom with its own shape tag that holds the root and the PRs. Join
       the hotfix URLs to `readPrs`, so they get words and counts. Tests
       for AC1 and AC4.
-- [ ] T3: In `hooks/status/pane.ts`, draw the Hotfixes heading with its
+- [x] T3: In `hooks/status/pane.ts`, draw the Hotfixes heading with its
       count and its own Refresh key, and the lines with their words and
       counts and no Button. Bump the `pane` shape tag if the state's
       layout changes. Update `types/index.d.ts`. Tests for AC2, AC3, and
@@ -151,6 +151,8 @@ review)" and "Pane count edges (M225 review)" candidate rows.
 - 2026-10-09: criteria audit (full mode, fresh Opus reader): 7 findings, all fixed toward the narrower promise. AC1 names the open paths and skips the call with no remote. The call gains `--limit 100`. AC2 places the section before Candidates. AC3 adds a merged reply. AC4 names the non-zero exit, entries with missing fields, the root, and the baseline for "unchanged". AC5 gives each Refresh its own key and tests both. AC6 requires exactly the listed PRs, at least one, with no `unknown`. AC7 clean.
 - 2026-10-09: question set: which PRs — `hotfix-*` only. Buttons — none on hotfix lines. `/milestone` report — include now, split to M227 because it ships alone. Live look — yes, in a new Code session in parameters at the merge question.
 - 2026-10-09: T1: gh 2.102 in a shell took `--repo` as an https URL (`.git` suffix included) and an ssh URL, and `--author @me` gave the 5 parameters hotfix PRs. The mod's `$.process.run` running `gh` from the app's PATH is M224's T1 probe, so no new mod probe ran. In parameters, `origin` is `easystats/parameters` itself.
+- 2026-10-09: T2 and T3 land in one commit, because the list read and the drawing share the new atom and tests. `readHotfixes` runs inside `readPrs` before the per-URL reads, and the list is written with the words, by the newest read only. `collaborationMode` in `reader.ts` mirrors `cairn_common.collaboration_mode`. The `pane` shape tag stays at 4, because the pane state did not change: the list sits in its own `hotfixes` atom (`hotfixes-1`). The hotfix heading's Refresh carries the target `hotfixes`, so its key is `cairn-pane-refresh-hotfixes`. The test fake `gh` now answers `git` and `gh pr list` calls apart, with no remote by default, so the M224 and M225 tests run unchanged.
+- 2026-10-09: tests: 17 new cases for AC1 to AC5, and mod tests went to 1756. Four planted defects at once (no keep on a failed list, no root check at drawing, no `hotfix-` filter, guest mode ignored) turned 7 of them red, and the files were restored.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
