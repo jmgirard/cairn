@@ -149,8 +149,8 @@ a bare PR number resolves against the fork.
    under the current development version (no milestone/issue jargon in the
    user-facing text).
    Then apply each per-change rule DESIGN.md's Conventions section states,
-   for example a development-version bump on every PR (counted from the
-   default branch's version at push time) or a NEWS heading format. Where
+   for example a development-version bump on every PR or a NEWS heading
+   format. Where
    the Conventions section states none, no version is bumped: cairn never
    bumps one on its own cadence (D-041).
    *Authoring a fix:* nothing is pushed and no PR is opened here — step 6
