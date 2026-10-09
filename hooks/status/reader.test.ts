@@ -12,6 +12,7 @@ import {
   parseDepends,
   parseRoadmapRows,
   prNumber,
+  prUrl,
   sectionFields,
   workableRows,
 } from './reader'
@@ -80,6 +81,21 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
     expect(prNumber('# M1: x\n\n## Review\n\n- **Branch/PR:** b, https://github.com/o/r/pull/7\n')).toBe(null)
     expect(prNumber(header('b, https://github.com/o/r/pull/123456789012345'))).toBe(123456789012345)
     expect(prNumber(header('b, https://github.com/o/r/pull/1234567890123456'))).toBe(null)
+  })
+
+  // `prUrl` over the forms test_status_fixtures.py gives `pr_url` (M224):
+  // the URL up to its number, which the pane hands to `gh pr view`.
+  test('prUrl reads the same URL, less any trailing path or anchor', () => {
+    const header = (value: string) => `# M1: x\n\n- **Status:** blocked\n- **Branch/PR:** ${value}\n\n## Goal\n`
+    const seven = 'https://github.com/o/r/pull/7'
+    expect(prUrl(header('b, https://github.com/o/r/pull/7'))).toBe(seven)
+    expect(prUrl(header('b, https://github.com/o/r/pull/7, https://github.com/o/r/pull/8'))).toBe(seven)
+    expect(prUrl(header('b, https://github.com/o/r/pull/7/files'))).toBe(seven)
+    expect(prUrl(header('b, https://github.com/o/r/pull/7#discussion_r1'))).toBe(seven)
+    expect(prUrl(header('b, companion: /x b https://github.com/o/s/pull/9'))).toBe(null)
+    expect(prUrl(header('b, https://github.com/o/r/issues/7'))).toBe(null)
+    expect(prUrl(header('b'))).toBe(null)
+    expect(prUrl(header('b, https://github.com/o/r/pull/1234567890123456'))).toBe(null)
   })
 
   test('the pane fixtures hold the shapes M205 names', () => {

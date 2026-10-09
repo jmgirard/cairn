@@ -10,6 +10,6 @@
   "next": {"action": "resume", "command": "/milestone-implement", "id": "M110", "waiting": []},
   "candidates": [],
   "blocked": [
-    {"id": "M111", "title": "Handed to the maintainers", "pr": 1250}
+    {"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250"}
   ]
 }

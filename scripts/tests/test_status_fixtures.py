@@ -280,6 +280,27 @@ class StatusFixtureAgreement(unittest.TestCase):
         self.assertEqual(cn.pr_number(header("b, https://github.com/o/r/pull/123456789012345")), 123456789012345)
         self.assertIsNone(cn.pr_number(header("b, https://github.com/o/r/pull/1234567890123456")))
 
+    def test_pr_url_header_forms(self):
+        # The URL `pr_number` reads its number from, less any trailing path
+        # or anchor, as reader.test.ts gives `prUrl` (M224). The pane runs
+        # `gh pr view` on it.
+        def header(value):
+            return f"# M1: x\n\n- **Status:** blocked\n- **Branch/PR:** {value}\n\n## Goal\n"
+
+        cases = [
+            ("b, https://github.com/o/r/pull/7", "https://github.com/o/r/pull/7"),
+            ("b, https://github.com/o/r/pull/7, https://github.com/o/r/pull/8", "https://github.com/o/r/pull/7"),
+            ("b, https://github.com/o/r/pull/7/files", "https://github.com/o/r/pull/7"),
+            ("b, https://github.com/o/r/pull/7#discussion_r1", "https://github.com/o/r/pull/7"),
+            ("b, companion: /x b https://github.com/o/s/pull/9", None),
+            ("b, https://github.com/o/r/issues/7", None),
+            ("b", None),
+        ]
+        for value, want in cases:
+            with self.subTest(value=value):
+                self.assertEqual(cn.pr_url(header(value)), want)
+        self.assertIsNone(cn.pr_url(header("b, https://github.com/o/r/pull/1234567890123456")))
+
     def test_blocked_fixtures_hold_the_row_shapes(self):
         # The row shapes M223 AC1 and AC2 name, stated apart from the
         # helper: the numbers and the null rows, with an active milestone
@@ -297,7 +318,25 @@ class StatusFixtureAgreement(unittest.TestCase):
         self.assertEqual(load("blocked-prs")["pane"], [])
         active = load("blocked-active")
         self.assertEqual([row["id"] for row in active["pane"]], ["M110"])
-        self.assertEqual(active["blocked"], [{"id": "M111", "title": "Handed to the maintainers", "pr": 1250}])
+        self.assertEqual(
+            active["blocked"],
+            [{"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250"}],
+        )
+        # Each row's URL beside its number (M224): the trailing path cut,
+        # and null wherever the number is.
+        urls = {row["id"]: row["url"] for row in load("blocked-prs")["blocked"]}
+        self.assertEqual(
+            urls,
+            {
+                "M101": "https://github.com/upstream/repo/pull/12",
+                "M102": "https://github.com/upstream/repo/pull/34",
+                "M103": None,
+                "M104": "https://github.com/upstream/repo/pull/90",
+                "M105": None,
+                "M106": None,
+                "M107": None,
+            },
+        )
 
     def test_candidate_rows_match_candidate_count(self):
         # Where no HTML comment sits in the Candidates section, the pane
