@@ -349,6 +349,18 @@ threads, reviews, and comments. A part that is zero is left out, and with both z
 When the query fails, the line is left out, and the state word and its
 Button stay.
 
+A `/hotfix` run has no ROADMAP row, so the pane finds its open PR on
+GitHub. The same read runs one `gh pr list --repo <url> --state open
+--author @me --limit 100` call. The URL is the base remote's: `upstream`
+in guest mode when the repo has that remote, else `origin`. The pane
+lists each PR from a `hotfix-` branch under a `HOTFIXES` heading with the
+count, after `BLOCKED` and before the candidates. Each line shows `#<n>`
+and the PR's title, and after a read the same word and count line that a
+blocked line shows. A hotfix line has no Button, because no command
+resumes an open hotfix PR yet. The heading has its own `Refresh`. When
+the list call fails, the pane keeps the last list it read for the same
+repo. With no remote, or with no open hotfix PR, there is no section.
+
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
 status.
