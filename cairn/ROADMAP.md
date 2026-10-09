@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-08 (M224 merged as PR #231: validate green, byte budgets met, no lesson added, doctrine modules untouched and in budget, prose guards green)_
+_Last hygiene check: 2026-10-09 (M225 merged as PR #233: validate green, byte budgets met, no lesson added, M222 row pruned, doctrine modules untouched and in budget, prose guards green)_
 
 ## Milestones
 
@@ -11,8 +11,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 |---|---|---|---|---|---|
 | M223 | The pane lists blocked milestones and their PRs | done | — | normal | milestones/archive/M223-pane-blocked-list.md |
 | M224 | The pane shows each handed-off PR's review state | done | M223 | normal | milestones/archive/M224-pane-pr-state.md |
-| M225 | The pane counts each handed-off PR's unanswered comments | review | M224 | normal | milestones/M225-pane-pr-comments.md |
-| M222 | The cairn pane stays open across /clear | done | — | normal | milestones/archive/M222-pane-across-clear.md |
+| M225 | The pane counts each handed-off PR's unanswered comments | done | M224 | normal | milestones/archive/M225-pane-pr-comments.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
