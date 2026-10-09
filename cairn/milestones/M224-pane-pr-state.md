@@ -1,6 +1,6 @@
 # M224: The pane shows each handed-off PR's review state
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M223
 - **Driving RR:** —
@@ -114,7 +114,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - [x] T5: Describe the states, Buttons, and reads in README.md's "The cairn
       pane", in `cairn/DESIGN.md`, and in CHANGELOG.md's Unreleased
       section. Run `verify`.
-- [ ] T6: Live look in a new desktop Code session in `~/github/insight`
+- [x] T6: Live look in a new desktop Code session in `~/github/insight`
       (LESSONS M195, M213). Press `Refresh`. Insight has no line that
       carries a Button (amended at T6).
 
@@ -140,6 +140,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: T5 done. README's pane section gains a paragraph and a table of the six words, their GitHub states, and their Buttons. DESIGN's pane text gains `readPrs`, `prWord`, and `PR_BUTTON`, and CHANGELOG's Unreleased section gains one entry. Each claim was written from this session's read of pane.ts and register.tsx. `verify` green, `cairn_validate` all checks passed.
 - 2026-10-08: minor amendment to T6: insight's blocked rows are M006 (PR 1250, OPEN, empty decision, so `in review` and no Button) and M007 (no URL), and M005 is done. So the live look has no line Button to press. T6 now presses `Refresh` only, and the register tests stay the evidence for the line Buttons. AC5 asks for a Button only where AC2 gives one, so it does not change.
 - 2026-10-08: claim audit: 46 claims read, 3 corrected — README.md, cairn/DESIGN.md, hooks/status/register.tsx
+- 2026-10-08: T6 live look: the operator ran `/cairn-pane` in their own insight desktop session, which had loaded this branch's mod, in place of a new session. The M006 line ends `#1250  in review`, the word `gh` gives for PR 1250 (OPEN, empty decision). The operator did not report a `Refresh` press, so the merge question asks for it.
 
 ## Decisions
 
