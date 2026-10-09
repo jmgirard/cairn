@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M227: The status report lists open hotfix PRs
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -112,3 +112,5 @@ so the report names the review decision only.
 - 2026-10-09: T3 done. No prose guard pins the old wording. Exit 0 for each: prose guards, scripts, hooks, plugin and marketplace validate, plugin test (1765 pass), and `cairn_validate`.
 - 2026-10-09: T4 stopped before the run. `gh pr list --repo easystats/parameters --author @me --state open --limit 100` prints no PR, because #1261 to #1265 merged after the plan. `gh search prs --author @me --state open` finds no `hotfix-` head branch in any repo. AC3's setup does not hold, so the user picks how AC3 changes.
 - 2026-10-09: substantive amendment: at the stop the user chose "Drop the live look". AC3 (the `/milestone` run in parameters) and T4 come out, and the old AC4 is now AC3 with its wording unchanged, mapped to T3. No criterion wording changed, so no re-audit ran. A candidate row holds the live look.
+- 2026-10-09: claim audit: 13 claims read, 1 corrected — skills/milestone/SKILL.md, skills/hotfix/SKILL.md
+- 2026-10-09: the corrected claim: the inbox bullet now says a hotfix PR "you opened" is reported by the new bullet. The reader's re-read found it true. Someone else's `hotfix-*` PR is still dropped from the inbox and reported nowhere, a gap older than M227, so the live-look candidate row records it. Verify green again after the fix, and status set to `review`.

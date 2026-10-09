@@ -185,10 +185,9 @@ The script deliberately does not judge these — do them yourself and report:
   field is for: a PR you opened, or one whose head branch is `m<nnn>-*` or
   `hotfix-*`, is cairn's own in-flight work. A milestone PR is tracked by
   its milestone and reported by the `review` and `blocked` bullets above,
-  and a hotfix PR is reported by the "Open hotfix PRs" bullet above. Only
-  what survives that
-  filter is inbox; without it the audit re-reports the milestone PR you are
-  reviewing right now and can propose adopting a PR this session authored.
+  and a hotfix PR you opened is reported by the "Open hotfix PRs" bullet
+  above. Only what survives that filter is inbox; without it the audit
+  re-reports the milestone PR you are reviewing right now and can propose adopting a PR this session authored.
   Then
   apply the search-first rule to every hit before proposing anything: sweep
   the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
