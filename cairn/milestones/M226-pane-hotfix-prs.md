@@ -184,3 +184,38 @@ Pass 2, on dcfe338 after review return 1 (no CHANGELOG entry), 2026-10-09.
 - AC6: pending. The live look in parameters runs at the merge question.
 - AC7: README pane section (hotfix paragraph) and DESIGN.md `hooks/status/` text (M226 paragraph and list entry) describe the section. Verify on dcfe338: 401 script tests OK, 174 hooks tests OK, plugin validate passed with the usual CLAUDE.md warning, marketplace validate passed, 1756 mod tests pass, 0 fail.
 - Gate: `cairn_validate` all checks passed. No principle changed, so `cairn_impact` is skipped. Marketplace validate shows no `plugins[N].version` warning. CHANGELOG has the Unreleased entry (T6).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: no Refresh when the list is empty and no blocked row has a URL — follow-up, "Pane hotfix edges (M226 review)"
+- diff-bug #2: the list read runs before the PR reads, up to about 45 s more wait — follow-up, same row
+- diff-bug #3: a newer read settling between the two writes loses its list — fixed now (each write checks the newest read again), fixed 1fa492f
+- diff-bug #4: the empty-URL path writes the list but not `prs` — reject, false: the `prs` value keeps M224's behavior on that path, and nothing draws a stale word from it
+- diff-bug #5: the other-root test passes without the read's own root check — fixed now (asserts the old URL is not read again), fixed 1fa492f
+- diff-bug #6: no parity test for `collaborationMode` — fixed now (9 cases against Python's results), fixed 1fa492f
+- diff-bug #7: `prNumber`'s comment sat above `collaborationMode` — fixed now, fixed 1fa492f
+- diff-bug #8: owner repo with only `upstream` shows no section — reject, false: README says no section when the base remote has no URL, and the rule matches `base_remote`
+- diff-bug #9: a remote URL that `gh` cannot map shows no section, and a credential URL goes into the argv — follow-up, "Pane hotfix edges (M226 review)"
+- diff-bug #10: a PR in both a blocked row and the list draws twice — follow-up, same row
+- diff-bug #11: repeated entries give two lines one key — fixed now (`hotfixPrs` skips a repeated URL or number), fixed 1fa492f
+- diff-bug #12: titles draw as GitHub gives them — follow-up, same row
+- diff-bug #13: `blockedView` gives no Buttons for a missing line — reject, false: the AC3 test asserts each line's text first, so the lines exist
+- diff-bug #14: the list call has a `cwd` and the view calls do not — reject, style
+- diff-bug #15: a UNC root is untested for `git` — follow-up, same row
+- diff-bug #16: shape tags are consistent — no finding
+- diff-bug #17: docs match the code — no finding
+- blame-history #1: the pre-read runs in series before the PR reads — follow-up, "Pane hotfix edges (M226 review)" (same as diff-bug #2)
+- blame-history #2: the two writes can tear — fixed now with diff-bug #3, fixed 1fa492f
+- blame-history #3: an in-process `/clear` leaves no Hotfixes Refresh — follow-up, same row
+- blame-history #4: read-then-write with no version check — reject, false: only the newest read writes, and each write now checks it
+- blame-history #5: misplaced `prNumber` comment — fixed now with diff-bug #7, fixed 1fa492f
+- blame-history #6: the Refresh comments named only the Blocked heading — fixed now, fixed 1fa492f
+- blame-history #7: README did not say the list stops at 100 — fixed now, fixed 1fa492f
+- blame-history #8: the fake's default runs no list in the M224 and M225 tests — reject, false: the M226 AC3 cases run words and counts with a list call
+- blame-history #9: a PR in both places draws twice — follow-up with diff-bug #10
+- prior-review #1: open and reopen waits grow — follow-up with diff-bug #2
+- prior-review #2: no race tests for the new list — follow-up, same row
+- prior-review #3: `collaborationMode` has no parity test — fixed now with diff-bug #6, fixed 1fa492f
+- prior-review #4: a PR in both places draws twice — follow-up with diff-bug #10
+- prior-review #5: an in-process `/clear` loses the list — follow-up, same row
+- prior-review #6: one contract type, aliased — no finding
+- prior-review #7: a non-github.com PR gets a word but no counts — follow-up, same row
+- Fix-now re-run on 1fa492f: 1765 mod tests pass, 0 fail. Planting the two defects again (no root check in the read, no repeated-entry skip) turned their 2 tests red.
