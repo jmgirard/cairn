@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M227: The status report lists open hotfix PRs
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -91,6 +91,8 @@ so the report names the review decision only.
       `/hotfix` guest handoff sentence (`skills/hotfix/SKILL.md:259`).
 - [x] T3: Run the `skills/tests` prose guards and verify. Fix a guard
       that pins the old wording.
+- [x] T4: Add a `CHANGELOG.md` Unreleased entry for the "Open hotfix PRs"
+      report (review return 1).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -115,6 +117,9 @@ so the report names the review decision only.
 - 2026-10-09: claim audit: 13 claims read, 1 corrected — skills/milestone/SKILL.md, skills/hotfix/SKILL.md
 - 2026-10-09: the corrected claim: the inbox bullet now says a hotfix PR "you opened" is reported by the new bullet. The reader's re-read found it true. Someone else's `hotfix-*` PR is still dropped from the inbox and reported nowhere, a gap older than M227, so the live-look candidate row records it. Verify green again after the fix, and status set to `review`.
 - 2026-10-09: review return 1: the consistency gate's changelog check fails. `CHANGELOG.md` has no Unreleased entry for the new "Open hotfix PRs" report in `/milestone`. Status back to `in-progress`.
+- 2026-10-09: T4 added for review return 1 (minor amendment) and done: a `CHANGELOG.md` Unreleased entry for the "Open hotfix PRs" report, above the pane's hotfix entry.
+- 2026-10-09: claim audit: 12 claims read, 0 corrected — CHANGELOG.md
+- 2026-10-09: verify green after T4, and status set to `review`.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate

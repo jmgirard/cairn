@@ -4,6 +4,16 @@
 
 ### New
 
+- **The `/milestone` health audit lists your open hotfix PRs.** A new
+  "Open hotfix PRs" item in its §2 runs one `gh pr list --state open
+  --author @me --limit 100` call on the base repo, in owner and guest mode.
+  It reports each PR from a `hotfix-` branch with its number, title, and
+  review decision, and shows an empty decision as `none`. It says when the
+  list can be cut at 100. It proposes no action and writes nothing to
+  GitHub. When the call fails, it names the cause and lists no PR. Before
+  this change, the inbox check dropped `hotfix-*` PRs and no other check
+  reported them.
+
 - **The cairn pane lists your open hotfix PRs.** A `/hotfix` run has no
   ROADMAP row, so the pane finds its PR on GitHub. Each time the pane
   opens, and at each `Refresh` press, it runs one `gh pr list --state open
