@@ -305,8 +305,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   routes `/milestone` gives a handed-off PR. None of these three Buttons
   clears first. A press reads the word as it is now and runs through
   `run`, as the Status press does, while no other run is in flight. Unlike
-  the Status press, it does not wait for a running cairn skill's step to
-  end. A test answers the mod's
+  the Status press, which does nothing while a cairn skill's step runs, it
+  has no check for that step. A test answers the mod's
   `$.process.run` with an `on('process.run')` hook (M224 probe), and a
   desktop Code session's mod runs `gh` from the app's `PATH`.
   `pane.ts` lays out the lines, and each line's text is
