@@ -320,8 +320,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   CHANGES_REQUESTED reviews and the conversation comments strictly after
   the anchor, by anyone but the PR author. A null author counts as another
   person. The anchor is the latest of the author's newest such review,
-  newest conversation comment, and newest commit's `committedDate`,
-  compared as ISO-8601 text. GitHub gives no reply link for a review or a
+  the author's newest conversation comment, and the `committedDate` of
+  the PR's newest commit. That commit can be anyone's, and the times
+  compare as ISO-8601 text. GitHub gives no reply link for a review or a
   conversation comment, so the anchor rule stands in for per-item reply
   tracking. Bots are others, so one Copilot review can count in both
   counts. The counts cover the newest 100 of each kind. A failed call or

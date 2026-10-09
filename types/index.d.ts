@@ -77,8 +77,8 @@ export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved'
 
 // One read of a blocked milestone's pull request: its state word (M224),
 // and for an open one, its unresolved review threads and the reviews and
-// comments from others newer than its author's last comment, review, or
-// commit (M225). `counts` is null for a pull request that is not open, or
+// comments from others newer than its author's last comment or review and
+// its newest commit (M225). `counts` is null for a pull request that is not open, or
 // whose count read failed.
 export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number; unanswered: number } | null }
 

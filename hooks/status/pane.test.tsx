@@ -1423,7 +1423,7 @@ const prView = (state: string, decision?: string) =>
 
 // A `gh api graphql` reply in the shape GitHub returns (M225), with `t`
 // unresolved threads and one resolved, and `c` comments from another person
-// after the author's newest commit and one before it.
+// after the pull request's newest commit and one before it.
 function countsReply(t: number, c: number): GhAnswer {
   const pr = {
     author: { login: 'ana' },

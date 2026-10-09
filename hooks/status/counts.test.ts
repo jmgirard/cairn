@@ -4,8 +4,9 @@ import { countPr, countsArgv, prCounts, prNodes } from './counts'
 import type { PrNodes } from './counts'
 
 // The counting rule (M225 AC2). Each case adds one item to a pull request
-// whose anchor is set by one of the author's comment, review, or commit,
-// and the count it expects is written out by hand from the rule: another
+// whose anchor is set by the author's comment, the author's review, or the
+// newest commit, and the count it expects comes from a short restatement
+// of the rule in the test loop: another
 // person's COMMENTED or CHANGES_REQUESTED review, or another person's
 // conversation comment, strictly after the anchor.
 
@@ -140,8 +141,17 @@ describe('prCounts reads only the reply shape it names (M225 AC4)', () => {
     expect(prCounts(ok(reply(GOOD)))).toEqual({ unresolved: 1, unanswered: 2 })
   })
 
+  // With no commit time, the author's comment alone sets the anchor: the
+  // other person's comment before it stops counting, and the review after
+  // it still counts.
   test('a pull request with no commits anchors on the author alone', () => {
-    expect(prNodes(reply({ ...GOOD, commits: { nodes: [] } }))?.commit).toBe(null)
+    const pr = {
+      ...GOOD,
+      comments: { nodes: [{ author: { login: 'bo' }, createdAt: T2 }, { author: { login: AUTHOR }, createdAt: T3 }] },
+      commits: { nodes: [] },
+    }
+    expect(prNodes(reply(pr))?.commit).toBe(null)
+    expect(prCounts(ok(reply(pr)))).toEqual({ unresolved: 1, unanswered: 1 })
   })
 
   const BAD: [string, unknown][] = [
@@ -184,6 +194,7 @@ describe('countsArgv names the owner, repo, and number of the URL (M225 AC1)', (
     // The number goes as an Int, the owner and repo as strings.
     expect(a?.[a.indexOf('number=12') - 1]).toBe('-F')
     expect(a?.[a.indexOf('owner=alpha') - 1]).toBe('-f')
+    expect(a?.[a.indexOf('repo=one') - 1]).toBe('-f')
   })
 
   test('a URL of another form gives no argv', () => {

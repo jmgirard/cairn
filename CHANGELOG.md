@@ -8,10 +8,12 @@
   reviews and comments.** Under a `BLOCKED` line whose PR is open, a line
   such as `3 unresolved threads · 2 unanswered` shows two counts. The
   first is the review threads not marked resolved. The second is the
-  reviews and conversation comments from anyone but the PR author that
-  came after the author's latest comment, review, or commit. GitHub does
-  not link a reply to a review or a conversation comment. So one comment,
-  review, or push by the author clears every earlier item. Bots count, so
+  reviews that comment or request changes, and the conversation comments,
+  from anyone but the PR author. It counts only those after the author's
+  latest comment or review and after the PR's newest commit, whoever made
+  it. GitHub does not link a reply to a review or a conversation comment.
+  So one comment or review by the author clears every earlier item, and so
+  does a newer commit on the PR. Bots count, so
   one Copilot review can show in both counts. The counts cover the newest
   100 threads, reviews, and comments. Each time the pane opens, and at
   each `Refresh` press, it reads them with one `gh api graphql` query per

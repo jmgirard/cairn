@@ -1,10 +1,11 @@
 // The two counts under an open handed-off pull request's blocked line
 // (M225): its unresolved review threads, and the reviews and conversation
-// comments from others that are newer than the anchor, the latest of its
-// author's newest submitted review, newest conversation comment, and newest
-// commit. GitHub links no reply to a review or a conversation comment, so
-// the anchor stands in for "answered": the author's comment, review, or
-// push clears every earlier item. Bots are others, so a Copilot review
+// comments from others that are newer than the anchor. The anchor is the
+// latest of the author's newest submitted review, the author's newest
+// conversation comment, and the committed date of the pull request's newest
+// commit, whoever made it. GitHub links no reply to a review or a
+// conversation comment, so the anchor stands in for "answered": the
+// author's comment or review, or a newer commit, clears every earlier item. Bots are others, so a Copilot review
 // counts, and its threads count too. Each kind is read `last: 100`, so the
 // counts cover the newest 100 of each.
 

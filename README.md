@@ -337,10 +337,11 @@ graphql` query, and the pane draws a line under the PR such as `3
 unresolved threads · 2 unanswered`. The first count is the review threads
 not marked resolved. The second count is the reviews that comment or
 request changes, and the conversation comments. It counts only the items
-from anyone but the PR author that came after the author's latest
-comment, review, or commit. GitHub does not link a reply to a review or to
-a conversation comment. So one comment, review, or push by the author
-clears every earlier item.
+from anyone but the PR author. Each item must come after the author's
+latest comment or review, and after the PR's newest commit. That commit
+can be anyone's, and the time used is its committed date. GitHub does not link a reply to a review or to a
+conversation comment. So one comment or review by the author clears every
+earlier item, and so does a newer commit on the PR.
 Bots count as other people, so a Copilot review counts, and one Copilot
 review can show in both counts: as a review in the second, and as its
 unresolved threads in the first. Each count covers the newest 100 threads, reviews, and comments.
