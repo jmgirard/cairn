@@ -70,7 +70,7 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
       CLOSED, or OPEN.
       The other lines draw as before, and the hook does not throw. One
       register test covers each case.
-- [ ] AC5: The operator looks at the desktop app's docked pane in the
+- [x] AC5: The operator looks at the desktop app's docked pane in the
       guest-mode insight checkout (`~/github/insight`). Each handed-off PR
       shows the state word read from GitHub, and its Button where AC2 gives
       one. The operator accepts this at the merge question.
@@ -141,6 +141,8 @@ depends on M224), which also reads each OPEN PR with a GraphQL call.
 - 2026-10-08: minor amendment to T6: insight's blocked rows are M006 (PR 1250, OPEN, empty decision, so `in review` and no Button) and M007 (no URL), and M005 is done. So the live look has no line Button to press. T6 now presses `Refresh` only, and the register tests stay the evidence for the line Buttons. AC5 asks for a Button only where AC2 gives one, so it does not change.
 - 2026-10-08: claim audit: 46 claims read, 3 corrected — README.md, cairn/DESIGN.md, hooks/status/register.tsx
 - 2026-10-08: T6 live look: the operator ran `/cairn-pane` in their own insight desktop session, which had loaded this branch's mod, in place of a new session. The M006 line ends `#1250  in review`, the word `gh` gives for PR 1250 (OPEN, empty decision). The operator did not report a `Refresh` press, so the merge question asks for it.
+- 2026-10-08: review: three fresh reviewers (diff-bug, blame-history, prior-review). 8 findings fixed on the branch, 4 sent to the candidate row "Pane PR-state edges (M224 review)", 6 rejected, all logged in the Review section. No return.
+- 2026-10-08: step-7 approval: m224-pane-pr-state approved for merge. The operator chose merge over checking `Refresh` first, which accepts the live look with no `Refresh` press seen.
 
 ## Decisions
 
@@ -152,7 +154,7 @@ Review head 64a5f56 (plus this record). Default branch unchanged since the cut (
 - AC2: same run, describe "the merged, changes-requested, and closed lines carry a Button (M224 AC2)": 6 pass, 0 fail. Finish, Revise, and Check presses submit exactly `cairn:milestone-review M111`, `cairn:milestone-implement M111`, and `cairn:milestone` with no `clear` before them. The `approved` and `in review` lines carry no Button, with their exact text. A review-added case shows a press during a running cairn skill runs nothing, and it fails with the step check removed (planted on the branch, then restored).
 - AC3: same run, the AC3 describes: 7 pass, 0 fail. The `/cairn-pane` command, the band's open button, the session-start reopen, and the Refresh press each record exactly one `gh` call for the one URL, and a turn-complete case records none. Each of these five records no `clock.sleep`, `clock.after`, or `clock.every` call. Two review-added cases show a close and a refused open run no `gh`. `grep -n "\$.clock" hooks/status/*.ts*` finds no call in the mod.
 - AC4: same run, describe "a failed read shows `unknown` and no Button (M224 AC4)": 4 pass, 0 fail. On blocked-prs, M101's call rejects, exits 1, prints non-JSON text, or prints JSON with state DRAFT. M101 shows `#12  unknown` with no Button, M102 and M104 still read `merged` with M102's Finish, M103 and M105 draw as before, and the command returns `cairn pane opened`, so the hook did not throw.
-- AC5: the operator looked at the docked pane in their insight desktop session (work log, T6). The M006 line ends `#1250  in review`, which matches `gh pr view` for PR 1250 at review time (OPEN, empty decision). Insight has no line that AC2 gives a Button. Acceptance is asked at the merge question, and the box waits for it.
+- AC5: the operator looked at the docked pane in their insight desktop session (work log, T6). The M006 line ends `#1250  in review`, which matches `gh pr view` for PR 1250 at review time (OPEN, empty decision). Insight has no line that AC2 gives a Button. Acceptance is asked at the merge question, and the box waits for it. The operator accepted it at the merge question on 2026-10-08.
 - AC6: README "The cairn pane" gains the read paragraph and the six-word table, DESIGN's pane text names `readPrs`, `prWord`, `PR_BUTTON`, the four reads, and the Refresh Button, and CHANGELOG Unreleased gains one entry naming the words, the three line Buttons, Refresh, and when the states are read, with no milestone number. The implement-time claim audit read 46 claims and corrected 3 (work log), and the review fixes rewrote the two DESIGN sentences they changed.
 - AC7: on 64a5f56, every `verify` command exited 0. `scripts/tests` ran 401 tests, OK with 21 skipped. `hooks/tests` ran 174, OK. Both `claude plugin validate` runs passed with warnings, and `claude plugin test .` ran 1469 pass, 0 fail.
 - Gate: `cairn_validate` exit 0, all checks passed. The marketplace validate shows no `plugins[N].version` warning. CHANGELOG has the entry. No IP or GP changed, so `cairn_impact` is skipped. Coverage is complete per `cairn_validate`.
