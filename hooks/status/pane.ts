@@ -1,4 +1,5 @@
-import type { CairnPrWord } from '../../types'
+import type { CairnPrRead, CairnPrWord } from '../../types'
+import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
@@ -14,7 +15,9 @@ import { PILL_TEXT } from './track'
 // workable planned milestones, and the planned ones that wait on
 // dependencies. Then the blocked milestones, each with the number of the
 // pull request its header names (M223), and after a read, that pull
-// request's state word and a Button for three of the words (M224). With no
+// request's state word and a Button for three of the words (M224), and for
+// an open one with counts above zero, a line under it with its unresolved
+// threads and unanswered reviews and comments (M225). With no
 // active milestone, the ROADMAP's candidate rows follow, each a priority
 // mark and its short title (M207).
 // A line's `lead` and `tail` keep their width. Its `text` is cut to one
@@ -58,6 +61,23 @@ export type PaneLine = {
 // `gh pr view <url> --json state,reviewDecision` call (M224). The state
 // contract holds the one list of words.
 export type PrWord = CairnPrWord
+
+// One read of a pull request: its word, and its counts while it is open
+// and its count read did not fail (M225).
+export type PrRead = CairnPrRead
+
+// The words `prWord` gives an OPEN pull request, whose counts are read
+// (M225).
+export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
+
+// The count line's text, or null when both counts are zero. A zero part is
+// left out, and one thread reads in the singular (M225).
+export function countsText(counts: PrCounts): string | null {
+  const parts: string[] = []
+  if (counts.unresolved > 0) parts.push(`${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`)
+  if (counts.unanswered > 0) parts.push(`${counts.unanswered} unanswered`)
+  return parts.length === 0 ? null : parts.join(' · ')
+}
 
 // The state word of one `gh pr view` result, null for a call that
 // rejected. A non-zero exit, text that is not a JSON object, or a `state`
@@ -274,13 +294,13 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // Stop that ends a cairn skill's step until the next idle typed prompt,
 // cairn skill prompt, or session end, and then the Clear Button comes
 // before Status (M219). `prs` holds each pull request's state word by its
-// URL, from the last read (M224).
+// URL, from the last read (M224), with its counts (M225).
 export function paneLines(
   state: PaneState,
   band: BandRow[] = [],
   acts = false,
   ended = false,
-  prs: Record<string, PrWord> = {},
+  prs: Record<string, PrRead> = {},
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
@@ -340,7 +360,8 @@ export function paneLines(
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
       if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
-      const word = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
+      const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
+      const word = got?.word
       if (word !== undefined) {
         held.tail = [...(held.tail ?? []), { text: '  ' }, { text: word, color: prColor(word) }]
         const button = PR_BUTTON[word]
@@ -350,6 +371,10 @@ export function paneLines(
         }
       }
       out.push(held)
+      // The counts sit in the line's text, which is cut at the pane's edge,
+      // since a 44-column dock leaves no room for them in the tail (M225).
+      const counts = got?.counts == null ? null : countsText(got.counts)
+      if (counts !== null) out.push(line(`blocked-${row.id}-counts`, 4, [], { text: counts, color: GRAY }))
     }
   }
   // With no active milestone, the ROADMAP's candidate rows (M207).

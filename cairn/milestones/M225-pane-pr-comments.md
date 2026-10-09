@@ -102,11 +102,11 @@ kept unchanged. M224's state words and Buttons are M224's.
       AC4 failure cases, with `process.run` answers per case. Extend M224's
       trigger tests to record GraphQL calls. Make sure that they fail
       against the M224 code.
-- [ ] T2: Add the query and the shape check beside M224's read in
+- [x] T2: Add the query and the shape check beside M224's read in
       `register.tsx`, and the counting function in `reader.ts` or its own
       module, with the counts in the M224 state atom under a moved shape
       tag (LESSONS M193, M210).
-- [ ] T3: Draw the count line in `pane.ts` with the Box widths of LESSONS
+- [x] T3: Draw the count line in `pane.ts` with the Box widths of LESSONS
       M194. Run `verify`.
 - [ ] T4: Describe the counts in README.md's "The cairn pane", in
       `cairn/DESIGN.md`, and in CHANGELOG.md's Unreleased section. Run
@@ -128,6 +128,8 @@ kept unchanged. M224's state words and Buttons are M224's.
 - 2026-10-09: a read-only `gh api graphql` call on PR #231 returned `data.repository.pullRequest` with `author.login`, `reviewThreads.nodes`, `reviews.nodes`, `comments.nodes`, and `commits.nodes[].commit.committedDate`, the shape the shape check reads.
 - 2026-10-09: implementation choice: the counting lives in its own module `hooks/status/counts.ts` (`countsArgv`, `prNodes`, `countPr`, `prCounts`). The argv passes owner and repo with `-f` and the number with `-F`, so an owner named like a number stays a string.
 - 2026-10-09: T1 done: `counts.test.ts` covers the AC2 axes, the shape check, and the argv; `pane.test.tsx` adds the AC1, AC3, and AC4 register cases and records `gh api graphql` calls in M224's trigger tests, now over an OPEN PR. `counts.ts` was written in the same sitting; against the M224 register and pane code with `countPr` and `prCounts` stubbed to zero counts, `claude plugin test .` gave 68 fail, 1666 pass, every failure in an M225 case or an extended M224 trigger case.
+- 2026-10-09: T2 done. `readPrs` runs the count query after a `gh pr view` whose word is open, with the same 15 s timeout. The `prs` atom holds `{ word, counts }` under the tag `prs-2`, and `CairnPrRead` joins the state contract. Words and counts are written once, after every call settles.
+- 2026-10-09: T3 done. `paneLines` adds `blocked-<id>-counts` at indent 4, gray, with the count text in the line's text part, so a narrow pane cuts it. The Refresh test reads the held state from the terminal surface, because the desktop pane holds the press. All five verify commands exit 0, and the mod tests give 1734 pass.
 
 ## Decisions
 

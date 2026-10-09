@@ -4,7 +4,8 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import type { PaneButton, PrWord } from './pane'
+import { countsArgv, prCounts } from './counts'
+import type { PaneButton, PrRead } from './pane'
 import {
   CHECK_LABEL,
   CLEAR_LABEL,
@@ -12,6 +13,7 @@ import {
   FINISH_LABEL,
   nextLabel as labelOf,
   NO_ROADMAP,
+  OPEN_WORDS,
   paneLines,
   PLAN_LABEL,
   PR_BUTTON,
@@ -68,7 +70,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // with `gh`, and so does a press of the Blocked heading's Refresh Button
 // (`readPrs`). A blocked line then shows its state word, and a merged,
 // changes-requested, or closed line carries a Button for its next step
-// (M224).
+// (M224). The same read counts each open pull request's unresolved review
+// threads and unanswered reviews and comments, which draw on a line under
+// it (M225).
 
 // Each shape tag names a value's layout; a reload whose value was written
 // under another tag reads it as absent. Bump a tag when its type changes.
@@ -117,8 +121,9 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
-// not been read, and its line shows no word.
-const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrWord>, { shape: 'prs-1' })
+// not been read, and its line shows no word. Each entry also holds the
+// open pull request's counts, or null; the tag moved to 2 with them (M225).
+const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'
@@ -634,6 +639,11 @@ let prReads = 0
 // only at a pane open and a Refresh press: no timer and no turn end starts
 // one, since the operator does not want repeating tasks. A read that
 // starts while another runs still runs, with the newest URLs.
+// A pull request whose word says it is open then gets one `gh api graphql`
+// call for its counts (counts.ts), with the same timeout. A count call that
+// fails leaves the counts null, so its line draws no counts, and the state
+// word stands (M225). Words and counts are written together when every call
+// has settled, so a Refresh keeps the earlier counts drawn until then.
 async function readPrs($) {
   prReads += 1
   const mine = prReads
@@ -643,19 +653,27 @@ async function readPrs($) {
       if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
     }
     if (urls.length === 0) return
-    const words = await Promise.all(
-      urls.map(async url => {
+    const reads = await Promise.all(
+      urls.map(async (url): Promise<PrRead> => {
+        let word: PrRead['word']
         try {
           const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
-          return prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
+          word = prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
         } catch {
-          return prWord(null)
+          word = prWord(null)
+        }
+        const argv = countsArgv(url)
+        if (!OPEN_WORDS.includes(word) || argv === null) return { word, counts: null }
+        try {
+          return { word, counts: prCounts(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })) }
+        } catch {
+          return { word, counts: null }
         }
       }),
     )
-    const out: Record<string, PrWord> = {}
+    const out: Record<string, PrRead> = {}
     urls.forEach((url, i) => {
-      out[url] = words[i]
+      out[url] = reads[i]
     })
     if (mine === prReads) await update($, prs, () => out)
   } catch {
@@ -689,7 +707,7 @@ async function pressBlocked($, kind: PaneButton, id: string) {
   const row = (await read($, pane)).blocked.find(each => each.id === id)
   if (row === undefined || row.url === null) return
   const words = await read($, prs)
-  const word = Object.prototype.hasOwnProperty.call(words, row.url) ? words[row.url] : undefined
+  const word = Object.prototype.hasOwnProperty.call(words, row.url) ? words[row.url].word : undefined
   const route = BLOCKED_COMMANDS[kind]
   if (word === undefined || PR_BUTTON[word] !== kind || route === undefined) return
   await run($, route.command, route.withId ? id : '')

@@ -1719,8 +1719,12 @@ describe('a failed read shows `unknown` and no Button (M224 AC4)', () => {
 // expects are written out by hand.
 
 // The keys, texts, and indents of the pane's lines, at a width.
-async function linesAt($, bodyColumns = 60): Promise<{ key: string; text: string; indent: number }[]> {
-  const ui = await mountPane($, 'desktop', bodyColumns)
+async function linesAt(
+  $,
+  bodyColumns = 60,
+  surface: (typeof SURFACES)[number] = 'desktop',
+): Promise<{ key: string; text: string; indent: number }[]> {
+  const ui = await mountPane($, surface, bodyColumns)
   const [root] = await ui.findAll({ key: 'cairn-pane' })
   const out = kids(root).map(line => ({
     key: keyOf(line) ?? '',
@@ -1730,7 +1734,8 @@ async function linesAt($, bodyColumns = 60): Promise<{ key: string; text: string
   await ui.unmount()
   return out
 }
-const countsOf = async ($, id = 'M111') => (await linesAt($)).find(line => line.key === `blocked-${id}-counts`)
+const countsOf = async ($, id = 'M111', surface: (typeof SURFACES)[number] = 'desktop') =>
+  (await linesAt($, 60, surface)).find(line => line.key === `blocked-${id}-counts`)
 
 describe('each open pull request is queried once, by its own owner, repo, and number (M225 AC1)', () => {
   // blocked-prs with M101 and M104 pointed at two other repos: both read
@@ -1858,7 +1863,8 @@ describe('the count line under a blocked line (M225 AC3)', () => {
     try {
       for (let i = 0; i < 200 && calls.graphql.length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5))
       expect(calls.graphql.length).toBe(2)
-      expect((await countsOf($))?.text).toBe('2 unresolved threads · 1 unanswered')
+      // The desktop pane holds the press, so the terminal one is read.
+      expect((await countsOf($, 'M111', 'terminal'))?.text).toBe('2 unresolved threads · 1 unanswered')
     } finally {
       release()
       await pressing
