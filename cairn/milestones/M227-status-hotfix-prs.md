@@ -120,6 +120,7 @@ so the report names the review decision only.
 - 2026-10-09: T4 added for review return 1 (minor amendment) and done: a `CHANGELOG.md` Unreleased entry for the "Open hotfix PRs" report, above the pane's hotfix entry.
 - 2026-10-09: claim audit: 12 claims read, 0 corrected — CHANGELOG.md
 - 2026-10-09: verify green after T4, and status set to `review`.
+- 2026-10-09: step-7 approval: m227-status-hotfix-prs approved for merge
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
