@@ -344,8 +344,8 @@ conversation comment. So one comment or review by the author clears every
 earlier item, and so does a newer commit on the PR.
 Bots count as other people, so a Copilot review counts, and one Copilot
 review can show in both counts: as a review in the second, and as its
-unresolved threads in the first. Each count covers the newest 100 threads, reviews, and comments.
-A part that is zero is left out, and with both zero there is no line.
+unresolved threads in the first. Each count covers the newest 100
+threads, reviews, and comments. A part that is zero is left out, and with both zero there is no line.
 When the query fails, the line is left out, and the state word and its
 Button stay.
 

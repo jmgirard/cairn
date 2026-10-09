@@ -133,6 +133,8 @@ kept unchanged. M224's state words and Buttons are M224's.
 - 2026-10-09: T4 done. README's pane section, DESIGN's `hooks/status/` text, and a CHANGELOG Unreleased entry describe the two counts, the anchor rule, that bots count, the newest-100 limit, the double count, and when the counts are read, each written against `counts.ts`, `pane.ts`, and `readPrs` as read this session. The added sentences pass the simple-english sentence and dash checks. All five verify commands exit 0, and `cairn_validate` passes.
 - 2026-10-09: claim audit: 66 claims read, 5 corrected — CHANGELOG.md, README.md, hooks/status/counts.ts, hooks/status/counts.test.ts, hooks/status/pane.ts, hooks/status/pane.test.tsx, hooks/status/register.tsx, types/index.d.ts
 - 2026-10-09: claim audit corrections. The docs said the author's commit or push sets the anchor, but the code uses the committed date of the PR's newest commit, whoever made it. README, CHANGELOG, DESIGN, `counts.ts`, the state contract, and a test comment now say so. CHANGELOG names the two counted review states. The no-commit test now asserts the counts, and the argv test checks the repo's flag. The same reader's one re-read is pending at this checkpoint. All five verify commands exit 0.
+- 2026-10-09: claim audit re-read: the same reader found all five corrections hold. One README line was re-wrapped.
+- 2026-10-09: T5 prep. Read-only `gh api graphql` on insight's open PRs gave both counts zero for PR 1250, M006's PR, because its newest commit (2026-10-09T02:45:56Z) follows the Copilot review and the maintainer's comments. PR 880 gives 1 unresolved and 2 unanswered, and PR 1252 gives 0 and 1. Insight M007 is `blocked` with no URL. The live look stops for the operator.
 
 ## Decisions
 
