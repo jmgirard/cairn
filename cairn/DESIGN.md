@@ -287,8 +287,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one `gh pr view <url> --json
   state,reviewDecision` per distinct URL through `$.process.run`, side
-  by side, with a 15-second timeout each, and writes the words to the
-  `prs` state value by URL. It runs after each pane open (the
+  by side, with a 15-second timeout each, and writes each word, with its
+  counts since M225, to the `prs` state value by URL. It runs after each pane open (the
   `/cairn-pane` command, the band's open button, the session-start
   reopen) and at a press of the `Refresh` Button on the `BLOCKED`
   heading, which first reads the files again. No timer and no turn end
@@ -321,8 +321,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   the anchor, by anyone but the PR author. A null author counts as another
   person. The anchor is the latest of the author's newest such review,
   the author's newest conversation comment, and the `committedDate` of
-  the PR's newest commit. That commit can be anyone's, and the times
-  compare as ISO-8601 text. GitHub gives no reply link for a review or a
+  the PR's newest commit. That commit can be anyone's. The times compare
+  as ISO-8601 UTC text, and a commit time given with an offset is first
+  converted to UTC (M225 review). GitHub gives no reply link for a review or a
   conversation comment, so the anchor rule stands in for per-item reply
   tracking. Bots are others, so one Copilot review can count in both
   counts. The counts cover the newest 100 of each kind. A failed call or

@@ -185,9 +185,11 @@ const BLOCKED_COMMANDS: Partial<Record<PaneButton, { command: string; withId: bo
   check: { command: STATUS_COMMAND, withId: false },
 }
 
-// How long one `gh pr view` call may run, well under the ten minutes
-// `$.process.run` allows. The calls run side by side, and a call still
-// running then rejects and reads as `unknown` (M224).
+// How long one `gh pr view` or `gh api graphql` call may run, well under
+// the ten minutes `$.process.run` allows. The URLs' calls run side by side,
+// and a call still running then rejects: a `gh pr view` reads as `unknown`
+// (M224), and a count call leaves the counts null (M225). An open PR's two
+// calls run one after the other, so its read can take twice this.
 const GH_TIMEOUT_MS = 15_000
 
 export const register: Register = on => {

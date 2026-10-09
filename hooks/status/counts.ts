@@ -5,11 +5,14 @@
 // conversation comment, and the committed date of the pull request's newest
 // commit, whoever made it. GitHub links no reply to a review or a
 // conversation comment, so the anchor stands in for "answered": the
-// author's comment or review, or a newer commit, clears every earlier item. Bots are others, so a Copilot review
-// counts, and its threads count too. Each kind is read `last: 100`, so the
+// author's comment or review, or a newer commit, clears every earlier item.
+// Bots are others, so a Copilot review counts, and its threads count too. Each kind is read `last: 100`, so the
 // counts cover the newest 100 of each.
 
-export type PrCounts = { unresolved: number; unanswered: number }
+import type { CairnPrRead } from '../../types'
+
+// The counts as the state contract holds them.
+export type PrCounts = NonNullable<CairnPrRead['counts']>
 
 // One review, conversation comment, and thread as the query returns them.
 // A null author is a deleted account, read as another person.
@@ -112,10 +115,23 @@ export function prNodes(reply: unknown): PrNodes | null {
     out.comments.push({ author: by, createdAt: c.createdAt })
   }
   for (const c of commits) {
-    if (!isObject(c.commit) || typeof c.commit.committedDate !== 'string') return null
-    if (out.commit === null || c.commit.committedDate > out.commit) out.commit = c.commit.committedDate
+    const at = isObject(c.commit) ? utc(c.commit.committedDate) : null
+    if (at === null) return null
+    if (out.commit === null || at > out.commit) out.commit = at
   }
   return out
+}
+
+// A commit time as `YYYY-MM-DDTHH:MM:SSZ`, null when it is not a time.
+// GitHub types `committedDate` as a GitTimestamp, which its schema says is
+// not converted to UTC, so an offset form is converted here to compare as
+// text with the reviews' and comments' UTC times. The replies seen on
+// 2026-10-09 all ended in `Z`.
+function utc(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/.test(value)) return value
+  const ms = Date.parse(value)
+  return Number.isNaN(ms) ? null : new Date(ms).toISOString().replace(/\.\d{3}Z$/, 'Z')
 }
 
 // The counts from one `gh api graphql` call, null for a read that failed:

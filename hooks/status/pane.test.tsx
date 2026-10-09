@@ -1798,6 +1798,25 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
       expect(await countsOf($)).toBe(undefined)
     })
   }
+
+  // Each word `prWord` gives an OPEN pull request gets the query (M225
+  // review), so the open words and `prWord` stay in step.
+  const OPEN: { decision: string; word: string }[] = [
+    { decision: 'CHANGES_REQUESTED', word: 'changes requested' },
+    { decision: 'APPROVED', word: 'approved' },
+    { decision: 'REVIEW_REQUIRED', word: 'in review' },
+  ]
+  for (const each of OPEN) {
+    test(`an \`${each.word}\` line gets one query`, async ($, on) => {
+      const calls = gh(on, () => prView('OPEN', each.decision), () => countsReply(1, 0))
+      seat(on, copyOf('blocked-active'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      expect(calls.graphql.length).toBe(1)
+      expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${each.word}`)
+      expect((await countsOf($))?.text).toBe('1 unresolved thread')
+    })
+  }
 })
 
 describe('the count line under a blocked line (M225 AC3)', () => {

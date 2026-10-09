@@ -154,7 +154,22 @@ describe('prCounts reads only the reply shape it names (M225 AC4)', () => {
     expect(prCounts(ok(reply(pr)))).toEqual({ unresolved: 1, unanswered: 1 })
   })
 
+  // A commit time with an offset is read as UTC: 11:00+02:00 is 09:00Z,
+  // before the comment at 10:30Z, so the comment counts. Compared as raw
+  // text, the commit would sort after it and the count would be 0.
+  test('a commit time with an offset compares as UTC', () => {
+    const pr = {
+      ...GOOD,
+      reviews: { nodes: [] },
+      comments: { nodes: [{ author: { login: 'bo' }, createdAt: '2026-10-05T10:30:00Z' }] },
+      commits: { nodes: [{ commit: { committedDate: '2026-10-05T11:00:00+02:00' } }] },
+    }
+    expect(prNodes(reply(pr))?.commit).toBe('2026-10-05T09:00:00Z')
+    expect(prCounts(ok(reply(pr)))?.unanswered).toBe(1)
+  })
+
   const BAD: [string, unknown][] = [
+    ['a commit time that is not a time', reply({ ...GOOD, commits: { nodes: [{ commit: { committedDate: 'soon' } }] } })],
     ['a null pullRequest', reply(null)],
     ['a null repository', { data: { repository: null } }],
     ['no data', { errors: [{ message: 'Could not resolve' }] }],

@@ -34,7 +34,7 @@ kept unchanged. M224's state words and Buttons are M224's.
 
 ## Acceptance criteria
 
-- [ ] AC1: For each Blocked line whose M224 state read returned OPEN, the
+- [x] AC1: For each Blocked line whose M224 state read returned OPEN, the
       mod runs one `gh api graphql` query through `$.process.run` for the
       PR's author login, `reviewThreads(last: 100)` with `isResolved`,
       `reviews(last: 100)` with author login, state, and `submittedAt`,
@@ -45,7 +45,7 @@ kept unchanged. M224's state words and Buttons are M224's.
       and number. A merged, closed, or `unknown` line gets no query. M224's
       trigger and turn-complete tests also record no `gh api graphql` call
       outside a pane open or a `Refresh` press.
-- [ ] AC2: The unresolved count is the number of returned threads with
+- [x] AC2: The unresolved count is the number of returned threads with
       `isResolved` false. The unanswered count is the number of returned
       submitted reviews in state COMMENTED or CHANGES_REQUESTED, plus
       returned conversation comments, whose author is not the PR author
@@ -59,7 +59,7 @@ kept unchanged. M224's state words and Buttons are M224's.
       each axis: kind (review, comment), author (PR author, human, bot,
       null), review state (all five), and time against the anchor (before,
       equal, after), with each of the three anchors the latest once.
-- [ ] AC3: Under a Blocked line with either count above zero, the pane
+- [x] AC3: Under a Blocked line with either count above zero, the pane
       draws a line with key `blocked-<id>-counts` at indent 4, reading
       `<t> unresolved threads · <c> unanswered`. A count of 1 reads
       `1 unresolved thread`, and a zero part is left out. There is no
@@ -68,7 +68,7 @@ kept unchanged. M224's state words and Buttons are M224's.
       drawn until the new read returns. `pane.test.tsx` cases cover both
       counts, each alone, both zero, the singular, and 3-digit counts in
       the 44-column width check.
-- [ ] AC4: A GraphQL read fails when the call rejects, exits non-zero,
+- [x] AC4: A GraphQL read fails when the call rejects, exits non-zero,
       prints text that is not JSON, or prints a reply that fails the shape
       check, including a null `pullRequest`, a null PR author, and a
       malformed node. Then no count line draws for that PR, its M224 state
@@ -78,12 +78,12 @@ kept unchanged. M224's state words and Buttons are M224's.
       checkout (`~/github/insight`), the operator compares a PR whose
       counts are not both zero with that PR's GitHub page and accepts the
       count line at the merge question.
-- [ ] AC6: README's pane section, `cairn/DESIGN.md`'s pane text, and
+- [x] AC6: README's pane section, `cairn/DESIGN.md`'s pane text, and
       CHANGELOG.md's Unreleased section describe the two counts, the
       anchor rule, that bots count, the newest-100 limit, that one review
       can show in both counts, and when the counts are read. Each claim is
       read against the code at implement time.
-- [ ] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
+- [x] AC7: Every command in `cairn/PROFILE.md`'s `verify` slot exits 0.
 
 ## Coverage
 
@@ -141,3 +141,38 @@ kept unchanged. M224's state words and Buttons are M224's.
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-10-09 on 619b58e, main at 4e840a3 (not moved). `claude plugin test .`: 1734 pass, 0 fail.
+
+- AC1: 7 `(M225 AC1)` tests pass. "two lines with different owners, repos, and numbers" records exactly two `gh api graphql` calls, alpha/one/12 and beta/two/90, each query naming the five field sets, and no call for the MERGED line. Merged, closed, and two unknown cases record no query. The 7 `(M224 AC3)` trigger tests, now over an OPEN PR, record one query per `/cairn-pane`, band open, session-start reopen, and `Refresh` press, and none at a close, a refused open, or two turn ends.
+- AC2: 228 `(M225 AC2)` tests in `counts.test.ts` pass. For each of the three anchors (author review, author comment, commit) as the latest, they add one comment and one review in each of five states, by the PR author, a person, a bot login, and a null author, before, equal to, and after the anchor. Further cases cover a null `submittedAt`, the author's later APPROVED, DISMISSED, and PENDING reviews, each anchor clearing an earlier comment, a mixed PR worked by hand to 2 unresolved and 3 unanswered, and a 3-of-4 unresolved count.
+- AC3: 8 `(M225 AC3)` tests in `pane.test.tsx` pass. The line keyed `blocked-M111-counts`, at indent 4 right after `blocked-M111`, reads `3 unresolved threads · 2 unanswered`, `2 unresolved threads`, `4 unanswered`, and `1 unresolved thread · 1 unanswered`; both zero draws none, and so does a turn end before any read. A held `Refresh` keeps `2 unresolved threads · 1 unanswered` until the query returns `5 unanswered`, and a later failed query removes the line. At 44 columns, `100 unresolved threads · 100 unanswered` plus its indent fits, and every line's lead and tail fit.
+- AC4: 6 register tests in "a failed count read draws no count line and leaves the state word (M225 AC4)" pass: a rejected call, a non-zero exit, non-JSON text, a null `pullRequest`, a null PR author, and a malformed thread node. In each, `/cairn-pane` returns `cairn pane opened`, the line reads `… #1250  changes requested` with the `cairn-pane-revise-M111` Button, and no count line draws. 16 `prCounts` unit cases also fail the read on other bad shapes.
+- AC5: the look used insight PR 880 through a temporary M007 header, since PR 1250's counts are both zero (work log, T5). A read-only query at resume gave PR 880 1 unresolved thread and 2 unanswered, so its line should read `1 unresolved thread · 2 unanswered`. The operator did not report what the pane showed. Acceptance is asked at the merge question, and this box waits for it.
+- AC6: the branch adds to README's "The cairn pane", DESIGN's `hooks/status/` text, and CHANGELOG's Unreleased section text naming the two counts, the anchor (author's latest comment or review, and the PR's newest commit), that bots count, the newest-100 limit, that one Copilot review can show in both counts, and that the counts are read at a pane open and a `Refresh`. Claim audit: 66 claims read, 5 corrected, and the re-read found all five fixed (work log).
+- AC7: all five `verify` commands exit 0: the two unittest suites (401 tests with 21 skipped, and 174), both `claude plugin validate` runs, and `claude plugin test .` (1734 pass).
+- Consistency gate: `cairn_validate.py` all checks passed. No principle changed, so no `cairn_impact` run. The marketplace validate prints no `plugins[N].version` warning. CHANGELOG's Unreleased section has this milestone's entry with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `committedDate` is a GitTimestamp that GitHub's schema says is not converted to UTC, so an offset time misorders against UTC review and comment times — fix now: `counts.ts` converts an offset commit time to UTC before the text compare, with a test (11:00+02:00 against a 10:30Z comment). Nine commit times read from insight PRs 734, 880, and 1123 all ended in `Z`.
+- diff-bug #2: the anchor uses the newest commit's committed date, not its push time — follow-up to "Pane count edges (M225 review)". AC2 names `committedDate`, and README states the committed date is the time used.
+- diff-bug #3: a bot or a reviewer's suggestion commit clears earlier items — follow-up to "Pane count edges (M225 review)". The rule is AC2's and the docs say the commit can be anyone's.
+- diff-bug #4: fractional seconds would sort wrong as text — follow-up to "Pane count edges (M225 review)". No reply seen carries them, and a commit time with them now converts to whole seconds.
+- diff-bug #5: threads the PR author opened count as unresolved — reject, planned change: AC2 counts every thread with `isResolved` false, and the docs say "review threads not marked resolved".
+- diff-bug #6: the `GH_TIMEOUT_MS` comment named only `gh pr view` — fix now: it names both calls, what each timeout gives, and the doubled wait.
+- diff-bug #7: an open PR's two calls run in turn, so a read can wait up to 30 s — follow-up to "Pane count edges (M225 review)".
+- diff-bug #8: a PR whose author account is deleted shows no counts — reject, planned change: AC4 makes a null PR author fail the read.
+- diff-bug #9: no test for an offset time, fractional seconds, or a non-author commit between reviews — offset part fixed now with diff-bug #1; the rest follow-up to "Pane count edges (M225 review)".
+- blame-history #1: each line's word now waits on its count query — follow-up to "Pane count edges (M225 review)", with diff-bug #7.
+- blame-history #2: M224's trigger tests moved from MERGED to OPEN — reject, false: `merged` and its Button stay covered by the M224 AC1 and AC2 tests, and the Refresh test still ends on `merged`.
+- blame-history #3: no test that only the newest read writes — follow-up, already in "Pane PR-state edges (M224 review)" ("an older read that settles after a newer one").
+- blame-history #4: DESIGN's M224 text said `readPrs` writes only the words — fix now: it says each word with its counts.
+- blame-history #5: the M225 DESIGN text sits between the M224 text and the layout text — reject, false: the layout text already followed the M224 PR-read text on main, and the M225 text extends that read.
+- blame-history #6: unwrapped README lines and a ragged CHANGELOG wrap — reject, style.
+- prior-review #1: the open and reopen wait grows from 15 s to up to 30 s — follow-up to "Pane count edges (M225 review)", with diff-bug #7.
+- prior-review #2: no test of an older read settling after a newer one — follow-up, already in "Pane PR-state edges (M224 review)".
+- prior-review #3: no positive control that the clock recorder catches a clock call — follow-up, already in "Pane PR-state edges (M224 review)".
+- prior-review #4: the counts shape was declared twice, and `OPEN_WORDS` is a third list of open words — fix now: `PrCounts` is the contract type, and a register test per open word checks that each gets a query.
+- prior-review #5: line presses in flight or after a word change stay untested — follow-up, already in "Pane PR-state edges (M224 review)".
+- prior-review #6: an in-process `/clear` now also drops the count line — follow-up, already in "Pane PR-state edges (M224 review)".
+- prior-review #7: `counts.ts` keeps its own copy of the PR URL pattern — follow-up to "Pane count edges (M225 review)".
+- Fix-now re-run: all five `verify` commands exit 0, and `claude plugin test .` gives 1739 pass.
