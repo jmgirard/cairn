@@ -84,8 +84,8 @@ def read_file(path):
         return None
 
 
-def pr_number(text):
-    """The number of the pull request that a milestone file's first
+def _pr_match(text):
+    """The match of the pull request URL that a milestone file's first
     `Branch/PR` header line names: the first `https://github.com/<owner>/
     <repo>/pull/<n>` URL before any `companion:` entry, or None (M223). The
     header is the text before the first `## ` heading."""
@@ -94,24 +94,44 @@ def pr_number(text):
             return None
         m = BRANCH_PR.match(line)
         if m:
-            url = PR_URL.search(m.group(1).split("companion:", 1)[0])
-            return int(url.group(1)) if url else None
+            return PR_URL.search(m.group(1).split("companion:", 1)[0])
     return None
+
+
+def pr_number(text):
+    """The number of the pull request that `_pr_match` finds, or None."""
+    url = _pr_match(text)
+    return int(url.group(1)) if url else None
+
+
+def pr_url(text):
+    """The URL of the pull request that `_pr_match` finds, up to its number,
+    so with no trailing path or anchor, or None (M224)."""
+    url = _pr_match(text)
+    return url.group(0) if url else None
 
 
 def blocked(root, rows, read=None):
     """The `blocked` rows in ROADMAP order. Each is a dict of `id`, `title`,
-    and `pr`, the number `pr_number` reads from the row's milestone file, or
-    None when the file is missing or its read fails. `read` takes a path and
-    gives its text or None (`read_file` by default). The cairn pane
-    (hooks/status/reader.ts) mirrors this (M223)."""
+    `pr`, the number `pr_number` reads from the row's milestone file, and
+    `url`, the URL `pr_url` reads (M224). Both are None when the file is
+    missing or its read fails. `read` takes a path and gives its text or None
+    (`read_file` by default). The cairn pane (hooks/status/reader.ts) mirrors
+    this (M223)."""
     read = read or read_file
     out = []
     for r in rows:
         if r["status"] != "blocked":
             continue
         text = read(os.path.join(root, "cairn", r["relpath"]))
-        out.append({"id": r["id"], "title": r["title"], "pr": None if text is None else pr_number(text)})
+        out.append(
+            {
+                "id": r["id"],
+                "title": r["title"],
+                "pr": None if text is None else pr_number(text),
+                "url": None if text is None else pr_url(text),
+            }
+        )
     return out
 
 

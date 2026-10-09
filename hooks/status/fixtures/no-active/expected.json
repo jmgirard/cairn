@@ -5,5 +5,5 @@
   "pane": [],
   "next": {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []},
   "candidates": [],
-  "blocked": [{"id": "M018", "title": "Held by a blocker", "pr": null}]
+  "blocked": [{"id": "M018", "title": "Held by a blocker", "pr": null, "url": null}]
 }

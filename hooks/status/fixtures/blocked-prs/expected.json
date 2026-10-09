@@ -7,12 +7,12 @@
   "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
   "candidates": [{"priority": "normal", "title": "An idea for later"}],
   "blocked": [
-    {"id": "M101", "title": "One pull request URL", "pr": 12},
-    {"id": "M102", "title": "Two pull request URLs", "pr": 34},
-    {"id": "M103", "title": "A URL only after a companion entry", "pr": null},
-    {"id": "M104", "title": "A URL with a trailing path", "pr": 90},
-    {"id": "M105", "title": "A branch with no URL", "pr": null},
-    {"id": "M106", "title": "A file whose read fails", "pr": null},
-    {"id": "M107", "title": "A missing file", "pr": null}
+    {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12"},
+    {"id": "M102", "title": "Two pull request URLs", "pr": 34, "url": "https://github.com/upstream/repo/pull/34"},
+    {"id": "M103", "title": "A URL only after a companion entry", "pr": null, "url": null},
+    {"id": "M104", "title": "A URL with a trailing path", "pr": 90, "url": "https://github.com/upstream/repo/pull/90"},
+    {"id": "M105", "title": "A branch with no URL", "pr": null, "url": null},
+    {"id": "M106", "title": "A file whose read fails", "pr": null, "url": null},
+    {"id": "M107", "title": "A missing file", "pr": null, "url": null}
   ]
 }

@@ -3,7 +3,7 @@ import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
 import { flowOf, width } from './band'
-import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout } from './pane'
+import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout, prWord } from './pane'
 import type { PaneState } from './reader'
 import { listNames } from './reader'
 
@@ -1010,8 +1010,11 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         const ui = await mountPane($, surface)
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
-        // No other line of the pane carries a Button (M219 review).
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS])
+        // No other line of the pane carries a Button (M219 review), but for
+        // the Blocked heading's Refresh while a blocked row has a pull
+        // request URL (M224). Before any read, no blocked line carries one.
+        const refresh = FIXTURES[name].blocked.some(row => row.url !== null) ? ['cairn-pane-refresh'] : []
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS, ...refresh])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
@@ -1373,4 +1376,286 @@ describe('an other end with the pane shown opens it at the next start in the sam
     await $.session.start(NEW_START)
     expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
   })
+})
+
+// Each blocked line's pull request state (M224). A case answers the mod's
+// `gh pr view` calls from `answer`, by the URL each call names, and records
+// each call's argv and each `$.clock` wait the mod asks for. A `reject`
+// answer throws, so the engine skips the hook and the mod's call rejects,
+// as it does when `gh` cannot start. The words and Buttons each case expects
+// are written out by hand.
+type GhAnswer = { exitCode: number; stdout: string } | 'reject'
+type Gh = { calls: (readonly string[])[]; clocks: string[] }
+const URL_1250 = 'https://github.com/upstream/repo/pull/1250'
+const LINE_1250 = 'M111  Handed to the maintainers  #1250'
+
+function gh(on: On, answer: (url: string) => GhAnswer): Gh {
+  const out: Gh = { calls: [], clocks: [] }
+  on('process.run', async ($, e) => {
+    out.calls.push(e.argv)
+    const got = answer(e.argv[3])
+    if (got === 'reject') throw new Error('gh cannot start')
+    return {
+      value: { exitCode: got.exitCode, stdout: got.stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
+    }
+  })
+  for (const name of ['clock.sleep', 'clock.after', 'clock.every'] as const) {
+    on(name, async () => {
+      out.clocks.push(name)
+      return { value: undefined }
+    })
+  }
+  return out
+}
+
+const prView = (state: string, decision?: string) =>
+  ({ exitCode: 0, stdout: `${JSON.stringify(decision === undefined ? { state } : { state, reviewDecision: decision })}\n` }) as const
+
+// The pane's line for a key, and the keys of the Buttons on it.
+async function blockedView($, key: string): Promise<{ text: string; buttons: string[] }> {
+  const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+  const [root] = await ui.findAll({ key: 'cairn-pane' })
+  const line = kids(root).find(child => keyOf(child) === key)
+  await ui.unmount()
+  return { text: line === undefined ? '' : textOf(line), buttons: line === undefined ? [] : buttonsIn(line).map(b => keyOf(b) ?? '') }
+}
+
+describe('each blocked line shows its pull request state (M224 AC1)', () => {
+  const SHAPES: { name: string; answer: GhAnswer; word: string }[] = [
+    { name: 'MERGED', answer: prView('MERGED', 'APPROVED'), word: 'merged' },
+    { name: 'CLOSED', answer: prView('CLOSED', ''), word: 'closed' },
+    { name: 'OPEN with CHANGES_REQUESTED', answer: prView('OPEN', 'CHANGES_REQUESTED'), word: 'changes requested' },
+    { name: 'OPEN with APPROVED', answer: prView('OPEN', 'APPROVED'), word: 'approved' },
+    { name: 'OPEN with REVIEW_REQUIRED', answer: prView('OPEN', 'REVIEW_REQUIRED'), word: 'in review' },
+    { name: 'OPEN with an empty decision', answer: prView('OPEN', ''), word: 'in review' },
+    { name: 'OPEN with no decision', answer: prView('OPEN'), word: 'in review' },
+  ]
+  for (const shape of SHAPES) {
+    test(`${shape.name} shows \`${shape.word}\``, async ($, on) => {
+      const calls = gh(on, () => shape.answer)
+      seat(on, copyOf('blocked-active'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      const opened = await $.command.run({ command: COMMAND })
+      expect(opened.text).toBe('cairn pane opened')
+      expect(calls.calls).toEqual([['gh', 'pr', 'view', URL_1250, '--json', 'state,reviewDecision']])
+      expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${shape.word}`)
+    })
+  }
+
+  test('a line not yet read shows no state word and no Button', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.turn.complete(turn())
+    expect(calls.calls).toEqual([])
+    const line = await blockedView($, 'blocked-M111')
+    expect(line.text).toBe(LINE_1250)
+    expect(line.buttons).toEqual([])
+  })
+})
+
+describe('the merged, changes-requested, and closed lines carry a Button (M224 AC2)', () => {
+  const BUTTONS = [
+    { answer: prView('MERGED', ''), key: 'cairn-pane-finish-M111', command: { command: 'cairn:milestone-review', args: 'M111' } },
+    {
+      answer: prView('OPEN', 'CHANGES_REQUESTED'),
+      key: 'cairn-pane-revise-M111',
+      command: { command: 'cairn:milestone-implement', args: 'M111' },
+    },
+    { answer: prView('CLOSED', ''), key: 'cairn-pane-check-M111', command: { command: 'cairn:milestone', args: '' } },
+  ]
+  for (const each of BUTTONS) {
+    test(`${each.key} runs /${each.command.command} with no /clear first`, async ($, on) => {
+      gh(on, () => each.answer)
+      const copy = copyOf('blocked-active')
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      expect((await blockedView($, 'blocked-M111')).buttons).toEqual([each.key])
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      await ui.press({ key: each.key })
+      await ui.unmount()
+      expect(copy.commands).toEqual([each.command])
+    })
+  }
+
+  // A press while a cairn skill's step runs does nothing, as the Next,
+  // Status, and Clear presses do (M224 review). The Button stays drawn.
+  test('a press while a cairn skill runs runs nothing', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-finish-M111'])
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await ui.press({ key: 'cairn-pane-finish-M111' })
+    await ui.unmount()
+    expect(copy.commands ?? []).toEqual([])
+    // After the step ends, the same press runs its command.
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+    const after = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await after.press({ key: 'cairn-pane-finish-M111' })
+    await after.unmount()
+    expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M111' }])
+  })
+
+  const PLAIN = [
+    { answer: prView('OPEN', 'APPROVED'), word: 'approved' },
+    { answer: prView('OPEN', 'REVIEW_REQUIRED'), word: 'in review' },
+  ]
+  for (const each of PLAIN) {
+    test(`an \`${each.word}\` line carries no Button`, async ($, on) => {
+      gh(on, () => each.answer)
+      seat(on, copyOf('blocked-active'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      const line = await blockedView($, 'blocked-M111')
+      expect(line.text).toBe(`${LINE_1250}  ${each.word}`)
+      expect(line.buttons).toEqual([])
+    })
+  }
+})
+
+// `prWord` over shapes beyond the register cases (M224 review): a JSON
+// value that is not an object, an object with no state, and a state in
+// another case all read as `unknown`.
+describe('prWord reads only the shapes it names', () => {
+  test('a rejected call, a non-object, and an unknown state read as unknown', () => {
+    const ok = (stdout: string) => ({ exitCode: 0, stdout })
+    expect(prWord(null)).toBe('unknown')
+    expect(prWord({ exitCode: 1, stdout: '{"state":"MERGED"}' })).toBe('unknown')
+    expect(prWord(ok('null'))).toBe('unknown')
+    expect(prWord(ok('[]'))).toBe('unknown')
+    expect(prWord(ok('"MERGED"'))).toBe('unknown')
+    expect(prWord(ok('{}'))).toBe('unknown')
+    expect(prWord(ok('{"state":"open"}'))).toBe('unknown')
+    expect(prWord(ok('{"state":"MERGED","reviewDecision":"CHANGES_REQUESTED"}'))).toBe('merged')
+    expect(prWord(ok('{"state":"OPEN","reviewDecision":"SOMETHING_NEW"}'))).toBe('in review')
+  })
+})
+
+// Paths that run no `gh` call (M224 review): a close of a shown pane, and
+// an open that a hook refuses.
+describe('a close or a refused open reads no state (M224 AC3)', () => {
+  test('/cairn-pane that closes a shown pane runs no gh call', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    calls.calls.length = 0
+    const closed = await $.command.run({ command: COMMAND })
+    expect(closed.text).toBe('cairn pane closed')
+    expect(calls.calls).toEqual([])
+  })
+
+  test('a refused open runs no gh call, by the command or the band', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    const copy = copyOf('blocked-active')
+    copy.refuse = 'opens are refused here'
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-open' })
+    await ui.unmount()
+    expect(calls.calls).toEqual([])
+  })
+})
+
+describe('the states are read at each pane open and at a Refresh press, and never on a timer (M224 AC3)', () => {
+  const ONE_READ = [['gh', 'pr', 'view', URL_1250, '--json', 'state,reviewDecision']]
+
+  test('the /cairn-pane command reads once', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(calls.calls).toEqual(ONE_READ)
+    expect(calls.clocks).toEqual([])
+  })
+
+  test("the band's open button reads once", async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await ui.press({ key: 'cairn-open' })
+    await ui.unmount()
+    expect(calls.calls).toEqual(ONE_READ)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  merged`)
+    expect(calls.clocks).toEqual([])
+  })
+
+  test('the session-start reopen reads once', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    const copy = copyOf('blocked-active')
+    await openPane($, on, copy)
+    await $.session.end({ reason: 'other', sessionId: 's1' })
+    newProcess(copy)
+    calls.calls.length = 0
+    await $.session.start(NEW_START)
+    expect(listed(copy)).toBe(true)
+    expect(calls.calls).toEqual(ONE_READ)
+    expect(calls.clocks).toEqual([])
+  })
+
+  test("a press of the Blocked heading's Refresh Button reads once", async ($, on) => {
+    let state = 'OPEN'
+    const calls = gh(on, () => prView(state, ''))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
+    state = 'MERGED'
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await ui.press({ key: 'cairn-pane-refresh' })
+    await ui.unmount()
+    expect(calls.calls).toEqual([...ONE_READ, ...ONE_READ])
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  merged`)
+    expect(calls.clocks).toEqual([])
+  })
+
+  test('a turn end runs no gh call', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'))
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    calls.calls.length = 0
+    await $.turn.complete(turn())
+    await $.turn.complete(turn())
+    expect(calls.calls).toEqual([])
+    expect(calls.clocks).toEqual([])
+  })
+})
+
+describe('a failed read shows `unknown` and no Button (M224 AC4)', () => {
+  // blocked-prs: M101's read fails, and M102 and M104 read as merged, so
+  // the other lines are seen to draw as before.
+  const URL_12 = 'https://github.com/upstream/repo/pull/12'
+  const FAILS: { name: string; answer: GhAnswer }[] = [
+    { name: 'a call that rejects', answer: 'reject' },
+    { name: 'a non-zero exit', answer: { exitCode: 1, stdout: '' } },
+    { name: 'text that is not JSON', answer: { exitCode: 0, stdout: 'no pull requests found\n' } },
+    { name: 'JSON with an unknown state', answer: prView('DRAFT', '') },
+  ]
+  for (const fail of FAILS) {
+    test(`${fail.name} shows \`unknown\``, async ($, on) => {
+      gh(on, url => (url === URL_12 ? fail.answer : prView('MERGED')))
+      seat(on, copyOf('blocked-prs'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      const opened = await $.command.run({ command: COMMAND })
+      expect(opened.text).toBe('cairn pane opened')
+      const failed = await blockedView($, 'blocked-M101')
+      expect(failed.text).toBe('M101  One pull request URL  #12  unknown')
+      expect(failed.buttons).toEqual([])
+      expect((await blockedView($, 'blocked-M102')).text).toBe('M102  Two pull request URLs  #34  merged')
+      expect((await blockedView($, 'blocked-M102')).buttons).toEqual(['cairn-pane-finish-M102'])
+      expect((await blockedView($, 'blocked-M104')).text).toBe('M104  A URL with a trailing path  #90  merged')
+      expect((await blockedView($, 'blocked-M103')).text).toBe('M103  A URL only after a companion entry')
+      expect((await blockedView($, 'blocked-M105')).text).toBe('M105  A branch with no URL')
+    })
+  }
 })

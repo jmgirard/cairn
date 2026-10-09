@@ -10,7 +10,8 @@
 // pane it also mirrors `recommend` and `waiting` in scripts/cairn_next.py
 // (M205), and reads the candidate rows in the sections that
 // `candidate_count` in scripts/cairn_scripts.py walks (M207), and mirrors
-// `blocked` and `pr_number` in scripts/cairn_next.py (M223). The mirror
+// `blocked` and `pr_number` in scripts/cairn_next.py (M223), and `pr_url`
+// (M224). The mirror
 // reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
 // also take other Unicode digits, so an id such as `M００５７` reads
 // differently in the two.
@@ -305,7 +306,12 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
     const path = join(root, `cairn/${row.relpath}`)
     const text = (await source.isFile(path)) ? await source.read(path) : null
     if (!active) {
-      blocked.push({ id: row.id, title: row.title, pr: text === null ? null : prNumber(text) })
+      blocked.push({
+        id: row.id,
+        title: row.title,
+        pr: text === null ? null : prNumber(text),
+        url: text === null ? null : prUrl(text),
+      })
       continue
     }
     const fields = text === null ? NO_FILE : fileFields(text)
@@ -335,19 +341,32 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
 const BRANCH_PR = /^[ \t]*-[ \t]*\*\*Branch\/PR:\*\*(.*)$/
 const PR_URL = /https:\/\/github\.com\/[^/ \t]+\/[^/ \t]+\/pull\/([0-9]{1,15})(?![0-9])/
 
-// `pr_number` in scripts/cairn_next.py: the number of the pull request that
-// the first `Branch/PR` header line names, from the first URL before any
+// `_pr_match` in scripts/cairn_next.py: the match of the pull request URL
+// that the first `Branch/PR` header line names, the first URL before any
 // `companion:` entry, or null. The header is the text before the first
 // `## ` heading.
-export function prNumber(text: string): number | null {
+function prMatch(text: string): RegExpExecArray | null {
   for (const line of splitLines(text)) {
     if (line.startsWith('## ')) return null
     const match = BRANCH_PR.exec(line)
     if (match === null) continue
-    const url = PR_URL.exec(match[1].split('companion:')[0])
-    return url === null ? null : Number(url[1])
+    return PR_URL.exec(match[1].split('companion:')[0])
   }
   return null
+}
+
+// `pr_number` in scripts/cairn_next.py: the number of that pull request, or
+// null.
+export function prNumber(text: string): number | null {
+  const url = prMatch(text)
+  return url === null ? null : Number(url[1])
+}
+
+// `pr_url` in scripts/cairn_next.py (M224): its URL up to the number, so
+// with no trailing path or anchor, or null.
+export function prUrl(text: string): string | null {
+  const url = prMatch(text)
+  return url === null ? null : url[0]
 }
 
 // The cairn pane's state (M205): the active milestones in full, the
@@ -387,8 +406,8 @@ export type WaitingRow = { id: string; title: string; unmet: string[] }
 
 // `blocked` in scripts/cairn_next.py (M223): a `blocked` row, and the
 // number of the pull request its milestone file's `Branch/PR` header names,
-// or null.
-export type BlockedRow = { id: string; title: string; pr: number | null }
+// or null, with that pull request's URL beside it (M224).
+export type BlockedRow = { id: string; title: string; pr: number | null; url: string | null }
 
 export const NO_PANE: PaneState = {
   found: false,

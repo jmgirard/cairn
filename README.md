@@ -312,6 +312,29 @@ its PR in that header, so the section lists the PRs that wait on review.
 `scripts/cairn_next.py` prints the same number after each "Externally
 blocked" line, as `(PR #<n>)`.
 
+The pane also shows each PR's state, which it reads from GitHub with `gh
+pr view <url> --json state,reviewDecision`. It reads the states when the
+pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
+at a session start. It also reads them when you press `Refresh` on the
+`BLOCKED` heading. It never reads them on a timer or at a turn's end, so a
+state can be out of date until the next open or `Refresh`. After a read,
+each line shows one word after its number:
+
+| Word | GitHub state | Button |
+|---|---|---|
+| `merged` | MERGED | `Finish` runs `/cairn:milestone-review <id>` |
+| `changes requested` | OPEN, review decision CHANGES_REQUESTED | `Revise` runs `/cairn:milestone-implement <id>` |
+| `closed` | CLOSED | `Check` runs `/cairn:milestone` |
+| `approved` | OPEN, review decision APPROVED | none |
+| `in review` | OPEN, any other review decision, or none | none |
+| `unknown` | the call failed, exited non-zero, or gave no known state | none |
+
+None of the `Finish`, `Revise`, or `Check` Buttons runs `/clear` first. A
+line not yet read shows no word.
+The read needs `gh` on the session's `PATH`, signed in to GitHub. The
+pane writes nothing to GitHub, and `/milestone` still sets a milestone's
+status.
+
 The pane reads the files at the same moments as the band. Outside a cairn
 repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command

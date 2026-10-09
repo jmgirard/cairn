@@ -31,7 +31,7 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M092", "title": "Blocked outside", "pr": null},
+      {"id": "M092", "title": "Blocked outside", "pr": null, "url": null},
     ],
     unreadable: [],
   },
@@ -53,7 +53,7 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M111", "title": "Handed to the maintainers", "pr": 1250},
+      {"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250"},
     ],
     unreadable: [],
   },
@@ -78,13 +78,13 @@ export const FIXTURES: Record<string, Fixture> = {
       {"priority": "normal", "title": "An idea for later"},
     ],
     blocked: [
-      {"id": "M101", "title": "One pull request URL", "pr": 12},
-      {"id": "M102", "title": "Two pull request URLs", "pr": 34},
-      {"id": "M103", "title": "A URL only after a companion entry", "pr": null},
-      {"id": "M104", "title": "A URL with a trailing path", "pr": 90},
-      {"id": "M105", "title": "A branch with no URL", "pr": null},
-      {"id": "M106", "title": "A file whose read fails", "pr": null},
-      {"id": "M107", "title": "A missing file", "pr": null},
+      {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12"},
+      {"id": "M102", "title": "Two pull request URLs", "pr": 34, "url": "https://github.com/upstream/repo/pull/34"},
+      {"id": "M103", "title": "A URL only after a companion entry", "pr": null, "url": null},
+      {"id": "M104", "title": "A URL with a trailing path", "pr": 90, "url": "https://github.com/upstream/repo/pull/90"},
+      {"id": "M105", "title": "A branch with no URL", "pr": null, "url": null},
+      {"id": "M106", "title": "A file whose read fails", "pr": null, "url": null},
+      {"id": "M107", "title": "A missing file", "pr": null, "url": null},
     ],
     unreadable: ["/cairn/milestones/M106-unreadable.md"],
   },
@@ -272,7 +272,7 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M018", "title": "Held by a blocker", "pr": null},
+      {"id": "M018", "title": "Held by a blocker", "pr": null, "url": null},
     ],
     unreadable: [],
   },

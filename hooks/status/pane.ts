@@ -1,3 +1,4 @@
+import type { CairnPrWord } from '../../types'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
@@ -12,9 +13,10 @@ import { PILL_TEXT } from './track'
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
 // dependencies. Then the blocked milestones, each with the number of the
-// pull request its header names (M223). With no active milestone, the
-// ROADMAP's candidate rows follow, each a priority mark and its short title
-// (M207).
+// pull request its header names (M223), and after a read, that pull
+// request's state word and a Button for three of the words (M224). With no
+// active milestone, the ROADMAP's candidate rows follow, each a priority
+// mark and its short title (M207).
 // A line's `lead` and `tail` keep their width. Its `text` is cut to one
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
@@ -34,9 +36,12 @@ import { PILL_TEXT } from './track'
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
 // with the one key `cairn-pane-next` and the next-step press.
-// The Next line's `buttons` name the Buttons that register.tsx draws after
-// its action Button, in order (M219). No other line carries them.
-export type PaneButton = 'clear' | 'status'
+// A line's `buttons` name the Buttons that register.tsx draws after its
+// tail and any action Button, in order: Clear and Status on the Next line
+// (M219), Refresh on the Blocked heading, and one of Finish, Revise, or
+// Check on a blocked line (M224). A blocked line's `target` is its
+// milestone id, which its Button's key and press carry.
+export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
   indent: number
@@ -46,6 +51,54 @@ export type PaneLine = {
   wraps?: true
   action?: string
   buttons?: PaneButton[]
+  target?: string
+}
+
+// A blocked milestone's pull request state, as `prWord` reads it from a
+// `gh pr view <url> --json state,reviewDecision` call (M224). The state
+// contract holds the one list of words.
+export type PrWord = CairnPrWord
+
+// The state word of one `gh pr view` result, null for a call that
+// rejected. A non-zero exit, text that is not a JSON object, or a `state`
+// other than MERGED, CLOSED, or OPEN reads as `unknown`. An OPEN pull
+// request reads by its `reviewDecision`, and any decision but
+// CHANGES_REQUESTED or APPROVED, an empty or absent one included, reads as
+// `in review`.
+export function prWord(result: { exitCode: number; stdout: string } | null): PrWord {
+  if (result === null || result.exitCode !== 0) return 'unknown'
+  let view: unknown
+  try {
+    view = JSON.parse(result.stdout)
+  } catch {
+    return 'unknown'
+  }
+  if (view === null || typeof view !== 'object') return 'unknown'
+  const { state, reviewDecision } = view as { state?: unknown; reviewDecision?: unknown }
+  if (state === 'MERGED') return 'merged'
+  if (state === 'CLOSED') return 'closed'
+  if (state !== 'OPEN') return 'unknown'
+  if (reviewDecision === 'CHANGES_REQUESTED') return 'changes requested'
+  if (reviewDecision === 'APPROVED') return 'approved'
+  return 'in review'
+}
+
+// The Button a blocked line carries for its state word (M224), from the
+// routes that /milestone gives a handed-off PR: a merged one goes to
+// review's hygiene, one with changes requested back to implement, and a
+// closed one to /milestone. The other words carry none.
+export const PR_BUTTON: Partial<Record<PrWord, PaneButton>> = {
+  merged: 'finish',
+  'changes requested': 'revise',
+  closed: 'check',
+}
+
+// A state word's color: the review phase's for a merged or approved pull
+// request, the warning key for one with changes requested, gray otherwise.
+function prColor(word: PrWord): string {
+  if (word === 'merged' || word === 'approved') return FLOW_COLORS.review
+  if (word === 'changes requested') return WARNING
+  return GRAY
 }
 
 // The next-step Button's label by the action that scripts/cairn_next.py
@@ -74,6 +127,11 @@ export function nextLabel(action: string): string | undefined {
 // pane's Next line read these (M219).
 export const STATUS_LABEL = 'Status'
 export const CLEAR_LABEL = 'Clear'
+// The Blocked heading's Button and a blocked line's Buttons (M224).
+export const REFRESH_LABEL = 'Refresh'
+export const FINISH_LABEL = 'Finish'
+export const REVISE_LABEL = 'Revise'
+export const CHECK_LABEL = 'Check'
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
@@ -215,8 +273,15 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // Status Button after it (M219). `ended` is true from a
 // Stop that ends a cairn skill's step until the next idle typed prompt,
 // cairn skill prompt, or session end, and then the Clear Button comes
-// before Status (M219).
-export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, ended = false): PaneLine[] {
+// before Status (M219). `prs` holds each pull request's state word by its
+// URL, from the last read (M224).
+export function paneLines(
+  state: PaneState,
+  band: BandRow[] = [],
+  acts = false,
+  ended = false,
+  prs: Record<string, PrWord> = {},
+): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
@@ -262,14 +327,28 @@ export function paneLines(state: PaneState, band: BandRow[] = [], acts = false, 
   }
   // The blocked rows, each with its pull request's number when its
   // milestone file's header names one, whether or not a milestone is
-  // active (M223).
+  // active (M223). After the number, the state word that the last read
+  // found, and the Button that word carries (M224). The heading carries
+  // the Refresh Button while a row has a pull request to read.
   if (state.blocked.length > 0) {
-    out.push(
-      ...heading('blocked-head', 'Blocked', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.blocked.length}`, color: GRAY }]),
-    )
+    const head = heading('blocked-head', 'Blocked', QUEUE_COLOR, [
+      { text: ' ' },
+      { text: `${state.blocked.length}`, color: GRAY },
+    ])
+    if (state.blocked.some(row => row.url !== null)) head[1].buttons = ['refresh']
+    out.push(...head)
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
       if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
+      const word = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
+      if (word !== undefined) {
+        held.tail = [...(held.tail ?? []), { text: '  ' }, { text: word, color: prColor(word) }]
+        const button = PR_BUTTON[word]
+        if (button !== undefined) {
+          held.buttons = [button]
+          held.target = row.id
+        }
+      }
       out.push(held)
     }
   }
