@@ -329,7 +329,8 @@ each line shows one word after its number:
 | `in review` | OPEN, any other review decision, or none | none |
 | `unknown` | the call failed, exited non-zero, or gave no known state | none |
 
-No line Button runs `/clear` first. A line not yet read shows no word.
+None of the `Finish`, `Revise`, or `Check` Buttons runs `/clear` first. A
+line not yet read shows no word.
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
 status.

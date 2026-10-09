@@ -679,10 +679,11 @@ async function pressRefresh($) {
 }
 
 // A press of a blocked line's Button runs its command as a typed command
-// would, through the Status Button's path, with no `/clear` first (M224).
-// It reads the row's state word as it is now, not as it was drawn, and
-// does nothing when that word no longer carries this Button, or while
-// another Button's run is in flight.
+// would, through `run`, as the Status press does, with no `/clear` first
+// (M224). It reads the row's state word as it is now, not as it was drawn,
+// and does nothing when that word no longer carries this Button, or while
+// another Button's run is in flight. Unlike the Status press, it has no
+// check for a running cairn skill's step.
 async function pressBlocked($, kind: PaneButton, id: string) {
   if (busy()) return
   const row = (await read($, pane)).blocked.find(each => each.id === id)

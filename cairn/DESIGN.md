@@ -302,9 +302,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   runs `/cairn:milestone-review <id>`, a `changes requested` line a
   `Revise` Button that runs `/cairn:milestone-implement <id>`, and a
   `closed` line a `Check` Button that runs `/cairn:milestone`, the
-  routes `/milestone` gives a handed-off PR. No line Button clears first.
-  A press reads the word as it is now and runs through `run`, the Status
-  Button's path, while no other run is in flight. A test answers the mod's
+  routes `/milestone` gives a handed-off PR. None of these three Buttons
+  clears first. A press reads the word as it is now and runs through
+  `run`, as the Status press does, while no other run is in flight. Unlike
+  the Status press, it does not wait for a running cairn skill's step to
+  end. A test answers the mod's
   `$.process.run` with an `on('process.run')` hook (M224 probe), and a
   desktop Code session's mod runs `gh` from the app's `PATH`.
   `pane.ts` lays out the lines, and each line's text is
