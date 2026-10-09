@@ -162,6 +162,18 @@ The script deliberately does not judge these — do them yourself and report:
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.
+- **Open hotfix PRs**, in owner and guest mode: read the open PRs you
+  opened with one call, `gh pr list --repo <base-repo> --state open
+  --author @me --limit 100 --json
+  number,title,url,headRefName,reviewDecision` (the rulebook's slug recipe
+  gives `<base-repo>`). Keep each PR whose `headRefName` starts with
+  `hotfix-`, and report its number, title, and review decision. Show an
+  empty `reviewDecision` as `none`. If the call returns 100 PRs, say that
+  the list can be cut at that limit. This bullet carries no disposition to
+  §3, names no next command, and writes nothing to GitHub. If the read
+  fails, name the cause and report no PR. The cause is a missing or
+  unauthenticated `gh`, a repo with no remote, or another cause that the
+  error names. A failed read is a reported gap, never an audit `FAIL`.
 - **Untriaged inboxes:** open GitHub issues and external PRs carrying no
   candidate row or hotfix disposition yet. Guest mode (tracking-rules
   "Collaboration mode") skips this bullet: the inboxes are the maintainers'
@@ -171,12 +183,12 @@ The script deliberately does not judge these — do them yourself and report:
   `gh pr list --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`
   field is for: a PR you opened, or one whose head branch is `m<nnn>-*` or
-  `hotfix-*`, is cairn's own in-flight work — already tracked by its
-  milestone and already reported two bullets up. Only what survives that
-  filter is inbox; without it the audit re-reports the milestone PR you are
-  reviewing right now and can propose adopting a PR this session authored.
-  Then
-  apply the search-first rule to every hit before proposing anything: sweep
+  `hotfix-*`, is cairn's own in-flight work. A milestone PR is tracked by
+  its milestone and reported by the `review` and `blocked` bullets above,
+  and a hotfix PR you opened is reported by the "Open hotfix PRs" bullet
+  above. Only what survives that filter is inbox; without it the audit
+  re-reports the milestone PR you are reviewing right now and can propose
+  adopting a PR this session authored. Then apply the search-first rule to every hit before proposing anything: sweep
   the existing `candidate` rows, `milestones/archive/`, and `DECISIONS.md`,
   so an item already covered is cross-referenced, never duplicated as a
   second row. Carry one proposed disposition per item to §3, where the user

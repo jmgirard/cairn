@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M227: The status report lists open hotfix PRs
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — `/milestone` is a shipped skill that every cairn operator runs   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m227-status-hotfix-prs   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -43,7 +43,7 @@ so the report names the review decision only.
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `skills/milestone/SKILL.md` §2 has an "Open hotfix PRs"
+- [x] AC1: `skills/milestone/SKILL.md` §2 has an "Open hotfix PRs"
       bullet, in owner and guest mode. It runs one `gh pr list --repo
       <base-repo> --state open --author @me --limit 100 --json
       number,title,url,headRefName,reviewDecision` call. It keeps the PRs
@@ -54,7 +54,7 @@ so the report names the review decision only.
       says that the list can be cut. The read fails if `gh` is missing or
       unauthenticated, if the repo has no remote, or for another cause.
       Then the bullet names the cause and reports no PR.
-- [ ] AC2: The §2 inbox bullet no longer says that a `hotfix-*` PR is
+- [x] AC2: The §2 inbox bullet no longer says that a `hotfix-*` PR is
       "already reported two bullets up", and it points at the new bullet
       instead. The `/hotfix` guest handoff text in `skills/hotfix/SKILL.md`
       no longer says `/milestone` "reports nothing for it", and says that
@@ -63,15 +63,7 @@ so the report names the review decision only.
       first: `tr -s ' \n' ' ' < <file> | grep -c '<phrase>'` prints 0 for
       each phrase, over `skills/milestone/SKILL.md` and
       `skills/hotfix/SKILL.md`. The same search before the change prints 1.
-- [ ] AC3: A `/milestone` run happens in a session in the parameters
-      repo (`/Users/jmgirard/github/parameters`, guest mode). This cairn
-      checkout, which `~/.claude/skills/cairn` links to, has the M227
-      branch checked out at the time. At the same time, `gh pr list
-      --repo easystats/parameters --author @me --state open --limit 100`
-      prints at least one PR with a `hotfix-` head branch. The run
-      reports exactly those PRs, each with its number, title, and review
-      decision.
-- [ ] AC4: The hand-run prose guards in `skills/tests` pass, and this
+- [x] AC3: The hand-run prose guards in `skills/tests` pass, and this
       repo's verify passes: `python3 -m unittest` over `scripts/tests` and
       `hooks/tests`, `claude plugin validate` on the plugin and marketplace
       manifests, and `claude plugin test`.
@@ -83,8 +75,7 @@ so the report names the review decision only.
 
 - AC1 → T1
 - AC2 → T2
-- AC3 → T4
-- AC4 → T3
+- AC3 → T3
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -93,15 +84,15 @@ so the report names the review decision only.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the "Open hotfix PRs" bullet in `skills/milestone/SKILL.md`
+- [x] T1: Write the "Open hotfix PRs" bullet in `skills/milestone/SKILL.md`
       §2, after the blocked-milestone PR bullets. It uses the rulebook's
       `<base-repo>` slug recipe.
-- [ ] T2: Change the §2 inbox bullet's "already reported" clause and the
+- [x] T2: Change the §2 inbox bullet's "already reported" clause and the
       `/hotfix` guest handoff sentence (`skills/hotfix/SKILL.md:259`).
-- [ ] T3: Run the `skills/tests` prose guards and verify. Fix a guard
+- [x] T3: Run the `skills/tests` prose guards and verify. Fix a guard
       that pins the old wording.
-- [ ] T4: Run `/milestone` in a parameters session and compare its
-      report with the AC1 call's output.
+- [x] T4: Add a `CHANGELOG.md` Unreleased entry for the "Open hotfix PRs"
+      report (review return 1).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -117,3 +108,51 @@ so the report names the review decision only.
 - 2026-10-09: created by /milestone-plan, split from M226's plan. The operator asked at the question set for the status report to list open hotfix PRs now. It ships apart from the pane, so it is its own milestone.
 - 2026-10-09: question set: `/milestone` report of open hotfix PRs — include now. Live look — yes, in parameters.
 - 2026-10-09: criteria audit (full mode, fresh Opus reader): 8 findings, 7 fixed. AC2's search joins lines, because one phrase wraps. AC1 shows an empty decision as `none`, notes a list cut at 100, adds other read failures, and says "no disposition, no next command". AC3 names the linked checkout on the branch and checks against a literal `easystats/parameters` call. T2 drops the README check that no criterion backs. Kept: AC3's need for an open hotfix PR, which holds today with 5. AC4 clean.
+- 2026-10-09: implement started on branch `m227-status-hotfix-prs`, cut from the pushed main. The untracked `cairn-probe.log` and `tsconfig.json` belong to no task and stay unstaged.
+- 2026-10-09: T1 done. The "Open hotfix PRs" bullet sits after the blocked-milestone PR bullet in `skills/milestone/SKILL.md` §2. Choice: it calls a failed read a reported gap, never an audit `FAIL`, the same as the inbox bullet. Verify green: scripts 401, hooks 174, plugin test 1765, both validates; prose guards 669.
+- 2026-10-09: T2 done. The inbox bullet now says that the `review` and `blocked` bullets report a milestone PR and the "Open hotfix PRs" bullet reports a hotfix PR. The `/hotfix` guest handoff says that §2 reports the open PR. The joined-line search prints 0 for both phrases in both files, and it printed 1 before. Suites and prose guards green.
+- 2026-10-09: T3 done. No prose guard pins the old wording. Exit 0 for each: prose guards, scripts, hooks, plugin and marketplace validate, plugin test (1765 pass), and `cairn_validate`.
+- 2026-10-09: T4 stopped before the run. `gh pr list --repo easystats/parameters --author @me --state open --limit 100` prints no PR, because #1261 to #1265 merged after the plan. `gh search prs --author @me --state open` finds no `hotfix-` head branch in any repo. AC3's setup does not hold, so the user picks how AC3 changes.
+- 2026-10-09: substantive amendment: at the stop the user chose "Drop the live look". AC3 (the `/milestone` run in parameters) and T4 come out, and the old AC4 is now AC3 with its wording unchanged, mapped to T3. No criterion wording changed, so no re-audit ran. A candidate row holds the live look.
+- 2026-10-09: claim audit: 13 claims read, 1 corrected — skills/milestone/SKILL.md, skills/hotfix/SKILL.md
+- 2026-10-09: the corrected claim: the inbox bullet now says a hotfix PR "you opened" is reported by the new bullet. The reader's re-read found it true. Someone else's `hotfix-*` PR is still dropped from the inbox and reported nowhere, a gap older than M227, so the live-look candidate row records it. Verify green again after the fix, and status set to `review`.
+- 2026-10-09: review return 1: the consistency gate's changelog check fails. `CHANGELOG.md` has no Unreleased entry for the new "Open hotfix PRs" report in `/milestone`. Status back to `in-progress`.
+- 2026-10-09: T4 added for review return 1 (minor amendment) and done: a `CHANGELOG.md` Unreleased entry for the "Open hotfix PRs" report, above the pane's hotfix entry.
+- 2026-10-09: claim audit: 12 claims read, 0 corrected — CHANGELOG.md
+- 2026-10-09: verify green after T4, and status set to `review`.
+- 2026-10-09: step-7 approval: m227-status-hotfix-prs approved for merge
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
+
+Pass 1, on 367b0b9, 2026-10-09.
+
+- AC1: `skills/milestone/SKILL.md:165` in §2 (`## 2. Health audit` at :54, `## 3. Route` at :245) opens the "Open hotfix PRs" bullet, in owner and guest mode. The joined-line search for the AC's full `gh pr list` call prints 1. The bullet keeps `hotfix-` heads, reports number, title, and review decision, shows an empty decision as `none`, says a 100-PR result can be cut, carries no §3 disposition or next command, writes nothing to GitHub, and on a failed read names the cause and reports no PR.
+- AC2: the joined-line search prints 0 for "already reported two bullets up" and "reports nothing for it" in both files on HEAD. On main it prints 1 for each phrase in its own file. The inbox bullet points at the new bullet (:188), and the `/hotfix` handoff says §2 reports the open PR in that bullet (`skills/hotfix/SKILL.md:259-260`).
+- AC3: on 367b0b9, each exits 0: prose guards (669 tests), scripts (401), hooks (174), plugin validate, marketplace validate, and plugin test (1765 pass, 0 fail).
+- Gate: `cairn_validate` exits 0. No principle changed, so `cairn_impact` is skipped. The marketplace validate output has no `version` warning. FAIL: `CHANGELOG.md` Unreleased has no entry for this change (review return 1).
+
+Pass 2, on 1e5d8a0 after review return 1, 2026-10-09. The default branch has not moved.
+
+- AC1: the bullet at `skills/milestone/SKILL.md:165` in §2 is unchanged since pass 1, and the joined-line search for the full `gh pr list` call prints 1. Each clause of AC1 reads as in pass 1.
+- AC2: the joined-line search prints 0 for each phrase in each file on 1e5d8a0. On main it prints 1 for each phrase in its own file. The inbox bullet points at the new bullet, and the `/hotfix` handoff says §2 reports the open PR.
+- AC3: on 1e5d8a0, each exits 0: prose guards (669 tests), scripts (401), hooks (174), plugin validate, marketplace validate, and plugin test (1765 pass, 0 fail).
+- Gate: `cairn_validate` exits 0. `cairn_impact` skipped (no principle changed). No marketplace `version` warning. `CHANGELOG.md` Unreleased has the entry (T4), and a fresh reader found its 12 claims true.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the inbox drops a `hotfix-*` PR that someone else opened, and the new bullet reads only `--author @me`, so that PR shows nowhere — follow-up, the "Live look" candidate row (older than M227)
+- diff-bug #2: the `/hotfix` guest handoff says §2 "filters `hotfix-*` PRs out of its inbox", but guest mode skips the inbox — fix now, fixed b52cc27
+- diff-bug #3: "with one call" leaves out the slug lookup's `gh repo view` — reject, planned change (AC1 names one `gh pr list` call, and "another cause that the error names" covers a failed lookup)
+- diff-bug #4: `--author` uses GitHub search, which can miss a PR opened seconds before — follow-up, the "Live look" candidate row
+- diff-bug #5: `url` is fetched but not reported — reject, planned change (AC1 fixes the field list)
+- diff-bug #6: a guest milestone slug that starts with `hotfix-` would show in two bullets — follow-up, the "Live look" candidate row
+- diff-bug #7: the bullet names no command for a reported hotfix PR — reject, planned change (Scope Out)
+- blame-history #1: same as diff-bug #2 — fix now, with it, fixed b52cc27
+- After b52cc27: AC2's search still prints 0 for each phrase in each file, and the `/hotfix` text still says §2 reports the open PR. Verify exits 0 on all five checks, and the prose guards pass.
+- blame-history #2: one rewritten inbox line runs past 100 characters — reject, style; it is rewrapped anyway in the diff-bug #2 commit
+- blame-history #3, #4, #6: no regression of M74's inbox filter, M185's handoff, or the adopted-PR model — noted, no finding
+- blame-history #5: owner-mode hits will be rare, because an owner hotfix PR opens only after approval — reject, planned change (AC1 names owner and guest mode)
+- prior-review #1: the same over-long line — reject, style; rewrapped with the fix
+- prior-review: no PR review comments exist (`pulls/comments` returned `[]`), and M226's changelog return does not recur
