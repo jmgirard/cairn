@@ -1,13 +1,13 @@
 # M225: The pane counts each handed-off PR's unanswered comments
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M224
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m225-pane-pr-comments
 
 ## Goal
 
@@ -97,7 +97,7 @@ kept unchanged. M224's state words and Buttons are M224's.
 
 ## Tasks
 
-- [ ] T1: Tests first. Add the counting function's cases on each AC2 axis,
+- [x] T1: Tests first. Add the counting function's cases on each AC2 axis,
       the AC1 query cases over two PR URLs, the AC3 layout cases, and the
       AC4 failure cases, with `process.run` answers per case. Extend M224's
       trigger tests to record GraphQL calls. Make sure that they fail
@@ -124,6 +124,10 @@ kept unchanged. M224's state words and Buttons are M224's.
 - 2026-10-08: criteria audit (full mode, fresh Opus reader): 13 findings, all taken toward the narrower promise. Only OPEN PRs are read. The Goal names the anchor rule in place of "waits on a reply". Threads are read `last: 100`, and the limit is documented. A null author is another person, and a null PR author fails the read. The newest commit is `commits(last: 1)`, times compare strictly as text, and PENDING and DISMISSED are named. The AC2 tests vary every axis, and AC1 uses two URLs. AC3 names its key, indent, refresh, and width case. AC4 is a shape check. AC5 needs a PR with counts not both zero, compared with GitHub. The docs and verify are split, the trigger clause rides M224's tests, and the double count goes in the docs. M224's Out now points here.
 - 2026-10-08: plan chose the anchor rule (others' items newer than the author's last comment, review, or commit) over per-item reply tracking, because GitHub links no reply to a review or a conversation comment. Falsified by a GitHub API field that links a comment to the item it answers.
 - 2026-10-08: plan chose a second line under the PR over adding the counts to its tail, because the tail does not shrink and a 44-column pane has no room for both. Falsified by a live look where the second line crowds the section.
+- 2026-10-09: implement started on `m225-pane-pr-comments`, cut from the pushed main at 4e840a3. The untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, not milestone work. The simple-english lint hook flags existing text across ROADMAP.md and this file on each edit; the hits sit in history and plan-owned sections, so they stay as written.
+- 2026-10-09: a read-only `gh api graphql` call on PR #231 returned `data.repository.pullRequest` with `author.login`, `reviewThreads.nodes`, `reviews.nodes`, `comments.nodes`, and `commits.nodes[].commit.committedDate`, the shape the shape check reads.
+- 2026-10-09: implementation choice: the counting lives in its own module `hooks/status/counts.ts` (`countsArgv`, `prNodes`, `countPr`, `prCounts`). The argv passes owner and repo with `-f` and the number with `-F`, so an owner named like a number stays a string.
+- 2026-10-09: T1 done: `counts.test.ts` covers the AC2 axes, the shape check, and the argv; `pane.test.tsx` adds the AC1, AC3, and AC4 register cases and records `gh api graphql` calls in M224's trigger tests, now over an OPEN PR. `counts.ts` was written in the same sitting; against the M224 register and pane code with `countPr` and `prCounts` stubbed to zero counts, `claude plugin test .` gave 68 fail, 1666 pass, every failure in an M225 case or an extended M224 trigger case.
 
 ## Decisions
 

@@ -11,7 +11,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 |---|---|---|---|---|---|
 | M223 | The pane lists blocked milestones and their PRs | done | — | normal | milestones/archive/M223-pane-blocked-list.md |
 | M224 | The pane shows each handed-off PR's review state | done | M223 | normal | milestones/archive/M224-pane-pr-state.md |
-| M225 | The pane counts each handed-off PR's unanswered comments | planned | M224 | normal | milestones/M225-pane-pr-comments.md |
+| M225 | The pane counts each handed-off PR's unanswered comments | in-progress | M224 | normal | milestones/M225-pane-pr-comments.md |
 | M222 | The cairn pane stays open across /clear | done | — | normal | milestones/archive/M222-pane-across-clear.md |
 ## Candidates
 
