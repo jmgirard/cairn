@@ -157,6 +157,12 @@
 
 ### Fixes
 
+- **`/cairn-pane` opens the pane after a typed `/clear`.** With the pane
+  open, a typed `/clear` in the desktop app took it off the screen. When
+  the next message was `/cairn-pane`, the session start reopened the pane,
+  and the command then closed it and printed `cairn pane closed`. You had
+  to run the command twice. Now that first `/cairn-pane` leaves the pane
+  open and prints `cairn pane opened`.
 - **The cairn pane opens without waiting for GitHub.** `/cairn-pane`, the
   band's open button, and the reopen at a session start now return without
   waiting for the reads from GitHub. Before, each one returned only after

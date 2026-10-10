@@ -244,10 +244,16 @@ export const register: Register = on => {
   // Only a pane the person can see is closed: one that waits undrawn, or
   // sits behind another pane's tab, is opened again instead (M205 review).
   // A hook that refuses the open or the close gives a line, not an error.
+  // The first `/cairn-pane` after the session-start reopen, before any turn
+  // ends, keeps the reopened pane open: a typed `/clear` took the pane off
+  // the screen, and that command is the message whose start reopened it.
   on('command.run', { command: PANE_COMMAND }, async $ => {
+    const afterReopen = reopened
+    reopened = false
     try {
       const mine = (await $.ui.panes()).find(open => open.id === PANE)
       if (mine !== undefined && mine.isPlaced && mine.isShown) {
+        if (afterReopen) return { text: 'cairn pane opened' }
         await $.ui.close({ id: PANE })
         return { text: 'cairn pane closed' }
       }
@@ -345,6 +351,7 @@ export const register: Register = on => {
   // skill that waits on background work ends its turn, and the work's notice
   // starts the next one, so a turn end is not the skill's end.
   on('turn.complete', async ($, e, next) => {
+    reopened = false
     const result = await next(e)
     await update($, expanded, () => false)
     await refresh($)
@@ -440,6 +447,7 @@ export const register: Register = on => {
     // rejecting `next(e)` below cannot leave it set (M221 review).
     const queued = heldRun
     heldRun = null
+    reopened = false
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -974,6 +982,11 @@ async function markReopen($) {
   }
 }
 
+// True from a session-start reopen that opened a pane not shown before it
+// until the next `/cairn-pane`, turn end, or session end. A reload starts
+// it over as false.
+let reopened = false
+
 // At the first start in a marked folder, clears the mark and, when the
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
 // with no toast, and a refused one gives nothing. An open starts the read of
@@ -985,7 +998,9 @@ async function reopen($) {
     if (!held.includes(cwd)) return
     await $.store.set(REOPEN_KEY, held.filter(each => each !== cwd))
     if (!(await read($, pane)).found) return
+    const before = await isShown($)
     await $.ui.open({ id: PANE, title: PANE_TITLE })
+    reopened = !before
   } catch {
     // No reopen.
     return

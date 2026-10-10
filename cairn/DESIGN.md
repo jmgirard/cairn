@@ -418,7 +418,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   move, to the store key `reopen`, and
   the next `session.start` in that folder clears the mark and opens the
   pane after its refresh, when a ROADMAP is found. A reopen that is not
-  placed waits with no toast. A pane behind another pane's tab or waiting
+  placed waits with no toast. A reopen of a pane not shown before it sets
+  the in-process flag `reopened`, which the next `/cairn-pane`, turn end,
+  or session end clears. A `/cairn-pane` that finds it set leaves the pane
+  open and prints `cairn pane opened`, since that command is the first
+  message after the clear. A pane behind another pane's tab or waiting
   undrawn at the `other` end is not marked. An app quit or a signal that
   ends with `other` also brings the pane back at the next session in that
   folder. The API does not say which ends those are, and none was checked.
