@@ -82,6 +82,13 @@ re-enters here, at the step the record shows is next:
   create` — the header already names the open PR — from the push and the
   marker write onward. The step-7 PR-conversation read runs before that
   chip is re-posed, the PR pre-existing.
+- (c′) `OPEN`, and the work log's newest `copilot round:` line reads
+  `waiting` (a stop at the Copilot round's wait; checked before (c) and
+  (d)) → step 1, with step 3 re-run when the default branch had moved,
+  then the round resumes from the PR's state
+  (`skills/shared/copilot-review.md` §7). In owner mode, step 7 follows,
+  its PR-conversation read included. In guest mode, step 8's guest close
+  block follows, the status already `blocked`.
 - (d) any other state, or a state above whose conditions are not met →
   step 1, then the review with the post-approval open at step 8 skipping
   `gh pr create` when the header already names an open PR. A `gh` that is
@@ -104,7 +111,9 @@ re-enters here, at the step the record shows is next:
    create` sit in step 8, after the step-7 approval, so a
    `pull_request`-triggered suite first runs on the head that merges rather
    than on every pre-approval push (D-138). The review below proceeds on the
-   local branch.
+   local branch. Where `cairn/PROFILE.md` opts in to the Copilot review
+   round (`skills/shared/copilot-review.md` §1), owner mode pushes and
+   opens the PR earlier, at step 6's round arm (D-152).
 
 3. **Execute every acceptance criterion with fresh evidence** — actually run
    the tests and the active profile's checks (its `verify` / `consistency-gate`
@@ -393,6 +402,20 @@ re-enters here, at the step the record shows is next:
    fix-now work step 5 settles lands after it and is committed before the
    merge question is posed (step 5's ordering clause).
 
+   **Copilot round arm** (owner mode, the round on per
+   `skills/shared/copilot-review.md` §1; D-152). After step 5's fix-now
+   commits, push the branch and open the PR the way step 8 states — `git
+   push -u origin <branch>`, then `gh pr create --title <title> --body
+   <body>` ready for review with the `Closes`/`Refs` lines — skipped when
+   the header already names an open PR. Record the PR URL in the header in
+   a commit on the branch; the round's fix pushes carry it. Then run the
+   round in that module, asking for Balanced. Each item's `copilot:` line
+   goes to the Review section, and the work log gets `copilot round: done
+   on PR #<N>` when the round ends (or the module's `waiting` line at its
+   timeout stop). Step 7's PR-conversation read then runs on this PR, which
+   now pre-exists. With the round off, nothing in this arm runs, and the
+   PR opens at step 8 after approval.
+
 7. **The merge question.** Present, outcome-first (per tracking-rules):
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, each finding with its
@@ -423,6 +446,9 @@ re-enters here, at the step the record shows is next:
    **"accept shortfall, recorded as such"** — the maintainer decides seeing
    the gap, and selecting it logs the accepted shortfall in the Review
    section.
+   Where step 6's Copilot round arm ran, each `copilot:` line and the
+   round's level line appear in this presentation, and the chip's question
+   text names how many Copilot items took each disposition.
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
@@ -573,6 +599,13 @@ re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay); record the PR URL in the header on disk, never committed.
+   With the Copilot review round on (`skills/shared/copilot-review.md`
+   §1), run it here, asking for Balanced, with the module's guest forms:
+   `--repo <base-repo>`, the base repo's owner and name in each `gh api`
+   call, and fix pushes to the fork. Its `copilot:` lines and its
+   `copilot round:` work-log line are written on disk, and the lines ride
+   in the close block below. A timeout stop in the round still sets the
+   status below before it stops.
    Then set status `blocked` in ROADMAP and the header
    mirror; append the work-log line `blocked: PR #<N> awaits the
    maintainers of <base-repo>` — the blocker the status vocabulary requires

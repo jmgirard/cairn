@@ -94,8 +94,10 @@ Each item is reported as `copilot: <path:line, or review body> — <disposition>
 with its reply. `/milestone-review` writes each line to the Review section and
 lists them at the merge question. `/hotfix` keeps no milestone file, so it
 states them in chat at its approval chip. In guest mode they ride in the close
-block. The level line of §2 goes with them. A milestone's timeout stop
-(§3) also writes the work-log line `copilot round: waiting on PR #<N>`.
+block. The level line of §2 goes with them. A milestone also writes one
+work-log line: `copilot round: waiting on PR #<N>` at the timeout stop (§3),
+and `copilot round: done on PR #<N>` when the round ends. `/milestone-review`
+resume route (c′) reads the newest of these lines.
 
 ## 7. Resume
 
