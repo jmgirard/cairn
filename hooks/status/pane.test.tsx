@@ -1392,6 +1392,9 @@ describe('an other end with the pane shown opens it at the next start in the sam
 // in `git` and `lists`. `git` answers from `remotes`, a remote's URL by its
 // name, and by default the repo has no remote, so no list call runs.
 // `list` answers each `gh pr list` call.
+// An open does not wait for the read (M230), so a case waits with
+// `settled` until no `git` or `gh` call has been in flight for 20 ms. The
+// `answer` and `list` answers may be promises too, which hold their calls.
 type GhAnswer = { exitCode: number; stdout: string } | 'reject'
 type Gh = {
   calls: (readonly string[])[]
@@ -1399,8 +1402,13 @@ type Gh = {
   git: (readonly string[])[]
   lists: (readonly string[])[]
   clocks: string[]
+  settled: () => Promise<void>
 }
-type GhRepo = { remotes?: Record<string, string>; list?: () => GhAnswer }
+type GhRepo = { remotes?: Record<string, string>; list?: () => GhAnswer | Promise<GhAnswer> }
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+// The newest `gh` set-up's `settled`, which the drawing helpers below wait
+// on before they mount the pane. Cases run one at a time.
+let ghSettled: () => Promise<void> = async () => {}
 const URL_1250 = 'https://github.com/upstream/repo/pull/1250'
 const LINE_1250 = 'M111  Handed to the maintainers  #1250'
 
@@ -1409,16 +1417,24 @@ const argOf = (argv: readonly string[], name: string) => argv.find(a => a.starts
 
 function gh(
   on: On,
-  answer: (url: string) => GhAnswer,
+  answer: (url: string) => GhAnswer | Promise<GhAnswer>,
   graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0, 0),
   repo: GhRepo = {},
 ): Gh {
-  const out: Gh = { calls: [], graphql: [], git: [], lists: [], clocks: [] }
+  let pending = 0
+  const settled = async () => {
+    for (let quiet = 0, i = 0; quiet < 4 && i < 400; i++) {
+      await sleep(5)
+      quiet = pending === 0 ? quiet + 1 : 0
+    }
+  }
+  const out: Gh = { calls: [], graphql: [], git: [], lists: [], clocks: [], settled }
+  ghSettled = settled
   const remotes = repo.remotes ?? {}
   const value = (got: { exitCode: number; stdout: string }) => ({
     value: { exitCode: got.exitCode, stdout: got.stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
   })
-  on('process.run', async ($, e) => {
+  const reply = async (e: { argv: readonly string[] }) => {
     if (e.argv[0] === 'git') {
       out.git.push(e.argv)
       if (e.argv[1] === 'remote' && e.argv.length === 2) return value({ exitCode: 0, stdout: Object.keys(remotes).map(n => `${n}\n`).join('') })
@@ -1428,7 +1444,7 @@ function gh(
     }
     if (e.argv[1] === 'pr' && e.argv[2] === 'list') {
       out.lists.push(e.argv)
-      const got = (repo.list ?? (() => ({ exitCode: 0, stdout: '[]\n' })))()
+      const got = await (repo.list ?? (() => ({ exitCode: 0, stdout: '[]\n' })))()
       if (got === 'reject') throw new Error('gh cannot start')
       return value(got)
     }
@@ -1436,9 +1452,17 @@ function gh(
     if (isGraph) out.graphql.push(e.argv)
     else out.calls.push(e.argv)
     const url = `https://github.com/${argOf(e.argv, 'owner')}/${argOf(e.argv, 'repo')}/pull/${argOf(e.argv, 'number')}`
-    const got = isGraph ? await graph(url) : answer(e.argv[3])
+    const got = isGraph ? await graph(url) : await answer(e.argv[3])
     if (got === 'reject') throw new Error('gh cannot start')
     return value(got)
+  }
+  on('process.run', async ($, e) => {
+    pending += 1
+    try {
+      return await reply(e)
+    } finally {
+      pending -= 1
+    }
   })
   for (const name of ['clock.sleep', 'clock.after', 'clock.every'] as const) {
     on(name, async () => {
@@ -1473,6 +1497,7 @@ function countsReply(t: number, c: number): GhAnswer {
 
 // The pane's line for a key, and the keys of the Buttons on it.
 async function blockedView($, key: string): Promise<{ text: string; buttons: string[] }> {
+  await ghSettled()
   const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
   const [root] = await ui.findAll({ key: 'cairn-pane' })
   const line = kids(root).find(child => keyOf(child) === key)
@@ -1497,6 +1522,7 @@ describe('each blocked line shows its pull request state (M224 AC1)', () => {
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       const opened = await $.command.run({ command: COMMAND })
       expect(opened.text).toBe('cairn pane opened')
+      await calls.settled()
       expect(calls.calls).toEqual([['gh', 'pr', 'view', URL_1250, '--json', 'state,reviewDecision']])
       expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${shape.word}`)
     })
@@ -1605,6 +1631,7 @@ describe('a close or a refused open reads no state (M224 AC3)', () => {
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     expect(calls.graphql.length).toBe(1)
     calls.calls.length = 0
     calls.graphql.length = 0
@@ -1642,6 +1669,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     expect(calls.calls).toEqual(ONE_READ)
     expect(graphOf(calls)).toEqual(ONE_QUERY)
     expect(calls.clocks).toEqual([])
@@ -1655,6 +1683,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
     await ui.press({ key: 'cairn-open' })
     await ui.unmount()
+    await calls.settled()
     expect(calls.calls).toEqual(ONE_READ)
     expect(graphOf(calls)).toEqual(ONE_QUERY)
     expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
@@ -1665,11 +1694,13 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     const calls = gh(on, () => prView('OPEN', ''))
     const copy = copyOf('blocked-active')
     await openPane($, on, copy)
+    await calls.settled()
     await $.session.end({ reason: 'other', sessionId: 's1' })
     newProcess(copy)
     calls.calls.length = 0
     calls.graphql.length = 0
     await $.session.start(NEW_START)
+    await calls.settled()
     expect(listed(copy)).toBe(true)
     expect(calls.calls).toEqual(ONE_READ)
     expect(graphOf(calls)).toEqual(ONE_QUERY)
@@ -1706,6 +1737,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     expect(calls.graphql.length).toBe(1)
     calls.calls.length = 0
     calls.graphql.length = 0
@@ -1755,6 +1787,7 @@ async function linesAt(
   bodyColumns = 60,
   surface: (typeof SURFACES)[number] = 'desktop',
 ): Promise<{ key: string; text: string; indent: number }[]> {
+  await ghSettled()
   const ui = await mountPane($, surface, bodyColumns)
   const [root] = await ui.findAll({ key: 'cairn-pane' })
   const out = kids(root).map(line => ({
@@ -1789,6 +1822,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     const asked = calls.graphql.map(argv => [argv.slice(0, 3).join(' '), argOf(argv, 'owner'), argOf(argv, 'repo'), argOf(argv, 'number')])
     expect(asked.sort()).toEqual([
       ['gh api graphql', 'alpha', 'one', '12'],
@@ -1824,6 +1858,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
+      await calls.settled()
       expect(calls.calls.length).toBe(1)
       expect(calls.graphql).toEqual([])
       expect(await countsOf($)).toBe(undefined)
@@ -1843,6 +1878,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
+      await calls.settled()
       expect(calls.graphql.length).toBe(1)
       expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${each.word}`)
       expect((await countsOf($))?.text).toBe('1 unresolved thread')
@@ -1970,6 +2006,7 @@ describe('a failed count read draws no count line and leaves the state word (M22
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       const opened = await $.command.run({ command: COMMAND })
       expect(opened.text).toBe('cairn pane opened')
+      await calls.settled()
       expect(calls.graphql.length).toBe(1)
       const line = await blockedView($, 'blocked-M111')
       expect(line.text).toBe(`${LINE_1250}  changes requested`)
@@ -2017,6 +2054,7 @@ describe('each pane open and Refresh press lists the open pull requests on the b
       seat(on, copy)
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
+      await calls.settled()
       expect(calls.lists).toEqual([listCall(mode.url)])
     })
   }
@@ -2029,6 +2067,7 @@ describe('each pane open and Refresh press lists the open pull requests on the b
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
     await ui.press({ key: 'cairn-open' })
     await ui.unmount()
+    await calls.settled()
     expect(calls.lists).toEqual([listCall(ORIGIN)])
   })
 
@@ -2036,10 +2075,12 @@ describe('each pane open and Refresh press lists the open pull requests on the b
     const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN } })
     const copy = copyOf('blocked-prs')
     await openPane($, on, copy)
+    await calls.settled()
     await $.session.end({ reason: 'other', sessionId: 's1' })
     newProcess(copy)
     calls.lists.length = 0
     await $.session.start(NEW_START)
+    await calls.settled()
     expect(listed(copy)).toBe(true)
     expect(calls.lists).toEqual([listCall(ORIGIN)])
     await $.turn.complete(turn())
@@ -2210,6 +2251,7 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     expect(calls.git).toEqual([['git', 'remote', 'get-url', 'origin']])
     expect(calls.lists).toEqual([])
     expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
@@ -2232,4 +2274,219 @@ describe("the Hotfixes heading's Refresh has its own key, and either heading's p
     expect(calls.lists.length).toBe(3)
     expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(3)
   })
+})
+
+// M230. `held` answers every `gh` call only after `release`, so an open
+// that waited for the read could not finish first. `finishes` says whether
+// a call finished within 300 ms. `until` waits for a condition, for at most
+// 200 waits of 5 ms.
+function held(on: On, list: () => GhAnswer = () => listReply([pr(1265, 'hotfix-a')])) {
+  let release = () => {}
+  const gate = new Promise<void>(resolve => {
+    release = resolve
+  })
+  let listSettled = false
+  const calls = gh(
+    on,
+    async () => {
+      await gate
+      return prView('OPEN', '')
+    },
+    async () => {
+      await gate
+      return countsReply(0, 0)
+    },
+    {
+      remotes: { origin: ORIGIN },
+      list: async () => {
+        await gate
+        listSettled = true
+        return list()
+      },
+    },
+  )
+  return { calls, release, listSettled: () => listSettled }
+}
+const finishes = (work: Promise<unknown>) => Promise.race([work.then(() => 'finished'), sleep(300).then(() => 'waiting')])
+async function until(ok: () => boolean) {
+  for (let i = 0; i < 200 && !ok(); i++) await sleep(5)
+}
+
+describe('an open finishes before the pull request reads settle (M230 AC1)', () => {
+  test('/cairn-pane prints its line before any gh call settles', async ($, on) => {
+    const { calls, release } = held(on)
+    seat(on, copyOf('blocked-active'))
+    await $.session.start(NEW_START)
+    try {
+      const run = $.command.run({ command: COMMAND })
+      expect(await finishes(run)).toBe('finished')
+      expect((await run).text).toBe('cairn pane opened')
+      await until(() => calls.calls.length > 0)
+      expect(calls.calls.map(argv => argv[3])).toEqual([URL_1250])
+    } finally {
+      release()
+    }
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+  })
+
+  test("the band's open Button's press returns before any gh call settles", async ($, on) => {
+    const { calls, release } = held(on)
+    seat(on, copyOf('blocked-active'))
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    try {
+      expect(await finishes(ui.press({ key: 'cairn-open' }))).toBe('finished')
+      await until(() => calls.calls.length > 0)
+      expect(calls.calls.map(argv => argv[3])).toEqual([URL_1250])
+    } finally {
+      release()
+      await ui.unmount()
+    }
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+  })
+
+  test("the session-start reopen's handler returns before any gh call settles", async ($, on) => {
+    const { calls, release } = held(on)
+    const copy = copyOf('blocked-active')
+    try {
+      await openPane($, on, copy)
+      await until(() => calls.calls.length > 0)
+      await $.session.end({ reason: 'other', sessionId: 's1' })
+      newProcess(copy)
+      calls.calls.length = 0
+      expect(await finishes($.session.start(NEW_START))).toBe('finished')
+      expect(listed(copy)).toBe(true)
+      await until(() => calls.calls.length > 0)
+      expect(calls.calls.map(argv => argv[3])).toEqual([URL_1250])
+    } finally {
+      release()
+    }
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+  })
+})
+
+describe('the blocked reads start before the hotfix list settles (M230 AC2)', () => {
+  test("the blocked URL's gh pr view runs while gh pr list is held", async ($, on) => {
+    const { calls, release, listSettled } = held(on)
+    seat(on, copyOf('blocked-active'))
+    await $.session.start(NEW_START)
+    try {
+      await $.command.run({ command: COMMAND })
+      await until(() => calls.calls.length > 0 && calls.lists.length > 0)
+      expect(calls.lists).toEqual([listCall(ORIGIN)])
+      expect(listSettled()).toBe(false)
+      expect(calls.calls).toEqual([['gh', 'pr', 'view', URL_1250, '--json', 'state,reviewDecision']])
+    } finally {
+      release()
+    }
+    await calls.settled()
+    // Once the list settles, its hotfix URL is read too.
+    expect(calls.calls.map(argv => argv[3])).toEqual([URL_1250, prUrl(1265)])
+  })
+})
+
+describe('a /clear in the same process reads the states again while the pane shows (M230 AC3)', () => {
+  // The pane is listed open with no read run, as after an in-process
+  // `/clear`, whose host state starts empty (M222).
+  async function setUp($, on, place: (copy: Copy) => void) {
+    const got = held(on)
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start(NEW_START)
+    place(copy)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(LINE_1250)
+    expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
+    return got
+  }
+
+  test('a placed and shown pane reads the words and the hotfix list, and the hook does not wait', async ($, on) => {
+    const { calls, release } = await setUp($, on, copy => {
+      copy.open = [PANE]
+    })
+    try {
+      expect(await finishes($.classic.SessionStart({ source: 'clear' }))).toBe('finished')
+      await until(() => calls.calls.length > 0 && calls.lists.length > 0)
+      expect(calls.lists).toEqual([listCall(ORIGIN)])
+      expect(calls.calls.map(argv => argv[3])).toEqual([URL_1250])
+    } finally {
+      release()
+    }
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'hotfix-1265')).text).toBe('#1265  Fix 1265  in review')
+  })
+
+  const QUIET: [string, (copy: Copy) => void][] = [
+    ['a closed pane', copy => {
+      copy.open = []
+    }],
+    ['a placed pane behind another tab', copy => {
+      copy.open = [PANE]
+      copy.hidden = [PANE]
+    }],
+  ]
+  for (const [name, place] of QUIET) {
+    test(`${name} runs no gh call`, async ($, on) => {
+      const { calls, release } = await setUp($, on, place)
+      try {
+        await $.classic.SessionStart({ source: 'clear' })
+        await calls.settled()
+        expect(calls.calls).toEqual([])
+        expect(calls.lists).toEqual([])
+        expect(calls.graphql).toEqual([])
+      } finally {
+        release()
+      }
+    })
+  }
+})
+
+describe("a hotfix whose URL is a blocked row's draws on the blocked line only (M230 AC4)", () => {
+  const SHARED = { number: 1250, title: 'Fix 1250', url: URL_1250, headRefName: 'hotfix-shared' }
+
+  test('beside another hotfix, the shared one draws once and the count leaves it out', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''), undefined, {
+      remotes: { origin: ORIGIN },
+      list: () => listReply([SHARED, pr(1265, 'hotfix-a')]),
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start(NEW_START)
+    await $.command.run({ command: COMMAND })
+    const keys = await keysOf($)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect(keys.filter(key => HOTFIX_KEY.test(key))).toEqual(['hotfixes-head-gap', 'hotfixes-head', 'hotfix-1265'])
+    expect((await blockedView($, 'hotfixes-head')).text).toBe('▎ HOTFIXES 1')
+    expect(calls.calls.filter(argv => argv[3] === URL_1250).length).toBe(1)
+  })
+
+  test('when the shared one is the only hotfix, no Hotfixes heading draws', async ($, on) => {
+    gh(on, () => prView('OPEN', ''), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([SHARED]) })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start(NEW_START)
+    await $.command.run({ command: COMMAND })
+    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
+  })
+})
+
+describe('the gh pr list call names an http(s) remote without its userinfo (M230 AC5)', () => {
+  const FORMS: { name: string; remote: string; repo: string }[] = [
+    { name: 'a user and token', remote: 'https://user:token@github.com/o/r.git', repo: 'https://github.com/o/r.git' },
+    { name: 'a token alone', remote: 'https://token@github.com/o/r.git', repo: 'https://github.com/o/r.git' },
+    { name: 'an scp-form ssh URL, kept as it is', remote: 'git@github.com:o/r.git', repo: 'git@github.com:o/r.git' },
+  ]
+  for (const form of FORMS) {
+    test(form.name, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: form.remote },
+        list: () => listReply([pr(1265, 'hotfix-a')]),
+      })
+      seat(on, copyOf('blocked-active'))
+      await $.session.start(NEW_START)
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      expect(calls.lists).toEqual([listCall(form.repo)])
+      const recorded = [...calls.calls, ...calls.graphql, ...calls.git, ...calls.lists].flat()
+      expect(recorded.filter(arg => arg.includes('token'))).toEqual([])
+    })
+  }
 })

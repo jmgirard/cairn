@@ -1,13 +1,13 @@
 # M230: The pane's PR reads stop holding up opens
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane ships in the plugin to every operator
-- **Branch/PR:** —
+- **Branch/PR:** m230-pane-reads-detached
 
 ## Goal
 
@@ -39,12 +39,12 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 
 ## Tasks
 
-- [ ] T1: Extend the `gh(...)` test helper in `hooks/status/pane.test.tsx` so the `answer` and `list` callbacks can return a promise that the test settles. The `graph` callback already can (near L1892–1924). First, probe what `claude plugin test` does with detached `$` work still running at a test's end, and log the answer. Then move the existing `gh(...)` tests that assert right after an `await` to wait for the settled reads.
-- [ ] T2: In `hooks/status/register.tsx`, start `readPrs` without awaiting it in three places: the `/cairn-pane` command (near L238), `openPane` (near L634), and `reopen` (near L937). Rewrite the M224 and M222 comments that say the line comes once the reads finish. Add the AC1 tests.
-- [ ] T3: In `readPrs` (near L666), start the blocked URLs' reads without waiting for `readHotfixes`. Once the list settles, read the hotfix URLs that the blocked rows lack. Keep the newest-read check before each write, and keep the hotfix list written with the words. Rewrite the "Before them" comment. Add the AC2 test.
-- [ ] T4: In the `classic.SessionStart` hook (near L227), start `readPrs` after `refresh` without awaiting it. It starts only when `$.ui.panes()` shows the pane placed and shown. Rewrite the `readPrs` comment that says it runs only at an open and a Refresh press. Add the AC3 tests.
-- [ ] T5: In `paneLines` in `hooks/status/pane.ts` (near L421), drop each hotfix entry whose URL equals a blocked row's URL. Drop it before the heading count and the lines. Add the AC4 tests.
-- [ ] T6: In `baseRemoteUrl` (near L761), remove the userinfo from an `http://` or `https://` URL, and pass every other form unchanged. Add the AC5 tests.
+- [x] T1: Extend the `gh(...)` test helper in `hooks/status/pane.test.tsx` so the `answer` and `list` callbacks can return a promise that the test settles. The `graph` callback already can (near L1892–1924). First, probe what `claude plugin test` does with detached `$` work still running at a test's end, and log the answer. Then move the existing `gh(...)` tests that assert right after an `await` to wait for the settled reads.
+- [x] T2: In `hooks/status/register.tsx`, start `readPrs` without awaiting it in three places: the `/cairn-pane` command (near L238), `openPane` (near L634), and `reopen` (near L937). Rewrite the M224 and M222 comments that say the line comes once the reads finish. Add the AC1 tests.
+- [x] T3: In `readPrs` (near L666), start the blocked URLs' reads without waiting for `readHotfixes`. Once the list settles, read the hotfix URLs that the blocked rows lack. Keep the newest-read check before each write, and keep the hotfix list written with the words. Rewrite the "Before them" comment. Add the AC2 test.
+- [x] T4: In the `classic.SessionStart` hook (near L227), start `readPrs` after `refresh` without awaiting it. It starts only when `$.ui.panes()` shows the pane placed and shown. Rewrite the `readPrs` comment that says it runs only at an open and a Refresh press. Add the AC3 tests.
+- [x] T5: In `paneLines` in `hooks/status/pane.ts` (near L421), drop each hotfix entry whose URL equals a blocked row's URL. Drop it before the heading count and the lines. Add the AC4 tests.
+- [x] T6: In `baseRemoteUrl` (near L761), remove the userinfo from an `http://` or `https://` URL, and pass every other form unchanged. Add the AC5 tests.
 - [ ] T7: Update the README and the `cairn/DESIGN.md` paragraphs on when the pane reads pull requests (DESIGN near L288–355 and L397). Add the CHANGELOG entry, and run the verify slot.
 
 ## Work log
@@ -60,6 +60,10 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 - 2026-10-10: plan gate kept the shared pull request on the blocked line, because only that line carries Finish, Revise, and Check. Falsified by a session where the operator looks for it under Hotfixes.
 - 2026-10-10: AC5 stays a task in M230, not a `/hotfix`, because the token shows only in local process listings and the change is one function.
 - 2026-10-10: the question set cut the empty-heading criterion, which also drops its state-shape change. The merged row holds it.
+- 2026-10-10: implement started on branch `m230-pane-reads-detached`. The untracked `cairn-probe.log` and `tsconfig.json` in the working tree are not this milestone's and stay unstaged.
+- 2026-10-10: T1 probe: detached `$` work runs on after a hook returns under `claude plugin test`, as the M221 detached runs already showed, and the 12 new cases end with their held calls released. The `gh(...)` helper takes held `answer` and `list` promises and gives `settled()`, which waits until no `git` or `gh` call is in flight for 20 ms. The drawing helpers `blockedView` and `linesAt` wait on it, and 14 cases that assert calls right after an open wait on it too.
+- 2026-10-10: T2–T6 done in one checkpoint, because the six tasks share two files and one test block. `readPrs` moved its per-URL body to `readPr`, and `isShown` gives the placed-and-shown check. The Refresh press still waits for its read, since AC1 names only the three opens.
+- 2026-10-10: plant check in scratch copies: each of 8 reversals turned its own M230 test red. The reversals are an await in each of the three opens, the serial list read, no read at a clear, a read at any pane, no hotfix filter, and kept userinfo. Mod tests: 1777 pass. The verify slot's five commands pass.
 
 ## Decisions
 

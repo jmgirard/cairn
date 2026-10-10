@@ -69,7 +69,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the Blocked heading's Refresh Button
-// (`readPrs`). A blocked line then shows its state word, and a merged,
+// (`readPrs`). An open does not wait for that read, and a `/clear` that stays
+// in the process reads again while the pane shows (M230). A blocked line then shows its state word, and a merged,
 // changes-requested, or closed line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
 // threads and unanswered reviews and comments, which draw on a line under
@@ -223,16 +224,22 @@ export const register: Register = on => {
 
   // A `/clear` that stays in the same process raises no `session.start`, and
   // the host's state starts empty under the new session id, so the band and
-  // an open pane read the files again here (M222).
+  // an open pane read the files again here (M222). A pane that is placed and
+  // shown also reads the pull request states and the hotfix list again, and
+  // the hook does not wait for that read (M230).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
-    if (e.source === 'clear') await refresh($)
+    if (e.source === 'clear') {
+      await refresh($)
+      if (await isShown($)) void readPrs($)
+    }
     return result
   })
 
   // `/cairn-pane` closes an open pane, and otherwise reads the files and
-  // opens it, or says why it did not (M205 AC1). After the open, it reads
-  // the pull request states, so its line comes once they are read (M224).
+  // opens it, or says why it did not (M205 AC1). After the open, it starts
+  // the read of the pull request states (M224), and its line does not wait
+  // for that read, which can take up to 30 s (M230).
   // Only a pane the person can see is closed: one that waits undrawn, or
   // sits behind another pane's tab, is opened again instead (M205 review).
   // A hook that refuses the open or the close gives a line, not an error.
@@ -246,7 +253,7 @@ export const register: Register = on => {
       await refresh($)
       if (!(await read($, pane)).found) return { text: NO_ROADMAP }
       const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
-      await readPrs($)
+      void readPrs($)
       return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
     } catch (error) {
       return { text: `cairn pane: ${error instanceof Error ? error.message : String(error)}` }
@@ -629,8 +636,9 @@ async function dismiss($) {
 // A press of the band's open button opens the pane. The press is the
 // person's own act, so the surface places the pane at any width.
 // A press has no output line, so an open the surface does not place, or one
-// a hook refuses, says why in a toast. An open that does not throw reads
-// the pull request states (M224).
+// a hook refuses, says why in a toast. An open that does not throw starts
+// the read of the pull request states (M224), and the press does not wait
+// for it (M230).
 async function openPane($) {
   try {
     const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
@@ -639,7 +647,18 @@ async function openPane($) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
     return
   }
-  await readPrs($)
+  void readPrs($)
+}
+
+// True when `$.ui.panes()` lists the pane placed and shown, false when it
+// does not or the call throws.
+async function isShown($): Promise<boolean> {
+  try {
+    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    return mine !== undefined && mine.isPlaced && mine.isShown
+  } catch {
+    return false
+  }
 }
 
 // Each read of the pull request states takes the next number, and only the
@@ -653,16 +672,19 @@ let prReads = 0
 // names the repo, so the call needs no `--repo`. A call that rejects, as
 // when `gh` cannot start or outruns its timeout, reads as `unknown`, as a
 // bad result does (pane.ts `prWord`), and the read never throws. It runs
-// only at a pane open and a Refresh press: no timer and no turn end starts
-// one, since the operator does not want repeating tasks. A read that
-// starts while another runs still runs, with the newest URLs.
+// only at a pane open, a Refresh press, and a `/clear` that stays in the
+// process while the pane shows (M230): no timer and no turn end starts one,
+// since the operator does not want repeating tasks. A read that starts
+// while another runs still runs, with the newest URLs.
 // A pull request whose word says it is open then gets one `gh api graphql`
 // call for its counts (counts.ts), with the same timeout. A count call that
 // fails leaves the counts null, so its line draws no counts, and the state
 // word stands (M225). Words and counts are written together when every call
 // has settled, so a Refresh keeps the earlier counts drawn until then.
-// Before them, `readHotfixes` lists the open hotfix pull requests, whose
-// URLs join the blocked rows' (M226). The list is written with the words.
+// Beside the blocked rows' reads, `readHotfixes` lists the open hotfix pull
+// requests (M226), and the blocked reads do not wait for it (M230). Once the
+// list settles, the hotfix URLs that no blocked row names are read. The list
+// is written with the words.
 async function readPrs($) {
   prReads += 1
   const mine = prReads
@@ -671,32 +693,19 @@ async function readPrs($) {
     for (const row of (await read($, pane)).blocked) {
       if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
     }
-    const listed = await readHotfixes($)
+    const listing = readHotfixes($)
+    const blocked = urls.map(url => readPr($, url))
+    const listed = await listing
+    const more: string[] = []
     for (const pr of listed.prs) {
-      if (!urls.includes(pr.url)) urls.push(pr.url)
+      if (!urls.includes(pr.url) && !more.includes(pr.url)) more.push(pr.url)
     }
+    urls.push(...more)
     if (urls.length === 0) {
       if (mine === prReads) await update($, hotfixes, () => listed)
       return
     }
-    const reads = await Promise.all(
-      urls.map(async (url): Promise<PrRead> => {
-        let word: PrRead['word']
-        try {
-          const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
-          word = prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
-        } catch {
-          word = prWord(null)
-        }
-        const argv = countsArgv(url)
-        if (!OPEN_WORDS.includes(word) || argv === null) return { word, counts: null }
-        try {
-          return { word, counts: prCounts(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })) }
-        } catch {
-          return { word, counts: null }
-        }
-      }),
-    )
+    const reads = await Promise.all([...blocked, ...more.map(url => readPr($, url))])
     const out: Record<string, PrRead> = {}
     urls.forEach((url, i) => {
       out[url] = reads[i]
@@ -707,6 +716,25 @@ async function readPrs($) {
     if (mine === prReads) await update($, hotfixes, () => listed)
   } catch {
     // No write: the lines keep the words they had.
+  }
+}
+
+// One pull request's state word, and its counts when the word says it is
+// open, as `readPrs` describes. It never rejects.
+async function readPr($, url: string): Promise<PrRead> {
+  let word: PrRead['word']
+  try {
+    const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
+    word = prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
+  } catch {
+    word = prWord(null)
+  }
+  const argv = countsArgv(url)
+  if (!OPEN_WORDS.includes(word) || argv === null) return { word, counts: null }
+  try {
+    return { word, counts: prCounts(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })) }
+  } catch {
+    return { word, counts: null }
   }
 }
 
@@ -757,7 +785,9 @@ function listArgv(url: string): string[] {
 }
 
 // The base remote's URL for a root, or null when `git remote get-url`
-// fails or prints nothing (M226).
+// fails or prints nothing (M226). An `http://` or `https://` URL loses its
+// userinfo, such as `user:token@`, so no credential reaches the `gh` argv,
+// and every other form is kept as it is (M230).
 async function baseRemoteUrl($, root: string): Promise<string | null> {
   let base = 'origin'
   const profile = await readText($, join(root, 'cairn/PROFILE.md'))
@@ -766,7 +796,20 @@ async function baseRemoteUrl($, root: string): Promise<string | null> {
     if (names !== null && names.split(/\s+/).includes('upstream')) base = 'upstream'
   }
   const url = (await git($, root, ['remote', 'get-url', base]))?.trim() ?? ''
-  return url === '' ? null : url
+  return url === '' ? null : withoutUserinfo(url)
+}
+
+// A URL with the userinfo of an `http://` or `https://` authority removed:
+// everything after the scheme's `//` up to the last `@` before the first
+// `/`, `?`, or `#`.
+function withoutUserinfo(url: string): string {
+  const scheme = /^https?:\/\//i.exec(url)
+  if (scheme === null) return url
+  const rest = url.slice(scheme[0].length)
+  const end = rest.search(/[/?#]/)
+  const authority = end === -1 ? rest : rest.slice(0, end)
+  const at = authority.lastIndexOf('@')
+  return at === -1 ? url : scheme[0] + rest.slice(at + 1)
 }
 
 // A git call's stdout in a root, or null when it rejects or exits non-zero.
@@ -932,8 +975,8 @@ async function markReopen($) {
 
 // At the first start in a marked folder, clears the mark and, when the
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
-// with no toast, and a refused one gives nothing. An open reads the pull
-// request states (M224).
+// with no toast, and a refused one gives nothing. An open starts the read of
+// the pull request states (M224), and the start does not wait for it (M230).
 async function reopen($) {
   try {
     const cwd = await $.session.root()
@@ -947,7 +990,7 @@ async function reopen($) {
     return
   }
   // The reopen is an open, so it reads the pull request states (M224).
-  await readPrs($)
+  void readPrs($)
 }
 
 async function reopenList($): Promise<string[]> {
