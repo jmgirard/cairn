@@ -322,8 +322,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   owner-mode rule; guest mode's invariant is that the tracking on disk is never behind the code in the working tree.
 - **No cairn vocabulary reaches the repo.** The milestone branch is `<slug>` alone (not `m<nnn>-<slug>`); commit
   messages and PR titles and bodies carry no `M<NNN>`, no `AC<n>`/`T<n>`, no D-entry ids, and no cairn terms.
-- **`/cairn-release` and `/cairn-triage` stop** at session start with a close block whose status line names the mode
-  as the reason: a release is the maintainers' act, and triage commits to the default branch.
+- **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
+  release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
+  committed or pushed, and skips its git preconditions.
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch

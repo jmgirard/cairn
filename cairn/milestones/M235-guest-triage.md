@@ -55,8 +55,8 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
      Coverage lines together. -->
 
 - [x] T1: Tests first: add `skills/tests/test_guest_triage.py` with one guard per AC4 behavior. Guard 1 reads the guest arm's run-in-guest-mode sentence and the absence of the old stop sentence. Guard 2 reads the guest arm's no-commit-no-push sentence. Register both in `REGISTRY` in `skills/tests/test_mutation_harness.py`, and see them fail on main's skill text.
-- [ ] T2: Edit `skills/cairn-triage/SKILL.md`. Replace the guest stop (lines 29–33) with the guest arm. Give step 5's commit-message references and its D-entry preview ("the turn that commits it") a guest reading. Update the frontmatter description.
-- [ ] T3: Edit step 6 with the guest arm: validate, a stamp that names each refuted-premise or already-shipped drop with its evidence record, no commit, no push. Step 4's byte-budget check counts the guest stamp's length, because the stamp is longer there. Edit step 7's status line and safety line. Edit tracking-rules lines 325–326, README.md's guest bullet (lines 735–737), and its `/cairn-triage` table row (line 510). Run the AC3 grep and read each listed line's sentence.
+- [x] T2: Edit `skills/cairn-triage/SKILL.md`. Replace the guest stop (lines 29–33) with the guest arm. Give step 5's commit-message references and its D-entry preview ("the turn that commits it") a guest reading. Update the frontmatter description.
+- [x] T3: Edit step 6 with the guest arm: validate, a stamp that names each refuted-premise or already-shipped drop with its evidence record, no commit, no push. Step 4's byte-budget check counts the guest stamp's length, because the stamp is longer there. Edit step 7's status line and safety line. Edit tracking-rules lines 325–326, README.md's guest bullet (lines 735–737), and its `/cairn-triage` table row (line 510). Run the AC3 grep and read each listed line's sentence.
 - [ ] T4: Add the CHANGELOG `## Unreleased` entry. Append D-156 to `cairn/DECISIONS.md`, annotating D-137: triage runs in guest mode with its edits on disk, the git preconditions are skipped, and the stamp carries the drop evidence.
 - [ ] T5: Run the `verify` slot and the hand-run `skills/tests` suite (`python3 -m unittest discover -s skills/tests`), including `test_mutation_harness.py`'s registry completeness check.
 
@@ -73,6 +73,8 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
 - 2026-10-10: approach: D-156 annotates D-137 rather than superseding it, because D-137 never named triage and its write rule stands.
 - 2026-10-10: implement started on m235-guest-triage. Unrelated untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
 - 2026-10-10: T1: `skills/tests/test_guest_triage.py` (5 tests, 2 classes) and 4 REGISTRY entries added. All 5 fail on main's skill text as assertion failures on the pinned phrases (the old stop sentence still present).
+- 2026-10-10: T2: triage skill's guest stop replaced by the guest arm ("Guest mode runs on disk"), owner preconditions labeled owner-mode, step 5's commit-message and D-entry-preview clauses given guest readings, frontmatter description names the no-commit ending. Implementation choice: the guest arm also names step 4 among the steps with guest arms, because the byte check counts the longer guest stamp there.
+- 2026-10-10: T3: step 4 counts the guest stamp, step 6 guest arm (stamp names each drop's evidence, no commit, no push), step 7 status and safety lines. Rulebook guest bullet split (`/cairn-release` stops, `/cairn-triage` runs on disk). README guest bullet split in two and the table row amended. AC3 grep: 118 lines, none states a guest triage stop. `test_guest_triage` 5/5 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
