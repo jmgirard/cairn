@@ -1,6 +1,6 @@
 # M232: `/milestone` looks into one GitHub issue and routes it
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -21,13 +21,13 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone/SKILL.md` gains an issue look-in section. An argument that is an issue number (`#N` or `N`) or an issue URL runs that section in place of the snapshot, audit, and route sections. The frontmatter description names "look into issue N" as a trigger, and `argument-hint` names the issue argument. `claude plugin validate .` is green.
-- [ ] AC2: The section tells the report to give a verdict of exactly one of reply, hotfix, or milestone. It defines a three-value maintainer-input scale: none (the code or docs settle it), confirm (a choice for the maintainer to approve), and decide (a design decision is needed before work). It tells the report to give file:line citations where the issue names existing code or docs, else a line saying none applies. It also tells the report to give a reproduction, or the reason none was run.
-- [ ] AC3: The section ends the report with one chip. Its options are do it now, add a candidate row, leave, and stop. "Do it now" means one of three things: `/hotfix` with the issue, `/milestone-plan` with the issue so that its `Resolves:` slot names it, or the reply hand-off. A candidate row is search-first and cites the issue URL. The section offers leave only with a stated reason from D-044's three: noise, a duplicate, or an item cairn already covers. The verdict's option is first and marked recommended.
-- [ ] AC4: The reply hand-off puts the drafted reply verbatim in the turn's final rendered text, with a fenced `gh issue comment <N> [--repo <base-repo>] --body` command for the user to run. In the look-in section, `grep -nE "gh (issue|pr|api)"` lists only commands that read, plus that one hand-off line, which the section shows and never runs. The section itself runs no remote write other than AC5's owner-mode push. Writes by `/hotfix` or `/milestone-plan` stay under those skills' gates.
-- [ ] AC5: In guest mode, every `gh issue` and `gh pr` command in the section carries `--repo <base-repo>`. Every `gh api` call that reads issue or PR data names the base repo's owner and name in its path or GraphQL variables. The maintainer in the input level is the upstream maintainers. The section tells the draft to follow the rulebook's guest-mode rule of no cairn vocabulary. A candidate row is written to disk and not committed. In owner mode, the row is a docs-only commit to the default branch, pushed.
-- [ ] AC6: The CLAUDE.md routing template (`skills/shared/templates/claude-md-section.md`) and this repo's `CLAUDE.md` route "look into an issue" to `/milestone` with the issue. Each section gains at most two lines, and the template's length comment is updated to match its body. The README describes the issue argument.
-- [ ] AC7: The profile's `verify` slot is green. A new prose guard in `skills/tests/` pins AC2's three verdicts and three levels and AC4's hand-off, and the hand-run `skills/tests` suite is green. One live run of the look-in on an open issue of `easystats/insight` reads the guest-mode profile of the `~/github/insight` checkout. It stops at the chip with the stop option, and its chat report shows one verdict and one level.
+- [x] AC1: `skills/milestone/SKILL.md` gains an issue look-in section. An argument that is an issue number (`#N` or `N`) or an issue URL runs that section in place of the snapshot, audit, and route sections. The frontmatter description names "look into issue N" as a trigger, and `argument-hint` names the issue argument. `claude plugin validate .` is green.
+- [x] AC2: The section tells the report to give a verdict of exactly one of reply, hotfix, or milestone. It defines a three-value maintainer-input scale: none (the code or docs settle it), confirm (a choice for the maintainer to approve), and decide (a design decision is needed before work). It tells the report to give file:line citations where the issue names existing code or docs, else a line saying none applies. It also tells the report to give a reproduction, or the reason none was run.
+- [x] AC3: The section ends the report with one chip. Its options are do it now, add a candidate row, leave, and stop. "Do it now" means one of three things: `/hotfix` with the issue, `/milestone-plan` with the issue so that its `Resolves:` slot names it, or the reply hand-off. A candidate row is search-first and cites the issue URL. The section offers leave only with a stated reason from D-044's three: noise, a duplicate, or an item cairn already covers. The verdict's option is first and marked recommended.
+- [x] AC4: The reply hand-off puts the drafted reply verbatim in the turn's final rendered text, with a fenced `gh issue comment <N> [--repo <base-repo>] --body` command for the user to run. In the look-in section, `grep -nE "gh (issue|pr|api)"` lists only commands that read, plus that one hand-off line, which the section shows and never runs. The section itself runs no remote write other than AC5's owner-mode push. Writes by `/hotfix` or `/milestone-plan` stay under those skills' gates.
+- [x] AC5: In guest mode, every `gh issue` and `gh pr` command in the section carries `--repo <base-repo>`. Every `gh api` call that reads issue or PR data names the base repo's owner and name in its path or GraphQL variables. The maintainer in the input level is the upstream maintainers. The section tells the draft to follow the rulebook's guest-mode rule of no cairn vocabulary. A candidate row is written to disk and not committed. In owner mode, the row is a docs-only commit to the default branch, pushed.
+- [x] AC6: The CLAUDE.md routing template (`skills/shared/templates/claude-md-section.md`) and this repo's `CLAUDE.md` route "look into an issue" to `/milestone` with the issue. Each section gains at most two lines, and the template's length comment is updated to match its body. The README describes the issue argument.
+- [x] AC7: The profile's `verify` slot is green. A new prose guard in `skills/tests/` pins AC2's three verdicts and three levels and AC4's hand-off, and the hand-run `skills/tests` suite is green. One live run of the look-in on an open issue of `easystats/insight` reads the guest-mode profile of the `~/github/insight` checkout. It stops at the chip with the stop option, and its chat report shows one verdict and one level.
 
 ## Coverage
 
@@ -64,7 +64,57 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: claim audit: 33 claims read, 4 corrected — README.md, skills/milestone/SKILL.md, skills/tests/test_issue_look_in.py
 - 2026-10-10: the claim audit's four corrections: the README now names leave's three reasons, the PR-number stop says guest mode routes a PR to the maintainers, the pre-chip rule says "nothing in this repo" since scratch files exist, and the test docstring no longer claims a fence check. The same reader re-read all four as true.
 - 2026-10-10: implement done, status set to review. All five tasks checked, the five verify checks green, hand-run `skills/tests` green.
+- 2026-10-10: review pass 1: PR #241 opened and Copilot requested at review start. AC1–AC7 evidence recorded and ticked, the consistency gate green, three reviewers and the AC7 live run spawned.
+- 2026-10-10: review return 1: three floor findings in §4. "Do it now" for a hotfix passes `#N`, which `/hotfix` step 1 reads as a PR reference (diff-bug #2). The reproduction can run code from a public issue with no data rule (diff-bug #3). Guest-mode "plan it now" reaches `/milestone-plan`'s issue acknowledgement, which posts `Queued as M<NNN>` with no `--repo` (diff-bug #1). The fix-now items in the Review section ride the same task.
 
 ## Decisions
 
 ## Review
+
+- Copilot arm: branch pushed, PR #241 opened at review start, state query returned `none`, Copilot requested (exit 0).
+- AC1 evidence (2026-10-10, head 04250fd): `skills/milestone/SKILL.md` has `## 4. Issue look-in` (line 314). Session start opens with the argument test: `#N`, `N`, or an issue URL runs §4 in place of §1–§3. The frontmatter description names "look into issue N", and `argument-hint` is `"[issue number or URL]"`. `claude plugin validate .` passed with warnings, exit 0.
+- AC2 evidence: §4 says "Give exactly one verdict" with `reply`, `hotfix`, `milestone`, and "Give exactly one level on this scale" with `none` (code or docs settle it), `confirm` (a choice for the maintainer to approve), `decide` (a design decision before work). Report part 2 asks file:line citations or a line that no citation applies, and part 3 the reproduction or the reason none was run.
+- AC3 evidence: the chip's options in order are do it now (the verdict's option, "first and marked recommended"), add a candidate row, leave, stop. Do it now invokes `/hotfix` with the issue, `/milestone-plan` with the issue "so that its `Resolves:` slot names the issue", or the reply hand-off. Leave is offered only with one of noise, a duplicate, or an item cairn already covers. The candidate row uses the sweep as its search-first pass and cites the issue URL.
+- AC4 evidence: the hand-off puts the draft verbatim in the turn's final rendered text, then the fenced `gh issue comment <N> --repo <base-repo> --body '<reply>'`, which "the section shows ... and never runs". `grep -nE "gh (issue|pr|api)"` over §4 lists 4 lines: `gh issue view`, `gh issue list`, `gh pr list` (reads), and the hand-off line. §4 states it runs no remote write other than the owner-mode candidate-row push, and `/hotfix` and `/milestone-plan` run under their own gates.
+- AC5 evidence: all 4 `gh issue`/`gh pr` lines in §4 carry `--repo <base-repo>` (the guard's `test_every_command_names_the_base_repo` checks it), in both modes. §4 has 0 `gh api` lines, so the `gh api` clause binds nothing. §4 says the maintainer is the upstream maintainers in guest mode, the draft follows the rulebook's guest-mode no-cairn-vocabulary rule, and a guest-mode row is written to disk and not committed. An owner-mode row is a docs-only commit to the default branch, pushed to `origin`.
+- AC6 evidence: the template section and this repo's `CLAUDE.md` section each gain the 2-line "Look into a GitHub issue: invoke `/milestone` with the issue number or URL" route (`git diff --numstat`: CLAUDE.md +2, template +3 −1 with the comment line outside the section). Section lengths are 29 and 26 lines, under 30. The template comment reads "Keep the section, heading included, under 30 lines." README.md:72 describes the issue argument.
+- AC7 evidence: the five verify checks exit 0 (scripts, hooks, plugin validate, marketplace validate, plugin test). `skills/tests/test_issue_look_in.py` pins the three verdicts, the three levels, and the hand-off line, and the hand-run `skills/tests` ran 689 tests OK. Live run: a fresh Opus agent followed §4 in `~/github/insight` (PROFILE.md `# Collaboration mode: guest`, base repo `easystats/insight` via `origin`, no `upstream`) on open issue #1127 (compois variance). Its report gave verdict `milestone` and level `decide`, with file:line citations and a reproduction under `pkgload::load_all`. It wrote out the chip (Plan it now, recommended, then Add a candidate row, then Stop) and took Stop, and `git status` in insight was unchanged.
+- Consistency gate: `cairn_validate.py` all checks passed (exit 0). Profile slot: verify green on the review head, the marketplace validate shows no `plugins[N].version` warning, and CHANGELOG.md has the look-in entry under Unreleased. No principle changed, so `cairn_impact` was skipped.
+- spawned: diff-bug, blame-history, prior-review (plus the AC7 live-run agent)
+- diff-bug #1: guest-mode "plan it now" reaches `/milestone-plan`'s issue acknowledgement, which posts `Queued as M<NNN>` with no `--repo` — fix now (floor: a guest-mode outward write to the wrong repo with cairn vocabulary)
+- diff-bug #2: `/hotfix` step 1 reads a `#N` argument as a PR reference, so "do it now" for a hotfix runs `gh pr view <N>` — fix now (floor: the hotfix route misfires)
+- diff-bug #3: the reproduction step can run code from a public issue with no rule that it is data — fix now (floor: unsafe behavior in the skill)
+- diff-bug #4: "look into issue N" may arrive as `issue N`, and a URL fragment or a slug case difference fails the argument and repo tests — fix now
+- diff-bug #5: a reply that holds a code block closes the hand-off's three-backtick fence early — fix now
+- diff-bug #6: in guest mode a `confirm` or `decide` level still recommends "do it now" — reject, planned change (AC3 puts the verdict's option first and recommended)
+- diff-bug #7: the candidate-row option is offered on a non-default branch where it writes nothing, and the chip does not say so — fix now
+- diff-bug #8: the PR-number stop says PRs go through `/hotfix` but fences `/milestone` — fix now
+- diff-bug #9: the reply hand-off's "then give the safety line" puts close-block parts out of order — fix now
+- diff-bug #10: Session start's RR check ("before anything else") can preempt the look-in — fix now
+- diff-bug #11: the owner-mode candidate-row push names no pull or dirty-tree check first — fix now
+- diff-bug #12: the guard's read pattern passes a line that holds a read and a write — fix now
+- diff-bug #13: the guard bounds §4 at end of file, so a later section would join it — fix now
+- diff-bug #14: `test_argument_test_names_both_forms` checks neither form — fix now
+- diff-bug #15: the CLAUDE.md issue route sits after the `/hotfix` route, so a bug issue can match `/hotfix` first — fix now
+- diff-bug #16: the PR search on a bare number matches unrelated text — fix now (hits are read as leads before they are listed)
+- blame-history #1: the template comment moved from "~25 lines" to under 30 against D-137's stated budget and D-018 — reject, planned change (AC6 updates the comment to match the body, and the 30-line cap is unchanged)
+- blame-history #2: a `reply` to a declined new request writes no row, so the issue can be its only record (D-044, D-042) — follow-up (candidate row "Issue look-in edges (M232 review)")
+- blame-history #3: the rulebook's Intake paragraph names neither the reply nor the plan route — follow-up (same row)
+- blame-history #4: §3's "resolves here, and nowhere else" now reads as excluding §4 — fix now
+- blame-history #5: the RR check ordering — fix now (same fix as diff-bug #10)
+- blame-history #6: §4 reads upstream issues in guest mode where §2 skips the inbox — reject, planned change (AC5)
+- blame-history #7: the `cairn_scripts.py` comment drops the old ~25 target — reject, style (the comment is accurate)
+- blame-history #8: the EXEMPT reason matches precedent — reject, false (no defect)
+- blame-history #9: `argument-hint: ""` was not pinned — reject, false (no defect)
+- blame-history #10: the routing lines are within AC6 — reject, false (no defect)
+- prior-review #1: the `/hotfix` route — fix now (same as diff-bug #2)
+- prior-review #2: README's "Which skill, when" table has no issue look-in row (M112 lesson) — fix now
+- prior-review #3: the PR search has no own-PR filter — reject, false (cairn's own PR that answers the issue is a correct hit)
+- prior-review #4: the search commands carry no `--limit` — reject, style (M168 rejected the same)
+- prior-review #5: owner-mode push is owner-only — reject, false (consistent)
+- live-run #1: the RR check and Session start reads before the look-in — fix now (same fix as diff-bug #10)
+- live-run #2: guest-mode `decide` still recommends "do it now" — reject, planned change (same as diff-bug #6)
+- live-run #3: leave's "a duplicate" does not say whether an upstream issue counts — fix now
+- live-run #4: §4 does not say how to run the checkout's code rather than an installed release — fix now
+- live-run #5: the PR search takes only the number, and the issue search returns the issue itself — fix now (with diff-bug #16)
+- live-run #6: unclear whether a one-phase look-in marks a chapter — reject, false (the phase header directive covers it)
