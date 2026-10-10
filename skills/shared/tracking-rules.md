@@ -384,6 +384,7 @@ stop whose choice is the user's is posed as a chip; any other stop ends with the
 - the repeated review-failure stop (`/milestone-review` step 4's thrash rule, and the second amendment return or the
   second re-audit on one criterion),
 - a CI wait that times out, or red CI that the agent cannot fix,
+- a Copilot review wait that times out on its first wait (`skills/shared/copilot-review.md` §3),
 - a guard hook's denial,
 - a stop at a task boundary for context hygiene,
 - the offer to escalate to a Fable review (`/milestone-brief`),

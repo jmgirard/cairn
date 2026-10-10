@@ -25,9 +25,10 @@
   row. Each thread gets a reply with no thanks and is resolved. In owner
   mode the PR opens before the merge question, which lists every Copilot
   item. In guest mode the round runs after the handoff. A stop at the wait
-  resumes from the PR's state. `/hotfix` with the number of your own open
-  `hotfix-*` PR now goes back to its approval step instead of the adopt
-  walk. GitHub's settings choose the review level, because its API took
+  resumes from the PR's state, and a rerun waits once more, then skips the
+  round. `/hotfix` with the number of your own open `hotfix-*` PR now
+  re-proves its regression test and goes back to its approval step instead
+  of the adopt walk. GitHub's settings choose the review level, because its API took
   none per request when this shipped. The rules live in
   `skills/shared/copilot-review.md`.
 

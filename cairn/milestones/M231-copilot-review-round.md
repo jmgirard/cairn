@@ -31,11 +31,11 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 
 ## Coverage
 
-- AC1 → T2, T3, T4
+- AC1 → T2, T3, T4, T8
 - AC2 → T1, T2
-- AC3 → T3, T4, T5
-- AC4 → T2, T3, T4
-- AC5 → T3, T4
+- AC3 → T3, T4, T5, T8
+- AC4 → T2, T3, T4, T8
+- AC5 → T3, T4, T8
 - AC6 → T6
 - AC7 → T7
 
@@ -48,6 +48,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - [x] T5: Append D-152 to `cairn/DECISIONS.md`, done at plan. Point the rulebook's "A branch push starts CI" bullet at the opt-in arm. Update `cairn/DESIGN.md`'s architecture paragraphs on the review and hotfix PR timing.
 - [x] T6: Add `# Copilot review: on` to `cairn/PROFILE.md`, under the collaboration-mode header position. The live round on M231's PR runs at review.
 - [x] T7: README, CHANGELOG, and a prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite.
+- [x] T8: Review return 1. Fix each fix-now finding the Review section lists: the wait's exits, the conversation read's handling of Copilot items, the hotfix open-PR re-entry's checks and guest path, companions, record commits and pushes, the stop-list entry, and the guard's loud slicer.
 
 ## Work log
 
@@ -81,6 +82,9 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: re-audit: AC4 (full) — nothing. The second fresh reader found the narrowed wording satisfied by the module and both guest arms, each universal bounded by a countable list.
 - 2026-10-10: amendment return: AC4 — "The §3 state query and the §5 reply name the base repo's owner and name in their GraphQL variables or path. §4 reads the threads on the same `<owner>`/`<name>`, and the §5 `resolveReviewThread` mutation takes only a thread id. §5 states that a guest-mode reply carries no cairn vocabulary, and its reply forms contain no `M<NNN>`, `AC<n>`, `T<n>`, or D-entry id."
 - 2026-10-10: review return 1: the three-lens fan-out found load-bearing defects in the round. The wait has no exit when Copilot never reviews (diff-bug #2, #3). The conversation read drops later Copilot findings by author (diff-bug #1). The `/hotfix` open-PR re-entry skips the hotfix bar and re-poses a spent guest handoff (diff-bug #6, #11). The Review section lists every fix-now item.
+- 2026-10-10: T8 added for review return 1 (minor amendment); Coverage maps AC1, AC3, AC4, and AC5 to it.
+- 2026-10-10: question set (return 1 stop): a Copilot review that never arrives — keep the timeout stop and add exits. A rerun waits once more, then skips. The user declined the recommended skip-and-continue, so AC1 and AC5 keep their text.
+- 2026-10-10: T8: module §3 now names each end state of the wait (`arrived` reads, `none` skips as a failed request, `waiting` stops on the first wait and skips on a rerun's), and §7 skips at once when the opt-in line is off. §4 adds `originalLine` and both Copilot logins. §5 adds the step-5 return with the PR open, `--force-with-lease` for guest pushes after a rebase, and a step-4 gate re-run after round fixes. §6 replaces the author-class skip: resolved threads drop out of the unresolved filter, the read's Copilot review is noted, a later one is an ordinary item, and an operator's empty-body reply review is not an item. Review step 6 commits the round's records, re-runs the gate after fixes, and skips the round with companions. Step 7's read and chip wording, step 8's record sentence, and route (c′) follow. `/hotfix` step 1's re-entry checks the tree, fast-forwards, re-proves the regression test, checks the changelog, and in guest mode does not re-pose the handoff. Step 6 names both open-PR cases, removes a stale approval marker on a decline, and its CI line names the re-posed chip. The rulebook's stop list names the Copilot wait. README and CHANGELOG follow. The guard's `section()` fails loudly on a missing anchor. Rulebook mass re-seeded to 630 lines / 59,861 chars. Module 138 lines / 7,936 bytes, budget under 160 and 9,500. All suites and `cairn_validate` green.
 
 ## Decisions
 

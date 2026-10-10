@@ -30,8 +30,16 @@ def flat(text):
 
 
 def section(text, start, end):
-    """The slice of `text` between the first `start` and the next `end`."""
-    return text.split(start, 1)[1].split(end, 1)[0]
+    """The slice of `text` between the first `start` and the next `end`.
+    Both anchors must be present, so a renamed heading fails loudly rather
+    than slicing to the end of the file (the M182 lesson)."""
+    head, sep, rest = text.partition(start)
+    if not sep:
+        raise AssertionError(f"start anchor missing: {start!r}")
+    body, sep, _ = rest.partition(end)
+    if not sep:
+        raise AssertionError(f"end anchor missing: {end!r}")
+    return body
 
 
 class TestModuleCitations(unittest.TestCase):

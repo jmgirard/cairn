@@ -644,7 +644,8 @@ actually reach.
   the scope being planned.
   The pull request itself is opened only after you approve at the merge
   chip, so a `pull_request`-triggered suite first runs on the head that
-  merges. Where a PR already exists — a return from an earlier review, an
+  merges. The opt-in Copilot round below is the exception: with it on, the
+  PR opens before the merge chip in owner mode. Where a PR already exists — a return from an earlier review, an
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread.
@@ -663,9 +664,10 @@ actually reach.
   request, so GitHub's own settings choose the level, and the report says
   so. A review that does not arrive in 20 minutes stops the run. The close
   block names the command that resumes it: `/milestone-review M<NNN>`, or
-  `/hotfix` with the PR number. Adopted outside PRs skip the round. The
-  conversation read at the approval gate then leaves out the Copilot items
-  that the round already handled.
+  `/hotfix` with the PR number. A rerun waits once more, then skips the
+  round if the review still has not come. Adopted outside PRs skip the
+  round. At the approval gate, the conversation read shows a Copilot
+  review that arrives after the round as an ordinary item.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
