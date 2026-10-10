@@ -148,7 +148,7 @@ class TestIntakeRouting(unittest.TestCase):
         # M233/D-154: the look-in's reply and plan routes are issue routes,
         # and a reply carries leave's narrowing: nothing new to record.
         self.assertIn(
-            "hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;",
+            "hotfix path, `/milestone-plan`, a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record, or",
             rules(),
         )
 

@@ -203,5 +203,29 @@ class TestPlanSweepRepo(unittest.TestCase):
         self.assertIn("skips guest mode. The reason is that the plan's sweep looks for overlap", t)
 
 
+def rulebook_flat():
+    text = SKILLS.joinpath("shared", "tracking-rules.md").read_text()
+    return " ".join(text.split())
+
+
+class TestIntakeNamesClose(unittest.TestCase):
+    # M234: the rulebook's Intake paragraph names `/milestone` §3's `close`
+    # route for an orphaned issue, and the `leave` clause stays as it was.
+    # The paragraph wraps, so the rulebook is read whitespace-collapsed.
+
+    def test_intake_names_close_for_an_orphaned_issue(self):
+        self.assertIn(
+            "or `close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;",
+            rulebook_flat(),
+        )
+
+    def test_leave_clause_unchanged(self):
+        self.assertIn(
+            "`leave` is legal only for noise, duplicates, or items already cross-referenced "
+            "in cairn — never anything genuinely new.",
+            rulebook_flat(),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

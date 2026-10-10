@@ -189,7 +189,8 @@ user approval; NEWS entry; no milestone file. **Milestone** → more than one si
 restoring documented behavior), or requires a design decision.
 
 Intake: GitHub issues and external PRs are inboxes, never a second tracking system. Issues → `candidate` rows, the
-hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;
+hotfix path, `/milestone-plan`, a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record, or
+`close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;
 `leave` is legal only for noise, duplicates, or items already cross-referenced in cairn — never anything genuinely new.
 External PRs: **`/hotfix` is the door** for the small and correct — it adopts the PR (`gh pr checkout`), holds it to
 the hotfix bar, merges on user approval; larger → `/milestone-plan`. Candidates may be added conversationally by anyone

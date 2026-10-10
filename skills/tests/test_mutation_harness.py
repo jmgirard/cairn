@@ -1241,7 +1241,7 @@ REGISTRY = [
         guard="test_external_pr_intake",
         test="TestIntakeRouting.test_intake_paragraph_names_reply_and_plan_routes",
         target=RULES,
-        block="hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;",
+        block="hotfix path, `/milestone-plan`, a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record, or",
     ),
     # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
     # advisory names. One entry per independently-load-bearing block: the
