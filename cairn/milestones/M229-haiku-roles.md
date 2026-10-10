@@ -45,7 +45,7 @@ in M228's note.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: A new `cairn/DECISIONS.md` entry supersedes D-016's "Never
+- [x] AC1: A new `cairn/DECISIONS.md` entry supersedes D-016's "Never
       Haiku" blanket and D-110's clause that the blanket stands, and its
       `### D-` heading names both. It cites
       `cairn/references/haiku-sonnet-roles.md`. It names the edit-work
@@ -53,7 +53,7 @@ in M228's note.
       verdict. It names the search and history-review groups as staying on
       Sonnet. It gives each group's verdict from that note. It records
       that history review stays by the user's T1 choice of 2026-10-10.
-- [ ] AC2: In `skills/shared/tracking-rules.md` "Model and agent strategy",
+- [x] AC2: In `skills/shared/tracking-rules.md` "Model and agent strategy",
       Haiku is assigned to mechanical migrations and to test writing
       against a spec (the edit-work group), and to boilerplate, which
       follows the edit-work verdict. Sonnet is assigned to the search role
@@ -61,14 +61,14 @@ in M228's note.
       and prior-PR-comments reviewers). The "Set the model" bullet's list
       of models includes Haiku. No bullet forbids Haiku for a role that
       this criterion assigns to Haiku.
-- [ ] AC3: Each line that `git grep -n -i -E "sonnet|haiku" -- skills
+- [x] AC3: Each line that `git grep -n -i -E "sonnet|haiku" -- skills
       README.md ':!skills/tests'` lists and that assigns a model to a role
       that AC2 names assigns the model that AC2 gives that role. Each
       listed line that bars a model bars it only from roles that AC2 does
       not give it.
-- [ ] AC4: `CHANGELOG.md`'s unreleased section carries one entry naming the
+- [x] AC4: `CHANGELOG.md`'s unreleased section carries one entry naming the
       roles that now run on Haiku 5.5.
-- [ ] AC5: The active profile's `verify` slot passes (`cairn/PROFILE.md`).
+- [x] AC5: The active profile's `verify` slot passes (`cairn/PROFILE.md`).
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -158,3 +158,36 @@ in M228's note.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+### Pass 2 (2026-10-10, after review return 1)
+
+Evidence, read fresh at 69ed436:
+- AC1: D-151's heading reads "supersedes D-016's "Never Haiku" blanket and D-110's clause that the blanket stands"; its body cites `cairn/references/haiku-sonnet-roles.md`, gives search `stay`, edit work `move`, history review `move`, moves edit work with boilerplate following it, keeps search and history review on Sonnet, and records "History review stays on Sonnet by the user's T1 choice of 2026-10-10" (one grep hit each). Pass.
+- AC2: "Model and agent strategy" lists "(Haiku, Sonnet, Opus, or Fable" in "Set the model"; "Haiku subagents" holds mechanical migrations, test writing against a spec, boilerplate; "Sonnet subagents" holds Explore and the blame-history and prior-PR-comments lenses; no "Never Haiku" bullet (0 hits). Pass.
+- AC3: the grep lists 11 lines; the Explore lines (cairn-triage 142, design-interview 46, milestone-plan 42, tracking-rules 530) and reviewer lines (milestone-review 259, 264, tracking-rules 535) say Sonnet, milestone-implement 119-120 and tracking-rules 527 give mechanical work and test writing to Haiku, tracking-rules 509 lists models; no listed line bars a model (0 hits for never/no Haiku). Pass.
+- AC4: the Unreleased section holds one "Edit-work subagents run on Haiku 5.5" entry naming migrations, test writing, and boilerplate. Pass.
+- AC5: verify — scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail. Pass.
+
+Consistency gate: `cairn_validate` exit 0; no principle changed, so no `cairn_impact`; profile slot: verify green on the review head, marketplace validate shows no `plugins[N].version` warning, the Unreleased changelog has an entry and 0 `M<NNN>`/`D-<NNN>` tokens. Pass.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: D-151 says a Haiku edit-work miss "shows as a failed check", but a weak test passes verify, and the note's edit tasks sat at the ceiling — fix now
+- diff-bug #2: D-151's falsifier needs a paired Haiku and Sonnet run on one spec, which normal use never makes — fix now
+- diff-bug #3: the ROADMAP candidate row gives the user a reason the record does not show — fix now
+- diff-bug #4: `/milestone-implement` step 5 drops "against a spec" and boilerplate, wider and narrower than AC2 — fix now
+- diff-bug #5: "Changes that affect existing repos" sits after "New" in Unreleased, unlike released sections — fix now
+- diff-bug #6: the CHANGELOG's `cairn/references/…` path reads as the adopter's own folder — fix now
+- diff-bug #7: the Sonnet bullet's "one work-log line" fits Explore, not the review lenses — fix now
+- diff-bug #8: `cairn/references/INDEX.md:5` still says the reference "challenges cairn's never-Haiku rule" — fix now
+- diff-bug #9: the DECISIONS annotation near line 2557 says the scorer stays "never Haiku" — reject, false as a defect: DECISIONS is append-only history and that scorer was retired by D-110
+- blame-history #1: step 5 drops boilerplate and never says to run verify — fix now (with diff-bug #4)
+- blame-history #2: INDEX.md and `competitive-landscape.md:99` describe a live never-Haiku rule — fix now for INDEX (with diff-bug #8); reject for competitive-landscape, false as a defect: a dated reference note whose "revisit" is the observation D-151 acted on
+- blame-history #3: D-016 and D-110 carry no inline "superseded by D-151" marker — reject, false as a defect: entries are append-only and supersession lives in the superseding heading by convention
+- blame-history #4: the split Sonnet bullet dropped "Give complete specs" and "verify" — reject, false: the reviewer found nothing lost, since Explore and the lenses make no diffs
+- blame-history #5: the CHANGELOG cites a plugin-repo path — fix now (with diff-bug #6)
+- blame-history #6: no D-entry depends on Sonnet edit work — reject, false: reports no defect
+- prior-review #1: step 5 does not say to run verify on a Haiku diff — fix now (with diff-bug #4)
+- prior-review #2: CHANGELOG section order — fix now (with diff-bug #5)
+- prior-review #3: the CHANGELOG figures are accurate — reject, false: reports no defect
+
