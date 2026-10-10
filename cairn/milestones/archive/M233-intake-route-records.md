@@ -1,0 +1,11 @@
+# M233: Issue intake routes keep their records and read the right repo
+
+**Status:** done (2026-10-10, PR #242 https://github.com/jmgirard/cairn/pull/242)
+
+**Goal:** Close three issue-intake gaps from the M232 review, so that no issue route leaves a new idea recorded only on GitHub or reads the wrong repo.
+
+**Outcome:** `skills/milestone/SKILL.md` §4 gives `reply` to a declined request only when a record of the reason exists, and the verdict's reason names it. In owner mode the record is a D-entry, a `DESIGN.md` line, or a dropped milestone's archive summary. In guest mode it is the upstream repo's docs or a maintainer's statement on GitHub. A decline with no record takes `milestone` at `decide`, its reason says so, and the chip lists the candidate-row option first and recommended in place of Do it now. The rulebook's Intake paragraph names the reply and `/milestone-plan` issue routes, with the `leave` sentence unchanged. The rulebook-mass baseline was re-seeded to 630 lines / 59,932 chars at its three sites. `/milestone-plan` step 2's inbox reads carry `--repo <base-repo>`, and step 2 states that guest mode reads the upstream inbox, unlike `/milestone` §2. In guest mode an overlapping PR names the maintainers, not `/hotfix`. Prose guards were added in `test_issue_look_in.py`, `test_external_pr_intake.py`, and `test_issue_triage.py`, with two mutation entries. CHANGELOG and README follow.
+
+**Decisions:** D-154 (a reply carries `leave`'s narrowing, and an unrecorded decline routes to `milestone`/`decide`; annotates D-044).
+
+**Review:** Full audit before the plan (4 findings fixed) and claim audit (31 claims, 3 corrected). Three-lens fan-out with no return: 7 findings fixed (the chip's recommendation for an unrecorded decline, the verdict reason, changelog placement, two plan wordings, a test name), 9 rejected, 1 sent to the new row "Intake and audit-line edges (M233 review)". Copilot (Lite) drew 3 threads on the rulebook-mass seed's locale dependence, sent to that row, replied to, and resolved. At hygiene the row "Issue look-in edges (M232 review)" was narrowed to its four remaining items, and the M149 lesson's line cite was corrected. The locale fact stayed on the candidate row, because LESSONS.md had 8 bytes of budget left. Nothing graduated or retired.
