@@ -47,7 +47,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - [x] T4: `/hotfix`: the same two arms around step 6. Step 1 gains the open-PR route: an open PR whose head is `hotfix-*` and whose author is the operator enters step 6.
 - [x] T5: Append D-152 to `cairn/DECISIONS.md`, done at plan. Point the rulebook's "A branch push starts CI" bullet at the opt-in arm. Update `cairn/DESIGN.md`'s architecture paragraphs on the review and hotfix PR timing.
 - [x] T6: Add `# Copilot review: on` to `cairn/PROFILE.md`, under the collaboration-mode header position. The live round on M231's PR runs at review.
-- [ ] T7: README, CHANGELOG, and a prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite.
+- [x] T7: README, CHANGELOG, and a prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite.
 
 ## Work log
 
@@ -72,6 +72,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: a `git stash` in a probe command took the uncommitted T4 edits for one call. `git stash pop` restored them, and a grep confirmed the edits. Per-file runs of `test_mutation_harness.py` and `test_references_pages.py` fail on main too (bare sibling imports), and the suite's discovery run is green (669 tests).
 - 2026-10-10: T5: D-152 landed at plan. The rulebook's "A branch push starts CI" bullet and its `PROFILE.md` file-map row point at the module, and DESIGN.md's conditional-modules bullet names it. DESIGN.md had no PR-timing paragraph to change. The rulebook grew to 629 lines / 59,756 chars, so the mass baseline was re-seeded at its three pins (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`), per the M149 lesson. All three suites and `cairn_validate` green.
 - 2026-10-10: T6: `cairn/PROFILE.md` line 2 is `# Copilot review: on`. `cairn_validate` stays green, and `cairn_common.collaboration_mode` still reads `owner`.
+- 2026-10-10: T7: README bullet and CHANGELOG entry added. `skills/tests/test_copilot_review_round.py` pins each skill's round-arm citation and both arms in each skill (6 tests). The citation test pins the arm sentence, because the bare path recurs in each skill and a mutation block must occur once. The six tests are registered in the mutation harness, and each fails when its block is blanked. Verify slot green: scripts 406, hooks 174, both `claude plugin validate` runs, and `claude plugin test` 1777 pass. Hand-run `skills/tests` green (675).
 
 ## Decisions
 

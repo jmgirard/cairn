@@ -3744,3 +3744,47 @@ REGISTRY += [
         block="the version bump when a Conventions rule required one",
     ),
 ]
+
+REGISTRY += [
+    # M231: the opt-in Copilot review round. Each skill's round arm cites
+    # the module and asks for its level; each skill keeps the
+    # post-approval open as the off arm.
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestModuleCitations.test_review_round_arm_cites_the_module",
+        target=REVIEW,
+        block="§1; D-152). After step 5's",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestModuleCitations.test_hotfix_round_arm_cites_the_module",
+        target=HOTFIX,
+        block="§1; D-152). Before the approval",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestReviewArms."
+             "test_round_arm_sits_in_step_six_before_the_merge_question",
+        target=REVIEW,
+        block="round in that module, asking for Balanced",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestReviewArms.test_off_arm_keeps_the_post_approval_open",
+        target=REVIEW,
+        block="skipped when the header already names an open PR: the branch "
+              "is pushed",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestHotfixArms.test_round_arm_runs_before_the_gate",
+        target=HOTFIX,
+        block="round in that module, asking for Lite",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestHotfixArms.test_off_arm_keeps_the_post_approval_open",
+        target=HOTFIX,
+        block="On approval of an authored fix, push and",
+    ),
+]

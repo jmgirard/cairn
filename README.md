@@ -648,6 +648,20 @@ actually reach.
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread.
+- **Copilot can review each PR first (opt-in).** Add the line
+  `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
+  and `/milestone-review` request a GitHub Copilot review on the PR with
+  `gh pr edit <N> --add-reviewer @copilot` and wait for it. Each Copilot
+  thread gets a fix, a reason it was rejected, or a follow-up row. Claude
+  replies on the thread, with no thanks, and resolves it. The line is your
+  permission for these pushes, replies, and resolves. In a repo you own, the
+  PR then opens before the merge question, so you see every Copilot thread
+  before you approve, and CI also runs on the fix pushes. In guest mode the
+  round runs after the handoff opens the PR. A hotfix asks for Lite and a
+  milestone for Balanced. On 2026-10-10 GitHub's API took no level for each
+  request, so GitHub's own settings choose the level, and the report says
+  so. A review that does not arrive in 20 minutes stops the run, and the
+  same command resumes it. Adopted outside PRs skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
