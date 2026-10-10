@@ -117,10 +117,11 @@ run ingestion first (see `/milestone-brief`).
      one-liners and checkbox ticks are exempt).
 
 5. **Delegate** per tracking-rules (Haiku for well-specified mechanical
-   work and test writing; Sonnet for Explore searches; Opus for
-   design-sensitive work; Fable only via `/milestone-brief`), setting the
-   model the work calls for on each spawn. Verify
-   subagent diffs yourself; one work-log line per delegation.
+   work, test writing against a spec, and boilerplate; Sonnet for Explore
+   searches; Opus for design-sensitive work; Fable only via
+   `/milestone-brief`), setting the model the work calls for on each
+   spawn. Verify subagent diffs yourself and run the `verify` slot before
+   committing them; one work-log line per delegation.
 
 6. **Plan amendments** (implementation always learns things planning
    didn't know):

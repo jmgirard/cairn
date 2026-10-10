@@ -5551,11 +5551,13 @@ the cost gap, and the note does not test D-016's reason that in a review step
 "a weaker model can silently drop a real bug". This entry answers that reason
 by keeping every review role on Opus or Sonnet. An edit-work diff is still
 read by the orchestrator and run through the `verify` slot before it is
-committed, so a Haiku miss there shows as a failed check, not a silent drop.
+committed. A broken migration fails that check, but a weak test passes it, so
+for test writing the orchestrator's read is the guard. M228's edit tasks sat
+at the ceiling for both models, so they cannot show a gap on harder edits.
 
 **Consequences:** "Never Haiku" leaves tracking-rules "Model and agent
 strategy" and `/milestone-implement` step 5. The ROADMAP candidate "Haiku for
 Sonnet subagent work" narrows to search and history review, whose re-test is
-M228's re-measurement procedure. This entry is falsified by an edit-work
-spawn on Haiku whose diff fails verify or review where a Sonnet spawn on the
-same spec did not.
+M228's re-measurement procedure. This entry is falsified by a defect that a
+later review or hotfix traces to a Haiku edit-work diff that passed verify and
+the orchestrator's read.

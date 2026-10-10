@@ -528,7 +528,8 @@ These rules bind all chat output while any cairn skill is active.
   boilerplate. Give complete specs; verify their diffs and run the `verify` slot before committing; summarize results
   into one work-log line.
 - **Sonnet subagents**: fan-out searches (Explore), with a reading list naming the files or areas to read; the
-  blame-history and prior-PR-comments lenses of the review fan-out. Summarize results into one work-log line.
+  blame-history and prior-PR-comments lenses of the review fan-out. Summarize an Explore fan-out's results into one
+  work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
   milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the

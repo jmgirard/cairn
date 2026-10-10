@@ -2,7 +2,7 @@
 
 - feature-dev.md — Anthropic's guided 7-phase feature workflow (M06 comparandum): focus-lens agent fan-out, reading-list pattern, hard user gates; session-scoped, no durable state.
 - claude-md-management.md — Anthropic's CLAUDE.md audit/harvest plugin (M06 comparandum): scored-rubric audit, session-end learning capture; monolith philosophy antithetical to cairn's boundary rule.
-- anthropic-code-review.md — Anthropic's PR-review pipeline (M06 comparandum): 5 distinct-evidence reviewers, Haiku confidence scoring ≥80 filter; challenges cairn's never-Haiku rule.
+- anthropic-code-review.md — Anthropic's PR-review pipeline (M06 comparandum): 5 distinct-evidence reviewers, Haiku confidence scoring ≥80 filter; challenged cairn's never-Haiku rule, which D-151 retired for edit work.
 - ccpm.md — community PRD→epic→GitHub-Issues→parallel-agents pipeline, ~8k★ (M06 comparandum): deterministic status scripts are the big steal; no approval gates anywhere.
 - spec-kit.md — GitHub's spec-driven dev toolkit (M06 comparandum): constitution gates, Sync Impact Report, severity-graded analyze pass; no project-level continuity by design.
 - task-master.md — JSON-native task engine with CLI+MCP (M06 comparandum): branch↔context mapping, complexity-scored expansion; statuses freely settable.
