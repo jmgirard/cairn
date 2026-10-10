@@ -172,22 +172,23 @@ Consistency gate: `cairn_validate` exit 0; no principle changed, so no `cairn_im
 
 spawned: diff-bug, blame-history, prior-review
 
-- diff-bug #1: D-151 says a Haiku edit-work miss "shows as a failed check", but a weak test passes verify, and the note's edit tasks sat at the ceiling — fix now
-- diff-bug #2: D-151's falsifier needs a paired Haiku and Sonnet run on one spec, which normal use never makes — fix now
-- diff-bug #3: the ROADMAP candidate row gives the user a reason the record does not show — fix now
-- diff-bug #4: `/milestone-implement` step 5 drops "against a spec" and boilerplate, wider and narrower than AC2 — fix now
-- diff-bug #5: "Changes that affect existing repos" sits after "New" in Unreleased, unlike released sections — fix now
-- diff-bug #6: the CHANGELOG's `cairn/references/…` path reads as the adopter's own folder — fix now
-- diff-bug #7: the Sonnet bullet's "one work-log line" fits Explore, not the review lenses — fix now
-- diff-bug #8: `cairn/references/INDEX.md:5` still says the reference "challenges cairn's never-Haiku rule" — fix now
+- diff-bug #1: D-151 says a Haiku edit-work miss "shows as a failed check", but a weak test passes verify, and the note's edit tasks sat at the ceiling — fix now, fixed fe4cd4a
+- diff-bug #2: D-151's falsifier needs a paired Haiku and Sonnet run on one spec, which normal use never makes — fix now, fixed fe4cd4a
+- diff-bug #3: the ROADMAP candidate row gives the user a reason the record does not show — fix now, fixed fe4cd4a
+- diff-bug #4: `/milestone-implement` step 5 drops "against a spec" and boilerplate, wider and narrower than AC2 — fix now, fixed fe4cd4a
+- diff-bug #5: "Changes that affect existing repos" sits after "New" in Unreleased, unlike released sections — fix now, fixed fe4cd4a
+- diff-bug #6: the CHANGELOG's `cairn/references/…` path reads as the adopter's own folder — fix now, fixed fe4cd4a
+- diff-bug #7: the Sonnet bullet's "one work-log line" fits Explore, not the review lenses — fix now, fixed fe4cd4a
+- diff-bug #8: `cairn/references/INDEX.md:5` still says the reference "challenges cairn's never-Haiku rule" — fix now, fixed fe4cd4a
 - diff-bug #9: the DECISIONS annotation near line 2557 says the scorer stays "never Haiku" — reject, false as a defect: DECISIONS is append-only history and that scorer was retired by D-110
-- blame-history #1: step 5 drops boilerplate and never says to run verify — fix now (with diff-bug #4)
-- blame-history #2: INDEX.md and `competitive-landscape.md:99` describe a live never-Haiku rule — fix now for INDEX (with diff-bug #8); reject for competitive-landscape, false as a defect: a dated reference note whose "revisit" is the observation D-151 acted on
+- blame-history #1: step 5 drops boilerplate and never says to run verify — fix now (with diff-bug #4), fixed fe4cd4a
+- blame-history #2: INDEX.md and `competitive-landscape.md:99` describe a live never-Haiku rule — fix now for INDEX (with diff-bug #8), fixed fe4cd4a; reject for competitive-landscape, false as a defect: a dated reference note whose "revisit" is the observation D-151 acted on
 - blame-history #3: D-016 and D-110 carry no inline "superseded by D-151" marker — reject, false as a defect: entries are append-only and supersession lives in the superseding heading by convention
 - blame-history #4: the split Sonnet bullet dropped "Give complete specs" and "verify" — reject, false: the reviewer found nothing lost, since Explore and the lenses make no diffs
-- blame-history #5: the CHANGELOG cites a plugin-repo path — fix now (with diff-bug #6)
+- blame-history #5: the CHANGELOG cites a plugin-repo path — fix now (with diff-bug #6), fixed fe4cd4a
 - blame-history #6: no D-entry depends on Sonnet edit work — reject, false: reports no defect
-- prior-review #1: step 5 does not say to run verify on a Haiku diff — fix now (with diff-bug #4)
-- prior-review #2: CHANGELOG section order — fix now (with diff-bug #5)
+- prior-review #1: step 5 does not say to run verify on a Haiku diff — fix now (with diff-bug #4), fixed fe4cd4a
+- prior-review #2: CHANGELOG section order — fix now (with diff-bug #5), fixed fe4cd4a
 - prior-review #3: the CHANGELOG figures are accurate — reject, false: reports no defect
 
+After the fixes: verify green again (scripts 401 OK, 21 skipped; hooks 174 OK; plugin validate passed with warnings; marketplace validate passed; plugin test 1765 pass 0 fail), `skills/tests` 669 OK, `cairn_validate` passed. No finding met the return floor: none shows a criterion failing, and the step-5 wording gap was fixed on the branch.
