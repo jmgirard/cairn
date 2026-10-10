@@ -98,22 +98,23 @@ Copilot round: PR #244 opened at review start, state query `none`, Copilot reque
 - Consistency gate: `cairn_validate.py` all checks passed (exit 0). No principle changed, `cairn_impact` skipped. Profile consistency-gate checks are the verify slot (AC6).
 - spawned: diff-bug, blame-history, prior-review
 - diff-bug #1: guest drop evidence lasts only until the next stamp replaces it — follow-up (new candidate row "Guest triage drop evidence outlives one stamp"); D-156 and the rulebook bullet now state the limit.
-- diff-bug #2: longer guest stamp conflicts with the rulebook's "one short line" — fix now (rulebook guest bullet names the exception).
-- diff-bug #3: "already shipped" can be judged against the operator's unmerged branch — fix now (step 2 reads `<base>/<default-branch>` with `git cat-file -e`; a shipped drop names a commit reachable from it).
-- diff-bug #4: skipped sync leaves step 2 judging stale code — fix now (same fix as #3, the ref is named above the step-3 table as last fetched).
-- diff-bug #5: step 6's commit sentence is unscoped before the guest arm — fix now ("In owner mode, make one docs-only commit").
+- diff-bug #2: longer guest stamp conflicts with the rulebook's "one short line" — fix now, fixed 9507b51 (rulebook guest bullet names the exception).
+- diff-bug #3: "already shipped" can be judged against the operator's unmerged branch — fix now, fixed 9507b51 (step 2 reads `<base>/<default-branch>` with `git cat-file -e`; a shipped drop names a commit reachable from it).
+- diff-bug #4: skipped sync leaves step 2 judging stale code — fix now, fixed 9507b51 (same fix as #3, the ref is named above the step-3 table as last fetched).
+- diff-bug #5: step 6's commit sentence is unscoped before the guest arm — fix now, fixed 9507b51 ("In owner mode, make one docs-only commit").
 - diff-bug #6: "steps 1–4 as written" loose given step 2–4 guest clauses — reject (false: the arm names those clauses in the next sentence, and "as written" includes them).
-- diff-bug #7: registered mutation only blanks the label — fix now (two more entries on the behavior phrases).
+- diff-bug #7: registered mutation only blanks the label — fix now, fixed 9507b51 (two more entries on the behavior phrases).
 - diff-bug #8: negative asserts have no registry entry — reject (false as a gap: blanking cannot exercise `assertNotIn`; the old-stop guard was shown red on main at T1).
 - diff-bug #9: README "runs as usual, but" is loose — reject (style).
 - diff-bug #10: rulebook "skips its git preconditions" vaguer than other surfaces — reject (style; the bullet points at the skill, which names all three).
-- blame-history #1: skipping sync reads stale upstream, M173 sync rationale unaddressed — fix now (same fix as diff-bug #3; D-156 now states the sync rationale and its guest replacement).
-- blame-history #2: D-156 leaves the default-branch rationale implicit — fix now (D-156 decision names it).
+- blame-history #1: skipping sync reads stale upstream, M173 sync rationale unaddressed — fix now, fixed 9507b51 (same fix as diff-bug #3; D-156 now states the sync rationale and its guest replacement).
+- blame-history #2: D-156 leaves the default-branch rationale implicit — fix now, fixed 9507b51 (D-156 decision names it).
 - blame-history #3: stamp is the only audit trail for guest drops — follow-up (same row as diff-bug #1).
 - blame-history #4: reverses M184's stop — reject (planned change; D-156 records the reason).
-- blame-history #5: "same untracked folder on every branch" too broad across worktrees — fix now ("on every branch of the checkout").
+- blame-history #5: "same untracked folder on every branch" too broad across worktrees — fix now, fixed 9507b51 ("on every branch of the checkout").
 - blame-history #6: no prior guard asserted the stop — noted, no defect.
 - blame-history #7: overlong owner-precondition line — reject (style).
-- prior-review #1: README edits unguarded (M234 put README in the guard domain) — fix now (`test_readme_states_the_guest_arm` plus a registry entry).
+- prior-review #1: README edits unguarded (M234 put README in the guard domain) — fix now, fixed 9507b51 (`test_readme_states_the_guest_arm` plus a registry entry).
 - prior-review #2: `test_old_stop_sentence_is_gone` has no mutation entry — reject (same ground as diff-bug #8).
+- Post-fix verify on 9507b51: scripts OK (21 skipped), hooks OK, plugin and marketplace validate 0, `claude plugin test .` 1777 pass 0 fail, `cairn_validate` all passed, hand-run `skills/tests` OK.
 - Return floor: no finding shows a criterion failing. Diff-bug #3 is a real defect in what the skill does; judged not load-bearing for a floor return because every drop passes the user's gate, so it is fixed on the branch with no status change.
