@@ -190,6 +190,8 @@ dial per spawned agent" candidate row.
 - 2026-10-09: deviation from T5 recorded: the label mappings were written to the scratchpad beside the judges' input files before the judges ran, not after; the judges were told to read only their two report files, and their transcripts show no read of a mapping file.
 - 2026-10-09: T8 put the key-building code in the note; run from the repo root it rebuilds the S1–S3 keys (10, 9, 88 items) equal to the built keys, and the same rule without the repeat check gives 91. F1 now says A and K are sets. The note now has one 18-row run table, a 22-row per-finding table of both judgings (rebuilt from the judges' reports and mappings: 11 of 22 differ, none newly valid), the E3 negative control (0 of 6, run 2026-10-09), a reading on D-016's untested risk with the per-task split, and reworded cost-bound, tier, ceiling, and older-record sentences. `session-cost-notes.md` row A4 and its open question are marked `corrected M228`, and the candidate row is rewritten as `[high]` with a promotion condition and the figures to re-measure.
 - 2026-10-10: verify passed on all five checks after T8 (scripts 401 OK, hooks 174 OK), `cairn_validate` reports no FAIL or WARN; status set to `review`.
+- 2026-10-10: override: the user said the review loop was churning and chose to merge without a third reviewer round; pass 3 re-ran the criteria evidence only.
+- 2026-10-10: step-7 approval: m228-haiku-sonnet-comparison approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -265,3 +267,5 @@ Pass 2, 2026-10-09, on `4101fe8` (branch current with `origin/main`). Pass-1 fix
 - prior-review #3: "within reach" and "the prompt's 'base name' allows that reading" are characterizations — fix now.
 - prior-review #4: no negative control is stated for E3 — fix now (the always-true file kills 0 of 6 for E3, run 2026-10-09).
 - prior-review #5: "Promote now" departs from the row convention — fix now (with diff-bug #7).
+
+Pass 3, 2026-10-10, on `14b1357` (branch current with `origin/main`). Pass-2 fix-now findings fixed 14b1357 (through return 2, T8). Evidence re-run: the table parse finds one run table of 18 rows; 0 rows fail the model-id or cost recomputation; search scores re-score equal; the note's key code, run from the repo root, rebuilds S1–S3 (10, 9, 88) equal to the built keys; the mutant table matches the applied mutants, 12 of 12; the 22-row per-finding table equals the ratings rebuilt from both judges' reports (11 differ, none newly valid); the verdicts recompute as stay, move, move. Verify passed at the end of T8 on this code tree (scripts 401 OK, hooks 174 OK, both validates, mod test). No reviewer round ran in pass 3, at the user's direction.
