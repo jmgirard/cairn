@@ -239,7 +239,7 @@ export const register: Register = on => {
   // `/cairn-pane` closes an open pane, and otherwise reads the files and
   // opens it, or says why it did not (M205 AC1). After the open, it starts
   // the read of the pull request states (M224), and its line does not wait
-  // for that read, which can take up to 30 s (M230).
+  // for that read, whose calls each have a 15 s timeout (M230).
   // Only a pane the person can see is closed: one that waits undrawn, or
   // sits behind another pane's tab, is opened again instead (M205 review).
   // A hook that refuses the open or the close gives a line, not an error.

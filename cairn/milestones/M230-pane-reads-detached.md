@@ -45,7 +45,7 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 - [x] T4: In the `classic.SessionStart` hook (near L227), start `readPrs` after `refresh` without awaiting it. It starts only when `$.ui.panes()` shows the pane placed and shown. Rewrite the `readPrs` comment that says it runs only at an open and a Refresh press. Add the AC3 tests.
 - [x] T5: In `paneLines` in `hooks/status/pane.ts` (near L421), drop each hotfix entry whose URL equals a blocked row's URL. Drop it before the heading count and the lines. Add the AC4 tests.
 - [x] T6: In `baseRemoteUrl` (near L761), remove the userinfo from an `http://` or `https://` URL, and pass every other form unchanged. Add the AC5 tests.
-- [ ] T7: Update the README and the `cairn/DESIGN.md` paragraphs on when the pane reads pull requests (DESIGN near L288–355 and L397). Add the CHANGELOG entry, and run the verify slot.
+- [x] T7: Update the README and the `cairn/DESIGN.md` paragraphs on when the pane reads pull requests (DESIGN near L288–355 and L397). Add the CHANGELOG entry, and run the verify slot.
 
 ## Work log
 
@@ -64,6 +64,7 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 - 2026-10-10: T1 probe: detached `$` work runs on after a hook returns under `claude plugin test`, as the M221 detached runs already showed, and the 12 new cases end with their held calls released. The `gh(...)` helper takes held `answer` and `list` promises and gives `settled()`, which waits until no `git` or `gh` call is in flight for 20 ms. The drawing helpers `blockedView` and `linesAt` wait on it, and 14 cases that assert calls right after an open wait on it too.
 - 2026-10-10: T2–T6 done in one checkpoint, because the six tasks share two files and one test block. `readPrs` moved its per-URL body to `readPr`, and `isShown` gives the placed-and-shown check. The Refresh press still waits for its read, since AC1 names only the three opens.
 - 2026-10-10: plant check in scratch copies: each of 8 reversals turned its own M230 test red. The reversals are an await in each of the three opens, the serial list read, no read at a clear, a read at any pane, no hotfix filter, and kept userinfo. Mod tests: 1777 pass. The verify slot's five commands pass.
+- 2026-10-10: T7 done: README, DESIGN, and four CHANGELOG Fixes entries describe the four changes. The CHANGELOG states the old wait as calls in turn with a 15 s timeout each, not a total, under the derived-figures rule. The verify slot's five commands pass, with 1777 mod tests.
 
 ## Decisions
 
