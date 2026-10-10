@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — it edits shipped skill prose and the rulebook that adopting repos run
-- **Branch/PR:** m233-intake-route-records
+- **Branch/PR:** m233-intake-route-records, PR #242 https://github.com/jmgirard/cairn/pull/242
 
 ## Goal
 
