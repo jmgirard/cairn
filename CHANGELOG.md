@@ -19,14 +19,15 @@
   `cairn/DESIGN.md` line, or a dropped milestone's archive summary. In
   guest mode it is the upstream repo's own docs or a maintainer's statement
   on GitHub. A decline with no such record gets the `milestone` verdict at
-  the `decide` level, so the candidate-row option can record it and the
-  GitHub issue is not its only record. The rulebook's intake rule now names
+  the `decide` level, so the candidate-row option can record it in cairn.
+  The rulebook's intake rule now names
   the reply and `/milestone-plan` routes for issues.
 - **In guest mode, `/milestone-plan` reads the upstream repo's open issues
   and PRs.** Its inbox reads now pass `--repo` with the base repo, so a
   plan can find an upstream issue that the planned work resolves. An
   overlapping upstream PR becomes a candidate row that names the
-  maintainers, since `/hotfix` does not adopt PRs in guest mode.
+  maintainers, since the rulebook does not support adopting a PR through
+  `/hotfix` in guest mode.
 
 ### New
 

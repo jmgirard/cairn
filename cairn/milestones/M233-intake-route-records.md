@@ -1,6 +1,6 @@
 # M233: Issue intake routes keep their records and read the right repo
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,3 +61,6 @@ Close three issue-intake gaps from the M232 review, so that no issue route leave
 - 2026-10-10: T2 done: Intake paragraph names the reply and `/milestone-plan` routes, `leave` sentence unchanged and still on one line. D-154 appended, annotating D-044. Rulebook mass re-seeded to 630 lines / 59,932 chars (`wc -l -m`) at its three sites. New intake guard registered in the mutation harness, and it fails against the old rulebook. Verify slot 5/5 green, `cairn_validate` green.
 - 2026-10-10: T3 done: both plan-sweep reads carry `--repo <base-repo>`, and step 2 states the guest-mode difference from `/milestone` §2 with its reason. Implement choice: an overlapping PR names the maintainers in guest mode, not `/hotfix`, and §3 triage is marked owner-mode, since the new guest reads would otherwise route to a door guest mode lacks. `TestPlanSweepRepo` (3 tests) passes, 2 fail against the old prose, and one mutation entry is registered. Verify slot 5/5 green.
 - 2026-10-10: T4 done: two CHANGELOG entries under "Changes that affect existing repos" and one README sentence in the look-in paragraph. Verify slot 5/5 green, and the hand-run `skills/tests` run passed 698 tests.
+- 2026-10-10: claim audit: 31 claims read, 3 corrected — skills/milestone/SKILL.md, skills/milestone-plan/SKILL.md, CHANGELOG.md
+- 2026-10-10: claim audit re-read: 4 of the 5 corrected sentences hold. §4's "the chip's candidate-row option then holds the decline's record" is kept as AC1 words it. The reader noted that an owner-mode row is not written off the default branch or with a dirty ROADMAP. The candidate-row option's own description in §4 already states those cases.
+- 2026-10-10: implement complete: T1–T4 checked. Verify slot 5/5 green and hand-run `skills/tests` green after the claim fixes. Status set to review.

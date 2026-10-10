@@ -109,8 +109,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    decides and logs: an open issue overlapping the goal becomes a
    `Resolves:` entry (`closes` or `partial`) or a candidate row; an open PR
    overlapping it becomes a candidate row naming `/hotfix` as its door in
-   owner mode, or naming the maintainers in guest mode, where `/hotfix`
-   adopts no PR (search-first applies to both). Items with no overlap take
+   owner mode, or naming the maintainers in guest mode, where the rulebook
+   does not support adopting a PR through `/hotfix` (search-first applies
+   to both). Items with no overlap take
    no disposition at the plan — report their count in the chat; in owner
    mode `/milestone` §3 is where they are triaged. The sweep writes nothing
    to GitHub — no labels, comments, or closes. **When `gh` is missing,
@@ -120,7 +121,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which
    skips guest mode. The reason is that the plan's sweep looks for overlap
    with the planned work, such as an upstream issue that the work resolves,
-   while §2 triages an inbox that is the maintainers' intake.
+   while §2 surfaces, for §3 to triage, an inbox that is the maintainers'
+   intake.
 
    **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records

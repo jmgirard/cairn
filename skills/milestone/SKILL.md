@@ -388,7 +388,7 @@ chip.
   statement on GitHub, since the guest's `cairn/` is not the project's.
   A decline with no such record takes the `milestone` verdict at the
   `decide` level, and the chip's candidate-row option then holds the
-  decline's record, so the issue is never its only record.
+  decline's record.
 - `hotfix`: a user-visible bug that is under the hotfix bar (tracking-rules
   "Sizing and the work tiers"). It restores documented behavior in one
   sitting, with no design decision.
