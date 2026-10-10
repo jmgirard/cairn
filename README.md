@@ -645,8 +645,9 @@ actually reach.
   the scope being planned.
   The pull request itself is opened only after you approve at the merge
   chip, so a `pull_request`-triggered suite first runs on the head that
-  merges. The opt-in Copilot round below is the exception: with it on, the
-  PR opens at the start of review in owner mode. Where a PR already exists — a return from an earlier review, an
+  merges. The opt-in Copilot round below is the exception: with it on, in
+  owner mode, the PR opens at the start of a milestone review, or before a
+  hotfix's approval chip. Where a PR already exists — a return from an earlier review, an
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread.

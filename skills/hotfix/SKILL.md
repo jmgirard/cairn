@@ -115,8 +115,10 @@ a bare PR number resolves against the fork.
    is the whole sync, the default branch is never pushed, and the branch is
    cut from `<base>/<default-branch>`, as `/milestone-implement` step 2
    states). A `hotfix-<slug>` branch that already exists for this bug (a
-   Copilot round's PR closed at a decline, step 6) is checked out and
-   fast-forwarded, not re-cut.
+   Copilot round's PR closed at a decline, step 6) is checked out, not
+   re-cut: fast-forward it from its remote, then merge the up-to-date
+   default branch into it (guest mode: rebase it onto
+   `<base>/<default-branch>`).
    *Adopting a PR:* run `gh pr checkout <N>` — never cut a fresh branch,
    which would orphan work that already exists. The contributor's branch
    name is **exempt** from the `hotfix-<slug>` contract (tracking-rules, git
@@ -222,7 +224,7 @@ a bare PR number resolves against the fork.
    keeps neither. An authored fix's PR is opened below, after the chip,
    and is merged with no read — the read runs at most once per hotfix,
    here. With the Copilot round arm above, the PR already exists, so the
-   read runs on it, as the module's §6 states. Then put the
+   read runs on it, as the module's §5 states. Then put the
    merge authorization to the user as an
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>` for an existing PR, `Merge hotfix-<slug> into

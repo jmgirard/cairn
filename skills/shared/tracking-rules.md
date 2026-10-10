@@ -246,7 +246,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   gate — the branch is pushed and `gh pr create` run at `/milestone-review` step 8 and `/hotfix` step 6, never before
   — so a `pull_request`-triggered suite first runs on the head that merges rather than on every pre-approval push
   (D-138); the CI wait at the gate is serial with the approval, the cost that entry records. In owner mode, a repo that
-  opts in to the Copilot review round (`skills/shared/copilot-review.md`) opens it at the start of review (D-152, D-153). Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
+  opts in to the Copilot review round (`skills/shared/copilot-review.md`) opens it earlier: `/milestone-review` at the start of review, `/hotfix` before its approval chip (D-152, D-153). Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
   head commit carries no check run — the wait rule's no-checks case, the last CI-covered commit then being the last
   code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and
   the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact

@@ -5,7 +5,7 @@ where they request Copilot and where they read the PR's conversation. It is
 a module of `tracking-rules.md`, read only at those moments, so it costs
 nothing to a session that never reaches them.
 
-Budget (M231, from 117 lines / 6,475 bytes after RR17, plus about one section
+Budget (M231, from 120 lines / 6,686 bytes after RR17, plus about one section
 of headroom): **under 140 lines and under 8,000 bytes**, hand-read with
 `wc -l -c` at hygiene passes, covered by no validator. Over either figure,
 compress or retire content here. Never "let it grow".
@@ -51,19 +51,22 @@ with no wait.
 ## 4. Wait
 
 The skill waits only when the state query prints `pending` at the moment it
-reads the PR's conversation. The wait is one Monitor on an until-loop that
-runs the state query every 30 seconds, with `timeout_ms` of at most 600000
-(10 minutes), so nothing is left armed after it (tracking-rules wait rule).
-At the bound, the read runs on what exists, and the presentation says
-`Copilot review pending since <time> on PR #<N>`. The wait never stops the
-run.
+reads the PR's conversation. The wait is one Monitor over a loop that runs
+the state query every 30 seconds and prints each result, a stream of
+events. The loop exits by itself on any result other than `pending`, or
+after 10 minutes. Set the Monitor's `timeout_ms` to 660000 as a backstop, so
+the loop's own exit ends the wait and nothing is left armed after it
+(tracking-rules wait rule). At the 10-minute exit, the read runs on what
+exists, and the presentation says `Copilot review still pending on PR #<N>`.
+The wait never stops the run.
 
 ## 5. Copilot threads in the read
 
 The skill's PR-conversation read gives each item its disposition. For a
 **Copilot thread**, an unresolved thread whose first comment's author is
-Copilot (`copilot-pull-request-reviewer` in GraphQL,
-`copilot-pull-request-reviewer[bot]` in REST), the read then acts on it:
+Copilot (`copilot-pull-request-reviewer` in GraphQL; in REST, `Copilot` on
+thread comments and `copilot-pull-request-reviewer[bot]` on reviews), the
+read then acts on it:
 
 1. Dispose of it by the skill's rule: fix now, reject with a reason, or
    follow-up (a candidate row, search-first). In `/hotfix` it takes the
