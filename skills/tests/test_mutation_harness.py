@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="636 lines / 60,714 bytes",
+        block="638 lines / 60,962 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3809,5 +3809,58 @@ REGISTRY += [
         test="TestHotfixArms.test_off_arm_keeps_the_post_approval_open",
         target=HOTFIX,
         block="On approval of an authored fix, push and",
+    ),
+]
+
+REGISTRY += [
+    # M235: `/cairn-triage` runs in guest mode and commits nothing there.
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="**Guest mode runs on disk**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_rulebook_names_the_guest_arm",
+        target=RULES,
+        block="**`/cairn-triage` runs**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageCommitsNothing."
+             "test_step_six_guest_arm_makes_no_commit_or_push",
+        target="skills/cairn-triage/SKILL.md",
+        block="The guest pass makes no commit and no push",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageCommitsNothing.test_stamp_carries_the_drop_evidence",
+        target="skills/cairn-triage/SKILL.md",
+        block="already-shipped drop, the record or path",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="preconditions below, because it moves no ref and commits nothing",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="It runs steps 1–4 as written and step 5 with the stamp standing in",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_readme_states_the_guest_arm",
+        target=README,
+        block="**Triage stays on disk.**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_step_two_reads_the_base_default_branch",
+        target="skills/cairn-triage/SKILL.md",
+        block="`git cat-file -e <base>/<default-branch>:<path>`",
     ),
 ]

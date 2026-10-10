@@ -1,6 +1,6 @@
 ---
 name: cairn-triage
-description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit, and record principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, or sweep the known issues.
+description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, or sweep the known issues.
 argument-hint: ""
 ---
 
@@ -26,14 +26,20 @@ step (session start implicit).
 
 ## Session start
 
-**Guest mode stops here** (tracking-rules "Collaboration mode"): when
-`cairn/PROFILE.md` carries `# Collaboration mode: guest`, the pass's commit
-to the default branch does not exist — stop with a close block whose status
-line reads `stopped before enumeration: guest collaboration mode — triage
-commits to the default branch`, before any precondition below.
+**Guest mode runs on disk** (tracking-rules "Collaboration mode"): when
+`cairn/PROFILE.md` carries `# Collaboration mode: guest`, `cairn/` is never
+committed, so the pass skips the clean-tree, default-branch, and sync
+preconditions below, because it moves no ref and commits nothing, and
+`cairn/` is the same untracked folder on every branch of the checkout.
+It runs steps 1–4 as written and step 5 with the stamp standing in for the
+commit message. Step
+2 reads cited code at the base remote's default branch as last fetched,
+never at the checked-out branch, which can hold the operator's unmerged
+work; step 3 names that ref and step 4's byte check counts the longer guest
+stamp. Steps 6 and 7 state their guest arms.
 
-Preconditions first: clean `git status`, on the default branch (detect it
-per the tracking-rules git model — never assume `main`), synced with origin
+Owner-mode preconditions first: clean `git status`, on the default branch
+(detect it per the tracking-rules git model — never assume `main`), synced with origin
 (`git fetch`, ff-only pull — the pass's only ref motion, done before the
 lists are read so the enumeration reads the tree the commit will land on).
 A dirty tree or a non-default branch stops the pass with a close block
@@ -109,7 +115,12 @@ one of them absorbs is never dropped or merged away in this pass
      retired), or a cited path that no longer exists (`ls` it from the
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
-     is `compress`, not `drop`.
+     is `compress`, not `drop`. In guest mode a code path is checked with
+     `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
+     git model's base remote and default branch) in place of `ls`, a fired
+     trigger or an *already shipped* drop is judged at that ref too, and an
+     *already shipped* drop names a commit reachable from it, since code
+     only on the checked-out branch has not shipped.
    - **Overlap → `merge`.** Two items on one subject, or one whose trigger
      is a special case of another's. The survivor is the row whose trigger
      is the more observation-bound (the one the other's is a case of); on
@@ -152,7 +163,8 @@ one of them absorbs is never dropped or merged away in this pass
    - **The table**, in the chat above the chip (best-effort rendering —
      the chip's own text carries what the decision needs), one row per
      enumerated item: item (source + subject) → disposition → one-line
-     reason. Every
+     reason. In guest mode a line above the table names the
+     `<base>/<default-branch>` ref that step 2's code checks read. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.
@@ -225,7 +237,9 @@ one of them absorbs is never dropped or merged away in this pass
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
-   over the cap. Every row or entry this step writes or rewrites is shown
+   over the cap. In guest mode the count includes the stamp step 6 will
+   write, which is longer there because it names each drop's evidence, and
+   the pass never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
 
 5. **Record.** Two kinds of removal leave two kinds of record:
@@ -244,11 +258,14 @@ one of them absorbs is never dropped or merged away in this pass
      the body; each removal re-openable by superseding this entry). No
      derived counts anywhere in it (the D-entry rule) — the stamp carries
      what the pass changed. Show the drafted entry verbatim in chat in the
-     turn that commits it (durable-record preview: it rides in the close
-     block's final rendered text).
+     turn that commits it, or in guest mode the turn that writes it
+     (durable-record preview: it rides in the close block's final rendered
+     text).
    - **The commit message and the stamp** — a `drop` whose reason is a
      refuted premise or work already shipped is named there and nowhere
      else: deferrals and refuted premises are ROADMAP facts, not decisions.
+     In guest mode there is no commit message, and the stamp alone names
+     it, with its evidence (step 6's guest arm).
    `keep`, `compress`, `split`, `route`, and a trigger-preserving `merge`
    write no decision entry; the stamp is their record.
 
@@ -260,19 +277,28 @@ one of them absorbs is never dropped or merged away in this pass
    has none gets one — with one line dated today naming what the pass
    changed: each dropped, merged, split, routed, compressed, and re-rated
    item by subject, the drops' reason classes, whether a decision entry was
-   written, and `validate green` (the run just observed). Make **one
-   docs-only commit on the default branch**, subject
+   written, and `validate green` (the run just observed). In owner mode,
+   make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
    drops with their evidence, and push it (the git model: docs-only
    tracking commits go straight to the pushed default branch; nothing here
    needs the merge gate because no code moves). Every `cairn/` change the
    gate accepted lands in that one commit, and nothing else does.
+   **Guest arm** (tracking-rules "Collaboration mode"): validate and stamp
+   as above, and the stamp also names, beside each refuted-premise or
+   already-shipped drop, the record or path that holds its evidence, since
+   no commit body exists to hold it.
+   The guest pass makes no commit and no push. The accepted edits stay on
+   disk in `cairn/`, which git's exclude file leaves untracked, and the
+   commit guard denies a commit it sees carrying a `cairn/` path.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. Then a status line — items enumerated,
    dispositions applied by kind and the commit hash, or `nothing applied`
-   (an apply-nothing answer and an all-`keep` accept alike). The decision
+   (an apply-nothing answer and an all-`keep` accept alike). In guest mode
+   `written to disk, not committed (guest mode)` stands in place of the
+   commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.
    Then, for **every** accepted `promote`, its own fenced block:
 
@@ -284,6 +310,7 @@ one of them absorbs is never dropped or merged away in this pass
    blocks, ordered by token — high → normal → low); with no promote, one fenced
    `/milestone` line labeled as the route to the next action. The safety
    line: the pass is committed
-   and pushed (or wrote nothing), so `/clear` is safe here, and any item
+   and pushed (or wrote nothing), or in guest mode its edits are on disk in
+   `cairn/` and uncommitted, so `/clear` is safe here, and any item
    can be re-examined by running `/cairn-triage` again; an item dropped on
    principle returns only by superseding the pass's decision entry.

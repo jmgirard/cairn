@@ -507,7 +507,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to main, no tracking |
-| Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so |
+| Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit) |
 | Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself |
 | Articulate a repo's design & principles | `/design-interview`: a two-phase interview (facts, then principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init`: idempotent; safe to re-run |
@@ -732,9 +732,13 @@ recommend one) and writes `# Collaboration mode: guest` into
   slug alone, and commit messages and PR text carry no milestone numbers.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
-- **No release walk, no triage pass.** Both stop at session start and say
-  why: releasing and roadmap triage commit to a default branch that isn't
-  yours.
+- **No release walk.** `/cairn-release` stops at session start and says
+  why: a release is the maintainers' act.
+- **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips
+  the clean-tree, default-branch, and sync checks, and its accepted edits
+  stay in `cairn/` with no commit and no push. The hygiene stamp names the
+  evidence for each item it drops as shipped or as resting on a false
+  premise.
 
 Because `cairn/` exists only in that clone, a fresh clone starts from
 nothing and `git clean -fdx` removes it; back it up if that matters.
