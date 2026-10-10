@@ -1,13 +1,13 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — `/hotfix` and `/milestone-review` ship in the plugin to every operator
-- **Branch/PR:** —
+- **Branch/PR:** m231-copilot-review-round
 
 ## Goal
 
@@ -41,7 +41,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 
 ## Tasks
 
-- [ ] T1: Probe for a per-request Copilot level field: the REST docs for `POST /pulls/{n}/requested_reviewers`, the GraphQL `RequestReviewsByLoginInput` and `CopilotCodeReviewParametersInput` types, and `gh pr edit --help`. Log the field or its absence with the date and the sources read. Also find which request form works: `gh pr edit <N> --add-reviewer @copilot`, or GraphQL `requestReviewsByLogin` with `botLogins`. The insight sessions show that the first form works, and that one empty check right after it can mislead.
+- [x] T1: Probe for a per-request Copilot level field: the REST docs for `POST /pulls/{n}/requested_reviewers`, the GraphQL `RequestReviewsByLoginInput` and `CopilotCodeReviewParametersInput` types, and `gh pr edit --help`. Log the field or its absence with the date and the sources read. Also find which request form works: `gh pr edit <N> --add-reviewer @copilot`, or GraphQL `requestReviewsByLogin` with `botLogins`. The insight sessions show that the first form works, and that one empty check right after it can mislead.
 - [ ] T2: Write `skills/shared/copilot-review.md`: the opt-in line, the request with its level, the refused-request skip, and the wait. The wait is one foreground loop under the rulebook's wait rule. Its timeout stop has a close block that names the resume command. The module states the thread read: GraphQL `reviewThreads` with `isResolved`, `path`, `line`, and each comment's `databaseId`, author, and body. It states the disposition rule from `/milestone-review` step 5 and the fix pushes. It states the reply through REST `pulls/<N>/comments/<id>/replies`, the resolve, and the guest-mode `--repo` and owner/name forms.
 - [ ] T3: `/milestone-review`: with the round on, owner mode pushes and opens the PR after step 6 and runs the round. Step 7's merge question lists the Copilot dispositions, and the PR-conversation read then runs on the PR that already exists. Step 8 skips the create. The guest handoff runs the round after the create. Add the resume route for a stop at the round's wait.
 - [ ] T4: `/hotfix`: the same two arms around step 6. Step 1 gains the open-PR route: an open PR whose head is `hotfix-*` and whose author is the operator enters step 6.
@@ -64,6 +64,8 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: plan gate chose one shared module over prose in each skill, because the round is the same in both skills. Falsified by the two skills needing different round steps beyond the level.
 - 2026-10-10: plan gate chose one Copilot round per PR over re-requesting after fix pushes, because each review uses credits and a repo can turn on Copilot's own re-review on push. Falsified by a merged PR whose fix push drew a Copilot finding that named a real defect.
 - 2026-10-10: M231 is planned before M232 (the issue look-in), so that M232's own PR gets the second live round.
+- 2026-10-10: implement started on branch `m231-copilot-review-round`. The untracked `cairn-probe.log` on main is not this milestone's and stays unstaged.
+- 2026-10-10: T1: no per-request Copilot level field found on 2026-10-10. Sources read: the REST docs for `POST /pulls/{n}/requested_reviewers` (`reviewers` and `team_reviewers` only), the GraphQL `RequestReviewsByLoginInput` (`userLogins`, `botLogins`, `teamSlugs`, `union`) and `CopilotCodeReviewParametersInput` (`reviewDraftPullRequests`, `reviewOnPush`) types, `gh pr edit --help` in gh 2.102.0, and the Copilot code review how-to page. The round uses `gh pr edit <N> --add-reviewer @copilot`, which the help names and the insight sessions used. Copilot's GraphQL login is `copilot-pull-request-reviewer`, and its REST login is `copilot-pull-request-reviewer[bot]` (read on easystats/insight PR 1253).
 
 ## Decisions
 
