@@ -273,7 +273,8 @@ a bare PR number resolves against the fork.
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of
    <base-repo>`, a decline option, no merge option — and on selection the
-   sequence is the push to the fork (`git push -u origin hotfix-<slug>`)
+   sequence is the push to the fork (`git push -u origin hotfix-<slug>`,
+   `--force-with-lease` after step 2's rebase of a reused branch)
    and the PR opened against the base repo — `gh pr create --repo
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn

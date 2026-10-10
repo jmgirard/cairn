@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
