@@ -83,3 +83,33 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - AC6 evidence (2026-10-10): `skills/milestone/SKILL.md:116-118` measures with `wc -l -c` and states "636 lines / 60,689 bytes". `wc -l -c skills/shared/tracking-rules.md` at the branch head prints 636 and 60689.
 - AC7 evidence (2026-10-10): scripts/tests 406 OK (21 skipped), hooks/tests 174 OK, plugin validate exit 0, marketplace validate exit 0, mod test 1777 tests with 0 failures, each exit code read.
 - Consistency gate (2026-10-10): `cairn_validate` all checks passed (exit 0). Coverage complete. `cairn_impact` skipped, because DESIGN.md is unchanged. The marketplace validate shows no version warning. CHANGELOG has 4 entries for this milestone, with no milestone numbers. The hand-run skills/tests gave 718 OK.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the absorbed candidate rows (ROADMAP 44 and 45) were not trimmed — reject (planned process): a promoted row is pruned at post-merge hygiene, never at plan (records-hygiene §1, M154 lesson). Step 9 trims them.
+- diff-bug #2: `gh pr checks <N>` gives no source for `<N>` when the header names only the branch — fix now: `<N>` is the header PR's number, or the branch name, fixed e2f603f.
+- diff-bug #3: a guest-mode `close` now aims `gh issue close --repo <base-repo>` at the upstream tracker — follow-up: this was already deferred at plan to "Issue look-in edges (M232 review)". Before the change a bare command also reached the upstream in both real layouts, because origin is the upstream in insight and gh prefers an `upstream` remote in brms.
+- diff-bug #4: the Write tool refuses to replace an existing reply file it has not read, and `<owner>`/`<repo>` were unsourced — fix now: Read it first if it exists, and `<owner>`/`<repo>` are `<base-repo>`'s, fixed e2f603f.
+- diff-bug #5: two matching remotes always stop the push, with no tie-break — reject (planned change): AC1 and the plan gate chose to stop on more than one match.
+- diff-bug #6: a failed read looks the same as "not a fork" in the stop — fix now: the stop names each failed read, fixed e2f603f.
+- diff-bug #7: the fork guard skips README.md, and its origin-is-fork pattern is narrow — fix now in part: README added to the scan domain, fixed e2f603f. Rejected in part (planned change): new guest push sites are covered by AC2's review search, not by a pattern guard.
+- diff-bug #8: the command scan matched only spans that start with `gh` — fix now: it searches for `gh pr|issue` anywhere in a span, with a planted `cd … && gh pr view` control, fixed e2f603f.
+- diff-bug #9: README's guest bullet said nothing else is written outside `cairn/` — fix now: "Nothing else in the checkout", fixed e2f603f.
+- diff-bug #10: the recipe's inner double quotes break in Windows PowerShell 5.1, and the hand-off fence is labeled `bash` — reject (false): the agent runs the recipe in its own Bash tool, never a user's PowerShell. The `bash` label is what gives the desktop app's Run button.
+- diff-bug #11: new rulebook lines run past 120 columns — reject (style).
+- diff-bug #12: the companion arm pushes to `origin` — follow-up: new row "Intake and guest edges (M234 review)". The companion arm is owner-mode, and its checkouts were never in scope.
+- blame-history #1: the Write tool cannot replace a reply file left by an earlier session — fix now (same as diff-bug #4), fixed e2f603f.
+- blame-history #2: guest-mode `close` reaches upstream — follow-up (same as diff-bug #3).
+- blame-history #3: the baseline goes stale on any later rulebook edit, and row 45 goes stale if not dropped — reject (planned process): re-seeded at e2f603f, and hygiene drops row 45.
+- blame-history #4: the hand-off fence labeled `bash` — reject (false, same as diff-bug #10).
+- blame-history #5: a guest layout with only `origin` (the fork) and no `upstream` now stops — follow-up: new row "Intake and guest edges (M234 review)". The layout already gave the wrong `<base-repo>` before M234.
+- blame-history #6: bare `gh pr` reads remain in `/milestone-review` resume routing and `/hotfix` — reject (false): both skills open with a guest blanket clause that adds `--repo <base-repo>` to every `gh pr` read (M185), and owner mode resolves `origin`.
+- blame-history #7: the softened `hotfix:28-29` wording is accurate — noted, no action.
+- blame-history #8: the Intake `close` route keeps D-044 and D-154 intact — noted, no action.
+- prior-review #1: guest-mode `close` now explicitly targets upstream — follow-up (same as diff-bug #3).
+- prior-review #2: `/milestone-plan`'s acknowledgement comment still passes untrusted issue text inline with `--body` — follow-up: new row "Intake and guest edges (M234 review)". That command is agent-run, not a user hand-off, and was outside the plan's scope.
+- Re-verification after e2f603f (2026-10-10): AC1 `TestForkRecipe` OK with the new stop clause pinned. AC3 scan gives 15 commands and 0 bare. AC6 baseline re-seeded to 636 lines / 60,714 bytes, equal to `wc -l -c` at HEAD. AC7: scripts/tests, hooks/tests, both validates, and the mod test all exit 0. skills/tests 719 OK, `cairn_validate` all checks passed.
+- copilot: skills/tests/test_issue_triage.py:218 — fix now: a mutation entry for `TestIntakeNamesClose` blanks the rulebook's `close` clause, fixed cf9dcf1. Replied and resolved.
+- copilot: skills/shared/tracking-rules.md:236 — reject (false as a threat): the remote name is substituted unquoted into `git remote get-url`, but remote names come from the operator's own git config, and a clone never imports them from repo content. Replied and resolved.
+- copilot: skills/milestone/SKILL.md:463 (outdated) — follow-up: the fixed draft name in a shared temp directory can collide or meet a planted symlink. AC5 fixes the name, so the change goes to the new row "Intake and guest edges (M234 review)". Replied and resolved.
+- copilot: review body — noted: its 3 findings are the 3 threads above.
+- Copilot level: Lite (set by GitHub's settings). The review covered an earlier head, so no second request was made (copilot-review §2).
+- conversation: no other reviews and no conversation comments on PR #243.
