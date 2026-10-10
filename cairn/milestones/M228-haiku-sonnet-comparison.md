@@ -121,7 +121,7 @@ dial per spawned agent" candidate row.
       M228 `blocked` with the id as the blocker. Record each run's
       transcript path (`~/.claude/projects/<slug>/<session>/subagents/`),
       its `model` ids, its token classes per `message.id`, and its score.
-- [ ] T4: Run the edit-work group the same way. Give each spawn
+- [x] T4: Run the edit-work group the same way. Give each spawn
       `isolation: "worktree"`, so that no run edits the shared checkout.
       Score each run's diff against its target or mutant set.
 - [ ] T5: Run the history-review group the same way. Then spawn one Opus
@@ -162,6 +162,7 @@ dial per spawned agent" candidate row.
 - 2026-10-09: re-audit: AC3 (reduced) — second reader returned four findings, answered without rewording (a further rewording would be the second-re-audit stop): the price at a call's prompt size is read from the note's table, which records the cited page at its access date and defines prompt size as input plus both cache writes plus cache read; the input-and-cache equality is recorded per row in the note as a cross-check; each row names the main session transcript that holds its one Agent tool result; costs are recorded to four decimal places and recomputed at that precision.
 - 2026-10-09: correction to the T2 line: the S3 key holds 88 pairs, not 89, by `len()` of the built key; the note is corrected in place.
 - 2026-10-09: T3 ran the six search spawns. Scores Sonnet 1.0, 1.0, 0.6767 and Haiku 1.0, 0.0, 1.0; costs Sonnet $0.3650 and Haiku $0.0218 in sum. Haiku's S2 zero is a format miss (script names without `.py`), scored as the fixed rule says; the note records it. Every row's final match is yes.
+- 2026-10-09: T4 ran the six edit spawns in worktrees. Every run scored 1.0 (both sweeps exact, all four test files killed 6 of 6). Costs Sonnet $0.4884 and Haiku $0.0407 in sum. The sweep diffs and test files are saved in the scratchpad; the worktrees are removed at T6.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

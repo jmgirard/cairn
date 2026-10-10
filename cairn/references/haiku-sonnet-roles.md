@@ -259,3 +259,20 @@ allows that reading. S3 Sonnet applied its own reading of which heading
 clauses "supersede" and listed 45 pairs, all in the key, where the prompt's
 rule counts every id after the word (88 pairs). Haiku followed the stated
 rule.
+
+| Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| E1 | sonnet | `a9dfb4d4c5d75cf2d` | claude-sonnet-5-5 | 4 | yes | 8 | 54344 | 0 | 157944 | 533 | 0.1570 | 1.0000 |
+| E1 | haiku | `a2fcaa827b9415e99` | claude-haiku-5-5 | 9 | yes | 18 | 58653 | 0 | 448108 | 556 | 0.0121 | 1.0000 |
+| E2 | sonnet | `a260f9308a2bc485b` | claude-sonnet-5-5 | 4 | yes | 8 | 59189 | 0 | 160585 | 421 | 0.1683 | 1.0000 |
+| E2 | haiku | `a402fd9aeaa7d5d4f` | claude-haiku-5-5 | 6 | yes | 12 | 69489 | 0 | 300615 | 320 | 0.0119 | 1.0000 |
+| E3 | sonnet | `ac124eccb4da7fbdb` | claude-sonnet-5-5 | 4 | yes | 8 | 57058 | 0 | 158507 | 463 | 0.1631 | 1.0000 |
+| E3 | haiku | `a59fa08d0b88b3b84` | claude-haiku-5-5 | 7 | yes | 14 | 73988 | 0 | 373525 | 7503 | 0.0167 | 1.0000 |
+
+Edit-work notes. Both E1 runs produced the target diff exactly, 11 files.
+All four test files passed on the unmutated code and killed all six
+mutants: Sonnet wrote 23 and 18 tests, Haiku 21 and 30. Every score is at
+the ceiling, so this group cannot show a quality gap smaller than these
+tasks' difficulty. The test files were written in non-final calls, whose
+output the transcript undercounts, so these rows' output columns are the
+lowest of the three groups relative to the work done.
