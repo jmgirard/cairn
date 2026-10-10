@@ -42,7 +42,7 @@ class TestInboxEnumeration(unittest.TestCase):
         # Without a command the bullet is a duty with no discharge — the
         # exact defect M74 exists to fix.
         self.assertIn(
-            "`gh issue list --state open --json number,title,url` for issues,",
+            "`gh issue list --repo <base-repo> --state open --json number,title,url` for issues,",
             milestone(),
         )
 
@@ -50,7 +50,7 @@ class TestInboxEnumeration(unittest.TestCase):
         # Both inboxes, not just issues: external PRs are half of D-043's
         # intake surface.
         self.assertIn(
-            "`gh pr list --state open --json number,title,url,author` for prs",
+            "`gh pr list --repo <base-repo> --state open --json number,title,url,author` for prs",
             milestone(),
         )
 

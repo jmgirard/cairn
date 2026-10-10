@@ -1184,7 +1184,7 @@ REGISTRY = [
         guard="test_issue_triage",
         test="TestInboxEnumeration.test_step_names_the_issue_command",
         target=MILESTONE,
-        block="`gh issue list --state open --json number,title,url` for issues,",
+        block="`gh issue list --repo <base-repo> --state open --json number,title,url` for issues,",
     ),
     Mutation(
         guard="test_issue_triage",
@@ -2214,6 +2214,7 @@ EXEMPT = {
     "test_plugin_root_fallback": "hotfix 2026-09-03: a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109)",
     "test_issue_look_in": "M232 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its planted-write tests prove the grep check can fail",
     "test_guest_fork_remote": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its reverted-site and planted-phrase tests prove both checks can fail",
+    "test_milestone_gh_repo": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its planted inline and fenced spans prove the scan can fail",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
     # every pinned block was deliberately reworded or retired. Their surviving
     # asserts pin current text; re-registration is deferred until adopter
@@ -3253,7 +3254,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestAuditOrphanBullet.test_a_closes_entry_is_read_with_state_and_url",
         target=MILESTONE,
-        block="`gh issue view <N> --json state,url`",
+        block="`gh issue view <N> --repo <base-repo> --json state,url`",
     ),
     Mutation(
         guard="test_issue_linkage",

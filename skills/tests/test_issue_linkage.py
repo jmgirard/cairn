@@ -238,7 +238,7 @@ class TestAuditOrphanBullet(unittest.TestCase):
         self.assertRegex(
             milestone(),
             r"carries a `resolves` entry marked `closes`, read that issue's "
-            r"state\s+with `gh issue view <N> --json state,url`",
+            r"state\s+with `gh issue view <N> --repo <base-repo> --json state,url`",
         )
 
     def test_a_still_open_issue_is_an_orphan(self):
@@ -283,8 +283,8 @@ class TestAuditOrphanBullet(unittest.TestCase):
             milestone(),
             r"\*\*close\*\* — an orphaned issue from §2's orphan bullet: only "
             r"on the\s+user's selection in the triage chip, close it with"
-            r"\s+`gh issue close <N> --comment` carrying a one-line comment "
-            r"naming the\s+archived milestone's PR",
+            r"\s+`gh issue close <N> --repo <base-repo> --comment` carrying a "
+            r"one-line comment naming the\s+archived milestone's PR",
         )
         self.assertIn("Not selected → the issue stays open and nothing is written", milestone())
 

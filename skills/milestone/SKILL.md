@@ -64,6 +64,10 @@ each active milestone, and open RBs and their age.
 
 ## 2. Health audit
 
+**The repo.** Every issue and pull-request command in this section and in
+§3 carries `--repo <base-repo>`, in both modes. The rulebook's slug recipe
+gives `<base-repo>`, and in guest mode that is the upstream repo.
+
 Run `cairn_validate.py` first and
 read its output — one line per check; never restate or recall its
 internals (a restated list is a stale-count trap, M28). Treat every
@@ -149,13 +153,14 @@ The script deliberately does not judge these — do them yourself and report:
   check instead reads `cairn/` from `.git/info/exclude` and reports a
   missing line as the repair item.
 - A milestone at `review` with an open unmerged PR → re-check CI now
-  (`gh pr checks`), report the fresh state (this is normal, not an error),
+  (`gh pr checks <N> --repo <base-repo>`), report the fresh state (this is normal, not an error),
   and beside it report the PR's unresolved-thread count and its pending
   review states (`COMMENTED`, `CHANGES_REQUESTED`) from the reads
   `/milestone-review` step 7 names; the audit writes nothing to GitHub.
 - A milestone at `review` whose header PR reports `MERGED` (`gh pr view <N>
-  --json state`; a header naming only the branch is resolved with `gh pr
-  list --head <branch> --state all`, the PR having been opened after
+  --repo <base-repo> --json state`; a header naming only the branch is
+  resolved with `gh pr list --repo <base-repo> --head <branch> --state
+  all`, the PR having been opened after
   approval and its record left unpushed — `/milestone-review` step 8) →
   post-merge hygiene owed: report it as such and route to
   `/milestone-review M<NNN>`, whose session start re-enters at the step the
@@ -191,8 +196,8 @@ The script deliberately does not judge these — do them yourself and report:
   "Collaboration mode") skips this bullet: the inboxes are the maintainers'
   intake, not the guest's, and the fork's own are not the repo's. Otherwise
   enumerate both inboxes —
-  `gh issue list --state open --json number,title,url` for issues,
-  `gh pr list --state open --json number,title,url,author` for PRs — then
+  `gh issue list --repo <base-repo> --state open --json number,title,url` for issues,
+  `gh pr list --repo <base-repo> --state open --json number,title,url,author` for PRs — then
   drop this session's own work from the PR list, which is what the `author`
   field is for: a PR you opened, or one whose head branch is `m<nnn>-*` or
   `hotfix-*`, is cairn's own in-flight work. A milestone PR is tracked by
@@ -215,7 +220,7 @@ The script deliberately does not judge these — do them yourself and report:
 - **Orphaned issues:** for each `done` row still in the ROADMAP table — the
   retained terminal rows bound the reads — whose archive summary's status
   line carries a `resolves` entry marked `closes`, read that issue's state
-  with `gh issue view <N> --json state,url`; one still open is reported as
+  with `gh issue view <N> --repo <base-repo> --json state,url`; one still open is reported as
   an orphan: the milestone slotted as closing it is done, but the close
   never happened (a missed keyword, a merge outside cairn). A row with no
   `resolves` clause, or with `partial` entries only, reads nothing; a row
@@ -226,7 +231,7 @@ The script deliberately does not judge these — do them yourself and report:
 - **Outside merges:** pull requests merged since the last hygiene stamp by
   anyone but the operator — a merge no cairn skill ran, so nothing re-read
   what its diff changed. Enumerate with
-  `gh pr list --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt`
+  `gh pr list --repo <base-repo> --state merged --limit 100 --json number,title,url,author,mergedBy,mergedAt`
   and keep the entries whose `mergedAt` date (its first ten characters) is
   on or after the date on `cairn/ROADMAP.md`'s `Last hygiene check` line
   and whose `mergedBy` login differs from the login `gh api user --jq
@@ -236,7 +241,7 @@ The script deliberately does not judge these — do them yourself and report:
   entries is newer than the stamp date, or the returned count equals the
   limit (a truncated list may hide a long-open, low-numbered PR merged
   after the stamp), raise `--limit` and re-read until neither holds. For
-  each kept PR, read its file list with `gh pr diff <N> --name-only` and
+  each kept PR, read its file list with `gh pr diff <N> --repo <base-repo> --name-only` and
   report which `cairn/milestones/archive/` summaries contain any listed
   path as a literal string (`grep -lF -- "<path>"
   cairn/milestones/archive/*.md`, once per path) — a possible-overlap hint
@@ -307,7 +312,7 @@ Each item takes exactly one disposition — you propose, the user chooses:
 - **leave** — no row, no action, with the reason stated.
 - **close** — an orphaned issue from §2's orphan bullet: only on the
   user's selection in the triage chip, close it with
-  `gh issue close <N> --comment` carrying a one-line comment naming the
+  `gh issue close <N> --repo <base-repo> --comment` carrying a one-line comment naming the
   archived milestone's PR; the option text names the issue and that PR.
   Not selected → the issue stays open and nothing is written.
 
