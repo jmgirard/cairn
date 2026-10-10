@@ -64,6 +64,7 @@ Close three issue-intake gaps from the M232 review, so that no issue route leave
 - 2026-10-10: claim audit: 31 claims read, 3 corrected — skills/milestone/SKILL.md, skills/milestone-plan/SKILL.md, CHANGELOG.md
 - 2026-10-10: claim audit re-read: 4 of the 5 corrected sentences hold. §4's "the chip's candidate-row option then holds the decline's record" is kept as AC1 words it. The reader noted that an owner-mode row is not written off the default branch or with a dirty ROADMAP. The candidate-row option's own description in §4 already states those cases.
 - 2026-10-10: implement complete: T1–T4 checked. Verify slot 5/5 green and hand-run `skills/tests` green after the claim fixes. Status set to review.
+- 2026-10-10: step-7 approval: m233-intake-route-records approved for merge
 - 2026-10-10: review start: branch up to date with origin/main (db92fd5). Copilot round on: branch pushed, PR #242 opened, state query `none`, Copilot requested.
 
 ## Review
