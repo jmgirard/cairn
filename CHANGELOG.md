@@ -4,6 +4,13 @@
 
 ### Changes that affect existing repos
 
+- **`/cairn-triage` runs in guest mode.** It used to stop at session
+  start, because its pass ends in a commit to the default branch. In guest
+  mode the pass now skips the clean-tree, default-branch, and sync checks,
+  and its accepted edits are written to `cairn/` on disk and not committed
+  or pushed. The hygiene stamp names the evidence for each item dropped as
+  already shipped or as resting on a false premise, since no commit message
+  holds it. `/cairn-release` still stops in guest mode.
 - **In guest mode, pushes go to your fork, whatever its remote is
   named.** The rulebook finds the fork remote as the one remote whose
   GitHub parent is the base repo, and every guest push and the PR's

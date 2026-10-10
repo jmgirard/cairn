@@ -5664,3 +5664,25 @@ commands must then stay in step.
 **Consequences:** D-137 and D-154 stand. The rulebook's guest bullet says
 that a file outside the checkout is not a write to the repo. Falsified by
 a platform where `gh` cannot read the temp file from a double-quoted path.
+
+### D-156 (2026-10-10): In guest mode `/cairn-triage` runs and leaves its edits on disk, uncommitted — annotates D-137 (M235)
+
+**Context:** M184 made `/cairn-triage` stop at session start in guest
+mode, because its pass ends in a docs-only commit to the default branch.
+D-137 does not name triage. Its rule is that `cairn/` is never committed
+and nothing is pushed to the default branch. A triage pass is reasoning
+over local `cairn/` files, like the plan and review loop that guest mode
+already runs.
+
+**Decision:** In guest mode the pass runs. It skips the clean-tree,
+default-branch, and sync preconditions, because it moves no ref and
+commits nothing. Its accepted edits stay in `cairn/` on disk. The stamp
+names the evidence for each refuted-premise or already-shipped drop,
+because no commit message holds it. Rejected: keeping the clean-tree
+check, because a pass with no commit cannot sweep code into one.
+Rejected: evidence in chat only, because chat is lost when the session
+ends.
+
+**Consequences:** D-137 stands. `/cairn-release` keeps its guest stop.
+Falsified by a guest pass that writes outside `cairn/`, or by a guest
+stamp that takes ROADMAP over its byte budget in a real pass.
