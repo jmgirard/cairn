@@ -1362,6 +1362,45 @@ describe('an other end with the pane shown opens it at the next start in the sam
     expect(panesOf(copy).map(open => open.id)).not.toContain(PANE)
   })
 
+  // A typed `/clear` closes the pane on screen, so a `/cairn-pane` that is
+  // the first message after it is a request to open, though the start that
+  // message brings has just reopened the pane. It keeps the pane open, and
+  // the next one closes it.
+  test('a /cairn-pane that is the first message after the reopen keeps the pane open', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    expect(listed(copy)).toBe(true)
+    const first = await $.command.run({ command: COMMAND })
+    expect(first.text).toBe('cairn pane opened')
+    expect(listed(copy)).toBe(true)
+    const second = await $.command.run({ command: COMMAND })
+    expect(second.text).toBe('cairn pane closed')
+    expect(listed(copy)).toBe(false)
+  })
+
+  test('after a turn ends, a /cairn-pane closes the reopened pane', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    await $.session.start(NEW_START)
+    await $.turn.complete(turn())
+    const got = await $.command.run({ command: COMMAND })
+    expect(got.text).toBe('cairn pane closed')
+    expect(listed(copy)).toBe(false)
+  })
+
+  test('a start with no reopen leaves the first /cairn-pane a close of a shown pane', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    await openPane($, on, copy)
+    const got = await $.command.run({ command: COMMAND })
+    expect(got.text).toBe('cairn pane closed')
+    expect(listed(copy)).toBe(false)
+  })
+
   test('the reopen happens once: a close and a later exit end list no pane', async ($, on) => {
     const copy = copyOf('single-in-progress')
     await openPane($, on, copy)
@@ -1369,6 +1408,7 @@ describe('an other end with the pane shown opens it at the next start in the sam
     newProcess(copy)
     await $.session.start(NEW_START)
     expect(listed(copy)).toBe(true)
+    await $.turn.complete(turn())
     await $.command.run({ command: COMMAND })
     expect(listed(copy)).toBe(false)
     await $.session.end({ reason: 'prompt_input_exit', sessionId: 's2' })

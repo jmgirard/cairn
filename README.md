@@ -401,7 +401,8 @@ A cairn pane that is shown at a `/clear` is open after it. A press of a
 Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
 and the pane stays. A typed `/clear` in the desktop app starts a new
 session at your next message, and a pane that was shown opens again then,
-in the same folder. A pane behind another pane's tab, or waiting undrawn,
+in the same folder. When that next message is `/cairn-pane`, the pane
+stays open, and the next `/cairn-pane` closes it. A pane behind another pane's tab, or waiting undrawn,
 does not open again. An app quit or a closed terminal that ends the session
 with reason `other` (not checked) also brings the pane back at the next
 session in that folder. In a terminal narrower than 110 columns, that pane
