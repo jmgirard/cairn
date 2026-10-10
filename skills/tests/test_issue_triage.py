@@ -42,7 +42,7 @@ class TestInboxEnumeration(unittest.TestCase):
         # Without a command the bullet is a duty with no discharge — the
         # exact defect M74 exists to fix.
         self.assertIn(
-            "`gh issue list --state open --json number,title,url` for issues,",
+            "`gh issue list --repo <base-repo> --state open --json number,title,url` for issues,",
             milestone(),
         )
 
@@ -50,7 +50,7 @@ class TestInboxEnumeration(unittest.TestCase):
         # Both inboxes, not just issues: external PRs are half of D-043's
         # intake surface.
         self.assertIn(
-            "`gh pr list --state open --json number,title,url,author` for prs",
+            "`gh pr list --repo <base-repo> --state open --json number,title,url,author` for prs",
             milestone(),
         )
 
@@ -201,6 +201,30 @@ class TestPlanSweepRepo(unittest.TestCase):
         t = plan()
         self.assertIn("the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which", t)
         self.assertIn("skips guest mode. The reason is that the plan's sweep looks for overlap", t)
+
+
+def rulebook_flat():
+    text = SKILLS.joinpath("shared", "tracking-rules.md").read_text()
+    return " ".join(text.split())
+
+
+class TestIntakeNamesClose(unittest.TestCase):
+    # M234: the rulebook's Intake paragraph names `/milestone` §3's `close`
+    # route for an orphaned issue, and the `leave` clause stays as it was.
+    # The paragraph wraps, so the rulebook is read whitespace-collapsed.
+
+    def test_intake_names_close_for_an_orphaned_issue(self):
+        self.assertIn(
+            "or `close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;",
+            rulebook_flat(),
+        )
+
+    def test_leave_clause_unchanged(self):
+        self.assertIn(
+            "`leave` is legal only for noise, duplicates, or items already cross-referenced "
+            "in cairn — never anything genuinely new.",
+            rulebook_flat(),
+        )
 
 
 if __name__ == "__main__":

@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="630 lines / 59,932 chars",
+        block="636 lines / 60,714 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -1184,7 +1184,15 @@ REGISTRY = [
         guard="test_issue_triage",
         test="TestInboxEnumeration.test_step_names_the_issue_command",
         target=MILESTONE,
-        block="`gh issue list --state open --json number,title,url` for issues,",
+        block="`gh issue list --repo <base-repo> --state open --json number,title,url` for issues,",
+    ),
+    # M234: the Intake paragraph names the `close` route; blanking the clause
+    # must red the guard that pins it.
+    Mutation(
+        guard="test_issue_triage",
+        test="TestIntakeNamesClose.test_intake_names_close_for_an_orphaned_issue",
+        target=RULES,
+        block="`close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;",
     ),
     Mutation(
         guard="test_issue_triage",
@@ -1241,7 +1249,7 @@ REGISTRY = [
         guard="test_external_pr_intake",
         test="TestIntakeRouting.test_intake_paragraph_names_reply_and_plan_routes",
         target=RULES,
-        block="hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;",
+        block="hotfix path, `/milestone-plan`, a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record, or",
     ),
     # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
     # advisory names. One entry per independently-load-bearing block: the
@@ -2213,6 +2221,8 @@ EXEMPT = {
     "test_mutation_harness": "the harness's own tests, not a prose-guard",
     "test_plugin_root_fallback": "hotfix 2026-09-03: a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109)",
     "test_issue_look_in": "M232 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its planted-write tests prove the grep check can fail",
+    "test_guest_fork_remote": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its reverted-site and planted-phrase tests prove both checks can fail",
+    "test_milestone_gh_repo": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its planted inline and fenced spans prove the scan can fail",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
     # every pinned block was deliberately reworded or retired. Their surviving
     # asserts pin current text; re-registration is deferred until adopter
@@ -3252,7 +3262,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestAuditOrphanBullet.test_a_closes_entry_is_read_with_state_and_url",
         target=MILESTONE,
-        block="`gh issue view <N> --json state,url`",
+        block="`gh issue view <N> --repo <base-repo> --json state,url`",
     ),
     Mutation(
         guard="test_issue_linkage",

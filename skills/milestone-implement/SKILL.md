@@ -69,7 +69,7 @@ run ingestion first (see `/milestone-brief`).
    profile's `verify` slot before continuing. Guest arm: `git fetch <base>`
    then `git rebase <base>/<default-branch>` in place of the merge — the
    branch is the operator's own on the fork, so the rebased branch goes up
-   with `git push --force-with-lease origin <slug>` once a PR exists (the
+   with `git push --force-with-lease <fork> <slug>` once a PR exists (the
    force-push guard covers the default branch alone); the maintainers'
    review comments stay attached to the PR.
 

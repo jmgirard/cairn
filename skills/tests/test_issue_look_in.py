@@ -10,7 +10,9 @@ things have to survive:
   2. The reply hand-off. cairn drafts the reply and shows the
      `gh issue comment` command line for the user to run, pinned verbatim
      and once, with `--repo <base-repo>` so a guest-mode reply reaches the
-     upstream repo.
+     upstream repo. Since M234 the reply travels in a temp file through
+     `--body-file`, so no shell quoting touches it, and the `'\\''` quoting
+     rule and the four-backtick fence are gone.
   3. The section's remote reach. A `gh issue|pr|api` line in §4 is a read or
      the one hand-off line, never a second write. The check is the plan's
      own grep, run over §4 only, and it is shown to fail on a planted write.
@@ -29,7 +31,7 @@ import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
 
-HANDOFF = "gh issue comment <N> --repo <base-repo> --body '<reply>'"
+HANDOFF = 'gh issue comment <N> --repo <base-repo> --body-file "<path>"'
 GH_LINE = re.compile(r"gh (issue|pr|api)")
 READ = re.compile(r"gh (issue view|issue list|pr list|pr view) ")
 
@@ -138,6 +140,33 @@ class TestHandOff(unittest.TestCase):
 
     def test_reply_follows_guest_vocabulary_rule(self):
         self.assertIn("guest-mode rule of no cairn vocabulary", look_in(milestone()))
+
+    def test_draft_goes_to_a_temp_file_outside_the_checkout(self):
+        flat = " ".join(look_in(milestone()).split())
+        self.assertIn(
+            "Write the draft to `cairn-reply-<owner>-<repo>-<N>.md` in the system "
+            "temp directory (Python's `tempfile.gettempdir()`), outside the checkout,",
+            flat,
+        )
+        self.assertIn("with that file's absolute path in place of `<path>`", flat)
+
+    def test_close_block_still_gives_the_draft_verbatim(self):
+        flat = " ".join(look_in(milestone()).split())
+        self.assertIn("it gives the draft verbatim, then this command", flat)
+
+    def test_rulebook_says_the_temp_file_is_not_a_repo_write(self):
+        rules = SKILLS.joinpath("shared", "tracking-rules.md").read_text()
+        self.assertIn(
+            "A file outside the checkout, such as `/milestone` §4's reply draft in the "
+            "system temp directory, is not a write to the repo (D-155).",
+            " ".join(rules.split()),
+        )
+
+    def test_shell_quoting_rule_and_long_fence_are_gone(self):
+        section = look_in(milestone())
+        self.assertNotIn("'\\''", section)
+        self.assertNotIn("`" * 4, section)
+        self.assertNotIn("--body '", section)
 
 
 class TestRemoteReach(unittest.TestCase):

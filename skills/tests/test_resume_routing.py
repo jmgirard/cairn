@@ -136,8 +136,9 @@ class TestMilestoneAuditMergedReview(unittest.TestCase):
     def test_merged_review_milestone_is_hygiene_owed(self):
         self.assertIn(
             "- A milestone at `review` whose header PR reports `MERGED` "
-            "(`gh pr view <N> --json state`; a header naming only the branch "
-            "is resolved with `gh pr list --head <branch> --state all`, the "
+            "(`gh pr view <N> --repo <base-repo> --json state`; a header naming "
+            "only the branch is resolved with `gh pr list --repo <base-repo> "
+            "--head <branch> --state all`, the "
             "PR having been opened after approval and its record left "
             "unpushed — `/milestone-review` step 8) → post-merge hygiene "
             "owed: report it as such and route to `/milestone-review M<NNN>`",

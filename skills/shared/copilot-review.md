@@ -83,7 +83,7 @@ read then acts on it:
    agent's disposition under the opt-in line, and an item over the hotfix
    bar is a follow-up.
 2. A fix-now item is committed on the branch with the profile's `verify`
-   slot green, then pushed (guest mode: to `origin`, the fork, with
+   slot green, then pushed (guest mode: to `<fork>`, the rulebook's fork remote, with
    `--force-with-lease` after a rebase).
 3. Reply on the thread's first comment, with the facts only and no thanks:
    `Fixed in <short-sha>.` plus at most one sentence, or the rejection

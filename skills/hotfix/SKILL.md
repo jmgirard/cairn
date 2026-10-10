@@ -25,8 +25,8 @@ Chapter markers: mark a chapter at each phase transition and at each numbered st
 (session start implicit).
 Guest arm (tracking-rules "Collaboration mode"): every `gh pr` read in this
 skill — step 1's tier-check and re-entry reads included — carries
-`--repo <base-repo>` (the rulebook's slug recipe), since in a fork checkout
-a bare PR number resolves against the fork.
+`--repo <base-repo>` (the rulebook's slug recipe), since a bare PR number
+can resolve against the fork instead of the base repo.
 
 ## Workflow
 
@@ -270,7 +270,8 @@ a bare PR number resolves against the fork.
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of
    <base-repo>`, a decline option, no merge option — and on selection the
-   sequence is the push to the fork (`git push -u origin hotfix-<slug>`)
+   sequence is the push to the fork (`git push -u <fork> hotfix-<slug>`,
+   `<fork>` being the rulebook's fork remote)
    and the PR opened against the base repo — `gh pr create --repo
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
@@ -281,7 +282,7 @@ a bare PR number resolves against the fork.
    wait while pending, then the Copilot threads by the module's §5. Use
    the module's guest forms: `--repo <base-repo>`, the base repo's owner
    and name in each `gh api` call that addresses a repository (the resolve
-   takes only a thread id), and fix pushes to the fork. Its `copilot:`
+   takes only a thread id), and fix pushes to `<fork>`. Its `copilot:`
    lines ride in the close block, which also says that a Copilot review
    arriving after the wait is the operator's to handle by hand. Then
    stop with the close block: the recap says the fix is in the maintainers'

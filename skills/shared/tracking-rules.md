@@ -189,7 +189,8 @@ user approval; NEWS entry; no milestone file. **Milestone** → more than one si
 restoring documented behavior), or requires a design decision.
 
 Intake: GitHub issues and external PRs are inboxes, never a second tracking system. Issues → `candidate` rows, the
-hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;
+hotfix path, `/milestone-plan`, a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record, or
+`close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;
 `leave` is legal only for noise, duplicates, or items already cross-referenced in cairn — never anything genuinely new.
 External PRs: **`/hotfix` is the door** for the small and correct — it adopts the PR (`gh pr checkout`), holds it to
 the hotfix bar, merges on user approval; larger → `/milestone-plan`. Candidates may be added conversationally by anyone
@@ -230,7 +231,11 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   ls-remote --symref <base> HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote at all** ask the
   user — never guess from the local current branch (wrong on a feature branch). A `gh` command that must name the base
   repo takes its `OWNER/REPO` slug as `<base-repo>`: `gh repo view "$(git remote get-url <base>)" --json
-  nameWithOwner -q .nameWithOwner`; `<fork-owner>` reads `origin` the same way with `--json owner -q .owner.login`.
+  nameWithOwner -q .nameWithOwner`. In guest mode the **fork remote** `<fork>` is the one remote that `git remote`
+  lists, other than `<base>`, whose parent equals `<base-repo>`, ignoring case. Read each parent with `gh repo view
+  "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote that is not
+  a fork prints `/`, meaning no parent. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
+  one, a guest push stops before the push. The stop names the remotes it read, each parent it found, and each failed read.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
@@ -309,7 +314,8 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   denies a `git commit` it sees carrying a `cairn/` path, on every branch (the misses its docstring lists — `git -C`,
   `git -c`, an empty `--amend`, a pathspec commit of a tracked file — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
   file — no CLAUDE.md section (the session hook injects the plugin's routing template instead), no ignore entries, no
-  CI edit.
+  CI edit. A file outside the checkout, such as `/milestone` §4's reply draft in the system temp directory, is not a
+  write to the repo (D-155).
 - **No docs-only commit and no push to the default branch.** The plan commit, the post-merge hygiene commit, and the
   `cairn-init` scaffold commit do not exist; tracking is **written to disk in the turn that changes the code** — the
   same turn a checkpoint commit would have carried it — and stays there. "Tracking travels with code" (GP2) is an
@@ -321,13 +327,13 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
-  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `origin` (the fork) at the handoff, and the PR
+  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `<fork>` (the git model's fork remote) at the handoff, and the PR
   targets the base repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened ready for the
   maintainers' review at the handoff selection, never earlier and never as a draft; every other `gh pr` command
   carries `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
   approval binding).
 - **cairn never merges in guest mode.** `/milestone-review` ends with a handoff gate in the merge gate's shape — hand
-  the branch to the maintainers (the push plus the `gh pr create` above), or decline; no merge option — and sets the
+  the branch to the maintainers (the push to `<fork>` plus the `gh pr create` above), or decline; no merge option — and sets the
   milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
