@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-10 (M234 merged as PR #243: validate green, byte budgets met, M231 row pruned, M233-review row pruned as shipped, M232-review row narrowed, M234-review row added, doctrine modules within budget, prose guards green)_
+_Last hygiene check: 2026-10-10 (M235 merged as PR #244: validate green, byte budgets met, M232 row pruned, M235-review row added, doctrine modules within budget, prose guards green)_
 
 ## Milestones
 
@@ -9,10 +9,9 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M232 | `/milestone` looks into one GitHub issue and routes it | done | — | normal | milestones/archive/M232-issue-look-in.md |
 | M233 | Issue intake routes keep their records and read the right repo | done | — | normal | milestones/archive/M233-intake-route-records.md |
 | M234 | Guest pushes find the fork, and intake commands work in any remote layout or shell | done | — | normal | milestones/archive/M234-fork-remote-intake-edges.md |
-| M235 | `/cairn-triage` runs in guest mode and writes its edits to disk | review | — | normal | milestones/M235-guest-triage.md |
+| M235 | `/cairn-triage` runs in guest mode and writes its edits to disk | done | — | normal | milestones/archive/M235-guest-triage.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
