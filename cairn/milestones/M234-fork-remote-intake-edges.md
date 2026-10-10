@@ -47,7 +47,7 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - [x] T4: Name `close` in the Intake paragraph (`tracking-rules.md:191-196`). Add a guard in `skills/tests/test_issue_triage.py`. Compare the `leave` clause with `git show b369a63:skills/shared/tracking-rules.md`.
 - [x] T5: Rewrite §4's reply hand-off (`milestone/SKILL.md:450-465`) to use the temp file and the `--body-file` command. Add D-155's clause to the rulebook's guest bullet (`tracking-rules.md:310`). Re-pin `skills/tests/test_issue_look_in.py`, whose line 32 pins `--body '<reply>'`. Update the reply text in `README.md` near line 82.
 - [x] T6: After the last rulebook edit, change the rulebook-mass line to `wc -l -c` and bytes. Re-seed it together with the pins in `skills/tests/test_cost_audit_line.py` and `skills/tests/test_mutation_harness.py` (the M149 lesson names three sites). Correct the M149 lesson if it names chars.
-- [ ] T7: Add CHANGELOG entries. Run the five `verify` checks and the hand-run `skills/tests` suite, and read each exit code.
+- [x] T7: Add CHANGELOG entries. Run the five `verify` checks and the hand-run `skills/tests` suite, and read each exit code.
 
 ## Work log
 
@@ -66,6 +66,7 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - 2026-10-10: T4: the Intake paragraph names "`close` (`/milestone` §3) for an orphaned issue whose closing milestone is done". The whitespace-normalized `leave` clause equals its b369a63 text. New class `TestIntakeNamesClose` in `test_issue_triage.py` fails with the rulebook change stashed. Re-pinned the M233 Intake guard in `test_external_pr_intake.py` and its mutation block. skills/tests OK, verify 5 of 5 green.
 - 2026-10-10: T5: §4's reply hand-off writes the draft to `cairn-reply-<owner>-<repo>-<N>.md` in `tempfile.gettempdir()` and hands the user `gh issue comment <N> --repo <base-repo> --body-file "<path>"` in a `bash` fence. `gh issue comment --help` lists `-F, --body-file file`. The rulebook's guest bullet carries D-155's clause. A PowerShell claim was cut from the draft prose, because `pwsh` is not installed here to observe it (derived-claims rule). `test_issue_look_in.py` re-pinned the hand-off line and gained 4 tests. With the §4 change stashed, 3 of them fail. README's reply sentence updated. skills/tests OK, verify 5 of 5 green.
 - 2026-10-10: T6: the rulebook-mass line measures with `wc -l -c` and states 636 lines / 60,630 bytes, the `wc -l -c` output after the last rulebook edit. `wc -c` gave 60,630 under both `LC_ALL=C` and `LC_ALL=en_US.UTF-8`. Both pins re-seeded at their same line numbers, so the M149 lesson needs no correction (it names no unit). skills/tests OK, verify 5 of 5 green.
+- 2026-10-10: T7: four CHANGELOG entries under "Changes that affect existing repos" (fork remote, audit `--repo`, reply file, byte count). skills/tests OK, verify 5 of 5 green, `cairn_validate` all checks passed.
 
 ## Decisions
 
