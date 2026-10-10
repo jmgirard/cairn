@@ -49,18 +49,18 @@ dial per spawned agent" candidate row.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `cairn/references/haiku-sonnet-roles.md` exists with its
+- [x] AC1: `cairn/references/haiku-sonnet-roles.md` exists with its
       `INDEX.md` line and a `**Provenance.**` block. Its run table holds 18
       rows: nine tasks, three per role group, each run once with the Agent
       tool's model set to Sonnet and once set to Haiku, from the same
       prompt. The edit-work tasks include a mechanical sweep and a
       test-writing task. The history-review tasks include a blame-history
       task and a prior-PR-comments task.
-- [ ] AC2: Each row records the `model` id taken from every assistant
+- [x] AC2: Each row records the `model` id taken from every assistant
       record of its subagent transcript. Every id on a Sonnet row begins
       `claude-sonnet-5-5`, and every id on a Haiku row begins
       `claude-haiku-5-5`.
-- [ ] AC3: Each row's dollar cost is a sum over the distinct `message.id`
+- [x] AC3: Each row's dollar cost is a sum over the distinct `message.id`
       values in its subagent transcript of each token class count times that
       model's price for the class at that call's prompt size, as the cited
       page gives it. The classes are input, 5-minute cache write, 1-hour
@@ -73,13 +73,13 @@ dial per spawned agent" candidate row.
       the transcript records output counts at stream start, so each row's
       cost is a lower bound. The note cites the prices from Anthropic's
       published pricing by URL and access date.
-- [ ] AC4: Each row's quality score follows from its group's scoring rule
+- [x] AC4: Each row's quality score follows from its group's scoring rule
       as the note states it, and each rule yields a score of zero or more.
       An answer key, built by a command that the note gives, scores search.
       A target diff or a mutant set that the note gives scores edit work. A
       model-blind Opus judge rates each history-review finding valid or
       invalid.
-- [ ] AC5: The note gives each role group a verdict. The verdict is `move`
+- [x] AC5: The note gives each role group a verdict. The verdict is `move`
       exactly when Sonnet's summed score over the group's three tasks is
       above zero, Haiku's summed cost is below Sonnet's, and Haiku's summed
       score is at least 0.9 times Sonnet's. Otherwise it is `stay`. Each
@@ -182,3 +182,13 @@ dial per spawned agent" candidate row.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Pass 1, 2026-10-09, on `2620860` (branch current with `origin/main`, no PR yet).
+
+- AC1 evidence: `cairn/references/haiku-sonnet-roles.md` exists, `INDEX.md` carries its line (grep count 1), and it has one `**Provenance.**` block. A parse of the note's run table (`verify_note.py`, scratchpad) finds 18 rows over tasks S1–S3, E1–E3, H1–H3, each task with one `sonnet` and one `haiku` row. E1 is the rename sweep and E2, E3 are test writing; H1, H2 use the blame-history lens and H3 the prior-PR-comments lens; the note's prompts section gives each prompt once for both models.
+- AC2 evidence: for each of the 18 rows, the recorded "Model ids" equal the set of `model` values on the assistant records of `subagents/agent-<id>.jsonl`, re-read by `cost_v2`; 0 rows fail. Every Sonnet row's ids are `claude-sonnet-5-5` and every Haiku row's `claude-haiku-5-5`.
+- AC3 evidence: recomputing each row from its transcript (distinct `message.id`s in record order, last-record counts, the final id's output from the one Agent tool result with matching `agentId` in the session transcript, Haiku's tier by each call's input-plus-cache sum) reproduces every row's call count, five token columns, final-match flag, and USD to four places; 0 of 18 rows fail, every row finds exactly one tool result, and all 18 final matches are yes. The note states the stream-start recording and the lower bound (Cost paragraph) and cites the prices by URL with "read 2026-10-09".
+- AC4 evidence: the note states each group's rule, every rule yields a score of zero or more (F1, Jaccard, killed fraction, valid count). Re-scoring from the tool results' reports and the keys gives S1–S3 scores equal to the table (1.0, 1.0 / 1.0, 0.0 / 0.6767, 1.0). The saved sweep diffs score Jaccard 1.0 each against a rebuilt target, and the four saved test files re-score 1.0 each on fresh `git archive c023018` copies. The three Opus judges' reports read `A valid: 3, B valid: 5` (H1), `3, 2` (H2), `4, 2` (H3), and the sealed mapping turns these into the table's Sonnet 5, 3, 2 and Haiku 3, 2, 4.
+- AC5 evidence: applying the rule to the parsed table gives search 0.3650 / 0.0218 USD, 2.6767 / 2.0 score → `stay`; edit 0.4884 / 0.0407, 3.0 / 3.0 → `move`; review 0.6066 / 0.4318, 10 / 9 → `move` (9 ≥ 0.9 × 10). These equal the note's Verdicts table.
+- Gate: `cairn_validate` exit 0, no FAIL or WARN lines. Verify on the review head: scripts suite 401 tests OK (21 skipped), hooks suite 174 OK, plugin validate 0, marketplace validate 0 with no `version` warning, mod test 0. No principle changed, so `cairn_impact` is skipped. No changelog entry is owed: the diff has no user-visible change (internal tier; files are tracking, a references page, and one test pin).
+- spawned: diff-bug, blame-history, prior-review (the diff touches `scripts/tests/test_scripts.py`, so the full fan-out).
