@@ -318,7 +318,7 @@ reads one GitHub issue and the code it names. Then it reports a verdict and
 a maintainer-input level, and it ends with one chip. It works in owner mode
 and in guest mode (tracking-rules "Collaboration mode").
 
-**The repo.** Every `gh issue` and `gh pr` command in this section carries
+**The repo.** Every issue and pull-request command in this section carries
 `--repo <base-repo>`, in both modes. The rulebook's slug recipe gives
 `<base-repo>`, and in guest mode that is the upstream repo. If the argument
 is a URL whose `<owner>/<repo>` is not `<base-repo>`, name both slugs and
@@ -382,3 +382,63 @@ title, state, and author, then these four parts:
 3. The reproduction and what it showed, or the reason that none was run.
 4. The sweep's hits: each candidate row, archive summary, D-entry, issue,
    or pull request that overlaps, or "none".
+
+**The chip.** End the report with one `AskUserQuestion` chip in the same
+turn. The verdict and the level are a produced conclusion, so the question
+text carries both in plain words (tracking-rules "Acceptance chips"). The
+options are these, in this order:
+
+1. Do it now, the verdict's option, first and marked recommended. For
+   `hotfix` it starts a hotfix, for `milestone` it starts a plan, and for
+   `reply` it drafts the reply.
+2. Add a candidate row.
+3. Leave. Offer it only with a stated reason, and only one of these three
+   (tracking-rules "Intake"): noise, a duplicate (name the issue or row it
+   duplicates), or an item cairn already covers (name the row, archive
+   summary, or D-entry). With no such reason, the chip has no leave option.
+4. Stop.
+
+A selection acts in this session. Never auto-proceed.
+
+- **Do it now, `hotfix`.** Invoke `/hotfix` through the Skill tool, with the
+  issue number, its URL, and a one-line summary of the bug as the argument.
+  `/hotfix` runs under its own gates, and its writes are its own.
+- **Do it now, `milestone`.** Invoke `/milestone-plan` through the Skill
+  tool, with the issue number, its URL, and its title as the argument, so
+  that its `Resolves:` slot names the issue. `/milestone-plan` runs under
+  its own gates, and its writes are its own.
+- **Do it now, `reply`: the reply hand-off.** Draft the reply from the
+  report. It answers the issue in plain words, and it cites file:line where
+  a citation helps the reader. In guest mode it follows the rulebook's
+  guest-mode rule of no cairn vocabulary: no milestone, criterion, task, or
+  decision ids and no cairn terms. If the issue's `author.is_bot` is true,
+  the reply carries no thanks. The turn's final rendered text gives the
+  draft verbatim, then this command in its own fenced block. The reply goes
+  in place of `<reply>`, with each `'` in it written `'\''`:
+
+  ```
+  gh issue comment <N> --repo <base-repo> --body '<reply>'
+  ```
+
+  The section shows this command and never runs it, because the user posts
+  the reply. Then give the close block's safety line.
+- **Add a candidate row.** Write one `candidate` row in `cairn/ROADMAP.md`,
+  at its priority level (tracking-rules "Candidate priority token"). The
+  sweep above is its search-first pass: on a hit, absorb the issue into
+  that row or cross-reference it, and do not add a second row. The row
+  cites the issue URL. Show the row verbatim in the turn's final rendered
+  text (tracking-rules "Durable-record preview"). In owner mode the row is
+  a docs-only commit to the default branch, pushed to `origin`. If the
+  checkout is on another branch, write nothing, and the close block shows
+  the row and says to rerun from the default branch. In guest mode the row
+  is written to disk and not committed.
+- **Leave.** Write nothing. The close block states the reason.
+- **Stop.** Write nothing.
+
+Each ending other than a Skill call is a close block (tracking-rules
+"Question gates and phase closes"). Its status line names the issue, the
+verdict, the level, and the option chosen. Its fenced next command is
+`/milestone`, labeled as the status check. After the reply hand-off, the
+hand-off command is the first fence, and `/milestone` follows.
+This section runs no remote write other than the owner-mode push of a
+candidate row.
