@@ -489,7 +489,7 @@ re-enters here, at the step the record shows is next:
    `AskUserQuestion` chip — the merge question, the second gate of the run
    (per tracking-rules), never a prose yes/no: the recommended option merges, naming the branch
    and the default branch, not a PR number — no PR exists yet on a first
-   pass (`Merge <branch> into <default-branch>`) — address-first instead,
+   pass unless step 6's Copilot round arm opened one (`Merge <branch> into <default-branch>`) — address-first instead,
    when the blocking rule above fires — and a decline option is present.
    Where the header carries `companion:` entries, the recommended option
    names every companion branch beside the primary (`Merge <branch> and
@@ -534,6 +534,9 @@ re-enters here, at the step the record shows is next:
    unpushed: the squash never needs it, and pushing it would move the PR
    head past the one CI just ran on; the resume routes and step 9 fall
    back to `gh pr list --head <branch>` once the local branch is gone.
+   Where step 6's Copilot round arm opened the PR, its URL is already in
+   the header, committed and pushed with the round's fix pushes, so no
+   record is written here.
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it

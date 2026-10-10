@@ -654,14 +654,16 @@ actually reach.
   `gh pr edit <N> --add-reviewer @copilot` and wait for it. Each Copilot
   thread gets a fix, a reason it was rejected, or a follow-up row. Claude
   replies on the thread, with no thanks, and resolves it. The line is your
-  permission for these pushes, replies, and resolves. In a repo you own, the
+  permission for these pushes, replies, and resolves. In owner mode, the
   PR then opens before the merge question, so you see every Copilot thread
-  before you approve, and CI also runs on the fix pushes. In guest mode the
+  before you approve, and a `pull_request`-triggered CI suite also runs on
+  the fix pushes. In guest mode the
   round runs after the handoff opens the PR. A hotfix asks for Lite and a
   milestone for Balanced. On 2026-10-10 GitHub's API took no level for each
   request, so GitHub's own settings choose the level, and the report says
-  so. A review that does not arrive in 20 minutes stops the run, and the
-  same command resumes it. Adopted outside PRs skip the round.
+  so. A review that does not arrive in 20 minutes stops the run. The close
+  block names the command that resumes it: `/milestone-review M<NNN>`, or
+  `/hotfix` with the PR number. Adopted outside PRs skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
