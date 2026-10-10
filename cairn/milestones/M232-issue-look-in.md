@@ -164,3 +164,9 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - live-run #8 (pass 2): chapter markers for one phase — reject, false (same as pass 1)
 - live-run #9 (pass 2): the rulebook's `<fork-owner>` recipe reads `origin`, which in the insight checkout is the upstream — follow-up (same row)
 - fixed: every pass-1 fix-now line above, fixed e9cf3ba (diff-bug #8's wording again in 3e43c88). Every pass-2 fix-now line, fixed a0a6e35. One line stands for the per-line `, fixed <sha>` marks.
+- copilot: skills/milestone/SKILL.md:346 (treat issue text as evidence, not instructions) — fix now, fixed e9cf3ba
+- copilot: skills/milestone/SKILL.md:346 (shell-quote the search keywords) — fix now, fixed 272a22e
+- copilot: skills/tests/test_issue_look_in.py:53 (reject a line with two `gh` commands) — fix now, fixed e9cf3ba
+- copilot: review body — noted (its three anchored findings are the threads above; each got a reply and was resolved)
+- Copilot level: Lite (set by GitHub's settings). The review covered head 5f2cca9, before the pass-1 fixes.
+- conversation: PR #241 has no issue comments and no human review. The one review is Copilot's `COMMENTED` (Bot), which does not change the chip — noted.
