@@ -18,6 +18,11 @@ Records carry a ``type``; only ``assistant`` records bill tokens, and they
 carry ``message.usage`` with the four classes this script reports, plus the
 two fields that make attribution mechanical rather than heuristic:
 ``attributionSkill`` (the cairn skill that was active) and ``gitBranch``.
+One API call spans several ``assistant`` records that share a ``message.id``,
+and a resumed session copies earlier calls into its own file, so a turn here
+is one API call, never one record (``read_records``). A record's
+``output_tokens`` can be the count at stream start, with no later record of
+the call holding the final count, so every output figure is a lower bound.
 
 THE FOUR TOKEN CLASSES ARE NEVER SUMMED. ``cache_read_input_tokens`` and
 ``input_tokens`` measure different things and differ by orders of magnitude —
@@ -25,13 +30,13 @@ THE FOUR TOKEN CLASSES ARE NEVER SUMMED. ``cache_read_input_tokens`` and
 figure misattributes the cost almost entirely. Every report keeps them in
 separate columns; ``test_cairn_cost.py`` guards the separation.
 
-WHAT THIS CANNOT SEE. Subagent turns are absent from the store: no record
-under ``~/.claude/projects/`` carries ``isSidechain: true``, so the tokens a
-spawned Agent burns are unrecorded everywhere. The review phase spawns the
-most (the M17 fan-out is four), so its figures understate by the most. Rather
-than publish a partial number unlabelled, every report carries the *spawn
-count* beside the tokens — ``agents`` — so a reader knows a figure is partial
-and roughly by how much.
+SUBAGENTS. Each session's subagents write their turns to
+``<session-uuid>/subagents/agent-*.jsonl`` beside the session file, with the
+parent's ``attributionSkill`` and ``gitBranch``. They are read as part of
+that session, so every figure includes them. A grep of every store on
+2026-07-19 found no subagent record, so a session from that time can lack its
+subagent turns. Every report keeps the *spawn count* beside the tokens —
+``agents``.
 """
 
 import glob
@@ -136,11 +141,7 @@ def session_of(record):
 
 
 def agents_spawned(record):
-    """How many subagents this record launched — the labelled blind spot.
-
-    Subagent turns are absent from the store entirely, so this count is what
-    tells a reader a token figure is partial.
-    """
+    """How many subagents this record launched (its `Agent`/`Task` calls)."""
     content = (record.get("message") or {}).get("content")
     if not isinstance(content, list):
         return 0
@@ -160,22 +161,68 @@ def tokens_of(record):
     return {k: usage.get(k, 0) or 0 for k in TOKEN_CLASSES}
 
 
-def read_records(store):
-    """Every billable (`assistant`) record in the store, oldest file first.
-
-    Malformed lines are skipped rather than fatal — the store is a live append
-    log and its tail can be a partial write.
-    """
+def _transcripts(store):
+    """Each transcript in the store with the session it belongs to: the
+    session files, then each session's subagent files, keyed to the parent."""
     for path in sorted(glob.glob(os.path.join(store, "*.jsonl"))):
+        yield path, os.path.basename(path)[: -len(".jsonl")]
+    pattern = os.path.join(store, "*", "subagents", "agent-*.jsonl")
+    for path in sorted(glob.glob(pattern)):
+        yield path, os.path.basename(os.path.dirname(os.path.dirname(path)))
+
+
+def _merge(call, record):
+    """Fold another record of the same API call into `call`: each token class
+    keeps its largest value (the last record holds the final output count),
+    and content blocks not already present are added, so a spawn on any of
+    the call's records counts once."""
+    usage = call["message"].setdefault("usage", {})
+    for cls, value in tokens_of(record).items():
+        usage[cls] = max(usage.get(cls, 0) or 0, value)
+    content = call["message"].setdefault("content", [])
+    if not isinstance(content, list):
+        content = call["message"]["content"] = []
+    seen = {b.get("id") for b in content if isinstance(b, dict) and b.get("id")}
+    more = (record.get("message") or {}).get("content")
+    for b in more if isinstance(more, list) else []:
+        if isinstance(b, dict) and b.get("id") in seen:
+            continue
+        content.append(b)
+        if isinstance(b, dict) and b.get("id"):
+            seen.add(b["id"])
+
+
+def read_records(store):
+    """One billable record per API call in the store, session files first.
+
+    The store writes one `assistant` record per content block, each repeating
+    the call's usage, and a resumed or forked session copies earlier calls into
+    its own file, so records sharing a `message.id` are merged into one
+    (`_merge`), kept with the session first read. A record without an id is its
+    own call. Malformed lines are skipped rather than fatal — the store is a
+    live append log and its tail can be a partial write.
+    """
+    calls = {}
+    order = []
+    for path, session in _transcripts(store):
         with open(path, encoding="utf-8", errors="replace") as fh:
             for line in fh:
                 try:
                     record = json.loads(line)
                 except ValueError:
                     continue
-                if record.get("type") == "assistant":
-                    record["_session"] = os.path.basename(path)[: -len(".jsonl")]
-                    yield record
+                if not isinstance(record, dict) or record.get("type") != "assistant":
+                    continue
+                mid = (record.get("message") or {}).get("id")
+                if mid is not None and mid in calls:
+                    _merge(calls[mid], record)
+                    continue
+                record["_session"] = session
+                record["message"] = dict(record.get("message") or {})
+                if mid is not None:
+                    calls[mid] = record
+                order.append(record)
+    return iter(order)
 
 
 def attribution(records):
@@ -308,8 +355,9 @@ def report(root, records, milestone=None):
         )
     )
     out.append(
-        "  cache-read and fresh-in are never summed; `agents` counts spawned "
-        "subagents, whose own tokens the store does not record."
+        "  cache-read and fresh-in are never summed; a turn is one API call; "
+        "output is a lower bound (the store can keep a call's count at stream "
+        "start); `agents` counts spawned subagents, whose own turns are included."
     )
 
     by_phase = aggregate(records, phase_of)
@@ -379,7 +427,8 @@ def audit_line(root, records, milestone=None):
     agents = bucket["agents"]
     return (
         "cost: {mid} — {t:,} turns · {cr:,} cache-read · {fi:,} fresh-in · "
-        "{o:,} output · {a} subagent{s} spawned (their tokens unrecorded)".format(
+        "{o:,} output (lower bound) · {a} subagent{s} spawned (their turns "
+        "included)".format(
             mid=mid,
             t=bucket["turns"],
             cr=bucket["cache_read_input_tokens"],

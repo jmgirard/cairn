@@ -49,10 +49,11 @@ class TestCostAuditLine(unittest.TestCase):
         self.assertIn("D-057 closed", self.text)
         self.assertNotIn("M96's to define", self.text)
 
-    def test_the_subagent_gap_is_stated_where_the_number_is_read(self):
-        # A partial figure read as complete is the specific misreading the
-        # spawn count exists to prevent.
-        self.assertIn("the store does not record", self.text)
+    def test_the_output_gap_is_stated_where_the_number_is_read(self):
+        # A partial figure read as complete is the misreading this sentence
+        # prevents. Subagent turns are now counted; the output count can
+        # still be the stream-start value.
+        self.assertIn("output figure is a lower bound", self.text)
 
     def test_the_audit_reports_rulebook_mass_beside_the_cost_line(self):
         # M101 (D-057's M96 fold): the rulebook line is the growth-visibility
