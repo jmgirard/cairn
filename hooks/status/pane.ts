@@ -16,8 +16,8 @@ import { PILL_TEXT } from './track'
 // dependencies. Then the blocked milestones, each with the number of the
 // pull request its header names (M223), and after a read, that pull
 // request's state word and a Button for three of the words (M224), and for
-// an open one with counts above zero, a line under it with its unresolved
-// threads and unanswered reviews and comments (M225). After a read, the
+// an open one with unresolved review threads, a line under it with their
+// number (M225, M236). After a read, the
 // open pull requests that the operator opened from `hotfix-*` branches,
 // each with the same word and counts and no Button (M226). With no
 // active milestone, the ROADMAP's candidate rows follow, each a priority
@@ -74,13 +74,11 @@ export type PrRead = CairnPrRead
 // (M225).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
 
-// The count line's text, or null when both counts are zero. A zero part is
-// left out, and one thread reads in the singular (M225).
+// The count line's text, or null when the count is zero. One thread reads
+// in the singular (M225, M236).
 export function countsText(counts: PrCounts): string | null {
-  const parts: string[] = []
-  if (counts.unresolved > 0) parts.push(`${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`)
-  if (counts.unanswered > 0) parts.push(`${counts.unanswered} unanswered`)
-  return parts.length === 0 ? null : parts.join(' · ')
+  if (counts.unresolved === 0) return null
+  return `${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`
 }
 
 // The state word of one `gh pr view` result, null for a call that

@@ -74,8 +74,7 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
-// threads and unanswered reviews and comments, which draw on a line under
-// it (M225). The same read lists the operator's open pull requests on the
+// threads, which draw on a line under it (M225, M236). The same read lists the operator's open pull requests on the
 // base remote with one `gh pr list` call and keeps the ones from
 // `hotfix-*` branches, which the pane draws, each with its word and counts
 // (M226).
@@ -128,8 +127,9 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
 // not been read, and its line shows no word. Each entry also holds the
-// open pull request's counts, or null; the tag moved to 2 with them (M225).
-const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
+// open pull request's counts, or null; the tag moved to 2 with them (M225)
+// and to 3 when the second count left them (M236).
+const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-3' })
 
 // The hotfix list that the last read wrote, and the repo root it is for
 // (M226, `readHotfixes` says when it is kept or empty). The pane draws

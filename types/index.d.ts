@@ -76,11 +76,10 @@ export type CairnPaneState = {
 export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
 
 // One read of a blocked milestone's pull request: its state word (M224),
-// and for an open one, its unresolved review threads and the reviews and
-// comments from others newer than its author's last comment or review and
-// its newest commit (M225). `counts` is null for a pull request that is not open, or
-// whose count read failed.
-export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number; unanswered: number } | null }
+// and for an open one, its review threads not marked resolved (M225, M236).
+// `counts` is null for a pull request that is not open, or whose count read
+// failed.
+export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number } | null }
 
 // One open pull request that the operator opened from a `hotfix-*` branch,
 // as `gh pr list` gave it (M226).

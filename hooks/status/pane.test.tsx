@@ -1459,7 +1459,7 @@ const argOf = (argv: readonly string[], name: string) => argv.find(a => a.starts
 function gh(
   on: On,
   answer: (url: string) => GhAnswer | Promise<GhAnswer>,
-  graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0, 0),
+  graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0),
   repo: GhRepo = {},
 ): Gh {
   let pending = 0
@@ -1517,22 +1517,10 @@ function gh(
 const prView = (state: string, decision?: string) =>
   ({ exitCode: 0, stdout: `${JSON.stringify(decision === undefined ? { state } : { state, reviewDecision: decision })}\n` }) as const
 
-// A `gh api graphql` reply in the shape GitHub returns (M225), with `t`
-// unresolved threads and one resolved, and `c` comments from another person
-// after the pull request's newest commit and one before it.
-function countsReply(t: number, c: number): GhAnswer {
-  const pr = {
-    author: { login: 'ana' },
-    reviewThreads: { nodes: [{ isResolved: true }, ...Array.from({ length: t }, () => ({ isResolved: false }))] },
-    reviews: { nodes: [] },
-    comments: {
-      nodes: [
-        { author: { login: 'bo' }, createdAt: '2026-10-01T00:00:00Z' },
-        ...Array.from({ length: c }, () => ({ author: { login: 'bo' }, createdAt: '2026-10-03T00:00:00Z' })),
-      ],
-    },
-    commits: { nodes: [{ commit: { committedDate: '2026-10-02T00:00:00Z' } }] },
-  }
+// A `gh api graphql` reply in the shape GitHub returns (M236), with `t`
+// unresolved threads and one resolved.
+function countsReply(t: number): GhAnswer {
+  const pr = { reviewThreads: { nodes: [{ isResolved: true }, ...Array.from({ length: t }, () => ({ isResolved: false }))] } }
   return { exitCode: 0, stdout: `${JSON.stringify({ data: { repository: { pullRequest: pr } } })}\n` }
 }
 
@@ -1863,7 +1851,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     const calls = gh(
       on,
       url => (url.includes('/upstream/') ? prView('MERGED') : prView('OPEN', '')),
-      url => (url.includes('/alpha/') ? countsReply(1, 0) : countsReply(0, 2)),
+      url => (url.includes('/alpha/') ? countsReply(1) : countsReply(2)),
     )
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
@@ -1877,18 +1865,10 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     // Each query names the fields AC1 lists.
     for (const argv of calls.graphql) {
       const query = argOf(argv, 'query') ?? ''
-      for (const field of [
-        'author { login }',
-        'reviewThreads(last: 100) { nodes { isResolved } }',
-        'reviews(last: 100) { nodes { author { login } state submittedAt } }',
-        'comments(last: 100) { nodes { author { login } createdAt } }',
-        'commits(last: 1) { nodes { commit { committedDate } } }',
-      ]) {
-        expect([field, query.includes(field)]).toEqual([field, true])
-      }
+      expect(query.includes('reviewThreads(last: 100) { nodes { isResolved } }')).toBe(true)
     }
     expect((await countsOf($, 'M101'))?.text).toBe('1 unresolved thread')
-    expect((await countsOf($, 'M104'))?.text).toBe('2 unanswered')
+    expect((await countsOf($, 'M104'))?.text).toBe('2 unresolved threads')
     expect(await countsOf($, 'M102')).toBe(undefined)
   })
 
@@ -1900,7 +1880,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
   ]
   for (const each of NOT_OPEN) {
     test(`a ${each.name} line gets no query`, async ($, on) => {
-      const calls = gh(on, () => each.answer, () => countsReply(3, 3))
+      const calls = gh(on, () => each.answer, () => countsReply(3))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1920,7 +1900,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
   ]
   for (const each of OPEN) {
     test(`an \`${each.word}\` line gets one query`, async ($, on) => {
-      const calls = gh(on, () => prView('OPEN', each.decision), () => countsReply(1, 0))
+      const calls = gh(on, () => prView('OPEN', each.decision), () => countsReply(1))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1933,16 +1913,15 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
 })
 
 describe('the count line under a blocked line (M225 AC3)', () => {
-  const LINES: { t: number; c: number; text: string | undefined }[] = [
-    { t: 3, c: 2, text: '3 unresolved threads · 2 unanswered' },
-    { t: 2, c: 0, text: '2 unresolved threads' },
-    { t: 0, c: 4, text: '4 unanswered' },
-    { t: 1, c: 1, text: '1 unresolved thread · 1 unanswered' },
-    { t: 0, c: 0, text: undefined },
+  const LINES: { t: number; text: string | undefined }[] = [
+    { t: 3, text: '3 unresolved threads' },
+    { t: 2, text: '2 unresolved threads' },
+    { t: 1, text: '1 unresolved thread' },
+    { t: 0, text: undefined },
   ]
   for (const each of LINES) {
-    test(`${each.t} threads and ${each.c} comments draw ${each.text === undefined ? 'no line' : `\`${each.text}\``}`, async ($, on) => {
-      gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(each.t, each.c))
+    test(`${each.t} threads draw ${each.text === undefined ? 'no line' : `\`${each.text}\``}`, async ($, on) => {
+      gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(each.t))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1959,7 +1938,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   }
 
   test('no line before the first read', async ($, on) => {
-    const calls = gh(on, () => prView('OPEN', ''), () => countsReply(3, 3))
+    const calls = gh(on, () => prView('OPEN', ''), () => countsReply(3))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.turn.complete(turn())
@@ -1973,7 +1952,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   // takes the line away.
   test('a Refresh keeps the earlier counts until the new read returns', async ($, on) => {
     let hold: Promise<void> | null = null
-    let reply = countsReply(2, 1)
+    let reply = countsReply(2)
     const calls = gh(
       on,
       () => prView('OPEN', ''),
@@ -1985,25 +1964,25 @@ describe('the count line under a blocked line (M225 AC3)', () => {
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect((await countsOf($))?.text).toBe('2 unresolved threads · 1 unanswered')
+    expect((await countsOf($))?.text).toBe('2 unresolved threads')
     let release = () => {}
     hold = new Promise<void>(resolve => {
       release = resolve
     })
-    reply = countsReply(0, 5)
+    reply = countsReply(5)
     const ui = await mountPane($, 'desktop')
     const pressing = ui.press({ key: 'cairn-pane-refresh' })
     try {
       for (let i = 0; i < 200 && calls.graphql.length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5))
       expect(calls.graphql.length).toBe(2)
       // The desktop pane holds the press, so the terminal one is read.
-      expect((await countsOf($, 'M111', 'terminal'))?.text).toBe('2 unresolved threads · 1 unanswered')
+      expect((await countsOf($, 'M111', 'terminal'))?.text).toBe('2 unresolved threads')
     } finally {
       release()
       await pressing
     }
     await ui.unmount()
-    expect((await countsOf($))?.text).toBe('5 unanswered')
+    expect((await countsOf($))?.text).toBe('5 unresolved threads')
     hold = null
     reply = { exitCode: 1, stdout: '' }
     const again = await mountPane($, 'desktop')
@@ -2015,12 +1994,12 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   // 3-digit counts fit a 44-column dock: the whole line, as well as each
   // line's lead and tail as the M208 check reads them.
   test('3-digit counts fit 44 columns', async ($, on) => {
-    gh(on, () => prView('OPEN', ''), () => countsReply(100, 100))
+    gh(on, () => prView('OPEN', ''), () => countsReply(100))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     const counts = (await linesAt($, 44)).find(line => line.key === 'blocked-M111-counts')
-    expect(counts?.text).toBe('100 unresolved threads · 100 unanswered')
+    expect(counts?.text).toBe('100 unresolved threads')
     expect((counts?.indent ?? 99) + width(counts?.text ?? '')).toBeLessThanOrEqual(44)
     const ui = await mountPane($, 'desktop', 44)
     const [root] = await ui.findAll({ key: 'cairn-pane' })
@@ -2037,13 +2016,13 @@ describe('the count line under a blocked line (M225 AC3)', () => {
 
 describe('a failed count read draws no count line and leaves the state word (M225 AC4)', () => {
   const reply = (pr: unknown): GhAnswer => ({ exitCode: 0, stdout: `${JSON.stringify({ data: { repository: { pullRequest: pr } } })}\n` })
-  const good = JSON.parse((countsReply(2, 2) as { stdout: string }).stdout).data.repository.pullRequest
+  const good = JSON.parse((countsReply(2) as { stdout: string }).stdout).data.repository.pullRequest
   const FAILS: { name: string; answer: GhAnswer }[] = [
     { name: 'a call that rejects', answer: 'reject' },
     { name: 'a non-zero exit', answer: { exitCode: 1, stdout: '' } },
     { name: 'text that is not JSON', answer: { exitCode: 0, stdout: 'gh: Could not resolve to a PullRequest\n' } },
     { name: 'a null pullRequest', answer: reply(null) },
-    { name: 'a null PR author', answer: reply({ ...good, author: null }) },
+    { name: 'threads that are not a list', answer: reply({ ...good, reviewThreads: { nodes: null } }) },
     { name: 'a malformed node', answer: reply({ ...good, reviewThreads: { nodes: [{ isResolved: 'no' }] } }) },
   ]
   for (const fail of FAILS) {
@@ -2139,7 +2118,7 @@ describe('each pane open and Refresh press lists the open pull requests on the b
 describe('the Hotfixes section lists the hotfix-* pull requests before the candidates (M226 AC2)', () => {
   test('only the hotfix-* entry draws, after Blocked and before Candidates', async ($, on) => {
     const list = () => listReply([pr(1265, 'hotfix-clmm', 'Return only fixed effects'), pr(1300, 'm226-pane'), pr(1301, 'feature-x')])
-    gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0, 0), { remotes: { origin: ORIGIN }, list })
+    gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0), { remotes: { origin: ORIGIN }, list })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
@@ -2161,7 +2140,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
       [prUrl(1264)]: prView('OPEN', 'CHANGES_REQUESTED'),
       [prUrl(1263)]: prView('MERGED', 'APPROVED'),
     }
-    const calls = gh(on, url => views[url] ?? prView('MERGED'), url => (url === prUrl(1265) ? countsReply(2, 1) : countsReply(0, 0)), {
+    const calls = gh(on, url => views[url] ?? prView('MERGED'), url => (url === prUrl(1265) ? countsReply(2) : countsReply(0)), {
       remotes: { origin: ORIGIN },
       list,
     })
@@ -2175,7 +2154,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     expect(textOf_('hotfix-1265')).toBe('#1265  Fix 1265  in review')
     expect(textOf_('hotfix-1264')).toBe('#1264  Fix 1264  changes requested')
     expect(textOf_('hotfix-1263')).toBe('#1263  Fix 1263  merged')
-    expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads · 1 unanswered')
+    expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads')
     expect(textOf_('hotfix-1264-counts')).toBe(undefined)
     expect(textOf_('hotfix-1263-counts')).toBe(undefined)
     for (const key of ['hotfix-1265', 'hotfix-1264', 'hotfix-1263']) expect((await blockedView($, key)).buttons).toEqual([])
@@ -2186,7 +2165,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
 
   test('a hotfix line shows the same word and counts as a blocked line with the same replies', async ($, on) => {
     const copy = copyOf('blocked-active')
-    gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(1, 3), {
+    gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(1), {
       remotes: { origin: ORIGIN },
       list: () => listReply([pr(1265, 'hotfix-a')]),
     })
@@ -2198,7 +2177,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     expect(textOf_('blocked-M111')).toBe(`${LINE_1250}  changes requested`)
     expect(textOf_('hotfix-1265').endsWith('  changes requested')).toBe(true)
     expect(textOf_('hotfix-1265-counts')).toBe(textOf_('blocked-M111-counts'))
-    expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread · 3 unanswered')
+    expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread')
   })
 })
 
@@ -2343,7 +2322,7 @@ function held(on: On, list: () => GhAnswer = () => listReply([pr(1265, 'hotfix-a
     },
     async () => {
       await gate
-      return countsReply(0, 0)
+      return countsReply(0)
     },
     {
       remotes: { origin: ORIGIN },

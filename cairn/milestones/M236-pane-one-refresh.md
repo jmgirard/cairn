@@ -1,13 +1,13 @@
 # M236: The pane has one ↻ Button and counts only unresolved threads
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** —
+- **Branch/PR:** m236-pane-one-refresh
 
 ## Goal
 
@@ -39,7 +39,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 
 ## Tasks
 
-- [ ] T1: Count (AC1). Cut `COUNTS_QUERY`, `PrNodes`, `prNodes`, and `countPr` in `hooks/status/counts.ts` down to the threads. Remove `unanswered` from `countsText` in `pane.ts`, from `CairnPrRead`, and from the `counts.ts` header. Bump the `prs` shape tag in `register.tsx`. Capture the PR #245 reply into a fixture file and rewrite `counts.test.ts`.
+- [x] T1: Count (AC1). Cut `COUNTS_QUERY`, `PrNodes`, `prNodes`, and `countPr` in `hooks/status/counts.ts` down to the threads. Remove `unanswered` from `countsText` in `pane.ts`, from `CairnPrRead`, and from the `counts.ts` header. Bump the `prs` shape tag in `register.tsx`. Capture the PR #245 reply into a fixture file and rewrite `counts.test.ts`.
 - [ ] T2: One ↻ Button (AC2). Add a first line to `paneLines` that carries `refresh`, and remove the heading Buttons and the `hotfixes` target. Draw the first row with `justifyContent="flex-end"` in the `ui.render` Pane hook. Set `REFRESH_LABEL` to `↻`. Update the pane tests.
 - [ ] T3: Reading state (AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
 - [ ] T4: Docs (AC4). README pane section, DESIGN `hooks/status/` entry, CHANGELOG `## Unreleased`.
@@ -59,6 +59,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 11 findings on the draft, all taken toward narrower promises: deleted-author handling, zero cases after the anchor, an unedited PR #245 fixture, removal of the old bots-count lines, a drawn-tree Button check with the right-end layout, the reading state across overlapping reads and after a reload, the press guard covering all calls with a blocked URL, and `## Unreleased`. The operator's answers then removed the count rule (findings 1, 2, 4 become the AC1 removal and its grep) and changed the label to `dimColor`. AC1 and AC3 were rewritten after the answers and checked again against the audit's questions by the author, no new finding.
 - 2026-10-10: inbox sweep: no open issues or PRs on jmgirard/cairn.
 - 2026-10-10: collision: the "Pane edges (M222–M226 reviews)" row's items "With no hotfix PR and no blocked PR URL, the pane has no `Refresh`" and the counts-anchor items are absorbed (this milestone removes the anchor), and the row keeps the rest. M224 and M225 (done) shipped the Buttons and the count this milestone changes.
+- 2026-10-10: implement started on m236-pane-one-refresh. Untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
+- 2026-10-10: T1 done. `counts.ts` reads only `reviewThreads`, `CairnPrRead.counts` is `{ unresolved }`, `prs` tag is `prs-3`. The PR #245 reply is stored in `hooks/status/fixtures/pr-245-threads.ts` as a string constant, because the mod tests import TypeScript, not JSON. `claude plugin test .` 1546 pass, the other four verify checks exit 0.
 
 ## Decisions
 
