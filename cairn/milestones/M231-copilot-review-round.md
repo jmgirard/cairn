@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -80,6 +80,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: re-audit: AC4 (full) — the first amended wording ("every `gh api` call in the module that addresses a repository …") left the §4 thread read and the review-body read as prose, so which calls count was a judgment, and "Replies carry no cairn vocabulary" was a claim over every future reply with no enumerating procedure. Both narrowed to named module sections. The reader also found both guest arms saying "each `gh api` call", which the resolve breaks. Both arms now say "each `gh api` call that addresses a repository (the resolve takes only a thread id)".
 - 2026-10-10: re-audit: AC4 (full) — nothing. The second fresh reader found the narrowed wording satisfied by the module and both guest arms, each universal bounded by a countable list.
 - 2026-10-10: amendment return: AC4 — "The §3 state query and the §5 reply name the base repo's owner and name in their GraphQL variables or path. §4 reads the threads on the same `<owner>`/`<name>`, and the §5 `resolveReviewThread` mutation takes only a thread id. §5 states that a guest-mode reply carries no cairn vocabulary, and its reply forms contain no `M<NNN>`, `AC<n>`, `T<n>`, or D-entry id."
+- 2026-10-10: review return 1: the three-lens fan-out found load-bearing defects in the round. The wait has no exit when Copilot never reviews (diff-bug #2, #3). The conversation read drops later Copilot findings by author (diff-bug #1). The `/hotfix` open-PR re-entry skips the hotfix bar and re-poses a spent guest handoff (diff-bug #6, #11). The Review section lists every fix-now item.
 
 ## Decisions
 
@@ -92,4 +93,43 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - AC4 evidence, after its amendment (2026-10-10): the guest arms run the round after the create and before the close block (`skills/milestone-review/SKILL.md:610`, then `blocked`, then the close block; `skills/hotfix/SKILL.md:284`, "run it next", then "Then stop with the close block"). The module's one `gh pr` command (L28) states the guest `--repo <base-repo>` form. The §3 query passes `-F owner=<owner> -F name=<name>` (L41), defined as the base repo's at L38. §4 reads threads "on the same `<owner>`/`<name>`" (L59). The §5 reply path is `repos/<owner>/<name>/…` (L78), and the resolve takes only `-F id=<thread id>` (L87). §5 states the guest no-cairn-vocabulary rule (L83-84), and its forms (`Fixed in <short-sha>.`, the reason, `Left for a follow-up.`) carry no `M<NNN>`, `AC<n>`, `T<n>`, or D-entry id.
 - AC7 evidence (2026-10-10, review head 54d0ccc plus this record): verify slot green. `scripts/tests` 406 tests exit 0, `hooks/tests` 174 tests exit 0, `claude plugin validate .claude-plugin/plugin.json` exit 0, `claude plugin validate .claude-plugin/marketplace.json` exit 0 with no `plugins[N].version` warning, and `claude plugin test .` 1777 pass, 0 fail. `skills/tests/test_copilot_review_round.py` pins both round-arm citations and both arms in each skill, and the hand-run `skills/tests` suite is 675 tests, exit 0. `README.md:652` and `CHANGELOG.md:21` describe the opt-in line.
 - Consistency gate (2026-10-10): `cairn_validate` exit 0, all checks passed. Profile slot: verify checks green on the review head (AC7 line), the marketplace validate has no `plugins[N].version` warning, and `CHANGELOG.md` has the entry. No DESIGN.md principle text changed, so `cairn_impact --changed` was skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the read's skip drops every Copilot review and thread by author, so a later Copilot review (a re-review on push) reaches the merge unread — fix now (return 1)
+- diff-bug #2: no exit from a review that never arrives; each rerun waits 20 more minutes and stops again, and (c′) ignores a removed opt-in line — fix now (return 1)
+- diff-bug #3: a wait loop that ends on `none` has no instruction — fix now (return 1)
+- diff-bug #4: a `/hotfix` rerun lists no Copilot item, because its lines live in chat and the threads are resolved — fix now (return 1)
+- diff-bug #5: each REST reply creates an empty operator `COMMENTED` review, which the read then disposes of — fix now (return 1)
+- diff-bug #6: in guest mode the open-PR re-entry re-poses the handoff on an already handed-off PR — fix now (return 1)
+- diff-bug #7: the round arm opens the primary PR before companions merge — fix now (return 1)
+- diff-bug #8: step 8's "committed and pushed with the round's fix pushes" is false with no fix, and the arm never says to commit its `copilot:` and `copilot round:` lines — fix now (return 1)
+- diff-bug #9: the skip names no login, and REST spells Copilot `copilot-pull-request-reviewer[bot]` — fix now (return 1)
+- diff-bug #10: a rerun disposes of review-body findings again — fix now (return 1)
+- diff-bug #11: the hotfix open-PR re-entry skips step 2's dirty-tree check, a fast-forward of a stale local branch, and the regression-test proof the gate presents — fix now (return 1)
+- diff-bug #12: the hotfix CI-wait close says a rerun "waits again", but the re-entry asks for approval first — fix now (return 1)
+- diff-bug #13: the round's fixes land after the evidence, the gate, and the fan-out, gated by `verify` alone — fix now (return 1)
+- diff-bug #14: `line` is null on outdated threads; the report needs `originalLine` — fix now (return 1)
+- diff-bug #15: a contributor's PR re-landed on a `hotfix-<slug>` branch matches the authored-PR route and gets the round — reject, planned change: a re-landed PR is the operator's own PR, and the adopted-PR skip covers only PRs the contributor still holds
+- diff-bug #16: after a CI-wait re-entry, a declined chip leaves the earlier `cairn/.merge-approved` marker live — fix now (return 1)
+- diff-bug #17: §3's "write the skill's record line (§6)" points at nothing for `/hotfix` — fix now (return 1)
+- diff-bug #18: guest fix pushes after a rebase need `--force-with-lease` — fix now (return 1)
+- diff-bug #19: the chip example no longer says what to name once a PR exists — fix now (return 1)
+- diff-bug #20: AC7's evidence cites `README.md:652` and `CHANGELOG.md:21` instead of 651 and 20 — reject, false: those lines hold the opt-in text the evidence names (`grep -n` output)
+- blame-history #1: the round arm breaks M188's companions-first order — fix now (return 1), same as diff-bug #7
+- blame-history #2: the hotfix open-PR re-entry skips the hotfix bar M174 holds on every path — fix now (return 1), same as diff-bug #11
+- blame-history #3: Copilot fix commits come after the evidence and the review — fix now (return 1), same as diff-bug #13
+- blame-history #4: the read's carve-out narrows M177 by author class — fix now (return 1), same as diff-bug #1
+- blame-history #5: D-152 is cited for the permission clause and other choices it does not record — fix now for the citations (the module's §1 permission cites the M231 question set); the call for a further D-entry is rejected, because those choices are milestone-local and the work log records them
+- blame-history #6: route (c′) keys on the newest line of an append-only log, the predicate family behind M203's returns — fix now (return 1)
+- blame-history #7: the guest round waits on GitHub and writes to the upstream PR — reject, planned change: the user asked for the guest round; the wait is for Copilot, not CI checks; and replies are the operator's GitHub writes like the PR itself, carrying no cairn vocabulary
+- blame-history #8: README L645 and L673, step 7's read clause, and step 8's record rule still read as D-138 alone — fix now (return 1)
+- blame-history #9: the module does not say what a step-5 return does with the PR open — fix now (return 1)
+- blame-history #10: an operator could read the PR-reference form as an adopted PR — reject, false: step 1's author check separates the two, and step 6 states the adopted-PR skip
+- blame-history #11: `/milestone`'s open hotfix PRs and the pane will list a hotfix PR the round opened before approval — reject, false: such a PR is open, which is what both report
+- prior-review #1: the read's exclusion narrows M177 by author — fix now (return 1), same as diff-bug #1
+- prior-review #2: the rulebook's closed stop list does not name the Copilot wait timeout — fix now (return 1)
+- prior-review #3: step 8's header-record sentence is false with no fix push — fix now (return 1), same as diff-bug #8
+- prior-review #4: guest fix pushes after (c′)'s rebase need `--force-with-lease` — fix now (return 1), same as diff-bug #18
+- prior-review #5: guest hotfix re-entry re-poses a spent handoff — fix now (return 1), same as diff-bug #6
+- prior-review #6: hotfix step 6's create-skip parenthetical, read trigger, and chip wording name only the PR-reference re-entry — fix now (return 1)
+- prior-review #7: the guard's `section()` runs to EOF when its end anchor vanishes, and the routes have no pins — fix now for a loud end anchor; new route pins rejected, as M172 rejected a pin for a new rule
 - AC5 evidence (2026-10-10): review resume route (c′) (`skills/milestone-review/SKILL.md:85`) and hotfix step 1's open authored-PR re-entry (`skills/hotfix/SKILL.md:46`, an `OPEN` PR with a `hotfix-*` head and the operator as author goes to step 6). Both resume through module §7, which re-derives the state from the §3 query (`none`, `waiting`, `arrived`) and the unresolved Copilot threads. The timeout stop's close block names `/milestone-review M<NNN>`, or `/hotfix` with the PR reference (§3).
