@@ -1,13 +1,13 @@
 # M232: `/milestone` looks into one GitHub issue and routes it
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone` ships in the plugin to every operator
-- **Branch/PR:** —
+- **Branch/PR:** m232-issue-look-in
 
 ## Goal
 
@@ -41,7 +41,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 
 ## Tasks
 
-- [ ] T1: In `skills/milestone/SKILL.md`, add the argument test and the frontmatter trigger and `argument-hint`. An issue argument skips §1–§3 and runs the new section. In guest mode the `gh` reads carry `--repo <base-repo>`.
+- [x] T1: In `skills/milestone/SKILL.md`, add the argument test and the frontmatter trigger and `argument-hint`. An issue argument skips §1–§3 and runs the new section. In guest mode the `gh` reads carry `--repo <base-repo>`.
 - [ ] T2: Write the section's read and report: `gh issue view <N> --comments`, the code the issue names, and a reproduction where one fits in the sitting. Define the three verdicts and the three-value input scale. In guest mode the maintainer is the upstream maintainers.
 - [ ] T3: Write the chip and its routes. `/hotfix` and `/milestone-plan` get the issue through the Skill tool. The candidate row reuses §3's search-first path, guest-mode disk-only and owner-mode docs-only commit included. The reply hand-off uses the rulebook's no-cairn-vocabulary rule in guest mode and no thanks to bots.
 - [ ] T4: Add the routing line to `skills/shared/templates/claude-md-section.md` and this repo's `CLAUDE.md`, merging a line where needed to stay under 30. Update the template's length comment. Update the README and the CHANGELOG.
@@ -55,6 +55,8 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: the insight memory says issue comments are drafted, shown verbatim, and run by the user. The plan builds that into the plugin (GP4), so the section hands the user a fenced command and never posts.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) on the first draft, which was a new `/issue` skill, flagged the D-043 collision and five wording findings. The re-audit of this redraft returned findings on AC2–AC7, all taken by narrowing. AC2 and AC3 now state what the section tells the report. AC4 counts the hand-off line and leaves delegated writes to their own skills. AC5 adds `--repo` to the hand-off form, limits the `gh api` clause to issue and PR reads, and ties no-cairn-vocabulary to the rulebook rule. AC6 caps the growth at two lines and fixes the template's length comment. AC7 names `easystats/insight` as the live-run repo. The AC1 `argument-hint` nit was taken too.
 - 2026-10-10: plan gate chose an issue argument to `/milestone` over a new `/issue` skill, at the user's choice, because §3 already holds the dispositions and D-043 rejected a new intake skill. Falsified by an operator who does not find the look-in under `/milestone`.
+- 2026-10-10: implement started on branch m232-issue-look-in. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-10: T1 done. The section is §4 at the end of the skill, and the argument test opens Session start. Every `gh issue` and `gh pr` command in §4 carries `--repo <base-repo>` in both modes, which covers guest mode with one form. Three cases stop with the close block: a URL that names another repo, a number that is a PR, and a failed read. `gh issue view` returns a PR's `/pull/` URL, which is how the PR case is found.
 
 ## Decisions
 

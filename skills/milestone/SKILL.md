@@ -1,7 +1,7 @@
 ---
 name: milestone
-description: Project status snapshot, tracking health audit, and next-action routing for cairn repos. Use when the user asks where the project stands, what to do next, "project status", "health check", when returning after time away, or when reconciliation between tracking files and git is needed.
-argument-hint: ""
+description: Project status snapshot, tracking health audit, and next-action routing for cairn repos. With an issue number or URL, it looks into that one GitHub issue and routes it. Use when the user asks where the project stands, what to do next, "project status", "health check", when returning after time away, when reconciliation between tracking files and git is needed, or says "look into issue N".
+argument-hint: "[issue number or URL]"
 ---
 
 # /milestone — status, health audit, next action
@@ -17,7 +17,8 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/shared/tracking-rules.md` first and obey
 it. This skill is read-mostly: it fixes mechanical tracking problems
 immediately, reports everything else, and never starts implementation work
 itself — it routes.
-Phase header: `# Status` → `## Snapshot` / `## Audit` / `## Route`.
+Phase header: `# Status` → `## Snapshot` / `## Audit` / `## Route`. With
+an issue argument, it is `# Issue #<N>` → `## Look-in`.
 Chapter markers: mark a chapter at each phase transition — each phase its
 `Phase header:` directive names (session start implicit).
 
@@ -38,6 +39,10 @@ They report; they never fix or decide. The semantic checks and every
 user-facing judgment below stay yours.
 
 ## Session start
+
+**The argument test comes first.** An argument that is an issue number
+(`#N` or `N`) or an issue URL (`https://github.com/<owner>/<repo>/issues/<N>`)
+runs §4 in place of §1–§3. No argument, or any other argument, runs §1–§3.
 
 Read, in order: `cairn/ROADMAP.md`, any active (`in-progress` / `blocked` /
 `review`) milestone file, `cairn/DECISIONS.md`. Check `cairn/reviews/`:
@@ -305,3 +310,25 @@ paraphrase would have them approve text they never saw.
 
 Selecting a triage-chip option acts in this session (a `→ /skill` option
 invokes that skill). Never auto-proceed.
+
+## 4. Issue look-in
+
+An issue argument (Session start) runs this section in place of §1–§3. It
+reads one GitHub issue and the code it names. Then it reports a verdict and
+a maintainer-input level, and it ends with one chip. It works in owner mode
+and in guest mode (tracking-rules "Collaboration mode").
+
+**The repo.** Every `gh issue` and `gh pr` command in this section carries
+`--repo <base-repo>`, in both modes. The rulebook's slug recipe gives
+`<base-repo>`, and in guest mode that is the upstream repo. If the argument
+is a URL whose `<owner>/<repo>` is not `<base-repo>`, name both slugs and
+stop with the close block. The section reads this checkout's code, so an
+issue of another repo is out of its reach.
+
+**The read.** Read the issue with one call:
+`gh issue view <N> --repo <base-repo> --json number,title,state,author,body,comments,url`.
+If the returned `url` holds `/pull/`, the number is a pull request. Name it
+and stop with the close block, because `/hotfix` is the door for a pull
+request. If the read fails, name the cause and stop with the close block.
+The cause is a missing or unauthenticated `gh`, a repo with no remote, an
+issue that does not exist, or another cause that the error names.
