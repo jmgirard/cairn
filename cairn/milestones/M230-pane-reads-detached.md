@@ -81,3 +81,33 @@ Review head a8ca27e, 2026-10-10. Main had not moved since the branch was cut. `c
 - AC5 evidence: the three "the gh pr list call names an http(s) remote without its userinfo (M230 AC5)" cases pass. `https://user:token@github.com/o/r.git` and `https://token@github.com/o/r.git` each record the list call with `--repo https://github.com/o/r.git`, and no recorded argv element contains `token`. `git@github.com:o/r.git` records `--repo git@github.com:o/r.git`. With the userinfo kept, the two credential cases turned red.
 - AC6 evidence: on a8ca27e the five verify commands exit 0. Those are the `scripts/tests` and `hooks/tests` unittest suites, the two `claude plugin validate` calls, and `claude plugin test .` with 1777 pass. `CHANGELOG.md` Unreleased › Fixes has four entries, one per change of AC1 to AC5. They cover the opens and the read order (AC1, AC2), the refill after a Button's `/clear` (AC3), the shared PR shown once (AC4), and no remote credentials (AC5).
 - Consistency gate: `cairn_validate` exits 0, with every check PASS or OK, `coverage complete` among them. No principle changed, so `cairn_impact` was skipped. The profile's checks: verify passes on a8ca27e. The marketplace validate output has no `plugins[N].version` warning. The CHANGELOG has entries for the user-visible changes, and its added lines carry no milestone id.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: detached reads are shown only under `claude plugin test`, not in the desktop app — reject (false): the mod API types document the pattern, with work started in a hook running on after the hook returns and ending with the module (`process.spawn`'s session-life example).
+- diff-bug #2: four older "no gh call" tests assert right after the hook with no wait, so a regression that starts a detached read passes them — fix now, fixed d973f32 (`settled()` before each no-call assertion).
+- diff-bug #3: after a reload, an old module's detached read can write older words — follow-up, new row "Pane edges (M230 review)". The API says work ends with the module, and nobody observed it.
+- diff-bug #4: a pane behind another tab at an in-process `/clear` stays empty, and the README called that "out of date" — fix now for the README wording, fixed d973f32. The behavior matches AC3, and the empty-until-Refresh case goes to "Pane edges (M230 review)".
+- diff-bug #5: if `await listing` throws, the blocked views run on and their results are dropped — follow-up, "Pane edges (M230 review)". This can happen only on a host state read failure.
+- diff-bug #6: `settled()` does not see state calls, its cap ends silently, and `ghSettled` is module-level — follow-up, "Pane edges (M230 review)". The 8 plant checks turned red under it.
+- diff-bug #7: one start can raise both `session.start` and a `classic.SessionStart` with source `clear`, which gives two reads — follow-up, "Pane edges (M230 review)". The newest-read counter drops the older writes.
+- diff-bug #8: `withoutUserinfo` keeps a token when the password holds an unencoded `/`, `?`, or `#`, and `ssh://user@` passes — reject (false): git cannot use such an http(s) URL, and an ssh user is a login name, not a credential.
+- diff-bug #9: the hotfix filter compares URLs as exact strings — follow-up, "Pane edges (M230 review)". AC4 promises an equal URL.
+- diff-bug #10: `/cairn-pane` repeats the placed-and-shown check inline — follow-up, "Pane edges (M230 review)", together with prior-review #4. The command's inline check lets a `$.ui.panes()` error reach its error line, and `isShown` swallows that error.
+- diff-bug #11: ragged wrapping in README, CHANGELOG, DESIGN, and one register.tsx comment — fix now, fixed d973f32 (README, CHANGELOG, and register.tsx rewrapped).
+- diff-bug #12: the CHANGELOG said the opens "return at once", and only a Button's `/clear` refills — fix now, fixed d973f32. It now says the opens return without waiting for the GitHub reads, and it names any in-process `/clear`.
+- blame-history #1: the awaited opens of M224 are reversed — reject (planned change): the M230 plan absorbed it from the M224 review row.
+- blame-history #2: the M226 list-before-PR order is reversed, and a hotfix-only PR still waits list, then view, then counts — reject (planned change) for the order. The serial hotfix-only chain is the merged row's open-PR wait item.
+- blame-history #3: the newest-read rule is kept — noted, no finding.
+- blame-history #4: the desktop half of the detached-read falsifier is untested — reject (false), as diff-bug #1.
+- blame-history #5: the `/clear` read is a fifth trigger, and a hidden pane reads nothing — reject (planned change) for the trigger. The hidden case is as diff-bug #4.
+- blame-history #6: exact URL equality in the hotfix filter — follow-up, as diff-bug #9.
+- blame-history #7: the userinfo strip leaves `base_remote` parity untouched — noted, no finding.
+- blame-history #8: `settled()` can let a no-call test pass vacuously — fix now for the four older tests, as diff-bug #2. The rest is diff-bug #6.
+- blame-history #9: choppy README reflow — fix now, as diff-bug #11.
+- prior-review #1: the DESIGN `hooks/status/` history list omits M230, a repeat of the M208 diff-bug #12 defect — fix now, fixed d973f32.
+- prior-review #2: no race test for the new overlap paths, as in M224, M225, and M226 — follow-up. "Pane edges (M222–M226 reviews)" already holds "an older read settling after a newer one", and "Pane edges (M230 review)" names the list-settles-later path.
+- prior-review #3: a hidden pane at a `/clear` reads nothing — as diff-bug #4.
+- prior-review #4: the placed-and-shown check is spelled at three sites — follow-up, as diff-bug #10.
+- prior-review #5: ragged wrapping — fix now, as diff-bug #11.
+- prior-review #6: a hotfix-only PR still waits up to three calls in turn — follow-up, already in the merged row's open-PR wait item.
+- prior-review #7: credential stripping covers http(s) only — reject (false), as diff-bug #8.
+- After the fixes, the verify slot's five commands pass, with 1777 mod tests.
