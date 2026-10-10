@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -169,6 +169,7 @@ dial per spawned agent" candidate row.
 - 2026-10-09: verify first ran red on one test: `TestShippedPageStateLedger` pins every references page's staleness state, and the new note had no pin. Added `haiku-sonnet-roles.md: exempt` (its status says nothing to re-verify against) in `scripts/tests/test_scripts.py`; all five verify checks then passed and `cairn_validate` reports no FAIL.
 - 2026-10-09: claim audit: not owed — internal tier
 - 2026-10-09: implement complete; status set to `review`.
+- 2026-10-09: review return 1: AC4 fails as written for the history-review rows (the judges applied a broader validity rule than the note states, diff-bug #1) and for the edit-work mutants (the note's table does not give the exact strings, diff-bug #7). The other fix-now findings of pass 1 ride the same return; dispositions are in the Review section.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -192,3 +193,23 @@ Pass 1, 2026-10-09, on `2620860` (branch current with `origin/main`, no PR yet).
 - AC5 evidence: applying the rule to the parsed table gives search 0.3650 / 0.0218 USD, 2.6767 / 2.0 score → `stay`; edit 0.4884 / 0.0407, 3.0 / 3.0 → `move`; review 0.6066 / 0.4318, 10 / 9 → `move` (9 ≥ 0.9 × 10). These equal the note's Verdicts table.
 - Gate: `cairn_validate` exit 0, no FAIL or WARN lines. Verify on the review head: scripts suite 401 tests OK (21 skipped), hooks suite 174 OK, plugin validate 0, marketplace validate 0 with no `version` warning, mod test 0. No principle changed, so `cairn_impact` is skipped. No changelog entry is owed: the diff has no user-visible change (internal tier; files are tracking, a references page, and one test pin).
 - spawned: diff-bug, blame-history, prior-review (the diff touches `scripts/tests/test_scripts.py`, so the full fan-out).
+- diff-bug #1: the note states the history-review validity rule as "the history or prior review it cites exists and the diff does conflict with it", but the judge prompts also counted a finding valid when "the diff really does leave something stale or inconsistent", and the judge prompt is recorded nowhere; AC4 requires scores to follow the rule as the note states it — fix now, floor return (AC4 fails as written for H1–H3): re-judge with the design's rule verbatim and record the judge prompt.
+- diff-bug #2: "the target diff changes 32 lines in 11 files" is the count of distinct triples; the diff has 21 removals and 21 additions over 21 sites, and the T1 work-log line's "20 sites" is wrong — fix now (note reworded; a superseding work-log line).
+- diff-bug #3: the page's status says nothing to re-verify, but its price table comes from a page that can change, and the `exempt` pin turns off the staleness warning for it — fix now (status claims a dated direct read of the prices; pin follows the new class).
+- diff-bug #4: Scope says "with no loss of quality", but the rule allows a 10% lower score — fix now.
+- diff-bug #5: the edit-work note's "lowest of the three groups relative to the work done" is unmeasured and E3 Haiku has the highest output of all rows; "cannot show a quality gap smaller than these tasks' difficulty" does not parse — fix now.
+- diff-bug #6: "one finding either way would flip it" holds only in one direction — fix now.
+- diff-bug #7: the mutant table gives descriptions, and `return "owner"` and `re.IGNORECASE` each occur twice in the file, so the mutants cannot be rebuilt from the note — fix now, part of the AC4 floor return ("a mutant set that the note gives"): the note gives each exact old and new string.
+- diff-bug #8: "no source gives the true output of earlier calls" is too strong, since prompt growth bounds it from above — fix now (reworded).
+- diff-bug #9: "1.9 to 4.0 times as many calls per task" holds only for review tasks — fix now.
+- diff-bug #10: the INDEX line omits that final-call output comes from the session transcript — fix now.
+- blame-history #1: `scripts/cairn_cost.py` (docstring and report text) and `references/session-cost-notes.md` (row A4, open question) say subagent turns are absent from the store, but `<session>/subagents/agent-*.jsonl` records them, as M228 used — fix now for the note's cross-reference to those claims; follow-up for correcting the script and the older note (new candidate row, door `/hotfix`, since the script prints the false claim to users).
+- blame-history #2: `cairn_cost.py` sums every assistant record and never groups by `message.id`, which the reviewer counted as 35,199 records against 14,049 ids, so its turn and cache-read figures run about 2.5 times high, and top-level transcripts also record output at stream start — follow-up (same new candidate row, door `/hotfix`), a pre-existing defect the diff did not introduce; the note gains a cross-reference.
+- blame-history #3: the Haiku spawns' exception to the "never Haiku" rule is recorded only in the work log — fix now (milestone-local Decisions entry).
+- blame-history #4: the Verdicts table prints history review `move` with no marker of its margin and its uncertain cost comparison — fix now (a column for how robust each verdict is).
+- blame-history #5: the note does not mention that the `claude-api` skill's cached price table differs from the live page — fix now.
+- prior-review #1: the Scope paragraph's claim about what the rulebook assigns to Sonnet is a repo-state claim without an inline observed date — fix now.
+- prior-review #2: the absence claims about uncommitted helpers and unrecorded output lack inline observed dates — fix now.
+- prior-review #3: "lowest of the three groups" and "because of one format miss" are characterizations — fix now (the first with diff-bug #5; the second restated as the measured sensitivity).
+- prior-review #4: the Review section must carry the per-finding list before archiving — reject, false as a defect: this pass logs every finding here.
+- prior-review #5: the test pin comment says "in this session" with no date — fix now.
