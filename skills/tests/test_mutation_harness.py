@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="629 lines / 59,763 chars",
+        block="629 lines / 59,767 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3753,7 +3753,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestModuleCitations.test_review_round_arm_cites_the_module",
         target=REVIEW,
-        block="§1; D-152). After step 5's",
+        block="§1; D-152, D-153). Here, at the start",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -3764,9 +3764,9 @@ REGISTRY += [
     Mutation(
         guard="test_copilot_review_round",
         test="TestReviewArms."
-             "test_round_arm_sits_in_step_six_before_the_merge_question",
+             "test_round_arm_sits_in_step_two_before_verification",
         target=REVIEW,
-        block="round in that module, asking for Balanced",
+        block="Balanced (§3). Copilot then reviews while steps 3 to 6",
     ),
     Mutation(
         guard="test_copilot_review_round",

@@ -48,7 +48,7 @@ class TestModuleCitations(unittest.TestCase):
 
     def test_review_round_arm_cites_the_module(self):
         self.assertIn(
-            f"the round on per `{MODULE}` §1; D-152). After step 5's",
+            f"the round on per `{MODULE}` §1; D-152, D-153). Here, at the start",
             flat(read("milestone-review", "SKILL.md")),
         )
 
@@ -60,18 +60,20 @@ class TestModuleCitations(unittest.TestCase):
 
 
 class TestReviewArms(unittest.TestCase):
-    """AC3: `/milestone-review` opens the PR at step 6 with the round on,
-    and keeps step 8's post-approval open as the off arm."""
+    """AC3: `/milestone-review` opens the PR and requests Copilot at step 2
+    with the round on (D-153), and keeps step 8's post-approval open as the
+    off arm."""
 
     def setUp(self):
         self.text = flat(read("milestone-review", "SKILL.md"))
 
-    def test_round_arm_sits_in_step_six_before_the_merge_question(self):
-        step6 = section(self.text, "6. Checkpoint commit on the branch",
-                        "7. **The merge question.**")
-        self.assertIn("**Copilot round arm** (owner mode, the round on", step6)
-        self.assertIn("push the branch and open the PR", step6)
-        self.assertIn("asking for Balanced", step6)
+    def test_round_arm_sits_in_step_two_before_verification(self):
+        step2 = section(self.text, "2. Nothing is pushed and no PR is opened",
+                        "3. **Execute every acceptance criterion")
+        self.assertIn("**Copilot arm** (owner mode, the round on", step2)
+        self.assertIn("push the branch and open the PR", step2)
+        self.assertIn("Balanced (§3). Copilot then reviews while steps 3 to 6",
+                      step2)
 
     def test_off_arm_keeps_the_post_approval_open(self):
         step8 = section(self.text, "8. **On approval — and only then:**",

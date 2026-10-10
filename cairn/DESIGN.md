@@ -49,8 +49,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   lifecycle and supersede discipline, read at hygiene/plan gates —
   M113, trimmed M146), and `copilot-review.md` (the Copilot review round
   that `/hotfix` and `/milestone-review` run on the PR in a repo whose
-  `PROFILE.md` carries `# Copilot review: on`; in owner mode the PR then
-  opens before the merge question, D-152 — M231); each module carries a
+  `PROFILE.md` carries `# Copilot review: on`; in owner mode
+  `/milestone-review` opens the PR at the start of review and its step-7
+  read handles Copilot's threads, D-152, D-153 — M231); each module carries a
   header-stated size budget (M154).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note, archive summary, and the LESSONS.md /

@@ -465,8 +465,8 @@ an internal docs-only diff. Claude settles each finding itself: it fixes a
 real one inside the milestone's scope, sends a real one outside it to a
 ROADMAP candidate row, and rejects a false one with the reason. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
-of you, and opens the PR after your yes (before it, with the opt-in
-Copilot round described below).
+of you, and opens the PR after your yes (at the start of review, in owner
+mode with the opt-in Copilot round described below).
 Nothing lands on your default branch until you say yes. After the merge,
 the milestone compresses to a short summary in the archive, the ROADMAP
 row flips to `done`, and the next session, tomorrow or next month, resumes
@@ -646,28 +646,31 @@ actually reach.
   The pull request itself is opened only after you approve at the merge
   chip, so a `pull_request`-triggered suite first runs on the head that
   merges. The opt-in Copilot round below is the exception: with it on, the
-  PR opens before the merge chip in owner mode. Where a PR already exists — a return from an earlier review, an
+  PR opens at the start of review in owner mode. Where a PR already exists — a return from an earlier review, an
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with
-  `gh pr edit <N> --add-reviewer @copilot` and wait for it. Each Copilot
-  thread gets a fix, a reason it was rejected, or a follow-up row. Claude
-  replies on the thread, with no thanks, and resolves it. The line is your
-  permission for these pushes, replies, and resolves. In owner mode, the
-  PR then opens before the merge question, so you see every Copilot thread
-  before you approve, and a `pull_request`-triggered CI suite also runs on
-  the fix pushes. In guest mode the
-  round runs after the handoff opens the PR. A hotfix asks for Lite and a
-  milestone for Balanced. On 2026-10-10 GitHub's API took no level for each
-  request, so GitHub's own settings choose the level, and the report says
-  so. If the review has not arrived after 20 minutes, the round is skipped
-  with a one-line report that names the PR, and the run goes on; the run
-  does not read a review that arrives later. A later pass on the same PR
-  does not run the round again. Adopted outside PRs, and
-  milestones with companion checkouts, skip the round.
+  `gh pr edit <N> --add-reviewer @copilot`, only when the PR has no
+  Copilot request or review yet. In owner mode `/milestone-review` opens
+  the PR at the start of review, so Copilot works while Claude runs its
+  own checks. The PR-conversation read before the merge question then
+  handles Copilot's threads: each gets a fix, a reason it was rejected, or
+  a follow-up row, and Claude replies on the thread, with no thanks, and
+  resolves it. The line is your permission for these pushes, replies, and
+  resolves. A `pull_request`-triggered CI suite also runs on the early
+  push and the fix pushes. A hotfix opens its PR before its approval chip;
+  a decline there closes the PR and keeps the branch. In guest mode the
+  round runs after the handoff opens the PR. If Copilot's review is still
+  pending at the read, Claude waits up to 10 minutes, then goes on and
+  says the review is pending. You see every Copilot thread that arrived
+  before the merge question. A hotfix asks for Lite and a milestone for
+  Balanced, but GitHub's API took no level for each request on 2026-10-10,
+  so GitHub's settings choose it; the report names the level from the
+  review. Adopted outside PRs, and milestones with companion checkouts,
+  skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each

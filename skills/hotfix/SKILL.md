@@ -114,7 +114,9 @@ a bare PR number resolves against the fork.
    pull ff-only, push any unpushed local commits — in guest mode the fetch
    is the whole sync, the default branch is never pushed, and the branch is
    cut from `<base>/<default-branch>`, as `/milestone-implement` step 2
-   states).
+   states). A `hotfix-<slug>` branch that already exists for this bug (a
+   Copilot round's PR closed at a decline, step 6) is checked out and
+   fast-forwarded, not re-cut.
    *Adopting a PR:* run `gh pr checkout <N>` — never cut a fresh branch,
    which would orphan work that already exists. The contributor's branch
    name is **exempt** from the `hotfix-<slug>` contract (tracking-rules, git
@@ -189,12 +191,18 @@ a bare PR number resolves against the fork.
    approved fix — `git push -u origin hotfix-<slug>`, then `gh pr create
    --title <title> --body <body>` ready, `Fixes #N` in the body when an
    issue exists. Then run the
-   round in that module, asking for Lite. Its `copilot:` lines and level
-   line are stated in chat at the chip below, and the PR-conversation read
-   below runs on this PR, which now pre-exists. A decline at the chip
-   leaves this PR open, and the close block names it. An adopted PR skips
-   the round: the contributor's PR is theirs to put to a reviewer. With the
-   round off, nothing in this arm runs.
+   round in that module, asking for Lite: the state query (§2), the
+   request on `none` (§3), and the bounded wait while the request is
+   pending (§4). The PR-conversation read below then runs on this PR,
+   which now pre-exists. Each Copilot thread takes the agent's disposition
+   under the opt-in line, then the module's reply and resolve (§5), and
+   its `copilot:` line and the level line are stated in chat at the chip
+   (§6); every other item keeps the four options. A decline at the chip
+   closes this PR with `gh pr close <N>` and keeps the branch, and the
+   close block names both; a later `/hotfix` for the same bug reuses the
+   branch (step 2) and opens a new PR. An adopted PR skips the round: the
+   contributor's PR is theirs to put to a reviewer. With the round off,
+   nothing in this arm runs.
 
    **The gate:** present the diff, the regression-test evidence, and
    the changelog line (when the `changelog` slot declares a file), and
@@ -270,10 +278,13 @@ a bare PR number resolves against the fork.
    vocabulary in its title or body (the changelog entry is the branch's
    only prose) — then no marker, no CI wait, no merge. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
-   asking for Lite, with the module's guest forms: `--repo <base-repo>`,
-   the base repo's owner and name in each `gh api` call that addresses a
-   repository (the resolve takes only a thread id), and fix pushes to
-   the fork. Its `copilot:` lines ride in the close block. Then
+   asking for Lite: the state query, the request on `none`, the bounded
+   wait while pending, then the Copilot threads by the module's §5. Use
+   the module's guest forms: `--repo <base-repo>`, the base repo's owner
+   and name in each `gh api` call that addresses a repository (the resolve
+   takes only a thread id), and fix pushes to the fork. Its `copilot:`
+   lines ride in the close block, which also says that a Copilot review
+   arriving after the wait is the operator's to handle by hand. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the

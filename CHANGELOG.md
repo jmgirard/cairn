@@ -19,18 +19,20 @@
 
 - **An opt-in Copilot review round on hotfix and milestone PRs.** With
   `# Copilot review: on` in `cairn/PROFILE.md`, `/hotfix` and
-  `/milestone-review` request a Copilot review on the PR and wait up to 20
-  minutes for it. Each unresolved Copilot thread, and each finding in the
-  review's body, is fixed, rejected with a reason, or sent to a candidate
-  row. Each thread gets a reply with no thanks and is resolved. In owner
-  mode the PR opens before the merge question, which lists every Copilot
-  item. In guest mode the round runs after the handoff. If the review has
-  not arrived after 20 minutes, the round is skipped with a one-line report
-  that names the PR, and the run goes on without reading a later review. A
-  later pass on the same PR does not run the round again, and adopted PRs and
-  milestones with companion checkouts skip it. GitHub's settings choose the
-  review level, because its API took none per request when this shipped. The rules live in
-  `skills/shared/copilot-review.md`.
+  `/milestone-review` request a Copilot review on the PR, only when the PR
+  has no Copilot request or review yet. In owner mode `/milestone-review`
+  opens the PR at the start of review, so Copilot works during cairn's own
+  checks, and the PR-conversation read before the merge question handles
+  each unresolved Copilot thread: it is fixed, rejected with a reason, or
+  sent to a candidate row, then gets a reply with no thanks and is
+  resolved. A review still pending at the read gets a wait of up to 10
+  minutes, and then the run goes on and says it is pending. A hotfix opens
+  its PR before its approval chip, and a decline closes the PR and keeps
+  the branch for a later run. In guest mode the round runs after the
+  handoff. Adopted PRs and milestones with companion checkouts skip it.
+  GitHub's settings choose the review level, because its API took none per
+  request when this shipped; the report names the level from the review.
+  The rules live in `skills/shared/copilot-review.md`.
 
 - **The `/milestone` health audit lists your open hotfix PRs.** A new
   "Open hotfix PRs" item in its §2 runs one `gh pr list --state open
