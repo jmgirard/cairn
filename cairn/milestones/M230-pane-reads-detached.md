@@ -67,6 +67,7 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 - 2026-10-10: T7 done: README, DESIGN, and four CHANGELOG Fixes entries describe the four changes. The CHANGELOG states the old wait as calls in turn with a 15 s timeout each, not a total, under the derived-figures rule. The verify slot's five commands pass, with 1777 mod tests.
 - 2026-10-10: claim audit: 38 claims read, 8 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/pane.test.tsx. The main fix: words and counts appear together when the last read settles, not one at a time. The same reader re-read the 8 once and found none still wrong, and its optional "or times out" wording went into the README.
 - 2026-10-10: implement done. All 7 tasks are checked, and the verify slot's five commands pass with 1777 mod tests. Status set to review.
+- 2026-10-10: step-7 approval: m230-pane-reads-detached approved for merge
 
 ## Decisions
 
