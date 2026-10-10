@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — a measurement note under `cairn/references/` that no adopter reads   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m228-haiku-sonnet-comparison   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -96,7 +96,7 @@ dial per spawned agent" candidate row.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the design into the note and commit it before any run.
+- [x] T1: Write the design into the note and commit it before any run.
       The design names the nine tasks and their sources, each prompt
       verbatim, each group's scoring rule, the 0.9 margin, and the price
       source. Search tasks are questions over this repo at a pinned commit.
@@ -145,6 +145,10 @@ dial per spawned agent" candidate row.
 - 2026-10-09: plan gate set the noninferiority margin at 0.9 of Sonnet's summed score; a tighter margin (0.95) was weighed and rejected because three tasks per group cannot resolve a 5% gap; falsified by a later re-measurement that finds the gap larger than 10%.
 - 2026-10-09: plan gate chose a model-blind Opus judge for history review over counting overlap with the archived original findings, because the originals ran on older models and are not a complete answer key; falsified by the judge rating as valid a finding that the milestone's own reviewers had shown false.
 - 2026-10-09: criteria audit (reduced mode, fresh Opus reader) returned four findings, all fixed: AC2 bound the transcript file and a singular `model` field, so it now binds what each row records, per row type; AC3 summed records, which overcounts because one `message.id` spans several records, so it now sums each id's last record; AC4/AC5 allowed a negative score or a zero Sonnet sum, so AC4 requires scores of zero or more and AC5 gives `stay` on a zero Sonnet sum. The reader also found a 2026-09-11 `haiku` spawn that ran as Haiku 4.5, so T3 now stops and sets `blocked` if the first Haiku run is not 5.5. AC1 drew no finding.
+- 2026-10-09: implement started on branch `m228-haiku-sonnet-comparison`. Untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-09: a one-word probe spawn per model before any run resolved `haiku` to `claude-haiku-5-5` and `sonnet` to `claude-sonnet-5-5`, so T3's blocked stop does not fire. The 2026-09-11 Haiku 4.5 spawn the audit found was a `claude-code-guide` agent type, whose own definition sets its model.
+- 2026-10-09: the Haiku spawns here are the measurement the question set granted ("only if some testing finds it is cheaper and noninferior"), not delegation, so implement step 5's "never Haiku" does not apply to them.
+- 2026-10-09: T1 design chosen: search keys from git grep, a JSON parse, and a heading parse; edit work is one rename sweep (`find_cairn_root`, 20 sites in 11 files) and two test-writing tasks scored on six hand-made mutants each; history review replays M226 and M227 (blame-history) and M225 (prior-PR-comments). Prices read from the live pricing page, which gives Sonnet 5.5 cache reads at $0.10 per million tokens where the `claude-api` skill's cached table says $0.20, so the live page is cited.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M225 | The pane counts each handed-off PR's unanswered comments | done | M224 | normal | milestones/archive/M225-pane-pr-comments.md |
 | M226 | The pane lists open hotfix PRs | done | — | normal | milestones/archive/M226-pane-hotfix-prs.md |
 | M227 | The status report lists open hotfix PRs | done | — | normal | milestones/archive/M227-status-hotfix-prs.md |
-| M228 | Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles | planned | — | normal | milestones/M228-haiku-sonnet-comparison.md |
+| M228 | Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles | in-progress | — | normal | milestones/M228-haiku-sonnet-comparison.md |
 | M229 | Sonnet roles move to Haiku 5.5 where M228 found it cheaper and noninferior | planned | M228 | normal | milestones/M229-haiku-roles.md |
 ## Candidates
 
