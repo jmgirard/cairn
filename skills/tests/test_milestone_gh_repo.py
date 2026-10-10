@@ -24,7 +24,7 @@ SKILLS = pathlib.Path(__file__).resolve().parent.parent
 
 FENCE = re.compile(r"^[ \t]*(`{3,})[^\n]*\n(.*?)^[ \t]*\1[ \t]*$", re.M | re.S)
 INLINE = re.compile(r"`([^`]+)`")
-COMMAND = re.compile(r"^gh (pr|issue) \S+ \S")
+COMMAND = re.compile(r"\bgh (pr|issue) \S+ \S")
 REPO = "--repo <base-repo>"
 RULE_2 = (
     "**The repo.** Every issue and pull-request command in this section and in "
@@ -44,7 +44,7 @@ def gh_commands(text):
         spans += [" ".join(l.split()) for l in m.group(2).splitlines()]
     rest = " ".join(FENCE.sub(" ", text).split())
     spans += [" ".join(s.split()) for s in INLINE.findall(rest)]
-    return [s for s in spans if COMMAND.match(s)]
+    return [s for s in spans if COMMAND.search(s)]
 
 
 def bare(text):
@@ -68,6 +68,10 @@ class TestMilestoneGhRepo(unittest.TestCase):
     def test_planted_bare_fenced_line_fails(self):
         planted = milestone() + "\n```bash\ngh issue view 7 --json state\n```\n"
         self.assertEqual(bare(planted), ["gh issue view 7 --json state"])
+
+    def test_planted_bare_prefixed_span_fails(self):
+        planted = milestone() + "\nrun `cd <p> && gh pr view <N> --json state`.\n"
+        self.assertEqual(bare(planted), ["cd <p> && gh pr view <N> --json state"])
 
     def test_bare_name_mention_is_not_a_command(self):
         self.assertEqual(gh_commands("a `gh pr diff` that fails"), [])

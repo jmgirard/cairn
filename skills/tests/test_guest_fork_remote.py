@@ -31,7 +31,8 @@ RECIPE = [
     "--json parent -q '.parent.owner.login + \"/\" + .parent.name'",
     "A remote whose read fails is not a match.",
     "`<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`.",
-    "With no match, or more than one, a guest push stops before the push",
+    "With no match, or more than one, a guest push stops before the push.",
+    "The stop names the remotes it read, each parent it found, and each failed read.",
 ]
 
 # (file under skills/, phrase) for every guest-mode push site.
@@ -70,11 +71,14 @@ def origin_fork_hits(text):
 
 
 def skill_texts():
-    return {
+    """Every skill markdown file outside `skills/tests/`, plus README.md."""
+    texts = {
         p.relative_to(SKILLS).as_posix(): norm(p.read_text(encoding="utf-8"))
         for p in SKILLS.glob("**/*.md")
         if "tests/" not in p.relative_to(SKILLS).as_posix()
     }
+    texts["README.md"] = norm(SKILLS.parent.joinpath("README.md").read_text(encoding="utf-8"))
+    return texts
 
 
 class TestForkRecipe(unittest.TestCase):

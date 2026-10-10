@@ -720,8 +720,8 @@ recommend one) and writes `# Collaboration mode: guest` into
   (git's untracked ignore file that is itself never committed), and the
   commit guard refuses a `git commit` it sees that would carry a `cairn/`
   path (it watches the commit commands Claude runs, with the same known
-  misses as before, such as `git -C <path> commit`). Nothing else is
-  written outside `cairn/`: no CLAUDE.md section (the session hook
+  misses as before, such as `git -C <path> commit`). Nothing else in the
+  checkout is written outside `cairn/`: no CLAUDE.md section (the session hook
   injects the same routing text from the plugin's template instead), no
   `.gitignore` or `.Rbuildignore` entries, no CI edits.
 - **Hygiene is written to disk, not committed.** Plan files, checkbox

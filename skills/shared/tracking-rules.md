@@ -235,7 +235,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   lists, other than `<base>`, whose parent equals `<base-repo>`, ignoring case. Read each parent with `gh repo view
   "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote that is not
   a fork prints `/`, meaning no parent. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
-  one, a guest push stops before the push and names the remotes it read and each parent it found.
+  one, a guest push stops before the push. The stop names the remotes it read, each parent it found, and each failed read.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.

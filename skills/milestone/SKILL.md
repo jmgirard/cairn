@@ -115,7 +115,7 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-636 lines / 60,689 bytes (M234, 2026-10-10, the fork remote, the Intake
+636 lines / 60,714 bytes (M234, 2026-10-10, the fork remote, the Intake
 paragraph's close route, and the reply-file clause; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
@@ -154,7 +154,9 @@ The script deliberately does not judge these — do them yourself and report:
   check instead reads `cairn/` from `.git/info/exclude` and reports a
   missing line as the repair item.
 - A milestone at `review` with an open unmerged PR → re-check CI now
-  (`gh pr checks <N> --repo <base-repo>`), report the fresh state (this is normal, not an error),
+  (`gh pr checks <N> --repo <base-repo>`, where `<N>` is the header PR's
+  number, or the branch name when the header names only the branch),
+  report the fresh state (this is normal, not an error),
   and beside it report the PR's unresolved-thread count and its pending
   review states (`COMMENTED`, `CHANGES_REQUESTED`) from the reads
   `/milestone-review` step 7 names; the audit writes nothing to GitHub.
@@ -460,8 +462,10 @@ A selection acts in this session. Never auto-proceed.
   decision ids and no cairn terms. If the issue's `author.is_bot` is true,
   the reply carries no thanks. Write the draft to
   `cairn-reply-<owner>-<repo>-<N>.md` in the system temp directory (Python's
-  `tempfile.gettempdir()`), outside the checkout, with the Write tool. The
-  file is not a write to the repo (D-155). The turn's final rendered text is
+  `tempfile.gettempdir()`), outside the checkout, with the Write tool.
+  `<owner>` and `<repo>` are `<base-repo>`'s. If that file already exists,
+  Read it first, so that the Write tool replaces it. The file is not a
+  write to the repo (D-155). The turn's final rendered text is
   the close block below, and it gives the draft verbatim, then this
   command, with that file's absolute path in place of `<path>`:
 
