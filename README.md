@@ -75,8 +75,10 @@ and the code the issue names, then reports one verdict (`reply`, `hotfix`, or
 `milestone`) and how much maintainer input the work needs (`none`,
 `confirm`, or `decide`). One question then lets you start the work now,
 add a candidate row, leave the issue, or stop. Leave is offered only for
-noise, a duplicate, or an item cairn already covers. For a reply, cairn drafts
-the text and shows a `gh issue comment` command for you to run. It never
+noise, a duplicate, or an item cairn already covers. A reply declines a
+request only when the reason to decline is already on record. For a
+reply, cairn drafts the text and shows a `gh issue comment` command for
+you to run. It never
 posts the reply itself. In guest mode, the commands name the upstream
 repo, and the draft uses no cairn terms.
 

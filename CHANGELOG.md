@@ -14,6 +14,19 @@
   result untested. On three edit tasks both models scored the same, and
   Haiku cost $0.04 where Sonnet cost $0.49 (the cairn repository's
   `cairn/references/haiku-sonnet-roles.md`).
+- **The issue look-in replies to a declined request only when the reason
+  is on record.** In owner mode the record is a decision entry, a
+  `cairn/DESIGN.md` line, or a dropped milestone's archive summary. In
+  guest mode it is the upstream repo's own docs or a maintainer's statement
+  on GitHub. A decline with no such record gets the `milestone` verdict at
+  the `decide` level, so the candidate-row option can record it and the
+  GitHub issue is not its only record. The rulebook's intake rule now names
+  the reply and `/milestone-plan` routes for issues.
+- **In guest mode, `/milestone-plan` reads the upstream repo's open issues
+  and PRs.** Its inbox reads now pass `--repo` with the base repo, so a
+  plan can find an upstream issue that the planned work resolves. An
+  overlapping upstream PR becomes a candidate row that names the
+  maintainers, since `/hotfix` does not adopt PRs in guest mode.
 
 ### New
 
