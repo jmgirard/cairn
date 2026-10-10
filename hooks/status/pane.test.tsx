@@ -1534,6 +1534,7 @@ describe('each blocked line shows its pull request state (M224 AC1)', () => {
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.turn.complete(turn())
+    await calls.settled()
     expect(calls.calls).toEqual([])
     const line = await blockedView($, 'blocked-M111')
     expect(line.text).toBe(LINE_1250)
@@ -1638,6 +1639,7 @@ describe('a close or a refused open reads no state (M224 AC3)', () => {
     calls.graphql.length = 0
     const closed = await $.command.run({ command: COMMAND })
     expect(closed.text).toBe('cairn pane closed')
+    await calls.settled()
     expect(calls.calls).toEqual([])
     expect(calls.graphql).toEqual([])
   })
@@ -1652,6 +1654,7 @@ describe('a close or a refused open reads no state (M224 AC3)', () => {
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
     await ui.press({ key: 'cairn-open' })
     await ui.unmount()
+    await calls.settled()
     expect(calls.calls).toEqual([])
     expect(calls.graphql).toEqual([])
   })
@@ -1680,6 +1683,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     const calls = gh(on, () => prView('OPEN', ''))
     seat(on, copyOf('blocked-active'))
     await $.turn.complete(turn())
+    await calls.settled()
     expect(calls.graphql).toEqual([])
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
     await ui.press({ key: 'cairn-open' })
@@ -1744,6 +1748,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     calls.graphql.length = 0
     await $.turn.complete(turn())
     await $.turn.complete(turn())
+    await calls.settled()
     expect(calls.calls).toEqual([])
     expect(calls.graphql).toEqual([])
     expect(calls.clocks).toEqual([])
@@ -1918,6 +1923,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.turn.complete(turn())
+    await calls.settled()
     expect(calls.graphql).toEqual([])
     expect(await countsOf($)).toBe(undefined)
   })
@@ -2064,6 +2070,7 @@ describe('each pane open and Refresh press lists the open pull requests on the b
     const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN } })
     seat(on, copyOf('blocked-prs'))
     await $.turn.complete(turn())
+    await calls.settled()
     expect(calls.lists).toEqual([])
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
     await ui.press({ key: 'cairn-open' })
@@ -2172,6 +2179,7 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
+    await calls.settled()
     expect(calls.lists).toEqual([])
     const baseline = await linesAt($)
     expect(baseline.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])

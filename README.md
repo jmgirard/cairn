@@ -316,14 +316,15 @@ The pane also shows each PR's state, which it reads from GitHub with `gh
 pr view <url> --json state,reviewDecision`. It reads the states when the
 pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
 at a session start. An open does not wait for the read. The words and
-counts appear together when the last GitHub call answers or times out. The
-pane also
-reads the
-states when you press `Refresh` on the `BLOCKED` heading. When a `Clear`,
-`Plan`, or `Implement` Button clears the conversation, the pane stays open
-and reads them again if it shows. It never reads them on a timer or at a
-turn's end, so a state can be out of date until the next open or `Refresh`.
-After a read, each line shows one word after its number:
+counts appear together when the last GitHub call answers or times out.
+The pane also reads the states when you press `Refresh` on the `BLOCKED`
+heading. When a `/clear` keeps the session's process, as a `Clear`,
+`Plan`, or `Implement` press does, the pane stays open, and if it shows at
+that moment, it reads the states again. A pane behind another tab at that
+moment reads nothing, so its words stay empty until the next open or
+`Refresh`. The pane never reads the states on a timer or at a turn's end,
+so a state can be out of date until the next open or `Refresh`. After a
+read, each line shows one word after its number:
 
 | Word | GitHub state | Button |
 |---|---|---|
@@ -359,15 +360,14 @@ GitHub. The same read runs one `gh pr list --repo <url> --state open
 --author @me --limit 100` call beside the blocked PRs' reads. The URL is
 the base remote's: `upstream` in guest mode when the repo has that remote,
 else `origin`. An `http` or `https` URL goes to `gh` without any user name
-or token in it. The pane
-lists each PR from a `hotfix-` branch under a `HOTFIXES` heading with the
-count, after `BLOCKED` and before the candidates. Each line shows `#<n>`
-and the PR's title, and after a read the same word and count line that a
-blocked line shows. A hotfix line has no Button, because no command
-resumes an open hotfix PR yet. A hotfix PR that is also a blocked
-milestone's PR shows only on the blocked line, and the count leaves it
-out. The heading has a `Refresh` of its own,
-which reads everything again, as the `BLOCKED` heading's does. When the
+or token in it. The pane lists each PR from a `hotfix-` branch under a
+`HOTFIXES` heading with the count, after `BLOCKED` and before the
+candidates. Each line shows `#<n>` and the PR's title, and after a read
+the same word and count line that a blocked line shows. A hotfix line has
+no Button, because no command resumes an open hotfix PR yet. A hotfix PR
+that is also a blocked milestone's PR shows only on the blocked line, and
+the count leaves it out. The heading has a `Refresh` of its own, which
+reads everything again, as the `BLOCKED` heading's does. When the
 list call fails, the pane keeps the last list it read for the same repo.
 The call reads at most 100 of your open PRs, so with more than that, some
 hotfix PRs can be left out.

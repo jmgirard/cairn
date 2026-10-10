@@ -70,8 +70,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the Blocked heading's Refresh Button
 // (`readPrs`). An open does not wait for that read, and a `/clear` that stays
-// in the process reads again while the pane shows (M230). A blocked line then shows its state word, and a merged,
-// changes-requested, or closed line carries a Button for its next step
+// in the process reads again while the pane shows (M230). A blocked line
+// then shows its state word, and a merged, changes-requested, or closed
+// line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
 // threads and unanswered reviews and comments, which draw on a line under
 // it (M225). The same read lists the operator's open pull requests on the
