@@ -1,6 +1,6 @@
 # M232: `/milestone` looks into one GitHub issue and routes it
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -63,6 +63,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: T5 done. `skills/tests/test_issue_look_in.py` has 14 tests: the entry, the three verdicts and three levels, the hand-off line once, and the AC4 grep over §4 with two planted-write cases. A plant in the skill file (one level renamed, `--repo` dropped from the hand-off) turned 6 tests red, and the file was restored. The guard takes an EXEMPT entry in the mutation registry, per the profile's test-doctrine. Hand-run `skills/tests`: 689 tests OK. The live `easystats/insight` run stays at review, per T5.
 - 2026-10-10: claim audit: 33 claims read, 4 corrected — README.md, skills/milestone/SKILL.md, skills/tests/test_issue_look_in.py
 - 2026-10-10: the claim audit's four corrections: the README now names leave's three reasons, the PR-number stop says guest mode routes a PR to the maintainers, the pre-chip rule says "nothing in this repo" since scratch files exist, and the test docstring no longer claims a fence check. The same reader re-read all four as true.
+- 2026-10-10: implement done, status set to review. All five tasks checked, the five verify checks green, hand-run `skills/tests` green.
 
 ## Decisions
 
