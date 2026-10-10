@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M229: The edit-work Sonnet roles move to Haiku 5.5
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M228   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -141,6 +141,7 @@ in M228's note.
 - 2026-10-10: T5: CHANGELOG Unreleased gains a "Changes that affect existing repos" entry naming the edit-work roles now on Haiku 5.5; the ROADMAP candidate "Haiku for Sonnet subagent work" narrowed in place to search and history review rather than graduating at hygiene. verify: scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail.
 - 2026-10-10: claim audit: 24 claims read, 1 corrected — CHANGELOG.md (the edit-work entry said M228 measured the whole move; it now says boilerplate follows the measured result untested; the same reader re-read it and it checks out).
 - 2026-10-10: all tasks checked, verify green; status review.
+- 2026-10-10: review return 1: consistency gate failed — the profile's changelog check bars milestone numbers in user-facing text, and the new CHANGELOG entry names `D-151` and `M228` (CHANGELOG.md lines 75 and 78). AC1-AC4 evidence, `cairn_validate`, and both manifest validates were clean at this point.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
