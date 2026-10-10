@@ -88,8 +88,9 @@ deliberately spared (D-017).
 
 Run `cairn_cost.py --audit-line` and report its one line verbatim. It measures
 what the most recent milestone spent — turns, cache-read, fresh input, output,
-and how many subagents it spawned (whose own tokens the store does not record,
-so the figure is partial by that much). It is **a reporting surface only**:
+and how many subagents it spawned, whose own turns the figures include. The
+output figure is a lower bound, because the store can keep a call's output
+count from the start of its stream. It is **a reporting surface only**:
 there is no threshold, no verdict, and no pass/fail attached to any number —
 never treat a large figure as a finding to act on, and never propose a cap from
 it. No governing mechanism over these numbers exists or is owed: D-057 closed

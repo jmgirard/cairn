@@ -24,6 +24,7 @@ Run from the repo root:
 
 import contextlib
 import io
+import json
 import os
 import pathlib
 import sys
@@ -339,9 +340,10 @@ class TestCacheFreshSplit(unittest.TestCase):
         self.assertNotIn("900,012", text, "the report printed a collapsed input figure")
 
 
-class TestSubagentBlindSpot(unittest.TestCase):
-    """Subagent tokens are absent from the store, so the spawn count is what
-    labels a partial figure (M94 ledger A4/A5)."""
+class TestSubagentSpawnCount(unittest.TestCase):
+    """The spawn count beside each figure (M94 ledger A4/A5). Subagent tokens
+    are now read from the store (`TestSubagentTranscriptsAreRead`); the count
+    still says how much of a figure came from spawned agents."""
 
     def test_spawned_agents_are_counted_under_every_known_tool_name(self):
         self.assertEqual(cost.agents_spawned(rec(content=[agent_block("Agent")])), 1)
@@ -374,7 +376,6 @@ class TestSubagentBlindSpot(unittest.TestCase):
         line = cost.audit_line(root, records)
         self.assertIn("M094", line)
         self.assertIn("1 subagent spawned", line)
-        self.assertIn("unrecorded", line)
 
 
 class TestMilestoneFlagIsHonouredOrRefused(unittest.TestCase):
@@ -551,6 +552,123 @@ class TestStoreLocation(unittest.TestCase):
         self.assertEqual(
             [cost.tokens_of(r)["output_tokens"] for r in got], [5, 7]
         )
+
+
+def _line(mid=None, usage=None, content=None, skill=None, branch=None):
+    """One store line: an `assistant` record, with `message.id` when given."""
+    message = {"usage": usage or {}, "content": content or []}
+    if mid is not None:
+        message["id"] = mid
+    return json.dumps(
+        {
+            "type": "assistant",
+            "attributionSkill": skill,
+            "gitBranch": branch,
+            "message": message,
+        }
+    ) + "\n"
+
+
+def _tool(tid, name="Agent"):
+    return {"type": "tool_use", "id": tid, "name": name, "input": {}}
+
+
+class TestOneApiCallIsCountedOnce(unittest.TestCase):
+    """One API call is written as several records sharing `message.id`, one
+    per content block, and a resumed or forked session copies earlier calls
+    into its own file. Each record repeats the call's usage, and only the last
+    holds the final `output_tokens` (the earlier ones hold the value at stream
+    start). Summing every record counted one call several times."""
+
+    def test_records_sharing_a_message_id_are_one_call_with_its_final_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            u_start = {"cache_read_input_tokens": 100, "input_tokens": 2, "output_tokens": 1}
+            u_final = dict(u_start, output_tokens=230)
+            (pathlib.Path(tmp) / "s.jsonl").write_text(
+                _line("msg_a", u_start, [{"type": "thinking"}])
+                + _line("msg_a", u_start, [_tool("t1")])
+                + _line("msg_a", u_final, [_tool("t2")])
+                + _line("msg_b", {"output_tokens": 9}),
+                encoding="utf-8",
+            )
+            got = list(cost.read_records(tmp))
+        self.assertEqual(len(got), 2)
+        bucket = cost.aggregate(got, lambda r: "all")["all"]
+        self.assertEqual(bucket["turns"], 2)
+        self.assertEqual(bucket["cache_read_input_tokens"], 100)
+        self.assertEqual(bucket["input_tokens"], 2)
+        self.assertEqual(bucket["output_tokens"], 239)
+        # The call's two spawns sat on two of its records; both still count.
+        self.assertEqual(bucket["agents"], 2)
+
+    def test_a_call_copied_into_another_session_file_is_counted_once(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            line = _line("msg_c", {"output_tokens": 50}, [_tool("t9")])
+            (pathlib.Path(tmp) / "orig.jsonl").write_text(line, encoding="utf-8")
+            (pathlib.Path(tmp) / "resumed.jsonl").write_text(
+                line + _line("msg_d", {"output_tokens": 4}), encoding="utf-8"
+            )
+            got = list(cost.read_records(tmp))
+        bucket = cost.aggregate(got, lambda r: "all")["all"]
+        self.assertEqual(bucket["turns"], 2)
+        self.assertEqual(bucket["output_tokens"], 54)
+        self.assertEqual(bucket["agents"], 1)
+
+    def test_records_without_a_message_id_each_stay_a_call(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            (pathlib.Path(tmp) / "s.jsonl").write_text(
+                _line(None, {"output_tokens": 5}) + _line(None, {"output_tokens": 7}),
+                encoding="utf-8",
+            )
+            got = list(cost.read_records(tmp))
+        self.assertEqual([cost.tokens_of(r)["output_tokens"] for r in got], [5, 7])
+
+
+class TestSubagentTranscriptsAreRead(unittest.TestCase):
+    """Each session's `<session>/subagents/agent-*.jsonl` records the turns of
+    the subagents it spawned, with the parent's skill and branch."""
+
+    def test_a_subagent_transcript_is_read_and_keyed_to_its_parent_session(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            store = pathlib.Path(tmp)
+            (store / "sess1.jsonl").write_text(
+                _line("msg_p", {"output_tokens": 3}, [_tool("t1")],
+                      skill="cairn:milestone-review", branch="m94-x"),
+                encoding="utf-8",
+            )
+            sub = store / "sess1" / "subagents"
+            sub.mkdir(parents=True)
+            (sub / "agent-abc.jsonl").write_text(
+                _line("msg_s", {"cache_read_input_tokens": 40, "output_tokens": 8},
+                      skill="cairn:milestone-review", branch="m94-x"),
+                encoding="utf-8",
+            )
+            # A sidecar that is not a transcript is never read as one.
+            (sub / "agent-abc.meta.json").write_text(
+                '{"type": "assistant"}\n', encoding="utf-8"
+            )
+            got = list(cost.read_records(tmp))
+        self.assertEqual({cost.session_of(r) for r in got}, {"sess1"})
+        by_ms = cost.aggregate(got, cost.milestone_of)
+        self.assertEqual(by_ms["M094"]["turns"], 2)
+        self.assertEqual(by_ms["M094"]["output_tokens"], 11)
+        self.assertEqual(by_ms["M094"]["cache_read_input_tokens"], 40)
+
+    def test_report_surfaces_no_longer_say_subagent_tokens_are_unrecorded(self):
+        records = [
+            rec(skill="cairn:milestone-review", branch="m94-x",
+                usage={"cache_read_input_tokens": 5}, content=[agent_block()])
+        ]
+        root = str(SCRIPTS_DIR.parent)
+        text = cost.report(root, records)
+        line = cost.audit_line(root, records)
+        self.assertIn("1 subagent spawned", line)
+        for surface in (text, line):
+            self.assertNotIn("unrecorded", surface)
+            self.assertNotIn("does not record", surface)
+            # The store can keep a call's output count at stream start, so
+            # both surfaces label output as a lower bound.
+            self.assertIn("lower bound", surface)
 
 
 class TestLiveStoreShape(unittest.TestCase):

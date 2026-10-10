@@ -91,6 +91,17 @@
   gate shows the bump. When the section states no such rule, `/hotfix`
   bumps no version.
 
+- **`cairn_cost.py` counts each API call once and reads subagent
+  transcripts.** The session store writes one call as several records that
+  share a `message.id`, and a resumed session copies earlier calls into its
+  own file. The script summed every record, so its turn and token figures
+  ran high. It now merges the records of one call. It also reads each
+  session's `subagents/agent-*.jsonl` files as part of that session, so the
+  figures include the turns of spawned subagents. The store can keep a
+  call's output count from the start of its stream, so the report and the
+  `--audit-line` output label output tokens as a lower bound. Cost figures
+  measured with the old script are not comparable with new ones.
+
 ## 2.0.0 (2026-10-06)
 
 ### Changes that affect existing repos

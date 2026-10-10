@@ -127,9 +127,9 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_cost_audit_line",
-        test="TestCostAuditLine.test_the_subagent_gap_is_stated_where_the_number_is_read",
+        test="TestCostAuditLine.test_the_output_gap_is_stated_where_the_number_is_read",
         target=MILESTONE,
-        block="the store does not record",
+        block="output figure is a lower bound",
     ),
     # M88 (D-050): release timing is the maintainer's to declare. Three
     # surfaces carry the rule independently — the governance rule, the
