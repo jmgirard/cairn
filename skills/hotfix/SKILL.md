@@ -283,7 +283,8 @@ a bare PR number resolves against the fork.
    merge. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite, with the module's guest forms: `--repo <base-repo>`,
-   the base repo's owner and name in each `gh api` call, and fix pushes to
+   the base repo's owner and name in each `gh api` call that addresses a
+   repository (the resolve takes only a thread id), and fix pushes to
    the fork. Its `copilot:` lines ride in the close block. A timeout stop
    in the round ends with the module's close block, whose `/hotfix` rerun
    with the PR reference takes step 1's open authored-PR re-entry. Then

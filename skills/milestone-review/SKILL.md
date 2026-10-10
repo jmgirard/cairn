@@ -609,7 +609,8 @@ re-enters here, at the step the record shows is next:
    With the Copilot review round on (`skills/shared/copilot-review.md`
    §1), run it here, asking for Balanced, with the module's guest forms:
    `--repo <base-repo>`, the base repo's owner and name in each `gh api`
-   call, and fix pushes to the fork. Its `copilot:` lines and its
+   call that addresses a repository (the resolve takes only a thread id),
+   and fix pushes to the fork. Its `copilot:` lines and its
    `copilot round:` work-log line are written on disk, and the lines ride
    in the close block below. A timeout stop in the round still sets the
    status below before it stops.
