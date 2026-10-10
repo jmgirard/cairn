@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -98,6 +98,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: pass-2 settlements not fixed: blame-history #7 (guest rules) rejected, because the rulebook's "nothing cairn writes reaches the maintainers" concerns tracking files and the guest PR replies are the operator's GitHub writes; blame-history #9 (review decline leaves a live marker) is pre-existing in route (c), not this diff — reject, pre-existing; blame-history #10 and #11 rejected as style; diff-bug #12 rejected, since the next sentence states the round-arm exception in place; prior-review #4 rejected as planned proportionality (the gate re-run and the merge question naming the round's commits); README L675 (diff-bug #6) is pinned by `test_issue_linkage` and covered by L645's stated exception.
 - 2026-10-10: claim audit: 31 claims read, 4 corrected — skills/shared/copilot-review.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md
 - 2026-10-10: claim-audit fixes (return 2 prose): a review that arrives after the 20-minute skip is not read by the run, so the module, README, and CHANGELOG now say the report names the PR instead of claiming the read shows it. A later pass on a PR with an earlier round only replies to and resolves any Copilot thread still open, so the round truly runs once per PR. A too-large item shows in the round's report (§6), not only the merge question. The hotfix arm's "skipped when the fix already has an open PR" is removed, since no authored-fix path reaches the arm with an open PR. The auditor's note that hotfix's PR-reference re-entry wording points at an open-PR path that step 1 lacks is pre-existing on main and stays with the "`/hotfix` has no resume route for an open PR" row. Module 124 lines / 7,173 bytes.
+- 2026-10-10: claim-audit re-read (same reader, once): items 1, 4, and 5 and the budget figure hold. §2's later-pass rule resolved a late review's threads unread, so §2 now leaves any still-unresolved Copilot thread to the skill's PR-conversation read, and §4's answered-thread sentence goes with it. Module 124 lines / 7,107 bytes. Status set to `review`.
 
 ## Decisions
 
