@@ -121,8 +121,8 @@ declare module 'claude-code' {
       // Their words and counts sit in `prs` by URL.
       hotfixes: Shaped<CairnHotfixRead>
       // True from the start of a read of the pull request states until the
-      // newest read started has settled, while the pane draws its ↻ Button
-      // dim (M236).
+      // newest read started has settled, while the pane's ↻ Button reads ⋯
+      // (M236).
       reading: Shaped<boolean>
     }
   }

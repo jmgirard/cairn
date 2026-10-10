@@ -46,9 +46,10 @@ import { PILL_TEXT } from './track'
 // (M219), and one of Finish, Revise, or Check on a blocked line (M224). A
 // blocked line's `target` is its milestone id, which its Button's key and
 // press carry. Since M236 the pane's first line carries the one Refresh
-// Button, labeled ↻, which reads everything again. Its `end` puts the
-// Button at the right end of the row. Until M236 the Blocked and Hotfixes
-// headings each carried a Refresh.
+// Button, labeled ↻, which reads everything again. Its `grow` makes its
+// text take the free room, so its tail and the Button sit at the right end
+// of the row. Until M236 the Blocked and Hotfixes headings each carried a
+// Refresh.
 export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
@@ -60,7 +61,7 @@ export type PaneLine = {
   action?: string
   buttons?: PaneButton[]
   target?: string
-  end?: true
+  grow?: true
 }
 
 // A blocked milestone's pull request state, as `prWord` reads it from a
@@ -186,9 +187,11 @@ export function nextLabel(action: string): string | undefined {
 // pane's Next line read these (M219).
 export const STATUS_LABEL = 'Status'
 export const CLEAR_LABEL = 'Clear'
-// The pane's Refresh Button (M224, one ↻ at the top since M236) and a
+// The pane's Refresh Button (M224, one ↻ on the first line since M236),
+// its label while a read of the pull request states runs (M236), and a
 // blocked line's Buttons (M224).
 export const REFRESH_LABEL = '↻'
+export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
 export const CHECK_LABEL = 'Check'
@@ -215,9 +218,11 @@ export const METER_EMPTY_KEY = 'subtle'
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
 
-const PHASE: Record<string, { label: string; color: string }> = {
-  'in-progress': { label: 'implement', color: FLOW_COLORS.implement },
-  review: { label: 'review', color: FLOW_COLORS.review },
+// A milestone's id draws in its phase's color, with no phase word, which
+// the operator dropped at the M236 live look.
+const PHASE_COLOR: Record<string, string> = {
+  'in-progress': FLOW_COLORS.implement,
+  review: FLOW_COLORS.review,
 }
 // The phase each recommended command runs, for the Next pill's color.
 export const COMMAND_PHASE: Record<string, FlowPhase> = {
@@ -291,13 +296,8 @@ function items(prefix: string, list: PaneItem[]): PaneLine[] {
 }
 
 function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine[] {
-  const phase = PHASE[row.status] ?? { label: row.status, color: GRAY }
-  const head = line(
-    `${row.id}-head`,
-    0,
-    [{ text: phase.label, color: phase.color, bold: true }, { text: ' ' }, { text: row.id, bold: true }, { text: '  ' }],
-    { text: row.title },
-  )
+  const phase = { color: PHASE_COLOR[row.status] ?? GRAY }
+  const head = line(`${row.id}-head`, 0, [{ text: row.id, color: phase.color, bold: true }, { text: '  ' }], { text: row.title })
   const file = row.file
   // The band's percent for the row, from its own counts, which count a box
   // inside an HTML comment where the pane's items do not.
@@ -345,13 +345,16 @@ export function paneLines(
   hotfixes: HotfixPr[] = [],
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
-  // The first line holds only the ↻ Button, at the right end (M236).
-  const out: PaneLine[] = [{ ...line('refresh', 0, []), buttons: ['refresh'], end: true }]
+  const out: PaneLine[] = []
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
   state.milestones.forEach((row, i) => {
     if (i > 0) out.push(gap(`${row.id}-gap`))
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
+  // The first line, the first milestone's head line or the no-active line,
+  // carries the ↻ Button at its right end (M236).
+  out[0].buttons = ['refresh']
+  out[0].grow = true
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))

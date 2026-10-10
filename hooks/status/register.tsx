@@ -19,6 +19,7 @@ import {
   PLAN_LABEL,
   PR_BUTTON,
   prWord,
+  READING_LABEL,
   REFRESH_LABEL,
   REVISE_LABEL,
   STATUS_LABEL,
@@ -140,8 +141,8 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 })
 
 // True from the start of a read of the pull request states until the newest
-// read started has settled (M236). The pane draws its ↻ Button dim while it
-// is true. A reload keeps it, so a press does not rely on it (`pressing`).
+// read started has settled (M236). The pane's ↻ Button reads ⋯ while it is
+// true. A reload keeps it, so a press does not rely on it (`pressing`).
 const reading = atom({ plugin: 'cairn', key: 'reading' } as const, false, { shape: 'reading-1' })
 
 // The pane's id, its title, and the command that opens and closes it.
@@ -285,7 +286,7 @@ export const register: Register = on => {
     const held = await read($, hotfixes)
     const listed = held.root !== null && held.root === shown.root ? held.prs : []
     const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
-    const dim = await read($, reading)
+    const busy_ = await read($, reading)
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -297,7 +298,7 @@ export const register: Register = on => {
     return (
       <Box key="cairn-pane" flexDirection="column">
         {lines.map(line => (
-          <Box key={line.key} paddingLeft={line.indent} minWidth={0} {...(line.end ? { justifyContent: 'flex-end' as const } : {})}>
+          <Box key={line.key} paddingLeft={line.indent} minWidth={0}>
             {line.lead.length === 0 ? null : (
               <Box key={`${line.key}-lead`} flexShrink={0}>
                 {line.lead.map(span => (
@@ -308,7 +309,7 @@ export const register: Register = on => {
               </Box>
             )}
             {line.text === null ? null : (
-              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
+              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0} {...(line.grow ? { flexGrow: 1 } : {})}>
                 <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
                   {line.text.text}
                 </Text>
@@ -341,8 +342,7 @@ export const register: Register = on => {
                   <Button
                     key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"
-                    label={button.label}
-                    {...(kind === 'refresh' && dim ? { dimColor: true } : {})}
+                    label={kind === 'refresh' && busy_ ? READING_LABEL : button.label}
                     onPress={() => pressPane($, kind, target)}
                   />
                 </Box>
@@ -707,7 +707,7 @@ async function readPrs($) {
   try {
     await update($, reading, () => true)
   } catch {
-    // The ↻ draws at full strength, and the read still runs.
+    // The ↻ stays, and the read still runs.
   }
   try {
     const urls: string[] = []
@@ -738,13 +738,13 @@ async function readPrs($) {
   } catch {
     // No write: the lines keep the words they had.
   } finally {
-    // Only the newest read clears the dim ↻, so an older read that settles
-    // first leaves it dim while the newer one runs (M236).
+    // Only the newest read puts back the ↻, so an older read that settles
+    // first leaves ⋯ while the newer one runs (M236).
     if (mine === prReads) {
       try {
         await update($, reading, () => false)
       } catch {
-        // The ↻ stays dim until the next read settles.
+        // The ⋯ stays until the next read settles.
       }
     }
   }

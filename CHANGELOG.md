@@ -119,10 +119,15 @@
   reads them with one `gh api graphql` query per open PR.
 
 - **The cairn pane has one ↻ Button.** It sits at the right end of the
-  pane's first row and shows whenever the pane has a ROADMAP, with or
-  without PRs. A press reads the tracking files, the hotfix PRs, and each
-  PR's state again. The ↻ draws dim while a read runs, and a press while
-  an earlier press's read runs does nothing.
+  pane's first line, the first milestone's line or `no active milestone`,
+  and shows whenever the pane has a ROADMAP, with or without PRs. A press
+  reads the tracking files, the hotfix PRs, and each PR's state again. The
+  ↻ reads `⋯` while a read runs, and a press while an earlier ↻ press's
+  read runs does nothing.
+
+- **A pane head line shows the milestone id in its phase's color.** The
+  phase word before the id is gone, and the id takes the implement or
+  review color.
 
 - **The cairn pane shows each blocked milestone's PR state.** After its
   `#<n>`, a `BLOCKED` line shows `merged`, `closed`, `changes requested`,

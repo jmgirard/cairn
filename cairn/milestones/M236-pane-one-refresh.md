@@ -46,8 +46,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - [x] T3: Reading state (old AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
 - [x] T4: Docs (old AC4). README pane section, DESIGN `hooks/status/` entry, CHANGELOG `## Unreleased`.
 - [x] T5: Run the five `verify` commands (old AC5).
-- [ ] T6: Live-look amendment (AC2, AC3, AC4, AC5). Remove the `refresh` first line, and put the `refresh` Button on the first line `paneLines` gives, with its text Box at `flexGrow` 1. Drop the phase word from `milestoneLines`, and color the id with the phase. Swap the `dimColor` for the `⋯` label. Update the tests and the docs.
-- [ ] T7: Run the five `verify` commands again (AC6).
+- [x] T6: Live-look amendment (AC2, AC3, AC4, AC5). Remove the `refresh` first line, and put the `refresh` Button on the first line `paneLines` gives, with its text Box at `flexGrow` 1. Drop the phase word from `milestoneLines`, and color the id with the phase. Swap the `dimColor` for the `⋯` label. Update the tests and the docs.
+- [x] T7: Run the five `verify` commands again (AC6).
 - [ ] T8: Live look again (AC7).
 
 ## Work log
@@ -83,6 +83,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: re-audit: AC4 (full) — second reader: the reload exception, `$.fs.read` in the press count, and seven cases. The fixes went to the operator at the stop, and the operator accepted them.
 - 2026-10-10: re-audit: AC5 (full) — second reader: the CHANGELOG entries were not named. The fix went to the operator at the stop, and the operator accepted it.
 - 2026-10-10: re-audit: AC7 (full) — second reader: nothing.
+- 2026-10-10: T6 done. `paneLines` gives `refresh` and `grow` to its first line, and the render gives that line's text Box `flexGrow: 1`. The `refresh` first line and `justifyContent` are gone. Head lines lead with the id in `PHASE_COLOR`. The ↻ label is `READING_LABEL` (`⋯`) while `reading` is true, and `dimColor` is gone. The seat's `fs.read` hook records paths in `copy.reads` for the second-press count. README, DESIGN, and CHANGELOG follow. The `dim` and `refresh` greps return no line that AC5 forbids.
+- 2026-10-10: T7 done. All five verify commands exit 0, `claude plugin test .` 1559 pass.
 
 ## Decisions
 

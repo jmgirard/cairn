@@ -276,8 +276,8 @@ it again to close the pane, or use the pane's own close mark. The band's
 conversation. In the terminal it docks beside a fullscreen conversation
 of 110 columns or more, and otherwise it sits above the prompt.
 
-For each `in-progress` or `review` milestone, the pane shows the phase,
-id, and title, with the band's percent for the milestone at the end of
+For each `in-progress` or `review` milestone, the pane shows the id, in
+the phase's color, and the title, with the band's percent for the milestone at the end of
 that line when its file reads, and the goal from the milestone file. It lists every task
 and acceptance criterion, `✓` for a checked box and `○` for an open one,
 and the five newest work-log lines. Each item takes one line, a long item
@@ -297,7 +297,7 @@ press runs the command of the band's button of the same name. As with the
 next-step button, a press while Claude works outside a cairn skill runs
 when Claude is idle. In a narrow pane, the pill is cut first. In the
 desktop app, a click on the pane while it does not have keyboard focus only
-gives it focus. Then press the button again. The `▎` and `■`
+gives it focus. Then press the button again. The id and the `▎` and `■`
 marks of a milestone draw in its phase's color, the theme's `claude`
 orange for implement and `success` green for review. The `▎` marks of the
 queue draw in the plan color, `planMode`, and the pill draws in the color
@@ -332,9 +332,10 @@ pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
 at a session start. An open does not wait for the read. The words and
 counts appear together when the last GitHub call answers or times out.
 The pane also reads the states, and the tracking files, when you press
-the ↻ Button at the right end of the pane's first row. The ↻ shows
-whenever the pane has a ROADMAP, and it draws dim while a read runs. A
-press while an earlier press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
+the ↻ Button at the right end of the pane's first line: the first
+milestone's line, or `no active milestone`. The ↻ shows whenever the pane
+has a ROADMAP, and it reads `⋯` while a read runs. A press while an
+earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
 `Plan`, or `Implement` press does, the pane stays open, and if it shows at
 that moment, it reads the states again. A pane behind another tab at that
 moment reads nothing, so its words stay empty until the next open or ↻
