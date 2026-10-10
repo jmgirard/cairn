@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode") | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`) | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -245,7 +245,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   whose filter reads the whole PR diff. The milestone or hotfix PR is opened after the user's approval at the merge
   gate — the branch is pushed and `gh pr create` run at `/milestone-review` step 8 and `/hotfix` step 6, never before
   — so a `pull_request`-triggered suite first runs on the head that merges rather than on every pre-approval push
-  (D-138); the CI wait at the gate is serial with the approval, the cost that entry records. Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
+  (D-138); the CI wait at the gate is serial with the approval, the cost that entry records. In owner mode, a repo that
+  opts in to the Copilot review round (`skills/shared/copilot-review.md`) opens it earlier: `/milestone-review` at the start of review, `/hotfix` before its approval chip (D-152, D-153). Where the workflows are push-triggered and ignore `cairn/**`, a tracking-only
   head commit carries no check run — the wait rule's no-checks case, the last CI-covered commit then being the last
   code-bearing one — unless branch protection requires that check, where the path-skipped run leaves it pending and
   the merge blocked; mergeability is the wait clause's to state. `/cairn-init` §0 reports the fact

@@ -47,8 +47,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   `migration-protocol.md` (cairn-init §2's body, read only on precursor
   footprint detection — M59), and `records-hygiene.md` (candidate-row
   lifecycle and supersede discipline, read at hygiene/plan gates —
-  M113, trimmed M146); each module carries a header-stated size
-  budget (M154).
+  M113, trimmed M146), and `copilot-review.md` (the Copilot review round
+  that `/hotfix` and `/milestone-review` run on the PR in a repo whose
+  `PROFILE.md` carries `# Copilot review: on`; in owner mode
+  `/milestone-review` opens the PR at the start of review and its step-7
+  read handles Copilot's threads, D-152, D-153 — M231); each module carries a
+  header-stated size budget (M154).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note, archive summary, and the LESSONS.md /
   DECISIONS.md file headers (M163).

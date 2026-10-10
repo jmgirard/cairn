@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="626 lines / 59,322 chars",
+        block="629 lines / 59,832 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3742,5 +3742,49 @@ REGISTRY += [
         test="TestHotfixReadsConventions.test_approval_gate_shows_the_bump",
         target=HOTFIX,
         block="the version bump when a Conventions rule required one",
+    ),
+]
+
+REGISTRY += [
+    # M231: the opt-in Copilot review round. Each skill's round arm cites
+    # the module and asks for its level; each skill keeps the
+    # post-approval open as the off arm.
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestModuleCitations.test_review_round_arm_cites_the_module",
+        target=REVIEW,
+        block="§1; D-152, D-153). Here, at the start",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestModuleCitations.test_hotfix_round_arm_cites_the_module",
+        target=HOTFIX,
+        block="§1; D-152). Before the approval",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestReviewArms."
+             "test_round_arm_sits_in_step_two_before_verification",
+        target=REVIEW,
+        block="Balanced (§2). Copilot then reviews while steps 3 to 6",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestReviewArms.test_off_arm_keeps_the_post_approval_open",
+        target=REVIEW,
+        block="skipped when the header already names an open PR: the branch "
+              "is pushed",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestHotfixArms.test_round_arm_runs_before_the_gate",
+        target=HOTFIX,
+        block="round in that module, asking for Lite",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestHotfixArms.test_off_arm_keeps_the_post_approval_open",
+        target=HOTFIX,
+        block="On approval of an authored fix, push and",
     ),
 ]

@@ -17,6 +17,24 @@
 
 ### New
 
+- **An opt-in Copilot review round on hotfix and milestone PRs.** With
+  `# Copilot review: on` in `cairn/PROFILE.md`, `/hotfix` and
+  `/milestone-review` request a Copilot review on the PR, only when the PR
+  has no Copilot request or review yet. In owner mode `/milestone-review`
+  opens the PR at the start of review, so Copilot works during cairn's own
+  checks, and the PR-conversation read before the merge question handles
+  each unresolved Copilot thread: it is fixed, rejected with a reason, or
+  sent to a candidate row, then gets a reply with no thanks and is
+  resolved. A review still pending at the read gets a wait of up to 10
+  minutes, once per pass, and then the run goes on and says it is pending.
+  In owner mode a hotfix opens its PR before its approval chip, and a
+  decline closes the PR and keeps the branch. In guest mode the round runs
+  after the handoff. Adopted PRs, a review of an already-merged PR, and
+  milestones with companion checkouts skip it.
+  GitHub's settings choose the review level, because its API took none per
+  request when this shipped; the report names the level from the review.
+  The rules live in `skills/shared/copilot-review.md`.
+
 - **The `/milestone` health audit lists your open hotfix PRs.** A new
   "Open hotfix PRs" item in its §2 runs one `gh pr list --state open
   --author @me --limit 100` call on the base repo, in owner and guest mode.
