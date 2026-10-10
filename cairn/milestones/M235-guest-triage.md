@@ -1,6 +1,6 @@
 # M235: `/cairn-triage` runs in guest mode and writes its edits to disk
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -77,6 +77,9 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
 - 2026-10-10: T3: step 4 counts the guest stamp, step 6 guest arm (stamp names each drop's evidence, no commit, no push), step 7 status and safety lines. Rulebook guest bullet split (`/cairn-release` stops, `/cairn-triage` runs on disk). README guest bullet split in two and the table row amended. AC3 grep: 118 lines, none states a guest triage stop. `test_guest_triage` 5/5 OK.
 - 2026-10-10: T4: CHANGELOG Unreleased entry added. D-156 appended, annotating D-137.
 - 2026-10-10: T5: verify green: scripts 406 OK (21 skipped), hooks 174 OK, plugin and marketplace validate exit 0, `claude plugin test .` 1777 pass. Hand-run `skills/tests` 724 OK, registry completeness included. `cairn_validate` all checks passed.
+- 2026-10-10: claim audit: 26 claims read, 4 corrected — skills/cairn-triage/SKILL.md (exclude-file claim now names the commit guard; steps 1–4 sentence no longer contradicts step 4; step 2 path checks read the checked-out branch, named above the step-3 table), README.md (sync check added). Re-read once by the same reader: all 4 true.
+- 2026-10-10: implementation choice: the branch-naming rule for guest path checks lands in step 3's table bullet as well as session start, at the claim reader's re-read note. No guard pins it (AC4 names two behaviors only).
+- 2026-10-10: implement complete, status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

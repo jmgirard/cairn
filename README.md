@@ -735,9 +735,10 @@ recommend one) and writes `# Collaboration mode: guest` into
 - **No release walk.** `/cairn-release` stops at session start and says
   why: a release is the maintainers' act.
 - **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips
-  the clean-tree and default-branch checks, and its accepted edits stay in
-  `cairn/` with no commit and no push. The hygiene stamp names the evidence
-  for each item it drops as shipped or as resting on a false premise.
+  the clean-tree, default-branch, and sync checks, and its accepted edits
+  stay in `cairn/` with no commit and no push. The hygiene stamp names the
+  evidence for each item it drops as shipped or as resting on a false
+  premise.
 
 Because `cairn/` exists only in that clone, a fresh clone starts from
 nothing and `git clean -fdx` removes it; back it up if that matters.

@@ -31,8 +31,10 @@ step (session start implicit).
 committed, so the pass skips the clean-tree, default-branch, and sync
 preconditions below, because it moves no ref and commits nothing, and
 `cairn/` is the same untracked folder on every branch. It runs steps 1–4 as
-written and step 5 with the stamp standing in for the commit message. Steps
-4, 6, and 7 state their guest arms.
+written and step 5 with the stamp standing in for the commit message. Step
+4's byte check counts the longer guest stamp, and steps 6 and 7 state their
+guest arms. Step 2 judges a cited code path against the checked-out branch,
+which need not be the default branch, so the step-3 table names that branch.
 
 Owner-mode preconditions first: clean `git status`, on the default branch (detect it
 per the tracking-rules git model — never assume `main`), synced with origin
@@ -154,7 +156,8 @@ one of them absorbs is never dropped or merged away in this pass
    - **The table**, in the chat above the chip (best-effort rendering —
      the chip's own text carries what the decision needs), one row per
      enumerated item: item (source + subject) → disposition → one-line
-     reason. Every
+     reason. In guest mode a line above the table names the checked-out
+     branch that step 2's path checks read. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.
@@ -279,7 +282,8 @@ one of them absorbs is never dropped or merged away in this pass
    already-shipped drop, the record or path that holds its evidence, since
    no commit body exists to hold it.
    The guest pass makes no commit and no push. The accepted edits stay on
-   disk in `cairn/`, which git's exclude file keeps out of every commit.
+   disk in `cairn/`, which git's exclude file leaves untracked, and the
+   commit guard denies a commit it sees carrying a `cairn/` path.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
