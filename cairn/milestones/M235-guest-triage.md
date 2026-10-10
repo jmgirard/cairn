@@ -28,12 +28,12 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `skills/cairn-triage/SKILL.md`'s session start no longer stops in guest mode, and the old stop sentence (`stopped before enumeration: guest collaboration mode`) is absent from the file. In its place a guest arm states that the pass skips the clean-tree, default-branch, and sync preconditions (it moves no ref and commits nothing), runs steps 1–4 as written, and runs step 5 with the stamp standing in for the commit message.
-- [ ] AC2: The skill's step 6 guest arm runs `cairn_validate.py` and replaces the `_Last hygiene check:` stamp as in owner mode, makes no commit and no push, and has the stamp name each refuted-premise or already-shipped drop with the record or path that holds its evidence. Step 7's guest close block reports the edits as written to disk and uncommitted in place of a commit hash, and its safety line says the same. The skill's frontmatter description and README.md's `/cairn-triage` table row name the guest arm's no-commit ending.
-- [ ] AC3: The tracking-rules "Collaboration mode" section names `/cairn-release` alone as stopping in guest mode and states the triage guest arm, and README.md's guest-mode section says the same. No sentence containing a line that `grep -rniE 'triage' skills/ hooks/ scripts/ README.md` lists states that `/cairn-triage` stops in guest mode.
-- [ ] AC4: The two guest-arm behaviors of AC1 and AC2 (the pass runs in guest mode with the old stop sentence gone, and the guest pass makes no commit or push) each have a prose guard in `skills/tests/` that fails when its sentence is blanked and passes on the branch.
-- [ ] AC5: `CHANGELOG.md`'s `## Unreleased` section has an entry stating that `/cairn-triage` runs in guest mode with its edits written to `cairn/` on disk and not committed.
-- [ ] AC6: The active profile's `verify` slot (`cairn/PROFILE.md`) is green on the branch.
+- [x] AC1: `skills/cairn-triage/SKILL.md`'s session start no longer stops in guest mode, and the old stop sentence (`stopped before enumeration: guest collaboration mode`) is absent from the file. In its place a guest arm states that the pass skips the clean-tree, default-branch, and sync preconditions (it moves no ref and commits nothing), runs steps 1–4 as written, and runs step 5 with the stamp standing in for the commit message.
+- [x] AC2: The skill's step 6 guest arm runs `cairn_validate.py` and replaces the `_Last hygiene check:` stamp as in owner mode, makes no commit and no push, and has the stamp name each refuted-premise or already-shipped drop with the record or path that holds its evidence. Step 7's guest close block reports the edits as written to disk and uncommitted in place of a commit hash, and its safety line says the same. The skill's frontmatter description and README.md's `/cairn-triage` table row name the guest arm's no-commit ending.
+- [x] AC3: The tracking-rules "Collaboration mode" section names `/cairn-release` alone as stopping in guest mode and states the triage guest arm, and README.md's guest-mode section says the same. No sentence containing a line that `grep -rniE 'triage' skills/ hooks/ scripts/ README.md` lists states that `/cairn-triage` stops in guest mode.
+- [x] AC4: The two guest-arm behaviors of AC1 and AC2 (the pass runs in guest mode with the old stop sentence gone, and the guest pass makes no commit or push) each have a prose guard in `skills/tests/` that fails when its sentence is blanked and passes on the branch.
+- [x] AC5: `CHANGELOG.md`'s `## Unreleased` section has an entry stating that `/cairn-triage` runs in guest mode with its edits written to `cairn/` on disk and not committed.
+- [x] AC6: The active profile's `verify` slot (`cairn/PROFILE.md`) is green on the branch.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -86,3 +86,34 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Copilot round: PR #244 opened at review start, state query `none`, Copilot requested (exit 0).
+
+- AC1 evidence: `grep -c` of the old stop sentence in `skills/cairn-triage/SKILL.md` = 0. Session start (lines 29–38) holds the "Guest mode runs on disk" arm: skips clean-tree, default-branch, and sync preconditions ("it moves no ref and commits nothing"), runs steps 1–4 as written and step 5 with the stamp standing in for the commit message. `test_guest_triage` green.
+- AC2 evidence: step 6 guest arm (`**Guest arm**` at ~line 287) validates and stamps "as above", the stamp names each refuted-premise or already-shipped drop's evidence record, "The guest pass makes no commit and no push". Step 7: status line `written to disk, not committed (guest mode)` in place of the hash, safety line "in guest mode its edits are on disk in `cairn/` and uncommitted". Frontmatter description and README.md:510 row both say "on disk with no commit".
+- AC3 evidence: tracking-rules.md:325–328 names `/cairn-release` alone as stopping and states the `/cairn-triage` arm. README.md:735–741 says the same. Sweep `grep -rniE 'triage' skills/ hooks/ scripts/ README.md` = 118 lines (41 outside `skills/tests/`); each sentence read, none states triage stops in guest mode (the two `assertNotIn` lines in the guard quote the old text to forbid it).
+- AC4 evidence: `test_guest_triage` 5/5 OK on the branch (7/7 after the review fixes). Blanking each registered block fails its guard (`mutation_engine.guard_fails_when_blanked` True for all 4 entries, 8 after fixes). The old-stop absence guard failed on main's text at T1 (work log).
+- AC5 evidence: CHANGELOG.md lines 7–13, first `## Unreleased` entry: "`/cairn-triage` runs in guest mode", edits "written to `cairn/` on disk and not committed or pushed".
+- AC6 evidence: verify on fc63360: scripts 406 OK (21 skipped), hooks 174 OK, plugin validate 0, marketplace validate 0, `claude plugin test .` 1777 pass 0 fail.
+- Consistency gate: `cairn_validate.py` all checks passed (exit 0). No principle changed, `cairn_impact` skipped. Profile consistency-gate checks are the verify slot (AC6).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: guest drop evidence lasts only until the next stamp replaces it — follow-up (new candidate row "Guest triage drop evidence outlives one stamp"); D-156 and the rulebook bullet now state the limit.
+- diff-bug #2: longer guest stamp conflicts with the rulebook's "one short line" — fix now (rulebook guest bullet names the exception).
+- diff-bug #3: "already shipped" can be judged against the operator's unmerged branch — fix now (step 2 reads `<base>/<default-branch>` with `git cat-file -e`; a shipped drop names a commit reachable from it).
+- diff-bug #4: skipped sync leaves step 2 judging stale code — fix now (same fix as #3, the ref is named above the step-3 table as last fetched).
+- diff-bug #5: step 6's commit sentence is unscoped before the guest arm — fix now ("In owner mode, make one docs-only commit").
+- diff-bug #6: "steps 1–4 as written" loose given step 2–4 guest clauses — reject (false: the arm names those clauses in the next sentence, and "as written" includes them).
+- diff-bug #7: registered mutation only blanks the label — fix now (two more entries on the behavior phrases).
+- diff-bug #8: negative asserts have no registry entry — reject (false as a gap: blanking cannot exercise `assertNotIn`; the old-stop guard was shown red on main at T1).
+- diff-bug #9: README "runs as usual, but" is loose — reject (style).
+- diff-bug #10: rulebook "skips its git preconditions" vaguer than other surfaces — reject (style; the bullet points at the skill, which names all three).
+- blame-history #1: skipping sync reads stale upstream, M173 sync rationale unaddressed — fix now (same fix as diff-bug #3; D-156 now states the sync rationale and its guest replacement).
+- blame-history #2: D-156 leaves the default-branch rationale implicit — fix now (D-156 decision names it).
+- blame-history #3: stamp is the only audit trail for guest drops — follow-up (same row as diff-bug #1).
+- blame-history #4: reverses M184's stop — reject (planned change; D-156 records the reason).
+- blame-history #5: "same untracked folder on every branch" too broad across worktrees — fix now ("on every branch of the checkout").
+- blame-history #6: no prior guard asserted the stop — noted, no defect.
+- blame-history #7: overlong owner-precondition line — reject (style).
+- prior-review #1: README edits unguarded (M234 put README in the guard domain) — fix now (`test_readme_states_the_guest_arm` plus a registry entry).
+- prior-review #2: `test_old_stop_sentence_is_gone` has no mutation entry — reject (same ground as diff-bug #8).
+- Return floor: no finding shows a criterion failing. Diff-bug #3 is a real defect in what the skill does; judged not load-bearing for a floor return because every drop passes the user's gate, so it is fixed on the branch with no status change.
