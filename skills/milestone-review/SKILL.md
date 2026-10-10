@@ -473,8 +473,8 @@ re-enters here, at the step the record shows is next:
    Where a Copilot review round ran on the PR (step 6's arm, or `/hotfix`
    step 6's), the round's resolved threads drop out of the unresolved
    filter, the Copilot review it read is logged as noted, a later Copilot
-   review is an ordinary item, and an operator's empty-body review is the
-   record of a reply, not an item (`skills/shared/copilot-review.md` §6).
+   review is an ordinary item, and an empty-body review, which GitHub makes
+   for each reply, is logged as noted (`skills/shared/copilot-review.md` §6).
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`); fix-now work lands per step 6 before the chip is posed,
