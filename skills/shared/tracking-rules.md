@@ -325,13 +325,13 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
-  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `origin` (the fork) at the handoff, and the PR
+  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `<fork>` (the git model's fork remote) at the handoff, and the PR
   targets the base repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened ready for the
   maintainers' review at the handoff selection, never earlier and never as a draft; every other `gh pr` command
   carries `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
   approval binding).
 - **cairn never merges in guest mode.** `/milestone-review` ends with a handoff gate in the merge gate's shape — hand
-  the branch to the maintainers (the push plus the `gh pr create` above), or decline; no merge option — and sets the
+  the branch to the maintainers (the push to `<fork>` plus the `gh pr create` above), or decline; no merge option — and sets the
   milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
