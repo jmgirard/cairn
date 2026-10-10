@@ -1,13 +1,13 @@
 # M234: Guest pushes find the fork, and intake commands work in any remote layout or shell
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — adopters run this skill prose for guest pushes, the `/milestone` audit, and the reply hand-off
-- **Branch/PR:** —
+- **Branch/PR:** m234-fork-remote-intake-edges
 
 ## Goal
 
@@ -41,7 +41,7 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 
 ## Tasks
 
-- [ ] T1: Write the `<fork>` recipe beside `<base-repo>` in `skills/shared/tracking-rules.md:226-233`, with the no-match and two-match stop. Make `<fork-owner>` read `<fork>`. Run the recipe in insight, brms, and parameters. Run it in a temporary clone of insight that has a second remote at the fork's URL. Log the four results in one work-log line.
+- [x] T1: Write the `<fork>` recipe beside `<base-repo>` in `skills/shared/tracking-rules.md:226-233`, with the no-match and two-match stop. Make `<fork-owner>` read `<fork>`. Run the recipe in insight, brms, and parameters. Run it in a temporary clone of insight that has a second remote at the fork's URL. Log the four results in one work-log line.
 - [ ] T2: Change each guest push from `origin` to `<fork>` at `tracking-rules.md:324`, `hotfix/SKILL.md:273` and `:284`, `milestone-review/SKILL.md:604` and `:618`, `milestone-implement/SKILL.md:72`, `copilot-review.md:86`, and `milestone/SKILL.md:173`. Reword `hotfix/SKILL.md:28-29`, which assumes the fork layout. Run AC2's search and log the owner or guest disposition of each hit. Add a prose guard that pins `<fork>` at every guest push site (the whole list, M171 lesson). Make sure that it fails when one site is reverted.
 - [ ] T3: Add §2's `--repo` rule sentence. Add `--repo <base-repo>` at `milestone/SKILL.md:152` (as `gh pr checks <N> --repo <base-repo>`), `:156-158`, `:194-195`, `:218`, `:229`, `:239`, and `:310`. Add a prose guard that runs AC3's scan. Make sure that it fails on one planted bare span.
 - [ ] T4: Name `close` in the Intake paragraph (`tracking-rules.md:191-196`). Add a guard in `skills/tests/test_issue_triage.py`. Compare the `leave` clause with `git show b369a63:skills/shared/tracking-rules.md`.
@@ -59,6 +59,8 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - 2026-10-10: plan gate chose a temp file with `--body-file` over one command per shell, a stdin heredoc, or a file under `cairn/` or the git directory. The first two stay shell-specific, and the last two write inside the repo or need a new ignore entry. Falsified by a platform whose temp path `gh` cannot read from a double-quoted argument.
 - 2026-10-10: plan gate chose `wc -l -c` (bytes) over `LC_ALL=C wc -l -m`. Bytes do not change with the locale, and the prefix does not work in PowerShell. Falsified by a `wc` whose `-c` count changes with the locale.
 - 2026-10-10: plan gate chose one §2 rule sentence plus per-site `--repo` over per-site edits alone (M185 lesson). Falsified by a later bare `gh` read in §2 that the guard misses.
+- 2026-10-10: implement started on branch m234-fork-remote-intake-edges. The untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-10: T1: the `<fork>` recipe is in the rulebook's canonical recipe. Probe results: insight resolves `fork`, brms resolves `origin`, parameters has no match, and a scratch `git init` repo with remotes `origin` (easystats/insight), `fork`, and `fork2` (both jmgirard/insight) reports two matches. A remote whose read fails (jmgirard/no-such-repo-zz9) is not a match. The scratch repo stands in for a clone, because the recipe reads only `git remote`. Verify: 5 of 5 green.
 
 ## Decisions
 

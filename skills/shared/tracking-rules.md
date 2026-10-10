@@ -230,7 +230,11 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   ls-remote --symref <base> HEAD` and read the `ref: refs/heads/<name>` line. Only with **no remote at all** ask the
   user — never guess from the local current branch (wrong on a feature branch). A `gh` command that must name the base
   repo takes its `OWNER/REPO` slug as `<base-repo>`: `gh repo view "$(git remote get-url <base>)" --json
-  nameWithOwner -q .nameWithOwner`; `<fork-owner>` reads `origin` the same way with `--json owner -q .owner.login`.
+  nameWithOwner -q .nameWithOwner`. In guest mode the **fork remote** `<fork>` is the one remote that `git remote`
+  lists, other than `<base>`, whose parent equals `<base-repo>`, ignoring case. Read each parent with `gh repo view
+  "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote whose read
+  fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
+  one, a guest push stops before the push and names the remotes it read and each parent it found.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
