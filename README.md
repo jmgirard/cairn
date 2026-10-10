@@ -663,7 +663,9 @@ actually reach.
   request, so GitHub's own settings choose the level, and the report says
   so. A review that does not arrive in 20 minutes stops the run. The close
   block names the command that resumes it: `/milestone-review M<NNN>`, or
-  `/hotfix` with the PR number. Adopted outside PRs skip the round.
+  `/hotfix` with the PR number. Adopted outside PRs skip the round. The
+  conversation read at the approval gate then leaves out the Copilot items
+  that the round already handled.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each

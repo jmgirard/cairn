@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -75,6 +75,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: T7: README bullet and CHANGELOG entry added. `skills/tests/test_copilot_review_round.py` pins each skill's round-arm citation and both arms in each skill (6 tests). The citation test pins the arm sentence, because the bare path recurs in each skill and a mutation block must occur once. The six tests are registered in the mutation harness, and each fails when its block is blanked. Verify slot green: scripts 406, hooks 174, both `claude plugin validate` runs, and `claude plugin test` 1777 pass. Hand-run `skills/tests` green (675).
 - 2026-10-10: claim audit: 120 claims read, 7 corrected — skills/shared/copilot-review.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, README.md
 - 2026-10-10: claim-audit fixes: the module's budget figure is re-measured, and it reads `fullDatabaseId` (`databaseId` is deprecated). The hotfix open-PR re-entry also covers the guest handoff, the CI-wait close names both re-entries, and the guest create is skipped for an open PR. The rulebook bullet says owner mode. Review step 7's first-pass clause and step 8's URL record allow for the round arm. The README says owner mode, names `pull_request`-triggered CI, and names each resume command. The request-failure claim now reads as an example. The auditor's observation that the PR-conversation read would dispose of Copilot's items twice is fixed in the module's §6: the read skips them. The rulebook mass is re-seeded to 629 lines / 59,763 chars at its three pins.
+- 2026-10-10: claim-audit re-read (same reader, once): 8 of the 9 corrected items hold. The module's §6 skip sentence had no match in the skills, so review step 7's PR-conversation read (which `/hotfix` step 6 reuses) and the README now state the skip. Verify slot green (scripts, hooks, both plugin validates, `claude plugin test` 1777 pass), and hand-run `skills/tests` green (675). Status set to `review`.
 
 ## Decisions
 
