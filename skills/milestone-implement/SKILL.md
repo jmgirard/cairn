@@ -239,7 +239,8 @@ run ingestion first (see `/milestone-brief`).
    results); the implement-stop **CI line** (tracking-rules close-block
    shape), one plain sentence saying there is nothing to wait for now: no
    PR exists yet, and `/milestone-review` pushes the branch, opens the PR,
-   and waits on CI itself at its merge step, after the user's approval (on
+   and waits on CI itself at its merge step, after the user's approval,
+   or before the merge question where the Copilot review round is on (on
    a return from a review that stopped between its post-approval open and
    the merge, where the header already names an open PR, the line instead
    says there is still nothing to wait for now: review re-pushes and

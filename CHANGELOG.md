@@ -24,14 +24,12 @@
   review's body, is fixed, rejected with a reason, or sent to a candidate
   row. Each thread gets a reply with no thanks and is resolved. In owner
   mode the PR opens before the merge question, which lists every Copilot
-  item. In guest mode the round runs after the handoff. A stop at the wait
-  resumes from the PR's state. A rerun waits once more for a review still
-  pending, then skips the round if it has not come. `/hotfix` with the
-  number of your own open `hotfix-*` PR now re-proves its regression test
-  and, in owner mode, goes back to its approval step instead of the adopt
-  walk. In guest mode it resumes the round and stops without asking for the
-  handoff again. GitHub's settings choose the review level, because its API took
-  none per request when this shipped. The rules live in
+  item. In guest mode the round runs after the handoff. If the review has
+  not arrived after 20 minutes, the round is skipped with a one-line report
+  and the run goes on; a later Copilot review shows in the merge question's
+  conversation read. The round runs once per PR, and adopted PRs and
+  milestones with companion checkouts skip it. GitHub's settings choose the
+  review level, because its API took none per request when this shipped. The rules live in
   `skills/shared/copilot-review.md`.
 
 - **The `/milestone` health audit lists your open hotfix PRs.** A new

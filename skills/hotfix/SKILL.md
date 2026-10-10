@@ -43,22 +43,6 @@ a bare PR number resolves against the fork.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
-   **Open authored-PR re-entry (M231).** A PR-reference argument whose
-   `gh pr view <N> --json state,headRefName,author` reports `OPEN`, a
-   `hotfix-*` head branch, and the operator as author (the login `gh api
-   user --jq .login` returns) is the operator's own fix after its PR
-   opened: stopped at the Copilot round's wait or at step 6's CI wait, or
-   handed to the maintainers in guest mode. It skips
-   the adopt-a-PR walk. Check `git status` first, by step 2's dirty-tree
-   rule. Then `git fetch origin`, `git checkout <head>`, and `git merge
-   --ff-only origin/<head>`, so a stale local branch catches up. The hotfix
-   bar still holds: prove the branch's regression test both ways by step
-   3's adopting sequence, run step 4's `verify` slot, and check step 5's
-   changelog entry. Then go to step 6, where the round resumes from the
-   PR's state (`skills/shared/copilot-review.md` §7) when it is on. In
-   guest mode the PR is already handed off, so step 6's handoff chip is not
-   posed again: resume the round when it is on, then stop
-   with step 6's guest close block, which reports the PR's state.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
@@ -207,8 +191,9 @@ a bare PR number resolves against the fork.
    issue exists — skipped when the fix already has an open PR. Then run the
    round in that module, asking for Lite. Its `copilot:` lines and level
    line are stated in chat at the chip below, and the PR-conversation read
-   below runs on this PR, which now pre-exists. An adopted PR skips the
-   round: the contributor's PR is theirs to put to a reviewer. With the
+   below runs on this PR, which now pre-exists. A decline at the chip
+   leaves this PR open, and the close block names it. An adopted PR skips
+   the round: the contributor's PR is theirs to put to a reviewer. With the
    round off, nothing in this arm runs.
 
    **The gate:** present the diff, the regression-test evidence, and
@@ -245,9 +230,7 @@ a bare PR number resolves against the fork.
    opening it ready for review, never as a draft, `Fixes #N` in the body
    when a GitHub issue exists (the create is skipped when the fix already
    has an open PR — the PR-reference re-entry, or the Copilot round arm —
-   where the branch is pushed and the existing PR stands). A decline at
-   a chip re-posed on an open PR deletes the merge-guard marker below if
-   it names this PR. Merge (`gh pr merge <N> --squash --delete-branch`
+   where the branch is pushed and the existing PR stands). Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -258,12 +241,11 @@ a bare PR number resolves against the fork.
    background at the ceiling is reported from fresh `gh pr checks` state,
    stopped with `TaskStop`, and the session stops there with a close block
    whose fenced next command is `/hotfix` with the PR reference — step 1's
-   open authored-PR re-entry or merged-PR re-entry, whichever the PR's
-   state selects, re-derives the merge state, the merged one also
-   verifying the merged diff post-hoc — and whose CI line (tracking-rules close-block
+   merged-PR re-entry re-derives the merge state and verifies the
+   merged diff post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,
-   then that rerunning `/hotfix` with the PR reference re-derives that state,
-   asks the approval chip again, and waits again, so waiting for green first is optional and never
+   then that rerunning `/hotfix` with the PR reference re-derives that state
+   and waits again, so waiting for green first is optional and never
    required; never left armed,
    never merged past; a PR created moments ago can report no checks before
    GitHub registers them, so where the profile does not declare the repo
@@ -286,16 +268,12 @@ a bare PR number resolves against the fork.
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
    vocabulary in its title or body (the changelog entry is the branch's
-   only prose), the create skipped when step 1's open authored-PR
-   re-entry found the PR already open — then no marker, no CI wait, no
-   merge. With the Copilot
+   only prose) — then no marker, no CI wait, no merge. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite, with the module's guest forms: `--repo <base-repo>`,
    the base repo's owner and name in each `gh api` call that addresses a
    repository (the resolve takes only a thread id), and fix pushes to
-   the fork. Its `copilot:` lines ride in the close block. A timeout stop
-   in the round ends with the module's close block, whose `/hotfix` rerun
-   with the PR reference takes step 1's open authored-PR re-entry. Then
+   the fork. Its `copilot:` lines ride in the close block. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and
    nothing waits on it here; the fenced next command is `/hotfix` with the

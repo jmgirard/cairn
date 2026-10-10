@@ -82,16 +82,6 @@ re-enters here, at the step the record shows is next:
   create` — the header already names the open PR — from the push and the
   marker write onward. The step-7 PR-conversation read runs before that
   chip is re-posed, the PR pre-existing.
-- (c′) `OPEN`, and the work log's newest `copilot round:` line reads
-  `waiting` (a stop at the Copilot round's wait; checked before (c) and
-  (d)) → step 1, with step 3 re-run when the default branch had moved,
-  then the round resumes from the PR's state
-  (`skills/shared/copilot-review.md` §7): a review still pending gets one
-  more wait and is skipped if it still has not come, and the round is
-  skipped at once when the opt-in line is now off.
-  In owner mode, step 7 follows,
-  its PR-conversation read included. In guest mode, step 8's guest close
-  block follows, the status already `blocked`.
 - (d) any other state, or a state above whose conditions are not met →
   step 1, then the review with the post-approval open at step 8 skipping
   `gh pr create` when the header already names an open PR. A `gh` that is
@@ -413,16 +403,16 @@ re-enters here, at the step the record shows is next:
    the header already names an open PR. Record the PR URL in the header in
    a commit on the branch. Then run the
    round in that module, asking for Balanced. Each item's `copilot:` line
-   goes to the Review section, and the work log gets the module's
-   `copilot round:` line (§6). Commit those records before step 7; a fix
+   goes to the Review section. Commit those records before step 7; a fix
    push or step 8's push carries them and the URL commit. When the round
    committed fixes, re-run step 4's consistency gate before step 7.
    Step 7's PR-conversation read then runs on this PR, which
-   now pre-exists. With `companion:` entries in the header, the arm does
-   not run, because companions merge before the primary is pushed (step
-   8): the round is skipped with a one-line report and the module's
-   no-PR skip line (§6), and the PR opens at step 8. With the round off, nothing in this arm runs, and the
-   PR opens at step 8 after approval.
+   now pre-exists. The arm does not run under route (b), whose PR is
+   already merged, or with `companion:` entries in the header, because
+   companions merge before the primary is pushed (step 8): there the round
+   is skipped with a one-line report, and the PR opens at step 8. With the
+   round off, nothing in this arm runs, and the PR opens at step 8 after
+   approval.
 
 7. **The merge question.** Present, outcome-first (per tracking-rules):
    what the user is approving in plain words — what the milestone does or
@@ -621,10 +611,9 @@ re-enters here, at the step the record shows is next:
    §1), run it here, asking for Balanced, with the module's guest forms:
    `--repo <base-repo>`, the base repo's owner and name in each `gh api`
    call that addresses a repository (the resolve takes only a thread id),
-   and fix pushes to the fork. Its `copilot:` lines and its
-   `copilot round:` work-log line are written on disk, and the lines ride
-   in the close block below. A timeout stop in the round still sets the
-   status below before it stops.
+   and fix pushes to the fork. When the round committed fixes, re-run
+   step 4's consistency gate before the close block. Its `copilot:` lines
+   are written on disk and ride in the close block below.
    Then set status `blocked` in ROADMAP and the header
    mirror; append the work-log line `blocked: PR #<N> awaits the
    maintainers of <base-repo>` — the blocker the status vocabulary requires

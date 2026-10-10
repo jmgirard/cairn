@@ -465,7 +465,8 @@ an internal docs-only diff. Claude settles each finding itself: it fixes a
 real one inside the milestone's scope, sends a real one outside it to a
 ROADMAP candidate row, and rejects a false one with the reason. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
-of you, and opens the PR after your yes.
+of you, and opens the PR after your yes (before it, with the opt-in
+Copilot round described below).
 Nothing lands on your default branch until you say yes. After the merge,
 the milestone compresses to a short summary in the archive, the ROADMAP
 row flips to `done`, and the next session, tomorrow or next month, resumes
@@ -662,12 +663,11 @@ actually reach.
   round runs after the handoff opens the PR. A hotfix asks for Lite and a
   milestone for Balanced. On 2026-10-10 GitHub's API took no level for each
   request, so GitHub's own settings choose the level, and the report says
-  so. A review that does not arrive in 20 minutes stops the run. The close
-  block names the command that resumes it: `/milestone-review M<NNN>`, or
-  `/hotfix` with the PR number. A rerun waits once more, then skips the
-  round if the review still has not come. Adopted outside PRs skip the
-  round. At the approval gate, the conversation read shows a Copilot
-  review that arrives after the round as an ordinary item.
+  so. If the review has not arrived after 20 minutes, the round is skipped
+  with a one-line report and the run goes on. A Copilot review that
+  arrives later shows at the approval gate's conversation read as an
+  ordinary item. The round runs once per PR. Adopted outside PRs, and
+  milestones with companion checkouts, skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
