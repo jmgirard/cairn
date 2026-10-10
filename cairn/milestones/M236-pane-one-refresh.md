@@ -11,40 +11,44 @@
 
 ## Goal
 
-The cairn pane shows only the unresolved review threads of each PR, and one ↻ Button at the top of the pane reads everything again and draws dim while a read runs.
+The cairn pane shows only the unresolved review threads of each PR, and one ↻ Button at the right end of the pane's first line reads everything again and shows ⋯ while a read runs.
 
 ## Scope
 
-**In:** Remove the `unanswered` count from the counts read, its state, and the pane's count line. Keep the `unresolved` count. Replace the `Refresh` Buttons on the `BLOCKED` and `HOTFIXES` headings with one ↻ Button at the right end of a new first row of the pane. The ↻ Button draws dim while a read of PR states runs. A press during its own read does nothing. Update README, DESIGN, and CHANGELOG.
+**In:** Remove the `unanswered` count from the counts read, its state, and the pane's count line. Keep the `unresolved` count. Replace the `Refresh` Buttons on the `BLOCKED` and `HOTFIXES` headings with one ↻ Button at the right end of the pane's first line. A milestone's head line shows its id in the phase color, with no phase word. The ↻ label is `⋯` while a read of PR states runs. A press during an earlier ↻ press's read does nothing. Update README, DESIGN, and CHANGELOG.
 
 **Out:** A timer or turn-end read. The pane reads only at an open, a press, and an in-process `/clear` (M224, M230). That rule stays. The band's own Buttons stay as they are. The other pane edges stay in the candidate rows "Pane edges (M222–M226 reviews)" and "Pane edges (M230 review)".
 
 ## Acceptance criteria
 
 - [ ] AC1: `prCounts` and `countPr` in `hooks/status/counts.ts` give only `unresolved`, the number of review threads with `isResolved` false. `COUNTS_QUERY` asks for no reviews, conversation comments, or commits. `CairnPrRead` in `types/index.d.ts` holds `counts: { unresolved: number } | null`, and the `prs` atom takes a new `shape` tag. The pane's count line reads `1 unresolved thread` or `N unresolved threads`, and no count line shows when the number is 0. `git grep -n -i "unanswered" -- hooks/status types README.md cairn/DESIGN.md` returns no match. `claude plugin test .` passes tests for these replies: no threads, one unresolved thread, two unresolved threads with one resolved thread, a reply whose threads are not a list (counts null), and the reply that PR #245 gave on 2026-10-10. That reply is stored as `gh api graphql` printed it with the new query, unedited. It has one Copilot review and no threads, and it gives `unresolved` 0 and no count line.
-- [ ] AC2: In the drawn pane for a found ROADMAP, exactly one Button has the key `cairn-pane-refresh`. It has the label `↻` and sits on the first row of the pane, whose Box puts it at the right end (`justifyContent` `flex-end`). No Button key ends in `-hotfixes`, and the `BLOCKED` and `HOTFIXES` heading rows carry no Button. `claude plugin test .` passes tests that find every Button in the drawn pane (`findAll`) for four states. One state has blocked PRs and hotfix PRs. One has neither. One has the Next line with Status and Clear. One has no ROADMAP, which draws no ↻ Button.
-- [ ] AC3: From the start of any read of PR states (a pane open, a ↻ press, or an in-process `/clear`) until the newest read started has settled, the ↻ Button draws with `dimColor`. At other times it draws without `dimColor`, also after a read whose calls exit non-zero or reject. From a ↻ press until the read it started settles, a further press reads no file and runs no `$.process.run` call. A press when no press's read runs reads the tracking files, the hotfix list, and the state and thread count of each PR, as the old `Refresh` press did. When the stored reading state is true but no press's read runs in this module, as after a reload, a press starts a read, and the Button draws without `dimColor` when that read settles. `claude plugin test .` passes tests in `hooks/status/pane.test.tsx` for six cases. A held read draws dim, then not dim after it succeeds, after it exits 1, and after it rejects. An open and a press overlap, the older read held longer, and the Button is not dim once the newer read settles. A second press during a held read leaves the number of `gh pr view`, `gh api graphql`, `gh pr list`, and `git` calls unchanged, with a blocked PR URL in the fixture. A stored reading state of true with no read in this module lets a press start a read.
-- [ ] AC4: README's pane section and the `hooks/status/` entry in DESIGN describe the one ↻ Button at the top of the pane, its dim drawing during a read, and that a press during its own read does nothing. They say that the count line shows only unresolved threads. No line that `git grep -n -i "refresh" -- README.md cairn/DESIGN.md` returns puts a Button on the `BLOCKED` or `HOTFIXES` heading. `CHANGELOG.md` has an entry for both changes under `## Unreleased`.
-- [ ] AC5: The five `verify` commands in `cairn/PROFILE.md` exit 0 on the branch head.
-- [ ] AC6: At a live look in the operator's session after a plugin reload, the operator sees ↻ at the right end of the pane's first row, presses it, and sees it draw dim and then return. The operator's answer is a work-log line.
+- [ ] AC2: In the drawn pane for a found ROADMAP, exactly one Button has the key `cairn-pane-refresh`. It sits on the first line that `paneLines` gives. That line is the first milestone's head line, or the `no active milestone` line when no milestone is active. The Button's Box, `<line key>-refresh`, is the last child of that line's Box, after the tail Box when the head line has a percent. Only that line's text Box has `flexGrow` 1, so its tail and the Button sit at the right end, and no line Box has `justifyContent`. No Button key ends in `-hotfixes`, and the `BLOCKED` and `HOTFIXES` heading rows carry no Button. `claude plugin test .` passes tests that find every Button in the drawn pane (`findAll`) for five states. The first state has blocked PRs and hotfix PRs and no active milestone. The second has an `in-progress` and a `review` milestone, and its second head line carries no Button. The third has the Next line with Status and Clear and one active milestone. The fourth has one active milestone and no PRs. The fifth has no ROADMAP and draws no `cairn-pane-refresh` Button.
+- [ ] AC3: A milestone's head line starts with its id, bold, in its phase's color. That is the implement color for `in-progress` and the review color for `review`, the two statuses that reach the pane. No phase word comes before the id. `claude plugin test .` passes tests that check the head line's lead spans for an `in-progress` and a `review` milestone.
+- [ ] AC4: From the start of any read of PR states (a pane open, a ↻ press, or an in-process `/clear`) until the newest read started has settled, the `cairn-pane-refresh` Button's label is `⋯`. At other times its label is `↻`, also after a read whose calls exit non-zero or reject, except that a stored reading state of true left by a reload shows `⋯` until the next read settles. From a ↻ press until the read it started settles, a further press reads no file and runs no `$.process.run` call. A press when no press's read runs reads the tracking files, the hotfix list, and the state and thread count of each PR, as the old `Refresh` press did. When the stored reading state is true but no press's read runs in this module, as after a reload, a press starts a read, and the label is `↻` when that read settles. `claude plugin test .` passes tests in `hooks/status/pane.test.tsx` for seven cases. A held read shows `⋯`, with the Button's Box still the last child of the first line. The label is `↻` after the read succeeds, after it exits 1, and after it rejects. An open and a press overlap, the older read held longer, and the label is `↻` once the newer read settles. A second press during a held press read leaves the number of `$.fs.read`, `gh pr view`, `gh api graphql`, `gh pr list`, and `git` calls unchanged, with a blocked PR URL in the fixture. A stored reading state of true with no read in this module lets a press start a read.
+- [ ] AC5: README's pane section and the `hooks/status/` entry in DESIGN describe the one ↻ Button at the right end of the pane's first line and its `⋯` label during a read. They say that a press during an earlier ↻ press's read does nothing. They say that the count line shows only unresolved threads, and that a head line shows the milestone id in its phase color with no phase word. No line that `git grep -n -i "refresh" -- README.md cairn/DESIGN.md` returns puts a Button on the `BLOCKED` or `HOTFIXES` heading. No line that `git grep -n -i "dim" -- README.md cairn/DESIGN.md CHANGELOG.md` returns says that the ↻ draws dim or with `dimColor`. `CHANGELOG.md` has entries under `## Unreleased` for the thread-only count, the one ↻ Button on the first line with its `⋯` label, and the head line's id in its phase color with no phase word.
+- [ ] AC6: The five `verify` commands in `cairn/PROFILE.md` exit 0 on the branch head.
+- [ ] AC7: At a live look in the operator's session after a plugin reload, the operator sees ↻ at the right end of the pane's first line, and the id in the phase color with no phase word. The operator presses ↻ and sees `⋯` and then `↻`, or the work-log line says that the read was too short to see. The operator accepts the look, and the answer is a work-log line.
 
 ## Coverage
 
 - AC1 → T1
-- AC2 → T2
-- AC3 → T3
-- AC4 → T4
-- AC5 → T5
-- AC6 → T6
+- AC2 → T2, T6
+- AC3 → T6
+- AC4 → T3, T6
+- AC5 → T4, T6
+- AC6 → T5, T7
+- AC7 → T8
 
 ## Tasks
 
 - [x] T1: Count (AC1). Cut `COUNTS_QUERY`, `PrNodes`, `prNodes`, and `countPr` in `hooks/status/counts.ts` down to the threads. Remove `unanswered` from `countsText` in `pane.ts`, from `CairnPrRead`, and from the `counts.ts` header. Bump the `prs` shape tag in `register.tsx`. Capture the PR #245 reply into a fixture file and rewrite `counts.test.ts`.
-- [x] T2: One ↻ Button (AC2). Add a first line to `paneLines` that carries `refresh`, and remove the heading Buttons and the `hotfixes` target. Draw the first row with `justifyContent="flex-end"` in the `ui.render` Pane hook. Set `REFRESH_LABEL` to `↻`. Update the pane tests.
-- [x] T3: Reading state (AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
-- [x] T4: Docs (AC4). README pane section, DESIGN `hooks/status/` entry, CHANGELOG `## Unreleased`.
-- [x] T5: Run the five `verify` commands (AC5).
-- [ ] T6: Live look (AC6). Ask the operator to reload plugins, look at the pane, and press ↻ once.
+- [x] T2: One ↻ Button (old AC2, wording before the T6 amendment). Add a first line to `paneLines` that carries `refresh`, and remove the heading Buttons and the `hotfixes` target. Draw the first row with `justifyContent="flex-end"` in the `ui.render` Pane hook. Set `REFRESH_LABEL` to `↻`. Update the pane tests.
+- [x] T3: Reading state (old AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
+- [x] T4: Docs (old AC4). README pane section, DESIGN `hooks/status/` entry, CHANGELOG `## Unreleased`.
+- [x] T5: Run the five `verify` commands (old AC5).
+- [ ] T6: Live-look amendment (AC2, AC3, AC4, AC5). Remove the `refresh` first line, and put the `refresh` Button on the first line `paneLines` gives, with its text Box at `flexGrow` 1. Drop the phase word from `milestoneLines`, and color the id with the phase. Swap the `dimColor` for the `⋯` label. Update the tests and the docs.
+- [ ] T7: Run the five `verify` commands again (AC6).
+- [ ] T8: Live look again (AC7).
 
 ## Work log
 
@@ -66,6 +70,19 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: T5 done. All five verify commands exit 0 on the T4 head, `claude plugin test .` 1556 pass.
 - 2026-10-10: claim audit: 46 claims read, 1 corrected — hooks/status/pane.test.tsx (the `gate()` helper comment named a `then` it does not have).
 - 2026-10-10: T6 stop for the operator's live look. The plugin loads from `~/.claude/skills/cairn`, a symlink to this checkout, which is on the M236 branch, so a new session in `~/github/cairn` or a plugin reload here runs the branch's mod.
+- 2026-10-10: T6 live look: the operator saw ↻ on its own row above the head line and no dim during a read, and said the look was wrong. They asked to put ↻ on the head line, shift the head line left, and drop the phase word, with the id in the phase color. The dim choice's falsifier fired: the desktop app drew no `dimColor` change.
+- 2026-10-10: question at the T6 stop: reading look — the operator chose a `⋯` label during a read, over a "↻ reading…" label and over no reading state.
+- 2026-10-10: substantive amendment: AC2 moves ↻ to the right end of the first line `paneLines` gives. New AC3 drops the phase word from head lines, which supersedes the phase word the operator picked at the M208 look. AC4 swaps `dimColor` for the `⋯` label, AC5 covers the new docs, and old AC5 and AC6 become AC6 and AC7. Goal and Scope follow. T6 to T8 are added, and the old T6 look becomes T8.
+- 2026-10-10: re-audit: AC2 (full) — 9 findings across AC2 to AC7, all taken: the Button Box as the last child, `flexGrow` on the first line only, five test states, no dead gray status, the `⋯` layout check, an earlier-press wording, a `dim` grep, and a look that may be too short.
+- 2026-10-10: re-audit: AC3 (full) — first reader: no unreachable status (finding 4 taken).
+- 2026-10-10: re-audit: AC4 (full) — first reader: the `⋯` layout check (finding 5 taken).
+- 2026-10-10: re-audit: AC5 (full) — first reader: `dim` grep and earlier-press wording (findings 6, 7 taken).
+- 2026-10-10: re-audit: AC7 (full) — first reader: a read too short to see (finding 9 taken).
+- 2026-10-10: re-audit: AC2 (full) — second reader: nothing.
+- 2026-10-10: re-audit: AC3 (full) — second reader: nothing.
+- 2026-10-10: re-audit: AC4 (full) — second reader: the reload exception, `$.fs.read` in the press count, and seven cases. The fixes went to the operator at the stop, and the operator accepted them.
+- 2026-10-10: re-audit: AC5 (full) — second reader: the CHANGELOG entries were not named. The fix went to the operator at the stop, and the operator accepted it.
+- 2026-10-10: re-audit: AC7 (full) — second reader: nothing.
 
 ## Decisions
 
