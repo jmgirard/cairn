@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-10 (M231 merged as PR #240: validate green, byte budgets met, no lesson added, M228 row pruned, copilot-review module within budget, prose guards green)_
+_Last hygiene check: 2026-10-10 (M232 merged as PR #241: validate green, byte budgets met, no lesson added, M229 row pruned, doctrine modules within budget, prose guards green)_
 
 ## Milestones
 
@@ -9,10 +9,9 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M229 | The edit-work Sonnet roles move to Haiku 5.5 | done | M228 | normal | milestones/archive/M229-haiku-roles.md |
 | M230 | The pane's PR reads stop holding up opens | done | — | normal | milestones/archive/M230-pane-reads-detached.md |
 | M231 | Hotfix and milestone PRs get a Copilot review round | done | — | normal | milestones/archive/M231-copilot-review-round.md |
-| M232 | `/milestone` looks into one GitHub issue and routes it | review | — | normal | milestones/M232-issue-look-in.md |
+| M232 | `/milestone` looks into one GitHub issue and routes it | done | — | normal | milestones/archive/M232-issue-look-in.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
