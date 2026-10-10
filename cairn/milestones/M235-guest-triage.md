@@ -117,4 +117,10 @@ Copilot round: PR #244 opened at review start, state query `none`, Copilot reque
 - prior-review #1: README edits unguarded (M234 put README in the guard domain) — fix now, fixed 9507b51 (`test_readme_states_the_guest_arm` plus a registry entry).
 - prior-review #2: `test_old_stop_sentence_is_gone` has no mutation entry — reject (same ground as diff-bug #8).
 - Post-fix verify on 9507b51: scripts OK (21 skipped), hooks OK, plugin and marketplace validate 0, `claude plugin test .` 1777 pass 0 fail, `cairn_validate` all passed, hand-run `skills/tests` OK.
+- copilot: skills/shared/tracking-rules.md:327 (rulebook mass baseline in `/milestone` and its guards left at 636 lines / 60,714 bytes) — fix now, fixed 6fc9c58 (re-seeded to 638 / 60,962; skills/tests, scripts, hooks, both validates green after)
+- copilot: cairn/milestones/M235-guest-triage.md:10 (header lacks the PR URL) — reject (false at the head now pushed: fc63360 records PR #244; Copilot reviewed 8b76713, before that commit was pushed)
+- copilot: review body (mutation entries missing for two protected phrases) — fix now, fixed 9507b51 (same as diff-bug #7)
+- copilot: review body overview — noted
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: no human reviews or issue comments on PR #244
 - Return floor: no finding shows a criterion failing. Diff-bug #3 is a real defect in what the skill does; judged not load-bearing for a floor return because every drop passes the user's gate, so it is fixed on the branch with no status change.
