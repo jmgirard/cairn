@@ -124,3 +124,5 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - live-run #4: §4 does not say how to run the checkout's code rather than an installed release — fix now
 - live-run #5: the PR search takes only the number, and the issue search returns the issue itself — fix now (with diff-bug #16)
 - live-run #6: unclear whether a one-phase look-in marks a chapter — reject, false (the phase header directive covers it)
+- Pass 2 (2026-10-10, head 3e43c88): branch pushed to PR #241. The Copilot state query returned `reviewed head Lite`, so nothing was requested.
+- Pass 2 evidence AC1–AC6: re-run on 3e43c88. The frontmatter trigger and `argument-hint` are present, §4 is at line 318, and `claude plugin validate .` exits 0 (AC1). §4 lists 6 scale entries, three verdicts and three levels (AC2). The chip's four options are in order (AC3). The AC4 grep lists 4 lines: `gh issue view`, `gh issue list`, `gh pr list`, and the hand-off, each with `--repo <base-repo>` (AC4, AC5). The template section is 29 lines and CLAUDE.md is 26, each +2 in the section, and the README carries the paragraph and the table row (AC6).
