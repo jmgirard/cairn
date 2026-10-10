@@ -5586,3 +5586,34 @@ on each fix push, the cost D-138 avoided. The merge question's existing
 PR-conversation read runs on that PR. Falsified by an opted-in repo whose
 Copilot rounds change nothing the merge question shows, while the extra CI
 runs are reported as a cost.
+
+### D-153 (2026-10-10): In an opted-in owner repo, `/milestone-review` opens the PR and requests Copilot at step 2, and step 7's PR-conversation read handles Copilot's threads — narrows D-152's placement sentence and D-138's unpushed-URL record on that path (M231, RR17)
+
+**Context:** D-152 placed the Copilot round "after cairn's own review and
+before the merge question" as a separate step. M231's review took three
+defect returns at that step's edges, and the third went to a Fable review
+(RB17). RR17 found that the separate step failed because it tried to know
+whether "the round ran", which the PR cannot tell it, and that the PR's
+own signals (a pending request, an existing review, each thread's resolved
+state) answer every per-item question with no record.
+
+**Decision:** In an owner repo with `# Copilot review: on`,
+`/milestone-review` pushes the branch, opens the PR, and requests Copilot
+at step 2, before cairn's own verification. Step 7's PR-conversation read
+gives each unresolved Copilot thread its disposition, then replies on it
+and resolves it. D-152's "after cairn's own review" becomes "at the start
+of review"; its reasons and rejections stand. On this path the PR-URL
+header record is pushed with the step-6 checkpoint, which narrows D-138's
+"never pushed" consequence. Rejected, with RR17: a post-approval hotfix
+round with a re-posed chip (it moves the decline problem to a second
+chip), and any record that the round ran (three passes showed each going
+stale against the PR).
+
+**Consequences:** Copilot's 2-to-20-minute review runs under cairn's own
+checks, so a wait at the read is usually zero. A ready PR is open during
+the whole review, so a web-UI merge outside the session has a longer
+window; the enforcement boundary already calls that honor-system.
+`/hotfix` and guest mode cannot open early and keep a serial request,
+bounded wait, and read. Falsified by an opted-in milestone whose step-7
+read still re-disposes a Copilot thread an earlier pass resolved, or
+requests Copilot twice on one PR.

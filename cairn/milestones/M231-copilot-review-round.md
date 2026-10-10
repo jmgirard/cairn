@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -30,10 +30,10 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 
 ## Coverage
 
-- AC1 → T2, T3, T4, T8
-- AC2 → T1, T2
-- AC3 → T3, T4, T5, T8
-- AC4 → T2, T3, T4, T8
+- AC1 → T2, T3, T4, T8, T10
+- AC2 → T1, T2, T10
+- AC3 → T3, T4, T5, T8, T10
+- AC4 → T2, T3, T4, T8, T10
 - AC5 → T6
 - AC6 → T7, T9
 
@@ -48,6 +48,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - [x] T7: README, CHANGELOG, and a prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite.
 - [x] T8: Review return 1. Fix each fix-now finding the Review section lists: the wait's exits, the conversation read's handling of Copilot items, the hotfix open-PR re-entry's checks and guest path, companions, record commits and pushes, the stop-list entry, and the guard's loud slicer.
 - [x] T9: Review return 2. Drop the timeout stop, route (c′), and the hotfix open-PR re-entry. The wait skips the round at 20 minutes, a later pass does not request Copilot again, and route (b) and companions skip the arm. Fix the remaining pass-2 items.
+- [ ] T10: RR17. Reduce the module to the exit-code-first query, the request on `none`, the bounded Monitor wait, the reply and resolve commands, body-anchor dedupe, and the level from the review body; re-seed its budget. Owner `/milestone-review`: open and request at step 2, delete step 6's arm, add the Copilot-thread rule to step 7's read. Guest arms in both skills: serial request, bounded wait, read, and the late-review line in the close block. `/hotfix`: close the PR on a decline, reuse an existing `hotfix-<slug>` branch at step 2, Copilot threads by the agent. Reword AC1, AC2, AC3, and AC5 per RR17 Q7 (AC1 at the user's stop). README, rulebook, and the guard follow.
 
 ## Work log
 
@@ -102,8 +103,17 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: review return 3: pass 3's diff-bug #1 (an automatic Copilot review makes the round skip itself), #3 (a failing state query has no branch), and #4 (a hotfix decline leaves an open PR with no next command) are load-bearing. Thrash rule (a) fires at this third return, so no further retry is queued, and descope-or-park goes to the user. The work log records two returns and one re-plan of the resume design (return 2's drop).
 - 2026-10-10: question set (thrash stop (a)): how M231 ends — escalate the round's design to a Fable review through `/milestone-brief` before more work. The recommended cut-and-finish, park, and drop were declined.
 - 2026-10-10: blocked on RB17 (`cairn/reviews/RB17-copilot-round-design.md`, committed on main as afc948e and merged into the branch): the simplest round design that holds at the edges three passes found, in owner and guest mode, for both skills. Advisory, no binding criteria. First escalation of this mechanism.
+- 2026-10-10: RR17 ingested (Fable, advisory): the Decisions section records its answers, D-153 records the step-2 placement, and T10 schedules the applied recommendations. The hotfix-deferral recommendation was not taken (it drops what the user asked for). The RB17/RR17 pair moves to `cairn/reviews/archive/`. Status back to `in-progress`.
 
 ## Decisions
+
+- 2026-10-10 (RR17, Q1): the round decides from three PR signals, never from a record that it ran: S1 a pending Copilot request (`reviewRequests`), S2 an existing Copilot review (its `commit.oid` names the head it covered), and S3 each thread's `isResolved`. One exit-code-first query: an error is one line, with no request and no wait; `pending` waits, then reads; `reviewed` reads and never requests again; `none` requests. The query uses `-f` for owner and name. Applied (rec. 1).
+- 2026-10-10 (RR17, Q2): in owner `/milestone-review` the PR opens and Copilot is requested at step 2, so Copilot works under steps 3–6. Step 6's round arm goes. Step 7's PR-conversation read gains one rule: an unresolved thread whose first comment is Copilot's gets its disposition, then a reply on the first comment and a resolve. The read is the round. Applied (rec. 2); D-153 records the placement.
+- 2026-10-10 (RR17, Q3): a wait runs only when the request is still pending at the read, as one Monitor on an until-loop with `timeout_ms` of at most 10 minutes; at the bound the read runs on what exists and the presentation says the review is pending. The `run_in_background` loop goes. Applied (rec. 3).
+- 2026-10-10 (RR17, Q4, Q6): body findings are matched to threads by their `discussion_r` anchor and skipped; an anchorless one is a body item with no reply. The level is read from the review body's `Review effort:` line. A Copilot item may take step 5's return floor: its thread stays unresolved and unreplied, and the next pass's read finds it. Applied (recs. 4, 5).
+- 2026-10-10 (RR17, Q4): `/hotfix` keeps its owner and guest arms in M231 (the user asked for the hotfix round): a decline at the chip closes the round's PR with `gh pr close <N>` and keeps the branch, step 2 checks out an existing `hotfix-<slug>` branch instead of re-cutting it, and Copilot threads take the agent's disposition under the opt-in line while every other item keeps the four options. The RR's deferral of the hotfix arms (rec. 8) was weighed and not taken, because it drops what the user asked for.
+- 2026-10-10 (RR17, Q5): the guest round runs in the same session after the handoff, bounded as above, and the guest close block says a review arriving after the bound is the operator's by hand until the `/milestone` bot-thread row ships. Applied (rec. 9).
+- 2026-10-10 (RR17, Q7): AC1, AC2, AC3, and AC5 are reworded as RR17 Q7 states, through the implement amendment protocol; AC1's rewording goes to the user, since AC1 already has two re-audit lines. README, rulebook, and D-152 wording follow (rec. 7), and the module's budget is re-seeded to its folded size (rec. 10). Rejected with RR17: a post-approval hotfix round (rec. 11), dropping reply and resolve (rec. 12), and any "round ran" record (rec. 13).
 
 ## Review
 
