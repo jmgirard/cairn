@@ -2291,7 +2291,7 @@ describe('a failed list keeps the last good read for the root, and an empty one 
 })
 
 // M236: the pane's first line, the Button keys the drawn pane holds, and
-// the ↻ Button with the Box it sits in.
+// the ↻ Button.
 async function refreshOf($, surface: (typeof SURFACES)[number] = 'desktop') {
   const ui = await mountPane($, surface)
   const keys = (await ui.findAll({ type: 'Button' })).map(keyOf)
@@ -2301,7 +2301,8 @@ async function refreshOf($, surface: (typeof SURFACES)[number] = 'desktop') {
   await ui.unmount()
   return { keys, lines, first: lines[0], button }
 }
-// The keys of a line Box's children, and the `flexGrow` of each text Box.
+// The keys of a line Box's children, and the keys of the text Boxes that
+// set `flexGrow`.
 const childKeys = (line: Element | undefined) => (line === undefined ? [] : kids(line).map(keyOf))
 const grows = (lines: Element[]) =>
   lines.flatMap(line => kids(line).filter(child => keyOf(child) === `${keyOf(line)}-text` && child.props.flexGrow !== undefined).map(keyOf))
@@ -2498,7 +2499,8 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
     try {
       await until(() => calls.calls.length === 2)
       const second = await mountPane($, 'terminal')
-      // The mount itself reads files to draw, so the count starts after it.
+      // The count starts after the second mount, so it holds only what the
+      // press does.
       const before = total(calls, reads)
       await second.press({ key: PANE_REFRESH })
       await sleep(50)

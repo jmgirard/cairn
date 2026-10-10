@@ -85,6 +85,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: re-audit: AC7 (full) — second reader: nothing.
 - 2026-10-10: T6 done. `paneLines` gives `refresh` and `grow` to its first line, and the render gives that line's text Box `flexGrow: 1`. The `refresh` first line and `justifyContent` are gone. Head lines lead with the id in `PHASE_COLOR`. The ↻ label is `READING_LABEL` (`⋯`) while `reading` is true, and `dimColor` is gone. The seat's `fs.read` hook records paths in `copy.reads` for the second-press count. README, DESIGN, and CHANGELOG follow. The `dim` and `refresh` greps return no line that AC5 forbids.
 - 2026-10-10: T7 done. All five verify commands exit 0, `claude plugin test .` 1559 pass.
+- 2026-10-10: claim audit: 34 claims read, 3 corrected — hooks/status/pane.test.tsx (three test-helper comments). A second pass over the T6 diff only, since the first claim audit ran before the amendment. The reader also noted that README and CHANGELOG say ↻ reads `⋯` while a read runs, and a press's file read comes before `reading` is set. That is left as written, because the PR read is the read that takes time.
+- 2026-10-10: T8 stop for the operator's second live look.
 
 ## Decisions
 
