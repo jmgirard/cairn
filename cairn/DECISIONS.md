@@ -5561,3 +5561,28 @@ Sonnet subagent work" narrows to search and history review, whose re-test is
 M228's re-measurement procedure. This entry is falsified by a defect that a
 later review or hotfix traces to a Haiku edit-work diff that passed verify and
 the orchestrator's read.
+
+### D-152 (2026-10-10): In a repo that opts in to the Copilot review round, the PR opens before the merge question — narrows D-138 for that arm; D-138 stands where the round is off (M231)
+
+**Context:** The user runs a scheme in the easystats repos: after a hotfix
+or a milestone opens its PR, Copilot reviews it, and the session fixes,
+answers, and resolves each Copilot thread. A Copilot review needs an open
+PR. D-138 opens the PR only after the user approves at the merge question,
+so a Copilot round in an owner repo would land fixes after that approval.
+D-138 named a bot comment that a review fan-out missed as a reopener of a
+later read.
+
+**Decision:** At the user's choice in the M231 question set, a repo whose
+`cairn/PROFILE.md` carries `# Copilot review: on` pushes the branch and
+opens the PR after cairn's own review and before the merge question. The
+round runs there, and the merge question lists each Copilot thread with its
+disposition. With the line absent, D-138's post-approval open stands
+unchanged. Rejected: running the round after approval (fixes would land
+after the user approved), and guest repos only (the user wants the round in
+owner repos too).
+
+**Consequences:** In an opted-in repo, CI runs on the early push and again
+on each fix push, the cost D-138 avoided. The merge question's existing
+PR-conversation read runs on that PR. Falsified by an opted-in repo whose
+Copilot rounds change nothing the merge question shows, while the extra CI
+runs are reported as a cost.
