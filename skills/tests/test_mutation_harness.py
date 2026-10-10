@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="630 lines / 59,932 chars",
+        block="636 lines / 60,630 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",

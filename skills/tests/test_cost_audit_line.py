@@ -59,13 +59,13 @@ class TestCostAuditLine(unittest.TestCase):
         # M101 (D-057's M96 fold): the rulebook line is the growth-visibility
         # surface the ratchet milestone folded down to.
         self.assertIn("report the rulebook's mass the same way", self.text)
-        self.assertIn("`wc -l -m`", self.text)
+        self.assertIn("`wc -l -c`", self.text)
 
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
         # Growth is reported against a recorded figure, not a remembered one;
-        # the seed is the M233 re-measurement (M233 added the reply and plan
-        # routes to the Intake paragraph of tracking-rules.md).
-        self.assertIn("630 lines / 59,932 chars", self.text)
+        # the seed is the M234 re-measurement in bytes (M234 added the fork
+        # remote, the close route, and the reply-file clause).
+        self.assertIn("636 lines / 60,630 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.

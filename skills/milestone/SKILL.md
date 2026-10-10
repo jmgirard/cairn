@@ -113,10 +113,11 @@ the stock-side size-governance program, and only a measured `cairn_cost`
 regression reopens that work.
 
 Beside it, report the rulebook's mass the same way: measure
-`skills/shared/tracking-rules.md` with `wc -l -m` and report current
-lines/chars and the growth since the recorded baseline —
-630 lines / 59,932 chars (M233, 2026-10-10, the Intake paragraph's
-reply and plan routes; re-seed these figures only when
+`skills/shared/tracking-rules.md` with `wc -l -c` and report current
+lines/bytes and the growth since the recorded baseline —
+636 lines / 60,630 bytes (M234, 2026-10-10, the fork remote, the Intake
+paragraph's close route, and the reply-file clause; bytes, because a
+character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.
