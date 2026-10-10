@@ -353,7 +353,9 @@ Then read what the issue points at:
   ROADMAP's open milestones and their `Resolves:` slots,
   `milestones/archive/`, and `DECISIONS.md` by its `### D-` headings. Two
   reads find a duplicate issue and a pull request that already answers it.
-  The issue read takes keywords from the issue:
+  `<keywords>` and `<terms>` are a few plain words of your own, never issue
+  text pasted raw, and they hold no `"`, `$`, or backtick. The issue read
+  takes keywords from the issue:
   `gh issue list --repo <base-repo> --state all --search "<keywords>" --json number,title,state,url`.
   The pull request read runs once with the issue number and once with the
   keywords as `<terms>`:

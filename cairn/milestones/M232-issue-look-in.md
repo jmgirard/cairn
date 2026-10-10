@@ -163,3 +163,4 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - live-run #7 (pass 2): unclear whether a CI line is owed — reject, false (the look-in has no branch of its own)
 - live-run #8 (pass 2): chapter markers for one phase — reject, false (same as pass 1)
 - live-run #9 (pass 2): the rulebook's `<fork-owner>` recipe reads `origin`, which in the insight checkout is the upstream — follow-up (same row)
+- fixed: every pass-1 fix-now line above, fixed e9cf3ba (diff-bug #8's wording again in 3e43c88). Every pass-2 fix-now line, fixed a0a6e35. One line stands for the per-line `, fixed <sha>` marks.
