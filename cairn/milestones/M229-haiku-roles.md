@@ -145,6 +145,7 @@ in M228's note.
 - 2026-10-10: all tasks checked, verify green; status review.
 - 2026-10-10: review return 1: consistency gate failed — the profile's changelog check bars milestone numbers in user-facing text, and the new CHANGELOG entry names `D-151` and `M228` (CHANGELOG.md lines 75 and 78). AC1-AC4 evidence, `cairn_validate`, and both manifest validates were clean at this point.
 - 2026-10-10: T6 (review return 1): T6 added and mapped to AC4 (minor amendment). The CHANGELOG entry drops `(D-151)` and reads "A side-by-side test measured" in place of "M228 measured"; the Unreleased section now holds no `M<NNN>` or `D-<NNN>` token. The claim audit's pass stands: the change swaps an id for a plain name and adds no claim. verify: scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail; status review.
+- 2026-10-10: step-7 approval: m229-haiku-roles approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
