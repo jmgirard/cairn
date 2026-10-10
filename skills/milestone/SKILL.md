@@ -332,3 +332,53 @@ and stop with the close block, because `/hotfix` is the door for a pull
 request. If the read fails, name the cause and stop with the close block.
 The cause is a missing or unauthenticated `gh`, a repo with no remote, an
 issue that does not exist, or another cause that the error names.
+
+Then read what the issue points at:
+
+- The code and docs the issue names, read in this checkout: each function,
+  file, error message, or documented claim it cites, found by search where
+  the issue gives no path.
+- The search-first sweep (tracking-rules), so that an item cairn already
+  holds is cross-referenced, never added twice: the `candidate` rows,
+  `milestones/archive/`, and `DECISIONS.md` by its `### D-` headings. Two
+  reads find a duplicate issue and a pull request that already answers it:
+  `gh issue list --repo <base-repo> --state all --search "<keywords>" --json number,title,state,url`
+  and
+  `gh pr list --repo <base-repo> --state all --search "<N>" --json number,title,state,url`.
+- A reproduction, where one fits in this sitting: the smallest run in this
+  checkout that shows the reported behavior, with scratch files in the
+  scratchpad and no change to the repo.
+
+The section writes nothing to GitHub and nothing to disk before the chip.
+
+**The verdict.** Give exactly one verdict:
+
+- `reply`: an answer settles the issue, and no code changes. Examples are a
+  question, a misunderstanding, a duplicate, an item already covered, and a
+  request the project declines.
+- `hotfix`: a user-visible bug that is under the hotfix bar (tracking-rules
+  "Sizing and the work tiers"). It restores documented behavior in one
+  sitting, with no design decision.
+- `milestone`: new work, a change to exported behavior, a design decision,
+  or more than one sitting.
+
+**The maintainer-input level.** Give exactly one level on this scale:
+
+- `none`: the code or docs settle the issue.
+- `confirm`: the work has a choice for the maintainer to approve.
+- `decide`: a design decision is needed before work starts.
+
+A `decide` level never goes with a `hotfix` verdict, because a design
+decision puts the work over the hotfix bar. In owner mode the maintainer is
+the operator. In guest mode the maintainer is the upstream maintainers, and
+the operator cannot settle a `confirm` or `decide` item for them.
+
+**The report.** Write the report in the chat. It gives the issue's number,
+title, state, and author, then these four parts:
+
+1. The verdict and the level, each with a one-sentence reason.
+2. File:line citations for each piece of existing code or docs the issue
+   names. If the issue names none, one line says that no citation applies.
+3. The reproduction and what it showed, or the reason that none was run.
+4. The sweep's hits: each candidate row, archive summary, D-entry, issue,
+   or pull request that overlaps, or "none".

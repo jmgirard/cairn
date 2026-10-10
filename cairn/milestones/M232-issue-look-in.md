@@ -42,7 +42,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 ## Tasks
 
 - [x] T1: In `skills/milestone/SKILL.md`, add the argument test and the frontmatter trigger and `argument-hint`. An issue argument skips §1–§3 and runs the new section. In guest mode the `gh` reads carry `--repo <base-repo>`.
-- [ ] T2: Write the section's read and report: `gh issue view <N> --comments`, the code the issue names, and a reproduction where one fits in the sitting. Define the three verdicts and the three-value input scale. In guest mode the maintainer is the upstream maintainers.
+- [x] T2: Write the section's read and report: `gh issue view <N> --comments`, the code the issue names, and a reproduction where one fits in the sitting. Define the three verdicts and the three-value input scale. In guest mode the maintainer is the upstream maintainers.
 - [ ] T3: Write the chip and its routes. `/hotfix` and `/milestone-plan` get the issue through the Skill tool. The candidate row reuses §3's search-first path, guest-mode disk-only and owner-mode docs-only commit included. The reply hand-off uses the rulebook's no-cairn-vocabulary rule in guest mode and no thanks to bots.
 - [ ] T4: Add the routing line to `skills/shared/templates/claude-md-section.md` and this repo's `CLAUDE.md`, merging a line where needed to stay under 30. Update the template's length comment. Update the README and the CHANGELOG.
 - [ ] T5: Add the prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite. The live run on an `easystats/insight` issue happens at review.
@@ -57,6 +57,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: plan gate chose an issue argument to `/milestone` over a new `/issue` skill, at the user's choice, because §3 already holds the dispositions and D-043 rejected a new intake skill. Falsified by an operator who does not find the look-in under `/milestone`.
 - 2026-10-10: implement started on branch m232-issue-look-in. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-10: T1 done. The section is §4 at the end of the skill, and the argument test opens Session start. Every `gh issue` and `gh pr` command in §4 carries `--repo <base-repo>` in both modes, which covers guest mode with one form. Three cases stop with the close block: a URL that names another repo, a number that is a PR, and a failed read. `gh issue view` returns a PR's `/pull/` URL, which is how the PR case is found.
+- 2026-10-10: T2 done. The read adds the search-first sweep, with two `gh` reads for a duplicate issue and an answering PR. The chip's leave and candidate-row options then have their evidence before the chip. The report has four numbered parts. One added rule: a `decide` level never goes with a `hotfix` verdict.
 
 ## Decisions
 
