@@ -332,10 +332,11 @@ issue of another repo is out of its reach.
 **The read.** Read the issue with one call:
 `gh issue view <N> --repo <base-repo> --json number,title,state,author,body,comments,url`.
 If the returned `url` holds `/pull/`, the number is a pull request. Name it
-and stop with the close block. In owner mode its fenced next command is
-`/hotfix <N>`, because `/hotfix` is the door for a pull request. In guest
-mode it is `/milestone`, because a pull request goes to the maintainers
-there. If the read fails, name the cause and stop with the close block.
+and stop with the close block. In owner mode, for an external pull
+request, its fenced next command is `/hotfix #<N>`, because `/hotfix` is
+the door for an external pull request. For the operator's own milestone or
+hotfix PR, and for any PR in guest mode, it is `/milestone`. In guest mode
+a pull request goes to the maintainers. If the read fails, name the cause and stop with the close block.
 The cause is a missing or unauthenticated `gh`, a repo with no remote, an
 issue that does not exist, or another cause that the error names.
 

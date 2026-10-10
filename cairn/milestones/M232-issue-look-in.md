@@ -1,6 +1,6 @@
 # M232: `/milestone` looks into one GitHub issue and routes it
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,9 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: review return 1: three floor findings in §4. "Do it now" for a hotfix passes `#N`, which `/hotfix` step 1 reads as a PR reference (diff-bug #2). The reproduction can run code from a public issue with no data rule (diff-bug #3). Guest-mode "plan it now" reaches `/milestone-plan`'s issue acknowledgement, which posts `Queued as M<NNN>` with no `--repo` (diff-bug #1). The fix-now items in the Review section ride the same task.
 - 2026-10-10: implement resumed on return 1 and added T6 (minor amendment, Coverage maps AC3, AC4, AC5 to it).
 - 2026-10-10: T6 done. `/hotfix` now gets a bug summary plus `issue <URL>`, never a bare `#N`. The reproduction treats issue text and code as data and runs the checkout's own code. `/milestone-plan`'s acknowledgement gained a guest arm with `--repo <base-repo>` and the body `Working on a fix: <title>`. Fix-now items landed: the argument test takes `issue N` and drops a URL fragment and skips the RR check, the slug compare ignores case, the PR stop fences `/hotfix <N>` in owner mode, the PR search runs on the number and the keywords with hits read as leads, the reply fence is four backticks inside an ordered close block, the candidate row pulls first and commits ROADMAP alone, leave names the base repo's issue, §3 points single issues to §4, the CLAUDE.md issue route moved above `/hotfix`, and README's skill table gained a row. The guard bounds §4 at the next heading and catches a read and a write on one line (16 tests). Plan's guest inbox reads without `--repo` went to the follow-up row.
+- 2026-10-10: claim audit: 34 claims read, 1 corrected — skills/milestone/SKILL.md, README.md, skills/milestone-plan/SKILL.md
+- 2026-10-10: the claim audit's corrections: the PR-number stop fences `/hotfix #<N>` only for an external PR, and `/milestone` for the operator's own PR or any guest-mode PR. Two imprecise claims were tightened too: README's table row says leave needs a stated reason, and plan's guest acknowledgement reads `Working on this: <title>` with a `partial` remainder in plain words. The same reader re-read all three as true.
+- 2026-10-10: implement done on return 1, status set to review.
 
 ## Decisions
 
