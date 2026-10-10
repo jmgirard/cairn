@@ -45,7 +45,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - [x] T2: Write the section's read and report: `gh issue view <N> --comments`, the code the issue names, and a reproduction where one fits in the sitting. Define the three verdicts and the three-value input scale. In guest mode the maintainer is the upstream maintainers.
 - [x] T3: Write the chip and its routes. `/hotfix` and `/milestone-plan` get the issue through the Skill tool. The candidate row reuses §3's search-first path, guest-mode disk-only and owner-mode docs-only commit included. The reply hand-off uses the rulebook's no-cairn-vocabulary rule in guest mode and no thanks to bots.
 - [x] T4: Add the routing line to `skills/shared/templates/claude-md-section.md` and this repo's `CLAUDE.md`, merging a line where needed to stay under 30. Update the template's length comment. Update the README and the CHANGELOG.
-- [ ] T5: Add the prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite. The live run on an `easystats/insight` issue happens at review.
+- [x] T5: Add the prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite. The live run on an `easystats/insight` issue happens at review.
 
 ## Work log
 
@@ -60,6 +60,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: T2 done. The read adds the search-first sweep, with two `gh` reads for a duplicate issue and an answering PR. The chip's leave and candidate-row options then have their evidence before the chip. The report has four numbered parts. One added rule: a `decide` level never goes with a `hotfix` verdict.
 - 2026-10-10: T3 done. The hand-off command always carries `--repo <base-repo>` and single-quotes the reply. The section's prose names no `gh` subcommand, so the AC4 grep lists the three reads and the hand-off line only. The bot test reads `author.is_bot` from the issue read. Decided: in owner mode on a branch other than the default, the candidate-row option writes nothing. Its close block shows the row and says to rerun from the default branch, which keeps AC5's docs-only commit to the default branch.
 - 2026-10-10: T4 done. The routing line is two lines in both sections, with no merge needed: the template section is 29 lines and this repo's is 26. The template's length comment said "under ~25 lines" while the body was already 27, and it now says under 30, heading included. The `cairn_scripts.py` cap comment's "~25 lines" target was corrected to match. README and CHANGELOG describe the issue argument.
+- 2026-10-10: T5 done. `skills/tests/test_issue_look_in.py` has 14 tests: the entry, the three verdicts and three levels, the hand-off line once, and the AC4 grep over §4 with two planted-write cases. A plant in the skill file (one level renamed, `--repo` dropped from the hand-off) turned 6 tests red, and the file was restored. The guard takes an EXEMPT entry in the mutation registry, per the profile's test-doctrine. Hand-run `skills/tests`: 689 tests OK. The live `easystats/insight` run stays at review, per T5.
 
 ## Decisions
 
