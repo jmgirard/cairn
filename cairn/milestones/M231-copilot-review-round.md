@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -89,6 +89,8 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: claim-audit fixes (return 1 prose): route (c′) and the CHANGELOG state the rerun's skip as conditional. The CHANGELOG names the guest re-entry's stop. The merge chip names the branch, and also the PR number when the round arm opened the PR. The companion skip writes `copilot round: skipped, no PR`. Module §6 says owner mode commits the round's lines and guest mode writes them on disk. A hotfix rerun re-reads the newest Copilot review's body, because a hotfix keeps no record of a first read. `test_cost_audit_line.py`'s comment names the stop-list entry. Module re-measured at 141 lines / 8,191 bytes.
 - 2026-10-10: claim-audit re-read (same reader, once): all 7 corrected items, the test comment, and the budget figure hold at 14ae931. Verify slot green (both unittest suites, both plugin validates, `claude plugin test` 1777 pass), and hand-run `skills/tests` green. Status set to `review`.
 - 2026-10-10: thrash rule (b) fires at review pass 2: AC5's resume promise failed in return 1 (an endless wait, the re-entry skipping the hotfix bar) and fails again in pass 2 by a new mechanism of the same shape (a stale `waiting` line and route (c′) skipping steps 3–6, step 6 re-requesting Copilot on a second pass, an uncommitted stop record). The plan gate recorded no alternative to the timeout stop. The alternative weighed at return 1, a skip at 20 minutes with no stop, is the one to reconsider, so the choice goes to the user.
+- 2026-10-10: question set (thrash stop): how M231 goes on — drop the resume machinery. The timeout stop, review route (c′), and the hotfix open-PR re-entry are removed. At 20 minutes the round is skipped with a one-line report and the run goes on. The re-entry returns to its candidate row, AC5 is removed, and the other pass-2 items get small fixes.
+- 2026-10-10: review return 2: pass 2's load-bearing defects (diff-bug #1–#3, blame-history #2–#4) sit in the resume machinery the user chose to drop. The remaining pass-2 items are fixed or settled in the amendment.
 
 ## Decisions
 
