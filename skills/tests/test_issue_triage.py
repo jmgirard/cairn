@@ -172,5 +172,34 @@ class TestVerbatimBar(unittest.TestCase):
         self.assertNotIn("routing chip (askuserquestion)", t)
 
 
+def plan():
+    return SKILLS.joinpath("milestone-plan", "SKILL.md").read_text()
+
+
+class TestPlanSweepRepo(unittest.TestCase):
+    # M233: `/milestone-plan` step 2's inbox reads name the base repo, so a
+    # guest-mode plan reads the upstream inboxes, not the fork's. The domain
+    # is every line of the plan skill that holds an inbox list command.
+
+    def inbox_lines(self):
+        return [
+            l for l in plan().splitlines()
+            if "gh issue list" in l or "gh pr list" in l
+        ]
+
+    def test_domain_is_non_empty(self):
+        # An empty match would pass the check below for the wrong reason.
+        self.assertEqual(len(self.inbox_lines()), 2)
+
+    def test_every_inbox_read_names_the_base_repo(self):
+        for line in self.inbox_lines():
+            self.assertIn("--repo <base-repo>", line)
+
+    def test_guest_mode_difference_from_the_audit_is_stated(self):
+        t = plan()
+        self.assertIn("the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which", t)
+        self.assertIn("skips guest mode. The reason is that the plan's sweep looks for overlap", t)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1188,6 +1188,12 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_issue_triage",
+        test="TestPlanSweepRepo.test_guest_mode_difference_from_the_audit_is_stated",
+        target=PLAN,
+        block="the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which",
+    ),
+    Mutation(
+        guard="test_issue_triage",
         test="TestInboxEnumeration.test_step_applies_search_first_before_proposing",
         target=MILESTONE,
         block="apply the search-first rule to every hit before proposing",
