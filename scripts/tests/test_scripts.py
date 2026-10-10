@@ -1462,6 +1462,10 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # the shelf copy, dated verification claim, hence `ok`.
     # M217 adds the WCAG 2.2 note: its three definitions read directly from
     # the W3C Recommendation, dated verification claim, hence `ok`.
+    # M228 adds the Haiku-against-Sonnet comparison: subagent runs recorded
+    # first-hand on 2026-10-09, priced from a pricing page its status says it
+    # read directly that day, a dated verification claim, hence `ok` (the
+    # prices age, so the staleness advisory must see the page).
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1476,6 +1480,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "design-interview-notes.md": "exempt",
         "desktop-toc-mechanism.md": "ok",
         "feature-dev.md": "ok",
+        "haiku-sonnet-roles.md": "ok",
         "impeccable.md": "ok",
         "llm-wiki.md": "ok",
         "migration-pilot-notes.md": "exempt",
