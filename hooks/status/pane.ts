@@ -423,7 +423,8 @@ export function paneLines(
   // and counts as a blocked line shows them, with no Button (M226). No
   // command resumes an open hotfix pull request, so no word routes one.
   // A hotfix pull request whose URL is a blocked row's draws on that blocked
-  // line only, which carries its Button, and the count leaves it out (M230).
+  // line only, which carries any Button its word calls for, and the count
+  // leaves it out (M230).
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
     const head = heading('hotfixes-head', 'Hotfixes', QUEUE_COLOR, [{ text: ' ' }, { text: `${shown.length}`, color: GRAY }])

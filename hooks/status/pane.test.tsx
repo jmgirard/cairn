@@ -1393,7 +1393,8 @@ describe('an other end with the pane shown opens it at the next start in the sam
 // name, and by default the repo has no remote, so no list call runs.
 // `list` answers each `gh pr list` call.
 // An open does not wait for the read (M230), so a case waits with
-// `settled` until no `git` or `gh` call has been in flight for 20 ms. The
+// `settled` until no `process.run` call is in flight at four checks 5 ms
+// apart, or until 400 checks (about 2 s) pass. The
 // `answer` and `list` answers may be promises too, which hold their calls.
 type GhAnswer = { exitCode: number; stdout: string } | 'reject'
 type Gh = {
@@ -1407,7 +1408,7 @@ type Gh = {
 type GhRepo = { remotes?: Record<string, string>; list?: () => GhAnswer | Promise<GhAnswer> }
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 // The newest `gh` set-up's `settled`, which the drawing helpers below wait
-// on before they mount the pane. Cases run one at a time.
+// on before they mount the pane. It holds one set-up only, the newest.
 let ghSettled: () => Promise<void> = async () => {}
 const URL_1250 = 'https://github.com/upstream/repo/pull/1250'
 const LINE_1250 = 'M111  Handed to the maintainers  #1250'

@@ -315,8 +315,10 @@ blocked" line, as `(PR #<n>)`.
 The pane also shows each PR's state, which it reads from GitHub with `gh
 pr view <url> --json state,reviewDecision`. It reads the states when the
 pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
-at a session start. An open does not wait for the read, so the pane shows
-at once and each word comes when GitHub answers. The pane also reads the
+at a session start. An open does not wait for the read. The words and
+counts appear together when the last GitHub call answers or times out. The
+pane also
+reads the
 states when you press `Refresh` on the `BLOCKED` heading. When a `Clear`,
 `Plan`, or `Implement` Button clears the conversation, the pane stays open
 and reads them again if it shows. It never reads them on a timer or at a

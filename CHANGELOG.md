@@ -86,12 +86,13 @@
 ### Fixes
 
 - **The cairn pane opens without waiting for GitHub.** `/cairn-pane`, the
-  band's open button, and the reopen at a session start now show the pane
-  at once. Before, each one waited for the `git` and `gh` reads of the pull
-  request states and the hotfix list, which ran in turn with a 15 s
-  timeout each. The blocked PRs' reads also no
-  longer wait for the hotfix list call. Each word now comes when its read
-  settles.
+  band's open button, and the reopen at a session start now return at
+  once. Before, each one returned only after the `git` and `gh` reads of
+  the pull request states and the hotfix list. The hotfix list's calls ran
+  first, one after another, and then the PR state reads ran. Each call has
+  a 15 s timeout. The blocked PRs' reads now start without waiting for the
+  hotfix list call. The words and counts appear together when the last
+  read settles.
 
 - **The pane's PR words come back after a Button's `/clear`.** A `Clear`,
   `Plan`, or `Implement` press clears the conversation and keeps the pane
@@ -100,7 +101,8 @@
   again.
 
 - **A hotfix PR that is also a blocked milestone's PR shows once.** It
-  stays on the blocked line, which carries its Button. The `HOTFIXES`
+  stays on the blocked line, which carries any Button its word calls for.
+  The `HOTFIXES`
   count leaves it out, and when it is the only hotfix, the section is
   gone.
 

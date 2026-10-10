@@ -1,6 +1,6 @@
 # M230: The pane's PR reads stop holding up opens
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -65,6 +65,8 @@ The cairn pane fills its pull request lines without holding up an open, fills th
 - 2026-10-10: T2–T6 done in one checkpoint, because the six tasks share two files and one test block. `readPrs` moved its per-URL body to `readPr`, and `isShown` gives the placed-and-shown check. The Refresh press still waits for its read, since AC1 names only the three opens.
 - 2026-10-10: plant check in scratch copies: each of 8 reversals turned its own M230 test red. The reversals are an await in each of the three opens, the serial list read, no read at a clear, a read at any pane, no hotfix filter, and kept userinfo. Mod tests: 1777 pass. The verify slot's five commands pass.
 - 2026-10-10: T7 done: README, DESIGN, and four CHANGELOG Fixes entries describe the four changes. The CHANGELOG states the old wait as calls in turn with a 15 s timeout each, not a total, under the derived-figures rule. The verify slot's five commands pass, with 1777 mod tests.
+- 2026-10-10: claim audit: 38 claims read, 8 corrected — CHANGELOG.md, README.md, hooks/status/pane.ts, hooks/status/pane.test.tsx. The main fix: words and counts appear together when the last read settles, not one at a time. The same reader re-read the 8 once and found none still wrong, and its optional "or times out" wording went into the README.
+- 2026-10-10: implement done. All 7 tasks are checked, and the verify slot's five commands pass with 1777 mod tests. Status set to review.
 
 ## Decisions
 
