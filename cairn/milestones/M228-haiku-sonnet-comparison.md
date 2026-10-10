@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -93,8 +93,8 @@ dial per spawned agent" candidate row.
 - AC1 → T1, T3, T4, T5, T6
 - AC2 → T3, T4, T5, T6
 - AC3 → T1, T6
-- AC4 → T1, T2, T3, T4, T5
-- AC5 → T1, T6
+- AC4 → T1, T2, T3, T4, T5, T7
+- AC5 → T1, T6, T7
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -132,6 +132,11 @@ dial per spawned agent" candidate row.
       prices, sum the costs per group, and apply AC5's rule. Write the
       verdicts, the single-run limit, and a re-measurement procedure into
       the note. Add the `INDEX.md` line and run `scripts/cairn_validate.py`.
+- [x] T7: Review return 1. Re-judge H1–H3 with fresh Opus judges whose
+      prompt states the note's validity rule verbatim, and record that
+      prompt in the note. Give each mutant's exact old and new strings in
+      the note. Apply pass 1's other fix-now findings, and add the
+      follow-up candidate row for `cairn_cost.py`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -170,6 +175,11 @@ dial per spawned agent" candidate row.
 - 2026-10-09: claim audit: not owed — internal tier
 - 2026-10-09: implement complete; status set to `review`.
 - 2026-10-09: review return 1: AC4 fails as written for the history-review rows (the judges applied a broader validity rule than the note states, diff-bug #1) and for the edit-work mutants (the note's table does not give the exact strings, diff-bug #7). The other fix-now findings of pass 1 ride the same return; dispositions are in the Review section.
+- 2026-10-09: implement resumed for return 1; added T7 for it (minor amendment) and mapped AC4 and AC5 to T7.
+- 2026-10-09: correction to the T1 design line: the `find_cairn_root` sweep has 21 sites (21 lines removed and 21 added over 11 files), not 20.
+- 2026-10-09: T7 re-judged H1–H3 with three fresh Opus judges whose prompt states the note's rule verbatim, under new shuffled labels read after they returned. Valid findings Sonnet 1, 1, 2 and Haiku 1, 0, 3, so 4 against 4: history review stays `move`, now at a ratio of 1.0 instead of 0.9. The two judgings rate 11 of 22 findings differently; the note records both and the judge prompt.
+- 2026-10-09: T7 also gave the note each mutant's exact old and new strings (a parse of the table matches the applied mutants, 12 of 12, each occurring once), corrected the target-diff count, re-dated the page's status as a dated read of the prices (pin moved `exempt` → `ok`, since the prices age), reworded the Scope, the edit-work and verdict readings, added observed dates and the cross-references to `cairn_cost.py` and the price discrepancy, added a "what could flip it" column, and filed the candidate row "Session-store reading in `cairn_cost.py`".
+- 2026-10-09: verify passed on all five checks after T7, and `cairn_validate` reports no FAIL or WARN; status set to `review`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -177,6 +187,8 @@ dial per spawned agent" candidate row.
      EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
      Entries carry their rationale; the counterweight `decisions format`
      advisory watches for pasted output, not for entry length (D-075). -->
+
+- 2026-10-09: The 18 Haiku and Sonnet measurement runs, and the one-word probe of each, are an exception to tracking-rules' "Never Haiku. For anything." bullet and D-016's blanket, scoped to this milestone's measurement. The rule stays in force for delegated work; the user granted the test at the plan gate ("only if some testing finds it is cheaper and noninferior"), and a measurement of Haiku cannot run without spawning it. Whether the rule changes is M229's decision, through a D-entry that supersedes D-016. Recorded here after review pass 1 (blame-history #3) found the exception only in the work log.
 
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate

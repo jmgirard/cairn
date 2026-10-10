@@ -7,13 +7,14 @@ each run's cost read from its subagent transcript under
 from Anthropic's pricing page (cited below). Tasks replay this repo at commit
 `c023018`.
 Pagination: —.
-Extraction: first-hand record, nothing to re-verify against; a rerun reproduces the method, not the exact figures — observed 2026-10-09.
+Extraction: prices read directly from the pricing page 2026-10-09 and liable to change; the run records are first-hand from that day's session store, and a rerun reproduces the method, not the exact figures — observed 2026-10-09.
 
 **Scope.** Measures whether Haiku 5.5 does the work of each role group that
-tracking-rules "Model and agent strategy" gives to Sonnet for less money and
-with no loss of quality. It records a measurement and a verdict per group.
-It changes no rule: M229 acts on the verdicts. This is a reference, not an
-authority: status lives in `ROADMAP.md`, decisions in `DECISIONS.md`.
+tracking-rules "Model and agent strategy" gave to Sonnet (observed
+2026-10-09) for less money and with a score at least 0.9 times Sonnet's. It
+records a measurement and a verdict per group. It changes no rule: M229 acts
+on the verdicts. This is a reference, not an authority: status lives in
+`ROADMAP.md`, decisions in `DECISIONS.md`.
 
 ## Design (fixed before any run, 2026-10-09)
 
@@ -48,11 +49,22 @@ the main session transcript
 `~/.claude/projects/-Users-jmgirard-github-cairn/914c172c-a7d8-4341-b5be-8f75283fc564.jsonl`.
 Each row records whether that `usage`'s input and cache counts equal the
 final id's last-record counts, which ties the tool result to that call. No
-source gives the true output of earlier calls, so every row's cost is a
-lower bound.
+record gives the exact output of earlier calls (observed 2026-10-09); the
+growth of each next call's prompt bounds it from above but also holds the
+tool result. So every row's cost is a lower bound.
+
+Two older records disagree with what this note relies on (observed
+2026-10-09). `scripts/cairn_cost.py` and `session-cost-notes.md` (ledger
+row A4) say subagent turns are absent from the session store, but each
+session's `subagents/agent-*.jsonl` holds them. `cairn_cost.py` also sums
+every assistant record, where this note groups records by `message.id`.
+The ROADMAP candidate "Session-store reading in `cairn_cost.py`" holds both.
 
 Prices, USD per million tokens, from
-<https://platform.claude.com/docs/en/about-claude/pricing> (read 2026-10-09):
+<https://platform.claude.com/docs/en/about-claude/pricing> (read 2026-10-09).
+The `claude-api` skill's cached model table gave Sonnet 5.5 cache reads at
+0.20; the live page gives 0.10, and this note uses the page. At 0.20 every
+Sonnet row costs more, so no verdict changes.
 
 | Model | Input | 5m cache write | 1h cache write | Cache read | Output |
 |---|---|---|---|---|---|
@@ -166,6 +178,31 @@ history or prior review it cites exists and the diff does conflict with it)
 or invalid. A finding that repeats an earlier one in the same list counts
 once. The label-to-model mapping is recorded only after the judge returns.
 
+Judge prompt (added after review return 1, 2026-10-09), with `<SHA>`,
+`<JLENS>`, and the two report paths per task:
+
+> You are a judge rating code-review findings. Two reviewers, labeled A and
+> B, independently reviewed commit <SHA> in /Users/jmgirard/github/cairn
+> (diff `git show <SHA>`, base `<SHA>^`) with this lens: "<JLENS>" Reviewer
+> A's report: <path A> Reviewer B's report: <path B> Read only those two
+> files in their directory. In the repo use ref-based git only (git show,
+> git log, git blame against refs); edit nothing. Rate each numbered finding
+> in each report VALID or INVALID by this rule: a finding is valid when the
+> history or prior review it cites exists and the diff does conflict with
+> it; otherwise it is invalid. A finding that repeats an earlier one in the
+> same report counts once: rate the repeat DUPLICATE. Unnumbered notes are
+> not findings. Return one line per finding, `A1: VALID|INVALID|DUPLICATE —
+> <one-sentence reason>`, then the B lines, then `A valid: <n>` and
+> `B valid: <n>`.
+
+`<JLENS>` for H1 and H2: "Blame-history reviewer. Runs `git log` / `git
+blame` on the modified lines and judges the change against the intent of
+the code it touches: does it silently undo something a past milestone added
+deliberately, resurrect a fixed bug, or contradict a recorded D-entry?" For
+H3: "Prior-PR-comments reviewer. Reads the repo's prior review record on the
+modified files and flags only where the current diff reintroduces or
+contradicts a point a past review raised on those files."
+
 ## Answer keys, target, and mutants (built 2026-10-09, before any run)
 
 S1 key, from `git grep -l -E '^\s*(import cairn_common|from cairn_common
@@ -211,25 +248,32 @@ D-147 D-145, D-147 D-146, D-148 D-144.
 E1 target: in a `git archive c023018` copy, `perl -pi -e
 's/\bfind_cairn_root\b/locate_cairn_root/g'` over each file that
 `git grep -l -w find_cairn_root -- 'scripts/*.py' 'hooks/*.py'` lists. The
-target diff changes 32 lines in 11 files.
+target diff removes 21 lines and adds 21 over 11 files (`git diff --stat`,
+corrected M228 from "32 lines"). Its changed-line set T, the set the Jaccard
+score compares, holds 32 distinct triples, because some files repeat an
+identical line.
 
-Mutants, each one exact-string replacement in `hooks/cairn_common.py` that
-occurs once at `c023018`:
+Mutants (exact strings corrected M228 after review return 1), each one
+`str.replace` of an old string that occurs exactly once in
+`hooks/cairn_common.py` at `c023018`. In the strings, `\n` is a line break
+and leading spaces are as in the file; "(empty)" is the empty string.
 
-| Task | Mutant | Change |
-|---|---|---|
-| E2 | m1 | `return m.group(1).lower()` loses `.lower()` |
-| E2 | m2 | the `if line.startswith("## "): break` lines are removed |
-| E2 | m3 | `encoding="utf-8-sig"` becomes `"utf-8"` |
-| E2 | m4 | the `except` branch returns `"guest"` |
-| E2 | m5 | the final `return "owner"` becomes `return None` |
-| E2 | m6 | `COLLAB_MODE_LINE` loses `re.IGNORECASE` |
-| E3 | n1 | `line.lstrip().startswith("\|")` becomes `line.startswith("\|")` |
-| E3 | n2 | `len(cells) < 6` becomes `< 7` |
-| E3 | n3 | the `not cells[0].startswith("M")` test is removed |
-| E3 | n4 | `cells[2].lower()` becomes `cells[2]` |
-| E3 | n5 | cells are not stripped |
-| E3 | n6 | the depends and priority cells swap places |
+| Task | Mutant | Old string | New string |
+|---|---|---|---|
+| E2 | m1 | `return m.group(1).lower()` | `return m.group(1)` |
+| E2 | m2 | `                if line.startswith("## "):\n                    break\n` | (empty) |
+| E2 | m3 | `open(path, encoding="utf-8-sig")` | `open(path, encoding="utf-8")` |
+| E2 | m4 | `    except Exception:\n        return "owner"\n    return "owner"` | `    except Exception:\n        return "guest"\n    return "owner"` |
+| E2 | m5 | `        return "owner"\n    return "owner"` | `        return "owner"\n    return None` |
+| E2 | m6 | `r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)` | `r"#\s*Collaboration mode:\s*(\S+)")` |
+| E3 | n1 | `if not line.lstrip().startswith("\|"):` | `if not line.startswith("\|"):` |
+| E3 | n2 | `if len(cells) < 6 or` | `if len(cells) < 7 or` |
+| E3 | n3 | ` or not cells[0].startswith("M"):` | `:` |
+| E3 | n4 | `cells[2].lower(), cells[3]` | `cells[2], cells[3]` |
+| E3 | n5 | `cells = [c.strip() for c in line.split("\|")][1:-1]` | `cells = [c for c in line.split("\|")][1:-1]` |
+| E3 | n6 | `cells[2].lower(), cells[3], cells[4], cells[5]` | `cells[2].lower(), cells[4], cells[3], cells[5]` |
+
+In the n-rows, `\|` is a literal `|` escaped for the table.
 
 Controls: a hand-written reference test file kills 6 of 6 mutants for E2
 and 6 of 6 for E3 and passes on the unmutated code. A file holding one
@@ -272,38 +316,42 @@ rule.
 Edit-work notes. Both E1 runs produced the target diff exactly, 11 files.
 All four test files passed on the unmutated code and killed all six
 mutants: Sonnet wrote 23 and 18 tests, Haiku 21 and 30. Every score is at
-the ceiling, so this group cannot show a quality gap smaller than these
-tasks' difficulty. The test files were written in non-final calls, whose
-output the transcript undercounts, so these rows' output columns are the
-lowest of the three groups relative to the work done.
+the ceiling of 1.0, so these tasks cannot show a gap between the models. The
+test files were written in non-final calls, whose output counts are too
+low, so these rows' output columns leave out most of the test code each run
+wrote.
 
 | Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| H1 | sonnet | `ab3cb7532d6192593` | claude-sonnet-5-5 | 12 | yes | 24 | 60378 | 0 | 903735 | 2553 | 0.2669 | 5 |
-| H1 | haiku | `a8ce7b385db7f0e77` | claude-haiku-5-5 | 36 | yes | 72 | 113496 | 0 | 3716111 | 4059 | 0.1844 | 3 |
-| H2 | sonnet | `a08bb633f7bea0b4b` | claude-sonnet-5-5 | 8 | yes | 16 | 38171 | 0 | 491838 | 1764 | 0.1623 | 3 |
-| H2 | haiku | `a60621730679c16bd` | claude-haiku-5-5 | 15 | yes | 30 | 78929 | 0 | 1328999 | 1250 | 0.0646 | 2 |
+| H1 | sonnet | `ab3cb7532d6192593` | claude-sonnet-5-5 | 12 | yes | 24 | 60378 | 0 | 903735 | 2553 | 0.2669 | 1 |
+| H1 | haiku | `a8ce7b385db7f0e77` | claude-haiku-5-5 | 36 | yes | 72 | 113496 | 0 | 3716111 | 4059 | 0.1844 | 1 |
+| H2 | sonnet | `a08bb633f7bea0b4b` | claude-sonnet-5-5 | 8 | yes | 16 | 38171 | 0 | 491838 | 1764 | 0.1623 | 1 |
+| H2 | haiku | `a60621730679c16bd` | claude-haiku-5-5 | 15 | yes | 30 | 78929 | 0 | 1328999 | 1250 | 0.0646 | 0 |
 | H3 | sonnet | `ab840bc451b9aa0ca` | claude-sonnet-5-5 | 8 | yes | 16 | 45229 | 0 | 466325 | 1771 | 0.1774 | 2 |
-| H3 | haiku | `a2a141b30ecb7543f` | claude-haiku-5-5 | 32 | yes | 64 | 119622 | 0 | 3468124 | 1455 | 0.1828 | 4 |
+| H3 | haiku | `a2a141b30ecb7543f` | claude-haiku-5-5 | 32 | yes | 64 | 119622 | 0 | 3468124 | 1455 | 0.1828 | 3 |
 
-Review notes. Judges (Opus, model `claude-opus-5-5`): H1 `a0fdaeea99a7f83ab`,
-H2 `a1e319f359d98aa70`, H3 `a4663e806d063642e`. Labels were drawn with
-`random.SystemRandom` and read after all three judges returned: H1 A was
-Haiku and B Sonnet, H2 A Sonnet and B Haiku, H3 A Haiku and B Sonnet. The
-judges rated no finding a duplicate. Invalid: one Haiku finding in H1 (a
-true observation that names no conflict), one Sonnet finding in H1 (a stale
-comment claim that was false), and one Haiku finding in H3 (a type-check
-concern it could not verify). Haiku used 1.9 to 4.0 times as many calls as
-Sonnet per task (36 against 12, 15 against 8, 32 against 8), and its long runs crossed the 100,000-token prompt tier, so
-its H3 row cost more than Sonnet's.
+Review notes. Judges (Opus, model `claude-opus-5-5`), run with the judge
+prompt above: H1 `a712b3ed31e25ea06`, H2 `a1f764706bb2969f0`, H3
+`a7849bedfc57f6132`. Labels were drawn with `random.SystemRandom` and read
+after all three judges returned: H1 A was Sonnet and B Haiku, H2 A Sonnet
+and B Haiku, H3 A Haiku and B Sonnet. No finding was rated a duplicate. A
+first judging (H1 `a0fdaeea99a7f83ab`, H2 `a1e319f359d98aa70`, H3
+`a4663e806d063642e`) used a prompt that also counted a finding valid when
+the diff left something stale or inconsistent, which is wider than the rule
+above. It gave Sonnet 5, 3, 2 and Haiku 3, 2, 4, and review return 1
+replaced it. The two judgings rate 11 of the 22 findings differently, and
+the second rates none valid that the first rated invalid. On the three
+review tasks Haiku used 1.9 to 4.0 times as many calls as Sonnet (36
+against 12, 15 against 8, 32 against 8). Its long runs crossed the
+100,000-token prompt tier, so its H3 row cost more than Sonnet's.
 
 ## Verdicts
 
-| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict |
-|---|---|---|---|---|---|---|
-| Search | 0.3650 | 0.0218 | 2.6767 | 2.0000 | 0.7472 | stay |
-| Edit work | 0.4884 | 0.0407 | 3.0000 | 3.0000 | 1.0000 | move |
-| History review | 0.6066 | 0.4318 | 10 | 9 | 0.9000 | move |
+| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict | What could flip it |
+|---|---|---|---|---|---|---|---|
+| Search | 0.3650 | 0.0218 | 2.6767 | 2.0000 | 0.7472 | stay | Rescoring S2's format miss (not done) |
+| Edit work | 0.4884 | 0.0407 | 3.0000 | 3.0000 | 1.0000 | move | Nothing measured here |
+| History review | 0.6066 | 0.4318 | 4 | 4 | 1.0000 | move | The output undercount (cost); the judging rule (score) |
 
 Each verdict applies the rule fixed in the design: `move` when Sonnet's
 summed score is above zero, Haiku's summed cost is below Sonnet's, and
@@ -311,30 +359,33 @@ Haiku's summed score is at least 0.9 times Sonnet's.
 
 Readings that bear on the verdicts:
 
-- Search is `stay` because of one format miss. Without S2's missing `.py`
-  extensions Haiku would score 3.0, above Sonnet's 2.6767. The rule was
-  fixed before the runs and is not rescored here.
-- Edit work is at the ceiling for both models. It shows that Haiku did
-  these three tasks as well as Sonnet. It cannot show a gap on harder
-  edits.
-- History review passes at exactly the margin, on one run per task. One
-  finding either way would flip it.
+- Search is `stay`. S2's zero is the whole gap: with the `.py` extensions
+  Haiku would score 3.0, above Sonnet's 2.6767. The rule was fixed before
+  the runs and is not rescored here.
+- Edit work is at the ceiling for both models. Haiku did these three tasks
+  as well as Sonnet, and the tasks cannot show a gap on harder edits.
+- History review is `move` with equal scores, 4 against 4, on one run per
+  task. One fewer Haiku finding leaves it at 3 against 4 (0.75), which is
+  `stay`. Under the first judging's wider rule it was 9 against 10 (0.9),
+  exactly at the margin.
 - Costs are lower bounds (see Cost). For a group's comparison to reverse,
   Haiku's unrecorded output, priced at its higher tier, would need to
   exceed the cost gap even with Sonnet's unrecorded output taken as zero.
   That break-even is about 137,000 tokens for search (34,000 per non-final
   Haiku call), 179,000 for edit work (9,400 per call), and 70,000 for
   history review (870 per call). The search and edit comparisons hold. The
-  history-review comparison does not hold for certain, because 870 output
-  tokens per tool-call turn, thinking included, is within reach.
+  history-review comparison is not certain, because 870 output tokens per
+  tool-call turn, thinking included, is within reach.
 
 ## Limits and re-measurement
 
 One run per model per task, three tasks per group, at default effort, on
-tasks drawn from this repo. The judge is one Opus reader per task. The
-measurement helpers were session-local and are not committed. To re-measure:
-re-run the nine prompts above with the same models, take each run's input
-and cache counts from its subagent transcript and its final call's output
-from the session transcript's Agent tool result, score with the keys and
-mutants above, and apply the verdict rule. A rerun that flips a group's
-verdict falsifies M228's single-run choice for that group.
+tasks drawn from this repo. The judge is one Opus reader per task, and two
+judgings under different rules rated 11 of 22 findings differently. The
+measurement helpers were session-local and are not committed (observed
+2026-10-09). To re-measure: re-run the nine task prompts and the judge
+prompt above with the same models, take each run's input and cache counts
+from its subagent transcript and its final call's output from the session
+transcript's Agent tool result, score with the keys and mutants above, and
+apply the verdict rule. A rerun that flips a group's verdict falsifies
+M228's single-run choice for that group.
