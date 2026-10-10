@@ -1,4 +1,4 @@
-<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section body under ~25 lines. -->
+<!-- Appended to the repo's CLAUDE.md by /cairn-init. Keep the section, heading included, under 30 lines. -->
 
 ## Project tracking (cairn)
 
@@ -15,6 +15,8 @@ git model. Classify first:
   implement and review to the merge question; typed `/milestone-implement`
   or `/milestone-review` resumes a stopped run.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
+- **Look into a GitHub issue**: invoke `/milestone` with the issue number
+  or URL.
 - **Never implement code on the default branch** outside a milestone/hotfix
   branch; nothing reaches it without the user's explicit approval at the
   merge question.

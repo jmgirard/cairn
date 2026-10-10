@@ -69,6 +69,16 @@ Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
 
+Give `/milestone` an issue number (`#12` or `12`) or an issue URL, and it
+looks into that one GitHub issue instead. It reads the issue and the code
+the issue names, then reports one verdict (`reply`, `hotfix`, or
+`milestone`) and how much maintainer input the work needs (`none`,
+`confirm`, or `decide`). One question then lets you start the work now,
+add a candidate row, leave the issue, or stop. For a reply, cairn drafts
+the text and shows a `gh issue comment` command for you to run. It never
+posts the reply itself. In guest mode, the commands name the upstream
+repo, and the draft uses no cairn terms.
+
 ### The milestone band
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows

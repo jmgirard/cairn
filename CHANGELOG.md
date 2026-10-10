@@ -17,6 +17,17 @@
 
 ### New
 
+- **`/milestone` looks into one GitHub issue.** Give it an issue number or
+  URL, and it reads that issue and the code the issue names. It reports one
+  verdict (`reply`, `hotfix`, or `milestone`), one maintainer-input level
+  (`none`, `confirm`, or `decide`), file:line citations, and a reproduction
+  or the reason none was run. One question then starts the work now, adds a
+  candidate row, leaves the issue with a stated reason, or stops. A hotfix
+  or a plan starts through `/hotfix` or `/milestone-plan`. A reply is
+  drafted and shown with a `gh issue comment` command for you to run, and
+  cairn never posts it. In guest mode the commands name the upstream repo,
+  the draft uses no cairn terms, and a candidate row stays on disk.
+
 - **An opt-in Copilot review round on hotfix and milestone PRs.** With
   `# Copilot review: on` in `cairn/PROFILE.md`, `/hotfix` and
   `/milestone-review` request a Copilot review on the PR, only when the PR

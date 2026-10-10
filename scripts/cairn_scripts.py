@@ -48,7 +48,7 @@ ARCHIVE_CAP = 25
 TERMINAL_ROW_RETENTION = 3  # done + dropped rows share one ROADMAP cap
 
 # Cap on the cairn-owned `## Project tracking (cairn)` block appended to a
-# repo's CLAUDE.md (D-018). Template target is ~25 lines; 30 gives headroom.
+# repo's CLAUDE.md (D-018). The shipped template stays under this cap.
 CLAUDE_SECTION_CAP = 30
 CLAUDE_SECTION_HEADING = "## Project tracking"
 
