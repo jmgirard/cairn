@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone` ships in the plugin to every operator
-- **Branch/PR:** m232-issue-look-in
+- **Branch/PR:** m232-issue-look-in, https://github.com/jmgirard/cairn/pull/241
 
 ## Goal
 
