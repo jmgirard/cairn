@@ -18,6 +18,8 @@ first:
 
 - **Trivial** (no runtime surface — typo, comment, tracking edit): commit to
   main.
+- **Look into a GitHub issue**: invoke `/milestone` with the issue number
+  or URL.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
   `/milestone-plan`. One question set follows, then the run goes on through

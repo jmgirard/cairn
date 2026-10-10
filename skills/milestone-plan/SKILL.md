@@ -171,7 +171,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    candidate-row text — shown verbatim in the chat before selection and
    composed against the plan as the gate's other answers settle it; it is
    posted with `gh issue comment <N> --body` only on selection, never by
-   default, and a declined option writes nothing to GitHub.
+   default, and a declined option writes nothing to GitHub. Guest arm
+   (tracking-rules "Collaboration mode"): the command adds `--repo
+   <base-repo>`, and the body carries no cairn vocabulary. It reads
+   `Working on this: <issue title>`, the issue's own title, with no
+   milestone id, and a `partial`
+   entry's remainder is described in plain words, with no row text.
 
    **Criteria audit (runs before the questions are composed; scaled to
    stakes).** A plan author's own read of its own criteria is the check

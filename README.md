@@ -69,6 +69,17 @@ Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
 
+Give `/milestone` an issue number (`#12`, `12`, or `issue 12`) or an issue
+URL, and it looks into that one GitHub issue instead. It reads the issue
+and the code the issue names, then reports one verdict (`reply`, `hotfix`, or
+`milestone`) and how much maintainer input the work needs (`none`,
+`confirm`, or `decide`). One question then lets you start the work now,
+add a candidate row, leave the issue, or stop. Leave is offered only for
+noise, a duplicate, or an item cairn already covers. For a reply, cairn drafts
+the text and shows a `gh issue comment` command for you to run. It never
+posts the reply itself. In guest mode, the commands name the upstream
+repo, and the draft uses no cairn terms.
+
 ### The milestone band
 
 The plugin also ships a Claude Code mod: a band above the prompt that shows
@@ -484,6 +495,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | You want to… | Do this |
 |---|---|
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
+| Look into one GitHub issue | `/milestone #12`, or the issue's URL: a verdict (reply, hotfix, or milestone), the maintainer input it needs, and one question to start the work, add a candidate row, leave it (with a stated reason), or stop |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
 | Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
 | Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
@@ -677,7 +689,9 @@ actually reach.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
-  slotted issue — posted only if you select it, never by default. The
+  slotted issue — posted only if you select it, never by default. In guest
+  mode the comment names the upstream repo and reads `Working on this:
+  <issue title>` instead. The
   PR the review opens after your approval has a body ending with
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the
