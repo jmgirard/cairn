@@ -379,8 +379,16 @@ chip.
 
 - `reply`: an answer settles the issue, and no code changes. Examples are a
   question, a misunderstanding, a duplicate, an item the code or docs
-  already cover, a closed issue whose fix landed, and a request the project
-  declines.
+  already cover, and a closed issue whose fix landed.
+  A request the project declines takes `reply` only when a record of the
+  reason to decline exists, and the verdict's reason names that record.
+  In owner mode the record is a D-entry, a `cairn/DESIGN.md` line, or a
+  dropped milestone's archive summary.
+  In guest mode it is the upstream repo's own docs or a maintainer's
+  statement on GitHub, since the guest's `cairn/` is not the project's.
+  A decline with no such record takes the `milestone` verdict at the
+  `decide` level, and the chip's candidate-row option then holds the
+  decline's record, so the issue is never its only record.
 - `hotfix`: a user-visible bug that is under the hotfix bar (tracking-rules
   "Sizing and the work tiers"). It restores documented behavior in one
   sitting, with no design decision.

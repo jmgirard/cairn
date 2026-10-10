@@ -1,13 +1,13 @@
 # M233: Issue intake routes keep their records and read the right repo
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — it edits shipped skill prose and the rulebook that adopting repos run
-- **Branch/PR:** —
+- **Branch/PR:** m233-intake-route-records
 
 ## Goal
 
@@ -41,7 +41,7 @@ Close three issue-intake gaps from the M232 review, so that no issue route leave
 
 ## Tasks
 
-- [ ] T1: Rewrite the `reply` verdict's decline case in `skills/milestone/SKILL.md` §4 (~lines 380-383) as a rule with its owner and guest records and the `milestone`/`decide` fallback (AC1). Add asserts to `skills/tests/test_issue_look_in.py` for the owner record list, the guest record, and the fallback.
+- [x] T1: Rewrite the `reply` verdict's decline case in `skills/milestone/SKILL.md` §4 (~lines 380-383) as a rule with its owner and guest records and the `milestone`/`decide` fallback (AC1). Add asserts to `skills/tests/test_issue_look_in.py` for the owner record list, the guest record, and the fallback.
 - [ ] T2: Edit the Intake paragraph of `skills/shared/tracking-rules.md` (~lines 191-192) to name the reply and `/milestone-plan` routes, with the `leave` sentence untouched (AC2). Append D-154 to `cairn/DECISIONS.md`, annotating D-044: a reply carries leave's narrowing, and an unrecorded decline routes to `milestone`/`decide`. Add a guard to `TestIntakeRouting` in `skills/tests/test_external_pr_intake.py`. Re-seed the rulebook-mass baseline "629 lines / 59,832 chars" with `wc -l -m` at its three sites: the `skills/milestone/SKILL.md` audit line, `skills/tests/test_cost_audit_line.py`, and `skills/tests/test_mutation_harness.py`.
 - [ ] T3: Add `--repo <base-repo>` to both inbox reads in `skills/milestone-plan/SKILL.md` step 2 (~lines 99-103). State the guest-mode difference from `/milestone` §2 with its reason (AC3). Add a guard to `skills/tests/test_issue_triage.py`.
 - [ ] T4: Add a CHANGELOG.md Unreleased entry and one README sentence in the look-in paragraph (README.md ~lines 72-81) on the decline rule. Register or exempt the new guards per the rule in `skills/tests/test_mutation_harness.py`. Run the `verify` slot (AC4). Run `python3 -m unittest discover -s skills/tests` by hand.
@@ -56,3 +56,5 @@ Close three issue-intake gaps from the M232 review, so that no issue route leave
 - 2026-10-10: plan gate chose `--repo` at each of the two plan-sweep reads over a blanket session-start clause, because the plan skill holds only these two inbox reads. Falsified by a later `gh issue` or `gh pr` read added to the plan skill without `--repo`.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader): 4 findings, all fixed. AC1 changed from an example condition to a rule, gained a guest-mode record arm, and now says where an unrecorded decline's record lands. AC3 now requires step 2 to state its guest-mode difference from `/milestone` §2 and the reason. AC2 and AC4 had no finding.
 - 2026-10-10: no split: 4 criteria, 4 tasks, one PR.
+- 2026-10-10: implement start: branch m233-intake-route-records cut from main at db92fd5. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-10: T1 done: §4 `reply` decline rule with owner and guest records and the `milestone`/`decide` fallback. 3 new tests in `test_issue_look_in.py` pass, and the same 3 fail against the old prose. Verify slot 5/5 green.

@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M230 | The pane's PR reads stop holding up opens | done | — | normal | milestones/archive/M230-pane-reads-detached.md |
 | M231 | Hotfix and milestone PRs get a Copilot review round | done | — | normal | milestones/archive/M231-copilot-review-round.md |
 | M232 | `/milestone` looks into one GitHub issue and routes it | done | — | normal | milestones/archive/M232-issue-look-in.md |
-| M233 | Issue intake routes keep their records and read the right repo | planned | — | normal | milestones/M233-intake-route-records.md |
+| M233 | Issue intake routes keep their records and read the right repo | in-progress | — | normal | milestones/M233-intake-route-records.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
