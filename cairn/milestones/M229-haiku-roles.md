@@ -96,7 +96,7 @@ in M228's note.
       note and names the moved and kept groups. Under IP2 it quotes D-016's
       "can silently drop a real bug" reason and answers it with the
       choice to keep every review role on Sonnet.
-- [ ] T3: Rewrite the "Set the model", "Sonnet subagents", review fan-out,
+- [x] T3: Rewrite the "Set the model", "Sonnet subagents", review fan-out,
       and "Never Haiku" bullets of "Model and agent strategy" in
       `skills/shared/tracking-rules.md` to match AC2.
 - [ ] T4: Edit each skill line that the AC3 grep lists. At plan time these
@@ -136,6 +136,7 @@ in M228's note.
 - 2026-10-10: re-audit: AC2 (full) — nothing.
 - 2026-10-10: re-audit: AC3 (full) — `milestone-implement` line 119's "well-specified mechanical work" is not a role AC2 names verbatim, so AC3 could pass with it still on Sonnet. Answered, not refixed (a third wording pass is the repeated-re-audit stop): that phrase is the mechanical-migration role AC2 names, and T4 now says it moves to Haiku. Also answered: Scope In's "pins on those lines change" binds nothing here, because no prose-guard pin covers a line that changes.
 - 2026-10-10: T2: appended D-151; it supersedes D-016's blanket and D-110's "blanket stands" clause, names each group's verdict, and quotes D-016's "silently drop a real bug" reason, answered by keeping every review role on Opus or Sonnet.
+- 2026-10-10: T3: "Set the model" lists Haiku; the "Sonnet subagents" bullet splits into "Haiku subagents" (D-151: migrations, test writing, boilerplate, with verify before commit) and "Sonnet subagents" (Explore, the two history-review lenses); "Never Haiku" removed; the review fan-out bullet already said Sonnet and is unchanged. Suites: scripts 401 OK (21 skipped), hooks 174 OK, skills 669 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
