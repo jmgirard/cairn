@@ -69,9 +69,9 @@ Then, in your package repo, run `/cairn-init`. Fresh repos get scaffolding;
 repos with an older tracking system get an interactive, PR-based migration.
 Run `/milestone` any time you're unsure where things stand.
 
-Give `/milestone` an issue number (`#12` or `12`) or an issue URL, and it
-looks into that one GitHub issue instead. It reads the issue and the code
-the issue names, then reports one verdict (`reply`, `hotfix`, or
+Give `/milestone` an issue number (`#12`, `12`, or `issue 12`) or an issue
+URL, and it looks into that one GitHub issue instead. It reads the issue
+and the code the issue names, then reports one verdict (`reply`, `hotfix`, or
 `milestone`) and how much maintainer input the work needs (`none`,
 `confirm`, or `decide`). One question then lets you start the work now,
 add a candidate row, leave the issue, or stop. Leave is offered only for
@@ -689,7 +689,9 @@ actually reach.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
-  slotted issue — posted only if you select it, never by default. The
+  slotted issue — posted only if you select it, never by default. In guest
+  mode the comment names the upstream repo and reads `Working on this:
+  <issue title>` instead. The
   PR the review opens after your approval has a body ending with
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the

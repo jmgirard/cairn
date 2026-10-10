@@ -27,6 +27,9 @@
   drafted and shown with a `gh issue comment` command for you to run, and
   cairn never posts it. In guest mode the commands name the upstream repo,
   the draft uses no cairn terms, and a candidate row stays on disk.
+  In guest mode, the optional issue comment that `/milestone-plan` offers
+  now names the upstream repo and reads `Working on this: <issue title>`,
+  with no milestone number.
 
 - **An opt-in Copilot review round on hotfix and milestone PRs.** With
   `# Copilot review: on` in `cairn/PROFILE.md`, `/hotfix` and

@@ -126,3 +126,40 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - live-run #6: unclear whether a one-phase look-in marks a chapter — reject, false (the phase header directive covers it)
 - Pass 2 (2026-10-10, head 3e43c88): branch pushed to PR #241. The Copilot state query returned `reviewed head Lite`, so nothing was requested.
 - Pass 2 evidence AC1–AC6: re-run on 3e43c88. The frontmatter trigger and `argument-hint` are present, §4 is at line 318, and `claude plugin validate .` exits 0 (AC1). §4 lists 6 scale entries, three verdicts and three levels (AC2). The chip's four options are in order (AC3). The AC4 grep lists 4 lines: `gh issue view`, `gh issue list`, `gh pr list`, and the hand-off, each with `--repo <base-repo>` (AC4, AC5). The template section is 29 lines and CLAUDE.md is 26, each +2 in the section, and the README carries the paragraph and the table row (AC6).
+- Pass 2 evidence AC7: verify green on 3e43c88, hand-run `skills/tests` 691 OK, `cairn_validate` all passed, no marketplace version warning. A second fresh Opus live run followed the fixed §4 in `~/github/insight` (guest) on open issue #329 (`is_nested_models` and random effects). Its report gave verdict `reply` and level `none`, with citations and a reproduction under `pkgload::load_all`. It skipped the issue's network reprex as data, wrote out the chip (Draft the reply, recommended, then Add a candidate row, then Stop), and took Stop. `git status` in insight stayed clean.
+- spawned: diff-bug, blame-history, prior-review (pass 2, plus the AC7 live-run agent)
+- diff-bug #1 (pass 2): the candidate-row text wrote the row before its pull and its checks — fix now (ordered steps)
+- diff-bug #2 (pass 2): the sweep skipped open milestones and their `Resolves:` slots — fix now
+- diff-bug #3 (pass 2): no rule for a closed issue — fix now (a closed issue whose fix landed is a `reply` example)
+- diff-bug #4 (pass 2): the candidate-row option warned about only one of its two no-write cases — fix now
+- diff-bug #5 (pass 2): an argument such as "look into issue 12" failed the argument test — fix now
+- diff-bug #6 (pass 2): the PR stop gave no way to tell an external PR from the operator's own — fix now (`/milestone` first, then `/hotfix #<N>` labeled for an external PR in owner mode)
+- diff-bug #7 (pass 2): "the hand-off command as the first fence" is false when the draft holds a code block — fix now (the fence is named by its label)
+- diff-bug #8 (pass 2): the reproduction can leave build files in the repo — fix now (`git status --short` the same before and after, ignored build output aside)
+- diff-bug #9 (pass 2): the CHANGELOG missed the guest-mode plan acknowledgement change — fix now
+- diff-bug #10 (pass 2): `<title>` in the guest acknowledgement was ambiguous — fix now (the issue's own title)
+- diff-bug #11 (pass 2): no rule for a failed candidate-row push — fix now
+- diff-bug #12 (pass 2): the `'\''` escape assumes a POSIX shell — follow-up (row "Issue look-in edges (M232 review)")
+- blame-history #1 (pass 2): external versus own PR undefined — fix now (same as diff-bug #6)
+- blame-history #2 (pass 2): `/hotfix` has no clause for an `issue <URL>` argument — follow-up (same row; the pass-2 diff-bug reviewer found steps 6 and 7 pick it up as an existing issue)
+- blame-history #3 (pass 2): a PR URL or a non-issue argument ran §1–§3 silently — fix now
+- blame-history #4 (pass 2): Stop leaves the issue as the only record — reject, planned change (AC3 names the stop option, and the rulebook requires one on every chip)
+- blame-history #5 (pass 2): an orphaned issue cannot be closed from the look-in — follow-up (same row)
+- blame-history #6 (pass 2): the guest acknowledgement's title may carry cairn wording — fix now (same as diff-bug #10)
+- blame-history #7 (pass 2): the reply close block names no label for the hand-off fence — fix now
+- blame-history #8 (pass 2): the first routing line can catch "fix issue #12" — reject, planned change (AC6 routes issues to the look-in, whose hotfix option leads on to `/hotfix`)
+- blame-history #9 (pass 2): README's contributions bullet names only the audit's inbox sweep — reject, false (the bullet describes the audit, and the look-in has its own paragraph and table row)
+- blame-history #10 (pass 2): §4 does not restate the phase header — reject, style
+- prior-review #1 (pass 2): the guest acknowledgement has no guard — reject, false (the profile's test-doctrine owes no prose guard, D-109)
+- prior-review #2 (pass 2): no blanket `--repo` clause in the plan skill — reject, false (owner mode needs none, and the inbox reads are in the follow-up row)
+- prior-review #3 (pass 2): README and CHANGELOG miss the guest acknowledgement — fix now
+- prior-review #4 (pass 2): README omits the `issue N` form — fix now
+- live-run #1 (pass 2): unclear whether the issue read also runs with the number — fix now (the two reads are stated apart)
+- live-run #2 (pass 2): no depth for reading a lead — reject, style
+- live-run #3 (pass 2): `load_all` can write build files — fix now (same as diff-bug #8)
+- live-run #4 (pass 2): docs in another package — reject, false (report part 2 covers what is out of reach)
+- live-run #5 (pass 2): a `reply` example "an item already covered" blurred with leave — fix now (it now reads "an item the code or docs already cover")
+- live-run #6 (pass 2): the candidate-row description said nothing for guest mode — fix now
+- live-run #7 (pass 2): unclear whether a CI line is owed — reject, false (the look-in has no branch of its own)
+- live-run #8 (pass 2): chapter markers for one phase — reject, false (same as pass 1)
+- live-run #9 (pass 2): the rulebook's `<fork-owner>` recipe reads `origin`, which in the insight checkout is the upstream — follow-up (same row)
