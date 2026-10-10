@@ -59,6 +59,21 @@ class TestGuestTriageRuns(unittest.TestCase):
         )
         self.assertNotIn("**`/cairn-release` and `/cairn-triage` stop**", text)
 
+    def test_readme_states_the_guest_arm(self):
+        text = norm((SKILLS.parent / "README.md").read_text(encoding="utf-8"))
+        self.assertIn(
+            "**Triage stays on disk.** `/cairn-triage` runs as usual, but it "
+            "skips the clean-tree, default-branch, and sync checks",
+            text,
+        )
+        self.assertNotIn("No release walk, no triage pass", text)
+
+    def test_step_two_reads_the_base_default_branch(self):
+        text = read("cairn-triage/SKILL.md")
+        self.assertIn(
+            "`git cat-file -e <base>/<default-branch>:<path>`", text
+        )
+
 
 class TestGuestTriageCommitsNothing(unittest.TestCase):
     def test_step_six_guest_arm_makes_no_commit_or_push(self):

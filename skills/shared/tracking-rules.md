@@ -324,7 +324,8 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   messages and PR titles and bodies carry no `M<NNN>`, no `AC<n>`/`T<n>`, no D-entry ids, and no cairn terms.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
-  committed or pushed, and skips its git preconditions.
+  committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
+  each refuted-premise or already-shipped drop's evidence, and it lasts only until the next stamp replaces it.
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch

@@ -30,14 +30,16 @@ step (session start implicit).
 `cairn/PROFILE.md` carries `# Collaboration mode: guest`, `cairn/` is never
 committed, so the pass skips the clean-tree, default-branch, and sync
 preconditions below, because it moves no ref and commits nothing, and
-`cairn/` is the same untracked folder on every branch. It runs steps 1–4 as
-written and step 5 with the stamp standing in for the commit message. Step
-4's byte check counts the longer guest stamp, and steps 6 and 7 state their
-guest arms. Step 2 judges a cited code path against the checked-out branch,
-which need not be the default branch, so the step-3 table names that branch.
+`cairn/` is the same untracked folder on every branch of the checkout.
+It runs steps 1–4 as written and step 5 with the stamp standing in for the
+commit message. Step
+2 reads cited code at the base remote's default branch as last fetched,
+never at the checked-out branch, which can hold the operator's unmerged
+work; step 3 names that ref and step 4's byte check counts the longer guest
+stamp. Steps 6 and 7 state their guest arms.
 
-Owner-mode preconditions first: clean `git status`, on the default branch (detect it
-per the tracking-rules git model — never assume `main`), synced with origin
+Owner-mode preconditions first: clean `git status`, on the default branch
+(detect it per the tracking-rules git model — never assume `main`), synced with origin
 (`git fetch`, ff-only pull — the pass's only ref motion, done before the
 lists are read so the enumeration reads the tree the commit will land on).
 A dirty tree or a non-default branch stops the pass with a close block
@@ -113,7 +115,12 @@ one of them absorbs is never dropped or merged away in this pass
      retired), or a cited path that no longer exists (`ls` it from the
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
-     is `compress`, not `drop`.
+     is `compress`, not `drop`. In guest mode a code path is checked with
+     `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
+     git model's base remote and default branch) in place of `ls`, a fired
+     trigger or an *already shipped* drop is judged at that ref too, and an
+     *already shipped* drop names a commit reachable from it, since code
+     only on the checked-out branch has not shipped.
    - **Overlap → `merge`.** Two items on one subject, or one whose trigger
      is a special case of another's. The survivor is the row whose trigger
      is the more observation-bound (the one the other's is a case of); on
@@ -156,8 +163,8 @@ one of them absorbs is never dropped or merged away in this pass
    - **The table**, in the chat above the chip (best-effort rendering —
      the chip's own text carries what the decision needs), one row per
      enumerated item: item (source + subject) → disposition → one-line
-     reason. In guest mode a line above the table names the checked-out
-     branch that step 2's path checks read. Every
+     reason. In guest mode a line above the table names the
+     `<base>/<default-branch>` ref that step 2's code checks read. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.
@@ -270,8 +277,8 @@ one of them absorbs is never dropped or merged away in this pass
    has none gets one — with one line dated today naming what the pass
    changed: each dropped, merged, split, routed, compressed, and re-rated
    item by subject, the drops' reason classes, whether a decision entry was
-   written, and `validate green` (the run just observed). Make **one
-   docs-only commit on the default branch**, subject
+   written, and `validate green` (the run just observed). In owner mode,
+   make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
    drops with their evidence, and push it (the git model: docs-only
    tracking commits go straight to the pushed default branch; nothing here

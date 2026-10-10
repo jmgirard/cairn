@@ -3839,4 +3839,28 @@ REGISTRY += [
         target="skills/cairn-triage/SKILL.md",
         block="already-shipped drop, the record or path",
     ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="preconditions below, because it moves no ref and commits nothing",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="It runs steps 1–4 as written and step 5 with the stamp standing in",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_readme_states_the_guest_arm",
+        target=README,
+        block="**Triage stays on disk.**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_step_two_reads_the_base_default_branch",
+        target="skills/cairn-triage/SKILL.md",
+        block="`git cat-file -e <base>/<default-branch>:<path>`",
+    ),
 ]

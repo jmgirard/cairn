@@ -5676,13 +5676,20 @@ already runs.
 
 **Decision:** In guest mode the pass runs. It skips the clean-tree,
 default-branch, and sync preconditions, because it moves no ref and
-commits nothing. Its accepted edits stay in `cairn/` on disk. The stamp
-names the evidence for each refuted-premise or already-shipped drop,
-because no commit message holds it. Rejected: keeping the clean-tree
-check, because a pass with no commit cannot sweep code into one.
-Rejected: evidence in chat only, because chat is lost when the session
-ends.
+commits nothing, and `cairn/` is the same folder on every branch of the
+checkout. The owner sync existed so the pass read the tree its commit
+lands on. In guest mode step 2 reads cited code at the base remote's
+default branch as last fetched instead, because the checked-out branch can
+hold the operator's unmerged work. Its accepted edits stay in `cairn/` on
+disk. The stamp names the evidence for each refuted-premise or
+already-shipped drop, because no commit message holds it. Rejected:
+keeping the clean-tree check, because a pass with no commit cannot sweep
+code into one. Rejected: evidence in chat only, because chat is lost when
+the session ends.
 
 **Consequences:** D-137 stands. `/cairn-release` keeps its guest stop.
-Falsified by a guest pass that writes outside `cairn/`, or by a guest
-stamp that takes ROADMAP over its byte budget in a real pass.
+The stamp is longer than the rulebook's "one short line" in guest mode,
+and its evidence lasts only until the next hygiene pass replaces the
+stamp, since guest mode has no git history of earlier stamps. Falsified by
+a guest pass that writes outside `cairn/`, or by a guest stamp that takes
+ROADMAP over its byte budget in a real pass.
