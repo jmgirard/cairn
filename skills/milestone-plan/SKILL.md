@@ -97,10 +97,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      never refuse merely because a rejection exists.
 
    **Inbox sweep.** The sweep also reads the repo's open GitHub inboxes,
-   in the health audit's form (`/milestone` §2): enumerate both —
-   `gh issue list --state open --json number,title,url` for issues,
-   `gh pr list --state open --json number,title,url,author,headRefName`
-   for PRs — then drop cairn's own in-flight work from the PR list: a PR
+   in the shape of the health audit's reads (`/milestone` §2): enumerate
+   both —
+   `gh issue list --repo <base-repo> --state open --json number,title,url` for issues,
+   `gh pr list --repo <base-repo> --state open --json number,title,url,author,headRefName`
+   for PRs (the rulebook's slug recipe gives `<base-repo>`) — then drop
+   cairn's own in-flight work from the PR list: a PR
    the operator authored, or whose head branch is `m<nnn>-*` or
    `hotfix-*`, is dropped (the `author.login` and `headRefName` fields are
    what the filter reads; the operator's login is what `gh api user --jq
@@ -108,13 +110,21 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    being planned, and only a hit takes a disposition here, which the agent
    decides and logs: an open issue overlapping the goal becomes a
    `Resolves:` entry (`closes` or `partial`) or a candidate row; an open PR
-   overlapping it becomes a candidate row naming `/hotfix` as its door
-   (search-first applies to both). Items with no overlap take no disposition
-   at the plan — report their count in the chat; `/milestone` §3 is where
-   they are triaged. The sweep writes nothing to GitHub — no labels,
-   comments, or closes. **When `gh` is missing, unauthenticated, or the
-   repo has no remote:** name which of the three it was, skip the sweep,
-   and continue planning.
+   overlapping it becomes a candidate row naming `/hotfix` as its door in
+   owner mode, or naming the maintainers in guest mode, where the rulebook
+   does not support adopting a PR through `/hotfix` (search-first applies
+   to both). Items with no overlap take
+   no disposition at the plan — report their count in the chat; in owner
+   mode `/milestone` §3 is where they are triaged. The sweep writes nothing
+   to GitHub — no labels, comments, or closes. **When `gh` is missing,
+   unauthenticated, or the repo has no remote:** name which of the three it
+   was, skip the sweep, and continue planning.
+   **Guest mode** (tracking-rules "Collaboration mode"): these reads go to
+   the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which
+   skips guest mode. The reason is that the plan's sweep looks for overlap
+   with the planned work, such as an upstream issue that the work resolves,
+   while §2 skips the maintainers' inbox, since triaging their intake is
+   their act.
 
    **Checker-regress shape.** The sweep also names this shape: a scope
    extending or hardening a checker that the ROADMAP or archive records

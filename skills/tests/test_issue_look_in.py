@@ -94,6 +94,30 @@ class TestScales(unittest.TestCase):
         for level in ("`none`:", "`confirm`:", "`decide`:"):
             self.assertIn("- " + level, s)
 
+    def test_reply_declines_only_with_a_recorded_reason(self):
+        # M233 (D-154): a decline with no record would leave the issue as
+        # the only record of a new idea, the gap D-044 closed for `leave`.
+        s = look_in(milestone())
+        self.assertIn("A request the project declines takes `reply` only when a record of the", s)
+        self.assertNotIn("closed issue whose fix landed, and a request the project", s)
+
+    def test_decline_records_per_mode(self):
+        s = look_in(milestone())
+        self.assertIn("In owner mode the record is a D-entry, a `cairn/DESIGN.md` line, or a", s)
+        self.assertIn("In guest mode it is the upstream repo's own docs or a maintainer's", s)
+
+    def test_unrecorded_decline_takes_milestone_decide(self):
+        s = look_in(milestone())
+        self.assertIn("A decline with no such record takes the `milestone` verdict at the", s)
+        self.assertIn("`decide` level, and the chip's candidate-row option then holds the", s)
+
+    def test_unrecorded_decline_recommends_the_candidate_row(self):
+        # M233 review: with Do it now recommended, the chip would plan work
+        # that resolves a request the project means to decline.
+        s = look_in(milestone())
+        self.assertIn("with no record, and the chip lists the candidate-row option first,", s)
+        self.assertIn("the candidate-row option goes first and is marked recommended instead.", s)
+
     def test_guest_mode_maintainer_is_upstream(self):
         self.assertIn(
             "In guest mode the maintainer is the upstream maintainers",

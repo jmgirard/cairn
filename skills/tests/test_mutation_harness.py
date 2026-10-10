@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="629 lines / 59,832 chars",
+        block="630 lines / 59,932 chars",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -1188,6 +1188,12 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_issue_triage",
+        test="TestPlanSweepRepo.test_guest_mode_difference_from_the_audit_is_stated",
+        target=PLAN,
+        block="the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which",
+    ),
+    Mutation(
+        guard="test_issue_triage",
         test="TestInboxEnumeration.test_step_applies_search_first_before_proposing",
         target=MILESTONE,
         block="apply the search-first rule to every hit before proposing",
@@ -1230,6 +1236,12 @@ REGISTRY = [
         test="TestIntakeRouting.test_intake_paragraph_names_leave_with_its_narrowing",
         target=RULES,
         block="`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn",
+    ),
+    Mutation(
+        guard="test_external_pr_intake",
+        test="TestIntakeRouting.test_intake_paragraph_names_reply_and_plan_routes",
+        target=RULES,
+        block="hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;",
     ),
     # M82: /cairn-init §3 performs the rename its own `scaffold deprecations`
     # advisory names. One entry per independently-load-bearing block: the

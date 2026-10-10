@@ -111,8 +111,8 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -m` and report current
 lines/chars and the growth since the recorded baseline —
-629 lines / 59,832 chars (M231, 2026-10-10, the Copilot round's two
-pointers; re-seed these figures only when
+630 lines / 59,932 chars (M233, 2026-10-10, the Intake paragraph's
+reply and plan routes; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
 governed at the door (D-057), and this line keeps it visible.
@@ -379,8 +379,18 @@ chip.
 
 - `reply`: an answer settles the issue, and no code changes. Examples are a
   question, a misunderstanding, a duplicate, an item the code or docs
-  already cover, a closed issue whose fix landed, and a request the project
-  declines.
+  already cover, and a closed issue whose fix landed.
+  A request the project declines takes `reply` only when a record of the
+  reason to decline exists, and the verdict's reason names that record.
+  In owner mode the record is a D-entry, a `cairn/DESIGN.md` line, or a
+  dropped milestone's archive summary.
+  In guest mode it is the upstream repo's own docs or a maintainer's
+  statement on GitHub, since the guest's `cairn/` is not the project's.
+  A decline with no such record takes the `milestone` verdict at the
+  `decide` level, and the chip's candidate-row option then holds the
+  decline's record. The verdict's reason says that the issue is a decline
+  with no record, and the chip lists the candidate-row option first,
+  marked recommended, in place of Do it now.
 - `hotfix`: a user-visible bug that is under the hotfix bar (tracking-rules
   "Sizing and the work tiers"). It restores documented behavior in one
   sitting, with no design decision.
@@ -415,7 +425,8 @@ options are these, in this order:
 
 1. Do it now, the verdict's option, first and marked recommended. For
    `hotfix` it starts a hotfix, for `milestone` it starts a plan, and for
-   `reply` it drafts the reply.
+   `reply` it drafts the reply. For a decline with no record (The verdict),
+   the candidate-row option goes first and is marked recommended instead.
 2. Add a candidate row. Its description says where the row goes: on disk
    only in guest mode, or nowhere in owner mode when the checkout is off
    the default branch or `cairn/ROADMAP.md` has uncommitted changes.

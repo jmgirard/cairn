@@ -14,6 +14,12 @@
   result untested. On three edit tasks both models scored the same, and
   Haiku cost $0.04 where Sonnet cost $0.49 (the cairn repository's
   `cairn/references/haiku-sonnet-roles.md`).
+- **In guest mode, `/milestone-plan` reads the upstream repo's open issues
+  and PRs.** Its inbox reads now pass `--repo` with the base repo, so a
+  plan can find an upstream issue that the planned work resolves. An
+  overlapping upstream PR becomes a candidate row that names the
+  maintainers, since the rulebook does not support adopting a PR through
+  `/hotfix` in guest mode.
 
 ### New
 
@@ -27,6 +33,14 @@
   drafted and shown with a `gh issue comment` command for you to run, and
   cairn never posts it. In guest mode the commands name the upstream repo,
   the draft uses no cairn terms, and a candidate row stays on disk.
+  A reply declines a request only when the reason is on record. In owner
+  mode the record is a decision entry, a `cairn/DESIGN.md` line, or a
+  dropped milestone's archive summary. In guest mode it is the upstream
+  repo's own docs or a maintainer's statement on GitHub. A decline with no
+  such record gets the `milestone` verdict at the `decide` level, and the
+  recommended option adds a candidate row, so the record lands in cairn.
+  The rulebook's intake rule names the reply and `/milestone-plan` routes
+  for issues.
   In guest mode, the optional issue comment that `/milestone-plan` offers
   now names the upstream repo and reads `Working on this: <issue title>`,
   with no milestone number.

@@ -144,6 +144,15 @@ class TestIntakeRouting(unittest.TestCase):
         )
 
 
+    def test_intake_paragraph_names_reply_and_plan_routes(self):
+        # M233/D-154: the look-in's reply and plan routes are issue routes,
+        # and a reply carries leave's narrowing: nothing new to record.
+        self.assertIn(
+            "hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;",
+            rules(),
+        )
+
+
     def test_no_second_approval_mechanism(self):
         # M73 reuses M72's PR-bound marker; a second marker file or a prose
         # yes/no would fork the approval path IP1 depends on.

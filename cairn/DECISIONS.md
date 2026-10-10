@@ -5617,3 +5617,27 @@ window; the enforcement boundary already calls that honor-system.
 bounded wait, and read. Falsified by an opted-in milestone whose step-7
 read still re-disposes a Copilot thread an earlier pass resolved, or
 requests Copilot twice on one PR.
+
+### D-154 (2026-10-10): A `reply` to an issue carries `leave`'s narrowing, and a decline with no recorded reason routes to `milestone` at `decide` — annotates D-044 (M233)
+
+**Context:** M232's issue look-in gave the `reply` verdict to "a request
+the project declines", and the reply path writes no row. A new idea that
+is declined could then keep the GitHub issue as its only record, the gap
+D-044 closed for `leave`. The rulebook's Intake paragraph also named
+neither the reply route nor the plan route.
+
+**Decision:** The Intake paragraph names a reply and `/milestone-plan` as
+issue routes, and a reply is legal only where the answer leaves nothing
+new for cairn to record. A decline takes `reply` only when a record of
+the reason exists: in owner mode a D-entry, a `DESIGN.md` line, or a
+dropped milestone's archive summary; in guest mode the upstream repo's
+own docs or a maintainer's statement on GitHub, since a guest's `cairn/`
+is not the project's. A decline with no such record takes the `milestone`
+verdict at the `decide` level, so the chip's candidate-row option holds
+it. Rejected: adding a candidate-row write to the reply path (the chip
+already offers the row, and the reply path stays write-free).
+
+**Consequences:** D-044's rule that what may go unrecorded is exactly
+what the ROADMAP would learn nothing from now covers `reply` as well as
+`leave`. Falsified by a real look-in where declining a request forces the
+user to file a row and then drop it at once.
