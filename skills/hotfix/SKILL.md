@@ -193,8 +193,8 @@ a bare PR number resolves against the fork.
    approved fix — `git push -u origin hotfix-<slug>`, then `gh pr create
    --title <title> --body <body>` ready, `Fixes #N` in the body when an
    issue exists. Then run the
-   round in that module, asking for Lite: the state query (§2), the
-   request on `none` (§3), and the bounded wait while the request is
+   round in that module, asking for Lite: the state query (§3), the
+   request on `none` (§2), and the bounded wait while the request is
    pending (§4). The PR-conversation read below then runs on this PR,
    which now pre-exists. Each Copilot thread takes the agent's disposition
    under the opt-in line, then the module's reply and resolve (§5), and

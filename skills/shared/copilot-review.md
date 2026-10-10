@@ -5,7 +5,7 @@ where they request Copilot and where they read the PR's conversation. It is
 a module of `tracking-rules.md`, read only at those moments, so it costs
 nothing to a session that never reaches them.
 
-Budget (M231, from 120 lines / 6,686 bytes after RR17, plus about one section
+Budget (M231, from 122 lines / 6,810 bytes after RR17, plus about one section
 of headroom): **under 140 lines and under 8,000 bytes**, hand-read with
 `wc -l -c` at hygiene passes, covered by no validator. Over either figure,
 compress or retire content here. Never "let it grow".
@@ -21,7 +21,19 @@ replies, and the resolves run without a further question (the M231 question
 set). The round keeps no record that it ran. The PR's own signals (§2)
 decide each step (RR17).
 
-## 2. State query
+## 2. Request
+
+First run the state query (§3). Only on `none`, request the review with `gh pr edit <N> --add-reviewer
+@copilot` (guest mode: add `--repo <base-repo>`). On `pending` or
+`reviewed`, never request: a second request starts a second review and
+spends credits. Who made an earlier request does not matter. `/hotfix` asks
+for Lite and `/milestone-review` asks for Balanced, but on 2026-10-10
+GitHub's API took no per-request level (M231 T1), so GitHub's settings choose
+it. A non-zero exit means the request failed, for example because it was
+refused or Copilot is not available: report the error in one line and go on
+with no wait.
+
+## 3. State query
 
 One query reads the PR. `<owner>` and `<name>` are the base repo's (guest
 mode: the upstream's).
@@ -36,19 +48,7 @@ read run as usual. Otherwise the output is `pending` (a Copilot request is
 open), `reviewed head <level>` or `reviewed earlier-head <level>` (a Copilot
 review exists; `head` means it covered the current head), or `none`.
 
-## 3. Request
-
-Only on `none`, request the review with `gh pr edit <N> --add-reviewer
-@copilot` (guest mode: add `--repo <base-repo>`). On `pending` or
-`reviewed`, never request: a second request starts a second review and
-spends credits. Who made an earlier request does not matter. `/hotfix` asks
-for Lite and `/milestone-review` asks for Balanced, but on 2026-10-10
-GitHub's API took no per-request level (M231 T1), so GitHub's settings choose
-it. A non-zero exit means the request failed, for example because it was
-refused or Copilot is not available: report the error in one line and go on
-with no wait.
-
-## 4. Wait
+## 4. Wait and read
 
 The skill waits only when the state query prints `pending` at the moment it
 reads the PR's conversation. The wait is one Monitor over a loop that runs
@@ -59,6 +59,12 @@ the loop's own exit ends the wait and nothing is left armed after it
 (tracking-rules wait rule). At the 10-minute exit, the read runs on what
 exists, and the presentation says `Copilot review still pending on PR #<N>`.
 The wait never stops the run.
+
+Then read the threads on the same `<owner>`/`<name>` with a GraphQL
+`reviewThreads(first:100)` query, paged until `hasNextPage` is false,
+selecting each thread's `id`, `isResolved`, `isOutdated`, `path`, `line`,
+`originalLine` (`line` is null on an outdated thread), and its comments'
+`fullDatabaseId`, `author{login}`, and `body`.
 
 ## 5. Copilot threads in the read
 
@@ -93,10 +99,6 @@ read then acts on it:
 
 An item that takes `/milestone-review` step 5's return floor gets no reply
 and no resolve: its thread stays open, and the next pass's read finds it.
-Read the threads with `reviewThreads(first:100)`, paged, selecting each
-thread's `id`, `isResolved`, `isOutdated`, `path`, `line`, `originalLine`
-(`line` is null on an outdated thread), and its comments' `fullDatabaseId`,
-`author{login}`, and `body`.
 
 Copilot's review body is an index of its threads: each finding links to a
 thread by a `#discussion_r<id>` anchor, which matches a comment's

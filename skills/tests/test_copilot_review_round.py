@@ -72,7 +72,7 @@ class TestReviewArms(unittest.TestCase):
                         "3. **Execute every acceptance criterion")
         self.assertIn("**Copilot arm** (owner mode, the round on", step2)
         self.assertIn("push the branch and open the PR", step2)
-        self.assertIn("Balanced (§3). Copilot then reviews while steps 3 to 6",
+        self.assertIn("Balanced (§2). Copilot then reviews while steps 3 to 6",
                       step2)
 
     def test_off_arm_keeps_the_post_approval_open(self):

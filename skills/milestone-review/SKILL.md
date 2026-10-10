@@ -114,8 +114,8 @@ re-enters here, at the step the record shows is next:
    runs; only the create is skipped when the header already names an open
    PR. Record a new PR's URL in the header in a commit on the branch; step
    6's checkpoint push carries it. Then run
-   the module's state query (§2) and request Copilot on `none`, asking for
-   Balanced (§3). Copilot then reviews while steps 3 to 6 run, and step 7's
+   the module's state query (§3) and request Copilot on `none`, asking for
+   Balanced (§2). Copilot then reviews while steps 3 to 6 run, and step 7's
    PR-conversation read handles its threads. The arm does not run under
    route (b), whose PR is already merged, or with `companion:` entries in
    the header, because companions merge before the primary is pushed (step
@@ -609,7 +609,7 @@ re-enters here, at the step the record shows is next:
    and stay); record the PR URL in the header on disk, never committed.
    With the Copilot review round on (`skills/shared/copilot-review.md`
    §1), run it here, after the create and before the close block: the
-   state query (§2), the request on `none` asking for Balanced (§3), the
+   state query (§3), the request on `none` asking for Balanced (§2), the
    bounded wait while the request is pending (§4), then step 7's
    PR-conversation read with the Copilot-thread rule (§5). Use the
    module's guest forms: `--repo <base-repo>`, the base repo's owner and

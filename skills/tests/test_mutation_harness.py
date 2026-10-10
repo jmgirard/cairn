@@ -3766,7 +3766,7 @@ REGISTRY += [
         test="TestReviewArms."
              "test_round_arm_sits_in_step_two_before_verification",
         target=REVIEW,
-        block="Balanced (§3). Copilot then reviews while steps 3 to 6",
+        block="Balanced (§2). Copilot then reviews while steps 3 to 6",
     ),
     Mutation(
         guard="test_copilot_review_round",
