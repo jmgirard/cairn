@@ -5641,3 +5641,26 @@ already offers the row, and the reply path stays write-free).
 what the ROADMAP would learn nothing from now covers `reply` as well as
 `leave`. Falsified by a real look-in where declining a request forces the
 user to file a row and then drop it at once.
+
+### D-155 (2026-10-10): Guest mode's write rule covers the repo, so the reply draft can go to the system temp directory — annotates D-137 and D-154 (M234)
+
+**Context:** `/milestone` §4's reply hand-off put the reply inside a
+single-quoted `gh issue comment --body` argument, and that quoting fails in
+PowerShell. A `--body-file` command needs a file. D-137 says that guest
+mode "writes nothing outside `cairn/`", and D-154 says that the reply path
+"stays write-free".
+
+**Decision:** The hand-off writes the draft to the system temp directory,
+outside the checkout, and hands the user a `--body-file` command. D-137's
+write rule governs the repo: its working tree and its git directory. A
+file outside the checkout is not a write to the repo. D-154's
+"write-free" means no tracking write, such as a candidate row, and the
+draft file is not a tracking write. Rejected: a file under `cairn/`,
+because in owner mode it needs a new ignore entry in every adopting repo.
+Rejected: a file under the git directory, because in guest mode that is a
+write inside the repo. Rejected: one command per shell, because two
+commands must then stay in step.
+
+**Consequences:** D-137 and D-154 stand. The rulebook's guest bullet says
+that a file outside the checkout is not a write to the repo. Falsified by
+a platform where `gh` cannot read the temp file from a double-quoted path.
