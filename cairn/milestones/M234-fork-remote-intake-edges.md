@@ -69,6 +69,7 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - 2026-10-10: T7: four CHANGELOG entries under "Changes that affect existing repos" (fork remote, audit `--repo`, reply file, byte count). skills/tests OK, verify 5 of 5 green, `cairn_validate` all checks passed.
 - 2026-10-10: claim audit: 80 claims read, 3 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/tests/test_guest_fork_remote.py. The fixes: CHANGELOG entry 2 now names the CI re-check and says `/milestone`, not "audit", since the orphan close is in §3. The recipe now says that a non-fork prints `/`. "or two" became "or more than one". The reader's fourth point (no fence rule for the draft) was rejected: the four-backtick fence existed only because the reply sat inside the command. The same reader re-read the 3 corrections, and all were correct. The rulebook grew, so its baseline was re-seeded to 636 lines / 60,689 bytes at all three sites. skills/tests OK, verify 5 of 5 green.
 - 2026-10-10: implement complete: status set to review.
+- 2026-10-10: step-7 approval: m234-fork-remote-intake-edges approved for merge
 
 ## Decisions
 
