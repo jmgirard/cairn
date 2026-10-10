@@ -87,7 +87,8 @@ a bare PR number resolves against the fork.
      the changelog entry land on the `hotfix-<slug>` branch (cut here when
      the regression-test move did not) and reach the default branch only
      through step 6's authoring variant — the approval chip, then the push
-     and a new PR opened after that approval (the merged PR's head branch
+     and a new PR opened after that approval, or before it where step 6's
+     Copilot round arm runs (the merged PR's head branch
      is gone after `--delete-branch`, and step 5's never-a-second-PR clause
      is about that merged PR, not this follow-up) — never by a commit to
      the default branch.
@@ -114,11 +115,7 @@ a bare PR number resolves against the fork.
    pull ff-only, push any unpushed local commits — in guest mode the fetch
    is the whole sync, the default branch is never pushed, and the branch is
    cut from `<base>/<default-branch>`, as `/milestone-implement` step 2
-   states). A `hotfix-<slug>` branch that already exists for this bug (a
-   Copilot round's PR closed at a decline, step 6) is checked out, not
-   re-cut: fast-forward it from its remote, then merge the up-to-date
-   default branch into it (guest mode: rebase it onto
-   `<base>/<default-branch>`).
+   states).
    *Adopting a PR:* run `gh pr checkout <N>` — never cut a fresh branch,
    which would orphan work that already exists. The contributor's branch
    name is **exempt** from the `hotfix-<slug>` contract (tracking-rules, git
@@ -201,8 +198,8 @@ a bare PR number resolves against the fork.
    its `copilot:` line and the level line are stated in chat at the chip
    (§6); every other item keeps the four options. A decline at the chip
    closes this PR with `gh pr close <N>` and keeps the branch, and the
-   close block names both; a later `/hotfix` for the same bug reuses the
-   branch (step 2) and opens a new PR. An adopted PR skips the round: the
+   close block names both; a later `/hotfix` for the same bug cuts a new
+   branch under a new slug. An adopted PR skips the round: the
    contributor's PR is theirs to put to a reviewer. With the round off,
    nothing in this arm runs.
 
@@ -273,8 +270,7 @@ a bare PR number resolves against the fork.
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of
    <base-repo>`, a decline option, no merge option — and on selection the
-   sequence is the push to the fork (`git push -u origin hotfix-<slug>`,
-   `--force-with-lease` after step 2's rebase of a reused branch)
+   sequence is the push to the fork (`git push -u origin hotfix-<slug>`)
    and the PR opened against the base repo — `gh pr create --repo
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn

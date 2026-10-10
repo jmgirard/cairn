@@ -667,10 +667,11 @@ actually reach.
   round runs after the handoff opens the PR. If Copilot's review is still
   pending at the read, Claude waits up to 10 minutes, then goes on and
   says the review is pending. You see every Copilot thread that arrived
-  before the merge question. A hotfix asks for Lite and a milestone for
+  before the merge question, or before a hotfix's approval chip. A hotfix asks for Lite and a milestone for
   Balanced, but GitHub's API took no level for each request on 2026-10-10,
   so GitHub's settings choose it; the report names the level from the
-  review. Adopted outside PRs, and milestones with companion checkouts,
+  review. Adopted outside PRs, a review of an already-merged PR, and
+  milestones with companion checkouts,
   skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the

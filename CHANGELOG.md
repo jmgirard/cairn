@@ -26,10 +26,11 @@
   each unresolved Copilot thread: it is fixed, rejected with a reason, or
   sent to a candidate row, then gets a reply with no thanks and is
   resolved. A review still pending at the read gets a wait of up to 10
-  minutes, and then the run goes on and says it is pending. A hotfix opens
-  its PR before its approval chip, and a decline closes the PR and keeps
-  the branch for a later run. In guest mode the round runs after the
-  handoff. Adopted PRs and milestones with companion checkouts skip it.
+  minutes, once per pass, and then the run goes on and says it is pending.
+  In owner mode a hotfix opens its PR before its approval chip, and a
+  decline closes the PR and keeps the branch. In guest mode the round runs
+  after the handoff. Adopted PRs, a review of an already-merged PR, and
+  milestones with companion checkouts skip it.
   GitHub's settings choose the review level, because its API took none per
   request when this shipped; the report names the level from the review.
   The rules live in `skills/shared/copilot-review.md`.

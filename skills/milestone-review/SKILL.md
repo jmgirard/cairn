@@ -477,7 +477,8 @@ re-enters here, at the step the record shows is next:
    the `copilot:` lines and level line follow §6.
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —
-   <disposition>`); fix-now work lands per step 6 before the chip is posed,
+   <disposition>`; a Copilot thread takes the module's `copilot:` line
+   instead); fix-now work lands per step 6 before the chip is posed,
    a follow-up becomes a candidate row (search-first). **Blocking rule.** A `CHANGES_REQUESTED`
    review whose author `type` is `User` and which has any unresolved thread
    removes merge from the chip's recommended option — the recommended
@@ -616,7 +617,8 @@ re-enters here, at the step the record shows is next:
    name in each `gh api` call that addresses a repository (the resolve
    takes only a thread id), and fix pushes to the fork. When the round
    committed fixes, re-run step 4's consistency gate before the close
-   block. Its `copilot:` lines are written on disk and ride in the close
+   block; a failure is fixed on the branch and pushed before the close
+   block, or named in it. Its `copilot:` lines are written on disk and ride in the close
    block below, which also says that a Copilot review arriving after the
    wait is the operator's to handle by hand.
    Then set status `blocked` in ROADMAP and the header
