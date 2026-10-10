@@ -80,6 +80,7 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
 - 2026-10-10: claim audit: 26 claims read, 4 corrected — skills/cairn-triage/SKILL.md (exclude-file claim now names the commit guard; steps 1–4 sentence no longer contradicts step 4; step 2 path checks read the checked-out branch, named above the step-3 table), README.md (sync check added). Re-read once by the same reader: all 4 true.
 - 2026-10-10: implementation choice: the branch-naming rule for guest path checks lands in step 3's table bullet as well as session start, at the claim reader's re-read note. No guard pins it (AC4 names two behaviors only).
 - 2026-10-10: implement complete, status → review.
+- 2026-10-10: step-7 approval: m235-guest-triage approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
