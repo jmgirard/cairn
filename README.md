@@ -666,8 +666,9 @@ actually reach.
   a decline there closes the PR and keeps the branch. In guest mode the
   round runs after the handoff opens the PR. If Copilot's review is still
   pending at the read, Claude waits up to 10 minutes, then goes on and
-  says the review is pending. You see every Copilot thread that arrived
-  before the merge question, or before a hotfix's approval chip. A hotfix asks for Lite and a milestone for
+  says the review is pending. You see every Copilot thread present when
+  the read runs, just before the merge question or a hotfix's approval
+  chip; a thread posted after that read is not shown in this run. A hotfix asks for Lite and a milestone for
   Balanced, but GitHub's API took no level for each request on 2026-10-10,
   so GitHub's settings choose it; the report names the level from the
   review. Adopted outside PRs, a review of an already-merged PR, and

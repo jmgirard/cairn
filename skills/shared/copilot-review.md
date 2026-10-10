@@ -5,7 +5,7 @@ where they request Copilot and where they read the PR's conversation. It is
 a module of `tracking-rules.md`, read only at those moments, so it costs
 nothing to a session that never reaches them.
 
-Budget (M231, from 126 lines / 7,098 bytes after RR17, plus about one section
+Budget (M231, from 126 lines / 7,142 bytes after RR17, plus about one section
 of headroom): **under 140 lines and under 8,000 bytes**, hand-read with
 `wc -l -c` at hygiene passes, covered by no validator. Over either figure,
 compress or retire content here. Never "let it grow".
@@ -39,7 +39,7 @@ One query reads the PR. `<owner>` and `<name>` are the base repo's (guest
 mode: the upstream's).
 
 ```
-gh api graphql -f owner=<owner> -f name=<name> -F n=<N> -f query='query($owner:String!,$name:String!,$n:Int!){repository(owner:$owner,name:$name){pullRequest(number:$n){headRefOid reviewRequests(first:20){nodes{requestedReviewer{... on Bot{login}}}} reviews(last:100){nodes{author{login} commit{oid} body}}}}}' --jq '.data.repository.pullRequest as $p | ([$p.reviewRequests.nodes[].requestedReviewer.login] | index("copilot-pull-request-reviewer") != null) as $pending | [$p.reviews.nodes[] | select(.author.login=="copilot-pull-request-reviewer")] as $cr | if $pending then "pending" elif ($cr|length)>0 then "reviewed \(if any($cr[]; .commit.oid==$p.headRefOid) then "head" else "earlier-head" end) \($cr[-1].body | capture("Review effort:\\*\\* (?<e>[A-Za-z]+)")?.e // "unknown")" else "none" end'
+gh api graphql -f owner=<owner> -f name=<name> -F n=<N> -f query='query($owner:String!,$name:String!,$n:Int!){repository(owner:$owner,name:$name){pullRequest(number:$n){headRefOid reviewRequests(first:100){nodes{requestedReviewer{... on Bot{login}}}} reviews(author:"copilot-pull-request-reviewer[bot]",last:20){nodes{author{login} commit{oid} body}}}}}' --jq '.data.repository.pullRequest as $p | ([$p.reviewRequests.nodes[].requestedReviewer.login] | index("copilot-pull-request-reviewer") != null) as $pending | [$p.reviews.nodes[] | select(.author.login=="copilot-pull-request-reviewer")] as $cr | if $pending then "pending" elif ($cr|length)>0 then "reviewed \(if any($cr[]; .commit.oid==$p.headRefOid) then "head" else "earlier-head" end) \($cr[-1].body | capture("Review effort:\\*\\* (?<e>[A-Za-z]+)")?.e // "unknown")" else "none" end'
 ```
 
 Read the exit code first. A non-zero exit means the query failed: state the
