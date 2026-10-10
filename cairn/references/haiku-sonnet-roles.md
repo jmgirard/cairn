@@ -28,15 +28,28 @@ runs use `general-purpose` with `isolation: "worktree"`. Review runs use
 `general-purpose`. One run per model per task: a verdict near the margin is
 not robust to rerun variance, which the re-measurement procedure covers.
 
-**Cost.** For each transcript, records are grouped by `message.id`, and the
-last record of each id carries that API call's usage (earlier records of the
-same id repeat the input counts and carry partial `output_tokens`). Per id,
+**Cost.** For each subagent transcript, records are grouped by `message.id`,
+one id per API call, and each id's counts come from its last record. Per id,
 cost is the sum over five classes of count times price: `input_tokens`,
 `cache_creation.ephemeral_5m_input_tokens`,
 `cache_creation.ephemeral_1h_input_tokens`, `cache_read_input_tokens`,
-`output_tokens`. A row's cost is the sum over its ids. Haiku prices depend on
-each call's prompt size: a call whose input, cache-write, and cache-read
-tokens sum to more than 100,000 pays the higher row for every class.
+`output_tokens`. A row's cost is the sum over its ids, recorded to four
+decimal places. Haiku prices depend on each call's prompt size, the sum of
+its input, both cache-write, and cache-read counts: a call over 100,000
+pays the higher row of the table below for every class.
+
+The subagent transcript records each call's `output_tokens` at stream start
+(amended 2026-10-09, after the search runs). The input and cache counts are
+complete, but the output counts are too low, for example 6 where the call
+produced 4,227. The run's final call, the last distinct `message.id` in
+record order, therefore takes its output count from the `usage` of the
+Agent tool result whose `agentId` matches the transcript's file name, in
+the main session transcript
+`~/.claude/projects/-Users-jmgirard-github-cairn/914c172c-a7d8-4341-b5be-8f75283fc564.jsonl`.
+Each row records whether that `usage`'s input and cache counts equal the
+final id's last-record counts, which ties the tool result to that call. No
+source gives the true output of earlier calls, so every row's cost is a
+lower bound.
 
 Prices, USD per million tokens, from
 <https://platform.claude.com/docs/en/about-claude/pricing> (read 2026-10-09):
@@ -174,7 +187,8 @@ absent), and the first `*.py` name in its command (9 items):
 
 S3 key, from each `### D-` heading of `git show c023018:cairn/DECISIONS.md`
 that matches `supersed` (case-insensitive): every `D-NNN` after the first
-match, other than the heading's own id, paired with that id (89 pairs).
+match, other than the heading's own id, paired with that id (88 pairs, counted by `len()` of the built key;
+corrected M228 from 89).
 D-027 D-026, D-038 D-037, D-058 D-049, D-058 D-052, D-062 D-004,
 D-065 D-064, D-071 D-056, D-072 D-071, D-074 D-046, D-074 D-030,
 D-074 D-045, D-074 D-063, D-079 D-067, D-079 D-069, D-080 D-079,
@@ -220,3 +234,28 @@ occurs once at `c023018`:
 Controls: a hand-written reference test file kills 6 of 6 mutants for E2
 and 6 of 6 for E3 and passes on the unmutated code. A file holding one
 always-true test kills 0 of 6 for E2.
+
+## Runs
+
+Agent ids name each run's subagent transcript, `agent-<id>.jsonl` under
+`~/.claude/projects/-Users-jmgirard-github-cairn/914c172c-a7d8-4341-b5be-8f75283fc564/subagents/`.
+"Model ids" lists every `model` value on the transcript's assistant records.
+"Final match" says whether the Agent tool result's input and cache counts
+equal the final id's last-record counts. Token columns sum the row's calls.
+
+| Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| S1 | sonnet | `a507fc85cce3e1c5d` | claude-sonnet-5-5 | 4 | yes | 8 | 39506 | 0 | 111383 | 624 | 0.1162 | 1.0000 |
+| S1 | haiku | `aa6923d0993e9e008` | claude-haiku-5-5 | 2 | yes | 4 | 38858 | 0 | 36121 | 1177 | 0.0058 | 1.0000 |
+| S2 | sonnet | `a40aa40dd7410ef86` | claude-sonnet-5-5 | 2 | yes | 4 | 38029 | 0 | 36142 | 587 | 0.1046 | 1.0000 |
+| S2 | haiku | `af8e9566575845fca` | claude-haiku-5-5 | 2 | yes | 4 | 38448 | 0 | 36140 | 1378 | 0.0059 | 0.0000 |
+| S3 | sonnet | `a7d06115f06e661f5` | claude-sonnet-5-5 | 2 | yes | 4 | 42137 | 0 | 36164 | 3519 | 0.1442 | 0.6767 |
+| S3 | haiku | `a08640fdf2c9f753a` | claude-haiku-5-5 | 3 | yes | 6 | 56781 | 0 | 84338 | 4237 | 0.0101 | 1.0000 |
+
+Search notes. S2 Haiku listed all nine registrations correctly but wrote
+each script without its `.py` extension (`session_context`), so no item
+matched the key and the fixed rule scores it 0. The prompt's "base name"
+allows that reading. S3 Sonnet applied its own reading of which heading
+clauses "supersede" and listed 45 pairs, all in the key, where the prompt's
+rule counts every id after the word (88 pairs). Haiku followed the stated
+rule.

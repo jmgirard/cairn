@@ -60,11 +60,18 @@ dial per spawned agent" candidate row.
       record of its subagent transcript. Every id on a Sonnet row begins
       `claude-sonnet-5-5`, and every id on a Haiku row begins
       `claude-haiku-5-5`.
-- [ ] AC3: Each row's dollar cost equals a sum over the distinct
-      `message.id` values in its transcript: each token class count from
-      that id's last record, times that model's price for the class. The
-      classes are input, 5-minute cache write, 1-hour cache write, cache
-      read, and output. The note cites the prices from Anthropic's
+- [ ] AC3: Each row's dollar cost is a sum over the distinct `message.id`
+      values in its subagent transcript of each token class count times that
+      model's price for the class at that call's prompt size, as the cited
+      page gives it. The classes are input, 5-minute cache write, 1-hour
+      cache write, cache read, and output. Each count comes from that id's
+      last transcript record, except one: the run's final call, the last
+      distinct `message.id` in the transcript's record order, takes its
+      output count from the `usage` of the Agent tool result whose `agentId`
+      matches the transcript's file name, and that `usage`'s input and cache
+      counts equal the final id's last-record counts. The note states that
+      the transcript records output counts at stream start, so each row's
+      cost is a lower bound. The note cites the prices from Anthropic's
       published pricing by URL and access date.
 - [ ] AC4: Each row's quality score follows from its group's scoring rule
       as the note states it, and each rule yields a score of zero or more.
@@ -107,7 +114,7 @@ dial per spawned agent" candidate row.
       skill for the price table, never prices from memory.
 - [x] T2: Build each answer key, target diff, and mutant set by the
       procedure that T1 names. Record each one in the note with its command.
-- [ ] T3: Run the search group with the Explore agent type, `model` set to
+- [x] T3: Run the search group with the Explore agent type, `model` set to
       `sonnet` and then `haiku`, same prompt. After the first Haiku run,
       read its transcript's `model` id. If the id is not Haiku 5.5 (a
       2026-09-11 spawn ran as `claude-haiku-4-5-20251001`), stop and set
@@ -150,6 +157,11 @@ dial per spawned agent" candidate row.
 - 2026-10-09: the Haiku spawns here are the measurement the question set granted ("only if some testing finds it is cheaper and noninferior"), not delegation, so implement step 5's "never Haiku" does not apply to them.
 - 2026-10-09: T1 design chosen: search keys from git grep, a JSON parse, and a heading parse; edit work is one rename sweep (`find_cairn_root`, 20 sites in 11 files) and two test-writing tasks scored on six hand-made mutants each; history review replays M226 and M227 (blame-history) and M225 (prior-PR-comments). Prices read from the live pricing page, which gives Sonnet 5.5 cache reads at $0.10 per million tokens where the `claude-api` skill's cached table says $0.20, so the live page is cited.
 - 2026-10-09: T2 built the S1 to S3 keys (10, 9, 89 items), the E1 target (32 lines, 11 files), and 12 mutants, all recorded in the note. A reference test file killed 12 of 12 mutants and an always-true test killed 0 of 6, so the mutant scoring can tell the two apart. Measurement helpers live in the session scratchpad (`m228.py`), not in the repo.
+- 2026-10-09: substantive amendment: AC3 rewritten. The search runs showed that subagent transcripts record each call's `output_tokens` at stream start (the Haiku S3 final call shows 6 in its transcript and 4,227 in the Agent tool result's `usage`), so the old formula undercounted output. The new AC3 takes the final call's output from the tool result and states that each row's cost is a lower bound. What the user gets is unchanged: a cost per row and a verdict per group.
+- 2026-10-09: re-audit: AC3 (reduced) — first reader returned five findings: the final call was not tied to an id, earlier calls named no record, "undercounts" was unverifiable, Haiku's prompt-size tiers were missing, and the lower bounds could bias AC5; the first four were fixed in the wording, the fifth is answered by the note's robustness statement on the cost comparison.
+- 2026-10-09: re-audit: AC3 (reduced) — second reader returned four findings, answered without rewording (a further rewording would be the second-re-audit stop): the price at a call's prompt size is read from the note's table, which records the cited page at its access date and defines prompt size as input plus both cache writes plus cache read; the input-and-cache equality is recorded per row in the note as a cross-check; each row names the main session transcript that holds its one Agent tool result; costs are recorded to four decimal places and recomputed at that precision.
+- 2026-10-09: correction to the T2 line: the S3 key holds 88 pairs, not 89, by `len()` of the built key; the note is corrected in place.
+- 2026-10-09: T3 ran the six search spawns. Scores Sonnet 1.0, 1.0, 0.6767 and Haiku 1.0, 0.0, 1.0; costs Sonnet $0.3650 and Haiku $0.0218 in sum. Haiku's S2 zero is a format miss (script names without `.py`), scored as the fixed rule says; the note records it. Every row's final match is yes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
