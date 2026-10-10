@@ -40,8 +40,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 ## Tasks
 
 - [x] T1: Count (AC1). Cut `COUNTS_QUERY`, `PrNodes`, `prNodes`, and `countPr` in `hooks/status/counts.ts` down to the threads. Remove `unanswered` from `countsText` in `pane.ts`, from `CairnPrRead`, and from the `counts.ts` header. Bump the `prs` shape tag in `register.tsx`. Capture the PR #245 reply into a fixture file and rewrite `counts.test.ts`.
-- [ ] T2: One ↻ Button (AC2). Add a first line to `paneLines` that carries `refresh`, and remove the heading Buttons and the `hotfixes` target. Draw the first row with `justifyContent="flex-end"` in the `ui.render` Pane hook. Set `REFRESH_LABEL` to `↻`. Update the pane tests.
-- [ ] T3: Reading state (AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
+- [x] T2: One ↻ Button (AC2). Add a first line to `paneLines` that carries `refresh`, and remove the heading Buttons and the `hotfixes` target. Draw the first row with `justifyContent="flex-end"` in the `ui.render` Pane hook. Set `REFRESH_LABEL` to `↻`. Update the pane tests.
+- [x] T3: Reading state (AC3). Add a `reading` atom with its own shape tag that `readPrs` sets at its start and clears when the newest read settles. Add a module-level press guard in `pressRefresh`. Draw the ↻ Button with `dimColor` from the atom. Add the six tests, driving the second press through a second mount (the held-press test near `pane.test.tsx:1974`).
 - [ ] T4: Docs (AC4). README pane section, DESIGN `hooks/status/` entry, CHANGELOG `## Unreleased`.
 - [ ] T5: Run the five `verify` commands (AC5).
 - [ ] T6: Live look (AC6). Ask the operator to reload plugins, look at the pane, and press ↻ once.
@@ -61,6 +61,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: collision: the "Pane edges (M222–M226 reviews)" row's items "With no hotfix PR and no blocked PR URL, the pane has no `Refresh`" and the counts-anchor items are absorbed (this milestone removes the anchor), and the row keeps the rest. M224 and M225 (done) shipped the Buttons and the count this milestone changes.
 - 2026-10-10: implement started on m236-pane-one-refresh. Untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
 - 2026-10-10: T1 done. `counts.ts` reads only `reviewThreads`, `CairnPrRead.counts` is `{ unresolved }`, `prs` tag is `prs-3`. The PR #245 reply is stored in `hooks/status/fixtures/pr-245-threads.ts` as a string constant, because the mod tests import TypeScript, not JSON. `claude plugin test .` 1546 pass, the other four verify checks exit 0.
+- 2026-10-10: T2 and T3 done in one checkpoint, since both rewrite the same Refresh tests. The first pane line has key `refresh`, no text, and `end: true`, which the render turns into `justifyContent="flex-end"`. `REFRESH_LABEL` is `↻`. A `reading` atom (`reading-1`, added to `types/index.d.ts`) is set at each `readPrs` start and cleared in its `finally` by the newest read only. A module-level `pressing` guards `pressRefresh`. The reload case is tested by a `state.get` hook that answers true until the mod writes the key. `claude plugin test .` 1556 pass, the other four verify checks exit 0.
 
 ## Decisions
 

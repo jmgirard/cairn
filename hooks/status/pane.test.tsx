@@ -986,6 +986,7 @@ describe('the pill gives way before the Button (M218 AC4)', () => {
 // labels written out by hand.
 const PANE_STATUS = 'cairn-pane-status'
 const PANE_CLEAR = 'cairn-pane-clear'
+const PANE_REFRESH = 'cairn-pane-refresh'
 const STATUS_RUN = { command: 'cairn:milestone', args: '' }
 const CLEAR_RUN = { command: 'clear', args: '' }
 
@@ -1011,10 +1012,9 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
         // No other line of the pane carries a Button (M219 review), but for
-        // the Blocked heading's Refresh while a blocked row has a pull
-        // request URL (M224). Before any read, no blocked line carries one.
-        const refresh = FIXTURES[name].blocked.some(row => row.url !== null) ? ['cairn-pane-refresh'] : []
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS, ...refresh])
+        // the ↻ Refresh on the first line (M236). Before any read, no
+        // blocked line carries one.
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_REFRESH, PANE_NEXT, PANE_STATUS])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
@@ -1740,14 +1740,15 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     expect(calls.clocks).toEqual([])
   })
 
-  test("a press of the Blocked heading's Refresh Button reads once", async ($, on) => {
+  test('a press of the ↻ Refresh Button reads once', async ($, on) => {
     let state = 'OPEN'
     const calls = gh(on, () => prView(state, ''))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
-    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
+    expect((await blockedView($, 'refresh')).buttons).toEqual(['cairn-pane-refresh'])
     const press = async () => {
       const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
       await ui.press({ key: 'cairn-pane-refresh' })
@@ -2286,21 +2287,212 @@ describe('a failed list keeps the last good read for the root, and an empty one 
   })
 })
 
-describe("the Hotfixes heading's Refresh has its own key, and either heading's press lists again (M226 AC5)", () => {
-  test('each Refresh press runs the list call', async ($, on) => {
+describe('the pane has one ↻ Refresh Button, at the right end of its first row (M236 AC2)', () => {
+  // Every Button the drawn pane holds, its ↻ Button, and the first row.
+  async function refreshOf($) {
+    const ui = await mountPane($, 'desktop')
+    const keys = (await ui.findAll({ type: 'Button' })).map(keyOf)
+    const [root] = await ui.findAll({ key: 'cairn-pane' })
+    const first = root === undefined ? undefined : kids(root)[0]
+    const inFirst = first === undefined ? [] : buttonsIn(first).map(keyOf)
+    const [button] = await ui.findAll({ key: PANE_REFRESH })
+    await ui.unmount()
+    return { keys, first, inFirst, button }
+  }
+  const one = async $ => {
+    const got = await refreshOf($)
+    expect(got.keys.filter(key => key === PANE_REFRESH)).toEqual([PANE_REFRESH])
+    expect(got.keys.filter(key => (key ?? '').endsWith('-hotfixes'))).toEqual([])
+    expect(keyOf(got.first as Element)).toBe('refresh')
+    expect(got.first?.props.justifyContent).toBe('flex-end')
+    expect(got.inFirst).toEqual([PANE_REFRESH])
+    expect(got.button?.props.label).toBe('↻')
+    return got.keys
+  }
+
+  test('blocked PRs and hotfix PRs', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([pr(1265, 'hotfix-a')]) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect((await keysOf($)).includes('hotfixes-head')).toBe(true)
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
+    expect((await blockedView($, 'hotfixes-head')).buttons).toEqual([])
+    await one($)
+  })
+
+  test('neither blocked PRs nor hotfix PRs', async ($, on) => {
+    gh(on, () => prView('OPEN', ''))
+    seat(on, copyOf('single-in-progress'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await keysOf($)).filter(key => key.startsWith('blocked') || key.startsWith('hotfix'))).toEqual([])
+    await one($)
+  })
+
+  test('the Next line with Status and Clear', async ($, on) => {
+    seat(on, copyOf('single-in-progress'))
+    await endSkill($)
+    const keys = await one($)
+    expect(keys).toEqual([PANE_REFRESH, PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+  })
+
+  test('no ROADMAP draws no ↻ Button', async ($, on) => {
+    seat(on, copyOf('no-roadmap'))
+    await $.turn.complete(turn())
+    const got = await refreshOf($)
+    expect(got.keys).toEqual([])
+  })
+
+  test('a press of ↻ lists the hotfix PRs and reads each PR again', async ($, on) => {
     const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([pr(1265, 'hotfix-a')]) })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
-    expect((await blockedView($, 'hotfixes-head')).buttons).toEqual(['cairn-pane-refresh-hotfixes'])
+    await calls.settled()
     expect(calls.lists.length).toBe(1)
-    await pressKey($, 'cairn-pane-refresh-hotfixes')
+    await pressKey($, PANE_REFRESH)
     expect(calls.lists.length).toBe(2)
     expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(2)
-    await pressKey($, 'cairn-pane-refresh')
-    expect(calls.lists.length).toBe(3)
-    expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(3)
+  })
+})
+
+describe('the ↻ Button draws dim while a read runs, and a press during its own read does nothing (M236 AC3)', () => {
+  // A `gh pr view` answer held until `release`, then `then` answers it.
+  function gate() {
+    let release = () => {}
+    const wait = new Promise<void>(resolve => {
+      release = resolve
+    })
+    return { wait, release: () => release() }
+  }
+  const until = async (ok: () => boolean) => {
+    for (let i = 0; i < 200 && !ok(); i++) await sleep(5)
+    expect(ok()).toBe(true)
+  }
+  // The ↻ Button's `dimColor`, read through a terminal mount, which no
+  // press holds.
+  const dimOf = async $ => {
+    const ui = await mountPane($, 'terminal')
+    const [button] = await ui.findAll({ key: PANE_REFRESH })
+    await ui.unmount()
+    return button?.props.dimColor === true
+  }
+  const total = (calls: Gh) => calls.calls.length + calls.graphql.length + calls.lists.length + calls.git.length
+
+  const ENDS: { name: string; answer: GhAnswer }[] = [
+    { name: 'succeeds', answer: prView('OPEN', '') },
+    { name: 'exits 1', answer: { exitCode: 1, stdout: '' } },
+    { name: 'rejects', answer: 'reject' },
+  ]
+  for (const end of ENDS) {
+    test(`a held read draws dim, and not dim after it ${end.name}`, async ($, on) => {
+      const held_ = gate()
+      const calls = gh(on, async () => {
+        await held_.wait
+        return end.answer
+      })
+      seat(on, copyOf('blocked-active'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      expect(await dimOf($)).toBe(false)
+      await $.command.run({ command: COMMAND })
+      await until(() => calls.calls.length === 1)
+      expect(await dimOf($)).toBe(true)
+      held_.release()
+      await calls.settled()
+      expect(await dimOf($)).toBe(false)
+    })
+  }
+
+  test('an open and a press overlap: not dim once the newer read settles', async ($, on) => {
+    const older = gate()
+    const newer = gate()
+    let n = 0
+    const calls = gh(on, async () => {
+      n += 1
+      await (n === 1 ? older.wait : newer.wait)
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await until(() => calls.calls.length === 1)
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      expect(await dimOf($)).toBe(true)
+      newer.release()
+      await pressing
+      expect(await dimOf($)).toBe(false)
+    } finally {
+      newer.release()
+      older.release()
+      await pressing
+      await ui.unmount()
+    }
+    await calls.settled()
+    expect(await dimOf($)).toBe(false)
+  })
+
+  test('a second press during a held press read runs no call', async ($, on) => {
+    const held_ = gate()
+    let holding = false
+    const calls = gh(on, async () => {
+      if (holding) await held_.wait
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    holding = true
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      const before = total(calls)
+      const second = await mountPane($, 'terminal')
+      await second.press({ key: PANE_REFRESH })
+      await second.unmount()
+      await sleep(50)
+      expect(total(calls)).toBe(before)
+    } finally {
+      held_.release()
+      await pressing
+      await ui.unmount()
+    }
+    await calls.settled()
+    // Once the first press's read settles, a press reads again.
+    holding = false
+    await pressKey($, PANE_REFRESH)
+    expect(calls.calls.length).toBe(3)
+  })
+
+  test('a stored reading state with no press read in this module lets a press read', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    seat(on, copyOf('blocked-active'))
+    // A read that a reloaded module ended leaves the stored state true: the
+    // store answers true until the mod writes the key.
+    let stale = true
+    on('state.get', async ($, e, next) => {
+      const got = await next(e)
+      if (!stale || e.plugin !== 'cairn' || e.key !== 'reading') return got
+      // The hook answers `{ value }`, a StateRead of `{ value, version }`.
+      const read_ = (got as { value?: { version?: number } } | undefined)?.value
+      return { value: { version: read_?.version ?? 0, value: { shape: 'reading-1', value: true } } }
+    })
+    on('state.set', async ($, e, next) => {
+      if (e.plugin === 'cairn' && e.key === 'reading') stale = false
+      return next(e)
+    })
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    expect(await dimOf($)).toBe(true)
+    await pressKey($, PANE_REFRESH)
+    await calls.settled()
+    expect(calls.calls.length).toBe(1)
+    expect(await dimOf($)).toBe(false)
   })
 })
 

@@ -43,11 +43,12 @@ import { PILL_TEXT } from './track'
 // with the one key `cairn-pane-next` and the next-step press.
 // A line's `buttons` name the Buttons that register.tsx draws after its
 // tail and any action Button, in order: Clear and Status on the Next line
-// (M219), Refresh on the Blocked heading, and one of Finish, Revise, or
-// Check on a blocked line (M224). A blocked line's `target` is its
-// milestone id, which its Button's key and press carry. The Hotfixes
-// heading's Refresh has the target `hotfixes`, so its key differs from the
-// Blocked heading's (M226).
+// (M219), and one of Finish, Revise, or Check on a blocked line (M224). A
+// blocked line's `target` is its milestone id, which its Button's key and
+// press carry. Since M236 the pane's first line carries the one Refresh
+// Button, labeled ↻, which reads everything again. Its `end` puts the
+// Button at the right end of the row. Until M236 the Blocked and Hotfixes
+// headings each carried a Refresh.
 export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
@@ -59,6 +60,7 @@ export type PaneLine = {
   action?: string
   buttons?: PaneButton[]
   target?: string
+  end?: true
 }
 
 // A blocked milestone's pull request state, as `prWord` reads it from a
@@ -184,8 +186,9 @@ export function nextLabel(action: string): string | undefined {
 // pane's Next line read these (M219).
 export const STATUS_LABEL = 'Status'
 export const CLEAR_LABEL = 'Clear'
-// The Blocked heading's Button and a blocked line's Buttons (M224).
-export const REFRESH_LABEL = 'Refresh'
+// The pane's Refresh Button (M224, one ↻ at the top since M236) and a
+// blocked line's Buttons (M224).
+export const REFRESH_LABEL = '↻'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
 export const CHECK_LABEL = 'Check'
@@ -342,7 +345,8 @@ export function paneLines(
   hotfixes: HotfixPr[] = [],
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
-  const out: PaneLine[] = []
+  // The first line holds only the ↻ Button, at the right end (M236).
+  const out: PaneLine[] = [{ ...line('refresh', 0, []), buttons: ['refresh'], end: true }]
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
   state.milestones.forEach((row, i) => {
     if (i > 0) out.push(gap(`${row.id}-gap`))
@@ -387,14 +391,12 @@ export function paneLines(
   // The blocked rows, each with its pull request's number when its
   // milestone file's header names one, whether or not a milestone is
   // active (M223). After the number, the state word that the last read
-  // found, and the Button that word carries (M224). The heading carries
-  // the Refresh Button while a row has a pull request to read.
+  // found, and the Button that word carries (M224).
   if (state.blocked.length > 0) {
     const head = heading('blocked-head', 'Blocked', QUEUE_COLOR, [
       { text: ' ' },
       { text: `${state.blocked.length}`, color: GRAY },
     ])
-    if (state.blocked.some(row => row.url !== null)) head[1].buttons = ['refresh']
     out.push(...head)
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
@@ -426,8 +428,6 @@ export function paneLines(
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
     const head = heading('hotfixes-head', 'Hotfixes', QUEUE_COLOR, [{ text: ' ' }, { text: `${shown.length}`, color: GRAY }])
-    head[1].buttons = ['refresh']
-    head[1].target = 'hotfixes'
     out.push(...head)
     for (const pr of shown) {
       const held = line(`hotfix-${pr.number}`, 2, [{ text: `#${pr.number}`, bold: true }, { text: '  ' }], { text: pr.title })
