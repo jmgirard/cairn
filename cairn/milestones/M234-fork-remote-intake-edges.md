@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — adopters run this skill prose for guest pushes, the `/milestone` audit, and the reply hand-off
-- **Branch/PR:** m234-fork-remote-intake-edges
+- **Branch/PR:** m234-fork-remote-intake-edges, https://github.com/jmgirard/cairn/pull/243
 
 ## Goal
 
@@ -21,13 +21,13 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md`'s canonical recipe defines the guest-mode fork remote `<fork>`. It is the one remote that `git remote` lists, other than `<base>`, whose parent equals `<base-repo>` ignoring case. The parent is read with `gh repo view "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>`'s owner. With no match, or more than one, a guest push stops before the push and names the remotes it read. In `~/github/insight`, `~/github/brms`, and `~/github/parameters`, the recipe's commands resolve `fork`, `origin`, and no match. A temporary clone given two remotes that are forks of its base reports two matches.
-- [ ] AC2: A case-insensitive, whitespace-normalized search of `skills/**/*.md` (outside `skills/tests/`) and `README.md` for `push` or `the fork` gives a set of hits. Each hit that describes a guest-mode push names `<fork>`, and no hit calls `origin` the fork.
-- [ ] AC3: In `skills/milestone/SKILL.md`, a whitespace-normalized scan finds every inline or fenced span that begins `gh pr ` or `gh issue ` and carries an argument or flag. Each such span also carries `--repo <base-repo>`. §2 states this rule for §2 and §3, as §4's "The repo." paragraph does for §4.
-- [ ] AC4: The Intake paragraph of `skills/shared/tracking-rules.md` names `/milestone` §3's `close` disposition for an orphaned issue among the issue routes. The clause from "`leave` is legal only" to "genuinely new." matches its text at commit b369a63 after whitespace normalization.
-- [ ] AC5: `/milestone` §4's reply hand-off writes the drafted reply to `cairn-reply-<owner>-<repo>-<N>.md` in the system temp directory (Python's `tempfile.gettempdir()`), outside the checkout. Its fenced command is `gh issue comment <N> --repo <base-repo> --body-file "<that file's absolute path>"`, so the reply text is not part of the command line. §4 no longer carries the `'\''` instruction or the four-backtick fence. The close block still gives the draft verbatim.
-- [ ] AC6: The rulebook-mass line in `skills/milestone/SKILL.md` measures with `wc -l -c` and states its baseline in lines and bytes. The figures are the line and byte counts that `wc -l -c skills/shared/tracking-rules.md` prints at the branch head.
-- [ ] AC7: The five checks of the `verify` slot in `cairn/PROFILE.md` pass.
+- [x] AC1: `skills/shared/tracking-rules.md`'s canonical recipe defines the guest-mode fork remote `<fork>`. It is the one remote that `git remote` lists, other than `<base>`, whose parent equals `<base-repo>` ignoring case. The parent is read with `gh repo view "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>`'s owner. With no match, or more than one, a guest push stops before the push and names the remotes it read. In `~/github/insight`, `~/github/brms`, and `~/github/parameters`, the recipe's commands resolve `fork`, `origin`, and no match. A temporary clone given two remotes that are forks of its base reports two matches.
+- [x] AC2: A case-insensitive, whitespace-normalized search of `skills/**/*.md` (outside `skills/tests/`) and `README.md` for `push` or `the fork` gives a set of hits. Each hit that describes a guest-mode push names `<fork>`, and no hit calls `origin` the fork.
+- [x] AC3: In `skills/milestone/SKILL.md`, a whitespace-normalized scan finds every inline or fenced span that begins `gh pr ` or `gh issue ` and carries an argument or flag. Each such span also carries `--repo <base-repo>`. §2 states this rule for §2 and §3, as §4's "The repo." paragraph does for §4.
+- [x] AC4: The Intake paragraph of `skills/shared/tracking-rules.md` names `/milestone` §3's `close` disposition for an orphaned issue among the issue routes. The clause from "`leave` is legal only" to "genuinely new." matches its text at commit b369a63 after whitespace normalization.
+- [x] AC5: `/milestone` §4's reply hand-off writes the drafted reply to `cairn-reply-<owner>-<repo>-<N>.md` in the system temp directory (Python's `tempfile.gettempdir()`), outside the checkout. Its fenced command is `gh issue comment <N> --repo <base-repo> --body-file "<that file's absolute path>"`, so the reply text is not part of the command line. §4 no longer carries the `'\''` instruction or the four-backtick fence. The close block still gives the draft verbatim.
+- [x] AC6: The rulebook-mass line in `skills/milestone/SKILL.md` measures with `wc -l -c` and states its baseline in lines and bytes. The figures are the line and byte counts that `wc -l -c skills/shared/tracking-rules.md` prints at the branch head.
+- [x] AC7: The five checks of the `verify` slot in `cairn/PROFILE.md` pass.
 
 ## Coverage
 
@@ -73,3 +73,13 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 ## Decisions
 
 ## Review
+
+- Route (d): no PR existed. The branch contained origin/main (b063e89). The Copilot arm ran: pushed, opened PR #243, state query `none`, Copilot requested (rc 0).
+- AC1 evidence (2026-10-10): `TestForkRecipe` OK (the 5 recipe clauses present, and `<fork-owner>` no longer reads `origin`). Recipe probe: insight resolves `fork`, brms resolves `origin`, parameters gives no match, and a temporary `git clone --no-checkout` of insight with remotes `origin` (easystats/insight), `fork`, and `fork2` (both jmgirard/insight) gives 2 matches.
+- AC2 evidence (2026-10-10): AC2's search gives 143 hits in 30 files. Every guest-mode push hit names `<fork>`: hotfix handoff and fix pushes, milestone-review handoff push, fix pushes, chip example, and gate-fix push, milestone-implement rebase push, copilot-review §5 push, the milestone §2 re-push, and the rulebook's two. The hits that push to `origin` are owner-mode: hotfix Copilot arm and authored-fix approval, milestone-review Copilot arm, step 8, and companion arm, the milestone owner-mode candidate row, and the claude-plugin profile's tag push. No hit calls `origin` the fork. `test_guest_fork_remote` 7 tests OK.
+- AC3 evidence (2026-10-10): the whitespace-normalized scan in `test_milestone_gh_repo.gh_commands` finds 15 `gh pr` or `gh issue` command spans (inline and fenced) in `skills/milestone/SKILL.md`, and 0 lack `--repo <base-repo>`. §2's "The repo." sentence is present.
+- AC4 evidence (2026-10-10): the Intake paragraph contains "or `close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;". The whitespace-normalized `leave` clause equals its text in `git show b369a63:skills/shared/tracking-rules.md`.
+- AC5 evidence (2026-10-10): §4 names `cairn-reply-<owner>-<repo>-<N>.md` in the system temp directory (Python's `tempfile.gettempdir()`), outside the checkout. Its fenced command is `gh issue comment <N> --repo <base-repo> --body-file "<path>"`, and `gh issue comment --help` lists `-F, --body-file`. §4 holds no `'\''` and no four-backtick fence. "gives the draft verbatim, then this command" is present.
+- AC6 evidence (2026-10-10): `skills/milestone/SKILL.md:116-118` measures with `wc -l -c` and states "636 lines / 60,689 bytes". `wc -l -c skills/shared/tracking-rules.md` at the branch head prints 636 and 60689.
+- AC7 evidence (2026-10-10): scripts/tests 406 OK (21 skipped), hooks/tests 174 OK, plugin validate exit 0, marketplace validate exit 0, mod test 1777 tests with 0 failures, each exit code read.
+- Consistency gate (2026-10-10): `cairn_validate` all checks passed (exit 0). Coverage complete. `cairn_impact` skipped, because DESIGN.md is unchanged. The marketplace validate shows no version warning. CHANGELOG has 4 entries for this milestone, with no milestone numbers. The hand-run skills/tests gave 718 OK.
