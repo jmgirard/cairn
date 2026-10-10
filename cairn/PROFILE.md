@@ -1,4 +1,5 @@
 # Toolchain profile: claude-plugin
+# Copilot review: on
 
 <!-- This repo's declared cairn toolchain profile, instantiated from
      skills/shared/profiles/claude-plugin.md at M215 (it ran generic.md

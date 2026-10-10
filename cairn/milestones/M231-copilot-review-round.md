@@ -46,7 +46,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - [x] T3: `/milestone-review`: with the round on, owner mode pushes and opens the PR after step 6 and runs the round. Step 7's merge question lists the Copilot dispositions, and the PR-conversation read then runs on the PR that already exists. Step 8 skips the create. The guest handoff runs the round after the create. Add the resume route for a stop at the round's wait.
 - [x] T4: `/hotfix`: the same two arms around step 6. Step 1 gains the open-PR route: an open PR whose head is `hotfix-*` and whose author is the operator enters step 6.
 - [x] T5: Append D-152 to `cairn/DECISIONS.md`, done at plan. Point the rulebook's "A branch push starts CI" bullet at the opt-in arm. Update `cairn/DESIGN.md`'s architecture paragraphs on the review and hotfix PR timing.
-- [ ] T6: Add `# Copilot review: on` to `cairn/PROFILE.md`, under the collaboration-mode header position. The live round on M231's PR runs at review.
+- [x] T6: Add `# Copilot review: on` to `cairn/PROFILE.md`, under the collaboration-mode header position. The live round on M231's PR runs at review.
 - [ ] T7: README, CHANGELOG, and a prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite.
 
 ## Work log
@@ -71,6 +71,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: T4: `/hotfix` gains step 1's open authored-PR re-entry (`OPEN`, `hotfix-*` head, the operator as author: check out, re-run verify, go to step 6), step 5's pointer, step 6's owner round arm with Lite, and the guest round after the handoff. Step 6 keeps its `6. **Approval gate:**` opening line, because `test_pr_conversation_gate.py` slices from it. Adopted PRs skip the round, because the contributor's PR is theirs to put to a reviewer. Falsified by an operator who wants Copilot on adopted PRs.
 - 2026-10-10: a `git stash` in a probe command took the uncommitted T4 edits for one call. `git stash pop` restored them, and a grep confirmed the edits. Per-file runs of `test_mutation_harness.py` and `test_references_pages.py` fail on main too (bare sibling imports), and the suite's discovery run is green (669 tests).
 - 2026-10-10: T5: D-152 landed at plan. The rulebook's "A branch push starts CI" bullet and its `PROFILE.md` file-map row point at the module, and DESIGN.md's conditional-modules bullet names it. DESIGN.md had no PR-timing paragraph to change. The rulebook grew to 629 lines / 59,756 chars, so the mass baseline was re-seeded at its three pins (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`), per the M149 lesson. All three suites and `cairn_validate` green.
+- 2026-10-10: T6: `cairn/PROFILE.md` line 2 is `# Copilot review: on`. `cairn_validate` stays green, and `cairn_common.collaboration_mode` still reads `owner`.
 
 ## Decisions
 
