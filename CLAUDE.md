@@ -18,14 +18,14 @@ first:
 
 - **Trivial** (no runtime surface — typo, comment, tracking edit): commit to
   main.
+- **Look into a GitHub issue**: invoke `/milestone` with the issue number
+  or URL.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
   `/milestone-plan`. One question set follows, then the run goes on through
   implement and review to the merge question; typed `/milestone-implement`
   or `/milestone-review` resumes a stopped run.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
-- **Look into a GitHub issue**: invoke `/milestone` with the issue number
-  or URL.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
   reaches main without explicit user approval at the merge question.
 

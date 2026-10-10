@@ -39,9 +39,13 @@ def milestone():
 
 
 def look_in(text):
-    """§4 from its heading to EOF, or "" when the heading is gone."""
+    """§4 from its heading to the next `## ` heading or EOF, or "" when the
+    heading is gone."""
     start = text.find("## 4. Issue look-in")
-    return "" if start < 0 else text[start:]
+    if start < 0:
+        return ""
+    end = text.find("\n## ", start + 1)
+    return text[start:] if end < 0 else text[start:end]
 
 
 def gh_lines(section):
@@ -49,8 +53,12 @@ def gh_lines(section):
 
 
 def stray_gh_lines(section):
-    """The `gh` lines that are neither a read nor the one hand-off line."""
-    return [l for l in gh_lines(section) if not READ.search(l) and l != HANDOFF]
+    """The `gh` lines that are neither one read nor the one hand-off line. A
+    line holding two `gh` commands is a stray even when one is a read."""
+    return [
+        l for l in gh_lines(section)
+        if len(GH_LINE.findall(l)) != 1 or not (READ.search(l) or l == HANDOFF)
+    ]
 
 
 class TestEntry(unittest.TestCase):
@@ -59,8 +67,13 @@ class TestEntry(unittest.TestCase):
 
     def test_argument_test_names_both_forms(self):
         t = milestone()
-        self.assertIn("An argument that is an issue number", t)
-        self.assertIn("runs §4 in place of §1–§3.", t)
+        self.assertIn("(`#N`, `N`, or `issue N`) or an issue URL", t)
+        self.assertIn("(`https://github.com/<owner>/<repo>/issues/<N>`, with any `#…` fragment", t)
+        self.assertIn("dropped) runs §4 in place of §1–§3.", t)
+
+    def test_section_ends_at_the_next_heading(self):
+        planted = milestone() + "\n## 5. Later\n`gh issue close <N>`\n"
+        self.assertNotIn("## 5. Later", look_in(planted))
 
     def test_frontmatter_names_the_trigger(self):
         t = milestone()
@@ -122,6 +135,11 @@ class TestRemoteReach(unittest.TestCase):
         self.assertEqual(
             stray_gh_lines(planted), ["`gh issue close <N> --repo <base-repo>`"]
         )
+
+    def test_planted_read_and_write_on_one_line_is_caught(self):
+        # A read on the same line must not hide a write.
+        line = "`gh issue view <N> --repo <base-repo>` then `gh issue close <N> --repo <base-repo>`"
+        self.assertEqual(stray_gh_lines(look_in(milestone()) + "\n" + line + "\n"), [line])
 
     def test_planted_second_handoff_is_caught(self):
         # A second comment command with another shape is a stray, not the

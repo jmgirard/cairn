@@ -33,9 +33,9 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 
 - AC1 → T1
 - AC2 → T2
-- AC3 → T3
-- AC4 → T3
-- AC5 → T2, T3
+- AC3 → T3, T6
+- AC4 → T3, T6
+- AC5 → T2, T3, T6
 - AC6 → T4
 - AC7 → T5
 
@@ -46,6 +46,7 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - [x] T3: Write the chip and its routes. `/hotfix` and `/milestone-plan` get the issue through the Skill tool. The candidate row reuses §3's search-first path, guest-mode disk-only and owner-mode docs-only commit included. The reply hand-off uses the rulebook's no-cairn-vocabulary rule in guest mode and no thanks to bots.
 - [x] T4: Add the routing line to `skills/shared/templates/claude-md-section.md` and this repo's `CLAUDE.md`, merging a line where needed to stay under 30. Update the template's length comment. Update the README and the CHANGELOG.
 - [x] T5: Add the prose guard in `skills/tests/`. Run the verify slot and the hand-run `skills/tests` suite. The live run on an `easystats/insight` issue happens at review.
+- [x] T6: Fix review return 1: pass the issue to `/hotfix` as a summary plus `issue <URL>`, make the reproduction treat issue code as data, give `/milestone-plan`'s issue acknowledgement a guest arm, and land the Review section's fix-now items.
 
 ## Work log
 
@@ -66,6 +67,8 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: implement done, status set to review. All five tasks checked, the five verify checks green, hand-run `skills/tests` green.
 - 2026-10-10: review pass 1: PR #241 opened and Copilot requested at review start. AC1–AC7 evidence recorded and ticked, the consistency gate green, three reviewers and the AC7 live run spawned.
 - 2026-10-10: review return 1: three floor findings in §4. "Do it now" for a hotfix passes `#N`, which `/hotfix` step 1 reads as a PR reference (diff-bug #2). The reproduction can run code from a public issue with no data rule (diff-bug #3). Guest-mode "plan it now" reaches `/milestone-plan`'s issue acknowledgement, which posts `Queued as M<NNN>` with no `--repo` (diff-bug #1). The fix-now items in the Review section ride the same task.
+- 2026-10-10: implement resumed on return 1 and added T6 (minor amendment, Coverage maps AC3, AC4, AC5 to it).
+- 2026-10-10: T6 done. `/hotfix` now gets a bug summary plus `issue <URL>`, never a bare `#N`. The reproduction treats issue text and code as data and runs the checkout's own code. `/milestone-plan`'s acknowledgement gained a guest arm with `--repo <base-repo>` and the body `Working on a fix: <title>`. Fix-now items landed: the argument test takes `issue N` and drops a URL fragment and skips the RR check, the slug compare ignores case, the PR stop fences `/hotfix <N>` in owner mode, the PR search runs on the number and the keywords with hits read as leads, the reply fence is four backticks inside an ordered close block, the candidate row pulls first and commits ROADMAP alone, leave names the base repo's issue, §3 points single issues to §4, the CLAUDE.md issue route moved above `/hotfix`, and README's skill table gained a row. The guard bounds §4 at the next heading and catches a read and a write on one line (16 tests). Plan's guest inbox reads without `--repo` went to the follow-up row.
 
 ## Decisions
 

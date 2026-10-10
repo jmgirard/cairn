@@ -495,6 +495,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | You want to… | Do this |
 |---|---|
 | See where the project stands / what to do next | `/milestone`: status snapshot, health audit, and a suggested next action |
+| Look into one GitHub issue | `/milestone #12`, or the issue's URL: a verdict (reply, hotfix, or milestone), the maintainer input it needs, and one question to start the work, add a candidate row, leave it, or stop |
 | Capture an idea for later | Just say it: "add X to the candidates" (one ROADMAP row, no ceremony) |
 | Turn an idea into a real plan and run it | `/milestone-plan <title>`: investigation, one question set, milestone file(s) with acceptance criteria, then implement and review in the same run up to the merge question |
 | Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
