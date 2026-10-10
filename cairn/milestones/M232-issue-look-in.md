@@ -72,6 +72,8 @@ Given an issue number or URL, `/milestone` reads that issue and the code it name
 - 2026-10-10: claim audit: 34 claims read, 1 corrected — skills/milestone/SKILL.md, README.md, skills/milestone-plan/SKILL.md
 - 2026-10-10: the claim audit's corrections: the PR-number stop fences `/hotfix #<N>` only for an external PR, and `/milestone` for the operator's own PR or any guest-mode PR. Two imprecise claims were tightened too: README's table row says leave needs a stated reason, and plan's guest acknowledgement reads `Working on this: <title>` with a `partial` remainder in plain words. The same reader re-read all three as true.
 - 2026-10-10: implement done on return 1, status set to review.
+- 2026-10-10: review pass 2: evidence re-gathered on 3e43c88, second live run passed, findings settled with no return, Copilot's three threads fixed, replied, and resolved.
+- 2026-10-10: step-7 approval: m232-issue-look-in approved for merge
 
 ## Decisions
 
