@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M229: The edit-work Sonnet roles move to Haiku 5.5
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M228   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -139,6 +139,8 @@ in M228's note.
 - 2026-10-10: T3: "Set the model" lists Haiku; the "Sonnet subagents" bullet splits into "Haiku subagents" (D-151: migrations, test writing, boilerplate, with verify before commit) and "Sonnet subagents" (Explore, the two history-review lenses); "Never Haiku" removed; the review fan-out bullet already said Sonnet and is unchanged. Suites: scripts 401 OK (21 skipped), hooks 174 OK, skills 669 OK.
 - 2026-10-10: T4: of the AC3 grep lines, only `skills/milestone-implement/SKILL.md:119-120` assigned or barred a model against AC2; it now reads Haiku for mechanical work and test writing, Sonnet for Explore searches, with "never Haiku" removed. The Explore lines (cairn-triage 142, design-interview 46, milestone-plan 42) and the reviewer lines (milestone-review 259, 264) already say Sonnet and stay. No prose-guard pin covers a changed line. `cairn/references/anthropic-code-review.md:53` quotes the old rule as history and stays. Suites: skills 669 OK, hooks 174 OK, scripts 401 OK (21 skipped).
 - 2026-10-10: T5: CHANGELOG Unreleased gains a "Changes that affect existing repos" entry naming the edit-work roles now on Haiku 5.5; the ROADMAP candidate "Haiku for Sonnet subagent work" narrowed in place to search and history review rather than graduating at hygiene. verify: scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail.
+- 2026-10-10: claim audit: 24 claims read, 1 corrected — CHANGELOG.md (the edit-work entry said M228 measured the whole move; it now says boilerplate follows the measured result untested; the same reader re-read it and it checks out).
+- 2026-10-10: all tasks checked, verify green; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
