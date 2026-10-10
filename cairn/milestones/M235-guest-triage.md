@@ -1,13 +1,13 @@
 # M235: `/cairn-triage` runs in guest mode and writes its edits to disk
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/cairn-triage` does for adopters in guest-mode repos   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m235-guest-triage   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -54,7 +54,7 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first: add `skills/tests/test_guest_triage.py` with one guard per AC4 behavior. Guard 1 reads the guest arm's run-in-guest-mode sentence and the absence of the old stop sentence. Guard 2 reads the guest arm's no-commit-no-push sentence. Register both in `REGISTRY` in `skills/tests/test_mutation_harness.py`, and see them fail on main's skill text.
+- [x] T1: Tests first: add `skills/tests/test_guest_triage.py` with one guard per AC4 behavior. Guard 1 reads the guest arm's run-in-guest-mode sentence and the absence of the old stop sentence. Guard 2 reads the guest arm's no-commit-no-push sentence. Register both in `REGISTRY` in `skills/tests/test_mutation_harness.py`, and see them fail on main's skill text.
 - [ ] T2: Edit `skills/cairn-triage/SKILL.md`. Replace the guest stop (lines 29–33) with the guest arm. Give step 5's commit-message references and its D-entry preview ("the turn that commits it") a guest reading. Update the frontmatter description.
 - [ ] T3: Edit step 6 with the guest arm: validate, a stamp that names each refuted-premise or already-shipped drop with its evidence record, no commit, no push. Step 4's byte-budget check counts the guest stamp's length, because the stamp is longer there. Edit step 7's status line and safety line. Edit tracking-rules lines 325–326, README.md's guest bullet (lines 735–737), and its `/cairn-triage` table row (line 510). Run the AC3 grep and read each listed line's sentence.
 - [ ] T4: Add the CHANGELOG `## Unreleased` entry. Append D-156 to `cairn/DECISIONS.md`, annotating D-137: triage runs in guest mode with its edits on disk, the git preconditions are skipped, and the stamp carries the drop evidence.
@@ -71,6 +71,8 @@ In a guest-mode repo, `/cairn-triage` runs its whole pass over the local `cairn/
 - 2026-10-10: plan gate chose skipping all guest git preconditions over keeping the clean-tree check because the guest pass commits nothing and `cairn/` is the same folder on every branch; falsified by a guest pass that writes outside `cairn/`.
 - 2026-10-10: plan gate chose the stamp line over chat-only for drop evidence because chat is lost at session end; falsified by a guest stamp that pushes ROADMAP over its byte budget in a real pass.
 - 2026-10-10: approach: D-156 annotates D-137 rather than superseding it, because D-137 never named triage and its write rule stands.
+- 2026-10-10: implement started on m235-guest-triage. Unrelated untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
+- 2026-10-10: T1: `skills/tests/test_guest_triage.py` (5 tests, 2 classes) and 4 REGISTRY entries added. All 5 fail on main's skill text as assertion failures on the pinned phrases (the old stop sentence still present).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

@@ -3811,3 +3811,32 @@ REGISTRY += [
         block="On approval of an authored fix, push and",
     ),
 ]
+
+REGISTRY += [
+    # M235: `/cairn-triage` runs in guest mode and commits nothing there.
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_skill_states_the_guest_arm",
+        target="skills/cairn-triage/SKILL.md",
+        block="**Guest mode runs on disk**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageRuns.test_rulebook_names_the_guest_arm",
+        target=RULES,
+        block="**`/cairn-triage` runs**",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageCommitsNothing."
+             "test_step_six_guest_arm_makes_no_commit_or_push",
+        target="skills/cairn-triage/SKILL.md",
+        block="The guest pass makes no commit and no push",
+    ),
+    Mutation(
+        guard="test_guest_triage",
+        test="TestGuestTriageCommitsNothing.test_stamp_carries_the_drop_evidence",
+        target="skills/cairn-triage/SKILL.md",
+        block="already-shipped drop, the record or path",
+    ),
+]
