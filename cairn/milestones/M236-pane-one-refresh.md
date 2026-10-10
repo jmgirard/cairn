@@ -65,6 +65,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: T4 done. The M225 CHANGELOG entry sits under `## Unreleased` and never shipped in a release, so it was rewritten in place to the thread count, and a new entry describes the ↻ Button. `git grep -n -i "refresh" -- README.md cairn/DESIGN.md` returns 17 lines, none of which puts a Button on a heading. `git grep -n -i "unanswered" -- hooks/status types README.md cairn/DESIGN.md` returns nothing.
 - 2026-10-10: T5 done. All five verify commands exit 0 on the T4 head, `claude plugin test .` 1556 pass.
 - 2026-10-10: claim audit: 46 claims read, 1 corrected — hooks/status/pane.test.tsx (the `gate()` helper comment named a `then` it does not have).
+- 2026-10-10: T6 stop for the operator's live look. The plugin loads from `~/.claude/skills/cairn`, a symlink to this checkout, which is on the M236 branch, so a new session in `~/github/cairn` or a plugin reload here runs the branch's mod.
 
 ## Decisions
 
