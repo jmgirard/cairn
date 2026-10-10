@@ -5528,3 +5528,34 @@ the next action it would fence names a flagged milestone, as `/milestone`
 **Consequences:** The stop counts executed amendments, so a return whose
 amendment never runs does not count. This entry is falsified by such a
 return that must count toward the stop.
+
+### D-151 (2026-10-10): Edit-work subagents run on Haiku 5.5 — supersedes D-016's "Never Haiku" blanket and D-110's clause that the blanket stands (M229)
+
+**Context:** D-016 kept "Never Haiku. For anything." when the model was
+Haiku 4.5, and D-110 left that blanket standing. M228 compared Haiku 5.5
+with Sonnet 5.5 on the Sonnet roles
+(`cairn/references/haiku-sonnet-roles.md`) and gave three verdicts. Search
+(Explore fan-outs) is `stay`: Haiku scored 2.00 against Sonnet's 2.68, the
+whole gap one answer that dropped `.py` extensions. Edit work (mechanical
+migrations, test writing against a spec) is `move`: both models scored 3.00,
+and Haiku cost $0.04 against $0.49. History review (the blame-history and
+prior-PR-comments reviewers) is `move`: 4 judged findings each, Haiku at
+$0.43 against $0.61, on one run per task.
+
+**Decision:** Edit-work subagents run on Haiku 5.5. Boilerplate follows the
+edit-work verdict, though M228 did not measure it. Search stays on Sonnet by
+its `stay` verdict. History review stays on Sonnet by the user's T1 choice of
+2026-10-10, despite its `move`: the score is a single-run tie that one fewer
+finding turns to `stay`, about 870 unrecorded output tokens per call reverse
+the cost gap, and the note does not test D-016's reason that in a review step
+"a weaker model can silently drop a real bug". This entry answers that reason
+by keeping every review role on Opus or Sonnet. An edit-work diff is still
+read by the orchestrator and run through the `verify` slot before it is
+committed, so a Haiku miss there shows as a failed check, not a silent drop.
+
+**Consequences:** "Never Haiku" leaves tracking-rules "Model and agent
+strategy" and `/milestone-implement` step 5. The ROADMAP candidate "Haiku for
+Sonnet subagent work" narrows to search and history review, whose re-test is
+M228's re-measurement procedure. This entry is falsified by an edit-work
+spawn on Haiku whose diff fails verify or review where a Sonnet spawn on the
+same spec did not.

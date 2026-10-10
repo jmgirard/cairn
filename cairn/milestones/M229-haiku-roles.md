@@ -92,7 +92,7 @@ in M228's note.
       If all are `move`, log the groups and go on. If all are `stay` or the
       verdicts are mixed, stop at the goal-wrong stop with the verdicts,
       because a move of fewer than all roles drops part of the request.
-- [ ] T2: Append the D-entry that supersedes D-016's blanket. It cites the
+- [x] T2: Append the D-entry that supersedes D-016's blanket. It cites the
       note and names the moved and kept groups. Under IP2 it quotes D-016's
       "can silently drop a real bug" reason and answers it with the
       choice to keep every review role on Sonnet.
@@ -135,6 +135,7 @@ in M228's note.
 - 2026-10-10: re-audit: AC1 (full) — nothing on the criterion; T2's "history-review verdict" answer reworded to the choice to keep review on Sonnet.
 - 2026-10-10: re-audit: AC2 (full) — nothing.
 - 2026-10-10: re-audit: AC3 (full) — `milestone-implement` line 119's "well-specified mechanical work" is not a role AC2 names verbatim, so AC3 could pass with it still on Sonnet. Answered, not refixed (a third wording pass is the repeated-re-audit stop): that phrase is the mechanical-migration role AC2 names, and T4 now says it moves to Haiku. Also answered: Scope In's "pins on those lines change" binds nothing here, because no prose-guard pin covers a line that changes.
+- 2026-10-10: T2: appended D-151; it supersedes D-016's blanket and D-110's "blanket stands" clause, names each group's verdict, and quotes D-016's "silently drop a real bug" reason, answered by keeping every review role on Opus or Sonnet.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
