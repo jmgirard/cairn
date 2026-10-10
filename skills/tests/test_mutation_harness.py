@@ -1186,6 +1186,14 @@ REGISTRY = [
         target=MILESTONE,
         block="`gh issue list --repo <base-repo> --state open --json number,title,url` for issues,",
     ),
+    # M234: the Intake paragraph names the `close` route; blanking the clause
+    # must red the guard that pins it.
+    Mutation(
+        guard="test_issue_triage",
+        test="TestIntakeNamesClose.test_intake_names_close_for_an_orphaned_issue",
+        target=RULES,
+        block="`close` (`/milestone` §3) for an orphaned issue whose closing milestone is done;",
+    ),
     Mutation(
         guard="test_issue_triage",
         test="TestPlanSweepRepo.test_guest_mode_difference_from_the_audit_is_stated",
