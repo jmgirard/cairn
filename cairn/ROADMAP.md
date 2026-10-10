@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M227 | The status report lists open hotfix PRs | done | — | normal | milestones/archive/M227-status-hotfix-prs.md |
 | M228 | Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles | done | — | normal | milestones/archive/M228-haiku-sonnet-comparison.md |
 | M229 | The edit-work Sonnet roles move to Haiku 5.5 | done | M228 | normal | milestones/archive/M229-haiku-roles.md |
-| M230 | The pane's PR reads stop holding up opens | planned | — | normal | milestones/M230-pane-reads-detached.md |
+| M230 | The pane's PR reads stop holding up opens | review | — | normal | milestones/M230-pane-reads-detached.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

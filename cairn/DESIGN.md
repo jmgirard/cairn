@@ -70,7 +70,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved and unanswered counts in M225, and the open hotfix PRs in M226).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved and unanswered counts in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -291,7 +291,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   counts since M225, to the `prs` state value by URL. It runs after each pane open (the
   `/cairn-pane` command, the band's open button, the session-start
   reopen) and at a press of the `Refresh` Button on the `BLOCKED`
-  heading, which first reads the files again. No timer and no turn end
+  heading, which first reads the files again. The three opens start the
+  read with `void readPrs($)` and return before it settles (M230). The
+  press still waits for it. After its refresh, a `classic.SessionStart`
+  with source `clear` also starts the read without waiting. It does so
+  only when `$.ui.panes()` lists the pane placed and shown (`isShown`). No timer and no turn end
   starts a read, at the operator's word. A read that starts while another
   runs still runs, and only the newest read started writes its words
   (M224 review). `prWord` in `pane.ts` maps each result:
@@ -333,12 +337,17 @@ transitions, human-gated merges, and a domain verification doctrine.
   above zero, `paneLines` draws `blocked-<id>-counts` at indent 4 under
   the line. The counts sit in the line's text part, which a narrow pane
   cuts.
-  The same read lists the open hotfix PRs first (M226, `readHotfixes`).
+  The same read lists the open hotfix PRs (M226, `readHotfixes`). Since
+  M230 the blocked URLs' reads (`readPr`) start beside the list call, and
+  the hotfix URLs that no blocked row names are read once the list
+  settles.
   A hotfix has no ROADMAP row, so the PR is its only record. The read
   needs the band's root. In it, the mod picks the base remote as
   `cairn_common.base_remote` does: `collaborationMode` in `reader.ts`
   reads `cairn/PROFILE.md`, and guest mode runs `git remote`. Then `git
-  remote get-url` gives the remote's URL. No URL means no list call and
+  remote get-url` gives the remote's URL, and `withoutUserinfo` drops the
+  userinfo of an `http://` or `https://` URL, keeping every other form
+  (M230). No URL means no list call and
   an empty list. Otherwise one `gh pr list --repo <url> --state open
   --author @me --limit 100 --json number,title,url,headRefName` call runs
   in the root. `hotfixPrs` in `pane.ts` keeps an entry only with a
@@ -349,7 +358,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   `hotfixes` state value (`{ root, prs }`, tag `hotfixes-1`) is written
   with the words. The pane draws the list only while the band's root is
   its root, under a `HOTFIXES` heading after `BLOCKED` and before the
-  candidates: `hotfix-<n>` lines with the word in the tail and
+  candidates. An entry whose URL is a blocked row's draws on that blocked
+  line only, and the heading's count leaves it out (M230). The section has
+  `hotfix-<n>` lines with the word in the tail and
   `hotfix-<n>-counts` at indent 4, and no Button. The heading's `Refresh`
   carries the target `hotfixes`, so its key is
   `cairn-pane-refresh-hotfixes`.
@@ -394,7 +405,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `clear` in the same process, and nothing closes the pane (M222 probe). The
   host's state starts empty under the new session id, and no
   `session.start` fires, so a `classic.SessionStart` hook with source
-  `clear` refreshes the band and the pane. A
+  `clear` refreshes the band and the pane, and a shown pane reads its PRs
+  again (M230). A
   typed `/clear` in the desktop app ends the process with reason `other`,
   and the next process starts with no pane at the first message after the
   clear. So at an `other` end with the pane listed, shown, and placed, the

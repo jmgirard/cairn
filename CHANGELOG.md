@@ -85,6 +85,33 @@
 
 ### Fixes
 
+- **The cairn pane opens without waiting for GitHub.** `/cairn-pane`, the
+  band's open button, and the reopen at a session start now return without
+  waiting for the reads from GitHub. Before, each one returned only after
+  the `git` and `gh` reads of
+  the pull request states and the hotfix list. The hotfix list's calls ran
+  first, one after another, and then the PR state reads ran. Each call has
+  a 15 s timeout. The blocked PRs' reads now start without waiting for the
+  hotfix list call. The words and counts appear together when the last
+  read settles.
+
+- **The pane's PR words come back after an in-process `/clear`.** A
+  `/clear` that keeps the session's process, as a `Clear`, `Plan`, or
+  `Implement` press does, keeps the pane open. Before, the PR words,
+  counts, Buttons, and hotfix list stayed empty until the next open or
+  `Refresh`. Now a pane that shows at that moment reads them again. A pane
+  behind another tab still waits for the next open or `Refresh`.
+
+- **A hotfix PR that is also a blocked milestone's PR shows once.** It
+  stays on the blocked line, which carries any Button its word calls for.
+  The `HOTFIXES` count leaves it out, and when it is the only hotfix, the
+  section is gone.
+
+- **The pane's `gh pr list` call carries no remote credentials.** When the
+  base remote is an `http` or `https` URL with a user name or token in it,
+  such as `https://token@github.com/o/r.git`, the pane drops that part
+  before it passes the URL to `gh`. Other URL forms pass unchanged.
+
 - **`/hotfix` follows the repo's own conventions.** It reads the
   Conventions section of `cairn/DESIGN.md` and applies each per-change rule
   there, for example a development-version bump on every PR. The approval
