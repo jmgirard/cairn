@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -180,6 +180,7 @@ dial per spawned agent" candidate row.
 - 2026-10-09: T7 re-judged H1–H3 with three fresh Opus judges whose prompt states the note's rule verbatim, under new shuffled labels read after they returned. Valid findings Sonnet 1, 1, 2 and Haiku 1, 0, 3, so 4 against 4: history review stays `move`, now at a ratio of 1.0 instead of 0.9. The two judgings rate 11 of 22 findings differently; the note records both and the judge prompt.
 - 2026-10-09: T7 also gave the note each mutant's exact old and new strings (a parse of the table matches the applied mutants, 12 of 12, each occurring once), corrected the target-diff count, re-dated the page's status as a dated read of the prices (pin moved `exempt` → `ok`, since the prices age), reworded the Scope, the edit-work and verdict readings, added observed dates and the cross-references to `cairn_cost.py` and the price discrepancy, added a "what could flip it" column, and filed the candidate row "Session-store reading in `cairn_cost.py`".
 - 2026-10-09: verify passed on all five checks after T7, and `cairn_validate` reports no FAIL or WARN; status set to `review`.
+- 2026-10-09: review return 2: AC4 fails as written for the search keys (S2 and S3 give prose procedures where AC4 says "a command that the note gives", and the S3 prose yields 91 pairs, not 88; pass-2 diff-bug #1, #2). The other pass-2 fix-now findings ride the same return; dispositions are in the Review section.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -234,3 +235,24 @@ Pass 2, 2026-10-09, on `4101fe8` (branch current with `origin/main`). Pass-1 fix
 - AC4 evidence (pass 2): search scores re-score equal to the table. The second judges' reports (`a712b3ed31e25ea06`, `a1f764706bb2969f0`, `a7849bedfc57f6132`), read through the sealed second mapping, give Sonnet 1, 1, 2 and Haiku 1, 0, 3, equal to the H rows, and the note now records the judge prompt whose rule is the note's rule verbatim. A parse of the note's mutant table matches the applied mutants, 12 of 12, each old string occurring once at `c023018`. The sweep and test scores from pass 1 stand (same saved artifacts, unchanged scoring).
 - AC5 evidence (pass 2): the rule over the parsed table gives search 0.3650 / 0.0218, 2.6767 / 2.0 → `stay`; edit 0.4884 / 0.0407, 3 / 3 → `move`; review 0.6066 / 0.4318, 4 / 4 → `move`, equal to the Verdicts table.
 - Gate (pass 2): verify's five checks and `cairn_validate` passed at the end of T7 on this head (work log); no principle changed; no changelog entry owed.
+- spawned: diff-bug, blame-history, prior-review (pass 2).
+- diff-bug #1: AC4 says each search key is "built by a command that the note gives", but S2 and S3 give prose procedures — fix now, floor return (AC4 fails as written): the note gives the exact key-building code.
+- diff-bug #2: the S3 procedure as written yields 91 pairs (D-080 D-079 and D-099 D-091 repeat), and the F1 formula does not say A and K are sets — fix now, same return.
+- diff-bug #3: `session-cost-notes.md` row A4 and its open question are current knowledge the branch shows stale, and the rulebook corrects such a page where it sits — fix now (A4 and the open question marked `corrected M228`; the script stays with the candidate row).
+- diff-bug #4: "the growth of each next call's prompt bounds it from above" is unverified, since thinking text is empty — fix now (claim removed).
+- diff-bug #5: H3 Haiku's cost is credited to the tier alone, but its 32 calls against 8 matter as much — fix now.
+- diff-bug #6: "these tasks cannot show a gap between the models" overstates, since the mutant scoring can tell runs apart — fix now.
+- diff-bug #7: the new candidate row's "Promote now" is not a promotion condition, and its stream-start clause names no effect — fix now (row rewritten, `[high]`).
+- diff-bug #8: the label mappings were written to the scratchpad before the judges ran; T5 said record them only after, and the note's "read after" is the accurate claim — fix now (the note states where the mappings were and that no judge read them; a work-log line records the deviation).
+- diff-bug #9: AC1 names one run table of 18 rows, but the note splits it into three — fix now (one table).
+- blame-history #1: the note never says which of D-016's risks the history-review score tests; the score counts judged-valid findings and does not measure missed defects, and the per-task split (H2 Haiku 0 against 1) is hidden by the tie — fix now (a reading added).
+- blame-history #2: the older "subagent turns absent" claim was dated 2026-07-19, and the earliest subagent transcript found is from 2026-08-13, so it is stale rather than false — fix now (wording in the note and the row).
+- blame-history #3: "Promote now" has no precedent, and the row should carry a priority — fix now (with diff-bug #7).
+- blame-history #4: older figures built with `cairn_cost.py` (M153's medians, the effort notes) also need re-measuring after the script fix — fix now (the row names them).
+- blame-history #5: an `ok` pin makes the staleness advisory cover the whole page, though only the prices can be re-read — reject, planned change: pass 1's diff-bug #3 chose `ok` so that the aging prices are seen, and the status names the prices as what was read.
+- blame-history #6: the first judging used a wider rule than the design — reject, not a defect: the note already records both judgings and the prompt.
+- prior-review #1: the per-finding judge ratings behind the scores and the "11 of 22" claim are not in the repo (the M153 lesson) — fix now (a per-finding table in the note, rebuilt from both judges' reports and mappings).
+- prior-review #2: pass 2's gate evidence was cited from the work log, not re-run — fix now (re-run at the next pass).
+- prior-review #3: "within reach" and "the prompt's 'base name' allows that reading" are characterizations — fix now.
+- prior-review #4: no negative control is stated for E3 — fix now (the always-true file kills 0 of 6 for E3, run 2026-10-09).
+- prior-review #5: "Promote now" departs from the row convention — fix now (with diff-bug #7).
