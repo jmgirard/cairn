@@ -188,11 +188,12 @@ branch, no tracking beyond the commit. **Hotfix** (user-visible bug) → `/hotfi
 user approval; NEWS entry; no milestone file. **Milestone** → more than one sitting, changes exported behavior (beyond
 restoring documented behavior), or requires a design decision.
 
-Intake: GitHub issues and external PRs are inboxes, never a second tracking system. Issues → `candidate` rows or the
-hotfix path; `leave` is legal only for noise, duplicates, or items already cross-referenced in cairn — never anything
-genuinely new. External PRs: **`/hotfix` is the door** for the small and correct — it adopts the PR (`gh pr checkout`),
-holds it to the hotfix bar, merges on user approval; larger → `/milestone-plan`. Candidates may be added
-conversationally by anyone at any time (one ROADMAP row).
+Intake: GitHub issues and external PRs are inboxes, never a second tracking system. Issues → `candidate` rows, the
+hotfix path, `/milestone-plan`, or a reply (`/milestone` §4) whose answer leaves nothing new for cairn to record;
+`leave` is legal only for noise, duplicates, or items already cross-referenced in cairn — never anything genuinely new.
+External PRs: **`/hotfix` is the door** for the small and correct — it adopts the PR (`gh pr checkout`), holds it to
+the hotfix bar, merges on user approval; larger → `/milestone-plan`. Candidates may be added conversationally by anyone
+at any time (one ROADMAP row).
 
 **Out-of-band idea capture.** A capture channel that is not a cairn tracking file — a chip, a scratch TODO, an ad-hoc
 note — is never the record of record: the idea also lands as a `candidate` ROADMAP row in the same turn (search-first
