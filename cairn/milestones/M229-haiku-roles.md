@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M229: The edit-work Sonnet roles move to Haiku 5.5
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M228   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -78,7 +78,7 @@ in M228's note.
 - AC1 → T1, T2
 - AC2 → T3
 - AC3 → T4
-- AC4 → T5
+- AC4 → T5, T6
 - AC5 → T4, T5
 
 ## Tasks
@@ -109,6 +109,8 @@ in M228's note.
       reviewer pins in `skills/tests/test_review_fanout.py` stay Sonnet.
       Hand-run `skills/tests` and both gating suites.
 - [x] T5: Add the `CHANGELOG.md` entry and run the full `verify` slot.
+- [x] T6: Remove the milestone and decision numbers from the new
+      `CHANGELOG.md` entry (review return 1) and re-run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -142,6 +144,7 @@ in M228's note.
 - 2026-10-10: claim audit: 24 claims read, 1 corrected — CHANGELOG.md (the edit-work entry said M228 measured the whole move; it now says boilerplate follows the measured result untested; the same reader re-read it and it checks out).
 - 2026-10-10: all tasks checked, verify green; status review.
 - 2026-10-10: review return 1: consistency gate failed — the profile's changelog check bars milestone numbers in user-facing text, and the new CHANGELOG entry names `D-151` and `M228` (CHANGELOG.md lines 75 and 78). AC1-AC4 evidence, `cairn_validate`, and both manifest validates were clean at this point.
+- 2026-10-10: T6 (review return 1): T6 added and mapped to AC4 (minor amendment). The CHANGELOG entry drops `(D-151)` and reads "A side-by-side test measured" in place of "M228 measured"; the Unreleased section now holds no `M<NNN>` or `D-<NNN>` token. The claim audit's pass stands: the change swaps an id for a plain name and adds no claim. verify: scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
