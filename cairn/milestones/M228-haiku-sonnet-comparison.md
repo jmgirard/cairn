@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -90,10 +90,10 @@ dial per spawned agent" candidate row.
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T1, T3, T4, T5, T6
+- AC1 → T1, T3, T4, T5, T6, T8
 - AC2 → T3, T4, T5, T6
 - AC3 → T1, T6
-- AC4 → T1, T2, T3, T4, T5, T7
+- AC4 → T1, T2, T3, T4, T5, T7, T8
 - AC5 → T1, T6, T7
 
 ## Tasks
@@ -137,6 +137,11 @@ dial per spawned agent" candidate row.
       prompt in the note. Give each mutant's exact old and new strings in
       the note. Apply pass 1's other fix-now findings, and add the
       follow-up candidate row for `cairn_cost.py`.
+- [x] T8: Review return 2. Give the exact key-building code for S1–S3 in
+      the note and state that F1 compares sets. Apply pass 2's other
+      fix-now findings, including the per-finding judge table, one run
+      table, the E3 negative control, and the `session-cost-notes.md` A4
+      correction.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -181,6 +186,10 @@ dial per spawned agent" candidate row.
 - 2026-10-09: T7 also gave the note each mutant's exact old and new strings (a parse of the table matches the applied mutants, 12 of 12, each occurring once), corrected the target-diff count, re-dated the page's status as a dated read of the prices (pin moved `exempt` → `ok`, since the prices age), reworded the Scope, the edit-work and verdict readings, added observed dates and the cross-references to `cairn_cost.py` and the price discrepancy, added a "what could flip it" column, and filed the candidate row "Session-store reading in `cairn_cost.py`".
 - 2026-10-09: verify passed on all five checks after T7, and `cairn_validate` reports no FAIL or WARN; status set to `review`.
 - 2026-10-09: review return 2: AC4 fails as written for the search keys (S2 and S3 give prose procedures where AC4 says "a command that the note gives", and the S3 prose yields 91 pairs, not 88; pass-2 diff-bug #1, #2). The other pass-2 fix-now findings ride the same return; dispositions are in the Review section.
+- 2026-10-09: implement resumed for return 2; added T8 (minor amendment) and mapped AC1 and AC4 to it.
+- 2026-10-09: deviation from T5 recorded: the label mappings were written to the scratchpad beside the judges' input files before the judges ran, not after; the judges were told to read only their two report files, and their transcripts show no read of a mapping file.
+- 2026-10-09: T8 put the key-building code in the note; run from the repo root it rebuilds the S1–S3 keys (10, 9, 88 items) equal to the built keys, and the same rule without the repeat check gives 91. F1 now says A and K are sets. The note now has one 18-row run table, a 22-row per-finding table of both judgings (rebuilt from the judges' reports and mappings: 11 of 22 differ, none newly valid), the E3 negative control (0 of 6, run 2026-10-09), a reading on D-016's untested risk with the per-task split, and reworded cost-bound, tier, ceiling, and older-record sentences. `session-cost-notes.md` row A4 and its open question are marked `corrected M228`, and the candidate row is rewritten as `[high]` with a promotion condition and the figures to re-measure.
+- 2026-10-10: verify passed on all five checks after T8 (scripts 401 OK, hooks 174 OK), `cairn_validate` reports no FAIL or WARN; status set to `review`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

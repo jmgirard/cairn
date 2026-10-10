@@ -55,7 +55,7 @@ does not contain it) · `refused` (derivable only by guessing, so not derived).
 | A1 | Phase (`plan`/`implement`/`review`, and the other cairn skills) | `attributionSkill` lookup | `mechanical` |
 | A2 | Milestone id | `gitBranch` matching `^m(\d{2,})-` → `M<NN>` | `mechanical` |
 | A3 | Token cost of a milestone's *plan* phase | plan work runs on the default branch, which names no milestone | `refused` |
-| A4 | Subagent token cost | no store record anywhere carries `isSidechain: true` | `absent` |
+| A4 | Subagent token cost | no store record carried `isSidechain: true` (observed 2026-07-19); since then each session's `<session>/subagents/agent-*.jsonl` records subagent turns with `isSidechain: true`, the oldest such file on this machine dated 2026-08-13 (corrected M228, observed 2026-10-09) | `absent` in this note's figures |
 | A5 | Subagent *count* per phase | `tool_use` blocks named `Agent`/`Task` | `mechanical` |
 | A6 | Per-file share of context growth | a shared prompt cache cannot apportion cache reads between files | `refused` |
 
@@ -139,7 +139,11 @@ carries. Stated as a measurement, not a conclusion: M94 does not judge whether
   `~/.claude/projects/`, `~/.claude/tasks/` (a todo store, not transcripts),
   and `~/.claude/sessions/`; none carried subagent turns — observed
   2026-07-19. If a surface is found later, A4 stops being `absent` and the
-  review-phase figures should be re-measured.
+  review-phase figures should be re-measured. Answered (corrected M228): the
+  per-session `subagents/` directory is that surface, and
+  `references/haiku-sonnet-roles.md` prices runs from it, grouping records by
+  `message.id` — observed 2026-10-09. The re-measurement belongs to the
+  ROADMAP candidate "Session-store reading in `cairn_cost.py`".
 - Whether `attributionSkill` is populated on every Claude Code version an
   adopting repo might run; this repo's store has it throughout, but that is one
   repo on one version — observed 2026-07-19.

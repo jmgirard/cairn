@@ -49,16 +49,17 @@ the main session transcript
 `~/.claude/projects/-Users-jmgirard-github-cairn/914c172c-a7d8-4341-b5be-8f75283fc564.jsonl`.
 Each row records whether that `usage`'s input and cache counts equal the
 final id's last-record counts, which ties the tool result to that call. No
-record gives the exact output of earlier calls (observed 2026-10-09); the
-growth of each next call's prompt bounds it from above but also holds the
-tool result. So every row's cost is a lower bound.
+record gives the exact output of earlier calls (observed 2026-10-09), so
+every row's cost is a lower bound.
 
-Two older records disagree with what this note relies on (observed
-2026-10-09). `scripts/cairn_cost.py` and `session-cost-notes.md` (ledger
-row A4) say subagent turns are absent from the session store, but each
-session's `subagents/agent-*.jsonl` holds them. `cairn_cost.py` also sums
-every assistant record, where this note groups records by `message.id`.
-The ROADMAP candidate "Session-store reading in `cairn_cost.py`" holds both.
+Two older records predate the store this note reads. `scripts/cairn_cost.py`
+and `session-cost-notes.md` (ledger row A4) say subagent turns are absent
+from the session store, which held when observed on 2026-07-19; each
+session's `subagents/agent-*.jsonl` now holds them, the oldest such file on
+this machine dated 2026-08-13 (observed 2026-10-09). `cairn_cost.py` also
+sums every assistant record, where this note groups records by
+`message.id`. `session-cost-notes.md` carries the correction; the script is
+the ROADMAP candidate "Session-store reading in `cairn_cost.py`".
 
 Prices, USD per million tokens, from
 <https://platform.claude.com/docs/en/about-claude/pricing> (read 2026-10-09).
@@ -104,8 +105,8 @@ Prompt, with `<Q>` and `<FORM>` per task:
   <superseded id>`, for example `D-110 D-016`".
 
 Score: F1 of the `ANSWER:` items against the key, `2·|A∩K| / (|A| + |K|)`,
-items compared after trimming whitespace and backticks. A reply with no
-`ANSWER:` line scores 0.
+where A and K are sets (repeats count once) of items compared after
+trimming whitespace and backticks. A reply with no `ANSWER:` line scores 0.
 
 ### Edit-work group (mechanical sweep, test writing)
 
@@ -205,16 +206,50 @@ contradicts a point a past review raised on those files."
 
 ## Answer keys, target, and mutants (built 2026-10-09, before any run)
 
-S1 key, from `git grep -l -E '^\s*(import cairn_common|from cairn_common
-import)' c023018 -- scripts hooks` (10 items): `hooks/commit_guard.py`,
+The three keys are the output of this Python 3 code, run from the repo root
+(code added after review return 2; it is the code the keys were built with):
+
+```python
+import json, re, subprocess
+PIN = "c023018"
+sh = lambda c: subprocess.run(c, shell=True, check=True, capture_output=True, text=True).stdout
+
+def key_s1():
+    out = sh(f"git grep -l -E '^\\s*(import cairn_common|from cairn_common import)' {PIN} -- scripts hooks")
+    return sorted(l.split(":", 1)[1] for l in out.split())
+
+def key_s2():
+    d = json.loads(sh(f"git show {PIN}:hooks/hooks.json"))
+    items = []
+    for ev, arr in d["hooks"].items():
+        for m in arr:
+            for h in m["hooks"]:
+                if h.get("type") == "command":
+                    script = re.search(r"([A-Za-z0-9_]+\.py)", h["command"]).group(1)
+                    items.append(f"{ev} {m.get('matcher') or '*'} {script}")
+    return items
+
+def key_s3():
+    pairs = []
+    for line in sh(f"git show {PIN}:cairn/DECISIONS.md").splitlines():
+        if not line.startswith("### D-"):
+            continue
+        own = re.match(r"### (D-\d+)", line).group(1)
+        m = re.search(r"supersed", line, re.I)
+        if m:
+            for old in re.findall(r"D-\d+", line[m.start():]):
+                if old != own and f"{own} {old}" not in pairs:
+                    pairs.append(f"{own} {old}")
+    return pairs
+```
+
+S1 key (10 items): `hooks/commit_guard.py`,
 `hooks/force_push_guard.py`, `hooks/idea_guard.py`, `hooks/memory_guard.py`,
 `hooks/merge_guard.py`, `hooks/merge_guard_post.py`,
 `hooks/session_context.py`, `hooks/stop_guard.py`, `scripts/cairn_impact.py`,
 `scripts/cairn_scripts.py`.
 
-S2 key, from a JSON parse of `git show c023018:hooks/hooks.json`, taking
-each `type: command` hook under `hooks`, its event, its matcher (`*` when
-absent), and the first `*.py` name in its command (9 items):
+S2 key (9 items):
 `SessionStart * session_context.py`, `Stop * stop_guard.py`,
 `PreToolUse Bash merge_guard.py`, `PreToolUse Bash commit_guard.py`,
 `PreToolUse Bash force_push_guard.py`, `PreToolUse Write memory_guard.py`,
@@ -222,10 +257,9 @@ absent), and the first `*.py` name in its command (9 items):
 `PostToolUse Bash merge_guard_post.py`,
 `PostToolUseFailure Bash merge_guard_post.py`.
 
-S3 key, from each `### D-` heading of `git show c023018:cairn/DECISIONS.md`
-that matches `supersed` (case-insensitive): every `D-NNN` after the first
-match, other than the heading's own id, paired with that id (88 pairs, counted by `len()` of the built key;
-corrected M228 from 89).
+S3 key (88 distinct pairs, counted by `len()` of the built key; corrected
+M228 from 89). Without the code's repeat check the same rule lists 91,
+because two headings name an id twice after the word.
 D-027 D-026, D-038 D-037, D-058 D-049, D-058 D-052, D-062 D-004,
 D-065 D-064, D-071 D-056, D-072 D-071, D-074 D-046, D-074 D-030,
 D-074 D-045, D-074 D-063, D-079 D-067, D-079 D-069, D-080 D-079,
@@ -277,7 +311,8 @@ In the n-rows, `\|` is a literal `|` escaped for the table.
 
 Controls: a hand-written reference test file kills 6 of 6 mutants for E2
 and 6 of 6 for E3 and passes on the unmutated code. A file holding one
-always-true test kills 0 of 6 for E2.
+always-true test kills 0 of 6 for E2 and 0 of 6 for E3 (the E3 run added
+2026-10-09, after review pass 2).
 
 ## Runs
 
@@ -286,6 +321,7 @@ Agent ids name each run's subagent transcript, `agent-<id>.jsonl` under
 "Model ids" lists every `model` value on the transcript's assistant records.
 "Final match" says whether the Agent tool result's input and cache counts
 equal the final id's last-record counts. Token columns sum the row's calls.
+The run table holds all 18 runs; the notes after it go by group.
 
 | Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -295,34 +331,12 @@ equal the final id's last-record counts. Token columns sum the row's calls.
 | S2 | haiku | `af8e9566575845fca` | claude-haiku-5-5 | 2 | yes | 4 | 38448 | 0 | 36140 | 1378 | 0.0059 | 0.0000 |
 | S3 | sonnet | `a7d06115f06e661f5` | claude-sonnet-5-5 | 2 | yes | 4 | 42137 | 0 | 36164 | 3519 | 0.1442 | 0.6767 |
 | S3 | haiku | `a08640fdf2c9f753a` | claude-haiku-5-5 | 3 | yes | 6 | 56781 | 0 | 84338 | 4237 | 0.0101 | 1.0000 |
-
-Search notes. S2 Haiku listed all nine registrations correctly but wrote
-each script without its `.py` extension (`session_context`), so no item
-matched the key and the fixed rule scores it 0. The prompt's "base name"
-allows that reading. S3 Sonnet applied its own reading of which heading
-clauses "supersede" and listed 45 pairs, all in the key, where the prompt's
-rule counts every id after the word (88 pairs). Haiku followed the stated
-rule.
-
-| Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | E1 | sonnet | `a9dfb4d4c5d75cf2d` | claude-sonnet-5-5 | 4 | yes | 8 | 54344 | 0 | 157944 | 533 | 0.1570 | 1.0000 |
 | E1 | haiku | `a2fcaa827b9415e99` | claude-haiku-5-5 | 9 | yes | 18 | 58653 | 0 | 448108 | 556 | 0.0121 | 1.0000 |
 | E2 | sonnet | `a260f9308a2bc485b` | claude-sonnet-5-5 | 4 | yes | 8 | 59189 | 0 | 160585 | 421 | 0.1683 | 1.0000 |
 | E2 | haiku | `a402fd9aeaa7d5d4f` | claude-haiku-5-5 | 6 | yes | 12 | 69489 | 0 | 300615 | 320 | 0.0119 | 1.0000 |
 | E3 | sonnet | `ac124eccb4da7fbdb` | claude-sonnet-5-5 | 4 | yes | 8 | 57058 | 0 | 158507 | 463 | 0.1631 | 1.0000 |
 | E3 | haiku | `a59fa08d0b88b3b84` | claude-haiku-5-5 | 7 | yes | 14 | 73988 | 0 | 373525 | 7503 | 0.0167 | 1.0000 |
-
-Edit-work notes. Both E1 runs produced the target diff exactly, 11 files.
-All four test files passed on the unmutated code and killed all six
-mutants: Sonnet wrote 23 and 18 tests, Haiku 21 and 30. Every score is at
-the ceiling of 1.0, so these tasks cannot show a gap between the models. The
-test files were written in non-final calls, whose output counts are too
-low, so these rows' output columns leave out most of the test code each run
-wrote.
-
-| Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | H1 | sonnet | `ab3cb7532d6192593` | claude-sonnet-5-5 | 12 | yes | 24 | 60378 | 0 | 903735 | 2553 | 0.2669 | 1 |
 | H1 | haiku | `a8ce7b385db7f0e77` | claude-haiku-5-5 | 36 | yes | 72 | 113496 | 0 | 3716111 | 4059 | 0.1844 | 1 |
 | H2 | sonnet | `a08bb633f7bea0b4b` | claude-sonnet-5-5 | 8 | yes | 16 | 38171 | 0 | 491838 | 1764 | 0.1623 | 1 |
@@ -330,20 +344,71 @@ wrote.
 | H3 | sonnet | `ab840bc451b9aa0ca` | claude-sonnet-5-5 | 8 | yes | 16 | 45229 | 0 | 466325 | 1771 | 0.1774 | 2 |
 | H3 | haiku | `a2a141b30ecb7543f` | claude-haiku-5-5 | 32 | yes | 64 | 119622 | 0 | 3468124 | 1455 | 0.1828 | 3 |
 
+Search notes. S2 Haiku listed all nine registrations correctly but wrote
+each script without its `.py` extension (`session_context`), so no item
+matched the key and the fixed rule scores it 0. The prompt said "base
+name" and did not say whether the extension is part of it. S3 Sonnet
+applied its own reading of which heading clauses "supersede" and listed 45
+pairs, all in the key, where the prompt's rule counts every id after the
+word (88 pairs). Haiku followed the stated rule.
+
+Edit-work notes. Both E1 runs produced the target diff exactly, 11 files.
+All four test files passed on the unmutated code and killed all six
+mutants: Sonnet wrote 23 and 18 tests, Haiku 21 and 30. The mutant scoring
+can tell runs apart (the always-true control kills 0 of 6), but both models
+reached 1.0 on every task. The test files were written in non-final calls,
+whose output counts are too low, so these rows' output columns leave out
+most of the test code each run wrote.
+
 Review notes. Judges (Opus, model `claude-opus-5-5`), run with the judge
 prompt above: H1 `a712b3ed31e25ea06`, H2 `a1f764706bb2969f0`, H3
-`a7849bedfc57f6132`. Labels were drawn with `random.SystemRandom` and read
-after all three judges returned: H1 A was Sonnet and B Haiku, H2 A Sonnet
-and B Haiku, H3 A Haiku and B Sonnet. No finding was rated a duplicate. A
-first judging (H1 `a0fdaeea99a7f83ab`, H2 `a1e319f359d98aa70`, H3
-`a4663e806d063642e`) used a prompt that also counted a finding valid when
-the diff left something stale or inconsistent, which is wider than the rule
-above. It gave Sonnet 5, 3, 2 and Haiku 3, 2, 4, and review return 1
-replaced it. The two judgings rate 11 of the 22 findings differently, and
-the second rates none valid that the first rated invalid. On the three
-review tasks Haiku used 1.9 to 4.0 times as many calls as Sonnet (36
-against 12, 15 against 8, 32 against 8). Its long runs crossed the
-100,000-token prompt tier, so its H3 row cost more than Sonnet's.
+`a7849bedfc57f6132`. Labels were drawn with `random.SystemRandom` and
+written to a mapping file in the session scratchpad, beside the report
+files, before the judges ran; the judges were told to read only their two
+report files, and their transcripts show no read of the mapping. The
+mappings were read after all three judges returned: H1 A was Sonnet and B
+Haiku, H2 A Sonnet and B Haiku, H3 A Haiku and B Sonnet. No finding was
+rated a duplicate. A first judging (H1 `a0fdaeea99a7f83ab`, H2
+`a1e319f359d98aa70`, H3 `a4663e806d063642e`) used a prompt that also
+counted a finding valid when the diff left something stale or
+inconsistent, which is wider than the rule above. It gave Sonnet 5, 3, 2
+and Haiku 3, 2, 4, and review return 1 replaced it. On the three review
+tasks Haiku used 1.9 to 4.0 times as many calls as Sonnet (36 against 12,
+15 against 8, 32 against 8). On H3, its 32 calls against Sonnet's 8, 19 of
+them over the 100,000-token prompt tier, made its row cost more than
+Sonnet's; H1 Haiku had 20 of 36 calls over the tier and still cost less.
+
+Per-finding ratings, rebuilt from both judgings' reports and their label
+mappings (1st = first judging, 2nd = the judging the scores use; V valid,
+I invalid). The finding number is the reviewer's own.
+
+| Task | Model | # | Finding, in short | 1st | 2nd |
+|---|---|---|---|---|---|
+| H1 | sonnet | 1 | a failed `git` call empties the hotfix list | V | I |
+| H1 | sonnet | 2 | two separate state writes can draw a torn state | V | V |
+| H1 | sonnet | 3 | `readPrs` is no longer free with no URL; comment stale | I | I |
+| H1 | sonnet | 4 | the Hotfixes heading's Refresh rule differs from Blocked | V | I |
+| H1 | sonnet | 5 | an in-process `/clear` also empties the hotfix list | V | I |
+| H1 | sonnet | 6 | AC4 says seven cases, the evidence says 8 | V | I |
+| H1 | haiku | 1 | first use of `cwd` in the mod is untested | V | I |
+| H1 | haiku | 2 | timeout and Refresh comments and DESIGN text stale | V | V |
+| H1 | haiku | 3 | a failed `git` call empties the list, unlike M210 | V | I |
+| H1 | haiku | 4 | every pane open now runs `git` and `gh` | I | I |
+| H2 | sonnet | 1 | the review record says rewrapped, the line is 117 characters | V | V |
+| H2 | sonnet | 2 | someone else's `hotfix-*` PR is dropped and unreported | V | I |
+| H2 | sonnet | 3 | a short orphan line in the hotfix skill | V | I |
+| H2 | haiku | 1 | the inbox filter keeps the `hotfix-*` drop | V | I |
+| H2 | haiku | 2 | the plan skill's inbox has the same drop | V | I |
+| H3 | sonnet | 1 | `counts.ts` keeps a second copy of the PR URL pattern | V | V |
+| H3 | sonnet | 2 | serial `gh` calls double the wait to 30 s | V | V |
+| H3 | haiku | 1 | DESIGN still names the old pane shape tag | V | I |
+| H3 | haiku | 2 | DESIGN's count-call timeout text is stale | V | V |
+| H3 | haiku | 3 | README lines run past the wrap width | V | V |
+| H3 | haiku | 4 | a ragged wrap in CHANGELOG | V | V |
+| H3 | haiku | 5 | the state-contract type change has no type check | I | I |
+
+The two judgings rate 11 of these 22 findings differently, and the second
+rates none valid that the first rated invalid.
 
 ## Verdicts
 
@@ -365,17 +430,23 @@ Readings that bear on the verdicts:
 - Edit work is at the ceiling for both models. Haiku did these three tasks
   as well as Sonnet, and the tasks cannot show a gap on harder edits.
 - History review is `move` with equal scores, 4 against 4, on one run per
-  task. One fewer Haiku finding leaves it at 3 against 4 (0.75), which is
-  `stay`. Under the first judging's wider rule it was 9 against 10 (0.9),
-  exactly at the margin.
+  task. Per task it is 1 against 1, 0 against 1 (H2, Haiku lower), and 3
+  against 2. One fewer Haiku finding leaves it at 3 against 4 (0.75),
+  which is `stay`. Under the first judging's wider rule it was 9 against 10
+  (0.9), exactly at the margin.
+- The history-review score counts reported findings that the judge rated
+  valid. It does not measure real conflicts that a reviewer missed, which
+  is the risk D-016 named for a weaker model in a review step ("can
+  silently drop a real bug"). This note does not test that risk.
 - Costs are lower bounds (see Cost). For a group's comparison to reverse,
   Haiku's unrecorded output, priced at its higher tier, would need to
   exceed the cost gap even with Sonnet's unrecorded output taken as zero.
   That break-even is about 137,000 tokens for search (34,000 per non-final
   Haiku call), 179,000 for edit work (9,400 per call), and 70,000 for
-  history review (870 per call). The search and edit comparisons hold. The
-  history-review comparison is not certain, because 870 output tokens per
-  tool-call turn, thinking included, is within reach.
+  history review (870 per call). The search and edit comparisons need tens
+  of thousands of unrecorded tokens per call to reverse. The history-review
+  comparison reverses at 870 unrecorded output tokens per call, thinking
+  included, and this note has no measure of how many there were.
 
 ## Limits and re-measurement
 
