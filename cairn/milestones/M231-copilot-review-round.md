@@ -1,6 +1,6 @@
 # M231: Hotfix and milestone PRs get a Copilot review round
 
-- **Status:** review
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -101,6 +101,7 @@ In a repo whose `cairn/PROFILE.md` opts in, `/hotfix` and `/milestone-review` re
 - 2026-10-10: claim-audit re-read (same reader, once): items 1, 4, and 5 and the budget figure hold. §2's later-pass rule resolved a late review's threads unread, so §2 now leaves any still-unresolved Copilot thread to the skill's PR-conversation read, and §4's answered-thread sentence goes with it. Module 124 lines / 7,107 bytes. Status set to `review`.
 - 2026-10-10: review return 3: pass 3's diff-bug #1 (an automatic Copilot review makes the round skip itself), #3 (a failing state query has no branch), and #4 (a hotfix decline leaves an open PR with no next command) are load-bearing. Thrash rule (a) fires at this third return, so no further retry is queued, and descope-or-park goes to the user. The work log records two returns and one re-plan of the resume design (return 2's drop).
 - 2026-10-10: question set (thrash stop (a)): how M231 ends — escalate the round's design to a Fable review through `/milestone-brief` before more work. The recommended cut-and-finish, park, and drop were declined.
+- 2026-10-10: blocked on RB17 (`cairn/reviews/RB17-copilot-round-design.md`, committed on main as afc948e and merged into the branch): the simplest round design that holds at the edges three passes found, in owner and guest mode, for both skills. Advisory, no binding criteria. First escalation of this mechanism.
 
 ## Decisions
 
