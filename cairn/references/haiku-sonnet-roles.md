@@ -152,3 +152,71 @@ labels A and B, with the diff and refs, and rates each finding valid (the
 history or prior review it cites exists and the diff does conflict with it)
 or invalid. A finding that repeats an earlier one in the same list counts
 once. The label-to-model mapping is recorded only after the judge returns.
+
+## Answer keys, target, and mutants (built 2026-10-09, before any run)
+
+S1 key, from `git grep -l -E '^\s*(import cairn_common|from cairn_common
+import)' c023018 -- scripts hooks` (10 items): `hooks/commit_guard.py`,
+`hooks/force_push_guard.py`, `hooks/idea_guard.py`, `hooks/memory_guard.py`,
+`hooks/merge_guard.py`, `hooks/merge_guard_post.py`,
+`hooks/session_context.py`, `hooks/stop_guard.py`, `scripts/cairn_impact.py`,
+`scripts/cairn_scripts.py`.
+
+S2 key, from a JSON parse of `git show c023018:hooks/hooks.json`, taking
+each `type: command` hook under `hooks`, its event, its matcher (`*` when
+absent), and the first `*.py` name in its command (9 items):
+`SessionStart * session_context.py`, `Stop * stop_guard.py`,
+`PreToolUse Bash merge_guard.py`, `PreToolUse Bash commit_guard.py`,
+`PreToolUse Bash force_push_guard.py`, `PreToolUse Write memory_guard.py`,
+`PreToolUse mcp__.*__spawn_task idea_guard.py`,
+`PostToolUse Bash merge_guard_post.py`,
+`PostToolUseFailure Bash merge_guard_post.py`.
+
+S3 key, from each `### D-` heading of `git show c023018:cairn/DECISIONS.md`
+that matches `supersed` (case-insensitive): every `D-NNN` after the first
+match, other than the heading's own id, paired with that id (89 pairs).
+D-027 D-026, D-038 D-037, D-058 D-049, D-058 D-052, D-062 D-004,
+D-065 D-064, D-071 D-056, D-072 D-071, D-074 D-046, D-074 D-030,
+D-074 D-045, D-074 D-063, D-079 D-067, D-079 D-069, D-080 D-079,
+D-081 D-065, D-083 D-082, D-083 D-067, D-083 D-069, D-083 D-070,
+D-083 D-081, D-084 D-083, D-085 D-083, D-085 D-084, D-086 D-085,
+D-087 D-069, D-087 D-070, D-088 D-083, D-089 D-088, D-091 D-085,
+D-091 D-064, D-092 D-091, D-095 D-069, D-095 D-070, D-095 D-080,
+D-095 D-082, D-095 D-083, D-095 D-085, D-095 D-088, D-095 D-091,
+D-095 D-079, D-095 D-067, D-095 D-090, D-096 D-095, D-099 D-091,
+D-100 D-099, D-102 D-101, D-105 D-064, D-105 D-098, D-106 D-105,
+D-108 D-090, D-110 D-016, D-110 D-078, D-113 D-111, D-114 D-057,
+D-115 D-052, D-116 D-099, D-116 D-108, D-117 D-115, D-118 D-111,
+D-118 D-098, D-120 D-118, D-120 D-111, D-120 D-098, D-121 D-120,
+D-123 D-037, D-123 D-038, D-124 D-003, D-124 D-022, D-124 D-019,
+D-124 D-123, D-126 D-090, D-126 D-108, D-129 D-021, D-129 D-020,
+D-129 D-027, D-134 D-027, D-134 D-035, D-134 D-108, D-144 D-124,
+D-144 D-067, D-144 D-110, D-144 D-003, D-144 D-022, D-144 D-050,
+D-147 D-145, D-147 D-146, D-148 D-144.
+
+E1 target: in a `git archive c023018` copy, `perl -pi -e
+'s/\bfind_cairn_root\b/locate_cairn_root/g'` over each file that
+`git grep -l -w find_cairn_root -- 'scripts/*.py' 'hooks/*.py'` lists. The
+target diff changes 32 lines in 11 files.
+
+Mutants, each one exact-string replacement in `hooks/cairn_common.py` that
+occurs once at `c023018`:
+
+| Task | Mutant | Change |
+|---|---|---|
+| E2 | m1 | `return m.group(1).lower()` loses `.lower()` |
+| E2 | m2 | the `if line.startswith("## "): break` lines are removed |
+| E2 | m3 | `encoding="utf-8-sig"` becomes `"utf-8"` |
+| E2 | m4 | the `except` branch returns `"guest"` |
+| E2 | m5 | the final `return "owner"` becomes `return None` |
+| E2 | m6 | `COLLAB_MODE_LINE` loses `re.IGNORECASE` |
+| E3 | n1 | `line.lstrip().startswith("\|")` becomes `line.startswith("\|")` |
+| E3 | n2 | `len(cells) < 6` becomes `< 7` |
+| E3 | n3 | the `not cells[0].startswith("M")` test is removed |
+| E3 | n4 | `cells[2].lower()` becomes `cells[2]` |
+| E3 | n5 | cells are not stripped |
+| E3 | n6 | the depends and priority cells swap places |
+
+Controls: a hand-written reference test file kills 6 of 6 mutants for E2
+and 6 of 6 for E3 and passes on the unmutated code. A file holding one
+always-true test kills 0 of 6 for E2.

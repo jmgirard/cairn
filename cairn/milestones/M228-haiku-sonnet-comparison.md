@@ -105,7 +105,7 @@ dial per spawned agent" candidate row.
       archived Review sections list findings. The prior-PR-comments task
       uses a repo with prior PR review comments. Load the `claude-api`
       skill for the price table, never prices from memory.
-- [ ] T2: Build each answer key, target diff, and mutant set by the
+- [x] T2: Build each answer key, target diff, and mutant set by the
       procedure that T1 names. Record each one in the note with its command.
 - [ ] T3: Run the search group with the Explore agent type, `model` set to
       `sonnet` and then `haiku`, same prompt. After the first Haiku run,
@@ -149,6 +149,7 @@ dial per spawned agent" candidate row.
 - 2026-10-09: a one-word probe spawn per model before any run resolved `haiku` to `claude-haiku-5-5` and `sonnet` to `claude-sonnet-5-5`, so T3's blocked stop does not fire. The 2026-09-11 Haiku 4.5 spawn the audit found was a `claude-code-guide` agent type, whose own definition sets its model.
 - 2026-10-09: the Haiku spawns here are the measurement the question set granted ("only if some testing finds it is cheaper and noninferior"), not delegation, so implement step 5's "never Haiku" does not apply to them.
 - 2026-10-09: T1 design chosen: search keys from git grep, a JSON parse, and a heading parse; edit work is one rename sweep (`find_cairn_root`, 20 sites in 11 files) and two test-writing tasks scored on six hand-made mutants each; history review replays M226 and M227 (blame-history) and M225 (prior-PR-comments). Prices read from the live pricing page, which gives Sonnet 5.5 cache reads at $0.10 per million tokens where the `claude-api` skill's cached table says $0.20, so the live page is cited.
+- 2026-10-09: T2 built the S1 to S3 keys (10, 9, 89 items), the E1 target (32 lines, 11 files), and 12 mutants, all recorded in the note. A reference test file killed 12 of 12 mutants and an always-true test killed 0 of 6, so the mutant scoring can tell the two apart. Measurement helpers live in the session scratchpad (`m228.py`), not in the repo.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
