@@ -7,9 +7,10 @@ things have to survive:
      or `milestone`, and the maintainer-input level is one of `none`,
      `confirm`, or `decide`. A lost value turns a fixed scale back into free
      text that the chip cannot carry.
-  2. The reply hand-off. cairn drafts the reply and shows a fenced
-     `gh issue comment` command for the user to run, with `--repo
-     <base-repo>` so a guest-mode reply reaches the upstream repo.
+  2. The reply hand-off. cairn drafts the reply and shows the
+     `gh issue comment` command line for the user to run, pinned verbatim
+     and once, with `--repo <base-repo>` so a guest-mode reply reaches the
+     upstream repo.
   3. The section's remote reach. A `gh issue|pr|api` line in §4 is a read or
      the one hand-off line, never a second write. The check is the plan's
      own grep, run over §4 only, and it is shown to fail on a planted write.

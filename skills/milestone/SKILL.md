@@ -328,8 +328,9 @@ issue of another repo is out of its reach.
 **The read.** Read the issue with one call:
 `gh issue view <N> --repo <base-repo> --json number,title,state,author,body,comments,url`.
 If the returned `url` holds `/pull/`, the number is a pull request. Name it
-and stop with the close block, because `/hotfix` is the door for a pull
-request. If the read fails, name the cause and stop with the close block.
+and stop with the close block, because a pull request goes through
+`/hotfix` in owner mode and to the maintainers in guest mode. If the read
+fails, name the cause and stop with the close block.
 The cause is a missing or unauthenticated `gh`, a repo with no remote, an
 issue that does not exist, or another cause that the error names.
 
@@ -349,7 +350,8 @@ Then read what the issue points at:
   checkout that shows the reported behavior, with scratch files in the
   scratchpad and no change to the repo.
 
-The section writes nothing to GitHub and nothing to disk before the chip.
+The section writes nothing to GitHub and nothing in this repo before the
+chip.
 
 **The verdict.** Give exactly one verdict:
 

@@ -74,7 +74,8 @@ looks into that one GitHub issue instead. It reads the issue and the code
 the issue names, then reports one verdict (`reply`, `hotfix`, or
 `milestone`) and how much maintainer input the work needs (`none`,
 `confirm`, or `decide`). One question then lets you start the work now,
-add a candidate row, leave the issue, or stop. For a reply, cairn drafts
+add a candidate row, leave the issue, or stop. Leave is offered only for
+noise, a duplicate, or an item cairn already covers. For a reply, cairn drafts
 the text and shows a `gh issue comment` command for you to run. It never
 posts the reply itself. In guest mode, the commands name the upstream
 repo, and the draft uses no cairn terms.
