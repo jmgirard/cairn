@@ -101,7 +101,7 @@
 
 - **The cairn pane lists your open hotfix PRs.** A `/hotfix` run has no
   ROADMAP row, so the pane finds its PR on GitHub. Each time the pane
-  opens, and at each `Refresh` press, it runs one `gh pr list --state open
+  opens, and at each ↻ press, it runs one `gh pr list --state open
   --author @me --limit 100` call on the base remote: `upstream` in guest
   mode when the repo has that remote, else `origin`. Each PR from a
   `hotfix-` branch takes a line under a `HOTFIXES` heading, after
@@ -110,20 +110,19 @@
   line has no Button. When the list call fails, the pane keeps the last
   list it read for the same repo.
 
-- **The cairn pane counts each open PR's unresolved threads and unanswered
-  reviews and comments.** Under a `BLOCKED` line whose PR is open, a line
-  such as `3 unresolved threads · 2 unanswered` shows two counts. The
-  first is the review threads not marked resolved. The second is the
-  reviews that comment or request changes, and the conversation comments,
-  from anyone but the PR author. It counts only those after the author's
-  latest comment or review and after the PR's newest commit, whoever made
-  it. GitHub does not link a reply to a review or a conversation comment.
-  So one comment or review by the author clears every earlier item, and so
-  does a newer commit on the PR. Bots count, so
-  one Copilot review can show in both counts. The counts cover the newest
-  100 threads, reviews, and comments. Each time the pane opens, and at
-  each `Refresh` press, it reads them with one `gh api graphql` query per
-  open PR.
+- **The cairn pane counts each open PR's unresolved review threads.**
+  Under a `BLOCKED` or `HOTFIXES` line whose PR is open, a line such as
+  `3 unresolved threads` shows the review threads not marked resolved, a
+  bot's threads included. A review or comment with no thread does not
+  count, because GitHub does not link a reply to it. The count covers the
+  newest 100 threads. Each time the pane opens, and at each ↻ press, it
+  reads them with one `gh api graphql` query per open PR.
+
+- **The cairn pane has one ↻ Button.** It sits at the right end of the
+  pane's first row and shows whenever the pane has a ROADMAP, with or
+  without PRs. A press reads the tracking files, the hotfix PRs, and each
+  PR's state again. The ↻ draws dim while a read runs, and a press while
+  an earlier press's read runs does nothing.
 
 - **The cairn pane shows each blocked milestone's PR state.** After its
   `#<n>`, a `BLOCKED` line shows `merged`, `closed`, `changes requested`,
@@ -133,8 +132,8 @@
   `changes requested` line a `Revise` Button that runs
   `/cairn:milestone-implement <id>`, and a `closed` line a `Check` Button
   that runs `/cairn:milestone`. None of them runs `/clear` first. The pane
-  reads the states each time it opens and when you press `Refresh` on the
-  `BLOCKED` heading, never on a timer. The read needs `gh` on the
+  reads the states each time it opens and when you press ↻, never on a
+  timer. The read needs `gh` on the
   session's `PATH`.
 
 - **The cairn pane lists blocked milestones and their PRs.** A `BLOCKED`

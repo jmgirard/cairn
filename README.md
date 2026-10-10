@@ -331,13 +331,15 @@ pr view <url> --json state,reviewDecision`. It reads the states when the
 pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
 at a session start. An open does not wait for the read. The words and
 counts appear together when the last GitHub call answers or times out.
-The pane also reads the states when you press `Refresh` on the `BLOCKED`
-heading. When a `/clear` keeps the session's process, as a `Clear`,
+The pane also reads the states, and the tracking files, when you press
+the ↻ Button at the right end of the pane's first row. The ↻ shows
+whenever the pane has a ROADMAP, and it draws dim while a read runs. A
+press while an earlier press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
 `Plan`, or `Implement` press does, the pane stays open, and if it shows at
 that moment, it reads the states again. A pane behind another tab at that
-moment reads nothing, so its words stay empty until the next open or
-`Refresh`. The pane never reads the states on a timer or at a turn's end,
-so a state can be out of date until the next open or `Refresh`. After a
+moment reads nothing, so its words stay empty until the next open or ↻
+press. The pane never reads the states on a timer or at a turn's end,
+so a state can be out of date until the next open or ↻ press. After a
 read, each line shows one word after its number:
 
 | Word | GitHub state | Button |
@@ -354,18 +356,11 @@ line not yet read shows no word.
 
 For a PR that GitHub reports as OPEN, the same read also runs one `gh api
 graphql` query, and the pane draws a line under the PR such as `3
-unresolved threads · 2 unanswered`. The first count is the review threads
-not marked resolved. The second count is the reviews that comment or
-request changes, and the conversation comments. It counts only the items
-from anyone but the PR author. Each item must come after the author's
-latest comment or review, and after the PR's newest commit. That commit
-can be anyone's, and the time used is its committed date. GitHub does not link a reply to a review or to a
-conversation comment. So one comment or review by the author clears every
-earlier item, and so does a newer commit on the PR.
-Bots count as other people, so a Copilot review counts, and one Copilot
-review can show in both counts: as a review in the second, and as its
-unresolved threads in the first. Each count covers the newest 100
-threads, reviews, and comments. A part that is zero is left out, and with both zero there is no line.
+unresolved threads`. The count is the review threads not marked resolved,
+and a bot's threads, such as Copilot's, count too. A review or comment
+with no thread does not count, because GitHub does not link a reply to
+it, so the pane cannot tell whether you answered it. The count covers the
+newest 100 threads. With no unresolved thread there is no line.
 When the query fails, the line is left out, and the state word and its
 Button stay.
 
@@ -380,8 +375,7 @@ candidates. Each line shows `#<n>` and the PR's title, and after a read
 the same word and count line that a blocked line shows. A hotfix line has
 no Button, because no command resumes an open hotfix PR yet. A hotfix PR
 that is also a blocked milestone's PR shows only on the blocked line, and
-the count leaves it out. The heading has a `Refresh` of its own, which
-reads everything again, as the `BLOCKED` heading's does. When the
+the count leaves it out. When the
 list call fails, the pane keeps the last list it read for the same repo.
 The call reads at most 100 of your open PRs, so with more than that, some
 hotfix PRs can be left out.
