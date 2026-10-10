@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M228: Compare Haiku 5.5 with Sonnet 5.5 on cairn's Sonnet roles
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -124,11 +124,11 @@ dial per spawned agent" candidate row.
 - [x] T4: Run the edit-work group the same way. Give each spawn
       `isolation: "worktree"`, so that no run edits the shared checkout.
       Score each run's diff against its target or mutant set.
-- [ ] T5: Run the history-review group the same way. Then spawn one Opus
+- [x] T5: Run the history-review group the same way. Then spawn one Opus
       judge per task. The judge sees both runs' findings under shuffled A/B
       labels and rates each finding valid or invalid against the diff.
       Record the label mapping only after the judge returns.
-- [ ] T6: Compute each row's cost from its token classes and the cited
+- [x] T6: Compute each row's cost from its token classes and the cited
       prices, sum the costs per group, and apply AC5's rule. Write the
       verdicts, the single-run limit, and a re-measurement procedure into
       the note. Add the `INDEX.md` line and run `scripts/cairn_validate.py`.
@@ -163,6 +163,12 @@ dial per spawned agent" candidate row.
 - 2026-10-09: correction to the T2 line: the S3 key holds 88 pairs, not 89, by `len()` of the built key; the note is corrected in place.
 - 2026-10-09: T3 ran the six search spawns. Scores Sonnet 1.0, 1.0, 0.6767 and Haiku 1.0, 0.0, 1.0; costs Sonnet $0.3650 and Haiku $0.0218 in sum. Haiku's S2 zero is a format miss (script names without `.py`), scored as the fixed rule says; the note records it. Every row's final match is yes.
 - 2026-10-09: T4 ran the six edit spawns in worktrees. Every run scored 1.0 (both sweeps exact, all four test files killed 6 of 6). Costs Sonnet $0.4884 and Haiku $0.0407 in sum. The sweep diffs and test files are saved in the scratchpad; the worktrees are removed at T6.
+- 2026-10-09: T5 ran the six review spawns and three Opus judges under labels drawn with `random.SystemRandom`, read after the judges returned. Valid findings Sonnet 5, 3, 2 and Haiku 3, 2, 4. Haiku used 1.9 to 4.0 times as many calls and crossed the 100,000-token tier, so its H3 row cost more than Sonnet's.
+- 2026-10-09: T6 verdicts: search `stay` (score ratio 0.7472, from S2's missing `.py`), edit work `move` (ratio 1.0, both at the ceiling), history review `move` (ratio 0.9, exactly at the margin). The output undercount can reverse only the history-review cost comparison (break-even about 870 unrecorded Haiku output tokens per non-final call); the note says so. The six edit worktrees and their branches are removed.
+- 2026-10-09: the verdicts are mixed, so M229's T1 will stop for the user, as M229's plan says.
+- 2026-10-09: verify first ran red on one test: `TestShippedPageStateLedger` pins every references page's staleness state, and the new note had no pin. Added `haiku-sonnet-roles.md: exempt` (its status says nothing to re-verify against) in `scripts/tests/test_scripts.py`; all five verify checks then passed and `cairn_validate` reports no FAIL.
+- 2026-10-09: claim audit: not owed — internal tier
+- 2026-10-09: implement complete; status set to `review`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

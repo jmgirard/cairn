@@ -276,3 +276,65 @@ the ceiling, so this group cannot show a quality gap smaller than these
 tasks' difficulty. The test files were written in non-final calls, whose
 output the transcript undercounts, so these rows' output columns are the
 lowest of the three groups relative to the work done.
+
+| Task | Model | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| H1 | sonnet | `ab3cb7532d6192593` | claude-sonnet-5-5 | 12 | yes | 24 | 60378 | 0 | 903735 | 2553 | 0.2669 | 5 |
+| H1 | haiku | `a8ce7b385db7f0e77` | claude-haiku-5-5 | 36 | yes | 72 | 113496 | 0 | 3716111 | 4059 | 0.1844 | 3 |
+| H2 | sonnet | `a08bb633f7bea0b4b` | claude-sonnet-5-5 | 8 | yes | 16 | 38171 | 0 | 491838 | 1764 | 0.1623 | 3 |
+| H2 | haiku | `a60621730679c16bd` | claude-haiku-5-5 | 15 | yes | 30 | 78929 | 0 | 1328999 | 1250 | 0.0646 | 2 |
+| H3 | sonnet | `ab840bc451b9aa0ca` | claude-sonnet-5-5 | 8 | yes | 16 | 45229 | 0 | 466325 | 1771 | 0.1774 | 2 |
+| H3 | haiku | `a2a141b30ecb7543f` | claude-haiku-5-5 | 32 | yes | 64 | 119622 | 0 | 3468124 | 1455 | 0.1828 | 4 |
+
+Review notes. Judges (Opus, model `claude-opus-5-5`): H1 `a0fdaeea99a7f83ab`,
+H2 `a1e319f359d98aa70`, H3 `a4663e806d063642e`. Labels were drawn with
+`random.SystemRandom` and read after all three judges returned: H1 A was
+Haiku and B Sonnet, H2 A Sonnet and B Haiku, H3 A Haiku and B Sonnet. The
+judges rated no finding a duplicate. Invalid: one Haiku finding in H1 (a
+true observation that names no conflict), one Sonnet finding in H1 (a stale
+comment claim that was false), and one Haiku finding in H3 (a type-check
+concern it could not verify). Haiku used 1.9 to 4.0 times as many calls as
+Sonnet per task (36 against 12, 15 against 8, 32 against 8), and its long runs crossed the 100,000-token prompt tier, so
+its H3 row cost more than Sonnet's.
+
+## Verdicts
+
+| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict |
+|---|---|---|---|---|---|---|
+| Search | 0.3650 | 0.0218 | 2.6767 | 2.0000 | 0.7472 | stay |
+| Edit work | 0.4884 | 0.0407 | 3.0000 | 3.0000 | 1.0000 | move |
+| History review | 0.6066 | 0.4318 | 10 | 9 | 0.9000 | move |
+
+Each verdict applies the rule fixed in the design: `move` when Sonnet's
+summed score is above zero, Haiku's summed cost is below Sonnet's, and
+Haiku's summed score is at least 0.9 times Sonnet's.
+
+Readings that bear on the verdicts:
+
+- Search is `stay` because of one format miss. Without S2's missing `.py`
+  extensions Haiku would score 3.0, above Sonnet's 2.6767. The rule was
+  fixed before the runs and is not rescored here.
+- Edit work is at the ceiling for both models. It shows that Haiku did
+  these three tasks as well as Sonnet. It cannot show a gap on harder
+  edits.
+- History review passes at exactly the margin, on one run per task. One
+  finding either way would flip it.
+- Costs are lower bounds (see Cost). For a group's comparison to reverse,
+  Haiku's unrecorded output, priced at its higher tier, would need to
+  exceed the cost gap even with Sonnet's unrecorded output taken as zero.
+  That break-even is about 137,000 tokens for search (34,000 per non-final
+  Haiku call), 179,000 for edit work (9,400 per call), and 70,000 for
+  history review (870 per call). The search and edit comparisons hold. The
+  history-review comparison does not hold for certain, because 870 output
+  tokens per tool-call turn, thinking included, is within reach.
+
+## Limits and re-measurement
+
+One run per model per task, three tasks per group, at default effort, on
+tasks drawn from this repo. The judge is one Opus reader per task. The
+measurement helpers were session-local and are not committed. To re-measure:
+re-run the nine prompts above with the same models, take each run's input
+and cache counts from its subagent transcript and its final call's output
+from the session transcript's Agent tool result, score with the keys and
+mutants above, and apply the verdict rule. A rerun that flips a group's
+verdict falsifies M228's single-run choice for that group.
