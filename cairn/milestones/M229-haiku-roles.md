@@ -108,7 +108,7 @@ in M228's note.
       mechanical work" is the edit-work group and moves to Haiku. The
       reviewer pins in `skills/tests/test_review_fanout.py` stay Sonnet.
       Hand-run `skills/tests` and both gating suites.
-- [ ] T5: Add the `CHANGELOG.md` entry and run the full `verify` slot.
+- [x] T5: Add the `CHANGELOG.md` entry and run the full `verify` slot.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -138,6 +138,7 @@ in M228's note.
 - 2026-10-10: T2: appended D-151; it supersedes D-016's blanket and D-110's "blanket stands" clause, names each group's verdict, and quotes D-016's "silently drop a real bug" reason, answered by keeping every review role on Opus or Sonnet.
 - 2026-10-10: T3: "Set the model" lists Haiku; the "Sonnet subagents" bullet splits into "Haiku subagents" (D-151: migrations, test writing, boilerplate, with verify before commit) and "Sonnet subagents" (Explore, the two history-review lenses); "Never Haiku" removed; the review fan-out bullet already said Sonnet and is unchanged. Suites: scripts 401 OK (21 skipped), hooks 174 OK, skills 669 OK.
 - 2026-10-10: T4: of the AC3 grep lines, only `skills/milestone-implement/SKILL.md:119-120` assigned or barred a model against AC2; it now reads Haiku for mechanical work and test writing, Sonnet for Explore searches, with "never Haiku" removed. The Explore lines (cairn-triage 142, design-interview 46, milestone-plan 42) and the reviewer lines (milestone-review 259, 264) already say Sonnet and stay. No prose-guard pin covers a changed line. `cairn/references/anthropic-code-review.md:53` quotes the old rule as history and stays. Suites: skills 669 OK, hooks 174 OK, scripts 401 OK (21 skipped).
+- 2026-10-10: T5: CHANGELOG Unreleased gains a "Changes that affect existing repos" entry naming the edit-work roles now on Haiku 5.5; the ROADMAP candidate "Haiku for Sonnet subagent work" narrowed in place to search and history review rather than graduating at hygiene. verify: scripts 401 OK (21 skipped), hooks 174 OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1765 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
