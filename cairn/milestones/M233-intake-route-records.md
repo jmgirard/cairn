@@ -73,4 +73,29 @@ Close three issue-intake gaps from the M232 review, so that no issue route leave
 - AC3 evidence (head f88dc6c): `git grep -n -e 'gh issue list' -e 'gh pr list' -- skills/milestone-plan/SKILL.md` lists 2 lines, 101 and 102, and each carries `--repo <base-repo>` on that line. Lines 120-124 state that in guest mode the reads go to "the base repo's inboxes, unlike `/milestone` §2's inbox bullet, which skips guest mode", with the reason that the plan's sweep looks for overlap with the planned work, such as an upstream issue that the work resolves.
 - AC4 evidence (head f88dc6c): `scripts/tests` exit 0, `hooks/tests` exit 0 (174 tests), `claude plugin validate` plugin.json exit 0, marketplace.json exit 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, each exit code read on its own.
 - Consistency gate (head f88dc6c): `cairn_validate` exit 0, all checks passed. No principle changed, so `cairn_impact` was skipped. Profile gate: the verify checks are green on this head (AC4), the marketplace validate output has no `version` line, and CHANGELOG.md has two Unreleased entries with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: for a decline with no record the chip still recommended Do it now, which starts a plan that resolves the request — fix now, fixed 52792c6
+- diff-bug #2: the report did not say that the `milestone`/`decide` verdict stands for a decline — fix now, fixed 52792c6
+- diff-bug #3: the decline entry sat under "Changes that affect existing repos" though the look-in is unreleased — fix now (folded into the "New" look-in entry), fixed 52792c6
+- diff-bug #4: the Intake list names the issue routes but not §3's `close` for an orphaned issue — follow-up, row "Intake and audit-line edges (M233 review)" (pre-existing omission)
+- diff-bug #5: a guest record can be a maintainer's comment on the same issue, so the thread is its record — reject, false: §4 and D-154 state that in guest mode the project's record is upstream's, since a guest's `cairn/` is not the project's
+- diff-bug #6: "in the health audit's form" no longer fits the plan's reads — fix now ("in the shape of the health audit's reads"), fixed 52792c6
+- diff-bug #7: "§2 surfaces ... the maintainers' intake" read as if §2 reads that inbox — fix now (reworded), fixed 52792c6
+- diff-bug #8: `test_domain_is_non_empty` asserts exactly 2 — fix now (renamed, comment states the exact count is deliberate), fixed 52792c6
+- diff-bug #9: plan lines past the wrap width and a short README line — reject, style
+- diff-bug #10: blank-line spacing in the intake test — reject, style
+- blame-history #1: same as diff-bug #1 — fix now, fixed 52792c6
+- blame-history #2: in guest mode the candidate row lands in the guest's `cairn/` — reject, false: the row records the open request for the operator, not the project's reason to decline
+- blame-history #3: D-044 has no forward pointer to D-154 — reject, false: D-entries are append-only (IP4), and the bounded read's back-reference search finds D-154
+- blame-history #4: the PR filter's branch-name clause misses guest `<slug>` branches — reject, false: the operator-authored clause drops them
+- blame-history #5–#7: no defect found (Intake reflow, re-seed sites, removed M232 wording) — noted
+- blame-history #8: README line break — reject, style
+- prior-review #1: the "Issue look-in edges (M232 review)" row still lists the three absorbed items — reject, planned change: the row is narrowed at post-merge hygiene (records-hygiene §1)
+- prior-review #2–#3: no regression of a recorded finding — noted
+- copilot: skills/milestone/SKILL.md:114 — follow-up, row "Intake and audit-line edges (M233 review)"
+- copilot: skills/tests/test_cost_audit_line.py:68 — follow-up, same row
+- copilot: skills/tests/test_mutation_harness.py:120 — follow-up, same row
+- copilot: review body — the summary's "register the new repository-targeting assertions" — reject, false: the per-line `--repo` check is a loop with no single block to blank, and the domain test fails on a removed read; the guest sentence is registered
+- Copilot level: Lite (set by GitHub's settings)
+- Return floor: no finding shows a criterion failing, and none is judged a load-bearing defect, so no return. Fixes re-ran the verify slot 5/5 green, `skills/tests` green, `cairn_validate` green at 52792c6.
 - Process note: the AC4 box was ticked in the same edit batch as a failed evidence write. The evidence line above was written before any commit, and no commit carries the tick without it.
