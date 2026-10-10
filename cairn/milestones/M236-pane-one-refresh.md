@@ -64,6 +64,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: T2 and T3 done in one checkpoint, since both rewrite the same Refresh tests. The first pane line has key `refresh`, no text, and `end: true`, which the render turns into `justifyContent="flex-end"`. `REFRESH_LABEL` is `↻`. A `reading` atom (`reading-1`, added to `types/index.d.ts`) is set at each `readPrs` start and cleared in its `finally` by the newest read only. A module-level `pressing` guards `pressRefresh`. The reload case is tested by a `state.get` hook that answers true until the mod writes the key. `claude plugin test .` 1556 pass, the other four verify checks exit 0.
 - 2026-10-10: T4 done. The M225 CHANGELOG entry sits under `## Unreleased` and never shipped in a release, so it was rewritten in place to the thread count, and a new entry describes the ↻ Button. `git grep -n -i "refresh" -- README.md cairn/DESIGN.md` returns 17 lines, none of which puts a Button on a heading. `git grep -n -i "unanswered" -- hooks/status types README.md cairn/DESIGN.md` returns nothing.
 - 2026-10-10: T5 done. All five verify commands exit 0 on the T4 head, `claude plugin test .` 1556 pass.
+- 2026-10-10: claim audit: 46 claims read, 1 corrected — hooks/status/pane.test.tsx (the `gate()` helper comment named a `then` it does not have).
 
 ## Decisions
 

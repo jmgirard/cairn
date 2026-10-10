@@ -2359,7 +2359,8 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first row
 })
 
 describe('the ↻ Button draws dim while a read runs, and a press during its own read does nothing (M236 AC3)', () => {
-  // A `gh pr view` answer held until `release`, then `then` answers it.
+  // A gate: `wait` settles when `release` runs, so a `gh pr view` answer
+  // that awaits it is held until then.
   function gate() {
     let release = () => {}
     const wait = new Promise<void>(resolve => {
