@@ -86,8 +86,9 @@ re-enters here, at the step the record shows is next:
   `waiting` (a stop at the Copilot round's wait; checked before (c) and
   (d)) → step 1, with step 3 re-run when the default branch had moved,
   then the round resumes from the PR's state
-  (`skills/shared/copilot-review.md` §7), which waits once more and then
-  skips the round, or skips it at once when the opt-in line is now off.
+  (`skills/shared/copilot-review.md` §7): a review still pending gets one
+  more wait and is skipped if it still has not come, and the round is
+  skipped at once when the opt-in line is now off.
   In owner mode, step 7 follows,
   its PR-conversation read included. In guest mode, step 8's guest close
   block follows, the status already `blocked`.
@@ -419,8 +420,8 @@ re-enters here, at the step the record shows is next:
    Step 7's PR-conversation read then runs on this PR, which
    now pre-exists. With `companion:` entries in the header, the arm does
    not run, because companions merge before the primary is pushed (step
-   8): the round is skipped with a one-line report, and the PR opens at
-   step 8. With the round off, nothing in this arm runs, and the
+   8): the round is skipped with a one-line report and the module's
+   no-PR skip line (§6), and the PR opens at step 8. With the round off, nothing in this arm runs, and the
    PR opens at step 8 after approval.
 
 7. **The merge question.** Present, outcome-first (per tracking-rules):
@@ -500,9 +501,10 @@ re-enters here, at the step the record shows is next:
    Put the merge authorization **itself** to the user as an
    `AskUserQuestion` chip — the merge question, the second gate of the run
    (per tracking-rules), never a prose yes/no: the recommended option merges, naming the branch
-   and the default branch, not a PR number — no PR exists yet on a first
-   pass unless step 6's Copilot round arm opened one, and then the option
-   also names its number (`Merge <branch> into <default-branch>`) — address-first instead,
+   and the default branch (`Merge <branch> into <default-branch>`), and no
+   PR number, since no PR exists yet on a first pass; where step 6's
+   Copilot round arm opened one, the option adds its number (`Merge
+   <branch> (PR #<N>) into <default-branch>`) — address-first instead,
    when the blocking rule above fires — and a decline option is present.
    Where the header carries `companion:` entries, the recommended option
    names every companion branch beside the primary (`Merge <branch> and

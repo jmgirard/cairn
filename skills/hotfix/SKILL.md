@@ -57,7 +57,7 @@ a bare PR number resolves against the fork.
    changelog entry. Then go to step 6, where the round resumes from the
    PR's state (`skills/shared/copilot-review.md` §7) when it is on. In
    guest mode the PR is already handed off, so step 6's handoff chip is not
-   posed again: resume the round when it is on and not done, then stop
+   posed again: resume the round when it is on, then stop
    with step 6's guest close block, which reports the PR's state.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head

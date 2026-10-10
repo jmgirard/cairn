@@ -4,7 +4,7 @@ In a repo that opts in (§1), `/hotfix` and `/milestone-review` read this at
 their round step. It is a module of `tracking-rules.md`, read only at that
 moment, so it costs nothing to a session that never reaches the step.
 
-Budget (M231, from 138 lines / 7,936 bytes at review return 1, plus about one
+Budget (M231, from 141 lines / 8,191 bytes at review return 1, plus about one
 section of headroom): **under 160 lines and under 9,500 bytes**, hand-read with
 `wc -l -c` at hygiene passes, covered by no validator. Over either figure,
 compress or retire content here. Never "let it grow".
@@ -113,9 +113,11 @@ states them in chat at its approval chip. In guest mode they ride in the close
 block. The level line of §2 goes with them, and a skipped round reports one
 line saying why. A milestone also writes one work-log line: `copilot round:
 waiting on PR #<N>` at the timeout stop, `copilot round: skipped on PR #<N>`
-when the round is skipped, and `copilot round: done on PR #<N>` when the round
-ends. It commits these lines before the merge question. `/milestone-review`
-resume route (c′) reads the newest of them.
+when the round is skipped (`copilot round: skipped, no PR` when step 6 skips it
+before a PR exists), and `copilot round: done on PR #<N>` when the round ends.
+In owner mode each line is committed with the next checkpoint or record
+commit. In guest mode it is written on disk only. `/milestone-review` resume
+route (c′) reads the newest of them.
 
 The skill's PR-conversation read that follows is unchanged, and two of its
 items need no new disposition. The round resolved its threads, so the read's
@@ -132,7 +134,8 @@ state. `none` re-requests once (§2), then waits. `waiting` waits once more
 (§3), and if that wait also ends on `waiting`, the round is skipped. `arrived`
 reads (§4). An unresolved Copilot thread whose newest comment's author is the
 operator was already answered, so it is only resolved. A Copilot thread with no
-answer is disposed as in §5. Body findings are disposed on the first read
-only. A milestone's rerun lists them from its Review section. A hotfix rerun
-lists the PR's resolved Copilot threads with their replies, read from the PR,
-and does not list the body findings again.
+answer is disposed as in §5. A milestone disposes of body findings on the
+first read only, and its rerun lists them from its Review section. A hotfix
+keeps no record, so its rerun lists the PR's resolved Copilot threads with
+their replies, reads the newest Copilot review's body again, and states each
+body finding's disposition in chat. A finding already fixed is noted as fixed.
