@@ -188,7 +188,7 @@ a bare PR number resolves against the fork.
    gate below, push and open the PR the way this step states for an
    approved fix — `git push -u origin hotfix-<slug>`, then `gh pr create
    --title <title> --body <body>` ready, `Fixes #N` in the body when an
-   issue exists — skipped when the fix already has an open PR. Then run the
+   issue exists. Then run the
    round in that module, asking for Lite. Its `copilot:` lines and level
    line are stated in chat at the chip below, and the PR-conversation read
    below runs on this PR, which now pre-exists. A decline at the chip

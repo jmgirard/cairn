@@ -664,9 +664,9 @@ actually reach.
   milestone for Balanced. On 2026-10-10 GitHub's API took no level for each
   request, so GitHub's own settings choose the level, and the report says
   so. If the review has not arrived after 20 minutes, the round is skipped
-  with a one-line report and the run goes on. A Copilot review that
-  arrives later shows at the approval gate's conversation read as an
-  ordinary item. The round runs once per PR. Adopted outside PRs, and
+  with a one-line report that names the PR, and the run goes on; the run
+  does not read a review that arrives later. A later pass on the same PR
+  does not run the round again. Adopted outside PRs, and
   milestones with companion checkouts, skip the round.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the

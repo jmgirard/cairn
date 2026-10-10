@@ -4,7 +4,7 @@ In a repo that opts in (§1), `/hotfix` and `/milestone-review` read this at
 their round step. It is a module of `tracking-rules.md`, read only at that
 moment, so it costs nothing to a session that never reaches the step.
 
-Budget (M231, from 122 lines / 7,069 bytes at review return 2, plus about one
+Budget (M231, from 124 lines / 7,173 bytes at review return 2, plus about one
 section of headroom): **under 150 lines and under 9,000 bytes**, hand-read with
 `wc -l -c` at hygiene passes, covered by no validator. Over either figure,
 compress or retire content here. Never "let it grow".
@@ -27,9 +27,11 @@ line sits in the local, uncommitted `PROFILE.md`.
 carries none and GitHub's settings choose it. The round's report says so in
 one line: `Copilot level: set by GitHub's settings (asked for <Lite|Balanced>)`.
 
-First run the §3 query once. If it prints `waiting` or `arrived`, this PR
-already has a Copilot request from an earlier pass, so do not request again:
-wait (§3) or read (§4). One round per PR. Otherwise request the review with
+First run the §3 query once. If it prints `waiting` or `arrived`, an earlier
+pass already ran the round on this PR. Do not request, wait, or read again:
+only reply to and resolve a Copilot thread still unresolved (§5), and report
+one line saying the round ran earlier. One round per PR. Otherwise request
+the review with
 `gh pr edit <N> --add-reviewer @copilot` (guest mode: add `--repo
 <base-repo>`). A non-zero exit means the request failed, for example because
 it was refused or Copilot is not available on the repo. Report the error in
@@ -53,8 +55,8 @@ completion notification. Nothing else polls it (tracking-rules wait rule).
 On `arrived`, read (§4). On `none`, the request never registered: report it
 and skip the round. On `waiting`, the 20-minute limit passed: report that
 Copilot's review did not arrive, skip the round, and continue the skill's
-flow. A review that arrives later is an ordinary item of the skill's
-PR-conversation read (§6). The wait never stops the run.
+flow. This run does not read a review that arrives later, so the report
+names the PR for the user to look at. The wait never stops the run.
 
 ## 4. Read
 
@@ -77,8 +79,8 @@ Each Copilot thread, and each finding in the review body, gets one
 disposition by `/milestone-review` step 5's rule: fix now, reject with a
 reason, or follow-up (a candidate row, search-first). A Copilot item never
 takes step 5's return floor: an item too large to fix in the round, or in
-`/hotfix` one over the hotfix bar, is a follow-up, and the merge question
-shows it. Fix-now work is committed on the branch
+`/hotfix` one over the hotfix bar, is a follow-up, and the report shows it
+(§6). Fix-now work is committed on the branch
 with the profile's `verify` slot green, then pushed (guest mode: to `origin`,
 the fork, with `--force-with-lease` after a rebase). When the round committed
 fixes, `/milestone-review` re-runs its step-4 consistency gate before the

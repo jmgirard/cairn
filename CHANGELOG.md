@@ -26,8 +26,8 @@
   mode the PR opens before the merge question, which lists every Copilot
   item. In guest mode the round runs after the handoff. If the review has
   not arrived after 20 minutes, the round is skipped with a one-line report
-  and the run goes on; a later Copilot review shows in the merge question's
-  conversation read. The round runs once per PR, and adopted PRs and
+  that names the PR, and the run goes on without reading a later review. A
+  later pass on the same PR does not run the round again, and adopted PRs and
   milestones with companion checkouts skip it. GitHub's settings choose the
   review level, because its API took none per request when this shipped. The rules live in
   `skills/shared/copilot-review.md`.
