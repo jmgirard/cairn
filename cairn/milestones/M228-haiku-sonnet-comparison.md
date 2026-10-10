@@ -225,3 +225,12 @@ Pass 1, 2026-10-09, on `2620860` (branch current with `origin/main`, no PR yet).
 - prior-review #3: "lowest of the three groups" and "because of one format miss" are characterizations — fix now (the first with diff-bug #5; the second restated as the measured sensitivity).
 - prior-review #4: the Review section must carry the per-finding list before archiving — reject, false as a defect: this pass logs every finding here.
 - prior-review #5: the test pin comment says "in this session" with no date — fix now.
+
+Pass 2, 2026-10-09, on `4101fe8` (branch current with `origin/main`). Pass-1 fix-now findings diff-bug #1–#10, blame-history #1, #3–#5, and prior-review #1–#3, #5 fixed 4101fe8 (through return 1, T7); blame-history #2 and the script half of #1 went to the candidate row "Session-store reading in `cairn_cost.py`".
+
+- AC1 evidence (pass 2): the table parse still finds 18 rows, 9 tasks, each with one `sonnet` and one `haiku` row; the INDEX line and Provenance block are present.
+- AC2 evidence (pass 2): 0 of 18 rows fail the model-id check against their transcripts.
+- AC3 evidence (pass 2): 0 of 18 rows fail the cost recomputation (calls, five token columns, final match, USD to four places); the Extraction status now claims a dated direct read of the prices.
+- AC4 evidence (pass 2): search scores re-score equal to the table. The second judges' reports (`a712b3ed31e25ea06`, `a1f764706bb2969f0`, `a7849bedfc57f6132`), read through the sealed second mapping, give Sonnet 1, 1, 2 and Haiku 1, 0, 3, equal to the H rows, and the note now records the judge prompt whose rule is the note's rule verbatim. A parse of the note's mutant table matches the applied mutants, 12 of 12, each old string occurring once at `c023018`. The sweep and test scores from pass 1 stand (same saved artifacts, unchanged scoring).
+- AC5 evidence (pass 2): the rule over the parsed table gives search 0.3650 / 0.0218, 2.6767 / 2.0 → `stay`; edit 0.4884 / 0.0407, 3 / 3 → `move`; review 0.6066 / 0.4318, 4 / 4 → `move`, equal to the Verdicts table.
+- Gate (pass 2): verify's five checks and `cairn_validate` passed at the end of T7 on this head (work log); no principle changed; no changelog entry owed.
