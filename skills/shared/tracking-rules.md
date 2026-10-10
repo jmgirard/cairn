@@ -314,7 +314,8 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   denies a `git commit` it sees carrying a `cairn/` path, on every branch (the misses its docstring lists — `git -C`,
   `git -c`, an empty `--amend`, a pathspec commit of a tracked file — stand, so the deny is a lever, not a proof). Nothing is written outside `cairn/` and that exclude
   file — no CLAUDE.md section (the session hook injects the plugin's routing template instead), no ignore entries, no
-  CI edit.
+  CI edit. A file outside the checkout, such as `/milestone` §4's reply draft in the system temp directory, is not a
+  write to the repo (D-155).
 - **No docs-only commit and no push to the default branch.** The plan commit, the post-merge hygiene commit, and the
   `cairn-init` scaffold commit do not exist; tracking is **written to disk in the turn that changes the code** — the
   same turn a checkpoint commit would have carried it — and stays there. "Tracking travels with code" (GP2) is an

@@ -457,18 +457,21 @@ A selection acts in this session. Never auto-proceed.
   a citation helps the reader. In guest mode it follows the rulebook's
   guest-mode rule of no cairn vocabulary: no milestone, criterion, task, or
   decision ids and no cairn terms. If the issue's `author.is_bot` is true,
-  the reply carries no thanks. The turn's final rendered text is the close
-  block below, and it gives the draft verbatim, then this command. The
-  reply goes in place of `<reply>`, with each `'` in it written `'\''`. The
-  fence is four backticks, so that a code block in the reply does not close
-  it:
+  the reply carries no thanks. Write the draft to
+  `cairn-reply-<owner>-<repo>-<N>.md` in the system temp directory (Python's
+  `tempfile.gettempdir()`), outside the checkout, with the Write tool. The
+  file is not a write to the repo (D-155). The turn's final rendered text is
+  the close block below, and it gives the draft verbatim, then this
+  command, with that file's absolute path in place of `<path>`:
 
-  ````
-  gh issue comment <N> --repo <base-repo> --body '<reply>'
-  ````
+  ```bash
+  gh issue comment <N> --repo <base-repo> --body-file "<path>"
+  ```
 
-  The section shows this command and never runs it, because the user posts
-  the reply.
+  The reply text is not part of the command line, so no shell quoting
+  touches it. The user can edit the file before running the command.
+  The section shows this command and never runs it, because the user
+  posts the reply.
 - **Add a candidate row.** Draft one `candidate` row for `cairn/ROADMAP.md`,
   at its priority level (tracking-rules "Candidate priority token"). The
   sweep above is its search-first pass: on a hit, absorb the issue into

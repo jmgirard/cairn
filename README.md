@@ -77,8 +77,9 @@ and the code the issue names, then reports one verdict (`reply`, `hotfix`, or
 add a candidate row, leave the issue, or stop. Leave is offered only for
 noise, a duplicate, or an item cairn already covers. A reply declines a
 request only when the reason to decline is already on record. For a
-reply, cairn drafts the text and shows a `gh issue comment` command for
-you to run. It never
+reply, cairn writes the draft to a file in the system temp directory and
+shows a `gh issue comment --body-file` command for you to run, so no shell
+quoting touches the reply. You can edit the file first. It never
 posts the reply itself. In guest mode, the commands name the upstream
 repo, and the draft uses no cairn terms.
 
