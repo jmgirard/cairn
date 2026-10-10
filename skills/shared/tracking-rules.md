@@ -233,8 +233,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   repo takes its `OWNER/REPO` slug as `<base-repo>`: `gh repo view "$(git remote get-url <base>)" --json
   nameWithOwner -q .nameWithOwner`. In guest mode the **fork remote** `<fork>` is the one remote that `git remote`
   lists, other than `<base>`, whose parent equals `<base-repo>`, ignoring case. Read each parent with `gh repo view
-  "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote whose read
-  fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
+  "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote that is not
+  a fork prints `/`, meaning no parent. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
   one, a guest push stops before the push and names the remotes it read and each parent it found.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint

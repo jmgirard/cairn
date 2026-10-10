@@ -1,6 +1,6 @@
 # M234: Guest pushes find the fork, and intake commands work in any remote layout or shell
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,6 +67,8 @@ Close five issue-intake and guest-mode edges from the M232 and M233 reviews, so 
 - 2026-10-10: T5: §4's reply hand-off writes the draft to `cairn-reply-<owner>-<repo>-<N>.md` in `tempfile.gettempdir()` and hands the user `gh issue comment <N> --repo <base-repo> --body-file "<path>"` in a `bash` fence. `gh issue comment --help` lists `-F, --body-file file`. The rulebook's guest bullet carries D-155's clause. A PowerShell claim was cut from the draft prose, because `pwsh` is not installed here to observe it (derived-claims rule). `test_issue_look_in.py` re-pinned the hand-off line and gained 4 tests. With the §4 change stashed, 3 of them fail. README's reply sentence updated. skills/tests OK, verify 5 of 5 green.
 - 2026-10-10: T6: the rulebook-mass line measures with `wc -l -c` and states 636 lines / 60,630 bytes, the `wc -l -c` output after the last rulebook edit. `wc -c` gave 60,630 under both `LC_ALL=C` and `LC_ALL=en_US.UTF-8`. Both pins re-seeded at their same line numbers, so the M149 lesson needs no correction (it names no unit). skills/tests OK, verify 5 of 5 green.
 - 2026-10-10: T7: four CHANGELOG entries under "Changes that affect existing repos" (fork remote, audit `--repo`, reply file, byte count). skills/tests OK, verify 5 of 5 green, `cairn_validate` all checks passed.
+- 2026-10-10: claim audit: 80 claims read, 3 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/tests/test_guest_fork_remote.py. The fixes: CHANGELOG entry 2 now names the CI re-check and says `/milestone`, not "audit", since the orphan close is in §3. The recipe now says that a non-fork prints `/`. "or two" became "or more than one". The reader's fourth point (no fence rule for the draft) was rejected: the four-backtick fence existed only because the reply sat inside the command. The same reader re-read the 3 corrections, and all were correct. The rulebook grew, so its baseline was re-seeded to 636 lines / 60,689 bytes at all three sites. skills/tests OK, verify 5 of 5 green.
+- 2026-10-10: implement complete: status set to review.
 
 ## Decisions
 

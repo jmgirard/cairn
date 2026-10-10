@@ -7,7 +7,7 @@ things have to survive:
 
   1. The rulebook's recipe. `<fork>` is the one remote, other than `<base>`,
      whose parent equals `<base-repo>`. A failed read is not a match, and no
-     match or two matches stop the push. `<fork-owner>` reads `<fork>`.
+     match or more than one stops the push. `<fork-owner>` reads `<fork>`.
   2. Every guest push site names `<fork>`. The list is the whole list (M171
      lesson): a test fails when any one site goes back to `origin`.
   3. No skill prose calls `origin` the fork.

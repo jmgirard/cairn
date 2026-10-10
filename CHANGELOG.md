@@ -9,12 +9,13 @@
   GitHub parent is the base repo, and every guest push and the PR's
   `--head` owner use it. Before, guest pushes went to `origin`, which is
   the upstream repo in a checkout cloned from upstream with the fork added
-  under another name. With no such remote, or two, a guest push stops and
-  names the remotes it read.
-- **`/milestone`'s audit names the repo in every `gh pr` and `gh issue`
-  command.** The orphaned-issue read, the outside-merge reads, the inbox
-  reads, the merged-PR check, and the orphan close now pass `--repo` with
-  the base repo, so a checkout with two remotes reads the right one.
+  under another name. With no such remote, or more than one, a guest push
+  stops and names the remotes it read.
+- **`/milestone` names the repo in every `gh pr` and `gh issue`
+  command.** The CI re-check, the merged-PR check, the inbox reads, the
+  orphaned-issue read, the outside-merge reads, and the orphan close now
+  pass `--repo` with the base repo, so a checkout with two remotes reads
+  the right one.
 - **The issue look-in's reply hand-off passes the reply as a file.** The
   draft goes to a file in the system temp directory, and the command to
   post it is `gh issue comment --body-file`, so no shell quoting touches
