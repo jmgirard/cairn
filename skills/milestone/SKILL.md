@@ -388,7 +388,9 @@ chip.
   statement on GitHub, since the guest's `cairn/` is not the project's.
   A decline with no such record takes the `milestone` verdict at the
   `decide` level, and the chip's candidate-row option then holds the
-  decline's record.
+  decline's record. The verdict's reason says that the issue is a decline
+  with no record, and the chip lists the candidate-row option first,
+  marked recommended, in place of Do it now.
 - `hotfix`: a user-visible bug that is under the hotfix bar (tracking-rules
   "Sizing and the work tiers"). It restores documented behavior in one
   sitting, with no design decision.
@@ -423,7 +425,8 @@ options are these, in this order:
 
 1. Do it now, the verdict's option, first and marked recommended. For
    `hotfix` it starts a hotfix, for `milestone` it starts a plan, and for
-   `reply` it drafts the reply.
+   `reply` it drafts the reply. For a decline with no record (The verdict),
+   the candidate-row option goes first and is marked recommended instead.
 2. Add a candidate row. Its description says where the row goes: on disk
    only in guest mode, or nowhere in owner mode when the checkout is off
    the default branch or `cairn/ROADMAP.md` has uncommitted changes.

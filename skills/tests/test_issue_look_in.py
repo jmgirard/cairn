@@ -111,6 +111,13 @@ class TestScales(unittest.TestCase):
         self.assertIn("A decline with no such record takes the `milestone` verdict at the", s)
         self.assertIn("`decide` level, and the chip's candidate-row option then holds the", s)
 
+    def test_unrecorded_decline_recommends_the_candidate_row(self):
+        # M233 review: with Do it now recommended, the chip would plan work
+        # that resolves a request the project means to decline.
+        s = look_in(milestone())
+        self.assertIn("with no record, and the chip lists the candidate-row option first,", s)
+        self.assertIn("the candidate-row option goes first and is marked recommended instead.", s)
+
     def test_guest_mode_maintainer_is_upstream(self):
         self.assertIn(
             "In guest mode the maintainer is the upstream maintainers",

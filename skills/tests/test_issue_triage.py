@@ -187,8 +187,10 @@ class TestPlanSweepRepo(unittest.TestCase):
             if "gh issue list" in l or "gh pr list" in l
         ]
 
-    def test_domain_is_non_empty(self):
-        # An empty match would pass the check below for the wrong reason.
+    def test_domain_holds_both_inbox_reads(self):
+        # An empty match would pass the check below for the wrong reason. The
+        # exact count is deliberate: a third read added later must be checked
+        # here on purpose, not pass unseen.
         self.assertEqual(len(self.inbox_lines()), 2)
 
     def test_every_inbox_read_names_the_base_repo(self):
