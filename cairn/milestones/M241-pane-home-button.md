@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter sees the Button in the cairn pane
-- **Branch/PR:** m241-pane-home-button
+- **Branch/PR:** m241-pane-home-button, https://github.com/jmgirard/cairn/pull/251
 
 ## Goal
 
