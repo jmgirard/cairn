@@ -1469,6 +1469,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
+        "effort-roles.md": "exempt",
         "m118-cap-exemption-ledger.md": "exempt",
         "m127-ac1-ledger.md": "exempt",
         "backlog-meridian.md": "ok",

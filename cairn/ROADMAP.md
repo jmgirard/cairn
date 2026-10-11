@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M236 | The pane has one ↻ Button and counts only unresolved threads | done | — | normal | milestones/archive/M236-pane-one-refresh.md |
 | M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | done | — | normal | milestones/archive/M237-pane-fills-again.md |
 | M238 | The pane reads its pull requests once per start, at its first draw when placed later | done | — | normal | milestones/archive/M238-pane-one-read-per-start.md |
-| M239 | Compare low with default reasoning effort on cairn's Sonnet and Haiku roles | in-progress | — | normal | milestones/M239-effort-roles.md |
+| M239 | Compare low with default reasoning effort on cairn's Sonnet and Haiku roles | review | — | normal | milestones/M239-effort-roles.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

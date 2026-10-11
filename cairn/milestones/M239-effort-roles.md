@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M239: Compare low with default reasoning effort on cairn's Sonnet and Haiku roles
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -115,10 +115,10 @@ this note does not rely on.
 - [x] T4: Edit runs: E1 to E3, each on Haiku (`general-purpose`) at both
       arms in its own copy; score E1 by Jaccard against the target and E2,
       E3 by mutants killed, under `PYTHONDONTWRITEBYTECODE=1`.
-- [ ] T5: History-review runs: H1 to H3, each on Sonnet at both arms. Then
+- [x] T5: History-review runs: H1 to H3, each on Sonnet at both arms. Then
       run one model-blind Opus judge per task, labels drawn before the judge
       runs and the mapping read after it returns.
-- [ ] T6: Price every row by the M228 cost method, re-reading the pricing
+- [x] T6: Price every row by the M228 cost method, re-reading the pricing
       page; fill the run table and the verdict table; write Limits and the
       re-measurement procedure; add the `INDEX.md` line; run
       `cairn_validate` and the `verify` slot.
@@ -152,3 +152,6 @@ this note does not rely on.
 - 2026-10-10: T3: six search runs on Sonnet; F1 per arm S1 1.0 and 1.0, S2 1.0 and 1.0, S3 0.6767 and 0.6767 (both arms listed the same 45 pairs, reading "supersede" by meaning). The first scoring pass read 0 for every run because the session-local scorer looked for the wrong field of the `SubagentHandback` call; the answer text is its `message` input.
 - 2026-10-10: T4: six edit runs on Haiku; E1 Jaccard 1.0 in both arms (32-triple target), E2 and E3 6 of 6 mutants killed in both arms; the always-true control kills 0 of 6 for E2 and for E3.
 - 2026-10-10: T5 in progress: six history-review runs done, three Opus judges spawned with labels drawn by `random.SystemRandom` and mappings written to a separate scratchpad directory before the judges ran. Cost method amended in the note: background runs carry no Agent tool `usage`, so the final call's output is the notification's `subagent_tokens` less the final id's input and cache counts (the identity holds on all five foreground spawns of this session).
+- 2026-10-10: T5: judges returned H1 3 against 1, H2 1 against 1, H3 0 against 0 (default against `low`), mappings read after all three returned; no judge transcript names the mapping directory.
+- 2026-10-10: T6: pricing page re-read, figures unchanged from M228's; verdicts search `low`, edit work `low`, history review `default`; every `low` row records only `low`. `cairn_validate` green; verify green after adding `effort-roles.md` (state `exempt`) to the pinned page ledger in `scripts/tests/test_scripts.py` (406 and 174 tests OK, both manifests valid, mod test 0 fail).
+- 2026-10-10: claim audit: not owed — internal tier.
