@@ -71,7 +71,11 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
 // (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
 // a `/resume` reads again while the pane is placed, shown or behind another
-// tab (M230, M237). A blocked line
+// tab (M230, M237). A pane listed but not placed then reads at its first
+// draw, unless an open or the start's reopen read first, or the start's
+// `$.ui.panes()` threw. One start reads once, though both its start hooks
+// fire (M238).
+// A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
@@ -237,12 +241,24 @@ export const register: Register = on => {
   // (M237). The hook cannot tell a resume in the process from a resumed
   // start, so a resumed start reads the files twice. A placed pane, shown or
   // behind another tab, also reads the pull request states and the hotfix
-  // list again, and the hook does not wait for that read (M230, M237).
+  // list again, and the hook does not wait for that read (M230, M237). A
+  // pane listed but not placed owes that read, and its first draw starts it
+  // (`owed`, M238). A start whose reopen already read starts no second read
+  // and owes none (`startRead`, M238).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
     if (e.source === 'clear' || e.source === 'resume') {
       await refresh($)
-      if (await isPlaced($)) void readPrs($)
+      if (startRead) return result
+      const mine = await listedPane($)
+      if (mine == null) return result
+      if (mine.isPlaced) {
+        startRead = true
+        owed = false
+        void readPrs($)
+      } else {
+        owed = true
+      }
     }
     return result
   })
@@ -261,7 +277,7 @@ export const register: Register = on => {
     const afterReopen = reopened
     reopened = false
     try {
-      const mine = (await $.ui.panes()).find(open => open.id === PANE)
+      const mine = await paneOf($)
       if (mine !== undefined && mine.isPlaced && mine.isShown) {
         if (afterReopen) return { text: 'cairn pane opened' }
         await $.ui.close({ id: PANE })
@@ -270,6 +286,7 @@ export const register: Register = on => {
       await refresh($)
       if (!(await read($, pane)).found) return { text: NO_ROADMAP }
       const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+      owed = false
       void readPrs($)
       return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
     } catch (error) {
@@ -278,6 +295,13 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
+    // A pane that a clear or resume start found listed but not placed reads
+    // the pull request states at its first draw (M238). The flag clears
+    // before any await, so two draws at once start one read.
+    if (owed) {
+      owed = false
+      void readPrs($)
+    }
     const { Box, Button, Text } = $.ui.resolve(e)
     // The Next line's Button shows while no cairn skill's step is set
     // (M218). A pane gets no `isWorking` prop, so it also shows during a
@@ -461,6 +485,9 @@ export const register: Register = on => {
     const queued = heldRun
     heldRun = null
     reopened = false
+    // The end ends the start, so the next start reads again (M238).
+    owed = false
+    startRead = false
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -669,29 +696,31 @@ async function openPane($) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
     return
   }
+  owed = false
   void readPrs($)
+}
+
+// The pane as `$.ui.panes()` lists it, or undefined when it is not listed.
+// It throws when that call throws. Every other place that needs the pane's
+// listing reads it here (M238).
+async function paneOf($) {
+  return (await $.ui.panes()).find(open => open.id === PANE)
+}
+
+// The pane as `paneOf` lists it, or null when the call throws (M238).
+async function listedPane($) {
+  try {
+    return await paneOf($)
+  } catch {
+    return null
+  }
 }
 
 // True when `$.ui.panes()` lists the pane placed and shown, false when it
 // does not or the call throws.
 async function isShown($): Promise<boolean> {
-  try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
-    return mine !== undefined && mine.isPlaced && mine.isShown
-  } catch {
-    return false
-  }
-}
-
-// True when `$.ui.panes()` lists the pane placed, shown or behind another
-// tab, false when it does not or the call throws (M237).
-async function isPlaced($): Promise<boolean> {
-  try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
-    return mine !== undefined && mine.isPlaced
-  } catch {
-    return false
-  }
+  const mine = await listedPane($)
+  return mine != null && mine.isPlaced && mine.isShown
 }
 
 // Each read of the pull request states takes the next number, and only the
@@ -699,6 +728,17 @@ async function isPlaced($): Promise<boolean> {
 // later does not put back older words (M224 review). A reload starts it
 // over at 0.
 let prReads = 0
+
+// True from a clear or resume start that finds the pane listed but not
+// placed until the pane's next draw starts the read it owes, an open reads,
+// or the session ends (M238). A reload starts it over as false.
+let owed = false
+
+// True from the read that a start's reopen or its clear or resume hook
+// starts until the next session end, so the other hook of the same start
+// starts no second read and owes none (M238). A reload starts it over as
+// false.
+let startRead = false
 
 // The reads of the pull request states that this module started and that
 // have not settled (M237). A reload starts it over at 0, as the reload ends
@@ -712,9 +752,10 @@ let inFlight = 0
 // that rejects, as when `gh` cannot start or outruns its timeout, reads as
 // `unknown` with no counts, as a bad result does (counts.ts `prRead`), and
 // the read never throws. Threads that fail the shape check leave the word
-// and draw no counts. It runs only at a pane open, a Refresh press, and a
-// `/clear` or `/resume` while the pane is placed (M230, M237): no timer and
-// no turn end starts one, since the operator does not want repeating tasks.
+// and draw no counts. It runs only at a pane open, a Refresh press, a
+// `/clear` or `/resume` while the pane is placed (M230, M237), and the
+// first draw of a pane that such a start found not placed (M238): no timer
+// and no turn end starts one, since the operator does not want repeating tasks.
 // A read that starts while another runs still runs, with the newest URLs.
 // Words and counts are written together when every call has settled, so a
 // Refresh keeps the earlier counts drawn until then.
@@ -1044,7 +1085,7 @@ async function fallBack($, text: string, why: string) {
 // (M222). A store or pane call that fails marks nothing.
 async function markReopen($) {
   try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    const mine = await paneOf($)
     if (mine === undefined || !mine.isShown || !mine.isPlaced) return
     const cwd = await $.session.root()
     const held = await reopenList($)
@@ -1063,6 +1104,8 @@ let reopened = false
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
 // with no toast, and a refused one gives nothing. An open starts the read of
 // the pull request states (M224), and the start does not wait for it (M230).
+// A start whose resume or clear hook already read starts no second read
+// (M238).
 async function reopen($) {
   try {
     const cwd = await $.session.root()
@@ -1077,7 +1120,11 @@ async function reopen($) {
     // No reopen.
     return
   }
-  // The reopen is an open, so it reads the pull request states (M224).
+  // The reopen is an open, so it reads the pull request states (M224),
+  // unless this start's resume or clear hook already read them (M238).
+  owed = false
+  if (startRead) return
+  startRead = true
   void readPrs($)
 }
 
