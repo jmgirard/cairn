@@ -193,4 +193,5 @@ Pass 2, 2026-10-11, at 6326082 after the step-7 decline. Main has not moved. The
 - prior-review #9 (pass 2): lines over the wrap width — fix now, fixed 6c98018 (README); CHANGELOG reject, style
 - Post-fix runs at 6c98018: fixtures A to F, zsh and bash identical; A, B, C, E match the AC6 and AC7 lines above, with merge lines now ending `by <login>`.
 - copilot: no new request on pass 2 (state `reviewed earlier-head unknown`, the quota-refused review). PR-conversation read below.
+- conversation (pass 2): PR #255 still has only Copilot's quota-refused review, no conversation comments, and 0 review threads.
 - Consistency gate, pass 2: `cairn_validate` exit 0 (the 8-criteria WARN only); marketplace validate has no `version` warning; the CHANGELOG entry exists and the added README/CHANGELOG lines carry no milestone number; `skills/tests` exit 0.
