@@ -166,3 +166,32 @@ this note does not rely on.
 - AC5 evidence: a parse of the run table, summed per group and run through the stated rule, gives search 0.3299 against 0.3247 USD at 2.6767 each, `low`; edit work 0.0293 against 0.0263 at 3.0 each, `low`; history review 0.8794 against 0.6002 at 4 against 2, `default`. No `low` row records an effort other than `low`, so none is `untested`. All three equal the note's verdict table.
 - gate: `cairn_validate` exit 0 (no WARN); verify on the review head: scripts 406 tests OK (21 skipped), hooks 174 OK, plugin manifest valid (one warning, the repo-root `CLAUDE.md` not loaded as plugin context, present before this branch), marketplace manifest valid with no `plugins[N].version` warning, mod test 1609 tests 0 fail. No principle changed, so `cairn_impact` is skipped. Changelog: no entry owed, since the branch adds an in-repo reference note and a test-ledger line and changes no user-visible behavior.
 - Copilot: requested on PR #249 at review start (state query `none`, `gh pr edit --add-reviewer @copilot` exit 0).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: page wrongly `exempt` from the staleness advisory though it carries aging prices — fix now (Extraction names the dated price read, ledger pins `ok`), fixed 18ca241
+- diff-bug #2: the Cost amendment changes the method AC3 binds to with no gate amendment — reject (false as an AC3 failure): the method's computation is unchanged, and the notification's `subagent_tokens` equals `totalTokens` on every foreground spawn, so the final-call figure is the one the method specifies; the dropped tie check is now stated in the note (diff-bug #3's fix)
+- diff-bug #3: the amendment's check proves `totalTokens` = `usage`, not the `subagent_tokens` link it uses — fix now (the note states the `subagent_tokens` = `totalTokens` link and that M228's tie check is unavailable), fixed 18ca241
+- diff-bug #4: search reversal written as a hypothetical though visible output is near the threshold — fix now (visible-output difference measured, about 390 tokens against 518), fixed 18ca241
+- diff-bug #5: break-even figures from rounded USD — fix now (518 and 5,935 tokens, unrounded gaps stated), fixed 18ca241
+- diff-bug #6: ledger entry has no rationale comment — fix now, fixed 18ca241
+- diff-bug #7: edit cost omits test code and INDEX gives no reversal caveat — fix now, fixed 18ca241
+- diff-bug #8: pointer places the scoring rules in the wrong section of M228's note — fix now, fixed 18ca241
+- diff-bug #9: "M228's runs also record high" cites one transcript — fix now (all 18 read), fixed 18ca241
+- blame-history #1: `exempt` pin undoes M228's deliberate `ok` for aging prices — fix now (same as diff-bug #1), fixed 18ca241
+- blame-history #2: ledger entry without comment breaks the convention — fix now (same as diff-bug #6), fixed 18ca241
+- blame-history #3: the history-review gap equals M228's run-to-run spread on the same reviewer — fix now (reading added, column "What could flip it"), fixed 18ca241
+- blame-history #4: Verdicts table drops M228's "What could flip it" column — fix now, fixed 18ca241
+- blame-history #5: weaker final check than M228's tie, `subagent_tokens` link unshown — fix now (same as diff-bug #3), fixed 18ca241
+- blame-history #6: the "Reasoning-effort dial" ROADMAP row still says the Agent tool has no effort setting — follow-up: this milestone's post-merge hygiene rewrites that row with the verdicts
+- blame-history #7: history-review runs could read M228's results in the live tree — fix now (transcripts checked: none names `haiku-sonnet-roles.md`, stated in the note), fixed 18ca241
+- prior-review #1: `exempt` repeats the mistake M228 pass 1 fixed — fix now (same as diff-bug #1), fixed 18ca241
+- prior-review #2: no "What could flip it" column — fix now (same as blame-history #4), fixed 18ca241
+- prior-review #3: no reading that the score does not measure missed defects (D-016) — fix now, fixed 18ca241
+- prior-review #4: ledger entry without comment — fix now (same as diff-bug #6), fixed 18ca241
+- prior-review #5: Limits drops M228's judge-rule sensitivity caveat — fix now, fixed 18ca241
+- prior-review #6: "cost gaps are small" and "cannot show a gap" are characterizations — fix now, fixed 18ca241
+- prior-review #7: the Design heading says "fixed before any task run" though it holds a later amendment — fix now (heading names the one amendment), fixed 18ca241
+- copilot: cairn/milestones/M239-effort-roles.md:14 — fix now (PR URL already recorded), fixed 872a42c
+- copilot: cairn/references/effort-roles.md:11 — fix now (same as diff-bug #1), fixed 18ca241
+- copilot: review body — noted (its two findings are the two threads above)
+- Copilot level: Lite (set by GitHub's settings)
+- verify after fixes (18ca241): scripts 406 OK, hooks 174 OK, both manifests valid with no version warning, mod test 0 fail; `cairn_validate` exit 0 with no WARN.
