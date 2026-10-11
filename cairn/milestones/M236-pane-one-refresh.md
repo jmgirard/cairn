@@ -136,3 +136,9 @@ Findings (each lens ranked its own; the agent settled each):
 - prior-review #5: the `busy_` name, and a stored `true` after a reload — reject: style for the name, and a planned change (AC4) for the reload.
 
 After the fixes, verify is green (1560 pass, the other four checks 0).
+
+PR conversation (PR #246):
+
+- copilot: review body — noted (Copilot reviewed 6ff1887 and reported 0 open findings, with no threads).
+- Copilot level: Lite (set by GitHub's settings).
+- conversation: no conversation comments and no other reviews.
