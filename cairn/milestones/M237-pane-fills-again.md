@@ -1,13 +1,13 @@
 # M237: The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** —
+- **Branch/PR:** m237-pane-fills-again
 
 ## Goal
 
@@ -39,7 +39,7 @@ The cairn pane fills its lines at each session start that empties the host's sta
 
 ## Tasks
 
-- [ ] T1: Session-start read (AC1, AC2). In `register.tsx:237-244`, handle `resume` beside `clear`. Start `readPrs` for a placed pane through a placed-only test beside `isShown` (`register.tsx:671`). Write the resume tests and the ten pane-case tests. Flip the tests near `pane.test.tsx:2738` that assert no read behind another tab.
+- [x] T1: Session-start read (AC1, AC2). In `register.tsx:237-244`, handle `resume` beside `clear`. Start `readPrs` for a placed pane through a placed-only test beside `isShown` (`register.tsx:671`). Write the resume tests and the ten pane-case tests. Flip the tests near `pane.test.tsx:2738` that assert no read behind another tab.
 - [ ] T2: Reading label (AC3). Add a module-level count of reads in flight. `readPrs` raises it at its start and lowers it in its `finally`. The render shows ⋯ only for a stored `reading` of true and a count above 0. Rewrite the test at `pane.test.tsx:2554`, whose first assertion expects ⋯ for a stale stored true. Add the held-read and failed-write tests.
 - [ ] T3: One call (AC4). Add `state` and `reviewDecision` to the `counts.ts` query. Parse the word and the count from one reply, so a bad thread list leaves the word. `readPr` (`register.tsx:758`) runs the graphql call for a URL that `countsArgv` takes, and `gh pr view` alone for any other URL. Update `counts.test.ts` and the pane tests' `gh` fakes.
 - [ ] T4: Docs (AC5). Update the comments at `register.tsx:70-81`, `208-213`, `232-236`, and `686-703`, and the `counts.ts` header. Update README's pane section (near lines 340 and 365), DESIGN.md's `hooks/status/` entry (near lines 292 and 311-333), and CHANGELOG `## Unreleased`. Run the AC5 grep.
@@ -56,6 +56,8 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - 2026-10-10: plan chose one graphql call per github.com URL over folding the word into the `gh pr list` call, because blocked rows have no list call. One path then serves both. Falsified by a session where a hotfix-only line still waits visibly on its own call after the list.
 - 2026-10-10: plan chose an in-flight count beside the stored `reading` over resetting the stored value at load, because the API gives no load hook. A module variable resets at a reload. Falsified by a pane drawn after a reload that still shows ⋯ with no read running.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 13 findings, and the plan took all of them. AC1 drops "in-process", since the hook cannot tell the two resumes apart. AC1 also leaves `fork` unasserted (to the row) and adds a stale-rows case. AC2 runs ten cases on a named fixture, names the `$.ui.panes()` throw, and flips the old tests. AC3 narrows to a pane drawn after a read and adds the failed-write case. AC4 names the two URL forms and lists every reply. The plan then chose that a bad thread list leaves the word, as today. AC5 adds the sweep for contrary lines, and T4 adds the stale comments. The plan answered the finding that verify belongs among the done conditions: the template puts verify in a criterion.
+- 2026-10-10: implement: branch m237-pane-fills-again cut from main at 345dc0d. The untracked `cairn-probe.log` and `tsconfig.json` are not the milestone's and stay unstaged.
+- 2026-10-10: T1 done. `classic.SessionStart` reads on `clear` or `resume`, and `isPlaced` (new, beside `isShown`) gates the PR read. Sixteen new tests replace the old behind-a-tab quiet case, and the test fake's `ui.panes` can throw (`panesThrow`). Planting the old hook made five of them fail. Verify: five commands exit 0, 1575 mod tests.
 
 ## Decisions
 

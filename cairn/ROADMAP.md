@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M234 | Guest pushes find the fork, and intake commands work in any remote layout or shell | done | — | normal | milestones/archive/M234-fork-remote-intake-edges.md |
 | M235 | `/cairn-triage` runs in guest mode and writes its edits to disk | done | — | normal | milestones/archive/M235-guest-triage.md |
 | M236 | The pane has one ↻ Button and counts only unresolved threads | done | — | normal | milestones/archive/M236-pane-one-refresh.md |
-| M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | planned | — | normal | milestones/M237-pane-fills-again.md |
+| M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | in-progress | — | normal | milestones/M237-pane-fills-again.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

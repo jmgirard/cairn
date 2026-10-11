@@ -75,6 +75,8 @@ type Copy = {
   runThrows?: string
   // While set, the path of each `$.fs.read` call is pushed here (M236).
   reads?: string[]
+  // While set, `$.ui.panes()` beneath the mod throws (M237).
+  panesThrow?: boolean
 }
 
 function copyOf(name: string): Copy {
@@ -140,7 +142,10 @@ function seat(on: On, copy: Copy) {
     copy.open = copy.open.filter(id => id !== e.id)
     return { value: undefined }
   })
-  on('ui.panes', async () => ({ value: panesOf(copy) }))
+  on('ui.panes', async () => {
+    if (copy.panesThrow === true) throw new Error('no panes')
+    return { value: panesOf(copy) }
+  })
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
     return { value: undefined }
@@ -2716,28 +2721,110 @@ describe('a /clear in the same process reads the states again while the pane sho
     expect((await blockedView($, 'hotfix-1265')).text).toBe('#1265  Fix 1265  in review')
   })
 
-  const QUIET: [string, (copy: Copy) => void][] = [
-    ['a closed pane', copy => {
+  test('a closed pane runs no gh call', async ($, on) => {
+    const { calls, release } = await setUp($, on, copy => {
       copy.open = []
-    }],
-    ['a placed pane behind another tab', copy => {
-      copy.open = [PANE]
-      copy.hidden = [PANE]
-    }],
-  ]
-  for (const [name, place] of QUIET) {
-    test(`${name} runs no gh call`, async ($, on) => {
-      const { calls, release } = await setUp($, on, place)
-      try {
-        await $.classic.SessionStart({ source: 'clear' })
-        await calls.settled()
-        expect(calls.calls).toEqual([])
-        expect(calls.lists).toEqual([])
-        expect(calls.graphql).toEqual([])
-      } finally {
-        release()
-      }
     })
+    try {
+      await $.classic.SessionStart({ source: 'clear' })
+      await calls.settled()
+      expect(calls.calls).toEqual([])
+      expect(calls.lists).toEqual([])
+      expect(calls.graphql).toEqual([])
+    } finally {
+      release()
+    }
+  })
+})
+
+// A `/resume` empties the host's state as a `/clear` does, and either reads
+// the files again (M237 AC1). Each case compares the drawing with the one a
+// turn end, a read the band already trusts, gives right after.
+describe('a resume start reads the files again, as a clear start does (M237 AC1)', () => {
+  async function bandText($): Promise<string> {
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'terminal', ...BAND })) as Ui
+    const [root] = await ui.findAll({ key: 'cairn-band' })
+    const out = root === undefined ? '' : textOf(root)
+    await ui.unmount()
+    return out
+  }
+  for (const source of ['clear', 'resume'] as const) {
+    test(`a ${source} start with empty state draws the fixture's rows and lines`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      expect(await bandText($)).toBe('')
+      expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBeUndefined()
+      await $.classic.SessionStart({ source })
+      const band = await bandText($)
+      const lines = await paneLines($, 'terminal')
+      expect(band).toContain('M002')
+      expect(textAt(lines, 'M002-task-1')).toBe(T2_OPEN)
+      await $.turn.complete(turn())
+      expect(await bandText($)).toBe(band)
+      expect(await paneLines($, 'terminal')).toEqual(lines)
+    })
+
+    test(`a ${source} start replaces rows from the same root that differ from the files`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const before = await bandText($)
+      expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBe(T2_OPEN)
+      tick(copy)
+      await $.classic.SessionStart({ source })
+      const band = await bandText($)
+      const lines = await paneLines($, 'terminal')
+      expect(band).not.toBe(before)
+      expect(textAt(lines, 'M002-task-1')).toBe(T2_DONE)
+      await $.turn.complete(turn())
+      expect(await bandText($)).toBe(band)
+      expect(await paneLines($, 'terminal')).toEqual(lines)
+    })
+  }
+
+  for (const source of ['startup', 'compact'] as const) {
+    test(`a ${source} start reads no file`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      copy.reads = []
+      await $.classic.SessionStart({ source })
+      expect(copy.reads).toEqual([])
+    })
+  }
+})
+
+// A clear or resume start reads the pull request states for a placed pane,
+// shown or behind another tab, and for no other pane (M237 AC2). No
+// `session.start` opens the pane first, so every `gh` call is the hook's.
+describe('a clear or resume start reads the states for a placed pane (M237 AC2)', () => {
+  const CASES: { name: string; place: (copy: Copy) => void; reads: boolean }[] = [
+    { name: 'a placed and shown pane', place: copy => { copy.open = [PANE] }, reads: true },
+    { name: 'a placed pane behind another tab', place: copy => { copy.open = [PANE]; copy.hidden = [PANE] }, reads: true },
+    { name: 'a pane that is not listed', place: copy => { copy.open = [] }, reads: false },
+    { name: 'a listed pane that is not placed', place: copy => { copy.open = [PANE]; copy.unplaced = [PANE] }, reads: false },
+    { name: 'a pane list that throws', place: copy => { copy.open = [PANE]; copy.panesThrow = true }, reads: false },
+  ]
+  for (const source of ['clear', 'resume'] as const) {
+    for (const { name, place, reads } of CASES) {
+      test(`at a ${source} start, ${name} ${reads ? 'reads' : 'runs no gh call'}`, async ($, on) => {
+        const calls = gh(on, () => prView('OPEN', ''), undefined, {
+          remotes: { origin: ORIGIN },
+          list: () => listReply([pr(1265, 'hotfix-a')]),
+        })
+        const copy = copyOf('blocked-active')
+        seat(on, copy)
+        place(copy)
+        await $.classic.SessionStart({ source })
+        await calls.settled()
+        const all = [...calls.calls, ...calls.graphql, ...calls.lists]
+        if (reads) {
+          expect(calls.lists).toEqual([listCall(ORIGIN)])
+          expect(all.length).toBeGreaterThan(1)
+        } else {
+          expect(all).toEqual([])
+        }
+      })
+    }
   }
 })
 

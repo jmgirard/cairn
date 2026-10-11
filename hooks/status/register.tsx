@@ -231,14 +231,16 @@ export const register: Register = on => {
 
   // A `/clear` that stays in the same process raises no `session.start`, and
   // the host's state starts empty under the new session id, so the band and
-  // an open pane read the files again here (M222). A pane that is placed and
-  // shown also reads the pull request states and the hotfix list again, and
-  // the hook does not wait for that read (M230).
+  // an open pane read the files again here (M222). A `/resume` does the same
+  // (M237). The hook cannot tell a resume in the process from a resumed
+  // start, so a resumed start reads the files twice. A placed pane, shown or
+  // behind another tab, also reads the pull request states and the hotfix
+  // list again, and the hook does not wait for that read (M230, M237).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
-    if (e.source === 'clear') {
+    if (e.source === 'clear' || e.source === 'resume') {
       await refresh($)
-      if (await isShown($)) void readPrs($)
+      if (await isPlaced($)) void readPrs($)
     }
     return result
   })
@@ -672,6 +674,17 @@ async function isShown($): Promise<boolean> {
   try {
     const mine = (await $.ui.panes()).find(open => open.id === PANE)
     return mine !== undefined && mine.isPlaced && mine.isShown
+  } catch {
+    return false
+  }
+}
+
+// True when `$.ui.panes()` lists the pane placed, shown or behind another
+// tab, false when it does not or the call throws (M237).
+async function isPlaced($): Promise<boolean> {
+  try {
+    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    return mine !== undefined && mine.isPlaced
   } catch {
     return false
   }
