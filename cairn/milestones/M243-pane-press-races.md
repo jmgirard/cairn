@@ -91,3 +91,33 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 - AC4: same run. Both "a press whose checks fail leaves the next press free" cases pass: after a `Finish` press during a step and a `classic.Stop`, and after a `Finish` press that reads `closed`, a pane Status press records `cairn:milestone`, and the Finish press records nothing. The planted leak (work log) turned both red.
 - AC5: on 23ac8e8, CHANGELOG.md:196 opens the first `### Fixes` entry under `## Unreleased`, saying a second press during the first press's reads does nothing. DESIGN.md:199-207 names `pressCheck`, `pressChecked`, the four presses, and `pressCandidate`. `grep -n candidateCheck cairn/DESIGN.md` finds nothing.
 - AC6: on 23ac8e8, `scripts/tests` ran 406 tests OK (21 skipped), `hooks/tests` 174 OK, both `claude plugin validate` runs exit 0, and the mod test ran 1656 with 0 red.
+- gate: `cairn_validate` all checks passed. The verify checks pass (AC6). The marketplace validate prints no `plugins[N].version` warning. CHANGELOG has the entry, with no milestone number. No principle changed, so `cairn_impact` was skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `untilRuns(copy, 2, 10)` polls about 55 ms, so a late duplicate could go unseen — reject, false: the T1 reds recorded the duplicate inside that same window.
+- diff-bug #2: no double-press test reaches the `/clear`-first path of Plan and Implement — fix now: "an Implement press holds once" on idle-order, fixed f04f2ec.
+- diff-bug #3: AC4 case one never checks that Finish is drawn — fix now, fixed f04f2ec.
+- diff-bug #4: AC4 case two infers the changed word, and an empty store would also pass — fix now: the test asserts a later drawing carries Check, fixed f04f2ec.
+- diff-bug #5: the AC2 test never checks that both Buttons are drawn — fix now, fixed f04f2ec.
+- diff-bug #6: DESIGN.md says the mark clears before `heldRun` is set — fix now, fixed f04f2ec.
+- diff-bug #7: DESIGN.md says `pressNext` stores `heldRun` and runs `clear` — fix now, fixed f04f2ec.
+- diff-bug #8: under a strict reading of AC3, the five presses set no mark themselves — reject, false: the call to `pressChecked` sets the mark before their first `await` suspends (AC3 evidence).
+- diff-bug #9: the CHANGELOG lists labels and not the pane's own presses — reject, false: the pane's Next and Status carry the listed labels, and the reviewer found every label correct.
+- diff-bug #10: a press in flight from a reloaded module can run while the new module's mark is free — follow-up: new row "Shared press mark edges (M243 review)" at hygiene.
+- diff-bug #11: no test covers a second press in a later tick during the checks — fix now: "a second Status press during the first press's checks runs nothing", fixed f04f2ec.
+- blame-history #1: DESIGN.md Known issues still says two quick presses can pass `busy` — fix now, fixed f04f2ec.
+- blame-history #2: the "⌂ edges (M241 review)" and "✎ edges (M242 review)" rows still say three presses await before they mark — follow-up: post-merge hygiene narrows both rows (records-hygiene §1).
+- blame-history #3: `session.end` does not clear `pressCheck`, so a read that never settles freezes every action press until a reload — follow-up: "Shared press mark edges (M243 review)".
+- blame-history #4: no same-tick test of the `clears` path — fix now, the same test as diff-bug #2, fixed f04f2ec.
+- blame-history #5: a ⌂ press during another press's checks now does nothing, with no toast — reject, planned change: AC2 promises exactly this.
+- blame-history #6: the AC4 test hard-codes `prs-3` as a fallback shape — fix now: the Check-drawing assertion of diff-bug #4 reds if the override stops matching, fixed f04f2ec.
+- blame-history #7: the CHANGELOG omits ✎, and a line wrapped mid-sentence — reject, false for ✎, which had its mark since M242, and style for the wrap, which the claim-audit commit rewrapped.
+- prior-review #1: `pressCheck` is not cleared at a session end — follow-up: "Shared press mark edges (M243 review)".
+- prior-review #2: the ROADMAP rows' stale sentence — follow-up: post-merge hygiene, as blame-history #2.
+- prior-review #3: no double-press test of the hold path — fix now, the same test as diff-bug #2, fixed f04f2ec.
+- prior-review #4: a session end between the hold and the `clear` run takes the hold — reject, false: `heldRun` is set and `run` called in one synchronous stretch, so no hook can run between them.
+- prior-review #5: stale ✎ drawings are still untested after the refactor — follow-up: "✎ edges (M242 review)" already holds it.
+- discrimination: on f04f2ec with main's register.tsx swapped in, the mod test ran 1660 with 12 red: the 8 T1 reds plus the 4 new band cases. The file was restored from git.
+- copilot: cairn/milestones/M243-pane-press-races.md:10 (Branch/PR header lacks the PR URL) — fix now, fixed fd50f7c.
+- copilot: review body — noted (its one finding is the thread above).
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: no human reviews or comments on PR #253.
