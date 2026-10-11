@@ -191,8 +191,8 @@
   `/clear` that keeps the session's process, as a `Clear`, `Plan`, or
   `Implement` press does, keeps the pane open. Before, the PR words,
   counts, Buttons, and hotfix list stayed empty until the next open or
-  `Refresh`. Now a pane that shows at that moment reads them again. A pane
-  behind another tab still waits for the next open or `Refresh`.
+  `Refresh`. Now a placed pane reads them again, also one behind another
+  tab.
 
 - **A hotfix PR that is also a blocked milestone's PR shows once.** It
   stays on the blocked line, which carries any Button its word calls for.
