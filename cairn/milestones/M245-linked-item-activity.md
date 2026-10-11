@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M245: The audit reports new activity on the issues and pull requests that candidate rows link to
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -53,11 +53,11 @@ written to GitHub.
 
 - AC1 → T1
 - AC2 → T1
-- AC3 → T1
+- AC3 → T1, T5
 - AC4 → T1
 - AC5 → T2
 - AC6 → T3
-- AC7 → T3
+- AC7 → T3, T5
 - AC8 → T4
 
 ## Tasks
@@ -66,6 +66,7 @@ written to GitHub.
 - [x] T2: Add the linked-item dispositions to §3: "update the row" with its `checked` mark, the other three, the re-report note, and the guest on-disk note. Name linked items in §3's triage-chip bullet.
 - [x] T3: Build fixtures A, B, and C in the scratchpad and run the bullet's commands as written in a shell, over each fixture.
 - [x] T4: Add the README sentence and the CHANGELOG entry. Run the five `verify` commands and hand-run `skills/tests` (the M148 lesson), and check each exit code.
+- [ ] T5: Step-7 decline: stop reporting a close or merge made by the operator. Amend AC3 (and AC7's fixture) through the gated amendment with its re-audit, filter on the item read's `closed_by` login in the block, update README and CHANGELOG, re-run the fixtures with a row linking `jmgirard/cairn#238` (merged by the operator on 2026-10-10), and narrow the "Linked-item read edges (M245 review)" row.
 
 ## Work log
 
@@ -87,6 +88,7 @@ written to GitHub.
 - 2026-10-11: T4 done. README's contributions bullet and a CHANGELOG `Unreleased` entry state the read. verify green (5/5), skills/tests OK.
 - 2026-10-11: claim audit: 31 claims read, 3 corrected — skills/milestone/SKILL.md (a standalone two-part `dir/name#N` is read as owner/repo, so the path-tail example is now `skills/hooks/status#3`; the `:00` pad for an HH:MM `checked` mark moved before `sort`, since two marks in one row picked the wrong one), README.md and CHANGELOG.md (close and merge are reported whoever made them; only comments and reviews drop the operator). The same reader re-read the three: all hold. Fixtures A, B, C re-run over the corrected block in zsh and bash: output unchanged.
 - 2026-10-11: implement done; status review. verify green (5/5), skills/tests OK, cairn_validate green but for the 8-criteria advisory.
+- 2026-10-11: step-7 decline: the operator chose "Fix own-merge noise first", so the read stops reporting a close or merge that the operator made (an AC3 amendment, from blame-history #1 and prior-review #1). Added as T5, with Coverage AC3 → T1, T5 and AC7 → T3, T5. Status back to in-progress.
 
 ## Decisions
 
