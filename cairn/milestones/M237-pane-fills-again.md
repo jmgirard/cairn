@@ -1,6 +1,6 @@
 # M237: The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,7 +43,7 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - [x] T2: Reading label (AC3). Add a module-level count of reads in flight. `readPrs` raises it at its start and lowers it in its `finally`. The render shows ⋯ only for a stored `reading` of true and a count above 0. Rewrite the test at `pane.test.tsx:2554`, whose first assertion expects ⋯ for a stale stored true. Add the held-read and failed-write tests.
 - [x] T3: One call (AC4). Add `state` and `reviewDecision` to the `counts.ts` query. Parse the word and the count from one reply, so a bad thread list leaves the word. `readPr` (`register.tsx:758`) runs the graphql call for a URL that `countsArgv` takes, and `gh pr view` alone for any other URL. Update `counts.test.ts` and the pane tests' `gh` fakes.
 - [x] T4: Docs (AC5). Update the comments at `register.tsx:70-81`, `208-213`, `232-236`, and `686-703`, and the `counts.ts` header. Update README's pane section (near lines 340 and 365), DESIGN.md's `hooks/status/` entry (near lines 292 and 311-333), and CHANGELOG `## Unreleased`. Run the AC5 grep.
-- [ ] T5: Run the five `verify` commands (AC6).
+- [x] T5: Run the five `verify` commands (AC6).
 
 ## Work log
 
@@ -61,6 +61,8 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - 2026-10-10: T2 done. A module-level `inFlight` count gates ⋯ in the render. The stale-store test now expects ↻, and a new test covers a lost write of false. The engine skips a `state.set` hook that throws and lets the write land, so the test hook writes true in place of the mod's false. Both tests failed before the fix (they drew ⋯). The held-read case is the existing M236 test at `pane.test.tsx:2435`. Verify: five commands exit 0, 1576 mod tests.
 - 2026-10-10: T3 done. `prRead` in `counts.ts` reads the word and the count from one graphql reply. `wordOf` in `pane.ts` maps a state and a decision for both `prRead` and `prWord`. `readPr` keeps `gh pr view` only for a URL that `countsArgv` refuses. `prCounts` is gone. The pane tests' `gh` fake merges its `answer` and `graph` answers into one reply and records each read's URL in `reads`. Three fake-only count-failure cases were dropped, since a failed call now reads `unknown`, and `counts.test.ts` covers each reply that AC4 lists. A new test covers a hotfix URL on another host. Planting a `gh pr view` call before the graphql call failed 12 or more pane tests. Verify: five commands exit 0, 1590 mod tests.
 - 2026-10-10: T4 done. Updated the `register.tsx` comments (the file header, `GH_TIMEOUT_MS`, the `classic.SessionStart` hook, `readPrs`, `readPr`, and the `reading` atom), README's pane section, DESIGN's `hooks/status/` entry, and four CHANGELOG `## Unreleased` entries. Three entries describe the unreleased pane features and were brought up to date in place, and one is new for the resume and hidden-tab reads. The AC5 sweep returned 14 lines. The 7 new or edited lines state the new behavior, and the other 7 are about the band example, the reopen, and a review chip, which this milestone does not change. Verify: five commands exit 0, 1590 mod tests.
+- 2026-10-10: claim audit: 56 claims read, 3 corrected — CHANGELOG.md, README.md, hooks/status/counts.ts. "An open pane reads" became a placed or drawn pane, and the `prRead` comment no longer says it returns null. The reader also flagged the stale catch comment in `readPrs`'s `finally` (register.tsx). The same reader re-read the 4 fixes once: 3 held, and the catch comment took its suggested wording (an older read can keep `inFlight` above 0).
+- 2026-10-10: T5 done. The five verify commands exit 0 on the corrected tree (1590 mod tests). Status set to `review`.
 
 ## Decisions
 

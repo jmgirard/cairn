@@ -128,7 +128,7 @@
 
 - **The cairn pane fills again after `/resume` and after a `/clear` behind
   another tab.** A `/resume` reads the tracking files again, as a `/clear`
-  that keeps the session's process does. After either one, an open pane
+  that keeps the session's process does. After either one, a placed pane
   reads its PRs again, also when it sits behind another tab. Before, a
   `/resume` left the band and the pane empty until the next prompt, and a
   pane behind another tab kept no PR words.

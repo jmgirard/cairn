@@ -73,8 +73,8 @@ export function prNodes(reply: unknown): PrNodes | null {
   return out
 }
 
-// The word and count of one `gh api graphql` call, null for a call that
-// rejected. A rejected call, a non-zero exit, text that is not JSON, or a
+// The word and count of one `gh api graphql` call, whose result is null
+// when the call rejected. A rejected call, a non-zero exit, text that is not JSON, or a
 // reply with no `pullRequest` reads `unknown` with no count. Otherwise the
 // word comes from `state` and `reviewDecision` (pane.ts `wordOf`). An open
 // word carries the count, which is null when the threads fail the shape

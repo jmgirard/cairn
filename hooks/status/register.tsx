@@ -770,7 +770,8 @@ async function readPrs($) {
       try {
         await update($, reading, current => (mine === prReads ? false : current))
       } catch {
-        // The ⋯ stays until the next read settles.
+        // The stored value stays true, and once no read of this module is
+        // in flight, the next draw shows ↻ (M237).
       }
     }
   }
