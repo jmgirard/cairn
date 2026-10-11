@@ -98,3 +98,11 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - prior-review #2: the same as diff-bug #4 — follow-up.
 - prior-review #3: ragged wrapping — fix now with blame-history #6.
 - prior-review #4: README 408-412 beside 343 — reject, false: they describe the reopen and the PR read, and the reviewer found no contradiction.
+- Fix-now commits for pass 1: diff-bug #1 (word assertion), #2, #3, #7, blame-history #1, #2, #5, #6, prior-review #1, #3 — fixed 33af39d and 102316c.
+- Pass 2 (2026-10-10, head 102316c; `register.tsx` unchanged since 33af39d, the code the mod run tested). Default branch unmoved (origin/main c53b0e3). Copilot state: `reviewed earlier-head Lite`, so no new request.
+- AC1 evidence (pass 2): `claude plugin test .` exit 0, 1609 pass, 0 fail. The 7 "M238 AC1" tests pass, and both first-draw tests now also assert the blocked line's `in review` word after the draw.
+- AC2 evidence (pass 2): the 10 "M238 AC2" tests pass, the 6 the criterion names among them. "A resume start that owes, the first draw, then the reopen" failed on 6554657 with two reads and passes now.
+- AC3 evidence (pass 2): the grep returns 4 lines, and one is not a `//` comment: `register.tsx:711`, in `paneOf`.
+- AC4 evidence (pass 2): the sweep was re-run after T7, and each returned line was read. README 342-349 now names the skip for each case, DESIGN 300-305 and 320-328 name the reopen's skip, the first-draw trigger, and the re-check, and `register.tsx:742-764` match. No line contradicts the code.
+- AC5 evidence (pass 2): both `unittest discover` suites, both `claude plugin validate` commands, and the mod test exit 0 on this head's code.
+- Consistency gate (pass 2): `cairn_validate` all checks passed. The marketplace validate prints no `version` warning. The CHANGELOG change sits in the unreleased `/resume` entry, with no milestone numbers.
