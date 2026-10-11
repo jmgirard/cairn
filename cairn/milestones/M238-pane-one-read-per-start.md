@@ -1,6 +1,6 @@
 # M238: The pane reads its pull requests once per start, at its first draw when placed later
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,6 +59,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: T1 done. 12 tests in `pane.test.tsx` ("M238 AC1" and "M238 AC2" groups). On the current code, 4 fail: both AC1 first-draw tests read nothing at the draw, and both reopen-first AC2 tests read the URL twice. The other 8 pass, as the plan expected. Suite: 1601 pass, 4 fail.
 - 2026-10-10: T2, T3, and T4 done in one commit, because the classic start hook used the removed `isPlaced`. `paneOf` holds the one `$.ui.panes()` call, and `listedPane` answers null when it throws. Module flags `owed` and `startRead` do the rest. The engine refused a helper named `listing`, since `readPrs` already declares a const of that name, so it is `listedPane`. The 4 T1 reds pass now. All five verify commands exit 0 (mod tests 1605 pass).
 - 2026-10-10: T5 done. The `register.tsx` comments, README near line 343, DESIGN.md near lines 318-325 and 430-434 and its history line 77, and two CHANGELOG Fixes entries describe the first-draw read and one read per start. Each line the AC4 sweep returns was read and agrees.
+- 2026-10-10: claim audit: 28 claims read, 4 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx, hooks/status/pane.test.tsx. The double-read entry named the wrong order, the first-draw claim left out the reopen's read and a failed pane list, and a test comment named the wrong cause. The same reader re-read the fixes once and found the failed-list case still missing, which the next commit adds. A new test covers the session-end reset of `startRead`. Removing that reset failed only that test (1605 pass, 1 fail), and the file was restored.
 - 2026-10-10: T6 done. All five verify commands exit 0 (mod tests 1605 pass), and `cairn_validate` passes.
 
 ## Decisions

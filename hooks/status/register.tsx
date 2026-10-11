@@ -72,8 +72,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
 // a `/resume` reads again while the pane is placed, shown or behind another
 // tab (M230, M237). A pane listed but not placed then reads at its first
-// draw, unless an open or the start's reopen read first, and one start
-// reads once, though both its start hooks fire (M238).
+// draw, unless an open or the start's reopen read first, or the start's
+// `$.ui.panes()` threw. One start reads once, though both its start hooks
+// fire (M238).
 // A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step

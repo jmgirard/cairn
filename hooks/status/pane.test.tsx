@@ -3105,7 +3105,7 @@ describe('one process start reads each URL once (M238 AC2)', () => {
 
   // An open's read is not the start's read, so a clear start after an open
   // whose read is still in flight reads again.
-  test('a clear start after a session end reads again while the open read is held', async ($, on) => {
+  test('a clear start reads again while an open read is held', async ($, on) => {
     const { calls, release } = held(on)
     const copy = copyOf('blocked-active')
     seat(on, copy)

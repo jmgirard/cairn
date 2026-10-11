@@ -175,7 +175,7 @@
   When the pane waited undrawn at a `/clear` or `/resume`, it read no PR
   states, and once drawn it showed no words until an open or a ↻ press.
   Now its first draw reads them, unless an open or the start's reopen
-  read them first.
+  read them first, or the start failed to list the pane.
 - **One session start reads the PR states once.** A start whose reopen
   placed the pane before the `/resume` hook ran read every PR twice. Now
   only the hook that reads first, the reopen or the `/resume` hook, reads
