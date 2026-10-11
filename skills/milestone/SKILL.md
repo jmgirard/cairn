@@ -352,8 +352,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,
-  including any untriaged inbox item, orphaned issue, or outside merge §2
-  surfaced (a
+  including any untriaged inbox item, orphaned issue, outside merge, or
+  linked item §2 surfaced (a
   decision gate, not a route)
 - Park M<NNN> as `blocked` → the release window is not open (a `release window` WARN fired in §2) — a decision put to the user, not a route
 
@@ -375,6 +375,10 @@ resolves here too.
 dispositions below other than **close**, which stays issue-only; the
 proposed disposition shown for such an item names the pull request number
 and the archive summaries the outside-merges bullet matched (or "none").
+§2's linked items resolve here too, each with one of four dispositions:
+**update the row**, `/hotfix`, `/milestone-plan`, or **leave**, each
+described below. The proposed disposition names the item, what happened, and
+the rows that link it.
 Each item takes exactly one disposition — you propose, the user chooses:
 
 - **candidate row** — the default for anything real but not urgent; one
@@ -384,7 +388,17 @@ Each item takes exactly one disposition — you propose, the user chooses:
   a second intake mechanism. A bug an outside merge introduced or undid
   takes this disposition too.
 - **`/milestone-plan`** — anything larger than the hotfix bar.
-- **leave** — no row, no action, with the reason stated.
+- **leave** — no row, no action, with the reason stated. A linked item
+  left on a row that carries a date is reported again at the next audit,
+  since its cut-off has not moved.
+- **update the row** — a linked item only: rewrite each candidate row that
+  links it to carry the news (for example `easystats/insight#1263 merged
+  2026-10-11`) and a `checked` mark with the current UTC time, cut to the
+  second and never rounded up (`checked 2026-10-11T17:05:09Z`, from `date
+  -u +%Y-%m-%dT%H:%M:%SZ`). The mark moves the row's cut-off, so the next
+  audit reports only what came after it. In owner mode the edit is a
+  docs-only commit to the default branch. In guest mode it stays on disk in
+  `cairn/ROADMAP.md`, uncommitted.
 - **close** — an orphaned issue from §2's orphan bullet: only on the
   user's selection in the triage chip, close it with
   `gh issue close <N> --repo <base-repo> --comment` carrying a one-line comment naming the
