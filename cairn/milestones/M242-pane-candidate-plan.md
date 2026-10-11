@@ -1,6 +1,6 @@
 # M242: A ✎ Button on each candidate row in the cairn pane plans that candidate
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -75,6 +75,9 @@ The held-run edges stay with "⌂ edges (M241 review)".
 - 2026-10-11: paused at the user's request after T2. T3 (docs) and T4 (live look in circumplex) remain.
 - 2026-10-11: resumed. T3 done: README's candidate paragraph, DESIGN's candidate-row text and `hooks/status/` entry, and a CHANGELOG "New" entry describe ✎. Five verify checks green, mod tests 1643.
 - 2026-10-11: T4 live look in circumplex, a session the operator opened there on this branch's mod. The operator reported ✎ at the right end of each candidate row. A press cleared the conversation and started the plan with that row's title, and the operator stopped it at its question set. The operator accepted the look.
+- 2026-10-11: claim audit: 46 claims read, 4 corrected — README.md, CHANGELOG.md, cairn/DESIGN.md, hooks/status/pane.test.tsx
+- 2026-10-11: claim audit detail: the README gained the ⌂ guard and a short-title definition, which the CHANGELOG also took. DESIGN names a missing row, and DESIGN and the test comment say ✎ needs a short title. The same reader's re-read found all four true. Its note on the exact `[high] ` token match was left, since the README's older sentence covers it.
+- 2026-10-11: all tasks done, five verify checks green (mod tests 1643). Status set to review.
 
 ## Decisions
 
