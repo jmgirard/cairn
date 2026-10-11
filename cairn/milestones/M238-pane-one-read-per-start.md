@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** m238-pane-one-read-per-start
+- **Branch/PR:** m238-pane-one-read-per-start · https://github.com/jmgirard/cairn/pull/248
 
 ## Goal
 
