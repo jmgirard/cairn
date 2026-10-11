@@ -76,3 +76,31 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - AC5: README's pane section states the resume read, the read for a drawn pane behind another tab, and the one graphql query. DESIGN's `hooks/status/` entry states all three (`isPlaced`, `readPr`, `prRead`). CHANGELOG `## Unreleased` has the new "fills again" entry, and the state, count, and ↻ entries were updated. The AC5 `git grep` returns 14 lines on the review head. The 7 new or edited lines state the new behavior. The other 7 are the band example (README:96), the reopen (README:399, 402, DESIGN:420, 431, 436), and a review chip and band row (README:686, DESIGN:574), and none of them contradicts the new behavior.
 - AC6: on the review head, `python3 -m unittest discover -s scripts/tests` exits 0, as do `-s hooks/tests`, `claude plugin validate .claude-plugin/plugin.json`, and `claude plugin validate .claude-plugin/marketplace.json`. `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exits 0 with 1590 pass and 0 fail.
 - Consistency gate: `cairn_validate.py` prints "all checks passed". No DESIGN principle changed, so `cairn_impact` is skipped. The verify checks pass on the review head (AC6). The marketplace validate prints "Validation passed" with no `plugins[N].version` warning. CHANGELOG `## Unreleased` carries the changes, with no milestone numbers.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a failed write of `reading` false leaves ⋯ on a pane already drawn, since a change to `inFlight` causes no redraw — fix now (`$.ui.invalidate('ui.render')` in that catch).
+- diff-bug #2: a resumed start in a folder marked for reopen reads the PRs twice, from the reopen and from the resume hook — follow-up, new row "Pane edges (M237 review)".
+- diff-bug #3: the AC1 tests never fire `session.start` before the resume hook — fix now (a test of a resumed process start).
+- diff-bug #4: a failed graphql call now loses the word, and the docs do not call it a change — reject, planned change: AC4 names a rejected call and a non-zero exit as `unknown`, and the PR-state feature is still under `## Unreleased`, so no released behavior changes.
+- diff-bug #5: the claim that a reload ends the old module's reads is unverified — follow-up, already in "Pane edges (M222–M236 reviews)".
+- diff-bug #6: a pane listed but not placed at a clear or resume reads nothing, so once placed it shows no words until an open or ↻ — follow-up, new row "Pane edges (M237 review)".
+- diff-bug #7: the test fake's failing `graph` answer models only bad threads — reject, false: the fake's comment says so, and a failed call is modeled through `answer`. The missing `reviewDecision` key is covered by the absent-decision case in `counts.test.ts`.
+- diff-bug #8: the AC2 positive cases do not check that the blocked URL was read — fix now (assert its graphql call and its word).
+- diff-bug #9: README's "The state word and its Button stay" can be read with the failed-query sentence — fix now (reworded).
+- diff-bug #10: `COUNTS_QUERY`, `countsArgv`, and `counts.ts` keep their names, and `prRead` looks up the pull request twice — reject, style.
+- blame-history #1: a failure confined to the threads, which `gh api graphql` reports with a non-zero exit, now blanks the word that M225 kept — reject, planned change (AC4).
+- blame-history #2: with `GH_HOST` set to another host, the graphql call for a github.com URL can go to that host and read `unknown` — fix now (`--hostname github.com` in the argv).
+- blame-history #3: no captured `gh` reply carries `state` and `reviewDecision`, so a wrong field name would pass — fix now (a reply captured from PR #246 with the new query, read by `prRead`).
+- blame-history #4: the pane-level count-failure cases were removed, a merged PR now reads its threads, and the M230 quiet hidden-tab case was inverted — reject, planned change (AC2, AC4). `counts.test.ts` and the M224 AC4 pane tests cover the failure cases.
+- blame-history #5: `inFlight` is module-local while `reading` is shared, so another host of the read would show ↻ — reject, false: one module serves the session's process, and the state is per session.
+- blame-history #6: the double read at a resumed start — follow-up, the diff-bug #2 row.
+- blame-history #7: no test lands a resume in another root — reject: the user dropped test-gap items at the question set, and `refresh`'s root handling is the M210 path that `clear` already takes.
+- blame-history #8: docs drift, and the pane-shown check now at four sites — follow-up, new row "Pane edges (M237 review)". The AC5 sweep found no contrary line.
+- prior-review #1: `isPlaced` adds a fourth spelling of the pane check that M230 asked to share — follow-up, new row "Pane edges (M237 review)".
+- prior-review #2: the double read now also at a resume — follow-up, the diff-bug #2 row.
+- prior-review #3: stale comments at `pane.ts` (`PrWord`, `OPEN_WORDS`) and `types/index.d.ts` (`CairnPrWord`) still name `gh pr view` — fix now.
+- prior-review #4: long comment and prose lines — reject, style.
+- prior-review #5: an old module's detached read can still write after a reload — follow-up, already in "Pane edges (M222–M236 reviews)".
+- prior-review #6: no test of `inFlight` when two reads overlap — reject: the M236 overlap tests run through the counter, and the user dropped test-gap items.
+- prior-review #7: a hotfix-only PR still waits for the list — follow-up, already in "Pane edges (M222–M236 reviews)".
+- prior-review #8: a PR on another host gets no counts — reject, planned change (AC4).
+- prior-review (unranked): DESIGN's `hooks/status/` history list does not name M237 — fix now.
