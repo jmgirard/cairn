@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M239: Compare low with default reasoning effort on cairn's Sonnet and Haiku roles
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — a measurement note under `cairn/references/` that no adopter reads   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m239-effort-roles   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -101,7 +101,7 @@ this note does not rely on.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Probe: spawn one-word subagents on Sonnet and on Haiku, each with
+- [x] T1: Probe: spawn one-word subagents on Sonnet and on Haiku, each with
       `effort` unset and with `low`, and read the `model` and `effort`
       fields of their transcripts. Write the note's Provenance, Scope, and
       Design sections, fixed before any task run: the arms, the models,
@@ -146,3 +146,5 @@ this note does not rely on.
 - 2026-10-10: plan gate chose the verdict `untested` for a group whose `low` rows do not record `low` over a criterion requiring every `low` row to record `low`, because the probe can show that a model ignores the setting; decided toward the narrower promise.
 - 2026-10-10: criteria audit ran after the question set, because the request named no work until the set answered it.
 - 2026-10-10: criteria audit (reduced mode, fresh Opus reader) returned 4 findings, all fixed. AC3 bound how prices were read, now the note's price table and citation. AC4 bound the label draw and read timing, now the note's per-task label mapping and ratings, with the timing kept in T5. AC4's judge clause counted tasks with no record, fixed by the same rewording. AC5 missed a `low` row with no `effort` value, now `untested`.
+- 2026-10-10: implement started on branch m239-effort-roles; the untracked `cairn-probe.log` and `tsconfig.json` predate this milestone and stay unstaged.
+- 2026-10-10: T1 probe: four one-word spawns show `effort` unset records `high` and `effort: "low"` records `low`, on Sonnet and on Haiku alike; the note's Design section is written and fixed before any task run.
