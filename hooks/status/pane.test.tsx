@@ -3103,8 +3103,8 @@ describe('one process start reads each URL once (M238 AC2)', () => {
     expect(calls.reads).toEqual([URL_1250])
   })
 
-  // A session end ends the start, so a clear start after an open whose read
-  // is still in flight reads again.
+  // An open's read is not the start's read, so a clear start after an open
+  // whose read is still in flight reads again.
   test('a clear start after a session end reads again while the open read is held', async ($, on) => {
     const { calls, release } = held(on)
     const copy = copyOf('blocked-active')
@@ -3120,6 +3120,19 @@ describe('one process start reads each URL once (M238 AC2)', () => {
     } finally {
       release()
     }
+  })
+
+  // A session end ends the start, so after a reopen's read, a clear start in
+  // the same process reads again.
+  test("a clear start after a session end reads again after the reopen's read", async ($, on) => {
+    const { calls } = await marked($, on)
+    await $.session.start(NEW_START)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+    await $.session.end(CLEAR_END)
+    await $.classic.SessionStart({ source: 'clear' })
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250, URL_1250])
   })
 })
 
