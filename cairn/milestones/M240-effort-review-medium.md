@@ -92,7 +92,7 @@ run per arm goes to the note's re-measurement procedure.
       call's output from the foreground Agent tool result's `usage`. The M228
       judge prompt widens to three labeled reports. The section states AC2's
       verdict rule.
-- [ ] T2: Extract M239's H1 to H3 default reports into report files (agent
+- [x] T2: Extract M239's H1 to H3 default reports into report files (agent
       ids `aa3398a8cbe013dcd`, `a19090c5879113da4`, `a358c3f0ff2386c3e`,
       under the M239 Provenance directory). Run H1 to H3 at
       `effort: "medium"` and with `effort` unset, with `model: "sonnet"` and
@@ -100,10 +100,10 @@ run per arm goes to the note's re-measurement procedure.
       model values and its counts. The live tree holds `effort-roles.md`,
       which lists M239's findings, so check that no run or judge transcript
       names that file, as M239 did for `haiku-sonnet-roles.md`.
-- [ ] T3: Run one Opus judge per task over its three reports, with `effort`
+- [x] T3: Run one Opus judge per task over its three reports, with `effort`
       unset. Draw the labels with `random.SystemRandom` and write the mapping
       before the judge runs. Record every rating and compute the verdict.
-- [ ] T4: Finish the note: run table, rating table, verdict, limits, and
+- [x] T4: Finish the note: run table, rating table, verdict, limits, and
       re-measurement procedure. Add its `INDEX.md` line. Pin it in the
       shipped-page ledger of `scripts/tests/test_scripts.py` (`EXPECTED`,
       near the `effort-roles.md` entry).
@@ -131,3 +131,6 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: plan gate chose leaving search and edit work at default over `low` (user's choice), because the measured saving sits inside the output undercount; falsified by a measurement where `low` saves more than the undercount can reverse.
 - 2026-10-10: implement started on branch `m240-effort-review-medium`. Untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
 - 2026-10-10: T1 done: the note's Design section committed before any run. New runs reuse the M239 default runs' first user records as prompts (extracted, verbatim). Each report is the run's `SubagentHandback` message, else its last assistant text.
+- 2026-10-10: T2 done: six Sonnet runs (three `medium`, three effort unset), all foreground in one message. Every `medium` record says `medium` and every new default record says `high`. The only note-name hit is `effort-roles.md` as a path in a `gh api` comment listing in the H3 default run, which read no such file.
+- 2026-10-10: T3 done: three Opus judges over shuffled labels, with the mapping read after they returned. Scores M239 default 3, new default 3, `medium` 2. Costs $0.8794, $0.9830, $0.6700. Verdict `default`: 2 is below 0.9 times the mean default score of 3.
+- 2026-10-10: T4 done: note finished, page pinned `ok` in `TestShippedPageStateLedger`. The note's later sections were appended with a shell heredoc, not the Edit tool, so the app's edited-files card leaves that append out.

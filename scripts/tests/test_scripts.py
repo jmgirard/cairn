@@ -1470,9 +1470,13 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # recorded first-hand on 2026-10-10, priced from a pricing page its status
     # says it read directly that day, a dated verification claim, hence `ok`
     # for the same reason as M228's page.
+    # M240 adds the medium-against-default comparison on the history
+    # reviewers: first-hand runs of 2026-10-10, priced by the figures its
+    # status says `effort-roles.md` read directly that day, hence `ok`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
+        "effort-review-medium.md": "ok",
         "effort-roles.md": "ok",
         "m118-cap-exemption-ledger.md": "exempt",
         "m127-ac1-ledger.md": "exempt",
