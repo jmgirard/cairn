@@ -1,13 +1,13 @@
 # M242: A ✎ Button on each candidate row in the cairn pane plans that candidate
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter sees the Button in the cairn pane
-- **Branch/PR:** —
+- **Branch/PR:** m242-pane-candidate-plan
 
 ## Goal
 
