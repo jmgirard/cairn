@@ -643,10 +643,18 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       const ui = await mountPane($, surface, 44)
       const head = await boxOf(ui, 'M060-head')
       if (head === undefined) throw new Error('no M060 head line')
-      // The first line also carries the ↻ Box after the tail (M236).
-      expect(kids(head).map(keyOf)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail', 'M060-head-refresh'])
+      // The first line also carries the ⌂ and ↻ Boxes after the tail (M236,
+      // M241).
+      expect(kids(head).map(keyOf)).toEqual([
+        'M060-head-lead',
+        'M060-head-text',
+        'M060-head-tail',
+        'M060-head-home',
+        'M060-head-refresh',
+      ])
       expect(kids(head)[2].props.flexShrink).toBe(0)
       expect(kids(head)[3].props.flexShrink).toBe(0)
+      expect(kids(head)[4].props.flexShrink).toBe(0)
       const title = textOf(kids(await boxOf(ui, 'M060-head-text') as Element)[0])
       expect(title.length).toBeGreaterThan(44)
       expect((await partOf(ui, 'M060-head-tail')).map(textOf).join('')).toMatch(/^ {2}\d+%$/)
@@ -990,10 +998,12 @@ describe('the pill gives way before the Button (M218 AC4)', () => {
   }
 })
 
-// M219: the Next line's Status and Clear Buttons, with their keys and
+// M219: the Next line's Status Button, the Clear Button it carried until
+// M241, and the first line's ⌂ (M241) and ↻ (M236), with their keys and
 // labels written out by hand.
 const PANE_STATUS = 'cairn-pane-status'
 const PANE_CLEAR = 'cairn-pane-clear'
+const PANE_HOME = 'cairn-pane-home'
 const PANE_REFRESH = 'cairn-pane-refresh'
 const STATUS_RUN = { command: 'cairn:milestone', args: '' }
 const CLEAR_RUN = { command: 'clear', args: '' }
@@ -1020,9 +1030,9 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
         // No other line of the pane carries a Button (M219 review), but for
-        // the ↻ Refresh on the first line (M236). Before any read, no
+        // the ⌂ and ↻ on the first line (M236, M241). Before any read, no
         // blocked line carries one.
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_REFRESH, PANE_NEXT, PANE_STATUS])
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
@@ -1034,7 +1044,10 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
   }
 })
 
-describe('a running skill hides Status, and its end adds Clear (M219 AC2)', () => {
+// Until M241 a skill's end added Clear before Status. The pane now draws no
+// Clear at any of these points, and the band's Clear is as its own tests
+// assert (M241 AC4).
+describe('a running skill hides Status, and its end adds no Clear (M219 AC2, M241 AC4)', () => {
   for (const surface of SURFACES) {
     test(`skill prompt, Stop, then an idle typed prompt (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
@@ -1045,18 +1058,30 @@ describe('a running skill hides Status, and its end adds Clear (M219 AC2)', () =
       expect(await ui.findAll({ key: PANE_STATUS })).toEqual([])
       expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
       await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
-      expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_CLEAR, PANE_STATUS])
-      const [clear] = await ui.findAll({ key: PANE_CLEAR })
-      expect([clear.props.variant, clear.props.label]).toEqual(['secondary', 'Clear'])
+      expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
+      expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
       await $.prompt.submit({ text: 'a typed prompt', wait: false, origin: { kind: 'composer' } })
       expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
       expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
       await ui.unmount()
     })
   }
+
+  test('paneLines gives the Next line Status alone while it acts', () => {
+    const state: PaneState = {
+      found: true,
+      milestones: [],
+      next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, waiting: [] },
+      workable: [],
+      waiting: [],
+      candidates: [],
+      blocked: [],
+    }
+    expect(layout(state, [], true).find(line => line.key === 'next')?.buttons).toEqual(['status'])
+  })
 })
 
-describe('a press of Status or Clear runs its command (M219 AC3)', () => {
+describe('a press of Status runs its command (M219 AC3)', () => {
   for (const surface of SURFACES) {
     test(`Status runs the status skill (${surface})`, async ($, on) => {
       const copy = copyOf('single-in-progress')
@@ -1065,17 +1090,6 @@ describe('a press of Status or Clear runs its command (M219 AC3)', () => {
       const ui = await mountPane($, surface)
       await ui.press({ key: PANE_STATUS })
       expect(copy.commands).toEqual([STATUS_RUN])
-      await ui.unmount()
-    })
-
-    test(`Clear, drawn after a Stop ends a step, runs clear (${surface})`, async ($, on) => {
-      const copy = copyOf('single-in-progress')
-      seat(on, copy)
-      await $.turn.complete(turn())
-      await endSkill($)
-      const ui = await mountPane($, surface)
-      await ui.press({ key: PANE_CLEAR })
-      expect(copy.commands).toEqual([CLEAR_RUN])
       await ui.unmount()
     })
 
@@ -1118,16 +1132,14 @@ describe("the pane's Plan and Implement run /clear and then their command (M221 
         const copy = copyOf(name)
         seat(on, copy)
         await $.turn.complete(turn())
-        // A skill that ended leaves Clear drawn too, so every action Button
-        // is pressed below.
-        await endSkill($)
+        // Every action Button is pressed below, ⌂ among them (M241).
         const ui = await mountPane($, surface)
-        expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+        expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         const [next] = await ui.findAll({ key: PANE_NEXT })
         expect(next.props.label).toBe(ACTION_LABELS[FIXTURES[name].next?.action as string])
         await ui.press({ key: PANE_NEXT })
         expect(copy.commands).toEqual([CLEAR_RUN])
-        for (const key of [PANE_NEXT, PANE_CLEAR, PANE_STATUS]) await ui.press({ key })
+        for (const key of [PANE_NEXT, PANE_HOME, PANE_STATUS]) await ui.press({ key })
         await untilRuns(copy, 2, 10)
         expect(copy.commands).toEqual([CLEAR_RUN])
         await $.session.end(CLEAR_END)
@@ -1158,14 +1170,207 @@ describe("the pane's Plan and Implement run /clear and then their command (M221 
   }
 })
 
-describe('the pill gives way before Clear and Status (M219 AC4)', () => {
+// M241: the first line's ⌂, written out by hand.
+const HOME = '⌂'
+
+// The first line's key for a fixture: its first milestone's head line, or
+// `no-active`.
+function firstKey(name: string): string {
+  const first = FIXTURES[name].pane[0]
+  return first === undefined ? 'no-active' : `${first.id}-head`
+}
+
+// Waits up to `tries` waits of 5 ms for the opens beneath the mod to reach
+// `n`, and then once more, so an unawaited open lands (M241).
+async function untilOpens(copy: Copy, n: number, tries = 200) {
+  for (let i = 0; i < tries && copy.opens.length < n; i++) await new Promise(resolve => setTimeout(resolve, 5))
+  await new Promise(resolve => setTimeout(resolve, 5))
+}
+
+describe('the first line carries ⌂ before ↻ while no cairn skill runs (M241 AC1)', () => {
+  for (const name of ['single-in-progress', 'no-active']) {
+    for (const surface of SURFACES) {
+      test(`${name}: ⌂ then ↻, and ↻ alone while a skill runs (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const key = firstKey(name)
+        const first = (await boxOf(ui, key)) as Element
+        expect(buttonsIn(first).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH])
+        expect(kids(first).map(keyOf).slice(-2)).toEqual([`${key}-home`, `${key}-refresh`])
+        expect((await boxOf(ui, `${key}-home`))?.props.flexShrink).toBe(0)
+        const [home] = await ui.findAll({ key: PANE_HOME })
+        expect([home.props.variant, home.props.label]).toEqual(['secondary', HOME])
+        await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+        expect(buttonsIn((await boxOf(ui, key)) as Element).map(keyOf)).toEqual([PANE_REFRESH])
+        expect(await ui.findAll({ key: PANE_HOME })).toEqual([])
+        await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+        expect(buttonsIn((await boxOf(ui, key)) as Element).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH])
+        await ui.unmount()
+      })
+    }
+  }
+
+  test('paneLines gives the first line home and refresh while it acts, and refresh alone otherwise', () => {
+    const state: PaneState = {
+      found: true,
+      milestones: [],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [],
+      blocked: [],
+    }
+    expect(layout(state, [], true)[0]).toMatchObject({ key: 'no-active', buttons: ['home', 'refresh'] })
+    expect(layout(state, [], false)[0]).toMatchObject({ key: 'no-active', buttons: ['refresh'] })
+  })
+})
+
+describe('a press of ⌂ runs /clear once, and a guarded press runs nothing (M241 AC2)', () => {
+  // On a milestone's head line and on the `no active milestone` line.
+  for (const name of ['single-in-progress', 'no-active']) {
+    test(`${name}: a free press runs clear with empty args`, async ($, on) => {
+      const copy = copyOf(name)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await pressKey($, PANE_HOME)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+    })
+  }
+
+  // single-in-progress's Next is `Resume`, which runs its command with no
+  // `/clear` first, so both presses hold a run in flight.
+  for (const [label, key, want] of [
+    ['Status', PANE_STATUS, STATUS_RUN],
+    ['Resume', PANE_NEXT, runOf('single-in-progress')],
+  ] as const) {
+    test(`a press while a ${label} run is in flight runs nothing`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      let release = () => {}
+      copy.runHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      const first = ui.press({ key })
+      try {
+        for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+        expect(copy.commands).toEqual([want])
+        await ui.press({ key: PANE_HOME })
+        expect(copy.commands).toEqual([want])
+      } finally {
+        release()
+        await first
+      }
+      await ui.unmount()
+    })
+  }
+
+  // One fixture for each held next step, `Plan` and `Implement`.
+  const HELD = CLEARS_FIRST.map(action => PANE_CLEAR_FIRST.find(name => FIXTURES[name].next?.action === action) as string)
+  test('the held cases reach both Plan and Implement', () => {
+    expect(HELD.map(name => ACTION_LABELS[FIXTURES[name].next?.action as string]).sort()).toEqual(['Implement', 'Plan'])
+  })
+
+  for (const name of HELD) test(`${name}: a press while its command is held runs nothing`, async ($, on) => {
+    const copy = copyOf(name)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    await pressKey($, PANE_NEXT)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await pressKey($, PANE_HOME)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    // The held command's end runs it, and opens no pane for a ⌂ press.
+    const before = copy.opens.length
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, runOf(name)])
+    expect(copy.opens.length).toBe(before)
+  })
+
+  test('a second press, or a Status press, before the first press ends runs nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    await pressKey($, PANE_HOME)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await pressKey($, PANE_HOME)
+    await pressKey($, PANE_STATUS)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    // The end frees the Buttons again.
+    await $.session.end(CLEAR_END)
+    await pressKey($, PANE_STATUS)
+    expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+  })
+})
+
+describe("a ⌂ press's /clear opens the pane at its end, and nothing else does (M241 AC3)", () => {
+  // The pane is open and sits behind another pane's tab, so the open shows.
+  async function homeReady($, on) {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    copy.hidden = [PANE]
+    return copy
+  }
+
+  test('a clear end after a press opens the pane once and brings it to the front', async ($, on) => {
+    const copy = await homeReady($, on)
+    const before = copy.opens.length
+    await pressKey($, PANE_HOME)
+    expect(copy.opens.length).toBe(before)
+    await $.session.end(CLEAR_END)
+    await untilOpens(copy, before + 1)
+    expect(copy.opens.slice(before)).toEqual([{ id: PANE, title: 'cairn' }])
+    expect(panesOf(copy).find(each => each.id === PANE)?.isShown).toBe(true)
+    // A later clear end opens nothing more.
+    await $.session.end(CLEAR_END)
+    await untilOpens(copy, before + 2, 10)
+    expect(copy.opens.length).toBe(before + 1)
+  })
+
+  test('an end with another reason after a press opens nothing', async ($, on) => {
+    const copy = await homeReady($, on)
+    const before = copy.opens.length
+    await pressKey($, PANE_HOME)
+    await $.session.end({ reason: 'other', sessionId: 's1' })
+    await untilOpens(copy, before + 1, 10)
+    expect(copy.opens.length).toBe(before)
+  })
+
+  test('a refused clear leaves no open for a later clear end', async ($, on) => {
+    const copy = await homeReady($, on)
+    copy.runThrows = 'no such command here'
+    const before = copy.opens.length
+    await pressKey($, PANE_HOME)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    expect(copy.toasts?.[0]).toMatch(/^cairn: .* \(\/clear\)$/)
+    await $.session.end(CLEAR_END)
+    await untilOpens(copy, before + 1, 10)
+    expect(copy.opens.length).toBe(before)
+  })
+
+  test('a clear end with no press opens nothing', async ($, on) => {
+    const copy = await homeReady($, on)
+    const before = copy.opens.length
+    await $.session.end(CLEAR_END)
+    await untilOpens(copy, before + 1, 10)
+    expect(copy.opens.length).toBe(before)
+  })
+})
+
+describe('the pill gives way before Status (M219 AC4)', () => {
   for (const surface of SURFACES) {
-    test(`the Buttons' Boxes do not shrink, and the pill's does (${surface})`, async ($, on) => {
+    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       await endSkill($)
       const ui = await mountPane($, surface)
-      for (const key of ['next-clear', 'next-status']) {
+      for (const key of ['next-status']) {
         const box = (await boxOf(ui, key)) as Element
         expect([key, box.props.flexShrink]).toEqual([key, 0])
       }
@@ -1798,7 +2003,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     await $.command.run({ command: COMMAND })
     expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
     expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
-    expect((await blockedView($, 'M110-head')).buttons).toEqual(['cairn-pane-refresh'])
+    expect((await blockedView($, 'M110-head')).buttons).toEqual(['cairn-pane-home', 'cairn-pane-refresh'])
     const press = async () => {
       const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
       await ui.press({ key: 'cairn-pane-refresh' })
@@ -2425,11 +2630,11 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect(buttonsIn(second as Element)).toEqual([])
   })
 
-  test('the Next line with Status and Clear, and one active milestone', async ($, on) => {
+  test('the Next line with Status after a skill ends, and one active milestone', async ($, on) => {
     seat(on, copyOf('single-in-progress'))
     await endSkill($)
     const got = await one($, `${FIXTURES['single-in-progress'].pane[0].id}-head`)
-    expect(got.keys).toEqual([PANE_REFRESH, PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+    expect(got.keys).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS])
   })
 
   test('one active milestone and no PRs', async ($, on) => {

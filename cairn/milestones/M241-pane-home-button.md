@@ -1,13 +1,13 @@
 # M241: A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter sees the Button in the cairn pane
-- **Branch/PR:** —
+- **Branch/PR:** m241-pane-home-button
 
 ## Goal
 
@@ -33,7 +33,7 @@ the "Pane edges (M238 review)" row.
 ## Acceptance criteria
 
 - [ ] AC1: While no cairn skill's step is set, `paneLines` gives the pane's first line the Buttons `home` then `refresh`. The first line is the first milestone's head line, or the `no active milestone` line. register.tsx draws `home` as a `secondary` Button labeled `⌂` with key `cairn-pane-home`. While a step is set, the first line carries `refresh` alone. Mod tests cover both states on both kinds of first line.
-- [ ] AC2: A free press of ⌂ runs the built-in `clear` command once, with empty args. A press is free when no step is set and no other Button's run is in flight or held. A press runs no command in four guarded cases. They are a set step, a run in flight, a held `Plan` or `Implement` command, and a pending ⌂ press. Mod tests assert the `$.command.run` calls in the free case and in each of the four guarded cases.
+- [ ] AC2: A free press of ⌂ runs the built-in `clear` command once, with empty args. A press is free when no step is set, no Button's run is in flight or held, and no earlier ⌂ press is pending. A drawn ⌂ press runs no command in three guarded cases. They are a run in flight, a held `Plan` or `Implement` command, and a pending ⌂ press. While a step is set, ⌂ is not drawn (AC1). Mod tests assert the `$.command.run` calls in the free case and in each of the three guarded cases.
 - [ ] AC3: At the session end of a ⌂ press's `/clear` (reason `clear`), the mod calls `$.ui.open` for the pane exactly once. A session end with any other reason after a ⌂ press calls no open. A ⌂ press whose `/clear` run is refused leaves no pending open, so a later `clear` end from another Button calls no open. A session end with no ⌂ press pending calls no open. Mod tests assert the open calls in each of these four cases.
 - [ ] AC4: The pane's Next line carries no Clear Button, with `ended` true or false. It carries Status after the next-step Button as before. The band's Clear Button draws and presses as the existing band tests assert, and those tests pass.
 - [ ] AC5: A live look in the desktop app shows ⌂ just before ↻ on the pane's first line. A press of ⌂ there clears the conversation, and the cairn pane stays open. The operator accepts the look.
@@ -52,8 +52,8 @@ the "Pane edges (M238 review)" row.
 
 ## Tasks
 
-- [ ] T1: pane.ts: add `home` to `PaneButton` and `HOME_LABEL = '⌂'`. Give the first line `['home', 'refresh']` while `acts` is true, and `['refresh']` otherwise. Drop `clear` from the Next line and update the `paneLines` comments. Update pane.test.tsx.
-- [ ] T2: register.tsx: add `PANE_BUTTONS.home` and route `home` in `pressPane` to a new `pressHome`. It returns at once while `busy()`, a step, or its own pending mark is set. Otherwise it sets the mark and runs `clear` through `run`, and a refused run clears the mark. `session.end` reads the mark and clears it at any end. On reason `clear`, it opens the pane unawaited, as the `heldRun` path runs its command. Write the AC2 and AC3 tests.
+- [x] T1: pane.ts: add `home` to `PaneButton` and `HOME_LABEL = '⌂'`. Give the first line `['home', 'refresh']` while `acts` is true, and `['refresh']` otherwise. Drop `clear` from the Next line and update the `paneLines` comments. Update pane.test.tsx.
+- [x] T2: register.tsx: add `PANE_BUTTONS.home` and route `home` in `pressPane` to a new `pressHome`. It returns at once while `busy()`, a step, or its own pending mark is set. Otherwise it sets the mark and runs `clear` through `run`, and a refused run clears the mark. `session.end` reads the mark and clears it at any end. On reason `clear`, it opens the pane unawaited, as the `heldRun` path runs its command. Write the AC2 and AC3 tests.
 - [ ] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry.
 - [ ] T4: Live look in the desktop app (granted at the question set).
 
@@ -69,6 +69,12 @@ the "Pane edges (M238 review)" row.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 10 findings, all fixed in this file. AC2 split held and in-flight runs and added a second ⌂ press. AC3 added a refused run. AC4 named the band tests. AC5 dropped the refill claim, which holds without M241, and the recording clause. AC6 left CHANGELOG history alone and replaced a grep with a reader's check. The open's effect was narrowed to a pane behind another tab.
 - 2026-10-10: inbox sweep: no open issues and no open PRs on jmgirard/cairn.
 - 2026-10-10: collision check: M219 shipped the pane's Clear, which this milestone removes, as the user chose. M222 shipped the pane kept open across a Button's `/clear`. No candidate row or D-entry overlaps a ⌂ Button.
+
+- 2026-10-10: substantive amendment: AC2 drops the set-step press from its tested guards. ⌂ is not drawn while a step is set (AC1), and `ui.press` presses only a drawn Button. `pressHome` keeps its step check, and no criterion promises it. The deliverable the user sees does not change.
+- 2026-10-10: re-audit: AC2 (full) — the "free" definition contradicted the pending-⌂ guard, and the press-time step check had no promise. Fixed the definition, and kept no promise for the step check (narrower).
+- 2026-10-10: re-audit: AC2 (full) — "pending" is not defined. The tests covered one in-flight run, one held label, and one kind of first line. Wording kept as audited. The tests now cover Status and Resume runs in flight, both held labels, and both kinds of first line.
+- 2026-10-10: implement chose a module mark `homeRun` beside `heldRun` over an atom. A reload must drop a pending press, as it drops `heldRun`. `paneLines` lost its `ended` parameter, which only the pane's Clear read.
+- 2026-10-10: T1, T2 done. ⌂ draws before ↻ while no step is set, a press runs `/clear`, and a `clear` end opens the pane. The pane's Clear is gone. 13 old pane tests changed to the new Button lists, and 17 M241 tests added. Mod tests 1625 pass, and all five verify checks pass.
 
 ## Decisions
 

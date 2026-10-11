@@ -36,22 +36,24 @@ import { PILL_TEXT } from './track'
 // of the phase its command runs. The colors are theme keys (M217).
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the pill, which register.tsx draws as a Button
-// (M218). After that Button the line carries Status, and Clear before it
-// while `ended` is true, which register.tsx draws as Buttons (M219).
+// (M218). After that Button the line carries Status, which register.tsx
+// draws as a Button (M219). Until M241 it also carried Clear after a cairn
+// skill's end, and the first line's ⌂ took its place.
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
 // with the one key `cairn-pane-next` and the next-step press.
 // A line's `buttons` name the Buttons that register.tsx draws after its
-// tail and any action Button, in order: Clear and Status on the Next line
-// (M219), and one of Finish, Revise, or Check on a blocked line (M224). A
+// tail and any action Button, in order: Status on the Next line (M219),
+// and one of Finish, Revise, or Check on a blocked line (M224). A
 // blocked line's `target` is its milestone id, which its Button's key and
 // press carry. Since M236 the pane's first line carries the one Refresh
 // Button, labeled ↻, which reads everything again. Its `grow` makes its
 // text take the free room, so its tail and the Button sit at the right end
 // of the row. Until M236 the Blocked and Hotfixes headings each carried a
-// Refresh.
-export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
+// Refresh. While no cairn skill runs, the Home Button, labeled ⌂, comes
+// before ↻: it clears the conversation and opens the pane again (M241).
+export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
   indent: number
@@ -192,14 +194,16 @@ export function nextLabel(action: string): string | undefined {
   return Object.prototype.hasOwnProperty.call(NEXT_LABELS, action) ? NEXT_LABELS[action] : undefined
 }
 
-// The Status and Clear Buttons' labels (M212, M216). The band and the
-// pane's Next line read these (M219).
+// The Status and Clear Buttons' labels (M212, M216). The band reads both,
+// and the pane's Next line reads Status (M219, M241).
 export const STATUS_LABEL = 'Status'
 export const CLEAR_LABEL = 'Clear'
 // The pane's Refresh Button (M224, one ↻ on the first line since M236),
 // its label while a read of the pull request states runs (M236), and a
 // blocked line's Buttons (M224).
 export const REFRESH_LABEL = '↻'
+// The pane's Home Button, before ↻ on the first line (M241).
+export const HOME_LABEL = '⌂'
 export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
@@ -339,17 +343,14 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // The pane's lines from its state and the band's rows, whose counts give
 // each head line its percent. `acts` is true while no cairn skill's step is
 // set, and then the Next line carries its action label (M218) and the
-// Status Button after it (M219). `ended` is true from a
-// Stop that ends a cairn skill's step until the next idle typed prompt,
-// cairn skill prompt, or session end, and then the Clear Button comes
-// before Status (M219). `prs` holds each pull request's state word by its
+// Status Button after it (M219), and the first line carries ⌂ (M241).
+// `prs` holds each pull request's state word by its
 // URL, from the last read (M224), with its counts (M225). `hotfixes` holds
 // the open hotfix pull requests of the last read for this root (M226).
 export function paneLines(
   state: PaneState,
   band: BandRow[] = [],
   acts = false,
-  ended = false,
   prs: Record<string, PrRead> = {},
   hotfixes: HotfixPr[] = [],
 ): PaneLine[] {
@@ -361,8 +362,9 @@ export function paneLines(
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
   // The first line, the first milestone's head line or the no-active line,
-  // carries the ↻ Button at its right end (M236).
-  out[0].buttons = ['refresh']
+  // carries the ↻ Button at its right end (M236), and ⌂ before it while no
+  // cairn skill's step is set (M241).
+  out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
   out[0].grow = true
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
@@ -376,11 +378,11 @@ export function paneLines(
       bold: true,
     })
     const label = nextLabel(state.next.action)
-    // Status and Clear follow the next-step Button and show only with it, as
-    // the band's show only with a next-step label (M219 review).
+    // Status follows the next-step Button and shows only with it, as the
+    // band's shows only with a next-step label (M219 review).
     if (acts && label !== undefined) {
       next.action = label
-      next.buttons = ended ? ['clear', 'status'] : ['status']
+      next.buttons = ['status']
     }
     out.push(next)
   }
