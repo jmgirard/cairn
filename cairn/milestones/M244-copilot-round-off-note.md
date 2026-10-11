@@ -62,7 +62,7 @@ thread on the operator's open PRs".
 ## Tasks
 
 - [x] T1: In each of the six checkouts, add `# Copilot review: on` under the `# Collaboration mode: guest` line of `cairn/PROFILE.md`. Run `git status --short` and `cairn_validate` there.
-- [ ] T2: Write the rule in `skills/shared/copilot-review.md` §1, reword the "usual flow" sentence, and update the module's opening, which says only opted-in repos read it. Keep `wc -l -c` under the module's 140 lines and 8,000 bytes. Run the §3 query once, read-only, with owner `easystats`, name `performance`, PR 964, and record that it prints `reviewed`. Hand-run `skills/tests` (`test_copilot_review_round.py` pins this module).
+- [x] T2: Write the rule in `skills/shared/copilot-review.md` §1, reword the "usual flow" sentence, and update the module's opening, which says only opted-in repos read it. Keep `wc -l -c` under the module's 140 lines and 8,000 bytes. Run the §3 query once, read-only, with owner `easystats`, name `performance`, PR 964, and record that it prints `reviewed`. Hand-run `skills/tests` (`test_copilot_review_round.py` pins this module).
 - [ ] T3: Add the pointer at the four close sites in `skills/hotfix/SKILL.md` and `skills/milestone-review/SKILL.md`. Hand-run `skills/tests`.
 - [ ] T4: README Copilot paragraph and CHANGELOG entry. Run the five `verify` checks.
 
@@ -79,3 +79,4 @@ thread on the operator's open PRs".
 - 2026-10-11: plan chose the rule in the module's §1 with four pointers over a copy of the rule at each site. Four copies drift apart. The cost is a read of the module at a round-off close. Falsified by a measured `cairn_cost` reading that attributes a material share of a round-off hotfix's tokens to that read.
 - 2026-10-11: implement started on m244-copilot-round-off-note. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-11: T1 done. `# Copilot review: on` sits on line 3 of `cairn/PROFILE.md`, under the collaboration-mode line, in correlation, insight, modelbased, parameters, performance, and see. In each, `git status --short` lists no `cairn/` path and `cairn_validate` exits 0.
+- 2026-10-11: T2 done. The read-only §3 query on `easystats/performance#964` printed `reviewed earlier-head Lite` (exit 0). §1 now says off means no request, reply, or resolve, but for the note, and gains the "Off but present" paragraph with the note's fixed text. The opening says round-off skills read §1 and §3 at the named closes. The module is 138 lines and 7,937 bytes. `skills/tests` ran 726 OK, and the five verify checks pass (1660 mod tests, 0 red).

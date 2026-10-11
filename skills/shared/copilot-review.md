@@ -1,9 +1,9 @@
 # Copilot review round
 
 In a repo that opts in (§1), `/hotfix` and `/milestone-review` read this
-where they request Copilot and where they read the PR's conversation. It is
-a module of `tracking-rules.md`, read only at those moments, so it costs
-nothing to a session that never reaches them.
+where they request Copilot and where they read the PR's conversation. With
+the round off, they read §1 and §3 at the closes §1 names. It is a module
+of `tracking-rules.md`, read only at those moments.
 
 Budget (M231, from 126 lines / 7,142 bytes after RR17, plus about one section
 of headroom): **under 140 lines and under 8,000 bytes**, hand-read with
@@ -13,13 +13,25 @@ compress or retire content here. Never "let it grow".
 ## 1. Opt-in
 
 If `cairn/PROFILE.md` carries the header line `# Copilot review: on`, the
-round runs. An absent line, or any other value, means off, and the skill
-keeps its usual flow: the PR opens after the merge approval (D-138). The
+round runs. An absent line, or any other value, means off: the PR opens
+after the merge approval (D-138), and the skill requests, replies, and
+resolves nothing, but it can add the note below. The
 opt-in line is also the permission for the round's outward writes and for
 the agent's own dispositions of Copilot's threads: the fix pushes, the
 replies, and the resolves run without a further question (the M231 question
 set). The round keeps no record that it ran. The PR's own signals (§2)
 decide each step (RR17).
+
+**Off but present (M244).** With the round off, `/hotfix` at its step 7
+close and its step 6 guest handoff close, and `/milestone-review` at its
+step 10 close and its step 8 guest handoff close, run the state query (§3)
+once on a PR the round covers: an authored hotfix PR, or a milestone PR
+with no companions that was not merged before review started. Guest mode
+uses the base repo's owner and name. On `pending` or `reviewed`, the close
+block gets one line: `Copilot is on PR #<N>, but the Copilot round is off
+here, so cairn did not handle its threads. Add "# Copilot review: on" to
+cairn/PROFILE.md to turn it on.` On `none` or a failed query, it gets
+nothing. The note requests, replies, and resolves nothing.
 
 ## 2. Request
 
