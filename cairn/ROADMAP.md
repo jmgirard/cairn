@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-10 (M236 merged as PR #246: validate green, byte budgets met, M233 row pruned, M236-review row added, doctrine modules within budget, prose guards green)_
+_Last hygiene check: 2026-10-10 (M237 merged as PR #247: validate green, byte budgets met, M234 row pruned, M237-review row added, M191 lesson extended, doctrine modules within budget, prose guards green)_
 
 ## Milestones
 
@@ -9,10 +9,9 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M234 | Guest pushes find the fork, and intake commands work in any remote layout or shell | done | — | normal | milestones/archive/M234-fork-remote-intake-edges.md |
 | M235 | `/cairn-triage` runs in guest mode and writes its edits to disk | done | — | normal | milestones/archive/M235-guest-triage.md |
 | M236 | The pane has one ↻ Button and counts only unresolved threads | done | — | normal | milestones/archive/M236-pane-one-refresh.md |
-| M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | review | — | normal | milestones/M237-pane-fills-again.md |
+| M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | done | — | normal | milestones/archive/M237-pane-fills-again.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
