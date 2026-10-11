@@ -160,4 +160,37 @@ Pass 2, 2026-10-11, at 6326082 after the step-7 decline. Main has not moved. The
 - AC3 evidence: SKILL.md:281-283 state the `closed_by` rule. Line 320's item read adds `(.closed_by.login // "-")`, and the next lines print nothing when `$closer` is `$me`, else the merge or close at or after the cut-off. Fresh runs, zsh and bash identical (15 lines over fixtures A, B, C, E): fixture E prints nothing for jmgirard/cairn#238 (merged by jmgirard) and nothing for jmgirard/cairn#168 (closed by jmgirard, the task-side check); ggplot2#1 (null `closed_by`) reports `closed 2009-12-11T04:43:25Z`; insight#1262 and #1263 (merged by strengejacke) are still reported in A and B. The comment, review, and list-read clauses are unchanged from pass 1 and the same A and B lines show them.
 - AC7 evidence: same runs. Fixture B: performance#428 strengejacke only; insight#1262 merged once, `lines 8,7`, no Copilot review line. Fixture C: `undated row at line 7: not read`. Fixture E: nothing for cairn#238; ggplot2#1 reports its close and hadley's 2009-12-11T04:43:24Z comment, not the 2009-12-09 one.
 - AC1, AC2, AC4, AC5, AC6, AC8 re-checked on 6326082: fixture A output matches pass 1's AC6 line exactly; AC1, AC2, AC4 and AC5's cited sites are unchanged apart from the 957bd36 fixes and the `closed_by` lines; README.md:686-691 and CHANGELOG.md:7-18 state the read; verify 5/5 exit 0.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1 (pass 2): the `checked` mark takes the edit time, so news between the read and the edit is lost — follow-up, row "Linked-item read edges (M245 review)" (an uncommitted read-time fix was reverted because AC5 names "the current UTC time")
+- diff-bug #2 (pass 2): "update the row" for one item moves the cut-off for a left item on the same row — fix now, fixed 6c98018 (the leave note and CHANGELOG name the exception)
+- diff-bug #3 (pass 2): any later date in a row moves its cut-off past unreported news — follow-up, row "Linked-item read edges (M245 review)"
+- diff-bug #4 (pass 2): owner-mode "update the row" refuses over the stamp line §2 just rewrote — fix now, fixed 6c98018 (the stamp line rides in the row's commit)
+- diff-bug #5 (pass 2): `[owner/repo#N]` is no longer read — fix now, fixed 6c98018 (`[` and `]` are excluded for bare `#N` only; fixture F reads `[easystats/insight#1263]`)
+- diff-bug #6 (pass 2): undated rows follow the stamp — reject, planned change (as pass 1 diff-bug #6)
+- diff-bug #7 (pass 2): the rulebook Intake list does not name "update the row" — reject, false: that list covers inbox issues and PRs, and a linked item is not an inbox item
+- diff-bug #8 (pass 2): merge and close lines name no actor — fix now, fixed 6c98018 (`merged … by <login>`)
+- diff-bug #9 (pass 2): AC1's boundary set differs from the block — reject, false: AC1 says the short forms match "only" after a character outside its set, a necessary condition the stricter block meets
+- diff-bug #10 (pass 2): `state` is read and unused — reject, style
+- diff-bug #11 (pass 2): `sort` and `[[ < ]]` follow the locale — reject, false: ISO times and slugs are ASCII, and fixture D passed under `LC_ALL=C`
+- diff-bug #12 (pass 2): zsh `echo` expands escapes — reject, as pass 1 diff-bug #14
+- diff-bug #13 (pass 2): CHANGELOG's "you made yourself" ignores a null `closed_by` — fix now, fixed 6c98018 ("that GitHub records as yours")
+- blame-history #1 (pass 2): a linked PR merged by others also shows as an outside merge — follow-up, already in row "Linked-item read edges (M245 review)"
+- blame-history #2 (pass 2): `leave` against the D-044 narrowing — reject, false (as pass 1 blame-history #9)
+- blame-history #3 (pass 2): undated rows advance with the stamp — reject, planned change (AC2)
+- blame-history #4 (pass 2): §4 refuses a foreign-repo issue while §2 reads other repos — reject, false: §4 is the one-issue look-in, and §2 reads linked items only
+- blame-history #5 (pass 2): ROADMAP at 23,979 of 24,000 bytes — fix now, fixed 6c98018 (follow-up row compressed; 23,864 bytes), hygiene re-checks
+- blame-history #6 (pass 2): a skipped §4-order write has no close block in §3 — reject, false: §3 ends with the close block
+- blame-history #7 (pass 2): README line over the wrap width — fix now, fixed 6c98018
+- blame-history #8 (pass 2): no prose guard — reject, planned change
+- prior-review #1 (pass 2): the `checked` mark takes the edit time — follow-up (as pass 2 diff-bug #1)
+- prior-review #2 (pass 2): §4's step 1 reports a skip in "the close block" — reject, false (as pass 2 blame-history #6)
+- prior-review #3 (pass 2): `gh api user failed` does not name which of the three causes — reject, false: the prose assigns the naming to the agent, and gh's own error line (`Bad credentials (HTTP 401)`) prints beside it
+- prior-review #4 (pass 2): `gh api user` carries no `--repo` — reject, false: it reads no repo
+- prior-review #5 (pass 2): README and CHANGELOG omit the stamp fallback — reject, false: they summarize, and the skill states the full rule
+- prior-review #6 (pass 2): locale-sensitive ranges and compares — reject, false (as pass 2 diff-bug #11)
+- prior-review #7 (pass 2): bot reviews on your own linked PR re-report until updated — reject, planned change (bots count as others, the M177 choice)
+- prior-review #8 (pass 2): no guard — reject, planned change
+- prior-review #9 (pass 2): lines over the wrap width — fix now, fixed 6c98018 (README); CHANGELOG reject, style
+- Post-fix runs at 6c98018: fixtures A to F, zsh and bash identical; A, B, C, E match the AC6 and AC7 lines above, with merge lines now ending `by <login>`.
+- copilot: no new request on pass 2 (state `reviewed earlier-head unknown`, the quota-refused review). PR-conversation read below.
 - Consistency gate, pass 2: `cairn_validate` exit 0 (the 8-criteria WARN only); marketplace validate has no `version` warning; the CHANGELOG entry exists and the added README/CHANGELOG lines carry no milestone number; `skills/tests` exit 0.
