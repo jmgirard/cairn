@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-10 (M240 done: archived, M237 row pruned, reasoning-effort row narrowed to the Opus and Fable roles, no lesson added; validate green, skills/tests green)_
+_Last hygiene check: 2026-10-10 (M241 done: archived, M238 row pruned, "⌂ edges (M241 review)" row added, no lesson added; validate green, skills/tests green)_
 
 ## Milestones
 
@@ -9,10 +9,9 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M238 | The pane reads its pull requests once per start, at its first draw when placed later | done | — | normal | milestones/archive/M238-pane-one-read-per-start.md |
 | M239 | Compare low with default reasoning effort on cairn's Sonnet and Haiku roles | done | — | normal | milestones/archive/M239-effort-roles.md |
 | M240 | Measure medium effort on the history reviewers, and state each spawned role's effort level | done | — | normal | milestones/archive/M240-effort-review-medium.md |
-| M241 | A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front | review | — | normal | milestones/M241-pane-home-button.md |
+| M241 | A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front | done | — | normal | milestones/archive/M241-pane-home-button.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
