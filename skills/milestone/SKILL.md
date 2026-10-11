@@ -266,10 +266,11 @@ The script deliberately does not judge these — do them yourself and report:
   `https://github.com/<owner>/<repo>/issues/<N>` or `/pull/<N>` URL,
   `<owner>/<repo>#<N>`, or a bare `#<N>`, read as `<base-repo>`. The two
   short forms match only at the start of a line or after a character
-  other than a letter, a digit, `_`, `.`, `/`, `-`, `&`, `[`, or `]`, so a
-  path tail such as `skills/hooks/status#3`, an HTML entity such as
-  `&#8212;`, and the text of a Markdown link such as `[#8](…)` are not
-  links. A two-part `dir/name#N` standing alone is read as
+  other than a letter, a digit, `_`, `.`, `/`, `-`, or `&`, and a bare
+  `#<N>` also not after `[` or `]`. So a path tail such as
+  `skills/hooks/status#3`, an HTML entity such as `&#8212;`, and the text
+  of a Markdown link such as `[#8](…)` are not links, while
+  `[owner/repo#N]` is. A two-part `dir/name#N` standing alone is read as
   `owner/repo#N` and gives a `read failed` line. A bare `#<N>` that is a review finding number (`diff-bug #4`) is
   read too, and is reported only if that item shows new activity.
   Each row has a cut-off: 00:00 UTC on the latest `YYYY-MM-DD` in the row,
@@ -302,7 +303,7 @@ The script deliberately does not judge these — do them yourself and report:
   [ -n "$me" ] && awk '/^## Candidates/{c=1;next} /^## /{c=0} c && /^- /{print NR"\t"$0}' cairn/ROADMAP.md |
   while IFS="$tab" read -r n row; do
     links=$(printf '%s\n' "$row" |
-      grep -oE 'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|(^|[^][A-Za-z0-9_./&-])([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#[0-9]+' |
+      grep -oE 'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|(^|[^A-Za-z0-9_./&-])[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+|(^|[^][A-Za-z0-9_./&-])#[0-9]+' |
       grep -oE 'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#[0-9]+' |
       sed -E -e 's,^https://github\.com/([^/]+)/([^/]+)/(issues|pull)/,\1/\2#,' -e "s,^#,$base#," |
       tr 'A-Z' 'a-z')
@@ -320,8 +321,8 @@ The script deliberately does not judge these — do them yourself and report:
     info=$(gh api "repos/$repo/issues/$num" --jq '[.state, (.closed_at // "-"), .updated_at, (.pull_request.merged_at // "-"), (if .pull_request then "pr" else "issue" end), (.closed_by.login // "-")] | @tsv' 2>&1) || { echo "$at: read failed: $info"; continue; }
     IFS="$tab" read -r state closed updated merged kind closer <<< "$info"
     if [ "$closer" = "$me" ]; then :
-    elif [ "$merged" != "-" ]; then [[ "$merged" < "$cut" ]] || echo "$at: merged $merged"
-    elif [ "$closed" != "-" ]; then [[ "$closed" < "$cut" ]] || echo "$at: closed $closed"; fi
+    elif [ "$merged" != "-" ]; then [[ "$merged" < "$cut" ]] || echo "$at: merged $merged by $closer"
+    elif [ "$closed" != "-" ]; then [[ "$closed" < "$cut" ]] || echo "$at: closed $closed by $closer"; fi
     [[ "${updated:0:10}" < "${cut:0:10}" ]] && continue
     sel="select(.user.login != \"$me\")"
     gh api --paginate "repos/$repo/issues/$num/comments?per_page=100" --jq ".[] | $sel | select(.created_at >= \"$cut\") | \"$at: comment \(.user.login) \(.created_at) \(.html_url)\"" || echo "$at: comments read failed"
@@ -405,17 +406,20 @@ Each item takes exactly one disposition — you propose, the user chooses:
 - **`/milestone-plan`** — anything larger than the hotfix bar.
 - **leave** — no row, no action, with the reason stated. A linked item
   left on a row that carries a date is reported again at the next audit,
-  since its cut-off has not moved.
+  since its cut-off has not moved, unless another item's **update the
+  row** on that same row moved it.
 - **update the row** — a linked item only: rewrite each candidate row that
   links it to carry the news (for example `easystats/insight#1263 merged
   2026-10-11`) and a `checked` mark with the current UTC time, cut to the
   second and never rounded up (`checked 2026-10-11T17:05:09Z`, from `date
-  -u +%Y-%m-%dT%H:%M:%SZ`). The mark moves the row's cut-off, so the next
-  audit reports only what came after it. In owner mode the edit is a
-  docs-only commit to the default branch, written in the order that §4's
-  **Add a candidate row** states (steps 1 to 4 there: nothing written off
-  the default branch or over uncommitted ROADMAP changes, a pull, a commit
-  of `cairn/ROADMAP.md` alone, a push). In guest mode it stays on disk in
+  -u +%Y-%m-%dT%H:%M:%SZ`). The mark moves the row's cut-off for every
+  link in the row, so the next audit reports only what came after it. In
+  owner mode the edit is a docs-only commit to the default branch, written
+  in the order that §4's **Add a candidate row** states (steps 1 to 4
+  there: nothing written off the default branch or over uncommitted ROADMAP
+  changes, a pull, a commit of `cairn/ROADMAP.md` alone, a push). The one
+  uncommitted ROADMAP change that step 1 allows is the stamp line that §2
+  just replaced, which rides in the same commit. In guest mode it stays on disk in
   `cairn/ROADMAP.md`, uncommitted.
 - **close** — an orphaned issue from §2's orphan bullet: only on the
   user's selection in the triage chip, close it with

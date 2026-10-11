@@ -9,12 +9,13 @@
   full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo's own issues
   and PRs (the upstream repo's, in guest mode), and
   reports the item's latest close or merge, and each comment, review, or
-  review-thread comment by someone else, since the row's latest date. A close or merge you made
-  yourself is not reported. It runs in guest mode too,
+  review-thread comment by someone else, since the row's latest date. A
+  close or merge that GitHub records as yours is not reported. It runs in guest mode too,
   so a row that waits on another repo's merge or a maintainer's reply hears
   about it. At the triage chip you can update the row, which adds a
   `checked <UTC time>` mark so the same news is not reported again. If you
-  leave it, the next audit reports it again, for a row that carries a date.
+  leave it, the next audit reports it again, for a row that carries a date
+  and that you did not update for another item.
   The read writes nothing to GitHub.
 - **`/cairn-triage` runs in guest mode.** It used to stop at session
   start, because its pass ends in a commit to the default branch. In guest
