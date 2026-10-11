@@ -138,6 +138,7 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: T6 done: verify green (scripts 406 tests OK, hooks 174 OK, plugin and marketplace validate exit 0, `claude plugin test` 0 fail), hand-run `skills/tests` 726 OK.
 - 2026-10-10: claim audit: 13 claims read, 1 corrected — skills/shared/tracking-rules.md (the effort bullet's "saved too little" became "the cost method's output undercount could reverse `low`'s saving", re-read once by the same reader: holds), scripts/tests/test_scripts.py, skills/milestone/SKILL.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py.
 - 2026-10-10: the rewording moved the rulebook to 642 lines / 61,373 bytes (`wc -l -c`), re-seeded at the three sites. Scripts, hooks, and `skills/tests` re-run green. Status set to `review`.
+- 2026-10-10: step-7 approval: m240-effort-review-medium approved for merge
 - 2026-10-10: review started: main unmoved since the branch was cut. Copilot arm (PROFILE.md `# Copilot review: on`): branch pushed, PR #250 opened, state query `none`, Copilot requested (exit 0).
 
 ## Review
