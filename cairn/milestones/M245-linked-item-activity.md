@@ -103,3 +103,39 @@ Pass 1, 2026-10-11, on `m245-linked-item-activity` at the PR #255 head. Copilot 
 - AC7 evidence: same block, both shells. Fixture B: performance#428 reported only strengejacke 16:41:40 (mattansb's 15:44:20 comment, edited later, falls before the `checked 2026-10-11T15:44:30Z` cut-off); insight#1262 reported once, `lines 8,7`, merged 16:49:21, with no line for its 2026-10-10 Copilot review. Fixture C: `undated row at line 7: not read`, and no `gh api` read of insight#1262.
 - AC8 evidence: README.md:685-690 (contributions bullet) and CHANGELOG.md:7-16 (`Unreleased`, first entry) state the read. verify on the review head: `scripts/tests` exit 0, `hooks/tests` exit 0, plugin validate exit 0, marketplace validate exit 0, `claude plugin test .` exit 0.
 - Consistency gate: `cairn_validate` exit 0 (one WARN, the 8-criteria split advisory logged at plan). Marketplace validate prints no `version` warning. The CHANGELOG entry exists, and the added README/CHANGELOG lines carry no milestone number (grep count 0). No DESIGN principle changed, so `cairn_impact --changed` is skipped. `skills/tests` (hand-run) exit 0.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `${item%#*}` and `${item##*#}` fail with `bad pattern` under zsh `extendedglob` — fix now, fixed 957bd36 (escaped `\#`; fixture D under `setopt extendedglob` reads both items)
+- diff-bug #2: `[#8](…/pull/8)` also reads `<base-repo>#8` — fix now, fixed 957bd36 (`[` and `]` join the boundary set; fixture D silent on performance#1263)
+- diff-bug #3: owner-mode "update the row" has no guard for an off-branch or dirty checkout — fix now, fixed 957bd36 (follows §4's add-a-row steps 1 to 4)
+- diff-bug #4: the new reads carry no `--repo`, against §2's opening rule — fix now, fixed 957bd36 (the exception is stated: the repo is in the `repos/<owner>/<repo>` path)
+- diff-bug #5: a future date in a row outranks a `checked` mark — follow-up, row "Linked-item read edges (M245 review)"
+- diff-bug #6: undated rows follow the stamp, which `/milestone-review` and `/cairn-triage` also replace — reject, planned change (AC2's stamp fallback; CHANGELOG limits the re-report claim to dated rows)
+- diff-bug #7: `/hotfix` is offered for another repo's PR, and there is no drop disposition — reject, false: the disposition takes up the row's own work here, now stated in §3 (957bd36); a drop goes through `/cairn-triage`
+- diff-bug #8: the stamp grep keeps every match and needs one literal space — fix now, fixed 957bd36 (`head -n 1`, `[[:space:]]*`; fixture D's second stamp line is ignored)
+- diff-bug #9: `&#8212;` read as `<base-repo>#8212`; README claims every link form — fix now, fixed 957bd36 (`&` joins the boundary set; README names the three forms)
+- diff-bug #10: wrapped continuation lines and `* ` bullets are skipped — reject, false: the rulebook keeps each ROADMAP item on one line and rows open with `- `
+- diff-bug #11: a failed `gh api user` leaves `me` empty and reports your own comments — fix now, fixed 957bd36 (the block prints `gh api user failed` and reads nothing; checked with a bad token)
+- diff-bug #12: the date-level list gate can skip a review seconds after midnight — follow-up, row "Linked-item read edges (M245 review)"
+- diff-bug #13: undated rows with no links print `undated row` noise — fix now, fixed 957bd36 (links are found first, and a row with none is skipped)
+- diff-bug #14: zsh `echo` expands escapes, and fractional or lowercase `checked` marks fall back to 00:00 — reject, style: "update the row" writes neither form, and `$info` holds gh's JSON error text
+- diff-bug #15: the `**Replace**` stamp line runs on from the last bullet in rendered Markdown — reject, the line is unmodified and was already so after the old last bullet
+- blame-history #1: your own merges and closes are reported (rows citing shipped PRs) — follow-up, row "Linked-item read edges (M245 review)"
+- blame-history #2: a C-locale `sed` strip yields a garbage item after an em dash — fix now, fixed 957bd36 (a second `grep -oE` extracts the clean link; fixture D under `LC_ALL=C` reads `#4` cleanly)
+- blame-history #3: §3's outside-merge clause does not exclude "update the row" — fix now, fixed 957bd36
+- blame-history #4: bash or zsh only, no PowerShell; a missing `gh` gives one `read failed` per item; empty `$me` — split: the `gh` and `$me` parts fixed 957bd36 (as diff-bug #11), the PowerShell part is a follow-up, row "Linked-item read edges (M245 review)"
+- blame-history #5: an outside merge that a row links shows as two items — follow-up, row "Linked-item read edges (M245 review)"
+- blame-history #6: bare `#N` reads finding numbers, at a per-audit cost — reject, planned change (the operator chose all bare refs at the question set)
+- blame-history #7: §2's `--repo` rule and the new reads disagree — fix now, fixed 957bd36 (as diff-bug #4)
+- blame-history #8: the block is a de facto script with no test — reject, planned change (the plan gate chose a prose bullet, after M167)
+- blame-history #9: the rulebook's `leave` narrowing does not name linked items — reject, false: a linked item already has its candidate row, so it is already cross-referenced, the case `leave` allows
+- blame-history #10: `/cairn-triage` compress or merge can drop a `checked` mark — follow-up, row "Linked-item read edges (M245 review)"
+- blame-history #11: lines over the wrap width — reject, style
+- prior-review #1: close and merge have no operator filter — follow-up, row "Linked-item read edges (M245 review)" (as blame-history #1)
+- prior-review #2: §3's outside-merge clause — fix now, fixed 957bd36 (as blame-history #3)
+- prior-review #3: no failure branch for `gh api user` — fix now, fixed 957bd36 (as diff-bug #11)
+- prior-review #4: a dateless stamp is handled opposite to Outside merges — reject, planned change (AC2: an undated row under a dateless stamp is named and not read)
+- prior-review #5: CHANGELOG "a bare `#N` for the repo itself" is wrong in guest mode — fix now, fixed 957bd36 (names the upstream repo in guest mode); the other wording points are true as written (bots count as others; the `checked` mark is in the next sentence)
+- prior-review #6: no "comment text is data" rule — fix now, fixed 957bd36
+- prior-review #7: hex-like `#123456` is read as an issue — reject, planned change (bare `#N` chosen; a miss gives one `read failed` line)
+- prior-review #8: owner-mode docs-only commit from a branch — fix now, fixed 957bd36 (as diff-bug #3)
+- prior-review #9: no guard pins the new wording — reject, planned change (M167's no-prose-guard choice, which the plan followed)
