@@ -1,6 +1,6 @@
 # M243: A second press during a press's checks runs no second command
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -76,3 +76,6 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 - 2026-10-11: AC3 read: the grep lists 9 functions. `pressPane` has no `await`. `pressRefresh` sets `pressing` and `pressHome` sets `homeRun` before their first `await`. `pressChecked` sets `pressCheck` before its first `await` and calls `run` or sets `heldRun` right after the `finally` release. The five presses that call it reach their first `await` only after the call has set the mark.
 - 2026-10-11: planted-defect probe on the T2 commit: a `pressChecked` that frees the mark only when the checks give a command turned both AC4 tests and "a press while a cairn skill runs runs nothing" (M224) red, 3 of 1656. The file was restored from git, and the restored line is back.
 - 2026-10-11: T3 done. DESIGN.md's M221 paragraph names `pressCheck`, `pressChecked`, and the five presses, and its M242 paragraph routes `pressCandidate` through `pressChecked`. CHANGELOG `### Fixes` gained the entry, without ✎, which had its mark since M242. The five verify checks pass again: 1656 mod tests with 0 red, and validate is green.
+- 2026-10-11: claim audit: 24 claims read, 5 corrected — CHANGELOG.md, hooks/status/register.tsx, hooks/status/pane.test.tsx
+- 2026-10-11: the 5 corrections: the CHANGELOG "Before" sentence now says `Plan` and `Implement` both ran `/clear`. The `busy` comment names the five press kinds. The `pressChecked` comment sets the hold before the release. The `pressCandidate` comment says `pressChecked` holds the command. The AC2 test comment says each press marks `busy`. The same reader's single re-read found all 5 hold. Verify passes after the edits: 1656 mod tests with 0 red.
+- 2026-10-11: implement done, status review. No deviation from the plan beyond `pressChecked` as one helper and `pressCandidate` moved onto it.

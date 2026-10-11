@@ -3712,9 +3712,9 @@ describe('two presses at once of a blocked line Button run its command once (M24
   })
 })
 
-// A Status press and a ⌂ press in the same tick share one press mark, so
-// only the press listed first runs (M243 AC2). ⌂ marks itself since M241,
-// so the ⌂-first order held before M243 too.
+// A Status press and a ⌂ press in the same tick each mark `busy` before
+// their first await, so only the press listed first runs (M243 AC2). ⌂
+// marks itself since M241, so the ⌂-first order held before M243 too.
 describe('a Status press and a ⌂ press at once run only the first one (M243 AC2)', () => {
   const ORDERS = [
     { keys: [PANE_STATUS, PANE_HOME], run: STATUS_RUN },

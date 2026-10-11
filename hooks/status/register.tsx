@@ -1051,7 +1051,8 @@ async function pressNext($, drawn: string | undefined) {
 }
 
 // True while a run is in flight, a command or a ⌂ press waits for its
-// `/clear`, or a press runs its checks (M242, M243).
+// `/clear`, or a Status, Clear, next-step, blocked-line, or ✎ press runs
+// its checks (M242, M243).
 function busy(): boolean {
   return running || heldRun !== null || homeRun !== null || pressCheck !== null
 }
@@ -1089,8 +1090,9 @@ type Checked = { command: string; args: string; clears?: boolean }
 // (M243). A press while `busy` does nothing, and a press whose checks give
 // no command runs nothing and frees the mark. A held command is set only
 // after the checks, so a session end during them runs none (M242 review).
-// No await comes between the mark's release and `run` or the hold, so no
-// other press passes `busy` in that gap. A refused `/clear` drops the hold.
+// The hold is set before the mark's release, and no await comes between
+// the release and `run`, so no other press passes `busy` in that gap. A
+// refused `/clear` drops the hold.
 async function pressChecked($, checks: () => Promise<Checked | undefined>) {
   if (busy()) return
   const mark = {}
@@ -1138,8 +1140,8 @@ async function pressHome($) {
 // Plan is. It does nothing when a step is set, when the stored pane state
 // would draw no candidate rows (no ROADMAP found, or an active milestone),
 // or when the stored row at the drawn index is missing or has another
-// title. Its checks run under the shared press mark, which holds the
-// command only after them, as `Plan` does (M242 review, M243).
+// title. Its checks run under the shared press mark, and `pressChecked`
+// holds the command only after them, as for `Plan` (M242 review, M243).
 async function pressCandidate($, index: string, title: string) {
   await pressChecked($, async () => {
     const state = await read($, pane)
