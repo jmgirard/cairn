@@ -85,6 +85,7 @@ thread on the operator's open PRs".
 - 2026-10-11: claim audit: 18 claims read, 5 corrected — skills/shared/copilot-review.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md
 - 2026-10-11: the 5 corrections: the module's covered hotfix PR is one this run merged or handed off, and a failed query skips §3's error line. Hotfix step 7 counts a re-entry's follow-up PR and excludes the re-entry's merged PR. README and CHANGELOG say "a merge made in that run" and limit the note to PRs the round itself would review. The same reader's re-read found all 5 hold. The module is 139 lines and 7,995 bytes. Verify passes after the edits (1660 mod tests, 0 red), and `skills/tests` ran 726 OK.
 - 2026-10-11: implement done, status review. No deviation from the plan.
+- 2026-10-11: step-7 approval: m244-copilot-round-off-note approved for merge
 
 ## Decisions
 
