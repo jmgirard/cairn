@@ -38,9 +38,9 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 ## Tasks
 
 - [x] T1: Write the AC1 and AC2 tests in `hooks/status/pane.test.tsx`, with the `gh` fake's `reads`, `copy.notPlaced`, and the reopen setup near `pane.test.tsx:1375`. Run them and record which fail on the current code. The reopen-first AC2 tests and the AC1 draw tests are expected to fail. The classic-first AC2 tests pass today.
-- [ ] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
-- [ ] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
-- [ ] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
+- [x] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
+- [x] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
+- [x] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
 - [ ] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
 - [ ] T6: Run the five `verify` commands (AC5).
 
@@ -57,6 +57,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 11 items, 9 with findings, and the plan took all 9. AC1 drops the ↻ case, which cannot happen before a draw, adds `blocked-prs` for more than one URL, and adds the not-listed and throw cases. AC2 names `clear` as a guard, adds the unplaced-reopen case, and T3 takes the per-start mark. AC3's grep catches a call without `await` and skips comments. AC4's grep adds the stale README and DESIGN lines and bounds "agrees". T2 clears the flag before its first await, for two draws at once.
 - 2026-10-10: implement started on branch m238-pane-one-read-per-start. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-10: T1 done. 12 tests in `pane.test.tsx` ("M238 AC1" and "M238 AC2" groups). On the current code, 4 fail: both AC1 first-draw tests read nothing at the draw, and both reopen-first AC2 tests read the URL twice. The other 8 pass, as the plan expected. Suite: 1601 pass, 4 fail.
+- 2026-10-10: T2, T3, and T4 done in one commit, because the classic start hook used the removed `isPlaced`. `paneOf` holds the one `$.ui.panes()` call, and `listedPane` answers null when it throws. Module flags `owed` and `startRead` do the rest. The engine refused a helper named `listing`, since `readPrs` already declares a const of that name, so it is `listedPane`. The 4 T1 reds pass now. All five verify commands exit 0 (mod tests 1605 pass).
 
 ## Decisions
 

@@ -237,12 +237,24 @@ export const register: Register = on => {
   // (M237). The hook cannot tell a resume in the process from a resumed
   // start, so a resumed start reads the files twice. A placed pane, shown or
   // behind another tab, also reads the pull request states and the hotfix
-  // list again, and the hook does not wait for that read (M230, M237).
+  // list again, and the hook does not wait for that read (M230, M237). A
+  // pane listed but not placed owes that read, and its first draw starts it
+  // (`owed`, M238). A start whose reopen already read starts no second read
+  // and owes none (`startRead`, M238).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
     if (e.source === 'clear' || e.source === 'resume') {
       await refresh($)
-      if (await isPlaced($)) void readPrs($)
+      if (startRead) return result
+      const mine = await listedPane($)
+      if (mine == null) return result
+      if (mine.isPlaced) {
+        startRead = true
+        owed = false
+        void readPrs($)
+      } else {
+        owed = true
+      }
     }
     return result
   })
@@ -261,7 +273,7 @@ export const register: Register = on => {
     const afterReopen = reopened
     reopened = false
     try {
-      const mine = (await $.ui.panes()).find(open => open.id === PANE)
+      const mine = await paneOf($)
       if (mine !== undefined && mine.isPlaced && mine.isShown) {
         if (afterReopen) return { text: 'cairn pane opened' }
         await $.ui.close({ id: PANE })
@@ -270,6 +282,7 @@ export const register: Register = on => {
       await refresh($)
       if (!(await read($, pane)).found) return { text: NO_ROADMAP }
       const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+      owed = false
       void readPrs($)
       return { text: opened.isPlaced ? 'cairn pane opened' : notPlaced(opened.reason) }
     } catch (error) {
@@ -278,6 +291,13 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
+    // A pane that a clear or resume start found listed but not placed reads
+    // the pull request states at its first draw (M238). The flag clears
+    // before any await, so two draws at once start one read.
+    if (owed) {
+      owed = false
+      void readPrs($)
+    }
     const { Box, Button, Text } = $.ui.resolve(e)
     // The Next line's Button shows while no cairn skill's step is set
     // (M218). A pane gets no `isWorking` prop, so it also shows during a
@@ -461,6 +481,9 @@ export const register: Register = on => {
     const queued = heldRun
     heldRun = null
     reopened = false
+    // The end ends the start, so the next start reads again (M238).
+    owed = false
+    startRead = false
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -669,29 +692,31 @@ async function openPane($) {
     $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
     return
   }
+  owed = false
   void readPrs($)
+}
+
+// The pane as `$.ui.panes()` lists it, or undefined when it is not listed.
+// It throws when that call throws. Every other place that needs the pane's
+// listing reads it here (M238).
+async function paneOf($) {
+  return (await $.ui.panes()).find(open => open.id === PANE)
+}
+
+// The pane as `paneOf` lists it, or null when the call throws (M238).
+async function listedPane($) {
+  try {
+    return await paneOf($)
+  } catch {
+    return null
+  }
 }
 
 // True when `$.ui.panes()` lists the pane placed and shown, false when it
 // does not or the call throws.
 async function isShown($): Promise<boolean> {
-  try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
-    return mine !== undefined && mine.isPlaced && mine.isShown
-  } catch {
-    return false
-  }
-}
-
-// True when `$.ui.panes()` lists the pane placed, shown or behind another
-// tab, false when it does not or the call throws (M237).
-async function isPlaced($): Promise<boolean> {
-  try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
-    return mine !== undefined && mine.isPlaced
-  } catch {
-    return false
-  }
+  const mine = await listedPane($)
+  return mine != null && mine.isPlaced && mine.isShown
 }
 
 // Each read of the pull request states takes the next number, and only the
@@ -699,6 +724,17 @@ async function isPlaced($): Promise<boolean> {
 // later does not put back older words (M224 review). A reload starts it
 // over at 0.
 let prReads = 0
+
+// True from a clear or resume start that finds the pane listed but not
+// placed until the pane's next draw starts the read it owes, an open reads,
+// or the session ends (M238). A reload starts it over as false.
+let owed = false
+
+// True from the read that a start's reopen or its clear or resume hook
+// starts until the next session end, so the other hook of the same start
+// starts no second read and owes none (M238). A reload starts it over as
+// false.
+let startRead = false
 
 // The reads of the pull request states that this module started and that
 // have not settled (M237). A reload starts it over at 0, as the reload ends
@@ -1044,7 +1080,7 @@ async function fallBack($, text: string, why: string) {
 // (M222). A store or pane call that fails marks nothing.
 async function markReopen($) {
   try {
-    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    const mine = await paneOf($)
     if (mine === undefined || !mine.isShown || !mine.isPlaced) return
     const cwd = await $.session.root()
     const held = await reopenList($)
@@ -1077,7 +1113,11 @@ async function reopen($) {
     // No reopen.
     return
   }
-  // The reopen is an open, so it reads the pull request states (M224).
+  // The reopen is an open, so it reads the pull request states (M224),
+  // unless this start's resume or clear hook already read them (M238).
+  owed = false
+  if (startRead) return
+  startRead = true
   void readPrs($)
 }
 
