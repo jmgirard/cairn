@@ -196,7 +196,15 @@ transitions, human-gated merges, and a domain verification doctrine.
   it and puts its command line in the prompt box with a toast, as `run`
   does for a refused run (`fallBack`). A `clear` run that rejects drops it
   too, and `run`'s own refusal names `/clear`. While `heldRun` is set,
-  `busy` makes every action press do nothing. A live probe (M221 T1) showed
+  `busy` makes every action press do nothing. `busy` also reads the
+  shared press mark `pressCheck` (M243). The four presses `pressNext`,
+  `pressStatus`, `pressClear`, and `pressBlocked`, and the ✎ press
+  `pressCandidate`, pass their checks to `pressChecked`. It returns while
+  `busy()`, else sets the mark before its first await, so a second press
+  during the checks does nothing, in the same tick or later. When the
+  checks end it clears the mark, and with no await between, it runs the
+  command or sets `heldRun` and runs `clear`. Checks that give no command
+  clear the mark and run nothing. A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
   a press of Clear is, which is how the plan gate settled the IP3 point. A
@@ -279,14 +287,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
   Box (M242). The line's `target` is its index and its `title` the short
-  title. `pressCandidate` in register.tsx returns while `busy()`. Else it
-  sets the module's `candidateCheck` mark before its first await, which
-  `busy()` reads, and clears it when its checks end. It returns on a set
-  step, on stored state that draws no candidates (no ROADMAP found, or an
-  active milestone), or on a stored row at that index that is missing or
-  has another title. Else it sets `heldRun` to `cairn:milestone-plan`
-  with the title and runs `clear`, and the `session.end` hook runs the
-  held command as it runs a `Plan` press's (M242 review).
+  title. `pressCandidate` in register.tsx runs its checks under the shared
+  press mark through `pressChecked` (M243). Its checks give no command on
+  a set step, on stored state that draws no candidates (no ROADMAP found,
+  or an active milestone), or on a stored row at that index that is
+  missing or has another title. Else `pressChecked` sets `heldRun` to
+  `cairn:milestone-plan` with the title and runs `clear`, and the
+  `session.end` hook runs the held command as it runs a `Plan` press's
+  (M242 review).
   The pane state also holds the `blocked` rows
   (M223), in ROADMAP order, each with the number of the pull request that
   its milestone file's first `Branch/PR` header line names. The number
