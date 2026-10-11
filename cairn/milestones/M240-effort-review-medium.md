@@ -11,7 +11,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the rulebook and review skill prose that every adopting repo's session follows when it spawns subagents
-- **Branch/PR:** m240-effort-review-medium
+- **Branch/PR:** m240-effort-review-medium, https://github.com/jmgirard/cairn/pull/250
 
 ## Goal
 
@@ -40,7 +40,7 @@ run per arm goes to the note's re-measurement procedure.
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/references/effort-review-medium.md` exists with a
+- [x] AC1: `cairn/references/effort-review-medium.md` exists with a
       `**Provenance.**` block and an `INDEX.md` line. For each of H1, H2,
       and H3, it records one `medium` run and one new default run. Each run
       shows its agent id, every `effort` and `message.model` value on its
@@ -50,7 +50,7 @@ run per arm goes to the note's re-measurement procedure.
       reports. Its run table also carries M239's H1 to H3 default rows, with
       the USD that `effort-roles.md` records. `cairn_validate` passes its
       references check.
-- [ ] AC2: The note states one history-review verdict: `medium`, `default`,
+- [x] AC2: The note states one history-review verdict: `medium`, `default`,
       or `untested`. The commit that adds its Design section, with the rule
       below, is older than the first record of the first run transcript.
       There are three arms: M239 default, new default, and `medium`. An
@@ -64,7 +64,7 @@ run per arm goes to the note's re-measurement procedure.
       the two default arms' mean cost. Its score is at least 0.9 times their
       mean score. Otherwise it is `default`. A recomputation of the rule from
       the note's run and rating tables gives the stated verdict.
-- [ ] AC3: The "Model and agent strategy" section of
+- [x] AC3: The "Model and agent strategy" section of
       `skills/shared/tracking-rules.md` states one effort rule that covers
       every subagent role its bullets name. If AC2's verdict is `medium`, the
       blame-history and prior-PR-comments reviewers set the Agent tool's
@@ -74,7 +74,7 @@ run per arm goes to the note's re-measurement procedure.
       `skills/milestone-review/SKILL.md` name `medium`. Otherwise
       `git diff <default-branch>..HEAD -- skills/milestone-review/SKILL.md`
       adds no line that contains `` `effort` `` or `effort:`.
-- [ ] AC4: The `verify` slot of `cairn/PROFILE.md` passes. The hand-run
+- [x] AC4: The `verify` slot of `cairn/PROFILE.md` passes. The hand-run
       `python3 -m unittest discover -s skills/tests` also passes.
 
 ## Coverage
@@ -138,3 +138,12 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: T6 done: verify green (scripts 406 tests OK, hooks 174 OK, plugin and marketplace validate exit 0, `claude plugin test` 0 fail), hand-run `skills/tests` 726 OK.
 - 2026-10-10: claim audit: 13 claims read, 1 corrected — skills/shared/tracking-rules.md (the effort bullet's "saved too little" became "the cost method's output undercount could reverse `low`'s saving", re-read once by the same reader: holds), scripts/tests/test_scripts.py, skills/milestone/SKILL.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py.
 - 2026-10-10: the rewording moved the rulebook to 642 lines / 61,373 bytes (`wc -l -c`), re-seeded at the three sites. Scripts, hooks, and `skills/tests` re-run green. Status set to `review`.
+- 2026-10-10: review started: main unmoved since the branch was cut. Copilot arm (PROFILE.md `# Copilot review: on`): branch pushed, PR #250 opened, state query `none`, Copilot requested (exit 0).
+
+## Review
+
+- AC1: `cairn/references/effort-review-medium.md` exists with one `**Provenance.**` block and `INDEX.md` line 33; `cairn_validate` PASS `references index<->disk`, OK `references staleness`. A fresh run of the session-local cost script over the six new transcripts reproduces each row's agent id, `effort` value (`medium` on the three `medium` rows, `high` on the three new default rows), model `claude-sonnet-5-5`, and USD (0.4602, 0.2422, 0.2494, 0.1879, 0.2734, 0.2399), final match `yes` on all six. Counting `VALID` and rated lines per label in the three judges' returned text, mapped through the label files, gives the note's per-arm counts: M239 default 15 findings (H3's five on one row), 3 valid; new default 10, 3 valid; `medium` 9, 2 valid. The run table carries the three M239 default rows with USD 0.3783, 0.2264, 0.2747, equal to `effort-roles.md`'s run table.
+- AC2: the note states verdict `default`. `git log --diff-filter=A` dates the note's adding commit `40d6ce7` 2026-10-10T22:43:14-05:00 (03:43:14Z), and the first run transcript's first record is 2026-10-11T03:43:49.077Z, so the Design section with the rule predates every run. Recomputed from the note's tables: arm scores 3 (M239 default), 3 (new default), 2 (`medium`); arm costs 0.8794, 0.9830, 0.6700. No `medium` record lacks an `effort` value or carries another, and every new default record carries `high`, so not `untested`. Mean default score 3 > 0, `medium` cost 0.6700 < mean default cost 0.9312, `medium` score 2 < 0.9 × 3 = 2.7, so `default`, the stated verdict.
+- AC3: tracking-rules "Model and agent strategy" carries one bullet, "Leave effort unset on every spawn": "No subagent role sets the Agent tool's `effort` setting, the history reviewers included", which covers every subagent role the section's bullets name (Haiku, Sonnet, Opus, Fable, the review fan-out). It cites `cairn/references/effort-roles.md` and `cairn/references/effort-review-medium.md`. The verdict is `default`, and `git diff main..HEAD -- skills/milestone-review/SKILL.md` adds 0 lines, so 0 lines containing `` `effort` `` or `effort:`.
+- AC4: fresh run on the review head, each exit code read: `scripts/tests` exit 0 (406 tests), `hooks/tests` exit 0 (174 tests), `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` exit 0 (1609 tests, 0 fail), hand-run `skills/tests` exit 0 (726 tests).
+- Gate: `cairn_validate` exit 0. No DESIGN.md principle changed, so `cairn_impact` skipped. Profile gate: verify green on the review head (AC4); marketplace validate shows no `plugins[N].version` warning. Changelog: no entry, judged no user-visible change. Spawns left `effort` unset before this branch (no skill named a level), and the new bullet states that rule without changing what any spawn does. M229 got an entry because it changed which model edit work spawns.
