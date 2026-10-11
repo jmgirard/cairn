@@ -2,6 +2,7 @@ import { describe, expect, test } from 'claude-code/testing'
 
 import { COUNTS_QUERY, countPr, countsArgv, prCounts, prNodes } from './counts'
 import { PR_245_STDOUT } from './fixtures/pr-245-threads'
+import { countsText } from './pane'
 
 // The count is the review threads with `isResolved` false (M225, M236).
 
@@ -28,7 +29,10 @@ describe('the count is the unresolved threads (M236 AC1)', () => {
   // PR #245's reply as `gh api graphql` printed it: one Copilot summary
   // review and no threads, so the count is 0.
   test('the PR #245 reply counts nothing', () => {
-    expect(prCounts({ exitCode: 0, stdout: PR_245_STDOUT })).toEqual({ unresolved: 0 })
+    const counts = prCounts({ exitCode: 0, stdout: PR_245_STDOUT })
+    expect(counts).toEqual({ unresolved: 0 })
+    // and no count line is drawn for it.
+    expect(countsText(counts as { unresolved: number })).toBe(null)
   })
 
   test('the query asks for threads only', () => {

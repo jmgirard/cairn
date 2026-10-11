@@ -7,7 +7,8 @@ import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from '
 import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. For each active milestone: its phase, id, and title, with the
+// draws. For each active milestone: its id in its phase's color (no phase
+// word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
 // (M208), its goal, its tasks and criteria with their boxes, and its
 // newest work-log lines.

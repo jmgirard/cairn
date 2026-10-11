@@ -704,8 +704,11 @@ let prReads = 0
 async function readPrs($) {
   prReads += 1
   const mine = prReads
+  // Each write checks again inside `update`, which retries on a version
+  // conflict, that no newer read started, so a retried write never undoes a
+  // newer read's write (M236 review).
   try {
-    await update($, reading, () => true)
+    await update($, reading, current => (mine === prReads ? true : current))
   } catch {
     // The ↻ stays, and the read still runs.
   }
@@ -742,7 +745,7 @@ async function readPrs($) {
     // first leaves ⋯ while the newer one runs (M236).
     if (mine === prReads) {
       try {
-        await update($, reading, () => false)
+        await update($, reading, current => (mine === prReads ? false : current))
       } catch {
         // The ⋯ stays until the next read settles.
       }

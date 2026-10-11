@@ -2301,11 +2301,11 @@ async function refreshOf($, surface: (typeof SURFACES)[number] = 'desktop') {
   await ui.unmount()
   return { keys, lines, first: lines[0], button }
 }
-// The keys of a line Box's children, and the keys of the text Boxes that
-// set `flexGrow`.
+// The keys of a line Box's children, and the key and `flexGrow` of every
+// line Box and child Box that sets one.
 const childKeys = (line: Element | undefined) => (line === undefined ? [] : kids(line).map(keyOf))
 const grows = (lines: Element[]) =>
-  lines.flatMap(line => kids(line).filter(child => keyOf(child) === `${keyOf(line)}-text` && child.props.flexGrow !== undefined).map(keyOf))
+  lines.flatMap(line => [line, ...kids(line)].filter(box => box.props.flexGrow !== undefined).map(box => [keyOf(box), box.props.flexGrow]))
 
 describe('the pane has one ↻ Refresh Button, at the right end of its first line (M236 AC2)', () => {
   // The checks AC2 makes in every state with a ROADMAP. `firstKey` is the
@@ -2317,7 +2317,7 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect(keyOf(got.first as Element)).toBe(firstKey)
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
-    expect(grows(got.lines)).toEqual([`${firstKey}-text`])
+    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1]])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
     expect(got.button?.props.label).toBe('↻')
     return got
@@ -2477,6 +2477,39 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
     }
     await calls.settled()
     expect(await labelOf($)).toBe('↻')
+  })
+
+  // The case the newest-read check exists for: the older read settles
+  // first, and ⋯ stays while the newer one runs.
+  test('an open and a press overlap: ⋯ stays when the older read settles first', async ($, on) => {
+    const older = gate()
+    const newer = gate()
+    let n = 0
+    const calls = gh(on, async () => {
+      n += 1
+      await (n === 1 ? older.wait : newer.wait)
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await until(() => calls.calls.length === 1)
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      older.release()
+      await sleep(50)
+      expect(await labelOf($)).toBe('⋯')
+      newer.release()
+      await pressing
+      expect(await labelOf($)).toBe('↻')
+    } finally {
+      older.release()
+      newer.release()
+      await pressing
+      await ui.unmount()
+    }
   })
 
   test('a second press during a held press read reads no file and runs no call', async ($, on) => {
