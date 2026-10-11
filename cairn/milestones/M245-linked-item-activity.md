@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M245: The audit reports new activity on the issues and pull requests that candidate rows link to
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP4
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/milestone`'s health audit reports in every adopting repo, guest mode included
-- **Branch/PR:** —
+- **Branch/PR:** m245-linked-item-activity
 
 ## Goal
 
@@ -62,7 +62,7 @@ written to GitHub.
 
 ## Tasks
 
-- [ ] T1: Write the "Linked items" bullet in `skills/milestone/SKILL.md` §2 after "Outside merges" (around line 261). It holds the `grep -oE` with its left boundaries, the dedupe, the cut-off rule, and the per-item `gh api` read with `--jq` for `state`, `closed_at`, `updated_at`, and `pull_request.merged_at`. It holds the list reads, run only when `updated_at` is at or after the cut-off less one minute (a review can land 2 to 3 seconds after the `updated_at` it sets): `issues/<N>/comments`, and for pull requests `pulls/<N>/reviews` and `pulls/<N>/comments`, each with `--paginate`. It holds the operator-login filter, the report shape (link, each row's opening words, what happened, each author and time), and the gap rules. Commands use no shell variable named `path` (the M133 lesson).
+- [x] T1: Write the "Linked items" bullet in `skills/milestone/SKILL.md` §2 after "Outside merges" (around line 261). It holds the `grep -oE` with its left boundaries, the dedupe, the cut-off rule, and the per-item `gh api` read with `--jq` for `state`, `closed_at`, `updated_at`, and `pull_request.merged_at`. It holds the list reads, run only when `updated_at` is at or after the cut-off less one minute (a review can land 2 to 3 seconds after the `updated_at` it sets): `issues/<N>/comments`, and for pull requests `pulls/<N>/reviews` and `pulls/<N>/comments`, each with `--paginate`. It holds the operator-login filter, the report shape (link, each row's opening words, what happened, each author and time), and the gap rules. Commands use no shell variable named `path` (the M133 lesson).
 - [ ] T2: Add the linked-item dispositions to §3: "update the row" with its `checked` mark, the other three, the re-report note, and the guest on-disk note. Name linked items in §3's triage-chip bullet.
 - [ ] T3: Build fixtures A, B, and C in the scratchpad and run the bullet's commands as written in a shell, over each fixture.
 - [ ] T4: Add the README sentence and the CHANGELOG entry. Run the five `verify` commands and hand-run `skills/tests` (the M148 lesson), and check each exit code.
@@ -79,6 +79,9 @@ written to GitHub.
 - 2026-10-11: 8 criteria, over the 7 tripwire; kept as one milestone because the four tasks ship one bullet and its proof, and splitting the fixtures from the bullet would leave the bullet unverified.
 - 2026-10-11: plan gate chose prose bullet over a `scripts/` reader because M167 kept GitHub reads out of scripts (D-043 context) and the reads are a handful of `gh api` calls; falsified by an audit run that misses or misreads a link the bullet's grep matches.
 - 2026-10-11: plan gate chose a per-row cut-off (latest date in the row, or a `checked` UTC mark) over the hygiene-stamp date because every hygiene pass replaces the stamp and would hide news older than the last pass; falsified by rows whose dates stop tracking their last edit.
+- 2026-10-11: branch m245-linked-item-activity cut from main at 3b6acc7. `cairn-probe.log` and `tsconfig.json` are untracked strangers, left unstaged.
+- 2026-10-11: minor amendment (T1 wording): the list-read gate compares `updated_at`'s date with the cut-off's date, not the cut-off less one minute. The day gate reads more and never hides a review, and it needs no date arithmetic, which differs between BSD and GNU `date`.
+- 2026-10-11: T1 done. The bullet's read is one fenced bash/zsh block (a here-string, not a heredoc, so a copy that keeps the list indent still runs). A dry run over the real performance ROADMAP took 20 s and reported 10 lines, among them the insight#1262 merge; the #428 row is gone there (promoted by the performance session). verify green (5/5), skills/tests 726 OK.
 
 ## Decisions
 

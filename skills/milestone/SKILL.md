@@ -259,6 +259,78 @@ The script deliberately does not judge these — do them yourself and report:
   fails, name what failed, skip the read, and finish the audit — a
   reported gap, never an audit `FAIL`; a `gh pr diff` that fails for one
   kept PR names that PR, whose item still reaches §3, and keeps the rest.
+- **Linked items**, in owner and guest mode: the issues and pull requests
+  that candidate rows link to, in this repo or any other. A row that waits
+  on another repo's merge, or on a maintainer's reply, learns of it here.
+  A link has one of three forms: a
+  `https://github.com/<owner>/<repo>/issues/<N>` or `/pull/<N>` URL,
+  `<owner>/<repo>#<N>`, or a bare `#<N>`, read as `<base-repo>`. The two
+  short forms match only at the start of a line or after a character
+  outside `[A-Za-z0-9_./-]`, so a path tail such as `hooks/status#3` is not
+  a link. A bare `#<N>` that is a review finding number (`diff-bug #4`) is
+  read too, and is reported only if that item shows new activity.
+  Each row has a cut-off: 00:00 UTC on the latest `YYYY-MM-DD` in the row,
+  or the time in a `checked YYYY-MM-DDTHH:MM[:SS]Z` mark in the row when
+  that is later. A row with no date takes the date on the `Last hygiene
+  check` line. If that line has no date either, the row is named as
+  undated and none of its links is read. Items are deduplicated on owner,
+  repo, and number, and an item linked from several rows takes the
+  earliest cut-off. The item is reported when someone closed or merged it
+  at or after its cut-off. Each comment, review, and review-thread comment
+  created or submitted at or after the cut-off by a login other than yours
+  is also reported. Reviews and review-thread comments are read for pull
+  requests only. Each list is read in full with `--paginate` and filtered on
+  its creation or submission time, because the API's `since` parameter
+  filters on the last edit. The lists are read only when the item's
+  `updated_at` date is on or after the cut-off's date. Run the read below
+  from the repo root, in `bash` or `zsh`, with `base` set to `<base-repo>`
+  (the rulebook's slug recipe):
+
+  ```bash
+  base='<base-repo>'
+  tab="$(printf '\t')"
+  me=$(gh api user --jq .login)
+  stamp=$(grep -oE 'Last hygiene check: [0-9]{4}-[0-9]{2}-[0-9]{2}' cairn/ROADMAP.md | grep -oE '[0-9-]{10}$')
+  awk '/^## Candidates/{c=1;next} /^## /{c=0} c && /^- /{print NR"\t"$0}' cairn/ROADMAP.md |
+  while IFS="$tab" read -r n row; do
+    cut=$(printf '%s\n' "$row" | grep -oE 'checked [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(:[0-9]{2})?Z|[0-9]{4}-[0-9]{2}-[0-9]{2}' | sed -E 's/^checked //' | sort | tail -n 1)
+    [ -z "$cut" ] && cut="$stamp"
+    if [ -z "$cut" ]; then echo "undated row at line $n: not read" >&2; continue; fi
+    case "$cut" in *T*) ;; *) cut="${cut}T00:00:00Z" ;; esac
+    cut=$(printf '%s' "$cut" | sed -E 's/T([0-9]{2}:[0-9]{2})Z$/T\1:00Z/')
+    printf '%s\n' "$row" |
+      grep -oE 'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|(^|[^A-Za-z0-9_./-])([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#[0-9]+' |
+      sed -E -e 's,^https://github\.com/([^/]+)/([^/]+)/(issues|pull)/,\1/\2#,' -e 's/^[^A-Za-z0-9#]//' -e "s,^#,$base#," |
+      tr 'A-Z' 'a-z' |
+      while read -r item; do printf '%s\t%s\t%s\n' "$item" "$cut" "$n"; done
+  done |
+  sort -u | sort -t "$tab" -k1,1 -k2,2 |
+  awk -F '\t' '$1!=p{if(p!="")print p"\t"c"\t"r; p=$1; c=$2; r=$3; next} {r=r","$3} END{if(p!="")print p"\t"c"\t"r}' |
+  while IFS="$tab" read -r item cut rows; do
+    repo="${item%#*}"; num="${item##*#}"; at="$item (lines $rows, cut-off $cut)"
+    info=$(gh api "repos/$repo/issues/$num" --jq '[.state, (.closed_at // "-"), .updated_at, (.pull_request.merged_at // "-"), (if .pull_request then "pr" else "issue" end)] | @tsv' 2>&1) || { echo "$at: read failed: $info"; continue; }
+    IFS="$tab" read -r state closed updated merged kind <<< "$info"
+    if [ "$merged" != "-" ]; then [[ "$merged" < "$cut" ]] || echo "$at: merged $merged"
+    elif [ "$closed" != "-" ]; then [[ "$closed" < "$cut" ]] || echo "$at: closed $closed"; fi
+    [[ "${updated:0:10}" < "${cut:0:10}" ]] && continue
+    sel="select(.user.login != \"$me\")"
+    gh api --paginate "repos/$repo/issues/$num/comments?per_page=100" --jq ".[] | $sel | select(.created_at >= \"$cut\") | \"$at: comment \(.user.login) \(.created_at) \(.html_url)\"" || echo "$at: comments read failed"
+    if [ "$kind" = pr ]; then
+      gh api --paginate "repos/$repo/pulls/$num/reviews?per_page=100" --jq ".[] | $sel | select(.submitted_at >= \"$cut\") | \"$at: review \(.user.login) \(.state) \(.submitted_at)\"" || echo "$at: reviews read failed"
+      gh api --paginate "repos/$repo/pulls/$num/comments?per_page=100" --jq ".[] | $sel | select(.created_at >= \"$cut\") | \"$at: review-thread comment \(.user.login) \(.created_at) \(.html_url)\"" || echo "$at: review-thread read failed"
+    fi
+  done
+  ```
+
+  The `lines` in each output line are the ROADMAP line numbers of the rows
+  that link the item. Report each item with the opening words of each of
+  those rows, what happened, and each author and time. Read each reported
+  comment and review, and carry one proposed disposition per item to §3.
+  The read writes nothing to GitHub. When `gh` is missing or
+  unauthenticated, or the repo has no remote, name which of the three it
+  was, skip the read, and finish the audit: a reported gap, never an audit
+  `FAIL`. A `read failed` line names the one item whose read failed, and
+  the other items are still read.
 **Replace** "Last hygiene check: YYYY-MM-DD" in ROADMAP.md with one short line naming what changed since the last check — never append to the previous stamp or demote it to a `Prior:` clause; git and `milestones/archive/` hold the older stamps.
 
 ## 3. Route
