@@ -71,6 +71,19 @@ tool result whose `agentId` matches, in the main session transcript
 `~/.claude/projects/-Users-jmgirard-github-cairn/0acf5eb5-22a4-47bd-bdaf-ea0b4c8a99c5.jsonl`.
 Every row's cost is a lower bound, as there.
 
+Amended 2026-10-10, after all 18 task runs: the task runs ran in the
+background, and a background spawn's Agent tool result carries no `usage`.
+The final call's output count therefore comes from the run's completion
+notification in the main session transcript, whose `subagent_tokens`
+figure, less the final id's input and cache counts from its last
+transcript record, is that call's output. On the five foreground spawns of
+this session (the four probes and the plan's criteria-audit reader), each
+Agent tool result's `totalTokens` equals the sum of its `usage` input,
+both cache-write, cache-read, and output counts, so the two sources give
+the same figure there. Each row's "Final check" column says whether the
+derived output is at least the output count the final id's last record
+holds.
+
 **Verdict rule.** Per group, sum each arm's cost and score over the
 group's three tasks. The verdict is `untested` when any of the group's
 `low` rows records no `effort` value or any value other than `low`.
