@@ -110,9 +110,9 @@ this note does not rely on.
       run, and for each edit run a fresh copy under git, so `git diff -U0`
       reads the run's changes; re-run M228's key code at `c023018` and
       confirm it reproduces the keys that note lists.
-- [ ] T3: Search runs: S1 to S3, each on Sonnet (`Explore` agent type) at
+- [x] T3: Search runs: S1 to S3, each on Sonnet (`Explore` agent type) at
       both arms, pointed at a pinned copy; score by F1 against the keys.
-- [ ] T4: Edit runs: E1 to E3, each on Haiku (`general-purpose`) at both
+- [x] T4: Edit runs: E1 to E3, each on Haiku (`general-purpose`) at both
       arms in its own copy; score E1 by Jaccard against the target and E2,
       E3 by mutants killed, under `PYTHONDONTWRITEBYTECODE=1`.
 - [ ] T5: History-review runs: H1 to H3, each on Sonnet at both arms. Then
@@ -149,3 +149,5 @@ this note does not rely on.
 - 2026-10-10: implement started on branch m239-effort-roles; the untracked `cairn-probe.log` and `tsconfig.json` predate this milestone and stay unstaged.
 - 2026-10-10: T1 probe: four one-word spawns show `effort` unset records `high` and `effort: "low"` records `low`, on Sonnet and on Haiku alike; the note's Design section is written and fixed before any task run.
 - 2026-10-10: T2: twelve `git archive c023018` copies built in the session scratchpad (six search, six edit with a baseline commit); M228's key code re-run at `c023018` reproduces its listed keys (S1 10, S2 9, S3 88 items, set-equal).
+- 2026-10-10: T3: six search runs on Sonnet; F1 per arm S1 1.0 and 1.0, S2 1.0 and 1.0, S3 0.6767 and 0.6767 (both arms listed the same 45 pairs, reading "supersede" by meaning). The first scoring pass read 0 for every run because the session-local scorer looked for the wrong field of the `SubagentHandback` call; the answer text is its `message` input.
+- 2026-10-10: T4: six edit runs on Haiku; E1 Jaccard 1.0 in both arms (32-triple target), E2 and E3 6 of 6 mutants killed in both arms; the always-true control kills 0 of 6 for E2 and for E3.
