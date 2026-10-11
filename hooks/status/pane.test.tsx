@@ -1318,7 +1318,9 @@ describe("a ⌂ press's /clear opens the pane at its end, and nothing else does 
     return copy
   }
 
-  test('a clear end after a press opens the pane once and brings it to the front', async ($, on) => {
+  // The fake `ui.open` shows a hidden pane, so the check below holds the
+  // mod to the open call, not to what the desktop app does with it.
+  test('a clear end after a press opens the pane once', async ($, on) => {
     const copy = await homeReady($, on)
     const before = copy.opens.length
     await pressKey($, PANE_HOME)

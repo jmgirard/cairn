@@ -290,10 +290,9 @@ skill runs or waits on its background work, a button after the pill reads `Imple
 command as that button does, so `Plan` and `Implement` run `/clear` first. A press while Claude works outside a cairn
 skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
-`/cairn:milestone`. When a cairn skill finishes, the line also carries a
-`Clear` button before `Status`, which runs `/clear`. When you send a prompt
-while Claude is idle, or start another cairn skill, Clear goes away. Each
-press runs the command of the band's button of the same name. As with the
+`/cairn:milestone`. The Next line has no `Clear` button. The pane's `⌂`
+button, described below, clears the conversation. Each press runs the
+command of the band's button of the same name. As with the
 next-step button, a press while Claude works outside a cairn skill runs
 when Claude is idle. In a narrow pane, the pill is cut first. In the
 desktop app, a click on the pane while it does not have keyboard focus only
@@ -337,7 +336,14 @@ The pane also reads the states, and the tracking files, when you press
 the ↻ Button at the right end of the pane's first line: the first
 milestone's line, or `no active milestone`. The ↻ shows whenever the pane
 has a ROADMAP, and it reads `⋯` while a read runs. A press while an
-earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
+earlier ↻ press's read runs does nothing.
+While no cairn skill runs or waits on its background work, a `⌂` button
+sits just before the ↻. A press runs `/clear`, and when that `/clear` ends
+the session, the pane is opened again. A press does nothing while another
+button's command runs, while `Plan` or `Implement` waits for its `/clear`,
+or while an earlier `⌂` press waits for its `/clear`. A press is your
+consent to drop the conversation, as a press of the band's `Clear` is.
+When a `/clear` keeps the session's process, as a `⌂`, `Clear`,
 `Plan`, or `Implement` press does, the pane stays open. The pane and the
 band then read the tracking files again, and so does a `/resume`. After
 either one, a placed pane reads the states again, also when it sits
@@ -404,8 +410,8 @@ repo, with no pane open, the command opens no pane and prints `no cairn
 ROADMAP found`. A pane that is already open says the same, and the command
 closes it.
 
-A cairn pane that is shown at a `/clear` is open after it. A press of a
-Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
+A cairn pane that is shown at a `/clear` is open after it. A press of the
+pane's `⌂` or the band's Clear, `Plan`, or `Implement` Button clears without restarting Claude Code,
 and the pane stays. A typed `/clear` in the desktop app starts a new
 session at your next message, and a pane that was shown opens again then,
 in the same folder. When that next message is `/cairn-pane`, the pane
@@ -414,8 +420,9 @@ does not open again. An app quit or a closed terminal that ends the session
 with reason `other` (not checked) also brings the pane back at the next
 session in that folder. In a terminal narrower than 110 columns, that pane
 waits undrawn until you open it. This was checked live in the desktop app
-only, for a typed `/clear` and both Clear Buttons. A `Plan` or `Implement`
-press clears through the same call as the Clear Buttons.
+only, for a typed `/clear` and the Clear Buttons that the band and the
+pane had then. A `⌂`, `Plan`, or `Implement` press clears through the same
+call as the band's Clear Button.
 
 Mods are on by default from Claude Code 2.1.287
 ([Getting started with Claude Code mods](https://claude.dev/blog/getting-started-with-claude-code-mods/)),

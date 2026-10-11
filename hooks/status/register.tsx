@@ -67,8 +67,8 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // `pressNext`, as the band's does (M218). At the same times, the line
 // carries Status after that Button, and a press runs `pressStatus` (M219).
 // At the same times, the first line carries ⌂ before ↻, and a press runs
-// `pressHome`: `/clear`, and an open of the pane at the clear's session end,
-// which brings a pane behind another tab to the front (M241). Until M241
+// `pressHome`: `/clear`, and an open of the pane at the clear's session end
+// (M241). Until M241
 // the Next line carried Clear while `ended` was true.
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
@@ -1074,8 +1074,8 @@ async function pressHome($) {
 }
 
 // The open at the session end of a ⌂ press's `/clear` (M241). A Button's
-// `/clear` keeps the pane open (M222), so the open brings a pane behind
-// another tab to the front. The clear's start reads the files and the pull
+// `/clear` keeps the pane open (M222), so the open is for a pane that sits
+// behind another tab or waits undrawn. The clear's start reads the files and the pull
 // requests (M237, M238), so this open starts no read. A refused or unplaced
 // open says why in a toast, as the band's open button does.
 async function openHome($) {

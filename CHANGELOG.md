@@ -126,6 +126,14 @@
   read runs does nothing. After a plugin reload, a stored reading state
   with no read running draws ↻, not `⋯`.
 
+- **The cairn pane has a ⌂ Button that clears the conversation.** It sits
+  just before ↻ on the pane's first line while no cairn skill runs. A press
+  runs `/clear`, and when that `/clear` ends the session, the pane is
+  opened again. A press does nothing while another button's command runs,
+  while `Plan` or `Implement` waits for its `/clear`, or while an earlier
+  ⌂ press waits for its `/clear`. The pane's Next line no longer carries a
+  `Clear` button after a cairn skill ends. The band keeps its `Clear`.
+
 - **The cairn pane fills again after `/resume` and after a `/clear` behind
   another tab.** A `/resume` reads the tracking files again, as a `/clear`
   that keeps the session's process does. After either one, a placed pane

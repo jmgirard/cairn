@@ -54,7 +54,7 @@ the "Pane edges (M238 review)" row.
 
 - [x] T1: pane.ts: add `home` to `PaneButton` and `HOME_LABEL = '⌂'`. Give the first line `['home', 'refresh']` while `acts` is true, and `['refresh']` otherwise. Drop `clear` from the Next line and update the `paneLines` comments. Update pane.test.tsx.
 - [x] T2: register.tsx: add `PANE_BUTTONS.home` and route `home` in `pressPane` to a new `pressHome`. It returns at once while `busy()`, a step, or its own pending mark is set. Otherwise it sets the mark and runs `clear` through `run`, and a refused run clears the mark. `session.end` reads the mark and clears it at any end. On reason `clear`, it opens the pane unawaited, as the `heldRun` path runs its command. Write the AC2 and AC3 tests.
-- [ ] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry.
+- [x] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry.
 - [ ] T4: Live look in the desktop app (granted at the question set).
 
 ## Work log
@@ -75,6 +75,7 @@ the "Pane edges (M238 review)" row.
 - 2026-10-10: re-audit: AC2 (full) — "pending" is not defined. The tests covered one in-flight run, one held label, and one kind of first line. Wording kept as audited. The tests now cover Status and Resume runs in flight, both held labels, and both kinds of first line.
 - 2026-10-10: implement chose a module mark `homeRun` beside `heldRun` over an atom. A reload must drop a pending press, as it drops `heldRun`. `paneLines` lost its `ended` parameter, which only the pane's Clear read.
 - 2026-10-10: T1, T2 done. ⌂ draws before ↻ while no step is set, a press runs `/clear`, and a `clear` end opens the pane. The pane's Clear is gone. 13 old pane tests changed to the new Button lists, and 17 M241 tests added. Mod tests 1625 pass, and all five verify checks pass.
+- 2026-10-10: T3 done. README, DESIGN, and a CHANGELOG New entry describe ⌂ and the Next line with no Clear. DESIGN's Known issues line on the pane's Clear is corrected in place. Code comments no longer say the open brings a pane forward, since the API says only that an open id retitles. The live look checks it. The T1/T2 line's "13 old pane tests" was not counted.
 
 ## Decisions
 
