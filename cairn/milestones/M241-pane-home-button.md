@@ -1,6 +1,6 @@
 # M241: A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,7 +55,7 @@ the "Pane edges (M238 review)" row.
 - [x] T1: pane.ts: add `home` to `PaneButton` and `HOME_LABEL = '⌂'`. Give the first line `['home', 'refresh']` while `acts` is true, and `['refresh']` otherwise. Drop `clear` from the Next line and update the `paneLines` comments. Update pane.test.tsx.
 - [x] T2: register.tsx: add `PANE_BUTTONS.home` and route `home` in `pressPane` to a new `pressHome`. It returns at once while `busy()`, a step, or its own pending mark is set. Otherwise it sets the mark and runs `clear` through `run`, and a refused run clears the mark. `session.end` reads the mark and clears it at any end. On reason `clear`, it opens the pane unawaited, as the `heldRun` path runs its command. Write the AC2 and AC3 tests.
 - [x] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry.
-- [ ] T4: Live look in the desktop app (granted at the question set).
+- [x] T4: Live look in the desktop app (granted at the question set).
 
 ## Work log
 
@@ -77,6 +77,9 @@ the "Pane edges (M238 review)" row.
 - 2026-10-10: T1, T2 done. ⌂ draws before ↻ while no step is set, a press runs `/clear`, and a `clear` end opens the pane. The pane's Clear is gone. 13 old pane tests changed to the new Button lists, and 17 M241 tests added. Mod tests 1625 pass, and all five verify checks pass.
 - 2026-10-10: T3 done. README, DESIGN, and a CHANGELOG New entry describe ⌂ and the Next line with no Clear. DESIGN's Known issues line on the pane's Clear is corrected in place. Code comments no longer say the open brings a pane forward, since the API says only that an open id retitles. The live look checks it. The T1/T2 line's "13 old pane tests" was not counted.
 - 2026-10-10: T4 stop for the live look. A desktop Code session keeps the mod it loaded at its start (LESSONS M195), so the operator opens a new Code session in this checkout on `m241-pane-home-button`.
+- 2026-10-10: T4 done. Live look in a new desktop Code session: the operator saw ⌂ just before ↻, a press cleared the conversation with the pane still open, and the operator accepted the look. Whether the open brings a pane behind another tab forward was not reported.
+- 2026-10-10: claim audit: 55 claims read, 3 corrected — register.tsx, CHANGELOG.md, pane.test.tsx
+- 2026-10-10: The corrections: the `openHome` comment states what the API documents for an open of an open pane. The CHANGELOG adds the background-work wait. An old pane test's comment drops Clear, and its call drops the stray fourth argument. The reader re-read the three, and they hold. Verify passes: mod tests 1625, both Python suites, both validates.
 
 ## Decisions
 

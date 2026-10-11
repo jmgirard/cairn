@@ -877,9 +877,9 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
       }
       const next = layout(state, [], true).find(line => line.key === 'next')
       expect([action, next?.action]).toEqual([action, undefined])
-      // Nor Status and Clear, which show only with the next-step Button
-      // (M219 review).
-      expect([action, layout(state, [], true, true).find(line => line.key === 'next')?.buttons]).toEqual([action, undefined])
+      // Nor Status, which shows only with the next-step Button (M219
+      // review).
+      expect([action, next?.buttons]).toEqual([action, undefined])
     }
   })
 

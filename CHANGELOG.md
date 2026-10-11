@@ -127,7 +127,8 @@
   with no read running draws ↻, not `⋯`.
 
 - **The cairn pane has a ⌂ Button that clears the conversation.** It sits
-  just before ↻ on the pane's first line while no cairn skill runs. A press
+  just before ↻ on the pane's first line while no cairn skill runs or
+  waits on its background work. A press
   runs `/clear`, and when that `/clear` ends the session, the pane is
   opened again. A press does nothing while another button's command runs,
   while `Plan` or `Implement` waits for its `/clear`, or while an earlier

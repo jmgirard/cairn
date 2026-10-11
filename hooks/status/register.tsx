@@ -1074,8 +1074,11 @@ async function pressHome($) {
 }
 
 // The open at the session end of a ⌂ press's `/clear` (M241). A Button's
-// `/clear` keeps the pane open (M222), so the open is for a pane that sits
-// behind another tab or waits undrawn. The clear's start reads the files and the pull
+// `/clear` keeps the pane open (M222), and the open asks the surface to
+// show it again. The API documents only that an open of an open id
+// retitles it, so whether a pane behind another tab comes forward was not
+// checked live. The open is unasked, so a pane that waits undrawn below the
+// width floor stays undrawn. The clear's start reads the files and the pull
 // requests (M237, M238), so this open starts no read. A refused or unplaced
 // open says why in a toast, as the band's open button does.
 async function openHome($) {

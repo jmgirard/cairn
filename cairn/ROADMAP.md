@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M238 | The pane reads its pull requests once per start, at its first draw when placed later | done | — | normal | milestones/archive/M238-pane-one-read-per-start.md |
 | M239 | Compare low with default reasoning effort on cairn's Sonnet and Haiku roles | done | — | normal | milestones/archive/M239-effort-roles.md |
 | M240 | Measure medium effort on the history reviewers, and state each spawned role's effort level | done | — | normal | milestones/archive/M240-effort-review-medium.md |
-| M241 | A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front | in-progress | — | normal | milestones/M241-pane-home-button.md |
+| M241 | A ⌂ Button in the cairn pane clears the conversation and brings the pane to the front | review | — | normal | milestones/M241-pane-home-button.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
