@@ -430,9 +430,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   `STATUS_LABEL`). A press is the band's `pressStatus`.
   Until M241 the Next line also carried `clear` while `ended` was true.
   The first line's ⌂ took its place, and `paneLines` lost its `ended`
-  parameter. A ⌂ press runs `pressHome`: under `busy` and the step check,
-  with no `ended` check, it sets the module mark `homeRun` and runs `clear`
-  through `run`. A refused run clears the mark. `busy` also reads the
+  parameter. A ⌂ press runs `pressHome`: under `busy`, with no `ended`
+  check, it sets the module mark `homeRun` before its first await, so a
+  second press in the same tick finds `busy` true. It takes the mark back
+  when it finds a step set, and otherwise runs `clear` through `run`. A
+  refused run clears the mark. `busy` also reads the
   mark, so every action press does nothing while it is set. `session.end`
   takes and clears the mark, and at reason `clear` it calls `openHome`
   unawaited, which opens the pane and toasts a refused or unplaced open.

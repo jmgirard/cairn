@@ -37,8 +37,8 @@ the "Pane edges (M238 review)" row.
 - [x] AC3: At the session end of a ⌂ press's `/clear` (reason `clear`), the mod calls `$.ui.open` for the pane exactly once. A session end with any other reason after a ⌂ press calls no open. A ⌂ press whose `/clear` run is refused leaves no pending open, so a later `clear` end from another Button calls no open. A session end with no ⌂ press pending calls no open. Mod tests assert the open calls in each of these four cases.
 - [x] AC4: The pane's Next line carries no Clear Button, with `ended` true or false. It carries Status after the next-step Button as before. The band's Clear Button draws and presses as the existing band tests assert, and those tests pass.
 - [x] AC5: A live look in the desktop app shows ⌂ just before ↻ on the pane's first line. A press of ⌂ there clears the conversation, and the cairn pane stays open. The operator accepts the look.
-- [ ] AC6: Three texts describe ⌂ and its press and say that the pane's Next line has no Clear. They are README.md's and DESIGN.md's text on the pane's current behavior, and a new CHANGELOG.md entry. Earlier CHANGELOG entries and the history in DESIGN.md do not change. A reader of the README and DESIGN lines that describe the pane's Next line finds no claim that it carries Clear.
-- [ ] AC7: The profile's five `verify` checks pass.
+- [x] AC6: Three texts describe ⌂ and its press and say that the pane's Next line has no Clear. They are README.md's and DESIGN.md's text on the pane's current behavior, and a new CHANGELOG.md entry. Earlier CHANGELOG entries and the history in DESIGN.md do not change. A reader of the README and DESIGN lines that describe the pane's Next line finds no claim that it carries Clear.
+- [x] AC7: The profile's five `verify` checks pass.
 
 ## Coverage
 
@@ -92,3 +92,35 @@ Evidence run 2026-10-10 on the code as of `3aa63d1`. Main has not moved since th
 - AC3: same run. The 4 open tests pass: a `clear` end after a press adds exactly one open of pane `cairn`, and a later `clear` end adds none. An `other` end after a press adds none. A refused `/clear` (toast names `/clear`) leaves no open at the next `clear` end. A `clear` end with no press adds none.
 - AC4: same run. "a running skill hides Status, and its end adds no Clear" passes on both surfaces: after a Stop (`ended` true) and after a typed prompt (`ended` false) the Next line holds Next then Status, with no `cairn-pane-clear`. The `paneLines` test gives the Next line `['status']`. The 28 band tests named M216 (the band's Clear) pass.
 - AC5: the T4 work-log line, 2026-10-10: in a new desktop Code session on this branch the operator saw ⌂ just before ↻, a press cleared the conversation with the pane still open, and the operator chose "Looks right, accept" at the live-look chip.
+- AC6: read on 2026-10-10 after the review fixes. README.md lines 286-300 (the pane's Next line) say "The Next line has no `Clear` button" and point to ⌂. README lines 340-350 describe ⌂ and its press. DESIGN.md lines 419-440 describe the Next line with `status` alone, and ⌂ and `pressHome`. The `hooks/status/` entry names ⌂ (M241). The new CHANGELOG New entry describes ⌂ and says the Next line no longer carries Clear. `git diff main...HEAD -- CHANGELOG.md` shows that entry's added lines only, so earlier entries are unchanged. DESIGN's history (the entry's M219 list) is unchanged. No README or DESIGN line on the pane's Next line claims Clear.
+- AC7: run on the tree of `58c4b7e`, each exit code read: `python3 -m unittest discover -s scripts/tests` 406 tests OK (21 skipped), `hooks/tests` 174 OK, both `claude plugin validate` checks pass, and `claude plugin test .` 1627 pass, 0 fail.
+
+Consistency gate: `cairn_validate.py` all checks passed. Principles touched is IP3, which this milestone works under and does not change, so `cairn_impact` is skipped. Profile slot: verify passes (AC7). The marketplace validate prints no `version` warning. The CHANGELOG has the entry (AC6), with no milestone number in it.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: a ⌂ `/clear` with no session end leaves `homeRun` set and every action press dead with no toast — fix now (DESIGN Known issues line), fixed 58c4b7e
+- diff-bug #2: two ⌂ presses in one tick both pass `busy` and both run `/clear` — fix now (mark set before the first await, new test seen red first), fixed 58c4b7e. The same pattern in the other presses goes to "⌂ edges (M241 review)".
+- diff-bug #3: a typed `/clear` takes a queued ⌂ press's open — follow-up, "⌂ edges (M241 review)"
+- diff-bug #4: the open can bring back a pane closed during the wait — follow-up, "⌂ edges (M241 review)"
+- diff-bug #5: `openHome` uses the ended session's `$`, unchecked live — follow-up, "⌂ edges (M241 review)"
+- diff-bug #6: title and Goal say the pane comes forward, which nobody saw — follow-up, "⌂ edges (M241 review)". The Goal is plan-owned and stays, and the archive summary says it was not seen.
+- diff-bug #7: README "opened again" reads as a visible effect, and README omits the idle-wait for ⌂ — fix now (README says a shown pane stays as it is, that the tab case was not checked, and the idle wait), fixed 58c4b7e
+- diff-bug #8: AC3 tests only reason `other`, which also marks a reopen — fix now (a `resume` case), fixed 58c4b7e
+- diff-bug #9: in-flight tests use one fixture on desktop, and a work-log line claims both first lines — reject, false: that line's "both kinds of first line" names the free case, which covers both.
+- diff-bug #10: the M221 pane test lost its `endSkill` — fix now (restored), fixed 58c4b7e
+- diff-bug #11: the AC3 `isShown` check rests on the fake `ui.open` — reject, false as a defect: the test comment says it checks the call only.
+- diff-bug #12: a rejecting `next(e)` at a `clear` end drops the open — follow-up, "⌂ edges (M241 review)"
+- blame-history #1: ⌂ shows at every idle moment, where the pane's Clear showed only after a skill's end — reject, planned change: the question set chose ⌂ always shown outside a run and the pane's Clear removed.
+- blame-history #2: a queued ⌂ `/clear` freezes every action press until its end — fix now, as diff-bug #1, fixed 58c4b7e
+- blame-history #3: a non-`clear` end drops the ⌂ mark with no message — follow-up, "⌂ edges (M241 review)"
+- blame-history #4: `openHome` has no `found` check or refresh, and its order against the start hook is untested — follow-up, "⌂ edges (M241 review)"
+- blame-history #5: the "front" promise in the title and Goal is not shown — follow-up, as diff-bug #6
+- blame-history #6: no test for a narrow first line with ⌂ and ↻ — reject, false: the M208 44-column test checks the `-home` and `-refresh` Boxes do not shrink.
+- blame-history #7: stale text in register.tsx (Clear in the layout comment), DESIGN (`CLEAR_LABEL` read by the pane), and README ("each press runs the band's button of the same name") — fix now for the first two, fixed 58c4b7e. Reject the README part, false: Status is the band's Status.
+- blame-history #8: no regression in `heldRun`, `runs`, or the M222 reopen — noted.
+- prior-review #1: `openHome` opens before the new start's refresh, against M222's register-before-reopen order — follow-up, "⌂ edges (M241 review)"
+- prior-review #2: an older Unreleased CHANGELOG bullet names "both Clear Buttons" — reject, false: each sentence there is still true (the live check covered both, and the band's Clear keeps the pane), and AC6 keeps earlier entries unchanged.
+- copilot: hooks/status/register.tsx:1074 — fix now (the race of diff-bug #2), fixed 58c4b7e
+- copilot: review body, "the milestone needs the PR URL" — noted: the header records PR #251 in the next push.
+- Copilot level: Lite (set by GitHub's settings)
