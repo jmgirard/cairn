@@ -521,8 +521,8 @@ These rules bind all chat output while any cairn skill is active.
   type's or the harness's default, which need not be the model the role calls for.
 - **Leave effort unset on every spawn.** No subagent role sets the Agent tool's `effort` setting, the history reviewers
   included. On search and edit work the cost method's output undercount could reverse `low`'s saving, the history
-  reviewers lost judged findings at `low` and at `medium`, and the Opus roles are unmeasured
-  (`cairn/references/effort-roles.md`, `cairn/references/effort-review-medium.md`).
+  reviewers scored fewer judged-valid findings at `low` and at `medium` by margins one rerun could flip, and the Opus
+  and Fable roles are unmeasured (`cairn/references/effort-roles.md`, `cairn/references/effort-review-medium.md`).
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
 - **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide

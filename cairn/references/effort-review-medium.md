@@ -188,10 +188,11 @@ score, 2.7. The verdict is `default`.
 
 Readings that bear on the verdict:
 
-- The whole score gap is H1. Both default arms found that `readPrs` lost
-  M224's no-call path, and the `medium` run did not. On H2 all three arms
-  found the same valid finding, and on H3 the new default and `medium`
-  arms found the same one.
+- Against the default mean, `medium` trails by 1.5 on H1, ties on H2,
+  and leads by 0.5 on H3. On H1 both default arms found that `readPrs`
+  lost M224's no-call path, and the `medium` run did not. On H2 all three
+  arms found the same valid finding, and on H3 the new default and
+  `medium` arms found the same one.
 - The `medium` arm cost 28% less than the mean default arm. On H1 it made
   6 calls against 16 and 21.
 - The two default arms differ by 1 on H1 and by 1 on H3 under one judging.
