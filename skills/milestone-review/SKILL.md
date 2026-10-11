@@ -632,7 +632,9 @@ re-enters here, at the step the record shows is next:
    session never waits on a guest PR's checks; the fenced next command is
    `/milestone`, labeled as the command that re-reads the PR's state (its
    §2 routes MERGED to this skill's hygiene, CLOSED to a chip,
-   `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line. A
+   `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line.
+   With the Copilot round off, this close also follows the off-but-present
+   rule (`skills/shared/copilot-review.md` §1). A
    merge the maintainers make is reconciled by that route — steps 9–10
    below run then, on disk.
 
@@ -768,5 +770,9 @@ re-enters here, at the step the record shows is next:
     after it, as `/milestone` §3 rules for `cairn_next`'s recommendation.
     This close is a handoff, so
     commands go in fenced blocks, never inline backticks (tracking-rules
-    "Copy-run commands"). Do **not** end review with an AskUserQuestion:
-    the step-7 merge question was the last chip this phase emits.
+    "Copy-run commands"). With the Copilot round off, the close after a
+    merge this run made also follows the off-but-present rule
+    (`skills/shared/copilot-review.md` §1); a close reached by resume route
+    (a) or by the guest hygiene run through `/milestone` does not. Do
+    **not** end review with an AskUserQuestion: the step-7 merge question
+    was the last chip this phase emits.

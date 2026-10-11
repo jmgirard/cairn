@@ -291,6 +291,8 @@ can resolve against the fork instead of the base repo.
    PR reference, whose step 1 re-derives the PR's state (a hotfix has no
    milestone row to set `blocked`, so the PR itself is the record;
    `/milestone` §2 reports the open PR in its "Open hotfix PRs" bullet).
+   With the Copilot round off, this close also follows the off-but-present
+   rule (`skills/shared/copilot-review.md` §1).
    Step 7's issue
    close is theirs — the `Fixes` keyword closes it at their merge.
 
@@ -304,7 +306,10 @@ can resolve against the fork instead of the base repo.
    unauthenticated, or the repo has no remote, name which of the three it
    was in the recap — never a failure. If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
-   branch-sync rule) — nothing to do now. End with the close block
+   branch-sync rule) — nothing to do now. With the Copilot round off, the
+   close after an authored fix this run merged also follows the
+   off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
+   PR or the merged-PR re-entry does not. End with the close block
    (tracking-rules "Question gates and phase closes"), composed from the
    hotfix's end state — recap of what was fixed and merged, status line,
    fenced next command(s) where any follow-up exists, and the safety line;
