@@ -142,7 +142,9 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 
 // True from the start of a read of the pull request states until the newest
 // read started has settled (M236). The pane's ↻ Button reads ⋯ while it is
-// true. A reload keeps it, so a press does not rely on it (`pressing`).
+// true and a read that this module started is in flight (`inFlight`, M237).
+// A reload keeps it, so neither the label nor a press relies on it alone
+// (`pressing`).
 const reading = atom({ plugin: 'cairn', key: 'reading' } as const, false, { shape: 'reading-1' })
 
 // The pane's id, its title, and the command that opens and closes it.
@@ -288,7 +290,9 @@ export const register: Register = on => {
     const held = await read($, hotfixes)
     const listed = held.root !== null && held.root === shown.root ? held.prs : []
     const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
-    const busy_ = await read($, reading)
+    // ⋯ also needs a read in flight in this module, so a stored true that a
+    // reload or a failed write left draws ↻ (M237).
+    const busy_ = (await read($, reading)) && inFlight > 0
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -696,6 +700,11 @@ async function isPlaced($): Promise<boolean> {
 // over at 0.
 let prReads = 0
 
+// The reads of the pull request states that this module started and that
+// have not settled (M237). A reload starts it over at 0, as the reload ends
+// the old module's reads.
+let inFlight = 0
+
 // Reads each blocked row's pull request with one `gh pr view` call per URL,
 // side by side, and writes each state word by its URL (M224). The URL
 // names the repo, so the call needs no `--repo`. A call that rejects, as
@@ -717,6 +726,7 @@ let prReads = 0
 async function readPrs($) {
   prReads += 1
   const mine = prReads
+  inFlight += 1
   // Each write checks again inside `update`, which retries on a version
   // conflict, that no newer read started, so a retried write never undoes a
   // newer read's write (M236 review).
@@ -754,6 +764,7 @@ async function readPrs($) {
   } catch {
     // No write: the lines keep the words they had.
   } finally {
+    inFlight -= 1
     // Only the newest read puts back the ↻, so an older read that settles
     // first leaves ⋯ while the newer one runs (M236).
     if (mine === prReads) {

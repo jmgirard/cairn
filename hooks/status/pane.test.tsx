@@ -2556,7 +2556,9 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
     expect(calls.calls.length).toBe(3)
   })
 
-  test('a stored reading state with no press read in this module lets a press read', async ($, on) => {
+  // The first assertion is M237 AC3's: a stored true with no read in flight
+  // in this module draws ↻, not ⋯.
+  test('a stored reading state with no read in this module draws ↻ and lets a press read', async ($, on) => {
     const calls = gh(on, () => prView('OPEN', ''))
     seat(on, copyOf('blocked-active'))
     // A read that a reloaded module ended leaves the stored state true: the
@@ -2574,10 +2576,40 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
       return next(e)
     })
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
-    expect(await labelOf($)).toBe('⋯')
+    expect(await labelOf($)).toBe('↻')
     await pressKey($, PANE_REFRESH)
     await calls.settled()
     expect(calls.calls.length).toBe(1)
+    expect(await labelOf($)).toBe('↻')
+  })
+
+  // M237 AC3: a read whose write of `reading` false fails leaves the stored
+  // value true, and the next drawing after it settles still shows ↻. The
+  // engine skips a hook that throws and the write lands, so the hook writes
+  // true in place of the mod's false, and the stored value stays true.
+  test('a failed write of the reading state false still draws ↻ once the read settles', async ($, on) => {
+    const held_ = gate()
+    const calls = gh(on, async () => {
+      await held_.wait
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    const refused: unknown[] = []
+    on('state.set', async ($, e, next) => {
+      const value = (e as { value?: { value?: unknown } }).value?.value
+      if (e.plugin === 'cairn' && e.key === 'reading' && value === false) {
+        refused.push(value)
+        return next({ ...e, value: { shape: 'reading-1', value: true } })
+      }
+      return next(e)
+    })
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await until(() => calls.calls.length === 1)
+    expect(await labelOf($)).toBe('⋯')
+    held_.release()
+    await calls.settled()
+    await until(() => refused.length > 0)
     expect(await labelOf($)).toBe('↻')
   })
 })
