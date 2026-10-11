@@ -53,7 +53,13 @@ import { PILL_TEXT } from './track'
 // of the row. Until M236 the Blocked and Hotfixes headings each carried a
 // Refresh. While no cairn skill runs, the Home Button, labeled ⌂, comes
 // before ↻: it clears the conversation and opens the pane again (M241).
-export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
+// While no cairn skill runs, each candidate line whose short title is not
+// empty carries the Plan Button, labeled ✎, which plans that row (M242).
+// Its `target` is the line's index among the candidate rows, which the
+// Button's key carries, so two rows with one title draw two keys, and its
+// `title` is the row's short title, which the press carries. A candidate
+// line's `grow` puts ✎ at the right end of the row.
+export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
   indent: number
@@ -64,6 +70,7 @@ export type PaneLine = {
   action?: string
   buttons?: PaneButton[]
   target?: string
+  title?: string
   grow?: true
 }
 
@@ -204,6 +211,8 @@ export const CLEAR_LABEL = 'Clear'
 export const REFRESH_LABEL = '↻'
 // The pane's Home Button, before ↻ on the first line (M241).
 export const HOME_LABEL = '⌂'
+// A candidate line's Plan Button (M242).
+export const PLAN_CANDIDATE_LABEL = '✎'
 export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
@@ -343,7 +352,8 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // The pane's lines from its state and the band's rows, whose counts give
 // each head line its percent. `acts` is true while no cairn skill's step is
 // set, and then the Next line carries its action label (M218) and the
-// Status Button after it (M219), and the first line carries ⌂ (M241).
+// Status Button after it (M219), the first line carries ⌂ (M241), and each
+// candidate line with a short title carries ✎ (M242).
 // `prs` holds each pull request's state word by its
 // URL, from the last read (M224), with its counts (M225). `hotfixes` holds
 // the open hotfix pull requests of the last read for this root (M226).
@@ -452,21 +462,28 @@ export function paneLines(
       if (counts !== null) out.push(line(`hotfix-${pr.number}-counts`, 4, [], { text: counts, color: GRAY }))
     }
   }
-  // With no active milestone, the ROADMAP's candidate rows (M207).
+  // With no active milestone, the ROADMAP's candidate rows (M207), each
+  // with ✎ while no cairn skill runs, but for a row with an empty short
+  // title, whose press would plan with no args (M242).
   if (state.milestones.length === 0 && state.candidates.length > 0) {
     out.push(
       ...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
     )
-    state.candidates.forEach((row, i) =>
-      out.push(
-        line(
-          `candidate-${i}`,
-          2,
-          [PRIORITY_MARK[row.priority], { text: ' ' }],
-          row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
-        ),
-      ),
-    )
+    state.candidates.forEach((row, i) => {
+      const candidate = line(
+        `candidate-${i}`,
+        2,
+        [PRIORITY_MARK[row.priority], { text: ' ' }],
+        row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
+      )
+      candidate.grow = true
+      if (acts && row.title !== '') {
+        candidate.buttons = ['plan']
+        candidate.target = `${i}`
+        candidate.title = row.title
+      }
+      out.push(candidate)
+    })
   }
   return out
 }

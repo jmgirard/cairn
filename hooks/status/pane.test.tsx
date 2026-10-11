@@ -1030,9 +1030,11 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
         // No other line of the pane carries a Button (M219 review), but for
-        // the ⌂ and ↻ on the first line (M236, M241). Before any read, no
-        // blocked line carries one.
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS])
+        // the ⌂ and ↻ on the first line (M236, M241) and each candidate
+        // line's ✎ (M242). Before any read, no blocked line carries one.
+        const candidates = FIXTURES[name].pane.length === 0 ? FIXTURES[name].candidates : []
+        const plans = candidates.flatMap((row, i) => (row.title === '' ? [] : [`cairn-pane-plan-${i}`]))
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS, ...plans])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
@@ -1382,6 +1384,201 @@ describe("a ⌂ press's /clear opens the pane at its end, and nothing else does 
     await untilOpens(copy, before + 1, 10)
     expect(copy.opens.length).toBe(before)
   })
+})
+
+// A candidate line's ✎ (M242). The candidates fixture with three more rows
+// at its end: one whose short title is empty, and two that share a title.
+const PANE_PLAN = 'cairn-pane-plan'
+const PLAN_MARK = '✎'
+const PLAN_COMMAND = 'cairn:milestone-plan'
+const EMPTY_AT = 9
+const SAME_AT = [10, 11]
+function candidatesPlus(): Copy {
+  const copy = copyOf('candidates')
+  const path = Object.keys(copy.files).find(each => each.endsWith('cairn/ROADMAP.md')) as string
+  copy.files[path] = copy.files[path].replace(
+    '\n## Notes',
+    '- : an empty short title — added 2026-01-10\n- Same title: one — added 2026-01-11\n- Same title: two — added 2026-01-12\n\n## Notes',
+  )
+  return copy
+}
+// The same copy with its one planned row done, so its Next is `Plan`.
+function candidatesPlanNext(): Copy {
+  const copy = candidatesPlus()
+  const path = Object.keys(copy.files).find(each => each.endsWith('cairn/ROADMAP.md')) as string
+  copy.files[path] = copy.files[path].replace('| M031 | Next up | planned |', '| M031 | Next up | done |')
+  return copy
+}
+const TITLES = [...CANDIDATE_LINES.map(text => text.slice(2)), '', 'Same title', 'Same title']
+
+describe('each candidate line with a short title carries ✎ while no cairn skill runs (M242 AC1)', () => {
+  test('the extra rows read as planned: an empty title and two equal ones', () => {
+    expect(TITLES[EMPTY_AT]).toBe('')
+    expect(SAME_AT.map(i => TITLES[i])).toEqual(['Same title', 'Same title'])
+  })
+
+  for (const surface of SURFACES) {
+    test(`✎ on each line with a title, none on the empty one, none while a skill runs (${surface})`, async ($, on) => {
+      seat(on, candidatesPlus())
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const planKeys = async () => {
+        const out: string[][] = []
+        for (let i = 0; i < TITLES.length; i++) out.push(buttonsIn((await boxOf(ui, `candidate-${i}`)) as Element).map(keyOf) as string[])
+        return out
+      }
+      const want = TITLES.map((title, i) => (title === '' ? [] : [`${PANE_PLAN}-${i}`]))
+      expect(await planKeys()).toEqual(want)
+      // The two rows with one title draw two keys.
+      expect(new Set(SAME_AT.map(i => want[i][0])).size).toBe(2)
+      for (const button of await ui.findAll({ type: 'Button' })) {
+        if (!(keyOf(button) ?? '').startsWith(`${PANE_PLAN}-`)) continue
+        expect([button.props.variant, button.props.label]).toEqual(['secondary', PLAN_MARK])
+      }
+      await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+      expect(await planKeys()).toEqual(TITLES.map(() => []))
+      await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+      expect(await planKeys()).toEqual(want)
+      await ui.unmount()
+    })
+  }
+
+  test('paneLines gives plan, the index, and the title to each titled row while it acts, and nothing otherwise', () => {
+    const state: PaneState = {
+      found: true,
+      milestones: [],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [
+        { priority: 'high', title: 'High' },
+        { priority: 'normal', title: 'Normal' },
+        { priority: 'low', title: 'Low' },
+        { priority: 'normal', title: '' },
+      ],
+      blocked: [],
+    }
+    const rows = (acts: boolean) => layout(state, [], acts).filter(line => /^candidate-\d+$/.test(line.key))
+    expect(rows(true).map(line => [line.buttons, line.target, line.title])).toEqual([
+      [['plan'], '0', 'High'],
+      [['plan'], '1', 'Normal'],
+      [['plan'], '2', 'Low'],
+      [undefined, undefined, undefined],
+    ])
+    expect(rows(false).map(line => [line.buttons, line.target, line.title])).toEqual(rows(false).map(() => [undefined, undefined, undefined]))
+  })
+})
+
+describe("a press of ✎ runs /clear, and /cairn:milestone-plan with the row's title at its end (M242 AC2)", () => {
+  // A high, a low, the backtick row, and the second of the two equal titles.
+  for (const i of [0, 2, 8, SAME_AT[1]]) {
+    test(`row ${i}: clear first, then the plan with the title`, async ($, on) => {
+      const copy = candidatesPlus()
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await pressKey($, `${PANE_PLAN}-${i}`)
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: TITLES[i] }])
+    })
+  }
+})
+
+describe('a guarded ✎ press runs nothing (M242 AC3)', () => {
+  test('a press while a Status run is in flight runs nothing', async ($, on) => {
+    const copy = candidatesPlus()
+    let release = () => {}
+    copy.runHold = new Promise<void>(resolve => {
+      release = resolve
+    })
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    const first = ui.press({ key: PANE_STATUS })
+    try {
+      for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      expect(copy.commands).toEqual([STATUS_RUN])
+      await ui.press({ key: `${PANE_PLAN}-0` })
+      expect(copy.commands).toEqual([STATUS_RUN])
+    } finally {
+      release()
+      await first
+    }
+    await ui.unmount()
+  })
+
+  test('a press while a Plan command is held runs nothing, and the held Plan runs at the end', async ($, on) => {
+    const copy = candidatesPlanNext()
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    const [next] = await ui.findAll({ key: PANE_NEXT })
+    expect(next.props.label).toBe('Plan')
+    await ui.unmount()
+    await pressKey($, PANE_NEXT)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await pressKey($, `${PANE_PLAN}-0`)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: '' }])
+  })
+
+  test('a press while a ⌂ press is pending runs nothing, and the end opens the pane only', async ($, on) => {
+    const copy = candidatesPlus()
+    seat(on, copy)
+    await $.turn.complete(turn())
+    await pressKey($, PANE_HOME)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await pressKey($, `${PANE_PLAN}-0`)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    const before = copy.opens.length
+    await $.session.end(CLEAR_END)
+    await untilOpens(copy, before + 1)
+    expect(copy.opens.length).toBe(before + 1)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+  })
+
+  test('two presses at once run clear once', async ($, on) => {
+    const copy = candidatesPlus()
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await Promise.all([ui.press({ key: `${PANE_PLAN}-0` }), ui.press({ key: `${PANE_PLAN}-1` })])
+    await ui.unmount()
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands?.length).toBe(2)
+    expect(copy.commands?.[1].command).toBe(PLAN_COMMAND)
+  })
+})
+
+describe('✎ sits at the right end of a candidate line, and the title gives way (M242 AC4)', () => {
+  for (const surface of SURFACES) {
+    // Row 1's title is short, and row 7's is longer than 44 columns.
+    for (const i of [1, 7]) {
+      test(`row ${i} at 44 columns (${surface})`, async ($, on) => {
+        seat(on, candidatesPlus())
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface, 44)
+        const text = (await boxOf(ui, `candidate-${i}-text`)) as Element
+        expect([text.props.flexGrow, text.props.minWidth]).toEqual([1, 0])
+        expect(kids(text)[0].props.wrap).toBe('truncate-end')
+        if (i === 7) expect(width(textOf(kids(text)[0]))).toBeGreaterThan(44)
+        const line = (await boxOf(ui, `candidate-${i}`)) as Element
+        expect(kids(line).map(keyOf).slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
+        expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
+        await ui.unmount()
+      })
+    }
+  }
 })
 
 describe('the pill gives way before Status (M219 AC4)', () => {
@@ -2622,7 +2819,9 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect(keyOf(got.first as Element)).toBe(firstKey)
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
-    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1]])
+    // Besides the first line, only candidate lines grow, so ✎ sits at their
+    // right end (M242).
+    expect(grows(got.lines).filter(([key]) => !/^candidate-\d+-text$/.test(String(key)))).toEqual([[`${firstKey}-text`, 1]])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
     expect(got.button?.props.label).toBe('↻')
     return got
