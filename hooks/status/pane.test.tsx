@@ -3693,3 +3693,88 @@ describe('the gh pr list call names an http(s) remote without its userinfo (M230
     })
   }
 })
+
+// Two presses in the same tick of a blocked line's `Finish`: the press marks
+// itself busy before its first await, so the second runs nothing (M243 AC1).
+describe('two presses at once of a blocked line Button run its command once (M243 AC1)', () => {
+  test('cairn-pane-finish-M111', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-finish-M111'])
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await Promise.all([ui.press({ key: 'cairn-pane-finish-M111' }), ui.press({ key: 'cairn-pane-finish-M111' })])
+    await ui.unmount()
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M111' }])
+  })
+})
+
+// A Status press and a ⌂ press in the same tick share one press mark, so
+// only the press listed first runs (M243 AC2). ⌂ marks itself since M241,
+// so the ⌂-first order held before M243 too.
+describe('a Status press and a ⌂ press at once run only the first one (M243 AC2)', () => {
+  const ORDERS = [
+    { keys: [PANE_STATUS, PANE_HOME], run: STATUS_RUN },
+    { keys: [PANE_HOME, PANE_STATUS], run: CLEAR_RUN },
+  ]
+  for (const { keys, run } of ORDERS) {
+    test(keys.join(' then '), async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      await Promise.all(keys.map(key => ui.press({ key })))
+      await ui.unmount()
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([run])
+    })
+  }
+})
+
+// A press whose checks fail takes its mark back, so the next free press
+// runs (M243 AC4).
+describe('a press whose checks fail leaves the next press free (M243 AC4)', () => {
+  test('a Finish press during a step, then a Status press after the step ends', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    await pressKey($, 'cairn-pane-finish-M111')
+    expect(copy.commands ?? []).toEqual([])
+    await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
+    await pressKey($, PANE_STATUS)
+    expect(copy.commands).toEqual([STATUS_RUN])
+  })
+
+  test('a Finish press that reads a changed PR word, then a Status press', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    // Once `changed` is set, every stored PR reads `closed`, which carries
+    // the Check Button, not Finish, so the Finish press's check fails.
+    let changed = false
+    on('state.get', async ($, e, next) => {
+      const got = await next(e)
+      if (!changed || e.plugin !== 'cairn' || e.key !== 'prs') return got
+      const read_ = (got as { value?: { version?: number; value?: { shape?: string; value?: Record<string, object> } } } | undefined)?.value
+      const words = read_?.value?.value ?? {}
+      const closed = Object.fromEntries(Object.entries(words).map(([url, each]) => [url, { ...each, word: 'closed' }]))
+      return { value: { version: read_?.version ?? 0, value: { shape: read_?.value?.shape ?? 'prs-3', value: closed } } }
+    })
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-finish-M111'])
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    changed = true
+    await ui.press({ key: 'cairn-pane-finish-M111' })
+    await ui.unmount()
+    expect(copy.commands ?? []).toEqual([])
+    await pressKey($, PANE_STATUS)
+    expect(copy.commands).toEqual([STATUS_RUN])
+  })
+})

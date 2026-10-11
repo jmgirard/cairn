@@ -1,13 +1,13 @@
 # M243: A second press during a press's checks runs no second command
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter presses these Buttons in the band and the cairn pane
-- **Branch/PR:** —
+- **Branch/PR:** m243-pane-press-races
 
 ## Goal
 
@@ -55,7 +55,7 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 
 ## Tasks
 
-- [ ] T1: Write the tests first, in `hooks/status/band.test.tsx` and `pane.test.tsx`. Add a `Promise.all` double press for `cairn-next`, `cairn-status`, and `Clear` on the band. Add one for a blocked line's `Finish` in the pane. Add the pane `Status` and ⌂ pair in both orders, and the two AC4 cases. The band Clear case needs `ended` true from a skill end. The `Finish` cases need a `gh` fake that answers MERGED. AC4's changed word needs a `state.get` hook on `prs` during the press (the pattern at pane.test.tsx:3098). Run the tests against the current code and record which go red. The AC1 cases and the Status-first AC2 order are expected red. The ⌂-first order and the AC4 cases are expected green, because `pressHome` already marks itself.
+- [x] T1: Write the tests first, in `hooks/status/band.test.tsx` and `pane.test.tsx`. Add a `Promise.all` double press for `cairn-next`, `cairn-status`, and `Clear` on the band. Add one for a blocked line's `Finish` in the pane. Add the pane `Status` and ⌂ pair in both orders, and the two AC4 cases. The band Clear case needs `ended` true from a skill end. The `Finish` cases need a `gh` fake that answers MERGED. AC4's changed word needs a `state.get` hook on `prs` during the press (the pattern at pane.test.tsx:3098). Run the tests against the current code and record which go red. The AC1 cases and the Status-first AC2 order are expected red. The ⌂-first order and the AC4 cases are expected green, because `pressHome` already marks itself.
 - [ ] T2: In register.tsx, rename `candidateCheck` to one shared press mark that `busy()` reads. Set it before the first await in `pressNext`, `pressStatus`, `pressClear`, and `pressBlocked`. Clear it in a `finally` when the checks end, with no await before `run` sets `running` or `heldRun` takes over. Keep `pressCandidate` on the same mark. Update the comments on each press and on `busy`. Run the T1 tests green and the AC3 read.
 - [ ] T3: Update DESIGN.md's current-behavior text on `busy`, the action presses, and `pressCandidate` (the M221 and M242 paragraphs). Add a CHANGELOG `### Fixes` entry. Run the five `verify` checks.
 
@@ -70,3 +70,5 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 - 2026-10-11: plan chose a mark set at press entry over setting `running` at entry. `running` belongs to `run`'s numbering, where only the latest run clears it, and a press that never reaches `run` must then undo it. Falsified by a press whose mark outlives its checks and blocks a free press.
 - 2026-10-11: criteria audit (full mode, fresh Opus reader) returned 7 findings on AC1-AC5 and the Goal, all fixed in this file. The Goal now names only presses that run a command, since ↻ and the open and close presses set no mark. AC1 names the Button tested per function and excludes a session end between the presses. AC1, AC2, and AC4 state their tests as "Verified by". AC2 names the pane's Status, and T1 expects the ⌂-first order green. AC3 says a mark that `busy()` reads and adds the no-await rule between the mark's release and `run`. AC4 names its two cases and Buttons, and T1 names the hooks they need. AC5 counts `pressCandidate` and drops `candidateCheck` from DESIGN.md. AC6 was clean.
 - 2026-10-11: no live look planned. A desktop double click lands its two presses in separate events, and the `Promise.all` tests cover the narrower window.
+- 2026-10-11: implement started on m243-pane-press-races. The untracked `cairn-probe.log` and `tsconfig.json` in the tree are not this milestone's and stay unstaged.
+- 2026-10-11: T1 done. Against the unchanged code, `claude plugin test .` ran 1656 tests with 8 red, all new: the 6 band cases, the pane `Finish` case, and the Status-first AC2 order. Each red records the command twice (or Status then `clear`). The ⌂-first order and both AC4 cases pass. The AC4 changed-word case runs no Finish command, which shows that its `state.get` hook takes effect.
