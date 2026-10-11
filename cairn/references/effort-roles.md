@@ -8,7 +8,7 @@ Prices from Anthropic's pricing page (cited below). Tasks, keys, mutants, and
 the judge prompt are those of `haiku-sonnet-roles.md` (M228), replayed at
 commit `c023018`.
 Pagination: —.
-Extraction: the run records are first-hand from that day's session store, with nothing to re-verify against, and a rerun reproduces the method, not the exact figures — observed 2026-10-10.
+Extraction: prices read directly from the pricing page 2026-10-10 and liable to change; the run records are first-hand from that day's session store, and a rerun reproduces the method, not the exact figures — observed 2026-10-10.
 
 **Scope.** Measures, for each role group of `haiku-sonnet-roles.md`, whether
 the model the rulebook gives that group (observed 2026-10-10: Sonnet for
@@ -19,7 +19,7 @@ group. It changes no rule: the ROADMAP candidate "Reasoning-effort dial per
 spawned agent" acts on the verdicts. This is a reference, not an authority:
 status lives in `ROADMAP.md`, decisions in `DECISIONS.md`.
 
-## Design (fixed before any task run, 2026-10-10)
+## Design (fixed before any task run, 2026-10-10, Cost amended once after)
 
 **Probe.** Four one-word spawns (`general-purpose`, prompt "Reply with the
 single word: ready. Use no tools.") read on 2026-10-10. Each assistant
@@ -34,8 +34,8 @@ record of a subagent transcript carries an `effort` field and a
 | `model: "haiku"`, `effort: "low"` | `a8a8c7b91a68e96d2` | low | claude-haiku-5-5 |
 
 So the default arm ran at `high` in this session. M228's runs, all with
-`effort` unset, also record `high` (its S1 Sonnet transcript
-`agent-a507fc85cce3e1c5d.jsonl`, read 2026-10-10).
+`effort` unset, also record `high`: every assistant record of its 18 run
+transcripts carries `high` (read 2026-10-10).
 
 **Arms.** Each of the nine tasks runs twice from the same prompt: once
 with the Agent tool's `effort` unset (the default arm) and once with
@@ -52,12 +52,15 @@ with a baseline commit made in it, so `git diff -U0` reads the run's
 changes. Each prompt's repository path is replaced by the copy's path,
 and the edit prompts' "In this git worktree" by "In the git repository
 at <copy>". History-review runs read refs of this repository, as in
-M228, since every ref they name predates `c023018`.
+M228, since every ref they name predates `c023018`. The live tree also
+holds `haiku-sonnet-roles.md`, which lists M228's findings on the same
+three commits; no history-review or judge transcript names that file
+(checked 2026-10-10).
 
 **Reused from `haiku-sonnet-roles.md`.** The task prompts (Design,
-Search group, Edit-work group, History-review group), the scoring rules,
-the answer keys, the E1 target, and the mutant set (Answer keys, target,
-and mutants), the judge prompt (Design, History-review group), and the
+Search group, Edit-work group, History-review group) with the scoring
+rules they state, the answer keys, the E1 target, and the mutant set
+(Answer keys, target, and mutants), the judge prompt (Design, History-review group), and the
 cost method (Design, Cost). The edit-work mutants are scored in a fresh
 `git archive c023018` copy under `PYTHONDONTWRITEBYTECODE=1`, as there.
 In the judge prompt, A and B are the two arms of one task, labels drawn
@@ -78,11 +81,15 @@ notification in the main session transcript, whose `subagent_tokens`
 figure, less the final id's input and cache counts from its last
 transcript record, is that call's output. On the five foreground spawns of
 this session (the four probes and the plan's criteria-audit reader), each
-Agent tool result's `totalTokens` equals the sum of its `usage` input,
-both cache-write, cache-read, and output counts, so the two sources give
-the same figure there. Each row's "Final check" column says whether the
-derived output is at least the output count the final id's last record
-holds.
+Agent tool result's text gives a `subagent_tokens` figure equal to its
+`totalTokens`, and `totalTokens` equals the sum of its `usage` input, both
+cache-write, cache-read, and output counts, so the two sources give the
+same figure there. M228's "Final match" tie (the tool result's input and
+cache counts equal the final id's last-record counts) needs that `usage`
+and is not available for a background run. The "Final check" column only
+says whether the derived output is at least the output count the final
+id's last record holds. That record is a stream-start count of 2 to 43 tokens on
+these rows, so the check does not tie the notification to that call.
 
 **Verdict rule.** Per group, sum each arm's cost and score over the
 group's three tasks. The verdict is `untested` when any of the group's
@@ -146,7 +153,10 @@ All four test files passed on the unmutated code and killed all six
 mutants: 24 and 25 tests at default, 30 and 15 at `low`. A file holding
 one always-true test kills 0 of 6 for E2 and 0 of 6 for E3 (re-run
 2026-10-10), so the mutant scoring can tell runs apart, but both arms
-reached 1.0 on every task, as both models did in M228.
+reached 1.0 on every task, as both models did in M228. The test files
+were written in non-final calls, whose output counts are stream-start
+stubs, so these rows' output columns leave out most of the test code each
+run wrote.
 
 Review notes. Judges (Opus, `claude-opus-5-5`, effort `high` on every
 record): H1 `a77a1ccdfb8b84875`, H2 `a9acd640dd5954ffe`, H3
@@ -187,11 +197,14 @@ Per-finding ratings (V valid, I invalid; the number is the reviewer's own):
 
 ## Verdicts
 
-| Group | Default USD | Low USD | Default score | Low score | Low ÷ default score | Verdict |
-|---|---|---|---|---|---|---|
-| Search | 0.3299 | 0.3247 | 2.6767 | 2.6767 | 1.0000 | low |
-| Edit work | 0.0293 | 0.0263 | 3.0000 | 3.0000 | 1.0000 | low |
-| History review | 0.8794 | 0.6002 | 4 | 2 | 0.5000 | default |
+| Group | Default USD | Low USD | Default score | Low score | Low ÷ default score | Verdict | What could flip it |
+|---|---|---|---|---|---|---|---|
+| Search | 0.3299 | 0.3247 | 2.6767 | 2.6767 | 1.0000 | low | The output undercount (cost) |
+| Edit work | 0.0293 | 0.0263 | 3.0000 | 3.0000 | 1.0000 | low | The output undercount (cost); harder edits (score) |
+| History review | 0.8794 | 0.6002 | 4 | 2 | 0.5000 | default | Rerun spread on H1 and H3 (score) |
+
+USD sums add the table's rounded rows. Unrounded, the gaps are $0.005184
+for search and $0.002968 for edit work.
 
 Every `low` row records only `low`, so no group is `untested`. Each
 verdict applies the rule fixed in the Design section to the sums of the
@@ -202,24 +215,41 @@ Readings that bear on the verdicts:
 - History review is `default`. The whole gap is H1, 3 valid findings
   against 1, where the `low` run made 4 calls against the default run's
   16. H2 tied at 1 against 1, and H3 found no valid finding in either arm.
-- Search and edit work tie on score, and their cost gaps are small: $0.0052
-  (1.6%) for search and $0.0030 (10%) for edit work. Costs are lower bounds
+- The same Sonnet reviewer at the same `high` effort scored H1 1, H2 1,
+  and H3 2 in M228, under its own judging, where this note's default arm
+  scored 3, 1, and 0. That run-to-run spread, 2 on H1 and 2 on H3, equals
+  the whole gap between the arms here, so one rerun can flip this verdict.
+- The history-review score counts reported findings that the judge rated
+  valid. It does not measure real conflicts that a reviewer missed, the
+  risk D-016 named for a weaker reviewer ("can silently drop a real
+  bug"). The `low` arm's zero on H3 and its one valid finding on H1 are
+  not evidence that nothing else was there.
+- Search and edit work tie on score. Their cost gaps are $0.0052 (1.6%)
+  for search and $0.0030 (10%) for edit work, and costs are lower bounds
   (see Cost). Taking the default arm's unrecorded output as zero, the
   search comparison reverses if the `low` arm's five non-final calls left
-  more than 520 output tokens unrecorded at Sonnet's output price, about
-  104 per call. The edit comparison reverses at 6,000 unrecorded tokens
-  over the `low` arm's ten non-final Haiku calls, about 600 per call. So
-  the search verdict says `low` costs no more at an equal score. It does
-  not show a saving.
+  more than 518 output tokens unrecorded at Sonnet's output price, about
+  104 per call. The visible text and tool inputs of those five calls run
+  about 1,560 characters longer than those of the default arm's four
+  non-final calls, about 390 tokens at a rough four characters per token,
+  and unrecorded thinking is not visible. So the search verdict says `low`
+  costs no more at an equal score. It does not show a saving.
+- The edit comparison reverses at 5,935 unrecorded tokens over the `low`
+  arm's ten non-final Haiku calls, about 594 per call. The visible text and
+  tool inputs of the `low` arm's non-final calls are about 1,470
+  characters shorter than the default arm's.
 - The default arm ran at `high`, so these verdicts compare `low` with
   `high`, the level a spawn with `effort` unset received in this session.
 - Edit work sits at the scoring ceiling in both arms, as both models did
-  in M228. The tasks cannot show a gap on harder edits.
+  in M228. The tasks do not include harder edits.
 
 ## Limits and re-measurement
 
 One run per arm per task, three tasks per group, on tasks drawn from this
-repo. The judge is one Opus reader per task. No Opus role was measured.
+repo. The judge is one Opus reader per task, one judging. In M228, two
+judgings of the same reports under different rules rated 11 of 22
+findings differently, and the history-review verdict here rests on a
+2-finding gap. No Opus role was measured.
 The measurement helpers (key builder, scorer, cost script) were
 session-local and are not committed (observed 2026-10-10). To re-measure:
 re-run the nine task prompts of `haiku-sonnet-roles.md` against fresh

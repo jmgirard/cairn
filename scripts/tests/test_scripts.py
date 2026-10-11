@@ -1466,10 +1466,14 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # first-hand on 2026-10-09, priced from a pricing page its status says it
     # read directly that day, a dated verification claim, hence `ok` (the
     # prices age, so the staleness advisory must see the page).
+    # M239 adds the low-against-default effort comparison: subagent runs
+    # recorded first-hand on 2026-10-10, priced from a pricing page its status
+    # says it read directly that day, a dated verification claim, hence `ok`
+    # for the same reason as M228's page.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
-        "effort-roles.md": "exempt",
+        "effort-roles.md": "ok",
         "m118-cap-exemption-ledger.md": "exempt",
         "m127-ac1-ledger.md": "exempt",
         "backlog-meridian.md": "ok",
