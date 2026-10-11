@@ -107,3 +107,32 @@ Evidence (2026-10-10, branch head c64636c, main unmoved since the branch was cut
 Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so `cairn_impact` is skipped. The marketplace validate output has no `plugins[N].version` warning. CHANGELOG has the entries. Verify is green on the review head.
 
 spawned: diff-bug, blame-history, prior-review
+
+Findings (each lens ranked its own; the agent settled each):
+
+- diff-bug #1: an older read's clear, retried by `update` after a version conflict, can write `false` after a newer read's `true` — fix now, fixed 3039de5 (the updater rechecks `mine === prReads`).
+- diff-bug #2: an older read's start write, retried after a newer read cleared, can leave `⋯` stuck — fix now, fixed 3039de5 (same recheck).
+- diff-bug #3: the overlap test cannot fail without the newest-read check — fix now, fixed 3039de5 (new test: the older read settles first and `⋯` stays).
+- diff-bug #4: after a reload, an old module's in-flight read can write `false` during the new module's read, and a stored `true` is not reset at load — follow-up, "Pane edges (M236 review)".
+- diff-bug #5: a press during a press's file read is ignored while the label still shows ↻ — reject, planned change: AC4 guards from the press, and the work log accepted that the file read comes before `reading` is set.
+- diff-bug #6: the `catch` path in `readPrs` is never tested, since `readPr` never rejects — follow-up, "Pane edges (M236 review)".
+- diff-bug #7: the `grows` helper accepts any `flexGrow` and looks only at text Boxes — fix now, fixed 3039de5 (it now lists every line Box and child Box with its `flexGrow` value).
+- diff-bug #8: the 44-column width check sums only lead and tail, not the ↻ Box — follow-up, "Pane edges (M236 review)".
+- diff-bug #9: the `pane.ts` header comment still says a milestone shows its phase — fix now, fixed 3039de5.
+- diff-bug #10: the PR #245 test does not check that no count line is drawn — fix now, fixed 3039de5 (`countsText` gives null).
+- diff-bug #11: the fixture comment names a Copilot review that the fixture does not hold — reject, false: the comment describes the PR, and the fixture is the threads reply the M236 query returns, as the comment says.
+- blame-history #1: with the phase word gone, phase is shown by color alone, and the implement and review colors are hard to tell apart for a red-green colorblind reader — follow-up, "Pane edges (M236 review)".
+- blame-history #2: a stored `reading: true` can stay after a session end — reject, false: the host's state starts empty under a new session id (M222), so only an in-process reload keeps it, which AC4 allows.
+- blame-history #3: an older read's start write can land after a newer read's clear — fix now, fixed 3039de5 (same as diff-bug #2).
+- blame-history #4: the ↻ shows with no PRs — reject, planned change (AC2).
+- blame-history #5: ROADMAP rows 22 and 23 say M236 is planned and name a `Refresh` that no longer exists — fix now, fixed 3039de5.
+- blame-history #6: the thread-only count drops people's top-level reviews and comments — reject, planned change (AC1, the operator's choice).
+- blame-history #7: a one-field `phase` object and the `busy_` name — reject, style.
+- blame-history #8: README and CHANGELOG lines not re-wrapped — reject, style.
+- prior-review #1: color is the only phase cue, the M208 colorblind gap — follow-up, "Pane edges (M236 review)" (same as blame-history #1).
+- prior-review #2: a press during an earlier press's read is dropped — reject, planned change (AC4).
+- prior-review #3: the first line now holds the id, the percent, and the ↻ Button, with no width test below 44 columns — follow-up, "Pane edges (M236 review)".
+- prior-review #4: `out[0]` has no guard — reject, false: `paneLines` pushes `no-active` when no milestone is active, and `milestoneLines` always returns a head line.
+- prior-review #5: the `busy_` name, and a stored `true` after a reload — reject: style for the name, and a planned change (AC4) for the reload.
+
+After the fixes, verify is green (1560 pass, the other four checks 0).
