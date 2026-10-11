@@ -682,7 +682,11 @@ actually reach.
   disposition per item; an adopted PR comes in through `/hotfix`.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
-  becomes a triage item. `/milestone-plan`'s collision check also reads
+  becomes a triage item. In owner and guest mode it also reads each issue
+  or pull request that a candidate row links to, in any repo, and reports
+  the ones that others closed, merged, commented on, or reviewed since the
+  row's date or its `checked` time; you can update the row to carry the
+  news, and the row's new `checked` time stops the same news coming back. `/milestone-plan`'s collision check also reads
   both open inboxes and settles a disposition only for an item overlapping
   the scope being planned.
   The pull request itself is opened only after you approve at the merge

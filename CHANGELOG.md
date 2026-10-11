@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **`/milestone` reports news on the issues and PRs your candidate rows
+  link to.** The health audit reads each link in a candidate row, whether a
+  full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo itself, and
+  reports a close, a merge, or a comment, review, or review-thread comment
+  by someone else since the row's latest date. It runs in guest mode too,
+  so a row that waits on another repo's merge or a maintainer's reply hears
+  about it. At the triage chip you can update the row, which adds a
+  `checked <UTC time>` mark so the same news is not reported again. If you
+  leave it, the next audit reports it again, for a row that carries a date.
+  The read writes nothing to GitHub.
 - **`/cairn-triage` runs in guest mode.** It used to stop at session
   start, because its pass ends in a commit to the default branch. In guest
   mode the pass now skips the clean-tree, default-branch, and sync checks,

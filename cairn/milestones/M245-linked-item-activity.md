@@ -64,8 +64,8 @@ written to GitHub.
 
 - [x] T1: Write the "Linked items" bullet in `skills/milestone/SKILL.md` §2 after "Outside merges" (around line 261). It holds the `grep -oE` with its left boundaries, the dedupe, the cut-off rule, and the per-item `gh api` read with `--jq` for `state`, `closed_at`, `updated_at`, and `pull_request.merged_at`. It holds the list reads, run only when `updated_at` is at or after the cut-off less one minute (a review can land 2 to 3 seconds after the `updated_at` it sets): `issues/<N>/comments`, and for pull requests `pulls/<N>/reviews` and `pulls/<N>/comments`, each with `--paginate`. It holds the operator-login filter, the report shape (link, each row's opening words, what happened, each author and time), and the gap rules. Commands use no shell variable named `path` (the M133 lesson).
 - [x] T2: Add the linked-item dispositions to §3: "update the row" with its `checked` mark, the other three, the re-report note, and the guest on-disk note. Name linked items in §3's triage-chip bullet.
-- [ ] T3: Build fixtures A, B, and C in the scratchpad and run the bullet's commands as written in a shell, over each fixture.
-- [ ] T4: Add the README sentence and the CHANGELOG entry. Run the five `verify` commands and hand-run `skills/tests` (the M148 lesson), and check each exit code.
+- [x] T3: Build fixtures A, B, and C in the scratchpad and run the bullet's commands as written in a shell, over each fixture.
+- [x] T4: Add the README sentence and the CHANGELOG entry. Run the five `verify` commands and hand-run `skills/tests` (the M148 lesson), and check each exit code.
 
 ## Work log
 
@@ -83,6 +83,8 @@ written to GitHub.
 - 2026-10-11: minor amendment (T1 wording): the list-read gate compares `updated_at`'s date with the cut-off's date, not the cut-off less one minute. The day gate reads more and never hides a review, and it needs no date arithmetic, which differs between BSD and GNU `date`.
 - 2026-10-11: T1 done. The bullet's read is one fenced bash/zsh block (a here-string, not a heredoc, so a copy that keeps the list indent still runs). A dry run over the real performance ROADMAP took 20 s and reported 10 lines, among them the insight#1262 merge; the #428 row is gone there (promoted by the performance session). verify green (5/5), skills/tests 726 OK.
 - 2026-10-11: T2 done. §3 names linked items in the triage-chip bullet, lists their four dispositions, adds "update the row" (the `checked` mark from `date -u +%Y-%m-%dT%H:%M:%SZ`, a docs-only commit in owner mode, on disk in guest mode), and notes that a left item on a dated row comes back. verify green (5/5), skills/tests OK.
+- 2026-10-11: T3 done. Fixtures A, B, C built under the session scratchpad (`fa/`, `fb/`, `fc/`, each a `cairn/ROADMAP.md`). The bullet's block, cut from SKILL.md by awk and de-indented, with `base` set to easystats/performance, gave the same output in zsh and bash. A: insight#1262 merged + Copilot review, insight#1263 merged, performance#428 comments by mattansb (05:34, 15:44) and strengejacke and none by jmgirard, see#465 read once with Copilot's two reviews and thread comment, insight#1261 silent, insight#99999999 `read failed` with the rest read. B: performance#428 strengejacke only; insight#1262 merged once, lines 7 and 8, no Copilot review. C: `undated row at line 7: not read`.
+- 2026-10-11: T4 done. README's contributions bullet and a CHANGELOG `Unreleased` entry state the read. verify green (5/5), skills/tests OK.
 
 ## Decisions
 
