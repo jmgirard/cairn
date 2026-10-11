@@ -78,6 +78,8 @@ The held-run edges stay with "⌂ edges (M241 review)".
 - 2026-10-11: claim audit: 46 claims read, 4 corrected — README.md, CHANGELOG.md, cairn/DESIGN.md, hooks/status/pane.test.tsx
 - 2026-10-11: claim audit detail: the README gained the ⌂ guard and a short-title definition, which the CHANGELOG also took. DESIGN names a missing row, and DESIGN and the test comment say ✎ needs a short title. The same reader's re-read found all four true. Its note on the exact `[high] ` token match was left, since the README's older sentence covers it.
 - 2026-10-11: all tasks done, five verify checks green (mod tests 1643). Status set to review.
+- 2026-10-11: review: three lenses and Copilot (Lite) gave 34 items, 20 fixed in 2eade43, 6 to "✎ edges (M242 review)", 7 rejected, 1 noted. The merge chip's text named the button ✂ by a slip, and the presentation above it named ✎.
+- 2026-10-11: step-7 approval: m242-pane-candidate-plan approved for merge
 
 ## Decisions
 
@@ -132,3 +134,4 @@ spawned: diff-bug, blame-history, prior-review
 - copilot: review body, pane.ts comment on empty-title rows — reject (false: the comment says a line needs a short title that is not empty)
 - copilot: review body, CHANGELOG on empty-title rows — reject (false: the entry says "but for a row whose short title is empty")
 - Copilot level: Lite (set by GitHub's settings)
+- conversation: jmgirard PR #252 — noted (two empty-body reviews that GitHub made for the thread replies)
