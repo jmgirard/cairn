@@ -56,7 +56,7 @@ The held-run edges stay with "⌂ edges (M241 review)".
 - [x] T1: pane.ts: add `plan` to `PaneButton` and a ✎ label. Give each candidate line with a non-empty title `['plan']` while `acts` is true, and `grow` so its title Box takes the free width. Carry the line's index and short title for the press, and say in the `PaneLine` comment which field holds which. Update the `paneLines` comments and pane.test.tsx.
 - [x] T2: register.tsx: add `PANE_BUTTONS.plan`, keyed by the line's index. Route `plan` in `pressPane` to a new press. It sets `heldRun` before its first await, as `pressHome` sets its mark (M241 review). Two cases take the hold back: a set step, and stored candidate rows with no row of the drawn title at that index. Otherwise it runs `clear` through `run`, and a refused run drops the hold. Write the AC1–AC3 tests.
 - [x] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry. ✎ has no band twin, so the README's sentence on presses that run the band button's command does not cover it.
-- [ ] T4: Live look in circumplex (granted at the question set).
+- [x] T4: Live look in circumplex (granted at the question set).
 
 ## Work log
 
@@ -74,6 +74,7 @@ The held-run edges stay with "⌂ edges (M241 review)".
 - 2026-10-11: planted an empty-title ✎ and a hold set after the first await. The AC1 tests and the same-tick test failed, and the files were restored.
 - 2026-10-11: paused at the user's request after T2. T3 (docs) and T4 (live look in circumplex) remain.
 - 2026-10-11: resumed. T3 done: README's candidate paragraph, DESIGN's candidate-row text and `hooks/status/` entry, and a CHANGELOG "New" entry describe ✎. Five verify checks green, mod tests 1643.
+- 2026-10-11: T4 live look in circumplex, a session the operator opened there on this branch's mod. The operator reported ✎ at the right end of each candidate row. A press cleared the conversation and started the plan with that row's title, and the operator stopped it at its question set. The operator accepted the look.
 
 ## Decisions
 

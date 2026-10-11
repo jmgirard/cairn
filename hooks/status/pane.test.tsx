@@ -1030,8 +1030,9 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
         // No other line of the pane carries a Button (M219 review), but for
-        // the ⌂ and ↻ on the first line (M236, M241) and each candidate
-        // line's ✎ (M242). Before any read, no blocked line carries one.
+        // the ⌂ and ↻ on the first line (M236, M241) and the ✎ of each
+        // candidate line with a short title (M242). Before any read, no
+        // blocked line carries one.
         const candidates = FIXTURES[name].pane.length === 0 ? FIXTURES[name].candidates : []
         const plans = candidates.flatMap((row, i) => (row.title === '' ? [] : [`cairn-pane-plan-${i}`]))
         expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS, ...plans])
