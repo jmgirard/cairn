@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M233 | Issue intake routes keep their records and read the right repo | done | — | normal | milestones/archive/M233-intake-route-records.md |
 | M234 | Guest pushes find the fork, and intake commands work in any remote layout or shell | done | — | normal | milestones/archive/M234-fork-remote-intake-edges.md |
 | M235 | `/cairn-triage` runs in guest mode and writes its edits to disk | done | — | normal | milestones/archive/M235-guest-triage.md |
-| M236 | The pane has one ↻ Button and counts only unresolved threads | in-progress | — | normal | milestones/M236-pane-one-refresh.md |
+| M236 | The pane has one ↻ Button and counts only unresolved threads | review | — | normal | milestones/M236-pane-one-refresh.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

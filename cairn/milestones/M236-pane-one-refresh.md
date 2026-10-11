@@ -1,6 +1,6 @@
 # M236: The pane has one ↻ Button and counts only unresolved threads
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,7 +48,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - [x] T5: Run the five `verify` commands (old AC5).
 - [x] T6: Live-look amendment (AC2, AC3, AC4, AC5). Remove the `refresh` first line, and put the `refresh` Button on the first line `paneLines` gives, with its text Box at `flexGrow` 1. Drop the phase word from `milestoneLines`, and color the id with the phase. Swap the `dimColor` for the `⋯` label. Update the tests and the docs.
 - [x] T7: Run the five `verify` commands again (AC6).
-- [ ] T8: Live look again (AC7).
+- [x] T8: Live look again (AC7).
 
 ## Work log
 
@@ -87,6 +87,8 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: T7 done. All five verify commands exit 0, `claude plugin test .` 1559 pass.
 - 2026-10-10: claim audit: 34 claims read, 3 corrected — hooks/status/pane.test.tsx (three test-helper comments). A second pass over the T6 diff only, since the first claim audit ran before the amendment. The reader also noted that README and CHANGELOG say ↻ reads `⋯` while a read runs, and a press's file read comes before `reading` is set. That is left as written, because the PR read is the read that takes time.
 - 2026-10-10: T8 stop for the operator's second live look.
+- 2026-10-10: T8 live look: the operator accepted the look. ↻ sat at the right end of the first milestone's line with the percent, and the id drew in the phase color with no phase word. The press took two clicks, which is the known upstream focus click (candidate row "Pane Button takes two clicks (upstream)"). Then ↻ showed `⋯` and came back in under a second.
+- 2026-10-10: implement done, status review.
 
 ## Decisions
 
