@@ -51,7 +51,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   that `/hotfix` and `/milestone-review` run on the PR in a repo whose
   `PROFILE.md` carries `# Copilot review: on`; in owner mode
   `/milestone-review` opens the PR at the start of review and its step-7
-  read handles Copilot's threads, D-152, D-153 — M231); each module carries a
+  read handles Copilot's threads, D-152, D-153 — M231; with the round off,
+  four closes add a one-line note naming the opt-in line when Copilot is
+  already on the PR — M244); each module carries a
   header-stated size budget (M154).
 - `skills/shared/templates/` — milestone, brief, decision, CLAUDE.md section,
   source note, synthesis note, archive summary, and the LESSONS.md /

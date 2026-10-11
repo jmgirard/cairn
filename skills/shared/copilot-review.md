@@ -1,9 +1,9 @@
 # Copilot review round
 
 In a repo that opts in (§1), `/hotfix` and `/milestone-review` read this
-where they request Copilot and where they read the PR's conversation. It is
-a module of `tracking-rules.md`, read only at those moments, so it costs
-nothing to a session that never reaches them.
+where they request Copilot and where they read the PR's conversation. With
+the round off, they read §1 and §3 at the closes §1 names. It is a module
+of `tracking-rules.md`, read only at those moments.
 
 Budget (M231, from 126 lines / 7,142 bytes after RR17, plus about one section
 of headroom): **under 140 lines and under 8,000 bytes**, hand-read with
@@ -13,13 +13,26 @@ compress or retire content here. Never "let it grow".
 ## 1. Opt-in
 
 If `cairn/PROFILE.md` carries the header line `# Copilot review: on`, the
-round runs. An absent line, or any other value, means off, and the skill
-keeps its usual flow: the PR opens after the merge approval (D-138). The
+round runs. An absent line, or any other value, means off: the PR opens
+after the merge approval (D-138), and the skill requests, replies, and
+resolves nothing, but it can add the note below. The
 opt-in line is also the permission for the round's outward writes and for
 the agent's own dispositions of Copilot's threads: the fix pushes, the
 replies, and the resolves run without a further question (the M231 question
 set). The round keeps no record that it ran. The PR's own signals (§2)
 decide each step (RR17).
+
+**Off but present (M244).** With the round off, `/hotfix` (step 7, step
+6's guest handoff close) and `/milestone-review` (step 10, step 8's guest
+handoff close) run §3's query once on a PR the round covers: an authored
+hotfix PR this run merged or handed off, or a milestone PR with no
+companions not merged before review started. Guest mode uses the base
+repo. On `pending` or `reviewed`, the recap ends with one plain line:
+Copilot is on PR #<N>, but the round is off here, so cairn does not
+handle Copilot's threads. Set "# Copilot review: on" in cairn/PROFILE.md
+to turn it on. On `none` or a failed query it adds nothing, and §3's error
+line does not apply. A request made after the query goes unreported. The
+note requests, replies, and resolves nothing.
 
 ## 2. Request
 
