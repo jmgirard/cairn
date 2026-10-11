@@ -76,6 +76,7 @@ the "Pane edges (M238 review)" row.
 - 2026-10-10: implement chose a module mark `homeRun` beside `heldRun` over an atom. A reload must drop a pending press, as it drops `heldRun`. `paneLines` lost its `ended` parameter, which only the pane's Clear read.
 - 2026-10-10: T1, T2 done. ⌂ draws before ↻ while no step is set, a press runs `/clear`, and a `clear` end opens the pane. The pane's Clear is gone. 13 old pane tests changed to the new Button lists, and 17 M241 tests added. Mod tests 1625 pass, and all five verify checks pass.
 - 2026-10-10: T3 done. README, DESIGN, and a CHANGELOG New entry describe ⌂ and the Next line with no Clear. DESIGN's Known issues line on the pane's Clear is corrected in place. Code comments no longer say the open brings a pane forward, since the API says only that an open id retitles. The live look checks it. The T1/T2 line's "13 old pane tests" was not counted.
+- 2026-10-10: T4 stop for the live look. A desktop Code session keeps the mod it loaded at its start (LESSONS M195), so the operator opens a new Code session in this checkout on `m241-pane-home-button`.
 
 ## Decisions
 
