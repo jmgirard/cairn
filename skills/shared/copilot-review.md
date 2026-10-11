@@ -22,17 +22,17 @@ replies, and the resolves run without a further question (the M231 question
 set). The round keeps no record that it ran. The PR's own signals (§2)
 decide each step (RR17).
 
-**Off but present (M244).** With the round off, `/hotfix` at its step 7
-close and its step 6 guest handoff close, and `/milestone-review` at its
-step 10 close and its step 8 guest handoff close, run the state query (§3)
-once on a PR the round covers: an authored hotfix PR this run merged or
-handed off, or a milestone PR with no companions not merged before review
-started. Guest mode uses the base repo's owner and name. On `pending` or `reviewed`, the close
-block gets one line: `Copilot is on PR #<N>, but the Copilot round is off
-here, so cairn did not handle its threads. Add "# Copilot review: on" to
-cairn/PROFILE.md to turn it on.` On `none` or a failed query, it gets
-nothing, and §3's error line does not apply. The note requests, replies,
-and resolves nothing.
+**Off but present (M244).** With the round off, `/hotfix` (step 7, step
+6's guest handoff close) and `/milestone-review` (step 10, step 8's guest
+handoff close) run §3's query once on a PR the round covers: an authored
+hotfix PR this run merged or handed off, or a milestone PR with no
+companions not merged before review started. Guest mode uses the base
+repo. On `pending` or `reviewed`, the recap ends with one plain line:
+Copilot is on PR #<N>, but the round is off here, so cairn does not
+handle Copilot's threads. Set "# Copilot review: on" in cairn/PROFILE.md
+to turn it on. On `none` or a failed query it adds nothing, and §3's error
+line does not apply. A request made after the query goes unreported. The
+note requests, replies, and resolves nothing.
 
 ## 2. Request
 
