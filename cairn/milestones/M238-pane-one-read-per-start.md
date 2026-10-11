@@ -1,6 +1,6 @@
 # M238: The pane reads its pull requests once per start, at its first draw when placed later
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -65,6 +65,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: review return 1: AC2 fails inside its domain (prior-review #1, Copilot on PR #248). A resume hook that owes a read, then the first draw, then the reopen read each URL twice, because the draw's read sets no `startRead`. The return also carries the fix-now items: the classic hook's re-check of `startRead` after its await (diff-bug #2), a test with the pane placed before both hooks (diff-bug #3), and the read-trigger wording in the `readPrs` comment, README, and DESIGN (diff-bug #7, blame-history #2, #6). It also folds the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries (blame-history #5).
 - 2026-10-10: T7 added for review return 1 (minor amendment; Coverage AC2, AC4, AC5 now also map to T7).
 - 2026-10-10: T7 done. The first-draw read sets `startRead`, and the classic hook checks `startRead` again after `listedPane`. Three AC2 tests added. "A resume start that owes, the first draw, then the reopen" failed on the old code with two reads and passes now. "A resume start that reads, then the reopen" covers the reopen's `startRead` check. "Both hooks at once" passed before the re-check too, so the harness seems to run the two hooks in turn, and the re-check has no test that fails without it. README, DESIGN, and the `readPrs` comment name the skip and the first-draw trigger. The CHANGELOG folds both behaviors into the unreleased `/resume` entry. All five verify commands exit 0 (mod tests 1609 pass).
+- 2026-10-10: claim audit: 36 claims read, 3 corrected — README.md, CHANGELOG.md, hooks/status/pane.test.tsx. README said an open skips a placed pane's start read, the `/resume` entry named a hidden-tab state that never shipped, and a test comment named the wrong cause. The same reader re-read the fixes once and found all three true. Verify: all five commands exit 0 (mod tests 1609 pass).
 
 ## Decisions
 

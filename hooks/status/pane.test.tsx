@@ -3148,8 +3148,8 @@ describe('one process start reads each URL once (M238 AC2)', () => {
     expect(calls.reads).toEqual([URL_1250])
   })
 
-  // An open's read is not the start's read, so a clear start after an open
-  // whose read is still in flight reads again.
+  // A clear start reads again after a session end, also while an open's
+  // read is still in flight.
   test('a clear start reads again while an open read is held', async ($, on) => {
     const { calls, release } = held(on)
     const copy = copyOf('blocked-active')

@@ -342,8 +342,9 @@ earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's 
 band then read the tracking files again, and so does a `/resume`. After
 either one, a placed pane reads the states again, also when it sits
 behind another tab. A pane that waits undrawn reads the states at its
-first draw. In both cases the pane skips the read when an open or the
-start's reopen already read the states, or when the start failed to list
+first draw. A placed pane skips that read when the start's reopen
+already read the states. A pane that waits undrawn skips it when an open
+or the reopen read first. Neither reads when the start failed to list
 the pane. One start reads the states once, also when a reopen and a
 `/resume` both run in it. The pane never reads the states on a timer or
 at a turn's end,

@@ -133,7 +133,7 @@
   that waits undrawn reads them at its first draw. One start reads them
   once, also when a reopen at a new session start and the `/resume` both
   run in it. Before, a `/resume` left the band and the pane empty until
-  the next prompt, and a pane behind another tab kept no PR words.
+  the next prompt.
 
 - **A pane head line shows the milestone id in its phase's color.** The
   phase word before the id is gone, and the id takes the implement or
