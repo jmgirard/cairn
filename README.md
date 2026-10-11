@@ -683,7 +683,8 @@ actually reach.
   The audit also lists pull requests merged by others since the last
   hygiene stamp — it only reads, writing nothing to GitHub — and each one
   becomes a triage item. In owner and guest mode it also reads each issue
-  or pull request that a candidate row links to, in any repo, and reports
+  or pull request that a candidate row links to as a GitHub URL,
+  `owner/repo#N`, or a bare `#N`, in any repo, and reports
   the ones closed or merged, or commented on or reviewed by others, since
   the row's date or its `checked` time; you can update the row to carry the
   news, and the row's new `checked` time stops the same news coming back. `/milestone-plan`'s collision check also reads

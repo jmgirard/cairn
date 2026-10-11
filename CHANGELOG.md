@@ -6,7 +6,8 @@
 
 - **`/milestone` reports news on the issues and PRs your candidate rows
   link to.** The health audit reads each link in a candidate row, whether a
-  full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo itself, and
+  full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo's own issues
+  and PRs (the upstream repo's, in guest mode), and
   reports a close or a merge, and each comment, review, or review-thread
   comment by someone else, since the row's latest date. It runs in guest mode too,
   so a row that waits on another repo's merge or a maintainer's reply hears
