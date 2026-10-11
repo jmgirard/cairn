@@ -107,7 +107,7 @@ run per arm goes to the note's re-measurement procedure.
       re-measurement procedure. Add its `INDEX.md` line. Pin it in the
       shipped-page ledger of `scripts/tests/test_scripts.py` (`EXPECTED`,
       near the `effort-roles.md` entry).
-- [ ] T5: Write the effort rule into tracking-rules "Model and agent
+- [x] T5: Write the effort rule into tracking-rules "Model and agent
       strategy". If the verdict is `medium`, also write it into the two
       reviewer bullets of `skills/milestone-review/SKILL.md` (near line
       275). Re-seed the rulebook mass baseline at its three sites:
@@ -116,7 +116,7 @@ run per arm goes to the note's re-measurement procedure.
       `skills/tests/test_mutation_harness.py` entry near line 118. Append a
       D-entry that records the rule. Its rejected alternatives are `low`
       for search and edit work and unmeasured levels for the Opus roles.
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` suite from
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` suite from
       the repo root, and check each exit code.
 
 ## Work log
@@ -134,3 +134,5 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: T2 done: six Sonnet runs (three `medium`, three effort unset), all foreground in one message. Every `medium` record says `medium` and every new default record says `high`. The only note-name hit is `effort-roles.md` as a path in a `gh api` comment listing in the H3 default run, which read no such file.
 - 2026-10-10: T3 done: three Opus judges over shuffled labels, with the mapping read after they returned. Scores M239 default 3, new default 3, `medium` 2. Costs $0.8794, $0.9830, $0.6700. Verdict `default`: 2 is below 0.9 times the mean default score of 3.
 - 2026-10-10: T4 done: note finished, page pinned `ok` in `TestShippedPageStateLedger`. The note's later sections were appended with a shell heredoc, not the Edit tool, so the app's edited-files card leaves that append out.
+- 2026-10-10: T5 done: verdict `default`, so tracking-rules gains one "Leave effort unset on every spawn" bullet citing both notes, and `skills/milestone-review/SKILL.md` is unchanged. Rulebook mass re-seeded to 642 lines / 61,338 bytes (`wc -l -c`, this branch) at its three sites. D-157 appended.
+- 2026-10-10: T6 done: verify green (scripts 406 tests OK, hooks 174 OK, plugin and marketplace validate exit 0, `claude plugin test` 0 fail), hand-run `skills/tests` 726 OK.

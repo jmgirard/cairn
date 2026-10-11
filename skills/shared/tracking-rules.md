@@ -519,6 +519,10 @@ These rules bind all chat output while any cairn skill is active.
 - **Set the model on every spawn.** Pass the model a role calls for (Haiku, Sonnet, Opus, or Fable, named in words in
   each skill) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent
   type's or the harness's default, which need not be the model the role calls for.
+- **Leave effort unset on every spawn.** No subagent role sets the Agent tool's `effort` setting, the history reviewers
+  included. Lower levels saved too little on search and edit work, the history reviewers lost judged findings at `low`
+  and at `medium`, and the Opus roles are unmeasured (`cairn/references/effort-roles.md`,
+  `cairn/references/effort-review-medium.md`).
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
 - **Delegate only what warrants it.** A subagent is warranted by a large, genuinely independent track of work (a wide
