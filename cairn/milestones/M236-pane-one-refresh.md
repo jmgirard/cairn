@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** m236-pane-one-refresh
+- **Branch/PR:** m236-pane-one-refresh, https://github.com/jmgirard/cairn/pull/246
 
 ## Goal
 
