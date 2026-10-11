@@ -326,8 +326,9 @@ its PR in that header, so the section lists the PRs that wait on review.
 `scripts/cairn_next.py` prints the same number after each "Externally
 blocked" line, as `(PR #<n>)`.
 
-The pane also shows each PR's state, which it reads from GitHub with `gh
-pr view <url> --json state,reviewDecision`. It reads the states when the
+The pane also shows each PR's state, which it reads from GitHub with one
+`gh api graphql` query for each PR. That query also gives the count
+below. It reads the states when the
 pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
 at a session start. An open does not wait for the read. The words and
 counts appear together when the last GitHub call answers or times out.
@@ -336,10 +337,10 @@ the ↻ Button at the right end of the pane's first line: the first
 milestone's line, or `no active milestone`. The ↻ shows whenever the pane
 has a ROADMAP, and it reads `⋯` while a read runs. A press while an
 earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
-`Plan`, or `Implement` press does, the pane stays open, and if it shows at
-that moment, it reads the states again. A pane behind another tab at that
-moment reads nothing, so its words stay empty until the next open or ↻
-press. The pane never reads the states on a timer or at a turn's end,
+`Plan`, or `Implement` press does, the pane stays open. The pane and the
+band then read the tracking files again, and so does a `/resume`. After
+either one, a pane that is open reads the states again, also when it sits
+behind another tab. The pane never reads the states on a timer or at a turn's end,
 so a state can be out of date until the next open or ↻ press. After a
 read, each line shows one word after its number:
 
@@ -355,15 +356,18 @@ read, each line shows one word after its number:
 None of the `Finish`, `Revise`, or `Check` Buttons runs `/clear` first. A
 line not yet read shows no word.
 
-For a PR that GitHub reports as OPEN, the same read also runs one `gh api
-graphql` query, and the pane draws a line under the PR such as `3
-unresolved threads`. The count is the review threads not marked resolved,
+For a PR that GitHub reports as OPEN, the pane draws a line under the PR
+such as `3 unresolved threads`, from the same query. The count is the review threads not marked resolved,
 and a bot's threads, such as Copilot's, count too. A review or comment
 with no thread does not count, because GitHub does not link a reply to
 it, so the pane cannot tell whether you answered it. The count covers the
 newest 100 threads. With no unresolved thread there is no line.
-When the query fails, the line is left out, and the state word and its
-Button stay.
+When the query fails, the PR's word is `unknown` and the line is left out.
+When only the thread list comes back in a shape the pane does not read,
+the line is left out. The state word and its Button stay.
+A hotfix PR whose URL is on a host other than github.com gets its word
+from one `gh pr view <url> --json state,reviewDecision` call instead, and
+no count line.
 
 A `/hotfix` run has no ROADMAP row, so the pane finds its open PR on
 GitHub. The same read runs one `gh pr list --repo <url> --state open

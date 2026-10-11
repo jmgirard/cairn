@@ -116,14 +116,22 @@
   bot's threads included. A review or comment with no thread does not
   count, because GitHub does not link a reply to it. The count covers the
   newest 100 threads. Each time the pane opens, and at each ↻ press, it
-  reads them with one `gh api graphql` query per open PR.
+  reads them in the same `gh api graphql` query that gives the PR's state.
 
 - **The cairn pane has one ↻ Button.** It sits at the right end of the
   pane's first line, the first milestone's line or `no active milestone`,
   and shows whenever the pane has a ROADMAP, with or without PRs. A press
   reads the tracking files, the hotfix PRs, and each PR's state again. The
   ↻ reads `⋯` while a read runs, and a press while an earlier ↻ press's
-  read runs does nothing.
+  read runs does nothing. After a plugin reload, a stored reading state
+  with no read running draws ↻, not `⋯`.
+
+- **The cairn pane fills again after `/resume` and after a `/clear` behind
+  another tab.** A `/resume` reads the tracking files again, as a `/clear`
+  that keeps the session's process does. After either one, an open pane
+  reads its PRs again, also when it sits behind another tab. Before, a
+  `/resume` left the band and the pane empty until the next prompt, and a
+  pane behind another tab kept no PR words.
 
 - **A pane head line shows the milestone id in its phase's color.** The
   phase word before the id is gone, and the id takes the implement or
@@ -131,8 +139,10 @@
 
 - **The cairn pane shows each blocked milestone's PR state.** After its
   `#<n>`, a `BLOCKED` line shows `merged`, `closed`, `changes requested`,
-  `approved`, or `in review`, read with `gh pr view <url> --json
-  state,reviewDecision`, or `unknown` when the read fails. A `merged` line
+  `approved`, or `in review`, or `unknown` when the read fails. A PR on
+  github.com takes one `gh api graphql` query for its state and its
+  count. A hotfix PR on another host takes one `gh pr view <url> --json
+  state,reviewDecision` call and gets no count. A `merged` line
   carries a `Finish` Button that runs `/cairn:milestone-review <id>`, a
   `changes requested` line a `Revise` Button that runs
   `/cairn:milestone-implement <id>`, and a `closed` line a `Check` Button

@@ -69,12 +69,14 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
-// (`readPrs`, M236). An open does not wait for that read, and a `/clear` that stays
-// in the process reads again while the pane shows (M230). A blocked line
+// (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
+// a `/resume` reads again while the pane is placed, shown or behind another
+// tab (M230, M237). A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
-// threads, which draw on a line under it (M225, M236). The same read lists the operator's open pull requests on the
+// threads, which draw on a line under it (M225, M236). A github.com pull
+// request's word and count come from one `gh api graphql` call (M237). The same read lists the operator's open pull requests on the
 // base remote with one `gh pr list` call and keeps the ones from
 // `hotfix-*` branches, which the pane draws, each with its word and counts
 // (M226).
@@ -206,11 +208,10 @@ const BLOCKED_COMMANDS: Partial<Record<PaneButton, { command: string; withId: bo
   check: { command: STATUS_COMMAND, withId: false },
 }
 
-// How long one `gh pr view` or `gh api graphql` call may run, well under
+// How long one `gh api graphql` or `gh pr view` call may run, well under
 // the ten minutes `$.process.run` allows. The URLs' calls run side by side,
-// and a call still running then rejects: a `gh pr view` reads as `unknown`
-// (M224), and a count call leaves the counts null (M225). An open PR's two
-// calls run one after the other, so its read can take twice this.
+// and a call still running then rejects and reads as `unknown` with no
+// counts (M224, M237). Each URL takes one call (M237).
 const GH_TIMEOUT_MS = 15_000
 
 export const register: Register = on => {
@@ -704,20 +705,19 @@ let prReads = 0
 // the old module's reads.
 let inFlight = 0
 
-// Reads each blocked row's pull request with one `gh pr view` call per URL,
-// side by side, and writes each state word by its URL (M224). The URL
-// names the repo, so the call needs no `--repo`. A call that rejects, as
-// when `gh` cannot start or outruns its timeout, reads as `unknown`, as a
-// bad result does (pane.ts `prWord`), and the read never throws. It runs
-// only at a pane open, a Refresh press, and a `/clear` that stays in the
-// process while the pane shows (M230): no timer and no turn end starts one,
-// since the operator does not want repeating tasks. A read that starts
-// while another runs still runs, with the newest URLs.
-// A pull request whose word says it is open then gets one `gh api graphql`
-// call for its counts (counts.ts), with the same timeout. A count call that
-// fails leaves the counts null, so its line draws no counts, and the state
-// word stands (M225). Words and counts are written together when every call
-// has settled, so a Refresh keeps the earlier counts drawn until then.
+// Reads each blocked row's pull request with one call per URL, side by
+// side, and writes each state word and its counts by its URL (M224, M225).
+// A github.com URL takes one `gh api graphql` call for both (`readPr`,
+// M237), and the URL names the repo, so the call needs no `--repo`. A call
+// that rejects, as when `gh` cannot start or outruns its timeout, reads as
+// `unknown` with no counts, as a bad result does (counts.ts `prRead`), and
+// the read never throws. Threads that fail the shape check leave the word
+// and draw no counts. It runs only at a pane open, a Refresh press, and a
+// `/clear` or `/resume` while the pane is placed (M230, M237): no timer and
+// no turn end starts one, since the operator does not want repeating tasks.
+// A read that starts while another runs still runs, with the newest URLs.
+// Words and counts are written together when every call has settled, so a
+// Refresh keeps the earlier counts drawn until then.
 // Beside the blocked rows' reads, `readHotfixes` lists the open hotfix pull
 // requests (M226), and the blocked reads do not wait for it (M230). Once the
 // list settles, the hotfix URLs that no blocked row names are read. The list
