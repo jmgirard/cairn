@@ -71,7 +71,9 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
 // (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
 // a `/resume` reads again while the pane is placed, shown or behind another
-// tab (M230, M237). A blocked line
+// tab (M230, M237). A pane listed but not placed then reads at its first
+// draw, and one start reads once, though both its start hooks fire (M238).
+// A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
@@ -748,9 +750,10 @@ let inFlight = 0
 // that rejects, as when `gh` cannot start or outruns its timeout, reads as
 // `unknown` with no counts, as a bad result does (counts.ts `prRead`), and
 // the read never throws. Threads that fail the shape check leave the word
-// and draw no counts. It runs only at a pane open, a Refresh press, and a
-// `/clear` or `/resume` while the pane is placed (M230, M237): no timer and
-// no turn end starts one, since the operator does not want repeating tasks.
+// and draw no counts. It runs only at a pane open, a Refresh press, a
+// `/clear` or `/resume` while the pane is placed (M230, M237), and the
+// first draw of a pane that such a start found not placed (M238): no timer
+// and no turn end starts one, since the operator does not want repeating tasks.
 // A read that starts while another runs still runs, with the newest URLs.
 // Words and counts are written together when every call has settled, so a
 // Refresh keeps the earlier counts drawn until then.
@@ -1099,6 +1102,8 @@ let reopened = false
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
 // with no toast, and a refused one gives nothing. An open starts the read of
 // the pull request states (M224), and the start does not wait for it (M230).
+// A start whose resume or clear hook already read starts no second read
+// (M238).
 async function reopen($) {
   try {
     const cwd = await $.session.root()

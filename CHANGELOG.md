@@ -171,6 +171,14 @@
 
 ### Fixes
 
+- **A pane placed after a `/clear` or `/resume` shows its PR words.**
+  When the pane waited undrawn at a `/clear` or `/resume`, it read no PR
+  states, and once drawn it showed no words until an open or a ↻ press.
+  Now its first draw reads them. An open before that draw reads them
+  instead, and the draw then reads nothing.
+- **One session start reads the PR states once.** A start that reopened
+  the pane and also ran the `/resume` hook read every PR twice. Now the
+  first of its two start hooks reads them, and the second reads nothing.
 - **`/cairn-pane` opens the pane after a typed `/clear`.** With the pane
   open, a typed `/clear` in the desktop app took it off the screen. When
   the next message was `/cairn-pane`, the session start reopened the pane,

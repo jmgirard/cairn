@@ -41,8 +41,8 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - [x] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
 - [x] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
 - [x] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
-- [ ] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
-- [ ] T6: Run the five `verify` commands (AC5).
+- [x] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
+- [x] T6: Run the five `verify` commands (AC5).
 
 ## Work log
 
@@ -58,6 +58,8 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: implement started on branch m238-pane-one-read-per-start. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-10: T1 done. 12 tests in `pane.test.tsx` ("M238 AC1" and "M238 AC2" groups). On the current code, 4 fail: both AC1 first-draw tests read nothing at the draw, and both reopen-first AC2 tests read the URL twice. The other 8 pass, as the plan expected. Suite: 1601 pass, 4 fail.
 - 2026-10-10: T2, T3, and T4 done in one commit, because the classic start hook used the removed `isPlaced`. `paneOf` holds the one `$.ui.panes()` call, and `listedPane` answers null when it throws. Module flags `owed` and `startRead` do the rest. The engine refused a helper named `listing`, since `readPrs` already declares a const of that name, so it is `listedPane`. The 4 T1 reds pass now. All five verify commands exit 0 (mod tests 1605 pass).
+- 2026-10-10: T5 done. The `register.tsx` comments, README near line 343, DESIGN.md near lines 318-325 and 430-434 and its history line 77, and two CHANGELOG Fixes entries describe the first-draw read and one read per start. Each line the AC4 sweep returns was read and agrees.
+- 2026-10-10: T6 done. All five verify commands exit 0 (mod tests 1605 pass), and `cairn_validate` passes.
 
 ## Decisions
 

@@ -340,7 +340,9 @@ earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's 
 `Plan`, or `Implement` press does, the pane stays open. The pane and the
 band then read the tracking files again, and so does a `/resume`. After
 either one, a pane that is drawn reads the states again, also when it sits
-behind another tab. A pane that waits undrawn does not read. The pane never reads the states on a timer or at a turn's end,
+behind another tab. A pane that waits undrawn reads the states when it is
+first drawn. One start reads the states once, also when a reopen and a
+`/resume` both run in it. The pane never reads the states on a timer or at a turn's end,
 so a state can be out of date until the next open or ↻ press. After a
 read, each line shows one word after its number:
 
