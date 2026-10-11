@@ -2984,6 +2984,9 @@ describe('a pane placed after a clear or resume start reads at its first draw (M
       await draw($)
       await calls.settled()
       expect(sorted(calls.reads)).toEqual(sorted([...urls]))
+      // The read's words reach the pane (M238 review).
+      const key = fixture === 'blocked-active' ? 'blocked-M111' : 'blocked-M101'
+      expect((await blockedView($, key)).text).toMatch(/  in review$/)
     })
   }
 

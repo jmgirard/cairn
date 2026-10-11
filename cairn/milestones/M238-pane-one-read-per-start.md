@@ -1,6 +1,6 @@
 # M238: The pane reads its pull requests once per start, at its first draw when placed later
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,6 +61,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: T5 done. The `register.tsx` comments, README near line 343, DESIGN.md near lines 318-325 and 430-434 and its history line 77, and two CHANGELOG Fixes entries describe the first-draw read and one read per start. Each line the AC4 sweep returns was read and agrees.
 - 2026-10-10: claim audit: 28 claims read, 4 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx, hooks/status/pane.test.tsx. The double-read entry named the wrong order, the first-draw claim left out the reopen's read and a failed pane list, and a test comment named the wrong cause. The same reader re-read the fixes once and found the failed-list case still missing, which the next commit adds. A new test covers the session-end reset of `startRead`. Removing that reset failed only that test (1605 pass, 1 fail), and the file was restored.
 - 2026-10-10: T6 done. All five verify commands exit 0 (mod tests 1605 pass), and `cairn_validate` passes.
+- 2026-10-10: review return 1: AC2 fails inside its domain (prior-review #1, Copilot on PR #248). A resume hook that owes a read, then the first draw, then the reopen read each URL twice, because the draw's read sets no `startRead`. The return also carries the fix-now items: the classic hook's re-check of `startRead` after its await (diff-bug #2), a test with the pane placed before both hooks (diff-bug #3), and the read-trigger wording in the `readPrs` comment, README, and DESIGN (diff-bug #7, blame-history #2, #6). It also folds the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries (blame-history #5).
 
 ## Decisions
 
@@ -72,3 +73,24 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - AC4 evidence: the sweep returns 27 lines besides DESIGN.md:77. Each was read. None states a read trigger or count that the code contradicts. DESIGN.md:318-320 says the clear or resume hook reads for a placed pane, and its lines 322-324 add the `startRead` exception. CHANGELOG.md `## Unreleased` Fixes holds the two new entries, outside the sweep's files.
 - AC5 evidence (head d642095): both `unittest discover` suites exit 0, both `claude plugin validate` commands exit 0, and the mod test exits 0 with 1606 pass.
 - Consistency gate: `cairn_validate` exit 0, all checks passed. No principle changed, so no `cairn_impact` run. The marketplace validate output has no `version` warning. CHANGELOG `## Unreleased` Fixes has two entries for this milestone's changes, with no milestone numbers.
+- spawned: diff-bug, blame-history, prior-review (pass 1).
+- diff-bug #1: the owed read runs on the render hook's `$`, the API refuses a state write while a render hook draws, and no test checks that the words arrive — fix now (the two first-draw tests now assert the blocked line's word, and they pass) and follow-up for a live look ("Pane edges (M238 review)").
+- diff-bug #2: the classic hook checks `startRead`, awaits `listedPane`, then sets it, so a reopen that runs during the await gives a second read or a stale `owed` — fix now.
+- diff-bug #3: the classic-first AC2 tests pass with no guard, and no test reaches the reopen's `startRead` check — fix now (a test with the pane placed before both hooks).
+- diff-bug #4: an in-process `/clear` or `/resume` relies on `session.end` coming first — follow-up ("Pane edges (M238 review)").
+- diff-bug #5: `owed` outlives a pane closed before its first draw — follow-up ("Pane edges (M238 review)").
+- diff-bug #6: the no-read tests trust `settled()` timing — follow-up ("Pane edges (M238 review)"); the M230 harness uses the same wait.
+- diff-bug #7: the `readPrs` comment and README say a clear or resume reads, with no word on the start that already read — fix now.
+- diff-bug #8: `listedPane`'s null-versus-undefined split is unused — reject, style: the comment states what the function returns, and no behavior depends on it.
+- diff-bug #9: no test reaches `owed` cleared at `session.end` or in the placed branch — follow-up ("Pane edges (M238 review)").
+- blame-history #1: the same race as diff-bug #2 — fix now.
+- blame-history #2: DESIGN.md near 295-301 and README near 331 still say every reopen reads and name three opens — fix now.
+- blame-history #3: the first read started from a render hook, never looked at live — follow-up, as diff-bug #1.
+- blame-history #4: `startRead` assumes a `session.end`, and the flags are module-wide — follow-up ("Pane edges (M238 review)").
+- blame-history #5: the two CHANGELOG entries describe states no release shipped, since the `/clear` and `/resume` reads are themselves unreleased — fix now (fold them into those entries).
+- blame-history #6: README's "waits undrawn" beside "behind another tab", DESIGN's "it lists", and ragged lines — fix now where the fix edits those lines.
+- blame-history #7: the two "Pane edges" rows still hold the absorbed items — noted; post-merge hygiene prunes them.
+- prior-review #1: the first-draw read sets no `startRead`, so a resume hook, a draw, then the reopen read twice (also Copilot's thread on PR #248) — fix now; it fails AC2 inside its domain, so it is a floor return.
+- prior-review #2: the same as diff-bug #4 — follow-up.
+- prior-review #3: ragged wrapping — fix now with blame-history #6.
+- prior-review #4: README 408-412 beside 343 — reject, false: they describe the reopen and the PR read, and the reviewer found no contradiction.
