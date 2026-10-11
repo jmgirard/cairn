@@ -128,4 +128,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - pass 2 prior-review #5: the placed-and-shown check is still spelled at three sites — follow-up ("Pane edges (M238 review)").
 - pass 2 prior-review #6: `register.tsx:66-72` says each open reads — fix now.
 - pass 2 prior-review #7: DESIGN's "It reads the PRs once" — fix now with pass 2 blame-history #2.
+- copilot: hooks/status/register.tsx:307 — fix now, fixed 33af39d (the first-draw read sets `startRead`). The thread was already resolved when read, so no reply was posted.
+- copilot: review body — noted. It names two start-read issues and anchors one, the thread above. The classic hook's re-check, also in 33af39d, covers the other start-hook overlap.
+- Copilot level: Lite (set by GitHub's settings). Review reads: one Copilot review in state COMMENTED, no other reviews, no conversation comments.
 - Consistency gate (pass 2): `cairn_validate` all checks passed. The marketplace validate prints no `version` warning. The CHANGELOG change sits in the unreleased `/resume` entry, with no milestone numbers.
