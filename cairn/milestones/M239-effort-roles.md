@@ -155,6 +155,7 @@ this note does not rely on.
 - 2026-10-10: T5: judges returned H1 3 against 1, H2 1 against 1, H3 0 against 0 (default against `low`), mappings read after all three returned; no judge transcript names the mapping directory.
 - 2026-10-10: T6: pricing page re-read, figures unchanged from M228's; verdicts search `low`, edit work `low`, history review `default`; every `low` row records only `low`. `cairn_validate` green; verify green after adding `effort-roles.md` (state `exempt`) to the pinned page ledger in `scripts/tests/test_scripts.py` (406 and 174 tests OK, both manifests valid, mod test 0 fail).
 - 2026-10-10: claim audit: not owed — internal tier.
+- 2026-10-10: step-7 approval: m239-effort-roles approved for merge
 
 ## Review
 <!-- owner: review · exclusive -->
