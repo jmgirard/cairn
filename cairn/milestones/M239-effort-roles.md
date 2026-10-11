@@ -55,26 +55,26 @@ this note does not rely on.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `cairn/references/effort-roles.md` exists with its `INDEX.md`
+- [x] AC1: `cairn/references/effort-roles.md` exists with its `INDEX.md`
       line and a `**Provenance.**` block. Its run table holds 18 rows: the
       nine tasks of `haiku-sonnet-roles.md`, each run once with the Agent
       tool's `effort` unset and once with it set to `low`, from that task's
       prompt in that note. Search and history-review rows set the model to
       Sonnet, and edit-work rows set it to Haiku.
-- [ ] AC2: Each row records the distinct `model` values and the distinct
+- [x] AC2: Each row records the distinct `model` values and the distinct
       `effort` values found on the assistant records of its subagent
       transcript.
-- [ ] AC3: Each row's dollar cost follows the cost method of
+- [x] AC3: Each row's dollar cost follows the cost method of
       `haiku-sonnet-roles.md` (its Design section, Cost), with the
       per-token prices it uses tabulated in the note and cited to
       Anthropic's pricing page by URL and access date.
-- [ ] AC4: Each row's score follows its group's scoring rule in
+- [x] AC4: Each row's score follows its group's scoring rule in
       `haiku-sonnet-roles.md`, with that note's answer keys, E1 target, and
       mutant set. Each history-review row's score comes from that note's
       judge prompt, with the task's two runs as reports A and B. The note
       records, per history-review task, the label mapping and the judge's
       rating of each finding under each label.
-- [ ] AC5: The note gives each role group a verdict, which follows from the
+- [x] AC5: The note gives each role group a verdict, which follows from the
       run table by this rule. The verdict is `untested` when any of the
       group's `low` rows records no `effort` value or any value other than
       `low`.
@@ -155,3 +155,14 @@ this note does not rely on.
 - 2026-10-10: T5: judges returned H1 3 against 1, H2 1 against 1, H3 0 against 0 (default against `low`), mappings read after all three returned; no judge transcript names the mapping directory.
 - 2026-10-10: T6: pricing page re-read, figures unchanged from M228's; verdicts search `low`, edit work `low`, history review `default`; every `low` row records only `low`. `cairn_validate` green; verify green after adding `effort-roles.md` (state `exempt`) to the pinned page ledger in `scripts/tests/test_scripts.py` (406 and 174 tests OK, both manifests valid, mod test 0 fail).
 - 2026-10-10: claim audit: not owed — internal tier.
+
+## Review
+<!-- owner: review · exclusive -->
+
+- AC1 evidence (2026-10-10, review pass 1): `effort-roles.md` exists, `INDEX.md` has 1 line naming it, 1 `**Provenance.**` block. A parse of the run table finds 18 rows over 18 distinct task-arm pairs. Each run's `agent-<id>.meta.json` records the requested model (`sonnet` on S and H rows, `haiku` on E rows) and `effort` (`low` on low rows, absent on default rows), and each run's first user message carries its task's prompt text from `haiku-sonnet-roles.md` (whitespace-collapsed anchor match, 18 of 18).
+- AC2 evidence: a fresh re-run of the session-local cost script over the 18 transcripts gives each row's distinct `effort` and `model` values, and all 18 match the table's Effort and Model ids columns (0 mismatches): `high` on every default row, `low` on every low row, `claude-sonnet-5-5` on S and H rows, `claude-haiku-5-5` on E rows.
+- AC3 evidence: the re-run cost script (message-id grouping, last-record counts, the note's price table, the Haiku 100,000-token tier) reproduces every row's five token sums, call count, and USD figure (0 mismatches over 18 rows). The note's price table equals the Sonnet 5.5 and both Haiku 5.5 rows of the pricing page read 2026-10-10, cited by URL and date. The final call's output comes from the completion notification's `subagent_tokens` less the final id's input and cache counts, the note's dated Cost amendment, because background runs have no Agent tool `usage`. On the five foreground spawns of this session, `totalTokens` equals the `usage` input, cache, and output sum, so both sources give the same figure. Every row's derived output is at least its recorded one.
+- AC4 evidence: the re-run scorer gives S1, S2 1.0 and S3 0.6767 in both arms (F1 against keys that M228's key code rebuilds at `c023018`, set-equal to the note's lists), E1 1.0 in both arms (Jaccard against the 32-triple target), and E2, E3 6 of 6 mutants killed in both arms; the always-true control kills 0 of 6 for E2 and E3. Every S and E score equals the table (0 mismatches). H scores equal the judges' `A valid`/`B valid` lines under the recorded mappings (H1 3 and 1, H2 1 and 1, H3 0 and 0, default first). The note records each task's mapping and a rating per finding by arm, and the per-finding rows match the judges' lines.
+- AC5 evidence: a parse of the run table, summed per group and run through the stated rule, gives search 0.3299 against 0.3247 USD at 2.6767 each, `low`; edit work 0.0293 against 0.0263 at 3.0 each, `low`; history review 0.8794 against 0.6002 at 4 against 2, `default`. No `low` row records an effort other than `low`, so none is `untested`. All three equal the note's verdict table.
+- gate: `cairn_validate` exit 0 (no WARN); verify on the review head: scripts 406 tests OK (21 skipped), hooks 174 OK, plugin manifest valid (one warning, the repo-root `CLAUDE.md` not loaded as plugin context, present before this branch), marketplace manifest valid with no `plugins[N].version` warning, mod test 1609 tests 0 fail. No principle changed, so `cairn_impact` is skipped. Changelog: no entry owed, since the branch adds an in-repo reference note and a test-ledger line and changes no user-visible behavior.
+- Copilot: requested on PR #249 at review start (state query `none`, `gh pr edit --add-reviewer @copilot` exit 0).
