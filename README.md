@@ -715,7 +715,11 @@ actually reach.
   so GitHub's settings choose it; the report names the level from the
   review. Adopted outside PRs, a review of an already-merged PR, and
   milestones with companion checkouts,
-  skip the round.
+  skip the round. Without the line, cairn does not handle Copilot's
+  threads. If Copilot is still on the PR anyway, for example through a
+  GitHub setting that requests it, the close after a hotfix merge, a
+  milestone merge, or a guest handoff says so in one line and names the
+  line to add.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each
