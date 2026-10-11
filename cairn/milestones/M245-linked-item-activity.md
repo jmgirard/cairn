@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M245: The audit reports new activity on the issues and pull requests that candidate rows link to
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -95,6 +95,8 @@ written to GitHub.
 - re-audit: AC7 (full) — second pass: no close-only item closed by the operator. Not amended again (the second-line bound): T5 runs `jmgirard/cairn#168` (closed by jmgirard 2026-09-02, no comments) in a row dated 2026-09-01 as a task-side check that must report nothing.
 - re-audit: AC8 (full) — the proposed AC8 wording ("both say that a close or merge made by the operator is not reported") could pass beside contradicting old text. The AC8 amendment is withdrawn and AC8 keeps its plan wording. T5 corrects the README and CHANGELOG text, and the claim audit reads it.
 - 2026-10-11: T5 done. The item read adds `(.closed_by.login // "-")`, and a close or merge whose `closed_by` is the operator prints nothing. The SKILL.md prose, README, and CHANGELOG say so, and the "Linked-item read edges (M245 review)" row drops the own-merge item. Fixtures A to D unchanged in zsh and bash. Fixture E: cairn#238 and the task-side cairn#168 row silent, ggplot2#1 reports `closed 2009-12-11T04:43:25Z` and hadley's 2009-12-11 comment. verify green (5/5), skills/tests OK.
+- 2026-10-11: claim audit: 6 claims read, 1 corrected — CHANGELOG.md (the read reports an item's latest close or merge, not each one, since it reads `closed_at`/`merged_at` once). The same reader re-read the correction: it holds. Scope: the T5 diff, 2419528..HEAD outside `cairn/`.
+- 2026-10-11: implement done after the step-7 decline; status review. verify green (5/5), skills/tests OK.
 
 ## Decisions
 

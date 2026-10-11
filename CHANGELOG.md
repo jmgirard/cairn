@@ -8,8 +8,8 @@
   link to.** The health audit reads each link in a candidate row, whether a
   full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo's own issues
   and PRs (the upstream repo's, in guest mode), and
-  reports each close, merge, comment, review, or review-thread comment by
-  someone else since the row's latest date. A close or merge you made
+  reports the item's latest close or merge, and each comment, review, or
+  review-thread comment by someone else, since the row's latest date. A close or merge you made
   yourself is not reported. It runs in guest mode too,
   so a row that waits on another repo's merge or a maintainer's reply hears
   about it. At the triage chip you can update the row, which adds a
