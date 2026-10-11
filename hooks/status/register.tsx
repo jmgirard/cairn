@@ -4,7 +4,7 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnHotfixRead, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import { countsArgv, prCounts } from './counts'
+import { countsArgv, prRead } from './counts'
 import type { HotfixPr, PaneButton, PrRead } from './pane'
 import {
   CHECK_LABEL,
@@ -14,7 +14,6 @@ import {
   hotfixPrs,
   nextLabel as labelOf,
   NO_ROADMAP,
-  OPEN_WORDS,
   paneLines,
   PLAN_LABEL,
   PR_BUTTON,
@@ -70,12 +69,14 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
-// (`readPrs`, M236). An open does not wait for that read, and a `/clear` that stays
-// in the process reads again while the pane shows (M230). A blocked line
+// (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
+// a `/resume` reads again while the pane is placed, shown or behind another
+// tab (M230, M237). A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
-// threads, which draw on a line under it (M225, M236). The same read lists the operator's open pull requests on the
+// threads, which draw on a line under it (M225, M236). A github.com pull
+// request's word and count come from one `gh api graphql` call (M237). The same read lists the operator's open pull requests on the
 // base remote with one `gh pr list` call and keeps the ones from
 // `hotfix-*` branches, which the pane draws, each with its word and counts
 // (M226).
@@ -142,7 +143,9 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 
 // True from the start of a read of the pull request states until the newest
 // read started has settled (M236). The pane's ↻ Button reads ⋯ while it is
-// true. A reload keeps it, so a press does not rely on it (`pressing`).
+// true and a read that this module started is in flight (`inFlight`, M237).
+// A reload keeps it, so neither the label nor a press relies on it alone
+// (`pressing`).
 const reading = atom({ plugin: 'cairn', key: 'reading' } as const, false, { shape: 'reading-1' })
 
 // The pane's id, its title, and the command that opens and closes it.
@@ -205,11 +208,10 @@ const BLOCKED_COMMANDS: Partial<Record<PaneButton, { command: string; withId: bo
   check: { command: STATUS_COMMAND, withId: false },
 }
 
-// How long one `gh pr view` or `gh api graphql` call may run, well under
+// How long one `gh api graphql` or `gh pr view` call may run, well under
 // the ten minutes `$.process.run` allows. The URLs' calls run side by side,
-// and a call still running then rejects: a `gh pr view` reads as `unknown`
-// (M224), and a count call leaves the counts null (M225). An open PR's two
-// calls run one after the other, so its read can take twice this.
+// and a call still running then rejects and reads as `unknown` with no
+// counts (M224, M237). Each URL takes one call (M237).
 const GH_TIMEOUT_MS = 15_000
 
 export const register: Register = on => {
@@ -231,14 +233,16 @@ export const register: Register = on => {
 
   // A `/clear` that stays in the same process raises no `session.start`, and
   // the host's state starts empty under the new session id, so the band and
-  // an open pane read the files again here (M222). A pane that is placed and
-  // shown also reads the pull request states and the hotfix list again, and
-  // the hook does not wait for that read (M230).
+  // an open pane read the files again here (M222). A `/resume` does the same
+  // (M237). The hook cannot tell a resume in the process from a resumed
+  // start, so a resumed start reads the files twice. A placed pane, shown or
+  // behind another tab, also reads the pull request states and the hotfix
+  // list again, and the hook does not wait for that read (M230, M237).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
-    if (e.source === 'clear') {
+    if (e.source === 'clear' || e.source === 'resume') {
       await refresh($)
-      if (await isShown($)) void readPrs($)
+      if (await isPlaced($)) void readPrs($)
     }
     return result
   })
@@ -286,7 +290,9 @@ export const register: Register = on => {
     const held = await read($, hotfixes)
     const listed = held.root !== null && held.root === shown.root ? held.prs : []
     const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
-    const busy_ = await read($, reading)
+    // ⋯ also needs a read in flight in this module, so a stored true that a
+    // reload or a failed write left draws ↻ (M237).
+    const busy_ = (await read($, reading)) && inFlight > 0
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -677,26 +683,41 @@ async function isShown($): Promise<boolean> {
   }
 }
 
+// True when `$.ui.panes()` lists the pane placed, shown or behind another
+// tab, false when it does not or the call throws (M237).
+async function isPlaced($): Promise<boolean> {
+  try {
+    const mine = (await $.ui.panes()).find(open => open.id === PANE)
+    return mine !== undefined && mine.isPlaced
+  } catch {
+    return false
+  }
+}
+
 // Each read of the pull request states takes the next number, and only the
 // newest read started writes its words, so an older read that settles
 // later does not put back older words (M224 review). A reload starts it
 // over at 0.
 let prReads = 0
 
-// Reads each blocked row's pull request with one `gh pr view` call per URL,
-// side by side, and writes each state word by its URL (M224). The URL
-// names the repo, so the call needs no `--repo`. A call that rejects, as
-// when `gh` cannot start or outruns its timeout, reads as `unknown`, as a
-// bad result does (pane.ts `prWord`), and the read never throws. It runs
-// only at a pane open, a Refresh press, and a `/clear` that stays in the
-// process while the pane shows (M230): no timer and no turn end starts one,
-// since the operator does not want repeating tasks. A read that starts
-// while another runs still runs, with the newest URLs.
-// A pull request whose word says it is open then gets one `gh api graphql`
-// call for its counts (counts.ts), with the same timeout. A count call that
-// fails leaves the counts null, so its line draws no counts, and the state
-// word stands (M225). Words and counts are written together when every call
-// has settled, so a Refresh keeps the earlier counts drawn until then.
+// The reads of the pull request states that this module started and that
+// have not settled (M237). A reload starts it over at 0, as the reload ends
+// the old module's reads.
+let inFlight = 0
+
+// Reads each blocked row's pull request with one call per URL, side by
+// side, and writes each state word and its counts by its URL (M224, M225).
+// A github.com URL takes one `gh api graphql` call for both (`readPr`,
+// M237), and the URL names the repo, so the call needs no `--repo`. A call
+// that rejects, as when `gh` cannot start or outruns its timeout, reads as
+// `unknown` with no counts, as a bad result does (counts.ts `prRead`), and
+// the read never throws. Threads that fail the shape check leave the word
+// and draw no counts. It runs only at a pane open, a Refresh press, and a
+// `/clear` or `/resume` while the pane is placed (M230, M237): no timer and
+// no turn end starts one, since the operator does not want repeating tasks.
+// A read that starts while another runs still runs, with the newest URLs.
+// Words and counts are written together when every call has settled, so a
+// Refresh keeps the earlier counts drawn until then.
 // Beside the blocked rows' reads, `readHotfixes` lists the open hotfix pull
 // requests (M226), and the blocked reads do not wait for it (M230). Once the
 // list settles, the hotfix URLs that no blocked row names are read. The list
@@ -704,6 +725,7 @@ let prReads = 0
 async function readPrs($) {
   prReads += 1
   const mine = prReads
+  inFlight += 1
   // Each write checks again inside `update`, which retries on a version
   // conflict, that no newer read started, so a retried write never undoes a
   // newer read's write (M236 review).
@@ -741,34 +763,46 @@ async function readPrs($) {
   } catch {
     // No write: the lines keep the words they had.
   } finally {
+    inFlight -= 1
     // Only the newest read puts back the ↻, so an older read that settles
     // first leaves ⋯ while the newer one runs (M236).
     if (mine === prReads) {
       try {
         await update($, reading, current => (mine === prReads ? false : current))
       } catch {
-        // The ⋯ stays until the next read settles.
+        // The stored value stays true, and once no read of this module is
+        // in flight, the next draw shows ↻ (M237). A change to `inFlight`
+        // draws nothing, so this asks for the pane to be drawn again (M237
+        // review). No test covers that redraw.
+        try {
+          $.ui.invalidate('ui.render')
+        } catch {
+          // The ⋯ stays until something else draws the pane.
+        }
       }
     }
   }
 }
 
 // One pull request's state word, and its counts when the word says it is
-// open, as `readPrs` describes. It never rejects.
+// open, as `readPrs` describes. It never rejects. A github.com URL takes one
+// `gh api graphql` call for both (counts.ts `prRead`, M237). A URL of
+// another form, as a hotfix's on another host, takes one `gh pr view` call
+// for its word and gets no counts.
 async function readPr($, url: string): Promise<PrRead> {
-  let word: PrRead['word']
+  const graph = countsArgv(url)
+  if (graph !== null) {
+    try {
+      return prRead(await $.process.run(graph, { timeoutMs: GH_TIMEOUT_MS }))
+    } catch {
+      return prRead(null)
+    }
+  }
   try {
     const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
-    word = prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
+    return { word: prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })), counts: null }
   } catch {
-    word = prWord(null)
-  }
-  const argv = countsArgv(url)
-  if (!OPEN_WORDS.includes(word) || argv === null) return { word, counts: null }
-  try {
-    return { word, counts: prCounts(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })) }
-  } catch {
-    return { word, counts: null }
+    return { word: prWord(null), counts: null }
   }
 }
 

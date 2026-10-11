@@ -72,13 +72,14 @@ export type CairnPaneState = {
 }
 
 // The state word of a blocked milestone's pull request, as the pane last
-// read it from `gh pr view` (M224).
+// read it from `gh api graphql`, or from `gh pr view` for a URL on another
+// host (M224, M237).
 export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
 
 // One read of a blocked milestone's pull request: its state word (M224),
 // and for an open one, its review threads not marked resolved (M225, M236).
-// `counts` is null for a pull request that is not open, or whose count read
-// failed.
+// `counts` is null for a pull request that is not open, or whose threads
+// failed the shape check (M237).
 export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number } | null }
 
 // One open pull request that the operator opened from a `hotfix-*` branch,

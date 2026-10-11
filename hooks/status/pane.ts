@@ -65,17 +65,18 @@ export type PaneLine = {
   grow?: true
 }
 
-// A blocked milestone's pull request state, as `prWord` reads it from a
-// `gh pr view <url> --json state,reviewDecision` call (M224). The state
-// contract holds the one list of words.
+// A blocked milestone's pull request state, as `wordOf` maps it from a
+// `gh api graphql` reply (counts.ts `prRead`, M237) or, for a URL on
+// another host, from a `gh pr view <url> --json state,reviewDecision` call
+// (`prWord`, M224). The state contract holds the one list of words.
 export type PrWord = CairnPrWord
 
 // One read of a pull request: its word, and its counts while it is open
-// and its count read did not fail (M225).
+// and its threads passed the shape check (M225, M237).
 export type PrRead = CairnPrRead
 
-// The words `prWord` gives an OPEN pull request, whose counts are read
-// (M225).
+// The words `wordOf` gives an OPEN pull request, the ones that carry
+// counts (M225, M237).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
 
 // The count line's text, or null when the count is zero. One thread reads
@@ -101,6 +102,13 @@ export function prWord(result: { exitCode: number; stdout: string } | null): PrW
   }
   if (view === null || typeof view !== 'object') return 'unknown'
   const { state, reviewDecision } = view as { state?: unknown; reviewDecision?: unknown }
+  return wordOf(state, reviewDecision)
+}
+
+// The state word of a pull request's `state` and `reviewDecision`, as
+// `prWord` reads them from `gh pr view` and `prRead` in counts.ts from
+// `gh api graphql` (M237), which give the same values.
+export function wordOf(state: unknown, reviewDecision: unknown): PrWord {
   if (state === 'MERGED') return 'merged'
   if (state === 'CLOSED') return 'closed'
   if (state !== 'OPEN') return 'unknown'

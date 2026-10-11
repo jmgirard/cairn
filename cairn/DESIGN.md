@@ -74,7 +74,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -289,10 +289,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   read it the same.
   Each blocked row also keeps that pull request's URL up to its number
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
-  from it. `readPrs` in `register.tsx` runs one `gh pr view <url> --json
-  state,reviewDecision` per distinct URL through `$.process.run`, side
-  by side, with a 15-second timeout each, and writes each word, with its
-  counts since M225, to the `prs` state value by URL. It runs after each pane open (the
+  from it. `readPrs` in `register.tsx` runs one call per distinct URL
+  through `$.process.run` (`readPr`), side by side, with a 15-second
+  timeout each. It writes each word, with its counts since M225, to the
+  `prs` state value by URL. Since M237 a github.com URL takes one `gh api
+  graphql` call for the word and the counts. A URL of another form, as a
+  hotfix's on another host, takes one `gh pr view <url> --json
+  state,reviewDecision` call for its word and gets no counts. It runs after each pane open (the
   `/cairn-pane` command, the band's open button, the session-start
   reopen) and at a press of the ↻ Refresh Button, which first reads the
   files again. The three opens start the read with `void readPrs($)` and
@@ -302,22 +305,28 @@ transitions, human-gated merges, and a domain verification doctrine.
   ROADMAP is found, and sets that line's `grow`. The render gives that
   line's text Box `flexGrow: 1`, so the tail and the ↻ Box sit at the
   right end. The `reading` state value (tag `reading-1`) is true from the
-  start of any read until the newest read started settles, and the ↻
-  Button's label is `⋯` (`READING_LABEL`) while it is true. A `dimColor`
+  start of any read until the newest read started settles. The ↻
+  Button's label is `⋯` (`READING_LABEL`) while it is true and
+  `inFlight` is above 0 (M237). `inFlight` is a module-level count of
+  this module's unsettled reads. So a stored true that a reload or a
+  failed write left draws ↻ at the next draw. A `dimColor`
   drew no change on the desktop app's native Button at the M236 live
   look, so the label changes instead. A module-level `pressing` flag makes a press during an
   earlier press's read do nothing. The flag is not stored, so after a
   reload a press reads again even while a stored `reading` is still true.
   After its refresh, a `classic.SessionStart`
-  with source `clear` also starts the read without waiting. It does so
-  only when `$.ui.panes()` lists the pane placed and shown (`isShown`). No timer and no turn end
+  with source `clear` or `resume` also starts the read without waiting
+  (M230, M237). It does so when `$.ui.panes()` lists the pane placed,
+  shown or behind another tab (`isPlaced`). No timer and no turn end
   starts a read, at the operator's word. A read that starts while another
   runs still runs, and only the newest read started writes its words
-  (M224 review). `prWord` in `pane.ts` maps each result:
+  (M224 review). `wordOf` in `pane.ts` maps a state and a decision:
   MERGED to `merged`, CLOSED to `closed`, OPEN by its review decision to
   `changes requested`, `approved`, or `in review` for any other or none,
-  and a rejected call, a non-zero exit, text that is not a JSON object, or
-  another `state` to `unknown`. The word follows the number in the
+  and another `state` to `unknown`. `prRead` in `counts.ts` reads it from
+  a graphql reply, and `prWord` in `pane.ts` from a `gh pr view` reply.
+  A rejected call, a non-zero exit, or a reply with no pull request reads
+  `unknown`. The word follows the number in the
   line's tail. `PR_BUTTON` gives a `merged` line a `Finish` Button that
   runs `/cairn:milestone-review <id>`, a `changes requested` line a
   `Revise` Button that runs `/cairn:milestone-implement <id>`, and a
@@ -329,18 +338,18 @@ transitions, human-gated merges, and a domain verification doctrine.
   review). The Buttons stay drawn while a step runs. A test answers the mod's
   `$.process.run` with an `on('process.run')` hook (M224 probe), and a
   desktop Code session's mod runs `gh` from the app's `PATH`.
-  In the same read, each URL whose word is in `OPEN_WORDS` gets one `gh
-  api graphql` call with the same timeout (M225, `counts.ts`). The query
-  names the URL's owner, repo, and number, and returns
-  `reviewThreads(last: 100)` with each thread's `isResolved`. `prCounts`
-  checks the reply's shape, and `countPr` gives one count, `unresolved`:
+  The graphql query (M225, `counts.ts`) names the URL's owner, repo, and
+  number, and returns `state`, `reviewDecision`, and
+  `reviewThreads(last: 100)` with each thread's `isResolved` (M237).
+  Only a word in `OPEN_WORDS` carries counts. `prNodes` checks the
+  threads' shape, and `countPr` gives one count, `unresolved`:
   the threads with `isResolved` false, a bot's threads included. Until
   M236 a second count showed the reviews and conversation comments after
   the author's last comment, review, or commit. GitHub links no reply to a
   review, so that count took items with nothing to answer, such as a
   Copilot summary review with no threads, and the operator dropped it. The
-  count covers the newest 100 threads. A failed call or reply leaves the
-  counts null. The `prs` value holds `{ word, counts }` per URL under the
+  count covers the newest 100 threads. Threads that fail the shape check
+  leave the counts null and the word standing. The `prs` value holds `{ word, counts }` per URL under the
   tag `prs-3`. It is written once every call settles, so a ↻ press keeps
   the earlier count drawn until then. When the count is above zero,
   `paneLines` draws `blocked-<id>-counts` at indent 4 under the line. The
@@ -413,8 +422,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `clear` in the same process, and nothing closes the pane (M222 probe). The
   host's state starts empty under the new session id, and no
   `session.start` fires, so a `classic.SessionStart` hook with source
-  `clear` refreshes the band and the pane, and a shown pane reads its PRs
-  again (M230). A
+  `clear` refreshes the band and the pane, and a placed pane reads its PRs
+  again (M230, M237). Source `resume` does the same (M237). The hook
+  cannot tell a resume in the process from a resumed start, so a resumed
+  start reads the files twice. A
   typed `/clear` in the desktop app ends the process with reason `other`,
   and the next process starts with no pane at the first message after the
   clear. So at an `other` end with the pane listed, shown, and placed, the
