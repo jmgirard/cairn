@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter presses these Buttons in the band and the cairn pane
-- **Branch/PR:** m243-pane-press-races
+- **Branch/PR:** m243-pane-press-races, https://github.com/jmgirard/cairn/pull/253
 
 ## Goal
 
@@ -37,12 +37,12 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 
 ## Acceptance criteria
 
-- [ ] AC1: Four Buttons each take two presses started together with `Promise.all`, while every guard passes and with no session end between. The Buttons are the band's `cairn-next` (`pressNext`), `cairn-status` (`pressStatus`), and Clear (`pressClear`), and a pane blocked line's `Finish` (`pressBlocked`). Each pair calls `$.command.run` once. Verified by mod tests that assert the recorded calls.
-- [ ] AC2: The pane's `cairn-pane-status` press and its ⌂ press, started together with `Promise.all`, call `$.command.run` once, in either order. The call carries the command of the press listed first (`cairn:milestone` or `clear`). Verified by mod tests that assert the recorded calls for both orders.
-- [ ] AC3: `grep -n 'async function press' hooks/status/register.tsx` lists a set of functions. Each one contains no `await`, or it sets a mark that its own entry check reads before its first `await`. That mark is one that `busy()` reads, or `pressing` for `pressRefresh`. Where a press releases its mark and then runs a command, no `await` comes between the release and `run` setting `running` or the press setting `heldRun`.
-- [ ] AC4: In two cases, a press whose checks fail leaves the next free press able to run. In case one, a pane `Finish` press finds a step set, and a `classic.Stop` then clears the step. In case two, a pane `Finish` press reads a changed PR word. In both cases, a pane `cairn-pane-status` press after it calls `$.command.run` with `cairn:milestone`. Verified by mod tests that assert both cases.
-- [ ] AC5: CHANGELOG.md's `## Unreleased` `### Fixes` gains an entry. It says that a second press of these Buttons during the first press's checks starts no second command. DESIGN.md's current-behavior text on `busy` names the shared press mark, and it names the four presses and the ✎ press (`pressCandidate`) that set it. No DESIGN.md current-behavior text names `candidateCheck`.
-- [ ] AC6: The profile's five `verify` checks pass.
+- [x] AC1: Four Buttons each take two presses started together with `Promise.all`, while every guard passes and with no session end between. The Buttons are the band's `cairn-next` (`pressNext`), `cairn-status` (`pressStatus`), and Clear (`pressClear`), and a pane blocked line's `Finish` (`pressBlocked`). Each pair calls `$.command.run` once. Verified by mod tests that assert the recorded calls.
+- [x] AC2: The pane's `cairn-pane-status` press and its ⌂ press, started together with `Promise.all`, call `$.command.run` once, in either order. The call carries the command of the press listed first (`cairn:milestone` or `clear`). Verified by mod tests that assert the recorded calls for both orders.
+- [x] AC3: `grep -n 'async function press' hooks/status/register.tsx` lists a set of functions. Each one contains no `await`, or it sets a mark that its own entry check reads before its first `await`. That mark is one that `busy()` reads, or `pressing` for `pressRefresh`. Where a press releases its mark and then runs a command, no `await` comes between the release and `run` setting `running` or the press setting `heldRun`.
+- [x] AC4: In two cases, a press whose checks fail leaves the next free press able to run. In case one, a pane `Finish` press finds a step set, and a `classic.Stop` then clears the step. In case two, a pane `Finish` press reads a changed PR word. In both cases, a pane `cairn-pane-status` press after it calls `$.command.run` with `cairn:milestone`. Verified by mod tests that assert both cases.
+- [x] AC5: CHANGELOG.md's `## Unreleased` `### Fixes` gains an entry. It says that a second press of these Buttons during the first press's checks starts no second command. DESIGN.md's current-behavior text on `busy` names the shared press mark, and it names the four presses and the ✎ press (`pressCandidate`) that set it. No DESIGN.md current-behavior text names `candidateCheck`.
+- [x] AC6: The profile's five `verify` checks pass.
 
 ## Coverage
 
@@ -79,3 +79,15 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 - 2026-10-11: claim audit: 24 claims read, 5 corrected — CHANGELOG.md, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-11: the 5 corrections: the CHANGELOG "Before" sentence now says `Plan` and `Implement` both ran `/clear`. The `busy` comment names the five press kinds. The `pressChecked` comment sets the hold before the release. The `pressCandidate` comment says `pressChecked` holds the command. The AC2 test comment says each press marks `busy`. The same reader's single re-read found all 5 hold. Verify passes after the edits: 1656 mod tests with 0 red.
 - 2026-10-11: implement done, status review. No deviation from the plan beyond `pressChecked` as one helper and `pressCandidate` moved onto it.
+
+## Decisions
+
+## Review
+
+- Copilot arm: branch pushed, PR #253 opened, state query `none`, Copilot requested (exit 0).
+- AC1: fresh `claude plugin test .` on 23ac8e8: 1656 tests, 0 red. The "two presses at once of a band Button" cases pass for `cairn-next`, `cairn-status`, and `cairn-clear` on the terminal and desktop surfaces, and "two presses at once of a blocked line Button" passes for `cairn-pane-finish-M111`. Each asserts one recorded `$.command.run` call. All 8 were red before T2 with two calls (T1 work-log line).
+- AC2: same run. "a Status press and a ⌂ press at once run only the first one" passes in both orders: Status first records only `cairn:milestone`, ⌂ first records only `clear`. The Status-first order was red before T2.
+- AC3: the grep on 23ac8e8 lists 9 functions. `pressPane` (958) has no `await`. `pressRefresh` (975) sets `pressing` before its first `await`. `pressHome` (1125) sets `homeRun` before its first `await`. `pressChecked` (1096) checks `busy()`, sets `pressCheck` before `await checks()`, sets `heldRun` inside the `try`, and calls `run` right after the `finally` release with no `await` between. `pressBlocked`, `pressNext`, `pressStatus`, `pressClear`, and `pressCandidate` have as their first `await` the call to `pressChecked`, which sets the mark before it suspends.
+- AC4: same run. Both "a press whose checks fail leaves the next press free" cases pass: after a `Finish` press during a step and a `classic.Stop`, and after a `Finish` press that reads `closed`, a pane Status press records `cairn:milestone`, and the Finish press records nothing. The planted leak (work log) turned both red.
+- AC5: on 23ac8e8, CHANGELOG.md:196 opens the first `### Fixes` entry under `## Unreleased`, saying a second press during the first press's reads does nothing. DESIGN.md:199-207 names `pressCheck`, `pressChecked`, the four presses, and `pressCandidate`. `grep -n candidateCheck cairn/DESIGN.md` finds nothing.
+- AC6: on 23ac8e8, `scripts/tests` ran 406 tests OK (21 skipped), `hooks/tests` 174 OK, both `claude plugin validate` runs exit 0, and the mod test ran 1656 with 0 red.
