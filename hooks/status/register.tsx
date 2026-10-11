@@ -19,6 +19,7 @@ import {
   PLAN_LABEL,
   PR_BUTTON,
   prWord,
+  READING_LABEL,
   REFRESH_LABEL,
   REVISE_LABEL,
   STATUS_LABEL,
@@ -68,14 +69,13 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // is true, and a press runs `pressStatus` or `pressClear` (M219).
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
-// with `gh`, and so does a press of the Blocked heading's Refresh Button
-// (`readPrs`). An open does not wait for that read, and a `/clear` that stays
+// with `gh`, and so does a press of the pane's ↻ Refresh Button
+// (`readPrs`, M236). An open does not wait for that read, and a `/clear` that stays
 // in the process reads again while the pane shows (M230). A blocked line
 // then shows its state word, and a merged, changes-requested, or closed
 // line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
-// threads and unanswered reviews and comments, which draw on a line under
-// it (M225). The same read lists the operator's open pull requests on the
+// threads, which draw on a line under it (M225, M236). The same read lists the operator's open pull requests on the
 // base remote with one `gh pr list` call and keeps the ones from
 // `hotfix-*` branches, which the pane draws, each with its word and counts
 // (M226).
@@ -128,8 +128,9 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
 // not been read, and its line shows no word. Each entry also holds the
-// open pull request's counts, or null; the tag moved to 2 with them (M225).
-const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-2' })
+// open pull request's counts, or null; the tag moved to 2 with them (M225)
+// and to 3 when the second count left them (M236).
+const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-3' })
 
 // The hotfix list that the last read wrote, and the repo root it is for
 // (M226, `readHotfixes` says when it is kept or empty). The pane draws
@@ -138,6 +139,11 @@ const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, 
 const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [] } as CairnHotfixRead, {
   shape: 'hotfixes-1',
 })
+
+// True from the start of a read of the pull request states until the newest
+// read started has settled (M236). The pane's ↻ Button reads ⋯ while it is
+// true. A reload keeps it, so a press does not rely on it (`pressing`).
+const reading = atom({ plugin: 'cairn', key: 'reading' } as const, false, { shape: 'reading-1' })
 
 // The pane's id, its title, and the command that opens and closes it.
 const PANE = 'cairn'
@@ -179,7 +185,7 @@ const CLEAR_COMMAND = 'clear'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
 // sits in pane.ts beside the label map.
 // The key and label of each Button after the Next line's action (M219),
-// of the Blocked heading's Refresh, and of a blocked line's Button, whose
+// of the pane's ↻ Refresh (M236), and of a blocked line's Button, whose
 // key ends in its milestone id (M224).
 const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
   clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
@@ -280,6 +286,7 @@ export const register: Register = on => {
     const held = await read($, hotfixes)
     const listed = held.root !== null && held.root === shown.root ? held.prs : []
     const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
+    const busy_ = await read($, reading)
     // A line's lead and tail keep their width, and its text takes the room
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
@@ -302,7 +309,7 @@ export const register: Register = on => {
               </Box>
             )}
             {line.text === null ? null : (
-              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0}>
+              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0} {...(line.grow ? { flexGrow: 1 } : {})}>
                 <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
                   {line.text.text}
                 </Text>
@@ -335,7 +342,7 @@ export const register: Register = on => {
                   <Button
                     key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"
-                    label={button.label}
+                    label={kind === 'refresh' && busy_ ? READING_LABEL : button.label}
                     onPress={() => pressPane($, kind, target)}
                   />
                 </Box>
@@ -697,6 +704,14 @@ let prReads = 0
 async function readPrs($) {
   prReads += 1
   const mine = prReads
+  // Each write checks again inside `update`, which retries on a version
+  // conflict, that no newer read started, so a retried write never undoes a
+  // newer read's write (M236 review).
+  try {
+    await update($, reading, current => (mine === prReads ? true : current))
+  } catch {
+    // The ↻ stays, and the read still runs.
+  }
   try {
     const urls: string[] = []
     for (const row of (await read($, pane)).blocked) {
@@ -725,6 +740,16 @@ async function readPrs($) {
     if (mine === prReads) await update($, hotfixes, () => listed)
   } catch {
     // No write: the lines keep the words they had.
+  } finally {
+    // Only the newest read puts back the ↻, so an older read that settles
+    // first leaves ⋯ while the newer one runs (M236).
+    if (mine === prReads) {
+      try {
+        await update($, reading, current => (mine === prReads ? false : current))
+      } catch {
+        // The ⋯ stays until the next read settles.
+      }
+    }
   }
 }
 
@@ -831,8 +856,8 @@ async function git($, root: string, args: string[]): Promise<string | null> {
   }
 }
 
-// A press of a pane Button (M219, M224). Either heading's Refresh goes to
-// `pressRefresh`, whatever its target (M226).
+// A press of a pane Button (M219, M224). The ↻ Refresh goes to
+// `pressRefresh` (M236).
 async function pressPane($, kind: PaneButton, target: string | undefined) {
   if (kind === 'clear') return pressClear($)
   if (kind === 'status') return pressStatus($)
@@ -840,11 +865,24 @@ async function pressPane($, kind: PaneButton, target: string | undefined) {
   if (target !== undefined) return pressBlocked($, kind, target)
 }
 
-// A press of the Blocked or Hotfixes heading's Refresh reads the files,
-// then the hotfix list and the pull request states again (M224, M226).
+// True from a ↻ press until the read it started settles (M236). A module
+// variable, so a reload, which ends that read, starts it over as false, and
+// a press after a reload reads again even while the stored `reading` is
+// true.
+let pressing = false
+
+// A press of the ↻ Refresh reads the files, then the hotfix list and the
+// pull request states again (M224, M226). A press while an earlier press's
+// read runs does nothing (M236).
 async function pressRefresh($) {
-  await refresh($)
-  await readPrs($)
+  if (pressing) return
+  pressing = true
+  try {
+    await refresh($)
+    await readPrs($)
+  } finally {
+    pressing = false
+  }
 }
 
 // A press of a blocked line's Button runs its command as a typed command

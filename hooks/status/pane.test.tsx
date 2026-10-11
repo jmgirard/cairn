@@ -33,8 +33,6 @@ const BAND = {
   component: 'AbovePrompt',
   props: { hasSurvey: false, isWorking: false, maxRows: 10, bodyColumns: 120 },
 } as const
-// The phase label of each status, written out by hand.
-const PHASE_LABEL: Record<string, string> = { 'in-progress': 'implement', review: 'review' }
 // The fixtures whose reader finds a ROADMAP.
 const WITH_ROADMAP = Object.keys(FIXTURES).filter(name => FIXTURES[name].next !== null)
 
@@ -75,6 +73,8 @@ type Copy = {
   // While set, a slash command run beneath the mod throws this message
   // (M221 review).
   runThrows?: string
+  // While set, the path of each `$.fs.read` call is pushed here (M236).
+  reads?: string[]
 }
 
 function copyOf(name: string): Copy {
@@ -107,9 +107,10 @@ function seat(on: On, copy: Copy) {
   on('fs.stat', async ($, e, next) =>
     has(e.path) ? { value: { kind: 'file', size: copy.files[e.path].length, mtimeMs: 0, isLink: false } } : next(e),
   )
-  on('fs.read', async ($, e, next) =>
-    has(e.path) && !copy.unreadable.includes(e.path) ? { value: copy.files[e.path] } : next(e),
-  )
+  on('fs.read', async ($, e, next) => {
+    copy.reads?.push(e.path)
+    return has(e.path) && !copy.unreadable.includes(e.path) ? { value: copy.files[e.path] } : next(e)
+  })
   on('fs.list', async ($, e, next) => {
     const names = listNames(Object.keys(copy.files), e.path)
     if (names === null) return next(e)
@@ -276,7 +277,7 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
           const band = FIXTURES[name].rows.find(b => b.id === row.id && b.status === row.status)
           const percent = row.file === null || band === undefined ? null : flowOf(band)?.percent
           const tail = percent === null || percent === undefined ? '' : `  ${percent}%`
-          expect(textAt(lines, `${row.id}-head`)).toBe(`${PHASE_LABEL[row.status]} ${row.id}  ${row.title}${tail}`)
+          expect(textAt(lines, `${row.id}-head`)).toBe(`${row.id}  ${row.title}${tail}`)
           const file = row.file
           if (file === null) {
             expect(textAt(lines, `${row.id}-nofile`)).toBe(NO_FILE)
@@ -626,7 +627,7 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       seat(on, reviewCopy())
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'M002-head')).toBe('review M002  Add the export command  77%')
+      expect(textAt(lines, 'M002-head')).toBe('M002  Add the export command  77%')
       // The pane's own items hold two criteria, one checked.
       expect(keysLike(lines, /^M002-criterion-\d+$/).length).toBe(2)
     })
@@ -637,8 +638,10 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       const ui = await mountPane($, surface, 44)
       const head = await boxOf(ui, 'M060-head')
       if (head === undefined) throw new Error('no M060 head line')
-      expect(kids(head).map(keyOf)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail'])
+      // The first line also carries the ↻ Box after the tail (M236).
+      expect(kids(head).map(keyOf)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail', 'M060-head-refresh'])
       expect(kids(head)[2].props.flexShrink).toBe(0)
+      expect(kids(head)[3].props.flexShrink).toBe(0)
       const title = textOf(kids(await boxOf(ui, 'M060-head-text') as Element)[0])
       expect(title.length).toBeGreaterThan(44)
       expect((await partOf(ui, 'M060-head-tail')).map(textOf).join('')).toMatch(/^ {2}\d+%$/)
@@ -986,6 +989,7 @@ describe('the pill gives way before the Button (M218 AC4)', () => {
 // labels written out by hand.
 const PANE_STATUS = 'cairn-pane-status'
 const PANE_CLEAR = 'cairn-pane-clear'
+const PANE_REFRESH = 'cairn-pane-refresh'
 const STATUS_RUN = { command: 'cairn:milestone', args: '' }
 const CLEAR_RUN = { command: 'clear', args: '' }
 
@@ -1011,10 +1015,9 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         expect(await ui.findAll({ key: PANE_CLEAR })).toEqual([])
         // No other line of the pane carries a Button (M219 review), but for
-        // the Blocked heading's Refresh while a blocked row has a pull
-        // request URL (M224). Before any read, no blocked line carries one.
-        const refresh = FIXTURES[name].blocked.some(row => row.url !== null) ? ['cairn-pane-refresh'] : []
-        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_NEXT, PANE_STATUS, ...refresh])
+        // the ↻ Refresh on the first line (M236). Before any read, no
+        // blocked line carries one.
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_REFRESH, PANE_NEXT, PANE_STATUS])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
         // The Buttons come after the pill, each in its own Box.
@@ -1459,7 +1462,7 @@ const argOf = (argv: readonly string[], name: string) => argv.find(a => a.starts
 function gh(
   on: On,
   answer: (url: string) => GhAnswer | Promise<GhAnswer>,
-  graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0, 0),
+  graph: (url: string) => GhAnswer | Promise<GhAnswer> = () => countsReply(0),
   repo: GhRepo = {},
 ): Gh {
   let pending = 0
@@ -1517,22 +1520,10 @@ function gh(
 const prView = (state: string, decision?: string) =>
   ({ exitCode: 0, stdout: `${JSON.stringify(decision === undefined ? { state } : { state, reviewDecision: decision })}\n` }) as const
 
-// A `gh api graphql` reply in the shape GitHub returns (M225), with `t`
-// unresolved threads and one resolved, and `c` comments from another person
-// after the pull request's newest commit and one before it.
-function countsReply(t: number, c: number): GhAnswer {
-  const pr = {
-    author: { login: 'ana' },
-    reviewThreads: { nodes: [{ isResolved: true }, ...Array.from({ length: t }, () => ({ isResolved: false }))] },
-    reviews: { nodes: [] },
-    comments: {
-      nodes: [
-        { author: { login: 'bo' }, createdAt: '2026-10-01T00:00:00Z' },
-        ...Array.from({ length: c }, () => ({ author: { login: 'bo' }, createdAt: '2026-10-03T00:00:00Z' })),
-      ],
-    },
-    commits: { nodes: [{ commit: { committedDate: '2026-10-02T00:00:00Z' } }] },
-  }
+// A `gh api graphql` reply in the shape GitHub returns (M236), with `t`
+// unresolved threads and one resolved.
+function countsReply(t: number): GhAnswer {
+  const pr = { reviewThreads: { nodes: [{ isResolved: true }, ...Array.from({ length: t }, () => ({ isResolved: false }))] } }
   return { exitCode: 0, stdout: `${JSON.stringify({ data: { repository: { pullRequest: pr } } })}\n` }
 }
 
@@ -1752,14 +1743,15 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     expect(calls.clocks).toEqual([])
   })
 
-  test("a press of the Blocked heading's Refresh Button reads once", async ($, on) => {
+  test('a press of the ↻ Refresh Button reads once', async ($, on) => {
     let state = 'OPEN'
     const calls = gh(on, () => prView(state, ''))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
-    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
+    expect((await blockedView($, 'M110-head')).buttons).toEqual(['cairn-pane-refresh'])
     const press = async () => {
       const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
       await ui.press({ key: 'cairn-pane-refresh' })
@@ -1863,7 +1855,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     const calls = gh(
       on,
       url => (url.includes('/upstream/') ? prView('MERGED') : prView('OPEN', '')),
-      url => (url.includes('/alpha/') ? countsReply(1, 0) : countsReply(0, 2)),
+      url => (url.includes('/alpha/') ? countsReply(1) : countsReply(2)),
     )
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
@@ -1877,18 +1869,10 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     // Each query names the fields AC1 lists.
     for (const argv of calls.graphql) {
       const query = argOf(argv, 'query') ?? ''
-      for (const field of [
-        'author { login }',
-        'reviewThreads(last: 100) { nodes { isResolved } }',
-        'reviews(last: 100) { nodes { author { login } state submittedAt } }',
-        'comments(last: 100) { nodes { author { login } createdAt } }',
-        'commits(last: 1) { nodes { commit { committedDate } } }',
-      ]) {
-        expect([field, query.includes(field)]).toEqual([field, true])
-      }
+      expect(query.includes('reviewThreads(last: 100) { nodes { isResolved } }')).toBe(true)
     }
     expect((await countsOf($, 'M101'))?.text).toBe('1 unresolved thread')
-    expect((await countsOf($, 'M104'))?.text).toBe('2 unanswered')
+    expect((await countsOf($, 'M104'))?.text).toBe('2 unresolved threads')
     expect(await countsOf($, 'M102')).toBe(undefined)
   })
 
@@ -1900,7 +1884,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
   ]
   for (const each of NOT_OPEN) {
     test(`a ${each.name} line gets no query`, async ($, on) => {
-      const calls = gh(on, () => each.answer, () => countsReply(3, 3))
+      const calls = gh(on, () => each.answer, () => countsReply(3))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1920,7 +1904,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
   ]
   for (const each of OPEN) {
     test(`an \`${each.word}\` line gets one query`, async ($, on) => {
-      const calls = gh(on, () => prView('OPEN', each.decision), () => countsReply(1, 0))
+      const calls = gh(on, () => prView('OPEN', each.decision), () => countsReply(1))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1933,16 +1917,15 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
 })
 
 describe('the count line under a blocked line (M225 AC3)', () => {
-  const LINES: { t: number; c: number; text: string | undefined }[] = [
-    { t: 3, c: 2, text: '3 unresolved threads · 2 unanswered' },
-    { t: 2, c: 0, text: '2 unresolved threads' },
-    { t: 0, c: 4, text: '4 unanswered' },
-    { t: 1, c: 1, text: '1 unresolved thread · 1 unanswered' },
-    { t: 0, c: 0, text: undefined },
+  const LINES: { t: number; text: string | undefined }[] = [
+    { t: 3, text: '3 unresolved threads' },
+    { t: 2, text: '2 unresolved threads' },
+    { t: 1, text: '1 unresolved thread' },
+    { t: 0, text: undefined },
   ]
   for (const each of LINES) {
-    test(`${each.t} threads and ${each.c} comments draw ${each.text === undefined ? 'no line' : `\`${each.text}\``}`, async ($, on) => {
-      gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(each.t, each.c))
+    test(`${each.t} threads draw ${each.text === undefined ? 'no line' : `\`${each.text}\``}`, async ($, on) => {
+      gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(each.t))
       seat(on, copyOf('blocked-active'))
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
@@ -1959,7 +1942,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   }
 
   test('no line before the first read', async ($, on) => {
-    const calls = gh(on, () => prView('OPEN', ''), () => countsReply(3, 3))
+    const calls = gh(on, () => prView('OPEN', ''), () => countsReply(3))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.turn.complete(turn())
@@ -1973,7 +1956,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   // takes the line away.
   test('a Refresh keeps the earlier counts until the new read returns', async ($, on) => {
     let hold: Promise<void> | null = null
-    let reply = countsReply(2, 1)
+    let reply = countsReply(2)
     const calls = gh(
       on,
       () => prView('OPEN', ''),
@@ -1985,25 +1968,25 @@ describe('the count line under a blocked line (M225 AC3)', () => {
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect((await countsOf($))?.text).toBe('2 unresolved threads · 1 unanswered')
+    expect((await countsOf($))?.text).toBe('2 unresolved threads')
     let release = () => {}
     hold = new Promise<void>(resolve => {
       release = resolve
     })
-    reply = countsReply(0, 5)
+    reply = countsReply(5)
     const ui = await mountPane($, 'desktop')
     const pressing = ui.press({ key: 'cairn-pane-refresh' })
     try {
       for (let i = 0; i < 200 && calls.graphql.length < 2; i++) await new Promise(resolve => setTimeout(resolve, 5))
       expect(calls.graphql.length).toBe(2)
       // The desktop pane holds the press, so the terminal one is read.
-      expect((await countsOf($, 'M111', 'terminal'))?.text).toBe('2 unresolved threads · 1 unanswered')
+      expect((await countsOf($, 'M111', 'terminal'))?.text).toBe('2 unresolved threads')
     } finally {
       release()
       await pressing
     }
     await ui.unmount()
-    expect((await countsOf($))?.text).toBe('5 unanswered')
+    expect((await countsOf($))?.text).toBe('5 unresolved threads')
     hold = null
     reply = { exitCode: 1, stdout: '' }
     const again = await mountPane($, 'desktop')
@@ -2015,12 +1998,12 @@ describe('the count line under a blocked line (M225 AC3)', () => {
   // 3-digit counts fit a 44-column dock: the whole line, as well as each
   // line's lead and tail as the M208 check reads them.
   test('3-digit counts fit 44 columns', async ($, on) => {
-    gh(on, () => prView('OPEN', ''), () => countsReply(100, 100))
+    gh(on, () => prView('OPEN', ''), () => countsReply(100))
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     const counts = (await linesAt($, 44)).find(line => line.key === 'blocked-M111-counts')
-    expect(counts?.text).toBe('100 unresolved threads · 100 unanswered')
+    expect(counts?.text).toBe('100 unresolved threads')
     expect((counts?.indent ?? 99) + width(counts?.text ?? '')).toBeLessThanOrEqual(44)
     const ui = await mountPane($, 'desktop', 44)
     const [root] = await ui.findAll({ key: 'cairn-pane' })
@@ -2037,13 +2020,13 @@ describe('the count line under a blocked line (M225 AC3)', () => {
 
 describe('a failed count read draws no count line and leaves the state word (M225 AC4)', () => {
   const reply = (pr: unknown): GhAnswer => ({ exitCode: 0, stdout: `${JSON.stringify({ data: { repository: { pullRequest: pr } } })}\n` })
-  const good = JSON.parse((countsReply(2, 2) as { stdout: string }).stdout).data.repository.pullRequest
+  const good = JSON.parse((countsReply(2) as { stdout: string }).stdout).data.repository.pullRequest
   const FAILS: { name: string; answer: GhAnswer }[] = [
     { name: 'a call that rejects', answer: 'reject' },
     { name: 'a non-zero exit', answer: { exitCode: 1, stdout: '' } },
     { name: 'text that is not JSON', answer: { exitCode: 0, stdout: 'gh: Could not resolve to a PullRequest\n' } },
     { name: 'a null pullRequest', answer: reply(null) },
-    { name: 'a null PR author', answer: reply({ ...good, author: null }) },
+    { name: 'threads that are not a list', answer: reply({ ...good, reviewThreads: { nodes: null } }) },
     { name: 'a malformed node', answer: reply({ ...good, reviewThreads: { nodes: [{ isResolved: 'no' }] } }) },
   ]
   for (const fail of FAILS) {
@@ -2139,7 +2122,7 @@ describe('each pane open and Refresh press lists the open pull requests on the b
 describe('the Hotfixes section lists the hotfix-* pull requests before the candidates (M226 AC2)', () => {
   test('only the hotfix-* entry draws, after Blocked and before Candidates', async ($, on) => {
     const list = () => listReply([pr(1265, 'hotfix-clmm', 'Return only fixed effects'), pr(1300, 'm226-pane'), pr(1301, 'feature-x')])
-    gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0, 0), { remotes: { origin: ORIGIN }, list })
+    gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0), { remotes: { origin: ORIGIN }, list })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
@@ -2161,7 +2144,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
       [prUrl(1264)]: prView('OPEN', 'CHANGES_REQUESTED'),
       [prUrl(1263)]: prView('MERGED', 'APPROVED'),
     }
-    const calls = gh(on, url => views[url] ?? prView('MERGED'), url => (url === prUrl(1265) ? countsReply(2, 1) : countsReply(0, 0)), {
+    const calls = gh(on, url => views[url] ?? prView('MERGED'), url => (url === prUrl(1265) ? countsReply(2) : countsReply(0)), {
       remotes: { origin: ORIGIN },
       list,
     })
@@ -2175,7 +2158,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     expect(textOf_('hotfix-1265')).toBe('#1265  Fix 1265  in review')
     expect(textOf_('hotfix-1264')).toBe('#1264  Fix 1264  changes requested')
     expect(textOf_('hotfix-1263')).toBe('#1263  Fix 1263  merged')
-    expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads · 1 unanswered')
+    expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads')
     expect(textOf_('hotfix-1264-counts')).toBe(undefined)
     expect(textOf_('hotfix-1263-counts')).toBe(undefined)
     for (const key of ['hotfix-1265', 'hotfix-1264', 'hotfix-1263']) expect((await blockedView($, key)).buttons).toEqual([])
@@ -2186,7 +2169,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
 
   test('a hotfix line shows the same word and counts as a blocked line with the same replies', async ($, on) => {
     const copy = copyOf('blocked-active')
-    gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(1, 3), {
+    gh(on, () => prView('OPEN', 'CHANGES_REQUESTED'), () => countsReply(1), {
       remotes: { origin: ORIGIN },
       list: () => listReply([pr(1265, 'hotfix-a')]),
     })
@@ -2198,7 +2181,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     expect(textOf_('blocked-M111')).toBe(`${LINE_1250}  changes requested`)
     expect(textOf_('hotfix-1265').endsWith('  changes requested')).toBe(true)
     expect(textOf_('hotfix-1265-counts')).toBe(textOf_('blocked-M111-counts'))
-    expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread · 3 unanswered')
+    expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread')
   })
 })
 
@@ -2307,21 +2290,290 @@ describe('a failed list keeps the last good read for the root, and an empty one 
   })
 })
 
-describe("the Hotfixes heading's Refresh has its own key, and either heading's press lists again (M226 AC5)", () => {
-  test('each Refresh press runs the list call', async ($, on) => {
+// M236: the pane's first line, the Button keys the drawn pane holds, and
+// the ↻ Button.
+async function refreshOf($, surface: (typeof SURFACES)[number] = 'desktop') {
+  const ui = await mountPane($, surface)
+  const keys = (await ui.findAll({ type: 'Button' })).map(keyOf)
+  const [root] = await ui.findAll({ key: 'cairn-pane' })
+  const lines = root === undefined ? [] : kids(root)
+  const [button] = await ui.findAll({ key: PANE_REFRESH })
+  await ui.unmount()
+  return { keys, lines, first: lines[0], button }
+}
+// The keys of a line Box's children, and the key and `flexGrow` of every
+// line Box and child Box that sets one.
+const childKeys = (line: Element | undefined) => (line === undefined ? [] : kids(line).map(keyOf))
+const grows = (lines: Element[]) =>
+  lines.flatMap(line => [line, ...kids(line)].filter(box => box.props.flexGrow !== undefined).map(box => [keyOf(box), box.props.flexGrow]))
+
+describe('the pane has one ↻ Refresh Button, at the right end of its first line (M236 AC2)', () => {
+  // The checks AC2 makes in every state with a ROADMAP. `firstKey` is the
+  // first line's key, the head line of the first milestone or `no-active`.
+  const one = async ($, firstKey: string) => {
+    const got = await refreshOf($)
+    expect(got.keys.filter(key => key === PANE_REFRESH)).toEqual([PANE_REFRESH])
+    expect(got.keys.filter(key => (key ?? '').endsWith('-hotfixes'))).toEqual([])
+    expect(keyOf(got.first as Element)).toBe(firstKey)
+    const children = childKeys(got.first)
+    expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
+    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1]])
+    expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
+    expect(got.button?.props.label).toBe('↻')
+    return got
+  }
+
+  test('blocked PRs and hotfix PRs, no active milestone', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([pr(1265, 'hotfix-a')]) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect((await keysOf($)).includes('hotfixes-head')).toBe(true)
+    expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
+    expect((await blockedView($, 'hotfixes-head')).buttons).toEqual([])
+    await one($, 'no-active')
+  })
+
+  test('an in-progress and a review milestone: only the first head line carries ↻', async ($, on) => {
+    gh(on, () => prView('OPEN', ''))
+    seat(on, copyOf('pane-full'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const got = await one($, 'M080-head')
+    const second = got.lines.find(line => keyOf(line) === 'M081-head')
+    expect(second).toBeDefined()
+    expect(buttonsIn(second as Element)).toEqual([])
+  })
+
+  test('the Next line with Status and Clear, and one active milestone', async ($, on) => {
+    seat(on, copyOf('single-in-progress'))
+    await endSkill($)
+    const got = await one($, `${FIXTURES['single-in-progress'].pane[0].id}-head`)
+    expect(got.keys).toEqual([PANE_REFRESH, PANE_NEXT, PANE_CLEAR, PANE_STATUS])
+  })
+
+  test('one active milestone and no PRs', async ($, on) => {
+    gh(on, () => prView('OPEN', ''))
+    seat(on, copyOf('single-in-progress'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect((await keysOf($)).filter(key => key.startsWith('blocked') || key.startsWith('hotfix'))).toEqual([])
+    await one($, `${FIXTURES['single-in-progress'].pane[0].id}-head`)
+  })
+
+  test('no ROADMAP draws no ↻ Button', async ($, on) => {
+    seat(on, copyOf('no-roadmap'))
+    await $.turn.complete(turn())
+    const got = await refreshOf($)
+    expect(got.keys.filter(key => key === PANE_REFRESH)).toEqual([])
+  })
+
+  test('a press of ↻ lists the hotfix PRs and reads each PR again', async ($, on) => {
     const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => listReply([pr(1265, 'hotfix-a')]) })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect((await blockedView($, 'blocked-head')).buttons).toEqual(['cairn-pane-refresh'])
-    expect((await blockedView($, 'hotfixes-head')).buttons).toEqual(['cairn-pane-refresh-hotfixes'])
+    await calls.settled()
     expect(calls.lists.length).toBe(1)
-    await pressKey($, 'cairn-pane-refresh-hotfixes')
+    await pressKey($, PANE_REFRESH)
     expect(calls.lists.length).toBe(2)
     expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(2)
-    await pressKey($, 'cairn-pane-refresh')
-    expect(calls.lists.length).toBe(3)
-    expect(calls.calls.filter(argv => argv[3] === prUrl(1265)).length).toBe(3)
+  })
+})
+
+describe('a head line starts with the id in its phase color, with no phase word (M236 AC3)', () => {
+  // pane-full holds M080 in-progress and M081 review.
+  for (const [id, color] of [
+    ['M080', IMPLEMENT_KEY],
+    ['M081', REVIEW_KEY],
+  ] as const) {
+    test(`${id}`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, 'desktop')
+      const lead = await partOf(ui, `${id}-head-lead`)
+      await ui.unmount()
+      expect(lead.map(span => [textOf(span), span.props.color ?? null, span.props.bold ?? null])).toEqual([
+        [id, color, true],
+        ['  ', null, null],
+      ])
+    })
+  }
+})
+
+describe('the ↻ Button reads ⋯ while a read runs, and a press during a press read does nothing (M236 AC4)', () => {
+  // A gate: `wait` settles when `release` runs, so a `gh pr view` answer
+  // that awaits it is held until then.
+  function gate() {
+    let release = () => {}
+    const wait = new Promise<void>(resolve => {
+      release = resolve
+    })
+    return { wait, release: () => release() }
+  }
+  const until = async (ok: () => boolean) => {
+    for (let i = 0; i < 200 && !ok(); i++) await sleep(5)
+    expect(ok()).toBe(true)
+  }
+  // The ↻ Button's label, read through a terminal mount, which no press
+  // holds.
+  const labelOf = async $ => (await refreshOf($, 'terminal')).button?.props.label
+  const total = (calls: Gh, reads: string[]) => reads.length + calls.calls.length + calls.graphql.length + calls.lists.length + calls.git.length
+
+  const ENDS: { name: string; answer: GhAnswer }[] = [
+    { name: 'succeeds', answer: prView('OPEN', '') },
+    { name: 'exits 1', answer: { exitCode: 1, stdout: '' } },
+    { name: 'rejects', answer: 'reject' },
+  ]
+  for (const end of ENDS) {
+    test(`a held read reads ⋯ on the first line, and ↻ after it ${end.name}`, async ($, on) => {
+      const held_ = gate()
+      const calls = gh(on, async () => {
+        await held_.wait
+        return end.answer
+      })
+      seat(on, copyOf('blocked-active'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      expect(await labelOf($)).toBe('↻')
+      await $.command.run({ command: COMMAND })
+      await until(() => calls.calls.length === 1)
+      const during = await refreshOf($, 'terminal')
+      expect(during.button?.props.label).toBe('⋯')
+      const children = childKeys(during.first)
+      expect(children[children.length - 1]).toBe(`${keyOf(during.first as Element)}-refresh`)
+      held_.release()
+      await calls.settled()
+      expect(await labelOf($)).toBe('↻')
+    })
+  }
+
+  test('an open and a press overlap: ↻ once the newer read settles', async ($, on) => {
+    const older = gate()
+    const newer = gate()
+    let n = 0
+    const calls = gh(on, async () => {
+      n += 1
+      await (n === 1 ? older.wait : newer.wait)
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await until(() => calls.calls.length === 1)
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      expect(await labelOf($)).toBe('⋯')
+      newer.release()
+      await pressing
+      expect(await labelOf($)).toBe('↻')
+    } finally {
+      newer.release()
+      older.release()
+      await pressing
+      await ui.unmount()
+    }
+    await calls.settled()
+    expect(await labelOf($)).toBe('↻')
+  })
+
+  // The case the newest-read check exists for: the older read settles
+  // first, and ⋯ stays while the newer one runs.
+  test('an open and a press overlap: ⋯ stays when the older read settles first', async ($, on) => {
+    const older = gate()
+    const newer = gate()
+    let n = 0
+    const calls = gh(on, async () => {
+      n += 1
+      await (n === 1 ? older.wait : newer.wait)
+      return prView('OPEN', '')
+    })
+    seat(on, copyOf('blocked-active'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await until(() => calls.calls.length === 1)
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      older.release()
+      await sleep(50)
+      expect(await labelOf($)).toBe('⋯')
+      newer.release()
+      await pressing
+      expect(await labelOf($)).toBe('↻')
+    } finally {
+      older.release()
+      newer.release()
+      await pressing
+      await ui.unmount()
+    }
+  })
+
+  test('a second press during a held press read reads no file and runs no call', async ($, on) => {
+    const held_ = gate()
+    let holding = false
+    const calls = gh(on, async () => {
+      if (holding) await held_.wait
+      return prView('OPEN', '')
+    })
+    const copy = copyOf('blocked-active')
+    const reads: string[] = []
+    copy.reads = reads
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    holding = true
+    const ui = await mountPane($, 'desktop')
+    const pressing = ui.press({ key: PANE_REFRESH })
+    try {
+      await until(() => calls.calls.length === 2)
+      const second = await mountPane($, 'terminal')
+      // The count starts after the second mount, so it holds only what the
+      // press does.
+      const before = total(calls, reads)
+      await second.press({ key: PANE_REFRESH })
+      await sleep(50)
+      expect(total(calls, reads)).toBe(before)
+      await second.unmount()
+    } finally {
+      held_.release()
+      await pressing
+      await ui.unmount()
+    }
+    await calls.settled()
+    // Once the first press's read settles, a press reads again.
+    holding = false
+    await pressKey($, PANE_REFRESH)
+    expect(calls.calls.length).toBe(3)
+  })
+
+  test('a stored reading state with no press read in this module lets a press read', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    seat(on, copyOf('blocked-active'))
+    // A read that a reloaded module ended leaves the stored state true: the
+    // store answers true until the mod writes the key.
+    let stale = true
+    on('state.get', async ($, e, next) => {
+      const got = await next(e)
+      if (!stale || e.plugin !== 'cairn' || e.key !== 'reading') return got
+      // The hook answers `{ value }`, a StateRead of `{ value, version }`.
+      const read_ = (got as { value?: { version?: number } } | undefined)?.value
+      return { value: { version: read_?.version ?? 0, value: { shape: 'reading-1', value: true } } }
+    })
+    on('state.set', async ($, e, next) => {
+      if (e.plugin === 'cairn' && e.key === 'reading') stale = false
+      return next(e)
+    })
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    expect(await labelOf($)).toBe('⋯')
+    await pressKey($, PANE_REFRESH)
+    await calls.settled()
+    expect(calls.calls.length).toBe(1)
+    expect(await labelOf($)).toBe('↻')
   })
 })
 
@@ -2343,7 +2595,7 @@ function held(on: On, list: () => GhAnswer = () => listReply([pr(1265, 'hotfix-a
     },
     async () => {
       await gate
-      return countsReply(0, 0)
+      return countsReply(0)
     },
     {
       remotes: { origin: ORIGIN },

@@ -7,7 +7,8 @@ import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from '
 import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. For each active milestone: its phase, id, and title, with the
+// draws. For each active milestone: its id in its phase's color (no phase
+// word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
 // (M208), its goal, its tasks and criteria with their boxes, and its
 // newest work-log lines.
@@ -16,8 +17,8 @@ import { PILL_TEXT } from './track'
 // dependencies. Then the blocked milestones, each with the number of the
 // pull request its header names (M223), and after a read, that pull
 // request's state word and a Button for three of the words (M224), and for
-// an open one with counts above zero, a line under it with its unresolved
-// threads and unanswered reviews and comments (M225). After a read, the
+// an open one with unresolved review threads, a line under it with their
+// number (M225, M236). After a read, the
 // open pull requests that the operator opened from `hotfix-*` branches,
 // each with the same word and counts and no Button (M226). With no
 // active milestone, the ROADMAP's candidate rows follow, each a priority
@@ -43,11 +44,13 @@ import { PILL_TEXT } from './track'
 // with the one key `cairn-pane-next` and the next-step press.
 // A line's `buttons` name the Buttons that register.tsx draws after its
 // tail and any action Button, in order: Clear and Status on the Next line
-// (M219), Refresh on the Blocked heading, and one of Finish, Revise, or
-// Check on a blocked line (M224). A blocked line's `target` is its
-// milestone id, which its Button's key and press carry. The Hotfixes
-// heading's Refresh has the target `hotfixes`, so its key differs from the
-// Blocked heading's (M226).
+// (M219), and one of Finish, Revise, or Check on a blocked line (M224). A
+// blocked line's `target` is its milestone id, which its Button's key and
+// press carry. Since M236 the pane's first line carries the one Refresh
+// Button, labeled ↻, which reads everything again. Its `grow` makes its
+// text take the free room, so its tail and the Button sit at the right end
+// of the row. Until M236 the Blocked and Hotfixes headings each carried a
+// Refresh.
 export type PaneButton = 'clear' | 'status' | 'refresh' | 'finish' | 'revise' | 'check'
 export type PaneLine = {
   key: string
@@ -59,6 +62,7 @@ export type PaneLine = {
   action?: string
   buttons?: PaneButton[]
   target?: string
+  grow?: true
 }
 
 // A blocked milestone's pull request state, as `prWord` reads it from a
@@ -74,13 +78,11 @@ export type PrRead = CairnPrRead
 // (M225).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
 
-// The count line's text, or null when both counts are zero. A zero part is
-// left out, and one thread reads in the singular (M225).
+// The count line's text, or null when the count is zero. One thread reads
+// in the singular (M225, M236).
 export function countsText(counts: PrCounts): string | null {
-  const parts: string[] = []
-  if (counts.unresolved > 0) parts.push(`${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`)
-  if (counts.unanswered > 0) parts.push(`${counts.unanswered} unanswered`)
-  return parts.length === 0 ? null : parts.join(' · ')
+  if (counts.unresolved === 0) return null
+  return `${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`
 }
 
 // The state word of one `gh pr view` result, null for a call that
@@ -186,8 +188,11 @@ export function nextLabel(action: string): string | undefined {
 // pane's Next line read these (M219).
 export const STATUS_LABEL = 'Status'
 export const CLEAR_LABEL = 'Clear'
-// The Blocked heading's Button and a blocked line's Buttons (M224).
-export const REFRESH_LABEL = 'Refresh'
+// The pane's Refresh Button (M224, one ↻ on the first line since M236),
+// its label while a read of the pull request states runs (M236), and a
+// blocked line's Buttons (M224).
+export const REFRESH_LABEL = '↻'
+export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
 export const CHECK_LABEL = 'Check'
@@ -214,9 +219,11 @@ export const METER_EMPTY_KEY = 'subtle'
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
 
-const PHASE: Record<string, { label: string; color: string }> = {
-  'in-progress': { label: 'implement', color: FLOW_COLORS.implement },
-  review: { label: 'review', color: FLOW_COLORS.review },
+// A milestone's id draws in its phase's color, with no phase word, which
+// the operator dropped at the M236 live look.
+const PHASE_COLOR: Record<string, string> = {
+  'in-progress': FLOW_COLORS.implement,
+  review: FLOW_COLORS.review,
 }
 // The phase each recommended command runs, for the Next pill's color.
 export const COMMAND_PHASE: Record<string, FlowPhase> = {
@@ -290,13 +297,8 @@ function items(prefix: string, list: PaneItem[]): PaneLine[] {
 }
 
 function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine[] {
-  const phase = PHASE[row.status] ?? { label: row.status, color: GRAY }
-  const head = line(
-    `${row.id}-head`,
-    0,
-    [{ text: phase.label, color: phase.color, bold: true }, { text: ' ' }, { text: row.id, bold: true }, { text: '  ' }],
-    { text: row.title },
-  )
+  const phase = { color: PHASE_COLOR[row.status] ?? GRAY }
+  const head = line(`${row.id}-head`, 0, [{ text: row.id, color: phase.color, bold: true }, { text: '  ' }], { text: row.title })
   const file = row.file
   // The band's percent for the row, from its own counts, which count a box
   // inside an HTML comment where the pane's items do not.
@@ -350,6 +352,10 @@ export function paneLines(
     if (i > 0) out.push(gap(`${row.id}-gap`))
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
+  // The first line, the first milestone's head line or the no-active line,
+  // carries the ↻ Button at its right end (M236).
+  out[0].buttons = ['refresh']
+  out[0].grow = true
   if (state.next !== null) {
     const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
@@ -389,14 +395,12 @@ export function paneLines(
   // The blocked rows, each with its pull request's number when its
   // milestone file's header names one, whether or not a milestone is
   // active (M223). After the number, the state word that the last read
-  // found, and the Button that word carries (M224). The heading carries
-  // the Refresh Button while a row has a pull request to read.
+  // found, and the Button that word carries (M224).
   if (state.blocked.length > 0) {
     const head = heading('blocked-head', 'Blocked', QUEUE_COLOR, [
       { text: ' ' },
       { text: `${state.blocked.length}`, color: GRAY },
     ])
-    if (state.blocked.some(row => row.url !== null)) head[1].buttons = ['refresh']
     out.push(...head)
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
@@ -428,8 +432,6 @@ export function paneLines(
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
     const head = heading('hotfixes-head', 'Hotfixes', QUEUE_COLOR, [{ text: ' ' }, { text: `${shown.length}`, color: GRAY }])
-    head[1].buttons = ['refresh']
-    head[1].target = 'hotfixes'
     out.push(...head)
     for (const pr of shown) {
       const held = line(`hotfix-${pr.number}`, 2, [{ text: `#${pr.number}`, bold: true }, { text: '  ' }], { text: pr.title })
