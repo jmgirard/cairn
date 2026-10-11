@@ -717,9 +717,10 @@ actually reach.
   milestones with companion checkouts,
   skip the round. Without the line, cairn does not handle Copilot's
   threads. If Copilot is still on the PR anyway, for example through a
-  GitHub setting that requests it, the close after a hotfix merge, a
-  milestone merge, or a guest handoff says so in one line and names the
-  line to add.
+  GitHub setting that requests it, the close after a hotfix or milestone
+  merge made in that run, or after a guest handoff, says so in one line and
+  names the line to add. This covers only PRs the round itself would
+  review.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
   plan question set offers one option to post `Queued as M<NNN>: <title>` on each

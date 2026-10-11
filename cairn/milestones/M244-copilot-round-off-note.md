@@ -1,6 +1,6 @@
 # M244: Turn on the Copilot round in the easystats checkouts, and name the line when Copilot reviews a PR with the round off
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -82,3 +82,6 @@ thread on the operator's open PRs".
 - 2026-10-11: T2 done. The read-only §3 query on `easystats/performance#964` printed `reviewed earlier-head Lite` (exit 0). §1 now says off means no request, reply, or resolve, but for the note, and gains the "Off but present" paragraph with the note's fixed text. The opening says round-off skills read §1 and §3 at the named closes. The module is 138 lines and 7,937 bytes. `skills/tests` ran 726 OK, and the five verify checks pass (1660 mod tests, 0 red).
 - 2026-10-11: T3 done. `/hotfix` step 6's guest handoff close and step 7, and `/milestone-review` step 8's guest handoff close and step 10, each point to §1's rule. Step 7 excludes an adopted PR and the merged-PR re-entry, and step 10 excludes resume route (a) and the later guest hygiene run, as Out states. `skills/tests` ran 726 OK, both Python suites and both validates pass.
 - 2026-10-11: T4 done. README's Copilot paragraph and a CHANGELOG `### New` entry describe the note. The five verify checks pass (1660 mod tests, 0 red), and `skills/tests` ran 726 OK.
+- 2026-10-11: claim audit: 18 claims read, 5 corrected — skills/shared/copilot-review.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md
+- 2026-10-11: the 5 corrections: the module's covered hotfix PR is one this run merged or handed off, and a failed query skips §3's error line. Hotfix step 7 counts a re-entry's follow-up PR and excludes the re-entry's merged PR. README and CHANGELOG say "a merge made in that run" and limit the note to PRs the round itself would review. The same reader's re-read found all 5 hold. The module is 139 lines and 7,995 bytes. Verify passes after the edits (1660 mod tests, 0 red), and `skills/tests` ran 726 OK.
+- 2026-10-11: implement done, status review. No deviation from the plan.

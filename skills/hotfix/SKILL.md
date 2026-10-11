@@ -309,7 +309,8 @@ can resolve against the fork instead of the base repo.
    branch-sync rule) — nothing to do now. With the Copilot round off, the
    close after an authored fix this run merged also follows the
    off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
-   PR or the merged-PR re-entry does not. End with the close block
+   PR, or the re-entry's already-merged PR, does not, and a follow-up PR
+   the re-entry opens and merges does. End with the close block
    (tracking-rules "Question gates and phase closes"), composed from the
    hotfix's end state — recap of what was fixed and merged, status line,
    fenced next command(s) where any follow-up exists, and the safety line;

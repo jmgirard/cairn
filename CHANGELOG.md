@@ -53,8 +53,9 @@
   the round off.** In a repo whose `cairn/PROFILE.md` lacks
   `# Copilot review: on`, cairn does not handle Copilot's threads. When
   Copilot is on the PR anyway, for example through a GitHub setting, the
-  close after a `/hotfix` merge or guest handoff, or after a milestone
-  merge or guest handoff, says so in one line and names the line to add.
+  close after a `/hotfix` or milestone merge made in that run, or after a
+  guest handoff, says so in one line and names the line to add. This
+  covers only PRs the round itself would review.
   It runs one read-only query and requests, replies to, and resolves
   nothing.
 - **`/milestone` looks into one GitHub issue.** Give it an issue number or

@@ -25,13 +25,14 @@ decide each step (RR17).
 **Off but present (M244).** With the round off, `/hotfix` at its step 7
 close and its step 6 guest handoff close, and `/milestone-review` at its
 step 10 close and its step 8 guest handoff close, run the state query (§3)
-once on a PR the round covers: an authored hotfix PR, or a milestone PR
-with no companions that was not merged before review started. Guest mode
-uses the base repo's owner and name. On `pending` or `reviewed`, the close
+once on a PR the round covers: an authored hotfix PR this run merged or
+handed off, or a milestone PR with no companions not merged before review
+started. Guest mode uses the base repo's owner and name. On `pending` or `reviewed`, the close
 block gets one line: `Copilot is on PR #<N>, but the Copilot round is off
 here, so cairn did not handle its threads. Add "# Copilot review: on" to
 cairn/PROFILE.md to turn it on.` On `none` or a failed query, it gets
-nothing. The note requests, replies, and resolves nothing.
+nothing, and §3's error line does not apply. The note requests, replies,
+and resolves nothing.
 
 ## 2. Request
 
