@@ -139,3 +139,7 @@ Pass 1, 2026-10-11, on `m245-linked-item-activity` at the PR #255 head. Copilot 
 - prior-review #7: hex-like `#123456` is read as an issue — reject, planned change (bare `#N` chosen; a miss gives one `read failed` line)
 - prior-review #8: owner-mode docs-only commit from a branch — fix now, fixed 957bd36 (as diff-bug #3)
 - prior-review #9: no guard pins the new wording — reject, planned change (M167's no-prose-guard choice, which the plan followed)
+- After the 957bd36 fixes, fixtures A, B, C re-run over the new block (zsh) gave the AC6 and AC7 output unchanged; fixture D (Markdown link, `&#8212;`, em dash before `#4`, path tail, second stamp line, linkless undated row) read only insight#1262 and insight#1263 in zsh, in `LC_ALL=C bash`, and in zsh with `setopt extendedglob`; a bad `GH_TOKEN` printed `gh api user failed` and read nothing. verify green (5/5), skills/tests OK.
+- copilot: review body — noted (Copilot's 2026-10-11T22:03:14Z review says it could not review because the requesting account reached its quota limit; no threads)
+- Copilot level: none, no review ran (quota limit)
+- conversation: PR #255 has no conversation comments and no review threads; Copilot's one review is the line above
