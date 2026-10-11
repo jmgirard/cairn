@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** m237-pane-fills-again
+- **Branch/PR:** m237-pane-fills-again https://github.com/jmgirard/cairn/pull/247
 
 ## Goal
 
