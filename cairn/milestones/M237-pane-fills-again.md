@@ -63,6 +63,7 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - 2026-10-10: T4 done. Updated the `register.tsx` comments (the file header, `GH_TIMEOUT_MS`, the `classic.SessionStart` hook, `readPrs`, `readPr`, and the `reading` atom), README's pane section, DESIGN's `hooks/status/` entry, and four CHANGELOG `## Unreleased` entries. Three entries describe the unreleased pane features and were brought up to date in place, and one is new for the resume and hidden-tab reads. The AC5 sweep returned 14 lines. The 7 new or edited lines state the new behavior, and the other 7 are about the band example, the reopen, and a review chip, which this milestone does not change. Verify: five commands exit 0, 1590 mod tests.
 - 2026-10-10: claim audit: 56 claims read, 3 corrected — CHANGELOG.md, README.md, hooks/status/counts.ts. "An open pane reads" became a placed or drawn pane, and the `prRead` comment no longer says it returns null. The reader also flagged the stale catch comment in `readPrs`'s `finally` (register.tsx). The same reader re-read the 4 fixes once: 3 held, and the catch comment took its suggested wording (an older read can keep `inFlight` above 0).
 - 2026-10-10: T5 done. The five verify commands exit 0 on the corrected tree (1590 mod tests). Status set to `review`.
+- 2026-10-10: step-7 approval: m237-pane-fills-again approved for merge
 
 ## Decisions
 
