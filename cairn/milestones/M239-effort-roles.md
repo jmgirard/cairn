@@ -106,7 +106,7 @@ this note does not rely on.
       fields of their transcripts. Write the note's Provenance, Scope, and
       Design sections, fixed before any task run: the arms, the models,
       the pinned copies, and pointers to the reused M228 sections.
-- [ ] T2: Prepare the inputs: a `git archive c023018` copy for each search
+- [x] T2: Prepare the inputs: a `git archive c023018` copy for each search
       run, and for each edit run a fresh copy under git, so `git diff -U0`
       reads the run's changes; re-run M228's key code at `c023018` and
       confirm it reproduces the keys that note lists.
@@ -148,3 +148,4 @@ this note does not rely on.
 - 2026-10-10: criteria audit (reduced mode, fresh Opus reader) returned 4 findings, all fixed. AC3 bound how prices were read, now the note's price table and citation. AC4 bound the label draw and read timing, now the note's per-task label mapping and ratings, with the timing kept in T5. AC4's judge clause counted tasks with no record, fixed by the same rewording. AC5 missed a `low` row with no `effort` value, now `untested`.
 - 2026-10-10: implement started on branch m239-effort-roles; the untracked `cairn-probe.log` and `tsconfig.json` predate this milestone and stay unstaged.
 - 2026-10-10: T1 probe: four one-word spawns show `effort` unset records `high` and `effort: "low"` records `low`, on Sonnet and on Haiku alike; the note's Design section is written and fixed before any task run.
+- 2026-10-10: T2: twelve `git archive c023018` copies built in the session scratchpad (six search, six edit with a baseline commit); M228's key code re-run at `c023018` reproduces its listed keys (S1 10, S2 9, S3 88 items, set-equal).
