@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M245: The audit reports new activity on the issues and pull requests that candidate rows link to
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -85,6 +85,8 @@ written to GitHub.
 - 2026-10-11: T2 done. §3 names linked items in the triage-chip bullet, lists their four dispositions, adds "update the row" (the `checked` mark from `date -u +%Y-%m-%dT%H:%M:%SZ`, a docs-only commit in owner mode, on disk in guest mode), and notes that a left item on a dated row comes back. verify green (5/5), skills/tests OK.
 - 2026-10-11: T3 done. Fixtures A, B, C built under the session scratchpad (`fa/`, `fb/`, `fc/`, each a `cairn/ROADMAP.md`). The bullet's block, cut from SKILL.md by awk and de-indented, with `base` set to easystats/performance, gave the same output in zsh and bash. A: insight#1262 merged + Copilot review, insight#1263 merged, performance#428 comments by mattansb (05:34, 15:44) and strengejacke and none by jmgirard, see#465 read once with Copilot's two reviews and thread comment, insight#1261 silent, insight#99999999 `read failed` with the rest read. B: performance#428 strengejacke only; insight#1262 merged once, lines 7 and 8, no Copilot review. C: `undated row at line 7: not read`.
 - 2026-10-11: T4 done. README's contributions bullet and a CHANGELOG `Unreleased` entry state the read. verify green (5/5), skills/tests OK.
+- 2026-10-11: claim audit: 31 claims read, 3 corrected — skills/milestone/SKILL.md (a standalone two-part `dir/name#N` is read as owner/repo, so the path-tail example is now `skills/hooks/status#3`; the `:00` pad for an HH:MM `checked` mark moved before `sort`, since two marks in one row picked the wrong one), README.md and CHANGELOG.md (close and merge are reported whoever made them; only comments and reviews drop the operator). The same reader re-read the three: all hold. Fixtures A, B, C re-run over the corrected block in zsh and bash: output unchanged.
+- 2026-10-11: implement done; status review. verify green (5/5), skills/tests OK, cairn_validate green but for the 8-criteria advisory.
 
 ## Decisions
 

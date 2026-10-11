@@ -266,8 +266,9 @@ The script deliberately does not judge these — do them yourself and report:
   `https://github.com/<owner>/<repo>/issues/<N>` or `/pull/<N>` URL,
   `<owner>/<repo>#<N>`, or a bare `#<N>`, read as `<base-repo>`. The two
   short forms match only at the start of a line or after a character
-  outside `[A-Za-z0-9_./-]`, so a path tail such as `hooks/status#3` is not
-  a link. A bare `#<N>` that is a review finding number (`diff-bug #4`) is
+  outside `[A-Za-z0-9_./-]`, so a path tail such as `skills/hooks/status#3`
+  is not a link. A two-part `dir/name#N` standing alone is read as
+  `owner/repo#N` and gives a `read failed` line. A bare `#<N>` that is a review finding number (`diff-bug #4`) is
   read too, and is reported only if that item shows new activity.
   Each row has a cut-off: 00:00 UTC on the latest `YYYY-MM-DD` in the row,
   or the time in a `checked YYYY-MM-DDTHH:MM[:SS]Z` mark in the row when
@@ -293,11 +294,10 @@ The script deliberately does not judge these — do them yourself and report:
   stamp=$(grep -oE 'Last hygiene check: [0-9]{4}-[0-9]{2}-[0-9]{2}' cairn/ROADMAP.md | grep -oE '[0-9-]{10}$')
   awk '/^## Candidates/{c=1;next} /^## /{c=0} c && /^- /{print NR"\t"$0}' cairn/ROADMAP.md |
   while IFS="$tab" read -r n row; do
-    cut=$(printf '%s\n' "$row" | grep -oE 'checked [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(:[0-9]{2})?Z|[0-9]{4}-[0-9]{2}-[0-9]{2}' | sed -E 's/^checked //' | sort | tail -n 1)
+    cut=$(printf '%s\n' "$row" | grep -oE 'checked [0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(:[0-9]{2})?Z|[0-9]{4}-[0-9]{2}-[0-9]{2}' | sed -E -e 's/^checked //' -e 's/T([0-9]{2}:[0-9]{2})Z$/T\1:00Z/' | sort | tail -n 1)
     [ -z "$cut" ] && cut="$stamp"
     if [ -z "$cut" ]; then echo "undated row at line $n: not read" >&2; continue; fi
     case "$cut" in *T*) ;; *) cut="${cut}T00:00:00Z" ;; esac
-    cut=$(printf '%s' "$cut" | sed -E 's/T([0-9]{2}:[0-9]{2})Z$/T\1:00Z/')
     printf '%s\n' "$row" |
       grep -oE 'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|(^|[^A-Za-z0-9_./-])([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#[0-9]+' |
       sed -E -e 's,^https://github\.com/([^/]+)/([^/]+)/(issues|pull)/,\1/\2#,' -e 's/^[^A-Za-z0-9#]//' -e "s,^#,$base#," |
