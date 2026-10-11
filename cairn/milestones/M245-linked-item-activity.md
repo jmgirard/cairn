@@ -11,7 +11,7 @@
 - **Principles touched:** IP2, GP4
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/milestone`'s health audit reports in every adopting repo, guest mode included
-- **Branch/PR:** m245-linked-item-activity
+- **Branch/PR:** m245-linked-item-activity, https://github.com/jmgirard/cairn/pull/255
 
 ## Goal
 
