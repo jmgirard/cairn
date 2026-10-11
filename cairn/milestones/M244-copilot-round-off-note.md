@@ -1,13 +1,13 @@
 # M244: Turn on the Copilot round in the easystats checkouts, and name the line when Copilot reviews a PR with the round off
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing, because adopters read the `/hotfix` and `/milestone-review` close blocks and the README
-- **Branch/PR:** —
+- **Branch/PR:** m244-copilot-round-off-note
 
 ## Goal
 
@@ -61,7 +61,7 @@ thread on the operator's open PRs".
 
 ## Tasks
 
-- [ ] T1: In each of the six checkouts, add `# Copilot review: on` under the `# Collaboration mode: guest` line of `cairn/PROFILE.md`. Run `git status --short` and `cairn_validate` there.
+- [x] T1: In each of the six checkouts, add `# Copilot review: on` under the `# Collaboration mode: guest` line of `cairn/PROFILE.md`. Run `git status --short` and `cairn_validate` there.
 - [ ] T2: Write the rule in `skills/shared/copilot-review.md` §1, reword the "usual flow" sentence, and update the module's opening, which says only opted-in repos read it. Keep `wc -l -c` under the module's 140 lines and 8,000 bytes. Run the §3 query once, read-only, with owner `easystats`, name `performance`, PR 964, and record that it prints `reviewed`. Hand-run `skills/tests` (`test_copilot_review_round.py` pins this module).
 - [ ] T3: Add the pointer at the four close sites in `skills/hotfix/SKILL.md` and `skills/milestone-review/SKILL.md`. Hand-run `skills/tests`.
 - [ ] T4: README Copilot paragraph and CHANGELOG entry. Run the five `verify` checks.
@@ -77,3 +77,5 @@ thread on the operator's open PRs".
 - 2026-10-11: criteria audit (full mode, fresh Opus reader) returned 13 findings, 9 fixed in this file. AC1 now checks `git status --short` for `cairn/` paths. AC2 names its skills and closes, covers only PRs the round covers, names the guest owner and name, and rewords §1's "usual flow" sentence. The Goal narrows to the four closes, and Out lists the other closes and the fork-remote gap. T2 rewrites the module opening, keeps the budget, and runs a read-only query probe on `easystats/performance#964`. Answered: a read-only query is no outward write and keeps no record, so D-152 and D-153 stand with no new entry. The budget and the probe stay in T2, not in a criterion, since both are instrument properties. AC4, AC5, and the instrument check were clean.
 - 2026-10-11: plan chose a note that names the line over handling Copilot threads with the round off. Handling them reverses D-152's opt-in and writes on upstream PRs unasked. Falsified by an opted-out repo whose operator acts on the note's Copilot threads by hand each time.
 - 2026-10-11: plan chose the rule in the module's §1 with four pointers over a copy of the rule at each site. Four copies drift apart. The cost is a read of the module at a round-off close. Falsified by a measured `cairn_cost` reading that attributes a material share of a round-off hotfix's tokens to that read.
+- 2026-10-11: implement started on m244-copilot-round-off-note. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-11: T1 done. `# Copilot review: on` sits on line 3 of `cairn/PROFILE.md`, under the collaboration-mode line, in correlation, insight, modelbased, parameters, performance, and see. In each, `git status --short` lists no `cairn/` path and `cairn_validate` exits 0.
