@@ -97,3 +97,33 @@ thread on the operator's open PRs".
 - AC4: on 8779eee, README.md:718-723 and the first `### New` entry under CHANGELOG.md `## Unreleased` (line 52) say that without the line cairn does not handle Copilot's threads, and that a close names the line when Copilot is on the PR.
 - AC5: on 8779eee, `scripts/tests` ran 406 OK (21 skipped), `hooks/tests` 174 OK, both validates exit 0, and the mod test ran 1660 with 0 red. `skills/tests` (hand-run) ran 726 OK.
 - gate: `cairn_validate` all checks passed. The marketplace validate prints no `plugins[N].version` warning. CHANGELOG has the entry with no milestone number. No principle changed, so `cairn_impact` was skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: one query at the close misses Copilot requests that land minutes after the PR opens, so the note often stays silent — fix now: the module, README, and CHANGELOG say a request made after the query goes unreported, fixed de81e76.
+- diff-bug #2: the new module line ran past 80 columns, and the module had no headroom — fix now: reflowed, the module is 139 lines and 7,983 bytes, fixed de81e76.
+- diff-bug #3: the note said "Add", which misleads when a misspelled value is present — fix now: it says "Set", fixed de81e76.
+- diff-bug #4: "did not handle its threads" does not fit `pending` — fix now: "does not handle Copilot's threads", fixed de81e76.
+- diff-bug #5: the note was one code span wrapped across three lines — fix now: a plain line, fixed de81e76.
+- diff-bug #6: the module did not say where the note goes in the close block — fix now: the recap ends with it, fixed de81e76.
+- diff-bug #7: nothing names how owner mode gets the owner and name — reject, false: §3 names the base repo, and the rulebook's slug recipe gives it.
+- diff-bug #8: step 10's exclusion names route (a) but not route (b) — reject, false: "a merge this run made" already excludes route (b).
+- diff-bug #9: no prose guard covers the rule or its pointers — reject, planned change: the plan scoped no guard, and `skills/tests` is hand-run and gates nothing (D-109).
+- diff-bug #10: a CHANGELOG sentence started on a fresh line mid-paragraph — fix now, fixed de81e76.
+- diff-bug #11: the opening dropped "costs nothing" and the read cost is real — reject, planned change: the work log records the choice and its falsifier.
+- blame-history #1: the note will rarely fire at the guest closes it targets, since the query runs seconds after the open — follow-up: new row "Late Copilot requests with the round off (M244 review)" at hygiene; the caveat is diff-bug #1's fix.
+- blame-history #2: "does not handle" overstates, since the PR-conversation read gives bot threads dispositions — reject, false: with the round off, an authored hotfix PR and a fresh milestone PR open after the chip and merge with no conversation read.
+- blame-history #3: every round-off close now reads the module and runs one query — reject, planned change, as diff-bug #11.
+- blame-history #4: the module used all its headroom — fix now, as diff-bug #2, fixed de81e76.
+- blame-history #5: DESIGN.md's module line and tracking-rules:255 describe only the opted-in reading — fix now for DESIGN.md, fixed de81e76; reject, false, for tracking-rules:255, which states when the PR opens, unchanged.
+- blame-history #6: a note after the merge comes too late for a pending review — reject, planned change: with the round off nothing waits on Copilot (D-152), and the opt-in is the remedy the note names.
+- blame-history #7: the step 7 and step 10 exclusions are hard to follow — reject, style.
+- blame-history #8: the note was not checked against guest mode's no-vocabulary rule — reject, false: the note goes in the chat close block, never to the repo.
+- blame-history #9: no D-entry records the narrowed "usual flow" wording — reject, false: D-152 decides when the PR opens and what the line permits, and neither changed.
+- blame-history #10: README says a GitHub setting requests Copilot, which is unconfirmed — fix now: README and CHANGELOG say "someone or something else", fixed de81e76.
+- prior-review #1: the README and CHANGELOG lacked M231's "present when the read runs" qualifier — fix now, as diff-bug #1, fixed de81e76.
+- prior-review #2: §3's error rule does not mention the carve-out — reject, false: the closes reach §3 through §1, which states the carve-out first.
+- prior-review #3: the budget header still cites 126 lines and 7,142 bytes — reject, false: it states where the budget figure came from.
+- prior-review #4: the "costs nothing" promise is gone — reject, planned change, as diff-bug #11.
+- prior-review #5: the hotfix re-entry enumeration may drift — reject, false: the claim audit read it against step 1's routes and it holds.
+- copilot: review body — noted: "Copilot was unable to review this pull request because the user who requested the review has reached their quota limit."
+- Copilot level: none, the review did not run (quota limit).
+- conversation: no human reviews or comments on PR #254.
