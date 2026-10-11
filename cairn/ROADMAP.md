@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-11 (M244 done: archived, M242 row pruned, "Late Copilot requests with the round off (M244 review)" row added, no lesson added; validate green, skills/tests green)_
+_Last hygiene check: 2026-10-11 (M245 done: archived, M243 row pruned at plan, "Linked-item read edges (M245 review)" row added, no lesson added (LESSONS at 19,978 of 20,000 bytes); validate green, skills/tests green)_
 
 ## Milestones
 
@@ -10,7 +10,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M244 | Turn on the Copilot round in the easystats checkouts, and name the line when Copilot reviews a PR with the round off | done | — | normal | milestones/archive/M244-copilot-round-off-note.md |
-| M245 | The audit reports new activity on the issues and pull requests that candidate rows link to | review | — | normal | milestones/M245-linked-item-activity.md |
+| M245 | The audit reports new activity on the issues and pull requests that candidate rows link to | done | — | normal | milestones/archive/M245-linked-item-activity.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
