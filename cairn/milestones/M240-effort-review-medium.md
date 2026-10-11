@@ -163,3 +163,6 @@ run per arm goes to the note's re-measurement procedure.
 - prior-review #2: no CHANGELOG entry — reject, same reason as diff-bug #7
 - prior-review #3: the candidate row narrowing — follow-up, same as diff-bug #4
 - After 8ee8aa7: rulebook 642 lines / 61,429 bytes (`wc -l -c`), re-seeded at the three sites. Fresh re-run, each exit 0: `scripts/tests` 406, `hooks/tests` 174, both `claude plugin validate`, `claude plugin test .` 0 fail, `skills/tests` 726, `cairn_validate` all passed. AC3's quoted rule sentence is unchanged by the fix.
+- copilot: cairn/milestones/M240-effort-review-medium.md:14 (outdated) — the header named only the branch, not the PR URL — fix now, fixed 4dc4fe6 (replied, resolved)
+- copilot: review body — its one finding is the thread above (anchor `discussion_r4240170460`), noted
+- Copilot level: Lite (set by GitHub's settings). Conversation: no other reviews, no issue comments, no other unresolved threads.
