@@ -1,13 +1,13 @@
 # M238: The pane reads its pull requests once per start, at its first draw when placed later
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** —
+- **Branch/PR:** m238-pane-one-read-per-start · https://github.com/jmgirard/cairn/pull/248
 
 ## Goal
 
@@ -21,28 +21,29 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 
 ## Acceptance criteria
 
-- [ ] AC1: Take a `classic.SessionStart` with source `clear` or `resume` that finds the pane listed but not placed. It starts no pull request read, and the pane's next draw starts one. `claude plugin test .` passes two tests, one per source, one over the `blocked-active` fixture and one over `blocked-prs`. Each asserts that the `gh` fake's `reads` is empty after the start. Each asserts that `reads` holds each blocked row's URL once after the first `ui.render` of the Pane. Each asserts that `reads` does not change after a second draw. Two more tests open the pane between such a start and the first draw, one by `/cairn-pane` and one by the band's open button. Each asserts that the first draw then starts no read. Three more tests assert that the first draw starts no read. In the first, no such start came before the draw. In the second, the start found no pane listed. In the third, the start's `$.ui.panes()` threw.
-- [ ] AC2: One process start can raise both `session.start` with a reopen and `classic.SessionStart` with source `resume`. Source `clear` is tested too, as a guard, because no record shows that pairing. In either order, the start reads each blocked row's URL once, before and after the pane's first draw. `claude plugin test .` passes four tests, for two sources and two orders, in a folder marked for reopen. Each asserts that every URL appears once in `reads`. A fifth test makes the reopen's open unplaced, raises `classic.SessionStart`, then draws the pane, and asserts each URL once. A sixth test holds an open's read unsettled. It then raises `session.end` and a `classic.SessionStart` with source `clear` for a placed pane. It asserts that the start reads each URL again.
-- [ ] AC3: register.tsx calls `$.ui.panes()` in one function, and every other place that needs the pane's listing uses that function. `git grep -n '\$\.ui\.panes(' -- hooks/status/register.tsx` returns one line that is not a `//` comment.
-- [ ] AC4: Four texts state the owed read at the first draw and the one read per start. They are the register.tsx comments, README's pane section, DESIGN.md's `hooks/status/` section (lines near 286-440), and CHANGELOG.md's `## Unreleased` section. The sweep is this command: `git grep -n -e '/resume' -e 'resume`' -e 'first draw' -e 'reads the files twice' -e 'undrawn' -e 'placed pane' -e 'not placed' -- README.md cairn/DESIGN.md hooks/status/register.tsx`. No line it returns states a read trigger or read count that the new code contradicts. DESIGN.md's milestone history list near line 77 is exempt.
-- [ ] AC5: The five `verify` commands in `cairn/PROFILE.md` exit 0 on the branch head.
+- [x] AC1: Take a `classic.SessionStart` with source `clear` or `resume` that finds the pane listed but not placed. It starts no pull request read, and the pane's next draw starts one. `claude plugin test .` passes two tests, one per source, one over the `blocked-active` fixture and one over `blocked-prs`. Each asserts that the `gh` fake's `reads` is empty after the start. Each asserts that `reads` holds each blocked row's URL once after the first `ui.render` of the Pane. Each asserts that `reads` does not change after a second draw. Two more tests open the pane between such a start and the first draw, one by `/cairn-pane` and one by the band's open button. Each asserts that the first draw then starts no read. Three more tests assert that the first draw starts no read. In the first, no such start came before the draw. In the second, the start found no pane listed. In the third, the start's `$.ui.panes()` threw.
+- [x] AC2: One process start can raise both `session.start` with a reopen and `classic.SessionStart` with source `resume`. Source `clear` is tested too, as a guard, because no record shows that pairing. In either order, the start reads each blocked row's URL once, before and after the pane's first draw. `claude plugin test .` passes four tests, for two sources and two orders, in a folder marked for reopen. Each asserts that every URL appears once in `reads`. A fifth test makes the reopen's open unplaced, raises `classic.SessionStart`, then draws the pane, and asserts each URL once. A sixth test holds an open's read unsettled. It then raises `session.end` and a `classic.SessionStart` with source `clear` for a placed pane. It asserts that the start reads each URL again.
+- [x] AC3: register.tsx calls `$.ui.panes()` in one function, and every other place that needs the pane's listing uses that function. `git grep -n '\$\.ui\.panes(' -- hooks/status/register.tsx` returns one line that is not a `//` comment.
+- [x] AC4: Four texts state the owed read at the first draw and the one read per start. They are the register.tsx comments, README's pane section, DESIGN.md's `hooks/status/` section (lines near 286-440), and CHANGELOG.md's `## Unreleased` section. The sweep is this command: `git grep -n -e '/resume' -e 'resume`' -e 'first draw' -e 'reads the files twice' -e 'undrawn' -e 'placed pane' -e 'not placed' -- README.md cairn/DESIGN.md hooks/status/register.tsx`. No line it returns states a read trigger or read count that the new code contradicts. DESIGN.md's milestone history list near line 77 is exempt.
+- [x] AC5: The five `verify` commands in `cairn/PROFILE.md` exit 0 on the branch head.
 
 ## Coverage
 
 - AC1 → T1, T2
-- AC2 → T1, T3
+- AC2 → T1, T3, T7
 - AC3 → T4
-- AC4 → T5
-- AC5 → T6
+- AC4 → T5, T7
+- AC5 → T6, T7
 
 ## Tasks
 
-- [ ] T1: Write the AC1 and AC2 tests in `hooks/status/pane.test.tsx`, with the `gh` fake's `reads`, `copy.notPlaced`, and the reopen setup near `pane.test.tsx:1375`. Run them and record which fail on the current code. The reopen-first AC2 tests and the AC1 draw tests are expected to fail. The classic-first AC2 tests pass today.
-- [ ] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
-- [ ] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
-- [ ] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
-- [ ] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
-- [ ] T6: Run the five `verify` commands (AC5).
+- [x] T1: Write the AC1 and AC2 tests in `hooks/status/pane.test.tsx`, with the `gh` fake's `reads`, `copy.notPlaced`, and the reopen setup near `pane.test.tsx:1375`. Run them and record which fail on the current code. The reopen-first AC2 tests and the AC1 draw tests are expected to fail. The classic-first AC2 tests pass today.
+- [x] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
+- [x] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
+- [x] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
+- [x] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
+- [x] T6: Run the five `verify` commands (AC5).
+- [x] T7: Review return 1 (AC2, AC4). The first-draw read sets `startRead`. The classic hook checks `startRead` again after its await. Add tests: a resume hook that owes, then a draw, then the reopen; the pane placed before both hooks, classic first; and both hooks at once. Fix the read-trigger wording in the `readPrs` comment, README, and DESIGN, and fold the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries. Run the five `verify` commands.
 
 ## Work log
 
@@ -55,7 +56,80 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: plan chose a read at the Pane's first draw over a turn-end check of `$.ui.panes()`. The operator wants no repeating reads, and a turn end can come long after the placement. Falsified by a host where a Pane placed after a start does not raise `ui.render`.
 - 2026-10-10: plan chose a per-start mark held until `session.end` over a skip while a read is in flight. A fast read settles before the second hook, and the skip then depends on timing. Falsified by a start that raises a hook after a read without a `session.end` between, where a second read is wanted.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 11 items, 9 with findings, and the plan took all 9. AC1 drops the ↻ case, which cannot happen before a draw, adds `blocked-prs` for more than one URL, and adds the not-listed and throw cases. AC2 names `clear` as a guard, adds the unplaced-reopen case, and T3 takes the per-start mark. AC3's grep catches a call without `await` and skips comments. AC4's grep adds the stale README and DESIGN lines and bounds "agrees". T2 clears the flag before its first await, for two draws at once.
+- 2026-10-10: implement started on branch m238-pane-one-read-per-start. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-10: T1 done. 12 tests in `pane.test.tsx` ("M238 AC1" and "M238 AC2" groups). On the current code, 4 fail: both AC1 first-draw tests read nothing at the draw, and both reopen-first AC2 tests read the URL twice. The other 8 pass, as the plan expected. Suite: 1601 pass, 4 fail.
+- 2026-10-10: T2, T3, and T4 done in one commit, because the classic start hook used the removed `isPlaced`. `paneOf` holds the one `$.ui.panes()` call, and `listedPane` answers null when it throws. Module flags `owed` and `startRead` do the rest. The engine refused a helper named `listing`, since `readPrs` already declares a const of that name, so it is `listedPane`. The 4 T1 reds pass now. All five verify commands exit 0 (mod tests 1605 pass).
+- 2026-10-10: T5 done. The `register.tsx` comments, README near line 343, DESIGN.md near lines 318-325 and 430-434 and its history line 77, and two CHANGELOG Fixes entries describe the first-draw read and one read per start. Each line the AC4 sweep returns was read and agrees.
+- 2026-10-10: claim audit: 28 claims read, 4 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx, hooks/status/pane.test.tsx. The double-read entry named the wrong order, the first-draw claim left out the reopen's read and a failed pane list, and a test comment named the wrong cause. The same reader re-read the fixes once and found the failed-list case still missing, which the next commit adds. A new test covers the session-end reset of `startRead`. Removing that reset failed only that test (1605 pass, 1 fail), and the file was restored.
+- 2026-10-10: T6 done. All five verify commands exit 0 (mod tests 1605 pass), and `cairn_validate` passes.
+- 2026-10-10: review return 1: AC2 fails inside its domain (prior-review #1, Copilot on PR #248). A resume hook that owes a read, then the first draw, then the reopen read each URL twice, because the draw's read sets no `startRead`. The return also carries the fix-now items: the classic hook's re-check of `startRead` after its await (diff-bug #2), a test with the pane placed before both hooks (diff-bug #3), and the read-trigger wording in the `readPrs` comment, README, and DESIGN (diff-bug #7, blame-history #2, #6). It also folds the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries (blame-history #5).
+- 2026-10-10: T7 added for review return 1 (minor amendment; Coverage AC2, AC4, AC5 now also map to T7).
+- 2026-10-10: T7 done. The first-draw read sets `startRead`, and the classic hook checks `startRead` again after `listedPane`. Three AC2 tests added. "A resume start that owes, the first draw, then the reopen" failed on the old code with two reads and passes now. "A resume start that reads, then the reopen" covers the reopen's `startRead` check. "Both hooks at once" passed before the re-check too, so the harness seems to run the two hooks in turn, and the re-check has no test that fails without it. README, DESIGN, and the `readPrs` comment name the skip and the first-draw trigger. The CHANGELOG folds both behaviors into the unreleased `/resume` entry. All five verify commands exit 0 (mod tests 1609 pass).
+- 2026-10-10: step-7 approval: m238-pane-one-read-per-start approved for merge
+- 2026-10-10: claim audit: 36 claims read, 3 corrected — README.md, CHANGELOG.md, hooks/status/pane.test.tsx. README said an open skips a placed pane's start read, the `/resume` entry named a hidden-tab state that never shipped, and a test comment named the wrong cause. The same reader re-read the fixes once and found all three true. Verify: all five commands exit 0 (mod tests 1609 pass).
 
 ## Decisions
 
 ## Review
+
+- AC1 evidence (2026-10-10, head d642095): `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 1606 pass. The 7 tests in the "M238 AC1" group pass: both first-draw tests (clear on `blocked-active`, resume on `blocked-prs` with 3 URLs) assert no read after the start, each URL once after the first draw, and no change after a second draw. The two open tests and the three no-read tests pass.
+- AC2 evidence (same run): the 7 tests in the "M238 AC2" group pass. The four source-and-order tests in a folder marked for reopen each read `URL_1250` once, checked after the first draw. The unplaced-reopen test reads it once. The held-open test reads it a second time at the clear start after `session.end`. The seventh test, added after the claim audit, shows the session end resetting the start's read. Removing that reset failed only that test (implement work log).
+- AC3 evidence: `git grep -n '\$\.ui\.panes(' -- hooks/status/register.tsx` returns 4 lines. Lines 76, 703, and 719 are `//` comments. Line 707, in `paneOf`, is the one call. `command.run`, `isShown`, `markReopen`, and `listedPane` reach the listing through `paneOf`.
+- AC4 evidence: the sweep returns 27 lines besides DESIGN.md:77. Each was read. None states a read trigger or count that the code contradicts. DESIGN.md:318-320 says the clear or resume hook reads for a placed pane, and its lines 322-324 add the `startRead` exception. CHANGELOG.md `## Unreleased` Fixes holds the two new entries, outside the sweep's files.
+- AC5 evidence (head d642095): both `unittest discover` suites exit 0, both `claude plugin validate` commands exit 0, and the mod test exits 0 with 1606 pass.
+- Consistency gate: `cairn_validate` exit 0, all checks passed. No principle changed, so no `cairn_impact` run. The marketplace validate output has no `version` warning. CHANGELOG `## Unreleased` Fixes has two entries for this milestone's changes, with no milestone numbers.
+- spawned: diff-bug, blame-history, prior-review (pass 1).
+- diff-bug #1: the owed read runs on the render hook's `$`, the API refuses a state write while a render hook draws, and no test checks that the words arrive — fix now (the two first-draw tests now assert the blocked line's word, and they pass) and follow-up for a live look ("Pane edges (M238 review)").
+- diff-bug #2: the classic hook checks `startRead`, awaits `listedPane`, then sets it, so a reopen that runs during the await gives a second read or a stale `owed` — fix now.
+- diff-bug #3: the classic-first AC2 tests pass with no guard, and no test reaches the reopen's `startRead` check — fix now (a test with the pane placed before both hooks).
+- diff-bug #4: an in-process `/clear` or `/resume` relies on `session.end` coming first — follow-up ("Pane edges (M238 review)").
+- diff-bug #5: `owed` outlives a pane closed before its first draw — follow-up ("Pane edges (M238 review)").
+- diff-bug #6: the no-read tests trust `settled()` timing — follow-up ("Pane edges (M238 review)"); the M230 harness uses the same wait.
+- diff-bug #7: the `readPrs` comment and README say a clear or resume reads, with no word on the start that already read — fix now.
+- diff-bug #8: `listedPane`'s null-versus-undefined split is unused — reject, style: the comment states what the function returns, and no behavior depends on it.
+- diff-bug #9: no test reaches `owed` cleared at `session.end` or in the placed branch — follow-up ("Pane edges (M238 review)").
+- blame-history #1: the same race as diff-bug #2 — fix now.
+- blame-history #2: DESIGN.md near 295-301 and README near 331 still say every reopen reads and name three opens — fix now.
+- blame-history #3: the first read started from a render hook, never looked at live — follow-up, as diff-bug #1.
+- blame-history #4: `startRead` assumes a `session.end`, and the flags are module-wide — follow-up ("Pane edges (M238 review)").
+- blame-history #5: the two CHANGELOG entries describe states no release shipped, since the `/clear` and `/resume` reads are themselves unreleased — fix now (fold them into those entries).
+- blame-history #6: README's "waits undrawn" beside "behind another tab", DESIGN's "it lists", and ragged lines — fix now where the fix edits those lines.
+- blame-history #7: the two "Pane edges" rows still hold the absorbed items — noted; post-merge hygiene prunes them.
+- prior-review #1: the first-draw read sets no `startRead`, so a resume hook, a draw, then the reopen read twice (also Copilot's thread on PR #248) — fix now; it fails AC2 inside its domain, so it is a floor return.
+- prior-review #2: the same as diff-bug #4 — follow-up.
+- prior-review #3: ragged wrapping — fix now with blame-history #6.
+- prior-review #4: README 408-412 beside 343 — reject, false: they describe the reopen and the PR read, and the reviewer found no contradiction.
+- Fix-now commits for pass 1: diff-bug #1 (word assertion), #2, #3, #7, blame-history #1, #2, #5, #6, prior-review #1, #3 — fixed 33af39d and 102316c.
+- Pass 2 (2026-10-10, head 102316c; `register.tsx` unchanged since 33af39d, the code the mod run tested). Default branch unmoved (origin/main c53b0e3). Copilot state: `reviewed earlier-head Lite`, so no new request.
+- AC1 evidence (pass 2): `claude plugin test .` exit 0, 1609 pass, 0 fail. The 7 "M238 AC1" tests pass, and both first-draw tests now also assert the blocked line's `in review` word after the draw.
+- AC2 evidence (pass 2): the 10 "M238 AC2" tests pass, the 6 the criterion names among them. "A resume start that owes, the first draw, then the reopen" failed on 6554657 with two reads and passes now.
+- AC3 evidence (pass 2): the grep returns 4 lines, and one is not a `//` comment: `register.tsx:711`, in `paneOf`.
+- AC4 evidence (pass 2): the sweep was re-run after T7, and each returned line was read. README 342-349 now names the skip for each case, DESIGN 300-305 and 320-328 name the reopen's skip, the first-draw trigger, and the re-check, and `register.tsx:742-764` match. No line contradicts the code.
+- AC5 evidence (pass 2): both `unittest discover` suites, both `claude plugin validate` commands, and the mod test exit 0 on this head's code.
+- spawned: diff-bug, blame-history, prior-review (pass 2).
+- pass 2 diff-bug #1: the first-draw read's ⋯ write likely lands during the draw and is refused — follow-up ("Pane edges (M238 review)").
+- pass 2 diff-bug #2: the "at once" test does not test the classic hook's re-check — fix now (renamed, with a comment that it does not) and follow-up for a test that fails without the check.
+- pass 2 diff-bug #3: the owes-draw-reopen test builds a state a new process does not reach — fix now (comment calls it a guard).
+- pass 2 diff-bug #4: two reopen comments leave out the owed draw — fix now.
+- pass 2 diff-bug #5: README's "unless" reads as covering all three opens — fix now.
+- pass 2 diff-bug #6: the classic hook's first `startRead` check is redundant — reject, style: it only saves one pane-list call.
+- pass 2 diff-bug #7: a pane placed and drawn while the classic hook awaits reads one redraw late — follow-up ("Pane edges (M238 review)").
+- pass 2 blame-history #1: restore the CHANGELOG clause that a hidden-tab pane kept no PR words — reject, false: v2.0.0 has no PR reads at all, so that state never shipped (claim audit after return 1).
+- pass 2 blame-history #2: DESIGN 430-438 lost the hook's antecedent — fix now.
+- pass 2 blame-history #3: ragged lines in README and `register.tsx` — fix now for the lines this branch wrote; README 339's long line is M236's and stays.
+- pass 2 blame-history #4: DESIGN's "the three opens start the read" — fix now.
+- pass 2 blame-history #5: the render-hook read rests on a harness that does not refuse writes — noted; the "Pane edges (M238 review)" row holds the live look.
+- pass 2 blame-history #6: split DESIGN 320-331 — reject, style.
+- pass 2 blame-history #7, #8, #10: the history list, README 412-416, and the absorbed row items — noted, no change; hygiene prunes the rows.
+- pass 2 blame-history #9: "waits undrawn" in the CHANGELOG — fix now (glossed as a pane not yet shown, as in a narrow terminal).
+- pass 2 prior-review #1: the same as pass 2 diff-bug #2 — fix now and follow-up.
+- pass 2 prior-review #2: the folded CHANGELOG entry drops the first-draw qualifiers — fix now (it names the open that reads first).
+- pass 2 prior-review #3: the same as pass 2 diff-bug #5 — fix now.
+- pass 2 prior-review #4: ragged wrapping — fix now with pass 2 blame-history #3.
+- pass 2 prior-review #5: the placed-and-shown check is still spelled at three sites — follow-up ("Pane edges (M238 review)").
+- pass 2 prior-review #6: `register.tsx:66-72` says each open reads — fix now.
+- pass 2 prior-review #7: DESIGN's "It reads the PRs once" — fix now with pass 2 blame-history #2.
+- copilot: hooks/status/register.tsx:307 — fix now, fixed 33af39d (the first-draw read sets `startRead`). The thread was already resolved when read, so no reply was posted.
+- copilot: review body — noted. It names two start-read issues and anchors one, the thread above. The classic hook's re-check, also in 33af39d, covers the other start-hook overlap.
+- Copilot level: Lite (set by GitHub's settings). Review reads: one Copilot review in state COMMENTED, no other reviews, no conversation comments.
+- Consistency gate (pass 2): `cairn_validate` all checks passed. The marketplace validate prints no `version` warning. The CHANGELOG change sits in the unreleased `/resume` entry, with no milestone numbers.

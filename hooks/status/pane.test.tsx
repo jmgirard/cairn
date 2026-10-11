@@ -2952,6 +2952,239 @@ describe('a clear or resume start reads the states for a placed pane (M237 AC2)'
   }
 })
 
+// One draw of the pane, as a surface that places it makes (M238).
+async function draw($) {
+  const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+  await ui.unmount()
+}
+const sorted = (list: string[]) => [...list].sort()
+
+// A clear or resume start that finds the pane listed but not placed owes a
+// read, and the pane's first draw starts it (M238 AC1). The repo has no
+// remote, so no hotfix list runs and `reads` holds the blocked URLs alone.
+describe('a pane placed after a clear or resume start reads at its first draw (M238 AC1)', () => {
+  const CASES = [
+    { source: 'clear', fixture: 'blocked-active', urls: [URL_1250] },
+    { source: 'resume', fixture: 'blocked-prs', urls: [prUrl(12), prUrl(34), prUrl(90)] },
+  ] as const
+  for (const { source, fixture, urls } of CASES) {
+    test(`a ${source} start reads nothing, and the first draw reads each URL once (${fixture})`, async ($, on) => {
+      const calls = gh(on, () => prView('OPEN', ''))
+      const copy = copyOf(fixture)
+      seat(on, copy)
+      copy.open = [PANE]
+      copy.unplaced = [PANE]
+      await $.classic.SessionStart({ source })
+      await calls.settled()
+      expect(calls.reads).toEqual([])
+      copy.unplaced = []
+      await draw($)
+      await calls.settled()
+      expect(sorted(calls.reads)).toEqual(sorted([...urls]))
+      await draw($)
+      await calls.settled()
+      expect(sorted(calls.reads)).toEqual(sorted([...urls]))
+      // The read's words reach the pane (M238 review).
+      const key = fixture === 'blocked-active' ? 'blocked-M111' : 'blocked-M101'
+      expect((await blockedView($, key)).text).toMatch(/  in review$/)
+    })
+  }
+
+  const OPENS: { name: string; open: ($, copy: Copy) => Promise<void> }[] = [
+    { name: 'a /cairn-pane open', open: async $ => void (await $.command.run({ command: COMMAND })) },
+    {
+      name: "a press of the band's open button",
+      open: async $ => {
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+        await ui.press({ key: 'cairn-open' })
+        await ui.unmount()
+      },
+    },
+  ]
+  for (const { name, open } of OPENS) {
+    test(`${name} between the start and the first draw leaves that draw reading nothing`, async ($, on) => {
+      const calls = gh(on, () => prView('OPEN', ''))
+      const copy = copyOf('blocked-active')
+      seat(on, copy)
+      copy.open = [PANE]
+      copy.unplaced = [PANE]
+      await $.classic.SessionStart({ source: 'clear' })
+      await open($, copy)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+    })
+  }
+
+  const NONE: { name: string; before: ($, copy: Copy) => Promise<void> }[] = [
+    { name: 'with no clear or resume start before it', before: async $ => void (await $.turn.complete(turn())) },
+    {
+      name: 'after a start that found no pane listed',
+      before: async ($, copy) => {
+        copy.open = []
+        await $.classic.SessionStart({ source: 'clear' })
+        copy.open = [PANE]
+      },
+    },
+    {
+      name: 'after a start whose pane list threw',
+      before: async ($, copy) => {
+        copy.open = [PANE]
+        copy.unplaced = [PANE]
+        copy.panesThrow = true
+        await $.classic.SessionStart({ source: 'resume' })
+        copy.panesThrow = false
+        copy.unplaced = []
+      },
+    },
+  ]
+  for (const { name, before } of NONE) {
+    test(`a first draw ${name} reads nothing`, async ($, on) => {
+      const calls = gh(on, () => prView('OPEN', ''))
+      const copy = copyOf('blocked-active')
+      seat(on, copy)
+      await before($, copy)
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([])
+    })
+  }
+})
+
+// A process start can raise both the reopen's `session.start` and a resume
+// or clear `classic.SessionStart`. Between them they read each URL once
+// (M238 AC2). Source `clear` is a guard, since no record shows a reopened
+// start raising it.
+describe('one process start reads each URL once (M238 AC2)', () => {
+  const OTHER_END = { reason: 'other', sessionId: 's1' } as const
+  // An open pane at an `other` end, so the next start in the folder reopens
+  // it, with the open's own read settled and cleared from `reads`.
+  async function marked($, on): Promise<{ calls: Gh; copy: Copy }> {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    await openPane($, on, copy)
+    await calls.settled()
+    await $.session.end(OTHER_END)
+    newProcess(copy)
+    calls.reads.length = 0
+    return { calls, copy }
+  }
+  for (const source of ['resume', 'clear'] as const) {
+    test(`the reopen, then a ${source} start, read each URL once`, async ($, on) => {
+      const { calls } = await marked($, on)
+      await $.session.start(NEW_START)
+      await $.classic.SessionStart({ source })
+      await calls.settled()
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+    })
+
+    test(`a ${source} start, then the reopen, read each URL once`, async ($, on) => {
+      const { calls } = await marked($, on)
+      await $.classic.SessionStart({ source })
+      await $.session.start(NEW_START)
+      await calls.settled()
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+    })
+  }
+
+  test('an unplaced reopen, a resume start, and the first draw read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.notPlaced = 'the terminal is too narrow'
+    await $.session.start(NEW_START)
+    await $.classic.SessionStart({ source: 'resume' })
+    await calls.settled()
+    copy.notPlaced = undefined
+    copy.unplaced = []
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // The read at the first draw is the start's read, so a reopen after it
+  // reads nothing (M238 review). In a new process the pane is not listed
+  // before the reopen, so this order is a guard, not one seen on a host.
+  test('a resume start that owes, the first draw, then the reopen read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    await $.classic.SessionStart({ source: 'resume' })
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    copy.unplaced = []
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+    await $.session.start(NEW_START)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // A pane placed before both hooks: the resume hook reads, and the reopen
+  // after it reads nothing (M238 review).
+  test('a resume start that reads, then the reopen, read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    await $.classic.SessionStart({ source: 'resume' })
+    await $.session.start(NEW_START)
+    await calls.settled()
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // Both hooks of one start begun together, for a placed pane (M238
+  // review). The harness runs the two in turn, so this test passed before
+  // the classic hook's second `startRead` check, and it does not test that
+  // check.
+  test('the reopen and a resume start begun together read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    await Promise.all([$.session.start(NEW_START), $.classic.SessionStart({ source: 'resume' })])
+    await calls.settled()
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // A clear start reads again after a session end, also while an open's
+  // read is still in flight.
+  test('a clear start reads again while an open read is held', async ($, on) => {
+    const { calls, release } = held(on)
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    await $.session.start(NEW_START)
+    try {
+      await $.command.run({ command: COMMAND })
+      await until(() => calls.reads.length > 0)
+      await $.session.end(CLEAR_END)
+      await $.classic.SessionStart({ source: 'clear' })
+      await until(() => calls.reads.filter(url => url === URL_1250).length > 1)
+      expect(calls.reads.filter(url => url === URL_1250)).toEqual([URL_1250, URL_1250])
+    } finally {
+      release()
+    }
+  })
+
+  // A session end ends the start, so after a reopen's read, a clear start in
+  // the same process reads again.
+  test("a clear start after a session end reads again after the reopen's read", async ($, on) => {
+    const { calls } = await marked($, on)
+    await $.session.start(NEW_START)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+    await $.session.end(CLEAR_END)
+    await $.classic.SessionStart({ source: 'clear' })
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250, URL_1250])
+  })
+})
+
 describe("a hotfix whose URL is a blocked row's draws on the blocked line only (M230 AC4)", () => {
   const SHARED = { number: 1250, title: 'Fix 1250', url: URL_1250, headRefName: 'hotfix-shared' }
 

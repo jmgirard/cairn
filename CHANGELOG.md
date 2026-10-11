@@ -129,9 +129,11 @@
 - **The cairn pane fills again after `/resume` and after a `/clear` behind
   another tab.** A `/resume` reads the tracking files again, as a `/clear`
   that keeps the session's process does. After either one, a placed pane
-  reads its PRs again, also when it sits behind another tab. Before, a
-  `/resume` left the band and the pane empty until the next prompt, and a
-  pane behind another tab kept no PR words.
+  reads its PRs again, also when it sits behind another tab. A pane not
+  yet shown, as in a narrow terminal, reads them when it is first drawn,
+  unless an open read them first. One start reads them once, also when a
+  reopen at a new session start and the `/resume` both run in it. Before, a `/resume` left the band and the pane empty until
+  the next prompt.
 
 - **A pane head line shows the milestone id in its phase's color.** The
   phase word before the id is gone, and the id takes the implement or
