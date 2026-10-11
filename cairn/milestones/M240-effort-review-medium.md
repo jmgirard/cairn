@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M240: Measure medium effort on the history reviewers, and state each spawned role's effort level
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -136,3 +136,5 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: T4 done: note finished, page pinned `ok` in `TestShippedPageStateLedger`. The note's later sections were appended with a shell heredoc, not the Edit tool, so the app's edited-files card leaves that append out.
 - 2026-10-10: T5 done: verdict `default`, so tracking-rules gains one "Leave effort unset on every spawn" bullet citing both notes, and `skills/milestone-review/SKILL.md` is unchanged. Rulebook mass re-seeded to 642 lines / 61,338 bytes (`wc -l -c`, this branch) at its three sites. D-157 appended.
 - 2026-10-10: T6 done: verify green (scripts 406 tests OK, hooks 174 OK, plugin and marketplace validate exit 0, `claude plugin test` 0 fail), hand-run `skills/tests` 726 OK.
+- 2026-10-10: claim audit: 13 claims read, 1 corrected — skills/shared/tracking-rules.md (the effort bullet's "saved too little" became "the cost method's output undercount could reverse `low`'s saving", re-read once by the same reader: holds), scripts/tests/test_scripts.py, skills/milestone/SKILL.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py.
+- 2026-10-10: the rewording moved the rulebook to 642 lines / 61,373 bytes (`wc -l -c`), re-seeded at the three sites. Scripts, hooks, and `skills/tests` re-run green. Status set to `review`.
