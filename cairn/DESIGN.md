@@ -426,7 +426,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   on a pane without keyboard focus only gives it focus, and no `ui.press`
   reaches the mod (M219 probe). A pane Button then takes a second click.
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the
-  band and the pane read one place. A press is the band's `pressStatus`.
+  band and the pane read one place (since M241 the pane reads only
+  `STATUS_LABEL`). A press is the band's `pressStatus`.
   Until M241 the Next line also carried `clear` while `ended` was true.
   The first line's ⌂ took its place, and `paneLines` lost its `ended`
   parameter. A ⌂ press runs `pressHome`: under `busy` and the step check,
@@ -629,7 +630,9 @@ within each type and are never reused.
   skill can run after the turn starts one. A pane Plan or Implement press
   in a working turn queues its `/clear`. Two quick presses can pass
   `busy`. A `/clear` with no clear end holds the queued command, and a
-  reload before the end loses it. A refused press with a draft sends
+  reload before the end loses it. A ⌂ press's `/clear` with no session end
+  keeps `homeRun` set, so every action press does nothing, with no toast,
+  until a session end (M241 review). A refused press with a draft sends
   `draft/cairn:…` as prose. `Review` can act on a hidden milestone, and
   `Plan` starts a milestone that just turned workable. Pane ⌂ shows
   outside a cairn skill and with the band closed (corrected M241: the

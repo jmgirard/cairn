@@ -329,8 +329,9 @@ export const register: Register = on => {
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218), and so do Clear and
-    // Status after it, each in its own such Box (M219). A Text drops its
+    // does not shrink, so the pill is cut first (M218), and so does Status
+    // after it, and the first line's ⌂ and ↻, each in its own such Box
+    // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
@@ -1065,11 +1066,17 @@ async function pressClear($) {
 // A press of the pane's ⌂ runs the built-in `/clear` under the same checks
 // as Clear, less `ended`, and marks the press for the session end the
 // clear brings, which opens the pane (M241). The press is the person's
-// consent to drop the conversation, as a press of Clear is.
+// consent to drop the conversation, as a press of Clear is. The mark is set
+// before the press's first await, so a second press in the same tick finds
+// `busy` true (M241 review, PR #251), and a step found set takes it back.
 async function pressHome($) {
-  if (busy() || knownStep(await read($, step)) !== null) return
+  if (busy()) return
   const mine = {}
   homeRun = mine
+  if (knownStep(await read($, step)) !== null) {
+    if (homeRun === mine) homeRun = null
+    return
+  }
   if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
 }
 

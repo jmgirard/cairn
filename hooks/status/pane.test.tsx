@@ -1132,7 +1132,9 @@ describe("the pane's Plan and Implement run /clear and then their command (M221 
         const copy = copyOf(name)
         seat(on, copy)
         await $.turn.complete(turn())
-        // Every action Button is pressed below, ⌂ among them (M241).
+        // Every action Button is pressed below, ⌂ among them (M241), after
+        // a skill's Stop, as before M241 (M241 review).
+        await endSkill($)
         const ui = await mountPane($, surface)
         expect(await nextKeys(ui)).toEqual([PANE_NEXT, PANE_STATUS])
         const [next] = await ui.findAll({ key: PANE_NEXT })
@@ -1290,6 +1292,19 @@ describe('a press of ⌂ runs /clear once, and a guarded press runs nothing (M24
     expect(copy.opens.length).toBe(before)
   })
 
+  // Two presses in the same tick: the mark is set before the press's first
+  // await, so only one passes (M241 review, PR #251).
+  test('two presses at once run clear once', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await Promise.all([ui.press({ key: PANE_HOME }), ui.press({ key: PANE_HOME })])
+    await ui.unmount()
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+  })
+
   test('a second press, or a Status press, before the first press ends runs nothing', async ($, on) => {
     const copy = copyOf('single-in-progress')
     seat(on, copy)
@@ -1335,14 +1350,18 @@ describe("a ⌂ press's /clear opens the pane at its end, and nothing else does 
     expect(copy.opens.length).toBe(before + 1)
   })
 
-  test('an end with another reason after a press opens nothing', async ($, on) => {
-    const copy = await homeReady($, on)
-    const before = copy.opens.length
-    await pressKey($, PANE_HOME)
-    await $.session.end({ reason: 'other', sessionId: 's1' })
-    await untilOpens(copy, before + 1, 10)
-    expect(copy.opens.length).toBe(before)
-  })
+  // `other` also marks a reopen (M222), so `resume` is checked too (M241
+  // review).
+  for (const reason of ['other', 'resume'] as const) {
+    test(`an end with reason ${reason} after a press opens nothing`, async ($, on) => {
+      const copy = await homeReady($, on)
+      const before = copy.opens.length
+      await pressKey($, PANE_HOME)
+      await $.session.end({ reason, sessionId: 's1' })
+      await untilOpens(copy, before + 1, 10)
+      expect(copy.opens.length).toBe(before)
+    })
+  }
 
   test('a refused clear leaves no open for a later clear end', async ($, on) => {
     const copy = await homeReady($, on)

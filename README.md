@@ -339,7 +339,10 @@ has a ROADMAP, and it reads `⋯` while a read runs. A press while an
 earlier ↻ press's read runs does nothing.
 While no cairn skill runs or waits on its background work, a `⌂` button
 sits just before the ↻. A press runs `/clear`, and when that `/clear` ends
-the session, the pane is opened again. A press does nothing while another
+the session, the mod opens the pane again. A pane that is already shown
+stays as it is. Whether a pane behind another tab comes to the front was
+not checked. As with the next-step button, a press while Claude works
+outside a cairn skill runs when Claude is idle. A press does nothing while another
 button's command runs, while `Plan` or `Implement` waits for its `/clear`,
 or while an earlier `⌂` press waits for its `/clear`. A press is your
 consent to drop the conversation, as a press of the band's `Clear` is.
