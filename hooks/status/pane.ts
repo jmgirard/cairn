@@ -101,6 +101,13 @@ export function prWord(result: { exitCode: number; stdout: string } | null): PrW
   }
   if (view === null || typeof view !== 'object') return 'unknown'
   const { state, reviewDecision } = view as { state?: unknown; reviewDecision?: unknown }
+  return wordOf(state, reviewDecision)
+}
+
+// The state word of a pull request's `state` and `reviewDecision`, as
+// `prWord` reads them from `gh pr view` and `prRead` in counts.ts from
+// `gh api graphql` (M237), which give the same values.
+export function wordOf(state: unknown, reviewDecision: unknown): PrWord {
   if (state === 'MERGED') return 'merged'
   if (state === 'CLOSED') return 'closed'
   if (state !== 'OPEN') return 'unknown'

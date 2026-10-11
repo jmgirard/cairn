@@ -4,7 +4,7 @@ import type { Register } from 'claude-code'
 import type { CairnBandHidden, CairnHotfixRead, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
-import { countsArgv, prCounts } from './counts'
+import { countsArgv, prRead } from './counts'
 import type { HotfixPr, PaneButton, PrRead } from './pane'
 import {
   CHECK_LABEL,
@@ -14,7 +14,6 @@ import {
   hotfixPrs,
   nextLabel as labelOf,
   NO_ROADMAP,
-  OPEN_WORDS,
   paneLines,
   PLAN_LABEL,
   PR_BUTTON,
@@ -778,21 +777,24 @@ async function readPrs($) {
 }
 
 // One pull request's state word, and its counts when the word says it is
-// open, as `readPrs` describes. It never rejects.
+// open, as `readPrs` describes. It never rejects. A github.com URL takes one
+// `gh api graphql` call for both (counts.ts `prRead`, M237). A URL of
+// another form, as a hotfix's on another host, takes one `gh pr view` call
+// for its word and gets no counts.
 async function readPr($, url: string): Promise<PrRead> {
-  let word: PrRead['word']
+  const graph = countsArgv(url)
+  if (graph !== null) {
+    try {
+      return prRead(await $.process.run(graph, { timeoutMs: GH_TIMEOUT_MS }))
+    } catch {
+      return prRead(null)
+    }
+  }
   try {
     const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
-    word = prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
+    return { word: prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })), counts: null }
   } catch {
-    word = prWord(null)
-  }
-  const argv = countsArgv(url)
-  if (!OPEN_WORDS.includes(word) || argv === null) return { word, counts: null }
-  try {
-    return { word, counts: prCounts(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })) }
-  } catch {
-    return { word, counts: null }
+    return { word: prWord(null), counts: null }
   }
 }
 
