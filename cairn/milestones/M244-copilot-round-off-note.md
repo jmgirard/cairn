@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing, because adopters read the `/hotfix` and `/milestone-review` close blocks and the README
-- **Branch/PR:** m244-copilot-round-off-note
+- **Branch/PR:** m244-copilot-round-off-note, https://github.com/jmgirard/cairn/pull/254
 
 ## Goal
 
@@ -45,11 +45,11 @@ thread on the operator's open PRs".
 
 ## Acceptance criteria
 
-- [ ] AC1: Each of the six checkouts `correlation`, `insight`, `modelbased`, `parameters`, `performance`, and `see` under `/Users/jmgirard/github/` has `# Copilot review: on` as a header line of `cairn/PROFILE.md`. In each, `git status --short` lists no `cairn/` path, and `cairn_validate` passes.
-- [ ] AC2: `skills/shared/copilot-review.md` §1 states the off-but-present rule for `/hotfix` and `/milestone-review` at the closes AC3 names. With the round off, on a PR the round covers (an authored hotfix PR, or a milestone PR with no companions, not already merged at review start), the skill runs one §3 state query with §3's owner and name (guest mode: the base repo's). On `pending` or `reviewed`, the close block gets one line that names the PR and the line `# Copilot review: on`. On `none` or a failed query, it gets nothing. The rule makes no request, reply, or resolve. §1 no longer says that a skill with the round off keeps its usual flow with no exception.
-- [ ] AC3: `/hotfix` step 7, `/hotfix` step 6's guest handoff close, `/milestone-review` step 10, and `/milestone-review` step 8's guest handoff close each point to §1's off-but-present rule.
-- [ ] AC4: README.md's Copilot paragraph and a new CHANGELOG.md `## Unreleased` entry say that with the line absent, a Copilot review on the PR gets a close-block note naming the line, and that cairn does not handle its threads.
-- [ ] AC5: The profile's five `verify` checks pass.
+- [x] AC1: Each of the six checkouts `correlation`, `insight`, `modelbased`, `parameters`, `performance`, and `see` under `/Users/jmgirard/github/` has `# Copilot review: on` as a header line of `cairn/PROFILE.md`. In each, `git status --short` lists no `cairn/` path, and `cairn_validate` passes.
+- [x] AC2: `skills/shared/copilot-review.md` §1 states the off-but-present rule for `/hotfix` and `/milestone-review` at the closes AC3 names. With the round off, on a PR the round covers (an authored hotfix PR, or a milestone PR with no companions, not already merged at review start), the skill runs one §3 state query with §3's owner and name (guest mode: the base repo's). On `pending` or `reviewed`, the close block gets one line that names the PR and the line `# Copilot review: on`. On `none` or a failed query, it gets nothing. The rule makes no request, reply, or resolve. §1 no longer says that a skill with the round off keeps its usual flow with no exception.
+- [x] AC3: `/hotfix` step 7, `/hotfix` step 6's guest handoff close, `/milestone-review` step 10, and `/milestone-review` step 8's guest handoff close each point to §1's off-but-present rule.
+- [x] AC4: README.md's Copilot paragraph and a new CHANGELOG.md `## Unreleased` entry say that with the line absent, a Copilot review on the PR gets a close-block note naming the line, and that cairn does not handle its threads.
+- [x] AC5: The profile's five `verify` checks pass.
 
 ## Coverage
 
@@ -85,3 +85,15 @@ thread on the operator's open PRs".
 - 2026-10-11: claim audit: 18 claims read, 5 corrected — skills/shared/copilot-review.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md
 - 2026-10-11: the 5 corrections: the module's covered hotfix PR is one this run merged or handed off, and a failed query skips §3's error line. Hotfix step 7 counts a re-entry's follow-up PR and excludes the re-entry's merged PR. README and CHANGELOG say "a merge made in that run" and limit the note to PRs the round itself would review. The same reader's re-read found all 5 hold. The module is 139 lines and 7,995 bytes. Verify passes after the edits (1660 mod tests, 0 red), and `skills/tests` ran 726 OK.
 - 2026-10-11: implement done, status review. No deviation from the plan.
+
+## Decisions
+
+## Review
+
+- Copilot arm: branch pushed, PR #254 opened, state query `none`, Copilot requested (exit 0).
+- AC1: on 8779eee, in each of correlation, insight, modelbased, parameters, performance, and see, the header block of `cairn/PROFILE.md` (lines above the first `## `) holds `# Copilot review: on` once, `git status --short` lists no `cairn/` path, and `cairn_validate` exits 0.
+- AC2: on 8779eee, `skills/shared/copilot-review.md` §1 holds the "Off but present" paragraph at line 25. It names `/hotfix` and `/milestone-review` at the four closes, limits the query to an authored hotfix PR this run merged or handed off or a milestone PR with no companions not merged before review, names the base repo's owner and name in guest mode, gives the one-line note naming the PR and `# Copilot review: on` on `pending` or `reviewed`, gives nothing on `none` or a failed query, and makes no request, reply, or resolve. Line 17's "off" sentence replaced "keeps its usual flow".
+- AC3: on 8779eee, `grep -n off-but-present` finds the pointer at skills/hotfix/SKILL.md:294 (step 6 guest handoff close) and :311 (step 7), and at skills/milestone-review/SKILL.md:636 (step 8 guest handoff close) and :774 (step 10), each citing `skills/shared/copilot-review.md` §1.
+- AC4: on 8779eee, README.md:718-723 and the first `### New` entry under CHANGELOG.md `## Unreleased` (line 52) say that without the line cairn does not handle Copilot's threads, and that a close names the line when Copilot is on the PR.
+- AC5: on 8779eee, `scripts/tests` ran 406 OK (21 skipped), `hooks/tests` 174 OK, both validates exit 0, and the mod test ran 1660 with 0 red. `skills/tests` (hand-run) ran 726 OK.
+- gate: `cairn_validate` all checks passed. The marketplace validate prints no `plugins[N].version` warning. CHANGELOG has the entry with no milestone number. No principle changed, so `cairn_impact` was skipped.
