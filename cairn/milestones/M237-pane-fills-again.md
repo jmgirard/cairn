@@ -104,4 +104,8 @@ The cairn pane fills its lines at each session start that empties the host's sta
 - prior-review #7: a hotfix-only PR still waits for the list — follow-up, already in "Pane edges (M222–M236 reviews)".
 - prior-review #8: a PR on another host gets no counts — reject, planned change (AC4).
 - prior-review (unranked): DESIGN's `hooks/status/` history list does not name M237 — fix now, fixed 314746b.
+- copilot: CHANGELOG.md:132 — fix now: the M230 entry for the in-process `/clear` still said a pane behind another tab waits for the next open, fixed 2ea874c (replied and resolved).
+- copilot: review body — noted (one finding, the thread above, "Approval recommended").
+- Copilot level: Lite (set by GitHub's settings). The review covered an earlier head (state `reviewed earlier-head Lite`).
+- conversation: copilot-pull-request-reviewer[bot] PR — noted (the COMMENTED review whose body is the index above). No issue comments.
 - Fix-now verify: the five verify commands exit 0 after 314746b (1592 mod tests). With the `inFlight` guard removed, the stale-store test and the deny-based failed-write test failed.
