@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M240: Measure medium effort on the history reviewers, and state each spawned role's effort level
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the rulebook and review skill prose that every adopting repo's session follows when it spawns subagents
-- **Branch/PR:** —
+- **Branch/PR:** m240-effort-review-medium
 
 ## Goal
 
@@ -86,7 +86,7 @@ run per arm goes to the note's re-measurement procedure.
 
 ## Tasks
 
-- [ ] T1: Write the note's Design section and commit it before any run. It
+- [x] T1: Write the note's Design section and commit it before any run. It
       names the two arms and the pinned inputs. History-review runs read refs
       that predate `c023018`, as in M239. The cost method takes the final
       call's output from the foreground Agent tool result's `usage`. The M228
@@ -129,3 +129,5 @@ run per arm goes to the note's re-measurement procedure.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader): 8 findings, AC4 clean. Fixed in place: AC2 arms and judging defined, `untested` widened to a missing effort value and to a new default run not at `high`, M239 default rows required in AC1, Design-before-runs made a commit-time check, AC3 narrowed to subagent roles, AC3's grep tightened to `` `effort` `` and `effort:`. Decided toward the narrower promise: the D-entry stays a task with no criterion. Moved to T2: the check that no transcript names `effort-roles.md`.
 - 2026-10-10: plan gate chose comparing `medium` with the mean of two default arms (M239's and one new) over one `medium` run against M239's default alone, because M239 measured a run-to-run spread equal to its whole low-against-default gap; falsified by a rerun that flips this milestone's verdict.
 - 2026-10-10: plan gate chose leaving search and edit work at default over `low` (user's choice), because the measured saving sits inside the output undercount; falsified by a measurement where `low` saves more than the undercount can reverse.
+- 2026-10-10: implement started on branch `m240-effort-review-medium`. Untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-10: T1 done: the note's Design section committed before any run. New runs reuse the M239 default runs' first user records as prompts (extracted, verbatim). Each report is the run's `SubagentHandback` message, else its last assistant text.

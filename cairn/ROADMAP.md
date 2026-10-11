@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 | M237 | The pane fills again after a resume or a hidden-tab clear, and reads each PR with one call | done | — | normal | milestones/archive/M237-pane-fills-again.md |
 | M238 | The pane reads its pull requests once per start, at its first draw when placed later | done | — | normal | milestones/archive/M238-pane-one-read-per-start.md |
 | M239 | Compare low with default reasoning effort on cairn's Sonnet and Haiku roles | done | — | normal | milestones/archive/M239-effort-roles.md |
-| M240 | Measure medium effort on the history reviewers, and state each spawned role's effort level | planned | — | normal | milestones/M240-effort-review-medium.md |
+| M240 | Measure medium effort on the history reviewers, and state each spawned role's effort level | in-progress | — | normal | milestones/M240-effort-review-medium.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
