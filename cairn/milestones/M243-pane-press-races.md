@@ -79,6 +79,7 @@ review)" stay in those rows. Examples are a non-`clear` end that drops a
 - 2026-10-11: claim audit: 24 claims read, 5 corrected — CHANGELOG.md, hooks/status/register.tsx, hooks/status/pane.test.tsx
 - 2026-10-11: the 5 corrections: the CHANGELOG "Before" sentence now says `Plan` and `Implement` both ran `/clear`. The `busy` comment names the five press kinds. The `pressChecked` comment sets the hold before the release. The `pressCandidate` comment says `pressChecked` holds the command. The AC2 test comment says each press marks `busy`. The same reader's single re-read found all 5 hold. Verify passes after the edits: 1656 mod tests with 0 red.
 - 2026-10-11: implement done, status review. No deviation from the plan beyond `pressChecked` as one helper and `pressCandidate` moved onto it.
+- 2026-10-11: step-7 approval: m243-pane-press-races approved for merge
 
 ## Decisions
 
