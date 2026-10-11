@@ -988,16 +988,19 @@ async function pressRefresh($) {
 // (M224). It reads the row's state word as it is now, not as it was drawn,
 // and does nothing when that word no longer carries this Button, while
 // another Button's run is in flight, or while a cairn skill's step runs,
-// as the Status press does (M224 review).
+// as the Status press does (M224 review). Its checks run under the shared
+// press mark (M243).
 async function pressBlocked($, kind: PaneButton, id: string) {
-  if (busy() || knownStep(await read($, step)) !== null) return
-  const row = (await read($, pane)).blocked.find(each => each.id === id)
-  if (row === undefined || row.url === null) return
-  const words = await read($, prs)
-  const word = Object.prototype.hasOwnProperty.call(words, row.url) ? words[row.url].word : undefined
-  const route = BLOCKED_COMMANDS[kind]
-  if (word === undefined || PR_BUTTON[word] !== kind || route === undefined) return
-  await run($, route.command, route.withId ? id : '')
+  await pressChecked($, async () => {
+    if (knownStep(await read($, step)) !== null) return undefined
+    const row = (await read($, pane)).blocked.find(each => each.id === id)
+    if (row === undefined || row.url === null) return undefined
+    const words = await read($, prs)
+    const word = Object.prototype.hasOwnProperty.call(words, row.url) ? words[row.url].word : undefined
+    const route = BLOCKED_COMMANDS[kind]
+    if (word === undefined || PR_BUTTON[word] !== kind || route === undefined) return undefined
+    return { command: route.command, args: route.withId ? id : '' }
+  })
 }
 
 // True while an action Button's run is in flight, so a second press, such
@@ -1034,41 +1037,83 @@ let homeRun: object | null = null
 // the conversation, as a press of Clear is (M216), so it clears only when
 // the drawn label is the next step's label as it is now: a `Resume` or
 // `Review` drawing whose next step has since become planning or implement
-// runs the command and keeps the conversation (M221 review).
+// runs the command and keeps the conversation (M221 review). Its checks run
+// under the shared press mark (M243).
 async function pressNext($, drawn: string | undefined) {
-  if (busy() || knownStep(await read($, step)) !== null) return
-  const next = (await read($, pane)).next
-  if (next === null) return
-  if (next.id === null && drawn !== PLAN_LABEL) return
-  const command = `cairn:${next.command.slice(1)}`
-  const args = next.id ?? ''
-  if (!CLEARS_FIRST.includes(next.action) || drawn !== labelOf(next.action)) {
-    await run($, command, args)
-    return
-  }
-  const mine = { command, args }
-  heldRun = mine
-  if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
+  await pressChecked($, async () => {
+    if (knownStep(await read($, step)) !== null) return undefined
+    const next = (await read($, pane)).next
+    if (next === null) return undefined
+    if (next.id === null && drawn !== PLAN_LABEL) return undefined
+    const clears = CLEARS_FIRST.includes(next.action) && drawn === labelOf(next.action)
+    return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '', clears }
+  })
 }
 
 // True while a run is in flight, a command or a ⌂ press waits for its
-// `/clear`, or a ✎ press runs its checks (M242).
+// `/clear`, or a Status, Clear, next-step, blocked-line, or ✎ press runs
+// its checks (M242, M243).
 function busy(): boolean {
-  return running || heldRun !== null || homeRun !== null || candidateCheck !== null
+  return running || heldRun !== null || homeRun !== null || pressCheck !== null
 }
 
+// A press of Status runs `/cairn:milestone` while no step is set. Its
+// checks run under the shared press mark (M243).
 async function pressStatus($) {
-  if (busy() || knownStep(await read($, step)) !== null) return
-  await run($, STATUS_COMMAND, '')
+  await pressChecked($, async () => (knownStep(await read($, step)) !== null ? undefined : { command: STATUS_COMMAND, args: '' }))
 }
 
 // A press of Clear runs the built-in `/clear` (M216), under the same checks
 // as the other action Buttons. It also reads `ended` as it is now, so a
 // press of a drawing made before a typed prompt, a skill, or a session end
-// cleared it does nothing (M216 review).
+// cleared it does nothing (M216 review). Its checks run under the shared
+// press mark (M243).
 async function pressClear($) {
-  if (busy() || knownStep(await read($, step)) !== null || !(await read($, ended))) return
-  await run($, CLEAR_COMMAND, '')
+  await pressChecked($, async () => {
+    if (knownStep(await read($, step)) !== null || !(await read($, ended))) return undefined
+    return { command: CLEAR_COMMAND, args: '' }
+  })
+}
+
+// The shared press mark, set from a press's entry while its checks read the
+// step and the stored state, so a second press, in the same tick or later,
+// finds `busy` true (M243, from the ✎ press's mark of M242). The press
+// clears it when its checks end, in the same tick as `run` sets `running`
+// or the press sets `heldRun`. A reload starts it over as null.
+let pressCheck: object | null = null
+
+// What a press's checks give: a command to run, or, with `clears`, a
+// command to hold for the session end of a `/clear` run first (M221).
+type Checked = { command: string; args: string; clears?: boolean }
+
+// Runs a press's checks under the shared press mark, then its command
+// (M243). A press while `busy` does nothing, and a press whose checks give
+// no command runs nothing and frees the mark. A held command is set only
+// after the checks, so a session end during them runs none (M242 review).
+// The hold is set before the mark's release, and no await comes between
+// the release and `run`, so no other press passes `busy` in that gap. A
+// refused `/clear` drops the hold.
+async function pressChecked($, checks: () => Promise<Checked | undefined>) {
+  if (busy()) return
+  const mark = {}
+  pressCheck = mark
+  let got: Checked | undefined
+  let mine: { command: string; args: string } | null = null
+  try {
+    got = await checks()
+    if (got?.clears) {
+      mine = { command: got.command, args: got.args }
+      heldRun = mine
+    }
+  } finally {
+    if (pressCheck === mark) pressCheck = null
+  }
+  if (got === undefined) return
+  if (mine === null) {
+    await run($, got.command, got.args)
+    return
+  }
+  if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
 }
 
 // A press of the pane's ⌂ runs the built-in `/clear` under the same checks
@@ -1088,12 +1133,6 @@ async function pressHome($) {
   if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
 }
 
-// A ✎ press's mark while it reads the step and the stored pane state, set
-// before its first await, so a second press in the same tick finds `busy`
-// true, as ⌂'s mark is (M241 review). The press clears it when its reads
-// end. A reload starts it over as null (M242).
-let candidateCheck: object | null = null
-
 // A press of a candidate line's ✎ runs `/clear` and holds
 // `/cairn:milestone-plan` with the row's short title for the session end
 // that the clear brings, as a `Plan` press holds its command (M242). The
@@ -1101,25 +1140,17 @@ let candidateCheck: object | null = null
 // Plan is. It does nothing when a step is set, when the stored pane state
 // would draw no candidate rows (no ROADMAP found, or an active milestone),
 // or when the stored row at the drawn index is missing or has another
-// title. It holds the command only after those checks, as `Plan` does, so
-// a session end during the checks runs no command (M242 review).
+// title. Its checks run under the shared press mark, and `pressChecked`
+// holds the command only after them, as for `Plan` (M242 review, M243).
 async function pressCandidate($, index: string, title: string) {
-  if (busy()) return
-  const mark = {}
-  candidateCheck = mark
-  let mine: { command: string; args: string }
-  try {
+  await pressChecked($, async () => {
     const state = await read($, pane)
     const rows = state.candidates
     const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
     const drawn = state.found && state.milestones.length === 0 && row?.title === title
-    if (!drawn || knownStep(await read($, step)) !== null) return
-    mine = { command: PLAN_COMMAND, args: title }
-    heldRun = mine
-  } finally {
-    if (candidateCheck === mark) candidateCheck = null
-  }
-  if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
+    if (!drawn || knownStep(await read($, step)) !== null) return undefined
+    return { command: PLAN_COMMAND, args: title, clears: true }
+  })
 }
 
 // The open at the session end of a ⌂ press's `/clear` (M241). A Button's

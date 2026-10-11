@@ -3446,6 +3446,88 @@ describe('a press of Clear runs /clear (M216 AC3)', () => {
   }
 })
 
+// Two presses of one Button in the same tick: each press marks itself busy
+// before its first await, so the second finds `busy` true and runs nothing
+// (M243 AC1). On single-in-progress the next step is a resume, which runs
+// with no `/clear`, so no session end comes between.
+describe('two presses at once of a band Button run its command once (M243 AC1)', () => {
+  const CASES = [
+    { key: 'cairn-next', run: () => nextRun('single-in-progress'), ends: false },
+    { key: 'cairn-status', run: () => STATUS_RUN, ends: false },
+    { key: CLEAR_KEY, run: () => CLEAR_RUN, ends: true },
+  ]
+  test('the next step on single-in-progress is a resume', () => {
+    expect(FIXTURES['single-in-progress'].next?.action).toBe('resume')
+  })
+  for (const { key, run, ends } of CASES) {
+    for (const surface of SURFACES) {
+      test(`${key} (${surface})`, async ($, on) => {
+        const copy = copyOf('single-in-progress')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+        // Clear draws only after a cairn skill ends (M216).
+        if (ends) await skillEnds($)
+        expect(await allActionKeys(ui)).toContain(key)
+        await Promise.all([ui.press({ key }), ui.press({ key })])
+        await untilRuns(copy, 2, 10)
+        expect(copy.commands).toEqual([run()])
+        await ui.unmount()
+      })
+    }
+  }
+
+  // On idle-order the next step is an implement, whose press holds its
+  // command and runs `/clear` first (M221): two presses at once run one
+  // `/clear`, and its session end runs the held command once (M243 review).
+  for (const surface of SURFACES) {
+    test(`an Implement press holds once (${surface})`, async ($, on) => {
+      expect(FIXTURES['idle-order'].next?.action).toBe('implement')
+      const copy = copyOf('idle-order')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      await Promise.all([ui.press({ key: 'cairn-next' }), ui.press({ key: 'cairn-next' })])
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 3, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN, nextRun('idle-order')])
+      await ui.unmount()
+    })
+
+    // A second press in a later tick, while the first press's read of the
+    // step waits, runs nothing (M243 review).
+    test(`a second Status press during the first press's checks runs nothing (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      let entered = false
+      let release = () => {}
+      const wait = new Promise<void>(resolve => {
+        release = resolve
+      })
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      // The first press's read of the step waits until the release.
+      copy.afterStepRead = async () => {
+        entered = true
+        await wait
+      }
+      const first = ui.press({ key: 'cairn-status' })
+      for (let i = 0; i < 200 && !entered; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      expect(entered).toBe(true)
+      const second = ui.press({ key: 'cairn-status' })
+      await new Promise(resolve => setTimeout(resolve, 5))
+      expect(copy.commands ?? []).toEqual([])
+      release()
+      await Promise.all([first, second])
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([STATUS_RUN])
+      await ui.unmount()
+    })
+  }
+})
+
 // The fixtures whose band Button is Plan, and those whose band Button is
 // Implement, with what each press runs after `/clear` (M221 AC1, AC2).
 const CLEAR_FIRST_CASES: { name: string; label: string; run: () => { command: string; args: string } }[] = [

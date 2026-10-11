@@ -193,6 +193,16 @@
 
 ### Fixes
 
+- **A quick second press of a band or pane button runs no second
+  command.** The `Plan`, `Implement`, `Resume`, `Review`, `Status`, and
+  `Clear` buttons, and a blocked line's `Finish`, `Revise`, and `Check`,
+  each read the step and the stored state before they run. Before, a
+  second press of these buttons during those reads also passed the busy
+  check, so both presses went on: both ran their command, or, for `Plan`
+  and `Implement`, both ran `/clear`. Now a press
+  marks the buttons busy before its reads start, so a second press during
+  them does nothing. A press whose reads find nothing to run frees the
+  buttons again.
 - **`/cairn-pane` opens the pane after a typed `/clear`.** With the pane
   open, a typed `/clear` in the desktop app took it off the screen. When
   the next message was `/cairn-pane`, the session start reopened the pane,
