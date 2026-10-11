@@ -80,6 +80,7 @@ the "Pane edges (M238 review)" row.
 - 2026-10-10: T4 done. Live look in a new desktop Code session: the operator saw ⌂ just before ↻, a press cleared the conversation with the pane still open, and the operator accepted the look. Whether the open brings a pane behind another tab forward was not reported.
 - 2026-10-10: claim audit: 55 claims read, 3 corrected — register.tsx, CHANGELOG.md, pane.test.tsx
 - 2026-10-10: The corrections: the `openHome` comment states what the API documents for an open of an open pane. The CHANGELOG adds the background-work wait. An old pane test's comment drops Clear, and its call drops the stray fourth argument. The reader re-read the three, and they hold. Verify passes: mod tests 1625, both Python suites, both validates.
+- 2026-10-10: step-7 approval: m241-pane-home-button approved for merge
 
 ## Decisions
 
