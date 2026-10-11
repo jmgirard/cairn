@@ -3726,6 +3726,8 @@ describe('a Status press and a ⌂ press at once run only the first one (M243 AC
       seat(on, copy)
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      // Both Buttons are drawn, so each press reaches its handler.
+      for (const key of keys) expect((await ui.findAll({ key })).length).toBe(1)
       await Promise.all(keys.map(key => ui.press({ key })))
       await ui.unmount()
       await untilRuns(copy, 2, 10)
@@ -3744,6 +3746,8 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    // Finish stays drawn while the step runs (M224 review).
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-finish-M111'])
     await pressKey($, 'cairn-pane-finish-M111')
     expect(copy.commands ?? []).toEqual([])
     await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
@@ -3774,6 +3778,9 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
     await ui.press({ key: 'cairn-pane-finish-M111' })
     await ui.unmount()
     expect(copy.commands ?? []).toEqual([])
+    // The press read `closed`, not an empty store: a drawing now carries
+    // the Check Button.
+    expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-check-M111'])
     await pressKey($, PANE_STATUS)
     expect(copy.commands).toEqual([STATUS_RUN])
   })
