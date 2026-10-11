@@ -194,4 +194,5 @@ this note does not rely on.
 - copilot: cairn/references/effort-roles.md:11 — fix now (same as diff-bug #1), fixed 18ca241
 - copilot: review body — noted (its two findings are the two threads above)
 - Copilot level: Lite (set by GitHub's settings)
+- conversation: jmgirard PR — noted (two empty-body reviews, GitHub's records of the two thread replies); 0 unresolved threads, 0 issue comments; Copilot state `reviewed earlier-head Lite`, no re-request.
 - verify after fixes (18ca241): scripts 406 OK, hooks 174 OK, both manifests valid with no version warning, mod test 0 fail; `cairn_validate` exit 0 with no WARN.
