@@ -127,15 +127,15 @@
   with no read running draws ↻, not `⋯`.
 
 - **A ✎ Button on each candidate row in the cairn pane plans that row.**
-  While no cairn skill runs, each row in the pane's `CANDIDATES` list
-  carries ✎ at its right end, but for a row whose short title is empty.
-  The short title is the row's text after any `[high]` or `[low]` token,
-  up to its first `: `, with outer spaces removed. A press runs `/clear`,
-  and then `/cairn:milestone-plan` with that short title in the cleared
-  conversation, as
-  the `Plan` button does. While another button's command runs or waits
-  for its `/clear`, or a ⌂ press waits for its `/clear`, a press does
-  nothing.
+  While no cairn skill runs or waits on its background work, each row in
+  the pane's `CANDIDATES` list carries ✎ at its right end, but for a row
+  whose short title is empty. The short title is the row's text after a
+  leading `[high] ` or `[low] ` token with its space, up to its first
+  `: `, with outer spaces removed. A press runs `/clear`, and then
+  `/cairn:milestone-plan` with that short title in the cleared
+  conversation. A press while Claude works outside a cairn skill runs when
+  Claude is idle. While another button's command runs or waits for its
+  `/clear`, or a ⌂ press waits for its `/clear`, a press does nothing.
 
 - **The cairn pane has a ⌂ Button that clears the conversation.** It sits
   just before ↻ on the pane's first line while no cairn skill runs or

@@ -200,6 +200,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
   a press of Clear is, which is how the plan gate settled the IP3 point. A
+  candidate line's ✎ holds `cairn:milestone-plan` in `heldRun` the same
+  way (M242). A
   `Resume` or `Review` drawing whose next step has since become planning or
   implement runs the command without the clear. `Resume`, `Review`,
   `Status`, and Clear run their one command.
@@ -278,10 +280,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
   Box (M242). The line's `target` is its index and its `title` the short
   title. `pressCandidate` in register.tsx returns while `busy()`. Else it
-  sets `heldRun` to `cairn:milestone-plan` with the title before its first
-  await. A set step, or a stored candidate row at that index that is
-  missing or has another title, takes the hold back. Else it runs `clear`, and
-  the `session.end` hook runs the held command as it runs a `Plan` press's. The pane state also holds the `blocked` rows
+  sets the module's `candidateCheck` mark before its first await, which
+  `busy()` reads, and clears it when its checks end. It returns on a set
+  step, on stored state that draws no candidates (no ROADMAP found, or an
+  active milestone), or on a stored row at that index that is missing or
+  has another title. Else it sets `heldRun` to `cairn:milestone-plan`
+  with the title and runs `clear`, and the `session.end` hook runs the
+  held command as it runs a `Plan` press's (M242 review).
+  The pane state also holds the `blocked` rows
   (M223), in ROADMAP order, each with the number of the pull request that
   its milestone file's first `Branch/PR` header line names. The number
   comes from the first `https://github.com/<owner>/<repo>/pull/<n>` URL

@@ -1413,9 +1413,15 @@ function candidatesPlanNext(): Copy {
 const TITLES = [...CANDIDATE_LINES.map(text => text.slice(2)), '', 'Same title', 'Same title']
 
 describe('each candidate line with a short title carries ✎ while no cairn skill runs (M242 AC1)', () => {
-  test('the extra rows read as planned: an empty title and two equal ones', () => {
-    expect(TITLES[EMPTY_AT]).toBe('')
-    expect(SAME_AT.map(i => TITLES[i])).toEqual(['Same title', 'Same title'])
+  // The reader's lines for the copy, so the titles below are read, not
+  // assumed (M242 review).
+  test('the extra rows read as planned: an empty title and two equal ones', async ($, on) => {
+    seat(on, candidatesPlus())
+    await $.turn.complete(turn())
+    const lines = await paneLines($, 'desktop')
+    const rows = keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))
+    expect(rows).toEqual([...CANDIDATE_LINES, '· ', '· Same title', '· Same title'])
+    expect(rows.map(text => (text as string).slice(2))).toEqual(TITLES)
   })
 
   for (const surface of SURFACES) {
@@ -1466,7 +1472,12 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
       [['plan'], '2', 'Low'],
       [undefined, undefined, undefined],
     ])
-    expect(rows(false).map(line => [line.buttons, line.target, line.title])).toEqual(rows(false).map(() => [undefined, undefined, undefined]))
+    expect(rows(false).map(line => [line.key, line.buttons, line.target, line.title])).toEqual([
+      ['candidate-0', undefined, undefined, undefined],
+      ['candidate-1', undefined, undefined, undefined],
+      ['candidate-2', undefined, undefined, undefined],
+      ['candidate-3', undefined, undefined, undefined],
+    ])
   })
 })
 
@@ -1554,10 +1565,30 @@ describe('a guarded ✎ press runs nothing (M242 AC3)', () => {
     await ui.unmount()
     await untilRuns(copy, 2, 10)
     expect(copy.commands).toEqual([CLEAR_RUN])
+    // The first press's title runs, not the second's (M242 review).
     await $.session.end(CLEAR_END)
     await untilRuns(copy, 2)
-    expect(copy.commands?.length).toBe(2)
-    expect(copy.commands?.[1].command).toBe(PLAN_COMMAND)
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: TITLES[0] }])
+  })
+
+  // A refused `/clear` drops the hold, so a later clear end runs no plan,
+  // and the next press is free (M242 review).
+  test('a refused clear drops the held plan', async ($, on) => {
+    const copy = candidatesPlus()
+    copy.runThrows = 'no such command here'
+    seat(on, copy)
+    await $.turn.complete(turn())
+    await pressKey($, `${PANE_PLAN}-1`)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    expect(copy.toasts?.[0]).toMatch(/^cairn: .* \(\/clear\)$/)
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    copy.runThrows = undefined
+    await pressKey($, `${PANE_PLAN}-2`)
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 3)
+    expect(copy.commands).toEqual([CLEAR_RUN, CLEAR_RUN, { command: PLAN_COMMAND, args: TITLES[2] }])
   })
 })
 
@@ -2820,9 +2851,10 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect(keyOf(got.first as Element)).toBe(firstKey)
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
-    // Besides the first line, only candidate lines grow, so ✎ sits at their
-    // right end (M242).
-    expect(grows(got.lines).filter(([key]) => !/^candidate-\d+-text$/.test(String(key)))).toEqual([[`${firstKey}-text`, 1]])
+    // Besides the first line, each candidate line's text grows, so ✎ sits at
+    // its right end, and no other line does (M242, M242 review).
+    const candidates = got.lines.map(keyOf).filter(key => /^candidate-\d+$/.test(key ?? ''))
+    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1], ...candidates.map(key => [`${key}-text`, 1])])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
     expect(got.button?.props.label).toBe('↻')
     return got

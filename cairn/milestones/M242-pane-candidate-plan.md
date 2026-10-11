@@ -7,7 +7,7 @@
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter sees the Button in the cairn pane
-- **Branch/PR:** m242-pane-candidate-plan
+- **Branch/PR:** m242-pane-candidate-plan, https://github.com/jmgirard/cairn/pull/252
 
 ## Goal
 
