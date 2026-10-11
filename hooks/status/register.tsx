@@ -69,15 +69,14 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
-// (`readPrs`, M236). An open does not wait for that read, and a `/clear` or
-// a `/resume` reads again while the pane is placed, shown or behind another
+// (`readPrs`, M236). The reopen skips the read when its start already read
+// (M238). An open does not wait for that read, and a `/clear` or a
+// `/resume` reads again while the pane is placed, shown or behind another
 // tab (M230, M237). A pane listed but not placed then reads at its first
 // draw, unless an open or the start's reopen read first, or the start's
 // `$.ui.panes()` threw. One start reads once, though both its start hooks
-// fire (M238).
-// A blocked line
-// then shows its state word, and a merged, changes-requested, or closed
-// line carries a Button for its next step
+// fire (M238). A blocked line then shows its state word, and a merged,
+// changes-requested, or closed line carries a Button for its next step
 // (M224). The same read counts each open pull request's unresolved review
 // threads, which draw on a line under it (M225, M236). A github.com pull
 // request's word and count come from one `gh api graphql` call (M237). The same read lists the operator's open pull requests on the
@@ -1110,8 +1109,8 @@ let reopened = false
 // refresh found a ROADMAP, opens the pane (M222). A reopen that is not placed waits
 // with no toast, and a refused one gives nothing. An open starts the read of
 // the pull request states (M224), and the start does not wait for it (M230).
-// A start whose resume or clear hook already read starts no second read
-// (M238).
+// A start that already read, by its resume or clear hook or by the draw
+// that hook owed, starts no second read (M238).
 async function reopen($) {
   try {
     const cwd = await $.session.root()
@@ -1127,7 +1126,8 @@ async function reopen($) {
     return
   }
   // The reopen is an open, so it reads the pull request states (M224),
-  // unless this start's resume or clear hook already read them (M238).
+  // unless this start already read them, by its resume or clear hook or by
+  // the draw that hook owed (M238).
   owed = false
   if (startRead) return
   startRead = true

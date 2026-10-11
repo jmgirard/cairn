@@ -105,4 +105,27 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - AC3 evidence (pass 2): the grep returns 4 lines, and one is not a `//` comment: `register.tsx:711`, in `paneOf`.
 - AC4 evidence (pass 2): the sweep was re-run after T7, and each returned line was read. README 342-349 now names the skip for each case, DESIGN 300-305 and 320-328 name the reopen's skip, the first-draw trigger, and the re-check, and `register.tsx:742-764` match. No line contradicts the code.
 - AC5 evidence (pass 2): both `unittest discover` suites, both `claude plugin validate` commands, and the mod test exit 0 on this head's code.
+- spawned: diff-bug, blame-history, prior-review (pass 2).
+- pass 2 diff-bug #1: the first-draw read's ⋯ write likely lands during the draw and is refused — follow-up ("Pane edges (M238 review)").
+- pass 2 diff-bug #2: the "at once" test does not test the classic hook's re-check — fix now (renamed, with a comment that it does not) and follow-up for a test that fails without the check.
+- pass 2 diff-bug #3: the owes-draw-reopen test builds a state a new process does not reach — fix now (comment calls it a guard).
+- pass 2 diff-bug #4: two reopen comments leave out the owed draw — fix now.
+- pass 2 diff-bug #5: README's "unless" reads as covering all three opens — fix now.
+- pass 2 diff-bug #6: the classic hook's first `startRead` check is redundant — reject, style: it only saves one pane-list call.
+- pass 2 diff-bug #7: a pane placed and drawn while the classic hook awaits reads one redraw late — follow-up ("Pane edges (M238 review)").
+- pass 2 blame-history #1: restore the CHANGELOG clause that a hidden-tab pane kept no PR words — reject, false: v2.0.0 has no PR reads at all, so that state never shipped (claim audit after return 1).
+- pass 2 blame-history #2: DESIGN 430-438 lost the hook's antecedent — fix now.
+- pass 2 blame-history #3: ragged lines in README and `register.tsx` — fix now for the lines this branch wrote; README 339's long line is M236's and stays.
+- pass 2 blame-history #4: DESIGN's "the three opens start the read" — fix now.
+- pass 2 blame-history #5: the render-hook read rests on a harness that does not refuse writes — noted; the "Pane edges (M238 review)" row holds the live look.
+- pass 2 blame-history #6: split DESIGN 320-331 — reject, style.
+- pass 2 blame-history #7, #8, #10: the history list, README 412-416, and the absorbed row items — noted, no change; hygiene prunes the rows.
+- pass 2 blame-history #9: "waits undrawn" in the CHANGELOG — fix now (glossed as a pane not yet shown, as in a narrow terminal).
+- pass 2 prior-review #1: the same as pass 2 diff-bug #2 — fix now and follow-up.
+- pass 2 prior-review #2: the folded CHANGELOG entry drops the first-draw qualifiers — fix now (it names the open that reads first).
+- pass 2 prior-review #3: the same as pass 2 diff-bug #5 — fix now.
+- pass 2 prior-review #4: ragged wrapping — fix now with pass 2 blame-history #3.
+- pass 2 prior-review #5: the placed-and-shown check is still spelled at three sites — follow-up ("Pane edges (M238 review)").
+- pass 2 prior-review #6: `register.tsx:66-72` says each open reads — fix now.
+- pass 2 prior-review #7: DESIGN's "It reads the PRs once" — fix now with pass 2 blame-history #2.
 - Consistency gate (pass 2): `cairn_validate` all checks passed. The marketplace validate prints no `version` warning. The CHANGELOG change sits in the unreleased `/resume` entry, with no milestone numbers.

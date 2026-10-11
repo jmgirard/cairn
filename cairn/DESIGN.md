@@ -300,8 +300,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   button, the session-start reopen, which skips it when its start
   already read, M238), at a press of the ↻ Refresh Button, which first
   reads the files again, and at the start hooks and the first draw
-  described below. The three opens start the read with `void readPrs($)`
-  and return before it settles (M230). The press still waits for it. The ↻
+  described below. The three opens start the read with `void readPrs($)`,
+  or the reopen skips it as above, and they return before it settles
+  (M230). The press still waits for it. The ↻
   is the pane's one Refresh (M236). `paneLines` gives it to the first
   line, the first milestone's head line or `no-active`, whenever a
   ROADMAP is found, and sets that line's `grow`. The render gives that
@@ -432,10 +433,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   host's state starts empty under the new session id, and no
   `session.start` fires, so a `classic.SessionStart` hook with source
   `clear` refreshes the band and the pane, and a placed pane reads its PRs
-  again (M230, M237). Source `resume` does the same (M237). A pane listed
-  but not placed reads them at its first draw (M238). The hook
+  again (M230, M237). Source `resume` does the same (M237). The hook
   cannot tell a resume in the process from a resumed start, so a resumed
-  start reads the files twice. It reads the PRs once (M238). A
+  start reads the files twice. A resumed start still reads the PRs once,
+  and a pane listed but not placed reads them at its first draw (M238). A
   typed `/clear` in the desktop app ends the process with reason `other`,
   and the next process starts with no pane at the first message after the
   clear. So at an `other` end with the pane listed, shown, and placed, the

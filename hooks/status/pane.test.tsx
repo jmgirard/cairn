@@ -3107,7 +3107,8 @@ describe('one process start reads each URL once (M238 AC2)', () => {
   })
 
   // The read at the first draw is the start's read, so a reopen after it
-  // reads nothing (M238 review).
+  // reads nothing (M238 review). In a new process the pane is not listed
+  // before the reopen, so this order is a guard, not one seen on a host.
   test('a resume start that owes, the first draw, then the reopen read each URL once', async ($, on) => {
     const { calls, copy } = await marked($, on)
     copy.open = [PANE]
@@ -3137,8 +3138,11 @@ describe('one process start reads each URL once (M238 AC2)', () => {
     expect(calls.reads).toEqual([URL_1250])
   })
 
-  // Both hooks of one start at once, for a placed pane (M238 review).
-  test('the reopen and a resume start at once read each URL once', async ($, on) => {
+  // Both hooks of one start begun together, for a placed pane (M238
+  // review). The harness runs the two in turn, so this test passed before
+  // the classic hook's second `startRead` check, and it does not test that
+  // check.
+  test('the reopen and a resume start begun together read each URL once', async ($, on) => {
     const { calls, copy } = await marked($, on)
     copy.open = [PANE]
     await Promise.all([$.session.start(NEW_START), $.classic.SessionStart({ source: 'resume' })])
