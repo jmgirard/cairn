@@ -363,8 +363,9 @@ with no thread does not count, because GitHub does not link a reply to
 it, so the pane cannot tell whether you answered it. The count covers the
 newest 100 threads. With no unresolved thread there is no line.
 When the query fails, the PR's word is `unknown` and the line is left out.
-When only the thread list comes back in a shape the pane does not read,
-the line is left out. The state word and its Button stay.
+When the query answers but its thread list comes back in a shape the pane
+does not read, the count line is left out, and the PR keeps its state word
+and its Button.
 A hotfix PR whose URL is on a host other than github.com gets its word
 from one `gh pr view <url> --json state,reviewDecision` call instead, and
 no count line.

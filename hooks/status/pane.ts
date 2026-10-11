@@ -65,17 +65,18 @@ export type PaneLine = {
   grow?: true
 }
 
-// A blocked milestone's pull request state, as `prWord` reads it from a
-// `gh pr view <url> --json state,reviewDecision` call (M224). The state
-// contract holds the one list of words.
+// A blocked milestone's pull request state, as `wordOf` maps it from a
+// `gh api graphql` reply (counts.ts `prRead`, M237) or, for a URL on
+// another host, from a `gh pr view <url> --json state,reviewDecision` call
+// (`prWord`, M224). The state contract holds the one list of words.
 export type PrWord = CairnPrWord
 
 // One read of a pull request: its word, and its counts while it is open
-// and its count read did not fail (M225).
+// and its threads passed the shape check (M225, M237).
 export type PrRead = CairnPrRead
 
-// The words `prWord` gives an OPEN pull request, whose counts are read
-// (M225).
+// The words `wordOf` gives an OPEN pull request, the ones that carry
+// counts (M225, M237).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
 
 // The count line's text, or null when the count is zero. One thread reads

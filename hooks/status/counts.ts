@@ -28,12 +28,28 @@ const URL = /^https:\/\/github\.com\/([^/ \t]+)\/([^/ \t]+)\/pull\/([0-9]{1,15})
 
 // The `gh api graphql` argv for a pull request URL, null for a URL of
 // another form. The owner and repo go as strings (`-f`) and the number as
-// an Int (`-F`), so an owner named like a number stays a string.
+// an Int (`-F`), so an owner named like a number stays a string. The call
+// names `--hostname github.com`, the URL's host, so a `GH_HOST` set to
+// another host does not move it (M237 review).
 export function countsArgv(url: string): string[] | null {
   const match = URL.exec(url)
   if (match === null) return null
   const [, owner, repo, number] = match
-  return ['gh', 'api', 'graphql', '-f', `query=${COUNTS_QUERY}`, '-f', `owner=${owner}`, '-f', `repo=${repo}`, '-F', `number=${number}`]
+  return [
+    'gh',
+    'api',
+    'graphql',
+    '--hostname',
+    'github.com',
+    '-f',
+    `query=${COUNTS_QUERY}`,
+    '-f',
+    `owner=${owner}`,
+    '-f',
+    `repo=${repo}`,
+    '-F',
+    `number=${number}`,
+  ]
 }
 
 // The count from the returned nodes.

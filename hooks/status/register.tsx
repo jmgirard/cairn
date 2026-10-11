@@ -771,7 +771,14 @@ async function readPrs($) {
         await update($, reading, current => (mine === prReads ? false : current))
       } catch {
         // The stored value stays true, and once no read of this module is
-        // in flight, the next draw shows ↻ (M237).
+        // in flight, the next draw shows ↻ (M237). A change to `inFlight`
+        // draws nothing, so this asks for the pane to be drawn again (M237
+        // review). No test covers that redraw.
+        try {
+          $.ui.invalidate('ui.render')
+        } catch {
+          // The ⋯ stays until something else draws the pane.
+        }
       }
     }
   }

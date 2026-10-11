@@ -2,6 +2,7 @@ import { describe, expect, test } from 'claude-code/testing'
 
 import { COUNTS_QUERY, countPr, countsArgv, prNodes, prRead } from './counts'
 import { PR_245_STDOUT } from './fixtures/pr-245-threads'
+import { PR_246_STDOUT, PR_247_STDOUT } from './fixtures/pr-state-replies'
 import { countsText } from './pane'
 
 // The count is the review threads with `isResolved` false (M225, M236), and
@@ -83,6 +84,13 @@ describe('prRead gives the word and the count of one graphql reply (M237 AC4)', 
     })
   }
 
+  // Replies GitHub gave to the M237 query, so the field names are GitHub's
+  // own (M237 review).
+  test('the captured PR #246 and #247 replies read merged and in review with one thread', () => {
+    expect(prRead({ exitCode: 0, stdout: `${PR_246_STDOUT}\n` })).toEqual({ word: 'merged', counts: null })
+    expect(prRead({ exitCode: 0, stdout: `${PR_247_STDOUT}\n` })).toEqual({ word: 'in review', counts: { unresolved: 1 } })
+  })
+
   test('OPEN with an absent decision reads in review', () => {
     expect(prRead(ok(reply({ state: 'OPEN', ...threads(false) })))).toEqual({ word: 'in review', counts: { unresolved: 1 } })
   })
@@ -121,7 +129,7 @@ describe('countsArgv names the owner, repo, and number of the URL (M225 AC1)', (
   test('two URLs with different owners, repos, and numbers', () => {
     const a = countsArgv('https://github.com/alpha/one/pull/12')
     const b = countsArgv('https://github.com/beta/two/pull/9001')
-    expect(a?.slice(0, 3)).toEqual(['gh', 'api', 'graphql'])
+    expect(a?.slice(0, 5)).toEqual(['gh', 'api', 'graphql', '--hostname', 'github.com'])
     expect([arg(a, 'owner'), arg(a, 'repo'), arg(a, 'number')]).toEqual(['owner=alpha', 'repo=one', 'number=12'])
     expect([arg(b, 'owner'), arg(b, 'repo'), arg(b, 'number')]).toEqual(['owner=beta', 'repo=two', 'number=9001'])
     // The number goes as an Int, the owner and repo as strings.

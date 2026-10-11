@@ -2659,8 +2659,10 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
 
   // M237 AC3: a read whose write of `reading` false fails leaves the stored
   // value true, and the next drawing after it settles still shows ↻. The
-  // engine skips a hook that throws and the write lands, so the hook writes
-  // true in place of the mod's false, and the stored value stays true.
+  // hook answers `{ deny }`, which rejects the mod's write, so the stored
+  // value stays true. The redraw the mod asks for after that failure is not
+  // tested here: with it removed, a pane mounted through the read still
+  // read ↻ in this harness (M237 review).
   test('a failed write of the reading state false still draws ↻ once the read settles', async ($, on) => {
     const held_ = gate()
     const calls = gh(on, async () => {
@@ -2673,7 +2675,7 @@ describe('the ↻ Button reads ⋯ while a read runs, and a press during a press
       const value = (e as { value?: { value?: unknown } }).value?.value
       if (e.plugin === 'cairn' && e.key === 'reading' && value === false) {
         refused.push(value)
-        return next({ ...e, value: { shape: 'reading-1', value: true } })
+        return { deny: 'the store refused the write' }
       }
       return next(e)
     })
@@ -2888,6 +2890,21 @@ describe('a resume start reads the files again, as a clear start does (M237 AC1)
     })
   }
 
+  // A resumed process raises `session.start` first and then the resume
+  // hook, which reads the files again (M237 review).
+  test('a resumed process start draws the rows once both hooks have run', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    tick(copy)
+    await $.classic.SessionStart({ source: 'resume' })
+    const band = await bandText($)
+    expect(band).toContain('M002')
+    expect(textAt(await paneLines($, 'terminal'), 'M002-task-1')).toBe(T2_DONE)
+    await $.turn.complete(turn())
+    expect(await bandText($)).toBe(band)
+  })
+
   for (const source of ['startup', 'compact'] as const) {
     test(`a ${source} start reads no file`, async ($, on) => {
       const copy = copyOf('single-in-progress')
@@ -2925,7 +2942,8 @@ describe('a clear or resume start reads the states for a placed pane (M237 AC2)'
         const all = [...calls.calls, ...calls.graphql, ...calls.lists]
         if (reads) {
           expect(calls.lists).toEqual([listCall(ORIGIN)])
-          expect(all.length).toBeGreaterThan(1)
+          expect(calls.reads.sort()).toEqual([URL_1250, prUrl(1265)].sort())
+          expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
         } else {
           expect(all).toEqual([])
         }
