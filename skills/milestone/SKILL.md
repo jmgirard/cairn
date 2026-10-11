@@ -278,8 +278,9 @@ The script deliberately does not judge these — do them yourself and report:
   check` line. If that line has no date either, the row is named as
   undated and none of its links is read. Items are deduplicated on owner,
   repo, and number, and an item linked from several rows takes the
-  earliest cut-off. The item is reported when someone closed or merged it
-  at or after its cut-off. Each comment, review, and review-thread comment
+  earliest cut-off. The item is reported when it was closed or merged at
+  or after its cut-off, unless the item read's `closed_by` login is yours.
+  A close with no `closed_by` login is reported. Each comment, review, and review-thread comment
   created or submitted at or after the cut-off by a login other than yours
   is also reported. Reviews and review-thread comments are read for pull
   requests only. Each list is read in full with `--paginate` and filtered on
@@ -316,9 +317,10 @@ The script deliberately does not judge these — do them yourself and report:
   awk -F '\t' '$1!=p{if(p!="")print p"\t"c"\t"r; p=$1; c=$2; r=$3; next} {r=r","$3} END{if(p!="")print p"\t"c"\t"r}' |
   while IFS="$tab" read -r item cut rows; do
     repo="${item%\#*}"; num="${item##*\#}"; at="$item (lines $rows, cut-off $cut)"
-    info=$(gh api "repos/$repo/issues/$num" --jq '[.state, (.closed_at // "-"), .updated_at, (.pull_request.merged_at // "-"), (if .pull_request then "pr" else "issue" end)] | @tsv' 2>&1) || { echo "$at: read failed: $info"; continue; }
-    IFS="$tab" read -r state closed updated merged kind <<< "$info"
-    if [ "$merged" != "-" ]; then [[ "$merged" < "$cut" ]] || echo "$at: merged $merged"
+    info=$(gh api "repos/$repo/issues/$num" --jq '[.state, (.closed_at // "-"), .updated_at, (.pull_request.merged_at // "-"), (if .pull_request then "pr" else "issue" end), (.closed_by.login // "-")] | @tsv' 2>&1) || { echo "$at: read failed: $info"; continue; }
+    IFS="$tab" read -r state closed updated merged kind closer <<< "$info"
+    if [ "$closer" = "$me" ]; then :
+    elif [ "$merged" != "-" ]; then [[ "$merged" < "$cut" ]] || echo "$at: merged $merged"
     elif [ "$closed" != "-" ]; then [[ "$closed" < "$cut" ]] || echo "$at: closed $closed"; fi
     [[ "${updated:0:10}" < "${cut:0:10}" ]] && continue
     sel="select(.user.login != \"$me\")"
