@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M239: Compare low with default reasoning effort on cairn's Sonnet and Haiku roles
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — a measurement note under `cairn/references/` that no adopter reads   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m239-effort-roles, https://github.com/jmgirard/cairn/pull/249   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -55,26 +55,26 @@ this note does not rely on.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `cairn/references/effort-roles.md` exists with its `INDEX.md`
+- [x] AC1: `cairn/references/effort-roles.md` exists with its `INDEX.md`
       line and a `**Provenance.**` block. Its run table holds 18 rows: the
       nine tasks of `haiku-sonnet-roles.md`, each run once with the Agent
       tool's `effort` unset and once with it set to `low`, from that task's
       prompt in that note. Search and history-review rows set the model to
       Sonnet, and edit-work rows set it to Haiku.
-- [ ] AC2: Each row records the distinct `model` values and the distinct
+- [x] AC2: Each row records the distinct `model` values and the distinct
       `effort` values found on the assistant records of its subagent
       transcript.
-- [ ] AC3: Each row's dollar cost follows the cost method of
+- [x] AC3: Each row's dollar cost follows the cost method of
       `haiku-sonnet-roles.md` (its Design section, Cost), with the
       per-token prices it uses tabulated in the note and cited to
       Anthropic's pricing page by URL and access date.
-- [ ] AC4: Each row's score follows its group's scoring rule in
+- [x] AC4: Each row's score follows its group's scoring rule in
       `haiku-sonnet-roles.md`, with that note's answer keys, E1 target, and
       mutant set. Each history-review row's score comes from that note's
       judge prompt, with the task's two runs as reports A and B. The note
       records, per history-review task, the label mapping and the judge's
       rating of each finding under each label.
-- [ ] AC5: The note gives each role group a verdict, which follows from the
+- [x] AC5: The note gives each role group a verdict, which follows from the
       run table by this rule. The verdict is `untested` when any of the
       group's `low` rows records no `effort` value or any value other than
       `low`.
@@ -101,24 +101,24 @@ this note does not rely on.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Probe: spawn one-word subagents on Sonnet and on Haiku, each with
+- [x] T1: Probe: spawn one-word subagents on Sonnet and on Haiku, each with
       `effort` unset and with `low`, and read the `model` and `effort`
       fields of their transcripts. Write the note's Provenance, Scope, and
       Design sections, fixed before any task run: the arms, the models,
       the pinned copies, and pointers to the reused M228 sections.
-- [ ] T2: Prepare the inputs: a `git archive c023018` copy for each search
+- [x] T2: Prepare the inputs: a `git archive c023018` copy for each search
       run, and for each edit run a fresh copy under git, so `git diff -U0`
       reads the run's changes; re-run M228's key code at `c023018` and
       confirm it reproduces the keys that note lists.
-- [ ] T3: Search runs: S1 to S3, each on Sonnet (`Explore` agent type) at
+- [x] T3: Search runs: S1 to S3, each on Sonnet (`Explore` agent type) at
       both arms, pointed at a pinned copy; score by F1 against the keys.
-- [ ] T4: Edit runs: E1 to E3, each on Haiku (`general-purpose`) at both
+- [x] T4: Edit runs: E1 to E3, each on Haiku (`general-purpose`) at both
       arms in its own copy; score E1 by Jaccard against the target and E2,
       E3 by mutants killed, under `PYTHONDONTWRITEBYTECODE=1`.
-- [ ] T5: History-review runs: H1 to H3, each on Sonnet at both arms. Then
+- [x] T5: History-review runs: H1 to H3, each on Sonnet at both arms. Then
       run one model-blind Opus judge per task, labels drawn before the judge
       runs and the mapping read after it returns.
-- [ ] T6: Price every row by the M228 cost method, re-reading the pricing
+- [x] T6: Price every row by the M228 cost method, re-reading the pricing
       page; fill the run table and the verdict table; write Limits and the
       re-measurement procedure; add the `INDEX.md` line; run
       `cairn_validate` and the `verify` slot.
@@ -146,3 +146,54 @@ this note does not rely on.
 - 2026-10-10: plan gate chose the verdict `untested` for a group whose `low` rows do not record `low` over a criterion requiring every `low` row to record `low`, because the probe can show that a model ignores the setting; decided toward the narrower promise.
 - 2026-10-10: criteria audit ran after the question set, because the request named no work until the set answered it.
 - 2026-10-10: criteria audit (reduced mode, fresh Opus reader) returned 4 findings, all fixed. AC3 bound how prices were read, now the note's price table and citation. AC4 bound the label draw and read timing, now the note's per-task label mapping and ratings, with the timing kept in T5. AC4's judge clause counted tasks with no record, fixed by the same rewording. AC5 missed a `low` row with no `effort` value, now `untested`.
+- 2026-10-10: implement started on branch m239-effort-roles; the untracked `cairn-probe.log` and `tsconfig.json` predate this milestone and stay unstaged.
+- 2026-10-10: T1 probe: four one-word spawns show `effort` unset records `high` and `effort: "low"` records `low`, on Sonnet and on Haiku alike; the note's Design section is written and fixed before any task run.
+- 2026-10-10: T2: twelve `git archive c023018` copies built in the session scratchpad (six search, six edit with a baseline commit); M228's key code re-run at `c023018` reproduces its listed keys (S1 10, S2 9, S3 88 items, set-equal).
+- 2026-10-10: T3: six search runs on Sonnet; F1 per arm S1 1.0 and 1.0, S2 1.0 and 1.0, S3 0.6767 and 0.6767 (both arms listed the same 45 pairs, reading "supersede" by meaning). The first scoring pass read 0 for every run because the session-local scorer looked for the wrong field of the `SubagentHandback` call; the answer text is its `message` input.
+- 2026-10-10: T4: six edit runs on Haiku; E1 Jaccard 1.0 in both arms (32-triple target), E2 and E3 6 of 6 mutants killed in both arms; the always-true control kills 0 of 6 for E2 and for E3.
+- 2026-10-10: T5 in progress: six history-review runs done, three Opus judges spawned with labels drawn by `random.SystemRandom` and mappings written to a separate scratchpad directory before the judges ran. Cost method amended in the note: background runs carry no Agent tool `usage`, so the final call's output is the notification's `subagent_tokens` less the final id's input and cache counts (the identity holds on all five foreground spawns of this session).
+- 2026-10-10: T5: judges returned H1 3 against 1, H2 1 against 1, H3 0 against 0 (default against `low`), mappings read after all three returned; no judge transcript names the mapping directory.
+- 2026-10-10: T6: pricing page re-read, figures unchanged from M228's; verdicts search `low`, edit work `low`, history review `default`; every `low` row records only `low`. `cairn_validate` green; verify green after adding `effort-roles.md` (state `exempt`) to the pinned page ledger in `scripts/tests/test_scripts.py` (406 and 174 tests OK, both manifests valid, mod test 0 fail).
+- 2026-10-10: claim audit: not owed — internal tier.
+- 2026-10-10: step-7 approval: m239-effort-roles approved for merge
+
+## Review
+<!-- owner: review · exclusive -->
+
+- AC1 evidence (2026-10-10, review pass 1): `effort-roles.md` exists, `INDEX.md` has 1 line naming it, 1 `**Provenance.**` block. A parse of the run table finds 18 rows over 18 distinct task-arm pairs. Each run's `agent-<id>.meta.json` records the requested model (`sonnet` on S and H rows, `haiku` on E rows) and `effort` (`low` on low rows, absent on default rows), and each run's first user message carries its task's prompt text from `haiku-sonnet-roles.md` (whitespace-collapsed anchor match, 18 of 18).
+- AC2 evidence: a fresh re-run of the session-local cost script over the 18 transcripts gives each row's distinct `effort` and `model` values, and all 18 match the table's Effort and Model ids columns (0 mismatches): `high` on every default row, `low` on every low row, `claude-sonnet-5-5` on S and H rows, `claude-haiku-5-5` on E rows.
+- AC3 evidence: the re-run cost script (message-id grouping, last-record counts, the note's price table, the Haiku 100,000-token tier) reproduces every row's five token sums, call count, and USD figure (0 mismatches over 18 rows). The note's price table equals the Sonnet 5.5 and both Haiku 5.5 rows of the pricing page read 2026-10-10, cited by URL and date. The final call's output comes from the completion notification's `subagent_tokens` less the final id's input and cache counts, the note's dated Cost amendment, because background runs have no Agent tool `usage`. On the five foreground spawns of this session, `totalTokens` equals the `usage` input, cache, and output sum, so both sources give the same figure. Every row's derived output is at least its recorded one.
+- AC4 evidence: the re-run scorer gives S1, S2 1.0 and S3 0.6767 in both arms (F1 against keys that M228's key code rebuilds at `c023018`, set-equal to the note's lists), E1 1.0 in both arms (Jaccard against the 32-triple target), and E2, E3 6 of 6 mutants killed in both arms; the always-true control kills 0 of 6 for E2 and E3. Every S and E score equals the table (0 mismatches). H scores equal the judges' `A valid`/`B valid` lines under the recorded mappings (H1 3 and 1, H2 1 and 1, H3 0 and 0, default first). The note records each task's mapping and a rating per finding by arm, and the per-finding rows match the judges' lines.
+- AC5 evidence: a parse of the run table, summed per group and run through the stated rule, gives search 0.3299 against 0.3247 USD at 2.6767 each, `low`; edit work 0.0293 against 0.0263 at 3.0 each, `low`; history review 0.8794 against 0.6002 at 4 against 2, `default`. No `low` row records an effort other than `low`, so none is `untested`. All three equal the note's verdict table.
+- gate: `cairn_validate` exit 0 (no WARN); verify on the review head: scripts 406 tests OK (21 skipped), hooks 174 OK, plugin manifest valid (one warning, the repo-root `CLAUDE.md` not loaded as plugin context, present before this branch), marketplace manifest valid with no `plugins[N].version` warning, mod test 1609 tests 0 fail. No principle changed, so `cairn_impact` is skipped. Changelog: no entry owed, since the branch adds an in-repo reference note and a test-ledger line and changes no user-visible behavior.
+- Copilot: requested on PR #249 at review start (state query `none`, `gh pr edit --add-reviewer @copilot` exit 0).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: page wrongly `exempt` from the staleness advisory though it carries aging prices — fix now (Extraction names the dated price read, ledger pins `ok`), fixed 18ca241
+- diff-bug #2: the Cost amendment changes the method AC3 binds to with no gate amendment — reject (false as an AC3 failure): the method's computation is unchanged, and the notification's `subagent_tokens` equals `totalTokens` on every foreground spawn, so the final-call figure is the one the method specifies; the dropped tie check is now stated in the note (diff-bug #3's fix)
+- diff-bug #3: the amendment's check proves `totalTokens` = `usage`, not the `subagent_tokens` link it uses — fix now (the note states the `subagent_tokens` = `totalTokens` link and that M228's tie check is unavailable), fixed 18ca241
+- diff-bug #4: search reversal written as a hypothetical though visible output is near the threshold — fix now (visible-output difference measured, about 390 tokens against 518), fixed 18ca241
+- diff-bug #5: break-even figures from rounded USD — fix now (518 and 5,935 tokens, unrounded gaps stated), fixed 18ca241
+- diff-bug #6: ledger entry has no rationale comment — fix now, fixed 18ca241
+- diff-bug #7: edit cost omits test code and INDEX gives no reversal caveat — fix now, fixed 18ca241
+- diff-bug #8: pointer places the scoring rules in the wrong section of M228's note — fix now, fixed 18ca241
+- diff-bug #9: "M228's runs also record high" cites one transcript — fix now (all 18 read), fixed 18ca241
+- blame-history #1: `exempt` pin undoes M228's deliberate `ok` for aging prices — fix now (same as diff-bug #1), fixed 18ca241
+- blame-history #2: ledger entry without comment breaks the convention — fix now (same as diff-bug #6), fixed 18ca241
+- blame-history #3: the history-review gap equals M228's run-to-run spread on the same reviewer — fix now (reading added, column "What could flip it"), fixed 18ca241
+- blame-history #4: Verdicts table drops M228's "What could flip it" column — fix now, fixed 18ca241
+- blame-history #5: weaker final check than M228's tie, `subagent_tokens` link unshown — fix now (same as diff-bug #3), fixed 18ca241
+- blame-history #6: the "Reasoning-effort dial" ROADMAP row still says the Agent tool has no effort setting — follow-up: this milestone's post-merge hygiene rewrites that row with the verdicts
+- blame-history #7: history-review runs could read M228's results in the live tree — fix now (transcripts checked: none names `haiku-sonnet-roles.md`, stated in the note), fixed 18ca241
+- prior-review #1: `exempt` repeats the mistake M228 pass 1 fixed — fix now (same as diff-bug #1), fixed 18ca241
+- prior-review #2: no "What could flip it" column — fix now (same as blame-history #4), fixed 18ca241
+- prior-review #3: no reading that the score does not measure missed defects (D-016) — fix now, fixed 18ca241
+- prior-review #4: ledger entry without comment — fix now (same as diff-bug #6), fixed 18ca241
+- prior-review #5: Limits drops M228's judge-rule sensitivity caveat — fix now, fixed 18ca241
+- prior-review #6: "cost gaps are small" and "cannot show a gap" are characterizations — fix now, fixed 18ca241
+- prior-review #7: the Design heading says "fixed before any task run" though it holds a later amendment — fix now (heading names the one amendment), fixed 18ca241
+- copilot: cairn/milestones/M239-effort-roles.md:14 — fix now (PR URL already recorded), fixed 872a42c
+- copilot: cairn/references/effort-roles.md:11 — fix now (same as diff-bug #1), fixed 18ca241
+- copilot: review body — noted (its two findings are the two threads above)
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: jmgirard PR — noted (two empty-body reviews, GitHub's records of the two thread replies); 0 unresolved threads, 0 issue comments; Copilot state `reviewed earlier-head Lite`, no re-request.
+- verify after fixes (18ca241): scripts 406 OK, hooks 174 OK, both manifests valid with no version warning, mod test 0 fail; `cairn_validate` exit 0 with no WARN.
