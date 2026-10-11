@@ -643,3 +643,24 @@ within each type and are never reused.
   Code: `CairnPaneState` and `PaneState` are hand-kept copies, and
   `render()` lists the archive three times. The desktop can draw `≡` as a
   native button over its 2 reserved columns.
+- The pane's PR reads and reopen have small gaps, found at the M222 to
+  M236 reviews with no fix planned. An ssh host alias remote shows no
+  hotfix section, a non-github.com PR gets no counts, and titles draw as
+  GitHub gives them. A primary PR URL written after a `companion:` entry
+  gives no number. A non-UTF-8 milestone file can give a number in the
+  pane and none from `cairn_next.py`. `counts.ts` keeps its own PR URL
+  pattern. Any start in a marked root takes the reopen mark, a `-p` run
+  included. The mark's store write has no version check, marks never
+  expire, and `markReopen` runs before `next(e)`. Nobody looked at a
+  `classic.SessionStart` with source `fork`, which can also start with
+  empty state. After a reload, an old module's detached read can write
+  older words or clear `reading` during a newer read. If the list read
+  throws, the blocked views run on and their results are dropped. The
+  hotfix filter compares URLs as exact strings, so a case or form
+  difference draws a PR twice. A hotfix-only PR waits for the list before
+  its own read. A head line shows its phase by color alone, as the
+  operator chose at the M236 live look, so a red-green colorblind reader
+  can confuse the implement orange and the review green. If a gap shows
+  in a real session, it becomes a `/hotfix` or a candidate row. Routed
+  from candidates 2026-10-10; added 2026-10-06 — M222–M226, M230, and
+  M236 reviews.
