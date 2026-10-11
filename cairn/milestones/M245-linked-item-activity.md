@@ -97,6 +97,7 @@ written to GitHub.
 - 2026-10-11: T5 done. The item read adds `(.closed_by.login // "-")`, and a close or merge whose `closed_by` is the operator prints nothing. The SKILL.md prose, README, and CHANGELOG say so, and the "Linked-item read edges (M245 review)" row drops the own-merge item. Fixtures A to D unchanged in zsh and bash. Fixture E: cairn#238 and the task-side cairn#168 row silent, ggplot2#1 reports `closed 2009-12-11T04:43:25Z` and hadley's 2009-12-11 comment. verify green (5/5), skills/tests OK.
 - 2026-10-11: claim audit: 6 claims read, 1 corrected — CHANGELOG.md (the read reports an item's latest close or merge, not each one, since it reads `closed_at`/`merged_at` once). The same reader re-read the correction: it holds. Scope: the T5 diff, 2419528..HEAD outside `cairn/`.
 - 2026-10-11: implement done after the step-7 decline; status review. verify green (5/5), skills/tests OK.
+- 2026-10-11: step-7 approval: m245-linked-item-activity approved for merge (PR #255, pass 2).
 
 ## Decisions
 
