@@ -5693,3 +5693,50 @@ and its evidence lasts only until the next hygiene pass replaces the
 stamp, since guest mode has no git history of earlier stamps. Falsified by
 a guest pass that writes outside `cairn/`, or by a guest stamp that takes
 ROADMAP over its byte budget in a real pass.
+
+### D-157 (2026-10-10): Every subagent spawn leaves the Agent tool's `effort` setting unset — annotates D-141 (M240)
+
+**Context:** The Agent tool takes an `effort` setting per spawn, and the
+skills named only a model per role (D-141). M239
+(`cairn/references/effort-roles.md`) measured `low` against default effort
+on the Sonnet and Haiku roles, and M240
+(`cairn/references/effort-review-medium.md`) measured `medium` against
+default on the history reviewers. The notes hold the figures.
+
+**Decision:** No subagent role sets `effort`. Tracking-rules "Model and
+agent strategy" states this in one bullet that cites both notes, and no
+skill site names a level. Rejected: `low` for search and edit work,
+because the measured saving sat inside the cost method's output undercount
+and the user chose at the M240 plan gate not to adopt it. Rejected:
+`medium` for the blame-history and prior-PR-comments reviewers, because
+its judged score fell below the verdict rule's 0.9 bar against the mean of
+two default arms. Rejected: a level for the Opus roles, because no scored
+task measures them.
+
+**Consequences:** D-141 stands; its set-the-model line is unchanged. The
+"Reasoning-effort dial per spawned agent" candidate row narrows to the
+Opus roles. Falsified by a rerun of either note's procedure that flips a
+verdict to a lower level, or by a measurement of an Opus role that meets
+the same rule at a lower level.
+
+### D-158 (2026-10-10): Three clauses of D-157 are corrected — the undercount wording, the Fable role, and the falsifier for search and edit work; supersedes those clauses, D-157's decision stands (M240 review)
+
+**Context:** M240's review fan-out found three defects in D-157, appended
+on the same branch. IP4 forbids repairing it in place.
+
+**Decision:** First, D-157 says the `low` saving on search and edit work
+"sat inside the cost method's output undercount". The notes say only that
+the undercount could reverse it. This entry's wording is "the undercount
+could reverse the saving", which the rulebook bullet also uses. Second,
+D-157 names only the Opus roles as unmeasured. The Fable role that
+`/milestone-brief` spawns is also unmeasured, so the rejected alternative
+reads "a level for the Opus and Fable roles", and the candidate row
+narrows to both. Third, D-157's falsifier cannot fire against its `low`
+rejection, because M239's search and edit verdicts are already `low`. The
+falsifier for that rejection is a measurement where `low`'s saving on
+search or edit work is larger than the output undercount can reverse. The
+rest of D-157's falsifier stands for the history reviewers and the
+unmeasured roles.
+
+**Consequences:** D-157's decision, that no subagent role sets `effort`,
+stands unchanged.
