@@ -313,7 +313,12 @@ ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
 `↓` for a `[low]` one, then the row's text up to its first `: `. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
-listed.
+listed. While no cairn skill runs, each row whose text before its first
+`: ` is not empty carries a `✎` button at its right end. A press runs
+`/clear`, and then `/cairn:milestone-plan` with that text in the cleared
+conversation, as the `Plan` button runs its command after `/clear`. The
+band has no such button. While another button's command runs or waits
+for its `/clear`, a press does nothing.
 
 Whenever a milestone is `blocked`, the pane lists it under a `BLOCKED`
 heading with the count, after the queue and before the candidates, with
