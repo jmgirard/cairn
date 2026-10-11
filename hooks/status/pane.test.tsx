@@ -3106,6 +3106,48 @@ describe('one process start reads each URL once (M238 AC2)', () => {
     expect(calls.reads).toEqual([URL_1250])
   })
 
+  // The read at the first draw is the start's read, so a reopen after it
+  // reads nothing (M238 review).
+  test('a resume start that owes, the first draw, then the reopen read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    await $.classic.SessionStart({ source: 'resume' })
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    copy.unplaced = []
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+    await $.session.start(NEW_START)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // A pane placed before both hooks: the resume hook reads, and the reopen
+  // after it reads nothing (M238 review).
+  test('a resume start that reads, then the reopen, read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    await $.classic.SessionStart({ source: 'resume' })
+    await $.session.start(NEW_START)
+    await calls.settled()
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // Both hooks of one start at once, for a placed pane (M238 review).
+  test('the reopen and a resume start at once read each URL once', async ($, on) => {
+    const { calls, copy } = await marked($, on)
+    copy.open = [PANE]
+    await Promise.all([$.session.start(NEW_START), $.classic.SessionStart({ source: 'resume' })])
+    await calls.settled()
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
   // An open's read is not the start's read, so a clear start after an open
   // whose read is still in flight reads again.
   test('a clear start reads again while an open read is held', async ($, on) => {

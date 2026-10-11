@@ -129,9 +129,11 @@
 - **The cairn pane fills again after `/resume` and after a `/clear` behind
   another tab.** A `/resume` reads the tracking files again, as a `/clear`
   that keeps the session's process does. After either one, a placed pane
-  reads its PRs again, also when it sits behind another tab. Before, a
-  `/resume` left the band and the pane empty until the next prompt, and a
-  pane behind another tab kept no PR words.
+  reads its PRs again, also when it sits behind another tab, and a pane
+  that waits undrawn reads them at its first draw. One start reads them
+  once, also when a reopen at a new session start and the `/resume` both
+  run in it. Before, a `/resume` left the band and the pane empty until
+  the next prompt, and a pane behind another tab kept no PR words.
 
 - **A pane head line shows the milestone id in its phase's color.** The
   phase word before the id is gone, and the id takes the implement or
@@ -171,15 +173,6 @@
 
 ### Fixes
 
-- **A pane placed after a `/clear` or `/resume` shows its PR words.**
-  When the pane waited undrawn at a `/clear` or `/resume`, it read no PR
-  states, and once drawn it showed no words until an open or a ↻ press.
-  Now its first draw reads them, unless an open or the start's reopen
-  read them first, or the start failed to list the pane.
-- **One session start reads the PR states once.** A start whose reopen
-  placed the pane before the `/resume` hook ran read every PR twice. Now
-  only the hook that reads first, the reopen or the `/resume` hook, reads
-  them.
 - **`/cairn-pane` opens the pane after a typed `/clear`.** With the pane
   open, a typed `/clear` in the desktop app took it off the screen. When
   the next message was `/cairn-pane`, the session start reopened the pane,

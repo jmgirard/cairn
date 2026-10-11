@@ -330,7 +330,8 @@ The pane also shows each PR's state, which it reads from GitHub with one
 `gh api graphql` query for each PR. That query also gives the count
 below. It reads the states when the
 pane opens, by `/cairn-pane`, by the band's open button, or by the reopen
-at a session start. An open does not wait for the read. The words and
+at a session start, unless that start already read them. An open does not
+wait for the read. The words and
 counts appear together when the last GitHub call answers or times out.
 The pane also reads the states, and the tracking files, when you press
 the ↻ Button at the right end of the pane's first line: the first
@@ -339,11 +340,13 @@ has a ROADMAP, and it reads `⋯` while a read runs. A press while an
 earlier ↻ press's read runs does nothing. When a `/clear` keeps the session's process, as a `Clear`,
 `Plan`, or `Implement` press does, the pane stays open. The pane and the
 band then read the tracking files again, and so does a `/resume`. After
-either one, a pane that is drawn reads the states again, also when it sits
-behind another tab. A pane that waits undrawn reads the states at its first
-draw, unless an open or the start's reopen read them first, or the start
-failed to list the pane. One start reads the states once, also when a reopen and a
-`/resume` both run in it. The pane never reads the states on a timer or at a turn's end,
+either one, a placed pane reads the states again, also when it sits
+behind another tab. A pane that waits undrawn reads the states at its
+first draw. In both cases the pane skips the read when an open or the
+start's reopen already read the states, or when the start failed to list
+the pane. One start reads the states once, also when a reopen and a
+`/resume` both run in it. The pane never reads the states on a timer or
+at a turn's end,
 so a state can be out of date until the next open or ↻ press. After a
 read, each line shows one word after its number:
 

@@ -251,7 +251,9 @@ export const register: Register = on => {
       await refresh($)
       if (startRead) return result
       const mine = await listedPane($)
-      if (mine == null) return result
+      // A reopen that read during the await is this start's read (M238
+      // review).
+      if (mine == null || startRead) return result
       if (mine.isPlaced) {
         startRead = true
         owed = false
@@ -297,9 +299,11 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     // A pane that a clear or resume start found listed but not placed reads
     // the pull request states at its first draw (M238). The flag clears
-    // before any await, so two draws at once start one read.
+    // before any await, so two draws at once start one read. The read is
+    // the start's read, so a reopen after it reads nothing (M238 review).
     if (owed) {
       owed = false
+      startRead = true
       void readPrs($)
     }
     const { Box, Button, Text } = $.ui.resolve(e)
@@ -734,10 +738,10 @@ let prReads = 0
 // or the session ends (M238). A reload starts it over as false.
 let owed = false
 
-// True from the read that a start's reopen or its clear or resume hook
-// starts until the next session end, so the other hook of the same start
-// starts no second read and owes none (M238). A reload starts it over as
-// false.
+// True from the read that a start's reopen, its clear or resume hook, or
+// the first draw that hook owed starts until the next session end, so the
+// other hook of the same start starts no second read and owes none (M238).
+// A reload starts it over as false.
 let startRead = false
 
 // The reads of the pull request states that this module started and that
@@ -754,8 +758,10 @@ let inFlight = 0
 // the read never throws. Threads that fail the shape check leave the word
 // and draw no counts. It runs only at a pane open, a Refresh press, a
 // `/clear` or `/resume` while the pane is placed (M230, M237), and the
-// first draw of a pane that such a start found not placed (M238): no timer
-// and no turn end starts one, since the operator does not want repeating tasks.
+// first draw of a pane that such a start found not placed (M238). A start
+// reads once: its reopen and its clear or resume hook skip the read when
+// the other, or the owed draw, already read (M238). No timer and no turn
+// end starts one, since the operator does not want repeating tasks.
 // A read that starts while another runs still runs, with the newest URLs.
 // Words and counts are written together when every call has settled, so a
 // Refresh keeps the earlier counts drawn until then.

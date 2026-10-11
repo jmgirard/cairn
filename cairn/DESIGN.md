@@ -295,11 +295,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   `prs` state value by URL. Since M237 a github.com URL takes one `gh api
   graphql` call for the word and the counts. A URL of another form, as a
   hotfix's on another host, takes one `gh pr view <url> --json
-  state,reviewDecision` call for its word and gets no counts. It runs after each pane open (the
-  `/cairn-pane` command, the band's open button, the session-start
-  reopen) and at a press of the ↻ Refresh Button, which first reads the
-  files again. The three opens start the read with `void readPrs($)` and
-  return before it settles (M230). The press still waits for it. The ↻
+  state,reviewDecision` call for its word and gets no counts. It runs
+  after each pane open (the `/cairn-pane` command, the band's open
+  button, the session-start reopen, which skips it when its start
+  already read, M238), at a press of the ↻ Refresh Button, which first
+  reads the files again, and at the start hooks and the first draw
+  described below. The three opens start the read with `void readPrs($)`
+  and return before it settles (M230). The press still waits for it. The ↻
   is the pane's one Refresh (M236). `paneLines` gives it to the first
   line, the first milestone's head line or `no-active`, whenever a
   ROADMAP is found, and sets that line's `grow`. The render gives that
@@ -317,11 +319,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   After its refresh, a `classic.SessionStart`
   with source `clear` or `resume` also starts the read without waiting
   (M230, M237). It does so when `$.ui.panes()` lists the pane placed,
-  shown or behind another tab. A pane that it lists but not placed owes
-  the read, and the Pane's first draw starts it (`owed`, M238). An open
-  before that draw, or a session end, clears the debt. A start's reopen
-  and its `classic.SessionStart` read once between them: the first to
-  read sets `startRead`, which holds until the next session end (M238).
+  shown or behind another tab. A pane listed but not placed owes the
+  read, and the Pane's first draw starts it (`owed`, M238). An open
+  before that draw, or a session end, clears the debt. A start's reopen,
+  its `classic.SessionStart`, and the owed draw read once between them:
+  the first to read sets `startRead`, which holds until the next session
+  end. The hook checks `startRead` again after it awaits the pane list
+  (M238 review).
   `paneOf` holds the one `$.ui.panes()` call (M238). No timer and no turn
   end starts a read, at the operator's word. A read that starts while another
   runs still runs, and only the newest read started writes its words

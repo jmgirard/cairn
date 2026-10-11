@@ -30,10 +30,10 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 ## Coverage
 
 - AC1 → T1, T2
-- AC2 → T1, T3
+- AC2 → T1, T3, T7
 - AC3 → T4
-- AC4 → T5
-- AC5 → T6
+- AC4 → T5, T7
+- AC5 → T6, T7
 
 ## Tasks
 
@@ -43,6 +43,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - [x] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
 - [x] T5: Docs (AC4). Update the comments at `register.tsx:69-82` and `234-240`, README near lines 339-343, DESIGN.md near lines 318-320 and 425-440, and CHANGELOG `## Unreleased`. Run the AC4 grep.
 - [x] T6: Run the five `verify` commands (AC5).
+- [x] T7: Review return 1 (AC2, AC4). The first-draw read sets `startRead`. The classic hook checks `startRead` again after its await. Add tests: a resume hook that owes, then a draw, then the reopen; the pane placed before both hooks, classic first; and both hooks at once. Fix the read-trigger wording in the `readPrs` comment, README, and DESIGN, and fold the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries. Run the five `verify` commands.
 
 ## Work log
 
@@ -62,6 +63,8 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: claim audit: 28 claims read, 4 corrected — CHANGELOG.md, README.md, hooks/status/register.tsx, hooks/status/pane.test.tsx. The double-read entry named the wrong order, the first-draw claim left out the reopen's read and a failed pane list, and a test comment named the wrong cause. The same reader re-read the fixes once and found the failed-list case still missing, which the next commit adds. A new test covers the session-end reset of `startRead`. Removing that reset failed only that test (1605 pass, 1 fail), and the file was restored.
 - 2026-10-10: T6 done. All five verify commands exit 0 (mod tests 1605 pass), and `cairn_validate` passes.
 - 2026-10-10: review return 1: AC2 fails inside its domain (prior-review #1, Copilot on PR #248). A resume hook that owes a read, then the first draw, then the reopen read each URL twice, because the draw's read sets no `startRead`. The return also carries the fix-now items: the classic hook's re-check of `startRead` after its await (diff-bug #2), a test with the pane placed before both hooks (diff-bug #3), and the read-trigger wording in the `readPrs` comment, README, and DESIGN (diff-bug #7, blame-history #2, #6). It also folds the two CHANGELOG entries into the unreleased `/clear` and `/resume` entries (blame-history #5).
+- 2026-10-10: T7 added for review return 1 (minor amendment; Coverage AC2, AC4, AC5 now also map to T7).
+- 2026-10-10: T7 done. The first-draw read sets `startRead`, and the classic hook checks `startRead` again after `listedPane`. Three AC2 tests added. "A resume start that owes, the first draw, then the reopen" failed on the old code with two reads and passes now. "A resume start that reads, then the reopen" covers the reopen's `startRead` check. "Both hooks at once" passed before the re-check too, so the harness seems to run the two hooks in turn, and the re-check has no test that fails without it. README, DESIGN, and the `readPrs` comment name the skip and the first-draw trigger. The CHANGELOG folds both behaviors into the unreleased `/resume` entry. All five verify commands exit 0 (mod tests 1609 pass).
 
 ## Decisions
 
