@@ -11,6 +11,7 @@ import {
   CLEAR_LABEL,
   CLEARS_FIRST,
   FINISH_LABEL,
+  HOME_LABEL,
   hotfixPrs,
   nextLabel as labelOf,
   NO_ROADMAP,
@@ -64,8 +65,11 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // (M208). While no cairn skill's step is set, the Next line carries a
 // Button with the band's next-step label after its pill, and a press runs
 // `pressNext`, as the band's does (M218). At the same times, the line
-// carries Status after that Button, with Clear before Status while `ended`
-// is true, and a press runs `pressStatus` or `pressClear` (M219).
+// carries Status after that Button, and a press runs `pressStatus` (M219).
+// At the same times, the first line carries ⌂ before ↻, and a press runs
+// `pressHome`: `/clear`, and an open of the pane at the clear's session end
+// (M241). Until M241
+// the Next line carried Clear while `ended` was true.
 // Each open of the pane, by the command, the band's open button, or the
 // session-start reopen, reads the blocked rows' pull request states once
 // with `gh`, and so does a press of the pane's ↻ Refresh Button
@@ -191,10 +195,10 @@ const CLEAR_COMMAND = 'clear'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
 // sits in pane.ts beside the label map.
 // The key and label of each Button after the Next line's action (M219),
-// of the pane's ↻ Refresh (M236), and of a blocked line's Button, whose
-// key ends in its milestone id (M224).
+// of the pane's ⌂ Home (M241) and ↻ Refresh (M236), and of a blocked
+// line's Button, whose key ends in its milestone id (M224).
 const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
-  clear: { key: 'cairn-pane-clear', label: CLEAR_LABEL },
+  home: { key: 'cairn-pane-home', label: HOME_LABEL },
   status: { key: 'cairn-pane-status', label: STATUS_LABEL },
   refresh: { key: 'cairn-pane-refresh', label: REFRESH_LABEL },
   finish: { key: 'cairn-pane-finish', label: FINISH_LABEL },
@@ -310,13 +314,13 @@ export const register: Register = on => {
     // (M218). A pane gets no `isWorking` prop, so it also shows during a
     // turn outside a cairn skill, and a press then waits for the session to
     // be idle, as `$.command.run` queues.
-    // After that Button, the Next line shows Status at the same times, and
-    // Clear before Status while `ended` is true (M219).
+    // After that Button, the Next line shows Status at the same times
+    // (M219), and the first line shows ⌂ (M241).
     const acts = knownStep(await read($, step)) === null
     const shown = await read($, band)
     const held = await read($, hotfixes)
     const listed = held.root !== null && held.root === shown.root ? held.prs : []
-    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, ended), await read($, prs), listed)
+    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, prs), listed)
     // ⋯ also needs a read in flight in this module, so a stored true that a
     // reload or a failed write left draws ↻ (M237).
     const busy_ = (await read($, reading)) && inFlight > 0
@@ -325,8 +329,9 @@ export const register: Register = on => {
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218), and so do Clear and
-    // Status after it, each in its own such Box (M219). A Text drops its
+    // does not shrink, so the pill is cut first (M218), and so does Status
+    // after it, and the first line's ⌂ and ↻, each in its own such Box
+    // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
     return (
       <Box key="cairn-pane" flexDirection="column">
@@ -487,6 +492,9 @@ export const register: Register = on => {
     // rejecting `next(e)` below cannot leave it set (M221 review).
     const queued = heldRun
     heldRun = null
+    // So is a ⌂ press's mark (M241).
+    const home = homeRun
+    homeRun = null
     reopened = false
     // The end ends the start, so the next start reads again (M238).
     owed = false
@@ -513,6 +521,9 @@ export const register: Register = on => {
       if (e.reason === 'clear') void run($, queued.command, queued.args)
       else void fallBack($, lineOf(queued.command, queued.args), 'the session ended before /clear')
     }
+    // A ⌂ press's `/clear` opens the pane at its end, unawaited as the held
+    // command's run is. Any other end drops the mark with no open (M241).
+    if (home !== null && e.reason === 'clear') void openHome($)
     return result
   })
 
@@ -939,7 +950,7 @@ async function git($, root: string, args: string[]): Promise<string | null> {
 // A press of a pane Button (M219, M224). The ↻ Refresh goes to
 // `pressRefresh` (M236).
 async function pressPane($, kind: PaneButton, target: string | undefined) {
-  if (kind === 'clear') return pressClear($)
+  if (kind === 'home') return pressHome($)
   if (kind === 'status') return pressStatus($)
   if (kind === 'refresh') return pressRefresh($)
   if (target !== undefined) return pressBlocked($, kind, target)
@@ -997,6 +1008,12 @@ let runs = 0
 // refused `/clear` drops it. A reload starts it over as null.
 let heldRun: { command: string; args: string } | null = null
 
+// A ⌂ press's mark, set from the press until the next session end, which
+// opens the pane when the end's reason is `clear` (M241). While it is set,
+// a press does nothing, as while `heldRun` is set. A refused `/clear`
+// drops it. A reload starts it over as null.
+let homeRun: object | null = null
+
 // A press of the next-step Button reads the next step and the step as they
 // are now, not as they were drawn, as the close press does (M212 review). A
 // cairn skill that started since the drawing, or no next step, makes the
@@ -1026,9 +1043,10 @@ async function pressNext($, drawn: string | undefined) {
   if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
 }
 
-// True while a run is in flight or a command waits for its `/clear`.
+// True while a run is in flight, or a command or a ⌂ press waits for its
+// `/clear`.
 function busy(): boolean {
-  return running || heldRun !== null
+  return running || heldRun !== null || homeRun !== null
 }
 
 async function pressStatus($) {
@@ -1043,6 +1061,40 @@ async function pressStatus($) {
 async function pressClear($) {
   if (busy() || knownStep(await read($, step)) !== null || !(await read($, ended))) return
   await run($, CLEAR_COMMAND, '')
+}
+
+// A press of the pane's ⌂ runs the built-in `/clear` under the same checks
+// as Clear, less `ended`, and marks the press for the session end the
+// clear brings, which opens the pane (M241). The press is the person's
+// consent to drop the conversation, as a press of Clear is. The mark is set
+// before the press's first await, so a second press in the same tick finds
+// `busy` true (M241 review, PR #251), and a step found set takes it back.
+async function pressHome($) {
+  if (busy()) return
+  const mine = {}
+  homeRun = mine
+  if (knownStep(await read($, step)) !== null) {
+    if (homeRun === mine) homeRun = null
+    return
+  }
+  if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
+}
+
+// The open at the session end of a ⌂ press's `/clear` (M241). A Button's
+// `/clear` keeps the pane open (M222), and the open asks the surface to
+// show it again. The API documents only that an open of an open id
+// retitles it, so whether a pane behind another tab comes forward was not
+// checked live. The open is unasked, so a pane that waits undrawn below the
+// width floor stays undrawn. The clear's start reads the files and the pull
+// requests (M237, M238), so this open starts no read. A refused or unplaced
+// open says why in a toast, as the band's open button does.
+async function openHome($) {
+  try {
+    const opened = await $.ui.open({ id: PANE, title: PANE_TITLE })
+    if (!opened.isPlaced) $.ui.toast(notPlaced(opened.reason))
+  } catch (error) {
+    $.ui.toast(`cairn pane: ${error instanceof Error ? error.message : String(error)}`)
+  }
 }
 
 // An action Button's command runs as if the person typed it (M212). A run

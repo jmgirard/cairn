@@ -74,7 +74,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -305,7 +305,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   (M230). The press still waits for it. The ↻
   is the pane's one Refresh (M236). `paneLines` gives it to the first
   line, the first milestone's head line or `no-active`, whenever a
-  ROADMAP is found, and sets that line's `grow`. The render gives that
+  ROADMAP is found, and sets that line's `grow`. While `acts` is true,
+  `home` comes before it, drawn as a `secondary` Button labeled `⌂`
+  (`HOME_LABEL`), key `cairn-pane-home`, in a `-home` Box (M241). The render gives that
   line's text Box `flexGrow: 1`, so the tail and the ↻ Box sit at the
   right end. The `reading` state value (tag `reading-1`) is true from the
   start of any read until the newest read started settles. The ↻
@@ -417,18 +419,30 @@ transitions, human-gated merges, and a domain verification doctrine.
   prop, so the Button also shows during a turn outside a cairn skill, and
   `$.command.run` queues such a press until the session is idle.
   At the same times, with that label, `paneLines` gives the Next line `buttons` (M219):
-  `status`, with `clear` before it while the `ended` atom (M216) is true.
-  The pane's `ui.render` reads `ended`, and draws each after `next-action`
-  as a `secondary` Button, key `cairn-pane-status` or `cairn-pane-clear`,
-  in a Box keyed `next-status` or `next-clear` with `flexShrink: 0` and
+  `status`, which the pane's `ui.render` draws after `next-action`
+  as a `secondary` Button, key `cairn-pane-status`,
+  in a Box keyed `next-status` with `flexShrink: 0` and
   `marginLeft: 1`. In the desktop app, a click
   on a pane without keyboard focus only gives it focus, and no `ui.press`
   reaches the mod (M219 probe). A pane Button then takes a second click.
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the
-  band and the pane read one place. A press is the band's `pressStatus` or
-  `pressClear`.
+  band and the pane read one place (since M241 the pane reads only
+  `STATUS_LABEL`). A press is the band's `pressStatus`.
+  Until M241 the Next line also carried `clear` while `ended` was true.
+  The first line's ⌂ took its place, and `paneLines` lost its `ended`
+  parameter. A ⌂ press runs `pressHome`: under `busy`, with no `ended`
+  check, it sets the module mark `homeRun` before its first await, so a
+  second press in the same tick finds `busy` true. It takes the mark back
+  when it finds a step set, and otherwise runs `clear` through `run`. A
+  refused run clears the mark. `busy` also reads the
+  mark, so every action press does nothing while it is set. `session.end`
+  takes and clears the mark, and at reason `clear` it calls `openHome`
+  unawaited, which opens the pane and toasts a refused or unplaced open.
+  The clear's start hooks read the files and the PRs, so `openHome` starts
+  no read. The press is the person's consent to drop the conversation, as
+  a press of Clear is (IP3).
   A cairn pane shown at a `/clear` is open after it (M222). A press
-  of a Clear, `Plan`, or `Implement` Button ends the session with reason
+  of ⌂ or a Clear, `Plan`, or `Implement` Button ends the session with reason
   `clear` in the same process, and nothing closes the pane (M222 probe). The
   host's state starts empty under the new session id, and no
   `session.start` fires, so a `classic.SessionStart` hook with source
@@ -618,10 +632,13 @@ within each type and are never reused.
   skill can run after the turn starts one. A pane Plan or Implement press
   in a working turn queues its `/clear`. Two quick presses can pass
   `busy`. A `/clear` with no clear end holds the queued command, and a
-  reload before the end loses it. A refused press with a draft sends
+  reload before the end loses it. A ⌂ press's `/clear` with no session end
+  keeps `homeRun` set, so every action press does nothing, with no toast,
+  until a session end (M241 review). A refused press with a draft sends
   `draft/cairn:…` as prose. `Review` can act on a hidden milestone, and
-  `Plan` starts a milestone that just turned workable. Pane Clear shows
-  outside a cairn skill and with the band closed.
+  `Plan` starts a milestone that just turned workable. Pane ⌂ shows
+  outside a cairn skill and with the band closed (corrected M241: the
+  pane's Clear, which this named, is gone).
   Layout: `refresh` writes band and pane apart, so a frame can drop a head
   line's percent or show `Plan` or the empty row out of date. Under about
   39 columns a band title gets less than its 10 columns, and under about 38
