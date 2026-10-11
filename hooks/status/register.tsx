@@ -16,6 +16,7 @@ import {
   nextLabel as labelOf,
   NO_ROADMAP,
   paneLines,
+  PLAN_CANDIDATE_LABEL,
   PLAN_LABEL,
   PR_BUTTON,
   prWord,
@@ -192,6 +193,8 @@ const STATUS_COMMAND = 'cairn:milestone'
 // The built-in command the Clear Button runs (M216). The Status and Clear
 // labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
+// The command a candidate line's ✎ holds for its `/clear` (M242).
+const PLAN_COMMAND = 'cairn:milestone-plan'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
 // sits in pane.ts beside the label map.
 // The key and label of each Button after the Next line's action (M219),
@@ -204,6 +207,7 @@ const PANE_BUTTONS: Record<PaneButton, { key: string; label: string }> = {
   finish: { key: 'cairn-pane-finish', label: FINISH_LABEL },
   revise: { key: 'cairn-pane-revise', label: REVISE_LABEL },
   check: { key: 'cairn-pane-check', label: CHECK_LABEL },
+  plan: { key: 'cairn-pane-plan', label: PLAN_CANDIDATE_LABEL },
 }
 
 // The command each blocked line's Button runs, and whether the milestone's
@@ -375,13 +379,14 @@ export const register: Register = on => {
             {(line.buttons ?? []).map(kind => {
               const button = PANE_BUTTONS[kind]
               const target = line.target
+              const title = line.title
               return (
                 <Box key={`${line.key}-${kind}`} flexShrink={0} marginLeft={1}>
                   <Button
                     key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"
                     label={kind === 'refresh' && busy_ ? READING_LABEL : button.label}
-                    onPress={() => pressPane($, kind, target)}
+                    onPress={() => pressPane($, kind, target, title)}
                   />
                 </Box>
               )
@@ -488,7 +493,7 @@ export const register: Register = on => {
   // Every session end, a `/clear` or a resume among them, ends the step and
   // shows a band that a press hid, whatever its reason (M200).
   on('session.end', async ($, e, next) => {
-    // A `Plan` or `Implement` press's held command is taken first, so a
+    // A `Plan`, `Implement`, or ✎ press's held command is taken first, so a
     // rejecting `next(e)` below cannot leave it set (M221 review).
     const queued = heldRun
     heldRun = null
@@ -948,9 +953,11 @@ async function git($, root: string, args: string[]): Promise<string | null> {
 }
 
 // A press of a pane Button (M219, M224). The ↻ Refresh goes to
-// `pressRefresh` (M236).
-async function pressPane($, kind: PaneButton, target: string | undefined) {
+// `pressRefresh` (M236), and a candidate line's ✎ to `pressCandidate`
+// (M242).
+async function pressPane($, kind: PaneButton, target: string | undefined, title?: string) {
   if (kind === 'home') return pressHome($)
+  if (kind === 'plan') return target === undefined || title === undefined ? undefined : pressCandidate($, target, title)
   if (kind === 'status') return pressStatus($)
   if (kind === 'refresh') return pressRefresh($)
   if (target !== undefined) return pressBlocked($, kind, target)
@@ -1002,8 +1009,9 @@ async function pressBlocked($, kind: PaneButton, id: string) {
 let running = false
 let runs = 0
 
-// The command a `Plan` or `Implement` press holds from the press until the
-// next session end, which runs it when the end's reason is `clear` (M221).
+// The command a `Plan`, `Implement`, or candidate ✎ press holds from the
+// press until the next session end, which runs it when the end's reason is
+// `clear` (M221, M242).
 // While it is set, a press does nothing, as while a run is in flight. A
 // refused `/clear` drops it. A reload starts it over as null.
 let heldRun: { command: string; args: string } | null = null
@@ -1043,10 +1051,10 @@ async function pressNext($, drawn: string | undefined) {
   if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
 }
 
-// True while a run is in flight, or a command or a ⌂ press waits for its
-// `/clear`.
+// True while a run is in flight, a command or a ⌂ press waits for its
+// `/clear`, or a ✎ press runs its checks (M242).
 function busy(): boolean {
-  return running || heldRun !== null || homeRun !== null
+  return running || heldRun !== null || homeRun !== null || candidateCheck !== null
 }
 
 async function pressStatus($) {
@@ -1078,6 +1086,40 @@ async function pressHome($) {
     return
   }
   if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
+}
+
+// A ✎ press's mark while it reads the step and the stored pane state, set
+// before its first await, so a second press in the same tick finds `busy`
+// true, as ⌂'s mark is (M241 review). The press clears it when its reads
+// end. A reload starts it over as null (M242).
+let candidateCheck: object | null = null
+
+// A press of a candidate line's ✎ runs `/clear` and holds
+// `/cairn:milestone-plan` with the row's short title for the session end
+// that the clear brings, as a `Plan` press holds its command (M242). The
+// press is the person's consent to drop the conversation, as a press of
+// Plan is. It does nothing when a step is set, when the stored pane state
+// would draw no candidate rows (no ROADMAP found, or an active milestone),
+// or when the stored row at the drawn index is missing or has another
+// title. It holds the command only after those checks, as `Plan` does, so
+// a session end during the checks runs no command (M242 review).
+async function pressCandidate($, index: string, title: string) {
+  if (busy()) return
+  const mark = {}
+  candidateCheck = mark
+  let mine: { command: string; args: string }
+  try {
+    const state = await read($, pane)
+    const rows = state.candidates
+    const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
+    const drawn = state.found && state.milestones.length === 0 && row?.title === title
+    if (!drawn || knownStep(await read($, step)) !== null) return
+    mine = { command: PLAN_COMMAND, args: title }
+    heldRun = mine
+  } finally {
+    if (candidateCheck === mark) candidateCheck = null
+  }
+  if (!(await run($, CLEAR_COMMAND, '')) && heldRun === mine) heldRun = null
 }
 
 // The open at the session end of a ⌂ press's `/clear` (M241). A Button's

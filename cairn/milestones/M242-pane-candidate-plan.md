@@ -1,13 +1,13 @@
 # M242: A ✎ Button on each candidate row in the cairn pane plans that candidate
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because every adopter sees the Button in the cairn pane
-- **Branch/PR:** —
+- **Branch/PR:** m242-pane-candidate-plan, https://github.com/jmgirard/cairn/pull/252
 
 ## Goal
 
@@ -33,13 +33,13 @@ The held-run edges stay with "⌂ edges (M241 review)".
 
 ## Acceptance criteria
 
-- [ ] AC1: While no cairn skill's step is set, `paneLines` gives the Button `plan` to each candidate line whose short title is not empty. While a step is set, no candidate line carries it. A candidate line with an empty short title never carries it. register.tsx draws `plan` as a `secondary` Button labeled `✎`. Its key carries the line's index, so two rows with one title draw two keys. Mod tests cover both states. Their rows are a high, a normal, a low, and an empty-title row, and two rows that share a title.
-- [ ] AC2: A free press of a candidate's ✎ runs the built-in `clear` command once, with empty args. The press holds `cairn:milestone-plan` with that row's short title as its args. At the session end of that `/clear` (reason `clear`), the mod runs the held command once. When no other Button's run is in flight or held, and no ⌂ press is pending, a press is free. Mod tests assert the `$.command.run` calls of a free press and of its `clear` end.
-- [ ] AC3: A press runs no command in each of three guarded cases. They are a run in flight, a held `Plan` command, and a pending ⌂ press. A second ✎ press in the same tick as a free press runs no second `clear`. Mod tests plant each case and assert the `$.command.run` calls.
-- [ ] AC4: On a candidate line, the title's Box has `flexGrow` 1 and `minWidth` 0, and its Text keeps `truncate-end`. The ✎ Button sits after it in its own Box with `flexShrink` 0. Mod tests assert these props on a short-title line and on a line whose title is longer than 44 columns.
-- [ ] AC5: The live look runs in circumplex, a cairn repo with no `in-progress` or `review` milestone. There the idle pane shows ✎ at the right end of each candidate row. A press clears the conversation and starts `/cairn:milestone-plan` with that row's short title. The operator stops that plan at its question set and accepts the look.
-- [ ] AC6: Three texts describe ✎ and what its press runs. They are README.md's and DESIGN.md's text on the pane's current behavior, and a new CHANGELOG.md entry. Earlier CHANGELOG entries and the history in DESIGN.md do not change.
-- [ ] AC7: The profile's five `verify` checks pass.
+- [x] AC1: While no cairn skill's step is set, `paneLines` gives the Button `plan` to each candidate line whose short title is not empty. While a step is set, no candidate line carries it. A candidate line with an empty short title never carries it. register.tsx draws `plan` as a `secondary` Button labeled `✎`. Its key carries the line's index, so two rows with one title draw two keys. Mod tests cover both states. Their rows are a high, a normal, a low, and an empty-title row, and two rows that share a title.
+- [x] AC2: A free press of a candidate's ✎ runs the built-in `clear` command once, with empty args. The press holds `cairn:milestone-plan` with that row's short title as its args. At the session end of that `/clear` (reason `clear`), the mod runs the held command once. When no other Button's run is in flight or held, and no ⌂ press is pending, a press is free. Mod tests assert the `$.command.run` calls of a free press and of its `clear` end.
+- [x] AC3: A press runs no command in each of three guarded cases. They are a run in flight, a held `Plan` command, and a pending ⌂ press. A second ✎ press in the same tick as a free press runs no second `clear`. Mod tests plant each case and assert the `$.command.run` calls.
+- [x] AC4: On a candidate line, the title's Box has `flexGrow` 1 and `minWidth` 0, and its Text keeps `truncate-end`. The ✎ Button sits after it in its own Box with `flexShrink` 0. Mod tests assert these props on a short-title line and on a line whose title is longer than 44 columns.
+- [x] AC5: The live look runs in circumplex, a cairn repo with no `in-progress` or `review` milestone. There the idle pane shows ✎ at the right end of each candidate row. A press clears the conversation and starts `/cairn:milestone-plan` with that row's short title. The operator stops that plan at its question set and accepts the look.
+- [x] AC6: Three texts describe ✎ and what its press runs. They are README.md's and DESIGN.md's text on the pane's current behavior, and a new CHANGELOG.md entry. Earlier CHANGELOG entries and the history in DESIGN.md do not change.
+- [x] AC7: The profile's five `verify` checks pass.
 
 ## Coverage
 
@@ -53,10 +53,10 @@ The held-run edges stay with "⌂ edges (M241 review)".
 
 ## Tasks
 
-- [ ] T1: pane.ts: add `plan` to `PaneButton` and a ✎ label. Give each candidate line with a non-empty title `['plan']` while `acts` is true, and `grow` so its title Box takes the free width. Carry the line's index and short title for the press, and say in the `PaneLine` comment which field holds which. Update the `paneLines` comments and pane.test.tsx.
-- [ ] T2: register.tsx: add `PANE_BUTTONS.plan`, keyed by the line's index. Route `plan` in `pressPane` to a new press. It sets `heldRun` before its first await, as `pressHome` sets its mark (M241 review). Two cases take the hold back: a set step, and stored candidate rows with no row of the drawn title at that index. Otherwise it runs `clear` through `run`, and a refused run drops the hold. Write the AC1–AC3 tests.
-- [ ] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry. ✎ has no band twin, so the README's sentence on presses that run the band button's command does not cover it.
-- [ ] T4: Live look in circumplex (granted at the question set).
+- [x] T1: pane.ts: add `plan` to `PaneButton` and a ✎ label. Give each candidate line with a non-empty title `['plan']` while `acts` is true, and `grow` so its title Box takes the free width. Carry the line's index and short title for the press, and say in the `PaneLine` comment which field holds which. Update the `paneLines` comments and pane.test.tsx.
+- [x] T2: register.tsx: add `PANE_BUTTONS.plan`, keyed by the line's index. Route `plan` in `pressPane` to a new press. It sets `heldRun` before its first await, as `pressHome` sets its mark (M241 review). Two cases take the hold back: a set step, and stored candidate rows with no row of the drawn title at that index. Otherwise it runs `clear` through `run`, and a refused run drops the hold. Write the AC1–AC3 tests.
+- [x] T3: README, DESIGN (current-behavior text and the `hooks/status/` entry), and a CHANGELOG entry. ✎ has no band twin, so the README's sentence on presses that run the band button's command does not cover it.
+- [x] T4: Live look in circumplex (granted at the question set).
 
 ## Work log
 
@@ -69,7 +69,69 @@ The held-run edges stay with "⌂ edges (M241 review)".
 - 2026-10-11: criteria audit (full mode, fresh Opus reader) returned 7 findings, all fixed in this file. AC5 moved to circumplex, since this repo's pane hides candidates while M242 is active. AC3 dropped the set-step and row-gone cases, which no drawn Button reaches, and split held `Plan` from pending ⌂. AC1 keyed the Button by index and drew no ✎ for an empty title. AC4 added `flexGrow` and a short-title line. The Goal and AC2 name the short title as `candidateRows` reads it. T3 keeps the README's band-twin sentence off ✎.
 - 2026-10-11: inbox sweep: no open issues and no open PRs on jmgirard/cairn.
 - 2026-10-11: collision check: M207 shipped the candidate lines, M218 and M221 the Plan Button and its held run, M241 ⌂. No candidate row or D-entry overlaps a per-row Button. "⌂ edges (M241 review)" holds held-run edges that this press shares.
+- 2026-10-11: branch m242-pane-candidate-plan cut from main at 2e6f86a. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-11: T1 and T2 done in one checkpoint. `PaneLine` gained `title`. A candidate line carries `target` (its index) and `title` while it shows ✎, and every candidate line grows. `pressCandidate` holds `cairn:milestone-plan` in `heldRun`. 14 new mod tests, and two older Button-list and grow checks now allow candidate lines. Mod tests 1643, all five verify checks green.
+- 2026-10-11: planted an empty-title ✎ and a hold set after the first await. The AC1 tests and the same-tick test failed, and the files were restored.
+- 2026-10-11: paused at the user's request after T2. T3 (docs) and T4 (live look in circumplex) remain.
+- 2026-10-11: resumed. T3 done: README's candidate paragraph, DESIGN's candidate-row text and `hooks/status/` entry, and a CHANGELOG "New" entry describe ✎. Five verify checks green, mod tests 1643.
+- 2026-10-11: T4 live look in circumplex, a session the operator opened there on this branch's mod. The operator reported ✎ at the right end of each candidate row. A press cleared the conversation and started the plan with that row's title, and the operator stopped it at its question set. The operator accepted the look.
+- 2026-10-11: claim audit: 46 claims read, 4 corrected — README.md, CHANGELOG.md, cairn/DESIGN.md, hooks/status/pane.test.tsx
+- 2026-10-11: claim audit detail: the README gained the ⌂ guard and a short-title definition, which the CHANGELOG also took. DESIGN names a missing row, and DESIGN and the test comment say ✎ needs a short title. The same reader's re-read found all four true. Its note on the exact `[high] ` token match was left, since the README's older sentence covers it.
+- 2026-10-11: all tasks done, five verify checks green (mod tests 1643). Status set to review.
+- 2026-10-11: review: three lenses and Copilot (Lite) gave 34 items, 20 fixed in 2eade43, 6 to "✎ edges (M242 review)", 7 rejected, 1 noted. The merge chip's text named the button ✂ by a slip, and the presentation above it named ✎.
+- 2026-10-11: step-7 approval: m242-pane-candidate-plan approved for merge
 
 ## Decisions
 
 ## Review
+
+Evidence on head 2eade43 (`claude plugin test .`, 1644 pass, 0 fail, run 2026-10-11).
+
+- AC1: pass. The M242 AC1 tests "✎ on each line with a title, none on the empty one, none while a skill runs" (terminal and desktop) pass. Over the candidates fixture plus an empty-title row and two "Same title" rows, they assert keys `cairn-pane-plan-<i>` on every titled row, none on the empty row, two distinct keys for the equal titles, `secondary` and `✎` on each, none while `cairn:milestone-implement` runs, and all back after its Stop. "paneLines gives plan, the index, and the title…" asserts the high, normal, low, and empty rows with acts true and false. "The extra rows read as planned" reads the drawn titles.
+- AC2: pass. The four M242 AC2 tests (rows 0 high, 2 low, 8 backtick, 11 second equal title) each assert `[clear ""]` after the press and `[clear "", cairn:milestone-plan <title>]` after a `clear` session end.
+- AC3: pass. The M242 AC3 tests assert the `$.command.run` calls for a ✎ press during a held Status run (`[cairn:milestone]` only), during a held `Plan` (`[clear]`, then the held Plan alone at the end), during a pending ⌂ press (`[clear]`, and the end opens the pane and runs no plan), and for two presses in one tick (one `clear`, then the first press's title). A planted `busy()` without the check mark failed the same-tick test (restored).
+- AC4: pass. The M242 AC4 tests at 44 columns, terminal and desktop, rows 1 (short) and 7 (over 44 columns, width asserted), assert the text Box's `flexGrow` 1 and `minWidth` 0, its Text's `truncate-end`, the `-text` then `-plan` order, and the `-plan` Box's `flexShrink` 0.
+- AC5: pass. The work-log line of 2026-10-11 records the live look in circumplex: ✎ at each candidate row's right end, and a press that cleared and started the plan with the row's title, stopped at its question set. The operator accepted it at the T4 chip. The look ran on the pre-review code. The review fix moved only when the hold is set, and AC2's tests pass on it.
+- AC6: pass. `git diff main..HEAD --numstat`: CHANGELOG.md 11 added, 0 removed (a new "New" entry). README.md's candidate paragraph and ⌂ paragraph describe ✎. DESIGN.md removes 2 lines, the current-behavior candidate line and the `hooks/status/` entry, both rewritten with ✎. No earlier CHANGELOG entry or DESIGN history line changes.
+- AC7: pass. On 2eade43: `scripts/tests` exit 0, `hooks/tests` exit 0, both `claude plugin validate` exit 0, `claude plugin test .` exit 0 (1644 pass).
+
+Consistency gate: `cairn_validate` exit 0. The marketplace validate prints no `plugins[N].version` warning. CHANGELOG.md has the ✎ entry under Unreleased > New. No principle changed, so `cairn_impact` is skipped.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: the hold was set before the press's checks, so a `clear` end during them ran an unchecked plan, and the press could clear again — fix now (a `candidateCheck` mark in `busy()`; the hold is set after the checks), fixed 2eade43
+- diff-bug #2: `pressNext`, `pressStatus`, `pressBlocked` mark after an await, so a ✎ press in their window also runs — follow-up, "✎ edges (M242 review)"
+- diff-bug #3: the press did not check that the stored state still draws candidates — fix now (found and no active milestone), fixed 2eade43
+- diff-bug #4: no test reaches the take-back paths — fix now for a refused clear (new test), fixed 2eade43; the stale-drawing paths go to "✎ edges (M242 review)"
+- diff-bug #5: the same-tick test checked counts, not the title — fix now, fixed 2eade43
+- diff-bug #6: "the extra rows read as planned" compared a constant with itself — fix now (reads the drawn lines), fixed 2eade43
+- diff-bug #7: the acts-false `toEqual` compared a list with itself — fix now (literal rows), fixed 2eade43
+- diff-bug #8: the M236 grow check filtered out candidate lines — fix now (asserts each candidate text's grow), fixed 2eade43
+- diff-bug #9: README and CHANGELOG said "any" token, but the reader strips only an exact `[high] ` or `[low] ` — fix now, fixed 2eade43
+- diff-bug #10: the M219 Button-list test derives its ✎ keys from the fixture — reject (false: `expected.json` is held to the Python reader by `scripts/tests`, a fact independent of the TypeScript code)
+- diff-bug #11: `grow` is set on candidate lines with no ✎ — reject (planned change: AC4 and DESIGN set it on every candidate line)
+- diff-bug #12: title characters reach `$.command.run` unquoted, no injection path found — noted
+- diff-bug #13: some terminals draw ✎ two columns wide — follow-up, "✎ edges (M242 review)"
+- blame-history #1: some short titles are fragments ("`code") or whole rows — reject (planned change: the plan gate chose the short title, and the live look found its row)
+- blame-history #2: two rows with one title send the same args — follow-up, "✎ edges (M242 review)"
+- blame-history #3: same-tick races with the other presses — follow-up, "✎ edges (M242 review)" (as diff-bug #2)
+- blame-history #4: the `heldRun`, `busy`, and `session.end` comments and DESIGN's M221 paragraph named only Plan and Implement — fix now, fixed 2eade43
+- blame-history #5: the M219 and M236 checks were loosened — fix now for M236 (as diff-bug #8), fixed 2eade43; reject for M219 (false, as diff-bug #10)
+- blame-history #6: a stale press drops with no message — reject (planned change: the Scope has it check as the other pane presses do, which drop silently)
+- prior-review #1: the M236 grow check — fix now (as diff-bug #8), fixed 2eade43
+- prior-review #2: the M219 test mirrors the fixture — reject (false, as diff-bug #10)
+- prior-review #3: "While no cairn skill runs" left out the background wait — fix now, fixed 2eade43
+- prior-review #4: the README left out the idle wait outside a cairn skill — fix now, fixed 2eade43
+- prior-review #5: the ⌂ paragraph's guard and `/clear` lists left out ✎ — fix now, fixed 2eade43
+- prior-review #6: same-tick races with the other presses — follow-up, "✎ edges (M242 review)"
+- prior-review #7: take-back paths untested — fix now in part (as diff-bug #4), fixed 2eade43
+- prior-review #8: the same-tick test counted — fix now (as diff-bug #5), fixed 2eade43
+- prior-review #9: ragged wrapping in DESIGN and CHANGELOG — fix now, fixed 2eade43
+- prior-review #10: "as the Plan button does" read as a twin claim — fix now (wording removed), fixed 2eade43
+- prior-review #11: no width test below 44 columns — follow-up, "✎ edges (M242 review)"
+- copilot: hooks/status/register.tsx:1108 — fix now (as diff-bug #1), fixed 2eade43
+- copilot: cairn/milestones/M242-pane-candidate-plan.md:10 — fix now (PR URL in the header), fixed 2eade43
+- copilot: review body, pane.ts comment on empty-title rows — reject (false: the comment says a line needs a short title that is not empty)
+- copilot: review body, CHANGELOG on empty-title rows — reject (false: the entry says "but for a row whose short title is empty")
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: jmgirard PR #252 — noted (two empty-body reviews that GitHub made for the thread replies)

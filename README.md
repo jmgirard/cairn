@@ -313,7 +313,16 @@ ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
 `↓` for a `[low]` one, then the row's text up to its first `: `. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
-listed.
+listed. A row's short title is its text after a leading `[high] ` or
+`[low] ` token with its space, up to its first `: `, with outer spaces
+removed. While no cairn skill runs or waits on its background work, each
+row whose short title is not empty carries a `✎` button at its right end.
+A press runs `/clear`, and then `/cairn:milestone-plan` with that short
+title in the cleared conversation. The band has no such button. As with
+the next-step button, a press while Claude works outside a cairn skill
+runs when Claude is idle. While another button's command runs or waits
+for its `/clear`, or a `⌂` press waits for its `/clear`, a press does
+nothing.
 
 Whenever a milestone is `blocked`, the pane lists it under a `BLOCKED`
 heading with the count, after the queue and before the candidates, with
@@ -343,11 +352,11 @@ the session, the mod opens the pane again. A pane that is already shown
 stays as it is. Whether a pane behind another tab comes to the front was
 not checked. As with the next-step button, a press while Claude works
 outside a cairn skill runs when Claude is idle. A press does nothing while another
-button's command runs, while `Plan` or `Implement` waits for its `/clear`,
-or while an earlier `⌂` press waits for its `/clear`. A press is your
-consent to drop the conversation, as a press of the band's `Clear` is.
-When a `/clear` keeps the session's process, as a `⌂`, `Clear`,
-`Plan`, or `Implement` press does, the pane stays open. The pane and the
+button's command runs, while `Plan`, `Implement`, or `✎` waits for its
+`/clear`, or while an earlier `⌂` press waits for its `/clear`. A press is
+your consent to drop the conversation, as a press of the band's `Clear`
+is. When a `/clear` keeps the session's process, as a `⌂`, `Clear`,
+`Plan`, `Implement`, or `✎` press does, the pane stays open. The pane and the
 band then read the tracking files again, and so does a `/resume`. After
 either one, a placed pane reads the states again, also when it sits
 behind another tab. A pane that waits undrawn reads the states at its
