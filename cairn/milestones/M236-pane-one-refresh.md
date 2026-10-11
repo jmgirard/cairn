@@ -89,6 +89,7 @@ The cairn pane shows only the unresolved review threads of each PR, and one ↻ 
 - 2026-10-10: T8 stop for the operator's second live look.
 - 2026-10-10: T8 live look: the operator accepted the look. ↻ sat at the right end of the first milestone's line with the percent, and the id drew in the phase color with no phase word. The press took two clicks, which is the known upstream focus click (candidate row "Pane Button takes two clicks (upstream)"). Then ↻ showed `⋯` and came back in under a second.
 - 2026-10-10: implement done, status review.
+- 2026-10-10: step-7 approval: m236-pane-one-refresh approved for merge.
 
 ## Decisions
 
