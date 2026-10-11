@@ -1,13 +1,13 @@
 # M238: The pane reads its pull requests once per start, at its first draw when placed later
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is part of the shipped status mod
-- **Branch/PR:** —
+- **Branch/PR:** m238-pane-one-read-per-start
 
 ## Goal
 
@@ -37,7 +37,7 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 
 ## Tasks
 
-- [ ] T1: Write the AC1 and AC2 tests in `hooks/status/pane.test.tsx`, with the `gh` fake's `reads`, `copy.notPlaced`, and the reopen setup near `pane.test.tsx:1375`. Run them and record which fail on the current code. The reopen-first AC2 tests and the AC1 draw tests are expected to fail. The classic-first AC2 tests pass today.
+- [x] T1: Write the AC1 and AC2 tests in `hooks/status/pane.test.tsx`, with the `gh` fake's `reads`, `copy.notPlaced`, and the reopen setup near `pane.test.tsx:1375`. Run them and record which fail on the current code. The reopen-first AC2 tests and the AC1 draw tests are expected to fail. The classic-first AC2 tests pass today.
 - [ ] T2: Owed read (AC1). A `classic.SessionStart` (`register.tsx:241`) that finds a listed, unplaced pane sets a module flag, unless this start already read. The Pane `ui.render` hook (`register.tsx:280`) clears the flag before its first await and then starts `readPrs`. A `/cairn-pane` open, a band open, a reopen, and a `session.end` clear the flag.
 - [ ] T3: One read per start (AC2). A start hook's read sets a module mark that holds until the next `session.end`, settled or not. While the mark is set, `reopen` (`register.tsx:1066`) and `classic.SessionStart` start no read and set no owed flag.
 - [ ] T4: One listing function (AC3). Fold the `$.ui.panes()` calls in `command.run`, `isShown`, `isPlaced`, and `markReopen` (`register.tsx:264`, `679`, `690`, `1047`) into one function.
@@ -55,6 +55,8 @@ Each `/clear` or `/resume` that finds the cairn pane open leads to one read of i
 - 2026-10-10: plan chose a read at the Pane's first draw over a turn-end check of `$.ui.panes()`. The operator wants no repeating reads, and a turn end can come long after the placement. Falsified by a host where a Pane placed after a start does not raise `ui.render`.
 - 2026-10-10: plan chose a per-start mark held until `session.end` over a skip while a read is in flight. A fast read settles before the second hook, and the skip then depends on timing. Falsified by a start that raises a hook after a read without a `session.end` between, where a second read is wanted.
 - 2026-10-10: criteria audit (full mode, fresh Opus reader) returned 11 items, 9 with findings, and the plan took all 9. AC1 drops the ↻ case, which cannot happen before a draw, adds `blocked-prs` for more than one URL, and adds the not-listed and throw cases. AC2 names `clear` as a guard, adds the unplaced-reopen case, and T3 takes the per-start mark. AC3's grep catches a call without `await` and skips comments. AC4's grep adds the stale README and DESIGN lines and bounds "agrees". T2 clears the flag before its first await, for two draws at once.
+- 2026-10-10: implement started on branch m238-pane-one-read-per-start. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-10: T1 done. 12 tests in `pane.test.tsx` ("M238 AC1" and "M238 AC2" groups). On the current code, 4 fail: both AC1 first-draw tests read nothing at the draw, and both reopen-first AC2 tests read the URL twice. The other 8 pass, as the plan expected. Suite: 1601 pass, 4 fail.
 
 ## Decisions
 
