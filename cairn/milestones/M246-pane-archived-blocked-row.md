@@ -133,6 +133,8 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: claim audit: 41 claims read, 4 corrected — skills/milestone-review/SKILL.md, README.md, CHANGELOG.md, skills/tests/test_resume_routing.py
 - 2026-10-12: claim audit fixes: the trigger says "first word ... is `done`" and "up to" the blank line, the `closes` sentence says the keyword closes it at the maintainers' merge, and README and CHANGELOG name only the three skipped items. The same reader re-read the 4 and found 0 wrong.
 - 2026-10-12: verify green at 54ab66a8: scripts 407 OK, hooks OK, both validates exit 0, mod tests 1707 pass, `skills/tests` 731 OK. Status set to review.
+- 2026-10-12: review pass 2: AC1 to AC7 verified at 07bbee17. Three reviewers gave 20 findings: 10 fixed in 07bbee17, 6 to the row "Archived blocked rows (M246 review)", 4 rejected. Copilot did not review (quota limit).
+- 2026-10-12: step-7 approval: m246-pane-archived-blocked-row approved for merge
 
 ## Decisions
 
