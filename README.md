@@ -783,6 +783,12 @@ recommend one) and writes `# Collaboration mode: guest` into
   commits and no pushes to the default branch.
 - **The repo sees none of cairn's vocabulary.** Branches are named by their
   slug alone, and commit messages and PR text carry no milestone numbers.
+- **What you write reads like the host's own.** This covers docs, code
+  comments, changelog entries, commit messages, PR text, and replies on the
+  host's issues and PRs. That text matches the host's existing text of the
+  same kind in length, tone, and level of technical detail. If another
+  writing-style instruction also covers that text, such as a plugin's or
+  your own CLAUDE.md, that instruction wins.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
 - **No release walk.** `/cairn-release` stops at session start and says
