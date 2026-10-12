@@ -5790,3 +5790,32 @@ on a `MERGED` state. The arm finishes a pass that already saw the merge.
 
 **Consequences:** D-159's decision and its falsifiers stand. An archive
 with no PR URL is accepted on the same ground.
+
+### D-161 (2026-10-12): In guest mode, text written for the host repo matches the host's length, tone, and level of technical detail, and other writing-style instructions win where they also apply — annotates D-137 and D-139 (M247)
+
+**Context:** Guest mode keeps cairn's vocabulary out of the host repo
+(D-137), and D-139 makes the host's public norms the source of its
+Conventions. Neither says how the documentation, commit messages, PR text,
+and replies a guest session writes should read. Text written in the
+session's own style can look out of place beside the maintainers' text.
+
+**Decision:** In guest mode, text the session writes for the host repo or
+its maintainers matches the host's existing text of the same kind in
+length, tone, and level of technical detail, read from that text before
+writing. It works within the no-cairn-vocabulary rule. Where another
+writing-style instruction in the session (another plugin's, or the user's
+own) also governs that text, that instruction wins and host matching
+covers only what it leaves open. The rule stands in the rulebook and on
+the guest-mode line of the session hook, so it applies with no skill
+loaded.
+
+**Rejected:** host style winning over the user's other style instructions,
+with or without a one-line notice, because the user chose at the M247 plan
+gate to keep those instructions in force; and storing a style summary in
+DESIGN.md Conventions at the guest seed, because a stored summary goes
+stale as the host's docs change. Falsified by a guest PR whose text the
+maintainers ask to restyle in a way the other instructions caused.
+
+**Consequences:** Owner mode is unchanged. The rulebook's Plain style rule
+binds chat output and the record-prose rule binds `cairn/` records, so
+neither governs host text.
