@@ -326,11 +326,13 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   repo or its maintainers: its documentation (README, guides and vignettes, help pages and docstrings, code comments,
   changelog entries, and messages users see), commit messages, the PR title and body, and replies on the host's issues
   and PRs. That text matches the host's existing text of the same kind in length, tone, and level of technical detail.
-  The session reads that text before writing, or the host's other documentation where it has none of that kind. The
-  matching works within the limits of the bullet above. Where another writing-style instruction in the session
-  (another plugin's, or the user's own) also governs that text, that instruction wins and the matching covers only what
-  it leaves open. This file's Plain style rule binds chat output and its record-prose rule binds `cairn/` records, so
-  neither governs that text.
+  The session reads that text before writing, or the host's other documentation where it has none of that kind. A
+  style the host states in writing (CONTRIBUTING, a style guide) comes before what its existing text shows. The
+  matching works within the limits of the "No cairn vocabulary reaches the repo" bullet, and the derived-claims rule
+  still binds what that text claims. Where another writing-style instruction in the session (another plugin's, or the
+  user's own) also governs that text, that instruction wins and the matching covers only what it leaves open. This
+  file's Plain style rule binds chat output and its record-prose rule binds `cairn/` records, so neither governs that
+  text.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names

@@ -344,7 +344,8 @@ class TestSessionContext(RepoFixture):
         self.assertEqual(len(tail.splitlines()), 1, tail)
         self.assertIn("host", tail)
         self.assertIn("length, tone, and level of technical detail", tail)
-        self.assertIn("writing-style instruction", tail)
+        # the precedence: matching yields to other style instructions
+        self.assertIn("where no other writing-style instruction", tail)
 
     def test_guest_mode_names_an_unreadable_template_instead_of_an_empty_body(self):
         # In guest mode this part is the session's only copy of the routing

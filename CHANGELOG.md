@@ -12,8 +12,9 @@
   the same kind in length, tone, and level of technical detail. The
   rulebook's "Collaboration mode" section states the rule, and the
   guest-mode line that the session hook injects carries it in short form,
-  so it applies before any cairn skill loads. When another writing-style instruction in the session, from
-  another plugin or your own, also covers that text, that instruction wins,
+  so it applies before any cairn skill loads. When another writing-style
+  instruction in the session, from another plugin or your own, also covers
+  that text, that instruction wins,
   and matching the host covers only what it leaves open.
 - **The pane shows a blocked milestone whose file was archived before its
   row changed.** A cleanup after a merge can stop between moving the

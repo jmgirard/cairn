@@ -65,7 +65,7 @@ class TestCostAuditLine(unittest.TestCase):
         # Growth is reported against a recorded figure, not a remembered one;
         # the seed is the M247 re-measurement in bytes (M247 added the guest
         # host-style rule to the collaboration section).
-        self.assertIn("651 lines / 62,396 bytes", self.text)
+        self.assertIn("653 lines / 62,604 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.

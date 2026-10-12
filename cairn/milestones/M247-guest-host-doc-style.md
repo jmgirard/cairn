@@ -61,10 +61,40 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 
 ## Decisions
 
+- 2026-10-12 (review): the rulebook bullet gains two clauses from diff-bug findings #2 and #3. A style the host states in writing comes before what its existing text shows, and the derived-claims rule still binds what host text claims. Both narrow how the matching is read and leave D-161's decision as written, so no new D-entry.
+
 ## Review
 
 - AC1: `git diff main..HEAD -- skills/shared/tracking-rules.md` adds one 9-line bullet, the "Collaboration mode" section going from 8 to 9 top-level bullets (awk over the section on main and HEAD). The bullet names each listed kind of text, the three matching axes, the read before writing, the host's other documentation as fallback, the limits of "the bullet above" (the no-cairn-vocabulary bullet directly above it), other writing-style instructions winning with matching covering only what they leave open, and the Plain style and record-prose rules not governing that text. Pass.
 - AC2: a scratch script ran `session_context.build_context` on temp guest and owner repos. The guest part's tail after the routing body is 1 line, names tracking-rules "Collaboration mode", and adds that text for the host repo or its maintainers matches the host's own length, tone, and level of technical detail where no other writing-style instruction in the session settles it. The owner context has no `## Collaboration mode` part. `unittest -k guest_mode` over hooks/tests: 3 tests OK, `test_guest_mode_line_carries_the_host_style_rule` among them (red before the hook change, T2 work log). Pass.
 - AC3: `git diff main..HEAD -- README.md CHANGELOG.md` adds one bullet to the README guest-mode list (6 to 7 bullets, awk between its heading and the "Because `cairn/`" paragraph) and one entry at the top of CHANGELOG's Unreleased "Changes that affect existing repos" (19 to 20 bullets). Both state the coverage, the three axes, and that another writing-style instruction wins with matching covering only what it leaves open. One overlong CHANGELOG line was rewrapped at review. Pass.
 - AC4: the five `verify` commands run from the repo root on the review head, each exit 0 checked on its own (scripts/tests, hooks/tests, plugin validate, marketplace validate, plugin test). Pass.
-- Gate: `cairn_validate.py` all checks passed; no principle text changed, so `cairn_impact` skipped; marketplace validate prints no `version` warning; CHANGELOG carries the entry with no milestone number; skills/tests (hand-run) OK.
+- Gate (pass 1, before the fixes below): `cairn_validate.py` all checks passed; no principle text changed, so `cairn_impact` skipped; marketplace validate prints no `version` warning; CHANGELOG carries the entry with no milestone number; skills/tests (hand-run) OK.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: CHANGELOG.md:15 was 105 characters, left by the review rewrap (so AC3's "rewrapped" line was half true) — fix now; every line of the entry is now 80 or fewer.
+- diff-bug #2: the derived-claims rule also covers host docs, and the bullet did not say which rule wins — fix now; the bullet says the derived-claims rule still binds what that text claims.
+- diff-bug #3: a host's written style guide (CONTRIBUTING, a style doc) was not named, so copying old text could override it — fix now; the bullet says a style the host states in writing comes before what its existing text shows.
+- diff-bug #4: "also governs" has no test, and a global user style rule could leave matching little to decide — reject, planned change: the user chose this precedence at the plan gate (D-161).
+- diff-bug #5: "the bullet above" points by position — fix now; the bullet names the "No cairn vocabulary reaches the repo" bullet.
+- diff-bug #6: the test checks fragments, so a reversed precedence would pass — fix now; the third fragment is "where no other writing-style instruction", which a reversal drops.
+- diff-bug #7: the hook's short form leaves out the vocabulary limit and the read step, and its pointer belongs to the sentence before — reject, planned change: AC2 sets a short form that names the section, and the line names it.
+- diff-bug #8: the new sentence spends about 300 characters of the context budget — reject, planned change: the part is charged to MAX_CHARS as M184 designed, and the plan put the rule there.
+- diff-bug #9: README's "your own CLAUDE.md" is narrower than "the user's own" — reject, false: the README gives it as an example after "such as".
+- diff-bug #10: "applies before any cairn skill loads" holds only when `cairn/ROADMAP.md` reads — reject, false: with no readable ROADMAP the hook injects nothing at all, so the condition is the hook's, not the rule's, and a cairn repo has the file.
+- diff-bug #11: README and CHANGELOG leave out the read step, the fallback, and some kinds of text — reject, planned change: both are summaries, and AC3 asks each to state the rule.
+- blame-history #1: the hook's "where no other writing-style instruction … settles it" reads all-or-nothing beside the rulebook's "covers only what it leaves open" — reject, planned change: the wording is AC2's, and "where" limits the matching to the points left unsettled.
+- blame-history #2: the same CHANGELOG line as diff-bug #1 — fix now (same fix).
+- blame-history #3: the line is longer but the tail stays one line and is charged to MAX_CHARS — reject, false as a defect: the reviewer itself found M184/M185's behavior kept.
+- blame-history #4: the re-seed follows its rule at all three sites — reject, false as a defect (a confirmation); re-seeded again to 653 lines / 62,604 bytes after the fixes.
+- blame-history #5: the bullet cites D-161 in plugin source — reject, false as a defect: rulebook text never reaches the host, and the hook line carries no id.
+- blame-history #6: the bullet agrees with D-137, D-139, and D-155 — reject, false as a defect (a confirmation).
+- blame-history #7: the hook's list is shorter than the rulebook's, and nothing pins the two together — reject, planned change: AC2 sets a short form.
+- prior-review #1: Copilot's open thread on the stale ROADMAP stamp — handled as the copilot line below.
+- prior-review #2: the same CHANGELOG line as diff-bug #1 — fix now (same fix).
+- prior-review #3: the re-seed matches `wc` at all three sites, unlike PRs #242 and #244 — reject, false as a defect (a confirmation).
+- prior-review #4: the D-161 cite sits in a guest-mode section — reject, false as a defect: rulebook text, never host-facing.
+- copilot: cairn/milestones/M247-guest-host-doc-style.md:10 — the header should carry the PR URL — reject, false: d37201b already recorded it; Copilot read an earlier head.
+- copilot: cairn/ROADMAP.md:12 — the hygiene stamp still says "M247 planned" — reject, false as a defect: the stamp records the last hygiene pass, and the post-merge pass replaces it.
+- copilot: review body — add a prose guard and mutation-harness entry for the new rulebook bullet — reject: prose guards are hand-run only and gate nothing (D-109), and the copy that reaches sessions with no skill loaded, the hook line, has its test.
+- Copilot level: Lite (set by GitHub's settings). Copilot reviewed head 4be5ae9 and not d37201b or the fixes after it.
+- Re-check after the fixes: the AC1 bullet still carries every clause AC1 names, and names the vocabulary bullet by title; the AC3 README bullet and CHANGELOG entry are unchanged in substance; AC2's tail is still one line and the hooks test passes; all five `verify` commands, skills/tests, and `cairn_validate.py` exit 0; `git grep` finds no leftover 651 / 62,396 figure outside `cairn/`.
