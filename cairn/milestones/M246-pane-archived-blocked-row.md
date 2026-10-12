@@ -1,6 +1,6 @@
 # M246: The pane shows a blocked row whose milestone file was archived before its row was updated
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -112,6 +112,8 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: claim audit: 77 claims read, 6 corrected — hooks/status/reader.ts, scripts/cairn_next.py, skills/milestone-review/SKILL.md, skills/tests/test_resume_routing.py, skills/tests/test_mutation_harness.py, scripts/tests/test_status_fixtures.py, README.md
 - 2026-10-12: claim audit fixes: the BlockedRow comment and `blocked` docstring state the null cases, the arm names step 9's checkout and pull, and README says `archived` shows alone with no URL. The same reader re-read the 6 and found 0 wrong. The reader also noted a root path holding a glob character such as `[` empties Python's `glob` but not the TS `list`, which `archive_files` and `archivedIds` share since before this branch.
 - 2026-10-12: all tasks checked. Verify green again after the fixes: scripts 407 OK, hooks OK, both validates exit 0, mod tests 1703 pass, `skills/tests` OK. Status set to review.
+- 2026-10-12: review: AC1 to AC7 verified and ticked at 34be02d5. PR #256 opened at review start for the Copilot round. Three reviewers gave 31 findings: 11 fixed in 1b3ae96b, 5 to the AC5 amendment, 1 row "Archived blocked rows (M246 review)", 6 rejected, the rest noted or duplicates.
+- 2026-10-12: amendment routed: AC5 — the arm accepts a finished milestone whatever its row status and makes a `blocked → done` move in owner mode that the rulebook does not admit (diff-bug #1, #2, blame-history #2); the criterion narrows to guest-mode `blocked` rows and names the step-9 parts the arm runs
 
 ## Decisions
 
@@ -133,3 +135,35 @@ Consistency gate, 2026-10-12:
 - Profile gate: the verify checks pass on the review head (AC7), the marketplace validate output has no `version` warning, and `CHANGELOG.md` has the entry, with no milestone number.
 - `skills/tests` (hand-run): 728 tests OK.
 - Copilot round: PR #256 opened at review start, state query `none`, review requested with exit 0.
+
+Independent review, 2026-10-12:
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the arm accepts a row already `done` or `dropped`, so a typed `/milestone-review` on any finished milestone reruns step 9 — amendment return: AC5 promises acceptance whatever the row status, so the criterion narrows to `blocked` rows
+- diff-bug #2: in owner mode the arm makes a `blocked → done` or other transition the rulebook does not admit — amendment return, with #1: AC5 narrows to guest mode, where the rulebook admits `blocked → done`
+- diff-bug #3: the tests pass if the archive wins over a live file — fix now, fixed 1b3ae96b (a done archive beside M201's live file)
+- diff-bug #4: Session start's "Status must be `review`" and "read the target milestone file" come before the arm with no pointer to it — fix in the AC5 amendment pass
+- diff-bug #5: step 9 "from its ROADMAP row update onward" includes writes to the archive summary and lesson steps that need the deleted work log — fix in the AC5 amendment pass (the arm names the step-9 parts it runs)
+- diff-bug #6: Revise and Check can show on an archived row — fix now, fixed 1b3ae96b (an archived row carries only Finish, two new pane tests)
+- diff-bug #7: an archived row with no PR URL gets no Button — follow-up, ROADMAP row "Archived blocked rows (M246 review)"
+- diff-bug #8: `glob.glob` on an unescaped root differs from the TS `list` — fix now for the new code, fixed 1b3ae96b (`os.listdir`); the same gap in `archive_files` is older, follow-up, same row
+- diff-bug #9: invalid UTF-8 in an archive file fails the Python read and not the TS one — follow-up, same row (the gap is older, on live files)
+- diff-bug #10: Unicode digits in archive names count on the Python side only — reject, false as new: the reader.ts header already states this mirror gap
+- diff-bug #11: `blocked` checks the real file system before the injected `read` — reject, false as a defect: the TS side also checks `isFile` apart from `read`, so the two sides agree
+- diff-bug #12: `cs._ID_RE` is a private name — reject, style
+- diff-bug #13: `doneish`, two Status lines, and no space before `done` are untested — fix now in part, fixed 1b3ae96b (`doneish` and a tab-only blank line); the rest follow-up, same row
+- diff-bug #14, #15, #16: shape tag enough, mirror agrees on the traced inputs, tail order matches AC3 — no defect, noted
+- blame-history #1: archived rows map `changes requested` and `closed` to Buttons — fix now, same as diff-bug #6, fixed 1b3ae96b
+- blame-history #2: the arm departs from D-130's merge-state routing and the transition table — amendment return, with diff-bug #1 and #2; the narrowed arm runs only where the rulebook admits `blocked → done`
+- blame-history #3: `types/index.d.ts` lacks `archived` — fix now, fixed 1b3ae96b
+- blame-history #4: `/milestone` §2 does not route an archived blocked row — follow-up, ROADMAP row "Archived blocked rows (M246 review)"
+- blame-history #5: the arm skips the companion check — fixed by the guest-mode narrowing, since guest mode has no companion arm
+- blame-history #6: step 9's lesson and Known-issues steps need the deleted work log — fix in the AC5 amendment pass, same as diff-bug #5
+- blame-history #7: the Status paragraph has no `companion:` exclusion — reject, planned change: AC1 names the first URL in the paragraph, and the archive template's Status line names one PR
+- blame-history #8: Python reads the archive without an `isfile` check — reject, false: `read_file` checks `os.path.isfile`
+- blame-history #9: README and CHANGELOG do not cover Revise or Check on archived lines, and the CHANGELOG's "accepts such a milestone" is broad — Revise and Check are gone with diff-bug #6; the wording is fixed in the AC5 amendment pass
+- blame-history #10: shape-tag practice followed — no defect, noted
+- prior-review #1: DESIGN.md Known issues still named `pane-3` — fix now, fixed 1b3ae96b
+- prior-review #2: `types/index.d.ts` parity — fix now, same as blame-history #3
+- prior-review #3: the 44-column sweep lacks `blocked-archived` — fix now, fixed 1b3ae96b
+- prior-review #4: thin parity cases for the Status paragraph cut — fix now in part, same as diff-bug #13
+- prior-review #5: unescaped glob, and the Status scan does not stop at a `## ` heading — the glob fixed 1b3ae96b; the heading stop is follow-up, same row
