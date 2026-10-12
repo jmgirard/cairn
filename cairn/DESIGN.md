@@ -647,8 +647,8 @@ within each type and are never reused.
   shorter, and a file deleted and recreated reads as absent. An empty or
   unreadable file before any good read prints `no cairn ROADMAP found`.
   So do the first failed read after a reload from pre-M210 code and a
-  moved pane shape tag (`pane-3` since M223) after a reload, until the
-  next refresh (corrected M223). A pane parse
+  moved pane shape tag (`pane-5` since M246) after a reload, until the
+  next refresh (corrected M223, M246). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare

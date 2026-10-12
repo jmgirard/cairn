@@ -758,7 +758,7 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
 // the prop that lets the line shrink; the live look shows the drawing.
 describe("each line's lead and tail fit a 44-column dock, and the line may shrink (M208 AC4)", () => {
   for (const surface of SURFACES) {
-    for (const fixture of ['pane-full', 'candidates', 'blocked-prs', 'blocked-active']) {
+    for (const fixture of ['pane-full', 'candidates', 'blocked-prs', 'blocked-active', 'blocked-archived']) {
       test(`${fixture} (${surface})`, async ($, on) => {
         seat(on, copyOf(fixture))
         await $.turn.complete(turn())
@@ -2126,6 +2126,24 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
     await ui.unmount()
     expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M202' }])
   })
+
+  // M246 review: an archived row carries no Revise or Check, since its
+  // milestone file is gone. A live row keeps its Button.
+  for (const each of [
+    { answer: prView('OPEN', 'CHANGES_REQUESTED'), word: 'changes requested', live: 'cairn-pane-revise-M201' },
+    { answer: prView('CLOSED', ''), word: 'closed', live: 'cairn-pane-check-M201' },
+  ]) {
+    test(`an archived row whose PR reads \`${each.word}\` carries no Button`, async ($, on) => {
+      gh(on, () => each.answer)
+      seat(on, copyOf('blocked-archived'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      const archived = await blockedView($, 'blocked-M202')
+      expect(archived.text).toBe(`M202  The URL on the Status line  #21  archived  ${each.word}`)
+      expect(archived.buttons).toEqual([])
+      expect((await blockedView($, 'blocked-M201')).buttons).toEqual([each.live])
+    })
+  }
 
   // A press while a cairn skill's step runs does nothing, as the Next,
   // Status, and Clear presses do (M224 review). The Button stays drawn.

@@ -432,7 +432,9 @@ export function paneLines(
       const word = got?.word
       if (word !== undefined) {
         held.tail = [...(held.tail ?? []), { text: '  ' }, { text: word, color: prColor(word) }]
-        const button = PR_BUTTON[word]
+        // An archived row carries only Finish (M246 review): its milestone
+        // file is gone, so Revise and Check have nothing to work on.
+        const button = row.archived && word !== 'merged' ? undefined : PR_BUTTON[word]
         if (button !== undefined) {
           held.buttons = [button]
           held.target = row.id

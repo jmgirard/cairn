@@ -61,6 +61,8 @@ export type CairnPaneMilestone = {
 // `blocked` holds the `blocked` rows in ROADMAP order, each with the number
 // of the pull request its milestone file's `Branch/PR` header names, or
 // null (M223), and that pull request's URL up to its number, or null (M224).
+// `archived` is true when the row's file is gone and its one archive file
+// reads done, the number and URL then read from its Status paragraph (M246).
 export type CairnPaneState = {
   found: boolean
   milestones: CairnPaneMilestone[]
@@ -68,7 +70,7 @@ export type CairnPaneState = {
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
   candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
-  blocked: { id: string; title: string; pr: number | null; url: string | null }[]
+  blocked: { id: string; title: string; pr: number | null; url: string | null; archived: boolean }[]
 }
 
 // The state word of a blocked milestone's pull request, as the pane last

@@ -335,6 +335,7 @@ class StatusFixtureAgreement(unittest.TestCase):
         # under a row with no live file, is archived, and its PR comes from
         # the Status paragraph.
         held = {row["id"]: (row["pr"], row["archived"]) for row in load("blocked-archived")["blocked"]}
+        archive = FIXTURES / "blocked-archived" / "cairn" / "milestones" / "archive"
         self.assertEqual(
             held,
             {
@@ -347,9 +348,13 @@ class StatusFixtureAgreement(unittest.TestCase):
                 "M207": (None, False),
                 "M208": (None, False),
                 "M209": (None, False),
+                "M210": (None, False),
+                "M211": (None, True),
             },
         )
-        archive = FIXTURES / "blocked-archived" / "cairn" / "milestones" / "archive"
+        # A done archive beside M201's live file, so the live file is shown
+        # to win (M246 review).
+        self.assertTrue((archive / "M201-live.md").exists())
         self.assertEqual(sorted(p.name for p in archive.glob("M*207*")), ["M0207-b.md", "M207-a.md"])
         self.assertIn("/cairn/milestones/archive/M208-unreadable.md", load("blocked-archived")["unreadable"])
         # Each row's URL beside its number (M224): the trailing path cut,

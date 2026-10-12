@@ -11,7 +11,6 @@ Read-only; exits 0 on success, 2 outside a cairn repo.
     python3 scripts/cairn_next.py [ROOT]
 """
 
-import glob
 import os
 import re
 import sys
@@ -140,11 +139,18 @@ def archived_text(root, row, read):
     canonical id, its read succeeds, and its Status paragraph starts with
     `done`. None otherwise."""
     want = cs.canon_id(row["id"])
+    # A listing, not a glob, so a root holding `[` or `*` lists as the TS
+    # side's `list` does (M246 review).
+    folder = os.path.join(root, "cairn", "milestones", "archive")
+    try:
+        names = os.listdir(folder)
+    except OSError:
+        names = []
     found = []
-    for path in glob.glob(os.path.join(root, "cairn", "milestones", "archive", "M*.md")):
-        m = cs._ID_RE.match(os.path.basename(path))
-        if m and cs.canon_id(m.group(1)) == want:
-            found.append(path)
+    for name in names:
+        m = cs._ID_RE.match(name)
+        if name.startswith("M") and name.endswith(".md") and m and cs.canon_id(m.group(1)) == want:
+            found.append(os.path.join(folder, name))
     if len(found) != 1:
         return None
     text = read(found[0])
