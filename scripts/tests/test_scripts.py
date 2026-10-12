@@ -322,6 +322,30 @@ class TestNext(ScriptCase):
         self.assertIn("  M05 — Handed off (PR #1250)", lines)
         self.assertIn("  M06 — Held", lines)
 
+    def test_externally_blocked_line_marks_an_archived_row(self):
+        # M246 AC4: a blocked row whose live file is gone and whose archive
+        # file reads done ends its line with the PR number and `archived`,
+        # or with `archived` alone when its Status paragraph has no URL. A
+        # row with a live file keeps today's line.
+        self.tree.rows += [
+            ("M05", "Archived with a PR", "blocked", "—", "normal", "milestones/M05-pr.md"),
+            ("M06", "Archived with no PR", "blocked", "—", "normal", "milestones/M06-nopr.md"),
+            ("M07", "Still live", "blocked", "—", "normal", "milestones/M07-live.md"),
+        ]
+        self.tree.files["milestones/archive/M05-pr.md"] = (
+            "# M05: Archived with a PR\n\n**Status:** done (2026-01-12, PR #956 https://github.com/up/repo/pull/956)\n"
+        )
+        self.tree.files["milestones/archive/M06-nopr.md"] = "# M06: Archived with no PR\n\n**Status:** done (2026-01-12)\n"
+        self.tree.files["milestones/M07-live.md"] = (
+            "# M07: Still live\n\n- **Status:** blocked   <!-- mirror -->\n"
+            "- **Branch/PR:** live, https://github.com/up/repo/pull/7\n\n## Goal\nx\n"
+        )
+        out = run("cairn_next.py", self.tree.build()).stdout
+        lines = out.splitlines()
+        self.assertIn("  M05 — Archived with a PR (PR #956, archived)", lines)
+        self.assertIn("  M06 — Archived with no PR (archived)", lines)
+        self.assertIn("  M07 — Still live (PR #7)", lines)
+
 
 class TestValidateClean(ScriptCase):
     def test_clean_tree_passes(self):

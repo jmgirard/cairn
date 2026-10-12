@@ -3476,6 +3476,26 @@ REGISTRY += [
 
 
 REGISTRY += [
+    # M246: the archived-file arm's trigger and its step-9 entry point in
+    # the review skill's Session start.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_trigger_is_a_missing_live_file_and_one_done_archive",
+        target=REVIEW,
+        block="exactly one file under `cairn/milestones/archive/`\n"
+              "carries its id (at any zero-padding)",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_entry_is_step_nine_row_update_without_issue_writes",
+        target=REVIEW,
+        block="and run it from its ROADMAP row update onward, then\nstep 10.",
+    ),
+]
+
+REGISTRY += [
     # M172: the resume route's trigger and its four branches in the review
     # skill's Session start (the list pinned whole, M171 lesson), step 7's
     # approval line, the audit's merged-but-review bullet, and the hotfix

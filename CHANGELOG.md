@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **The pane shows a blocked milestone whose file was archived before its
+  row changed.** A cleanup after a merge can stop between moving the
+  milestone file to the archive and setting its ROADMAP row to `done`. The
+  pane then showed the row with no PR state and no button. Now, if exactly
+  one archive file has the row's id and its `**Status:**` paragraph starts
+  with `done`, the pane reads the PR from that paragraph and marks the
+  line `archived`. A merged PR gets the Finish button, and
+  `/milestone-review` accepts such a milestone and completes the row update.
+  It names the issue writes it skipped as owed. `scripts/cairn_next.py`
+  marks the line `archived` too.
 - **`/milestone` reports news on the issues and PRs your candidate rows
   link to.** The health audit reads each link in a candidate row, whether a
   full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo's own issues

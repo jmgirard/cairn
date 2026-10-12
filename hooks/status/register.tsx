@@ -130,9 +130,10 @@ const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: '
 
 // What the cairn pane shows, written at each refresh (M205). The tag moved
 // to 2 when the state gained the candidate rows (M207), to 3 when it
-// gained the blocked rows (M223), and to 4 when each blocked row gained its
-// pull request's URL (M224).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-4' })
+// gained the blocked rows (M223), to 4 when each blocked row gained its
+// pull request's URL (M224), and to 5 when each blocked row gained
+// `archived` (M246).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-5' })
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has

@@ -334,6 +334,16 @@ its PR in that header, so the section lists the PRs that wait on review.
 `scripts/cairn_next.py` prints the same number after each "Externally
 blocked" line, as `(PR #<n>)`.
 
+A cleanup after a merge can stop after it moves the milestone file to
+`cairn/milestones/archive/` and before it changes the ROADMAP row. The row
+then still says `blocked` and names a file that is gone. If exactly one
+archive file has the row's id and its `**Status:**` paragraph starts with
+`done`, the pane reads the PR from the first GitHub pull request URL in
+that paragraph and shows `archived` after the number. `cairn_next.py`
+prints `(PR #<n>, archived)`, or `(archived)` with no number. A merged PR
+then gets the Finish button, and `/milestone-review` completes the row
+update. It names the issue writes it skipped as owed.
+
 The pane also shows each PR's state, which it reads from GitHub with one
 `gh api graphql` query for each PR. That query also gives the count
 below. It reads the states when the pane opens, by `/cairn-pane`, by the

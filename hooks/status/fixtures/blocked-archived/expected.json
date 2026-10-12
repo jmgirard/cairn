@@ -1,0 +1,20 @@
+{
+  "cwd": "",
+  "unreadable": ["/cairn/milestones/archive/M208-unreadable.md"],
+  "workable": [],
+  "rows": [],
+  "pane": [],
+  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+  "candidates": [],
+  "blocked": [
+    {"id": "M201", "title": "A live file", "pr": 11, "url": "https://github.com/upstream/repo/pull/11", "archived": false},
+    {"id": "M202", "title": "The URL on the Status line", "pr": 21, "url": "https://github.com/upstream/repo/pull/21", "archived": true},
+    {"id": "M203", "title": "The URL on the second line", "pr": 32, "url": "https://github.com/upstream/repo/pull/32", "archived": true},
+    {"id": "M204", "title": "A URL only in a later paragraph", "pr": null, "url": null, "archived": true},
+    {"id": "M057", "title": "An id padded unlike its archive file", "pr": 57, "url": "https://github.com/upstream/repo/pull/57", "archived": true},
+    {"id": "M206", "title": "A dropped archive", "pr": null, "url": null, "archived": false},
+    {"id": "M207", "title": "Two archive files", "pr": null, "url": null, "archived": false},
+    {"id": "M208", "title": "An archive file whose read fails", "pr": null, "url": null, "archived": false},
+    {"id": "M209", "title": "No file at all", "pr": null, "url": null, "archived": false}
+  ]
+}

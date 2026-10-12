@@ -425,6 +425,9 @@ export function paneLines(
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
       if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
+      // A row whose file was archived before its row changed (M246): the
+      // mark sits after the number and before the state word.
+      if (row.archived) held.tail = [...(held.tail ?? []), { text: '  ' }, { text: 'archived', color: GRAY }]
       const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
       const word = got?.word
       if (word !== undefined) {

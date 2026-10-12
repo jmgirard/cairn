@@ -475,8 +475,8 @@ const BLOCKED_LINES = [
   'M106  A file whose read fails',
   'M107  A missing file',
 ]
-const blockedLine = (row: { id: string; title: string; pr: number | null }) =>
-  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}`
+const blockedLine = (row: { id: string; title: string; pr: number | null; archived: boolean }) =>
+  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}${row.archived ? '  archived' : ''}`
 
 describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', () => {
   test('the domain holds blocked rows with and without an active milestone, and fixtures with none', () => {
@@ -2100,6 +2100,32 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
       expect(copy.commands).toEqual([each.command])
     })
   }
+
+  // M246 AC3: a blocked row whose milestone file was archived reads its PR
+  // from the archive file. Its line carries `archived` after the number and
+  // before the state word, or `archived` alone with no number. A merged one
+  // carries the Finish Button for its id. A live row carries no `archived`.
+  // The lines are written out by hand from the blocked-archived fixture.
+  test('an archived row shows `archived`, its state word, and Finish', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-archived')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const archived = await blockedView($, 'blocked-M202')
+    expect(archived.text).toBe('M202  The URL on the Status line  #21  archived  merged')
+    expect(archived.buttons).toEqual(['cairn-pane-finish-M202'])
+    const bare = await blockedView($, 'blocked-M204')
+    expect(bare.text).toBe('M204  A URL only in a later paragraph  archived')
+    expect(bare.buttons).toEqual([])
+    const live = await blockedView($, 'blocked-M201')
+    expect(live.text).toBe('M201  A live file  #11  merged')
+    expect((await blockedView($, 'blocked-M206')).text).toBe('M206  A dropped archive')
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await ui.press({ key: 'cairn-pane-finish-M202' })
+    await ui.unmount()
+    expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M202' }])
+  })
 
   // A press while a cairn skill's step runs does nothing, as the Next,
   // Status, and Clear presses do (M224 review). The Button stays drawn.

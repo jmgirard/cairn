@@ -125,6 +125,40 @@ class TestReviewResumeRoute(unittest.TestCase):
         )
 
 
+class TestReviewArchivedFileArm(unittest.TestCase):
+    """M246 AC5: Session start accepts a target whose live file is gone and
+    whose one archive file reads done, and the arm enters step 9 at its
+    ROADMAP row update with the issue writes named as owed."""
+
+    def setUp(self):
+        self.arm = flat(section(read("milestone-review", "SKILL.md"),
+                                "**Archived-file arm (M246).**",
+                                "**Resume routing (M172).**"))
+
+    def test_trigger_is_a_missing_live_file_and_one_done_archive(self):
+        self.assertIn(
+            "A target whose live milestone file is missing, and for which "
+            "exactly one file under `cairn/milestones/archive/` carries its "
+            "id (at any zero-padding) with a `**Status:**` paragraph that "
+            "starts with `done`, is accepted whatever its ROADMAP status.",
+            self.arm,
+        )
+
+    def test_entry_is_step_nine_row_update_without_issue_writes(self):
+        self.assertIn(
+            "Skip steps 1 to 8. Run step 9's sync of the default branch, skip "
+            "its summary write and live-file delete, and run it from its "
+            "ROADMAP row update onward, then step 10.",
+            self.arm,
+        )
+        self.assertIn(
+            "skip step 9's issue writes, and name each entry of the "
+            "`resolves` clause in the archive's Status paragraph as owed in "
+            "the recap.",
+            self.arm,
+        )
+
+
 class TestMilestoneAuditMergedReview(unittest.TestCase):
     """AC3: `/milestone`'s audit reports a `review` milestone whose header
     PR is merged as post-merge hygiene owed, beside the open-PR bullet."""

@@ -37,6 +37,21 @@ read in this skill then carries `--repo <base-repo>` (the rulebook's slug
 recipe), and every docs-only commit named below is an on-disk write
 instead, nothing under `cairn/` ever committed.
 
+**Archived-file arm (M246).** A target whose live milestone file is
+missing, and for which exactly one file under `cairn/milestones/archive/`
+carries its id (at any zero-padding) with a `**Status:**` paragraph that
+starts with `done`, is accepted whatever its ROADMAP status. An earlier
+hygiene pass wrote the archive summary and deleted the live file, then
+stopped before the ROADMAP row changed. This arm reads no `Branch/PR`
+header and no PR state, and Resume routing below does not run. Say in chat
+that the archive exists and the row was not updated (IP2). Skip steps 1
+to 8. Run step 9's sync of the default branch, skip its summary write and
+live-file delete, and run it from its ROADMAP row update onward, then
+step 10. The archive
+replaces the work log, so no recorded step-7 approval exists: skip step
+9's issue writes, and name each entry of the `resolves` clause in the
+archive's Status paragraph as owed in the recap.
+
 **Resume routing (M172).** When the target milestone's `Branch/PR` header
 carries a PR URL — or names only the branch and `gh pr list --head
 <branch> --state all --json number,url` finds a PR for it (step 8's

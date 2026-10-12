@@ -11,6 +11,7 @@ Read-only; exits 0 on success, 2 outside a cairn repo.
     python3 scripts/cairn_next.py [ROOT]
 """
 
+import glob
 import os
 import re
 import sys
@@ -23,6 +24,10 @@ import cairn_scripts as cs
 BRANCH_PR = re.compile(r"^[ \t]*-[ \t]*\*\*Branch/PR:\*\*(.*)$")
 # At most 15 digits, so the number is exact in JavaScript too.
 PR_URL = re.compile(r"https://github\.com/[^/ \t]+/[^/ \t]+/pull/([0-9]{1,15})(?![0-9])")
+# A line of only spaces and tabs ends an archive summary's Status paragraph,
+# and the paragraph of a done milestone starts with `done` (M246).
+BLANK = re.compile(r"^[ \t]*$")
+STATUS_DONE = re.compile(r"^\*\*Status:\*\*[ \t]*done(?![A-Za-z0-9_])")
 
 
 def done_ids(root, rows):
@@ -111,25 +116,79 @@ def pr_url(text):
     return url.group(0) if url else None
 
 
+def status_paragraph(text):
+    """An archive summary's `**Status:**` paragraph (M246): the first line
+    that starts with `**Status:**`, through the line before the next line of
+    only spaces and tabs, or the end of the text. None when no line starts
+    so."""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if not line.startswith("**Status:**"):
+            continue
+        out = [line]
+        for rest in lines[i + 1 :]:
+            if BLANK.match(rest):
+                break
+            out.append(rest)
+        return "\n".join(out)
+    return None
+
+
+def archived_text(root, row, read):
+    """The text of a row's archive file when the fallback applies (M246):
+    exactly one file under `cairn/milestones/archive/` has the row's
+    canonical id, its read succeeds, and its Status paragraph starts with
+    `done`. None otherwise."""
+    want = cs.canon_id(row["id"])
+    found = []
+    for path in glob.glob(os.path.join(root, "cairn", "milestones", "archive", "M*.md")):
+        m = cs._ID_RE.match(os.path.basename(path))
+        if m and cs.canon_id(m.group(1)) == want:
+            found.append(path)
+    if len(found) != 1:
+        return None
+    text = read(found[0])
+    para = None if text is None else status_paragraph(text)
+    return text if para is not None and STATUS_DONE.match(para) else None
+
+
 def blocked(root, rows, read=None):
     """The `blocked` rows in ROADMAP order. Each is a dict of `id`, `title`,
-    `pr`, the number `pr_number` reads from the row's milestone file, and
-    `url`, the URL `pr_url` reads (M224). Both are None when the file is
-    missing or its read fails. `read` takes a path and gives its text or None
-    (`read_file` by default). The cairn pane (hooks/status/reader.ts) mirrors
-    this (M223)."""
+    `pr`, the number `pr_number` reads from the row's milestone file, `url`,
+    the URL `pr_url` reads (M224), and `archived` (M246). Both are None when
+    the file is missing or its read fails. When the row's file is not a
+    regular file and `archived_text` finds its archive file, `archived` is
+    True and `pr` and `url` come from the first URL in that file's Status
+    paragraph. `read` takes a path and gives its text or None (`read_file`
+    by default). The cairn pane (hooks/status/reader.ts) mirrors this
+    (M223)."""
     read = read or read_file
     out = []
     for r in rows:
         if r["status"] != "blocked":
             continue
-        text = read(os.path.join(root, "cairn", r["relpath"]))
+        path = os.path.join(root, "cairn", r["relpath"])
+        archive = None if os.path.isfile(path) else archived_text(root, r, read)
+        if archive is not None:
+            url = PR_URL.search(status_paragraph(archive))
+            out.append(
+                {
+                    "id": r["id"],
+                    "title": r["title"],
+                    "pr": int(url.group(1)) if url else None,
+                    "url": url.group(0) if url else None,
+                    "archived": True,
+                }
+            )
+            continue
+        text = read(path)
         out.append(
             {
                 "id": r["id"],
                 "title": r["title"],
                 "pr": None if text is None else pr_number(text),
                 "url": None if text is None else pr_url(text),
+                "archived": False,
             }
         )
     return out
@@ -165,7 +224,8 @@ def render(root):
     if held:
         lines.append("Externally blocked (see work-log):")
         for r in held:
-            suffix = "" if r["pr"] is None else f" (PR #{r['pr']})"
+            notes = ([] if r["pr"] is None else [f"PR #{r['pr']}"]) + (["archived"] if r["archived"] else [])
+            suffix = f" ({', '.join(notes)})" if notes else ""
             lines.append(f"  {r['id']} — {r['title']}{suffix}")
     return "\n".join(lines)
 

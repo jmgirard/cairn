@@ -1,13 +1,13 @@
 # M246: The pane shows a blocked row whose milestone file was archived before its row was updated
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane, the `cairn_next.py` output, and `/milestone-review` are what plugin users see and run
-- **Branch/PR:** —
+- **Branch/PR:** m246-pane-archived-blocked-row
 
 ## Goal
 
@@ -77,18 +77,18 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 
 ## Tasks
 
-- [ ] T1: Write the tests first: the AC1 and AC4 cases in `scripts/tests`, the new fixture with its `expected.json` (the read-fail case through its `unreadable` key), and the reader and pane mod tests.
+- [x] T1: Write the tests first: the AC1 and AC4 cases in `scripts/tests`, the new fixture with its `expected.json` (the read-fail case through its `unreadable` key), and the reader and pane mod tests.
       Add `archived: false` to the `blocked` entries of the existing fixtures (`blocked-prs`, `blocked-active`, and any other with a `blocked` key).
       The new tests fail before T2 to T4.
-- [ ] T2: `scripts/cairn_next.py`: the archive fallback in `blocked`, a Status-paragraph URL reader beside `_pr_match`, the `archived` key, and the printed suffix.
-- [ ] T3: `hooks/status/reader.ts`: the same fallback, with archive paths and not only ids, and `BlockedRow.archived`.
+- [x] T2: `scripts/cairn_next.py`: the archive fallback in `blocked`, a Status-paragraph URL reader beside `_pr_match`, the `archived` key, and the printed suffix.
+- [x] T3: `hooks/status/reader.ts`: the same fallback, with archive paths and not only ids, and `BlockedRow.archived`.
       Give the pane atom a new shape tag in `register.tsx` (LESSONS, M193).
       Regenerate `fixtures.gen.ts` with `hooks/status/gen_fixtures.py`.
-- [ ] T4: `hooks/status/pane.ts`: the `archived` word in the blocked line's tail.
-- [ ] T5: `skills/milestone-review/SKILL.md`: the Session start acceptance and the resume arm.
+- [x] T4: `hooks/status/pane.ts`: the `archived` word in the blocked line's tail.
+- [x] T5: `skills/milestone-review/SKILL.md`: the Session start acceptance and the resume arm.
       Add a prose guard in `skills/tests` (hand-run) that fails when the arm's trigger or its step-9 entry point is removed.
-- [ ] T6: `cairn/DESIGN.md`, `README.md`, and `CHANGELOG.md`.
-- [ ] T7: Run the `verify` slot and the hand-run `skills/tests` suite.
+- [x] T6: `cairn/DESIGN.md`, `README.md`, and `CHANGELOG.md`.
+- [x] T7: Run the `verify` slot and the hand-run `skills/tests` suite.
 
 ## Work log
 
@@ -103,6 +103,12 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: plan gate chose the review arm behind Finish over an `archived` mark with a Check button and no skill change, because the user chose it. Falsified by a half-done hygiene state that the arm's step-9 entry point cannot finish.
 - 2026-10-12: plan gate chose to read the PR from the archive's Status paragraph over adding a `Branch/PR` line to the archive template, because every existing archive has only the Status line. Falsified by archives that put the PR outside the Status paragraph.
 - 2026-10-12: the user chose this fallback over a Refresh button that writes ROADMAP rows, in chat before the plan.
+- 2026-10-12: implement started. Branch `m246-pane-archived-blocked-row` cut from main at 48469bd. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-12: T1 done. New fixture `blocked-archived` holds the nine AC1 cases, and the four existing fixtures with blocked rows gained `archived: false`. Its files were written with shell heredocs, not the Write tool. The Python tests failed before T2 on the missing key and suffix. The mod tests were not run before T3 and T4.
+- 2026-10-12: choice: `archived_text` globs the archive directory itself, because `archive_files` keys by raw id and keeps one path per id, so it cannot see two files with one canonical id.
+- 2026-10-12: T2 to T4 done. `test_status_fixtures.py` states the nine cases apart from the helper. `band.test.tsx`'s list of empty fixtures gained `blocked-archived`. The pane shape tag is `pane-5`.
+- 2026-10-12: T5 done. The arm sits in Session start before Resume routing, keeps step 9's default-branch sync, and skips the issue writes. Guard `TestReviewArchivedFileArm` and two harness entries; `skills/tests` 728 tests OK.
+- 2026-10-12: T6 and T7 done. Verify: scripts 407 OK, hooks 174 OK, both validates exit 0, mod tests 1703 pass. `cairn_validate` passes.
 
 ## Decisions
 
