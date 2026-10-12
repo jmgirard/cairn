@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M246 | The pane shows a blocked row whose milestone file was archived before its row was updated | in-progress | — | normal | milestones/M246-pane-archived-blocked-row.md |
+| M246 | The pane shows a blocked row whose milestone file was archived before its row was updated | review | — | normal | milestones/M246-pane-archived-blocked-row.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

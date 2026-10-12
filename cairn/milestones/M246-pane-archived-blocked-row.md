@@ -1,6 +1,6 @@
 # M246: The pane shows a blocked row whose milestone file was archived before its row was updated
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -96,7 +96,7 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
       Add a prose guard in `skills/tests` (hand-run) that fails when the arm's trigger or its step-9 entry point is removed.
 - [x] T6: `cairn/DESIGN.md`, `README.md`, and `CHANGELOG.md`.
 - [x] T7: Run the `verify` slot and the hand-run `skills/tests` suite.
-- [ ] T8: Rewrite the archived-file arm in `skills/milestone-review/SKILL.md` to the amended AC5, and the status rule's exception.
+- [x] T8: Rewrite the archived-file arm in `skills/milestone-review/SKILL.md` to the amended AC5, and the status rule's exception.
       Rewrite `TestReviewArchivedFileArm` and its harness entries to pin the guest-mode limit, the `blocked` limit, the owner-mode stop, the step-9 parts, and the no-write clause.
       Add a D-entry annotating D-130, and say "guest mode" in the README, CHANGELOG, and DESIGN.md lines on Finish.
 
@@ -129,6 +129,10 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: question set: accept the third AC5 wording (repeated review-failure stop). Answer: accept the wording, with Finish still shown in owner mode, where it reports and stops.
 - 2026-10-12: amendment return: AC5 — "accepts, in guest mode only, a target whose ROADMAP row is `blocked`, whose ROADMAP path is not a regular file, and for which exactly one file under `cairn/milestones/archive/` has the row's canonical id and a `**Status:**` paragraph (AC1's definition) that starts with `done`. Session start's status rule names this exception. For such an archive in owner mode, or under a row that is not `blocked`, Session start says in chat that the archive exists and the row was not updated, and stops. In the accepted case, the arm says the same in chat. It reads the archive file in place of the milestone file, reads no `Branch/PR` header and no PR state, and takes the archive's `done` Status as the record of the merge. It skips steps 1 to 8. Of step 9 it runs only these parts: the default branch's fetch, checkout, and fast-forward (step 9's guest arm), the ROADMAP row update to `done` with the archive path, the hygiene stamp, the cap and budget checks, the hand-run prose guards where the repo ships them, and `cairn_validate.py`. A cap breach or a `cairn_validate.py` FAIL is named in the recap, with no prune, and step 10 still runs. It writes nothing to the archive file, captures or retires no lesson, and archives no RB/RR pair, and its recap names these as skipped. It skips the issue writes. Its recap names each `partial` entry of the archive's `resolves` clause as an owed comment, and each `closes` entry as left to the maintainers' merge. Then it runs step 10."
 - 2026-10-12: the amendment narrows what the arm accepts and the step-9 parts it runs. It adds the status-rule exception, the owner-mode stop, the chat line, the archive read, the no-write clause, and the split `partial` and `closes` recap. T8 added (minor amendment), and AC5's tick removed until fresh evidence.
+- 2026-10-12: T8 done. The arm is rewritten to the amended AC5, the status rule names it, D-159 annotates D-130, and README, CHANGELOG, and DESIGN.md say guest mode. `TestReviewArchivedFileArm` now has 5 tests with 5 harness entries.
+- 2026-10-12: claim audit: 41 claims read, 4 corrected — skills/milestone-review/SKILL.md, README.md, CHANGELOG.md, skills/tests/test_resume_routing.py
+- 2026-10-12: claim audit fixes: the trigger says "first word ... is `done`" and "up to" the blank line, the `closes` sentence says the keyword closes it at the maintainers' merge, and README and CHANGELOG name only the three skipped items. The same reader re-read the 4 and found 0 wrong.
+- 2026-10-12: verify green at 54ab66a8: scripts 407 OK, hooks OK, both validates exit 0, mod tests 1707 pass, `skills/tests` 731 OK. Status set to review.
 
 ## Decisions
 
