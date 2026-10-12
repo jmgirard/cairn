@@ -323,9 +323,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   `status_paragraph` in `cairn_next.py`, mirrored in `reader.ts`). The
   pane draws `archived` after the number and before the state word, and
   `cairn_next.py` prints `(PR #<n>, archived)` or `(archived)`. A merged
-  one carries Finish, and `/milestone-review`'s archived-file arm
-  completes the row update from step 9's ROADMAP edit onward, with the
-  issue writes named as owed. The pane state's shape tag is `pane-5`.
+  one carries Finish, and an archived line carries no Revise or Check.
+  In guest mode, `/milestone-review`'s archived-file arm (D-159) sets a
+  `blocked` row to `done` and runs a named part of step 9, writing
+  nothing to the archive and making no issue write. In owner mode it
+  reports and stops. The pane state's shape tag is `pane-5`.
   Each blocked row also keeps that pull request's URL up to its number
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one call per distinct URL

@@ -342,8 +342,12 @@ archive file has the row's id and its `**Status:**` paragraph starts with
 that paragraph and shows `archived` after the number, or alone when the
 paragraph has no URL. `cairn_next.py`
 prints `(PR #<n>, archived)`, or `(archived)` with no number. A merged PR
-then gets the Finish button, and `/milestone-review` completes the row
-update. It names the issue writes it skipped as owed.
+then gets the Finish button, and an archived line gets no other button.
+In guest mode, `/milestone-review` then sets the row to `done`, runs the
+checks, and names the archive, lesson, and review-brief work it skipped
+and the issue comments still owed. It changes nothing in the archive
+file. In owner mode it says what it found and stops, and leaves the row
+as it is.
 
 The pane also shows each PR's state, which it reads from GitHub with one
 `gh api graphql` query for each PR. That query also gives the count

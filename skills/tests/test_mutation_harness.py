@@ -3476,23 +3476,41 @@ REGISTRY += [
 
 
 REGISTRY += [
-    # M246: the archived-file arm's trigger, and its resumption of step 9 at
-    # the ROADMAP row update after step 9's checkout and pull, in the review
-    # skill's Session start.
+    # M246 (AC5 amended): the archived-file arm in the review skill's
+    # Session start: the status rule's exception, the trigger, the
+    # owner-mode stop, the named step-9 parts, and the no-write clause.
     Mutation(
         guard="test_resume_routing",
-        test="TestReviewArchivedFileArm."
-             "test_trigger_is_a_missing_live_file_and_one_done_archive",
+        test="TestReviewArchivedFileArm.test_status_rule_names_the_exception",
         target=REVIEW,
-        block="exactly one file under `cairn/milestones/archive/`\n"
-              "carries its id (at any zero-padding)",
+        block="except under the archived-file arm below.",
     ),
     Mutation(
         guard="test_resume_routing",
         test="TestReviewArchivedFileArm."
-             "test_entry_is_step_nine_row_update_without_issue_writes",
+             "test_trigger_is_a_missing_path_and_one_done_archive",
         target=REVIEW,
-        block="and run it from its ROADMAP row update onward, then step 10.",
+        block="exactly one file under `cairn/milestones/archive/` has\n"
+              "its canonical id (any zero-padding)",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm.test_owner_mode_and_other_rows_stop",
+        target=REVIEW,
+        block="In owner mode, or\nwhen the row is not `blocked`, stop there.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm.test_runs_only_the_named_step_nine_parts",
+        target=REVIEW,
+        block="the hygiene stamp,\nthe cap and budget checks",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_writes_nothing_to_the_archive_and_no_issue",
+        target=REVIEW,
+        block="Write nothing to\nthe archive file",
     ),
 ]
 

@@ -57,11 +57,18 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
       If the row has no PR number, the line ends with ` (archived)`.
       The line for a row that is not archived is unchanged.
       A test in `scripts/tests` asserts the three printed forms.
-- [x] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts a target whose live milestone file is missing and whose single archive file's `**Status:**` paragraph starts with `done`.
-      Its "Resume routing" has an arm for that target that reads no `Branch/PR` header and no PR state.
-      The arm skips steps 1 to 8 and step 9's summary write and live-file delete.
-      It runs step 9 from the ROADMAP row update onward, then step 10.
-      It skips step 9's issue writes, and its recap names each `resolves` entry of the archive's Status paragraph as owed.
+- [ ] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts, in guest mode only, a target whose ROADMAP row is `blocked`, whose ROADMAP path is not a regular file, and for which exactly one file under `cairn/milestones/archive/` has the row's canonical id and a `**Status:**` paragraph (AC1's definition) that starts with `done`.
+      Session start's status rule names this exception.
+      For such an archive in owner mode, or under a row that is not `blocked`, Session start says in chat that the archive exists and the row was not updated, and stops.
+      In the accepted case, the arm says the same in chat.
+      It reads the archive file in place of the milestone file, reads no `Branch/PR` header and no PR state, and takes the archive's `done` Status as the record of the merge.
+      It skips steps 1 to 8.
+      Of step 9 it runs only these parts: the default branch's fetch, checkout, and fast-forward (step 9's guest arm), the ROADMAP row update to `done` with the archive path, the hygiene stamp, the cap and budget checks, the hand-run prose guards where the repo ships them, and `cairn_validate.py`.
+      A cap breach or a `cairn_validate.py` FAIL is named in the recap, with no prune, and step 10 still runs.
+      It writes nothing to the archive file, captures or retires no lesson, and archives no RB/RR pair, and its recap names these as skipped.
+      It skips the issue writes.
+      Its recap names each `partial` entry of the archive's `resolves` clause as an owed comment, and each `closes` entry as left to the maintainers' merge.
+      Then it runs step 10.
 - [x] AC6: `cairn/DESIGN.md`'s paragraph on the pane's `blocked` rows, `README.md`'s description of the pane's blocked section, and a `CHANGELOG.md` entry each state the archive fallback and the `archived` mark.
 - [x] AC7: The profile's `verify` slot is green: its five commands each exit 0 from the repo root.
 
@@ -71,7 +78,7 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - AC2 → T1, T3
 - AC3 → T1, T4
 - AC4 → T1, T2
-- AC5 → T5
+- AC5 → T5, T8
 - AC6 → T6
 - AC7 → T7
 
@@ -89,6 +96,9 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
       Add a prose guard in `skills/tests` (hand-run) that fails when the arm's trigger or its step-9 entry point is removed.
 - [x] T6: `cairn/DESIGN.md`, `README.md`, and `CHANGELOG.md`.
 - [x] T7: Run the `verify` slot and the hand-run `skills/tests` suite.
+- [ ] T8: Rewrite the archived-file arm in `skills/milestone-review/SKILL.md` to the amended AC5, and the status rule's exception.
+      Rewrite `TestReviewArchivedFileArm` and its harness entries to pin the guest-mode limit, the `blocked` limit, the owner-mode stop, the step-9 parts, and the no-write clause.
+      Add a D-entry annotating D-130, and say "guest mode" in the README, CHANGELOG, and DESIGN.md lines on Finish.
 
 ## Work log
 
@@ -116,6 +126,9 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: amendment routed: AC5 — the arm accepts a finished milestone whatever its row status and makes a `blocked → done` move in owner mode that the rulebook does not admit (diff-bug #1, #2, blame-history #2); the criterion narrows to guest-mode `blocked` rows and names the step-9 parts the arm runs
 - 2026-10-12: re-audit: AC5 (full) — 4 findings on the first narrowed wording: in guest mode `closes` entries are the maintainers' merge, not owed; the prose guards and lesson pruning are conditional in step 9; the trigger did not use AC1's terms and dropped the chat line (IP2); the guard did not pin the new limits. All four fixed in the second wording.
 - 2026-10-12: re-audit: AC5 (full) — 4 findings on the second wording: the fast-forward needs step 9's checkout; a `cairn_validate.py` FAIL has no rule when pruning is barred; owner mode and non-`blocked` rows have no exit; RB/RR archiving is dropped unsaid. It also advised a D-entry annotating D-130. This is the second re-audit line, so the third wording goes to the user.
+- 2026-10-12: question set: accept the third AC5 wording (repeated review-failure stop). Answer: accept the wording, with Finish still shown in owner mode, where it reports and stops.
+- 2026-10-12: amendment return: AC5 — "accepts, in guest mode only, a target whose ROADMAP row is `blocked`, whose ROADMAP path is not a regular file, and for which exactly one file under `cairn/milestones/archive/` has the row's canonical id and a `**Status:**` paragraph (AC1's definition) that starts with `done`. Session start's status rule names this exception. For such an archive in owner mode, or under a row that is not `blocked`, Session start says in chat that the archive exists and the row was not updated, and stops. In the accepted case, the arm says the same in chat. It reads the archive file in place of the milestone file, reads no `Branch/PR` header and no PR state, and takes the archive's `done` Status as the record of the merge. It skips steps 1 to 8. Of step 9 it runs only these parts: the default branch's fetch, checkout, and fast-forward (step 9's guest arm), the ROADMAP row update to `done` with the archive path, the hygiene stamp, the cap and budget checks, the hand-run prose guards where the repo ships them, and `cairn_validate.py`. A cap breach or a `cairn_validate.py` FAIL is named in the recap, with no prune, and step 10 still runs. It writes nothing to the archive file, captures or retires no lesson, and archives no RB/RR pair, and its recap names these as skipped. It skips the issue writes. Its recap names each `partial` entry of the archive's `resolves` clause as an owed comment, and each `closes` entry as left to the maintainers' merge. Then it runs step 10."
+- 2026-10-12: the amendment narrows what the arm accepts and the step-9 parts it runs. It adds the status-rule exception, the owner-mode stop, the chat line, the archive read, the no-write clause, and the split `partial` and `closes` recap. T8 added (minor amendment), and AC5's tick removed until fresh evidence.
 
 ## Decisions
 

@@ -10,10 +10,13 @@
   pane then showed the row with no PR state and no button. Now, if exactly
   one archive file has the row's id and its `**Status:**` paragraph starts
   with `done`, the pane reads the PR from that paragraph and marks the
-  line `archived`. A merged PR gets the Finish button, and
-  `/milestone-review` accepts such a milestone and completes the row update.
-  It names the issue writes it skipped as owed. `scripts/cairn_next.py`
-  marks the line `archived` too.
+  line `archived`. A merged PR gets the Finish button, and the line gets no
+  other button. In guest mode, `/milestone-review` accepts such a `blocked`
+  milestone, sets its row to `done`, runs the checks, and names the
+  archive, lesson, and review-brief work it skipped and the issue comments
+  still owed. In owner mode it reports what
+  it found and stops. `scripts/cairn_next.py` marks the line `archived`
+  too.
 - **`/milestone` reports news on the issues and PRs your candidate rows
   link to.** The health audit reads each link in a candidate row, whether a
   full GitHub URL, `owner/repo#N`, or a bare `#N` for the repo's own issues
