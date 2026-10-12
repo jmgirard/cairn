@@ -7,7 +7,7 @@
 - **Principles touched:** IP2, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane, the `cairn_next.py` output, and `/milestone-review` are what plugin users see and run
-- **Branch/PR:** m246-pane-archived-blocked-row
+- **Branch/PR:** m246-pane-archived-blocked-row, https://github.com/jmgirard/cairn/pull/256
 
 ## Goal
 
