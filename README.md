@@ -339,7 +339,8 @@ A cleanup after a merge can stop after it moves the milestone file to
 then still says `blocked` and names a file that is gone. If exactly one
 archive file has the row's id and its `**Status:**` paragraph starts with
 `done`, the pane reads the PR from the first GitHub pull request URL in
-that paragraph and shows `archived` after the number. `cairn_next.py`
+that paragraph and shows `archived` after the number, or alone when the
+paragraph has no URL. `cairn_next.py`
 prints `(PR #<n>, archived)`, or `(archived)` with no number. A merged PR
 then gets the Finish button, and `/milestone-review` completes the row
 update. It names the issue writes it skipped as owed.

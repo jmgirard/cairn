@@ -469,7 +469,9 @@ export type WaitingRow = { id: string; title: string; unmet: string[] }
 // `blocked` in scripts/cairn_next.py (M223): a `blocked` row, and the
 // number of the pull request its milestone file's `Branch/PR` header names,
 // or null, with that pull request's URL beside it (M224). `archived` is true
-// when the row's file is gone and its archive file gives the PR (M246).
+// when the row's file is not a regular file and exactly one archive file
+// with its id is read and its Status paragraph starts with `done` (M246). The number and URL then come from
+// that file's Status paragraph, and either may be null.
 export type BlockedRow = { id: string; title: string; pr: number | null; url: string | null; archived: boolean }
 
 export const NO_PANE: PaneState = {

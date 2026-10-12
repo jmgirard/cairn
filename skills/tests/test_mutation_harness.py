@@ -3476,8 +3476,9 @@ REGISTRY += [
 
 
 REGISTRY += [
-    # M246: the archived-file arm's trigger and its step-9 entry point in
-    # the review skill's Session start.
+    # M246: the archived-file arm's trigger, and its resumption of step 9 at
+    # the ROADMAP row update after step 9's checkout and pull, in the review
+    # skill's Session start.
     Mutation(
         guard="test_resume_routing",
         test="TestReviewArchivedFileArm."
@@ -3491,7 +3492,7 @@ REGISTRY += [
         test="TestReviewArchivedFileArm."
              "test_entry_is_step_nine_row_update_without_issue_writes",
         target=REVIEW,
-        block="and run it from its ROADMAP row update onward, then\nstep 10.",
+        block="and run it from its ROADMAP row update onward, then step 10.",
     ),
 ]
 

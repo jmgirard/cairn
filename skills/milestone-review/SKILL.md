@@ -45,9 +45,9 @@ hygiene pass wrote the archive summary and deleted the live file, then
 stopped before the ROADMAP row changed. This arm reads no `Branch/PR`
 header and no PR state, and Resume routing below does not run. Say in chat
 that the archive exists and the row was not updated (IP2). Skip steps 1
-to 8. Run step 9's sync of the default branch, skip its summary write and
-live-file delete, and run it from its ROADMAP row update onward, then
-step 10. The archive
+to 8. Run step 9's checkout and pull of the default branch (guest arm:
+its fetch and fast-forward), skip its summary write and live-file delete,
+and run it from its ROADMAP row update onward, then step 10. The archive
 replaces the work log, so no recorded step-7 approval exists: skip step
 9's issue writes, and name each entry of the `resolves` clause in the
 archive's Status paragraph as owed in the recap.

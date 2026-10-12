@@ -127,8 +127,9 @@ class TestReviewResumeRoute(unittest.TestCase):
 
 class TestReviewArchivedFileArm(unittest.TestCase):
     """M246 AC5: Session start accepts a target whose live file is gone and
-    whose one archive file reads done, and the arm enters step 9 at its
-    ROADMAP row update with the issue writes named as owed."""
+    whose one archive file reads done. The arm runs step 9's checkout and
+    pull, then resumes step 9 at its ROADMAP row update, with the issue
+    writes named as owed."""
 
     def setUp(self):
         self.arm = flat(section(read("milestone-review", "SKILL.md"),
@@ -146,9 +147,10 @@ class TestReviewArchivedFileArm(unittest.TestCase):
 
     def test_entry_is_step_nine_row_update_without_issue_writes(self):
         self.assertIn(
-            "Skip steps 1 to 8. Run step 9's sync of the default branch, skip "
-            "its summary write and live-file delete, and run it from its "
-            "ROADMAP row update onward, then step 10.",
+            "Skip steps 1 to 8. Run step 9's checkout and pull of the default "
+            "branch (guest arm: its fetch and fast-forward), skip its summary "
+            "write and live-file delete, and run it from its ROADMAP row "
+            "update onward, then step 10.",
             self.arm,
         )
         self.assertIn(

@@ -155,8 +155,9 @@ def archived_text(root, row, read):
 def blocked(root, rows, read=None):
     """The `blocked` rows in ROADMAP order. Each is a dict of `id`, `title`,
     `pr`, the number `pr_number` reads from the row's milestone file, `url`,
-    the URL `pr_url` reads (M224), and `archived` (M246). Both are None when
-    the file is missing or its read fails. When the row's file is not a
+    the URL `pr_url` reads (M224), and `archived` (M246). `pr` and `url` are
+    None when the file is missing and no archive file applies, or when its
+    read fails. When the row's file is not a
     regular file and `archived_text` finds its archive file, `archived` is
     True and `pr` and `url` come from the first URL in that file's Status
     paragraph. `read` takes a path and gives its text or None (`read_file`

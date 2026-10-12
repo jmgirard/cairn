@@ -331,8 +331,9 @@ class StatusFixtureAgreement(unittest.TestCase):
             ],
         )
         # M246 AC1: the archive fallback's nine cases, stated apart from
-        # the helper. Only a single done archive file under a row with no
-        # live file is archived, and its PR comes from the Status paragraph.
+        # the helper. Only a single done archive file whose read succeeds,
+        # under a row with no live file, is archived, and its PR comes from
+        # the Status paragraph.
         held = {row["id"]: (row["pr"], row["archived"]) for row in load("blocked-archived")["blocked"]}
         self.assertEqual(
             held,

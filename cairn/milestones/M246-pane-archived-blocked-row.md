@@ -1,6 +1,6 @@
 # M246: The pane shows a blocked row whose milestone file was archived before its row was updated
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -109,6 +109,9 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: T2 to T4 done. `test_status_fixtures.py` states the nine cases apart from the helper. `band.test.tsx`'s list of empty fixtures gained `blocked-archived`. The pane shape tag is `pane-5`.
 - 2026-10-12: T5 done. The arm sits in Session start before Resume routing, keeps step 9's default-branch sync, and skips the issue writes. Guard `TestReviewArchivedFileArm` and two harness entries; `skills/tests` 728 tests OK.
 - 2026-10-12: T6 and T7 done. Verify: scripts 407 OK, hooks 174 OK, both validates exit 0, mod tests 1703 pass. `cairn_validate` passes.
+- 2026-10-12: claim audit: 77 claims read, 6 corrected — hooks/status/reader.ts, scripts/cairn_next.py, skills/milestone-review/SKILL.md, skills/tests/test_resume_routing.py, skills/tests/test_mutation_harness.py, scripts/tests/test_status_fixtures.py, README.md
+- 2026-10-12: claim audit fixes: the BlockedRow comment and `blocked` docstring state the null cases, the arm names step 9's checkout and pull, and README says `archived` shows alone with no URL. The same reader re-read the 6 and found 0 wrong. The reader also noted a root path holding a glob character such as `[` empties Python's `glob` but not the TS `list`, which `archive_files` and `archivedIds` share since before this branch.
+- 2026-10-12: all tasks checked. Verify green again after the fixes: scripts 407 OK, hooks OK, both validates exit 0, mod tests 1703 pass, `skills/tests` OK. Status set to review.
 
 ## Decisions
 
