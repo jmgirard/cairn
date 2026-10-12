@@ -1,6 +1,6 @@
 # M247: In guest mode, text written for the host repo matches the host's own style
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 - 2026-10-12: T2 done: `test_guest_mode_line_carries_the_host_style_rule` failed before the hook change with `'host' not found` in the old mode line, and passes after it. The sentence lists the kinds of text in short form and carries no milestone id, since it reaches guest sessions. verify, skills/tests, and validate are green.
 - 2026-10-12: T3 done: README guest-mode bullet after the vocabulary bullet, CHANGELOG entry at the top of "Changes that affect existing repos", both written from a same-session read of T1's bullet and T2's line. Long sentences in the new text were split for the simple-english lint, and the older hits in both files stay.
 - 2026-10-12: T4 done: all five verify commands, skills/tests, and validate exit 0, each checked on its own.
+- 2026-10-12: claim audit: 16 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/session_context.py, hooks/tests/test_hooks.py, skills/shared/tracking-rules.md, skills/milestone/SKILL.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py. The reader noted the README bullet left out "covers only what it leaves open", now added, and that the hook's line reaches only repos whose `cairn/ROADMAP.md` reads, as every injected part does.
+- 2026-10-12: implement complete; status set to review.
 
 ## Decisions
 
