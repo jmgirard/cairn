@@ -57,7 +57,7 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
       If the row has no PR number, the line ends with ` (archived)`.
       The line for a row that is not archived is unchanged.
       A test in `scripts/tests` asserts the three printed forms.
-- [ ] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts, in guest mode only, a target whose ROADMAP row is `blocked`, whose ROADMAP path is not a regular file, and for which exactly one file under `cairn/milestones/archive/` has the row's canonical id and a `**Status:**` paragraph (AC1's definition) that starts with `done`.
+- [x] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts, in guest mode only, a target whose ROADMAP row is `blocked`, whose ROADMAP path is not a regular file, and for which exactly one file under `cairn/milestones/archive/` has the row's canonical id and a `**Status:**` paragraph (AC1's definition) that starts with `done`.
       Session start's status rule names this exception.
       For such an archive in owner mode, or under a row that is not `blocked`, Session start says in chat that the archive exists and the row was not updated, and stops.
       In the accepted case, the arm says the same in chat.
@@ -186,3 +186,40 @@ Independent review, 2026-10-12:
 - prior-review #3: the 44-column sweep lacks `blocked-archived` — fix now, fixed 1b3ae96b
 - prior-review #4: thin parity cases for the Status paragraph cut — fix now in part, same as diff-bug #13
 - prior-review #5: unescaped glob, and the Status scan does not stop at a `## ` heading — the glob fixed 1b3ae96b; the heading stop is follow-up, same row
+
+Pass 2 evidence, 2026-10-12, at 07bbee17 (after the AC5 amendment and the pass-2 fixes), each exit code checked from the repo root:
+- AC1: `test_python_helpers_match_expected` and `test_blocked_fixtures_hold_the_row_shapes` ok over the fixture's eleven blocked rows. The added rows are M201 with a done archive beside its live file, giving (11, False), M210 `doneish`, giving (101, True) under AC1's literal "starts with `done`", and M211 with a tab-and-space line, giving (None, True).
+- AC2: `reader.test.ts` "blocked-archived: the pane's milestones and next step match expected.json" passed in the 1707-test mod run.
+- AC3: the archived-row pane test passed again. Two new tests pass, and they assert no Button on an archived row whose PR reads `changes requested` or `closed`, while the live M201 row keeps Revise or Check. The 44-column sweep passed for `blocked-archived` on both surfaces.
+- AC4: `test_externally_blocked_line_marks_an_archived_row` passed. `cairn_next.py` over the fixture printed `(PR #101, archived)` for M210 and `(archived)` for M211.
+- AC5: `skills/milestone-review/SKILL.md` lines 30 to 63 at 07bbee17, read against the amended AC5 clause by clause. Guest mode and a `blocked` row are required, with the path not a regular file, one archive with the canonical id, and a done Status paragraph. The status rule names the exception (line 32), and line 30 points to the archive. Owner mode and other rows report and stop. The arm has the chat line, reads the archive in place of the file, reads no header or PR state, and takes `done` as the merge record. It skips steps 1 to 8 and lists the step-9 parts it runs. A cap breach or validate FAIL is named with no prune, and the arm goes on to step 10. It writes nothing to the archive, touches no lesson or RB/RR pair, and names them skipped. It makes no issue write, and the recap splits `partial` from `closes`. Then step 10. `TestReviewArchivedFileArm` 7 tests pass, and the 7 harness entries each turn their test red. `skills/tests` 732 OK.
+- AC6: README lines 337 to 350, the CHANGELOG Unreleased entry, and DESIGN.md's blocked-rows paragraph state the fallback, the `archived` mark, and the guest-mode arm.
+- AC7: `scripts/tests` 407 OK (21 skipped), `hooks/tests` OK, both `claude plugin validate` exit 0 with no `version` warning, `claude plugin test .` 1707 pass and 0 fail. `cairn_validate.py` passes.
+
+Independent review, pass 2, 2026-10-12, over `06ee90d4..HEAD`:
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the guards miss the `done` condition, the step-1-to-8 skip, the FAIL rule, and other arm clauses — fix now, fixed 07bbee17 (pins for the `done` clause, the skip and FAIL rule, and the line-30 pointer, with two harness entries); the rest of the arm's sentences stay unpinned, as a guard pins the rule's trigger and limits
+- diff-bug #2: D-159's reason for not reading the PR state is false, since the archive's Status line carries the URL — fix now, fixed 07bbee17 (D-160 corrects it: step 9 writes the archive only after a merge was read)
+- diff-bug #3: an owner-mode step 9 that stops leaves the same state with no route — follow-up, row "Archived blocked rows (M246 review)"
+- diff-bug #4: line 30 "Read ... the target milestone file" has no pointer to the arm — fix now, fixed 07bbee17
+- diff-bug #5: the arm's paragraph wording drifts from AC1 and AC5 — fix now, fixed 07bbee17 (the arm states AC1's paragraph and "starts with `done`")
+- diff-bug #6: AC1's literal "starts with `done`" conflicts with the M210 `doneish` fixture — fix now, fixed 07bbee17: the word-boundary lookahead is dropped on both sides, so the code meets AC1 as written; archive statuses are `done` or `dropped`
+- diff-bug #7: some skipped step-9 parts are not named in the recap — reject, planned change: AC5 names the three the recap lists
+- diff-bug #8: the `os.listdir` switch has no test with `[` in the root — follow-up, same row
+- diff-bug #9: the M211 case is named "tab-only" but holds a tab and a space — fix now, fixed 07bbee17 (renamed)
+- diff-bug #10: D-159's Context says Session start required `review` — fix now, fixed 07bbee17 (D-160)
+- blame-history #1: the arm sets `done` without reading the merge, and D-159's reason is wrong — the reason is fixed by D-160; the trust is kept, since step 9 runs only after a merge was read
+- blame-history #2: tracking-rules and D-137 are not updated for the arm's `blocked → done` — reject, false: the rulebook admits `blocked → done` for a guest handoff the maintainers merged, which is the state the archive records
+- blame-history #3: Finish dead-ends in owner mode — planned change (question set answer); the owner-mode route is follow-up, same row
+- blame-history #4: archives with no PR URL are accepted — reject, same ground as #1 (D-160)
+- blame-history #5: a press of a Button drawn before the row turned archived still routes — follow-up, same row
+- blame-history #6: the `PR_BUTTON` comment is stale and `word !== 'merged'` hardcodes the word — fix now, fixed 07bbee17
+- blame-history #7: step-9 parts skipped while the row is `done` — reject, planned change (AC5)
+- blame-history #8: prose and regex differ on `done-x`, `done.`, and no space — fixed with diff-bug #6, since both now read "starts with `done`"
+- blame-history #9: Python `archived_text` has no `isfile` check, and `archive_files` still globs — the first is false (`read_file` checks it); the second is follow-up, same row
+- blame-history #10: `/milestone` and `cairn_next.py` do not route the arm — follow-up, same row
+- prior-review: no prior-review evidence that pass 2 reintroduces or contradicts; its optional item is diff-bug #4
+
+PR conversation read, 2026-10-12, PR #256: 0 unresolved threads, 0 issue comments, 1 review.
+- conversation: copilot-pull-request-reviewer[bot] PR — noted: a COMMENTED review saying Copilot could not review because the requester reached the quota limit. It requests nothing.
+- Copilot level: no review ran (quota limit), so there are no Copilot threads to handle.
