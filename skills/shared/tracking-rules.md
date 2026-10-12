@@ -322,6 +322,15 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   owner-mode rule; guest mode's invariant is that the tracking on disk is never behind the code in the working tree.
 - **No cairn vocabulary reaches the repo.** The milestone branch is `<slug>` alone (not `m<nnn>-<slug>`); commit
   messages and PR titles and bodies carry no `M<NNN>`, no `AC<n>`/`T<n>`, no D-entry ids, and no cairn terms.
+- **Text written for the host matches the host's own** (D-161). This covers the text the session writes for the host
+  repo or its maintainers: its documentation (README, guides and vignettes, help pages and docstrings, code comments,
+  changelog entries, and messages users see), commit messages, the PR title and body, and replies on the host's issues
+  and PRs. That text matches the host's existing text of the same kind in length, tone, and level of technical detail.
+  The session reads that text before writing, or the host's other documentation where it has none of that kind. The
+  matching works within the limits of the bullet above. Where another writing-style instruction in the session
+  (another plugin's, or the user's own) also governs that text, that instruction wins and the matching covers only what
+  it leaves open. This file's Plain style rule binds chat output and its record-prose rule binds `cairn/` records, so
+  neither governs that text.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names

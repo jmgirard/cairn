@@ -1,13 +1,13 @@
 # M247: In guest mode, text written for the host repo matches the host's own style
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what a guest session writes into another team's repo
-- **Branch/PR:** —
+- **Branch/PR:** m247-guest-host-doc-style
 
 ## Goal
 
@@ -35,7 +35,7 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 
 ## Tasks
 
-- [ ] T1: Add the bullet to `skills/shared/tracking-rules.md` "Collaboration mode" (after the "No cairn vocabulary reaches the repo" bullet, near line 325), cross-referencing that bullet rather than restating it. Hand-run `skills/tests` afterward, since prose guards slice this section (LESSONS M148).
+- [x] T1: Add the bullet to `skills/shared/tracking-rules.md` "Collaboration mode" (after the "No cairn vocabulary reaches the repo" bullet, near line 325), cross-referencing that bullet rather than restating it. Hand-run `skills/tests` afterward, since prose guards slice this section (LESSONS M148).
 - [ ] T2: Append the short-form sentence to the guest-mode line in `hooks/session_context.py` `build_context` (lines 296-299), keeping it one line. Add a test in `hooks/tests/test_hooks.py` beside `test_guest_mode_injects_the_template_routing_section` that asserts the fragments "host", "length, tone, and level of technical detail", and "writing-style instruction" in the tail (the line already names the section, so a section-name fragment cannot fail); show it red with the sentence removed, then green. The existing one-line tail assertion stays.
 - [ ] T3: Add the README bullet (`README.md` guest-mode list, lines 772-794) and the CHANGELOG entry, each written against a same-session read of T1 and T2's text (the derived-claims rule).
 - [ ] T4: Run every `verify` command from the repo root, each exit code checked on its own (LESSONS M56).
@@ -51,6 +51,8 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 - 2026-10-12: criteria audit (full mode): 13 findings on the first draft. Fixed: an unanswered conflict with the no-cairn-vocabulary bullet, an undefined "nearest kind", "one bullet" made "exactly one new bullet", a closed text list widened to replies and user messages, the existing one-line tail test (the sentence now joins that line), the removal check moved from AC2 to T2, AC2's short form given named parts, the CHANGELOG subsection named. The precedence wording went to the question set. Re-audit after the gate (full mode): 3 findings, all fixed — AC1 now says the Plain style and record-prose rules do not govern host text, AC2 uses AC1's term "writing-style instruction", and T2's third fragment is one the current line lacks.
 - 2026-10-12: plan chose to put the rule in both the rulebook and the guest session line over the rulebook alone, because the rulebook loads only when a cairn skill fires and a doc edit can happen outside one; falsified by a guest session that loads the session line and still writes off-style text with no skill loaded.
 - 2026-10-12: plan chose reading the host's text at write time over storing a style summary in DESIGN.md Conventions at the guest seed, because a stored summary goes stale as the host's docs change; falsified by a guest session that skips the read and writes off-style text a stored line would have prevented.
+- 2026-10-12: implement started on m247-guest-host-doc-style; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-12: T1 done: the bullet follows the no-cairn-vocabulary bullet in tracking-rules "Collaboration mode". The rulebook-size baseline is re-seeded to 651 lines / 62,396 bytes at its three sites (LESSONS M149). The simple-english plugin's lint hook flagged the rulebook's older text (490 hits), and only the new bullet was rewritten to clear its own. verify, skills/tests, and validate are green.
 
 ## Decisions
 
