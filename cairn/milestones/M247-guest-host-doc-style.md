@@ -36,7 +36,7 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 ## Tasks
 
 - [x] T1: Add the bullet to `skills/shared/tracking-rules.md` "Collaboration mode" (after the "No cairn vocabulary reaches the repo" bullet, near line 325), cross-referencing that bullet rather than restating it. Hand-run `skills/tests` afterward, since prose guards slice this section (LESSONS M148).
-- [ ] T2: Append the short-form sentence to the guest-mode line in `hooks/session_context.py` `build_context` (lines 296-299), keeping it one line. Add a test in `hooks/tests/test_hooks.py` beside `test_guest_mode_injects_the_template_routing_section` that asserts the fragments "host", "length, tone, and level of technical detail", and "writing-style instruction" in the tail (the line already names the section, so a section-name fragment cannot fail); show it red with the sentence removed, then green. The existing one-line tail assertion stays.
+- [x] T2: Append the short-form sentence to the guest-mode line in `hooks/session_context.py` `build_context` (lines 296-299), keeping it one line. Add a test in `hooks/tests/test_hooks.py` beside `test_guest_mode_injects_the_template_routing_section` that asserts the fragments "host", "length, tone, and level of technical detail", and "writing-style instruction" in the tail (the line already names the section, so a section-name fragment cannot fail); show it red with the sentence removed, then green. The existing one-line tail assertion stays.
 - [ ] T3: Add the README bullet (`README.md` guest-mode list, lines 772-794) and the CHANGELOG entry, each written against a same-session read of T1 and T2's text (the derived-claims rule).
 - [ ] T4: Run every `verify` command from the repo root, each exit code checked on its own (LESSONS M56).
 
@@ -53,6 +53,7 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 - 2026-10-12: plan chose reading the host's text at write time over storing a style summary in DESIGN.md Conventions at the guest seed, because a stored summary goes stale as the host's docs change; falsified by a guest session that skips the read and writes off-style text a stored line would have prevented.
 - 2026-10-12: implement started on m247-guest-host-doc-style; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-12: T1 done: the bullet follows the no-cairn-vocabulary bullet in tracking-rules "Collaboration mode". The rulebook-size baseline is re-seeded to 651 lines / 62,396 bytes at its three sites (LESSONS M149). The simple-english plugin's lint hook flagged the rulebook's older text (490 hits), and only the new bullet was rewritten to clear its own. verify, skills/tests, and validate are green.
+- 2026-10-12: T2 done: `test_guest_mode_line_carries_the_host_style_rule` failed before the hook change with `'host' not found` in the old mode line, and passes after it. The sentence lists the kinds of text in short form and carries no milestone id, since it reaches guest sessions. verify, skills/tests, and validate are green.
 
 ## Decisions
 
