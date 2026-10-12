@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-12 (M247 planned, archived M246 row pruned for the line cap; validate green)_
+_Last hygiene check: 2026-10-12 (M247 done and archived, no lesson, no new candidate row; validate and skills/tests green)_
 
 ## Milestones
 
@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M247 | In guest mode, text written for the host repo matches the host's own style | review | — | normal | milestones/M247-guest-host-doc-style.md |
+| M247 | In guest mode, text written for the host repo matches the host's own style | done | — | normal | milestones/archive/M247-guest-host-doc-style.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
