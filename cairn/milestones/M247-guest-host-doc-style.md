@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what a guest session writes into another team's repo
-- **Branch/PR:** m247-guest-host-doc-style
+- **Branch/PR:** m247-guest-host-doc-style, https://github.com/jmgirard/cairn/pull/257
 
 ## Goal
 
@@ -21,10 +21,10 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md`'s "Collaboration mode" section carries exactly one new bullet stating that, in guest mode, the text the session writes for the host repo or its maintainers (its documentation, such as README, guides and vignettes, help pages and docstrings, code comments, changelog entries, and messages users see; commit messages; the PR title and body; and replies on the host's issues and PRs) matches the host's existing text of the same kind in length, tone, and level of technical detail, read from that text before writing, or from the host's other documentation where it has none of that kind; that this matching works within the limits of the "No cairn vocabulary reaches the repo" bullet; and that where another writing-style instruction in the session (another plugin's, or the user's own) also governs that text, that instruction wins and the matching covers only what it leaves open, while the rulebook's Plain style rule (which binds chat output) and record-prose rule (which binds `cairn/` records) do not govern that text.
-- [ ] AC2: In guest mode, the one line that ends the `## Collaboration mode` part of the SessionStart context built by `hooks/session_context.py` also states that text written for the host repo or its maintainers matches the host's own length, tone, and level of technical detail where no other writing-style instruction in the session settles it, and names the tracking-rules "Collaboration mode" section; the part's tail after the routing body stays one line.
-- [ ] AC3: `README.md`'s "Contributing to a repo you don't own (guest mode)" list carries exactly one new bullet stating the rule, and `CHANGELOG.md`'s Unreleased "Changes that affect existing repos" subsection carries exactly one new entry describing it.
-- [ ] AC4: The repo's `verify` slot (`cairn/PROFILE.md` `## verify`) passes on the branch.
+- [x] AC1: `skills/shared/tracking-rules.md`'s "Collaboration mode" section carries exactly one new bullet stating that, in guest mode, the text the session writes for the host repo or its maintainers (its documentation, such as README, guides and vignettes, help pages and docstrings, code comments, changelog entries, and messages users see; commit messages; the PR title and body; and replies on the host's issues and PRs) matches the host's existing text of the same kind in length, tone, and level of technical detail, read from that text before writing, or from the host's other documentation where it has none of that kind; that this matching works within the limits of the "No cairn vocabulary reaches the repo" bullet; and that where another writing-style instruction in the session (another plugin's, or the user's own) also governs that text, that instruction wins and the matching covers only what it leaves open, while the rulebook's Plain style rule (which binds chat output) and record-prose rule (which binds `cairn/` records) do not govern that text.
+- [x] AC2: In guest mode, the one line that ends the `## Collaboration mode` part of the SessionStart context built by `hooks/session_context.py` also states that text written for the host repo or its maintainers matches the host's own length, tone, and level of technical detail where no other writing-style instruction in the session settles it, and names the tracking-rules "Collaboration mode" section; the part's tail after the routing body stays one line.
+- [x] AC3: `README.md`'s "Contributing to a repo you don't own (guest mode)" list carries exactly one new bullet stating the rule, and `CHANGELOG.md`'s Unreleased "Changes that affect existing repos" subsection carries exactly one new entry describing it.
+- [x] AC4: The repo's `verify` slot (`cairn/PROFILE.md` `## verify`) passes on the branch.
 
 ## Coverage
 
@@ -62,3 +62,9 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 ## Decisions
 
 ## Review
+
+- AC1: `git diff main..HEAD -- skills/shared/tracking-rules.md` adds one 9-line bullet, the "Collaboration mode" section going from 8 to 9 top-level bullets (awk over the section on main and HEAD). The bullet names each listed kind of text, the three matching axes, the read before writing, the host's other documentation as fallback, the limits of "the bullet above" (the no-cairn-vocabulary bullet directly above it), other writing-style instructions winning with matching covering only what they leave open, and the Plain style and record-prose rules not governing that text. Pass.
+- AC2: a scratch script ran `session_context.build_context` on temp guest and owner repos. The guest part's tail after the routing body is 1 line, names tracking-rules "Collaboration mode", and adds that text for the host repo or its maintainers matches the host's own length, tone, and level of technical detail where no other writing-style instruction in the session settles it. The owner context has no `## Collaboration mode` part. `unittest -k guest_mode` over hooks/tests: 3 tests OK, `test_guest_mode_line_carries_the_host_style_rule` among them (red before the hook change, T2 work log). Pass.
+- AC3: `git diff main..HEAD -- README.md CHANGELOG.md` adds one bullet to the README guest-mode list (6 to 7 bullets, awk between its heading and the "Because `cairn/`" paragraph) and one entry at the top of CHANGELOG's Unreleased "Changes that affect existing repos" (19 to 20 bullets). Both state the coverage, the three axes, and that another writing-style instruction wins with matching covering only what it leaves open. One overlong CHANGELOG line was rewrapped at review. Pass.
+- AC4: the five `verify` commands run from the repo root on the review head, each exit 0 checked on its own (scripts/tests, hooks/tests, plugin validate, marketplace validate, plugin test). Pass.
+- Gate: `cairn_validate.py` all checks passed; no principle text changed, so `cairn_impact` skipped; marketplace validate prints no `version` warning; CHANGELOG carries the entry with no milestone number; skills/tests (hand-run) OK.
