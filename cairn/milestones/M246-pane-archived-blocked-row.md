@@ -114,6 +114,8 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 - 2026-10-12: all tasks checked. Verify green again after the fixes: scripts 407 OK, hooks OK, both validates exit 0, mod tests 1703 pass, `skills/tests` OK. Status set to review.
 - 2026-10-12: review: AC1 to AC7 verified and ticked at 34be02d5. PR #256 opened at review start for the Copilot round. Three reviewers gave 31 findings: 11 fixed in 1b3ae96b, 5 to the AC5 amendment, 1 row "Archived blocked rows (M246 review)", 6 rejected, the rest noted or duplicates.
 - 2026-10-12: amendment routed: AC5 — the arm accepts a finished milestone whatever its row status and makes a `blocked → done` move in owner mode that the rulebook does not admit (diff-bug #1, #2, blame-history #2); the criterion narrows to guest-mode `blocked` rows and names the step-9 parts the arm runs
+- 2026-10-12: re-audit: AC5 (full) — 4 findings on the first narrowed wording: in guest mode `closes` entries are the maintainers' merge, not owed; the prose guards and lesson pruning are conditional in step 9; the trigger did not use AC1's terms and dropped the chat line (IP2); the guard did not pin the new limits. All four fixed in the second wording.
+- 2026-10-12: re-audit: AC5 (full) — 4 findings on the second wording: the fast-forward needs step 9's checkout; a `cairn_validate.py` FAIL has no rule when pruning is barred; owner mode and non-`blocked` rows have no exit; RB/RR archiving is dropped unsaid. It also advised a D-entry annotating D-130. This is the second re-audit line, so the third wording goes to the user.
 
 ## Decisions
 
