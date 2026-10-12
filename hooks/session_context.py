@@ -296,7 +296,11 @@ def build_context(root):
             + "\n\nCollaboration mode: `guest` (from cairn/PROFILE.md) — cairn/ is "
             "local-only and never committed; the routing section above is "
             "injected here because nothing is appended to this repo's "
-            "CLAUDE.md (tracking-rules \"Collaboration mode\")."
+            "CLAUDE.md (tracking-rules \"Collaboration mode\"). Text written "
+            "for the host repo or its maintainers (docs, comments, changelog "
+            "entries, commit messages, PR text, replies) matches the host's "
+            "own length, tone, and level of technical detail where no other "
+            "writing-style instruction in the session settles it."
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

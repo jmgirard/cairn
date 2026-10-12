@@ -333,6 +333,20 @@ class TestSessionContext(RepoFixture):
         self.assertEqual(len(tail.splitlines()), 1, tail)
         self.assertIn("guest", tail)
 
+    def test_guest_mode_line_carries_the_host_style_rule(self):
+        # M247 AC2: the rule stands even when no cairn skill has loaded, so
+        # the injected mode line carries it, still as one line.
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n- x\n"
+        )
+        part = self._session().split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+        tail = part.split(self._template_section(), 1)[1].strip()
+        self.assertEqual(len(tail.splitlines()), 1, tail)
+        self.assertIn("host", tail)
+        self.assertIn("length, tone, and level of technical detail", tail)
+        # the precedence: matching yields to other style instructions
+        self.assertIn("where no other writing-style instruction", tail)
+
     def test_guest_mode_names_an_unreadable_template_instead_of_an_empty_body(self):
         # In guest mode this part is the session's only copy of the routing
         # text, so a missing template must be said, never a blank body.
