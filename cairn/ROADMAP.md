@@ -9,8 +9,8 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M244 | Turn on the Copilot round in the easystats checkouts, and name the line when Copilot reviews a PR with the round off | done | — | normal | milestones/archive/M244-copilot-round-off-note.md |
 | M245 | The audit reports new activity on the issues and pull requests that candidate rows link to | done | — | normal | milestones/archive/M245-linked-item-activity.md |
+| M246 | The pane shows a blocked row whose milestone file was archived before its row was updated | planned | — | normal | milestones/M246-pane-archived-blocked-row.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
