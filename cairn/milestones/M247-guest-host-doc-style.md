@@ -58,6 +58,7 @@ In guest mode, the documentation, commit messages, PR text, and replies that a s
 - 2026-10-12: T4 done: all five verify commands, skills/tests, and validate exit 0, each checked on its own.
 - 2026-10-12: claim audit: 16 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/session_context.py, hooks/tests/test_hooks.py, skills/shared/tracking-rules.md, skills/milestone/SKILL.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py. The reader noted the README bullet left out "covers only what it leaves open", now added, and that the hook's line reaches only repos whose `cairn/ROADMAP.md` reads, as every injected part does.
 - 2026-10-12: implement complete; status set to review.
+- 2026-10-12: step-7 approval: m247-guest-host-doc-style approved for merge
 
 ## Decisions
 
