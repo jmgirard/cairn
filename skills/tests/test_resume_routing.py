@@ -125,6 +125,71 @@ class TestReviewResumeRoute(unittest.TestCase):
         )
 
 
+class TestReviewArchivedFileArm(unittest.TestCase):
+    """M246 AC5 (amended): in guest mode, Session start accepts a `blocked`
+    row whose path is not a regular file and whose one archive file reads
+    done. Owner mode and other rows stop. The arm runs a named list of
+    step 9's parts, writes nothing to the archive, and makes no issue
+    write."""
+
+    def setUp(self):
+        text = read("milestone-review", "SKILL.md")
+        self.arm = flat(section(text,
+                                "**Archived-file arm (M246, D-159).**",
+                                "**Resume routing (M172).**"))
+        self.start = flat(section(text, "## Session start",
+                                  "**Archived-file arm (M246, D-159).**"))
+
+    def test_status_rule_names_the_exception(self):
+        self.assertIn("except under the archived-file arm below.", self.start)
+
+    def test_trigger_is_a_missing_path_and_one_done_archive(self):
+        self.assertIn(
+            "The target's ROADMAP path is not a regular file, and exactly one "
+            "file under `cairn/milestones/archive/` has its canonical id (any "
+            "zero-padding) and a `**Status:**` paragraph",
+            self.arm,
+        )
+        self.assertIn("spaces and tabs or the end of the file) that starts with `done`.", self.arm)
+        self.assertIn("the archived file, under the archived-file arm below", self.start)
+
+    def test_skips_steps_one_to_eight_and_ends_at_step_ten(self):
+        self.assertIn("Resume routing below does not run. Skip steps 1 to 8.", self.arm)
+        self.assertIn(
+            "Name a cap breach or a `cairn_validate.py` FAIL in the recap, "
+            "with no prune, and go on to step 10.",
+            self.arm,
+        )
+
+    def test_owner_mode_and_other_rows_stop(self):
+        self.assertIn("In owner mode, or when the row is not `blocked`, stop there.", self.arm)
+        self.assertIn("In guest mode with a `blocked` row, the target is accepted", self.arm)
+
+    def test_runs_only_the_named_step_nine_parts(self):
+        self.assertIn(
+            "Of step 9, run only these parts: the default branch's fetch, "
+            "checkout, and fast-forward (its guest arm), the ROADMAP row "
+            "update to `done` with the archive path, the hygiene stamp, the "
+            "cap and budget checks, the hand-run prose guards where the repo "
+            "ships them, and `cairn_validate.py`.",
+            self.arm,
+        )
+
+    def test_writes_nothing_to_the_archive_and_no_issue(self):
+        self.assertIn(
+            "Write nothing to the archive file, capture or retire no lesson, "
+            "and archive no RB/RR pair",
+            self.arm,
+        )
+        self.assertIn("Make no issue write", self.arm)
+        self.assertIn(
+            "names each `partial` entry of the archive's `resolves` clause as "
+            "an owed comment, and each `closes` entry as left to the "
+            "maintainers' merge, whose `Closes` keyword closes it",
+            self.arm,
+        )
+
+
 class TestMilestoneAuditMergedReview(unittest.TestCase):
     """AC3: `/milestone`'s audit reports a `review` milestone whose header
     PR is merged as post-merge hygiene owed, beside the open-PR bullet."""

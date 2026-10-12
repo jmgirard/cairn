@@ -475,8 +475,8 @@ const BLOCKED_LINES = [
   'M106  A file whose read fails',
   'M107  A missing file',
 ]
-const blockedLine = (row: { id: string; title: string; pr: number | null }) =>
-  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}`
+const blockedLine = (row: { id: string; title: string; pr: number | null; archived: boolean }) =>
+  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}${row.archived ? '  archived' : ''}`
 
 describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', () => {
   test('the domain holds blocked rows with and without an active milestone, and fixtures with none', () => {
@@ -758,7 +758,7 @@ describe('section headings and Next in the set-off form (M208 AC3)', () => {
 // the prop that lets the line shrink; the live look shows the drawing.
 describe("each line's lead and tail fit a 44-column dock, and the line may shrink (M208 AC4)", () => {
   for (const surface of SURFACES) {
-    for (const fixture of ['pane-full', 'candidates', 'blocked-prs', 'blocked-active']) {
+    for (const fixture of ['pane-full', 'candidates', 'blocked-prs', 'blocked-active', 'blocked-archived']) {
       test(`${fixture} (${surface})`, async ($, on) => {
         seat(on, copyOf(fixture))
         await $.turn.complete(turn())
@@ -2098,6 +2098,50 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
       await ui.press({ key: each.key })
       await ui.unmount()
       expect(copy.commands).toEqual([each.command])
+    })
+  }
+
+  // M246 AC3: a blocked row whose milestone file was archived reads its PR
+  // from the archive file. Its line carries `archived` after the number and
+  // before the state word, or `archived` alone with no number. A merged one
+  // carries the Finish Button for its id. A live row carries no `archived`.
+  // The lines are written out by hand from the blocked-archived fixture.
+  test('an archived row shows `archived`, its state word, and Finish', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    const copy = copyOf('blocked-archived')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const archived = await blockedView($, 'blocked-M202')
+    expect(archived.text).toBe('M202  The URL on the Status line  #21  archived  merged')
+    expect(archived.buttons).toEqual(['cairn-pane-finish-M202'])
+    const bare = await blockedView($, 'blocked-M204')
+    expect(bare.text).toBe('M204  A URL only in a later paragraph  archived')
+    expect(bare.buttons).toEqual([])
+    const live = await blockedView($, 'blocked-M201')
+    expect(live.text).toBe('M201  A live file  #11  merged')
+    expect((await blockedView($, 'blocked-M206')).text).toBe('M206  A dropped archive')
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    await ui.press({ key: 'cairn-pane-finish-M202' })
+    await ui.unmount()
+    expect(copy.commands).toEqual([{ command: 'cairn:milestone-review', args: 'M202' }])
+  })
+
+  // M246 review: an archived row carries no Revise or Check, since its
+  // milestone file is gone. A live row keeps its Button.
+  for (const each of [
+    { answer: prView('OPEN', 'CHANGES_REQUESTED'), word: 'changes requested', live: 'cairn-pane-revise-M201' },
+    { answer: prView('CLOSED', ''), word: 'closed', live: 'cairn-pane-check-M201' },
+  ]) {
+    test(`an archived row whose PR reads \`${each.word}\` carries no Button`, async ($, on) => {
+      gh(on, () => each.answer)
+      seat(on, copyOf('blocked-archived'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      const archived = await blockedView($, 'blocked-M202')
+      expect(archived.text).toBe(`M202  The URL on the Status line  #21  archived  ${each.word}`)
+      expect(archived.buttons).toEqual([])
+      expect((await blockedView($, 'blocked-M201')).buttons).toEqual([each.live])
     })
   }
 

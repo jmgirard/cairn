@@ -3476,6 +3476,59 @@ REGISTRY += [
 
 
 REGISTRY += [
+    # M246 (AC5 amended): the archived-file arm in the review skill's
+    # Session start: the status rule's exception, the trigger, the
+    # owner-mode stop, the named step-9 parts, and the no-write clause.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm.test_status_rule_names_the_exception",
+        target=REVIEW,
+        block="except under the archived-file arm below.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_trigger_is_a_missing_path_and_one_done_archive",
+        target=REVIEW,
+        block="exactly one file under `cairn/milestones/archive/` has\n"
+              "its canonical id (any zero-padding)",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_trigger_is_a_missing_path_and_one_done_archive",
+        target=REVIEW,
+        block="or the end of the file) that starts with `done`.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_skips_steps_one_to_eight_and_ends_at_step_ten",
+        target=REVIEW,
+        block="Skip steps 1 to 8.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm.test_owner_mode_and_other_rows_stop",
+        target=REVIEW,
+        block="In owner mode, or\nwhen the row is not `blocked`, stop there.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm.test_runs_only_the_named_step_nine_parts",
+        target=REVIEW,
+        block="the hygiene stamp,\nthe cap and budget checks",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_writes_nothing_to_the_archive_and_no_issue",
+        target=REVIEW,
+        block="Write nothing to\nthe archive file",
+    ),
+]
+
+REGISTRY += [
     # M172: the resume route's trigger and its four branches in the review
     # skill's Session start (the list pinned whole, M171 lesson), step 7's
     # approval line, the audit's merged-but-review bullet, and the hotfix

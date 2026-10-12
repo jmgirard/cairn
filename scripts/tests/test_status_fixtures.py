@@ -320,8 +320,43 @@ class StatusFixtureAgreement(unittest.TestCase):
         self.assertEqual([row["id"] for row in active["pane"]], ["M110"])
         self.assertEqual(
             active["blocked"],
-            [{"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250"}],
+            [
+                {
+                    "id": "M111",
+                    "title": "Handed to the maintainers",
+                    "pr": 1250,
+                    "url": "https://github.com/upstream/repo/pull/1250",
+                    "archived": False,
+                }
+            ],
         )
+        # M246 AC1: the archive fallback's nine cases, stated apart from
+        # the helper. Only a single done archive file whose read succeeds,
+        # under a row with no live file, is archived, and its PR comes from
+        # the Status paragraph.
+        held = {row["id"]: (row["pr"], row["archived"]) for row in load("blocked-archived")["blocked"]}
+        archive = FIXTURES / "blocked-archived" / "cairn" / "milestones" / "archive"
+        self.assertEqual(
+            held,
+            {
+                "M201": (11, False),
+                "M202": (21, True),
+                "M203": (32, True),
+                "M204": (None, True),
+                "M057": (57, True),
+                "M206": (None, False),
+                "M207": (None, False),
+                "M208": (None, False),
+                "M209": (None, False),
+                "M210": (101, True),
+                "M211": (None, True),
+            },
+        )
+        # A done archive beside M201's live file, so the live file is shown
+        # to win (M246 review).
+        self.assertTrue((archive / "M201-live.md").exists())
+        self.assertEqual(sorted(p.name for p in archive.glob("M*207*")), ["M0207-b.md", "M207-a.md"])
+        self.assertIn("/cairn/milestones/archive/M208-unreadable.md", load("blocked-archived")["unreadable"])
         # Each row's URL beside its number (M224): the trailing path cut,
         # and null wherever the number is.
         urls = {row["id"]: row["url"] for row in load("blocked-prs")["blocked"]}

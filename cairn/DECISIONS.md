@@ -5740,3 +5740,53 @@ unmeasured roles.
 
 **Consequences:** D-157's decision, that no subagent role sets `effort`,
 stands unchanged.
+
+### D-159 (2026-10-12): `/milestone-review` gains a guest-mode route for a `blocked` row whose milestone file was archived before the row changed — annotates D-130 (M246)
+
+**Context:** A guest-mode hygiene pass can stop after it writes the archive
+summary and deletes the live file, and before it sets the ROADMAP row to
+`done`. The row then stays `blocked` and names a missing file. D-130's
+four routes all start from the `Branch/PR` header, which went with the
+live file, and Session start required status `review`. The pane's Finish
+button for such a row (M246) needed a route to land on.
+
+**Decision:** Session start gains an archived-file arm ahead of D-130's
+routes. It applies when the row's path is not a regular file and exactly
+one archive file has the row's canonical id and a `done` Status. In guest
+mode with a `blocked` row it reads the archive in place of the milestone
+file, takes the archive's `done` Status as the record of the merge, and
+runs a named part of step 9: the default branch's fetch, checkout, and
+fast-forward, the row update to `done`, the stamp, the cap checks, the
+prose guards, and `cairn_validate.py`. It writes nothing to the archive,
+touches no lesson, makes no issue write, and names what it skipped and
+what is owed. In owner mode, or under a row that is not `blocked`, it
+says what it found and stops.
+
+**Rejected:** accepting the archive whatever the mode and row status,
+because a finished milestone would rerun step 9 and owner mode would make
+a status move the rulebook does not admit (M246 review); and reading the
+PR state as D-130's routes do, because the archive keeps no `Branch/PR`
+header and the guest's merge is the maintainers'. Falsified by an archive
+marked `done` whose PR did not merge, or by an owner-mode repo that
+reaches this state.
+
+**Consequences:** D-130's four routes are unchanged. The pane's Finish
+button on an archived row reaches this arm in guest mode, and in owner
+mode it reaches the stop.
+
+### D-160 (2026-10-12): D-159's Context and its reason for not reading the PR state are corrected; supersedes those clauses, D-159's decision stands (M246 review)
+
+**Context:** M246's second review pass found two wrong statements in
+D-159, appended on the same branch. IP4 forbids repairing it in place.
+
+**Decision:** First, D-159's Context says Session start "required status
+`review`". Its guest arm also accepted `blocked` when the header names a
+PR. Second, D-159 rejects reading the PR state because "the archive keeps
+no `Branch/PR` header". The archive's Status line does carry the PR URL,
+and the pane reads it. The reason the arm takes the archive's `done` as
+the record of the merge is that step 9 writes the archive only after a
+merge was read: route (a) and `/milestone` §2 send a milestone to step 9
+on a `MERGED` state. The arm finishes a pass that already saw the merge.
+
+**Consequences:** D-159's decision and its falsifiers stand. An archive
+with no PR URL is accepted on the same ground.

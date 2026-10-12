@@ -27,15 +27,40 @@ the close block names the plan's next workable milestone (step 10).
 
 ## Session start
 
-Read, in order: `cairn/ROADMAP.md`, the target milestone file,
-`cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
-overrides — log the override). **Guest arm** (tracking-rules
+Read, in order: `cairn/ROADMAP.md`, the target milestone file (the
+archived file, under the archived-file arm below), `cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
+overrides — log the override), except under the archived-file arm below.
+**Guest arm** (tracking-rules
 "Collaboration mode"): `blocked` is also accepted when the header names a
 PR — the milestone was handed to the maintainers at step 8, and
 `/milestone` §2 routes a merged one back here for hygiene; every `gh pr`
 read in this skill then carries `--repo <base-repo>` (the rulebook's slug
 recipe), and every docs-only commit named below is an on-disk write
 instead, nothing under `cairn/` ever committed.
+
+**Archived-file arm (M246, D-159).** The target's ROADMAP path is not a
+regular file, and exactly one file under `cairn/milestones/archive/` has
+its canonical id (any zero-padding) and a `**Status:**` paragraph (the
+first line that starts with `**Status:**`, up to the next line of only
+spaces and tabs or the end of the file) that starts with `done`. An earlier hygiene pass wrote the archive summary and deleted the
+live file, then stopped before the ROADMAP row changed. Say in chat that
+the archive exists and the row was not updated (IP2). In owner mode, or
+when the row is not `blocked`, stop there. In guest mode with a `blocked`
+row, the target is accepted: read the archive file in place of the
+milestone file, read no `Branch/PR` header and no PR state, and take the
+archive's `done` Status as the record of the merge. Resume routing below
+does not run. Skip steps 1 to 8. Of step 9, run only these parts: the
+default branch's fetch, checkout, and fast-forward (its guest arm), the
+ROADMAP row update to `done` with the archive path, the hygiene stamp,
+the cap and budget checks, the hand-run prose guards where the repo ships
+them, and `cairn_validate.py`. Name a cap breach or a `cairn_validate.py`
+FAIL in the recap, with no prune, and go on to step 10. Write nothing to
+the archive file, capture or retire no lesson, and archive no RB/RR pair,
+and name these as skipped in the recap. Make no issue write: the archive
+replaces the work log, so no step-7 approval is recorded. The recap names
+each `partial` entry of the archive's `resolves` clause as an owed
+comment, and each `closes` entry as left to the maintainers' merge, whose
+`Closes` keyword closes it; this arm does not check it. Then run step 10.
 
 **Resume routing (M172).** When the target milestone's `Branch/PR` header
 carries a PR URL — or names only the branch and `gh pr list --head

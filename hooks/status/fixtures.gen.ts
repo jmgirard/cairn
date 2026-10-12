@@ -31,7 +31,7 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M092", "title": "Blocked outside", "pr": null, "url": null},
+      {"id": "M092", "title": "Blocked outside", "pr": null, "url": null, "archived": false},
     ],
     unreadable: [],
   },
@@ -53,9 +53,49 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250"},
+      {"id": "M111", "title": "Handed to the maintainers", "pr": 1250, "url": "https://github.com/upstream/repo/pull/1250", "archived": false},
     ],
     unreadable: [],
+  },
+  "blocked-archived": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M201 | A live file | blocked | — | normal | milestones/M201-live.md |\n| M202 | The URL on the Status line | blocked | — | normal | milestones/M202-line.md |\n| M203 | The URL on the second line | blocked | — | normal | milestones/M203-wrapped.md |\n| M204 | A URL only in a later paragraph | blocked | — | normal | milestones/M204-later.md |\n| M057 | An id padded unlike its archive file | blocked | — | normal | milestones/M057-padded.md |\n| M206 | A dropped archive | blocked | — | normal | milestones/M206-dropped.md |\n| M207 | Two archive files | blocked | — | normal | milestones/M207-two.md |\n| M208 | An archive file whose read fails | blocked | — | normal | milestones/M208-unreadable.md |\n| M209 | No file at all | blocked | — | normal | milestones/M209-none.md |\n| M210 | A status word that starts with done | blocked | — | normal | milestones/M210-doneish.md |\n| M211 | A tab-and-space line ends the paragraph | blocked | — | normal | milestones/M211-tab-blank.md |\n\n## Candidates\n",
+      "/cairn/milestones/M201-live.md": "# M201: A live file\n\n- **Status:** blocked\n- **Branch/PR:** live, https://github.com/upstream/repo/pull/11\n\n## Goal\n\nA handoff whose file is still live.\n",
+      "/cairn/milestones/archive/M0207-b.md": "# M207: Two archive files\n\n**Status:** done (2026-01-12, PR #72 https://github.com/upstream/repo/pull/72)\n",
+      "/cairn/milestones/archive/M201-live.md": "# M201: A live file\n\n**Status:** done (2026-01-12, PR #99 https://github.com/upstream/repo/pull/99)\n\n**Goal:** An archive beside a live file, which the live file wins over.\n",
+      "/cairn/milestones/archive/M202-line.md": "# M202: The URL on the Status line\n\n**Status:** done (2026-01-12, PR #21 https://github.com/upstream/repo/pull/21; resolves #3 partial)\n\n**Goal:** A merged handoff.\n",
+      "/cairn/milestones/archive/M203-wrapped.md": "# M203: The URL on the second line\n\n**Status:** done (2026-01-12, PR #32\nhttps://github.com/upstream/repo/pull/32; resolves #4 closes)\n\n**Goal:** A merged handoff.\n",
+      "/cairn/milestones/archive/M204-later.md": "# M204: A URL only in a later paragraph\n\n**Status:** done (2026-01-12)\n\n**Outcome:** See https://github.com/upstream/repo/pull/44 for the history.\n",
+      "/cairn/milestones/archive/M206-dropped.md": "# M206: A dropped archive\n\n**Status:** dropped (2026-01-12, PR #66 https://github.com/upstream/repo/pull/66)\n\n**Goal:** A closed handoff.\n",
+      "/cairn/milestones/archive/M207-a.md": "# M207: Two archive files\n\n**Status:** done (2026-01-12, PR #71 https://github.com/upstream/repo/pull/71)\n",
+      "/cairn/milestones/archive/M208-unreadable.md": "# M208: An archive file whose read fails\n\n**Status:** done (2026-01-12, PR #81 https://github.com/upstream/repo/pull/81)\n",
+      "/cairn/milestones/archive/M210-doneish.md": "# M210: A status word that starts with done\n\n**Status:** doneish (2026-01-12, PR #101 https://github.com/upstream/repo/pull/101)\n",
+      "/cairn/milestones/archive/M211-tab-blank.md": "# M211: A tab-only line ends the paragraph\n\n**Status:** done (2026-01-12)\n\t \nhttps://github.com/upstream/repo/pull/111\n",
+      "/cairn/milestones/archive/M57-padded.md": "# M57: An id padded unlike its archive file\n\n**Status:** done (2026-01-12, PR #57 https://github.com/upstream/repo/pull/57)\n\n**Goal:** A merged handoff.\n",
+    },
+    rows: [
+    ],
+    workable: [],
+    pane: [
+    ],
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M201", "title": "A live file", "pr": 11, "url": "https://github.com/upstream/repo/pull/11", "archived": false},
+      {"id": "M202", "title": "The URL on the Status line", "pr": 21, "url": "https://github.com/upstream/repo/pull/21", "archived": true},
+      {"id": "M203", "title": "The URL on the second line", "pr": 32, "url": "https://github.com/upstream/repo/pull/32", "archived": true},
+      {"id": "M204", "title": "A URL only in a later paragraph", "pr": null, "url": null, "archived": true},
+      {"id": "M057", "title": "An id padded unlike its archive file", "pr": 57, "url": "https://github.com/upstream/repo/pull/57", "archived": true},
+      {"id": "M206", "title": "A dropped archive", "pr": null, "url": null, "archived": false},
+      {"id": "M207", "title": "Two archive files", "pr": null, "url": null, "archived": false},
+      {"id": "M208", "title": "An archive file whose read fails", "pr": null, "url": null, "archived": false},
+      {"id": "M209", "title": "No file at all", "pr": null, "url": null, "archived": false},
+      {"id": "M210", "title": "A status word that starts with done", "pr": 101, "url": "https://github.com/upstream/repo/pull/101", "archived": true},
+      {"id": "M211", "title": "A tab-and-space line ends the paragraph", "pr": null, "url": null, "archived": true},
+    ],
+    unreadable: ["/cairn/milestones/archive/M208-unreadable.md"],
   },
   "blocked-prs": {
     cwd: "/",
@@ -78,13 +118,13 @@ export const FIXTURES: Record<string, Fixture> = {
       {"priority": "normal", "title": "An idea for later"},
     ],
     blocked: [
-      {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12"},
-      {"id": "M102", "title": "Two pull request URLs", "pr": 34, "url": "https://github.com/upstream/repo/pull/34"},
-      {"id": "M103", "title": "A URL only after a companion entry", "pr": null, "url": null},
-      {"id": "M104", "title": "A URL with a trailing path", "pr": 90, "url": "https://github.com/upstream/repo/pull/90"},
-      {"id": "M105", "title": "A branch with no URL", "pr": null, "url": null},
-      {"id": "M106", "title": "A file whose read fails", "pr": null, "url": null},
-      {"id": "M107", "title": "A missing file", "pr": null, "url": null},
+      {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12", "archived": false},
+      {"id": "M102", "title": "Two pull request URLs", "pr": 34, "url": "https://github.com/upstream/repo/pull/34", "archived": false},
+      {"id": "M103", "title": "A URL only after a companion entry", "pr": null, "url": null, "archived": false},
+      {"id": "M104", "title": "A URL with a trailing path", "pr": 90, "url": "https://github.com/upstream/repo/pull/90", "archived": false},
+      {"id": "M105", "title": "A branch with no URL", "pr": null, "url": null, "archived": false},
+      {"id": "M106", "title": "A file whose read fails", "pr": null, "url": null, "archived": false},
+      {"id": "M107", "title": "A missing file", "pr": null, "url": null, "archived": false},
     ],
     unreadable: ["/cairn/milestones/M106-unreadable.md"],
   },
@@ -272,7 +312,7 @@ export const FIXTURES: Record<string, Fixture> = {
     candidates: [
     ],
     blocked: [
-      {"id": "M018", "title": "Held by a blocker", "pr": null, "url": null},
+      {"id": "M018", "title": "Held by a blocker", "pr": null, "url": null, "archived": false},
     ],
     unreadable: [],
   },

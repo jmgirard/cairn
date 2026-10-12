@@ -164,7 +164,8 @@ export function hotfixPrs(result: { exitCode: number; stdout: string } | null): 
 // The Button a blocked line carries for its state word (M224), from the
 // routes that /milestone gives a handed-off PR: a merged one goes to
 // review's hygiene, one with changes requested back to implement, and a
-// closed one to /milestone. The other words carry none.
+// closed one to /milestone. The other words carry none. An archived row
+// keeps only Finish (M246), since its milestone file is gone.
 export const PR_BUTTON: Partial<Record<PrWord, PaneButton>> = {
   merged: 'finish',
   'changes requested': 'revise',
@@ -425,11 +426,17 @@ export function paneLines(
     for (const row of state.blocked) {
       const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
       if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
+      // A row whose file was archived before its row changed (M246): the
+      // mark sits after the number and before the state word.
+      if (row.archived) held.tail = [...(held.tail ?? []), { text: '  ' }, { text: 'archived', color: GRAY }]
       const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
       const word = got?.word
       if (word !== undefined) {
         held.tail = [...(held.tail ?? []), { text: '  ' }, { text: word, color: prColor(word) }]
-        const button = PR_BUTTON[word]
+        // An archived row carries only Finish (M246 review): its milestone
+        // file is gone, so Revise and Check have nothing to work on.
+        const mapped = PR_BUTTON[word]
+        const button = row.archived && mapped !== 'finish' ? undefined : mapped
         if (button !== undefined) {
           held.buttons = [button]
           held.target = row.id

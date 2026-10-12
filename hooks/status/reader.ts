@@ -11,7 +11,7 @@
 // (M205), and reads the candidate rows in the sections that
 // `candidate_count` in scripts/cairn_scripts.py walks (M207), and mirrors
 // `blocked` and `pr_number` in scripts/cairn_next.py (M223), and `pr_url`
-// (M224). The mirror
+// (M224), and `archived_text` and `status_paragraph` (M246). The mirror
 // reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
 // also take other Unicode digits, so an id such as `M００５７` reads
 // differently in the two.
@@ -178,6 +178,40 @@ async function archivedIds(source: FileSource, root: string): Promise<string[]> 
   return ids
 }
 
+// `status_paragraph` in scripts/cairn_next.py (M246): the first line that
+// starts with `**Status:**`, through the line before the next line of only
+// spaces and tabs, or the end of the text. Null when no line starts so.
+const BLANK = /^[ \t]*$/
+const STATUS_DONE = /^\*\*Status:\*\*[ \t]*done/
+export function statusParagraph(text: string): string | null {
+  const lines = splitLines(text)
+  const start = lines.findIndex(line => line.startsWith('**Status:**'))
+  if (start < 0) return null
+  const out = [lines[start]]
+  for (const rest of lines.slice(start + 1)) {
+    if (BLANK.test(rest)) break
+    out.push(rest)
+  }
+  return out.join('\n')
+}
+
+// `archived_text` in scripts/cairn_next.py (M246): the text of the one
+// archive file whose canonical id is the row's, when its read succeeds and
+// its Status paragraph starts with `done`. Null otherwise.
+async function archivedText(source: FileSource, root: string, id: string): Promise<string | null> {
+  const dir = join(root, 'cairn/milestones/archive')
+  const want = canonId(id)
+  const found = ((await source.list(dir)) ?? []).filter(name => {
+    const got = ARCHIVE_NAME.test(name) ? ARCHIVE_ID.exec(name)?.[0] : undefined
+    return got !== undefined && canonId(got) === want
+  })
+  if (found.length !== 1) return null
+  const path = join(dir, found[0])
+  const text = (await source.isFile(path)) ? await source.read(path) : null
+  const para = text === null ? null : statusParagraph(text)
+  return para !== null && STATUS_DONE.test(para) ? text : null
+}
+
 // Lines under the first `## <heading>` H2, up to the next H2 or the end.
 export function sectionBody(text: string, heading: string): string[] {
   const out: string[] = []
@@ -304,13 +338,27 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
     // A regular file only, as Python's os.path.isfile: a path to a pipe or
     // a device would otherwise stall the read at every turn end.
     const path = join(root, `cairn/${row.relpath}`)
-    const text = (await source.isFile(path)) ? await source.read(path) : null
+    const live = await source.isFile(path)
+    const text = live ? await source.read(path) : null
     if (!active) {
+      const archive = live ? null : await archivedText(source, root, row.id)
+      if (archive !== null) {
+        const url = PR_URL.exec(statusParagraph(archive) ?? '')
+        blocked.push({
+          id: row.id,
+          title: row.title,
+          pr: url === null ? null : Number(url[1]),
+          url: url === null ? null : url[0],
+          archived: true,
+        })
+        continue
+      }
       blocked.push({
         id: row.id,
         title: row.title,
         pr: text === null ? null : prNumber(text),
         url: text === null ? null : prUrl(text),
+        archived: false,
       })
       continue
     }
@@ -420,8 +468,11 @@ export type WaitingRow = { id: string; title: string; unmet: string[] }
 
 // `blocked` in scripts/cairn_next.py (M223): a `blocked` row, and the
 // number of the pull request its milestone file's `Branch/PR` header names,
-// or null, with that pull request's URL beside it (M224).
-export type BlockedRow = { id: string; title: string; pr: number | null; url: string | null }
+// or null, with that pull request's URL beside it (M224). `archived` is true
+// when the row's file is not a regular file and exactly one archive file
+// with its id is read and its Status paragraph starts with `done` (M246). The number and URL then come from
+// that file's Status paragraph, and either may be null.
+export type BlockedRow = { id: string; title: string; pr: number | null; url: string | null; archived: boolean }
 
 export const NO_PANE: PaneState = {
   found: false,
