@@ -30,7 +30,7 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 
 ## Acceptance criteria
 
-- [ ] AC1: For a `blocked` row whose ROADMAP path is not a regular file, `blocked` in `scripts/cairn_next.py` looks for files under `cairn/milestones/archive/` whose `canon_id` equals the row's `canon_id`.
+- [x] AC1: For a `blocked` row whose ROADMAP path is not a regular file, `blocked` in `scripts/cairn_next.py` looks for files under `cairn/milestones/archive/` whose `canon_id` equals the row's `canon_id`.
       The row gets `archived: True` when exactly one such file exists, its read succeeds, and its `**Status:**` paragraph starts with `done`.
       The `**Status:**` paragraph is the first line that starts with `**Status:**`, through the line before the next blank line or the end of the file.
       For an archived row, `pr` and `url` come from the first `PR_URL` match in that paragraph.
@@ -46,24 +46,24 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
       7. two archive files with one canonical id,
       8. an archive file whose read fails,
       9. no live file and no archive file.
-- [ ] AC2: The `blocked` list that `hooks/status/reader.ts` computes equals `cairn_next.blocked` for each fixture under `hooks/status/fixtures/`, as `scripts/tests/test_status_fixtures.py` and `hooks/status/reader.test.ts` check.
+- [x] AC2: The `blocked` list that `hooks/status/reader.ts` computes equals `cairn_next.blocked` for each fixture under `hooks/status/fixtures/`, as `scripts/tests/test_status_fixtures.py` and `hooks/status/reader.test.ts` check.
       A new fixture holds the AC1 cases.
-- [ ] AC3: In the cairn pane, the tail of an archived blocked line reads `#<n>`, then `archived`, then the PR state word when one was read.
+- [x] AC3: In the cairn pane, the tail of an archived blocked line reads `#<n>`, then `archived`, then the PR state word when one was read.
       With no PR number, the tail starts with `archived`.
       A blocked line for a row that is not archived carries no `archived`.
       Tests in `hooks/status/pane.test.tsx` assert these three forms.
       They also assert that an archived row whose PR reads `merged` carries the `merged` word and the `finish` Button, with the row's id as its target.
-- [ ] AC4: The "Externally blocked" line that `scripts/cairn_next.py` prints for an archived row ends with ` (PR #<n>, archived)`.
+- [x] AC4: The "Externally blocked" line that `scripts/cairn_next.py` prints for an archived row ends with ` (PR #<n>, archived)`.
       If the row has no PR number, the line ends with ` (archived)`.
       The line for a row that is not archived is unchanged.
       A test in `scripts/tests` asserts the three printed forms.
-- [ ] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts a target whose live milestone file is missing and whose single archive file's `**Status:**` paragraph starts with `done`.
+- [x] AC5: At Session start, `skills/milestone-review/SKILL.md` accepts a target whose live milestone file is missing and whose single archive file's `**Status:**` paragraph starts with `done`.
       Its "Resume routing" has an arm for that target that reads no `Branch/PR` header and no PR state.
       The arm skips steps 1 to 8 and step 9's summary write and live-file delete.
       It runs step 9 from the ROADMAP row update onward, then step 10.
       It skips step 9's issue writes, and its recap names each `resolves` entry of the archive's Status paragraph as owed.
-- [ ] AC6: `cairn/DESIGN.md`'s paragraph on the pane's `blocked` rows, `README.md`'s description of the pane's blocked section, and a `CHANGELOG.md` entry each state the archive fallback and the `archived` mark.
-- [ ] AC7: The profile's `verify` slot is green: its five commands each exit 0 from the repo root.
+- [x] AC6: `cairn/DESIGN.md`'s paragraph on the pane's `blocked` rows, `README.md`'s description of the pane's blocked section, and a `CHANGELOG.md` entry each state the archive fallback and the `archived` mark.
+- [x] AC7: The profile's `verify` slot is green: its five commands each exit 0 from the repo root.
 
 ## Coverage
 
@@ -116,3 +116,20 @@ The cairn pane shows a `blocked` row as archived when its milestone file moved t
 ## Decisions
 
 ## Review
+
+Evidence run 2026-10-12 on branch head 34be02d5.
+
+- AC1: `test_python_helpers_match_expected` compares `cairn_next.blocked` with the `blocked-archived` fixture's nine cases, and `test_blocked_fixtures_hold_the_row_shapes` states the nine (pr, archived) pairs apart from the helper: M201 (11, False), M202 (21, True), M203 (32, True), M204 (None, True), M057 (57, True), M206, M207, M208, M209 (None, False). Both ok. Planted in memory, an any-status `STATUS_DONE` and a never-matching `BLANK` each turned the fixture test red, and the restored control passed.
+- AC2: `reader.test.ts` "blocked-archived: the pane's milestones and next step match expected.json" passed, and it compares `pane.blocked` with the fixture's `blocked` key that `test_python_helpers_match_expected` holds `cairn_next.blocked` to. The four other fixtures with blocked rows pass both sides with `archived: false`.
+- AC3: `pane.test.tsx` "an archived row shows `archived`, its state word, and Finish" passed. With every PR read `MERGED` it asserts `M202  The URL on the Status line  #21  archived  merged` with Button `cairn-pane-finish-M202`, `M204  A URL only in a later paragraph  archived` with no Button, `M201  A live file  #11  merged`, and `M206  A dropped archive`. A Finish press ran `cairn:milestone-review M202`. "blocked-archived: blocked rows" passed on both surfaces.
+- AC4: `test_externally_blocked_line_marks_an_archived_row` passed. It asserts `  M05 — Archived with a PR (PR #956, archived)`, `  M06 — Archived with no PR (archived)`, and `  M07 — Still live (PR #7)`. `cairn_next.py` over the fixture printed `(PR #21, archived)`, `(archived)` for M204, and `(PR #11)` for M201.
+- AC5: `skills/milestone-review/SKILL.md` lines 40 to 53, read at 34be02d5. The archived-file arm sits in Session start, accepts a target whose live file is missing and whose one archive file (any zero-padding) has a Status paragraph starting with `done` whatever its ROADMAP status, reads no `Branch/PR` header and no PR state, skips steps 1 to 8 and step 9's summary write and live-file delete, runs step 9 from its ROADMAP row update onward and then step 10, and skips the issue writes, naming each `resolves` entry as owed. `TestReviewArchivedFileArm` (2 tests) passed in `skills/tests`, 728 tests OK, and the harness turns both red when their blocks are blanked.
+- AC6: `cairn/DESIGN.md` line 317 opens the paragraph "Each blocked row also has `archived` (M246)" inside the pane's blocked-rows text, and line 79 lists M246. `README.md` lines 337 to 346 describe the fallback, the `archived` mark, and the printed forms. `CHANGELOG.md` line 7 opens the Unreleased entry for it.
+- AC7: from the repo root at 34be02d5, each exit code checked: `scripts/tests` 407 OK (21 skipped), `hooks/tests` 174 OK, `claude plugin validate` exit 0 on `plugin.json` and on `marketplace.json`, and `claude plugin test .` 1703 pass, 0 fail.
+
+Consistency gate, 2026-10-12:
+- `cairn_validate.py`: exit 0, all checks passed.
+- No DESIGN.md principle changed, so `cairn_impact.py` was not run.
+- Profile gate: the verify checks pass on the review head (AC7), the marketplace validate output has no `version` warning, and `CHANGELOG.md` has the entry, with no milestone number.
+- `skills/tests` (hand-run): 728 tests OK.
+- Copilot round: PR #256 opened at review start, state query `none`, review requested with exit 0.
