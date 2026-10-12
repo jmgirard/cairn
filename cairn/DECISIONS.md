@@ -5773,3 +5773,20 @@ reaches this state.
 **Consequences:** D-130's four routes are unchanged. The pane's Finish
 button on an archived row reaches this arm in guest mode, and in owner
 mode it reaches the stop.
+
+### D-160 (2026-10-12): D-159's Context and its reason for not reading the PR state are corrected; supersedes those clauses, D-159's decision stands (M246 review)
+
+**Context:** M246's second review pass found two wrong statements in
+D-159, appended on the same branch. IP4 forbids repairing it in place.
+
+**Decision:** First, D-159's Context says Session start "required status
+`review`". Its guest arm also accepted `blocked` when the header names a
+PR. Second, D-159 rejects reading the PR state because "the archive keeps
+no `Branch/PR` header". The archive's Status line does carry the PR URL,
+and the pane reads it. The reason the arm takes the archive's `done` as
+the record of the merge is that step 9 writes the archive only after a
+merge was read: route (a) and `/milestone` §2 send a milestone to step 9
+on a `MERGED` state. The arm finishes a pass that already saw the merge.
+
+**Consequences:** D-159's decision and its falsifiers stand. An archive
+with no PR URL is accepted on the same ground.

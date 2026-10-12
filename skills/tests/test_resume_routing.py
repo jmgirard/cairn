@@ -150,6 +150,16 @@ class TestReviewArchivedFileArm(unittest.TestCase):
             "zero-padding) and a `**Status:**` paragraph",
             self.arm,
         )
+        self.assertIn("spaces and tabs or the end of the file) that starts with `done`.", self.arm)
+        self.assertIn("the archived file, under the archived-file arm below", self.start)
+
+    def test_skips_steps_one_to_eight_and_ends_at_step_ten(self):
+        self.assertIn("Resume routing below does not run. Skip steps 1 to 8.", self.arm)
+        self.assertIn(
+            "Name a cap breach or a `cairn_validate.py` FAIL in the recap, "
+            "with no prune, and go on to step 10.",
+            self.arm,
+        )
 
     def test_owner_mode_and_other_rows_stop(self):
         self.assertIn("In owner mode, or when the row is not `blocked`, stop there.", self.arm)

@@ -13,7 +13,7 @@
 | M207 | Two archive files | blocked | — | normal | milestones/M207-two.md |
 | M208 | An archive file whose read fails | blocked | — | normal | milestones/M208-unreadable.md |
 | M209 | No file at all | blocked | — | normal | milestones/M209-none.md |
-| M210 | A status word that only starts with done | blocked | — | normal | milestones/M210-doneish.md |
-| M211 | A tab-only line ends the paragraph | blocked | — | normal | milestones/M211-tab-blank.md |
+| M210 | A status word that starts with done | blocked | — | normal | milestones/M210-doneish.md |
+| M211 | A tab-and-space line ends the paragraph | blocked | — | normal | milestones/M211-tab-blank.md |
 
 ## Candidates

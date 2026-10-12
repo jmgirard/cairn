@@ -27,8 +27,8 @@ the close block names the plan's next workable milestone (step 10).
 
 ## Session start
 
-Read, in order: `cairn/ROADMAP.md`, the target milestone file,
-`cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
+Read, in order: `cairn/ROADMAP.md`, the target milestone file (the
+archived file, under the archived-file arm below), `cairn/DECISIONS.md`. Status must be `review` (or the user explicitly
 overrides — log the override), except under the archived-file arm below.
 **Guest arm** (tracking-rules
 "Collaboration mode"): `blocked` is also accepted when the header names a
@@ -40,9 +40,9 @@ instead, nothing under `cairn/` ever committed.
 
 **Archived-file arm (M246, D-159).** The target's ROADMAP path is not a
 regular file, and exactly one file under `cairn/milestones/archive/` has
-its canonical id (any zero-padding) and a `**Status:**` paragraph (that
-line up to the next line of only spaces and tabs) whose first word after
-`**Status:**` is `done`. An earlier hygiene pass wrote the archive summary and deleted the
+its canonical id (any zero-padding) and a `**Status:**` paragraph (the
+first line that starts with `**Status:**`, up to the next line of only
+spaces and tabs or the end of the file) that starts with `done`. An earlier hygiene pass wrote the archive summary and deleted the
 live file, then stopped before the ROADMAP row changed. Say in chat that
 the archive exists and the row was not updated (IP2). In owner mode, or
 when the row is not `blocked`, stop there. In guest mode with a `blocked`

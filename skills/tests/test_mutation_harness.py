@@ -3495,6 +3495,20 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_trigger_is_a_missing_path_and_one_done_archive",
+        target=REVIEW,
+        block="or the end of the file) that starts with `done`.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestReviewArchivedFileArm."
+             "test_skips_steps_one_to_eight_and_ends_at_step_ten",
+        target=REVIEW,
+        block="Skip steps 1 to 8.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
         test="TestReviewArchivedFileArm.test_owner_mode_and_other_rows_stop",
         target=REVIEW,
         block="In owner mode, or\nwhen the row is not `blocked`, stop there.",

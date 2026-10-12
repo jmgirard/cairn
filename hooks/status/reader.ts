@@ -182,7 +182,7 @@ async function archivedIds(source: FileSource, root: string): Promise<string[]> 
 // starts with `**Status:**`, through the line before the next line of only
 // spaces and tabs, or the end of the text. Null when no line starts so.
 const BLANK = /^[ \t]*$/
-const STATUS_DONE = /^\*\*Status:\*\*[ \t]*done(?![A-Za-z0-9_])/
+const STATUS_DONE = /^\*\*Status:\*\*[ \t]*done/
 export function statusParagraph(text: string): string | null {
   const lines = splitLines(text)
   const start = lines.findIndex(line => line.startsWith('**Status:**'))

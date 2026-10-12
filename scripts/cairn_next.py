@@ -26,7 +26,7 @@ PR_URL = re.compile(r"https://github\.com/[^/ \t]+/[^/ \t]+/pull/([0-9]{1,15})(?
 # A line of only spaces and tabs ends an archive summary's Status paragraph,
 # and the paragraph of a done milestone starts with `done` (M246).
 BLANK = re.compile(r"^[ \t]*$")
-STATUS_DONE = re.compile(r"^\*\*Status:\*\*[ \t]*done(?![A-Za-z0-9_])")
+STATUS_DONE = re.compile(r"^\*\*Status:\*\*[ \t]*done")
 
 
 def done_ids(root, rows):

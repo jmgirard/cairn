@@ -348,7 +348,7 @@ class StatusFixtureAgreement(unittest.TestCase):
                 "M207": (None, False),
                 "M208": (None, False),
                 "M209": (None, False),
-                "M210": (None, False),
+                "M210": (101, True),
                 "M211": (None, True),
             },
         )
