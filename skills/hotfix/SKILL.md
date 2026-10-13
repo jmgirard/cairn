@@ -43,6 +43,20 @@ can resolve against the fork instead of the base repo.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
+   **Candidate-row match (M249).** Step 1 also finds the candidate rows
+   this hotfix fixes. It runs on every entry to step 1, PR-reference
+   re-entries included, before any stop this step takes, and never from
+   memory. A matched row is a row of `cairn/ROADMAP.md`'s Candidates
+   section whose title the argument quotes, or a row that describes the bug
+   being fixed. A row's title is its text after the `- ` and any
+   `[high]`/`[low]` token, up to the first `: `, or all of that text when
+   it has no `: `. For a PR-reference argument, read the PR's title, body
+   and `Fixes #N` line against the rows. Name each matched row's title in
+   chat, or say that no row matched. A row whose title a live milestone
+   file quotes is not matched: that milestone's post-merge hygiene
+   graduates it (records-hygiene §1). Within a hotfix, only step 7, after
+   a merge, removes or narrows a matched row. A search-first absorb on
+   another path can add to the row, but it never removes or narrows it.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
@@ -106,7 +120,9 @@ can resolve against the fork instead of the base repo.
      — the candidate-row check, the issue close, then the close block with
      one recap line naming the merged PR and its verification. A decline
      stops with a close block naming the decline and the reason where the
-     user gave one, plus a `candidate` row (search-first).
+     user gave one, plus a `candidate` row (search-first). In both modes
+     the acceptance chip's question text also names each matched row's
+     title and says whether step 7 removes the row or narrows it.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
@@ -231,7 +247,11 @@ can resolve against the fork instead of the base repo.
    as `/milestone-review`. A `Fixes #N` line, in the PR body or owed to the
    one about to be opened, adds to the
    chip's question text the post-merge close-if-open of that issue it
-   authorizes (hotfix step 7). On approval of an authored fix, push and
+   authorizes (hotfix step 7). When step 1 matched a candidate row, the
+   question text also names each matched row's title and says whether the
+   merge removes the row or narrows it to the part the fix leaves (step 7).
+   The guest handoff chip below carries no row text.
+   On approval of an authored fix, push and
    open the PR before the marker write below — `git push -u origin
    hotfix-<slug>`, then `gh pr create --title <title> --body <body>`
    opening it ready for review, never as a draft, `Fixes #N` in the body
@@ -294,7 +314,10 @@ can resolve against the fork instead of the base repo.
    With the Copilot round off, this close also follows the off-but-present
    rule (`skills/shared/copilot-review.md` §1).
    Step 7's issue
-   close is theirs — the `Fixes` keyword closes it at their merge.
+   close is theirs — the `Fixes` keyword closes it at their merge. The
+   handoff leaves each matched candidate row unchanged. Step 7's guest arm
+   edits it on a later `/hotfix` run with the PR reference, after the
+   maintainers merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule
@@ -304,7 +327,31 @@ can resolve against the fork instead of the base repo.
    `gh issue close <N> --comment` carrying a one-line comment naming the
    merged PR; a PR with no such line is a no-op here. When `gh` is missing,
    unauthenticated, or the repo has no remote, name which of the three it
-   was in the recap — never a failure. If a milestone branch is currently active, remind the user that its
+   was in the recap — never a failure.
+   **Matched candidate rows (M249).** In owner mode, after a merge whose
+   diff passed the hotfix bar, edit each row step 1 matched. This covers an
+   authored fix, an adopted PR, a re-landed PR, and the merged-PR re-entry
+   once its post-hoc verification is accepted, or, where items were owed,
+   once the follow-up PR merges. Delete each row that the fix covers in
+   full. Narrow each row that the fix covers in part to the part left,
+   keeping its title, with a `narrowed YYYY-MM-DD by the PR #N hotfix`
+   note, where `#N` is the merged PR that carried the fix. The part left is
+   that narrowing, never a second new row. On step 1's over-the-bar
+   disposition, step 7 neither removes nor narrows a matched row.
+   In owner mode, every ROADMAP edit step 7 makes on any path, the
+   candidate row added above included, lands in one docs-only commit on the
+   default branch. Run step 2's `git status` check first, then check out
+   the default branch, bring it up to date (fetch, pull ff-only), commit,
+   and push at once. When step 7 makes no ROADMAP edit, nothing is checked
+   out or committed. Show each deleted, narrowed, and new row verbatim in
+   chat (the durable-record preview).
+   *Guest arm:* the handoff leaves each matched row unchanged. When the
+   merged-PR re-entry finds that the maintainers merged the PR, and its
+   post-hoc verification is accepted, remove or narrow each matched row on
+   disk with no commit, judged against the merged diff, and show each
+   deleted, narrowed, and new row verbatim in chat. A PR closed without a
+   merge leaves the row.
+   If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now. With the Copilot round off, the
    close after an authored fix this run merged also follows the
