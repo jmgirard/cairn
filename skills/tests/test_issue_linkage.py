@@ -134,8 +134,10 @@ class TestPlanGateAssignment(unittest.TestCase):
         self.assertIn("`gh repo view <base-repo> --json viewerPermission`", plan())
         self.assertRegex(
             plan(),
-            r"below `TRIAGE` \(`READ` or empty\), or the read fails, the set "
-            r"poses no\s+assignment option, and the chat says in one line that "
+            # An allowlist, so any other value (`READ`, `NONE`, empty) withholds.
+            r"below `TRIAGE`, meaning anything but `ADMIN`, `MAINTAIN`, `WRITE`, "
+            r"or\s+`TRIAGE` \(an empty value included\), or the read fails, the "
+            r"set poses no\s+assignment option, and the chat says in one line that "
             r"the account\s+cannot assign on that repo",
         )
 

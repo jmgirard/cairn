@@ -181,7 +181,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    The option posts no comment. Before composing it, the agent reads the
    account's access to the repo with
    `gh repo view <base-repo> --json viewerPermission`. If the value is
-   below `TRIAGE` (`READ` or empty), or the read fails, the set poses no
+   below `TRIAGE`, meaning anything but `ADMIN`, `MAINTAIN`, `WRITE`, or
+   `TRIAGE` (an empty value included), or the read fails, the set poses no
    assignment option, and the chat says in one line that the account
    cannot assign on that repo, naming the read's failure where the read
    failed. That line rides in the question text of one of the set's

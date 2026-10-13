@@ -3181,7 +3181,13 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestPlanGateAssignment.test_access_read_gates_the_option",
         target=PLAN,
-        block="below `TRIAGE` (`READ` or empty), or the read fails, the set poses no",
+        block="below `TRIAGE`, meaning anything but `ADMIN`, `MAINTAIN`, `WRITE`, or",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_access_read_gates_the_option",
+        target=PLAN,
+        block="`TRIAGE` (an empty value included), or the read fails, the set poses no",
     ),
     Mutation(
         guard="test_issue_linkage",
