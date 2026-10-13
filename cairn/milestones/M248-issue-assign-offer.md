@@ -109,3 +109,10 @@ Review pass 1, 2026-10-12, on branch head 1e7fa897 plus the PR record commit. PR
 - prior-review #1: run-time reads and the edit use only `<N>` and `<base-repo>`, no issue text — reject (false): the lens itself found no regression
 - prior-review #2-#6: retired text gone, harness entries complete, guest `--repo` kept, no baseline to re-seed, README and SKILL agree — noted, no finding
 - Re-verify after fix-now commit f85b04dd: `verify` 5 of 5 exit 0, `skills/tests` 738 tests OK, `cairn_validate` exit 0; AC1-AC4 text re-read at `skills/milestone-plan/SKILL.md:176-201`, unchanged in substance and extended by the fixes; the AC1 and AC5 greps still print no line.
+- copilot: skills/milestone-plan/SKILL.md:184 — `viewerPermission` can be `NONE`, outside the "`READ` or empty" list — fix now: the gate names the allowed values (`ADMIN`, `MAINTAIN`, `WRITE`, `TRIAGE`), fixed dc0eb45f
+- copilot: cairn/milestones/M248-issue-assign-offer.md:14 (outdated) — the header carried only the branch name — fix now, fixed 504faadb (the header names PR #258 since the start of review)
+- copilot: cairn/milestones/M248-issue-assign-offer.md:53 — checked-off tasks name the retired test class and old line range — reject (false): the tasks name what they rewrote as it stood at plan time, and the work log records the new names
+- copilot: review body — the index of the three threads above, and a review effort line — noted
+- Copilot level: Lite (set by GitHub's settings); the review covered head 1e7fa897, before the fix-now commits.
+- conversation: PR #258 — no conversation comments; the one review is Copilot's (above).
+- Re-verify after dc0eb45f: `verify` 5 of 5 exit 0, `skills/tests` 738 tests OK.
