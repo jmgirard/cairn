@@ -115,12 +115,12 @@ because step 1's match reads the Candidates section on every entry.
       verbatim preview, the over-the-bar exception, and the only-step-7
       rule. Add the guest sentences to the step 6 guest arm (`:269-297`) and
       step 7.
-- [ ] T4: Add the sentence to `skills/shared/records-hygiene.md` §1 and
+- [x] T4: Add the sentence to `skills/shared/records-hygiene.md` §1 and
       keep the module under its 55-line, 4,000-byte budget (`wc -l -c`).
       Edit README.md's `/hotfix` row (`:549`). Sweep
       `git grep -n -i candidate -- README.md skills/` for prose that says a
       hotfix leaves a row it fixes, and fix each hit (lesson M112).
-- [ ] T5: Add a hand-run prose guard in `skills/tests/` that pins the
+- [x] T5: Add a hand-run prose guard in `skills/tests/` that pins the
       clauses of T1-T4, and show each pin red by deleting its clause. Run
       the whole `skills/tests` suite (lesson M148), both gating suites, and
       `cairn_validate`.
@@ -146,6 +146,8 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: plan gate chose guest removal at the merged re-entry over removal at handoff because a PR closed unmerged would lose the row's idea; falsified by guest operators who never rerun /hotfix after a merge, leaving fixed rows in place.
 - 2026-10-12: implement started on m249-hotfix-graduates-candidate; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-12: T1-T3 done: step 1 match clause, chip clauses at step 6 and the nothing-owed chip, step 7 remove-or-narrow clause with its one docs-only commit, and the guest sentences in step 6's guest arm and step 7; the nothing-owed sentence sits after the bullet's decline sentence because `test_resume_routing` pins the text before it (lesson M148).
+- 2026-10-12: T4 done: records-hygiene §1 sentence added and the paragraph reflowed to keep the module at 54 lines and 3,160 bytes (its "Kept, the graduation is one step where the work actually lands" rationale sentence dropped for the line); README `/hotfix` row edited; the candidate sweep over README.md and skills/ found no prose saying a hotfix leaves a row it fixes.
+- 2026-10-12: T5 done: `skills/tests/test_hotfix_candidate_graduation.py` pins the clauses, 11 planted deletions each turned their test red with the control green; registered EXEMPT in `test_mutation_harness.py` (hand-run, D-109); scripts, hooks, and skills suites, both plugin validates, the mod test, and cairn_validate all green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
