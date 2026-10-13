@@ -69,6 +69,7 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 - 2026-10-12: T3 done: README bullet and its guard (now `test_plan_time_assignment_offer`, 3 registry entries) rewritten, CHANGELOG entry added, and the `--body` edge removed from the "Intake and guest edges (M234 review)" row. The README text uses two sentences where the old one used an em dash.
 - 2026-10-12: T4 done: `verify` 5 of 5 exit 0, `skills/tests` 736 tests OK, `cairn_validate` exit 0.
 - 2026-10-12: claim audit: 30 claims read, 2 corrected — skills/milestone-plan/SKILL.md (`NONE` is not a `viewerPermission` value, now "`READ` or empty"), CHANGELOG.md and README.md (now say a failed access read also offers nothing). The same reader re-read both and found them accurate; guards and one new README registry entry follow the new text, and `verify` plus `skills/tests` exit 0.
+- 2026-10-12: step-7 approval: m248-issue-assign-offer approved for merge. The chip said 25 reviewer findings with 10 fixed; the Review section holds 24, with 9 fixed, 1 follow-up, 8 rejected, and 6 noted.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
