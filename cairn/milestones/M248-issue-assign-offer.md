@@ -28,12 +28,12 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: Step 3 of `skills/milestone-plan/SKILL.md` offers one option to assign the operator's own GitHub account to every issue in the `Resolves:` slot with `gh issue edit <N> --add-assignee @me`, plus `--repo <base-repo>` in guest mode. The paragraph says that the command runs only on selection, after step 4 writes the milestone file, and that the option posts no comment. `grep -n -e "gh issue comment" -e "Queued as" -e "Working on this" skills/milestone-plan/SKILL.md` prints no line.
-- [ ] AC2: The paragraph says that the agent reads the account's access at the gate with `gh repo view <base-repo> --json viewerPermission`. If the value is below `TRIAGE`, or the read fails, the set poses no assignment option, and the chat says in one line that the account cannot assign on that repo.
-- [ ] AC3: The paragraph says that the option description names the current assignees of each slotted issue, read with `gh issue view <N> --json assignees` (plus `--repo <base-repo>` in guest mode). If another account holds the issue, the description says so. If the read fails, the description calls the assignees unknown.
-- [ ] AC4: The paragraph says that if the assign command fails for an issue, or `gh` cannot run at that point, the agent names the issue and the error in chat and in one work-log line, and writes nothing else to GitHub for that issue.
-- [ ] AC5: The issue-linkage bullet of `README.md` describes the assignment offer and its access gate in both modes, and `grep -n -e "Queued as" -e "Working on this" README.md` prints no line. The Unreleased section of `CHANGELOG.md` has one entry that states the change.
-- [ ] AC6: The `verify` slot of `cairn/PROFILE.md` is clean on the branch head, and the hand-run `python3 -m unittest discover skills/tests` exits 0.
+- [x] AC1: Step 3 of `skills/milestone-plan/SKILL.md` offers one option to assign the operator's own GitHub account to every issue in the `Resolves:` slot with `gh issue edit <N> --add-assignee @me`, plus `--repo <base-repo>` in guest mode. The paragraph says that the command runs only on selection, after step 4 writes the milestone file, and that the option posts no comment. `grep -n -e "gh issue comment" -e "Queued as" -e "Working on this" skills/milestone-plan/SKILL.md` prints no line.
+- [x] AC2: The paragraph says that the agent reads the account's access at the gate with `gh repo view <base-repo> --json viewerPermission`. If the value is below `TRIAGE`, or the read fails, the set poses no assignment option, and the chat says in one line that the account cannot assign on that repo.
+- [x] AC3: The paragraph says that the option description names the current assignees of each slotted issue, read with `gh issue view <N> --json assignees` (plus `--repo <base-repo>` in guest mode). If another account holds the issue, the description says so. If the read fails, the description calls the assignees unknown.
+- [x] AC4: The paragraph says that if the assign command fails for an issue, or `gh` cannot run at that point, the agent names the issue and the error in chat and in one work-log line, and writes nothing else to GitHub for that issue.
+- [x] AC5: The issue-linkage bullet of `README.md` describes the assignment offer and its access gate in both modes, and `grep -n -e "Queued as" -e "Working on this" README.md` prints no line. The Unreleased section of `CHANGELOG.md` has one entry that states the change.
+- [x] AC6: The `verify` slot of `cairn/PROFILE.md` is clean on the branch head, and the hand-run `python3 -m unittest discover skills/tests` exits 0.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -75,3 +75,13 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Review pass 1, 2026-10-12, on branch head 1e7fa897 plus the PR record commit. PR #258 opened at review start (Copilot round on); Copilot requested on state `none`.
+
+- AC1 evidence: `skills/milestone-plan/SKILL.md:177-196` read: one option assigns the operator's own account to every slotted issue (177-178), "The option posts no comment." (180), the command runs only on selection after step 4 writes the file with `gh issue edit <N> --add-assignee @me` (189-190), and the guest arm adds `--repo <base-repo>` to the edit (195-196). `grep -n -e "gh issue comment" -e "Queued as" -e "Working on this" skills/milestone-plan/SKILL.md` printed no line (exit 1).
+- AC2 evidence: lines 181-185 read: `gh repo view <base-repo> --json viewerPermission`, and below `TRIAGE` (`READ` or empty) or a failed read poses no option and says in one line that the account cannot assign on that repo.
+- AC3 evidence: lines 185-189 read: assignees read with `gh issue view <N> --json assignees` (guest `--repo` at 195-196), the description names them, says so when another account holds an issue, and calls them unknown on a failed read.
+- AC4 evidence: lines 191-194 read: a failed assign command or `gh` unable to run names the issue and the error in chat and in one work-log line, and writes nothing else to GitHub for that issue.
+- AC5 evidence: `README.md:745-754` describes the assignment offer and the access read "in owner and guest mode alike"; `grep -n -e "Queued as" -e "Working on this" README.md` printed no line (exit 1). The Unreleased section of `CHANGELOG.md` opens with the one entry "The plan offers to assign you to an issue it resolves, in place of a comment."
+- AC6 evidence: `verify` all exit 0 (scripts/tests 407 tests, hooks/tests 175 tests, plugin validate, marketplace validate, plugin test); hand-run `skills/tests` 736 tests OK, exit 0.
+- Consistency gate: `cairn_validate` all checks passed (exit 0); no principle changed, so `cairn_impact` skipped; marketplace validate shows no `version` warning; the changelog entry names no milestone number (its `M<NNN>` is the retired comment's placeholder).
