@@ -13,8 +13,9 @@
   in part, with a `narrowed YYYY-MM-DD by the PR #N hotfix` note. The edit
   lands in one tracking commit on the default branch. A declined or closed
   PR, or a fix too large for a hotfix, leaves the row. In guest mode the
-  row stays at the handoff, and a later `/hotfix` run with the PR number
-  edits it on disk after the maintainers merge.
+  row stays at the handoff. A later `/hotfix` run with the PR number edits
+  it on disk after the maintainers merge, once you accept that run's check
+  of the merged change.
 - **The plan offers to assign you to an issue it resolves, in place of a
   comment.** When a plan absorbs a GitHub issue, the question set no
   longer offers a `Queued as M<NNN>: <title>` comment, or in guest mode a

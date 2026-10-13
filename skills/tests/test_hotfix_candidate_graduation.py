@@ -46,18 +46,21 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "read the PR's title, body and `Fixes #N` line against the rows.",
             "Name each matched row's title in chat, or say that no row "
             "matched.",
-            "Only step 7, after a merge, removes or narrows a matched row. "
-            "A search-first absorb on another path can add to the row, but "
-            "it never removes or narrows it.",
+            "A row's title is its text after the `- ` and any "
+            "`[high]`/`[low]` token, up to the first `: `.",
+            "Within a hotfix, only step 7, after a merge, removes or narrows "
+            "a matched row. A search-first absorb on another path can add to "
+            "the row, but it never removes or narrows it.",
         ):
             self.assertIn(phrase, self.step1)
 
     def test_chips_name_each_matched_row(self):
+        nothing_owed = section(self.hotfix, "*Nothing owed*", "2. **Branch")
         self.assertIn(
-            "In owner mode the acceptance chip's question text also names "
+            "In both modes the acceptance chip's question text also names "
             "each matched row's title and says whether step 7 removes the "
             "row or narrows it.",
-            self.step1,
+            nothing_owed,
         )
         self.assertIn(
             "the question text also names each matched row's title and says "
@@ -76,14 +79,19 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "merged-PR re-entry once its post-hoc verification is accepted, "
             "or, where items were owed, once the follow-up PR merges.",
             "Delete each row that the fix covers in full.",
+            "Narrow each row that the fix covers in part to the part left,",
+            "The part left is that narrowing, never a second new row.",
             "with a `narrowed YYYY-MM-DD by the PR #N hotfix` note, where "
             "`#N` is the merged PR that carried the fix.",
             "On step 1's over-the-bar disposition, step 7 neither removes "
             "nor narrows a matched row.",
-            "Every ROADMAP edit this step makes, the candidate row added "
-            "above included, lands in one docs-only commit on the default "
-            "branch",
-            "Show the narrowed and new rows verbatim in chat",
+            "In owner mode, every ROADMAP edit step 7 makes on any path, the "
+            "candidate row added above included, lands in one docs-only "
+            "commit on the default branch.",
+            "Run step 2's `git status` check first, then check out the "
+            "default branch, bring it up to date (fetch, pull ff-only), "
+            "commit, and push at once.",
+            "Show each deleted, narrowed, and new row verbatim in chat",
         ):
             self.assertIn(phrase, self.step7)
 
@@ -97,7 +105,8 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "
-            "the merged diff, and show the narrowed rows verbatim in chat.",
+            "the merged diff, and show each deleted and narrowed row "
+            "verbatim in chat.",
             "A PR closed without a merge leaves the row.",
         ):
             self.assertIn(phrase, self.step7)
@@ -105,11 +114,12 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
     def test_records_hygiene_and_readme_say_so(self):
         hygiene = section(flat(SKILLS / "shared" / "records-hygiene.md"),
                           "## 1. Candidate rows graduate", "## 2.")
-        self.assertIn(
-            "A hotfix's step 7 removes or narrows the row it fixes after the "
-            "merge.",
-            hygiene,
-        )
+        for phrase in (
+            "the row stays through planning and implementation",
+            "A hotfix graduates the same way: step 7 removes or narrows its "
+            "row after merge.",
+        ):
+            self.assertIn(phrase, hygiene)
         readme_row = [line for line in (REPO / "README.md").read_text()
                       .splitlines()
                       if line.startswith("| Fix a reported bug quickly |")]

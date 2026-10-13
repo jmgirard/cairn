@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M249: A hotfix removes the candidate row it fixes, once the fix merges
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -126,6 +126,12 @@ because step 1's match reads the Candidates section on every entry.
       `cairn_validate`.
 - [x] T6: Add a `CHANGELOG.md` Unreleased entry for the change (review
       return 1).
+- [x] T7: Fix review return 2 and the pass-1 fix-now items: the
+      "Nothing owed" chip names rows in both modes, deleted rows are shown,
+      the one-commit rule covers every step-7 ROADMAP edit with a
+      `git status` check first, "within a hotfix", the narrowing replaces a
+      second row, records-hygiene §1 restored, CHANGELOG guest wording; guard
+      re-pinned.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -156,6 +162,7 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: review return 1: consistency gate — `CHANGELOG.md` has no entry for this milestone's user-visible change (the plan had no task for it).
 - 2026-10-12: minor amendment: T6 added for review return 1; T6 done, a CHANGELOG Unreleased entry written against the same-session read of steps 1, 6 and 7; suites green; status back to review.
 - 2026-10-12: review return 2: AC2 fails in guest mode — `skills/hotfix/SKILL.md:120-122` limits the "Nothing owed" chip's row naming to owner mode (diff-bug #2); fix it with the pass-1 fix-now items (diff-bug #3, #4, #6, #8, #9, #10, #14; blame-history #4) and file the follow-up row; AC2 box unticked.
+- 2026-10-12: minor amendment: T7 added for review return 2; T7 done: SKILL.md step 1 ("In both modes", "Within a hotfix"), step 7 (narrowing replaces a second row; one docs-only commit for every step-7 ROADMAP edit on any path after a `git status` check; deleted rows shown, guest too), records-hygiene §1 back to "through planning and implementation" with its rationale sentence and "A hotfix graduates the same way" (budget paragraph reflowed, module 54 lines, 3,255 bytes), CHANGELOG guest sentence; guard re-pinned with 10 new plants each red, control green; all suites and cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
