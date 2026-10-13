@@ -88,23 +88,24 @@ Review pass 1, 2026-10-12, on branch head 1e7fa897 plus the PR record commit. PR
 - AC6 evidence: `verify` all exit 0 (scripts/tests 407 tests, hooks/tests 175 tests, plugin validate, marketplace validate, plugin test); hand-run `skills/tests` 736 tests OK, exit 0.
 - Consistency gate: `cairn_validate` all checks passed (exit 0); no principle changed, so `cairn_impact` skipped; marketplace validate shows no `version` warning; the changelog entry names no milestone number (its `M<NNN>` is the retired comment's placeholder).
 - spawned: diff-bug, blame-history, prior-review
-- diff-bug #1: the "cannot assign" line is pre-tool-call chat and can go unseen, with no work-log line — fix now: the line rides in a question's text or the turn's final text, and step 4 logs it
-- diff-bug #2: a failed access read is reported as a permission fact — fix now: the line names the read's failure where the read failed
-- diff-bug #3: the assign command's timing relative to step 6's commit is open — fix now: it runs before step 6's commit, so its work-log line rides in that commit
-- diff-bug #4: "can pose" is weaker than AC1's "offers" — fix now: "poses ... unless the access read below withholds it"
-- diff-bug #5: GitHub can drop an ineligible assignee with exit 0 — fix now: the agent re-reads the assignees after the command, and a missing account counts as a failed command
-- diff-bug #6: README "in owner and guest mode alike" unguarded — fix now: pinned in `test_plan_time_assignment_offer` with a registry entry
-- diff-bug #7: "`closes` and `partial` entries alike" unguarded — fix now: pinned with a registry entry
+- diff-bug #1: the "cannot assign" line is pre-tool-call chat and can go unseen, with no work-log line — fix now: the line rides in a question's text or the turn's final text, and step 4 logs it, fixed f85b04dd
+- diff-bug #2: a failed access read is reported as a permission fact — fix now: the line names the read's failure where the read failed, fixed f85b04dd
+- diff-bug #3: the assign command's timing relative to step 6's commit is open — fix now: it runs before step 6's commit, so its work-log line rides in that commit, fixed f85b04dd
+- diff-bug #4: "can pose" is weaker than AC1's "offers" — fix now: "poses ... unless the access read below withholds it", fixed f85b04dd
+- diff-bug #5: GitHub can drop an ineligible assignee with exit 0 — fix now: the agent re-reads the assignees after the command, and a missing account counts as a failed command, fixed f85b04dd
+- diff-bug #6: README "in owner and guest mode alike" unguarded — fix now: pinned in `test_plan_time_assignment_offer` with a registry entry, fixed f85b04dd
+- diff-bug #7: "`closes` and `partial` entries alike" unguarded — fix now: pinned with a registry entry, fixed f85b04dd
 - diff-bug #8: the CHANGELOG entry has no guard and an odd wrap — reject (style): changelog entries are not prose-guarded in this repo, the behavior they state is pinned in the skill guards, and the wrap is cosmetic
-- diff-bug #9: the retired-terms check covers only the plan skill — fix now: it also checks README for the two retired bodies (README keeps `gh issue comment` for the `/milestone` reply draft)
+- diff-bug #9: the retired-terms check covers only the plan skill — fix now: it also checks README for the two retired bodies (README keeps `gh issue comment` for the `/milestone` reply draft), fixed f85b04dd
 - diff-bug #10: with the fork at `origin` and no `upstream`, the access read reads the fork — follow-up: added to the existing fork edge in "Intake and guest edges (M234 review)"
 - diff-bug #11: a `partial` issue keeps the operator assigned after merge — reject (planned change): Scope Out and the plan-gate line record it
 - blame-history #1: guest acknowledgement mostly disappears for read-only contributors — reject (planned change): the user chose "offer nothing" at the question set; the cost is now a milestone-local Decisions entry
 - blame-history #2: owner mode loses the `Queued as` comment, partly rebuilding M166's falsifier as a hard rule — reject (planned change): the user chose both modes at the question set
-- blame-history #3: no Decisions entry records the reversal — fix now: milestone-local Decisions entry added
+- blame-history #3: no Decisions entry records the reversal — fix now: milestone-local Decisions entry added, fixed f85b04dd
 - blame-history #4: `partial` issues stay assigned after merge — reject (planned change): Scope Out
 - blame-history #5: `@me` may need a newer `gh` — reject (false): `gh issue edit --help` documents `@me`, and a failure takes the failed-command path
 - blame-history #6: the ROADMAP `--body` edge removal leaves review step 9's `--body` comment — reject (false): no defect, that row never named step 9's comment
 - blame-history #7: test pins match the new text — noted, no finding
 - prior-review #1: run-time reads and the edit use only `<N>` and `<base-repo>`, no issue text — reject (false): the lens itself found no regression
 - prior-review #2-#6: retired text gone, harness entries complete, guest `--repo` kept, no baseline to re-seed, README and SKILL agree — noted, no finding
+- Re-verify after fix-now commit f85b04dd: `verify` 5 of 5 exit 0, `skills/tests` 738 tests OK, `cairn_validate` exit 0; AC1-AC4 text re-read at `skills/milestone-plan/SKILL.md:176-201`, unchanged in substance and extended by the fixes; the AC1 and AC5 greps still print no line.
