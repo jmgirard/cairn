@@ -3181,7 +3181,7 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestPlanGateAssignment.test_access_read_gates_the_option",
         target=PLAN,
-        block="below `TRIAGE` (`READ` or `NONE`), or the read fails, the set poses no",
+        block="below `TRIAGE` (`READ` or empty), or the read fails, the set poses no",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3389,6 +3389,12 @@ REGISTRY += [
         test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
         target=README,
         block="nothing and says so in one line.",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
+        target=README,
+        block="It does the same if the access read",
     ),
     Mutation(
         guard="test_issue_linkage",

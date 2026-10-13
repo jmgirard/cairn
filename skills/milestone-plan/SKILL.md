@@ -180,7 +180,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    permission to give). The option posts no comment. Before composing it,
    the agent reads the account's access to the repo with
    `gh repo view <base-repo> --json viewerPermission`. If the value is
-   below `TRIAGE` (`READ` or `NONE`), or the read fails, the set poses no
+   below `TRIAGE` (`READ` or empty), or the read fails, the set poses no
    assignment option, and the chat says in one line that the account
    cannot assign on that repo. Otherwise the agent reads each slotted
    issue's assignees with `gh issue view <N> --json assignees`, and the

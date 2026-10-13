@@ -127,7 +127,7 @@ class TestPlanGateAssignment(unittest.TestCase):
         self.assertIn("`gh repo view <base-repo> --json viewerPermission`", plan())
         self.assertRegex(
             plan(),
-            r"below `TRIAGE` \(`READ` or `NONE`\), or the read fails, the set "
+            r"below `TRIAGE` \(`READ` or empty\), or the read fails, the set "
             r"poses no\s+assignment option, and the chat says in one line that "
             r"the account\s+cannot assign on that repo",
         )
@@ -341,7 +341,7 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
             self.readme(),
             r"If your account cannot assign there \(less\s+than triage access, "
             r"common on a repo you do not own\), the plan offers\s+nothing and "
-            r"says so in one line",
+            r"says so in one line\. It does the same if the access read\s+fails",
         )
 
     def test_pr_closing_keyword(self):

@@ -68,6 +68,7 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 - 2026-10-12: T2 done: `TestPlanGateAcknowledgement` became `TestPlanGateAssignment` (7 tests, one a negative check on the retired comment terms) with 12 registry entries, one per pinned line. The registry test passes with each line blanked in turn; `verify` is clean (5 of 5 exit 0).
 - 2026-10-12: T3 done: README bullet and its guard (now `test_plan_time_assignment_offer`, 3 registry entries) rewritten, CHANGELOG entry added, and the `--body` edge removed from the "Intake and guest edges (M234 review)" row. The README text uses two sentences where the old one used an em dash.
 - 2026-10-12: T4 done: `verify` 5 of 5 exit 0, `skills/tests` 736 tests OK, `cairn_validate` exit 0.
+- 2026-10-12: claim audit: 30 claims read, 2 corrected — skills/milestone-plan/SKILL.md (`NONE` is not a `viewerPermission` value, now "`READ` or empty"), CHANGELOG.md and README.md (now say a failed access read also offers nothing). The same reader re-read both and found them accurate; guards and one new README registry entry follow the new text, and `verify` plus `skills/tests` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

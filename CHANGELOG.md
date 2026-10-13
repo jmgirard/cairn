@@ -10,7 +10,8 @@
   `Working on this: <issue title>` comment. It offers one option to assign
   your own account to each issue in the `Resolves:` slot, and posts no
   comment. The plan first reads your access to the repo. With less than
-  triage access, it offers nothing and says so in one line. The option
+  triage access, or if the read fails, it offers nothing and says so in
+  one line. The option
   description names each issue's current assignees. The assignment runs
   only if you select the option, after the milestone file is written. A
   failed assignment is named in chat and in the work log, and nothing else

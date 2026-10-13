@@ -749,7 +749,8 @@ actually reach.
   select it, never by default. The plan first reads your access to the repo, in
   owner and guest mode alike. If your account cannot assign there (less
   than triage access, common on a repo you do not own), the plan offers
-  nothing and says so in one line. The
+  nothing and says so in one line. It does the same if the access read
+  fails. The
   PR the review opens after your approval has a body ending with
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the
