@@ -9,7 +9,8 @@ pinned here:
 
   1. `/milestone-plan` fills the `Resolves:` slot from the issues the scope
      absorbs, rows a `partial` entry's remainder, and offers — never
-     defaults to — an acknowledgement comment at the gate.
+     defaults to — assigning the operator to the slotted issues at the gate,
+     with no comment, and only where the account can assign (M248).
   2. `/milestone-review` ends the post-approval PR body with `Closes`/`Refs` lines,
      enumerates the post-merge issue writes in the merge chip, and reads
      each `closes` issue's state after the merge, closing what the keyword
@@ -105,31 +106,64 @@ class TestPlanFillsTheSlot(unittest.TestCase):
         )
 
 
-class TestPlanGateAcknowledgement(unittest.TestCase):
-    """AC2: one gate option, body shown first, posted only on selection."""
+class TestPlanGateAssignment(unittest.TestCase):
+    """M248: one gate option assigns the operator, posts no comment, and is
+    posed only where the account can assign (replaces M166's comment)."""
 
-    def test_gate_poses_one_option_for_all_slotted_issues(self):
+    def test_option_assigns_own_account_to_every_slotted_issue(self):
         self.assertRegex(
             plan(),
-            # M202 (D-144): the plan's gate is now the question set.
-            r"the set poses one option offering an\s+acknowledgement comment "
-            r"on all slotted issues",
+            r"one option offering to assign\s+the operator's own GitHub "
+            r"account to every slotted issue",
         )
 
-    def test_comment_body_is_fixed_and_shown_before_selection(self):
-        self.assertIn("`Queued as M<NNN>: <title>`", plan())
+    def test_option_posts_no_comment(self):
+        self.assertIn("The option posts no comment.", plan())
+        # The retired comment offer: no comment command or body survives.
+        for retired in ("gh issue " + "comment", "Queued " + "as", "Working on " + "this"):
+            self.assertNotIn(retired, plan())
+
+    def test_access_read_gates_the_option(self):
+        self.assertIn("`gh repo view <base-repo> --json viewerPermission`", plan())
         self.assertRegex(
             plan(),
-            r"for a `partial` entry, the remainder's\s+candidate-row text — "
-            r"shown verbatim in the chat before selection",
+            r"below `TRIAGE` \(`READ` or `NONE`\), or the read fails, the set "
+            r"poses no\s+assignment option, and the chat says in one line that "
+            r"the account\s+cannot assign on that repo",
         )
 
-    def test_posted_only_on_selection_never_by_default(self):
+    def test_description_names_current_assignees(self):
+        self.assertRegex(
+            plan(),
+            r"`gh issue view <N> --json assignees`, and the\s+option description "
+            r"names them\. If another account holds an issue, the\s+description "
+            r"says so\. If the read fails, the description calls that\s+issue's "
+            r"assignees unknown\.",
+        )
+
+    def test_assignment_runs_only_on_selection_after_step_4(self):
         # The gate condition: every GitHub write stays behind a user gate.
         self.assertRegex(
             plan(),
-            r"posted with `gh issue comment <N> --body` only on selection, "
-            r"never by\s+default, and a declined option writes nothing to GitHub",
+            r"The command runs only on selection, after\s+step 4 writes the "
+            r"milestone file: `gh issue edit <N> --add-assignee @me`",
+        )
+        self.assertIn("A declined option writes nothing to GitHub.", plan())
+
+    def test_failed_assignment_is_reported_and_writes_nothing_else(self):
+        self.assertRegex(
+            plan(),
+            r"the assign command fails for an issue, or `gh` cannot run at "
+            r"that\s+point, the agent names the issue and the error in chat and "
+            r"in one\s+work-log line, and writes nothing else to GitHub for that "
+            r"issue\.",
+        )
+
+    def test_guest_arm_names_the_base_repo(self):
+        self.assertRegex(
+            plan(),
+            r"the `gh issue view` and\s+`gh issue edit` commands add "
+            r"`--repo <base-repo>`",
         )
 
 

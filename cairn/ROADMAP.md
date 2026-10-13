@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M248 | The plan offers to assign you to an issue it resolves, in place of a comment | planned | — | normal | milestones/M248-issue-assign-offer.md |
+| M248 | The plan offers to assign you to an issue it resolves, in place of a comment | in-progress | — | normal | milestones/M248-issue-assign-offer.md |
 | M247 | In guest mode, text written for the host repo matches the host's own style | done | — | normal | milestones/archive/M247-guest-host-doc-style.md |
 ## Candidates
 

@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M248: The plan offers to assign you to an issue it resolves, in place of a comment
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes the GitHub write that the plan question set offers every operator
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m248-issue-assign-offer   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,8 +48,8 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Rewrite the step-3 paragraph of `skills/milestone-plan/SKILL.md` for AC1-AC4. The assignment covers `closes` and `partial` entries alike.
-- [ ] T2: Rewrite `TestPlanGateAcknowledgement` and the module docstring in `skills/tests/test_issue_linkage.py`, and the matching entries in `skills/tests/test_mutation_harness.py` (near lines 3161-3177), to pin each AC1-AC4 sentence. Plant the removal of each pinned sentence and see its guard fail.
+- [x] T1: Rewrite the step-3 paragraph of `skills/milestone-plan/SKILL.md` for AC1-AC4. The assignment covers `closes` and `partial` entries alike.
+- [x] T2: Rewrite `TestPlanGateAcknowledgement` and the module docstring in `skills/tests/test_issue_linkage.py`, and the matching entries in `skills/tests/test_mutation_harness.py` (near lines 3161-3177), to pin each AC1-AC4 sentence. Plant the removal of each pinned sentence and see its guard fail.
 - [ ] T3: Rewrite the README bullet and its guard `test_plan_time_acknowledgement_offer` (with its harness entries near lines 3321-3330), and add the CHANGELOG entry (AC5). Remove the `--body` edge from the ROADMAP candidate "Intake and guest edges (M234 review)".
 - [ ] T4: Run the `verify` slot and `skills/tests` (AC6).
 
@@ -63,6 +63,9 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 - 2026-10-12: question set: should owner mode's `Queued as M<NNN>` comment also become an assignment offer — yes, both modes.
 - 2026-10-12: plan gate chose to offer no option below `TRIAGE` access over falling back to the "Working on this" comment, because the user wants no post; falsified by a guest operator who loses track of an upstream issue nobody acknowledged.
 - 2026-10-12: plan gate chose to assign on `partial` entries as on `closes` entries over skipping them, because the operator works on the issue in both cases and the post-merge `partial` comment still names the remainder; falsified by an operator left assigned to a `partial` issue's remainder they do not mean to take.
+- 2026-10-12: implement started on branch m248-issue-assign-offer. The untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-12: T1 done: the step-3 paragraph is now "Issue assignment (one option)". The access read uses `gh repo view <base-repo>` in both modes, since the slug recipe defines `<base-repo>` in both; the guest arm adds `--repo` to the issue view and edit commands only.
+- 2026-10-12: T2 done: `TestPlanGateAcknowledgement` became `TestPlanGateAssignment` (7 tests, one a negative check on the retired comment terms) with 12 registry entries, one per pinned line. The registry test passes with each line blanked in turn; `verify` is clean (5 of 5 exit 0).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
