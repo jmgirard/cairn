@@ -3374,15 +3374,21 @@ REGISTRY += [
     # M166 T6: README states the three behaviors.
     Mutation(
         guard="test_issue_linkage",
-        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
         target=README,
-        block="plan question set offers one option to post `Queued as M<NNN>: <title>`",
+        block="plan question set offers one option to assign your own GitHub account to",
     ),
     Mutation(
         guard="test_issue_linkage",
-        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_acknowledgement_offer",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
         target=README,
-        block="posted only if you select it, never by default",
+        block="each slotted issue, with no comment posted. You are assigned only if you",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
+        target=README,
+        block="nothing and says so in one line.",
     ),
     Mutation(
         guard="test_issue_linkage",

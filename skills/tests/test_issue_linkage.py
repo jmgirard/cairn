@@ -329,13 +329,20 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
     def readme(self):
         return SKILLS.parent.joinpath("README.md").read_text()
 
-    def test_plan_time_acknowledgement_offer(self):
+    def test_plan_time_assignment_offer(self):
+        # M248: the offer assigns the operator; it no longer posts a comment.
         self.assertRegex(
             self.readme(),
-            r"plan question set offers one option to post `Queued as M<NNN>: "
-            r"<title>`",
+            r"plan question set offers one option to assign your own GitHub "
+            r"account to\s+each slotted issue, with no comment posted",
         )
-        self.assertRegex(self.readme(), r"posted only if you select it, never by default")
+        self.assertRegex(self.readme(), r"You are assigned only if you\s+select it, never by default")
+        self.assertRegex(
+            self.readme(),
+            r"If your account cannot assign there \(less\s+than triage access, "
+            r"common on a repo you do not own\), the plan offers\s+nothing and "
+            r"says so in one line",
+        )
 
     def test_pr_closing_keyword(self):
         self.assertRegex(

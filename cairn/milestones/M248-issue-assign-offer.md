@@ -50,8 +50,8 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 
 - [x] T1: Rewrite the step-3 paragraph of `skills/milestone-plan/SKILL.md` for AC1-AC4. The assignment covers `closes` and `partial` entries alike.
 - [x] T2: Rewrite `TestPlanGateAcknowledgement` and the module docstring in `skills/tests/test_issue_linkage.py`, and the matching entries in `skills/tests/test_mutation_harness.py` (near lines 3161-3177), to pin each AC1-AC4 sentence. Plant the removal of each pinned sentence and see its guard fail.
-- [ ] T3: Rewrite the README bullet and its guard `test_plan_time_acknowledgement_offer` (with its harness entries near lines 3321-3330), and add the CHANGELOG entry (AC5). Remove the `--body` edge from the ROADMAP candidate "Intake and guest edges (M234 review)".
-- [ ] T4: Run the `verify` slot and `skills/tests` (AC6).
+- [x] T3: Rewrite the README bullet and its guard `test_plan_time_acknowledgement_offer` (with its harness entries near lines 3321-3330), and add the CHANGELOG entry (AC5). Remove the `--body` edge from the ROADMAP candidate "Intake and guest edges (M234 review)".
+- [x] T4: Run the `verify` slot and `skills/tests` (AC6).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -66,6 +66,8 @@ When a plan resolves a GitHub issue, the question set offers to assign the opera
 - 2026-10-12: implement started on branch m248-issue-assign-offer. The untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
 - 2026-10-12: T1 done: the step-3 paragraph is now "Issue assignment (one option)". The access read uses `gh repo view <base-repo>` in both modes, since the slug recipe defines `<base-repo>` in both; the guest arm adds `--repo` to the issue view and edit commands only.
 - 2026-10-12: T2 done: `TestPlanGateAcknowledgement` became `TestPlanGateAssignment` (7 tests, one a negative check on the retired comment terms) with 12 registry entries, one per pinned line. The registry test passes with each line blanked in turn; `verify` is clean (5 of 5 exit 0).
+- 2026-10-12: T3 done: README bullet and its guard (now `test_plan_time_assignment_offer`, 3 registry entries) rewritten, CHANGELOG entry added, and the `--body` edge removed from the "Intake and guest edges (M234 review)" row. The README text uses two sentences where the old one used an em dash.
+- 2026-10-12: T4 done: `verify` 5 of 5 exit 0, `skills/tests` 736 tests OK, `cairn_validate` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

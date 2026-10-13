@@ -4,6 +4,17 @@
 
 ### Changes that affect existing repos
 
+- **The plan offers to assign you to an issue it resolves, in place of a
+  comment.** When a plan absorbs a GitHub issue, the question set no
+  longer offers a `Queued as M<NNN>: <title>` comment, or in guest mode a
+  `Working on this: <issue title>` comment. It offers one option to assign
+  your own account to each issue in the `Resolves:` slot, and posts no
+  comment. The plan first reads your access to the repo. With less than
+  triage access, it offers nothing and says so in one line. The option
+  description names each issue's current assignees. The assignment runs
+  only if you select the option, after the milestone file is written. A
+  failed assignment is named in chat and in the work log, and nothing else
+  is written to GitHub for that issue.
 - **In guest mode, text written for the host repo matches the host's own
   style.** The rule covers documentation (README, guides and vignettes,
   help pages and docstrings, code comments, changelog entries, and messages
