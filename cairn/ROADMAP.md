@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-12 (M247 done and archived, no lesson, no new candidate row; validate and skills/tests green)_
+_Last hygiene check: 2026-10-12 (M248 done and archived, no lesson, one finding added to an existing row; validate and skills/tests green)_
 
 ## Milestones
 
@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M248 | The plan offers to assign you to an issue it resolves, in place of a comment | review | — | normal | milestones/M248-issue-assign-offer.md |
+| M248 | The plan offers to assign you to an issue it resolves, in place of a comment | done | — | normal | milestones/archive/M248-issue-assign-offer.md |
 | M247 | In guest mode, text written for the host repo matches the host's own style | done | — | normal | milestones/archive/M247-guest-host-doc-style.md |
 ## Candidates
 
