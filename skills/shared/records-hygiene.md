@@ -15,9 +15,9 @@ here — never "let it grow".
 
 **A ROADMAP candidate whose scope a milestone absorbs is NOT pruned when that
 milestone is planned.** Candidates graduate at *completion*: the row stays
-through planning and implementation and goes in the post-merge hygiene pass.
-Pruned at plan time, the ROADMAP shows shipped work as pending for the life of
-the branch. Kept, the graduation is one step where the work actually lands.
+through implementation and goes at post-merge hygiene. Pruned at plan time,
+the ROADMAP shows shipped work as pending for the life of the branch. A
+hotfix's step 7 removes or narrows the row it fixes after the merge.
 
 ## 2. Superseding a decision, and sweeping the archive for one
 
