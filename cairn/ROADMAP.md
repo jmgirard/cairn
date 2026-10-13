@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M249 | A hotfix removes the candidate row it fixes, once the fix merges | in-progress | — | normal | milestones/M249-hotfix-graduates-candidate.md |
+| M249 | A hotfix removes the candidate row it fixes, once the fix merges | review | — | normal | milestones/M249-hotfix-graduates-candidate.md |
 | M248 | The plan offers to assign you to an issue it resolves, in place of a comment | done | — | normal | milestones/archive/M248-issue-assign-offer.md |
 ## Candidates
 

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M249: A hotfix removes the candidate row it fixes, once the fix merges
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -124,6 +124,8 @@ because step 1's match reads the Candidates section on every entry.
       clauses of T1-T4, and show each pin red by deleting its clause. Run
       the whole `skills/tests` suite (lesson M148), both gating suites, and
       `cairn_validate`.
+- [x] T6: Add a `CHANGELOG.md` Unreleased entry for the change (review
+      return 1).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -152,6 +154,7 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: claim audit minor items left as is: the README row does not spell out guest mode or the over-the-bar case, and a row with no `: ` has no title (all 42 current rows have one).
 - 2026-10-12: review started; Copilot arm opened PR #259 and requested Copilot (state was `none`).
 - 2026-10-12: review return 1: consistency gate — `CHANGELOG.md` has no entry for this milestone's user-visible change (the plan had no task for it).
+- 2026-10-12: minor amendment: T6 added for review return 1; T6 done, a CHANGELOG Unreleased entry written against the same-session read of steps 1, 6 and 7; suites green; status back to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
