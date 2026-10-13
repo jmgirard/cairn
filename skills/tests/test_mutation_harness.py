@@ -3187,7 +3187,43 @@ REGISTRY += [
         guard="test_issue_linkage",
         test="TestPlanGateAssignment.test_access_read_gates_the_option",
         target=PLAN,
-        block="cannot assign on that repo.",
+        block="cannot assign on that repo, naming the read's failure where the read",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_option_assigns_own_account_to_every_slotted_issue",
+        target=PLAN,
+        block="`partial` entries alike (an outward action, so it is the user's",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_withheld_option_line_lands_on_a_shown_surface",
+        target=PLAN,
+        block="failed. That line rides in the question text of one of the set's",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_withheld_option_line_lands_on_a_shown_surface",
+        target=PLAN,
+        block="step 4 writes it as one work-log line. Otherwise the agent reads each slotted",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_assignment_runs_only_on_selection_after_step_4",
+        target=PLAN,
+        block="for each slotted issue, before step 6's commit, so any work-log line it",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_assignees_are_re_read_after_the_command",
+        target=PLAN,
+        block="agent re-reads each issue's assignees after the command, and an issue",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestPlanGateAssignment.test_assignees_are_re_read_after_the_command",
+        target=PLAN,
+        block="whose assignees still lack the account counts as a failed command.",
     ),
     Mutation(
         guard="test_issue_linkage",
@@ -3395,6 +3431,12 @@ REGISTRY += [
         test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
         target=README,
         block="It does the same if the access read",
+    ),
+    Mutation(
+        guard="test_issue_linkage",
+        test="TestReadmeStatesTheThreeBehaviors.test_plan_time_assignment_offer",
+        target=README,
+        block="owner and guest mode alike.",
     ),
     Mutation(
         guard="test_issue_linkage",

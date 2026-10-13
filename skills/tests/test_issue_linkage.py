@@ -116,12 +116,19 @@ class TestPlanGateAssignment(unittest.TestCase):
             r"one option offering to assign\s+the operator's own GitHub "
             r"account to every slotted issue",
         )
+        # The plan gate assigned `partial` entries as well as `closes` ones.
+        self.assertRegex(plan(), r"`closes` and\s+`partial` entries alike")
 
     def test_option_posts_no_comment(self):
         self.assertIn("The option posts no comment.", plan())
-        # The retired comment offer: no comment command or body survives.
+        # The retired comment offer: no comment command or body survives in
+        # the plan skill, and no body in the README that describes it (the
+        # README keeps `gh issue comment` for the /milestone reply draft).
+        readme = SKILLS.parent.joinpath("README.md").read_text()
         for retired in ("gh issue " + "comment", "Queued " + "as", "Working on " + "this"):
             self.assertNotIn(retired, plan())
+        for retired in ("Queued " + "as", "Working on " + "this"):
+            self.assertNotIn(retired, readme)
 
     def test_access_read_gates_the_option(self):
         self.assertIn("`gh repo view <base-repo> --json viewerPermission`", plan())
@@ -130,6 +137,16 @@ class TestPlanGateAssignment(unittest.TestCase):
             r"below `TRIAGE` \(`READ` or empty\), or the read fails, the set "
             r"poses no\s+assignment option, and the chat says in one line that "
             r"the account\s+cannot assign on that repo",
+        )
+
+    def test_withheld_option_line_lands_on_a_shown_surface(self):
+        # Pre-tool-call chat is not reliably shown (Mandated-substance rule).
+        self.assertRegex(
+            plan(),
+            r"naming the read's failure where the read\s+failed\. That line rides "
+            r"in the question text of one of the set's\s+questions, or in the "
+            r"turn's final text when the set poses none, and\s+step 4 writes it "
+            r"as one work-log line",
         )
 
     def test_description_names_current_assignees(self):
@@ -149,6 +166,19 @@ class TestPlanGateAssignment(unittest.TestCase):
             r"milestone file: `gh issue edit <N> --add-assignee @me`",
         )
         self.assertIn("A declined option writes nothing to GitHub.", plan())
+        self.assertRegex(
+            plan(),
+            r"before step 6's commit, so any work-log line it\s+writes rides in "
+            r"that commit",
+        )
+
+    def test_assignees_are_re_read_after_the_command(self):
+        self.assertRegex(
+            plan(),
+            r"agent re-reads each issue's assignees after the command, and an "
+            r"issue\s+whose assignees still lack the account counts as a failed "
+            r"command",
+        )
 
     def test_failed_assignment_is_reported_and_writes_nothing_else(self):
         self.assertRegex(
@@ -343,6 +373,7 @@ class TestReadmeStatesTheThreeBehaviors(unittest.TestCase):
             r"common on a repo you do not own\), the plan offers\s+nothing and "
             r"says so in one line\. It does the same if the access read\s+fails",
         )
+        self.assertRegex(self.readme(), r"reads your access to the repo, in\s+owner and guest mode alike")
 
     def test_pr_closing_keyword(self):
         self.assertRegex(

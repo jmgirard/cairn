@@ -174,21 +174,29 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    resumed run reads what the user granted from the file, never from recall.
 
    **Issue assignment (one option).** When the `Resolves:` slot step 4
-   will fill is not `—`, the set can pose one option offering to assign
+   will fill is not `—`, the set poses one option offering to assign
    the operator's own GitHub account to every slotted issue, `closes` and
    `partial` entries alike (an outward action, so it is the user's
-   permission to give). The option posts no comment. Before composing it,
-   the agent reads the account's access to the repo with
+   permission to give), unless the access read below withholds it.
+   The option posts no comment. Before composing it, the agent reads the
+   account's access to the repo with
    `gh repo view <base-repo> --json viewerPermission`. If the value is
    below `TRIAGE` (`READ` or empty), or the read fails, the set poses no
    assignment option, and the chat says in one line that the account
-   cannot assign on that repo. Otherwise the agent reads each slotted
+   cannot assign on that repo, naming the read's failure where the read
+   failed. That line rides in the question text of one of the set's
+   questions, or in the turn's final text when the set poses none, and
+   step 4 writes it as one work-log line. Otherwise the agent reads each slotted
    issue's assignees with `gh issue view <N> --json assignees`, and the
    option description names them. If another account holds an issue, the
    description says so. If the read fails, the description calls that
    issue's assignees unknown. The command runs only on selection, after
    step 4 writes the milestone file: `gh issue edit <N> --add-assignee @me`
-   for each slotted issue. A declined option writes nothing to GitHub. If
+   for each slotted issue, before step 6's commit, so any work-log line it
+   writes rides in that commit. A declined option writes nothing to GitHub.
+   GitHub can drop an assignee it does not accept with no error, so the
+   agent re-reads each issue's assignees after the command, and an issue
+   whose assignees still lack the account counts as a failed command. If
    the assign command fails for an issue, or `gh` cannot run at that
    point, the agent names the issue and the error in chat and in one
    work-log line, and writes nothing else to GitHub for that issue. Guest
