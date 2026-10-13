@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M249: A hotfix removes the candidate row it fixes, once the fix merges
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1, GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/hotfix` does to an adopter's ROADMAP   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m249-hotfix-graduates-candidate   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -103,14 +103,14 @@ because step 1's match reads the Candidates section on every entry.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Step 1 (`skills/hotfix/SKILL.md:33-45`): add the match clause
+- [x] T1: Step 1 (`skills/hotfix/SKILL.md:33-45`): add the match clause
       after the ROADMAP read, with the PR-reference reading and the
       re-derive-on-every-entry rule. Trace the merged-PR re-entry
       (`:46-109`) so its path reaches the match (lesson M172).
-- [ ] T2: Step 6's approval chip (`:224-234`) and the "Nothing owed" chip
+- [x] T2: Step 6's approval chip (`:224-234`) and the "Nothing owed" chip
       (`:98-105`): add the row-title clause. The guest handoff chip carries
       no row text.
-- [ ] T3: Step 7 (`:299-307`): add the remove-or-narrow clause, the
+- [x] T3: Step 7 (`:299-307`): add the remove-or-narrow clause, the
       single docs-only commit for every ROADMAP edit step 7 makes, the
       verbatim preview, the over-the-bar exception, and the only-step-7
       rule. Add the guest sentences to the step 6 guest arm (`:269-297`) and
@@ -144,6 +144,8 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: question set: owner-mode timing — after the merge, a docs-only commit on main; guest-mode timing — when a later /hotfix run sees the maintainers' merge.
 - 2026-10-12: plan gate chose a post-merge docs-only commit over a row deletion inside the PR's diff because an adopted PR would carry a tracking edit pushed to the contributor's branch and an unpushable branch needs the post-merge commit anyway; falsified by hotfix runs that merge and leave the row because the step-7 commit was skipped.
 - 2026-10-12: plan gate chose guest removal at the merged re-entry over removal at handoff because a PR closed unmerged would lose the row's idea; falsified by guest operators who never rerun /hotfix after a merge, leaving fixed rows in place.
+- 2026-10-12: implement started on m249-hotfix-graduates-candidate; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-12: T1-T3 done: step 1 match clause, chip clauses at step 6 and the nothing-owed chip, step 7 remove-or-narrow clause with its one docs-only commit, and the guest sentences in step 6's guest arm and step 7; the nothing-owed sentence sits after the bullet's decline sentence because `test_resume_routing` pins the text before it (lesson M148).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
