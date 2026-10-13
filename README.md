@@ -744,10 +744,13 @@ actually reach.
   request made after that close goes unreported.
 - **Issues a milestone resolves get linked and closed.** When a plan absorbs
   a GitHub issue, the milestone file's `Resolves:` slot names it and the
-  plan question set offers one option to post `Queued as M<NNN>: <title>` on each
-  slotted issue — posted only if you select it, never by default. In guest
-  mode the comment names the upstream repo and reads `Working on this:
-  <issue title>` instead. The
+  plan question set offers one option to assign your own GitHub account to
+  each slotted issue, with no comment posted. You are assigned only if you
+  select it, never by default. The plan first reads your access to the repo, in
+  owner and guest mode alike. If your account cannot assign there (less
+  than triage access, common on a repo you do not own), the plan offers
+  nothing and says so in one line. It does the same if the access read
+  fails. The
   PR the review opens after your approval has a body ending with
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the

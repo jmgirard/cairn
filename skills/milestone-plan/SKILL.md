@@ -173,20 +173,36 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    milestone it serves, `question set: <what was asked> — <answer>`, so a
    resumed run reads what the user granted from the file, never from recall.
 
-   **Issue acknowledgement (one option).** When the `Resolves:` slot step 4
-   will fill is not `—`, the set poses one option offering an
-   acknowledgement comment on all slotted issues (an outward action, so it
-   is the user's permission to give). The comment body is
-   `Queued as M<NNN>: <title>` — plus, for a `partial` entry, the remainder's
-   candidate-row text — shown verbatim in the chat before selection and
-   composed against the plan as the gate's other answers settle it; it is
-   posted with `gh issue comment <N> --body` only on selection, never by
-   default, and a declined option writes nothing to GitHub. Guest arm
-   (tracking-rules "Collaboration mode"): the command adds `--repo
-   <base-repo>`, and the body carries no cairn vocabulary. It reads
-   `Working on this: <issue title>`, the issue's own title, with no
-   milestone id, and a `partial`
-   entry's remainder is described in plain words, with no row text.
+   **Issue assignment (one option).** When the `Resolves:` slot step 4
+   will fill is not `—`, the set poses one option offering to assign
+   the operator's own GitHub account to every slotted issue, `closes` and
+   `partial` entries alike (an outward action, so it is the user's
+   permission to give), unless the access read below withholds it.
+   The option posts no comment. Before composing it, the agent reads the
+   account's access to the repo with
+   `gh repo view <base-repo> --json viewerPermission`. If the value is
+   below `TRIAGE`, meaning anything but `ADMIN`, `MAINTAIN`, `WRITE`, or
+   `TRIAGE` (an empty value included), or the read fails, the set poses no
+   assignment option, and the chat says in one line that the account
+   cannot assign on that repo, naming the read's failure where the read
+   failed. That line rides in the question text of one of the set's
+   questions, or in the turn's final text when the set poses none, and
+   step 4 writes it as one work-log line. Otherwise the agent reads each slotted
+   issue's assignees with `gh issue view <N> --json assignees`, and the
+   option description names them. If another account holds an issue, the
+   description says so. If the read fails, the description calls that
+   issue's assignees unknown. The command runs only on selection, after
+   step 4 writes the milestone file: `gh issue edit <N> --add-assignee @me`
+   for each slotted issue, before step 6's commit, so any work-log line it
+   writes rides in that commit. A declined option writes nothing to GitHub.
+   GitHub can drop an assignee it does not accept with no error, so the
+   agent re-reads each issue's assignees after the command, and an issue
+   whose assignees still lack the account counts as a failed command. If
+   the assign command fails for an issue, or `gh` cannot run at that
+   point, the agent names the issue and the error in chat and in one
+   work-log line, and writes nothing else to GitHub for that issue. Guest
+   arm (tracking-rules "Collaboration mode"): the `gh issue view` and
+   `gh issue edit` commands add `--repo <base-repo>`.
 
    **Criteria audit (runs before the questions are composed; scaled to
    stakes).** A plan author's own read of its own criteria is the check
