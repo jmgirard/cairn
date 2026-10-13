@@ -163,6 +163,8 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: minor amendment: T6 added for review return 1; T6 done, a CHANGELOG Unreleased entry written against the same-session read of steps 1, 6 and 7; suites green; status back to review.
 - 2026-10-12: review return 2: AC2 fails in guest mode — `skills/hotfix/SKILL.md:120-122` limits the "Nothing owed" chip's row naming to owner mode (diff-bug #2); fix it with the pass-1 fix-now items (diff-bug #3, #4, #6, #8, #9, #10, #14; blame-history #4) and file the follow-up row; AC2 box unticked.
 - 2026-10-12: minor amendment: T7 added for review return 2; T7 done: SKILL.md step 1 ("In both modes", "Within a hotfix"), step 7 (narrowing replaces a second row; one docs-only commit for every step-7 ROADMAP edit on any path after a `git status` check; deleted rows shown, guest too), records-hygiene §1 back to "through planning and implementation" with its rationale sentence and "A hotfix graduates the same way" (budget paragraph reflowed, module 54 lines, 3,255 bytes), CHANGELOG guest sentence; guard re-pinned with 10 new plants each red, control green; all suites and cairn_validate green.
+- 2026-10-12: review pass 2: no criterion failed; 9 fix-now items and both Copilot threads fixed in 2e95b50, threads replied to and resolved; record committed 3bc70113.
+- 2026-10-12: step-7 approval: m249-hotfix-graduates-candidate approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
