@@ -65,16 +65,16 @@ review exists; `head` means it covered the current head), or `none`.
 
 The skill waits only when the state query prints `pending` at the moment it
 reads the PR's conversation. The wait is one Monitor over a loop that runs
-the state query every 30 seconds and prints each result, a stream of
-events. The loop exits by itself on any result other than `pending`, or
-after 10 minutes. Set the Monitor's `timeout_ms` to 660000 as a backstop, so
-the loop's own exit ends the wait and nothing is left armed after it
+the state query every 30 seconds and prints a result only when it differs
+from the last. The loop exits by itself on any result other than `pending`,
+or after 25 minutes. Set the Monitor's `timeout_ms` to 1560000 as a
+backstop, so the loop's own exit ends the wait and nothing is left armed
 (tracking-rules wait rule). The loop runs the query exactly as written,
 with gh's `--jq`, and counts a failed query as `pending`, so it keeps polling
-to its 10-minute exit. At that exit, the read runs on what exists, and the
+to its 25-minute exit. At that exit, the read runs on what exists, and the
 presentation says `Copilot review still pending on PR #<N>`. A pass waits at
 most once: a read that follows a wait in the same pass does not wait again.
-If the backstop ever fires, treat it as the 10-minute exit. The wait never
+If the backstop ever fires, treat it as the 25-minute exit. The wait never
 stops the run.
 
 Then read the threads on the same `<owner>`/`<name>` with a GraphQL
