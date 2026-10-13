@@ -728,7 +728,7 @@ actually reach.
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the
   round runs after the handoff opens the PR. If Copilot's review is still
-  pending at the read, Claude waits up to 10 minutes, then goes on and
+  pending at the read, Claude waits up to 25 minutes, then goes on and
   says the review is pending. You see every Copilot thread present when
   the read runs, just before the merge question or a hotfix's approval
   chip; a thread posted after that read is not shown in this run. A hotfix asks for Lite and a milestone for

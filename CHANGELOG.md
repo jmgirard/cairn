@@ -266,6 +266,12 @@
 
 ### Fixes
 
+- **The Copilot review wait lasts 25 minutes, not 10.** With
+  `# Copilot review: on`, a hotfix or a guest handoff waits for a pending
+  Copilot review before it reads the PR. Copilot's reviews often came
+  after the 10-minute wait ended, so their threads went unhandled. The
+  wait now lasts up to 25 minutes. It reports only a change in the
+  review's state, so it no longer posts "pending" every 30 seconds.
 - **A quick second press of a band or pane button runs no second
   command.** The `Plan`, `Implement`, `Resume`, `Review`, `Status`, and
   `Clear` buttons, and a blocked line's `Finish`, `Revise`, and `Check`,

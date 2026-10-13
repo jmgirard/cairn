@@ -104,5 +104,30 @@ class TestHotfixArms(unittest.TestCase):
                       gate)
 
 
+class TestWaitBound(unittest.TestCase):
+    """Hotfix 2026-10-13: the wait runs 25 minutes, since Copilot took
+    longer than 10 minutes on 11 of 27 easystats PRs requested from
+    2026-10-11 to 2026-10-13, and the loop prints only a changed state, so
+    a pending review does not wake the session every 30 seconds."""
+
+    def setUp(self):
+        self.wait = flat(section(read("shared", "copilot-review.md"),
+                                 "## 4. Wait and read", "## 5."))
+
+    def test_loop_runs_25_minutes_under_its_backstop(self):
+        self.assertIn("or after 25 minutes", self.wait)
+        self.assertIn("`timeout_ms` to 1560000", self.wait)
+        self.assertIn("treat it as the 25-minute exit", self.wait)
+        self.assertNotRegex(self.wait, r"10[ -]minute")
+
+    def test_loop_prints_only_a_changed_state(self):
+        self.assertIn("prints a result only when it differs from the last",
+                      self.wait)
+
+    def test_readme_states_the_same_bound(self):
+        readme = flat(SKILLS.parent.joinpath("README.md").read_text())
+        self.assertIn("Claude waits up to 25 minutes", readme)
+
+
 if __name__ == "__main__":
     unittest.main()
