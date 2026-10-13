@@ -228,3 +228,29 @@ Review pass 2, evidence at e6844aa3 (2026-10-12); guard 5/5 OK, 10 new plants ea
 - AC4 (re-verified): `:54-57`, `:335-336`. Pass.
 - AC5 (re-verified): `:314-316`, `:342-348`. Pass.
 - AC6 (re-verified): records-hygiene `:16-20` keeps "through planning and implementation" and adds "A hotfix graduates the same way: step 7 removes or narrows its row after merge."; README `:549` unchanged; module 54 lines, 3,255 bytes. Pass.
+Consistency gate at e6844aa3: cairn_validate exit 0; scripts, hooks, skills suites OK; both plugin validates exit 0, no version warning; `claude plugin test` 0 fail; CHANGELOG entry present.
+
+Pass 2. spawned: diff-bug, blame-history, prior-review.
+- diff-bug #1: the follow-up row "Hotfix row-graduation edges (M249 review)" is not filed yet — reject (false as a gap: it is filed in step 9's hygiene commit on the default branch, so the branch carries no ROADMAP row it would conflict on)
+- diff-bug #2: the decline arm's `candidate` row has no stated commit — follow-up (the same new row; pre-existing, not introduced here)
+- diff-bug #3: nothing says no edit means no checkout or commit — fix now, fixed 2e95b50
+- diff-bug #4: the guest arm does not show a new deeper-work row — fix now, fixed 2e95b50
+- diff-bug #5: the step-6 guest sentence is unpinned — fix now, fixed 2e95b50
+- diff-bug #6: records-hygiene's "step 7" does not name `/hotfix` — fix now, fixed 2e95b50
+- diff-bug #7: pass-2 evidence cites off by one — fix now: re-cited at 2e95b50 below
+- diff-bug #8: two new lines run past 80 characters — fix now, fixed 2e95b50
+- diff-bug #9: the budget-paragraph reflow is churn — reject (planned change: it keeps the module under its 55-line budget)
+- blame-history #1: step 7 can delete a row a live milestone absorbed, against records-hygiene §1 — fix now, fixed 2e95b50 (a row whose title a live milestone file quotes is not matched)
+- blame-history #2: deleting a §7 group's head row orphans the rows that quote it, and §7 may read the narrowed note as an extension — follow-up (the same new row); the keep-the-title half is fix now, fixed 2e95b50
+- blame-history #3: dated narrowed notes trip the linked-item cut-off edge more often — noted (the "Linked-item read edges (M245 review)" row holds it)
+- blame-history #4: docs-only commit to the default branch is admitted — noted, requests nothing
+- prior-review #1: Copilot thread, step 1 skips the match on the over-the-bar stop — see the copilot line below
+- prior-review #2: Copilot thread, no title for a row with no `: ` — see the copilot line below
+- copilot: skills/hotfix/SKILL.md:48 (match skipped before an early stop) — fix now, fixed 2e95b50
+- copilot: skills/hotfix/SKILL.md:51 (no title for a row without `: `) — fix now, fixed 2e95b50
+- copilot: review body — noted (both anchored findings are the threads above)
+- conversation: jmgirard PR #259 (two empty-body reviews made by the replies) — noted
+- Copilot level: Lite (set by GitHub's settings)
+
+Re-cited at 2e95b50, guard 5/5 OK, 8 new plants each red, control green; all suites and cairn_validate green.
+- AC1: `skills/hotfix/SKILL.md:46-59` (match before any stop, title rule with the no-`: ` case, live-milestone rows excluded, "Within a hotfix"). AC2: `:123-125`, `:250-253`. AC3: `:331-347`. AC4: `:56-59`, `:339-340`. AC5: `:318-320`, `:348-353`. AC6: records-hygiene `:16-20` ("`/hotfix` step 7"), README `:549`.
