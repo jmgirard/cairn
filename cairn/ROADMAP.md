@@ -9,8 +9,8 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M249 | A hotfix removes the candidate row it fixes, once the fix merges | planned | — | normal | milestones/M249-hotfix-graduates-candidate.md |
 | M248 | The plan offers to assign you to an issue it resolves, in place of a comment | done | — | normal | milestones/archive/M248-issue-assign-offer.md |
-| M247 | In guest mode, text written for the host repo matches the host's own style | done | — | normal | milestones/archive/M247-guest-host-doc-style.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
