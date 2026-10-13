@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M249: A hotfix removes the candidate row it fixes, once the fix merges
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -47,7 +47,7 @@ because step 1's match reads the Candidates section on every entry.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/hotfix/SKILL.md` step 1 says how the hotfix finds the
+- [x] AC1: `skills/hotfix/SKILL.md` step 1 says how the hotfix finds the
       candidate rows it fixes. A matched row is a row whose title the
       argument quotes, or a row in `cairn/ROADMAP.md`'s Candidates section
       that describes the bug. For a PR-reference argument the hotfix reads
@@ -59,7 +59,7 @@ because step 1's match reads the Candidates section on every entry.
       and say whether the merge removes the row or narrows it: step 6's
       owner-mode approval chip, and step 1's "Nothing owed" acceptance chip
       on the merged-PR re-entry.
-- [ ] AC3: `skills/hotfix/SKILL.md` step 7 says what happens to the matched
+- [x] AC3: `skills/hotfix/SKILL.md` step 7 says what happens to the matched
       rows in owner mode after a merge whose diff passed the hotfix bar.
       This covers an authored fix, an adopted PR, a re-landed PR, and the
       merged-PR re-entry once its post-hoc verification is accepted. The
@@ -69,16 +69,16 @@ because step 1's match reads the Candidates section on every entry.
       edit that step 7 makes, its own new candidate row included, lands in
       one docs-only commit on the up-to-date default branch, pushed at once.
       The narrowed and new rows are shown verbatim in chat.
-- [ ] AC4: `skills/hotfix/SKILL.md` says that only step 7, after a merge,
+- [x] AC4: `skills/hotfix/SKILL.md` says that only step 7, after a merge,
       removes or narrows a matched row, and that step 7 on step 1's
       over-the-bar disposition neither removes nor narrows it.
-- [ ] AC5: `skills/hotfix/SKILL.md`'s guest arm says that the handoff
+- [x] AC5: `skills/hotfix/SKILL.md`'s guest arm says that the handoff
       leaves each matched row unchanged. When the merged-PR re-entry finds
       that the maintainers merged the PR, and its post-hoc verification is
       accepted, step 7 removes or narrows each row on disk, with no commit,
       judged against the merged diff. A PR closed without a merge leaves the
       row.
-- [ ] AC6: `skills/shared/records-hygiene.md` §1 says that a hotfix
+- [x] AC6: `skills/shared/records-hygiene.md` §1 says that a hotfix
       graduates the row it fixes at its step 7, after the merge, as the
       hotfix case of graduation at completion. The `/hotfix` row of
       README.md's commands table says that the hotfix removes or narrows the
@@ -155,6 +155,7 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: review started; Copilot arm opened PR #259 and requested Copilot (state was `none`).
 - 2026-10-12: review return 1: consistency gate — `CHANGELOG.md` has no entry for this milestone's user-visible change (the plan had no task for it).
 - 2026-10-12: minor amendment: T6 added for review return 1; T6 done, a CHANGELOG Unreleased entry written against the same-session read of steps 1, 6 and 7; suites green; status back to review.
+- 2026-10-12: review return 2: AC2 fails in guest mode — `skills/hotfix/SKILL.md:120-122` limits the "Nothing owed" chip's row naming to owner mode (diff-bug #2); fix it with the pass-1 fix-now items (diff-bug #3, #4, #6, #8, #9, #10, #14; blame-history #4) and file the follow-up row; AC2 box unticked.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -168,3 +169,47 @@ because step 1's match reads the Candidates section on every entry.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Evidence at 5beab549 (2026-10-12); `test_hotfix_candidate_graduation` 5/5 OK, each pin shown red at implement (11 planted deletions).
+
+- AC1: `skills/hotfix/SKILL.md:46-56` (step 1, before the merged-PR re-entry): finds rows "whose title the argument quotes, or a row that describes the bug being fixed" (:49-50), runs "on every entry to step 1, PR-reference re-entries included, and never from memory" (:47-48), reads "the PR's title, body and `Fixes #N` line against the rows" (:52-53), names each title or says none matched (:53-54). Pinned by `test_step1_matches_rows_on_every_entry`. Pass.
+- AC2: the "Nothing owed" acceptance chip, owner mode, names each matched row's title and remove-or-narrow (`:119-122`); step 6's approval chip question text does the same (`:247-249`), and the guest handoff chip "carries no row text" (`:250`). Pinned by `test_chips_name_each_matched_row`. Pass.
+- AC3: step 7 `:325-338`: owner mode, "after a merge whose diff passed the hotfix bar"; covers authored, adopted, re-landed, and the re-entry once accepted (plus the owed-items follow-up, a superset); deletes full-coverage rows, narrows partial ones with the `narrowed YYYY-MM-DD by the PR #N hotfix` note where `#N` is "the merged PR that carried the fix" (the PR that merged); every step-7 ROADMAP edit, the step-7 added row included, in one docs-only commit on the up-to-date default branch, pushed at once; narrowed and new rows shown verbatim. Pinned by `test_step7_removes_or_narrows_after_a_merge`. Pass.
+- AC4: `:54-56` "Only step 7, after a merge, removes or narrows a matched row" (a search-first absorb elsewhere may add to it, never remove or narrow it); `:334-335` "On step 1's over-the-bar disposition, step 7 neither removes nor narrows a matched row." Pinned by the step-1 and step-7 tests. Pass.
+- AC5: step 6 guest arm `:314-316` "The handoff leaves each matched candidate row unchanged"; step 7 guest arm `:340-345`: on the merged-PR re-entry with accepted verification, remove or narrow on disk with no commit, judged against the merged diff; "A PR closed without a merge leaves the row." Pinned by `test_guest_arm_waits_for_the_maintainers_merge`. Pass.
+- AC6: `skills/shared/records-hygiene.md:19-20`, inside §1 "Candidate rows graduate at completion", right after the post-merge-hygiene sentence: "A hotfix's step 7 removes or narrows the row it fixes after the merge." README.md:549 (`/hotfix` row): "After the merge it removes the candidate row it fixed, or narrows it to the part left." Module at 54 lines, 3,160 bytes (under 55 / 4,000). Pinned by `test_records_hygiene_and_readme_say_so`. Pass.
+
+Consistency gate at 5beab549: cairn_validate exit 0; scripts and hooks suites OK; plugin and marketplace validate exit 0, no `plugins[N].version` warning; `claude plugin test` 0 fail; skills/tests OK; CHANGELOG Unreleased entry present. No principle changed, so no `cairn_impact` run.
+
+Review pass 1. spawned: diff-bug, blame-history, prior-review.
+- diff-bug #1: guest re-entry with owed items never reaches an accepted verification, so the row edit has no route — follow-up (new candidate row "Hotfix row-graduation edges (M249 review)")
+- diff-bug #2: in guest mode the "Nothing owed" chip names no rows, yet accepting it edits them; AC2 has no owner-only limit — fix now; AC2 fails as written in guest mode, review return 2
+- diff-bug #3: deleted rows are never shown when the edit lands — fix now
+- diff-bug #4: the one-commit rule sits under "after a merge whose diff passed the hotfix bar", so the over-the-bar re-entry's added row has no stated commit — fix now
+- diff-bug #5: a CI-timeout rerun on the owed-items path can lose the original PR number — follow-up (same new row)
+- diff-bug #6: step 7 switches to the default branch with no dirty-tree check — fix now
+- diff-bug #7: a narrowing can push ROADMAP past its byte budget — reject (planned change: the byte budget is judgment-checked at hygiene passes by rule, like any conversational row edit, and a narrowing replaces covered text with its remainder)
+- diff-bug #8: the guard leaves the sync-and-push phrase, the narrow phrase, and the title definition unpinned — fix now
+- diff-bug #9: "Only step 7 ... removes or narrows" reads as a repo-wide rule against `/cairn-triage` and review hygiene — fix now
+- diff-bug #10: the records-hygiene reflow dropped "planning" and the rationale sentence, and does not frame the hotfix as the same graduation — fix now
+- diff-bug #11: the "Nothing owed" chip sentence sits after the decline sentence — reject (style; placed there because `test_resume_routing` pins the text before it, lesson M148)
+- diff-bug #12: AC3's `#N` widened to "the merged PR that carried the fix" without an amendment — reject (false: with one merged PR the two readings agree, and on the owed path the PR that merged carrying the fix is the one AC3's wording names)
+- diff-bug #13: a guest operator gets no prompt to rerun `/hotfix` after the maintainers merge — follow-up (same new row; the plan's recorded falsifier)
+- diff-bug #14: the CHANGELOG entry omits that the guest edit waits for accepted verification — fix now
+- blame-history #1: the dropped "Kept, the graduation is one step where the work actually lands" came from M110 and M211 — fix now (with diff-bug #10)
+- blame-history #2: "through planning and implementation" lost "planning" — fix now (with diff-bug #10)
+- blame-history #3: first hotfix write to the default branch outside a PR, with no D-entry — reject (false as a gap: the git model admits docs-only tracking commits on the default branch, and the PR #238 hotfix's row narrowing, edccd564, already landed that way)
+- blame-history #4: a partly covered row can get both a narrowing and a new row for the same remainder — fix now
+- blame-history #5: "the candidate-row check" in the re-entry now means two things — reject (style; the sentence after the bullet names the row edit)
+- blame-history #6: guest arm complies with D-137 and the guest rules — noted, requests nothing
+- blame-history #7: EXEMPT entry follows D-109 — noted, requests nothing
+- blame-history #8: README row history clean — noted, requests nothing
+- blame-history #9: CHANGELOG placement clean — noted, requests nothing
+- prior-review #1: owed-items rerun may not re-match the original row and `#N` is ambiguous — follow-up (same new row as diff-bug #5)
+- prior-review #2: guest acceptance chip names no row before the on-disk edit — fix now (with diff-bug #2)
+- prior-review #3: the durable-record preview's hotfix exemption is stale for the post-merge commit — reject (false: the enumeration already lists candidate graduation rows and the exemption covers only content reviewable at the merge gate, so the preview is owed, which step 7 states)
+- prior-review #4: the rulebook's hotfix tier line does not mention the ROADMAP edit — reject (false as a contradiction: the tier line is a summary that the change leaves true)
+- prior-review #5: deleted rows get no preview — fix now (with diff-bug #3)
+- prior-review #6: `--repo` covered by the session-start clause — noted, requests nothing
+- prior-review #7: records-hygiene lost "planning" — fix now (with diff-bug #10)
+- prior-review #8: CHANGELOG and README match — noted, requests nothing
