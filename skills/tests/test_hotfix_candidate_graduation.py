@@ -47,7 +47,8 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "Name each matched row's title in chat, or say that no row "
             "matched.",
             "Only step 7, after a merge, removes or narrows a matched row. "
-            "No other step edits it.",
+            "A search-first absorb on another path can add to the row, but "
+            "it never removes or narrows it.",
         ):
             self.assertIn(phrase, self.step1)
 
@@ -72,10 +73,11 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "In owner mode, after a merge whose diff passed the hotfix bar, "
             "edit each row step 1 matched.",
             "an authored fix, an adopted PR, a re-landed PR, and the "
-            "merged-PR re-entry once its post-hoc verification is accepted.",
+            "merged-PR re-entry once its post-hoc verification is accepted, "
+            "or, where items were owed, once the follow-up PR merges.",
             "Delete each row that the fix covers in full.",
             "with a `narrowed YYYY-MM-DD by the PR #N hotfix` note, where "
-            "`#N` is the PR that merged.",
+            "`#N` is the merged PR that carried the fix.",
             "On step 1's over-the-bar disposition, step 7 neither removes "
             "nor narrows a matched row.",
             "Every ROADMAP edit this step makes, the candidate row added "
@@ -95,7 +97,7 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "
-            "the merged diff.",
+            "the merged diff, and show the narrowed rows verbatim in chat.",
             "A PR closed without a merge leaves the row.",
         ):
             self.assertIn(phrase, self.step7)

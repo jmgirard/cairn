@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M249: A hotfix removes the candidate row it fixes, once the fix merges
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -148,6 +148,8 @@ because step 1's match reads the Candidates section on every entry.
 - 2026-10-12: T1-T3 done: step 1 match clause, chip clauses at step 6 and the nothing-owed chip, step 7 remove-or-narrow clause with its one docs-only commit, and the guest sentences in step 6's guest arm and step 7; the nothing-owed sentence sits after the bullet's decline sentence because `test_resume_routing` pins the text before it (lesson M148).
 - 2026-10-12: T4 done: records-hygiene §1 sentence added and the paragraph reflowed to keep the module at 54 lines and 3,160 bytes (its "Kept, the graduation is one step where the work actually lands" rationale sentence dropped for the line); README `/hotfix` row edited; the candidate sweep over README.md and skills/ found no prose saying a hotfix leaves a row it fixes.
 - 2026-10-12: T5 done: `skills/tests/test_hotfix_candidate_graduation.py` pins the clauses, 11 planted deletions each turned their test red with the control green; registered EXEMPT in `test_mutation_harness.py` (hand-run, D-109); scripts, hooks, and skills suites, both plugin validates, the mod test, and cairn_validate all green.
+- 2026-10-12: claim audit: 29 claims read, 2 corrected — skills/hotfix/SKILL.md (step 1's "no other step edits it" now allows a search-first absorb that adds to the row; step 7 now covers the owed-items follow-up PR and names the PR that carried the fix); also tightened the guest sentences; the same reader's re-read confirmed both; guard updated, suites green.
+- 2026-10-12: claim audit minor items left as is: the README row does not spell out guest mode or the over-the-bar case, and a row with no `: ` has no title (all 42 current rows have one).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

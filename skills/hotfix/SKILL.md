@@ -52,7 +52,8 @@ can resolve against the fork instead of the base repo.
    a PR-reference argument, read the PR's title, body and `Fixes #N` line
    against the rows. Name each matched row's title in chat, or say that no
    row matched. Only step 7, after a merge, removes or narrows a matched
-   row. No other step edits it.
+   row. A search-first absorb on another path can add to the row, but it
+   never removes or narrows it.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
@@ -311,7 +312,8 @@ can resolve against the fork instead of the base repo.
    Step 7's issue
    close is theirs — the `Fixes` keyword closes it at their merge. The
    handoff leaves each matched candidate row unchanged. Step 7's guest arm
-   edits it after the maintainers merge.
+   edits it on a later `/hotfix` run with the PR reference, after the
+   maintainers merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule
@@ -325,10 +327,11 @@ can resolve against the fork instead of the base repo.
    **Matched candidate rows (M249).** In owner mode, after a merge whose
    diff passed the hotfix bar, edit each row step 1 matched. This covers an
    authored fix, an adopted PR, a re-landed PR, and the merged-PR re-entry
-   once its post-hoc verification is accepted. Delete each row that the
-   fix covers in full. Narrow each row that the fix covers in part to the
-   part left, with a `narrowed YYYY-MM-DD by the PR #N hotfix` note, where
-   `#N` is the PR that merged. On step 1's over-the-bar disposition, step 7
+   once its post-hoc verification is accepted, or, where items were owed,
+   once the follow-up PR merges. Delete each row that the fix covers in
+   full. Narrow each row that the fix covers in part to the part left, with
+   a `narrowed YYYY-MM-DD by the PR #N hotfix` note, where `#N` is the
+   merged PR that carried the fix. On step 1's over-the-bar disposition, step 7
    neither removes nor narrows a matched row. Every ROADMAP edit this step
    makes, the candidate row added above included, lands in one docs-only
    commit on the default branch, checked out and brought up to date (fetch,
@@ -337,8 +340,9 @@ can resolve against the fork instead of the base repo.
    *Guest arm:* the handoff leaves each matched row unchanged. When the
    merged-PR re-entry finds that the maintainers merged the PR, and its
    post-hoc verification is accepted, remove or narrow each matched row on
-   disk with no commit, judged against the merged diff. A PR closed
-   without a merge leaves the row.
+   disk with no commit, judged against the merged diff, and show the
+   narrowed rows verbatim in chat. A PR closed without a merge leaves the
+   row.
    If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now. With the Copilot round off, the
