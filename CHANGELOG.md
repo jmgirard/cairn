@@ -12,7 +12,9 @@
   merge it deletes a row the fix covers in full, or narrows a row it covers
   in part, with a `narrowed YYYY-MM-DD by the PR #N hotfix` note. The edit
   lands in one tracking commit on the default branch. A declined or closed
-  PR, or a fix too large for a hotfix, leaves the row. In guest mode the
+  PR, or a fix too large for a hotfix, leaves the row. So does a row
+  whose title an open milestone's file quotes: that milestone removes it
+  when it finishes. In guest mode the
   row stays at the handoff. A later `/hotfix` run with the PR number edits
   it on disk after the maintainers merge, once you accept that run's check
   of the merged change.

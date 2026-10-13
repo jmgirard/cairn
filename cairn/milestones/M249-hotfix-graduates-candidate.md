@@ -55,7 +55,7 @@ because step 1's match reads the Candidates section on every entry.
       runs again on every entry to step 1, PR-reference re-entries
       included, and is never taken from memory. The hotfix names each
       matched row's title in chat, or says that no row matched.
-- [ ] AC2: Two chips name each matched row's title in their question text
+- [x] AC2: Two chips name each matched row's title in their question text
       and say whether the merge removes the row or narrows it: step 6's
       owner-mode approval chip, and step 1's "Nothing owed" acceptance chip
       on the merged-PR re-entry.
@@ -220,3 +220,11 @@ Review pass 1. spawned: diff-bug, blame-history, prior-review.
 - prior-review #6: `--repo` covered by the session-start clause — noted, requests nothing
 - prior-review #7: records-hygiene lost "planning" — fix now (with diff-bug #10)
 - prior-review #8: CHANGELOG and README match — noted, requests nothing
+
+Review pass 2, evidence at e6844aa3 (2026-10-12); guard 5/5 OK, 10 new plants each red at T7.
+- AC1 (re-verified): step 1 `:46-57`, now "Within a hotfix, only step 7" (`:54`); title definition pinned. Pass.
+- AC2: the "Nothing owed" chip, "In both modes", names each matched row's title and remove-or-narrow (`:120-122`); step 6's approval chip does the same (`:247-249`); the guest handoff chip carries no row text (`:250`). Pinned by `test_chips_name_each_matched_row`, now sliced to the Nothing-owed bullet. Pass.
+- AC3 (re-verified): step 7 `:327-341`; one docs-only commit for every step-7 ROADMAP edit on any path (`:337-341`), after the `git status` check, synced and pushed at once; deleted, narrowed, and new rows shown. Pass.
+- AC4 (re-verified): `:54-57`, `:335-336`. Pass.
+- AC5 (re-verified): `:314-316`, `:342-348`. Pass.
+- AC6 (re-verified): records-hygiene `:16-20` keeps "through planning and implementation" and adds "A hotfix graduates the same way: step 7 removes or narrows its row after merge."; README `:549` unchanged; module 54 lines, 3,255 bytes. Pass.

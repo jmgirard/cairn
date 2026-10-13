@@ -40,14 +40,18 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
         for phrase in (
             "Step 1 also finds the candidate rows this hotfix fixes.",
             "It runs on every entry to step 1, PR-reference re-entries "
-            "included, and never from memory.",
+            "included, before any stop this step takes, and never from "
+            "memory.",
+            "A row whose title a live milestone file quotes is not matched: "
+            "that milestone's post-merge hygiene graduates it",
             "whose title the argument quotes, or a row that describes the "
             "bug being fixed.",
             "read the PR's title, body and `Fixes #N` line against the rows.",
             "Name each matched row's title in chat, or say that no row "
             "matched.",
             "A row's title is its text after the `- ` and any "
-            "`[high]`/`[low]` token, up to the first `: `.",
+            "`[high]`/`[low]` token, up to the first `: `, or all of that "
+            "text when it has no `: `.",
             "Within a hotfix, only step 7, after a merge, removes or narrows "
             "a matched row. A search-first absorb on another path can add to "
             "the row, but it never removes or narrows it.",
@@ -91,13 +95,18 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "Run step 2's `git status` check first, then check out the "
             "default branch, bring it up to date (fetch, pull ff-only), "
             "commit, and push at once.",
+            "When step 7 makes no ROADMAP edit, nothing is checked out or "
+            "committed.",
+            "to the part left, keeping its title,",
             "Show each deleted, narrowed, and new row verbatim in chat",
         ):
             self.assertIn(phrase, self.step7)
 
     def test_guest_arm_waits_for_the_maintainers_merge(self):
         self.assertIn(
-            "The handoff leaves each matched candidate row unchanged.",
+            "The handoff leaves each matched candidate row unchanged. Step "
+            "7's guest arm edits it on a later `/hotfix` run with the PR "
+            "reference, after the maintainers merge.",
             self.step6,
         )
         for phrase in (
@@ -105,7 +114,7 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "
-            "the merged diff, and show each deleted and narrowed row "
+            "the merged diff, and show each deleted, narrowed, and new row "
             "verbatim in chat.",
             "A PR closed without a merge leaves the row.",
         ):
@@ -116,8 +125,8 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
                           "## 1. Candidate rows graduate", "## 2.")
         for phrase in (
             "the row stays through planning and implementation",
-            "A hotfix graduates the same way: step 7 removes or narrows its "
-            "row after merge.",
+            "A hotfix graduates the same way: `/hotfix` step 7 removes or "
+            "narrows its row.",
         ):
             self.assertIn(phrase, hygiene)
         readme_row = [line for line in (REPO / "README.md").read_text()
