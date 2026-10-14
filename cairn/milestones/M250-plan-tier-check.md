@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1, IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/milestone-plan` does in every adopting repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m250-plan-tier-check   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m250-plan-tier-check, https://github.com/jmgirard/cairn/pull/261   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -46,7 +46,7 @@ such a request is a milestone here.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: For a request that names work and that AC2's routers have not
+- [x] AC1: For a request that names work and that AC2's routers have not
       already tiered, `skills/milestone-plan/SKILL.md` step 1 holds a tier
       check that runs before step 2. It cites tracking-rules "Sizing and the work
       tiers" and puts the request as a whole in exactly one tier: `hotfix`
@@ -58,14 +58,14 @@ such a request is a milestone here.
       parts is `milestone`, is a milestone. The skill says the check may
       read the code and docs the request names, and that it does not run
       step 2's sweeps or spawn subagents.
-- [ ] AC2: The skill says that two invocations are classified `milestone`
+- [x] AC2: The skill says that two invocations are classified `milestone`
       without re-judging, and that the work-log reason names the router:
       an invocation from `/milestone` §4's `milestone` verdict, and a
       `/milestone-plan` for work that `/hotfix` found over the hotfix bar
       earlier in this session, whether that hotfix stopped at step 1 or
       closed at step 7 after a merged-PR re-entry. A request that names no
       work is not checked.
-- [ ] AC3: When the check finds `hotfix` or `trivial`, the skill poses one
+- [x] AC3: When the check finds `hotfix` or `trivial`, the skill poses one
       chip before step 2. Its question text names the tier found and the
       reason. Its options are the tier's route (marked recommended),
       planning a milestone anyway, and stop. The trivial option's
@@ -74,7 +74,7 @@ such a request is a milestone here.
       tracking-rules "Question gates and phase closes" states that a run
       begins at the plan question set, and that `/milestone-plan`'s tier
       chip, posed only on a `hotfix` or `trivial` finding, comes before it.
-- [ ] AC4: `skills/milestone-plan/SKILL.md` says what each option of AC3's
+- [x] AC4: `skills/milestone-plan/SKILL.md` says what each option of AC3's
       chip does. The hotfix route invokes `/hotfix` through the Skill tool
       with the request as its argument, and the plan skill writes no file.
       The trivial route in owner mode runs `git status`, then edits and
@@ -85,20 +85,20 @@ such a request is a milestone here.
       In guest mode it writes the edit on disk with no commit and ends with
       a close block. Stop ends with the close block and writes nothing.
       Planning anyway goes on to step 2.
-- [ ] AC5: The skill says that step 4 writes one work-log line in the
+- [x] AC5: The skill says that step 4 writes one work-log line in the
       first milestone file it writes: `tier check: milestone — <reason>`
       when the check found `milestone` and posed no chip, `tier check:
       <tier> — planned as a milestone at the user's choice` after the
       plan-anyway option, or `tier check: not run — work named at the
       question set` for a request that named no work.
-- [ ] AC6: README.md's `/milestone-plan` row in the commands table says
+- [x] AC6: README.md's `/milestone-plan` row in the commands table says
       that the plan first checks whether the work needs a milestone and
       offers `/hotfix` or a direct edit when it does not. CHANGELOG.md's
       Unreleased section has an entry for the check. No hit of
       `git grep -n -i "milestone-plan" -- README.md CLAUDE.md skills/
       ':!skills/tests'` states that `/milestone-plan` always produces a
       milestone.
-- [ ] AC7: The `verify` slot's five commands (`cairn/PROFILE.md`) each
+- [x] AC7: The `verify` slot's five commands (`cairn/PROFILE.md`) each
       exit 0.
 
 ## Coverage
@@ -179,6 +179,8 @@ such a request is a milestone here.
 - 2026-10-14: re-audit: AC1 (full) — 1 finding: the last sentence's second clause can still attach to "the check" (a runtime claim); proposed "The skill says the check may read the code and docs the request names, and that it does not run step 2's sweeps or spawn subagents." Second AC1 line: stop for the user.
 - 2026-10-14: user at the AC1 stop: took the reader's rewording; no further reader.
 - 2026-10-14: skill step 1, CHANGELOG, and guard pins follow the amended AC1, AC2, AC5; D-162 gained the no-work sentence in place, since it has not reached main; clause probe 0 survivors; `skills/tests`, verify five, and `cairn_validate` green; rulebook still 655 lines / 62,812 bytes. Status → review.
+- 2026-10-14: review: PR #261 opened at review start and Copilot requested (state `none` before); all 7 criteria verified and ticked; three-lens fan-out returned 26 findings.
+- 2026-10-14: review return 1: two load-bearing defects in the tier check's routes — an issue `#N` handed to `/hotfix` as a bare PR reference (diff-bug #1, blame-history #1), and the trivial route pushing without comparing the default branch with origin (diff-bug #2, prior-review #2); the other fix-now items in the Review section ride the same pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -192,3 +194,41 @@ such a request is a milestone here.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Pass 1, 2026-10-14, branch head 0124aa36, synced with origin/main (5f4bb1a0). PR #261 opened at review start (Copilot arm); Copilot requested on `none`.
+
+- AC1 evidence: `skills/milestone-plan/SKILL.md:41-62` holds "Tier check (before step 2)", cites "Sizing and the work tiers" (1 hit), gives the three tier tests and the mixed-parts rule, scopes to "every source of request that names work" with the two routed invocations exempt, and says the check can read the named code and docs and "does not run step 2's sweeps or spawn subagents" (:54-55); `test_tiers_are_defined_before_step_2` ok.
+- AC2 evidence: SKILL.md:57-64 names both routers (`/milestone` §4's verdict; `/hotfix` over-the-bar work at step 1 or step 7's merged-PR re-entry, earlier in this session), classified `milestone` without re-judging with the router in the reason, and "A request that names no work is not checked"; `test_routed_sources_and_no_work_requests` ok.
+- AC3 evidence: SKILL.md tier-chip paragraph poses one chip before step 2 on a `hotfix` or `trivial` finding, question text names tier and reason, options route (recommended) / plan anyway / stop, trivial description names push or on-disk; tracking-rules.md:380-382 states a run begins at the question set and the chip comes before it, posed only on a hotfix or trivial finding; `test_tier_chip_and_its_options` and `test_rulebook_puts_the_chip_before_the_run` ok.
+- AC4 evidence: SKILL.md option bullets: hotfix route invokes `/hotfix` via the Skill tool with the request, no file written; owner trivial runs `git status`, commits only touched files, pushes, refuses off the default branch or over uncommitted changes with a close block naming why, else a close block naming the commit; guest writes on disk, no commit, close block; stop writes nothing; plan anyway goes to step 2; `test_tier_chip_and_its_options` ok.
+- AC5 evidence: SKILL.md step-1 closing paragraph names the three `tier check:` forms (milestone, plan-anyway, not run) in the first milestone file, and step 4's "Tier-check line" bullet points to it; `test_tier_check_work_log_line` ok.
+- AC6 evidence: README.md:545 row says the plan first checks the work needs a milestone and offers `/hotfix` or a direct edit; CHANGELOG.md:7 Unreleased entry present; `git grep -n -i "milestone-plan" -- README.md CLAUDE.md skills/ ':!skills/tests'` gives 52 hits, read at implement and re-filtered for "always"/"every request" (0): none states the plan always produces a milestone.
+- AC7 evidence: verify five, fresh: scripts/tests 407 OK (21 skipped), hooks/tests 175 OK, plugin validate 0, marketplace validate 0, `claude plugin test .` 1707 tests 0 fail; all exit 0.
+- Consistency gate: `cairn_validate.py` exit 0; no DESIGN.md principle changed (cairn_impact skipped); claude-plugin consistency-gate = the verify slot above; hand-run `skills/tests` exit 0. Marketplace validate prints no `version` warning; the CHANGELOG entry carries no milestone id.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: hotfix route passes the request as-is, so an issue `#N` reaches `/hotfix` as a PR reference — fix now (floor: load-bearing defect)
+- diff-bug #2: trivial route never compares the default branch with origin, so it can push unapproved local commits or fail its push silently — fix now (floor: load-bearing defect)
+- diff-bug #3: "commits only the files the edit touches" does not exclude files already staged — fix now
+- diff-bug #4: unrelated dirty paths go unmentioned at the chip — fix now (named in the option description)
+- diff-bug #5: the trivial route leaves a matched candidate row in the ROADMAP — follow-up (new row "Tier check edges (M250 review)")
+- diff-bug #6: git model says the default branch takes only docs-only commits, while the trivial route pushes a code-comment commit — follow-up (absorbed into "Branch-protection compatibility"; the router's trivial tier predates M250)
+- diff-bug #7: "A run begins at the plan question set" leaves steps 1-2 outside the early-stop clause — reject (false: the run's definition at tracking-rules.md:378 already starts with the question set; M250 adds no change there)
+- diff-bug #8: in guest mode a PR reference judged `hotfix` routes to `/hotfix`, which cannot adopt a third party's PR there — follow-up (new row; a fix changes AC1's tier definitions)
+- diff-bug #9: `/milestone` §3's `/milestone-plan` disposition is not in the already-tiered list — follow-up (new row; AC2 names two routers)
+- diff-bug #10: "names the tier found" invites cairn words into chip text — fix now (plain words)
+- diff-bug #11: README "Answer two questions" / "one question set" understate the tier chip — fix now (README core loop; CLAUDE.md template stays out of scope)
+- diff-bug #12: no commit subject form and no no-remote behavior for the trivial route — fix now (with #2)
+- diff-bug #13: the guard does not pin "every source of request that names work" — fix now
+- diff-bug #14: D-162's rejection of the automatic route has no falsifier of its own — fix now
+- blame-history #1: same as diff-bug #1 (M232's `issue <URL>` argument form) — fix now
+- blame-history #2: D-162 calls the tier chip "the gate IP1 asks for" though the chip approves a route before the edit exists — fix now (D-162 reworded; the edit is shown verbatim when committed)
+- blame-history #3: same as diff-bug #9 — follow-up (new row)
+- blame-history #4: same as diff-bug #11 — fix now
+- blame-history #5: the rulebook sentence restates step 1's condition — reject (planned change: AC3 requires the rulebook to state it)
+- blame-history #6: D-162 does not record the guest `cairn/`-only narrowing of trivial — fix now (one D-162 sentence)
+- blame-history #7: the route proceeds past unrelated dirty files where tracking-rules says to ask — fix now (with diff-bug #4)
+- blame-history #8: the trivial commit draws commit_guard's non-blocking nudge — noted (informational, no defect)
+- prior-review #1: the trivial edit lands on main without a verbatim preview — fix now
+- prior-review #2: no sync before the push — fix now (with diff-bug #2)
+- prior-review #3: the routed-work exemption depends on this session's memory; after a `/clear` routed work is re-judged — fix now (D-162 states the accepted bound: the plan-anyway option ends any bounce)
+- prior-review #4: header carries no PR URL — fix now
