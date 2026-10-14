@@ -304,3 +304,4 @@ Pass 4, 2026-10-14, head 8ae61d4f, synced with origin/main.
 - copilot: review body (2 open findings, both the threads above) — noted
 - Copilot level: Lite (set by GitHub's settings); reviewed an earlier head, not re-requested.
 - conversation: no other reviews or comments on PR #261.
+- 2026-10-14: step-7 approval: m250-plan-tier-check approved for merge
