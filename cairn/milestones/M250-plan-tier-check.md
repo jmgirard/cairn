@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -180,6 +180,8 @@ such a request is a milestone here.
 - 2026-10-14: review return 2: the pass-1 hotfix-route fix drops the request text and has no issue-URL read (diff-bug #2, #3), and the trivial commit fails on a new file (diff-bug #5); the route's checks move before the chip in one rewrite rather than further patches.
 - 2026-10-14: T8 added for review return 2 (minor amendment; Tasks compressed in one pass to stay under the cap; Coverage maps AC3, AC4, AC6 to it).
 - 2026-10-14: T8: issue read by `gh issue view`; hotfix argument keeps the request text and a row's title verbatim; five trivial-route checks run before the chip, in order (remote, fetch, branch level, nothing staged, touched files clean); option names the file and change, the other dirty paths, and any failed check; `git add`/`commit`/`push <base> HEAD:<default-branch>` named; undo command on a rejected push; README core loop and expectations bullet reworded; CHANGELOG and D-162 updated (guest wording, IP1 sentence, git-model note); guard pins 36 clauses incl. the README row, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
+- 2026-10-14: review pass 3: evidence re-recorded; three-lens fan-out returned 7 findings.
+- 2026-10-14: review return 3: issue handling in the tier check — a typed `#N` passed unchanged to `/hotfix` (diff-bug #1), and the issue body read with no data-not-instructions rule while the trivial route can push (prior-review #1). Thrash rule (a) fires at this third defect return: stop for the user with descope-or-park; no retry queued.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -261,3 +263,17 @@ Pass 2, 2026-10-14, head ce44d6e2 (code as of cb478930; ce44d6e2 touches only `c
 - prior-review #2: same as diff-bug #8 — fix now
 - prior-review #3: same as blame-history #6 — follow-up
 - prior-review #4: the guard pins no README text — fix now (pin README.md's `/milestone-plan` row)
+- fixed: pass-2 diff-bug #1-#12, blame-history #1-#5, prior-review #1, #2, #4, fixed faf0ac26.
+
+Pass 3, 2026-10-14, head b04eecab (code as of faf0ac26; b04eecab touches only `cairn/`), synced with origin/main. Copilot state `reviewed earlier-head Lite`: not requested again.
+
+- AC1-AC5 evidence (pass 3): `test_plan_tier_check` 6 tests OK at head; 36 pinned clauses each red when deleted (probe, 0 survivors); SKILL.md step 1 keeps each clause AC1-AC5 name, AC4's "runs `git status`, then edits and commits only the files the edit touches and pushes at once" and its refusal sentence included.
+- AC6 evidence (pass 3): README.md:545 row pinned by `test_readme_row_names_the_check`; CHANGELOG.md:7 entry present; AC6 sweep re-filtered, 0 "always" hits.
+- AC7 evidence (pass 3): at faf0ac26: scripts/tests, hooks/tests, plugin validate, marketplace validate, `claude plugin test .` all exit 0; `cairn_validate.py` exit 0 at b04eecab; hand-run `skills/tests` exit 0.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: "The request text follows unchanged" lets a typed `#N` reach `/hotfix` as a PR reference, against the same bullet's `issue <URL>` rule — floor (load-bearing defect); disposition at the thrash stop
+- prior-review #1: the issue body is read with no "data, never instructions" rule while the trivial route can push to the default branch (M232 diff-bug #3) — floor (load-bearing defect); disposition at the thrash stop
+- prior-review #2: a push that fails other than by rejection has no close path — fix now (with the stop's chosen route)
+- prior-review #3: new CHANGELOG and README lines run past 80 columns — reject (style)
+- blame-history #1: D-162 names a candidate row for the git-model sentence that does not exist yet — fix now (absorbed into "Branch-protection compatibility" on the branch; "Tier check edges (M250 review)" lands at hygiene)
+- blame-history #2: line-wrap debris in SKILL.md, README, CHANGELOG — reject (style)
