@@ -5839,8 +5839,8 @@ the plan-anyway option ends any bounce between the two skills. A request
 that names no work is not checked: its work is chosen at the question set
 and planned as a milestone. The tier definitions do not change: a small
 change to running code that is not a bug stays a milestone. In guest mode
-the trivial tier covers `cairn/` files only, because a guest has no commit
-to the default branch.
+the plan's check counts as trivial only an edit to `cairn/` files, because
+a guest has no commit to the default branch.
 
 **Rejected:** an automatic route with no chip, because a wrong call costs
 a rerun and the user keeps the plan-anyway option, falsified by tier chips
@@ -5851,7 +5851,10 @@ small non-bug changes, at the user's choice. The chip itself is falsified
 by tier chips the user always answers with "plan anyway".
 
 **Consequences:** A plan for hotfix-sized or trivial work costs one chip in
-place of a full run. Selecting the trivial route authorizes the commit and
-push of the edit the plan then makes; the plan shows that edit verbatim
-when it commits it, and refuses when the default branch is out of step
-with its remote, so nothing else is pushed with it.
+place of a full run. The trivial option names the file and the change, so
+selecting it approves that edit's commit and push; the plan shows the edit
+verbatim when it commits it, and its checks before the chip keep anything
+else from being pushed with it. The rulebook's git model still says the
+default branch takes only docs-only tracking commits, while its trivial
+tier already allowed a direct commit; this route acts on the trivial tier,
+and reconciling the git-model sentence is left to a candidate row.

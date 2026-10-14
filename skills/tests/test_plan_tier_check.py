@@ -1,10 +1,11 @@
 """Regression guard: the plan checks the work tier before it plans (M250).
 
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
-mixed-request rule, the read bound, the two already-tiered sources, and the
-no-work exemption), the tier chip and each option's effect, the `tier
-check:` work-log line, step 4's pointer to it, and the rulebook sentence
-that puts the chip before the run. Text is whitespace-collapsed on read
+mixed-request rule, the read bound, the issue read, the two already-tiered
+sources, and the no-work exemption), the trivial-route checks, the tier chip
+and each option's effect, the `tier check:` work-log line, step 4's pointer
+to it, the rulebook sentence that puts the chip before the run, and
+README.md's `/milestone-plan` row. Text is whitespace-collapsed on read
 (M171), so a phrase may wrap across lines.
 
     python3 -m unittest discover -s skills/tests -v
@@ -60,6 +61,8 @@ class TestPlanTierCheck(unittest.TestCase):
         for phrase in (
             "The check runs on every source of request that names work: "
             "typed text, a candidate row, a pane press, an issue.",
+            "For an issue, the check reads it with `gh issue view <N> --repo "
+            "<base-repo> --json title,body,url` and judges its body.",
             "The first is an invocation from `/milestone` §4's `milestone` "
             "verdict.",
             "The second is a `/milestone-plan` for work that `/hotfix` found "
@@ -82,27 +85,39 @@ class TestPlanTierCheck(unittest.TestCase):
             "The chip comes before the run's question set and is not part "
             "of it",
             "**The tier's route** (recommended).",
+            "Before it poses the chip on a `trivial` finding, the plan runs "
+            "five checks in this order. The repo has a remote. `git fetch "
+            "<base>` succeeds. The checkout is on the default branch and level "
+            "with `<base>/<default-branch>`. Nothing is staged. `git status` "
+            "shows no uncommitted change in a file the edit touches.",
             "`hotfix`: invoke `/hotfix` through the Skill tool with the "
             "request as its argument, in `/milestone` §4's form. The argument "
-            "opens with a one-line summary of the bug. An issue is then named "
-            "as `issue <URL>`, never as a bare `#N`, which `/hotfix` reads as "
-            "a pull request. The plan writes no file.",
+            "opens with a one-line summary of the bug. The request text "
+            "follows unchanged, with a candidate row's title quoted verbatim. "
+            "An issue is named as `issue <URL>`, from the check's read, never "
+            "as a bare `#N`, which `/hotfix` reads as a pull request. The plan "
+            "writes no file.",
+            "`trivial`: the option's description names the file and the "
+            "change and says where the edit goes.",
             "In owner mode it is committed and pushed to the default branch. "
             "In guest mode it is left uncommitted on disk.",
-            "The description also names any other uncommitted paths, which "
-            "the commit leaves alone.",
-            "the plan runs `git status` and `git fetch <base>`, then edits and "
-            "commits only the files the edit touches and pushes at once.",
+            "In owner mode the description also names any other uncommitted "
+            "paths, which the commit leaves alone.",
+            "If a check failed, the description says that the edit cannot be "
+            "made now, and why.",
+            "the plan runs `git status` and the other checks before the chip, "
+            "then edits and commits only the files the edit touches and "
+            "pushes at once.",
             "If the checkout is not on the default branch, or one of those "
             "files holds uncommitted changes, the plan makes no edit and ends "
-            "with a close block naming why.",
-            "It also refuses in three other cases: the repo has no remote, the "
-            "default branch is ahead of or behind `<base>/<default-branch>`, "
-            "or a file is already staged.",
-            "The plan shows the edit verbatim in chat, commits by path (`git "
-            "commit -m \"<one-line summary>\" -- <paths>`), and pushes.",
-            "If the push is rejected, it never forces, and the close block "
-            "names the local commit.",
+            "with a close block naming why. Any other failed check ends the "
+            "same way.",
+            "Otherwise the plan shows the edit verbatim in chat and runs `git "
+            "add -- <paths>`, `git commit -m \"<one-line summary>\" -- "
+            "<paths>`, and `git push <base> HEAD:<default-branch>`.",
+            "If the push is rejected, it never forces. The close block then "
+            "names the local commit and the undo command `git reset --soft "
+            "HEAD~1`.",
             "On success it ends with a close block naming the commit.",
             "In guest mode it writes the edit on disk with no commit and ends "
             "with a close block.",
@@ -131,6 +146,14 @@ class TestPlanTierCheck(unittest.TestCase):
             "only when the plan's step-1 tier check finds a hotfix or a "
             "trivial edit",
             self.rules)
+
+    def test_readme_row_names_the_check(self):
+        readme = flat(SKILLS.parent / "README.md")
+        self.assertIn(
+            "`/milestone-plan <title>`: first a check that the work needs a "
+            "milestone, with an offer of `/hotfix` or a direct edit when it "
+            "does not;",
+            readme)
 
 
 if __name__ == "__main__":

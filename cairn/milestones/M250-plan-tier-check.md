@@ -108,10 +108,10 @@ such a request is a milestone here.
 
 - AC1 → T1, T6
 - AC2 → T1, T6
-- AC3 → T2, T4, T6, T7
-- AC4 → T2, T6, T7
+- AC3 → T2, T4, T6, T7, T8
+- AC4 → T2, T6, T7, T8
 - AC5 → T3, T6
-- AC6 → T5, T7
+- AC6 → T5, T7, T8
 - AC7 → T6
 
 ## Tasks
@@ -121,30 +121,20 @@ such a request is a milestone here.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [x] T1: Step 1 (`skills/milestone-plan/SKILL.md:37-41`): add the tier
-      check paragraph after the in-progress check, without renumbering
-      steps (lesson M148). Trace each entry path to it (lesson M172):
-      `/milestone` §4's Do it now (`skills/milestone/SKILL.md`), `/hotfix`
-      step 1's over-the-bar route (`skills/hotfix/SKILL.md:33-45`), the
-      pane's ✎ press (README.md:320), and a request naming no work.
-- [x] T2: Add the chip and each option's effect, with the owner and
-      guest arms of the trivial route.
-- [x] T3: Add the `tier check:` work-log line to step 4's rules.
-- [x] T4: Add the sentence to tracking-rules "Question gates and phase
-      closes" (`:378-390`). Append a D-entry annotating D-144 on the chip's
-      place before the run. Re-seed the rulebook baseline at its three
-      sites (lesson M149): `skills/milestone/SKILL.md:117`,
-      `skills/tests/test_cost_audit_line.py:68`,
-      `skills/tests/test_mutation_harness.py:120`.
-- [x] T5: Edit README.md's `/milestone-plan` row (`:545`) and add the
-      CHANGELOG entry. Run AC6's sweep and fix each hit (lesson M112).
-- [x] T6: Add a hand-run prose guard in `skills/tests/` pinning the
-      clauses of T1-T4, and show each pin red by deleting its clause. Run
-      `skills/tests` once and note red or green in the work log (D-109).
-      Run the five verify commands and `cairn_validate`.
-- [x] T7: Review return 1: the `/hotfix` argument form, the trivial
-      route's sync and refusals, and each other fix-now line of the Review
-      section.
+- [x] T1: Step 1 (`skills/milestone-plan/SKILL.md:37-41`): the tier check,
+      no step renumbered (M148); trace each entry path to it (M172).
+- [x] T2: The chip and each option's effect, owner and guest arms.
+- [x] T3: The `tier check:` work-log line in step 4's rules.
+- [x] T4: The tracking-rules "Question gates and phase closes" sentence, a
+      D-entry annotating D-144, and the rulebook baseline re-seeded at its
+      three sites (M149).
+- [x] T5: README.md's `/milestone-plan` row, the CHANGELOG entry, and
+      AC6's sweep (M112).
+- [x] T6: A hand-run prose guard in `skills/tests/` pinning T1-T4, each
+      pin shown red; `skills/tests` once (D-109); verify five; validate.
+- [x] T7: Review return 1: each pass-1 fix-now line of the Review section.
+- [ ] T8: Review return 2: each pass-2 fix-now line of the Review section;
+      the trivial route's checks run before the chip.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.

@@ -9,9 +9,14 @@
   tier. If the request is a user-visible bug that a hotfix can fix, or an
   edit with no runtime effect such as a typo, the plan asks one question:
   take that route, plan a milestone anyway, or stop. The hotfix route
-  starts `/hotfix`. In owner mode the direct-edit route makes the edit,
-  commits it, and pushes it to the default branch. If the checkout is on
-  another branch or the files hold uncommitted changes, it refuses. In
+  starts `/hotfix` with your request text, and an issue goes as its URL.
+  In owner mode the direct-edit route makes the edit, shows it, commits
+  only the files it touched, and pushes them to the default branch. The
+  question names the file and the change. Before asking, the plan checks
+  three things. The repo has a remote. The checkout is on the default
+  branch and level with the remote. Nothing is staged, and those files
+  hold no uncommitted changes. If a check fails, the question says so, and the route
+  makes no edit. A rejected push is never forced. In
   guest mode the direct edit applies only to `cairn/` files and stays on
   disk. A small change to running code that is not a bug still gets a
   milestone. An issue that `/milestone` judged a milestone and handed to

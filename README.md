@@ -467,9 +467,7 @@ in the environment.
 Development is a cycle of milestones: PR-sized units of work with explicit
 acceptance criteria. One command starts a run. You answer one question set
 when the plan is made, and Claude then implements and reviews the milestone
-in the same run and stops at the merge question. Before the run starts,
-the plan checks that the work needs a milestone. If a hotfix or a direct
-edit fits, it asks you once whether to take that route instead:
+in the same run and stops at the merge question:
 
 ```mermaid
 flowchart LR
@@ -481,7 +479,9 @@ flowchart LR
     merged -->|/clear, then the next milestone of the plan| implement
 ```
 
-Each skill starts the next one itself, up to the merge. A merge ends the run.
+Before the run starts, the plan checks that the work needs a milestone. If
+a hotfix or a direct edit fits, it asks you once whether to take that route
+instead. Each skill starts the next one itself, up to the merge. A merge ends the run.
 The closing message gives `/clear` and the command that starts the next
 milestone of the same plan, so each milestone starts in a fresh context. Between the two
 questions Claude stops only for a short list of reasons: it needs your eyes
@@ -632,13 +632,13 @@ profile.
 
 ## What the system expects from you
 
-- **Answer two questions.** One question set comes when the plan is made,
-  each question with a recommendation. It also asks ahead for what the run
-  will need from you: a file, a login, a live look, or permission for an
-  outward action. The merge question comes at the end of review. When the
-  plan finds that a hotfix or a direct edit fits, one question about that
-  route comes before the question set. Between
-  them, expect the agent to decide and log the rest.
+- **Answer two questions in a run.** One question set comes when the plan
+  is made, each question with a recommendation. It also asks ahead for what
+  the run will need from you: a file, a login, a live look, or permission
+  for an outward action. The merge question comes at the end of review.
+  Between the question set and the merge question, expect the agent to
+  decide and log the rest. When the plan finds that a hotfix or a direct
+  edit fits, one more question about that route comes before the run.
 - **A run stops only for a listed reason.** It stops when it needs your eyes
   or hands, for an action the question set did not cover, when the goal is
   found wrong or a change would drop something you asked for, after repeated
