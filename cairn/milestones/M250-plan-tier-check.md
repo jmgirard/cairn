@@ -189,6 +189,7 @@ such a request is a milestone here.
 - 2026-10-14: user at the thrash stop: narrow, so requests naming a GitHub issue skip the tier check; AC1 and AC2 amended with the shown wording, no further reader (each already has two `re-audit:` lines).
 - 2026-10-14: substantive amendment: AC1 now opens "For a request that names work, names no GitHub issue, and that AC2's routers have not already tiered"; AC2 adds "A request that names a GitHub issue (`#N` or an issue URL) is not checked and is planned as a milestone, since `/milestone` with the issue is the door that tiers an issue." AC1 and AC2 unticked for re-verification.
 - 2026-10-14: T9 added for review return 3 (minor amendment; Coverage maps AC1, AC2 to it). T9: issue read and `issue <URL>` sentence removed from step 1, issue exemption added; push "fails or is rejected"; CHANGELOG, D-162 updated; git-model note absorbed into "Branch-protection compatibility"; guard 36 clauses, 0 survivors.
+- 2026-10-14: review pass 4: 5 findings, none over the return floor; all fixed on the branch (51d55b5f), the branch-protection row extension reverted for the ROADMAP byte budget, its note moving to the hygiene row. Correction: pass 2 returned 22 findings, not 23, and pass 3 returned 6, not 7. Copilot's two threads replied to and resolved.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -298,3 +299,8 @@ Pass 4, 2026-10-14, head 8ae61d4f, synced with origin/main.
 - prior-review #1: the issue exemption lists only `#N` and a URL, narrower than the forms `/milestone` accepts (M232) — fix now ("in any form `/milestone` accepts, such as")
 - prior-review #2: re-wrap debris past 80 columns in SKILL.md step 1 (M249 fixed the same) — fix now (re-wrapped; the pass-3 style reject stands for README and CHANGELOG)
 - fixed: pass-4 diff-bug #1, #2, prior-review #1, #2, fixed 51d55b5f; blame-history #1 fixed by reverting the branch-protection row extension (ROADMAP.md 23,981 bytes) and moving the git-model note to the hygiene row "Tier check edges (M250 review)"; verify five, `skills/tests`, `cairn_validate` green; guard 37 clauses, 0 survivors.
+- copilot: cairn/milestones/M250-plan-tier-check.md:14 (header lacks the PR URL) — fix now, fixed ce44d6e2
+- copilot: skills/milestone-plan/SKILL.md:79 (no default-branch sync, no rejected-push close path) — fix now, fixed faf0ac26
+- copilot: review body (2 open findings, both the threads above) — noted
+- Copilot level: Lite (set by GitHub's settings); reviewed an earlier head, not re-requested.
+- conversation: no other reviews or comments on PR #261.
