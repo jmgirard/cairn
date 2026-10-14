@@ -46,23 +46,25 @@ such a request is a milestone here.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/milestone-plan/SKILL.md` step 1 holds a tier check that
-      runs before step 2. It cites tracking-rules "Sizing and the work
+- [ ] AC1: For a request that names work and that AC2's routers have not
+      already tiered, `skills/milestone-plan/SKILL.md` step 1 holds a tier
+      check that runs before step 2. It cites tracking-rules "Sizing and the work
       tiers" and puts the request as a whole in exactly one tier: `hotfix`
       when it is a user-visible bug whose fix restores documented behavior
       in one sitting with no design decision; `trivial` when it has no
       runtime surface, fits one sitting with no design decision, and, in
       guest mode, touches only files under `cairn/`; `milestone` otherwise.
       A request whose parts fall in more than one tier, or any of whose
-      parts is `milestone`, is a milestone. The check may read the code and
-      docs the request names. It runs neither step 2's sweeps nor its
-      subagents.
-- [ ] AC2: The skill says that an invocation from `/milestone` §4's
-      `milestone` verdict, or for a request that `/hotfix` step 1 routed
-      to `/milestone-plan` in this session, is classified `milestone`
-      without re-judging, and that the work-log reason names the router.
-      A request that names no work skips the check until step 3 names the
-      work, and the check then runs before step 4.
+      parts is `milestone`, is a milestone. The skill says the check can
+      read the code and docs the request names, and runs neither step 2's
+      sweeps nor its subagents.
+- [ ] AC2: The skill says that two invocations are classified `milestone`
+      without re-judging, and that the work-log reason names the router:
+      an invocation from `/milestone` §4's `milestone` verdict, and a
+      `/milestone-plan` for work that `/hotfix` found over the hotfix bar
+      earlier in this session, whether that hotfix stopped at step 1 or
+      closed at step 7 after a merged-PR re-entry. A request that names no
+      work is not checked.
 - [ ] AC3: When the check finds `hotfix` or `trivial`, the skill poses one
       chip before step 2. Its question text names the tier found and the
       reason. Its options are the tier's route (marked recommended),
@@ -85,10 +87,10 @@ such a request is a milestone here.
       Planning anyway goes on to step 2.
 - [ ] AC5: The skill says that step 4 writes one work-log line in the
       first milestone file it writes: `tier check: milestone — <reason>`
-      when the check found `milestone` and posed no chip, or `tier check:
+      when the check found `milestone` and posed no chip, `tier check:
       <tier> — planned as a milestone at the user's choice` after the
-      plan-anyway option. When step 4 writes no milestone file, the line
-      goes into the close block's recap.
+      plan-anyway option, or `tier check: not run — work named at the
+      question set` for a request that named no work.
 - [ ] AC6: README.md's `/milestone-plan` row in the commands table says
       that the plan first checks whether the work needs a milestone and
       offers `/hotfix` or a direct edit when it does not. CHANGELOG.md's
@@ -166,6 +168,15 @@ such a request is a milestone here.
 - 2026-10-14: T4: tracking-rules "Question gates and phase closes" names the tier chip as before the run, not a run gate; D-162 appended (annotates D-144); rulebook baseline re-seeded to 655 lines / 62,812 bytes at its three sites.
 - 2026-10-14: T5: README `/milestone-plan` row and CHANGELOG Unreleased entry added; AC6 sweep read 52 hits, none says the plan always produces a milestone; the router's "One question set follows" (CLAUDE.md, template) left as is per Scope Out.
 - 2026-10-14: T6: `skills/tests/test_plan_tier_check.py` added (5 tests, 27 pinned clauses), each clause shown red by deleting it, tree restored; registered EXEMPT in the mutation harness like M249's guard; `skills/tests` green (751 tests) after that entry, red once before it; verify five green; `cairn_validate` green.
+- 2026-10-14: claim audit: 50 claims read, 3 corrected — CHANGELOG.md (routed-work exemption overstated), skills/milestone-plan/SKILL.md (hotfix route wording; deferred check contradicts the chip's before-step-2 timing).
+- 2026-10-14: re-audit: AC3 (full) — 3 findings: a deferred chip after the question set still contradicts AC4, the closed stop list, and D-162; descoping recommended; the AC3 amendment was not taken.
+- 2026-10-14: re-audit: AC2 (full) — 4 findings: AC5's no-file fallback unreachable; `/hotfix`'s merged-PR re-entry route missed; AC1 lacked the no-work scope; branch text lags (known).
+- 2026-10-14: re-audit: AC5 (full) — same reader as AC2: the no-file fallback names a state step 4 never reaches.
+- 2026-10-14: re-audit: AC1 (full) — 3 findings: routed requests double-classified; D-162 lacks the no-work exception; last sentence read as a runtime claim.
+- 2026-10-14: re-audit: AC2 (full) — nothing.
+- 2026-10-14: re-audit: AC5 (full) — nothing.
+- 2026-10-14: substantive amendment: AC1 scoped to requests that name work and are not already tiered, its last sentence put under "the skill says"; AC2 lists both routers, the `/hotfix` arm covering step 1 and the step-7 merged-PR re-entry, and a request naming no work is not checked; AC5 gains the `tier check: not run` form and drops the no-file fallback. Deferral descoped: a bare `/milestone-plan` whose work is picked at the question set is planned as a milestone.
+- 2026-10-14: re-audit: AC1 (full) — 1 finding: the last sentence's second clause can still attach to "the check" (a runtime claim); proposed "The skill says the check may read the code and docs the request names, and that it does not run step 2's sweeps or spawn subagents." Second AC1 line: stop for the user.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
