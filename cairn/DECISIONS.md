@@ -5833,18 +5833,25 @@ trivial finding it poses one chip: take that route (recommended), plan a
 milestone anyway, or stop. On a milestone finding it asks nothing. The
 chip comes before the run's question set and is not a run gate, so D-144's
 two gates stand. Work that `/milestone` §4 or `/hotfix` step 1 already
-routed here is not re-judged. A request that names no work is not
-checked: its work is chosen at the question set and planned as a
-milestone. The tier definitions do not change: a small change to running
-code that is not a bug stays a milestone.
+routed here in the same session is not re-judged. After a `/clear` that
+record is gone and routed work is judged again, an accepted cost, since
+the plan-anyway option ends any bounce between the two skills. A request
+that names no work is not checked: its work is chosen at the question set
+and planned as a milestone. The tier definitions do not change: a small
+change to running code that is not a bug stays a milestone. In guest mode
+the trivial tier covers `cairn/` files only, because a guest has no commit
+to the default branch.
 
 **Rejected:** an automatic route with no chip, because a wrong call costs
-a rerun and the user keeps the plan-anyway option; a tier question inside
+a rerun and the user keeps the plan-anyway option, falsified by tier chips
+the user always answers with the recommended route; a tier question inside
 step 3's question set, because step 2's sweeps and the criteria audit
 would run first on work that needs no milestone; widening `/hotfix` to
-small non-bug changes, at the user's choice. Falsified by tier chips the
-user always answers with "plan anyway".
+small non-bug changes, at the user's choice. The chip itself is falsified
+by tier chips the user always answers with "plan anyway".
 
 **Consequences:** A plan for hotfix-sized or trivial work costs one chip in
-place of a full run. The trivial route commits and pushes to the default
-branch at the user's selection, which is the gate IP1 asks for.
+place of a full run. Selecting the trivial route authorizes the commit and
+push of the edit the plan then makes; the plan shows that edit verbatim
+when it commits it, and refuses when the default branch is out of step
+with its remote, so nothing else is pushed with it.

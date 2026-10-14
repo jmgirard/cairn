@@ -467,7 +467,9 @@ in the environment.
 Development is a cycle of milestones: PR-sized units of work with explicit
 acceptance criteria. One command starts a run. You answer one question set
 when the plan is made, and Claude then implements and reviews the milestone
-in the same run and stops at the merge question:
+in the same run and stops at the merge question. Before the run starts,
+the plan checks that the work needs a milestone. If a hotfix or a direct
+edit fits, it asks you once whether to take that route instead:
 
 ```mermaid
 flowchart LR
@@ -633,7 +635,9 @@ profile.
 - **Answer two questions.** One question set comes when the plan is made,
   each question with a recommendation. It also asks ahead for what the run
   will need from you: a file, a login, a live look, or permission for an
-  outward action. The merge question comes at the end of review. Between
+  outward action. The merge question comes at the end of review. When the
+  plan finds that a hotfix or a direct edit fits, one question about that
+  route comes before the question set. Between
   them, expect the agent to decide and log the rest.
 - **A run stops only for a listed reason.** It stops when it needs your eyes
   or hands, for an action the question set did not cover, when the goal is

@@ -108,10 +108,10 @@ such a request is a milestone here.
 
 - AC1 → T1, T6
 - AC2 → T1, T6
-- AC3 → T2, T4, T6
-- AC4 → T2, T6
+- AC3 → T2, T4, T6, T7
+- AC4 → T2, T6, T7
 - AC5 → T3, T6
-- AC6 → T5
+- AC6 → T5, T7
 - AC7 → T6
 
 ## Tasks
@@ -142,6 +142,12 @@ such a request is a milestone here.
       clauses of T1-T4, and show each pin red by deleting its clause. Run
       `skills/tests` once and note red or green in the work log (D-109).
       Run the five verify commands and `cairn_validate`.
+- [ ] T7: Review return 1: pass the `/hotfix` argument in `/milestone` §4's
+      form; make the trivial route refuse with no remote, off the default
+      branch, out of step with `<base>`, or over dirty or staged files,
+      commit by path, show the edit, and never force a rejected push; plain
+      chip words; README core loop; D-162 wording; guard pins. The fix-now
+      lines of the Review section list each item.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.

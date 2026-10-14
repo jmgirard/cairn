@@ -65,20 +65,32 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
    **The tier chip.** On a `milestone` finding the plan asks nothing and
    goes on. On a `hotfix` or `trivial` finding it poses one chip before
-   step 2. The chip's question text names the tier found and the reason. The
-   chip comes before the run's question set and is not part of it
-   (tracking-rules "Question gates and phase closes"). Its options:
+   step 2. The chip's question text names, in plain words, the tier found
+   and the reason. The chip comes before the run's question set and is not
+   part of it (tracking-rules "Question gates and phase closes"). Its
+   options:
    - **The tier's route** (recommended). `hotfix`: invoke `/hotfix`
-     through the Skill tool with the request as its argument. The plan
-     writes no file. `trivial`: the option's description says where the
-     edit goes. In owner mode it is committed and pushed to the default
-     branch. In guest mode it is left uncommitted on disk. In owner mode
-     the plan runs `git status`, then edits and commits only the files the
-     edit touches and pushes at once. If the checkout is not on the
-     default branch, or one of those files holds uncommitted changes, the
-     plan makes no edit and ends with a close block naming why. On
-     success it ends with a close block naming the commit. In guest mode
-     it writes the edit on disk with no commit and ends with a close block.
+     through the Skill tool with the request as its argument, in
+     `/milestone` §4's form. The argument opens with a one-line summary of
+     the bug. An issue is then named as `issue <URL>`, never as a bare
+     `#N`, which `/hotfix` reads as a pull request. The plan writes no
+     file. `trivial`: the option's description says where the edit goes.
+     In owner mode it is committed and pushed to the default branch. In
+     guest mode it is left uncommitted on disk. The description also names
+     any other uncommitted paths, which the commit leaves alone. In owner
+     mode the plan runs `git status` and `git fetch <base>`, then edits and
+     commits only the files the edit touches and pushes at once. If the
+     checkout is not on the default branch, or one of those files holds
+     uncommitted changes, the plan makes no edit and ends with a close
+     block naming why. It also refuses in three other cases: the repo has
+     no remote, the default branch is ahead of or behind
+     `<base>/<default-branch>`, or a file is already staged. The
+     plan shows the edit verbatim in chat, commits by path
+     (`git commit -m "<one-line summary>" -- <paths>`), and pushes. If the
+     push is rejected, it never forces, and the close block names the local
+     commit. On success it ends with a close block naming the commit. In
+     guest mode it writes the edit on disk with no commit and ends with a
+     close block.
    - **Plan a milestone anyway.** The plan goes on to step 2.
    - **Stop.** The close block, and nothing written.
 
