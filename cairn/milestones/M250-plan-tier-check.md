@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -186,6 +186,8 @@ such a request is a milestone here.
 - 2026-10-14: review return 1: two load-bearing defects in the tier check's routes — an issue `#N` handed to `/hotfix` as a bare PR reference (diff-bug #1, blame-history #1), and the trivial route pushing without comparing the default branch with origin (diff-bug #2, prior-review #2); the other fix-now items in the Review section ride the same pass.
 - 2026-10-14: T7 added for review return 1 (minor amendment; Coverage maps AC3, AC4, AC6 to it).
 - 2026-10-14: T7: `/hotfix` argument in §4's `issue <URL>` form; trivial route fetches, refuses with no remote, off the default branch, out of step with `<base>`, or over dirty or staged files, names other dirty paths, shows the edit, commits by path, never forces; plain chip words; README core loop and "Answer two questions"; D-162 reworded (IP1 sentence, same-session bound, guest narrowing, falsifier); header PR URL; guard pins 32 clauses, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
+- 2026-10-14: review pass 2: Copilot `reviewed earlier-head Lite`, not re-requested; AC evidence re-recorded; three-lens fan-out returned 23 findings.
+- 2026-10-14: review return 2: the pass-1 hotfix-route fix drops the request text and has no issue-URL read (diff-bug #2, #3), and the trivial commit fails on a new file (diff-bug #5); the route's checks move before the chip in one rewrite rather than further patches.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -237,3 +239,33 @@ Pass 1, 2026-10-14, branch head 0124aa36, synced with origin/main (5f4bb1a0). PR
 - prior-review #2: no sync before the push — fix now (with diff-bug #2)
 - prior-review #3: the routed-work exemption depends on this session's memory; after a `/clear` routed work is re-judged — fix now (D-162 states the accepted bound: the plan-anyway option ends any bounce)
 - prior-review #4: header carries no PR URL — fix now
+- fixed: diff-bug #1-#4, #10-#14, blame-history #1, #2, #4, #6, #7, prior-review #1-#4, fixed cb478930 (README, D-162, SKILL.md, guard) and ce44d6e2 (header).
+
+Pass 2, 2026-10-14, head ce44d6e2 (code as of cb478930; ce44d6e2 touches only `cairn/`), synced with origin/main. Copilot state `reviewed earlier-head Lite`: not requested again.
+
+- AC1-AC5 evidence (pass 2): `test_plan_tier_check` 5 tests OK at head, 32 pinned clauses each red when deleted (probe, 0 survivors); SKILL.md:66-94 keeps every clause AC1-AC5 name, now with the `issue <URL>` argument form (:73-77), the fetch and refusals (:81-89), and plain-words chip text (:68).
+- AC6 evidence (pass 2): README.md:545 row unchanged; README.md:469-472 and :636-638 name the tier question before the question set; CHANGELOG.md:7 entry unchanged; the AC6 sweep's no-hit claim holds (no new "always" hit).
+- AC7 evidence (pass 2): at cb478930: scripts/tests OK, hooks/tests OK, plugin validate 0, marketplace validate 0, `claude plugin test .` 0 fail; all exit 0. `cairn_validate.py` exit 0 at ce44d6e2; hand-run `skills/tests` exit 0.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: other dirty paths must be named at the chip, but `git status` runs only after selection — fix now (checks move before the chip)
+- diff-bug #2: the hotfix argument keeps only a one-line summary and drops the request text — fix now (floor: load-bearing defect)
+- diff-bug #3: an issue source has no step that reads the issue or its URL, so `issue <URL>` cannot be built — fix now (floor: load-bearing defect)
+- diff-bug #4: the trivial option is recommended even when its checks will refuse — fix now (description says it cannot run now and why)
+- diff-bug #5: `git commit -- <paths>` fails for a new file — fix now (floor: load-bearing defect; stage the paths first)
+- diff-bug #6: a rejected push leaves an unpushed commit with no recovery step — fix now (close block gives the undo command; push command named)
+- diff-bug #7: the fetch runs before the no-remote refusal — fix now (checks reordered)
+- diff-bug #8: README "Answer two questions" heading and "Between them" now ambiguous — fix now
+- diff-bug #9: README core-loop colon now introduces the diagram after the tier sentences — fix now
+- diff-bug #10: D-162's guest sentence reads as a tier-definition change — fix now (worded as the plan's check)
+- diff-bug #11: CHANGELOG refusal list omits the new refusals — fix now
+- diff-bug #12: a candidate-row source's title should pass to `/hotfix` verbatim for its exact-title match — fix now
+- blame-history #1: the chip approves the route, not the content — fix now (option description names the file and the change, so the approval covers the content)
+- blame-history #2: D-162 should name the git model's docs-only sentence the trivial route departs from — fix now (one D-162 clause; the rulebook edit stays in the follow-up row)
+- blame-history #3: same as diff-bug #8 — fix now
+- blame-history #4: same as diff-bug #3 — fix now
+- blame-history #5: same as diff-bug #5 — fix now
+- blame-history #6: CLAUDE.md and the routing template say "One question set follows" with no follow-up row — follow-up (named in the new row "Tier check edges (M250 review)")
+- prior-review #1: same as diff-bug #4 — fix now
+- prior-review #2: same as diff-bug #8 — fix now
+- prior-review #3: same as blame-history #6 — follow-up
+- prior-review #4: the guard pins no README text — fix now (pin README.md's `/milestone-plan` row)
