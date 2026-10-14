@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -142,12 +142,9 @@ such a request is a milestone here.
       clauses of T1-T4, and show each pin red by deleting its clause. Run
       `skills/tests` once and note red or green in the work log (D-109).
       Run the five verify commands and `cairn_validate`.
-- [ ] T7: Review return 1: pass the `/hotfix` argument in `/milestone` §4's
-      form; make the trivial route refuse with no remote, off the default
-      branch, out of step with `<base>`, or over dirty or staged files,
-      commit by path, show the edit, and never force a rejected push; plain
-      chip words; README core loop; D-162 wording; guard pins. The fix-now
-      lines of the Review section list each item.
+- [x] T7: Review return 1: the `/hotfix` argument form, the trivial
+      route's sync and refusals, and each other fix-now line of the Review
+      section.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -187,6 +184,8 @@ such a request is a milestone here.
 - 2026-10-14: skill step 1, CHANGELOG, and guard pins follow the amended AC1, AC2, AC5; D-162 gained the no-work sentence in place, since it has not reached main; clause probe 0 survivors; `skills/tests`, verify five, and `cairn_validate` green; rulebook still 655 lines / 62,812 bytes. Status → review.
 - 2026-10-14: review: PR #261 opened at review start and Copilot requested (state `none` before); all 7 criteria verified and ticked; three-lens fan-out returned 26 findings.
 - 2026-10-14: review return 1: two load-bearing defects in the tier check's routes — an issue `#N` handed to `/hotfix` as a bare PR reference (diff-bug #1, blame-history #1), and the trivial route pushing without comparing the default branch with origin (diff-bug #2, prior-review #2); the other fix-now items in the Review section ride the same pass.
+- 2026-10-14: T7 added for review return 1 (minor amendment; Coverage maps AC3, AC4, AC6 to it).
+- 2026-10-14: T7: `/hotfix` argument in §4's `issue <URL>` form; trivial route fetches, refuses with no remote, off the default branch, out of step with `<base>`, or over dirty or staged files, names other dirty paths, shows the edit, commits by path, never forces; plain chip words; README core loop and "Answer two questions"; D-162 reworded (IP1 sentence, same-session bound, guest narrowing, falsifier); header PR URL; guard pins 32 clauses, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
