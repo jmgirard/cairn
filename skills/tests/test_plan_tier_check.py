@@ -61,9 +61,10 @@ class TestPlanTierCheck(unittest.TestCase):
         for phrase in (
             "The check runs on every source of request that names work: "
             "typed text, a candidate row, a pane press.",
-            "A request that names a GitHub issue (`#N` or an issue URL) is not "
-            "checked and is planned as a milestone, since `/milestone` with the "
-            "issue is the door that tiers an issue.",
+            "A request that names a GitHub issue (`#N` or an issue URL, or any "
+            "other form `/milestone`'s argument accepts) is not checked and is "
+            "planned as a milestone, since `/milestone` with the issue is the "
+            "door that tiers an issue.",
             "The first is an invocation from `/milestone` §4's `milestone` "
             "verdict.",
             "The second is a `/milestone-plan` for work that `/hotfix` found "
@@ -134,6 +135,9 @@ class TestPlanTierCheck(unittest.TestCase):
             "user's choice` after the plan-anyway option, or `tier check: not "
             "run — work named at the question set` for a request that named "
             "no work.",
+            "A request that names an issue writes `tier check: not run — "
+            "request names an issue`, unless a router sent it, in which case "
+            "it writes the `milestone` line naming the router.",
         ):
             self.assertIn(phrase, self.step1)
         self.assertIn("**Tier-check line.** Write the `tier check:` work-log "

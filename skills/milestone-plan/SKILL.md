@@ -55,9 +55,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    request names. It does not run step 2's sweeps or spawn subagents. The
    check runs on every source of request that names work: typed text, a
    candidate row, a pane press. A request that names a GitHub issue (`#N`
-   or an issue URL) is not checked and is planned as a milestone, since
-   `/milestone` with the issue is the door that tiers an issue. Two
-   invocations are already tiered. The first is an invocation from `/milestone` §4's `milestone`
+   or an issue URL, or any other form `/milestone`'s argument accepts) is
+   not checked and is planned as a milestone, since `/milestone` with the
+   issue is the door that tiers an issue. Two invocations are already
+   tiered. The first is an invocation from `/milestone` §4's `milestone`
    verdict. The second is a `/milestone-plan` for work that `/hotfix` found
    over the hotfix bar earlier in this session, whether that hotfix stopped
    at step 1 or closed at step 7 after a merged-PR re-entry. The check
@@ -83,11 +84,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      through the Skill tool with the request as its argument, in
      `/milestone` §4's form. The argument opens with a one-line summary of
      the bug. The request text follows unchanged, with a candidate row's
-     title quoted verbatim. The plan writes no file. `trivial`: the option's description
-     names the file and the change and says where the edit goes. In owner
-     mode it is committed and pushed to the default branch. In guest mode
-     it is left uncommitted on disk. In owner mode the description also
-     names any other uncommitted paths, which the commit leaves alone. If
+     title quoted verbatim. The plan writes no file. `trivial`: the
+     option's description names the file and the change and says where
+     the edit goes. In owner mode it is committed and pushed to the
+     default branch. In guest mode it is left uncommitted on disk. In
+     owner mode the description also names any other uncommitted paths,
+     which the commit leaves alone. If
      a check failed, the description says that the edit cannot be made
      now, and why. In owner mode the plan runs `git status` and the other
      checks before the chip, then edits and commits only the files the
@@ -98,10 +100,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      verbatim in chat and runs `git add -- <paths>`,
      `git commit -m "<one-line summary>" -- <paths>`, and
      `git push <base> HEAD:<default-branch>`. If the push fails or is
-     rejected, it never forces. The close block then names the local commit and the
-     undo command `git reset --soft HEAD~1`. On success it ends with a
-     close block naming the commit. In guest mode it writes the edit on
-     disk with no commit and ends with a close block.
+     rejected, it never forces. The close block then names the local
+     commit and the undo command `git reset --soft HEAD~1`. On success it
+     ends with a close block naming the commit. In guest mode it writes the
+     edit on disk with no commit and ends with a close block.
    - **Plan a milestone anyway.** The plan goes on to step 2.
    - **Stop.** The close block, and nothing written.
 
@@ -109,7 +111,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    `tier check: milestone — <reason>` after a `milestone` finding,
    `tier check: <tier> — planned as a milestone at the user's choice`
    after the plan-anyway option, or `tier check: not run — work named at
-   the question set` for a request that named no work.
+   the question set` for a request that named no work. A request that
+   names an issue writes `tier check: not run — request names an issue`,
+   unless a router sent it, in which case it writes the `milestone` line
+   naming the router.
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Sonnet Explore

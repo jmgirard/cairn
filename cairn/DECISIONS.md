@@ -5834,7 +5834,8 @@ milestone anyway, or stop. On a milestone finding it asks nothing. The
 chip comes before the run's question set and is not a run gate, so D-144's
 two gates stand. Work that `/milestone` §4 or `/hotfix` step 1 already
 routed here in the same session is not re-judged. After a `/clear` that
-record is gone and routed work is judged again, an accepted cost, since
+record is gone and work `/hotfix` routed is judged again (work from
+`/milestone` §4 names its issue and stays exempt), an accepted cost, since
 the plan-anyway option ends any bounce between the two skills. A request
 that names no work is not checked: its work is chosen at the question set
 and planned as a milestone. A request that names a GitHub issue is not
