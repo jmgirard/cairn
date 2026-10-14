@@ -4,6 +4,18 @@
 
 ### Changes that affect existing repos
 
+- **The plan checks that the work needs a milestone before it plans one.**
+  Before `/milestone-plan` investigates, it puts the request in one work
+  tier. If the request is a user-visible bug that a hotfix can fix, or an
+  edit with no runtime effect such as a typo, the plan asks one question:
+  take that route, plan a milestone anyway, or stop. The hotfix route
+  starts `/hotfix`. In owner mode the direct-edit route makes the edit,
+  commits it, and pushes it to the default branch. If the checkout is on
+  another branch or the files hold uncommitted changes, it refuses. In
+  guest mode the direct edit applies only to `cairn/` files and stays on
+  disk. A small change to running code that is not a bug still gets a
+  milestone. Work that `/milestone` or `/hotfix` already sent to the plan
+  is not checked again.
 - **A hotfix removes the candidate row it fixes, once the fix merges.**
   `/hotfix` now looks for ROADMAP candidate rows that describe the bug: a
   row whose title the request quotes, or one that describes the same bug.

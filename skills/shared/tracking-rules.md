@@ -377,7 +377,9 @@ so fix the file.
 
 A milestone **run** is one `/milestone-plan` question set, then `/milestone-implement`, `/milestone-review`, and the
 merge, each skill invoking the next through the Skill tool. A merge ends the run: the next workable milestone that the
-same plan created starts from its typed command after a `/clear` (D-148). User interaction in a run happens at two gates, each a single exchange whose chip
+same plan created starts from its typed command after a `/clear` (D-148). A run begins at the plan question set.
+`/milestone-plan`'s tier chip comes before it and is not a run gate. That chip is posed only when the plan's step-1 tier
+check finds a hotfix or a trivial edit (D-162). User interaction in a run happens at two gates, each a single exchange whose chip
 is posed in the same turn as its presentation (the Mandated-substance rule below):
 
 - **The plan question set.** One batched AskUserQuestion round of 2–5 concrete decision questions, each with a

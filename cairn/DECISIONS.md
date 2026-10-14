@@ -5819,3 +5819,30 @@ maintainers ask to restyle in a way the other instructions caused.
 **Consequences:** Owner mode is unchanged. The rulebook's Plain style rule
 binds chat output and the record-prose rule binds `cairn/` records, so
 neither governs host text.
+
+### D-162 (2026-10-14): `/milestone-plan` checks the work tier before it plans, and its tier chip comes before the run — annotates D-144 (M250)
+
+**Context:** `/hotfix` step 1 sends work that is too large for a hotfix to
+`/milestone-plan`, but nothing sent work the other way. A request typed as
+a plan went through investigation, sweeps, and a criteria audit even when
+a hotfix or a direct edit fit it.
+
+**Decision:** `/milestone-plan` step 1 puts the request in one tier of the
+rulebook's "Sizing and the work tiers" before step 2. On a hotfix or
+trivial finding it poses one chip: take that route (recommended), plan a
+milestone anyway, or stop. On a milestone finding it asks nothing. The
+chip comes before the run's question set and is not a run gate, so D-144's
+two gates stand. Work that `/milestone` §4 or `/hotfix` step 1 already
+routed here is not re-judged. The tier definitions do not change: a small
+change to running code that is not a bug stays a milestone.
+
+**Rejected:** an automatic route with no chip, because a wrong call costs
+a rerun and the user keeps the plan-anyway option; a tier question inside
+step 3's question set, because step 2's sweeps and the criteria audit
+would run first on work that needs no milestone; widening `/hotfix` to
+small non-bug changes, at the user's choice. Falsified by tier chips the
+user always answers with "plan anyway".
+
+**Consequences:** A plan for hotfix-sized or trivial work costs one chip in
+place of a full run. The trivial route commits and pushes to the default
+branch at the user's selection, which is the gate IP1 asks for.
