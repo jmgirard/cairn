@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -133,7 +133,7 @@ such a request is a milestone here.
 - [x] T6: A hand-run prose guard in `skills/tests/` pinning T1-T4, each
       pin shown red; `skills/tests` once (D-109); verify five; validate.
 - [x] T7: Review return 1: each pass-1 fix-now line of the Review section.
-- [ ] T8: Review return 2: each pass-2 fix-now line of the Review section;
+- [x] T8: Review return 2: each pass-2 fix-now line of the Review section;
       the trivial route's checks run before the chip.
 
 ## Work log
@@ -178,6 +178,8 @@ such a request is a milestone here.
 - 2026-10-14: T7: `/hotfix` argument in §4's `issue <URL>` form; trivial route fetches, refuses with no remote, off the default branch, out of step with `<base>`, or over dirty or staged files, names other dirty paths, shows the edit, commits by path, never forces; plain chip words; README core loop and "Answer two questions"; D-162 reworded (IP1 sentence, same-session bound, guest narrowing, falsifier); header PR URL; guard pins 32 clauses, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
 - 2026-10-14: review pass 2: Copilot `reviewed earlier-head Lite`, not re-requested; AC evidence re-recorded; three-lens fan-out returned 23 findings.
 - 2026-10-14: review return 2: the pass-1 hotfix-route fix drops the request text and has no issue-URL read (diff-bug #2, #3), and the trivial commit fails on a new file (diff-bug #5); the route's checks move before the chip in one rewrite rather than further patches.
+- 2026-10-14: T8 added for review return 2 (minor amendment; Tasks compressed in one pass to stay under the cap; Coverage maps AC3, AC4, AC6 to it).
+- 2026-10-14: T8: issue read by `gh issue view`; hotfix argument keeps the request text and a row's title verbatim; five trivial-route checks run before the chip, in order (remote, fetch, branch level, nothing staged, touched files clean); option names the file and change, the other dirty paths, and any failed check; `git add`/`commit`/`push <base> HEAD:<default-branch>` named; undo command on a rejected push; README core loop and expectations bullet reworded; CHANGELOG and D-162 updated (guest wording, IP1 sentence, git-model note); guard pins 36 clauses incl. the README row, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
