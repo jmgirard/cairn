@@ -2224,6 +2224,7 @@ EXEMPT = {
     "test_guest_fork_remote": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its reverted-site and planted-phrase tests prove both checks can fail",
     "test_milestone_gh_repo": "M234 (2026-10-10): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its planted inline and fenced spans prove the scan can fail",
     "test_hotfix_candidate_graduation": "M249 (2026-10-12): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
+    "test_plan_tier_check": "M250 (2026-10-14): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
     # every pinned block was deliberately reworded or retired. Their surviving
     # asserts pin current text; re-registration is deferred until adopter

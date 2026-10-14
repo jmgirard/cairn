@@ -136,7 +136,7 @@ such a request is a milestone here.
       `skills/tests/test_mutation_harness.py:120`.
 - [x] T5: Edit README.md's `/milestone-plan` row (`:545`) and add the
       CHANGELOG entry. Run AC6's sweep and fix each hit (lesson M112).
-- [ ] T6: Add a hand-run prose guard in `skills/tests/` pinning the
+- [x] T6: Add a hand-run prose guard in `skills/tests/` pinning the
       clauses of T1-T4, and show each pin red by deleting its clause. Run
       `skills/tests` once and note red or green in the work log (D-109).
       Run the five verify commands and `cairn_validate`.
@@ -165,6 +165,7 @@ such a request is a milestone here.
 - 2026-10-14: T1-T3: tier check, tier chip, and the `tier check:` line added to step 1 of `skills/milestone-plan/SKILL.md`, with a pointer bullet in step 4; no steps renumbered; entry paths traced: `/milestone` §4 passes the issue (exempt), `/hotfix` step 1 routes by a close block (exempt in-session), the ✎ press passes a row title (checked).
 - 2026-10-14: T4: tracking-rules "Question gates and phase closes" names the tier chip as before the run, not a run gate; D-162 appended (annotates D-144); rulebook baseline re-seeded to 655 lines / 62,812 bytes at its three sites.
 - 2026-10-14: T5: README `/milestone-plan` row and CHANGELOG Unreleased entry added; AC6 sweep read 52 hits, none says the plan always produces a milestone; the router's "One question set follows" (CLAUDE.md, template) left as is per Scope Out.
+- 2026-10-14: T6: `skills/tests/test_plan_tier_check.py` added (5 tests, 27 pinned clauses), each clause shown red by deleting it, tree restored; registered EXEMPT in the mutation harness like M249's guard; `skills/tests` green (751 tests) after that entry, red once before it; verify five green; `cairn_validate` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
