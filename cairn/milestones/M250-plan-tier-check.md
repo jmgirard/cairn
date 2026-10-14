@@ -46,7 +46,7 @@ such a request is a milestone here.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: For a request that names work, names no GitHub issue, and that
+- [x] AC1: For a request that names work, names no GitHub issue, and that
       AC2's routers have not already tiered,
       `skills/milestone-plan/SKILL.md` step 1 holds a tier check that runs
       before step 2. It cites tracking-rules "Sizing and the work
@@ -59,7 +59,7 @@ such a request is a milestone here.
       parts is `milestone`, is a milestone. The skill says the check may
       read the code and docs the request names, and that it does not run
       step 2's sweeps or spawn subagents.
-- [ ] AC2: The skill says that two invocations are classified `milestone`
+- [x] AC2: The skill says that two invocations are classified `milestone`
       without re-judging, and that the work-log reason names the router:
       an invocation from `/milestone` §4's `milestone` verdict, and a
       `/milestone-plan` for work that `/hotfix` found over the hotfix bar
@@ -284,3 +284,16 @@ Pass 3, 2026-10-14, head b04eecab (code as of faf0ac26; b04eecab touches only `c
 - prior-review #3: new CHANGELOG and README lines run past 80 columns — reject (style)
 - blame-history #1: D-162 names a candidate row for the git-model sentence that does not exist yet — fix now (absorbed into "Branch-protection compatibility" on the branch; "Tier check edges (M250 review)" lands at hygiene)
 - blame-history #2: line-wrap debris in SKILL.md, README, CHANGELOG — reject (style)
+- fixed: pass-3 diff-bug #1, prior-review #1 (by the narrowing the user chose), prior-review #2, blame-history #1, fixed 126ce665.
+
+Pass 4, 2026-10-14, head 8ae61d4f, synced with origin/main.
+
+- AC1 evidence (pass 4): SKILL.md:56-58 scopes the check to requests that name work and no GitHub issue ("typed text, a candidate row, a pane press"); the rest of AC1 as in pass 3; step 1 no longer reads an issue (`gh issue view` appears only in step 3's assignment option, :264, :277); `test_tiers_are_defined_before_step_2` and `test_routed_sources_and_no_work_requests` OK.
+- AC2 evidence (pass 4): SKILL.md:57-59 "A request that names a GitHub issue (`#N` or an issue URL) is not checked and is planned as a milestone, since `/milestone` with the issue is the door that tiers an issue."; the two routers and the no-work sentence unchanged; guard OK (36 clauses, 0 survivors).
+- AC3-AC7 evidence (pass 4): unchanged text bar the push wording ("fails or is rejected", :100); verify five and `cairn_validate` exit 0 at 8ae61d4f's code; hand-run `skills/tests` exit 0.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: no `tier check:` line form fits a request that names an issue — fix now (a fourth form; a router-sent request keeps the router line)
+- diff-bug #2: D-162 says routed work is judged again after a `/clear`, false now for §4's issue handoff — fix now
+- blame-history #1: the extended "Branch-protection compatibility" row takes ROADMAP.md to 24,262 bytes, over its 24,000 budget — fix now (sentence shortened)
+- prior-review #1: the issue exemption lists only `#N` and a URL, narrower than the forms `/milestone` accepts (M232) — fix now ("in any form `/milestone` accepts, such as")
+- prior-review #2: re-wrap debris past 80 columns in SKILL.md step 1 (M249 fixed the same) — fix now (re-wrapped; the pass-3 style reject stands for README and CHANGELOG)
