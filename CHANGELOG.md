@@ -14,8 +14,11 @@
   another branch or the files hold uncommitted changes, it refuses. In
   guest mode the direct edit applies only to `cairn/` files and stays on
   disk. A small change to running code that is not a bug still gets a
-  milestone. Work that `/milestone` or `/hotfix` already sent to the plan
-  is not checked again.
+  milestone. An issue that `/milestone` judged a milestone and handed to
+  the plan is not checked again. Neither is work that `/hotfix` found too
+  large earlier in the same session. A plain `/milestone-plan` that names
+  no work is not checked: the work you pick at the question set is planned
+  as a milestone.
 - **A hotfix removes the candidate row it fixes, once the fix merges.**
   `/hotfix` now looks for ROADMAP candidate rows that describe the bug: a
   row whose title the request quotes, or one that describes the same bug.

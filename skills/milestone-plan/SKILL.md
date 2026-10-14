@@ -52,14 +52,16 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 
    A request whose parts fall in more than one tier, or any of whose parts
    is `milestone`, is a milestone. The check can read the code and docs the
-   request names. It runs neither step 2's sweeps nor its subagents. The
-   check runs on every source of request: typed text, a candidate row, a
-   pane press, an issue. Two sources are already tiered: an invocation
-   from `/milestone` §4's `milestone` verdict, and a request that
-   `/hotfix` step 1 routed to `/milestone-plan` in this session. The check
+   request names. It does not run step 2's sweeps or spawn subagents. The
+   check runs on every source of request that names work: typed text, a
+   candidate row, a pane press, an issue. Two invocations are already
+   tiered. The first is an invocation from `/milestone` §4's `milestone`
+   verdict. The second is a `/milestone-plan` for work that `/hotfix` found
+   over the hotfix bar earlier in this session, whether that hotfix stopped
+   at step 1 or closed at step 7 after a merged-PR re-entry. The check
    classifies both `milestone` without re-judging, and the work-log reason
-   names the router. A request that names no work skips the check until
-   step 3 names the work, and the check then runs before step 4.
+   names the router. A request that names no work is not checked: its work
+   is chosen at step 3's question set and planned as a milestone.
 
    **The tier chip.** On a `milestone` finding the plan asks nothing and
    goes on. On a `hotfix` or `trivial` finding it poses one chip before
@@ -81,10 +83,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - **Stop.** The close block, and nothing written.
 
    Step 4 writes one work-log line in the first milestone file it writes:
-   `tier check: milestone — <reason>` after a `milestone` finding, or
+   `tier check: milestone — <reason>` after a `milestone` finding,
    `tier check: <tier> — planned as a milestone at the user's choice`
-   after the plan-anyway option. When step 4 writes no milestone file, the
-   line goes into the close block's recap.
+   after the plan-anyway option, or `tier check: not run — work named at
+   the question set` for a request that named no work.
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
    scopes touching more than a couple of files, fan out Sonnet Explore

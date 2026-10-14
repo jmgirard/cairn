@@ -5833,8 +5833,10 @@ trivial finding it poses one chip: take that route (recommended), plan a
 milestone anyway, or stop. On a milestone finding it asks nothing. The
 chip comes before the run's question set and is not a run gate, so D-144's
 two gates stand. Work that `/milestone` §4 or `/hotfix` step 1 already
-routed here is not re-judged. The tier definitions do not change: a small
-change to running code that is not a bug stays a milestone.
+routed here is not re-judged. A request that names no work is not
+checked: its work is chosen at the question set and planned as a
+milestone. The tier definitions do not change: a small change to running
+code that is not a bug stays a milestone.
 
 **Rejected:** an automatic route with no chip, because a wrong call costs
 a rerun and the user keeps the plan-anyway option; a tier question inside

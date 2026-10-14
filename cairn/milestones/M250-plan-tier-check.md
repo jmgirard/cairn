@@ -55,9 +55,9 @@ such a request is a milestone here.
       runtime surface, fits one sitting with no design decision, and, in
       guest mode, touches only files under `cairn/`; `milestone` otherwise.
       A request whose parts fall in more than one tier, or any of whose
-      parts is `milestone`, is a milestone. The skill says the check can
-      read the code and docs the request names, and runs neither step 2's
-      sweeps nor its subagents.
+      parts is `milestone`, is a milestone. The skill says the check may
+      read the code and docs the request names, and that it does not run
+      step 2's sweeps or spawn subagents.
 - [ ] AC2: The skill says that two invocations are classified `milestone`
       without re-judging, and that the work-log reason names the router:
       an invocation from `/milestone` §4's `milestone` verdict, and a
@@ -177,6 +177,7 @@ such a request is a milestone here.
 - 2026-10-14: re-audit: AC5 (full) — nothing.
 - 2026-10-14: substantive amendment: AC1 scoped to requests that name work and are not already tiered, its last sentence put under "the skill says"; AC2 lists both routers, the `/hotfix` arm covering step 1 and the step-7 merged-PR re-entry, and a request naming no work is not checked; AC5 gains the `tier check: not run` form and drops the no-file fallback. Deferral descoped: a bare `/milestone-plan` whose work is picked at the question set is planned as a milestone.
 - 2026-10-14: re-audit: AC1 (full) — 1 finding: the last sentence's second clause can still attach to "the check" (a runtime claim); proposed "The skill says the check may read the code and docs the request names, and that it does not run step 2's sweeps or spawn subagents." Second AC1 line: stop for the user.
+- 2026-10-14: user at the AC1 stop: took the reader's rewording; no further reader.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

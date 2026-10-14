@@ -2,7 +2,7 @@
 
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
 mixed-request rule, the read bound, the two already-tiered sources, and the
-no-work deferral), the tier chip and each option's effect, the `tier
+no-work exemption), the tier chip and each option's effect, the `tier
 check:` work-log line, step 4's pointer to it, and the rulebook sentence
 that puts the chip before the run. Text is whitespace-collapsed on read
 (M171), so a phrase may wrap across lines.
@@ -51,20 +51,23 @@ class TestPlanTierCheck(unittest.TestCase):
             "is not a bug included.",
             "A request whose parts fall in more than one tier, or any of "
             "whose parts is `milestone`, is a milestone.",
-            "The check can read the code and docs the request names. It runs "
-            "neither step 2's sweeps nor its subagents.",
+            "The check can read the code and docs the request names. It does "
+            "not run step 2's sweeps or spawn subagents.",
         ):
             self.assertIn(phrase, self.step1)
 
     def test_routed_sources_and_no_work_requests(self):
         for phrase in (
-            "Two sources are already tiered: an invocation from `/milestone` "
-            "§4's `milestone` verdict, and a request that `/hotfix` step 1 "
-            "routed to `/milestone-plan` in this session.",
+            "The first is an invocation from `/milestone` §4's `milestone` "
+            "verdict.",
+            "The second is a `/milestone-plan` for work that `/hotfix` found "
+            "over the hotfix bar earlier in this session, whether that hotfix "
+            "stopped at step 1 or closed at step 7 after a merged-PR "
+            "re-entry.",
             "The check classifies both `milestone` without re-judging, and "
             "the work-log reason names the router.",
-            "A request that names no work skips the check until step 3 names "
-            "the work, and the check then runs before step 4.",
+            "A request that names no work is not checked: its work is chosen "
+            "at step 3's question set and planned as a milestone.",
         ):
             self.assertIn(phrase, self.step1)
 
@@ -98,10 +101,10 @@ class TestPlanTierCheck(unittest.TestCase):
         for phrase in (
             "Step 4 writes one work-log line in the first milestone file it "
             "writes: `tier check: milestone — <reason>` after a `milestone` "
-            "finding, or `tier check: <tier> — planned as a milestone at the "
-            "user's choice` after the plan-anyway option.",
-            "When step 4 writes no milestone file, the line goes into the "
-            "close block's recap.",
+            "finding, `tier check: <tier> — planned as a milestone at the "
+            "user's choice` after the plan-anyway option, or `tier check: not "
+            "run — work named at the question set` for a request that named "
+            "no work.",
         ):
             self.assertIn(phrase, self.step1)
         self.assertIn("**Tier-check line.** Write the `tier check:` work-log "
