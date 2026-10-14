@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -178,6 +178,7 @@ such a request is a milestone here.
 - 2026-10-14: substantive amendment: AC1 scoped to requests that name work and are not already tiered, its last sentence put under "the skill says"; AC2 lists both routers, the `/hotfix` arm covering step 1 and the step-7 merged-PR re-entry, and a request naming no work is not checked; AC5 gains the `tier check: not run` form and drops the no-file fallback. Deferral descoped: a bare `/milestone-plan` whose work is picked at the question set is planned as a milestone.
 - 2026-10-14: re-audit: AC1 (full) — 1 finding: the last sentence's second clause can still attach to "the check" (a runtime claim); proposed "The skill says the check may read the code and docs the request names, and that it does not run step 2's sweeps or spawn subagents." Second AC1 line: stop for the user.
 - 2026-10-14: user at the AC1 stop: took the reader's rewording; no further reader.
+- 2026-10-14: skill step 1, CHANGELOG, and guard pins follow the amended AC1, AC2, AC5; D-162 gained the no-work sentence in place, since it has not reached main; clause probe 0 survivors; `skills/tests`, verify five, and `cairn_validate` green; rulebook still 655 lines / 62,812 bytes. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
