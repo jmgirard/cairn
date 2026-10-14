@@ -5819,3 +5819,48 @@ maintainers ask to restyle in a way the other instructions caused.
 **Consequences:** Owner mode is unchanged. The rulebook's Plain style rule
 binds chat output and the record-prose rule binds `cairn/` records, so
 neither governs host text.
+
+### D-162 (2026-10-14): `/milestone-plan` checks the work tier before it plans, and its tier chip comes before the run — annotates D-144 (M250)
+
+**Context:** `/hotfix` step 1 sends work that is too large for a hotfix to
+`/milestone-plan`, but nothing sent work the other way. A request typed as
+a plan went through investigation, sweeps, and a criteria audit even when
+a hotfix or a direct edit fit it.
+
+**Decision:** `/milestone-plan` step 1 puts the request in one tier of the
+rulebook's "Sizing and the work tiers" before step 2. On a hotfix or
+trivial finding it poses one chip: take that route (recommended), plan a
+milestone anyway, or stop. On a milestone finding it asks nothing. The
+chip comes before the run's question set and is not a run gate, so D-144's
+two gates stand. Work that `/milestone` §4 or `/hotfix` step 1 already
+routed here in the same session is not re-judged. After a `/clear` that
+record is gone and work `/hotfix` routed is judged again (work from
+`/milestone` §4 names its issue and stays exempt), an accepted cost, since
+the plan-anyway option ends any bounce between the two skills. A request
+that names no work is not checked: its work is chosen at the question set
+and planned as a milestone. A request that names a GitHub issue is not
+checked either and is planned as a milestone, since `/milestone` with the
+issue is the door that tiers an issue; this keeps an issue's text from
+steering a direct edit and a bare `#N` from reaching `/hotfix` as a pull
+request (narrowed at the M250 review's third return, at the user's
+choice). The tier definitions do not change: a small
+change to running code that is not a bug stays a milestone. In guest mode
+the plan's check counts as trivial only an edit to `cairn/` files, because
+a guest has no commit to the default branch.
+
+**Rejected:** an automatic route with no chip, because a wrong call costs
+a rerun and the user keeps the plan-anyway option, falsified by tier chips
+the user always answers with the recommended route; a tier question inside
+step 3's question set, because step 2's sweeps and the criteria audit
+would run first on work that needs no milestone; widening `/hotfix` to
+small non-bug changes, at the user's choice. The chip itself is falsified
+by tier chips the user always answers with "plan anyway".
+
+**Consequences:** A plan for hotfix-sized or trivial work costs one chip in
+place of a full run. The trivial option names the file and the change, so
+selecting it approves that edit's commit and push; the plan shows the edit
+verbatim when it commits it, and its checks before the chip keep anything
+else from being pushed with it. The rulebook's git model still says the
+default branch takes only docs-only tracking commits, while its trivial
+tier already allowed a direct commit; this route acts on the trivial tier,
+and reconciling the git-model sentence is left to a candidate row.

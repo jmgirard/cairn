@@ -4,6 +4,27 @@
 
 ### Changes that affect existing repos
 
+- **The plan checks that the work needs a milestone before it plans one.**
+  Before `/milestone-plan` investigates, it puts the request in one work
+  tier. If the request is a user-visible bug that a hotfix can fix, or an
+  edit with no runtime effect such as a typo, the plan asks one question:
+  take that route, plan a milestone anyway, or stop. The hotfix route
+  starts `/hotfix` with your request text. In owner mode the direct-edit
+  route makes the edit, shows it, commits only the files it touched, and
+  pushes them to the default branch. The question names the file and the
+  change. Before asking, the plan checks three things. The repo has a
+  remote. The checkout is on the default branch and level with the
+  remote. Nothing is staged, and those files hold no uncommitted changes.
+  If a check fails, the question says so, and the route makes no edit. A
+  failed or rejected push is never forced. In guest mode the direct edit
+  applies only to `cairn/` files and stays on disk. A small change to
+  running code that is not a bug still gets a milestone. A request that
+  names a GitHub issue is not checked: `/milestone` with the issue is the
+  way to judge an issue. An issue that `/milestone` judged a milestone and
+  handed to the plan is not checked again. Neither is work that `/hotfix`
+  found too large earlier in the same session. A plain `/milestone-plan`
+  that names no work is not checked: the work you pick at the question
+  set is planned as a milestone.
 - **A hotfix removes the candidate row it fixes, once the fix merges.**
   `/hotfix` now looks for ROADMAP candidate rows that describe the bug: a
   row whose title the request quotes, or one that describes the same bug.
