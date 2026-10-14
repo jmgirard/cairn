@@ -1,7 +1,7 @@
 """Regression guard: the plan checks the work tier before it plans (M250).
 
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
-mixed-request rule, the read bound, the issue read, the two already-tiered
+mixed-request rule, the read bound, the issue exemption, the two already-tiered
 sources, and the no-work exemption), the trivial-route checks, the tier chip
 and each option's effect, the `tier check:` work-log line, step 4's pointer
 to it, the rulebook sentence that puts the chip before the run, and
@@ -60,9 +60,10 @@ class TestPlanTierCheck(unittest.TestCase):
     def test_routed_sources_and_no_work_requests(self):
         for phrase in (
             "The check runs on every source of request that names work: "
-            "typed text, a candidate row, a pane press, an issue.",
-            "For an issue, the check reads it with `gh issue view <N> --repo "
-            "<base-repo> --json title,body,url` and judges its body.",
+            "typed text, a candidate row, a pane press.",
+            "A request that names a GitHub issue (`#N` or an issue URL) is not "
+            "checked and is planned as a milestone, since `/milestone` with the "
+            "issue is the door that tiers an issue.",
             "The first is an invocation from `/milestone` §4's `milestone` "
             "verdict.",
             "The second is a `/milestone-plan` for work that `/hotfix` found "
@@ -94,9 +95,7 @@ class TestPlanTierCheck(unittest.TestCase):
             "request as its argument, in `/milestone` §4's form. The argument "
             "opens with a one-line summary of the bug. The request text "
             "follows unchanged, with a candidate row's title quoted verbatim. "
-            "An issue is named as `issue <URL>`, from the check's read, never "
-            "as a bare `#N`, which `/hotfix` reads as a pull request. The plan "
-            "writes no file.",
+            "The plan writes no file.",
             "`trivial`: the option's description names the file and the "
             "change and says where the edit goes.",
             "In owner mode it is committed and pushed to the default branch. "
@@ -115,7 +114,8 @@ class TestPlanTierCheck(unittest.TestCase):
             "Otherwise the plan shows the edit verbatim in chat and runs `git "
             "add -- <paths>`, `git commit -m \"<one-line summary>\" -- "
             "<paths>`, and `git push <base> HEAD:<default-branch>`.",
-            "If the push is rejected, it never forces. The close block then "
+            "If the push fails or is rejected, it never forces. The close "
+            "block then "
             "names the local commit and the undo command `git reset --soft "
             "HEAD~1`.",
             "On success it ends with a close block naming the commit.",

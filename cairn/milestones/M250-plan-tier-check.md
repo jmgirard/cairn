@@ -46,9 +46,10 @@ such a request is a milestone here.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [x] AC1: For a request that names work and that AC2's routers have not
-      already tiered, `skills/milestone-plan/SKILL.md` step 1 holds a tier
-      check that runs before step 2. It cites tracking-rules "Sizing and the work
+- [ ] AC1: For a request that names work, names no GitHub issue, and that
+      AC2's routers have not already tiered,
+      `skills/milestone-plan/SKILL.md` step 1 holds a tier check that runs
+      before step 2. It cites tracking-rules "Sizing and the work
       tiers" and puts the request as a whole in exactly one tier: `hotfix`
       when it is a user-visible bug whose fix restores documented behavior
       in one sitting with no design decision; `trivial` when it has no
@@ -58,13 +59,15 @@ such a request is a milestone here.
       parts is `milestone`, is a milestone. The skill says the check may
       read the code and docs the request names, and that it does not run
       step 2's sweeps or spawn subagents.
-- [x] AC2: The skill says that two invocations are classified `milestone`
+- [ ] AC2: The skill says that two invocations are classified `milestone`
       without re-judging, and that the work-log reason names the router:
       an invocation from `/milestone` §4's `milestone` verdict, and a
       `/milestone-plan` for work that `/hotfix` found over the hotfix bar
       earlier in this session, whether that hotfix stopped at step 1 or
       closed at step 7 after a merged-PR re-entry. A request that names no
-      work is not checked.
+      work is not checked. A request that names a GitHub issue (`#N` or an
+      issue URL) is not checked and is planned as a milestone, since
+      `/milestone` with the issue is the door that tiers an issue.
 - [x] AC3: When the check finds `hotfix` or `trivial`, the skill poses one
       chip before step 2. Its question text names the tier found and the
       reason. Its options are the tier's route (marked recommended),

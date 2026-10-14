@@ -5837,7 +5837,12 @@ routed here in the same session is not re-judged. After a `/clear` that
 record is gone and routed work is judged again, an accepted cost, since
 the plan-anyway option ends any bounce between the two skills. A request
 that names no work is not checked: its work is chosen at the question set
-and planned as a milestone. The tier definitions do not change: a small
+and planned as a milestone. A request that names a GitHub issue is not
+checked either and is planned as a milestone, since `/milestone` with the
+issue is the door that tiers an issue; this keeps an issue's text from
+steering a direct edit and a bare `#N` from reaching `/hotfix` as a pull
+request (narrowed at the M250 review's third return, at the user's
+choice). The tier definitions do not change: a small
 change to running code that is not a bug stays a milestone. In guest mode
 the plan's check counts as trivial only an edit to `cairn/` files, because
 a guest has no commit to the default branch.

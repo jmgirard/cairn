@@ -54,10 +54,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    is `milestone`, is a milestone. The check can read the code and docs the
    request names. It does not run step 2's sweeps or spawn subagents. The
    check runs on every source of request that names work: typed text, a
-   candidate row, a pane press, an issue. For an issue, the check reads it
-   with `gh issue view <N> --repo <base-repo> --json title,body,url` and
-   judges its body. Two invocations are already
-   tiered. The first is an invocation from `/milestone` §4's `milestone`
+   candidate row, a pane press. A request that names a GitHub issue (`#N`
+   or an issue URL) is not checked and is planned as a milestone, since
+   `/milestone` with the issue is the door that tiers an issue. Two
+   invocations are already tiered. The first is an invocation from `/milestone` §4's `milestone`
    verdict. The second is a `/milestone-plan` for work that `/hotfix` found
    over the hotfix bar earlier in this session, whether that hotfix stopped
    at step 1 or closed at step 7 after a merged-PR re-entry. The check
@@ -83,9 +83,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      through the Skill tool with the request as its argument, in
      `/milestone` §4's form. The argument opens with a one-line summary of
      the bug. The request text follows unchanged, with a candidate row's
-     title quoted verbatim. An issue is named as `issue <URL>`, from the
-     check's read, never as a bare `#N`, which `/hotfix` reads as a pull
-     request. The plan writes no file. `trivial`: the option's description
+     title quoted verbatim. The plan writes no file. `trivial`: the option's description
      names the file and the change and says where the edit goes. In owner
      mode it is committed and pushed to the default branch. In guest mode
      it is left uncommitted on disk. In owner mode the description also
@@ -99,8 +97,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      failed check ends the same way. Otherwise the plan shows the edit
      verbatim in chat and runs `git add -- <paths>`,
      `git commit -m "<one-line summary>" -- <paths>`, and
-     `git push <base> HEAD:<default-branch>`. If the push is rejected, it
-     never forces. The close block then names the local commit and the
+     `git push <base> HEAD:<default-branch>`. If the push fails or is
+     rejected, it never forces. The close block then names the local commit and the
      undo command `git reset --soft HEAD~1`. On success it ends with a
      close block naming the commit. In guest mode it writes the edit on
      disk with no commit and ends with a close block.
