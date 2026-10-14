@@ -297,3 +297,4 @@ Pass 4, 2026-10-14, head 8ae61d4f, synced with origin/main.
 - blame-history #1: the extended "Branch-protection compatibility" row takes ROADMAP.md to 24,262 bytes, over its 24,000 budget — fix now (sentence shortened)
 - prior-review #1: the issue exemption lists only `#N` and a URL, narrower than the forms `/milestone` accepts (M232) — fix now ("in any form `/milestone` accepts, such as")
 - prior-review #2: re-wrap debris past 80 columns in SKILL.md step 1 (M249 fixed the same) — fix now (re-wrapped; the pass-3 style reject stands for README and CHANGELOG)
+- fixed: pass-4 diff-bug #1, #2, prior-review #1, #2, fixed 51d55b5f; blame-history #1 fixed by reverting the branch-protection row extension (ROADMAP.md 23,981 bytes) and moving the git-model note to the hygiene row "Tier check edges (M250 review)"; verify five, `skills/tests`, `cairn_validate` green; guard 37 clauses, 0 survivors.
