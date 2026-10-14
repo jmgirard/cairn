@@ -190,6 +190,7 @@ such a request is a milestone here.
 - 2026-10-14: substantive amendment: AC1 now opens "For a request that names work, names no GitHub issue, and that AC2's routers have not already tiered"; AC2 adds "A request that names a GitHub issue (`#N` or an issue URL) is not checked and is planned as a milestone, since `/milestone` with the issue is the door that tiers an issue." AC1 and AC2 unticked for re-verification.
 - 2026-10-14: T9 added for review return 3 (minor amendment; Coverage maps AC1, AC2 to it). T9: issue read and `issue <URL>` sentence removed from step 1, issue exemption added; push "fails or is rejected"; CHANGELOG, D-162 updated; git-model note absorbed into "Branch-protection compatibility"; guard 36 clauses, 0 survivors.
 - 2026-10-14: review pass 4: 5 findings, none over the return floor; all fixed on the branch (51d55b5f), the branch-protection row extension reverted for the ROADMAP byte budget, its note moving to the hygiene row. Correction: pass 2 returned 22 findings, not 23, and pass 3 returned 6, not 7. Copilot's two threads replied to and resolved.
+- 2026-10-14: step-7 approval: m250-plan-tier-check approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -304,4 +305,3 @@ Pass 4, 2026-10-14, head 8ae61d4f, synced with origin/main.
 - copilot: review body (2 open findings, both the threads above) — noted
 - Copilot level: Lite (set by GitHub's settings); reviewed an earlier head, not re-requested.
 - conversation: no other reviews or comments on PR #261.
-- 2026-10-14: step-7 approval: m250-plan-tier-check approved for merge
