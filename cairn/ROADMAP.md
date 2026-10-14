@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M250 | The plan checks that the work needs a milestone before it plans one | planned | — | normal | milestones/M250-plan-tier-check.md |
+| M250 | The plan checks that the work needs a milestone before it plans one | in-progress | — | normal | milestones/M250-plan-tier-check.md |
 ## Candidates
 
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

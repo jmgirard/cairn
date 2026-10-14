@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1, IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/milestone-plan` does in every adopting repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m250-plan-tier-check   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -119,15 +119,15 @@ such a request is a milestone here.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Step 1 (`skills/milestone-plan/SKILL.md:37-41`): add the tier
+- [x] T1: Step 1 (`skills/milestone-plan/SKILL.md:37-41`): add the tier
       check paragraph after the in-progress check, without renumbering
       steps (lesson M148). Trace each entry path to it (lesson M172):
       `/milestone` §4's Do it now (`skills/milestone/SKILL.md`), `/hotfix`
       step 1's over-the-bar route (`skills/hotfix/SKILL.md:33-45`), the
       pane's ✎ press (README.md:320), and a request naming no work.
-- [ ] T2: Add the chip and each option's effect, with the owner and
+- [x] T2: Add the chip and each option's effect, with the owner and
       guest arms of the trivial route.
-- [ ] T3: Add the `tier check:` work-log line to step 4's rules.
+- [x] T3: Add the `tier check:` work-log line to step 4's rules.
 - [ ] T4: Add the sentence to tracking-rules "Question gates and phase
       closes" (`:378-390`). Append a D-entry annotating D-144 on the chip's
       place before the run. Re-seed the rulebook baseline at its three
@@ -161,6 +161,8 @@ such a request is a milestone here.
 - 2026-10-14: plan gate chose a chip on a smaller-tier finding over an automatic route because a wrong call would cost a rerun and the user keeps the plan-anyway option; falsified by tier chips the user always answers with the recommended route.
 - 2026-10-14: plan gate chose the tier check in step 1 over a question in step 3's set because step 2's sweeps and the criteria audit would run first on work that needs no milestone; falsified by tier chips that cannot be answered without step 2's investigation.
 - 2026-10-14: plan gate kept the rulebook's tier definitions over widening `/hotfix` to small non-bug changes, at the user's choice; falsified by small refactors that the check keeps sending through a full milestone run.
+- 2026-10-14: implement started on m250-plan-tier-check; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-14: T1-T3: tier check, tier chip, and the `tier check:` line added to step 1 of `skills/milestone-plan/SKILL.md`, with a pointer bullet in step 4; no steps renumbered; entry paths traced: `/milestone` §4 passes the issue (exempt), `/hotfix` step 1 routes by a close block (exempt in-session), the ✎ press passes a row title (checked).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
