@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M250: The plan checks that the work needs a milestone before it plans one
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -109,8 +109,8 @@ such a request is a milestone here.
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T1, T6
-- AC2 → T1, T6
+- AC1 → T1, T6, T9
+- AC2 → T1, T6, T9
 - AC3 → T2, T4, T6, T7, T8
 - AC4 → T2, T6, T7, T8
 - AC5 → T3, T6
@@ -138,6 +138,7 @@ such a request is a milestone here.
 - [x] T7: Review return 1: each pass-1 fix-now line of the Review section.
 - [x] T8: Review return 2: each pass-2 fix-now line of the Review section;
       the trivial route's checks run before the chip.
+- [x] T9: Review return 3: issue requests skip the check (AC1, AC2).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -185,6 +186,9 @@ such a request is a milestone here.
 - 2026-10-14: T8: issue read by `gh issue view`; hotfix argument keeps the request text and a row's title verbatim; five trivial-route checks run before the chip, in order (remote, fetch, branch level, nothing staged, touched files clean); option names the file and change, the other dirty paths, and any failed check; `git add`/`commit`/`push <base> HEAD:<default-branch>` named; undo command on a rejected push; README core loop and expectations bullet reworded; CHANGELOG and D-162 updated (guest wording, IP1 sentence, git-model note); guard pins 36 clauses incl. the README row, 0 survivors; verify five, `skills/tests`, `cairn_validate` green. Status → review.
 - 2026-10-14: review pass 3: evidence re-recorded; three-lens fan-out returned 7 findings.
 - 2026-10-14: review return 3: issue handling in the tier check — a typed `#N` passed unchanged to `/hotfix` (diff-bug #1), and the issue body read with no data-not-instructions rule while the trivial route can push (prior-review #1). Thrash rule (a) fires at this third defect return: stop for the user with descope-or-park; no retry queued.
+- 2026-10-14: user at the thrash stop: narrow, so requests naming a GitHub issue skip the tier check; AC1 and AC2 amended with the shown wording, no further reader (each already has two `re-audit:` lines).
+- 2026-10-14: substantive amendment: AC1 now opens "For a request that names work, names no GitHub issue, and that AC2's routers have not already tiered"; AC2 adds "A request that names a GitHub issue (`#N` or an issue URL) is not checked and is planned as a milestone, since `/milestone` with the issue is the door that tiers an issue." AC1 and AC2 unticked for re-verification.
+- 2026-10-14: T9 added for review return 3 (minor amendment; Coverage maps AC1, AC2 to it). T9: issue read and `issue <URL>` sentence removed from step 1, issue exemption added; push "fails or is rejected"; CHANGELOG, D-162 updated; git-model note absorbed into "Branch-protection compatibility"; guard 36 clauses, 0 survivors.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
