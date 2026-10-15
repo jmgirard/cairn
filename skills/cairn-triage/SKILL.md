@@ -63,7 +63,9 @@ one of them absorbs is never dropped or merged away in this pass
    each: its source (`candidate` / `known issue`), its subject (for a
    candidate, its short title, tracking-rules "Candidate short title",
    when that title is not empty and runs to ~80 characters at most; for
-   any other item, the text up to the first colon, trimmed; when no
+   a candidate whose short title is empty, the text after its leading
+   `: `, up to the first comma, trimmed to ~80 characters; for any other
+   item, the text up to the first colon, trimmed; when no
    colon falls within the first ~80 characters, the first clause — up to
    the first comma — trimmed to that length), its priority (`high` / `normal` / `low`; `—` for a Known
    issues entry), its byte length, and its added date.
@@ -104,7 +106,7 @@ one of them absorbs is never dropped or merged away in this pass
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. Its opening is rewritten into a short title (tracking-rules "Candidate short title"): a few words that name the row, then `: `, put before the row's text, which stays as it is. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's opening token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that a finding-absorbing row
@@ -225,7 +227,7 @@ one of them absorbs is never dropped or merged away in this pass
      an item the user pulled out of a `merge` or `drop` stays as it was;
      an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out,
      and it touches the row's opening token and the row's place in the order alone. An accepted
-     `retitle`'s rewrite of a listed mention in another row is the other: it changes that quote alone.
+     `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the other: it changes that quote alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
    `keep` (with no priority change) or `promote`, or nothing enumerated —

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -180,6 +180,8 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: all tasks done; verify green (both suites, both validates, `claude plugin test` 1714 pass), `skills/tests` hand-run OK; status set to review.
 - 2026-10-15: review return 1: AC5 — `/cairn-triage`'s `retitle` apply step replaced a title cut at ` — ` or a long `: ` title with the new title, deleting the row's description, so it did not rewrite only the row's opening (diff-bug #1, blame-history #1); the other fix-now findings in the Review section ride the same return.
 - 2026-10-15: T6 added for review return 1 (minor amendment) and done: `retitle` now keeps the token, puts the new title and `: ` before the row's text, and rewrites listed mentions in other ROADMAP rows and Known issues entries; plus the triage subject bound, eight-word vocabulary, carve-outs, stamp, uniqueness, same-pass scope, merge-survivor exclusion, `JS_TRIM` with `test_python_candidates_cut_and_trim_edges` (red on bare `strip()`), two TS trim rows, the skeleton and its fixture, `types/index.d.ts`, D-163's D-108 and D-035 sentences, and two rewraps; verify green (`claude plugin test` 0 fail), `skills/tests` OK.
+- 2026-10-15: claim audit: 38 claims read, 6 corrected — skills/cairn-triage/SKILL.md (3), CHANGELOG.md (1), cairn/DECISIONS.md (1), scripts/tests/test_status_fixtures.py (1); scope: the return's added lines (`6b2d646d..` outside milestone files); the same reader re-read the six and found all fixed.
+- 2026-10-15: return work done; verify green, `skills/tests` OK; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -260,10 +260,10 @@ class StatusFixtureAgreement(unittest.TestCase):
                     self.assertEqual(python_blocked(start, unreadable), expected.get("blocked", []))
 
     def test_python_candidates_cut_and_trim_edges(self):
-        # The same rows and titles as the M251 review cases in
-        # hooks/status/reader.test.ts, written out by hand on both sides: an
-        # empty title, and the trim edges where Python's bare strip()
-        # differs from JavaScript's trim().
+        # The same rows and titles as three cases in
+        # hooks/status/reader.test.ts, written out by hand on both sides: the
+        # M251 AC1 empty title, and the two M251 review trim edges where
+        # Python's bare strip() differs from JavaScript's trim().
         rows = [
             ": an empty short title — added 2026-01-04",
             "Trailing byte-order mark﻿: x — added 2026-01-05",

@@ -14,7 +14,8 @@
   ROADMAP skeleton shows that shape. `/cairn-triage` gains a `retitle`
   proposal for a row whose short title is empty, longer than 60
   characters, or the same as another row's. It puts a new short title
-  before the row's text, which stays as it is, and rewrites each
+  before the row's text, which stays as it is (a row whose title is empty
+  loses only its leading `: `), and rewrites each
   double-quoted mention of the old title in the other ROADMAP rows and in
   DESIGN.md's Known issues, except a mention of a title that several rows
   share, which it lists and leaves as it is. A quote of a row's whole
