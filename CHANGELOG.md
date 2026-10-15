@@ -6,16 +6,19 @@
 
 - **Candidate rows have one written short-title rule.** A row's short
   title is still its text up to the first `: `. A row with no `: ` is now
-  cut at its first ` — `, so the cairn pane no longer shows its date and
-  links. The rulebook now tells whoever writes a row to open it with a few
+  cut at its first ` — `, so the cairn pane no longer shows the date and
+  links that follow it. A row with neither still shows all its text. The
+  rulebook now tells whoever writes a row to open it with a few
   words that name the row, then `: ` and the details, with an area word
   inside the title (`ordinal REML: …`, not `ordinal: REML. …`). The new
   ROADMAP skeleton shows that shape. `/cairn-triage` gains a `retitle`
   proposal for a row whose short title is empty, longer than 60
   characters, or the same as another row's. It rewords only the row's
-  opening and also rewrites each quote of the old title in the other
-  candidate rows. A quote of a row's whole text, written before this
-  change for a row with no `: `, no longer matches that row's title.
+  opening and also rewrites each double-quoted mention of the old title in
+  the other candidate rows, except a mention of a title that several rows
+  share, which it lists and leaves as it is. A quote of a row's whole
+  text, written before this change for a row with no `: ` but a ` — `, no
+  longer matches that row's title.
 
 - **The plan checks that the work needs a milestone before it plans one.**
   Before `/milestone-plan` investigates, it puts the request in one work

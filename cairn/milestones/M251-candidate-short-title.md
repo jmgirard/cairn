@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -173,3 +173,5 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T4 done: `/cairn-triage` gains `retitle` (table row, a Title evidence class checked last on rows the others leave `keep`, the proposal table's naming, the apply step, and the no-D-entry list); a `compress` or `split` rewrite opens each row with a short title; verify green, `skills/tests` OK.
 - 2026-10-15: agent chose to check the Title class last, on rows the other classes leave `keep`, over letting it pre-empt them, because a drop or merge removes the title problem with the row.
 - 2026-10-15: T5 done: README's pane section (rule, writing shape, `retitle`), DESIGN.md's `candidateRows` description, and a CHANGELOG entry under "Changes that affect existing repos"; AC3's sweep over README.md and cairn/DESIGN.md now finds only hits that agree with the rule (plus README.md:140, about milestone titles); verify green.
+- 2026-10-15: claim audit: 44 claims read, 6 corrected — CHANGELOG.md (3), skills/cairn-triage/SKILL.md (1), skills/shared/tracking-rules.md (2); the same reader re-read the six and found all fixed; the rulebook baseline re-seeded to 664 lines / 63,656 bytes at its three sites.
+- 2026-10-15: all tasks done; verify green (both suites, both validates, `claude plugin test` 1714 pass), `skills/tests` hand-run OK; status set to review.

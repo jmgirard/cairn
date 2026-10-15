@@ -241,8 +241,9 @@ one of them absorbs is never dropped or merged away in this pass
    stance, and `added <original date> — <original origin>, routed from
    Known issues <today>` (the accepting `M<NNN>` as the origin); `retitle`
    replaces the row's text before its old cut (the old title and its `: `
-   or ` — `) with the new title and `: `, and rewrites each listed mention
-   in the other candidate rows; `promote` and `keep` change nothing; an accepted priority change adds, replaces,
+   or ` — `) with the new title and `: `, or, for a row with no old cut,
+   puts the new title and `: ` before its text, and rewrites each listed
+   mention in the other candidate rows; `promote` and `keep` change nothing; an accepted priority change adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
    token) and moves the row to its level. Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.

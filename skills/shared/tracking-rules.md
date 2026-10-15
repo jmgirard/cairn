@@ -216,9 +216,10 @@ an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `no
 up to the first `: `. A row with no `: ` is cut at its first ` — ` (space, em dash, space). A row with neither is all
 of that text. Outer spaces are removed. The cairn pane shows the short title, and the skills name a row by it: a ✎
 press plans the row by it, records-hygiene §7 groups the rows that quote it in double quotes, and `/hotfix` matches a
-fix to its row by it. Open each row with a few words that name the row and differ from every other row's title, then
-`: ` and the detail. An area word joins the title and does not stand before it: write `ordinal REML: …`, not
-`ordinal: REML. …`. `/cairn-triage`'s `retitle` disposition rewords a long or shared title (D-163).
+row whose title the argument quotes. Open each row with a few words that name the row and differ from every other
+row's title, then `: ` and the detail. An area word joins the title and does not stand before it: write
+`ordinal REML: …`, not `ordinal: REML. …`. `/cairn-triage`'s `retitle` disposition rewords an empty, long, or shared
+title (D-163).
 
 **Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
 heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched
