@@ -144,13 +144,21 @@ def python_blocked(start, unreadable=()):
 
 PRIORITY = re.compile(r"\[(high|low)\] ")
 
+# The characters JavaScript's String.prototype.trim removes (ECMAScript's
+# WhiteSpace and LineTerminator), so the twin trims as `candidateRows` does.
+# Python's bare strip() keeps U+FEFF and removes U+001F; the other characters
+# it adds (U+001C-U+001E, U+0085) break lines first, so they never reach the
+# trim (M251 review).
+JS_TRIM = "\t\n\v\f\r \u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
+
 
 def python_candidates(start):
     """The pane's candidate rows for a session started in `start` (M207 AC3):
     the lines that open with `- ` in the sections `candidate_count` walks
     (not the indented ones it also counts), each section read after its own
     HTML comments are removed, each row its priority and the text after the
-    token before its first `: `."""
+    token before its first `: `, else before its first ` — `, else all of it
+    (M251)."""
     root = cs.cc.find_cairn_root(str(start))
     if root is None:
         return []
@@ -174,7 +182,8 @@ def python_candidates(start):
             priority = m.group(1) if m else "normal"
             if m:
                 text = text[m.end():]
-            out.append({"priority": priority, "title": text.split(": ", 1)[0].strip()})
+            cut = ": " if ": " in text else " — "
+            out.append({"priority": priority, "title": text.split(cut, 1)[0].strip(JS_TRIM)})
     return out
 
 
@@ -250,6 +259,30 @@ class StatusFixtureAgreement(unittest.TestCase):
                     self.assertEqual(python_next(start), expected["next"])
                     self.assertEqual(python_candidates(start), expected["candidates"])
                     self.assertEqual(python_blocked(start, unreadable), expected.get("blocked", []))
+
+    def test_python_candidates_cut_and_trim_edges(self):
+        # The same rows and titles as three cases in
+        # hooks/status/reader.test.ts, written out by hand on both sides: the
+        # M251 AC1 empty title, and the two M251 review trim edges where
+        # Python's bare strip() differs from JavaScript's trim().
+        rows = [
+            ": an empty short title — added 2026-01-04",
+            "Trailing byte-order mark\ufeff: x — added 2026-01-05",
+            "Trailing unit separator\u001f: x — added 2026-01-06",
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp) / "repo"
+            (root / "cairn").mkdir(parents=True)
+            text = "# Roadmap\n\n## Candidates\n\n" + "".join(f"- {row}\n" for row in rows)
+            (root / "cairn" / "ROADMAP.md").write_text(text, encoding="utf-8")
+            self.assertEqual(
+                python_candidates(root),
+                [
+                    {"priority": "normal", "title": ""},
+                    {"priority": "normal", "title": "Trailing byte-order mark"},
+                    {"priority": "normal", "title": "Trailing unit separator\u001f"},
+                ],
+            )
 
     def test_pr_number_header_forms(self):
         # The forms reader.test.ts gives `prNumber`, held to `pr_number`.

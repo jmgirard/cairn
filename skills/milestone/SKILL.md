@@ -115,8 +115,8 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-655 lines / 62,812 bytes (M250, 2026-10-14, the plan's tier chip in the
-question-gates section; bytes, because a
+664 lines / 63,690 bytes (M251, 2026-10-15, the candidate short-title
+paragraph; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
@@ -136,8 +136,9 @@ The script deliberately does not judge these — do them yourself and report:
   `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
   drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
   demand, never from here. A finding-absorbing group — a candidate row and
-  the rows that name its exact title in double quotes (direct references
-  only), together carrying deferred review findings filed from two or more
+  the rows that name its short title (tracking-rules "Candidate short
+  title") exactly in double quotes (direct references only), together
+  carrying deferred review findings filed from two or more
   distinct milestones — is triaged even though not untouched: pose the
   disposition chip whose options `skills/shared/records-hygiene.md` §7
   states, rather than restating them here; a row or group meeting both

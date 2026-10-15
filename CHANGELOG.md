@@ -4,6 +4,24 @@
 
 ### Changes that affect existing repos
 
+- **Candidate rows have one written short-title rule.** A row's short
+  title is still its text up to the first `: `. A row with no `: ` is now
+  cut at its first ` — `, so the cairn pane no longer shows the date and
+  links that follow it. A row with neither still shows all its text. The
+  rulebook now tells whoever writes a row to open it with a few
+  words that name the row, then `: ` and the details, with an area word
+  inside the title (`ordinal REML: …`, not `ordinal: REML. …`). The new
+  ROADMAP skeleton shows that shape. `/cairn-triage` gains a `retitle`
+  proposal for a row whose short title is empty, longer than 60
+  characters, or the same as another row's. It puts a new short title
+  before the row's text, which stays as it is (a row whose title is empty
+  loses only its leading `: `), and rewrites each
+  double-quoted mention of the old title in the other ROADMAP rows and in
+  DESIGN.md's Known issues, except a mention of a title that several rows
+  share, which it lists and leaves as it is. A quote of a row's whole
+  text, written before this change for a row with no `: ` but a ` — `, no
+  longer matches that row's title.
+
 - **The plan checks that the work needs a milestone before it plans one.**
   Before `/milestone-plan` investigates, it puts the request in one work
   tier. If the request is a user-visible bug that a hotfix can fix, or an

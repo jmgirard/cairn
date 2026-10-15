@@ -711,8 +711,9 @@ re-enters here, at the step the record shows is next:
    filed from two or more distinct milestones), it files this milestone's
    deferred findings as a new row instead, and names the row in step 10's
    handoff sentence or close block. Any row this pass files that
-   cross-references another candidate row names that row's exact title in
-   double quotes, after its own title's `: `, so §7 can group them. The disposition chip of
+   cross-references another candidate row names that row's short title
+   (tracking-rules "Candidate short title") exactly in double quotes, after
+   its own title's `: `, so §7 can group them. The disposition chip of
    `skills/shared/records-hygiene.md` §7 belongs to the `/milestone` health
    audit, which the user runs; review poses no question here. A whole-list
    sweep is `/cairn-triage`, run by the user on demand, never from this

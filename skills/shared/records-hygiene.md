@@ -34,7 +34,7 @@ silently outrank a record it does not mention.
 ## 7. A finding-absorbing group of candidate rows is dispositioned, not silently extended
 
 **Rows that name each other count as one group.** A candidate row's title is
-its text after the `- ` and any `[high]`/`[low]` token, up to the first `: `.
+its short title (tracking-rules "Candidate short title").
 The row and each row that names its exact title in double quotes form its
 group, direct references only. A group whose rows together carry deferred
 review findings filed from two or more distinct milestones (named in

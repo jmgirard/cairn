@@ -17,7 +17,7 @@ import {
   sectionFields,
   workableRows,
 } from './reader'
-import type { BandState, FileSource } from './reader'
+import type { BandState, CandidateRow, FileSource } from './reader'
 
 // loadBand gives null for a found ROADMAP it cannot read. These tests read good files.
 async function loaded(source: FileSource): Promise<BandState> {
@@ -250,6 +250,31 @@ describe('candidate rows (M207 review)', () => {
     const text = '## Candidates\n<!--\n- [low] Hidden: x\n-->\n- [high] High row: x\n- Normal row: y\n'
     expect(candidateRows(text)).toEqual(rows)
   })
+})
+
+// The short title (M251 AC1): the text after the token up to the first
+// `: `, else up to the first ` — `, else all of it. The first two rows
+// open as glmmTMB's ROADMAP rows do.
+describe('the short title is cut at the first `: `, else at the first ` — ` (M251 AC1)', () => {
+  const table: [string, CandidateRow][] = [
+    ['ordinal: REML. The fit warns — added 2026-10-01', { priority: 'normal', title: 'ordinal' }],
+    ['loglog link for `binomial`. Needs a case — added 2026-10-15', { priority: 'normal', title: 'loglog link for `binomial`. Needs a case' }],
+    ['Title — detail: more — added 2026-01-01', { priority: 'normal', title: 'Title — detail' }],
+    ['[low] Low row — added 2026-01-02', { priority: 'low', title: 'Low row' }],
+    ['A `a — b` dash in backticks — added 2026-01-03', { priority: 'normal', title: 'A `a' }],
+    ['A row with no colon and no dash', { priority: 'normal', title: 'A row with no colon and no dash' }],
+    [': an empty short title — added 2026-01-04', { priority: 'normal', title: '' }],
+    // The trim edges where Python's bare strip() differs from trim(), held
+    // on the Python side by test_python_candidates_cut_and_trim_edges
+    // (M251 review).
+    ['Trailing byte-order mark\uFEFF: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark' }],
+    ['Trailing unit separator\u001F: x — added 2026-01-06', { priority: 'normal', title: 'Trailing unit separator\u001F' }],
+  ]
+  for (const [text, row] of table) {
+    test(text, () => {
+      expect(candidateRows(`## Candidates\n\n- ${text}\n`)).toEqual([row])
+    })
+  }
 })
 
 describe('reader details', () => {

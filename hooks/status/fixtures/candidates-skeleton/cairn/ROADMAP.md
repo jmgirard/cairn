@@ -12,9 +12,11 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
 
 ## Candidates
 <!-- unnumbered ideas; one line each, ordered high → normal → low:
-     - [high] idea — added YYYY-MM-DD — links
-     - idea — added YYYY-MM-DD — links
-     the opening token is `[high]`/`[low]` or absent (`normal`) — tracking-rules "Candidate priority token" -->
+     - [high] short title: detail — added YYYY-MM-DD — links
+     - short title: detail — added YYYY-MM-DD — links
+     the opening token is `[high]`/`[low]` or absent (`normal`) — tracking-rules "Candidate priority token";
+     open each row with its short title, the words the cairn pane shows, then `: `;
+     tracking-rules "Candidate short title" has the whole rule -->
 <!--
 - [high] A row someone commented out: flush left, so only the comment hides it
 -->

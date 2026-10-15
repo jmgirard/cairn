@@ -311,12 +311,19 @@ milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
 ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `·` for a normal one, and
-`↓` for a `[low]` one, then the row's text up to its first `: `. Rows
+`↓` for a `[low]` one, then the row's short title. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
 listed. A row's short title is its text after a leading `[high] ` or
 `[low] ` token with its space, up to its first `: `, with outer spaces
-removed. While no cairn skill runs or waits on its background work, each
-row whose short title is not empty carries a `✎` button at its right end.
+removed. A row with no `: ` is cut at its first ` — ` (space, em dash,
+space), so its date and links stay out of the title. A row with neither
+shows all its text. Open each row with a few words that name it, then
+`: ` and the details, for example
+`- [high] Pane refresh lag: details — added 2026-10-15`.
+`/cairn-triage` offers a new short title for a row whose title is empty, longer
+than 60 characters, or the same as another row's. While no cairn skill
+runs or waits on its background work, each row whose short title is not
+empty carries a `✎` button at its right end.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short
 title in the cleared conversation. The band has no such button. As with
 the next-step button, a press while Claude works outside a cairn skill

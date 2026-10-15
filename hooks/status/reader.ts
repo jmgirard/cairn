@@ -540,7 +540,9 @@ const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
 // `candidate_count` in scripts/cairn_scripts.py, which also counts indented
 // lines and lines inside comments. A row's priority is `high` or `low` when
 // its text opens with exactly `[high] ` or `[low] `, else `normal`. Its
-// short title is the text after that token up to the first `: `, or all of it.
+// short title is the text after that token up to the first `: `, else up
+// to the first ` — `, else all of it (M251; tracking-rules "Candidate short
+// title").
 export function candidateRows(roadmap: string): CandidateRow[] {
   const bodies: string[][] = []
   let body: string[] | null = null
@@ -562,7 +564,8 @@ export function candidateRows(roadmap: string): CandidateRow[] {
       priority = match[1]
       text = text.slice(match[0].length)
     }
-    const cut = text.indexOf(': ')
+    let cut = text.indexOf(': ')
+    if (cut < 0) cut = text.indexOf(' — ')
     rows.push({ priority, title: (cut < 0 ? text : text.slice(0, cut)).trim() })
   }
   return rows

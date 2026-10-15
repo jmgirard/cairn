@@ -14,5 +14,5 @@
     {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "file": {"goal": "- [x] A box under Goal, which does not count.", "tasks": [], "criteria": [], "log": []}}
   ],
   "next": {"action": "review", "command": "/milestone-review", "id": "M010", "waiting": [{"id": "M011", "title": "Not started", "unmet": ["M010 (review)"]}]},
-  "candidates": [{"priority": "high", "title": "A candidate line with - [x] inside it — added 2026-01-01"}]
+  "candidates": [{"priority": "high", "title": "A candidate line with - [x] inside it"}]
 }
