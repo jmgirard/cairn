@@ -8,11 +8,17 @@
     {"priority": "high", "title": "High row"},
     {"priority": "normal", "title": "Normal row"},
     {"priority": "low", "title": "Low row"},
-    {"priority": "normal", "title": "A row with no colon and space, shown whole — added 2026-01-04"},
-    {"priority": "normal", "title": "[HIGH] Upper-case token, shown whole — added 2026-01-05"},
-    {"priority": "normal", "title": "[high]No space after the token, shown whole — added 2026-01-06"},
-    {"priority": "normal", "title": "Token in [low] mid-row, shown whole — added 2026-01-07"},
+    {"priority": "normal", "title": "A row with no colon and space, cut at its dash"},
+    {"priority": "normal", "title": "[HIGH] Upper-case token, kept in the title"},
+    {"priority": "normal", "title": "[high]No space after the token, kept in the title"},
+    {"priority": "normal", "title": "Token in [low] mid-row, read as normal"},
     {"priority": "normal", "title": "A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end"},
-    {"priority": "normal", "title": "`code"}
+    {"priority": "normal", "title": "`code"},
+    {"priority": "normal", "title": "ordinal"},
+    {"priority": "normal", "title": "loglog link for `binomial`. Needs a case"},
+    {"priority": "normal", "title": "Title — detail"},
+    {"priority": "low", "title": "Low row"},
+    {"priority": "normal", "title": "A `a"},
+    {"priority": "normal", "title": "A row with no colon and no dash"}
   ]
 }

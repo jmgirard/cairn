@@ -150,7 +150,8 @@ def python_candidates(start):
     the lines that open with `- ` in the sections `candidate_count` walks
     (not the indented ones it also counts), each section read after its own
     HTML comments are removed, each row its priority and the text after the
-    token before its first `: `."""
+    token before its first `: `, else before its first ` — `, else all of it
+    (M251)."""
     root = cs.cc.find_cairn_root(str(start))
     if root is None:
         return []
@@ -174,7 +175,8 @@ def python_candidates(start):
             priority = m.group(1) if m else "normal"
             if m:
                 text = text[m.end():]
-            out.append({"priority": priority, "title": text.split(": ", 1)[0].strip()})
+            cut = ": " if ": " in text else " — "
+            out.append({"priority": priority, "title": text.split(cut, 1)[0].strip()})
     return out
 
 

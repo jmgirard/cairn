@@ -364,12 +364,18 @@ const CANDIDATE_LINES = [
   '↑ High row',
   '· Normal row',
   '↓ Low row',
-  '· A row with no colon and space, shown whole — added 2026-01-04',
-  '· [HIGH] Upper-case token, shown whole — added 2026-01-05',
-  '· [high]No space after the token, shown whole — added 2026-01-06',
-  '· Token in [low] mid-row, shown whole — added 2026-01-07',
+  '· A row with no colon and space, cut at its dash',
+  '· [HIGH] Upper-case token, kept in the title',
+  '· [high]No space after the token, kept in the title',
+  '· Token in [low] mid-row, read as normal',
   '· A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end',
   '· `code',
+  '· ordinal',
+  '· loglog link for `binomial`. Needs a case',
+  '· Title — detail',
+  '↓ Low row',
+  '· A `a',
+  '· A row with no colon and no dash',
 ]
 
 describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
@@ -378,7 +384,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       seat(on, copyOf('candidates'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 9')
+      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 15')
       const rows = keysLike(lines, /^candidate-\d+$/)
       expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_LINES)
       // The section comes after the queue.
@@ -1392,8 +1398,8 @@ describe("a ⌂ press's /clear opens the pane at its end, and nothing else does 
 const PANE_PLAN = 'cairn-pane-plan'
 const PLAN_MARK = '✎'
 const PLAN_COMMAND = 'cairn:milestone-plan'
-const EMPTY_AT = 9
-const SAME_AT = [10, 11]
+const EMPTY_AT = 15
+const SAME_AT = [16, 17]
 function candidatesPlus(): Copy {
   const copy = copyOf('candidates')
   const path = Object.keys(copy.files).find(each => each.endsWith('cairn/ROADMAP.md')) as string

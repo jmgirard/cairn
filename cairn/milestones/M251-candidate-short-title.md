@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters see the cairn pane, and their agents follow the rulebook when they write rows   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m251-candidate-short-title   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -117,7 +117,7 @@ cases (M211 review)" stay in that row.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first. Add AC1's rows to `hooks/status/fixtures/candidates/`
+- [x] T1: Tests first. Add AC1's rows to `hooks/status/fixtures/candidates/`
       and its `expected.json`, and restate the old "shown whole" rows, which
       now cut at their dash. Add the table to `reader.test.ts`. Update the
       `TITLES` list, `EMPTY_AT`, `SAME_AT`, and the ✎-count assertions in
@@ -166,3 +166,5 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: agent chose a new `retitle` disposition over a `compress` variant, because `compress` fires on byte length and rewrites the body, while a title change must also rewrite quotes.
 - 2026-10-15: agent chose no length cap in the reader, because the pane already cuts a long title to one line with an ellipsis.
 - 2026-10-15: criteria audit (full mode, fresh Opus reader) ran twice. Pass 1 on the draft: 8 findings (missing probe axes, `. ` abbreviations, shared titles, compress breaking quotes, two missed citing sites and a work-log escape in AC3, no AC for the D-149 narrowing, no migration note, the `pane.test.tsx` list); all fixed or made moot by the gate's choice. Pass 2 on the revised criteria: 5 findings (who gets a shared-title retitle, live milestone files are plan-owned, T3's log escape, AC1's fixture clause, `EMPTY_AT`/`SAME_AT` index shifts); all 5 fixed by narrowing AC1, AC3, AC5, T1, T3, and T4.
+- 2026-10-15: implement started on m251-candidate-short-title; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-15: T1 done: AC1's table in `reader.test.ts` and the `candidates` fixture (6 rows; the empty-title row stays in reader.test.ts and pane.test.tsx's own extra rows), old "shown whole" rows reworded, `mixed` and `single-in-progress` expected titles lose their dash tail; 3 TS cases and the fixture checks failed before the reader change; after it, both suites, both validates, and `claude plugin test` (1714 pass) are green.
