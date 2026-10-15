@@ -89,8 +89,10 @@ type Copy = {
   reads?: string[]
   // While set, `$.ui.panes()` beneath the mod throws (M237).
   panesThrow?: boolean
-  // While set, the session end beneath the mod throws (M255).
+  // While set, the session end beneath the mod throws, and while set, it
+  // waits for this promise before it answers (M255).
   endThrows?: boolean
+  endHold?: Promise<void>
 }
 
 function copyOf(name: string): Copy {
@@ -173,6 +175,7 @@ function seat(on: On, copy: Copy) {
   // The session end a `/clear` brings, which runs the command a Plan or
   // Implement press holds (M221).
   on('session.end', async ($, e) => {
+    if (copy.endHold !== undefined) await copy.endHold
     if (copy.endThrows === true) throw new Error('the end failed')
     return { sessionId: e.sessionId }
   })
@@ -4108,6 +4111,33 @@ describe('a press check cut off by a session end frees the Buttons and runs noth
     hold.release()
     await first
     await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+
+  // While the end beneath is still running, the cut-off press's mark keeps
+  // a new press from reading the state of the session that is ending.
+  test('a press during the end, while a cut-off press reads, runs nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_STATUS })
+    await until(() => hold.held)
+    let finish = () => {}
+    copy.endHold = new Promise<void>(resolve => (finish = resolve))
+    const end = $.session.end(CLEAR_END)
+    await sleep(20)
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands ?? []).toEqual([])
+    copy.endHold = undefined
+    finish()
+    await end
+    hold.release()
+    await first
+    await ui.press({ key: PANE_STATUS })
     expect(copy.commands).toEqual([STATUS_RUN])
     await ui.unmount()
   })
