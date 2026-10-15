@@ -172,6 +172,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - 2026-10-15: T6: README pane section, DESIGN.md (hooks/status list, candidate and hotfix-read passages), CHANGELOG Unreleased New entry; types done in T4; verify, `skills/tests`, cairn_validate green.
 - 2026-10-15: claim audit: 41 claims read, 6 corrected — CHANGELOG.md, README.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md (re-read once by the same reader: all six TRUE; its leftover note on "removes or narrows" kept, since a milestone can narrow a row through a partial remainder and AC5 uses those words).
 - 2026-10-15: implement done; verify green at head (mod tests 1729, scripts 408, hooks 175, both validates), `skills/tests` 752 green; status review.
+- 2026-10-15: step-7 approval: m252-pane-started-candidate approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
