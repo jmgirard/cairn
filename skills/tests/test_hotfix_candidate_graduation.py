@@ -49,9 +49,8 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
             "read the PR's title, body and `Fixes #N` line against the rows.",
             "Name each matched row's title in chat, or say that no row "
             "matched.",
-            "A row's title is its text after the `- ` and any "
-            "`[high]`/`[low]` token, up to the first `: `, or all of that "
-            "text when it has no `: `.",
+            "A row's title is its short title (tracking-rules \"Candidate "
+            "short title\").",
             "Within a hotfix, only step 7, after a merge, removes or narrows "
             "a matched row. A search-first absorb on another path can add to "
             "the row, but it never removes or narrows it.",

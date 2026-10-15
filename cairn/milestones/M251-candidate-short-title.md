@@ -132,7 +132,7 @@ cases (M211 review)" stay in that row.
       row example. Change the skeleton comment in
       `skills/cairn-init/SKILL.md` (~line 190). Append the D-entry that
       narrows D-149.
-- [ ] T3: Make records-hygiene §7 (line 36), `/hotfix` step 1 (line 51),
+- [x] T3: Make records-hygiene §7 (line 36), `/hotfix` step 1 (line 51),
       `/cairn-triage` step 1 (line 63), `/milestone` (line 139), and
       `/milestone-review` step 9 (line 710) cite the paragraph. Update the pin
       in `skills/tests/test_hotfix_candidate_graduation.py:53` and hand-run
@@ -169,3 +169,4 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: implement started on m251-candidate-short-title; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
 - 2026-10-15: T1 done: AC1's table in `reader.test.ts` and the `candidates` fixture (6 rows; the empty-title row stays in reader.test.ts and pane.test.tsx's own extra rows), old "shown whole" rows reworded, `mixed` and `single-in-progress` expected titles lose their dash tail; 3 TS cases and the fixture checks failed before the reader change; after it, both suites, both validates, and `claude plugin test` (1714 pass) are green.
 - 2026-10-15: T2 done: tracking-rules "Candidate short title" paragraph and the token example's new shape, the `/cairn-init` skeleton comment, D-163 narrowing D-149's title sentence; rulebook baseline re-seeded to 663 lines / 63,632 bytes at its three sites (`/milestone` and two hand-run pins); the skeleton pin and its mutation entry updated; verify green and `skills/tests` hand-run OK.
+- 2026-10-15: T3 done: records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1 (candidate subject only; a Known issues subject keeps its rule), `/milestone`'s §7 sentence, and review step 9 cite the paragraph; hotfix pin updated. AC3 sweep: remaining old-rule hits are README.md:314-317 and cairn/DESIGN.md:285, left to T5; the "exact title" hits in §7, triage, and review now read §7's title; README.md:140 is about milestone titles in the band and source-note.md:37 about a citation, both unrelated.

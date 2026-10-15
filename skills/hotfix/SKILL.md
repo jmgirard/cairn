@@ -48,10 +48,9 @@ can resolve against the fork instead of the base repo.
    re-entries included, before any stop this step takes, and never from
    memory. A matched row is a row of `cairn/ROADMAP.md`'s Candidates
    section whose title the argument quotes, or a row that describes the bug
-   being fixed. A row's title is its text after the `- ` and any
-   `[high]`/`[low]` token, up to the first `: `, or all of that text when
-   it has no `: `. For a PR-reference argument, read the PR's title, body
-   and `Fixes #N` line against the rows. Name each matched row's title in
+   being fixed. A row's title is its short title (tracking-rules
+   "Candidate short title"). For a PR-reference argument, read the PR's
+   title, body and `Fixes #N` line against the rows. Name each matched row's title in
    chat, or say that no row matched. A row whose title a live milestone
    file quotes is not matched: that milestone's post-merge hygiene
    graduates it (records-hygiene §1). Within a hotfix, only step 7, after

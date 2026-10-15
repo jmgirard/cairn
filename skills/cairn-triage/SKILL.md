@@ -60,10 +60,11 @@ one of them absorbs is never dropped or merged away in this pass
 ## Workflow
 
 1. **Enumerate.** List every item in both sections, in file order, one line
-   each: its source (`candidate` / `known issue`), its subject (the text up
-   to the first colon, trimmed; when no colon falls within the first ~80
-   characters, the first clause — up to the first comma — trimmed to
-   that length), its priority (`high` / `normal` / `low`; `—` for a Known
+   each: its source (`candidate` / `known issue`), its subject (for a
+   candidate, its short title, tracking-rules "Candidate short title"; for
+   a Known issues entry, the text up to the first colon, trimmed; when no
+   colon falls within the first ~80 characters, the first clause — up to
+   the first comma — trimmed to that length), its priority (`high` / `normal` / `low`; `—` for a Known
    issues entry), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
