@@ -208,7 +208,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   checks give a held command, it sets `heldRun` before it clears the mark.
   After the mark clears, with no await between, it runs the command or
   `clear`. Checks that give no command
-  clear the mark and run nothing. A live probe (M221 T1) showed
+  clear the mark and run nothing. A session end counts itself in `ends`
+  before it calls `next(e)`, and checks that settle after that count moved
+  run and hold nothing. The end clears the mark beside `running`, after its
+  own updates, so a press cut off by the end leaves the Buttons free
+  (M255). A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
   a press of Clear is, which is how the plan gate settled the IP3 point. A

@@ -4101,6 +4101,7 @@ describe('a press check cut off by a session end frees the Buttons and runs noth
     const first = ui.press({ key: PANE_STATUS })
     await until(() => hold.held)
     expect(hold.held).toBe(true)
+    expect(copy.commands ?? []).toEqual([])
     await $.session.end(CLEAR_END)
     await ui.press({ key: PANE_STATUS })
     expect(copy.commands).toEqual([STATUS_RUN])
@@ -4123,6 +4124,7 @@ describe('a press check cut off by a session end frees the Buttons and runs noth
     const first = ui.press({ key: PANE_NEXT })
     await until(() => hold.held)
     expect(hold.held).toBe(true)
+    expect(copy.commands ?? []).toEqual([])
     await $.session.end(CLEAR_END)
     hold.release()
     await first
@@ -4141,7 +4143,6 @@ describe("a ⌂ press's open still runs when the session end beneath rejects (M2
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    copy.hidden = [PANE]
     const before = copy.opens.length
     await pressKey($, PANE_HOME)
     copy.endThrows = true
@@ -4153,6 +4154,25 @@ describe("a ⌂ press's open still runs when the session end beneath rejects (M2
     }
     expect(rejected).toBe(true)
     await untilOpens(copy, before + 1)
+    await untilOpens(copy, before + 2, 10)
     expect(copy.opens.slice(before)).toEqual([{ id: PANE, title: 'cairn' }])
+  })
+
+  test('a clear end whose next(e) rejects, with no press, opens nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const before = copy.opens.length
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    await untilOpens(copy, before + 1, 10)
+    expect(copy.opens.length).toBe(before)
   })
 })

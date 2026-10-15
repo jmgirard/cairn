@@ -334,7 +334,7 @@
 ### Fixes
 
 - **A session end frees the pane Buttons from a press still reading.** A
-  Status, next-step, blocked-line, or `✎` press reads the stored state
+  Status, Clear, next-step, blocked-line, or `✎` press reads the stored state
   before it runs its command. While that read waited, the other pane
   Buttons except `↻` did nothing, through a session end too. A read that
   never finished kept them dead until a reload. A read that finished after
