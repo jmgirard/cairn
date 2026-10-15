@@ -168,4 +168,9 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
 - prior-review #4: same as diff-bug #4, #5 — fixed at hygiene.
 - prior-review #5: same as blame-history #4 — fixed fbdccbec.
 - prior-review #6: the reloaded-module press — noted, Scope Out, row keeps it.
+- copilot: hooks/status/register.tsx (the mark cleared before `next(e)` lets a press overlap the end) — fix now, fixed fbdccbe; regression test with a held `next(e)` in 11f3c1e, red with the mark freed before `next(e)`.
+- copilot: cairn/milestones/M255-pane-press-after-end.md (PR URL in Branch/PR) — fix now, fixed d4e141f.
+- copilot: review body — noted.
+- Copilot level: Lite (set by GitHub's settings).
+- AC5-adjacent re-run after 11f3c1e: plugin test 1734 pass 0 fail.
 
