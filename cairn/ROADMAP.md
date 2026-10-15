@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-15 (M251 archived, its row dropped, one new row, one narrowed; validate, guards green)_
+_Last hygiene check: 2026-10-15 (M252 archived, its row dropped, its guest row widened; validate, guards green)_
 
 ## Milestones
 
@@ -9,7 +9,6 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M252 | The cairn pane marks a candidate row that an open pull request names | review | — | normal | milestones/M252-pane-started-candidate.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (hotfix, 2026-10-10) made it count each call once and read subagent files, output tokens a lower bound. Earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (and its A4 row and "unrecorded" note), M153's medians in `record-rule-remeasurement.md`, and `effort-experiment-notes.md`. Promote when a decision next relies on one of those figures — added 2026-10-09 — M228 review (blame-history #1, #2; pass 2 blame-history #2–#4); narrowed 2026-10-10 by the PR #238 hotfix
@@ -43,7 +42,7 @@ _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, u
 - Tier check edges (M250 review): the trivial route leaves a matched candidate row in place; the git model's "docs-only" sentence conflicts with that route (D-162); a guest PR reference judged `hotfix` reaches `/hotfix`, which cannot adopt it there; `/milestone` §3's plan disposition is judged again; CLAUDE.md and the router template still say "One question set follows". Promote when one shows in a real session — added 2026-10-14 — M250 review
 - Hotfix row-graduation edges (M249 review): "`/hotfix` has no resume route for an open PR" holds the older rerun gap. A guest rerun with owed items never reaches an accepted check, so the row edit has no route; an owner rerun after a CI stop on the owed path can lose the PR number. No prompt tells a guest to rerun after the merge. The decline path's row has no stated commit. Deleting a §7 group's head row orphans rows quoting its title; §7 may read a `narrowed` note as an extension. Promote when one shows in a real session — added 2026-10-12 — M249 review (diff-bug #1, #5, #13; prior-review #1; pass 2 diff-bug #2, blame-history #2)
 - Retitle edges (M251 review): rows sharing a title get identical triage subjects; an empty title not from a leading `: ` has no anchor; the Amend loop does not re-check a new title's uniqueness. Promote when one shows in a real triage pass — added 2026-10-15 — M251 review (pass 2 diff-bug #3, #5, #7)
-- Started mark in guest mode: a guest PR body has no cairn terms, so no `Candidate row:` line, and M252's mark never shows. Promote when a guest misses a row a handed-off PR holds — added 2026-10-15 — M252 plan
+- Started mark edges (M252 review): guest PR bodies carry no `Candidate row:` line. Lines are set at PR open, so older PRs and later row changes go unmarked. A cut or timed-out `gh pr list` drops hotfixes and marks. A line in a code fence counts. Merge to hygiene commit, the row has no mark. Promote when one shows in a real session — added 2026-10-15 — M252
 - [low] Contributor-facing scaffold: cairn ships nothing a repo can hand an outsider (no CONTRIBUTING, PR template, or issue template), so a contributor learns the branch/commit/tracking conventions only by being told; would be a `/cairn-init` opt-in, not a core scaffold addition. Promote once M72's README subsection is in use and proves insufficient — added 2026-07-18 — M72 Out
 - [low] Branch-protection compatibility: cairn structurally requires direct docs-only pushes to the default branch (tracking commits; post-merge hygiene), which a repo protecting its default branch behind required PRs cannot do; needs a decision on whether hygiene commits get their own PR or the rule gains a protected-branch mode. Promote if an adopting repo turns on branch protection — added 2026-07-18 — M72 Out
 - [low] Review-side reclassification of record-binding criterion failures: a review finding that an acceptance criterion is unmet only in a recording act (a work-log quotation, a named recording command's provenance) crosses the return floor as a full defect return toward the thrash threshold; the deferred remedy routes such findings to the amendment track, held back so D-120's plan-time prevention proves itself first. Promote when a milestone whose criteria passed the extended audit (D-120) still costs a defect return on a record-binding clause — never on a count of legacy-milestone returns — added 2026-08-21 — M151 (circumplex M101)
