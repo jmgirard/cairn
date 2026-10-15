@@ -140,7 +140,7 @@ cases (M211 review)" stay in that row.
 - [x] T4: Add `retitle` to `/cairn-triage`'s disposition table, its evidence
       classes, and its apply step, with the ROADMAP quote rewrite and the
       live-milestone exclusion.
-- [ ] T5: Update README's pane section (~line 314), DESIGN.md (~line 285),
+- [x] T5: Update README's pane section (~line 314), DESIGN.md (~line 285),
       and `CHANGELOG.md`.
 
 ## Work log
@@ -172,3 +172,4 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T3 done: records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1 (candidate subject only; a Known issues subject keeps its rule), `/milestone`'s §7 sentence, and review step 9 cite the paragraph; hotfix pin updated. AC3 sweep: remaining old-rule hits are README.md:314-317 and cairn/DESIGN.md:285, left to T5; the "exact title" hits in §7, triage, and review now read §7's title; README.md:140 is about milestone titles in the band and source-note.md:37 about a citation, both unrelated.
 - 2026-10-15: T4 done: `/cairn-triage` gains `retitle` (table row, a Title evidence class checked last on rows the others leave `keep`, the proposal table's naming, the apply step, and the no-D-entry list); a `compress` or `split` rewrite opens each row with a short title; verify green, `skills/tests` OK.
 - 2026-10-15: agent chose to check the Title class last, on rows the other classes leave `keep`, over letting it pre-empt them, because a drop or merge removes the title problem with the row.
+- 2026-10-15: T5 done: README's pane section (rule, writing shape, `retitle`), DESIGN.md's `candidateRows` description, and a CHANGELOG entry under "Changes that affect existing repos"; AC3's sweep over README.md and cairn/DESIGN.md now finds only hits that agree with the rule (plus README.md:140, about milestone titles); verify green.
