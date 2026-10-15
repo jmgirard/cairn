@@ -136,3 +136,8 @@ stay as they are (the request changes only the normal mark).
 - prior-review #4: width math unchanged — reject, false (no defect)
 - prior-review #5: no CHANGELOG or README hits — reject, not a finding
 - verify after fixes: mod tests 1729 pass, scripts and hooks OK, both validates exit 0.
+- copilot: cairn/milestones/M253-pane-open-circle-mark.md:14 (outdated) — reject, false at the head: the reviewed commit predates b6a45205, which records the PR URL; replied and resolved
+- copilot: hooks/status/pane.ts:269 — fix now, fixed dd62db2e ("A normal row's mark is"); replied and resolved
+- copilot: review body overview — noted
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: no other reviews, issue comments, or unresolved threads on PR #264
