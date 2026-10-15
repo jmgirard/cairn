@@ -117,3 +117,22 @@ stay as they are (the request changes only the normal mark).
 - AC1: `pane.ts` holds `normal: { text: '○' }`; `claude plugin test .` at the review head, 1729 pass 0 fail. "each priority's mark" (both surfaces) asserts `'○'` with no color, `'↑'` in `'claude'` and bold, `'↓'` in `'inactive'`, and `PRIORITY_MARK` and `STARTED_MARK` whole by `toEqual` against literals; "the candidates fixture's heading, count, marks, and titles" (both surfaces) matches `CANDIDATE_LINES`, every normal row `○ …`; the M242 ✎ test's extra rows expect `○ `, `○ Same title` twice; M252's `PLAIN` is `○ An idea for later` (same-root, no-remote, and other-root tests pass); M252's matched-row tests expect `{ text: '◐', color: 'success' }`. `grep -n PRIORITY_MARK pane.test.tsx` shows only the import, a comment, and the whole-constant assertion. T1's work log records 18 tests red on `·` before the change.
 - AC2: README.md:313 reads "`↑` for a `[high]` row, `○` for a normal one"; `grep -n "·" README.md` finds only line 600, the tracking-file map's separators, not a candidate mark. DESIGN.md:707 lists "`↑ ○ ◐ ↓` marks" as ambiguous width. CHANGELOG.md:155-158, under Unreleased "### New", has the `○` entry.
 - AC2 (re-recorded; the line above misread DESIGN's list, which read `↑ ○ ◐ ↓` and so did not hold the span `↑ ○ ↓` the criterion names, prior-review #1): DESIGN.md:707 now reads "`↑ ○ ↓`, and `◐` marks are ambiguous width"; README and CHANGELOG evidence above unchanged.
+- Consistency gate: `cairn_validate` all checks passed; verify green (scripts OK, hooks OK, plugin and marketplace validate exit 0, mod tests 1729); no `plugins[N].version` warning; CHANGELOG has the entry, no milestone number; `skills/tests` OK. No principle changed.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the entry sits under "New", not "Changes that affect existing repos" — reject, planned change (AC2 names "New")
+- diff-bug #2: CHANGELOG's ◐ clause drops the `Candidate row:` line — fix now, fixed a190af49 (names the line)
+- diff-bug #3: `MARKS` and the constant's `toEqual` repeat the three spans — fix now, fixed a190af49 (`toEqual(MARKS)`)
+- diff-bug #4: the drawn normal mark is not checked for bold — fix now, fixed a190af49 (`bold` asserted undefined)
+- diff-bug #5: DESIGN's width list is accurate — reject, false (no defect; the list now reads `↑ ○ ↓`, and `◐`)
+- blame-history #1: `·` came from M207 with no recorded reason — reject, false (no conflict with a recorded choice)
+- blame-history #2: `○` now also means an open task — reject, planned change (the plan reuses `OPEN_MARK`'s glyph; tasks and candidates never draw together, pane.ts:528 and `items()`)
+- blame-history #3: DESIGN's list `↑ ○ ◐ ↓` drifted from AC2's `↑ ○ ↓` — fixed 972b8661 (same as prior-review #1)
+- blame-history #4: tests now use literals — reject, planned change
+- blame-history #5: CHANGELOG:522 still names `·` — reject, false (the released 2.0.0 entry is history)
+- blame-history #6: a `·` in test_section_allow_lists.py — reject, false (a prose separator)
+- prior-review #1: DESIGN's list did not hold AC2's `↑ ○ ↓` span — fix now, fixed 972b8661 (`↑ ○ ↓`, and `◐`; AC2 re-recorded)
+- prior-review #2: the "three marks differ" check was removed — reject, planned change (the whole-constant `toEqual` pins each mark)
+- prior-review #3: literals agree with M217 — reject, not a finding
+- prior-review #4: width math unchanged — reject, false (no defect)
+- prior-review #5: no CHANGELOG or README hits — reject, not a finding
+- verify after fixes: mod tests 1729 pass, scripts and hooks OK, both validates exit 0.
