@@ -264,3 +264,6 @@ cases (M211 review)" stay in that row.
 - pass 2 prior-review #3: a title over ~80 characters falls out of the subject rule — same as pass 2 blame-history #5, fixed c660c07.
 - pass 2 prior-review #4: a row a live milestone quotes or absorbs keeps a shared title, so its ✎ stays ambiguous — reject, planned change: AC5 excludes those rows.
 - pass 2 return floor: no finding shows a criterion failing or a load-bearing defect; no return.
+- conversation: copilot-pull-request-reviewer[bot] PR review (COMMENTED) — noted (its two threads are the `copilot:` lines above)
+- conversation: jmgirard PR reviews (COMMENTED, two) — noted (GitHub's wrappers for the two thread replies)
+- conversation: no issue comments; no unresolved threads after the replies.
