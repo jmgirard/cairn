@@ -137,7 +137,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
       its tag to `hotfixes-2` (`:150`), and pass them to `paneLines`
       (`:328`). Extend `CairnHotfixRead` in `types/index.d.ts:97`. Run
       `verify`.
-- [ ] T5: In `skills/hotfix/SKILL.md` (the create sites at `:205`, `:255`,
+- [x] T5: In `skills/hotfix/SKILL.md` (the create sites at `:205`, `:255`,
       `:294`, and step 5's re-land at `:195`) and
       `skills/milestone-review/SKILL.md` (`:137`, `:557`; none at `:610` and
       `:631`), write the `Candidate row:` line rule. Hand-run `skills/tests`.
@@ -168,6 +168,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - 2026-10-15: T1: 13 tests written first; red as a load failure (`STARTED_MARK` not exported from pane.ts), the missing feature; the M226 `listCall` argv now holds `body`.
 - 2026-10-15: T2–T4: `startedRows` and `STARTED_MARK` in pane.ts, a `started` argument to `paneLines`, `body` in `listArgv`, `started` in the `hotfixes` value (tag `hotfixes-2`), `CairnStartedRow` in types; mod tests 1729 green; plants (✎ kept on a matched line; another root's items kept on a failed call) each turned their tests red, then reverted; verify green.
 - 2026-10-15: implement chose to keep a matched low row's gray title, since AC2 replaces only the mark.
+- 2026-10-15: T5: `/hotfix` step 6 approval paragraph holds the `Candidate row:` rule; its Copilot arm and step 5's re-land point to it; its guest arm and `/milestone-review`'s guest and companion sites write none; review step 8 holds the rule, its Copilot arm points to it; `skills/tests` 752 green, verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

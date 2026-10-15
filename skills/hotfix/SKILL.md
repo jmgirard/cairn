@@ -192,7 +192,8 @@ can resolve against the fork instead of the base repo.
    = re-land, with a decline option), showing the closing comment's text in
    chat first. Only on approval: recreate their commits on a
    `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
-   there, open a PR crediting them (`Co-authored-by:`), and close theirs with
+   there, open a PR crediting them (`Co-authored-by:`), its body carrying
+   the `Candidate row:` lines that step 6 names, and close theirs with
    that comment. Declined → leave their PR open and stop.
    Never merge a fix whose regression test
    is still missing — that is the one gate this path exists to enforce.
@@ -204,7 +205,8 @@ can resolve against the fork instead of the base repo.
    gate below, push and open the PR the way this step states for an
    approved fix — `git push -u origin hotfix-<slug>`, then `gh pr create
    --title <title> --body <body>` ready, `Fixes #N` in the body when an
-   issue exists. Then run the
+   issue exists, and the `Candidate row:` lines the approval paragraph
+   below names. Then run the
    round in that module, asking for Lite: the state query (§3), the
    request on `none` (§2), and the bounded wait while the request is
    pending (§4). The PR-conversation read below then runs on this PR,
@@ -256,7 +258,12 @@ can resolve against the fork instead of the base repo.
    opening it ready for review, never as a draft, `Fixes #N` in the body
    when a GitHub issue exists (the create is skipped when the fix already
    has an open PR — the PR-reference re-entry, or the Copilot round arm —
-   where the branch is pushed and the existing PR stands). Merge (`gh pr merge <N> --squash --delete-branch`
+   where the branch is pushed and the existing PR stands). In owner mode
+   the body also carries one `Candidate row: <short title>` line for each
+   candidate row that step 1 matched. The title is cut from the row in
+   `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. The
+   cairn pane marks that row while the PR is open (M252). The guest arm
+   below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -294,7 +301,7 @@ can resolve against the fork instead of the base repo.
    and the PR opened against the base repo — `gh pr create --repo
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
-   vocabulary in its title or body (the changelog entry is the branch's
+   vocabulary in its title or body, so no `Candidate row:` line (the changelog entry is the branch's
    only prose) — then no marker, no CI wait, no merge. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite: the state query, the request on `none`, the bounded
