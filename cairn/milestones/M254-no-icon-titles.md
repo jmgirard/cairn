@@ -39,7 +39,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: tracking-rules "Candidate short title" tells a writer to name
+- [x] AC1: tracking-rules "Candidate short title" tells a writer to name
       things in words and to put no icon in a short title. It defines an
       icon as a non-ASCII character whose Unicode general category is `So`
       or `Sm` (emoji, and marks such as ○, ✓, ⌂, ✎, ↑, ⋯), with no
@@ -47,7 +47,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       pane draws its own marks and Buttons beside the title. The
       paragraph's sentence on `/cairn-triage`'s `retitle` names a title that
       holds an icon beside an empty, long, or shared one.
-- [ ] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
+- [x] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
       names a short title that holds an icon (tracking-rules "Candidate short
       title") as a trigger, and its new-title rule excludes an icon. Its
       `retitle` disposition text says that for a row proposed on the icon
@@ -55,7 +55,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       replaces the old one in place, so the old title does not stay in the
       row's text, and that a row with neither separator takes the new title
       and `: ` before its text, which stays.
-- [ ] AC3: At the review commit, a script that cuts each Candidates row's
+- [x] AC3: At the review commit, a script that cuts each Candidates row's
       short title in `cairn/ROADMAP.md` by the tracking-rules rule reports no
       non-ASCII `So` or `Sm` character, where the same script on the plan
       commit reports the two rows "⌂ edges (M241 review)" and "✎ edges (M242
@@ -65,10 +65,10 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       other row's title. `grep -c` for each old title over `cairn/ROADMAP.md`
       and DESIGN.md's Known issues returns 0, and the two quoted mentions at
       the plan commit (ROADMAP lines 40 and 41) quote the new titles.
-- [ ] AC4: CHANGELOG.md's Unreleased section has an entry that states the
+- [x] AC4: CHANGELOG.md's Unreleased section has an entry that states the
       no-icon rule with AC1's definition and the `retitle` icon trigger
       whose new title replaces the old one.
-- [ ] AC5: The active profile's `verify` passes: `python3 -m unittest` for
+- [x] AC5: The active profile's `verify` passes: `python3 -m unittest` for
       `scripts/tests` and `hooks/tests` from the repo root, `claude plugin
       validate` on the plugin and marketplace manifests, and `claude plugin
       test` for the status mod.
@@ -158,3 +158,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC1: tracking-rules.md:221-226 reads "Name things in words and put no icon in a short title, because the cairn pane draws its own marks and Buttons with such glyphs, and some sit beside the title", defines an icon as "a non-ASCII character whose Unicode general category is `So` or `Sm`, between backticks or not", gives emoji and ○ ✓ ⌂ ✎ ↑ ⋯ as examples, and its `retitle` sentence names an icon title beside empty, long, or shared ones. Met.
+- AC2: cairn-triage SKILL.md:146-149 lists "holds an icon (tracking-rules "Candidate short title")" as a trigger; :155-156 "holds no `: `, ` — `, or icon"; :108 says the icon-trigger title "replaces the old one in place, and the row keeps the `: ` or ` — ` after it, so the old title and its icon do not stay in the row" and "A row with neither separator takes the new title and `: ` before its text, which stays". Met (amended wording).
+- AC3: the scratchpad `icon_titles.py` cut script reports "45 rows, 2 with icons" (⌂ edges, ✎ edges) on 0c1976c2 and "45 rows, 0 with icons" on the head; both new titles meet the triage new-title rule; `grep -c` for each old title returns 0 over ROADMAP and DESIGN.md Known issues; ROADMAP:40-41 quote "Home Button edges (M241 review)" and "Plan Button edges (M242 review)", where 0c1976c2:40-41 quoted the old titles. Met.
+- AC4: CHANGELOG.md:7-17, Unreleased "Changes that affect existing repos", states the `So`/`Sm` non-ASCII definition, between backticks or not, and the `retitle` icon trigger replacing the title in place. Met.
+- AC5: verify on 64a59375: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail. `cairn_validate.py` all checks passed. Met.
