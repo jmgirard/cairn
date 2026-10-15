@@ -98,6 +98,8 @@ stay as they are (the request changes only the normal mark).
 - 2026-10-15: T2: README mark list, DESIGN.md Known issues width list and hooks/status lineage, CHANGELOG Unreleased New entry; verify, `skills/tests`, cairn_validate green.
 - 2026-10-15: claim audit: 12 claims read, 2 corrected — hooks/status/pane.ts, CHANGELOG.md (re-read once by the same reader: both TRUE); its note that DESIGN's ambiguous-width list lacked `◐` (an M252 gap) taken, `◐` added.
 - 2026-10-15: implement done; verify green at head (mod tests 1729, scripts and hooks suites OK, both validates), `skills/tests` OK; status review.
+- 2026-10-15: review deviation: the planned live look at the merge question could not run, since this checkout has M253 active and the pane hides candidate rows; the merge question said so and the operator approved, so the look follows the merge.
+- 2026-10-15: step-7 approval: m253-pane-open-circle-mark approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
