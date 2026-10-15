@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M254: Candidate short titles hold no icons
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -47,14 +47,14 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       pane draws its own marks and Buttons beside the title. The
       paragraph's sentence on `/cairn-triage`'s `retitle` names a title that
       holds an icon beside an empty, long, or shared one.
-- [x] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
+- [ ] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
       names a short title that holds an icon (tracking-rules "Candidate short
       title") as a trigger, and its new-title rule excludes an icon. Its
       `retitle` disposition text says that for a row proposed on the icon
-      trigger whose short title ends at a `: ` or ` — `, the new title
-      replaces the old one in place, so the old title does not stay in the
-      row's text, and that a row with neither separator takes the new title
-      and `: ` before its text, which stays.
+      trigger whose short title ends at a `: `, the new title replaces the
+      old one in place, so the old title does not stay in the row's text,
+      and that any other row proposed on the icon trigger takes the new
+      title and `: ` before its text, which stays with each icon removed.
 - [x] AC3: At the review commit, a script that cuts each Candidates row's
       short title in `cairn/ROADMAP.md` by the tracking-rules rule reports no
       non-ASCII `So` or `Sm` character, where the same script on the plan
@@ -79,7 +79,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
 - AC1 → T1
-- AC2 → T2, T6
+- AC2 → T2, T6, T7
 - AC3 → T3
 - AC4 → T4
 - AC5 → T5
@@ -110,6 +110,10 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - [x] T5: Run `verify`.
 - [x] T6: Review return: amend AC2 for a row with neither separator, and
       align SKILL.md :108, tracking-rules' `retitle` sentence, and D-164.
+- [x] T7: Review return 1: AC2 per the user's choice; triage step 4 Apply
+      and trigger precedence; tracking-rules, D-164, CHANGELOG, README; the
+      rulebook-mass baseline in three places; follow-ups into "Retitle edges
+      (M251 review)"; ROADMAP back under its byte budget.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -148,6 +152,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: amendment routed: AC2 — diff-bug #2: in-place replacement deletes the detail of a row cut at ` — `; second AC2 amendment, posed to the user at the stop.
 - 2026-10-15: question set (review stop): AC2's second amendment — "In place only after `: `": a title ending at `: ` is replaced in place, and any other icon row takes the new title and `: ` before its text, which stays with each icon removed.
 - 2026-10-15: review return 1: triage SKILL.md step 4 Apply contradicts the icon exception (diff-bug #1, blame-history #1); also fix now: trigger precedence (diff-bug #3), tracking-rules no-separator case (diff-bug #4), CHANGELOG "opens with" (diff-bug #6), cut-title wording (blame-history #3), rulebook-mass baseline (prior-review #1), README triggers (prior-review #2), and the follow-ups into "Retitle edges (M251 review)".
+- 2026-10-15: amendment return: AC2 — "Its `retitle` disposition text says that for a row proposed on the icon trigger whose short title ends at a `: `, the new title replaces the old one in place, so the old title does not stay in the row's text, and that any other row proposed on the icon trigger takes the new title and `: ` before its text, which stays with each icon removed." The user chose this wording at the review stop, so no further reader ran (two `re-audit: AC2` lines stand).
+- 2026-10-15: T7 done: SKILL.md :108 and step 4 Apply state the icon exception and that it wins over other triggers; tracking-rules, D-164, CHANGELOG, README updated; rulebook-mass baseline re-seeded to 668 lines / 64,196 bytes (milestone SKILL.md, test_cost_audit_line.py, test_mutation_harness.py); "Retitle edges (M251 review)" absorbs diff-bug #7 and prior-review #3; four wide ROADMAP rows reworded with no fact dropped, ROADMAP 23,998 bytes.
+- 2026-10-15: verify after T7: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, both validates passed, plugin test 1729 pass 0 fail; skills/tests 752 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
