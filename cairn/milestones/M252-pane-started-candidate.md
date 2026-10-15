@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M252: The cairn pane marks a candidate row that an open pull request names
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -170,6 +170,8 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - 2026-10-15: implement chose to keep a matched low row's gray title, since AC2 replaces only the mark.
 - 2026-10-15: T5: `/hotfix` step 6 approval paragraph holds the `Candidate row:` rule; its Copilot arm and step 5's re-land point to it; its guest arm and `/milestone-review`'s guest and companion sites write none; review step 8 holds the rule, its Copilot arm points to it; `skills/tests` 752 green, verify green.
 - 2026-10-15: T6: README pane section, DESIGN.md (hooks/status list, candidate and hotfix-read passages), CHANGELOG Unreleased New entry; types done in T4; verify, `skills/tests`, cairn_validate green.
+- 2026-10-15: claim audit: 41 claims read, 6 corrected — CHANGELOG.md, README.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md (re-read once by the same reader: all six TRUE; its leftover note on "removes or narrows" kept, since a milestone can narrow a row through a partial remainder and AC5 uses those words).
+- 2026-10-15: implement done; verify green at head (mod tests 1729, scripts 408, hooks 175, both validates), `skills/tests` 752 green; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

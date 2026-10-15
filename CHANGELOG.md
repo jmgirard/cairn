@@ -159,9 +159,9 @@
   call reads each of your open PRs' bodies, and a candidate row whose
   short title a line names exactly shows `◐` in place of its priority
   mark, the PR number at its right end, and no `✎` button. A guest-mode
-  PR carries no such line. The mark changes only when the pane reads its
-  PRs, and the pane lists candidate rows only while no milestone is
-  active. A PR opened before this change has no such line.
+  PR carries no such line. The PR numbers behind the mark change only when
+  the pane reads its PRs, and the pane lists candidate rows only while no
+  milestone is active. A PR opened before this change has no such line.
 
 - **A close names the Copilot opt-in line when Copilot reviews a PR with
   the round off.** In a repo whose `cairn/PROFILE.md` lacks

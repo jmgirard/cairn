@@ -261,8 +261,8 @@ can resolve against the fork instead of the base repo.
    where the branch is pushed and the existing PR stands). In owner mode
    the body also carries one `Candidate row: <short title>` line for each
    candidate row that step 1 matched. The title is cut from the row in
-   `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. The
-   cairn pane marks that row while the PR is open (M252). The guest arm
+   `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. While
+   the PR is open, the cairn pane can mark that row (M252). The guest arm
    below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a

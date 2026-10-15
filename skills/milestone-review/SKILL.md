@@ -563,10 +563,11 @@ re-enters here, at the step the record shows is next:
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
    close the issue at merge; a slot of `—` adds no lines. In owner mode
    the body also carries one `Candidate row: <short title>` line for each
-   candidate row that step 9's hygiene will remove or narrow, as known when
-   the PR opens. The title is cut from the row in `cairn/ROADMAP.md` as
-   tracking-rules "Candidate short title" states. The cairn pane marks
-   that row while the PR is open (M252). Record the PR
+   candidate row that this milestone graduates at step 9's hygiene
+   (`skills/shared/records-hygiene.md` §1), as known when the PR opens. The
+   title is cut from the row in `cairn/ROADMAP.md` as tracking-rules
+   "Candidate short title" states. While the PR is open, the cairn pane in
+   a checkout with no active milestone can mark that row (M252). Record the PR
    URL in the milestone header — a docs-only commit on the branch, left
    unpushed: the squash never needs it, and pushing it would move the PR
    head past the one CI just ran on; the resume routes and step 9 fall
