@@ -155,6 +155,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: amendment return: AC2 — "Its `retitle` disposition text says that for a row proposed on the icon trigger whose short title ends at a `: `, the new title replaces the old one in place, so the old title does not stay in the row's text, and that any other row proposed on the icon trigger takes the new title and `: ` before its text, which stays with each icon removed." The user chose this wording at the review stop, so no further reader ran (two `re-audit: AC2` lines stand).
 - 2026-10-15: T7 done: SKILL.md :108 and step 4 Apply state the icon exception and that it wins over other triggers; tracking-rules, D-164, CHANGELOG, README updated; rulebook-mass baseline re-seeded to 668 lines / 64,196 bytes (milestone SKILL.md, test_cost_audit_line.py, test_mutation_harness.py); "Retitle edges (M251 review)" absorbs diff-bug #7 and prior-review #3; four wide ROADMAP rows reworded with no fact dropped, ROADMAP 23,998 bytes.
 - 2026-10-15: verify after T7: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, both validates passed, plugin test 1729 pass 0 fail; skills/tests 752 OK.
+- 2026-10-15: review pass 2 fix: tracking-rules' `retitle` sentence now says the non-`: ` icon row gets the new title before its text with its icons removed; baseline re-seeded to 668 lines / 64,222 bytes in the three places.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

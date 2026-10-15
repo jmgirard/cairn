@@ -65,7 +65,7 @@ class TestCostAuditLine(unittest.TestCase):
         # Growth is reported against a recorded figure, not a remembered one;
         # the seed is the M254 re-measurement in bytes (M254 added the no-icon
         # sentences to the candidate short-title paragraph).
-        self.assertIn("668 lines / 64,196 bytes", self.text)
+        self.assertIn("668 lines / 64,222 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
