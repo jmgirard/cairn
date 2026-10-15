@@ -74,7 +74,7 @@ stay as they are (the request changes only the normal mark).
       (`:3987`); replace the constant-derived marks at `:416-432`, `:476`, and
       `:3977` with literals. See them red, then set `PRIORITY_MARK.normal`
       (`pane.ts:270`). Run `verify`.
-- [ ] T2: README (`:313`), DESIGN.md Known issues (`:707`), and a CHANGELOG
+- [x] T2: README (`:313`), DESIGN.md Known issues (`:707`), and a CHANGELOG
       entry. Run `verify`.
 
 ## Work log
@@ -95,3 +95,4 @@ stay as they are (the request changes only the normal mark).
 - 2026-10-15: question set: ○ color — default text; live look — the operator glances at the pane at the merge question, no extra stop.
 - 2026-10-15: implement started on m253-pane-open-circle-mark; untracked `cairn-probe.log` and `tsconfig.json` stay unstaged; ROADMAP is 1 byte over its budget until this row drops at hygiene.
 - 2026-10-15: T1: tests state the marks literally (a hand-written `MARKS` map, `PRIORITY_MARK` and `STARTED_MARK` asserted whole); 18 tests red with `·` received for `○` expected, then `PRIORITY_MARK.normal` set to `○`; mod tests 1729 green, verify green.
+- 2026-10-15: T2: README mark list, DESIGN.md Known issues width list and hooks/status lineage, CHANGELOG Unreleased New entry; verify, `skills/tests`, cairn_validate green.
