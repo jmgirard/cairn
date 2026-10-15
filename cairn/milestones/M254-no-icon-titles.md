@@ -62,7 +62,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       `: ` or ` — `, runs to 60 code points at most, and differs from every
       other row's title. `grep -c` for each old title over `cairn/ROADMAP.md`
       and DESIGN.md's Known issues returns 0, and the two quoted mentions at
-      the plan commit (ROADMAP lines 39 and 40) quote the new titles.
+      the plan commit (ROADMAP lines 40 and 41) quote the new titles.
 - [ ] AC4: CHANGELOG.md's Unreleased section has an entry that states the
       no-icon rule with AC1's definition and the `retitle` icon trigger
       whose new title replaces the old one.
@@ -100,7 +100,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       disposition table (`:108`) and the Title → `retitle` class
       (`:146-160`). Run the hand-run `skills/tests` prose guards that read
       this skill and the tracking-rules paragraph; fix any pin they break.
-- [ ] T3: Save the AC3 script in the milestone's scratch notes, run it on
+- [x] T3: Save the AC3 script in the milestone's scratch notes, run it on
       the plan commit (expect the two rows), retitle both rows by replacing
       the old title, rewrite the two quoted mentions, rerun it (expect none).
 - [ ] T4: CHANGELOG.md Unreleased entry under "Changes that affect existing
@@ -129,6 +129,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 
 - 2026-10-15: T1 done: tracking-rules "Candidate short title" gains the no-icon sentence, the `So`/`Sm` definition, the pane reason, and the `retitle` icon sentence; D-164 appended.
 - 2026-10-15: T2 done: `/cairn-triage`'s `retitle` row says an icon title is replaced in place, keeping its `: ` or ` — `; the Title class names the icon trigger and the new-title rule excludes an icon. Implement choice: replace in place rather than prepend-then-strip, so a row cut at ` — ` keeps that cut. All 752 hand-run `skills/tests` pass.
+- 2026-10-15: substantive amendment: AC3's parenthetical "(ROADMAP lines 39 and 40)" → "(ROADMAP lines 40 and 41)"; at plan commit 0c1976c2 the M254 row had moved the two quoted mentions down one line. Wording only, the deliverable unchanged.
+- 2026-10-15: re-audit: AC3 (full) — nothing; the reader confirmed the mentions sit on lines 40 and 41 at 0c1976c2.
+- 2026-10-15: T3 done: the AC3 script (session scratchpad `icon_titles.py`) reports 2 icon rows on 0c1976c2 and 0 after the edit; both rows retitled in place, the two quoted mentions rewritten; `grep -c` for each old title over ROADMAP and DESIGN.md returns 0; both new titles meet the triage new-title rule.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
