@@ -333,13 +333,15 @@
 
 ### Fixes
 
-- **Pane Buttons work again after a session end cuts a press short.** A
-  pane Button press reads the stored state before it runs its command.
-  If a session end came while that read was still waiting, every pane
-  Button stayed dead until the plugin reloaded. Now the session end frees
-  the Buttons. When its read finishes, the cut-off press runs nothing. If
-  the session end beneath the plugin fails, a `⌂` press still opens the
-  pane at its `/clear` end.
+- **A session end frees the pane Buttons from a press still reading.** A
+  Status, next-step, blocked-line, or `✎` press reads the stored state
+  before it runs its command. While that read waited, the other pane
+  Buttons except `↻` did nothing, through a session end too. A read that
+  never finished kept them dead until a reload. A read that finished after
+  the end then ran its command late. Now the session end frees the
+  Buttons, and a press cut off this way runs nothing. If the session end
+  beneath the plugin fails, a `⌂` press still opens the pane at its
+  `/clear` end.
 
 - **The Copilot review wait lasts 25 minutes, not 10.** With
   `# Copilot review: on`, a hotfix or a guest handoff waits for a pending

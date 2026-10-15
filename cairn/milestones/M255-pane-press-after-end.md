@@ -121,6 +121,7 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
 - 2026-10-15: T1 done: `holdStep` (a one-shot `state.get` hold on `step`, armed after mount) and the AC1/AC2 cases at the end of pane.test.tsx, both red first (no Status run after the end; the stale press ran `/clear`); then `pressCheck = null` in the `session.end` handler and `if (pressCheck !== mark) got = undefined` after `await checks()` in `pressChecked`. Plugin test 1731 pass 0 fail.
 - 2026-10-15: T2 done: `Copy.endThrows` makes `seat()`'s `session.end` throw; the AC3 case was red (no open), then the mod's `session.end` handler catches a rejecting `next(e)`, opens the pane for a ⌂ press at a clear end, and rethrows. Implement choice: open in the catch and rethrow, not try/finally, so the later updates keep their present behavior on a rejection.
 - 2026-10-15: T3 done: CHANGELOG Unreleased "Fixes" entry. Verify: scripts/tests OK (21 skipped), hooks/tests OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1732 pass 0 fail.
+- 2026-10-15: claim audit: 23 claims read, 3 corrected — CHANGELOG.md, hooks/status/pane.test.tsx. The CHANGELOG overstated the freeze (a read that settled freed the mark; ↻ was never blocked) and the cut-off rule's reach (⌂ does not use the press mark); the `holdStep` comment gave the end's update as a reason to arm after mount. Also fixed the stale `pressCheck` comment (register.tsx ~1101). Re-read pending.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

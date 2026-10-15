@@ -1100,7 +1100,8 @@ async function pressClear($) {
 // step and the stored state, so a second press, in the same tick or later,
 // finds `busy` true (M243, from the ✎ press's mark of M242). The press
 // clears it when its checks end, in the same tick as `run` sets `running`
-// or the press sets `heldRun`. A reload starts it over as null.
+// or the press sets `heldRun`. A session end clears it too (M255). A reload
+// starts it over as null.
 let pressCheck: object | null = null
 
 // What a press's checks give: a command to run, or, with `clears`, a

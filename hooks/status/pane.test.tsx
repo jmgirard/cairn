@@ -4073,7 +4073,8 @@ describe('the pane read stores the items with the hotfix list and draws them (M2
 })
 
 // A one-shot hold on the mod's `step` read. It is armed after mount, since
-// the draw and the session end's update read the key too (M255).
+// the draw reads the key too, and it fires once, so the session end's
+// update of the key passes (M255).
 function holdStep(on: On) {
   let open = () => {}
   const gate = new Promise<void>(resolve => (open = resolve))
