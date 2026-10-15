@@ -3643,6 +3643,26 @@ describe('a pane placed while a clear start lists the panes reads with no furthe
   }
 })
 
+// A session end clears the read a clear start owed, so the pane's first
+// draw after the end reads nothing (M256 AC2).
+describe('a session end clears an owed read (M256 AC2)', () => {
+  test('a pane owed a read at a session end reads nothing at its first draw after it', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    await $.classic.SessionStart({ source: 'clear' })
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    await $.session.end(CLEAR_END)
+    copy.unplaced = []
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+  })
+})
+
 // A process start can raise both the reopen's `session.start` and a resume
 // or clear `classic.SessionStart`. Between them they read each URL once
 // (M238 AC2). Source `clear` is a guard, since no record shows a reopened

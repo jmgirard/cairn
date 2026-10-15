@@ -87,7 +87,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
       computes its answer before holding; the AC1 case, red. Then, after
       `owed = true` (register.tsx ~273), list the pane again and read when
       it is now placed. Run `verify`.
-- [ ] T2: The AC2 case; check it fails with the `owed = false` line
+- [x] T2: The AC2 case; check it fails with the `owed = false` line
       (~509) removed, then restore it. Run `verify`.
 - [ ] T3: One placed-and-shown predicate used at ~294, ~744-747, and
       ~1236; existing tests unchanged. Run `verify`.
@@ -113,6 +113,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
 - 2026-10-15: plan chose a second pane listing after `owed = true` over `$.ui.invalidate('ui.render')` because a listing reads without a draw the host may delay; falsified by a test or live look where the second listing still answers not placed after the pane drew.
 - 2026-10-15: started on branch m256-pane-late-placement; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-15: T1 done: `Copy.panesHold` (one-shot, cleared when reached, so a test sees the hold was hit); the AC1 case over blocked-active and blocked-prs went red at its final read assertion (reads `[]`) after the hold was reached and the held draw read nothing; the hook now lists again after `owed = true` and reads when placed and `owed` still holds (a draw, open, or end clears it). Verify green: 408 + 175 Python tests, both validates, 1736 mod tests.
+- 2026-10-15: T2 done: the AC2 case (clear start owes, `CLEAR_END`, place, draw, no read); with the `session.end` handler's `owed = false` removed it alone failed, reading `[URL_1250]` at its last assertion (1 of 1737); restored, `register.tsx` back to no diff. Verify green: 1737 mod tests.
 
 
 ## Decisions
