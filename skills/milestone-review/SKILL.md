@@ -562,9 +562,11 @@ re-enters here, at the step the record shows is next:
    per `closes` entry and one `Refs #N` line per `partial` entry of the
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
    close the issue at merge; a slot of `—` adds no lines. In owner mode
-   the body also carries one `Candidate row: <short title>` line for each
-   candidate row that this milestone graduates at step 9's hygiene
-   (`skills/shared/records-hygiene.md` §1), as known when the PR opens. The
+   the body also carries, before those lines, one `Candidate row: <short
+   title>` line for each candidate row that this milestone graduates at
+   step 9's hygiene (`skills/shared/records-hygiene.md` §1), as known when
+   the PR opens, each line unwrapped and the title bare, with no quotes or
+   backticks. The
    title is cut from the row in `cairn/ROADMAP.md` as tracking-rules
    "Candidate short title" states. While the PR is open, the cairn pane in
    a checkout with no active milestone can mark that row (M252). Record the PR

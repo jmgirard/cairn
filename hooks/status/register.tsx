@@ -1150,7 +1150,8 @@ async function pressHome($) {
 // Plan is. It does nothing when a step is set, when the stored pane state
 // would draw no candidate rows (no ROADMAP found, or an active milestone),
 // or when the stored row at the drawn index is missing or has another
-// title. Its checks run under the shared press mark, and `pressChecked`
+// title, or when the stored read for the band's root holds an item with
+// that title (M252 review). Its checks run under the shared press mark, and `pressChecked`
 // holds the command only after them, as for `Plan` (M242 review, M243).
 async function pressCandidate($, index: string, title: string) {
   await pressChecked($, async () => {
@@ -1159,6 +1160,12 @@ async function pressCandidate($, index: string, title: string) {
     const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
     const drawn = state.found && state.milestones.length === 0 && row?.title === title
     if (!drawn || knownStep(await read($, step)) !== null) return undefined
+    // A row that an open pull request's body names draws no ✎ (M252), so a
+    // press from a drawing made before the read marked it plans nothing. No
+    // test reaches it, since the test kit presses only the current drawing.
+    const held = await read($, hotfixes)
+    const ours = held.root !== null && held.root === (await read($, band)).root
+    if (ours && held.started.some(item => item.title === title)) return undefined
     return { command: PLAN_COMMAND, args: title, clears: true }
   })
 }

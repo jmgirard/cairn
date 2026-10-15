@@ -306,8 +306,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   place of its priority mark, `#<n>` in gray in its tail for the lowest
   matching number, and no `plan` Button. `paneLines` takes the items as its
   `started` argument, which register.tsx passes only while the band's root
-  is the stored root. The pane lists candidate rows only while no row is
-  active, so a milestone PR's mark shows only in a checkout whose ROADMAP
+  is the stored root. The pane lists candidate rows only while no milestone
+  is active, so a milestone PR's mark shows only in a checkout whose ROADMAP
   has no active row, such as one of the default branch.
   The pane state also holds the `blocked` rows
   (M223), in ROADMAP order, each with the number of the pull request that

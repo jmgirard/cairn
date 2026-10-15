@@ -193,7 +193,7 @@ can resolve against the fork instead of the base repo.
    chat first. Only on approval: recreate their commits on a
    `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
    there, open a PR crediting them (`Co-authored-by:`), its body carrying
-   the `Candidate row:` lines that step 6 names, and close theirs with
+   in owner mode the `Candidate row:` lines that step 6 names, and close theirs with
    that comment. Declined → leave their PR open and stop.
    Never merge a fix whose regression test
    is still missing — that is the one gate this path exists to enforce.
@@ -260,7 +260,8 @@ can resolve against the fork instead of the base repo.
    has an open PR — the PR-reference re-entry, or the Copilot round arm —
    where the branch is pushed and the existing PR stands). In owner mode
    the body also carries one `Candidate row: <short title>` line for each
-   candidate row that step 1 matched. The title is cut from the row in
+   candidate row that step 1 matched, each line unwrapped and the title
+   bare, with no quotes or backticks. The title is cut from the row in
    `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. While
    the PR is open, the cairn pane can mark that row (M252). The guest arm
    below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch`

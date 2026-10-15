@@ -195,3 +195,32 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - AC5: `grep -n "gh pr create" skills/milestone-review/SKILL.md` lists :112 (a skip mention, not a site), :137 (Copilot arm, owner: "with the `Closes`/`Refs` and `Candidate row:` lines"), :558 (step 8, owner: rule at :564-570, one line per row this milestone graduates at step 9's hygiene per records-hygiene §1, as known when the PR opens, title cut from the ROADMAP row), :617 (companion: "no `Candidate row:` line", :618), and :638 (guest: the lines "are left out", :642). Records-hygiene §1 is the rule by which step 9 removes a graduated row, so "graduates" names the rows AC5 calls removed or narrowed.
 - AC6: README.md:437-452 states the `◐` mark, the `Candidate row:` line, owner mode only ("A guest-mode PR carries no such line"), only your own open PRs on the base remote, that the PR numbers behind the mark change only at an open, a ↻ press, or a `/clear` or `/resume` while the pane is open (the claim audit narrowed "the mark" to its PR numbers, since a file refresh can hide a row), and that candidate rows show only while no milestone is active, so a milestone PR's mark shows only in another checkout of the default branch. DESIGN.md:79 (M252 in the hooks/status list), :304-311 (mark, `#<n>`, no `plan` Button, root check, active-milestone limit), :431-446 (`--author @me` call with `body`, `startedRows`, `hotfixes-2`, owner-mode lines, guest none; the read times at :350-373 cover the same read). CHANGELOG.md:155-164 Unreleased New entry, no milestone number. `types/index.d.ts:94` `CairnStartedRow`, `:102` `CairnHotfixRead.started`, which the `PluginState` entry `hotfixes: Shaped<CairnHotfixRead>` holds.
 - Consistency gate: `cairn_validate` all checks passed; verify green at the review head (scripts 408 OK, hooks 175 OK, plugin and marketplace validate exit 0, mod tests 1729 pass); no `plugins[N].version` warning; CHANGELOG has the entry, no milestone number in it; `skills/tests` 752 OK (hand-run). No principle changed, so no `cairn_impact`.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `body` makes the one `gh pr list` call larger, so a truncated (4 MiB) or timed-out result now fails the hotfix list with the marks — follow-up, "Started mark edges (M252 review)"
+- diff-bug #2: `pressCandidate` does not check `started`, so a ✎ press from a drawing made before the read marked the row still plans it — fix now (press returns nothing when the stored read for the band's root names the title; no test reaches it, as the kit presses only the current drawing)
+- diff-bug #3: the "with no items" test compared the new code with itself — fix now (literal pre-M252 lead, text, tail, and Buttons per row)
+- diff-bug #4: the AC2 loop had no length check — fix now (keys asserted)
+- diff-bug #5: the AC3 "no ✎" check had no positive control — fix now (the unmarked line's Buttons asserted `cairn-pane-plan-0`)
+- diff-bug #6: the skills did not say the line must stay unwrapped — fix now (both skills: unwrapped, title bare)
+- diff-bug #7: a `Candidate row:` line inside a code fence or quote counts — follow-up, "Started mark edges (M252 review)"
+- diff-bug #8: a body with lone `\r` line ends reads as one line — reject, planned change (AC1 splits on `\n`; GitHub returns `\n` or `\r\n`)
+- diff-bug #9: the mark is written only after the slowest per-PR read — reject, planned change (the list is written with the words since M226/M236, and AC3 stores the marks with the list)
+- diff-bug #10: DESIGN.md said "no row is active" — fix now ("no milestone is active")
+- diff-bug #11: no test of a value stored under `hotfixes-1` — reject, false as a gap in this repo's tests (the shape tag's discard is the mod API's contract; tracking-rules "What gets a test" excludes dependency behavior)
+- blame-history #1: a PR whose create is skipped, or whose rows change after it opens, never gains or fixes its lines — follow-up, "Started mark edges (M252 review)"
+- blame-history #2: without the Copilot round a PR opens only after the merge approval, so its mark shows only until the merge, and the docs did not say so — fix now (README sentence)
+- blame-history #3: one line marks every row sharing the title — reject, planned change (AC2 names "two rows sharing a matched title")
+- blame-history #4: a throwing per-PR read leaves the mark stale — reject, false (`readPr` never rejects, `register.tsx` readPr doc and its try/catch); the timeout part is diff-bug #1
+- blame-history #5: between the merge and the hygiene commit the row loses its mark and gets ✎ back — follow-up, "Started mark edges (M252 review)"
+- blame-history #6: an old `hotfixes-1` value could make `held.started` undefined — reject, false (a value under another tag reads as absent, so the default holds `started: []`)
+- blame-history #7: "the PR body ends with" the `Closes` lines is now ambiguous — fix now (review step 8 puts the `Candidate row:` lines before them)
+- blame-history #8: the companion clause changed scope with no record — reject, planned change (AC5 names the companion site)
+- blame-history #9: a stale ✎ press — fixed with diff-bug #2
+- prior-review #1: duplicate titles both draw ◐ — reject, planned change (as blame-history #3)
+- prior-review #2: a stale ✎ press — fixed with diff-bug #2
+- prior-review #3: existing PRs get no lines — follow-up, with blame-history #1
+- prior-review #4: hotfix "matched" against "removes or narrows" — reject, false (hotfix step 1 says only step 7 removes or narrows a matched row, so the two sets are one); the review half is blame-history #1
+- prior-review #5: search lag and the 100 cap now hit the mark — fix now for the cap (README names the marks); the search lag stays in "Live look at `/milestone`'s "Open hotfix PRs" bullet", which records it
+- prior-review #6: the re-land sentence did not say owner mode — fix now ("in owner mode")
+- prior-review #7: the README read list is shorter than the full read conditions — reject, false (the README's earlier paragraph states the full conditions; the claim audit read this sentence TRUE)
+- prior-review #8: the guard is equivalent to one check — reject, style

@@ -3950,6 +3950,7 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
       const got = rows(acts)
       const before = rows(acts, [])
       const want: Record<number, number> = { 0: 11, 1: 12, 2: 13, 4: 15, 5: 15 }
+      expect(got.map(line => line.key)).toEqual(state.candidates.map((_, i) => `candidate-${i}`))
       got.forEach((line, i) => {
         if (want[i] === undefined) {
           // Unmatched, a title that differs only by case, and an empty title.
@@ -3966,9 +3967,17 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
     })
   }
 
+  // The lines the pre-M252 code drew, written out by hand: the priority
+  // mark, no tail, and ✎ on each titled row while `acts` is true.
   test('with no items every candidate line draws as before', () => {
-    expect(layout(state, [], true, {}, [], [])).toEqual(layout(state, [], true, {}, []))
-    expect(rows(true, [])[3].buttons).toEqual(['plan'])
+    const lines = rows(true, [])
+    expect(lines.length).toBe(state.candidates.length)
+    lines.forEach((line, i) => {
+      const row = state.candidates[i]
+      expect([i, line.lead, line.tail]).toEqual([i, [PRIORITY_MARK[row.priority], { text: ' ' }], undefined])
+      expect([i, line.text]).toEqual([i, row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title }])
+      expect([i, line.buttons, line.target]).toEqual(row.title === '' ? [i, undefined, undefined] : [i, ['plan'], `${i}`])
+    })
   })
 })
 
@@ -4004,6 +4013,9 @@ describe('the pane read stores the items with the hotfix list and draws them (M2
     answer = () => listReply([])
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
+    // The unmarked line carries ✎ again, the control for the marked line's
+    // empty Button list (M252 review).
+    expect((await blockedView($, 'candidate-0')).buttons).toEqual([`${PANE_PLAN}-0`])
   })
 
   test('a root with no base-remote URL empties the mark', async ($, on) => {
