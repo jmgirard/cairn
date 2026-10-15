@@ -2199,13 +2199,13 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestTriageReadsTheToken.test_proposal_table_may_carry_a_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="A `keep` or `compress` row may also carry a priority change",
+        block="A `keep`, `compress`, or `retitle` row may also carry a priority change",
     ),
     Mutation(
         guard="test_candidate_priority_token",
         test="TestTriageReadsTheToken.test_priority_change_is_the_carve_out",
         target="skills/cairn-triage/SKILL.md",
-        block="an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out",
+        block="an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out",
     ),
     Mutation(
         guard="test_candidate_priority_token",

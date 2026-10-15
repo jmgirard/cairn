@@ -61,8 +61,9 @@ one of them absorbs is never dropped or merged away in this pass
 
 1. **Enumerate.** List every item in both sections, in file order, one line
    each: its source (`candidate` / `known issue`), its subject (for a
-   candidate, its short title, tracking-rules "Candidate short title"; for
-   a Known issues entry, the text up to the first colon, trimmed; when no
+   candidate, its short title, tracking-rules "Candidate short title",
+   when that title is not empty and runs to ~80 characters at most; for
+   any other item, the text up to the first colon, trimmed; when no
    colon falls within the first ~80 characters, the first clause — up to
    the first comma — trimmed to that length), its priority (`high` / `normal` / `low`; `—` for a Known
    issues entry), its byte length, and its added date.
@@ -90,7 +91,7 @@ one of them absorbs is never dropped or merged away in this pass
    proposal.
 
 2. **Assess.** For each item, gather the evidence below and choose exactly
-   one disposition. The vocabulary is fixed — seven words, no sub-statuses
+   one disposition. The vocabulary is fixed — eight words, no sub-statuses
    or scores (D-027) and no grouping (D-035); the priority token is a row
    fact re-rated beside the disposition (D-134), never a disposition:
 
@@ -103,7 +104,7 @@ one of them absorbs is never dropped or merged away in this pass
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. Its opening is rewritten into a short title (tracking-rules "Candidate short title"): a few words that name the row, then `: `. The rest of the row stays as it is. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. Its opening is rewritten into a short title (tracking-rules "Candidate short title"): a few words that name the row, then `: `, put before the row's text, which stays as it is. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that a finding-absorbing row
@@ -143,12 +144,15 @@ one of them absorbs is never dropped or merged away in this pass
      wanted now; the close block hands it on.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, is
-     over 60 code points, or equals another row's short title. Each row
-     that shares a title gets its own proposal. The row's byte length does
+     over 60 code points, or equals the short title of another row not
+     proposed for `drop` or `merge`. Each row that shares a title gets its
+     own proposal, and each new title differs from every other row's title,
+     the other new titles of the pass included. The row's byte length does
      not matter here. A row that takes `compress` or `split` opens each
      rewritten row with a short title instead. A row whose title a live
      milestone file quotes is not proposed for `retitle`: it stays `keep`
-     with that milestone named, as below.
+     with that milestone named, as below. Nor is a `merge` survivor in the
+     same pass, whose one edit is its lineage clause.
    A finding-absorbing row — one that belongs to a records-hygiene §7 group
    (a row and the rows that name its exact title in double quotes) carrying
    deferred findings filed from two or more milestones; a weighed note
@@ -182,7 +186,7 @@ one of them absorbs is never dropped or merged away in this pass
      its destination; a `promote` names the milestone title it hands on; a
      `retitle` names the new title, each mention it rewrites, and each
      ambiguous mention it leaves.
-     A `keep` or `compress` row may also carry a priority change
+     A `keep`, `compress`, or `retitle` row may also carry a priority change
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
      that cannot fire soon, is the usual ground; the token is never
@@ -219,8 +223,9 @@ one of them absorbs is never dropped or merged away in this pass
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording
      (a merge survivor's lineage clause is the accepted merge's edit), and
      an item the user pulled out of a `merge` or `drop` stays as it was;
-     an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out,
-     and it touches the row's opening token and the row's place in the order alone.
+     an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out,
+     and it touches the row's opening token and the row's place in the order alone. An accepted
+     `retitle`'s rewrite of a listed mention in another row is the other: it changes that quote alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
    `keep` (with no priority change) or `promote`, or nothing enumerated —
@@ -240,10 +245,13 @@ one of them absorbs is never dropped or merged away in this pass
    is, its promotion trigger as the class of evidence that would change the
    stance, and `added <original date> — <original origin>, routed from
    Known issues <today>` (the accepting `M<NNN>` as the origin); `retitle`
-   replaces the row's text before its old cut (the old title and its `: `
-   or ` — `) with the new title and `: `, or, for a row with no old cut,
-   puts the new title and `: ` before its text, and rewrites each listed
-   mention in the other ROADMAP rows; `promote` and `keep` change nothing; an accepted priority change adds, replaces,
+   keeps the row's opening token and puts the new title and `: ` before
+   the row's text, which stays as it is, old title and provenance included
+   (a row whose title is empty loses only its leading `: `); it then
+   rewrites each listed mention in the other ROADMAP rows and Known issues
+   entries, in each quoting item's text as its own accepted disposition
+   leaves it, and none in an item being dropped; `promote` and `keep`
+   change nothing; an accepted priority change adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
    token) and moves the row to its level. Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.
@@ -291,8 +299,8 @@ one of them absorbs is never dropped or merged away in this pass
    re-run, never committed over. Then replace the ROADMAP `_Last hygiene
    check:` line — replace, never append (tracking-rules); a ROADMAP that
    has none gets one — with one line dated today naming what the pass
-   changed: each dropped, merged, split, routed, compressed, and re-rated
-   item by subject, the drops' reason classes, whether a decision entry was
+   changed: each dropped, merged, split, routed, compressed, retitled
+   (old title → new title), and re-rated item by subject, the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). In owner mode,
    make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped

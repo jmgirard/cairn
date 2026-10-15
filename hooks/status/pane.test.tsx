@@ -1395,6 +1395,7 @@ describe("a ⌂ press's /clear opens the pane at its end, and nothing else does 
 
 // A candidate line's ✎ (M242). The candidates fixture with three more rows
 // at its end: one whose short title is empty, and two that share a title.
+// The fixture's rows 2 and 12 also share the title `Low row` (M251).
 const PANE_PLAN = 'cairn-pane-plan'
 const PLAN_MARK = '✎'
 const PLAN_COMMAND = 'cairn:milestone-plan'

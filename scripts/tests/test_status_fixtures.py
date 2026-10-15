@@ -144,6 +144,12 @@ def python_blocked(start, unreadable=()):
 
 PRIORITY = re.compile(r"\[(high|low)\] ")
 
+# The characters JavaScript's String.prototype.trim removes (ECMAScript's
+# WhiteSpace and LineTerminator), so the twin trims as `candidateRows` does:
+# Python's bare strip() also removes U+001C-U+001F and U+0085, and keeps
+# U+FEFF (M251 review).
+JS_TRIM = "\t\n\v\f\r                  　﻿"
+
 
 def python_candidates(start):
     """The pane's candidate rows for a session started in `start` (M207 AC3):
@@ -176,7 +182,7 @@ def python_candidates(start):
             if m:
                 text = text[m.end():]
             cut = ": " if ": " in text else " — "
-            out.append({"priority": priority, "title": text.split(cut, 1)[0].strip()})
+            out.append({"priority": priority, "title": text.split(cut, 1)[0].strip(JS_TRIM)})
     return out
 
 
@@ -252,6 +258,30 @@ class StatusFixtureAgreement(unittest.TestCase):
                     self.assertEqual(python_next(start), expected["next"])
                     self.assertEqual(python_candidates(start), expected["candidates"])
                     self.assertEqual(python_blocked(start, unreadable), expected.get("blocked", []))
+
+    def test_python_candidates_cut_and_trim_edges(self):
+        # The same rows and titles as the M251 review cases in
+        # hooks/status/reader.test.ts, written out by hand on both sides: an
+        # empty title, and the trim edges where Python's bare strip()
+        # differs from JavaScript's trim().
+        rows = [
+            ": an empty short title — added 2026-01-04",
+            "Trailing byte-order mark﻿: x — added 2026-01-05",
+            "Trailing unit separator\u001f: x — added 2026-01-06",
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp) / "repo"
+            (root / "cairn").mkdir(parents=True)
+            text = "# Roadmap\n\n## Candidates\n\n" + "".join(f"- {row}\n" for row in rows)
+            (root / "cairn" / "ROADMAP.md").write_text(text, encoding="utf-8")
+            self.assertEqual(
+                python_candidates(root),
+                [
+                    {"priority": "normal", "title": ""},
+                    {"priority": "normal", "title": "Trailing byte-order mark"},
+                    {"priority": "normal", "title": "Trailing unit separator\u001f"},
+                ],
+            )
 
     def test_pr_number_header_forms(self):
         # The forms reader.test.ts gives `prNumber`, held to `pr_number`.

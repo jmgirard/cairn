@@ -107,7 +107,7 @@ cases (M211 review)" stay in that row.
 - AC2 → T2
 - AC3 → T3
 - AC4 → T2
-- AC5 → T4
+- AC5 → T4, T6
 - AC6 → T5
 
 ## Tasks
@@ -142,6 +142,9 @@ cases (M211 review)" stay in that row.
       live-milestone exclusion.
 - [x] T5: Update README's pane section (~line 314), DESIGN.md (~line 285),
       and `CHANGELOG.md`.
+- [x] T6: Review return 1: `retitle` puts the new title before the row's
+      text and keeps the token and provenance; apply the other fix-now
+      findings the Review section lists.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -176,6 +179,7 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: claim audit: 44 claims read, 6 corrected — CHANGELOG.md (3), skills/cairn-triage/SKILL.md (1), skills/shared/tracking-rules.md (2); the same reader re-read the six and found all fixed; the rulebook baseline re-seeded to 664 lines / 63,656 bytes at its three sites.
 - 2026-10-15: all tasks done; verify green (both suites, both validates, `claude plugin test` 1714 pass), `skills/tests` hand-run OK; status set to review.
 - 2026-10-15: review return 1: AC5 — `/cairn-triage`'s `retitle` apply step replaced a title cut at ` — ` or a long `: ` title with the new title, deleting the row's description, so it did not rewrite only the row's opening (diff-bug #1, blame-history #1); the other fix-now findings in the Review section ride the same return.
+- 2026-10-15: T6 added for review return 1 (minor amendment) and done: `retitle` now keeps the token, puts the new title and `: ` before the row's text, and rewrites listed mentions in other ROADMAP rows and Known issues entries; plus the triage subject bound, eight-word vocabulary, carve-outs, stamp, uniqueness, same-pass scope, merge-survivor exclusion, `JS_TRIM` with `test_python_candidates_cut_and_trim_edges` (red on bare `strip()`), two TS trim rows, the skeleton and its fixture, `types/index.d.ts`, D-163's D-108 and D-035 sentences, and two rewraps; verify green (`claude plugin test` 0 fail), `skills/tests` OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -5884,6 +5884,11 @@ then `: `, with an area word inside the title. `/cairn-triage` gains a
 `retitle` disposition for a row whose title is empty, long, or shared with
 another row. This narrows D-149's sentence "A candidate row's title is its
 text before the first `: `" to this rule. D-149's grouping decision stands.
+D-108's door is passed on its retained trigger, because the trigger is a
+defect in shipped behavior: the pane showed `ordinal` for 8 different rows.
+D-035's rejection of a mandated "promote when:" opener does not apply: the
+short title is a name for one row, not a label shared across rows, so it
+cannot become a sub-status.
 
 **Rejected:** cutting at the earliest of `: `, `. `, and ` — `, because
 `. ` cuts at abbreviations such as "e.g." and changes many titles in other

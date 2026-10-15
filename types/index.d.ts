@@ -57,7 +57,8 @@ export type CairnPaneMilestone = {
 // found. `next` is `recommend` in scripts/cairn_next.py, its `id` null for
 // planning, and `waiting` is its `waiting`, each row's undone dependencies
 // as written with their status. `candidates` holds the ROADMAP's candidate
-// rows, each its priority and the text before its first `: ` (M207).
+// rows, each its priority and its short title: the text before its first
+// `: `, else before its first ` — `, else all of it (M207, M251).
 // `blocked` holds the `blocked` rows in ROADMAP order, each with the number
 // of the pull request its milestone file's `Branch/PR` header names, or
 // null (M223), and that pull request's URL up to its number, or null (M224).

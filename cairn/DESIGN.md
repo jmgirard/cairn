@@ -284,7 +284,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `[high] ` or `[low] ` opening, else `normal`) and the short title: the
   text before the first `: `, else before the first ` — `, else all of it
   (M251, tracking-rules "Candidate short title"). It walks the sections
-  `candidate_count` walks, but that count also takes indented lines and lines inside comments.
+  `candidate_count` walks, but that count also takes indented lines and
+  lines inside comments.
   `test_status_fixtures.py` holds the reader to each fixture's `candidates`
   key, and to that count where no comment sits in the section. The pane draws them only
   while no row is active. Every candidate line sets `grow`. While `acts`

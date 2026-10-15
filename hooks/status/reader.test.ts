@@ -264,6 +264,11 @@ describe('the short title is cut at the first `: `, else at the first ` — ` (M
     ['A `a — b` dash in backticks — added 2026-01-03', { priority: 'normal', title: 'A `a' }],
     ['A row with no colon and no dash', { priority: 'normal', title: 'A row with no colon and no dash' }],
     [': an empty short title — added 2026-01-04', { priority: 'normal', title: '' }],
+    // The trim edges where Python's bare strip() differs from trim(), held
+    // on the Python side by test_python_candidates_cut_and_trim_edges
+    // (M251 review).
+    ['Trailing byte-order mark﻿: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark' }],
+    ['Trailing unit separator\u001F: x — added 2026-01-06', { priority: 'normal', title: 'Trailing unit separator\u001F' }],
   ]
   for (const [text, row] of table) {
     test(text, () => {

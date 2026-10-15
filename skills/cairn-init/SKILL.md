@@ -191,7 +191,8 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
      - [high] short title: detail — added YYYY-MM-DD — links
      - short title: detail — added YYYY-MM-DD — links
      the opening token is `[high]`/`[low]` or absent (`normal`) — tracking-rules "Candidate priority token";
-     the words before the first `: ` are the title the cairn pane shows — tracking-rules "Candidate short title" -->
+     open each row with its short title, the words the cairn pane shows, then `: `;
+     tracking-rules "Candidate short title" has the whole rule -->
 ```
 
 Then:

@@ -321,8 +321,8 @@ shows all its text. Open each row with a few words that name it, then
 `: ` and the details, for example
 `- [high] Pane refresh lag: details — added 2026-10-15`.
 `/cairn-triage` offers to reword a row whose short title is empty, longer
-than 60 characters, or the same as another row's. While no cairn skill runs or waits on its background work, each
-row whose short title is not empty carries a `✎` button at its right end.
+than 60 characters, or the same as another row's. While no cairn skill
+runs or waits on its background work, each row whose short title is not empty carries a `✎` button at its right end.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short
 title in the cleared conversation. The band has no such button. As with
 the next-step button, a press while Claude works outside a cairn skill

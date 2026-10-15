@@ -81,12 +81,12 @@ class TestTriageReadsTheToken(unittest.TestCase):
 
     def test_proposal_table_may_carry_a_priority_change(self):
         self.assertIn(
-            "a `keep` or `compress` row may also carry a priority change", self.step(3)
+            "a `keep`, `compress`, or `retitle` row may also carry a priority change", self.step(3)
         )
 
     def test_priority_change_is_the_carve_out(self):
         self.assertIn(
-            "an accepted priority change on a `keep` or `compress` row is the one edit this rule carves out",
+            "an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out",
             self.step(3),
         )
 

@@ -13,9 +13,10 @@
   inside the title (`ordinal REML: …`, not `ordinal: REML. …`). The new
   ROADMAP skeleton shows that shape. `/cairn-triage` gains a `retitle`
   proposal for a row whose short title is empty, longer than 60
-  characters, or the same as another row's. It rewords only the row's
-  opening and also rewrites each double-quoted mention of the old title in
-  the other ROADMAP rows, except a mention of a title that several rows
+  characters, or the same as another row's. It puts a new short title
+  before the row's text, which stays as it is, and rewrites each
+  double-quoted mention of the old title in the other ROADMAP rows and in
+  DESIGN.md's Known issues, except a mention of a title that several rows
   share, which it lists and leaves as it is. A quote of a row's whole
   text, written before this change for a row with no `: ` but a ` — `, no
   longer matches that row's title.
