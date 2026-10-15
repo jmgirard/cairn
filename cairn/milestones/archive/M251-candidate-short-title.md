@@ -1,0 +1,11 @@
+# M251: One short-title rule for candidate rows
+
+**Status:** done (2026-10-15, PR #262 https://github.com/jmgirard/cairn/pull/262)
+
+**Goal:** A candidate row's short title, which the pane shows and the skills quote, has one written rule that tells row writers how to form it.
+
+**Outcome:** `candidateRows` in `reader.ts` and its Python twin `python_candidates` cut a row's short title at the first `: `, else at the first ` — `, else keep all of it. The twin now trims with `JS_TRIM`, the set JavaScript's `trim()` removes. tracking-rules "Candidate short title" states the rule once and tells writers to open each row with a few words that name it, then `: `, an area word inside the title. records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1, `/milestone`'s §7 sentence and review step 9 cite it, and the `/cairn-init` skeleton shows `- [high] short title: detail — added …`. `/cairn-triage` gains `retitle`, its eighth disposition: for a row left `keep` whose title is empty, over 60 code points, or shared, it puts a new title and `: ` before the row's text and rewrites double-quoted mentions in other ROADMAP rows and Known issues. Fixtures gained the glmmTMB-shaped rows, and `types/index.d.ts`, README, DESIGN, and CHANGELOG describe the rule. The rulebook baseline is 664 lines / 63,690 bytes. Reported by the glmmTMB session (8 rows showed `ordinal`). Absorbed the no-title part of "Amendment-return and linked-row edge cases (M211 review)".
+
+**Decisions:** D-163 (narrows D-149's title sentence; passes D-108's door on a shipped-behavior trigger). The plan gate chose colon-then-dash over adding a `. ` cut or an area-prefix guess, and `retitle` over a validate advisory. AC5 was amended once, at a user stop after two re-audits.
+
+**Review:** Two passes of the three-lens fan-out gave 53 findings: 39 fixed, 11 rejected, 3 to the new row "Retitle edges (M251 review)". Pass 1 took one return: `retitle`'s first apply step deleted a dash-cut row's description. Copilot (Lite) raised 2 threads, both fixed and resolved. Two claim audits corrected 12 of 82 claims. No lesson captured: LESSONS.md is at its byte budget, and the Edit tool's literal-character hazard is the same class as the existing M191 line.
