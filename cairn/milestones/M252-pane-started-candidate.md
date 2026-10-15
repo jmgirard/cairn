@@ -141,7 +141,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
       `:294`, and step 5's re-land at `:195`) and
       `skills/milestone-review/SKILL.md` (`:137`, `:557`; none at `:610` and
       `:631`), write the `Candidate row:` line rule. Hand-run `skills/tests`.
-- [ ] T6: README's pane section, DESIGN.md's pane description, and
+- [x] T6: README's pane section, DESIGN.md's pane description, and
       CHANGELOG.md, with AC6's four limits. Run `verify`.
 
 ## Work log
@@ -169,6 +169,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - 2026-10-15: T2–T4: `startedRows` and `STARTED_MARK` in pane.ts, a `started` argument to `paneLines`, `body` in `listArgv`, `started` in the `hotfixes` value (tag `hotfixes-2`), `CairnStartedRow` in types; mod tests 1729 green; plants (✎ kept on a matched line; another root's items kept on a failed call) each turned their tests red, then reverted; verify green.
 - 2026-10-15: implement chose to keep a matched low row's gray title, since AC2 replaces only the mark.
 - 2026-10-15: T5: `/hotfix` step 6 approval paragraph holds the `Candidate row:` rule; its Copilot arm and step 5's re-land point to it; its guest arm and `/milestone-review`'s guest and companion sites write none; review step 8 holds the rule, its Copilot arm points to it; `skills/tests` 752 green, verify green.
+- 2026-10-15: T6: README pane section, DESIGN.md (hooks/status list, candidate and hotfix-read passages), CHANGELOG Unreleased New entry; types done in T4; verify, `skills/tests`, cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
