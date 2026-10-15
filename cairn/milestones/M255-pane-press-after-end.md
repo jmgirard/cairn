@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M255: Pane Buttons recover after a session end
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -93,10 +93,10 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
       the AC1 and AC2 cases, red. Then `pressCheck = null` in the
       `session.end` handler (register.tsx ~516) and a stale-mark return in
       `pressChecked` after `await checks()` (~1112). Run `verify`.
-- [ ] T2: Tests first: a `Copy` flag that makes `seat()`'s `session.end`
+- [x] T2: Tests first: a `Copy` flag that makes `seat()`'s `session.end`
       (~173) throw; the AC3 case, red. Then make the open at a clear end
       (~535) run when `next(e)` rejects, keeping the rejection. Run `verify`.
-- [ ] T3: CHANGELOG entry; run `verify`.
+- [x] T3: CHANGELOG entry; run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -119,6 +119,8 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
 - 2026-10-15: plan chose to drop the ⌂ open when the pane is no longer listed out of scope because whether a `/clear` keeps the pane listed is unlooked live, and a wrong guess stops ⌂ from opening the pane at all; falsified by a live look showing the pane stays listed across a clear.
 
 - 2026-10-15: T1 done: `holdStep` (a one-shot `state.get` hold on `step`, armed after mount) and the AC1/AC2 cases at the end of pane.test.tsx, both red first (no Status run after the end; the stale press ran `/clear`); then `pressCheck = null` in the `session.end` handler and `if (pressCheck !== mark) got = undefined` after `await checks()` in `pressChecked`. Plugin test 1731 pass 0 fail.
+- 2026-10-15: T2 done: `Copy.endThrows` makes `seat()`'s `session.end` throw; the AC3 case was red (no open), then the mod's `session.end` handler catches a rejecting `next(e)`, opens the pane for a ⌂ press at a clear end, and rethrows. Implement choice: open in the catch and rethrow, not try/finally, so the later updates keep their present behavior on a rejection.
+- 2026-10-15: T3 done: CHANGELOG Unreleased "Fixes" entry. Verify: scripts/tests OK (21 skipped), hooks/tests OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1732 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -515,7 +515,15 @@ export const register: Register = on => {
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
     if (e.reason === 'other') await markReopen($)
-    const result = await next(e)
+    let result
+    try {
+      result = await next(e)
+    } catch (error) {
+      // A ⌂ press's open still runs when the end beneath rejects, and the
+      // rejection goes on (M255). A held command is dropped as before.
+      if (home !== null && e.reason === 'clear') void openHome($)
+      throw error
+    }
     await update($, step, () => null)
     await update($, expanded, () => false)
     await update($, dismissed, () => null)

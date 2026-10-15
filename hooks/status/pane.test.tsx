@@ -89,6 +89,8 @@ type Copy = {
   reads?: string[]
   // While set, `$.ui.panes()` beneath the mod throws (M237).
   panesThrow?: boolean
+  // While set, the session end beneath the mod throws (M255).
+  endThrows?: boolean
 }
 
 function copyOf(name: string): Copy {
@@ -170,7 +172,10 @@ function seat(on: On, copy: Copy) {
   })
   // The session end a `/clear` brings, which runs the command a Plan or
   // Implement press holds (M221).
-  on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
+  on('session.end', async ($, e) => {
+    if (copy.endThrows === true) throw new Error('the end failed')
+    return { sessionId: e.sessionId }
+  })
 }
 
 function textOf(node: unknown): string {
@@ -4126,5 +4131,27 @@ describe('a press check cut off by a session end frees the Buttons and runs noth
     await untilRuns(copy, 1, 10)
     expect(copy.commands ?? []).toEqual([])
     await ui.unmount()
+  })
+})
+
+describe("a ⌂ press's open still runs when the session end beneath rejects (M255 AC3)", () => {
+  test('a clear end whose next(e) rejects opens the pane once', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    copy.hidden = [PANE]
+    const before = copy.opens.length
+    await pressKey($, PANE_HOME)
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    await untilOpens(copy, before + 1)
+    expect(copy.opens.slice(before)).toEqual([{ id: PANE, title: 'cairn' }])
   })
 })
