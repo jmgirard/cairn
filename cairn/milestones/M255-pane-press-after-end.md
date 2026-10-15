@@ -123,6 +123,7 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
 - 2026-10-15: T3 done: CHANGELOG Unreleased "Fixes" entry. Verify: scripts/tests OK (21 skipped), hooks/tests OK, plugin validate passed with warnings, marketplace validate passed, plugin test 1732 pass 0 fail.
 - 2026-10-15: claim audit: 23 claims read, 3 corrected — CHANGELOG.md, hooks/status/pane.test.tsx. The CHANGELOG overstated the freeze (a read that settled freed the mark; ↻ was never blocked) and the cut-off rule's reach (⌂ does not use the press mark); the `holdStep` comment gave the end's update as a reason to arm after mount. Also fixed the stale `pressCheck` comment (register.tsx ~1101). Re-read pending.
 - 2026-10-15: claim audit re-read: the 3 corrected claims and the stale comment now hold.
+- 2026-10-15: step-7 approval: m255-pane-press-after-end approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
