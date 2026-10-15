@@ -152,6 +152,17 @@
 
 ### New
 
+- **The cairn pane marks a candidate row that an open PR already works
+  on.** In owner mode, `/hotfix` and `/milestone-review` now put one
+  `Candidate row: <short title>` line in the PR body for each candidate
+  row that the merge removes or narrows. The pane's existing `gh pr list`
+  call reads each of your open PRs' bodies, and a candidate row whose
+  short title a line names exactly shows `◐` in place of its priority
+  mark, the PR number at its right end, and no `✎` button. A guest-mode
+  PR carries no such line. The PR numbers behind the mark change only when
+  the pane reads its PRs, and the pane lists candidate rows only while no
+  milestone is active. A PR opened before this change has no such line.
+
 - **A close names the Copilot opt-in line when Copilot reviews a PR with
   the round off.** In a repo whose `cairn/PROFILE.md` lacks
   `# Copilot review: on`, cairn does not handle Copilot's threads. When

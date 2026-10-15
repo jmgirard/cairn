@@ -76,7 +76,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -301,6 +301,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   `cairn:milestone-plan` with the title and runs `clear`, and the
   `session.end` hook runs the held command as it runs a `Plan` press's
   (M242 review).
+  A candidate line whose non-empty short title equals a `started` item's
+  title exactly (M252) draws `STARTED_MARK`, `◐` in the review color, in
+  place of its priority mark, `#<n>` in gray in its tail for the lowest
+  matching number, and no `plan` Button. `paneLines` takes the items as its
+  `started` argument, which register.tsx passes only while the band's root
+  is the stored root. The pane lists candidate rows only while no milestone
+  is active, so a milestone PR's mark shows only in a checkout whose ROADMAP
+  has no active row, such as one of the default branch.
   The pane state also holds the `blocked` rows
   (M223), in ROADMAP order, each with the number of the pull request that
   its milestone file's first `Branch/PR` header line names. The number
@@ -421,14 +429,21 @@ transitions, human-gated merges, and a domain verification doctrine.
   userinfo of an `http://` or `https://` URL, keeping every other form
   (M230). No URL means no list call and
   an empty list. Otherwise one `gh pr list --repo <url> --state open
-  --author @me --limit 100 --json number,title,url,headRefName` call runs
-  in the root. `hotfixPrs` in `pane.ts` keeps an entry only with a
+  --author @me --limit 100 --json number,title,url,headRefName,body` call
+  runs in the root (`body` since M252). `hotfixPrs` in `pane.ts` keeps an entry only with a
   `headRefName` that starts with `hotfix-`, a string `url`, and an
   integer `number`. A call that rejects, exits non-zero, or prints no JSON
   array keeps the last good list when it was read for the same root. The
   list's URLs join the blocked URLs for the word and count reads. The
-  `hotfixes` state value (`{ root, prs }`, tag `hotfixes-1`) is written
-  with the words. The pane draws the list only while the band's root is
+  `hotfixes` state value (`{ root, prs, started }`, tag `hotfixes-2` since
+  M252) is written with the words. `startedRows` in `pane.ts` reads the
+  same result into `started` (M252): for each entry with an integer
+  `number` and a string `body`, whatever its branch, each body line that
+  opens with exactly `Candidate row: ` gives `{ title, number }`, the rest
+  trimmed, a blank rest giving none. A failed call keeps or empties
+  `started` with `prs`. In owner mode `/hotfix` and `/milestone-review`
+  write those lines in the PR body, one per candidate row that the merge
+  removes or narrows; a guest PR body carries none. The pane draws the list only while the band's root is
   its root, under a `HOTFIXES` heading after `BLOCKED` and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has

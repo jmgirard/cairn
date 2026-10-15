@@ -5,7 +5,7 @@ import type { CairnBandHidden, CairnHotfixRead, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prRead } from './counts'
-import type { HotfixPr, PaneButton, PrRead } from './pane'
+import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
   CHECK_LABEL,
   CLEAR_LABEL,
@@ -13,6 +13,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  startedRows,
   nextLabel as labelOf,
   NO_ROADMAP,
   paneLines,
@@ -145,9 +146,11 @@ const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, 
 // The hotfix list that the last read wrote, and the repo root it is for
 // (M226, `readHotfixes` says when it is kept or empty). The pane draws
 // them only while the band's root is that root, so a failed read after a
-// `cd` shows no other repo's.
-const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [] } as CairnHotfixRead, {
-  shape: 'hotfixes-1',
+// `cd` shows no other repo's. The same value holds the candidate rows that
+// the listed bodies name, so one write keeps both from one read; the tag
+// moved to 2 with them (M252).
+const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: null, prs: [], started: [] } as CairnHotfixRead, {
+  shape: 'hotfixes-2',
 })
 
 // True from the start of a read of the pull request states until the newest
@@ -324,8 +327,8 @@ export const register: Register = on => {
     const acts = knownStep(await read($, step)) === null
     const shown = await read($, band)
     const held = await read($, hotfixes)
-    const listed = held.root !== null && held.root === shown.root ? held.prs : []
-    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, prs), listed)
+    const ours = held.root !== null && held.root === shown.root
+    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, prs), ours ? held.prs : [], ours ? held.started : [])
     // ⋯ also needs a read in flight in this module, so a stored true that a
     // reload or a failed write left draws ↻ (M237).
     const busy_ = (await read($, reading)) && inFlight > 0
@@ -877,25 +880,31 @@ async function readPr($, url: string): Promise<PrRead> {
 // no root or no URL for the base remote, it runs no call, and the list is
 // empty. A call that fails keeps the last good list when it was read for
 // the same root, and is empty otherwise. A good read replaces it, an empty
-// one included.
+// one included. The same result gives the candidate rows that the listed
+// bodies name (`startedRows`, M252), kept and emptied with the list.
 async function readHotfixes($): Promise<CairnHotfixRead> {
   const root = (await read($, band)).root
-  if (root === null) return { root: null, prs: [] }
+  if (root === null) return { root: null, prs: [], started: [] }
   const url = await baseRemoteUrl($, root)
-  if (url === null) return { root, prs: [] }
+  if (url === null) return { root, prs: [], started: [] }
   let got: HotfixPr[] | null
+  let started: StartedRow[] | null
   try {
-    got = hotfixPrs(await $.process.run(listArgv(url), { cwd: root, timeoutMs: GH_TIMEOUT_MS }))
+    const result = await $.process.run(listArgv(url), { cwd: root, timeoutMs: GH_TIMEOUT_MS })
+    got = hotfixPrs(result)
+    started = startedRows(result)
   } catch {
     got = null
+    started = null
   }
-  if (got !== null) return { root, prs: got }
+  if (got !== null && started !== null) return { root, prs: got, started }
   const held = await read($, hotfixes)
-  return held.root === root ? held : { root, prs: [] }
+  return held.root === root ? held : { root, prs: [], started: [] }
 }
 
 // The `gh pr list` call for the operator's open pull requests on a remote
-// (M226). A list longer than the limit is cut at it.
+// (M226), with each body for its `Candidate row:` lines (M252). A list
+// longer than the limit is cut at it.
 const LIST_LIMIT = 100
 function listArgv(url: string): string[] {
   return [
@@ -911,7 +920,7 @@ function listArgv(url: string): string[] {
     '--limit',
     `${LIST_LIMIT}`,
     '--json',
-    'number,title,url,headRefName',
+    'number,title,url,headRefName,body',
   ]
 }
 
@@ -1141,7 +1150,8 @@ async function pressHome($) {
 // Plan is. It does nothing when a step is set, when the stored pane state
 // would draw no candidate rows (no ROADMAP found, or an active milestone),
 // or when the stored row at the drawn index is missing or has another
-// title. Its checks run under the shared press mark, and `pressChecked`
+// title, or when the stored read for the band's root holds an item with
+// that title (M252 review). Its checks run under the shared press mark, and `pressChecked`
 // holds the command only after them, as for `Plan` (M242 review, M243).
 async function pressCandidate($, index: string, title: string) {
   await pressChecked($, async () => {
@@ -1150,6 +1160,12 @@ async function pressCandidate($, index: string, title: string) {
     const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
     const drawn = state.found && state.milestones.length === 0 && row?.title === title
     if (!drawn || knownStep(await read($, step)) !== null) return undefined
+    // A row that an open pull request's body names draws no ✎ (M252), so a
+    // press from a drawing made before the read marked it plans nothing. No
+    // test reaches it, since the test kit presses only the current drawing.
+    const held = await read($, hotfixes)
+    const ours = held.root !== null && held.root === (await read($, band)).root
+    if (ours && held.started.some(item => item.title === title)) return undefined
     return { command: PLAN_COMMAND, args: title, clears: true }
   })
 }

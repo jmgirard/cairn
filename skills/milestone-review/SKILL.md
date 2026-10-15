@@ -135,7 +135,8 @@ re-enters here, at the step the record shows is next:
    `skills/shared/copilot-review.md` §1; D-152, D-153). Here, at the start
    of review, and unlike the paragraph above, push the branch and open the PR the way step 8 states — `git
    push -u origin <branch>`, then `gh pr create --title <title> --body
-   <body>` ready for review with the `Closes`/`Refs` lines. The push always
+   <body>` ready for review with the `Closes`/`Refs` and `Candidate row:`
+   lines. The push always
    runs; only the create is skipped when the header already names an open
    PR. Record a new PR's URL in the header in a commit on the branch; step
    6's checkpoint push carries it. Then run
@@ -560,7 +561,15 @@ re-enters here, at the step the record shows is next:
    and the existing PR stands). The PR body ends with one `Closes #N` line
    per `closes` entry and one `Refs #N` line per `partial` entry of the
    milestone's `Resolves:` slot — the closing keyword is what makes GitHub
-   close the issue at merge; a slot of `—` adds no lines. Record the PR
+   close the issue at merge; a slot of `—` adds no lines. In owner mode
+   the body also carries, before those lines, one `Candidate row: <short
+   title>` line for each candidate row that this milestone graduates at
+   step 9's hygiene (`skills/shared/records-hygiene.md` §1), as known when
+   the PR opens, each line unwrapped and the title bare, with no quotes or
+   backticks. The
+   title is cut from the row in `cairn/ROADMAP.md` as tracking-rules
+   "Candidate short title" states. While the PR is open, the cairn pane in
+   a checkout with no active milestone can mark that row (M252). Record the PR
    URL in the milestone header — a docs-only commit on the branch, left
    unpushed: the squash never needs it, and pushing it would move the PR
    head past the one CI just ran on; the resume routes and step 9 fall
@@ -608,8 +617,8 @@ re-enters here, at the step the record shows is next:
    spelled `cd <abs-path> && …` (the shell cwd resets to the session repo
    after each call) — push the companion branch (`cd <abs-path> && git
    push -u origin <branch>`), open its PR (`cd <abs-path> && gh pr create
-   --title … --body …`, ready for review, no cairn vocabulary when that
-   repo is untracked), append its URL to the companion's header entry,
+   --title … --body …`, ready for review, no `Candidate row:` line, and no
+   cairn vocabulary when that repo is untracked), append its URL to the companion's header entry,
    wait on its checks under the same wait rule as the primary (`cd
    <abs-path> && gh pr checks <N> --watch --fail-fast`, with the same
    timeout and no-checks handling), then — only when `<abs-path>` has a
@@ -632,7 +641,7 @@ re-enters here, at the step the record shows is next:
    ready for their review (never a draft, so no later ready-marking step)
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
-   and stay); record the PR URL in the header on disk, never committed.
+   and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
    With the Copilot review round on (`skills/shared/copilot-review.md`
    §1), run it here, after the create and before the close block: the
    state query (§3), the request on `none` asking for Balanced (§2), the
