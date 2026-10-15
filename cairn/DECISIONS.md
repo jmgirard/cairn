@@ -5864,3 +5864,36 @@ else from being pushed with it. The rulebook's git model still says the
 default branch takes only docs-only tracking commits, while its trivial
 tier already allowed a direct commit; this route acts on the trivial tier,
 and reconciling the git-model sentence is left to a candidate row.
+
+### D-163 (2026-10-15): A candidate row's short title is cut at the first `: `, else at the first ` — `, and the rulebook tells writers to open each row with one — narrows D-149's title sentence (M251)
+
+**Context:** The glmmTMB session reported that 8 of its candidate rows,
+written `ordinal: topic. detail`, all show `ordinal` in the cairn pane, and
+that a row with no `: ` shows its whole line. D-149 defined a row's title as
+its text before the first `: `, and no rule told a writer that this text is
+the title. Across 25 local cairn repos, most rows were not written with a
+short title before `: `.
+
+**Decision:** At the M251 plan gate the user chose to keep the first `: `
+as the cut and, for a row with no `: `, to cut at its first ` — ` (space,
+em dash, space), so the date and links leave the title. A row with neither
+keeps all its text. tracking-rules "Candidate short title" states the rule
+once, and the skills that name a row by its title cite it. The same
+paragraph tells a writer to open each row with a few words that name it,
+then `: `, with an area word inside the title. `/cairn-triage` gains a
+`retitle` disposition for a row whose title is empty, long, or shared with
+another row. This narrows D-149's sentence "A candidate row's title is its
+text before the first `: `" to this rule. D-149's grouping decision stands.
+
+**Rejected:** cutting at the earliest of `: `, `. `, and ` — `, because
+`. ` cuts at abbreviations such as "e.g." and changes many titles in other
+repos; falsified by writers who follow the rule and still end titles at
+`. `. Guessing that a one-word text before `: ` is an area prefix, because
+every reader of the title would have to copy the guess; falsified by
+area-prefix rows that persist after the rule ships. A `cairn_validate`
+advisory on long titles, at the user's choice.
+
+**Consequences:** A row with no `: ` now has a shorter title, so an old
+double-quoted mention of its whole text no longer matches it and leaves its
+§7 group. Rows that already exist keep long titles until a `/cairn-triage`
+pass rewords them.

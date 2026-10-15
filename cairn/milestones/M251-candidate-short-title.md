@@ -127,7 +127,7 @@ cases (M211 review)" stay in that row.
       `python_candidates`, with their comments. Regenerate `fixtures.gen.ts`
       with `hooks/status/gen_fixtures.py`. Run both gating suites and
       `claude plugin test`.
-- [ ] T2: Write the "Candidate short title" paragraph after "Candidate
+- [x] T2: Write the "Candidate short title" paragraph after "Candidate
       priority token" (`tracking-rules.md:209`) and change that paragraph's
       row example. Change the skeleton comment in
       `skills/cairn-init/SKILL.md` (~line 190). Append the D-entry that
@@ -168,3 +168,4 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: criteria audit (full mode, fresh Opus reader) ran twice. Pass 1 on the draft: 8 findings (missing probe axes, `. ` abbreviations, shared titles, compress breaking quotes, two missed citing sites and a work-log escape in AC3, no AC for the D-149 narrowing, no migration note, the `pane.test.tsx` list); all fixed or made moot by the gate's choice. Pass 2 on the revised criteria: 5 findings (who gets a shared-title retitle, live milestone files are plan-owned, T3's log escape, AC1's fixture clause, `EMPTY_AT`/`SAME_AT` index shifts); all 5 fixed by narrowing AC1, AC3, AC5, T1, T3, and T4.
 - 2026-10-15: implement started on m251-candidate-short-title; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
 - 2026-10-15: T1 done: AC1's table in `reader.test.ts` and the `candidates` fixture (6 rows; the empty-title row stays in reader.test.ts and pane.test.tsx's own extra rows), old "shown whole" rows reworded, `mixed` and `single-in-progress` expected titles lose their dash tail; 3 TS cases and the fixture checks failed before the reader change; after it, both suites, both validates, and `claude plugin test` (1714 pass) are green.
+- 2026-10-15: T2 done: tracking-rules "Candidate short title" paragraph and the token example's new shape, the `/cairn-init` skeleton comment, D-163 narrowing D-149's title sentence; rulebook baseline re-seeded to 663 lines / 63,632 bytes at its three sites (`/milestone` and two hand-run pins); the skeleton pin and its mutation entry updated; verify green and `skills/tests` hand-run OK.

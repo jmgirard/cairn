@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="655 lines / 62,812 bytes",
+        block="663 lines / 63,632 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2175,7 +2175,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestInitSkeleton.test_skeleton_shows_the_tagged_shape",
         target="skills/cairn-init/SKILL.md",
-        block="- [high] idea — added YYYY-MM-DD — links",
+        block="- [high] short title: detail — added YYYY-MM-DD — links",
     ),
     Mutation(
         guard="test_candidate_priority_token",

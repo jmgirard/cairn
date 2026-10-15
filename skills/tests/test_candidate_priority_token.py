@@ -54,7 +54,7 @@ class TestInitSkeleton(unittest.TestCase):
         return text[start : text.index("-->", start)]
 
     def test_skeleton_shows_the_tagged_shape(self):
-        self.assertIn("- [high] idea — added yyyy-mm-dd — links", self.skeleton())
+        self.assertIn("- [high] short title: detail — added yyyy-mm-dd — links", self.skeleton())
 
     def test_skeleton_names_the_token_as_optional(self):
         self.assertIn("`[high]`/`[low]` or absent (`normal`)", self.skeleton())
