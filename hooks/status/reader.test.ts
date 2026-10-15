@@ -267,7 +267,7 @@ describe('the short title is cut at the first `: `, else at the first ` — ` (M
     // The trim edges where Python's bare strip() differs from trim(), held
     // on the Python side by test_python_candidates_cut_and_trim_edges
     // (M251 review).
-    ['Trailing byte-order mark﻿: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark' }],
+    ['Trailing byte-order mark\uFEFF: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark' }],
     ['Trailing unit separator\u001F: x — added 2026-01-06', { priority: 'normal', title: 'Trailing unit separator\u001F' }],
   ]
   for (const [text, row] of table) {

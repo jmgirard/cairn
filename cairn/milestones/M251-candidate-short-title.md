@@ -238,3 +238,29 @@ cases (M211 review)" stay in that row.
 - copilot: hooks/status/reader.ts:545 — fix now (`types/index.d.ts` still documented the old cut), fixed 15b0ad3
 - copilot: review body — noted (an index of the two threads above)
 - Copilot level: Lite (set by GitHub's settings)
+- spawned: diff-bug, blame-history, prior-review (pass 2)
+- pass 2 diff-bug #1: a `compress` or `split` rewrite gave a row a new short title with no mention rewrite or live-milestone check — fix now (that clause removed; only `retitle` changes a title).
+- pass 2 diff-bug #2: the owner-mode cap check did not count the longer stamp — fix now (step 4 now counts the stamp in both modes), fixed c660c07.
+- pass 2 diff-bug #3: rows that share a title get identical subjects at the chip, so the Amend loop cannot tell their proposals apart — follow-up (candidate row "Retitle edges (M251 review)").
+- pass 2 diff-bug #4: README.md:325 still overlong — fix now, fixed c660c07.
+- pass 2 diff-bug #5: an empty title that does not come from a leading `: ` (a row opening with ` — `, or spaces) has no anchor in the subject and apply rules, and an empty old title's mention search matches `""` — follow-up (same row).
+- pass 2 diff-bug #6: nothing bounds a new title (empty, long, or holding `: `) — fix now (not empty, no `: ` or ` — `, 60 code points at most).
+- pass 2 diff-bug #7: the Amend loop can set a new title another row already has — follow-up (same row).
+- pass 2 diff-bug #8: the Known issues mention rewrite is scope AC5 does not ask for — reject, not a defect: a deliberate pass-1 fix (diff-bug #10) that AC5 does not forbid.
+- pass 2 diff-bug #9: quotes of a whole no-`: ` row written before M251 stay stale after a `retitle` pass — reject, planned change: D-163 and CHANGELOG state that consequence.
+- pass 2 diff-bug #10: "rewords" no longer describes the insert — fix now (tracking-rules, README, D-163); rulebook baseline re-seeded to 664 lines / 63,690 bytes at its three sites.
+- pass 2 diff-bug #11: CHANGELOG says "characters" and omits the exclusions — reject, style: a plain-language summary for users.
+- pass 2 diff-bug #12: literal invisible U+FEFF/U+001F in the tests (and in `JS_TRIM`) — fix now (written as escapes).
+- pass 2 diff-bug #13: the `JS_TRIM` comment names characters that break lines before the trim — fix now (comment narrowed to U+FEFF and U+001F).
+- pass 2 blame-history #1: README and DESIGN lines still overlong — fix now, fixed c660c07.
+- pass 2 blame-history #2: no guard pins the new mention carve-out — reject, not a defect: the prose guards stay hand-run (D-109) and the carve-out text is correct.
+- pass 2 blame-history #3: step 4 says `keep` and `promote` change nothing while a mention rewrite can touch them — fix now, fixed c660c07.
+- pass 2 blame-history #4: owner-mode stamp not counted — same as pass 2 diff-bug #2, fixed c660c07.
+- pass 2 blame-history #5: a candidate title over ~80 characters fell to the Known issues subject rule — fix now (the short title trimmed to ~80), fixed c660c07.
+- pass 2 blame-history #6: `compress`/`split` titles had no uniqueness check — fix now (that clause removed, as pass 2 diff-bug #1).
+- pass 2 blame-history #7: D-163's heading did not name D-108's door — fix now (heading, still unmerged), fixed c660c07.
+- pass 2 prior-review #1: the stamp-length point from the M235 review (owner mode) — same as pass 2 diff-bug #2, fixed c660c07.
+- pass 2 prior-review #2: overlong lines — same as pass 2 diff-bug #4, fixed c660c07.
+- pass 2 prior-review #3: a title over ~80 characters falls out of the subject rule — same as pass 2 blame-history #5, fixed c660c07.
+- pass 2 prior-review #4: a row a live milestone quotes or absorbs keeps a shared title, so its ✎ stays ambiguous — reject, planned change: AC5 excludes those rows.
+- pass 2 return floor: no finding shows a criterion failing or a load-bearing defect; no return.

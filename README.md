@@ -320,7 +320,7 @@ space), so its date and links stay out of the title. A row with neither
 shows all its text. Open each row with a few words that name it, then
 `: ` and the details, for example
 `- [high] Pane refresh lag: details — added 2026-10-15`.
-`/cairn-triage` offers to reword a row whose short title is empty, longer
+`/cairn-triage` offers a new short title for a row whose title is empty, longer
 than 60 characters, or the same as another row's. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end.

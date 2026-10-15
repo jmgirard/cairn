@@ -5902,4 +5902,4 @@ advisory on long titles, at the user's choice.
 **Consequences:** A row with no `: ` now has a shorter title, so an old
 double-quoted mention of its whole text no longer matches it and leaves its
 §7 group. Rows that already exist keep long titles until a `/cairn-triage`
-pass rewords them.
+pass gives them short titles.

@@ -145,10 +145,11 @@ def python_blocked(start, unreadable=()):
 PRIORITY = re.compile(r"\[(high|low)\] ")
 
 # The characters JavaScript's String.prototype.trim removes (ECMAScript's
-# WhiteSpace and LineTerminator), so the twin trims as `candidateRows` does:
-# Python's bare strip() also removes U+001C-U+001F and U+0085, and keeps
-# U+FEFF (M251 review).
-JS_TRIM = "\t\n\v\f\r                  　﻿"
+# WhiteSpace and LineTerminator), so the twin trims as `candidateRows` does.
+# Python's bare strip() keeps U+FEFF and removes U+001F; the other characters
+# it adds (U+001C-U+001E, U+0085) break lines first, so they never reach the
+# trim (M251 review).
+JS_TRIM = "\t\n\v\f\r \u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff"
 
 
 def python_candidates(start):
@@ -266,7 +267,7 @@ class StatusFixtureAgreement(unittest.TestCase):
         # Python's bare strip() differs from JavaScript's trim().
         rows = [
             ": an empty short title — added 2026-01-04",
-            "Trailing byte-order mark﻿: x — added 2026-01-05",
+            "Trailing byte-order mark\ufeff: x — added 2026-01-05",
             "Trailing unit separator\u001f: x — added 2026-01-06",
         ]
         with tempfile.TemporaryDirectory() as tmp:

@@ -151,9 +151,8 @@ one of them absorbs is never dropped or merged away in this pass
      the other new titles of the pass included. The row's byte length does
      not matter here. The mentions it lists are found by a search for the
      old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
-     Known issues. A row that takes `compress` or `split` opens each
-     rewritten row with a short title instead, under the same uniqueness
-     rule. A row whose title a live
+     Known issues. Each new title is not empty, holds no `: ` or ` — `,
+     and runs to 60 code points at most. A row whose title a live
      milestone file quotes, or that a live milestone absorbs, is not
      proposed for `retitle`: it stays `keep` with that milestone named, as
      below. Nor is a `merge` survivor in the

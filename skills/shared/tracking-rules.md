@@ -218,8 +218,8 @@ of that text. Outer spaces are removed. The cairn pane shows the short title, an
 press plans the row by it, records-hygiene §7 groups the rows that quote it in double quotes, and `/hotfix` matches a
 row whose title the argument quotes. Open each row with a few words that name the row and differ from every other
 row's title, then `: ` and the detail. An area word joins the title and does not stand before it: write
-`ordinal REML: …`, not `ordinal: REML. …`. `/cairn-triage`'s `retitle` disposition rewords an empty, long, or shared
-title (D-163).
+`ordinal REML: …`, not `ordinal: REML. …`. `/cairn-triage`'s `retitle` disposition puts a new short title before a
+row whose title is empty, long, or shared (D-163).
 
 **Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
 heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched
