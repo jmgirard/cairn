@@ -146,8 +146,8 @@ one of them absorbs is never dropped or merged away in this pass
      wanted now; the close block hands it on.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, is
-     over 60 code points, or equals the short title of another row not
-     proposed for `drop` or `merge`. Each row that shares a title gets its
+     over 60 code points, or equals another row's short title. Each row
+     that shares a title gets its
      own proposal, and each new title differs from every other row's title,
      the other new titles of the pass included. The row's byte length does
      not matter here. A row that takes `compress` or `split` opens each

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -182,6 +182,7 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T6 added for review return 1 (minor amendment) and done: `retitle` now keeps the token, puts the new title and `: ` before the row's text, and rewrites listed mentions in other ROADMAP rows and Known issues entries; plus the triage subject bound, eight-word vocabulary, carve-outs, stamp, uniqueness, same-pass scope, merge-survivor exclusion, `JS_TRIM` with `test_python_candidates_cut_and_trim_edges` (red on bare `strip()`), two TS trim rows, the skeleton and its fixture, `types/index.d.ts`, D-163's D-108 and D-035 sentences, and two rewraps; verify green (`claude plugin test` 0 fail), `skills/tests` OK.
 - 2026-10-15: claim audit: 38 claims read, 6 corrected — skills/cairn-triage/SKILL.md (3), CHANGELOG.md (1), cairn/DECISIONS.md (1), scripts/tests/test_status_fixtures.py (1); scope: the return's added lines (`6b2d646d..` outside milestone files); the same reader re-read the six and found all fixed.
 - 2026-10-15: return work done; verify green, `skills/tests` OK; status set to review.
+- 2026-10-15: amendment routed: AC5 — the skill proposes `retitle` only for rows the other classes leave `keep` (one disposition per item, since T4) and not for a `merge` survivor, while AC5 says each row with an empty, long, or shared title, with only the live-milestone exception; the criterion is wrong as written (review pass 2).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -228,3 +229,4 @@ cases (M211 review)" stay in that row.
 - prior-review #2: the skeleton comment restates part of the rule — fix now (same as diff-bug #14).
 - prior-review #3: hotfix step 1 now cites the paragraph in place of PR 259's colon-less wording — reject, false: the paragraph states the colon-less case and the reader agrees.
 - prior-review #4-#6: rulebook baseline, hotfix step 1's before-any-stop text, README overclaims — reject, false: the lens found each consistent.
+- pass 2: diff-bug #9 (same-pass drops and merges) re-dispositioned to reject, planned change: AC5 says "shared with another row", so the narrowing was reverted (skills/cairn-triage/SKILL.md:149).
