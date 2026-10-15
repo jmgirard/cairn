@@ -5921,7 +5921,9 @@ no icon in a short title. An icon is a non-ASCII character whose Unicode
 general category is `So` or `Sm`, between backticks or not, since the pane
 does not strip backticks. `/cairn-triage`'s `retitle` class proposes a row
 whose title holds an icon, and for that trigger the new title replaces the
-old one, so the icon does not stay in the row's text. D-108's door is
+old one in place when a `: ` or ` — ` follows it, so the icon does not
+stay in the row's text. A row with neither separator is all title, so it
+takes the new title and `: ` before its text, which keeps the icon. D-108's door is
 passed on its retained trigger, because the trigger is a defect in shipped
 behavior: the pane drew title icons that read as its own Buttons.
 

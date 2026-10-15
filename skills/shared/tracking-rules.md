@@ -222,7 +222,8 @@ row's title, then `: ` and the detail. An area word joins the title and does not
 pane draws its own marks and Buttons with such glyphs, and some sit beside the title. An icon is a non-ASCII
 character whose Unicode general category is `So` or `Sm`, between backticks or not. Most emoji are icons, and so are
 ○, ✓, ⌂, ✎, ↑, and ⋯. Write `Home Button edges`, not `⌂ edges`. `/cairn-triage`'s `retitle` disposition puts a new
-short title before a row whose title is empty, long, or shared. It replaces a title that holds an icon (D-163, D-164).
+short title before a row whose title is empty, long, or shared. It replaces a title that holds an icon in place
+when a `: ` or ` — ` follows it (D-163, D-164).
 
 **Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
 heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched

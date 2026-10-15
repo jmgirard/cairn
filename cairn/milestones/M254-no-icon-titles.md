@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M254: Candidate short titles hold no icons
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -49,10 +49,12 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       holds an icon beside an empty, long, or shared one.
 - [ ] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
       names a short title that holds an icon (tracking-rules "Candidate short
-      title") as a trigger, its new-title rule excludes an icon, and its
+      title") as a trigger, and its new-title rule excludes an icon. Its
       `retitle` disposition text says that for a row proposed on the icon
-      trigger the new title replaces the old one, so the old title does not
-      stay in the row's text.
+      trigger whose short title ends at a `: ` or ` — `, the new title
+      replaces the old one in place, so the old title does not stay in the
+      row's text, and that a row with neither separator takes the new title
+      and `: ` before its text, which stays.
 - [ ] AC3: At the review commit, a script that cuts each Candidates row's
       short title in `cairn/ROADMAP.md` by the tracking-rules rule reports no
       non-ASCII `So` or `Sm` character, where the same script on the plan
@@ -77,7 +79,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
 - AC1 → T1
-- AC2 → T2
+- AC2 → T2, T6
 - AC3 → T3
 - AC4 → T4
 - AC5 → T5
@@ -106,6 +108,8 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - [x] T4: CHANGELOG.md Unreleased entry under "Changes that affect existing
       repos".
 - [x] T5: Run `verify`.
+- [x] T6: Review return: amend AC2 for a row with neither separator, and
+      align SKILL.md :108, tracking-rules' `retitle` sentence, and D-164.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -137,6 +141,10 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: claim audit fixes (checkpoint, re-read pending): "Emoji are icons" → "Most emoji are icons"; the pane reason now says some marks and Buttons sit beside the title; a no-separator row takes the new title and `: ` before its text; D-164's Context places each glyph as pane.ts draws it.
 - 2026-10-15: claim audit: 17 claims read, 1 corrected — CHANGELOG.md, skills/cairn-triage/SKILL.md, skills/shared/tracking-rules.md. The re-read found the corrections hold; it also flagged D-164's "beside its own ⌂ and ✎ Buttons", now reworded.
 - 2026-10-15: amendment routed: AC2 — AC2 promises the old title never stays in the row's text, but a row with neither `: ` nor ` — ` is all title, so replacing it in place would drop the row's detail; the skill (after the claim audit) gives that row the new title and `: ` before its text, so AC2 as written fails for that case alone.
+- 2026-10-15: re-audit: AC2 (full) — the reader found the "says what a row with neither separator takes" clause accepted any answer, D-164 and tracking-rules stated replacement with no carve-out, and SKILL.md :108 said "the icon" where AC2 says "the old title"; all three fixed and the clause pinned.
+- 2026-10-15: re-audit: AC2 (full) — nothing; the reader confirmed SKILL.md :108 and :146-157, D-164, and tracking-rules :225 agree with the amended wording.
+- 2026-10-15: amendment return: AC2 — "Its `retitle` disposition text says that for a row proposed on the icon trigger whose short title ends at a `: ` or ` — `, the new title replaces the old one in place, so the old title does not stay in the row's text, and that a row with neither separator takes the new title and `: ` before its text, which stays."
+- 2026-10-15: T6 done: SKILL.md :108 now says "so the old title and its icon do not stay in the row" and "which stays"; tracking-rules says the icon title is replaced in place when a `: ` or ` — ` follows it; D-164's Decision states the no-separator case.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
