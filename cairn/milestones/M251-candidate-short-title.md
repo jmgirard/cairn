@@ -185,6 +185,7 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: amendment return: AC5 — "It is proposed for each candidate row that the other evidence classes leave `keep`, other than a `merge` survivor, a finding-absorbing row, or a row a live milestone absorbs or quotes, whose short title is empty, is over 60 code points, or is shared with another row (each such row gets its own proposal), whatever the row's byte length. It inserts a short title ending at `: ` after the row's `- ` and any priority token and leaves the row's text unchanged (a row whose title is empty loses only its leading `: `). Its accepted edit also rewrites each double-quoted mention of the old title, found by a search of `cairn/ROADMAP.md` and DESIGN.md's Known issues, in another ROADMAP row the pass does not remove."
 - 2026-10-15: AC5 amendment applied to the skill: "after the `- ` and any priority token" at the table row and the apply step, the mention search named in the Title class, and the live-milestone-absorbed exclusion; AC5's box unticked for re-review.
 - 2026-10-15: the AC5 amendment took the plan-owned body to 153 lines; compressed the heaviest section (Acceptance criteria) in one pass by cutting its template comment to one line; validate green.
+- 2026-10-15: step-7 approval: m251-candidate-short-title approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
