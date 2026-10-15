@@ -89,6 +89,10 @@ type Copy = {
   reads?: string[]
   // While set, `$.ui.panes()` beneath the mod throws (M237).
   panesThrow?: boolean
+  // While set, the session end beneath the mod throws, and while set, it
+  // waits for this promise before it answers (M255).
+  endThrows?: boolean
+  endHold?: Promise<void>
 }
 
 function copyOf(name: string): Copy {
@@ -170,7 +174,11 @@ function seat(on: On, copy: Copy) {
   })
   // The session end a `/clear` brings, which runs the command a Plan or
   // Implement press holds (M221).
-  on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
+  on('session.end', async ($, e) => {
+    if (copy.endHold !== undefined) await copy.endHold
+    if (copy.endThrows === true) throw new Error('the end failed')
+    return { sessionId: e.sessionId }
+  })
 }
 
 function textOf(node: unknown): string {
@@ -4064,5 +4072,137 @@ describe('the pane read stores the items with the hotfix list and draws them (M2
     await $.turn.complete(turn())
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
+  })
+})
+
+// A one-shot hold on the mod's `step` read. It is armed after mount, since
+// the draw reads the key too, and it fires once, so the session end's
+// update of the key passes (M255).
+function holdStep(on: On) {
+  let open = () => {}
+  const gate = new Promise<void>(resolve => (open = resolve))
+  const hold = { armed: false, held: false, release: () => open() }
+  on('state.get', async ($, e, next) => {
+    if (hold.armed && e.plugin === 'cairn' && e.key === 'step') {
+      hold.armed = false
+      hold.held = true
+      await gate
+    }
+    return next(e)
+  })
+  return hold
+}
+
+describe('a press check cut off by a session end frees the Buttons and runs nothing late (M255 AC1, AC2)', () => {
+  test('a Status press after the end runs once, and the cut-off press runs nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_STATUS })
+    await until(() => hold.held)
+    expect(hold.held).toBe(true)
+    expect(copy.commands ?? []).toEqual([])
+    await $.session.end(CLEAR_END)
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands).toEqual([STATUS_RUN])
+    hold.release()
+    await first
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+
+  // While the end beneath is still running, the cut-off press's mark keeps
+  // a new press from reading the state of the session that is ending.
+  test('a press during the end, while a cut-off press reads, runs nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_STATUS })
+    await until(() => hold.held)
+    let finish = () => {}
+    copy.endHold = new Promise<void>(resolve => (finish = resolve))
+    const end = $.session.end(CLEAR_END)
+    await sleep(20)
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands ?? []).toEqual([])
+    copy.endHold = undefined
+    finish()
+    await end
+    hold.release()
+    await first
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+
+  // A next-step press whose checks would hold its command for a `/clear`.
+  const name = PANE_CLEAR_FIRST[0]
+  test(`${name}: a cut-off next-step press holds nothing for a later clear end`, async ($, on) => {
+    const copy = copyOf(name)
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_NEXT })
+    await until(() => hold.held)
+    expect(hold.held).toBe(true)
+    expect(copy.commands ?? []).toEqual([])
+    await $.session.end(CLEAR_END)
+    hold.release()
+    await first
+    await untilRuns(copy, 1, 10)
+    expect(copy.commands ?? []).toEqual([])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 1, 10)
+    expect(copy.commands ?? []).toEqual([])
+    await ui.unmount()
+  })
+})
+
+describe("a ⌂ press's open still runs when the session end beneath rejects (M255 AC3)", () => {
+  test('a clear end whose next(e) rejects opens the pane once', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const before = copy.opens.length
+    await pressKey($, PANE_HOME)
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    await untilOpens(copy, before + 1)
+    await untilOpens(copy, before + 2, 10)
+    expect(copy.opens.slice(before)).toEqual([{ id: PANE, title: 'cairn' }])
+  })
+
+  test('a clear end whose next(e) rejects, with no press, opens nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    const before = copy.opens.length
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    await untilOpens(copy, before + 1, 10)
+    expect(copy.opens.length).toBe(before)
   })
 })

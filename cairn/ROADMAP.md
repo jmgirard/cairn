@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M255 | Pane Buttons recover after a session end | planned | — | normal | milestones/M255-pane-press-after-end.md |
+| M255 | Pane Buttons recover after a session end | review | — | normal | milestones/M255-pane-press-after-end.md |
 | M256 | Pane reads after late placement | planned | — | normal | milestones/M256-pane-late-placement.md |
 | M257 | Started mark skips fenced lines | planned | — | normal | milestones/M257-started-mark-fences.md |
 ## Candidates

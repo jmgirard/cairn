@@ -508,18 +508,32 @@ export const register: Register = on => {
     // The end ends the start, so the next start reads again (M238).
     owed = false
     startRead = false
+    // A press whose checks have not settled is cut off: its checks run
+    // nothing when they settle (M255).
+    ends += 1
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
     if (e.reason === 'other') await markReopen($)
-    const result = await next(e)
+    let result: unknown
+    try {
+      result = await next(e)
+    } catch (error) {
+      // A ⌂ press's open still runs when the end beneath rejects, and the
+      // rejection goes on (M255). A held command is dropped as before.
+      if (home !== null && e.reason === 'clear') void openHome($)
+      throw error
+    }
     await update($, step, () => null)
     await update($, expanded, () => false)
     await update($, dismissed, () => null)
     await update($, ended, () => false)
     // A `/clear` from the Clear Button ends the session, and its run may
-    // never settle, so the end frees the action Buttons (M216).
+    // never settle, so the end frees the action Buttons (M216). So does a
+    // press whose checks have not settled, once the end's own updates are
+    // done, so no press reads the state of the session that ended (M255).
     running = false
+    pressCheck = null
     // The held command runs now when this end is its `/clear` (M221). The
     // run is not awaited, so the session end does not wait on the command.
     // It takes the next run number, so the `/clear` run that settles after
@@ -1089,8 +1103,13 @@ async function pressClear($) {
 // step and the stored state, so a second press, in the same tick or later,
 // finds `busy` true (M243, from the ✎ press's mark of M242). The press
 // clears it when its checks end, in the same tick as `run` sets `running`
-// or the press sets `heldRun`. A reload starts it over as null.
+// or the press sets `heldRun`. A session end clears it too (M255). A reload
+// starts it over as null.
 let pressCheck: object | null = null
+
+// The number of session ends so far, so a press can tell that an end came
+// while its checks ran (M255). A reload starts it over.
+let ends = 0
 
 // What a press's checks give: a command to run, or, with `clears`, a
 // command to hold for the session end of a `/clear` run first (M221).
@@ -1100,6 +1119,8 @@ type Checked = { command: string; args: string; clears?: boolean }
 // (M243). A press while `busy` does nothing, and a press whose checks give
 // no command runs nothing and frees the mark. A held command is set only
 // after the checks, so a session end during them runs none (M242 review).
+// A session end frees the mark, and checks that settle after an end began
+// run and hold nothing (M255).
 // The hold is set before the mark's release, and no await comes between
 // the release and `run`, so no other press passes `busy` in that gap. A
 // refused `/clear` drops the hold.
@@ -1107,11 +1128,13 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
   if (busy()) return
   const mark = {}
   pressCheck = mark
+  const at = ends
   let got: Checked | undefined
   let mine: { command: string; args: string } | null = null
   try {
     got = await checks()
-    if (got?.clears) {
+    if (ends !== at) got = undefined
+    else if (got?.clears) {
       mine = { command: got.command, args: got.args }
       heldRun = mine
     }
