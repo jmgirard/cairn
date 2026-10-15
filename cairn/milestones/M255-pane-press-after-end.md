@@ -47,26 +47,26 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: After a session end, a pane press whose checks pass runs its
+- [x] AC1: After a session end, a pane press whose checks pass runs its
       command even when a press check begun before the end has not settled
       by the end. Shown by a `hooks/status/pane.test.tsx` case: a Status
       press's first `step` read, held once and armed after mount, has not
       settled when the session ends with reason `clear`; a second Status
       press then runs the Status command, and after the first press's read
       is released the commands are still exactly one Status run.
-- [ ] AC2: A press check that settles after a session end runs no command
+- [x] AC2: A press check that settles after a session end runs no command
       and leaves no command held for a later clear end. Shown by AC1's case
       and a `hooks/status/pane.test.tsx` case in which a next-step press
       whose checks would hold a `/clear` command has its `step` read
       released only after a session end, and no command runs through that
       release and a later session end with reason `clear`.
-- [ ] AC3: A ⌂ press's open of the pane still runs at its clear end when the
+- [x] AC3: A ⌂ press's open of the pane still runs at its clear end when the
       mod's `next(e)` rejects in its `session.end` handler. Shown by a
       `hooks/status/pane.test.tsx` case in which `seat()`'s `session.end`
       handler throws behind a `Copy` flag, a ⌂ press precedes a session end
       with reason `clear`, the test catches `$.session.end`'s rejection, and
       one `ui.open` of the pane follows.
-- [ ] AC4: The active profile's `verify` passes: `python3 -m unittest` for
+- [x] AC4: The active profile's `verify` passes: `python3 -m unittest` for
       `scripts/tests` and `hooks/tests` from the repo root, `claude plugin
       validate` on the plugin and marketplace manifests, and `claude plugin
       test` for the status mod.
@@ -136,3 +136,36 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC1: pane.test.tsx "a Status press after the end runs once, and the cut-off press runs nothing" passes on fbdccbec: the held `step` read, the clear end, a second Status press giving `[STATUS_RUN]`, and after release still `[STATUS_RUN]`. Red before T1's fix (no second run). Met.
+- AC2: the same case (no command from the released Status read) and "all-waiting: a cut-off next-step press holds nothing for a later clear end" pass: no command through the release and a second clear end. Red before T1's fix (`/clear` ran). Met.
+- AC3: "a clear end whose next(e) rejects opens the pane once" passes: `$.session.end` rejects, one `{ id: 'cairn', title: 'cairn' }` open and no second within the wait; a no-press twin opens nothing. Red before T2's fix. Met.
+- AC4: verify on fbdccbec: scripts/tests OK (21 skipped), hooks/tests OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1733 pass 0 fail; `cairn_validate.py` all checks passed. Met.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a rejecting `next(e)` still skips `running = false`, so a never-settling run keeps the Buttons dead — follow-up, new row "Press end edges (M255 review)" (pre-existing; the plan kept the later updates unchanged on a rejection).
+- diff-bug #2: clearing `pressCheck` before `next(e)` let a new press read the ending session's state — fix now, fixed fbdccbec (an `ends` counter cuts off stale checks; the mark clears beside `running` after the end's updates).
+- diff-bug #3: CHANGELOG left out the Clear press — fix now, fixed fbdccbec.
+- diff-bug #4, #5: the "Shared press mark edges" and "Home Button edges" rows state gaps M255 closed — fix now at this milestone's hygiene (rows narrowed).
+- diff-bug #6: a rejecting `next(e)` drops a held command with no prompt-box line or toast — follow-up, "Press end edges (M255 review)" (Scope Out).
+- diff-bug #7: the catch's ⌂ open runs before the end's state updates — follow-up, "Press end edges (M255 review)".
+- diff-bug #8: the hold could be taken by a read other than the press's — fix now, fixed fbdccbec (no command before the end is asserted).
+- diff-bug #9: negative waits pass by timing out — noted; `await first` bounds them.
+- diff-bug #10: AC2's second clear end adds no coverage — reject, false: it checks no command is held for a later clear end, which AC2 names.
+- diff-bug #11: no cut-off ✎ or blocked-line case — reject, planned change: the criteria name Status and next-step, and all share `pressChecked`.
+- diff-bug #12: `copy.hidden` dead in the AC3 test — fix now, fixed fbdccbec.
+- diff-bug #13: AC3 lacks a no-press case and a late-duplicate wait — fix now, fixed fbdccbec.
+- diff-bug #14: `let result` untyped — fix now, fixed fbdccbec (`unknown`).
+- blame-history #1: same as diff-bug #6 — follow-up.
+- blame-history #2: same as diff-bug #1 — follow-up.
+- blame-history #3: the catch opens the pane though the clear may not have happened — follow-up, "Press end edges (M255 review)".
+- blame-history #4: DESIGN.md's press paragraph not updated — fix now, fixed fbdccbec.
+- blame-history #5: same as diff-bug #4, #5 — fixed at hygiene.
+- blame-history #6: AC3 does not check a later press works — noted.
+- blame-history #7: the cut-off applies to every end reason — noted, intended (M242's wording).
+- prior-review #1: `pressHome` can still run `/clear` after an end during its `step` read — follow-up, "Press end edges (M255 review)".
+- prior-review #2: same as diff-bug #1 — follow-up.
+- prior-review #3: the catch-path open for a ⌂ press that never cleared — follow-up, "Press end edges (M255 review)".
+- prior-review #4: same as diff-bug #4, #5 — fixed at hygiene.
+- prior-review #5: same as blame-history #4 — fixed fbdccbec.
+- prior-review #6: the reloaded-module press — noted, Scope Out, row keeps it.
+
