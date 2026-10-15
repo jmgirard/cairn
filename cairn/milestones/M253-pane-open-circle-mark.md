@@ -37,7 +37,7 @@ stay as they are (the request changes only the normal mark).
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `PRIORITY_MARK.normal` in `hooks/status/pane.ts` equals `{ text: '○' }`,
+- [x] AC1: `PRIORITY_MARK.normal` in `hooks/status/pane.ts` equals `{ text: '○' }`,
       the U+25CB character that `OPEN_MARK` holds, with no color or bold.
       `PRIORITY_MARK.high`, `PRIORITY_MARK.low`, and `STARTED_MARK` keep their
       M207 and M252 values. Shown by `hooks/status/pane.test.tsx` cases that
@@ -48,7 +48,7 @@ stay as they are (the request changes only the normal mark).
       the implement color and bold and its low row `↓` in gray; and M252's
       cases for a row that an open PR's item names draw `◐` in the review
       color.
-- [ ] AC2: README's sentence that lists the candidate marks names `○` for a
+- [x] AC2: README's sentence that lists the candidate marks names `○` for a
       normal row, and `grep -n "·" README.md` finds no line that names `·` as
       a candidate mark. DESIGN.md's ambiguous-width list in Known issues names
       `↑ ○ ↓`. CHANGELOG.md's Unreleased "New" section has an entry for the
@@ -98,3 +98,21 @@ stay as they are (the request changes only the normal mark).
 - 2026-10-15: T2: README mark list, DESIGN.md Known issues width list and hooks/status lineage, CHANGELOG Unreleased New entry; verify, `skills/tests`, cairn_validate green.
 - 2026-10-15: claim audit: 12 claims read, 2 corrected — hooks/status/pane.ts, CHANGELOG.md (re-read once by the same reader: both TRUE); its note that DESIGN's ambiguous-width list lacked `◐` (an M252 gap) taken, `◐` added.
 - 2026-10-15: implement done; verify green at head (mod tests 1729, scripts and hooks suites OK, both validates), `skills/tests` OK; status review.
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md.
+     EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
+     Entries carry their rationale; the counterweight `decisions format`
+     advisory watches for pasted output, not for entry length (D-075). -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
+
+- 2026-10-15 sync: `origin/main` has not moved since the branch was cut.
+- 2026-10-15 Copilot arm: PR #264 opened at review start; state query `none`; `gh pr edit 264 --add-reviewer @copilot` exit 0.
+- AC1: `pane.ts` holds `normal: { text: '○' }`; `claude plugin test .` at the review head, 1729 pass 0 fail. "each priority's mark" (both surfaces) asserts `'○'` with no color, `'↑'` in `'claude'` and bold, `'↓'` in `'inactive'`, and `PRIORITY_MARK` and `STARTED_MARK` whole by `toEqual` against literals; "the candidates fixture's heading, count, marks, and titles" (both surfaces) matches `CANDIDATE_LINES`, every normal row `○ …`; the M242 ✎ test's extra rows expect `○ `, `○ Same title` twice; M252's `PLAIN` is `○ An idea for later` (same-root, no-remote, and other-root tests pass); M252's matched-row tests expect `{ text: '◐', color: 'success' }`. `grep -n PRIORITY_MARK pane.test.tsx` shows only the import, a comment, and the whole-constant assertion. T1's work log records 18 tests red on `·` before the change.
+- AC2: README.md:313 reads "`↑` for a `[high]` row, `○` for a normal one"; `grep -n "·" README.md` finds only line 600, the tracking-file map's separators, not a candidate mark. DESIGN.md:707 lists "`↑ ○ ◐ ↓` marks" as ambiguous width. CHANGELOG.md:155-158, under Unreleased "### New", has the `○` entry.
