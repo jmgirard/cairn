@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M254: Candidate short titles hold no icons
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -145,6 +145,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: re-audit: AC2 (full) — nothing; the reader confirmed SKILL.md :108 and :146-157, D-164, and tracking-rules :225 agree with the amended wording.
 - 2026-10-15: amendment return: AC2 — "Its `retitle` disposition text says that for a row proposed on the icon trigger whose short title ends at a `: ` or ` — `, the new title replaces the old one in place, so the old title does not stay in the row's text, and that a row with neither separator takes the new title and `: ` before its text, which stays."
 - 2026-10-15: T6 done: SKILL.md :108 now says "so the old title and its icon do not stay in the row" and "which stays"; tracking-rules says the icon title is replaced in place when a `: ` or ` — ` follows it; D-164's Decision states the no-separator case.
+- 2026-10-15: amendment routed: AC2 — diff-bug #2: in-place replacement deletes the detail of a row cut at ` — `; second AC2 amendment, posed to the user at the stop.
+- 2026-10-15: question set (review stop): AC2's second amendment — "In place only after `: `": a title ending at `: ` is replaced in place, and any other icon row takes the new title and `: ` before its text, which stays with each icon removed.
+- 2026-10-15: review return 1: triage SKILL.md step 4 Apply contradicts the icon exception (diff-bug #1, blame-history #1); also fix now: trigger precedence (diff-bug #3), tracking-rules no-separator case (diff-bug #4), CHANGELOG "opens with" (diff-bug #6), cut-title wording (blame-history #3), rulebook-mass baseline (prior-review #1), README triggers (prior-review #2), and the follow-ups into "Retitle edges (M251 review)".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
