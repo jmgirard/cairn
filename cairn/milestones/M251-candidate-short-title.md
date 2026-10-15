@@ -75,7 +75,7 @@ cases (M211 review)" stay in that row.
       `skills/cairn-init/SKILL.md` and the row example in the "Candidate
       priority token" paragraph show the shape
       `- [high] short title: detail — added YYYY-MM-DD — links`.
-- [ ] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
+- [x] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
       each candidate row that the other evidence classes leave `keep`, other
       than a `merge` survivor, a finding-absorbing row, or a row a live
       milestone absorbs or quotes, whose short title is empty, is over 60
@@ -232,3 +232,5 @@ cases (M211 review)" stay in that row.
 - prior-review #3: hotfix step 1 now cites the paragraph in place of PR 259's colon-less wording — reject, false: the paragraph states the colon-less case and the reader agrees.
 - prior-review #4-#6: rulebook baseline, hotfix step 1's before-any-stop text, README overclaims — reject, false: the lens found each consistent.
 - pass 2: diff-bug #9 (same-pass drops and merges) re-dispositioned to reject, planned change: AC5 says "shared with another row", so the narrowing was reverted (skills/cairn-triage/SKILL.md:149).
+- pass 2 evidence (head dd4855f0): verify green: `scripts/tests` 408 OK, `hooks/tests` 175 OK, both validates exit 0, `claude plugin test` 1716 pass, 0 fail (the 9 "M251 AC1" table tests pass, two of them the review trim rows); `skills/tests` 752 OK; `cairn_validate` all checks passed. AC1-AC4 and AC6 re-read on this head and unchanged in substance from pass 1 (AC6's CHANGELOG entry now describes the insert and the Known issues rewrite).
+- AC5 (pass 2, amended text): `skills/cairn-triage/SKILL.md:109` the `retitle` row (new title and `: ` after the `- ` and any priority token, text unchanged, empty title loses only its leading `: `, mentions in other ROADMAP rows and Known issues rewritten, shared-title mentions listed as ambiguous); `:147-160` the Title class (rows left `keep`; empty, over 60 code points, or shared; one proposal per sharing row; byte length does not matter; the search over `cairn/ROADMAP.md` and Known issues; no `retitle` for a row a live milestone quotes or absorbs, or a `merge` survivor); `:161-164` finding-absorbing rows take §7's options before any class, so never reach the Title class; `:252-258` the apply step (mentions rewritten in each quoting item as its own disposition leaves it, none in a dropped item).
