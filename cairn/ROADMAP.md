@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-15 (M253 archived, its row dropped, four rows trimmed at its plan; validate, guards green)_
+_Last hygiene check: 2026-10-15 (M254 archived, its row dropped; validate, guards green)_
 
 ## Milestones
 
@@ -9,7 +9,6 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M254 | Candidate short titles hold no icons | review | — | normal | milestones/M254-no-icon-titles.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (2026-10-10) made it count each call once and read subagent files (output tokens a lower bound); earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (its A4 row, "unrecorded" note), M153's medians in `record-rule-remeasurement.md`, `effort-experiment-notes.md`. Promote when a decision next relies on one of those figures — added 2026-10-09 — M228 review (blame-history #1, #2; pass 2 blame-history #2–#4); narrowed 2026-10-10 by the PR #238 hotfix
