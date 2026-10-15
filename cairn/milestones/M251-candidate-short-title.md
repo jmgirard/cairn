@@ -183,6 +183,8 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: claim audit: 38 claims read, 6 corrected — skills/cairn-triage/SKILL.md (3), CHANGELOG.md (1), cairn/DECISIONS.md (1), scripts/tests/test_status_fixtures.py (1); scope: the return's added lines (`6b2d646d..` outside milestone files); the same reader re-read the six and found all fixed.
 - 2026-10-15: return work done; verify green, `skills/tests` OK; status set to review.
 - 2026-10-15: amendment routed: AC5 — the skill proposes `retitle` only for rows the other classes leave `keep` (one disposition per item, since T4) and not for a `merge` survivor, while AC5 says each row with an empty, long, or shared title, with only the live-milestone exception; the criterion is wrong as written (review pass 2).
+- 2026-10-15: re-audit: AC5 (full) — 3 findings on the first amended wording: a finding-absorbing row never reaches the Title class; a row the pass removes gets no mention rewrite; "rewrites only the row's opening" mismatches the skill's insert. All three fixed in the wording.
+- 2026-10-15: re-audit: AC5 (full) — 3 findings on the re-entered wording: a row a live milestone absorbs but does not quote is `keep` in the skill; "after the row's opening token" has no anchor on an untagged row; no step names a search for mentions outside the enumerated items. Second re-audit line for AC5: the repeated review-failure stop, put to the user.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
