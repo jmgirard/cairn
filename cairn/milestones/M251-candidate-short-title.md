@@ -137,7 +137,7 @@ cases (M211 review)" stay in that row.
       `/milestone-review` step 9 (line 710) cite the paragraph. Update the pin
       in `skills/tests/test_hotfix_candidate_graduation.py:53` and hand-run
       `skills/tests`. Run AC3's sweep and fix each hit.
-- [ ] T4: Add `retitle` to `/cairn-triage`'s disposition table, its evidence
+- [x] T4: Add `retitle` to `/cairn-triage`'s disposition table, its evidence
       classes, and its apply step, with the ROADMAP quote rewrite and the
       live-milestone exclusion.
 - [ ] T5: Update README's pane section (~line 314), DESIGN.md (~line 285),
@@ -170,3 +170,5 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T1 done: AC1's table in `reader.test.ts` and the `candidates` fixture (6 rows; the empty-title row stays in reader.test.ts and pane.test.tsx's own extra rows), old "shown whole" rows reworded, `mixed` and `single-in-progress` expected titles lose their dash tail; 3 TS cases and the fixture checks failed before the reader change; after it, both suites, both validates, and `claude plugin test` (1714 pass) are green.
 - 2026-10-15: T2 done: tracking-rules "Candidate short title" paragraph and the token example's new shape, the `/cairn-init` skeleton comment, D-163 narrowing D-149's title sentence; rulebook baseline re-seeded to 663 lines / 63,632 bytes at its three sites (`/milestone` and two hand-run pins); the skeleton pin and its mutation entry updated; verify green and `skills/tests` hand-run OK.
 - 2026-10-15: T3 done: records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1 (candidate subject only; a Known issues subject keeps its rule), `/milestone`'s §7 sentence, and review step 9 cite the paragraph; hotfix pin updated. AC3 sweep: remaining old-rule hits are README.md:314-317 and cairn/DESIGN.md:285, left to T5; the "exact title" hits in §7, triage, and review now read §7's title; README.md:140 is about milestone titles in the band and source-note.md:37 about a citation, both unrelated.
+- 2026-10-15: T4 done: `/cairn-triage` gains `retitle` (table row, a Title evidence class checked last on rows the others leave `keep`, the proposal table's naming, the apply step, and the no-D-entry list); a `compress` or `split` rewrite opens each row with a short title; verify green, `skills/tests` OK.
+- 2026-10-15: agent chose to check the Title class last, on rows the other classes leave `keep`, over letting it pre-empt them, because a drop or merge removes the title problem with the row.
