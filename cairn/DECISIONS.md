@@ -5903,3 +5903,39 @@ advisory on long titles, at the user's choice.
 double-quoted mention of its whole text no longer matches it and leaves its
 §7 group. Rows that already exist keep long titles until a `/cairn-triage`
 pass gives them short titles.
+
+### D-164 (2026-10-15): A candidate row's short title holds no icon, and `/cairn-triage`'s `retitle` removes it, in place when a `: ` ends the title — extends D-163; passes D-108's door on its retained trigger (M254)
+
+**Context:** The cairn pane draws a mark (○, ◐, ↑, or ↓) before each
+candidate row's short title and a ✎ Button after it, and ⌂, ↻, and ⋯ on
+its first line. Two rows in this repo were
+titled "⌂ edges (M241 review)" and "✎ edges (M242 review)", so the pane
+drew a title's ✎ on the same line as its own ✎ Button and a title's ⌂ in
+the glyph of its Home Button, and a reader could not tell row text from a
+Button. No rule told a writer to keep icons out
+of a title.
+
+**Decision:** At the user's request, planned as M254, tracking-rules
+"Candidate short title" tells a writer to name things in words and to put
+no icon in a short title. An icon is a non-ASCII character whose Unicode
+general category is `So` or `Sm`, between backticks or not, since the pane
+does not strip backticks. `/cairn-triage`'s `retitle` class proposes a row
+whose title holds an icon, whatever other trigger it also meets. When the
+title ends at a `: `, the new title replaces it in place, so the icon does
+not stay in the row's text. Any other such row takes the new title and
+`: ` before its text, which stays with each icon removed, because a title
+cut at ` — `, or a row with neither separator, holds the row's detail and
+its promotion trigger. The user chose this at the M254 review stop. D-108's door is
+passed on its retained trigger, because the trigger is a defect in shipped
+behavior: the pane drew title icons that read as its own Buttons.
+
+**Rejected:** `So` alone, because the pane's ↑, ↓, and ⋯ are `Sm`;
+falsified by a pane mark outside both categories. A `cairn_validate`
+advisory on icon titles, at the user's choice, as D-163 declined one for
+long titles; falsified by icon titles that recur after the rule ships.
+Exempting text between backticks, because the pane shows backticks and
+the glyph inside them unchanged.
+
+**Consequences:** Titles such as "© notice" or "≤ bound" also count as
+holding an icon; they are rare and accepted. Rows in other repos keep
+their icon titles until a `/cairn-triage` pass there retitles them.

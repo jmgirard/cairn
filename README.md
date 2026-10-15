@@ -319,9 +319,12 @@ removed. A row with no `: ` is cut at its first ` — ` (space, em dash,
 space), so its date and links stay out of the title. A row with neither
 shows all its text. Open each row with a few words that name it, then
 `: ` and the details, for example
-`- [high] Pane refresh lag: details — added 2026-10-15`.
-`/cairn-triage` offers a new short title for a row whose title is empty, longer
-than 60 characters, or the same as another row's. While no cairn skill
+`- [high] Pane refresh lag: details — added 2026-10-15`. Name things in
+words and put no icon, such as an emoji or `⌂`, in a short title, because
+the pane draws its own marks and buttons with such glyphs.
+`/cairn-triage` offers a new short title for a row whose title is empty,
+is longer than 60 characters, is the same as another row's, or holds an
+icon. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short

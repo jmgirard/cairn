@@ -4,6 +4,18 @@
 
 ### Changes that affect existing repos
 
+- **Candidate short titles hold no icons.** The cairn pane uses glyphs
+  such as `⌂` and `✎` for its own marks and Buttons, so an icon anywhere in
+  a short title can read as one of them. The rulebook now tells whoever writes
+  a row to name things in words and to put no icon in the short title. An
+  icon is a non-ASCII character whose Unicode general category is `So` or
+  `Sm`, between backticks or not. Most emoji are icons, and so are `○`, `✓`,
+  `⌂`, `✎`, `↑`, and `⋯`. `/cairn-triage` proposes a `retitle` for a row
+  whose title holds an icon. When that title ends at a `: `, the new title
+  replaces it in place. Any other such row takes the new title and `: `
+  before its text, which stays with each icon removed. Existing
+  rows keep their titles until a triage pass retitles them.
+
 - **Candidate rows have one written short-title rule.** A row's short
   title is still its text up to the first `: `. A row with no `: ` is now
   cut at its first ` — `, so the cairn pane no longer shows the date and
