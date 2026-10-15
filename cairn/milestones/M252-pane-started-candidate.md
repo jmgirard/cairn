@@ -51,7 +51,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `startedRows` in `hooks/status/pane.ts` maps one `gh pr list --json
+- [x] AC1: `startedRows` in `hooks/status/pane.ts` maps one `gh pr list --json
       number,title,url,headRefName,body` result to a list of `{ title, number }`
       items. Each entry with an integer `number` and a string `body` counts,
       whatever its head branch. Each body line that begins with exactly
@@ -64,7 +64,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
       with two such lines, the prefix after other text, the prefix after leading
       spaces, an empty rest, a whitespace-only rest, a CRLF body, a non-string
       body, a non-integer `number`, and each null case.
-- [ ] AC2: `paneLines` draws a candidate line as started when its short title is
+- [x] AC2: `paneLines` draws a candidate line as started when its short title is
       not empty and equals an item's `title` exactly. That line draws `◐` in the
       review phase color in place of its priority mark. Its tail draws `#N` in
       gray for the lowest matching `number`. It carries no `plan` Button,
@@ -73,7 +73,7 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
       normal, and low row; a matched row with `acts` true and with `acts` false;
       an unmatched row beside them; two PRs naming one row; two rows sharing a
       matched title; a title that differs only by case; and an empty-title row.
-- [ ] AC3: The pane's read sends `body` in its one `gh pr list` call. It stores
+- [x] AC3: The pane's read sends `body` in its one `gh pr list` call. It stores
       the items in the same value as the hotfix list, under the tag
       `hotfixes-2`. A failed call in the same root keeps the last good items,
       and a failed call in another root, or a root with no base-remote URL,
@@ -83,20 +83,20 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
       `pane.test.tsx` cases through the test kit's `process.run` stub: the argv
       holds `body`, a marked line after a read, and each of the three failure
       cases.
-- [ ] AC4: Each place that `/hotfix` opens a PR, the `gh pr create` lines that
+- [x] AC4: Each place that `/hotfix` opens a PR, the `gh pr create` lines that
       `grep -n "gh pr create" skills/hotfix/SKILL.md` lists and step 5's re-land
       PR, tells the agent what the body carries or points to the sentence that
       does. In owner mode the body carries one `Candidate row: <short title>`
       line per matched row, the title cut from the ROADMAP row as tracking-rules
       "Candidate short title" states. The guest-mode site tells the agent to put
       no such line.
-- [ ] AC5: Each owner-mode site that opens the milestone PR in
+- [x] AC5: Each owner-mode site that opens the milestone PR in
       `skills/milestone-review/SKILL.md`, among the lines that `grep -n "gh pr
       create" skills/milestone-review/SKILL.md` lists, tells the agent to put
       one such line per candidate row that the post-merge hygiene will remove or
       narrow, as known when the PR opens, the title cut from the ROADMAP row.
       The guest site and the companion-repo site tell it to put none.
-- [ ] AC6: README's cairn pane section and DESIGN.md's pane description state
+- [x] AC6: README's cairn pane section and DESIGN.md's pane description state
       the started mark, the `Candidate row:` line, and four limits: only
       owner-mode PRs carry the line; only the operator's own open PRs on the
       base remote count; marks change only at a pane open, ↻, `/clear`, or
@@ -185,3 +185,13 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- 2026-10-15 sync: `origin/main` has not moved since the branch was cut (0 commits ahead of HEAD).
+- 2026-10-15 Copilot arm: PR #263 opened at review start; state query `none`; `gh pr edit 263 --add-reviewer @copilot` exit 0.
+- AC1: `claude plugin test .` at the review head, 1729 pass 0 fail; the six "startedRows reads the Candidate row lines" tests pass, covering a `hotfix-*`, an `m252-*`, and a `feature-x` head, two lines in one body, the prefix after text and after leading spaces, `Candidate row:No space`, empty and whitespace-only rests, a CRLF body, null and absent bodies, `'3'` and `4.5` numbers, and null for a null result, exit 1, non-JSON, and a JSON object.
+- AC2: the same run's three "a candidate line that an item names draws as started" tests pass: matched high, normal, and low rows draw `{ text: '◐', color: 'success' }` (the review color) as lead[0], tail `#N` in GRAY, and no `buttons`/`target`/`title`, with `acts` true and false; "Normal row" named by #14 and #12 draws #12; two rows titled "Shared title" both draw #15; "case row" against item "Case row", an unmatched row, and an empty-title row against an empty item equal their no-items drawing; with no items the whole layout equals the pre-M252 call.
+- AC3: the same run's four "the pane read stores the items with the hotfix list" tests pass: the one recorded `gh pr list` argv ends `number,title,url,headRefName,body`; after a read the blocked-prs candidate line reads `◐ An idea for later  #1265` with no Button while the `m252-pane` PR draws no HOTFIXES line; a rejected call in the same root keeps the mark, and an empty list removes it; deleting the origin remote empties it; a rejected call in `/other` and then in `/` leaves it unmarked. Code read: `register.tsx:153` tag `hotfixes-2`, one value `{ root, prs, started }`, `readHotfixes` replaces both only when both parse; the draw passes `started` only when the stored root equals the band's root (`register.tsx` paneLines call), and `paneLines` draws candidates only with no active milestone. Plants at implement (work log) turned these tests red.
+- AC4: `grep -n "gh pr create" skills/hotfix/SKILL.md` lists :206 (Copilot arm: "the `Candidate row:` lines the approval paragraph below names", :208), :257 (approval: owner-mode rule at :261-266, one line per row step 1 matched, title cut from the ROADMAP row as tracking-rules "Candidate short title" states), and :301 (guest arm: "no `Candidate row:` line", :304); step 5's re-land PR at :195-196 points to "the `Candidate row:` lines that step 6 names".
+- AC5: `grep -n "gh pr create" skills/milestone-review/SKILL.md` lists :112 (a skip mention, not a site), :137 (Copilot arm, owner: "with the `Closes`/`Refs` and `Candidate row:` lines"), :558 (step 8, owner: rule at :564-570, one line per row this milestone graduates at step 9's hygiene per records-hygiene §1, as known when the PR opens, title cut from the ROADMAP row), :617 (companion: "no `Candidate row:` line", :618), and :638 (guest: the lines "are left out", :642). Records-hygiene §1 is the rule by which step 9 removes a graduated row, so "graduates" names the rows AC5 calls removed or narrowed.
+- AC6: README.md:437-452 states the `◐` mark, the `Candidate row:` line, owner mode only ("A guest-mode PR carries no such line"), only your own open PRs on the base remote, that the PR numbers behind the mark change only at an open, a ↻ press, or a `/clear` or `/resume` while the pane is open (the claim audit narrowed "the mark" to its PR numbers, since a file refresh can hide a row), and that candidate rows show only while no milestone is active, so a milestone PR's mark shows only in another checkout of the default branch. DESIGN.md:79 (M252 in the hooks/status list), :304-311 (mark, `#<n>`, no `plan` Button, root check, active-milestone limit), :431-446 (`--author @me` call with `body`, `startedRows`, `hotfixes-2`, owner-mode lines, guest none; the read times at :350-373 cover the same read). CHANGELOG.md:155-164 Unreleased New entry, no milestone number. `types/index.d.ts:94` `CairnStartedRow`, `:102` `CairnHotfixRead.started`, which the `PluginState` entry `hotfixes: Shaped<CairnHotfixRead>` holds.
+- Consistency gate: `cairn_validate` all checks passed; verify green at the review head (scripts 408 OK, hooks 175 OK, plugin and marketplace validate exit 0, mod tests 1729 pass); no `plugins[N].version` warning; CHANGELOG has the entry, no milestone number in it; `skills/tests` 752 OK (hand-run). No principle changed, so no `cairn_impact`.
