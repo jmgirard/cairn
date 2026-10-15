@@ -5904,7 +5904,7 @@ double-quoted mention of its whole text no longer matches it and leaves its
 §7 group. Rows that already exist keep long titles until a `/cairn-triage`
 pass gives them short titles.
 
-### D-164 (2026-10-15): A candidate row's short title holds no icon, and `/cairn-triage`'s `retitle` replaces a title that holds one — extends D-163; passes D-108's door on its retained trigger (M254)
+### D-164 (2026-10-15): A candidate row's short title holds no icon, and `/cairn-triage`'s `retitle` removes it, in place when a `: ` ends the title — extends D-163; passes D-108's door on its retained trigger (M254)
 
 **Context:** The cairn pane draws a mark (○, ◐, ↑, or ↓) before each
 candidate row's short title and a ✎ Button after it, and ⌂, ↻, and ⋯ on

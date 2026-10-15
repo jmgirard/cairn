@@ -146,7 +146,8 @@ one of them absorbs is never dropped or merged away in this pass
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, is
      over 60 code points, equals another row's short title, or holds an
-     icon (tracking-rules "Candidate short title"). Each row
+     icon (tracking-rules "Candidate short title"; the `retitle` row of the
+     table above gives the icon case its own edit). Each row
      that shares a title gets its own proposal, and each new title differs
      from every other row's title,
      the other new titles of the pass included. The row's byte length does
