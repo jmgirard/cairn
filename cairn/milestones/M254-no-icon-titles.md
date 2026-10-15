@@ -47,7 +47,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
       pane draws its own marks and Buttons beside the title. The
       paragraph's sentence on `/cairn-triage`'s `retitle` names a title that
       holds an icon beside an empty, long, or shared one.
-- [ ] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
+- [x] AC2: `skills/cairn-triage/SKILL.md`'s Title → `retitle` class text
       names a short title that holds an icon (tracking-rules "Candidate short
       title") as a trigger, and its new-title rule excludes an icon. Its
       `retitle` disposition text says that for a row proposed on the icon
@@ -200,4 +200,34 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - prior-review #4: same as blame-history #3 — fix now.
 - prior-review #5: retitled rows and mentions consistent — noted.
 - prior-review #6: PR #257's stamp point — noted, no finding.
+- Pass 2 (after review return 1), evidence on 6dcacb18:
+- AC1: tracking-rules.md:221-226 keeps the no-icon sentence, the pane reason ("draws its own marks and Buttons with such glyphs, and some sit beside the title"), the `So`/`Sm` non-ASCII definition "between backticks or not", and the `retitle` sentences naming empty, long, shared, and icon titles. Met.
+- AC2 (amended): SKILL.md:146-150 names "holds an icon" as a trigger; :156-157 "holds no `: `, ` — `, or icon"; :108 "If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed." Met.
+- AC3: `icon_titles.py` reports 2 icon rows on 0c1976c2 and "45 rows, 0 with icons" at head; both new titles meet the triage rule; `grep -c` for each old title over ROADMAP and DESIGN Known issues returns 0; ROADMAP:40-41 quote the new titles. Met.
+- AC4: CHANGELOG.md:7-17 states the definition and the icon `retitle` trigger, in place when the title ends at `: `, else prepended with icons removed. AC4's "whose new title replaces the old one" holds for the `: ` case the amended AC2 keeps. Met.
+- AC5: verify on 6dcacb18: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail; `cairn_validate.py` all checks passed; skills/tests 752 OK. Met.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1 (pass 2): an icon title cut at a late `: ` holds detail that the in-place rule deletes — follow-up, "Retitle edges (M251 review)"; AC2 as chosen by the user mandates in-place for `: ` titles.
+- diff-bug #2 (pass 2): "each icon removed" has no stated scope and can strip `⋯` or `≥` from detail — follow-up, "Retitle edges (M251 review)".
+- diff-bug #3–#7 (pass 2): T7's ROADMAP rewordings dropped or changed facts in five rows — fixed 6dcacb18 (four rows restored to 7abcfe7d text; the Re-measure row lost no fact).
+- diff-bug #8 (pass 2): the T7 line's 23,998-byte figure is wrong — fixed 6dcacb18 (correction line; the work log is append-only).
+- diff-bug #9 (pass 2): AC1 and AC4 evidence predated the return — fixed (pass 2 evidence above).
+- diff-bug #10 (pass 2): the Title → `retitle` class does not point at the icon edit — fixed 6dcacb18.
+- diff-bug #11 (pass 2): README's "such as" placement and mixed trigger list — fixed 6dcacb18.
+- blame-history #1 (pass 2): the return undid in-place for dash-cut rows on a false premise — reject, false: in a `- description — added date — origin` row the description and trigger sit before the first ` — `, so in-place replacement deleted them (pass 1 diff-bug #2, the user's choice).
+- blame-history #2 (pass 2): same as diff-bug #2 — follow-up.
+- blame-history #3 (pass 2): in-place after `: ` can delete a dash segment before the `: ` — follow-up, same row as diff-bug #1.
+- blame-history #4–#7 (pass 2): same as diff-bug #3–#6 — fixed 6dcacb18.
+- blame-history #8 (pass 2): the PR-link clause belongs in the M252 row — reject, planned change: it is a retitle effect and stays with the retitle gaps.
+- blame-history #9 (pass 2): AC2 unticked with stale evidence — fixed (pass 2 evidence above).
+- blame-history #10 (pass 2): cosmetic README width, baseline and budget consistent — README width fixed 6dcacb18; rest noted.
+- prior-review #1 (pass 2): Review evidence stale — fixed (pass 2 evidence above).
+- prior-review #2 (pass 2): D-164's heading overstates in-place replacement — fixed 6dcacb18.
+- prior-review #3 (pass 2): same as diff-bug #2 — follow-up.
+- prior-review #4 (pass 2): same as diff-bug #3–#7 — fixed 6dcacb18.
+- prior-review #5 (pass 2): two Copilot threads unresolved — fixed (replied and resolved).
+- copilot: cairn/milestones/M254-no-icon-titles.md (PR URL in Branch/PR) — fix now, fixed 095be99.
+- copilot: skills/cairn-triage/SKILL.md (step 4 Apply contradicts the icon exception) — fix now, fixed dddf9b4.
+- copilot: review body — noted.
+- Copilot level: Lite (set by GitHub's settings).
 
