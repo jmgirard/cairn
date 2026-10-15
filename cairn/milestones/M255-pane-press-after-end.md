@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M255: Pane Buttons recover after a session end
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane ships to plugin users   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m255-pane-press-after-end   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -88,7 +88,7 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first: a one-shot `step` hold through an `on('state.get')`
+- [x] T1: Tests first: a one-shot `step` hold through an `on('state.get')`
       override armed after mount (pane.test.tsx ~3165 shows the pattern);
       the AC1 and AC2 cases, red. Then `pressCheck = null` in the
       `session.end` handler (register.tsx ~516) and a stale-mark return in
@@ -118,6 +118,7 @@ mark edges (M243 review)"; the ✎ rows' gaps stay in "Plan Button edges
 - 2026-10-15: ROADMAP: the three upstream-blocked rows ("Pane Button takes two clicks (upstream)", "Band in the app's code font", "Band label colors in other themes") merged into one row "Gaps only the app or mod API can close" with every fact and promotion condition kept, to fit three planned rows under the 60-line and 24,000-byte caps; no ROADMAP row or Known issues entry quoted their titles.
 - 2026-10-15: plan chose to drop the ⌂ open when the pane is no longer listed out of scope because whether a `/clear` keeps the pane listed is unlooked live, and a wrong guess stops ⌂ from opening the pane at all; falsified by a live look showing the pane stays listed across a clear.
 
+- 2026-10-15: T1 done: `holdStep` (a one-shot `state.get` hold on `step`, armed after mount) and the AC1/AC2 cases at the end of pane.test.tsx, both red first (no Status run after the end; the stale press ran `/clear`); then `pressCheck = null` in the `session.end` handler and `if (pressCheck !== mark) got = undefined` after `await checks()` in `pressChecked`. Plugin test 1731 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

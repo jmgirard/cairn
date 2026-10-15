@@ -508,6 +508,9 @@ export const register: Register = on => {
     // The end ends the start, so the next start reads again (M238).
     owed = false
     startRead = false
+    // A press whose checks have not settled is cut off, so its mark frees
+    // the Buttons, and its checks run nothing when they settle (M255).
+    pressCheck = null
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -1100,6 +1103,8 @@ type Checked = { command: string; args: string; clears?: boolean }
 // (M243). A press while `busy` does nothing, and a press whose checks give
 // no command runs nothing and frees the mark. A held command is set only
 // after the checks, so a session end during them runs none (M242 review).
+// A session end frees the mark, and checks that settle after it run and
+// hold nothing (M255).
 // The hold is set before the mark's release, and no await comes between
 // the release and `run`, so no other press passes `busy` in that gap. A
 // refused `/clear` drops the hold.
@@ -1111,7 +1116,8 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
   let mine: { command: string; args: string } | null = null
   try {
     got = await checks()
-    if (got?.clears) {
+    if (pressCheck !== mark) got = undefined
+    else if (got?.clears) {
       mine = { command: got.command, args: got.args }
       heldRun = mine
     }

@@ -4066,3 +4066,65 @@ describe('the pane read stores the items with the hotfix list and draws them (M2
     expect(await candidateLine($)).toBe(PLAIN)
   })
 })
+
+// A one-shot hold on the mod's `step` read. It is armed after mount, since
+// the draw and the session end's update read the key too (M255).
+function holdStep(on: On) {
+  let open = () => {}
+  const gate = new Promise<void>(resolve => (open = resolve))
+  const hold = { armed: false, held: false, release: () => open() }
+  on('state.get', async ($, e, next) => {
+    if (hold.armed && e.plugin === 'cairn' && e.key === 'step') {
+      hold.armed = false
+      hold.held = true
+      await gate
+    }
+    return next(e)
+  })
+  return hold
+}
+
+describe('a press check cut off by a session end frees the Buttons and runs nothing late (M255 AC1, AC2)', () => {
+  test('a Status press after the end runs once, and the cut-off press runs nothing', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_STATUS })
+    await until(() => hold.held)
+    expect(hold.held).toBe(true)
+    await $.session.end(CLEAR_END)
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands).toEqual([STATUS_RUN])
+    hold.release()
+    await first
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+
+  // A next-step press whose checks would hold its command for a `/clear`.
+  const name = PANE_CLEAR_FIRST[0]
+  test(`${name}: a cut-off next-step press holds nothing for a later clear end`, async ($, on) => {
+    const copy = copyOf(name)
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_NEXT })
+    await until(() => hold.held)
+    expect(hold.held).toBe(true)
+    await $.session.end(CLEAR_END)
+    hold.release()
+    await first
+    await untilRuns(copy, 1, 10)
+    expect(copy.commands ?? []).toEqual([])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 1, 10)
+    expect(copy.commands ?? []).toEqual([])
+    await ui.unmount()
+  })
+})
