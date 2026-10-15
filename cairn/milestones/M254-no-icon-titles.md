@@ -103,9 +103,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - [x] T3: Save the AC3 script in the milestone's scratch notes, run it on
       the plan commit (expect the two rows), retitle both rows by replacing
       the old title, rewrite the two quoted mentions, rerun it (expect none).
-- [ ] T4: CHANGELOG.md Unreleased entry under "Changes that affect existing
+- [x] T4: CHANGELOG.md Unreleased entry under "Changes that affect existing
       repos".
-- [ ] T5: Run `verify`.
+- [x] T5: Run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -132,6 +132,8 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: substantive amendment: AC3's parenthetical "(ROADMAP lines 39 and 40)" → "(ROADMAP lines 40 and 41)"; at plan commit 0c1976c2 the M254 row had moved the two quoted mentions down one line. Wording only, the deliverable unchanged.
 - 2026-10-15: re-audit: AC3 (full) — nothing; the reader confirmed the mentions sit on lines 40 and 41 at 0c1976c2.
 - 2026-10-15: T3 done: the AC3 script (session scratchpad `icon_titles.py`) reports 2 icon rows on 0c1976c2 and 0 after the edit; both rows retitled in place, the two quoted mentions rewritten; `grep -c` for each old title over ROADMAP and DESIGN.md returns 0; both new titles meet the triage new-title rule.
+- 2026-10-15: T4 done: CHANGELOG Unreleased entry "Candidate short titles hold no icons" under "Changes that affect existing repos".
+- 2026-10-15: T5 done: verify green — scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
