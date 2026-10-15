@@ -137,7 +137,8 @@ The script deliberately does not judge these — do them yourself and report:
   drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
   demand, never from here. A finding-absorbing group — a candidate row and
   the rows that name its short title (tracking-rules "Candidate short
-  title") exactly in double quotes (direct references only), together carrying deferred review findings filed from two or more
+  title") exactly in double quotes (direct references only), together
+  carrying deferred review findings filed from two or more
   distinct milestones — is triaged even though not untouched: pose the
   disposition chip whose options `skills/shared/records-hygiene.md` §7
   states, rather than restating them here; a row or group meeting both

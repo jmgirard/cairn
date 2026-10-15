@@ -103,7 +103,7 @@ one of them absorbs is never dropped or merged away in this pass
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. Its opening is rewritten into a short title (tracking-rules "Candidate short title"): a few words that name the row, then `: `. The rest of the row stays as it is. Each double-quoted mention of the old title in another candidate row is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. Its opening is rewritten into a short title (tracking-rules "Candidate short title"): a few words that name the row, then `: `. The rest of the row stays as it is. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that a finding-absorbing row
@@ -243,7 +243,7 @@ one of them absorbs is never dropped or merged away in this pass
    replaces the row's text before its old cut (the old title and its `: `
    or ` — `) with the new title and `: `, or, for a row with no old cut,
    puts the new title and `: ` before its text, and rewrites each listed
-   mention in the other candidate rows; `promote` and `keep` change nothing; an accepted priority change adds, replaces,
+   mention in the other ROADMAP rows; `promote` and `keep` change nothing; an accepted priority change adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
    token) and moves the row to its level. Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.

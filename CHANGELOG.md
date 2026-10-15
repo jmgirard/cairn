@@ -15,7 +15,7 @@
   proposal for a row whose short title is empty, longer than 60
   characters, or the same as another row's. It rewords only the row's
   opening and also rewrites each double-quoted mention of the old title in
-  the other candidate rows, except a mention of a title that several rows
+  the other ROADMAP rows, except a mention of a title that several rows
   share, which it lists and leaves as it is. A quote of a row's whole
   text, written before this change for a row with no `: ` but a ` — `, no
   longer matches that row's title.

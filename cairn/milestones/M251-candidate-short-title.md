@@ -11,7 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters see the cairn pane, and their agents follow the rulebook when they write rows   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m251-candidate-short-title   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m251-candidate-short-title, https://github.com/jmgirard/cairn/pull/262   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,7 +48,7 @@ cases (M211 review)" stay in that row.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `candidateRows` in `hooks/status/reader.ts` and `python_candidates`
+- [x] AC1: `candidateRows` in `hooks/status/reader.ts` and `python_candidates`
       in `scripts/tests/test_status_fixtures.py` return the short title in the
       right column for each row text in the left column (checked by the
       `candidates` fixture and `hooks/status/reader.test.ts`). Both gating
@@ -64,7 +64,7 @@ cases (M211 review)" stay in that row.
       | `A row with no colon and no dash` | `A row with no colon and no dash` |
       | `: an empty short title — added 2026-01-04` | (empty) |
 
-- [ ] AC2: `skills/shared/tracking-rules.md` states the rule in one
+- [x] AC2: `skills/shared/tracking-rules.md` states the rule in one
       "Candidate short title" paragraph beside "Candidate priority token". The
       paragraph says that the pane shows the short title and that the skills
       name a row by it. It tells a writer to open each row with a few words
@@ -73,18 +73,18 @@ cases (M211 review)" stay in that row.
       (`ordinal REML: ...`, not `ordinal: REML. ...`). A new `DECISIONS.md`
       entry whose heading names D-149 narrows D-149's title sentence to this
       rule.
-- [ ] AC3: records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1's
+- [x] AC3: records-hygiene §7, `/hotfix` step 1, `/cairn-triage` step 1's
       subject, the `/milestone` health audit's §7 sentence, and
       `/milestone-review` step 9's row-filing sentence cite that paragraph and
       state no title rule of their own. The branch runs one sweep:
       `git grep -n -i -e "first \`: \`" -e "first colon" -e "short title" -e "title's \`: \`" -e "exact title"`
       over `skills`, `README.md`, `cairn/DESIGN.md`, `hooks`, and `scripts`.
       Each hit agrees with the rule.
-- [ ] AC4: The `/cairn-init` ROADMAP skeleton comment in
+- [x] AC4: The `/cairn-init` ROADMAP skeleton comment in
       `skills/cairn-init/SKILL.md` and the row example in the "Candidate
       priority token" paragraph show the shape
       `- [high] short title: detail — added YYYY-MM-DD — links`.
-- [ ] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
+- [x] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
       each candidate row whose short title is empty, is over 60 code points,
       or is shared with another row (each such row gets its own proposal),
       whatever the row's byte length. It is not proposed for a row whose
@@ -92,7 +92,7 @@ cases (M211 review)" stay in that row.
       into a short title that ends at `: `. Its accepted edit also rewrites
       each double-quoted mention of the old title in another ROADMAP row. A
       mention of a shared title is listed as ambiguous and is not rewritten.
-- [ ] AC6: README's cairn pane section and DESIGN.md's `candidateRows`
+- [x] AC6: README's cairn pane section and DESIGN.md's `candidateRows`
       description state the rule. `CHANGELOG.md`'s Unreleased section says
       that a row with no `: ` now loses its date and links from its pane
       title, names the writing rule and `retitle`, and says that an old quote
@@ -175,3 +175,19 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T5 done: README's pane section (rule, writing shape, `retitle`), DESIGN.md's `candidateRows` description, and a CHANGELOG entry under "Changes that affect existing repos"; AC3's sweep over README.md and cairn/DESIGN.md now finds only hits that agree with the rule (plus README.md:140, about milestone titles); verify green.
 - 2026-10-15: claim audit: 44 claims read, 6 corrected — CHANGELOG.md (3), skills/cairn-triage/SKILL.md (1), skills/shared/tracking-rules.md (2); the same reader re-read the six and found all fixed; the rulebook baseline re-seeded to 664 lines / 63,656 bytes at its three sites.
 - 2026-10-15: all tasks done; verify green (both suites, both validates, `claude plugin test` 1714 pass), `skills/tests` hand-run OK; status set to review.
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md. -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. -->
+
+- AC1 (2026-10-15, branch head after 6b2d646d): `claude plugin test .` 1714 pass, 0 fail; the 7 tests of "the short title is cut at the first `: `, else at the first ` — ` (M251 AC1)" in `reader.test.ts` all pass, one per table row; the `candidates` fixture carries the 6 non-empty table rows with their expected titles, and `scripts/tests` (407, OK) holds `python_candidates` to it through `test_python_helpers_match_expected`; `hooks/tests` 175 OK; both `claude plugin validate` runs exit 0.
+- AC2: `skills/shared/tracking-rules.md:215-221` is one "Candidate short title" paragraph right after "Candidate priority token" (209-213); it states the cut (first `: `, else first ` — `, else all), says the pane shows the title and the skills name a row by it (✎, §7, `/hotfix`), tells a writer to open each row with a few words that name it and differ from every other title, then `: ` and the detail, and gives the area-word example. `cairn/DECISIONS.md:5868` D-163, whose heading names D-149, narrows D-149's title sentence.
+- AC3: the five sites cite the paragraph and state no rule of their own: `records-hygiene.md:37`, `hotfix/SKILL.md:51-52`, `cairn-triage/SKILL.md:63-64` (candidate subject), `milestone/SKILL.md:139-140`, `milestone-review/SKILL.md:714-716`. The sweep (`git grep -n -i` with the five patterns over the named paths) returned 57 hits on the branch; each agrees: the rule's own statements (tracking-rules, README 314-325, DESIGN 284-291, reader/pane/register comments, the test twin, fixtures, skeleton), §7's and its readers' "exact title" (now §7's defined title), triage:65 (a Known issues subject, not a candidate title), README:140 (milestone titles in the band) and source-note.md:37 (a citation title), which state no candidate-title rule.
+- AC4: `cairn-init/SKILL.md:191-192` shows `- [high] short title: detail — added YYYY-MM-DD — links` and the untagged form; `tracking-rules.md:209-210` gives the same shape as the token example.
+- AC5: `cairn-triage/SKILL.md:106` adds the `retitle` row (opening rewritten into a short title ending at `: `, rest unchanged, double-quoted mentions in other ROADMAP rows rewritten, a shared-title mention listed as ambiguous and left); `:144-151` the Title class (empty, over 60 code points, or shared, one proposal per sharing row, byte length does not matter, not for a row a live milestone file quotes); `:246` the apply step. Review fixed "another candidate row" to "another ROADMAP row" (106, 246, CHANGELOG:18) to match the criterion's wording.
+- AC6: `README.md:314-325` states the rule, the writing shape, and `retitle`; `cairn/DESIGN.md:284-286` states the rule in the `candidateRows` description; `CHANGELOG.md` Unreleased, "Changes that affect existing repos", first entry, says a row with no `: ` loses the date and links after its dash, names the writing rule and `retitle`, and says an old whole-text quote of such a row no longer matches.
+- consistency gate: `cairn_validate` all checks passed; no principle changed, so `cairn_impact` skipped; verify green on the review head (scripts 407 OK, hooks 175 OK, both validates exit 0, `claude plugin test` 1714 pass); the marketplace validate prints no `plugins[N].version` warning; CHANGELOG has the entry with no milestone number; `skills/tests` hand-run 752 OK.
