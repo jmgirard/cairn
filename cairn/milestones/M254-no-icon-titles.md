@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M254: Candidate short titles hold no icons
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the rulebook and `/cairn-triage` ship to plugin users   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m254-no-icon-titles   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -89,14 +89,14 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Edit tracking-rules "Candidate short title" (`:215-222`): the
+- [x] T1: Edit tracking-rules "Candidate short title" (`:215-222`): the
       no-icon sentence, the definition, the reason, and the `retitle`
       sentence. Append D-164 to `cairn/DECISIONS.md`: the rule passes
       D-108's door on its retained trigger, a defect in shipped behavior
       (the pane draws a row titled "⌂ edges" or "✎ edges" beside its own ⌂
       and ✎ Buttons), at the user's request; record the rejected
       alternatives from the work log.
-- [ ] T2: Edit `skills/cairn-triage/SKILL.md`: the `retitle` row of the
+- [x] T2: Edit `skills/cairn-triage/SKILL.md`: the `retitle` row of the
       disposition table (`:108`) and the Title → `retitle` class
       (`:146-160`). Run the hand-run `skills/tests` prose guards that read
       this skill and the tracking-rules paragraph; fix any pin they break.
@@ -126,6 +126,9 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: plan gate chose non-ASCII `So`/`Sm` over `So` alone because the pane draws ↑ ↓ ⋯ (`Sm`) beside titles; falsified by a pane mark outside both categories, or by false positives in real titles.
 - 2026-10-15: plan gate chose rulebook and triage only over a `cairn_validate` advisory because D-163 declined one for long titles and the repo has 2 icon rows; falsified by icon titles recurring after the rule ships.
 - 2026-10-15: plan decided to leave the cairn-init ROADMAP skeleton comment as it is, since it points at the rule and `hooks/status/fixtures.gen.ts` embeds it.
+
+- 2026-10-15: T1 done: tracking-rules "Candidate short title" gains the no-icon sentence, the `So`/`Sm` definition, the pane reason, and the `retitle` icon sentence; D-164 appended.
+- 2026-10-15: T2 done: `/cairn-triage`'s `retitle` row says an icon title is replaced in place, keeping its `: ` or ` — `; the Title class names the icon trigger and the new-title rule excludes an icon. Implement choice: replace in place rather than prepend-then-strip, so a row cut at ` — ` keeps that cut. All 752 hand-run `skills/tests` pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
