@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M254: Candidate short titles hold no icons
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -135,6 +135,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: T4 done: CHANGELOG Unreleased entry "Candidate short titles hold no icons" under "Changes that affect existing repos".
 - 2026-10-15: T5 done: verify green — scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail.
 - 2026-10-15: claim audit fixes (checkpoint, re-read pending): "Emoji are icons" → "Most emoji are icons"; the pane reason now says some marks and Buttons sit beside the title; a no-separator row takes the new title and `: ` before its text; D-164's Context places each glyph as pane.ts draws it.
+- 2026-10-15: claim audit: 17 claims read, 1 corrected — CHANGELOG.md, skills/cairn-triage/SKILL.md, skills/shared/tracking-rules.md. The re-read found the corrections hold; it also flagged D-164's "beside its own ⌂ and ✎ Buttons", now reworded.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

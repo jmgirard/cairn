@@ -5910,8 +5910,9 @@ pass gives them short titles.
 candidate row's short title and a ✎ Button after it, and ⌂, ↻, and ⋯ on
 its first line. Two rows in this repo were
 titled "⌂ edges (M241 review)" and "✎ edges (M242 review)", so the pane
-drew a title's ⌂ or ✎ beside its own ⌂ and ✎ Buttons, and a reader could
-not tell row text from a Button. No rule told a writer to keep icons out
+drew a title's ✎ on the same line as its own ✎ Button and a title's ⌂ in
+the glyph of its Home Button, and a reader could not tell row text from a
+Button. No rule told a writer to keep icons out
 of a title.
 
 **Decision:** At the user's request, planned as M254, tracking-rules
