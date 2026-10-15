@@ -301,7 +301,7 @@ export const register: Register = on => {
     reopened = false
     try {
       const mine = await paneOf($)
-      if (mine !== undefined && mine.isPlaced && mine.isShown) {
+      if (placedAndShown(mine)) {
         if (afterReopen) return { text: 'cairn pane opened' }
         await $.ui.close({ id: PANE })
         return { text: 'cairn pane closed' }
@@ -766,7 +766,13 @@ async function listedPane($) {
 // True when `$.ui.panes()` lists the pane placed and shown, false when it
 // does not or the call throws.
 async function isShown($): Promise<boolean> {
-  const mine = await listedPane($)
+  return placedAndShown(await listedPane($))
+}
+
+// True when a listing of the pane, as `paneOf` or `listedPane` gives it,
+// is placed and shown. The command's close, `isShown`, and `markReopen`
+// test the listing here (M256).
+function placedAndShown(mine: { isPlaced: boolean; isShown: boolean } | null | undefined): boolean {
   return mine != null && mine.isPlaced && mine.isShown
 }
 
@@ -1266,7 +1272,7 @@ async function fallBack($, text: string, why: string) {
 async function markReopen($) {
   try {
     const mine = await paneOf($)
-    if (mine === undefined || !mine.isShown || !mine.isPlaced) return
+    if (!placedAndShown(mine)) return
     const cwd = await $.session.root()
     const held = await reopenList($)
     if (!held.includes(cwd)) await $.store.set(REOPEN_KEY, [...held, cwd])

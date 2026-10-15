@@ -89,7 +89,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
       it is now placed. Run `verify`.
 - [x] T2: The AC2 case; check it fails with the `owed = false` line
       (~509) removed, then restore it. Run `verify`.
-- [ ] T3: One placed-and-shown predicate used at ~294, ~744-747, and
+- [x] T3: One placed-and-shown predicate used at ~294, ~744-747, and
       ~1236; existing tests unchanged. Run `verify`.
 - [ ] T4: CHANGELOG entry; run `verify`.
 
@@ -114,6 +114,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
 - 2026-10-15: started on branch m256-pane-late-placement; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-15: T1 done: `Copy.panesHold` (one-shot, cleared when reached, so a test sees the hold was hit); the AC1 case over blocked-active and blocked-prs went red at its final read assertion (reads `[]`) after the hold was reached and the held draw read nothing; the hook now lists again after `owed = true` and reads when placed and `owed` still holds (a draw, open, or end clears it). Verify green: 408 + 175 Python tests, both validates, 1736 mod tests.
 - 2026-10-15: T2 done: the AC2 case (clear start owes, `CLEAR_END`, place, draw, no read); with the `session.end` handler's `owed = false` removed it alone failed, reading `[URL_1250]` at its last assertion (1 of 1737); restored, `register.tsx` back to no diff. Verify green: 1737 mod tests.
+- 2026-10-15: T3 done: chose the name `placedAndShown(mine)`, taking a listing (`undefined` from `paneOf`, `null` from `listedPane`); the command's close branch, `isShown`, and `markReopen` call it; `grep -c "\.isShown" hooks/status/register.tsx` returns 1; `pane.test.tsx` untouched. Verify green: 1737 mod tests.
 
 
 ## Decisions
