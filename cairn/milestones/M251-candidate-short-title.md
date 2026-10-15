@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -175,6 +175,7 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: T5 done: README's pane section (rule, writing shape, `retitle`), DESIGN.md's `candidateRows` description, and a CHANGELOG entry under "Changes that affect existing repos"; AC3's sweep over README.md and cairn/DESIGN.md now finds only hits that agree with the rule (plus README.md:140, about milestone titles); verify green.
 - 2026-10-15: claim audit: 44 claims read, 6 corrected — CHANGELOG.md (3), skills/cairn-triage/SKILL.md (1), skills/shared/tracking-rules.md (2); the same reader re-read the six and found all fixed; the rulebook baseline re-seeded to 664 lines / 63,656 bytes at its three sites.
 - 2026-10-15: all tasks done; verify green (both suites, both validates, `claude plugin test` 1714 pass), `skills/tests` hand-run OK; status set to review.
+- 2026-10-15: review return 1: AC5 — `/cairn-triage`'s `retitle` apply step replaced a title cut at ` — ` or a long `: ` title with the new title, deleting the row's description, so it did not rewrite only the row's opening (diff-bug #1, blame-history #1); the other fix-now findings in the Review section ride the same return.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -191,3 +192,33 @@ cases (M211 review)" stay in that row.
 - AC5: `cairn-triage/SKILL.md:106` adds the `retitle` row (opening rewritten into a short title ending at `: `, rest unchanged, double-quoted mentions in other ROADMAP rows rewritten, a shared-title mention listed as ambiguous and left); `:144-151` the Title class (empty, over 60 code points, or shared, one proposal per sharing row, byte length does not matter, not for a row a live milestone file quotes); `:246` the apply step. Review fixed "another candidate row" to "another ROADMAP row" (106, 246, CHANGELOG:18) to match the criterion's wording.
 - AC6: `README.md:314-325` states the rule, the writing shape, and `retitle`; `cairn/DESIGN.md:284-286` states the rule in the `candidateRows` description; `CHANGELOG.md` Unreleased, "Changes that affect existing repos", first entry, says a row with no `: ` loses the date and links after its dash, names the writing rule and `retitle`, and says an old whole-text quote of such a row no longer matches.
 - consistency gate: `cairn_validate` all checks passed; no principle changed, so `cairn_impact` skipped; verify green on the review head (scripts 407 OK, hooks 175 OK, both validates exit 0, `claude plugin test` 1714 pass); the marketplace validate prints no `plugins[N].version` warning; CHANGELOG has the entry with no milestone number; `skills/tests` hand-run 752 OK.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: `retitle`'s apply step replaced a title cut at ` — ` (the whole description) or a long `: ` title with the new title, deleting the row's substance — fix now; floor return (AC5 "rewrites only the row's opening" fails as written).
+- diff-bug #2: rewriting mentions in other rows breaks step 3's byte-for-byte rule for unaccepted items — fix now (carve-out for a listed mention).
+- diff-bug #3: mention rewrites collide with same-pass dispositions of the quoting row; a milestone-row rewrite can drift from the milestone file heading — fix now for the ordering (rewrite applied to each quoting item's text as its own disposition leaves it, none in a dropped item); the milestone-row part rejected, planned change (AC5 names "another ROADMAP row").
+- diff-bug #4: step 6's stamp omits retitled items — fix now.
+- diff-bug #5: "seven words" is now eight — fix now.
+- diff-bug #6: a candidate's subject can be empty or unbounded — fix now (short title only when not empty and ~80 characters at most, else the old fallback).
+- diff-bug #7: no uniqueness check on new titles; ambiguous mentions can drop a §7 group — fix now for uniqueness; the ambiguous-mention part rejected, planned change (AC5 lists and leaves them, shown at the chip).
+- diff-bug #8: a retitled row cannot take a priority change — fix now.
+- diff-bug #9: "another row" ignores same-pass drops and merges — fix now.
+- diff-bug #10: a Known issues quote of the old title stays stale — fix now (Known issues entries join the rewrite).
+- diff-bug #11: the fixture's rows 2 and 12 share `Low row` and the pane test comment says otherwise — fix now (comment).
+- diff-bug #12: `python_candidates` is never held to an empty title — fix now (`test_python_candidates_cut_and_trim_edges`).
+- diff-bug #13: JS `trim()` and Python `strip()` differ on U+FEFF and U+001C-U+001F — fix now (`JS_TRIM`; the new test fails on bare `strip()` for both rows).
+- diff-bug #14: the skeleton comment states half the rule — fix now (it now tells a writer to open with the short title and points to the paragraph).
+- diff-bug #15: two overlong lines in README.md and DESIGN.md — fix now.
+- blame-history #1: same defect as diff-bug #1, and the opening token's fate unstated — fix now (token kept).
+- blame-history #2: D-163 does not say how it passes D-108's door — fix now (D-163, still unmerged, states the retained trigger: the pane showed `ordinal` for 8 rows).
+- blame-history #3: D-163 does not say why D-035's rejected opener does not apply — fix now (one sentence in D-163).
+- blame-history #4: review step 9's "after its own title's `: `" fits only colon rows — reject, planned change: rows review files follow the writer rule and open with a title and `: `.
+- blame-history #5: a late `: ` wins over an earlier ` — `, so provenance can leak into a title — reject, planned change (the plan gate's colon-first choice, AC1's `Title — detail: more` row).
+- blame-history #6: the `candidates-skeleton` fixture still holds the old skeleton text — fix now.
+- blame-history #7: the skeleton comment and `types/index.d.ts` were stale at the branch commit — fix now (same as diff-bug #14 and prior-review #1).
+- blame-history #8: the hotfix pin now asserts a citation, not the rule — reject, planned change (T3 called for the cite; reader tests hold the behavior).
+- blame-history #9: CHANGELOG states the lost whole-text match only for §7 — reject, false: the entry says any old quote of such a row no longer matches.
+- blame-history #10: a `merge` survivor can also take `retitle` — fix now (excluded in the same pass).
+- prior-review #1: `types/index.d.ts:60` still documents the old cut (also Copilot's thread) — fix now.
+- prior-review #2: the skeleton comment restates part of the rule — fix now (same as diff-bug #14).
+- prior-review #3: hotfix step 1 now cites the paragraph in place of PR 259's colon-less wording — reject, false: the paragraph states the colon-less case and the reader agrees.
+- prior-review #4-#6: rulebook baseline, hotfix step 1's before-any-stop text, README overclaims — reject, false: the lens found each consistent.
