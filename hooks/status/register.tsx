@@ -269,8 +269,18 @@ export const register: Register = on => {
         startRead = true
         owed = false
         void readPrs($)
-      } else {
-        owed = true
+        return result
+      }
+      owed = true
+      // A pane placed and drawn during the list above drew before the read
+      // was owed, so the hook lists it again and reads if it is now placed,
+      // unless a draw, an open, or a session end cleared `owed` meanwhile
+      // (M256).
+      const again = await listedPane($)
+      if (again != null && again.isPlaced && owed) {
+        owed = false
+        startRead = true
+        void readPrs($)
       }
     }
     return result

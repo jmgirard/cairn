@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M256: Pane reads after late placement
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane ships to plugin users   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m256-pane-late-placement   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -83,7 +83,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first: a one-shot `ui.panes` hold in `seat()` (~150) that
+- [x] T1: Tests first: a one-shot `ui.panes` hold in `seat()` (~150) that
       computes its answer before holding; the AC1 case, red. Then, after
       `owed = true` (register.tsx ~273), list the pane again and read when
       it is now placed. Run `verify`.
@@ -111,6 +111,8 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
 - 2026-10-15: criteria audit (full, Opus fresh reader, one reader for M255-M257, with throwaway probe tests in a scratch copy) — 8 findings, all taken: see the per-milestone line below.
 - 2026-10-15: audit findings for M256: AC1 names the `seat()` hold (a second `ui.panes` registration fails to load) and "each blocked pull-request URL read once"; AC3's grep became `\.isShown`, which also catches the negated form at ~1236.
 - 2026-10-15: plan chose a second pane listing after `owed = true` over `$.ui.invalidate('ui.render')` because a listing reads without a draw the host may delay; falsified by a test or live look where the second listing still answers not placed after the pane drew.
+- 2026-10-15: started on branch m256-pane-late-placement; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-15: T1 done: `Copy.panesHold` (one-shot, cleared when reached, so a test sees the hold was hit); the AC1 case over blocked-active and blocked-prs went red at its final read assertion (reads `[]`) after the hold was reached and the held draw read nothing; the hook now lists again after `owed = true` and reads when placed and `owed` still holds (a draw, open, or end clears it). Verify green: 408 + 175 Python tests, both validates, 1736 mod tests.
 
 
 ## Decisions
