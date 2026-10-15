@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M253: A normal candidate row's mark is an open circle
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -96,3 +96,5 @@ stay as they are (the request changes only the normal mark).
 - 2026-10-15: implement started on m253-pane-open-circle-mark; untracked `cairn-probe.log` and `tsconfig.json` stay unstaged; ROADMAP is 1 byte over its budget until this row drops at hygiene.
 - 2026-10-15: T1: tests state the marks literally (a hand-written `MARKS` map, `PRIORITY_MARK` and `STARTED_MARK` asserted whole); 18 tests red with `·` received for `○` expected, then `PRIORITY_MARK.normal` set to `○`; mod tests 1729 green, verify green.
 - 2026-10-15: T2: README mark list, DESIGN.md Known issues width list and hooks/status lineage, CHANGELOG Unreleased New entry; verify, `skills/tests`, cairn_validate green.
+- 2026-10-15: claim audit: 12 claims read, 2 corrected — hooks/status/pane.ts, CHANGELOG.md (re-read once by the same reader: both TRUE); its note that DESIGN's ambiguous-width list lacked `◐` (an M252 gap) taken, `◐` added.
+- 2026-10-15: implement done; verify green at head (mod tests 1729, scripts and hooks suites OK, both validates), `skills/tests` OK; status review.

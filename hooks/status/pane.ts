@@ -265,7 +265,8 @@ export const NO_ACTIVE = 'no active milestone'
 export const CHECKED_MARK = '✓'
 export const OPEN_MARK = '○'
 // A candidate row's mark for each priority (M207). A normal row's is the
-// open circle, the shape of the started mark `◐` (M253).
+// empty circle that the started mark `◐` half fills, the glyph
+// `OPEN_MARK` also uses (M253).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
   normal: { text: '○' },

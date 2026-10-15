@@ -154,8 +154,8 @@
 
 - **A normal-priority candidate row in the cairn pane shows `○`.** The
   open circle replaces the `·` mark, so the candidate marks read `↑` for
-  high priority, `↓` for low, `○` for normal, and `◐` for a row that an
-  open PR already works on.
+  high priority, `↓` for low, `○` for normal, and `◐` for a row whose
+  short title an open PR's body names.
 
 - **The cairn pane marks a candidate row that an open PR already works
   on.** In owner mode, `/hotfix` and `/milestone-review` now put one
