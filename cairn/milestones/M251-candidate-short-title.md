@@ -50,9 +50,9 @@ cases (M211 review)" stay in that row.
 
 - [ ] AC1: `candidateRows` in `hooks/status/reader.ts` and `python_candidates`
       in `scripts/tests/test_status_fixtures.py` return the short title in the
-      right column for each row text in the left column, and the
-      `candidates` fixture and `hooks/status/reader.test.ts` carry these
-      rows. Both gating suites and `claude plugin test` pass.
+      right column for each row text in the left column (checked by the
+      `candidates` fixture and `hooks/status/reader.test.ts`). Both gating
+      suites and `claude plugin test` pass.
 
       | Row text after `- ` | Short title |
       |---|---|
@@ -79,18 +79,19 @@ cases (M211 review)" stay in that row.
       state no title rule of their own. The branch runs one sweep:
       `git grep -n -i -e "first \`: \`" -e "first colon" -e "short title" -e "title's \`: \`" -e "exact title"`
       over `skills`, `README.md`, `cairn/DESIGN.md`, `hooks`, and `scripts`.
-      Each hit agrees with the rule or sits in an append-only record.
+      Each hit agrees with the rule.
 - [ ] AC4: The `/cairn-init` ROADMAP skeleton comment in
       `skills/cairn-init/SKILL.md` and the row example in the "Candidate
       priority token" paragraph show the shape
       `- [high] short title: detail — added YYYY-MM-DD — links`.
-- [ ] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for a
-      candidate row whose short title is over 60 characters, or equal to
-      another row's short title, whatever the row's byte length. It rewrites
-      only the row's opening into a short title that ends at `: `. A
-      `retitle` lists, beside the proposal, each double-quoted mention of the
-      old title in a ROADMAP row or a live milestone file, and its accepted
-      edit rewrites those mentions in the same commit.
+- [ ] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
+      each candidate row whose short title is empty, is over 60 code points,
+      or is shared with another row (each such row gets its own proposal),
+      whatever the row's byte length. It is not proposed for a row whose
+      title a live milestone file quotes. It rewrites only the row's opening
+      into a short title that ends at `: `. Its accepted edit also rewrites
+      each double-quoted mention of the old title in another ROADMAP row. A
+      mention of a shared title is listed as ambiguous and is not rewritten.
 - [ ] AC6: README's cairn pane section and DESIGN.md's `candidateRows`
       description state the rule. `CHANGELOG.md`'s Unreleased section says
       that a row with no `: ` now loses its date and links from its pane
@@ -119,7 +120,9 @@ cases (M211 review)" stay in that row.
 - [ ] T1: Tests first. Add AC1's rows to `hooks/status/fixtures/candidates/`
       and its `expected.json`, and restate the old "shown whole" rows, which
       now cut at their dash. Add the table to `reader.test.ts`. Update the
-      `TITLES` list in `pane.test.tsx` (~line 1413). See the new cases fail.
+      `TITLES` list, `EMPTY_AT`, `SAME_AT`, and the ✎-count assertions in
+      `pane.test.tsx` (~line 1395-1420) for the shifted indexes, or keep the
+      empty-title row out of the shared fixture. See the new cases fail.
       Then change `candidateRows` (`reader.ts:543-566`) and
       `python_candidates`, with their comments. Regenerate `fixtures.gen.ts`
       with `hooks/status/gen_fixtures.py`. Run both gating suites and
@@ -133,9 +136,10 @@ cases (M211 review)" stay in that row.
       `/cairn-triage` step 1 (line 63), `/milestone` (line 139), and
       `/milestone-review` step 9 (line 710) cite the paragraph. Update the pin
       in `skills/tests/test_hotfix_candidate_graduation.py:53` and hand-run
-      `skills/tests`. Run AC3's sweep and fix or log each hit.
+      `skills/tests`. Run AC3's sweep and fix each hit.
 - [ ] T4: Add `retitle` to `/cairn-triage`'s disposition table, its evidence
-      classes, and its apply step, with the quote rewrite.
+      classes, and its apply step, with the ROADMAP quote rewrite and the
+      live-milestone exclusion.
 - [ ] T5: Update README's pane section (~line 314), DESIGN.md (~line 285),
       and `CHANGELOG.md`.
 
@@ -161,3 +165,4 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: plan gate chose a `/cairn-triage` `retitle` disposition over a `cairn_validate` advisory and over no route for old rows.
 - 2026-10-15: agent chose a new `retitle` disposition over a `compress` variant, because `compress` fires on byte length and rewrites the body, while a title change must also rewrite quotes.
 - 2026-10-15: agent chose no length cap in the reader, because the pane already cuts a long title to one line with an ellipsis.
+- 2026-10-15: criteria audit (full mode, fresh Opus reader) ran twice. Pass 1 on the draft: 8 findings (missing probe axes, `. ` abbreviations, shared titles, compress breaking quotes, two missed citing sites and a work-log escape in AC3, no AC for the D-149 narrowing, no migration note, the `pane.test.tsx` list); all fixed or made moot by the gate's choice. Pass 2 on the revised criteria: 5 findings (who gets a shared-title retitle, live milestone files are plan-owned, T3's log escape, AC1's fixture clause, `EMPTY_AT`/`SAME_AT` index shifts); all 5 fixed by narrowing AC1, AC3, AC5, T1, T3, and T4.
