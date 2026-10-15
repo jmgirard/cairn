@@ -5906,8 +5906,9 @@ pass gives them short titles.
 
 ### D-164 (2026-10-15): A candidate row's short title holds no icon, and `/cairn-triage`'s `retitle` replaces a title that holds one — extends D-163; passes D-108's door on its retained trigger (M254)
 
-**Context:** The cairn pane draws marks (○, ◐, ↑, ↓, ⋯) and Buttons (⌂,
-✎, ↻) beside each candidate row's short title. Two rows in this repo were
+**Context:** The cairn pane draws a mark (○, ◐, ↑, or ↓) before each
+candidate row's short title and a ✎ Button after it, and ⌂, ↻, and ⋯ on
+its first line. Two rows in this repo were
 titled "⌂ edges (M241 review)" and "✎ edges (M242 review)", so the pane
 drew a title's ⌂ or ✎ beside its own ⌂ and ✎ Buttons, and a reader could
 not tell row text from a Button. No rule told a writer to keep icons out

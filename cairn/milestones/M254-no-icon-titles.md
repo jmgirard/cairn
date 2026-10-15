@@ -134,6 +134,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: T3 done: the AC3 script (session scratchpad `icon_titles.py`) reports 2 icon rows on 0c1976c2 and 0 after the edit; both rows retitled in place, the two quoted mentions rewritten; `grep -c` for each old title over ROADMAP and DESIGN.md returns 0; both new titles meet the triage new-title rule.
 - 2026-10-15: T4 done: CHANGELOG Unreleased entry "Candidate short titles hold no icons" under "Changes that affect existing repos".
 - 2026-10-15: T5 done: verify green — scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail.
+- 2026-10-15: claim audit fixes (checkpoint, re-read pending): "Emoji are icons" → "Most emoji are icons"; the pane reason now says some marks and Buttons sit beside the title; a no-separator row takes the new title and `: ` before its text; D-164's Context places each glyph as pane.ts draws it.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
