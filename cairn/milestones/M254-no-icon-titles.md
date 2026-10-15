@@ -164,3 +164,27 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - AC3: the scratchpad `icon_titles.py` cut script reports "45 rows, 2 with icons" (⌂ edges, ✎ edges) on 0c1976c2 and "45 rows, 0 with icons" on the head; both new titles meet the triage new-title rule; `grep -c` for each old title returns 0 over ROADMAP and DESIGN.md Known issues; ROADMAP:40-41 quote "Home Button edges (M241 review)" and "Plan Button edges (M242 review)", where 0c1976c2:40-41 quoted the old titles. Met.
 - AC4: CHANGELOG.md:7-17, Unreleased "Changes that affect existing repos", states the `So`/`Sm` non-ASCII definition, between backticks or not, and the `retitle` icon trigger replacing the title in place. Met.
 - AC5: verify on 64a59375: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, plugin validate passed with warnings, marketplace validate passed with no warning, plugin test 1729 pass 0 fail. `cairn_validate.py` all checks passed. Met.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: cairn-triage SKILL.md:252-256 step 4 Apply still says `retitle` always prepends and keeps the old title, contradicting :108 — fix now (in the return below).
+- diff-bug #2: in-place replacement deletes the description of a row cut at ` — `, whose title is usually its whole detail and trigger — amendment routed (AC2 mandates it); second AC2 amendment, so the user decides.
+- diff-bug #3: SKILL.md does not say which edit wins when a row meets the icon trigger and another — fix now.
+- diff-bug #4: tracking-rules' `retitle` sentence does not cover an icon row with neither separator — fix now.
+- diff-bug #5: AC1's "beside an empty, long, or shared one" against a two-sentence split — reject, false: the adjacent sentences name all four triggers.
+- diff-bug #6: CHANGELOG says a title that "opens with" an icon reads as a Button, narrower than the rule — fix now.
+- diff-bug #7: a retitle while a PR carries a `Candidate row:` line breaks the pane's link — follow-up, absorbed into "Retitle edges (M251 review)".
+- diff-bug #8: archived M241/M242 files still quote the old titles — reject, planned change: history is not edited (IP4).
+- diff-bug #9: uneven line wraps in DECISIONS, CHANGELOG, SKILL.md — reject, style.
+- blame-history #1: same as diff-bug #1 — fix now.
+- blame-history #2: same as diff-bug #3 — fix now.
+- blame-history #3: the replaced span for `⌂ a — b: c` is defined only through the cut rule — fix now (wording names the cut title).
+- blame-history #4: in-place replacement loses the old title's words — reject, planned change.
+- blame-history #5: D-164 consistent with D-163 and D-149 — noted.
+- blame-history #6: `→`, `×`, `≥` titles become `retitle` triggers — reject, planned change (the user chose non-ASCII `So`/`Sm`).
+- blame-history #7: same as diff-bug #7 — follow-up, absorbed into "Retitle edges (M251 review)".
+- prior-review #1: the rulebook-mass baseline (milestone SKILL.md:118, test_cost_audit_line.py:68, test_mutation_harness.py:120) still reads 664 lines / 63,690 bytes — fix now.
+- prior-review #2: README.md:323-324 lists the old `retitle` triggers and no no-icon sentence — fix now.
+- prior-review #3: the amend loop applies a user-named title with no icon check — follow-up, absorbed into "Retitle edges (M251 review)".
+- prior-review #4: same as blame-history #3 — fix now.
+- prior-review #5: retitled rows and mentions consistent — noted.
+- prior-review #6: PR #257's stamp point — noted, no finding.
+
