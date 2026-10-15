@@ -89,12 +89,17 @@ export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number } | 
 // as `gh pr list` gave it (M226).
 export type CairnHotfixPr = { number: number; title: string; url: string }
 
+// One `Candidate row: <short title>` line of an open pull request's body,
+// with that pull request's number, from any head branch (M252).
+export type CairnStartedRow = { title: string; number: number }
+
 // The hotfix list that the last read wrote, and the repo root it is for
 // (M226): a good `gh pr list` read's result, the list kept after a failed
 // call in the same root, or empty when no call ran or the kept list was
 // for another root. `root` is null before any read and when no ROADMAP
-// root was known.
-export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[] }
+// root was known. `started` holds the same read's candidate rows that the
+// listed bodies name, kept and emptied with `prs` (M252).
+export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; started: CairnStartedRow[] }
 
 declare module 'claude-code' {
   interface PluginState {

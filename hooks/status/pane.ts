@@ -1,4 +1,4 @@
-import type { CairnHotfixPr, CairnPrRead, CairnPrWord } from '../../types'
+import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnStartedRow } from '../../types'
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
@@ -161,6 +161,46 @@ export function hotfixPrs(result: { exitCode: number; stdout: string } | null): 
   return out
 }
 
+// One `Candidate row: <short title>` line of an open pull request's body,
+// with that pull request's number (M252). `/hotfix` and `/milestone-review`
+// write one such line per candidate row their merge removes or narrows.
+export type StartedRow = CairnStartedRow
+
+// The prefix a body line opens with to name a candidate row (M252).
+export const STARTED_PREFIX = 'Candidate row: '
+
+// The started items of one `gh pr list --json
+// number,title,url,headRefName,body` result, in the order it lists them,
+// or null for a call that rejected, exited non-zero, or printed something
+// other than a JSON array, as `hotfixPrs` reads it (M252). Every entry with
+// an integer `number` and a string `body` counts, whatever its head
+// branch. Each body line, split on `\n` with a trailing `\r` removed, that
+// opens with exactly `Candidate row: ` gives one item, its title the rest
+// trimmed as `candidateRows` trims a title. A blank rest gives none.
+export function startedRows(result: { exitCode: number; stdout: string } | null): StartedRow[] | null {
+  if (result === null || result.exitCode !== 0) return null
+  let list: unknown
+  try {
+    list = JSON.parse(result.stdout)
+  } catch {
+    return null
+  }
+  if (!Array.isArray(list)) return null
+  const out: StartedRow[] = []
+  for (const entry of list) {
+    if (entry === null || typeof entry !== 'object') continue
+    const { number, body } = entry as Record<string, unknown>
+    if (typeof body !== 'string' || typeof number !== 'number' || !Number.isInteger(number)) continue
+    for (const raw of body.split('\n')) {
+      const line = raw.endsWith('\r') ? raw.slice(0, -1) : raw
+      if (!line.startsWith(STARTED_PREFIX)) continue
+      const title = line.slice(STARTED_PREFIX.length).trim()
+      if (title !== '') out.push({ title, number })
+    }
+  }
+  return out
+}
+
 // The Button a blocked line carries for its state word (M224), from the
 // routes that /milestone gives a handed-off PR: a merged one goes to
 // review's hygiene, one with changes requested back to implement, and a
@@ -230,6 +270,9 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: '·' },
   low: { text: '↓', color: GRAY },
 }
+// The mark of a candidate row that an open pull request's body names, in
+// place of its priority mark (M252).
+export const STARTED_MARK: Span = { text: '◐', color: FLOW_COLORS.review }
 // A section heading's accent mark, in the phase's color (M208).
 export const ACCENT_MARK = '▎'
 // The meter's squares, filled and empty, and how many it draws (M208).
@@ -357,13 +400,15 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
 // candidate line with a short title carries ✎ (M242).
 // `prs` holds each pull request's state word by its
 // URL, from the last read (M224), with its counts (M225). `hotfixes` holds
-// the open hotfix pull requests of the last read for this root (M226).
+// the open hotfix pull requests of the last read for this root (M226), and
+// `started` the candidate rows that open pull requests' bodies name (M252).
 export function paneLines(
   state: PaneState,
   band: BandRow[] = [],
   acts = false,
   prs: Record<string, PrRead> = {},
   hotfixes: HotfixPr[] = [],
+  started: StartedRow[] = [],
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   const out: PaneLine[] = []
@@ -471,20 +516,26 @@ export function paneLines(
   }
   // With no active milestone, the ROADMAP's candidate rows (M207), each
   // with ✎ while no cairn skill runs, but for a row with an empty short
-  // title, whose press would plan with no args (M242).
+  // title, whose press would plan with no args (M242). A row whose short
+  // title an open pull request's body names exactly draws the started mark
+  // in place of its priority mark, the lowest such number in its tail, and
+  // no ✎, since that pull request already works on it (M252).
   if (state.milestones.length === 0 && state.candidates.length > 0) {
     out.push(
       ...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
     )
     state.candidates.forEach((row, i) => {
+      const numbers = row.title === '' ? [] : started.filter(item => item.title === row.title).map(item => item.number)
       const candidate = line(
         `candidate-${i}`,
         2,
-        [PRIORITY_MARK[row.priority], { text: ' ' }],
+        [numbers.length > 0 ? STARTED_MARK : PRIORITY_MARK[row.priority], { text: ' ' }],
         row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
-      if (acts && row.title !== '') {
+      if (numbers.length > 0) {
+        candidate.tail = [{ text: '  ' }, { text: `#${Math.min(...numbers)}`, color: GRAY }]
+      } else if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
         candidate.title = row.title

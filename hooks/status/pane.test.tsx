@@ -2,8 +2,20 @@ import { describe, expect, mock, test } from 'claude-code/testing'
 import type { On } from 'claude-code'
 
 import { FIXTURES } from './fixtures.gen'
-import { flowOf, width } from './band'
-import { CHECKED_MARK, COMMAND_PHASE, NO_FILE, NO_ROADMAP, OPEN_MARK, PRIORITY_MARK, nextLabel, paneLines as layout, prWord } from './pane'
+import { GRAY, flowOf, width } from './band'
+import {
+  CHECKED_MARK,
+  COMMAND_PHASE,
+  NO_FILE,
+  NO_ROADMAP,
+  OPEN_MARK,
+  PRIORITY_MARK,
+  STARTED_MARK,
+  nextLabel,
+  paneLines as layout,
+  prWord,
+  startedRows,
+} from './pane'
 import type { PaneState } from './reader'
 import { listNames } from './reader'
 
@@ -2614,7 +2626,7 @@ const ORIGIN = 'https://github.com/fork/repo.git'
 const UPSTREAM = 'git@github.com:upstream/repo.git'
 const GUEST_PROFILE = '# Toolchain profile: generic\n# Collaboration mode: guest\n\n## verify\n'
 const listCall = (url: string) => [
-  'gh', 'pr', 'list', '--repo', url, '--state', 'open', '--author', '@me', '--limit', '100', '--json', 'number,title,url,headRefName',
+  'gh', 'pr', 'list', '--repo', url, '--state', 'open', '--author', '@me', '--limit', '100', '--json', 'number,title,url,headRefName,body',
 ]
 const prUrl = (n: number) => `https://github.com/upstream/repo/pull/${n}`
 const pr = (n: number, branch: string, title = `Fix ${n}`) => ({ number: n, title, url: prUrl(n), headRefName: branch })
@@ -3834,5 +3846,198 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
     expect((await blockedView($, 'blocked-M111')).buttons).toEqual(['cairn-pane-check-M111'])
     await pressKey($, PANE_STATUS)
     expect(copy.commands).toEqual([STATUS_RUN])
+  })
+})
+
+// M252: a candidate row that an open pull request's body names in a
+// `Candidate row: <short title>` line draws as started. The items each case
+// expects are written out by hand.
+const bodied = (n: number, branch: string, body: unknown) => ({ ...pr(n, branch), body })
+
+describe('startedRows reads the Candidate row lines of each listed body (M252 AC1)', () => {
+  const read = (entries: unknown[]) => startedRows(listReply(entries) as { exitCode: number; stdout: string })
+
+  test('every head branch counts, and each line gives one item', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', 'Fixes the parse.\n\nCandidate row: Pane edges (M238 review)\n'),
+        bodied(2, 'm252-pane', 'Candidate row: Retitle edges\nCandidate row: Band in the app\'s code font'),
+        bodied(3, 'feature-x', 'Candidate row: An idea for later'),
+      ]),
+    ).toEqual([
+      { title: 'Pane edges (M238 review)', number: 1 },
+      { title: 'Retitle edges', number: 2 },
+      { title: "Band in the app's code font", number: 2 },
+      { title: 'An idea for later', number: 3 },
+    ])
+  })
+
+  test('the prefix must open the line, exactly', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', 'See Candidate row: Not this one\n  Candidate row: Nor this one\ncandidate row: Nor lower case\nCandidate row:No space'),
+      ]),
+    ).toEqual([])
+  })
+
+  test('the rest is trimmed, and an empty or blank rest gives no item', () => {
+    expect(read([bodied(1, 'hotfix-a', 'Candidate row: \nCandidate row:    \nCandidate row:  Spaced title \t')])).toEqual([
+      { title: 'Spaced title', number: 1 },
+    ])
+  })
+
+  test('a CRLF body loses each line end', () => {
+    expect(read([bodied(1, 'hotfix-a', 'Intro\r\nCandidate row: One\r\nCandidate row: Two\r\n')])).toEqual([
+      { title: 'One', number: 1 },
+      { title: 'Two', number: 1 },
+    ])
+  })
+
+  test('an entry with a non-string body or a non-integer number gives none', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', null),
+        pr(2, 'hotfix-b'),
+        { ...bodied(3, 'hotfix-c', 'Candidate row: Three'), number: '3' },
+        { ...bodied(4, 'hotfix-d', 'Candidate row: Four'), number: 4.5 },
+        null,
+        'Candidate row: Five',
+        bodied(6, 'hotfix-f', 'Candidate row: Six'),
+      ]),
+    ).toEqual([{ title: 'Six', number: 6 }])
+  })
+
+  test('a call that rejected, failed, or printed no JSON array gives null', () => {
+    expect(startedRows(null)).toBe(null)
+    expect(startedRows({ exitCode: 1, stdout: '[]\n' })).toBe(null)
+    expect(startedRows({ exitCode: 0, stdout: 'HTTP 502\n' })).toBe(null)
+    expect(startedRows({ exitCode: 0, stdout: '{"number":1}\n' })).toBe(null)
+  })
+})
+
+describe('a candidate line that an item names draws as started (M252 AC2)', () => {
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [
+      { priority: 'high', title: 'High row' },
+      { priority: 'normal', title: 'Normal row' },
+      { priority: 'low', title: 'Low row' },
+      { priority: 'normal', title: 'Unmatched row' },
+      { priority: 'normal', title: 'Shared title' },
+      { priority: 'low', title: 'Shared title' },
+      { priority: 'normal', title: 'case row' },
+      { priority: 'normal', title: '' },
+    ],
+    blocked: [],
+  }
+  const items = [
+    { title: 'High row', number: 11 },
+    { title: 'Normal row', number: 14 },
+    { title: 'Normal row', number: 12 },
+    { title: 'Low row', number: 13 },
+    { title: 'Shared title', number: 15 },
+    { title: 'Case row', number: 16 },
+    { title: '', number: 17 },
+  ]
+  const rows = (acts: boolean, started = items) => layout(state, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+
+  for (const acts of [true, false]) {
+    test(`matched rows take the mark and number and lose ✎ (acts ${acts})`, () => {
+      const got = rows(acts)
+      const before = rows(acts, [])
+      const want: Record<number, number> = { 0: 11, 1: 12, 2: 13, 4: 15, 5: 15 }
+      got.forEach((line, i) => {
+        if (want[i] === undefined) {
+          // Unmatched, a title that differs only by case, and an empty title.
+          expect([i, line]).toEqual([i, before[i]])
+          return
+        }
+        expect([i, line.lead[0]]).toEqual([i, { text: '◐', color: 'success' }])
+        expect([i, line.tail]).toEqual([i, [{ text: '  ' }, { text: `#${want[i]}`, color: GRAY }]])
+        expect([i, line.buttons, line.target, line.title]).toEqual([i, undefined, undefined, undefined])
+        // The title keeps its own style, and so does the rest of the lead.
+        expect([i, line.text, line.lead.slice(1)]).toEqual([i, before[i].text, before[i].lead.slice(1)])
+      })
+      expect(STARTED_MARK).toEqual({ text: '◐', color: 'success' })
+    })
+  }
+
+  test('with no items every candidate line draws as before', () => {
+    expect(layout(state, [], true, {}, [], [])).toEqual(layout(state, [], true, {}, []))
+    expect(rows(true, [])[3].buttons).toEqual(['plan'])
+  })
+})
+
+describe('the pane read stores the items with the hotfix list and draws them (M252 AC3)', () => {
+  const STARTED_BODY = 'Fixes it.\nCandidate row: An idea for later\n'
+  const MARKED = '◐ An idea for later  #1265'
+  const PLAIN = '· An idea for later'
+  const GOOD = () => listReply([bodied(1265, 'm252-pane', STARTED_BODY)])
+  const candidateLine = async $ => (await linesAt($)).find(line => line.key === 'candidate-0')?.text
+
+  test('the call asks for body, a read marks the line, and the Hotfixes section skips an m-branch', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: GOOD })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(calls.lists).toEqual([listCall(ORIGIN)])
+    expect(await candidateLine($)).toBe(MARKED)
+    expect((await blockedView($, 'candidate-0')).buttons).toEqual([])
+    expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
+  })
+
+  test('a failed call in the same root keeps the mark', async ($, on) => {
+    let answer: () => GhAnswer = GOOD
+    gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => answer() })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(await candidateLine($)).toBe(MARKED)
+    answer = () => 'reject'
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await candidateLine($)).toBe(MARKED)
+    answer = () => listReply([])
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await candidateLine($)).toBe(PLAIN)
+  })
+
+  test('a root with no base-remote URL empties the mark', async ($, on) => {
+    const remotes: Record<string, string> = { origin: ORIGIN }
+    gh(on, () => prView('MERGED'), undefined, { remotes, list: GOOD })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(await candidateLine($)).toBe(MARKED)
+    delete remotes.origin
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await candidateLine($)).toBe(PLAIN)
+  })
+
+  test('a failed call in another root empties the mark kept for the first root', async ($, on) => {
+    let answer: () => GhAnswer = GOOD
+    gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => answer() })
+    const copy = copyOf('blocked-prs')
+    for (const path of Object.keys(copy.files)) copy.files[`/other${path}`] = copy.files[path]
+    copy.unreadable.push(...copy.unreadable.map(path => `/other${path}`))
+    seat(on, copy)
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    expect(await candidateLine($)).toBe(MARKED)
+    answer = () => 'reject'
+    copy.cwd = '/other'
+    await $.turn.complete(turn())
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await candidateLine($)).toBe(PLAIN)
+    // Back in the first root, a failed call finds the other root's empty
+    // value, not the first root's items.
+    copy.cwd = '/'
+    await $.turn.complete(turn())
+    await pressKey($, 'cairn-pane-refresh')
+    expect(await candidateLine($)).toBe(PLAIN)
   })
 })

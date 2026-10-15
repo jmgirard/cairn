@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M252 | The cairn pane marks a candidate row that an open pull request names | planned | — | normal | milestones/M252-pane-started-candidate.md |
+| M252 | The cairn pane marks a candidate row that an open pull request names | in-progress | — | normal | milestones/M252-pane-started-candidate.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (hotfix, 2026-10-10) made it count each call once and read subagent files, output tokens a lower bound. Earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (and its A4 row and "unrecorded" note), M153's medians in `record-rule-remeasurement.md`, and `effort-experiment-notes.md`. Promote when a decision next relies on one of those figures — added 2026-10-09 — M228 review (blame-history #1, #2; pass 2 blame-history #2–#4); narrowed 2026-10-10 by the PR #238 hotfix

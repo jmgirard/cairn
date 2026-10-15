@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M252: The cairn pane marks a candidate row that an open pull request names
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane and the /hotfix and /milestone-review skills ship to plugin users   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m252-pane-started-candidate   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -124,15 +124,15 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first in `hooks/status/pane.test.tsx`: AC1's parser
+- [x] T1: Tests first in `hooks/status/pane.test.tsx`: AC1's parser
       cases, AC2's draw cases, and AC3's read cases through the
       `process.run` stub (`pane.test.tsx:1908-2000`, `:2609-2720`). Update
       the stub's expected argv (`:2617`) to hold `body`. See them red.
-- [ ] T2: Add `startedRows` beside `hotfixPrs` (`pane.ts:143`).
-- [ ] T3: In `paneLines` (`pane.ts:472-494`), take the items as a new
+- [x] T2: Add `startedRows` beside `hotfixPrs` (`pane.ts:143`).
+- [x] T3: In `paneLines` (`pane.ts:472-494`), take the items as a new
       argument, add a started mark beside `PRIORITY_MARK` (`pane.ts:228`),
       and draw the mark, the `#N` tail, and no ✎ on a matched line.
-- [ ] T4: In `register.tsx`, add `body` to `listArgv` (`:899`), parse the
+- [x] T4: In `register.tsx`, add `body` to `listArgv` (`:899`), parse the
       items in `readHotfixes` (`:882`), store them in the hotfix value, move
       its tag to `hotfixes-2` (`:150`), and pass them to `paneLines`
       (`:328`). Extend `CairnHotfixRead` in `types/index.d.ts:97`. Run
@@ -164,6 +164,10 @@ README, DESIGN.md, CHANGELOG.md, and `types/index.d.ts`.
 - 2026-10-15: criteria audit (full mode, Opus): 11 findings. Fixed 9 (AC1, AC2 cases added; AC3 draw condition and shared value; AC4 re-land site; AC5 companion site and title source; AC6 limits and types scope). Accepted 1 (a stale line after a later narrow, in Out). 1 posed (milestone PRs show only from another checkout).
 - 2026-10-15: question set: mark — ◐ in the review color; ✎ on a marked row — hidden; milestone PRs — included, limit documented; live look — none, tests only.
 - 2026-10-15: guest mode left out at the plan (no cairn terms reach the host repo), to the new candidate row "Started mark in guest mode".
+- 2026-10-15: implement started on m252-pane-started-candidate; untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-15: T1: 13 tests written first; red as a load failure (`STARTED_MARK` not exported from pane.ts), the missing feature; the M226 `listCall` argv now holds `body`.
+- 2026-10-15: T2–T4: `startedRows` and `STARTED_MARK` in pane.ts, a `started` argument to `paneLines`, `body` in `listArgv`, `started` in the `hotfixes` value (tag `hotfixes-2`), `CairnStartedRow` in types; mod tests 1729 green; plants (✎ kept on a matched line; another root's items kept on a failed call) each turned their tests red, then reverted; verify green.
+- 2026-10-15: implement chose to keep a matched low row's gray title, since AC2 replaces only the mark.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
