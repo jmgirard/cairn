@@ -371,23 +371,31 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
   }
 })
 
+// Each priority's mark, written out by hand rather than read from
+// `PRIORITY_MARK` (M253).
+const MARKS = {
+  high: { text: '↑', color: 'claude', bold: true },
+  normal: { text: '○' },
+  low: { text: '↓', color: 'inactive' },
+} as const
+
 // The candidates fixture's lines, written out by hand from its ROADMAP.
 const CANDIDATE_LINES = [
   '↑ High row',
-  '· Normal row',
+  '○ Normal row',
   '↓ Low row',
-  '· A row with no colon and space, cut at its dash',
-  '· [HIGH] Upper-case token, kept in the title',
-  '· [high]No space after the token, kept in the title',
-  '· Token in [low] mid-row, read as normal',
-  '· A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end',
-  '· `code',
-  '· ordinal',
-  '· loglog link for `binomial`. Needs a case',
-  '· Title — detail',
+  '○ A row with no colon and space, cut at its dash',
+  '○ [HIGH] Upper-case token, kept in the title',
+  '○ [high]No space after the token, kept in the title',
+  '○ Token in [low] mid-row, read as normal',
+  '○ A long title that runs on well past the width of any docked pane, so the pane cuts it to one line with an ellipsis at its end',
+  '○ `code',
+  '○ ordinal',
+  '○ loglog link for `binomial`. Needs a case',
+  '○ Title — detail',
   '↓ Low row',
-  '· A `a',
-  '· A row with no colon and no dash',
+  '○ A `a',
+  '○ A row with no colon and no dash',
 ]
 
 describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
@@ -413,23 +421,28 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         const [lead] = await ui.findAll({ key: `candidate-${i}-lead` })
         return kids(lead)[0]
       }
-      expect(textOf(await markOf(0))).toBe(PRIORITY_MARK.high.text)
+      // Each mark and its color are written out by hand (M253): ↑ high, ○
+      // normal (the open circle, M253), and ↓ low.
+      expect(textOf(await markOf(0))).toBe('↑')
       // The high mark takes the implement phase's theme key, written out
       // by hand (M217).
       expect((await markOf(0)).props.color).toBe('claude')
-      expect(textOf(await markOf(1))).toBe(PRIORITY_MARK.normal.text)
-      expect(textOf(await markOf(2))).toBe(PRIORITY_MARK.low.text)
-      expect((await markOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      expect(textOf(await markOf(1))).toBe('○')
+      expect(textOf(await markOf(2))).toBe('↓')
+      expect((await markOf(2)).props.color).toBe('inactive')
       // The high mark is bold, the normal mark has no color, and only a
       // low row's title is gray.
       expect((await markOf(0)).props.bold).toBe(true)
       expect((await markOf(1)).props.color).toBe(undefined)
+      expect((await markOf(1)).props.bold).toBe(undefined)
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
-      expect((await titleOf(2)).props.color).toBe(PRIORITY_MARK.low.color)
+      expect((await titleOf(2)).props.color).toBe('inactive')
       expect((await titleOf(0)).props.color).toBe(undefined)
       expect((await titleOf(1)).props.color).toBe(undefined)
-      // The three marks differ.
-      expect(new Set([PRIORITY_MARK.high.text, PRIORITY_MARK.normal.text, PRIORITY_MARK.low.text]).size).toBe(3)
+      // The constants hold exactly these marks, the started one included
+      // (M252), so no stray color or bold rides on the normal mark.
+      expect(PRIORITY_MARK).toEqual(MARKS)
+      expect(STARTED_MARK).toEqual({ text: '◐', color: 'success' })
       await ui.unmount()
     })
 
@@ -473,7 +486,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         }
         expect(textAt(lines, 'candidates-head')).toBe(`▎ CANDIDATES ${candidates.length}`)
         expect(keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))).toEqual(
-          candidates.map(row => `${PRIORITY_MARK[row.priority].text} ${row.title}`),
+          candidates.map(row => `${MARKS[row.priority].text} ${row.title}`),
         )
       })
     }
@@ -1439,7 +1452,7 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
     await $.turn.complete(turn())
     const lines = await paneLines($, 'desktop')
     const rows = keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))
-    expect(rows).toEqual([...CANDIDATE_LINES, '· ', '· Same title', '· Same title'])
+    expect(rows).toEqual([...CANDIDATE_LINES, '○ ', '○ Same title', '○ Same title'])
     expect(rows.map(text => (text as string).slice(2))).toEqual(TITLES)
   })
 
@@ -3974,7 +3987,7 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
     expect(lines.length).toBe(state.candidates.length)
     lines.forEach((line, i) => {
       const row = state.candidates[i]
-      expect([i, line.lead, line.tail]).toEqual([i, [PRIORITY_MARK[row.priority], { text: ' ' }], undefined])
+      expect([i, line.lead, line.tail]).toEqual([i, [MARKS[row.priority], { text: ' ' }], undefined])
       expect([i, line.text]).toEqual([i, row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title }])
       expect([i, line.buttons, line.target]).toEqual(row.title === '' ? [i, undefined, undefined] : [i, ['plan'], `${i}`])
     })
@@ -3984,7 +3997,7 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
 describe('the pane read stores the items with the hotfix list and draws them (M252 AC3)', () => {
   const STARTED_BODY = 'Fixes it.\nCandidate row: An idea for later\n'
   const MARKED = '◐ An idea for later  #1265'
-  const PLAIN = '· An idea for later'
+  const PLAIN = '○ An idea for later'
   const GOOD = () => listReply([bodied(1265, 'm252-pane', STARTED_BODY)])
   const candidateLine = async $ => (await linesAt($)).find(line => line.key === 'candidate-0')?.text
 

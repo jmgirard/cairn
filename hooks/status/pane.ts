@@ -264,10 +264,12 @@ export const NO_FILE = 'no milestone file'
 export const NO_ACTIVE = 'no active milestone'
 export const CHECKED_MARK = '✓'
 export const OPEN_MARK = '○'
-// A candidate row's mark for each priority (M207).
+// A candidate row's mark for each priority (M207). A normal row's mark is
+// the empty circle that the started mark `◐` half fills, the glyph
+// `OPEN_MARK` also uses (M253).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
-  normal: { text: '·' },
+  normal: { text: '○' },
   low: { text: '↓', color: GRAY },
 }
 // The mark of a candidate row that an open pull request's body names, in
