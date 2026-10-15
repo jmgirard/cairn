@@ -704,7 +704,7 @@ within each type and are never reused.
   pad, so `…` draws on the pill's color. Desktop Buttons count at terminal
   width, and the track uses a 7-pixel column estimate (`TRACK_COLUMNS`, 52)
   that no test ties to the app. The engine's scrub can drop the track's
-  `clipPath`. The `▎`, `■`, `□`, and `↑ ○ ◐ ↓` marks are ambiguous width in
+  `clipPath`. The `▎`, `■`, `□`, `↑ ○ ↓`, and `◐` marks are ambiguous width in
   CJK terminals.
   Colors: nobody checked the gray Buttons or the terminal track in other
   themes. In the light colorblind theme the implement pill is 2.1:1
