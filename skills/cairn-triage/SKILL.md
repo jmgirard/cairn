@@ -62,13 +62,12 @@ one of them absorbs is never dropped or merged away in this pass
 1. **Enumerate.** List every item in both sections, in file order, one line
    each: its source (`candidate` / `known issue`), its subject (for a
    candidate, its short title, tracking-rules "Candidate short title",
-   when that title is not empty and runs to ~80 characters at most; for
-   a candidate whose short title is empty, the text after its leading
-   `: `, up to the first comma, trimmed to ~80 characters; for any other
-   item, the text up to the first colon, trimmed; when no
-   colon falls within the first ~80 characters, the first clause — up to
-   the first comma — trimmed to that length), its priority (`high` / `normal` / `low`; `—` for a Known
-   issues entry), its byte length, and its added date.
+   trimmed to ~80 characters; for a candidate whose short title is empty,
+   the text after its leading `: `, up to the first comma, trimmed to ~80
+   characters; for a Known issues entry, the text up to the first colon,
+   trimmed; when no colon falls within the first ~80 characters, the first
+   clause — up to the first comma — trimmed to that length),
+   its priority (`high` / `normal` / `low`; `—` for a Known issues entry), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
      priority is the row's opening `[high]` or `[low]` token, and an untagged row is `normal`,
@@ -153,7 +152,8 @@ one of them absorbs is never dropped or merged away in this pass
      not matter here. The mentions it lists are found by a search for the
      old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
      Known issues. A row that takes `compress` or `split` opens each
-     rewritten row with a short title instead. A row whose title a live
+     rewritten row with a short title instead, under the same uniqueness
+     rule. A row whose title a live
      milestone file quotes, or that a live milestone absorbs, is not
      proposed for `retitle`: it stays `keep` with that milestone named, as
      below. Nor is a `merge` survivor in the
@@ -256,7 +256,8 @@ one of them absorbs is never dropped or merged away in this pass
    rewrites each listed mention in the other ROADMAP rows and Known issues
    entries, in each quoting item's text as its own accepted disposition
    leaves it, and none in an item being dropped; `promote` and `keep`
-   change nothing; an accepted priority change adds, replaces,
+   change nothing of their own, though a `retitle` can rewrite a mention
+   inside one; an accepted priority change adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
    token) and moves the row to its level. Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.
@@ -265,9 +266,10 @@ one of them absorbs is never dropped or merged away in this pass
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
-   over the cap. In guest mode the count includes the stamp step 6 will
-   write, which is longer there because it names each drop's evidence, and
-   the pass never writes over the cap either. Every row or entry this step writes or rewrites is shown
+   over the cap. The count includes the stamp step 6 will write, which
+   is longer when it names each `retitle`'s old and new titles, and in
+   guest mode longer still because it names each drop's evidence; the pass
+   never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
 
 5. **Record.** Two kinds of removal leave two kinds of record:

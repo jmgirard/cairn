@@ -5865,7 +5865,7 @@ default branch takes only docs-only tracking commits, while its trivial
 tier already allowed a direct commit; this route acts on the trivial tier,
 and reconciling the git-model sentence is left to a candidate row.
 
-### D-163 (2026-10-15): A candidate row's short title is cut at the first `: `, else at the first ` — `, and the rulebook tells writers to open each row with one — narrows D-149's title sentence (M251)
+### D-163 (2026-10-15): A candidate row's short title is cut at the first `: `, else at the first ` — `, and the rulebook tells writers to open each row with one — narrows D-149's title sentence; passes D-108's door on its retained trigger (M251)
 
 **Context:** The glmmTMB session reported that 8 of its candidate rows,
 written `ordinal: topic. detail`, all show `ordinal` in the cairn pane, and

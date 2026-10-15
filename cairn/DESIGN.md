@@ -287,8 +287,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `candidate_count` walks, but that count also takes indented lines and
   lines inside comments.
   `test_status_fixtures.py` holds the reader to each fixture's `candidates`
-  key, and to that count where no comment sits in the section. The pane draws them only
-  while no row is active. Every candidate line sets `grow`. While `acts`
+  key, and to that count where no comment sits in the section. The pane
+  draws them only while no row is active. Every candidate line sets `grow`. While `acts`
   is true, a line whose short title is not empty carries the `plan`
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
