@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M251: One short-title rule for candidate rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -37,16 +37,7 @@ the plan gate). The other edges of "Amendment-return and linked-row edge
 cases (M211 review)" stay in that row.
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
-     Every item opens with its positional label — `ACn:` — the item's
-     position counted top-to-bottom, the number Coverage cites; an
-     insertion, removal, or reorder renumbers the labels and the Coverage
-     lines together.
-     Driving RR set → its Binding criteria appear VERBATIM here (binding-
-     criteria check), each ingested as a numbered criterion carrying its tag
-     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
-     coverage-complete counts AC checkboxes positionally (M107); departures:
-     a "Deviations from RR<NN>" table ends this section. -->
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets (tracking-rules section ownership) -->
 
 - [x] AC1: `candidateRows` in `hooks/status/reader.ts` and `python_candidates`
       in `scripts/tests/test_status_fixtures.py` return the short title in the
@@ -84,14 +75,19 @@ cases (M211 review)" stay in that row.
       `skills/cairn-init/SKILL.md` and the row example in the "Candidate
       priority token" paragraph show the shape
       `- [high] short title: detail — added YYYY-MM-DD — links`.
-- [x] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
-      each candidate row whose short title is empty, is over 60 code points,
-      or is shared with another row (each such row gets its own proposal),
-      whatever the row's byte length. It is not proposed for a row whose
-      title a live milestone file quotes. It rewrites only the row's opening
-      into a short title that ends at `: `. Its accepted edit also rewrites
-      each double-quoted mention of the old title in another ROADMAP row. A
-      mention of a shared title is listed as ambiguous and is not rewritten.
+- [ ] AC5: `/cairn-triage` has a `retitle` disposition. It is proposed for
+      each candidate row that the other evidence classes leave `keep`, other
+      than a `merge` survivor, a finding-absorbing row, or a row a live
+      milestone absorbs or quotes, whose short title is empty, is over 60
+      code points, or is shared with another row (each such row gets its own
+      proposal), whatever the row's byte length. It inserts a short title
+      ending at `: ` after the row's `- ` and any priority token and leaves
+      the row's text unchanged (a row whose title is empty loses only its
+      leading `: `). Its accepted edit also rewrites each double-quoted
+      mention of the old title, found by a search of `cairn/ROADMAP.md` and
+      DESIGN.md's Known issues, in another ROADMAP row the pass does not
+      remove. A mention of a shared title is listed as ambiguous and is not
+      rewritten.
 - [x] AC6: README's cairn pane section and DESIGN.md's `candidateRows`
       description state the rule. `CHANGELOG.md`'s Unreleased section says
       that a row with no `: ` now loses its date and links from its pane
@@ -185,6 +181,10 @@ cases (M211 review)" stay in that row.
 - 2026-10-15: amendment routed: AC5 — the skill proposes `retitle` only for rows the other classes leave `keep` (one disposition per item, since T4) and not for a `merge` survivor, while AC5 says each row with an empty, long, or shared title, with only the live-milestone exception; the criterion is wrong as written (review pass 2).
 - 2026-10-15: re-audit: AC5 (full) — 3 findings on the first amended wording: a finding-absorbing row never reaches the Title class; a row the pass removes gets no mention rewrite; "rewrites only the row's opening" mismatches the skill's insert. All three fixed in the wording.
 - 2026-10-15: re-audit: AC5 (full) — 3 findings on the re-entered wording: a row a live milestone absorbs but does not quote is `keep` in the skill; "after the row's opening token" has no anchor on an untagged row; no step names a search for mentions outside the enumerated items. Second re-audit line for AC5: the repeated review-failure stop, put to the user.
+- 2026-10-15: question at the stop: accept the fixed AC5 text, move retitle out, or stop — the user chose to accept the fixed text, with no further re-check of AC5.
+- 2026-10-15: amendment return: AC5 — "It is proposed for each candidate row that the other evidence classes leave `keep`, other than a `merge` survivor, a finding-absorbing row, or a row a live milestone absorbs or quotes, whose short title is empty, is over 60 code points, or is shared with another row (each such row gets its own proposal), whatever the row's byte length. It inserts a short title ending at `: ` after the row's `- ` and any priority token and leaves the row's text unchanged (a row whose title is empty loses only its leading `: `). Its accepted edit also rewrites each double-quoted mention of the old title, found by a search of `cairn/ROADMAP.md` and DESIGN.md's Known issues, in another ROADMAP row the pass does not remove."
+- 2026-10-15: AC5 amendment applied to the skill: "after the `- ` and any priority token" at the table row and the apply step, the mention search named in the Title class, and the live-milestone-absorbed exclusion; AC5's box unticked for re-review.
+- 2026-10-15: the AC5 amendment took the plan-owned body to 153 lines; compressed the heaviest section (Acceptance criteria) in one pass by cutting its template comment to one line; validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

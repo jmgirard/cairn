@@ -106,7 +106,7 @@ one of them absorbs is never dropped or merged away in this pass
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's opening token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that a finding-absorbing row
@@ -147,13 +147,16 @@ one of them absorbs is never dropped or merged away in this pass
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, is
      over 60 code points, or equals another row's short title. Each row
-     that shares a title gets its
-     own proposal, and each new title differs from every other row's title,
+     that shares a title gets its own proposal, and each new title differs
+     from every other row's title,
      the other new titles of the pass included. The row's byte length does
-     not matter here. A row that takes `compress` or `split` opens each
+     not matter here. The mentions it lists are found by a search for the
+     old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
+     Known issues. A row that takes `compress` or `split` opens each
      rewritten row with a short title instead. A row whose title a live
-     milestone file quotes is not proposed for `retitle`: it stays `keep`
-     with that milestone named, as below. Nor is a `merge` survivor in the
+     milestone file quotes, or that a live milestone absorbs, is not
+     proposed for `retitle`: it stays `keep` with that milestone named, as
+     below. Nor is a `merge` survivor in the
      same pass, whose one edit is its lineage clause.
    A finding-absorbing row — one that belongs to a records-hygiene §7 group
    (a row and the rows that name its exact title in double quotes) carrying
@@ -247,8 +250,8 @@ one of them absorbs is never dropped or merged away in this pass
    is, its promotion trigger as the class of evidence that would change the
    stance, and `added <original date> — <original origin>, routed from
    Known issues <today>` (the accepting `M<NNN>` as the origin); `retitle`
-   keeps the row's opening token and puts the new title and `: ` before
-   the row's text, which stays as it is, old title and provenance included
+   keeps the row's `- ` and any priority token and puts the new title and
+   `: ` before the row's text, which stays as it is, old title and provenance included
    (a row whose title is empty loses only its leading `: `); it then
    rewrites each listed mention in the other ROADMAP rows and Known issues
    entries, in each quoting item's text as its own accepted disposition
