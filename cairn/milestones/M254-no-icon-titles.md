@@ -158,6 +158,7 @@ D-163 declined one for long titles); the ROADMAP skeleton comment in
 - 2026-10-15: review pass 2 fix: tracking-rules' `retitle` sentence now says the non-`: ` icon row gets the new title before its text with its icons removed; baseline re-seeded to 668 lines / 64,222 bytes in the three places.
 - 2026-10-15: correction to the T7 line: ROADMAP was 23,993 bytes after T7, not 23,998.
 - 2026-10-15: review pass 2 fixes: ROADMAP rows reworded in T7 restored to their 7abcfe7d text (the Re-measure row kept, no fact lost), the M254 follow-ups folded into "Retitle edges (M251 review)", twelve other rows reworded with no fact dropped, ROADMAP 59 lines / 23,997 bytes; D-164 heading; README wording; the Title class points at the `retitle` row's icon edit.
+- 2026-10-15: step-7 approval: m254-no-icon-titles approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
