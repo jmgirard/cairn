@@ -434,17 +434,14 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       // low row's title is gray.
       expect((await markOf(0)).props.bold).toBe(true)
       expect((await markOf(1)).props.color).toBe(undefined)
+      expect((await markOf(1)).props.bold).toBe(undefined)
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
       expect((await titleOf(2)).props.color).toBe('inactive')
       expect((await titleOf(0)).props.color).toBe(undefined)
       expect((await titleOf(1)).props.color).toBe(undefined)
       // The constants hold exactly these marks, the started one included
       // (M252), so no stray color or bold rides on the normal mark.
-      expect(PRIORITY_MARK).toEqual({
-        high: { text: '↑', color: 'claude', bold: true },
-        normal: { text: '○' },
-        low: { text: '↓', color: 'inactive' },
-      })
+      expect(PRIORITY_MARK).toEqual(MARKS)
       expect(STARTED_MARK).toEqual({ text: '◐', color: 'success' })
       await ui.unmount()
     })
