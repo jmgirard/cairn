@@ -14,6 +14,7 @@ import {
   parseRoadmapRows,
   prNumber,
   prUrl,
+  pushRemote,
   sectionFields,
   startedTokens,
   takenRows,
@@ -482,6 +483,22 @@ describe('collaborationMode reads the mode as cairn_common does (M226)', () => {
   for (const [name, text, mode] of CASES) {
     test(`${name} reads as ${mode}`, () => {
       expect(collaborationMode(text)).toBe(mode)
+    })
+  }
+})
+
+describe('pushRemote reads the line as cairn_common does (M268)', () => {
+  const CASES: [string, string, string | null][] = [
+    ['an empty file', '', null],
+    ['a base line under the mode line', '# Collaboration mode: guest\n# Push remote: base\n', 'base'],
+    ['the key and value in other cases', '#push REMOTE:  Base\n', 'base'],
+    ['a leading BOM', '﻿# Push remote: base\n', 'base'],
+    ['a line after the first slot heading', '# Toolchain profile: x\n\n## verify\n# Push remote: base\n', null],
+    ['the mode line alone', '# Collaboration mode: guest\n', null],
+  ]
+  for (const [name, text, value] of CASES) {
+    test(`${name} reads as ${value}`, () => {
+      expect(pushRemote(text)).toBe(value)
     })
   }
 })

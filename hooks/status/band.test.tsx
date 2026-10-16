@@ -438,6 +438,11 @@ const IDLE_DRAWN: Record<string, string> = {
   'idle-order': 'M500 Priority in mixed case  [track]',
   'no-active': 'M021 Waiting to start  [track]',
   'repo-at-cut': 'M191 Milestone status band, a Claude Code mod inside the cairn plugin  [track]',
+  'stack-base': 'M302 Builds on the handed-off branch  [track]',
+  'stack-no-pr': 'M304 Needs nothing  [track]',
+  'stack-no-push-line': 'M304 Needs nothing  [track]',
+  'stack-owner': 'M304 Needs nothing  [track]',
+  'stack-two-bases': 'M304 Needs nothing  [track]',
 }
 
 // The id of the row the band shows on a fixture, read from the fixture's
@@ -2626,6 +2631,7 @@ const FLOWS: Record<string, { fills: [string, string, string]; pill: string; sho
   'pane-full': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', short: '1/3', percent: 44 },
   'single-in-progress': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', short: '1/3', percent: 44 },
   'six-active': { fills: ['1/1', '1/2', '0/1'], pill: 'Implement 1/2', short: '1/2', percent: 50 },
+  'stack-in-progress': { fills: ['1/1', '0/1', '0/1'], pill: 'Implement 0/1', short: '0/1', percent: 33 },
   subdirectory: { fills: ['1/1', '2/2', '0/1'], pill: 'Implement 2/2', short: '2/2', percent: 66 },
   'unlabeled-item': { fills: ['1/1', '1/3', '0/1'], pill: 'Implement 1/3', short: '1/3', percent: 44 },
   'wide-title': { fills: ['1/1', '1/1', '1/2'], pill: 'Review 1/2', short: '1/2', percent: 83 },

@@ -125,7 +125,11 @@ re-enters here, at the step the record shows is next:
    and a moved default branch is taken by `git rebase
    <base>/<default-branch>` through `/milestone-implement` step 2's guest
    sync in full: its remote-only-commits check before the rebase, and, for
-   a branch already pushed, its leased push right after it. That push only
+   a branch already pushed, its leased push right after it. A stacked
+   milestone takes that step's stacked sync instead of the plain rebase,
+   whether or not the default branch moved, but only while the stack
+   base's PR is `OPEN`. A merged base is left to step 8, which routes the
+   restack to `/milestone-implement`. That push only
    re-syncs a branch that is already pushed. A branch never pushed stays
    local until step 8.
 
@@ -647,10 +651,22 @@ re-enters here, at the step the record shows is next:
    remote, by the rulebook's open-PR head rule. When `<push>` is `<base>`, first run
    `gh api repos/<base-repo> --jq .permissions.push`. On any output but
    `true`, or a failed read, push nothing, open no PR, and stop with a
-   close block that names the read and its result. Then, unless the
+   close block that names the read and its result. **Stacked
+   milestone** (tracking-rules "Collaboration mode"): before the push,
+   read the stack base's PR with `gh pr view <base-pr> --repo <base-repo>
+   --json state`. If it is `MERGED`, push nothing and open no PR. Set
+   status `in-progress`, write the work-log line `restack: PR #<base-pr>
+   merged`, and stop with a close block whose next command is
+   `/milestone-implement M<NNN>`, whose stacked sync does the restack. If
+   it is `CLOSED`, push nothing, open no PR, change no status, and stop
+   with a close block naming the closed PR: what the milestone builds on
+   is gone, and the next step is the user's. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
+   and its body names the stack base's PR (`#<base-pr>`) as the change it
+   builds on. Then, unless the
    header already names an open PR, open the PR against the base repo from
    the pushed branch —
-   `gh pr create --repo <base-repo> --head <push-owner>:<slug>`, opened
+   `gh pr create --repo <base-repo> --head <push-owner>:<slug>` (a stacked
+   milestone's adds `--base <stack-base-branch>`), opened
    ready for their review (never a draft, so no later ready-marking step)
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
@@ -679,7 +695,8 @@ re-enters here, at the step the record shows is next:
    CI on the PR is the check that counts and nothing waits on it here — the
    session never waits on a guest PR's checks; the fenced next command is
    `/milestone`, labeled as the command that re-reads the PR's state (its
-   §2 routes MERGED to this skill's hygiene, CLOSED to a chip,
+   §2 routes MERGED to this skill's hygiene, a stacked PR whose stack
+   base merged to `/milestone-implement` for the restack, CLOSED to a chip,
    `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line.
    With the Copilot round off, this close also follows the off-but-present
    rule (`skills/shared/copilot-review.md` §1). A
@@ -797,7 +814,8 @@ re-enters here, at the step the record shows is next:
     of the plan there). The next workable milestone of the plan is, in
     ROADMAP order as `/milestone-plan` step 7 picks it, the first other id
     in that subject whose ROADMAP status is `planned` and whose `Depends
-    on:` milestones are all `done`, with no milestone `in-progress`. If one
+    on:` milestones are all `done` (in guest mode one can be a stack base,
+    tracking-rules "Collaboration mode"), with no milestone `in-progress`. If one
     exists, the close block fences `/clear`, then `/milestone-implement <next-id>` as the primary
     next command, labeled as the plan's next milestone. Its question set
     already ran, so no new one is asked.

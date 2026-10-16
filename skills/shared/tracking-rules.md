@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo and no validator reads (the git model's push remote) | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo, `scripts/cairn_next.py` and the cairn pane read for the stack-base rule ("Collaboration mode"), and no validator reads (the git model's push remote) | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -155,7 +155,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   reused** — dropped milestones included. Spellings of the same number at other zero-pad widths (`M57`, `M057`) resolve
   to the same milestone; milestone filename prefixes carry the padded form, so filenames sort in id order. A repo
   passing M999 re-pads its milestone filenames in one hygiene commit. **No completion-order requirement**: work order is
-  governed only by `Depends on:` (workable only when dependencies are `done`) and `Priority:` (high / normal / low); the
+  governed only by `Depends on:` (workable only when dependencies are `done`, or in guest mode when one of them is a
+  stack base and the rest are `done`, per "Collaboration mode") and `Priority:` (high / normal / low); the
   ROADMAP index is grouped by status, not sorted by ID.
 - Bare `M<NNN>` is repo-local: with more than one cairn-tracked repo in scope, qualify the ID with the repo name —
   "tidymedia M007". User-facing materials (NEWS.md, README, vignettes, pkgdown) never reference milestone numbers.
@@ -377,7 +378,7 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
-  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `<push>` (the git model's push remote: the fork,
+  is cut from `<base>/<default-branch>` (or from a stack base's branch, below) and synced by rebase, pushed to `<push>` (the git model's push remote: the fork,
   or the base repo where `cairn/PROFILE.md` asks for it) at the handoff, and the PR targets the base repo — `gh pr
   create --repo <base-repo> --head <push-owner>:<slug>`, opened ready for the
   maintainers' review at the handoff selection, never earlier and never as a draft; every other `gh pr` command
@@ -388,7 +389,27 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
-  `/milestone-implement`. `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
+  `/milestone-implement`, and an open stacked one whose stack base's PR merged to `/milestone-implement` for the
+  restack (below). `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
+- **A guest milestone can build on one that waits for the maintainers** (stacking). With `# Push remote: base` in
+  `cairn/PROFILE.md`, a **stack base** is a dependency whose ROADMAP row is `blocked` and whose milestone file's
+  `Branch/PR` header names a PR URL. An archived dependency is `done`, so it is met as `done`, not as a stack base.
+  That PR is `<base-pr>`, and
+  its `headRefName` is `<stack-base-branch>`. If each dependency of a `planned` milestone is
+  `done` or a stack base, and at most one is a stack base, the milestone is workable (`cairn_next.workable` and the
+  cairn pane). Owner
+  mode, and guest mode without the line, never stack: a dependency there must be `done`. `/milestone-implement` cuts
+  the branch from `<base>/<stack-base-branch>`. It writes the work-log line `stack base: <branch> at <sha>` at the cut
+  and at each sync. A **stacked milestone** is one whose newest `stack base:` line names a branch other than the
+  default branch. Its stack base stays the dependency whose PR's `headRefName` is the branch that its first
+  `stack base:` line names, also after that dependency turns `done`. To find it, take each dependency's PR URL from
+  its milestone header, or from its archive summary's Status paragraph once the file is archived. Read each PR with
+  `gh pr view <n> --repo <base-repo> --json headRefName`. The match is `<base-pr>`. While `<base-pr>` is
+  open, the stacked milestone's own PR targets `<stack-base-branch>` (`/milestone-review` step 8).
+  Once `<base-pr>` merges, the **restack** rebases the branch onto the default branch and retargets the PR:
+  `/milestone` §2 routes a `blocked` stacked milestone to `/milestone-implement`, whose step 2 runs it. Building on
+  two or more stack bases, on a stack base that is itself stacked, stacking in owner mode, and stacking a hotfix are
+  unsupported.
 - **DESIGN.md's Conventions and IP/GP principles are the operator's provisional model of the maintainers'
   constraints.** They are sourced from the upstream's public norms — CONTRIBUTING, style docs, review feedback — never
   from the operator's authority over the repo, which is none. A principle or convention that maintainer feedback

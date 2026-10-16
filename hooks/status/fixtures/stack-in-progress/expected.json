@@ -1,0 +1,13 @@
+{
+  "cwd": "",
+  "rows": [
+    {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made."}
+  ],
+  "workable": ["M304"],
+  "pane": [
+    {"id": "M301", "title": "Back in work after review", "status": "in-progress", "file": {"goal": "Answer the maintainers' requested changes on an open pull request.", "tasks": [{"text": "T1: Make the requested change.", "checked": false}], "criteria": [{"text": "AC1: The requested change is made.", "checked": false}], "log": ["2026-01-12: changes requested."]}}
+  ],
+  "next": {"action": "resume", "command": "/milestone-implement", "id": "M301", "waiting": [{"id": "M302", "title": "Builds on the reworked branch", "unmet": ["M301 (in-progress)"]}]},
+  "candidates": [],
+  "blocked": []
+}

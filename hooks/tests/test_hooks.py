@@ -194,6 +194,56 @@ class TestCollaborationMode(RepoFixture):
         self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "other")
 
 
+class TestPushRemote(RepoFixture):
+    """M268: `cairn_common.push_remote` reads the `# Push remote: <value>`
+    header line of cairn/PROFILE.md as `collaboration_mode` reads its own;
+    None when the line or the file is absent."""
+
+    def _profile(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+
+    def test_base_line_reads_base(self):
+        for text in (
+            "# Toolchain profile: generic\n# Collaboration mode: guest\n# Push remote: base\n\n## verify\nx\n",
+            "# Toolchain profile: generic\n#push remote: Base\n",
+            "﻿# Push remote: base\n",
+        ):
+            with self.subTest(text=text):
+                self._profile(text)
+                self.assertEqual(session_context.cc.push_remote(str(self.root)), "base")
+
+    def test_no_line_or_no_profile_reads_none(self):
+        self.assertIsNone(session_context.cc.push_remote(str(self.root)))
+        self._profile("# Toolchain profile: generic\n# Collaboration mode: guest\n")
+        self.assertIsNone(session_context.cc.push_remote(str(self.root)))
+        # The mode line still reads, so the shared header reader is not
+        # returning None for every line.
+        self.assertEqual(session_context.cc.collaboration_mode(str(self.root)), "guest")
+
+    def test_a_line_inside_a_slot_body_is_body_text(self):
+        self._profile("# Toolchain profile: generic\n\n## verify\n```\n# Push remote: base\n```\n")
+        self.assertIsNone(session_context.cc.push_remote(str(self.root)))
+
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "needs os.mkfifo")
+    def test_a_fifo_profile_reads_as_absent_without_blocking(self):
+        # M268 review: opening a FIFO for reading blocks until a writer
+        # comes, so the reader must not open one. A thread bounds the
+        # call, so a regression fails here instead of hanging the suite.
+        import threading
+
+        os.mkfifo(self.root / "cairn" / "PROFILE.md")
+        out = {}
+        worker = threading.Thread(
+            target=lambda: out.update(push=session_context.cc.push_remote(str(self.root)),
+                                      mode=session_context.cc.collaboration_mode(str(self.root))),
+            daemon=True,
+        )
+        worker.start()
+        worker.join(5)
+        self.assertFalse(worker.is_alive(), "the PROFILE.md read blocked on a FIFO")
+        self.assertEqual(out, {"push": None, "mode": "owner"})
+
+
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
     and only when that remote exists, else `origin`; `default_branch`

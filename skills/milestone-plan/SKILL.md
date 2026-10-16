@@ -521,7 +521,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    remainder ledger in chat, then invoke `/milestone-implement M<NNN>`
    through the Skill tool for the first workable milestone this plan
    created: status `planned`, every `Depends on:` milestone `done`, in
-   ROADMAP order. The run goes on from there with no further question until
+   ROADMAP order. In guest mode one dependency may instead be a stack base
+   (tracking-rules "Collaboration mode"). The run goes on from there with no further question until
    the merge question. The merge ends the run, and each later milestone of
    the plan starts from its typed command after a `/clear`.
    **Close block instead** when another milestone is `in-progress`, when the

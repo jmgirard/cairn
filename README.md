@@ -186,7 +186,10 @@ milestone you can start, whether or not a cairn skill runs. That milestone
 is the first `planned` row whose `Depends on` milestones are all done, by
 priority and then by id, the one `cairn_next.py` recommends. A dependency
 is done when its row is `done` or its file is in
-`cairn/milestones/archive/`. The idle row draws the id in bold and the
+`cairn/milestones/archive/`. In guest mode with `# Push remote: base`,
+one dependency can instead be a change that waits for the maintainers'
+review (see "A milestone can build on one that waits for review" under
+guest mode). The idle row draws the id in bold and the
 title, then a track with plan full and the pill `Planned`:
 
 ```text
@@ -888,6 +891,23 @@ recommend one) and writes `# Collaboration mode: guest` into
   pushing to where that PR's head lives. Before a resync rebases a pushed
   branch, cairn fetches it. If the remote branch has commits your copy
   lacks, it stops and names them.
+- **A milestone can build on one that waits for review.** With
+  `# Push remote: base` set, a `planned` milestone can depend on one
+  milestone that you handed to the maintainers. That milestone is
+  `blocked`, and its file's `Branch/PR` line names its PR. The new
+  milestone counts as workable, and `/milestone-implement` cuts its branch
+  from the open PR's branch on the upstream repo. Each later resync
+  rebases only your own commits onto that branch. A rebase of the first
+  PR's branch then does not repeat its commits in yours.
+  `/milestone-review` opens your PR with the first PR's branch as its
+  base, and the PR text names the first PR. After the maintainers merge
+  the first PR, `/milestone` sends the milestone back to
+  `/milestone-implement`. It rebases your branch onto the default branch
+  and pushes it. If GitHub did not move the PR's base to the default
+  branch, it moves it. A milestone can build on only one waiting milestone.
+  cairn stops on three more cases: that milestone is itself stacked, its
+  PR comes from a fork or another repo, or its PR closed with no merge.
+  Owner mode and hotfixes do not stack.
 - **No release walk.** `/cairn-release` stops at session start and says
   why: a release is the maintainers' act.
 - **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips

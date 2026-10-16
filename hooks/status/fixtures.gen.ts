@@ -462,6 +462,129 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     unreadable: [],
   },
+  "stack-base": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Collaboration mode: guest\n# Push remote: base\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M300 | Merged earlier | done | — | normal | milestones/archive/M300-merged.md |\n| M301 | Handed to the maintainers | blocked | M300 | normal | milestones/M301-handed.md |\n| M302 | Builds on the handed-off branch | planned | M300, M301 | normal | milestones/M302-stacked.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n",
+      "/cairn/milestones/M301-handed.md": "# M301: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nA change that waits on the maintainers' review.\n",
+    },
+    rows: [
+    ],
+    workable: ["M302", "M304"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M302", "waiting": []},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M301", "title": "Handed to the maintainers", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false},
+    ],
+    unreadable: [],
+  },
+  "stack-in-progress": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Collaboration mode: guest\n# Push remote: base\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M300 | Merged earlier | done | — | normal | milestones/archive/M300-merged.md |\n| M301 | Back in work after review | in-progress | M300 | normal | milestones/M301-reworked.md |\n| M302 | Builds on the reworked branch | planned | M300, M301 | normal | milestones/M302-stacked.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n",
+      "/cairn/milestones/M301-reworked.md": "# M301: Back in work after review\n\n- **Status:** in-progress\n- **Branch/PR:** reworked, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nAnswer the maintainers' requested changes on an open pull request.\n\n## Acceptance criteria\n\n- [ ] AC1: The requested change is made.\n\n## Tasks\n\n- [ ] T1: Make the requested change.\n\n## Work log\n\n- 2026-01-12: changes requested.\n",
+    },
+    rows: [
+      {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made."},
+    ],
+    workable: ["M304"],
+    pane: [
+      {"id": "M301", "title": "Back in work after review", "status": "in-progress", "file": {"goal": "Answer the maintainers' requested changes on an open pull request.", "tasks": [{"text": "T1: Make the requested change.", "checked": false}], "criteria": [{"text": "AC1: The requested change is made.", "checked": false}], "log": ["2026-01-12: changes requested."]}},
+    ],
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M301", "waiting": [{"id": "M302", "title": "Builds on the reworked branch", "unmet": ["M301 (in-progress)"]}]},
+    candidates: [
+    ],
+    blocked: [
+    ],
+    unreadable: [],
+  },
+  "stack-no-pr": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Collaboration mode: guest\n# Push remote: base\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M300 | Merged earlier | done | — | normal | milestones/archive/M300-merged.md |\n| M301 | Waits on something else | blocked | M300 | normal | milestones/M301-waits.md |\n| M302 | Builds on the waiting branch | planned | M300, M301 | normal | milestones/M302-stacked.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n",
+      "/cairn/milestones/M301-waits.md": "# M301: Waits on something else\n\n- **Status:** blocked\n- **Branch/PR:** waits-on-a-reply, https://github.com/upstream/repo/issues/720\n\n## Goal\n\nA change that waits on an answer, with no pull request open.\n",
+    },
+    rows: [
+    ],
+    workable: ["M304"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the waiting branch", "unmet": ["M301 (blocked)"]}]},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M301", "title": "Waits on something else", "pr": null, "url": null, "archived": false},
+    ],
+    unreadable: [],
+  },
+  "stack-no-push-line": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Collaboration mode: guest\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M300 | Merged earlier | done | — | normal | milestones/archive/M300-merged.md |\n| M301 | Handed to the maintainers | blocked | M300 | normal | milestones/M301-handed.md |\n| M302 | Builds on the handed-off branch | planned | M300, M301 | normal | milestones/M302-stacked.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n",
+      "/cairn/milestones/M301-handed.md": "# M301: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nA change that waits on the maintainers' review.\n",
+    },
+    rows: [
+    ],
+    workable: ["M304"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M301", "title": "Handed to the maintainers", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false},
+    ],
+    unreadable: [],
+  },
+  "stack-owner": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Push remote: base\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M300 | Merged earlier | done | — | normal | milestones/archive/M300-merged.md |\n| M301 | Handed to the maintainers | blocked | M300 | normal | milestones/M301-handed.md |\n| M302 | Builds on the handed-off branch | planned | M300, M301 | normal | milestones/M302-stacked.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n",
+      "/cairn/milestones/M301-handed.md": "# M301: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nA change that waits on the maintainers' review.\n",
+    },
+    rows: [
+    ],
+    workable: ["M304"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M301", "title": "Handed to the maintainers", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false},
+    ],
+    unreadable: [],
+  },
+  "stack-two-bases": {
+    cwd: "/",
+    files: {
+      "/cairn/PROFILE.md": "# Toolchain profile: generic\n# Collaboration mode: guest\n# Push remote: base\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M301 | First handed-off change | blocked | — | normal | milestones/M301-first.md |\n| M302 | Builds on both handed-off branches | planned | M301, M303 | normal | milestones/M302-both.md |\n| M303 | Second handed-off change | blocked | — | normal | milestones/M303-second.md |\n| M304 | Needs nothing | planned | — | normal | milestones/M304-free.md |\n| M305 | Builds on the second branch alone | planned | M303 | normal | milestones/M305-one.md |\n",
+      "/cairn/milestones/M301-first.md": "# M301: First handed-off change\n\n- **Status:** blocked\n- **Branch/PR:** first-change, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nA change that waits on the maintainers' review.\n",
+      "/cairn/milestones/M303-second.md": "# M303: Second handed-off change\n\n- **Status:** blocked\n- **Branch/PR:** second-change, https://github.com/upstream/repo/pull/722\n\n## Goal\n\nAnother change that waits on the maintainers' review.\n",
+    },
+    rows: [
+    ],
+    workable: ["M304", "M305"],
+    pane: [
+    ],
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on both handed-off branches", "unmet": ["M301 (blocked)", "M303 (blocked)"]}]},
+    candidates: [
+    ],
+    blocked: [
+      {"id": "M301", "title": "First handed-off change", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false},
+      {"id": "M303", "title": "Second handed-off change", "pr": 722, "url": "https://github.com/upstream/repo/pull/722", "archived": false},
+    ],
+    unreadable: [],
+  },
   "states-implement": {
     cwd: "/",
     files: {

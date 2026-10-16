@@ -11,7 +11,9 @@
 // (M205), and reads the candidate rows in the sections that
 // `candidate_count` in scripts/cairn_scripts.py walks (M207), and mirrors
 // `blocked` and `pr_number` in scripts/cairn_next.py (M223), and `pr_url`
-// (M224), and `archived_text` and `status_paragraph` (M246). The mirror
+// (M224), and `archived_text` and `status_paragraph` (M246), and
+// `stack_bases` and `_met`, with `push_remote` in hooks/cairn_common.py
+// (M268). The mirror
 // reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
 // also take other Unicode digits, so an id such as `M００５７` reads
 // differently in the two.
@@ -30,7 +32,8 @@ export type FileSource = {
   list: (path: string) => Promise<string[] | null>
 }
 
-// A planned milestone whose dependencies are all done.
+// A planned milestone whose dependencies are all done; in guest mode at
+// most one may instead be a stack base (M268, `workableRows`).
 export type WorkableRow = { id: string; title: string }
 
 // What the band reads: the active rows in ROADMAP order, and the workable
@@ -151,15 +154,32 @@ function priorityRank(priority: string): number {
   return PRIORITY_RANK.get(priority.toLowerCase()) ?? 1
 }
 
-// The planned rows whose Depends-on ids are each a done row or in
-// `archived`, by priority and then id; the sort keeps ROADMAP order on a
-// tie. `archived` holds ids at three-digit padding.
-export function workableRows(rows: RoadmapRow[], archived: string[]): WorkableRow[] {
-  const done = new Set([...rows.filter(row => row.status === 'done').map(row => canonId(row.id)), ...archived])
+// The planned rows whose Depends-on ids are each a done row, in
+// `archived`, or in `bases`, with at most one in `bases` (M268), by
+// priority and then id; the sort keeps ROADMAP order on a tie. `archived`
+// and `bases` hold ids at three-digit padding. `bases` holds the stack
+// bases, as `stack_bases` in scripts/cairn_next.py reads them.
+export function workableRows(rows: RoadmapRow[], archived: string[], bases: string[] = []): WorkableRow[] {
+  const done = doneIds(rows, archived)
+  const stacked = new Set(bases)
   return rows
-    .filter(row => row.status === 'planned' && parseDepends(row.depends).every(dep => done.has(canonId(dep))))
+    .filter(row => row.status === 'planned' && unmetDeps(row, done, stacked).length === 0)
     .sort((a, b) => priorityRank(a.priority) - priorityRank(b.priority) || idNumber(a.id) - idNumber(b.id))
     .map(row => ({ id: row.id, title: row.title }))
+}
+
+function doneIds(rows: RoadmapRow[], archived: string[]): Set<string> {
+  return new Set([...rows.filter(row => row.status === 'done').map(row => canonId(row.id)), ...archived])
+}
+
+// The Depends-on ids, as written, that `_met` in scripts/cairn_next.py
+// leaves out: met are the done ids, and the row's stack-base dependency
+// when it has exactly one (M268).
+function unmetDeps(row: RoadmapRow, done: Set<string>, bases: Set<string>): string[] {
+  const deps = parseDepends(row.depends)
+  const onBases = new Set(deps.map(canonId).filter(id => bases.has(id) && !done.has(id)))
+  const met = onBases.size <= 1 ? new Set([...done, ...onBases]) : done
+  return deps.filter(dep => !met.has(canonId(dep)))
 }
 
 // The glob `M*.md` and the id at the start of each name, as `archive_files`.
@@ -367,7 +387,12 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
     milestones.push({ id: row.id, title: row.title, status: row.status, file: text === null ? null : paneFile(text) })
   }
   const archived = await archivedIds(source, root)
-  const workable = workableRows(parsed, archived)
+  // The stack bases, as `stack_bases` in scripts/cairn_next.py (M268).
+  const profilePath = join(root, 'cairn/PROFILE.md')
+  const profile = (await source.isFile(profilePath)) ? await source.read(profilePath) : null
+  const stacking = profile !== null && collaborationMode(profile) === 'guest' && pushRemote(profile) === 'base'
+  const bases = stacking ? blocked.filter(row => row.url !== null && !row.archived).map(row => canonId(row.id)) : []
+  const workable = workableRows(parsed, archived, bases)
   return {
     band: { rows: out, workable },
     pane: {
@@ -375,7 +400,7 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
       milestones,
       next: recommend(parsed, workable),
       workable,
-      waiting: waitingRows(parsed, archived),
+      waiting: waitingRows(parsed, archived, bases),
       candidates: candidateRows(roadmap),
       blocked,
       taken: takenRows(
@@ -414,12 +439,25 @@ function prMatch(text: string): RegExpExecArray | null {
 // heading, lowercased, with the key matched in any case and a leading BOM
 // skipped. A text with no such line reads as `owner`.
 export function collaborationMode(text: string): string {
+  return profileHeader(text, /^#\s*Collaboration mode:\s*(\S+)/i) ?? 'owner'
+}
+
+// The value of the `# Push remote:` line that a `cairn/PROFILE.md` text
+// declares, as `push_remote` in hooks/cairn_common.py reads it (M268):
+// read as `collaborationMode` reads its line, and null with no such line.
+export function pushRemote(text: string): string | null {
+  return profileHeader(text, /^#\s*Push remote:\s*(\S+)/i)
+}
+
+// The first match of `pattern` before the first `## ` slot heading,
+// lowercased, with a leading BOM skipped, or null.
+function profileHeader(text: string, pattern: RegExp): string | null {
   for (const each of splitLines(text.replace(/^﻿/, ''))) {
     if (each.startsWith('## ')) break
-    const found = /^#\s*Collaboration mode:\s*(\S+)/i.exec(each)
+    const found = pattern.exec(each)
     if (found !== null) return found[1].toLowerCase()
   }
-  return 'owner'
+  return null
 }
 
 // `pr_number` in scripts/cairn_next.py: the number of that pull request, or
@@ -645,19 +683,18 @@ export function recommend(rows: RoadmapRow[], workable: WorkableRow[]): NextStep
   return { action: 'plan the next milestone', command: '/milestone-plan', id: null }
 }
 
-// `waiting` in scripts/cairn_next.py: the planned rows with a dependency
-// not yet done, in ROADMAP order. A later row with the same id wins the
-// status lookup, as the Python dict does.
-export function waitingRows(rows: RoadmapRow[], archived: string[]): WaitingRow[] {
-  const done = new Set([...rows.filter(row => row.status === 'done').map(row => canonId(row.id)), ...archived])
+// `waiting` in scripts/cairn_next.py: the planned rows that are not
+// workable, in ROADMAP order. A later row with the same id wins the status
+// lookup, as the Python dict does.
+export function waitingRows(rows: RoadmapRow[], archived: string[], bases: string[] = []): WaitingRow[] {
+  const done = doneIds(rows, archived)
+  const stacked = new Set(bases)
   const byId = new Map<string, RoadmapRow>()
   for (const row of rows) byId.set(canonId(row.id), row)
   const out: WaitingRow[] = []
   for (const row of rows) {
     if (row.status !== 'planned') continue
-    const unmet = parseDepends(row.depends)
-      .filter(dep => !done.has(canonId(dep)))
-      .map(dep => `${dep} (${byId.get(canonId(dep))?.status ?? 'unknown'})`)
+    const unmet = unmetDeps(row, done, stacked).map(dep => `${dep} (${byId.get(canonId(dep))?.status ?? 'unknown'})`)
     if (unmet.length > 0) out.push({ id: row.id, title: row.title, unmet })
   }
   return out

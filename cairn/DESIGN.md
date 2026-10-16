@@ -166,7 +166,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   `Implement` Button starts the milestone. A narrow row drops the track.
   The workable list is the `planned` rows whose dependencies are all done,
   by priority and then id, as `workable` in `scripts/cairn_next.py`
-  computes it. A done id is a `done` row or an
+  computes it. In a guest repo with `# Push remote: base`, one dependency
+  of a row may instead be a stack base: a `blocked` row whose milestone
+  file's `Branch/PR` header names a PR URL (M268; tracking-rules
+  "Collaboration mode"). `reader.ts` reads `cairn/PROFILE.md` for the mode
+  and the line, and takes the stack bases from its blocked rows. A done id is a `done` row or an
   `M<digits>` file directly under `cairn/milestones/archive/`, compared at
   three-digit padding. With an empty list and a found ROADMAP (the pane
   state's `found`), the band draws the empty row (M213): key `plan-row`,

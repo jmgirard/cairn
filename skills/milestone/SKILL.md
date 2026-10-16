@@ -181,7 +181,15 @@ The script deliberately does not judge these — do them yourself and report:
   M<NNN>` (the maintainers' requests become tasks; the branch is rebased on
   `<base>` and re-pushed to the remote that holds the PR's head by
   `/milestone-implement` step 2's guest sync, and its new commits go up at
-  `/milestone-review`'s re-handoff); `OPEN` otherwise → report the fresh
+  `/milestone-review`'s re-handoff); `OPEN` on a stacked milestone
+  (tracking-rules "Collaboration mode") whose stack base's PR reads
+  `MERGED` (`gh pr view <base-pr> --repo <base-repo> --json state`) → the
+  restack is owed: route to `/milestone-implement M<NNN>`, whose stacked
+  sync rebases the branch onto `<base>/<default-branch>`, re-pushes it, and
+  retargets the PR if GitHub did not; `OPEN` on a stacked milestone whose
+  stack base's PR reads `CLOSED` → report it with no route: what the
+  milestone builds on is gone, and the next step is the user's; `OPEN`
+  otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.
@@ -364,7 +372,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-implement M<NNN>` — resume (an `in-progress` milestone exists)
 - `/milestone-review M<NNN>` — review (a milestone sits at `review`)
 - `/milestone-implement M<NNN>` — implement (a workable planned milestone
-  exists — its dependencies `done`, nothing `in-progress`)
+  exists — its dependencies `done`, in guest mode with at most one of them
+  a stack base instead, nothing `in-progress`)
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,
