@@ -176,9 +176,13 @@
   call reads each of your open PRs' bodies, and a candidate row whose
   short title a line names exactly shows `◐` in place of its priority
   mark, the PR number at its right end, and no `✎` button. A guest-mode
-  PR carries no such line. The PR numbers behind the mark change only when
-  the pane reads its PRs, and the pane lists candidate rows only while no
-  milestone is active. A PR opened before this change has no such line.
+  PR carries no `Candidate row:` line. The PR numbers behind the mark
+  change only when the pane reads its PRs, and the pane lists candidate
+  rows only while no milestone is active. A PR opened before this change
+  has no `Candidate row:` line. A `Candidate row:` line inside a fenced
+  code block names no row. Such a block runs from a line that opens with
+  three backticks or three tildes, after optional spaces, to the next
+  such line or the end of the body.
 
 - **A close names the Copilot opt-in line when Copilot reviews a PR with
   the round off.** In a repo whose `cairn/PROFILE.md` lacks

@@ -447,7 +447,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   same result into `started` (M252): for each entry with an integer
   `number` and a string `body`, whatever its branch, each body line that
   opens with exactly `Candidate row: ` gives `{ title, number }`, the rest
-  trimmed, a blank rest giving none. A failed call keeps or empties
+  trimmed, a blank rest giving none. A line inside a fence gives none
+  (M257): a line opening with three backticks or three tildes after
+  optional spaces toggles the fence, which starts closed in each body.
+  A failed call keeps or empties
   `started` with `prs`. In owner mode `/hotfix` and `/milestone-review`
   write those lines in the PR body, one per candidate row that the merge
   removes or narrows; a guest PR body carries none. The pane draws the list only while the band's root is

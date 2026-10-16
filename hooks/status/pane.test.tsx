@@ -4038,6 +4038,45 @@ describe('startedRows reads the Candidate row lines of each listed body (M252 AC
     ).toEqual([{ title: 'Six', number: 6 }])
   })
 
+  // M257: a line between a fence line and the next fence line names no row.
+  test('a line inside a backtick, tilde, or indented fence gives no item', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', '```\nCandidate row: Inside backticks\n```\nCandidate row: After backticks'),
+        bodied(2, 'hotfix-b', '~~~markdown\nCandidate row: Inside tildes\n~~~\nCandidate row: After tildes'),
+        bodied(3, 'hotfix-c', 'Intro\n   ```\nCandidate row: Inside spaced\n  ```\nCandidate row: After spaced'),
+      ]),
+    ).toEqual([
+      { title: 'After backticks', number: 1 },
+      { title: 'After tildes', number: 2 },
+      { title: 'After spaced', number: 3 },
+    ])
+  })
+
+  test('any fence line closes an open fence, whatever its character', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', '```\nCandidate row: Inside mixed\n~~~\nCandidate row: After mixed'),
+        bodied(2, 'hotfix-b', '~~~\nCandidate row: Inside mixed\n```\nCandidate row: After mixed'),
+      ]),
+    ).toEqual([
+      { title: 'After mixed', number: 1 },
+      { title: 'After mixed', number: 2 },
+    ])
+  })
+
+  test('a fence that never closes hides the rest of its body only', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', 'Candidate row: Before\n```\nCandidate row: Unclosed one\nCandidate row: Unclosed two'),
+        bodied(2, 'hotfix-b', 'Candidate row: Next body'),
+      ]),
+    ).toEqual([
+      { title: 'Before', number: 1 },
+      { title: 'Next body', number: 2 },
+    ])
+  })
+
   test('a call that rejected, failed, or printed no JSON array gives null', () => {
     expect(startedRows(null)).toBe(null)
     expect(startedRows({ exitCode: 1, stdout: '[]\n' })).toBe(null)
