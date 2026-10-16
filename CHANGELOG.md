@@ -4,6 +4,14 @@
 
 ### Changes that affect existing repos
 
+- **The routing section names the tier question.** The cairn section that
+  `/cairn-init` adds to `CLAUDE.md` now names it. Where a hotfix or a
+  direct edit fits, `/milestone-plan` offers it before its one question
+  set. The section's Trivial line says that guest mode leaves the edit on
+  disk. In a repo set up earlier, `CLAUDE.md` keeps the old wording. To get
+  the new wording, update that section by hand. In guest mode the session
+  hook reads the plugin's own copy, so the new wording shows at once.
+
 - **`/cairn-triage lessons` triages `cairn/LESSONS.md`.** It reads every
   lesson and proposes one disposition each at the triage gate: keep it,
   shorten it, merge it into another lesson, retire it, or hand a family of
@@ -371,6 +379,26 @@
   clears through the same call.
 
 ### Fixes
+
+- **A direct edit from `/milestone-plan` removes the candidate row it
+  fixes.** When the plan finds a trivial edit and you take that route, it
+  now finds each candidate row whose short title your request quotes, such
+  as a row you pressed in the cairn pane. The edit deletes a row it fixes in
+  full and narrows a row it fixes in part, in the same commit (in guest
+  mode, on disk). The route's option names each row before you choose. A
+  row that a planned or active milestone quotes is left for that milestone.
+
+- **In guest mode, `/milestone-plan` no longer sends a pull request to
+  `/hotfix`.** A request that names a pull request, such as a PR URL or
+  "adopt PR 12", skips the tier check. If the PR is your own `hotfix-`
+  handoff, the plan stops and points you at `/hotfix` with the PR. For any
+  other PR it stops and says that guest mode does not adopt someone else's
+  PR. A bare `#N` is still read as an issue.
+
+- **A plan picked at `/milestone`'s triage gate asks no tier question.**
+  When you choose `/milestone-plan` for an item at `/milestone`'s triage
+  gate, the plan treats the work as a milestone without asking again
+  whether a hotfix or direct edit fits. This holds within the same session.
 
 - **A `/hotfix` rerun on an open hotfix PR finishes the merge you
   approved.** When a hotfix stopped at its CI wait, its close block told you

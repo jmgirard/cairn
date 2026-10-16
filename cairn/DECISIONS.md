@@ -6113,3 +6113,44 @@ rule stand, and so do D-055's bar and graduation path. The tracking-rules
 retirement paragraph names the pass beside review hygiene. If the pass is
 ever found running unasked, or retiring a lesson whose trap then recurs,
 this is the entry to supersede.
+
+### D-170 (2026-10-16): Four tier-check edges close: trivial-tier commits join the git model, the trivial route graduates its rows, and a guest PR request and a `/milestone` §3 pick skip the check — annotates D-162 (M265)
+
+**Context:** D-162 shipped `/milestone-plan`'s tier check, and M250's
+review left its open edges in a candidate row. D-162's Consequences noted
+that the git model still took only docs-only tracking commits on the
+default branch while the trivial route committed other files, and left
+that sentence to the row. The trivial route also left in place the
+candidate row it fixed. In guest mode a request that names a pull request
+could be judged `hotfix` and sent to `/hotfix`, which cannot adopt a third
+party's PR there. A `/milestone-plan` pick at `/milestone` §3 was checked a
+second time, since D-162 exempted only `/milestone` §4 and `/hotfix`.
+
+**Decision:** The git model's default-branch bullet accepts trivial-tier
+commits that the user approved at the tier chip, and its approval bullet
+names that chip beside the merge question. The trivial route matches each
+candidate row whose short title the request quotes. It deletes or narrows
+that row in the edit itself, as `/hotfix` step 7 does, and records-hygiene
+§1 names that edit a completion. In guest mode a request that names a pull
+request is not checked. The operator's own `hotfix-` handoff ends with a
+close block that points at `/hotfix`. Any other PR ends with a close block
+that says guest mode does not adopt a third party's PR. A bare `#N` stays
+an issue, as D-162 decided. A `/milestone-plan` disposition that the user
+selected at `/milestone` §3 earlier in the session is a third
+already-tiered invocation. These are routing fixes in shipped skills, not
+a conduct rule about verification or records, so D-108's door does not
+apply.
+
+**Rejected:** Planning a guest pull-request request as a milestone,
+because guest mode routes a third party's PR to the maintainers; falsified
+by a guest user who needs to plan work that names a PR they did not open.
+Matching rows by `/hotfix`'s "describes the bug" judgment, because a pane
+press sends the quoted title; falsified by a trivial edit that fixes a row
+the request did not quote.
+
+**Consequences:** D-162's chip, its tiers, its issue rule, and its two
+gates stand. The routing template and this repo's CLAUDE.md name the tier
+route before the question set. An adopter's CLAUDE.md section keeps the old
+wording until the adopter updates it. If a trivial-tier commit is found
+reaching the default branch without the chip's approval, this is the entry
+to supersede.
