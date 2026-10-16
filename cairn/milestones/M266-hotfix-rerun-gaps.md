@@ -73,6 +73,7 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - 2026-10-16: claim audit fixes: the "one entry per pinned clause" comments made true with 2 more mutation entries; the reader also found the round arm's decline would `gh pr close` the operator's own pre-existing PR, fixed with a sentence that leaves it open and names `/hotfix` with the PR reference (new test and entry). Same reader's one re-read: both hold. 24 M266 mutation entries, none survive blanking.
 - 2026-10-16: open concerns for review: `committedDate` is commit time, not push time, so a commit made before a change request and pushed after it still triggers the change route; `latestReviews` masking (already in Known issues) also applies to the change route's trigger.
 - 2026-10-16: T6 done: verify slot green (5 of 5) at the final tree; hand-run `skills/tests` green (807). Status → review.
+- 2026-10-16: step-7 approval: m266-hotfix-rerun-gaps approved for merge
 
 ## Decisions
 
