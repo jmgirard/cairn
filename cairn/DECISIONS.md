@@ -6074,3 +6074,35 @@ sends the rerun to the walk, so the worst case there is the second
 approval this entry set out to remove. The merge guard reads only the
 PR number in the marker, not its head, so the head pin holds only for a
 merge that the skill runs with `--match-head-commit`.
+
+### D-169 (2026-10-16): `/cairn-triage lessons` proposes a disposition for every lesson when the user runs it — annotates D-051 and D-055 (M263)
+
+**Context:** D-051 checks lesson retirement at `/milestone-review`
+post-merge hygiene, scoped to what the milestone shipped, "never as a full
+re-sweep". Its rejection (4) refused re-evaluating every lesson at each
+hygiene pass, because that taxes every milestone with judgment over records
+it never touched. With no other outflow that looks at the whole file,
+`cairn/LESSONS.md` stood at its line cap and byte budget, and M262's
+hygiene pass could not add a lesson.
+
+**Decision:** `/cairn-triage lessons` reads every lesson and proposes one
+disposition each at the triage gate: `keep`, `compress`, `merge`, `drop`
+by D-051's enforcement or ownership exit, or `promote` for a family that
+meets D-055's maturation bar, handed to `/milestone-plan`. It runs only
+when the user types it, so rejection (4)'s reason, a cost on every
+milestone, does not reach it, and review hygiene keeps its scoped check.
+A lesson that a test file pins stays `keep`. A lesson found false stays
+`keep`, flagged for correction (D-045). Pruning the oldest lesson stays
+the last resort at review hygiene. A lesson drop or merge writes no
+decision entry; the stamp and the commit message name it.
+
+**Rejected:** Running the lessons with every triage pass, and adding
+pruning of the oldest lesson to the pass, both at the user's choice at
+M263's question set; falsified by an operator who finds the opt-in pass
+never run while LESSONS.md stays at its cap.
+
+**Consequences:** D-051's two exits, its trim rule, and its no-breadcrumb
+rule stand, and so do D-055's bar and graduation path. The tracking-rules
+retirement paragraph names the pass beside review hygiene. If the pass is
+ever found running unasked, or retiring a lesson whose trap then recurs,
+this is the entry to supersede.

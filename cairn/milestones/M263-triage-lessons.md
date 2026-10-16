@@ -124,7 +124,7 @@ repo is the user's, after the merge.
       line left behind; prefix and marks kept), the cap and budget check over
       both files, the stamp and commit naming drops and merges, the guest arm,
       no decision entry, one `/milestone-plan` per promoted family (AC3, AC5).
-- [ ] T4: Write the D-entry annotating D-051 and D-055; amend the
+- [x] T4: Write the D-entry annotating D-051 and D-055; amend the
       tracking-rules retirement paragraph; update README's "Prune the
       backlog" row, DESIGN.md's `cairn-triage` line, and the CHANGELOG
       Unreleased entry. Sweep with `git grep -n "candidates and Known
@@ -154,3 +154,4 @@ repo is the user's, after the merge.
 - 2026-10-16: plan gate chose a subagent dry run to the table (T6) over posing the triage chip at review, because the chip would add a stop for the user and the table is what the criteria bind; falsified by a defect that shows only in steps 4 to 7 of a real pass.
 - 2026-10-16: branch m263-triage-lessons cut from main at 9af1b99d; untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
 - 2026-10-16: T1-T3 done in one section: `skills/cairn-triage/SKILL.md` gains "The lessons pass (`/cairn-triage lessons`)" before the workflow, stating each step's change for lessons (argument and stop, pin-file read, item shape, five lesson dispositions with exits and the maturation bar, false-lesson `keep`, apply with the two-file cap check, record, close), plus the frontmatter `description`, `argument-hint: "[lessons]"`, the H1, and one session-start sentence. Chose one section over threading lesson clauses through steps 1-7, because the existing step text is pinned by guards (priority token, guest arm) and a separate section leaves it untouched. It cites D-169, the entry T4 writes. Suites green.
+- 2026-10-16: T4 done: D-169 annotates D-051 and D-055; the tracking-rules retirement sentence now reads "…scoped to what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`; prune-the-stalest is the last resort."; README's "Prune the backlog" row and DESIGN.md's `cairn-triage` line name the lessons pass; CHANGELOG Unreleased entry added. `git grep -n -i "candidates and Known issues"` outside `cairn/milestones` and DECISIONS.md found only README:624, DESIGN.md:31, and the skill itself, all now naming lessons. The rulebook grew to 679 lines / 65,305 bytes, so its baseline is re-seeded at all three sites (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, the mutation block), per the M149 lesson. Suites and `cairn_validate` green.
