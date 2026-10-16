@@ -107,3 +107,53 @@ check. Token columns sum the row's calls. The table holds all 36 runs.
 | S3 | haiku | 1 | `a7b94be94516e19e0` | claude-haiku-5-5 | 3 | yes | 6 | 54478 | 0 | 84600 | 11182 | 0.0132 | 1.0000 |
 | S3 | haiku | 2 | `ab25b41baad6dee08` | claude-haiku-5-5 | 6 | yes | 12 | 63666 | 0 | 248381 | 1624 | 0.0113 | 0.9885 |
 | S3 | haiku | 3 | `a406de22edbdf2c3b` | claude-haiku-5-5 | 6 | yes | 12 | 61946 | 0 | 237164 | 10183 | 0.0152 | 1.0000 |
+| H1 | sonnet | 1 | `ad5ca596cd445f64a` | claude-sonnet-5-5 | 16 | yes | 32 | 102648 | 0 | 1296054 | 2428 | 0.4106 | 1 |
+| H1 | sonnet | 2 | `adf66583d08739e3f` | claude-sonnet-5-5 | 14 | yes | 28 | 99585 | 0 | 1087480 | 2843 | 0.3862 | 1 |
+| H1 | sonnet | 3 | `a18bcfa4bb7f1b852` | claude-sonnet-5-5 | 18 | yes | 36 | 104806 | 0 | 1475460 | 2027 | 0.4299 | 2 |
+| H1 | haiku | 1 | `a1f27d60869af76e1` | claude-haiku-5-5 | 23 | yes | 46 | 130100 | 0 | 2164972 | 3712 | 0.1185 | 2 |
+| H1 | haiku | 2 | `a4a149e195c5a845f` | claude-haiku-5-5 | 28 | yes | 56 | 130412 | 0 | 2636497 | 2747 | 0.1304 | 2 |
+| H1 | haiku | 3 | `a46daa9cd67678f47` | claude-haiku-5-5 | 27 | yes | 54 | 146351 | 0 | 2750934 | 2978 | 0.1608 | 1 |
+| H2 | sonnet | 1 | `accbfc9194281254e` | claude-sonnet-5-5 | 11 | yes | 22 | 80194 | 0 | 705830 | 1188 | 0.2830 | 1 |
+| H2 | sonnet | 2 | `ad684dce613b57209` | claude-sonnet-5-5 | 8 | yes | 16 | 77358 | 0 | 468543 | 1452 | 0.2548 | 2 |
+| H2 | sonnet | 3 | `a0805c385571c8bd8` | claude-sonnet-5-5 | 8 | yes | 16 | 74411 | 0 | 460465 | 1357 | 0.2457 | 1 |
+| H2 | haiku | 1 | `af4ffaac1b2f500ed` | claude-haiku-5-5 | 15 | yes | 30 | 111645 | 0 | 1216797 | 2078 | 0.0652 | 1 |
+| H2 | haiku | 2 | `a041a705f2f4fc13f` | claude-haiku-5-5 | 17 | yes | 34 | 115192 | 0 | 1470189 | 2752 | 0.0738 | 1 |
+| H2 | haiku | 3 | `a5d21cc45d85c0529` | claude-haiku-5-5 | 13 | yes | 26 | 102507 | 0 | 982324 | 2169 | 0.0335 | 0 |
+| H3 | sonnet | 1 | `a03dc8f1ce751188f` | claude-sonnet-5-5 | 12 | yes | 24 | 87761 | 0 | 743391 | 2144 | 0.3152 | 2 |
+| H3 | sonnet | 2 | `a0f1a9715a0f3b69c` | claude-sonnet-5-5 | 13 | yes | 26 | 76919 | 0 | 754800 | 1124 | 0.2791 | 2 |
+| H3 | sonnet | 3 | `a1d56d7cdc1f0a286` | claude-sonnet-5-5 | 13 | yes | 26 | 88882 | 0 | 832909 | 1852 | 0.3241 | 1 |
+| H3 | haiku | 1 | `a652efb6e6608a6fd` | claude-haiku-5-5 | 29 | yes | 58 | 110546 | 0 | 2215176 | 2681 | 0.0657 | 1 |
+| H3 | haiku | 2 | `a6b8b87ec86964b39` | claude-haiku-5-5 | 32 | yes | 64 | 140832 | 0 | 3233572 | 4356 | 0.1724 | 2 |
+| H3 | haiku | 3 | `a3e2017d7562e7a09` | claude-haiku-5-5 | 21 | yes | 42 | 126854 | 0 | 1805648 | 5780 | 0.1074 | 2 |
+
+Search notes. Every S1 and S2 Sonnet run and every S1 Haiku run scored 1.0. All
+three Haiku S2 runs listed the nine registrations correctly but wrote each
+script without its `.py` extension, so each scores 0. S3 Sonnet run 3
+applied its own reading of which heading clauses supersede and listed 45
+pairs, as M228's Sonnet run did. The other S3 runs followed the stated rule
+and differ from the key by at most two pairs, from D-085's
+"supersede-on-firing".
+
+Judging. Each judge ran on Opus (`claude-opus-5-5`, read from its
+transcript). The mappings were read after all nine judges returned. "Sonnet
+label" names the label the Sonnet report carried. A rating list gives each
+numbered finding of a report in order: V valid, I invalid. No finding was
+rated a duplicate.
+
+| Task | Run | Judge id | Sonnet label | Sonnet ratings | Sonnet valid | Haiku ratings | Haiku valid |
+|---|---|---|---|---|---|---|---|
+| H1 | 1 | `a9122ca7c75a06ec9` | B | I I I I V | 1 | I V V I I | 2 |
+| H1 | 2 | `a6ce0b1608d1b0fd7` | B | V I I I | 1 | I V I I V | 2 |
+| H1 | 3 | `a977c78c50e9976b7` | B | V V I I | 2 | I V I I | 1 |
+| H2 | 1 | `abaa9f5a569079ec0` | B | V I I | 1 | I V | 1 |
+| H2 | 2 | `abe4003ce49da45e0` | B | V I I V I | 2 | I V | 1 |
+| H2 | 3 | `a53758de58d5e6991` | B | V I I I | 1 | I | 0 |
+| H3 | 1 | `a184bfa5485d4bca2` | B | V V I | 2 | I I V | 1 |
+| H3 | 2 | `aa75203b7c05ee2b5` | A | V I V I | 2 | V V | 2 |
+| H3 | 3 | `a4fe8a23ba090403b` | A | I V I I I | 1 | I V V | 2 |
+
+No reviewer or judge tool call named the mapping file or a path under
+`cairn/references/`. No tool result carried text from the three earlier
+notes (`haiku-sonnet-roles.md`, `effort-roles.md`,
+`effort-review-medium.md`). Both checks ran over the 27 transcripts on
+2026-10-16.
