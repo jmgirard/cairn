@@ -4053,6 +4053,18 @@ describe('startedRows reads the Candidate row lines of each listed body (M252 AC
     ])
   })
 
+  test('any fence line closes an open fence, whatever its character', () => {
+    expect(
+      read([
+        bodied(1, 'hotfix-a', '```\nCandidate row: Inside mixed\n~~~\nCandidate row: After mixed'),
+        bodied(2, 'hotfix-b', '~~~\nCandidate row: Inside mixed\n```\nCandidate row: After mixed'),
+      ]),
+    ).toEqual([
+      { title: 'After mixed', number: 1 },
+      { title: 'After mixed', number: 2 },
+    ])
+  })
+
   test('a fence that never closes hides the rest of its body only', () => {
     expect(
       read([

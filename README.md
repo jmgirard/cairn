@@ -442,29 +442,35 @@ there is no section.
 An open PR can name the candidate rows that it fixes. In owner mode,
 `/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
 line in the PR body for each row that the merge removes or narrows. No
-other skill and no guest-mode run writes such a line. The same `gh pr list` call reads the body
-of each listed PR, from any branch. Any of your open PRs whose body has
-such a line marks the row, also when you wrote the line by hand. A line
-inside a fenced code block does not count. A fence line opens with three
-backticks or three tildes after optional spaces. Such a block starts at a
-fence line and ends at the next fence line or at the end of the body.
-A candidate row whose short title such a line names exactly shows `◐` in
-the review color in place of its priority mark. It also shows the PR's
-`#<n>` at its right end, the lower number when two PRs name it, and no
-`✎` button. A guest-mode PR carries no such line, because guest mode puts
-no cairn terms in a PR body. Only your own open PRs on the base remote
-count. The PR numbers behind the mark change only when the pane reads its
+other skill and no guest-mode run writes such a line. The same `gh pr
+list` call reads the body of each listed PR, from any branch. Any of your
+open PRs whose body has a `Candidate row:` line marks the row, also when
+you wrote the line by hand. A candidate row whose short title such a line
+names exactly shows `◐` in the review color in place of its priority
+mark. It also shows the PR's `#<n>` at its right end, the lower number
+when two PRs name it, and no `✎` button. A guest-mode PR carries no
+`Candidate row:` line, because guest mode puts no cairn terms in a PR
+body. Only your own open PRs on the base remote count.
+
+A `Candidate row:` line inside a fenced code block does not count. A
+fence line opens with three backticks or three tildes after optional
+spaces. Such a block starts at a fence line and ends at the next fence
+line or at the end of the body.
+
+The PR numbers behind the mark change only when the pane reads its
 PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
 open. The pane lists candidate rows only
 while no milestone is active, so while a milestone's branch is checked
 out, the mark of that milestone's PR shows only in another checkout of the
 default branch. Without the opt-in Copilot round (below), a PR that
 `/milestone-review` or an authored `/hotfix` opens does so only after you
-approve the merge. A row's `◐` goes at the pane's first PR read after the
-merge. The row then shows its priority mark again, with no PR number.
-It keeps that look until `/milestone-review`'s hygiene commit or
-`/hotfix`'s step 7 removes or narrows it. A PR opened
-before this change has no such line.
+approve the merge. After the merge, the row's `◐` goes at the pane's
+first PR read, unless another open PR also names the row. The row then
+shows its priority mark again, with no PR number. After a
+`/milestone-review` or `/hotfix` merge, the row keeps that look until
+`/milestone-review`'s hygiene commit or `/hotfix`'s step 7 removes or
+narrows it. A PR opened before these skills wrote `Candidate row:` lines
+has none.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
