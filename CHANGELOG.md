@@ -4,6 +4,19 @@
 
 ### Changes that affect existing repos
 
+- **A guest milestone can build on one that waits for review.** In guest
+  mode with `# Push remote: base`, a `planned` milestone can depend on one
+  `blocked` milestone whose file names its open PR. `cairn_next.py` and
+  the cairn pane count it as workable. `/milestone-implement` cuts its
+  branch from that PR's branch and records the base tip in a
+  `stack base:` work-log line. Each resync rebases onto that branch with
+  `git rebase --onto`, from the recorded tip. `/milestone-review` opens
+  the PR with that branch as its base. Once the first PR merges,
+  `/milestone` routes the milestone to `/milestone-implement`, which
+  rebases it onto the default branch and force-pushes it. If GitHub did
+  not retarget the PR, it retargets it to the default branch. A milestone on two or more such dependencies
+  stops at `/milestone-implement`. Owner mode is unchanged.
+
 - **Guest branches can go to the upstream repo.** In guest mode, add the
   line `# Push remote: base` near the top of `cairn/PROFILE.md`, and
   `/milestone-review` and `/hotfix` push the branch to the upstream repo

@@ -6248,3 +6248,42 @@ owner that is neither the base repo's owner nor the fork's, where D-171's
 route fell back to the fork. If a handoff's first
 push reaches the base repo without the line, or without the access read,
 this is the entry to supersede.
+
+### D-173 (2026-10-16): In guest mode with `# Push remote: base`, a milestone can depend on one handed-off milestone and build on its branch — annotates D-137 and D-172 (M268)
+
+**Context:** A milestone is workable only when every dependency is
+`done`, and under D-137 a guest dependency reaches `done` only when the
+maintainers merge its PR. A guest PR that builds on another open guest PR
+was set up by hand, then retargeted by hand after the first PR merged
+(easystats/datawizard #723 on #721). D-172 put guest branches on the base
+repo, where GitHub takes a branch as a PR's base.
+
+**Decision:** In guest mode with `# Push remote: base`, a dependency whose
+row is `blocked` and whose milestone file's `Branch/PR` header names a PR
+URL is a stack base. A `planned` milestone is workable when each
+dependency is `done` or a stack base and at most one is a stack base;
+`cairn_next.workable` and the cairn pane read it so. Implement cuts the
+branch from the stack base's branch on the base repo and records the base
+tip in a `stack base: <branch> at <sha>` work-log line at the cut and at
+each sync. Each sync onto an open base runs `git rebase --onto` from the
+recorded tip. Review opens the PR with `--base` set to the stack base's
+branch. Once the base PR merges, `/milestone` routes the milestone to
+implement, whose sync rebases it onto the default branch, force-pushes
+with lease, and retargets the PR when GitHub did not.
+
+**Rejected:** Reading the old base from the local branch or from
+`<base>/<branch>`, because `git fetch --prune` or a deleted branch loses
+those refs after the merge; falsified by a restack whose recorded tip is
+missing or wrong. A new `/milestone` action that rebases on its own,
+because §2 writes nothing and implement already re-runs `verify` and
+hands back to review; falsified by restacks that need no verify and
+leave the review pass with nothing to check. Stacking in owner mode, because owner
+milestones merge in order. Building on two or more stack bases, because a
+branch has one base.
+
+**Consequences:** The dependency rule gains its one exception, in guest
+mode only; owner mode and guest mode without the line are unchanged. A
+restack re-runs review and the handoff gate. A milestone on two stack
+bases stops at implement. If a stacked PR reaches the maintainers with a
+base other than the stack base's branch, or a restack replays the stack
+base's commits, this is the entry to supersede.
