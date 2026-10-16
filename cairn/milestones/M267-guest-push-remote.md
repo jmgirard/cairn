@@ -11,7 +11,7 @@
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — changes where guest-mode skills push branches and open PRs in other people's repos
-- **Branch/PR:** m267-guest-push-remote
+- **Branch/PR:** m267-guest-push-remote — https://github.com/jmgirard/cairn/pull/279
 
 ## Goal
 
