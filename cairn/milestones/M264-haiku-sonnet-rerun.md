@@ -83,22 +83,22 @@ Pass 1, 2026-10-16. PR #276 opened at review start (Copilot round on); Copilot r
 - AC3: from the repo root, each exit code read: `scripts/tests` and `hooks/tests` unittest suites 0, `claude plugin validate` on `plugin.json` and `marketplace.json` 0, `claude plugin test .` 0, `cairn_validate.py` 0 ("all checks passed"), on head after `M264: record PR #276`. Pass.
 - Consistency gate: `cairn_validate.py` green; no principle changed, so `cairn_impact --changed` skipped; verify green (AC3); marketplace validate prints no `version` warning; no CHANGELOG entry owed, as the diff changes no user-visible behavior (diffstat: 6 files, +241 −7, all under `cairn/` except the four-line ledger pin in `scripts/tests/test_scripts.py`).
 - spawned: diff-bug, blame-history, prior-review (full fan-out: the diff touches `scripts/tests/test_scripts.py`).
-- diff-bug #1: S3 search note says the other S3 runs miss pairs only from D-085, but Sonnet run 1 misses `D-116 D-108` — fix now.
-- diff-bug #2: T4's per-task score ranges are not stated — fix now (range columns in the per-task table).
-- diff-bug #3: the Extraction line's "that day's session store" follows 2026-10-09 and so misdates the runs — fix now.
-- diff-bug #4: T3's per-finding table is only V/I strings with no finding text — fix now (64-row per-finding table; descriptions by a Haiku subagent from the reviewer reports, rows diffed equal to the checked file, ratings from the judges).
+- diff-bug #1: S3 search note says the other S3 runs miss pairs only from D-085, but Sonnet run 1 misses `D-116 D-108` — fix now, fixed 9e08fe9.
+- diff-bug #2: T4's per-task score ranges are not stated — fix now, fixed 9e08fe9 (range columns in the per-task table).
+- diff-bug #3: the Extraction line's "that day's session store" follows 2026-10-09 and so misdates the runs — fix now, fixed 9e08fe9.
+- diff-bug #4: T3's per-finding table is only V/I strings with no finding text — fix now, fixed 9e08fe9 (64-row per-finding table; descriptions by a Haiku subagent from the reviewer reports, rows diffed equal to the checked file, ratings from the judges).
 - diff-bug #5: AC1 to AC3 unticked on the branch at status `review` — reject, false: each box is ticked in this pass against its evidence line above.
-- diff-bug #6: "All six runs use the same prompt" reads as one prompt for six tasks — fix now.
-- blame-history #1: the note does not say the S2 gap can come from the prompt, and the pointer in `haiku-sonnet-roles.md` carries no S2 caveat — fix now.
-- blame-history #2: T3 per-finding table and T4 ranges missing — fix now (same fixes as diff-bug #2 and #4).
+- diff-bug #6: "All six runs use the same prompt" reads as one prompt for six tasks — fix now, fixed 9e08fe9.
+- blame-history #1: the note does not say the S2 gap can come from the prompt, and the pointer in `haiku-sonnet-roles.md` carries no S2 caveat — fix now, fixed 9e08fe9.
+- blame-history #2: T3 per-finding table and T4 ranges missing — fix now, fixed 9e08fe9 (same fixes as diff-bug #2 and #4).
 - blame-history #3: the candidate row "Haiku for the remaining Sonnet roles" still reads as before the rerun — reject, planned change: Scope Out leaves the row to post-merge hygiene.
-- blame-history #4: the note states the contamination check without its narrowing to tool calls and results — fix now.
-- prior-review #1: Limits drops M228's judge-disagreement caveat (11 of 22), which exceeds the one-finding margin — fix now.
-- prior-review #2: the verdict table lacks the "What could flip it" column the sibling notes carry — fix now ("What flips it").
-- prior-review #3: "S2 is the whole gap" is loose, as Haiku leads on S3 — fix now (note and INDEX line).
-- prior-review #4: per-finding table missing — fix now (same fix as diff-bug #4).
-- prior-review #5: the break-even is not compared with recorded output; Haiku history final calls record 2,078 to 5,780 tokens — fix now.
-- prior-review #6: the INDEX line's "32% of the cost" lacks the undercount caveat — fix now.
-- prior-review #7: contamination narrowing absent from the note — fix now (same fix as blame-history #4).
-- prior-review #8: two repo-state claims in Scope carry no observed date — fix now.
+- blame-history #4: the note states the contamination check without its narrowing to tool calls and results — fix now, fixed 9e08fe9.
+- prior-review #1: Limits drops M228's judge-disagreement caveat (11 of 22), which exceeds the one-finding margin — fix now, fixed 9e08fe9.
+- prior-review #2: the verdict table lacks the "What could flip it" column the sibling notes carry — fix now, fixed 9e08fe9 ("What flips it").
+- prior-review #3: "S2 is the whole gap" is loose, as Haiku leads on S3 — fix now, fixed 9e08fe9 (note and INDEX line).
+- prior-review #4: per-finding table missing — fix now, fixed 9e08fe9 (same fix as diff-bug #4).
+- prior-review #5: the break-even is not compared with recorded output; Haiku history final calls record 2,078 to 5,780 tokens — fix now, fixed 9e08fe9.
+- prior-review #6: the INDEX line's "32% of the cost" lacks the undercount caveat — fix now, fixed 9e08fe9.
+- prior-review #7: contamination narrowing absent from the note — fix now, fixed 9e08fe9 (same fix as blame-history #4).
+- prior-review #8: two repo-state claims in Scope carry no observed date — fix now, fixed 9e08fe9.
 - After the fixes: AC1 and AC2 checks re-run on the edited note (36 rows, 12 pairs of 3; both verdicts recompute and match); verify green. No finding demonstrates a criterion failing, so no return.
