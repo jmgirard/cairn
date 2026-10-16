@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M268: Let a guest milestone build on one that waits for the maintainers
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M267
 - **Driving RR:** —
@@ -109,6 +109,8 @@ planned.
 - 2026-10-16: T7: on 17985ff7 from the repo root, each exit code 0: scripts 409 OK (21 skipped), hooks 178 OK, plugin validate 0, marketplace validate 0 with no version warning, plugin test 2018 pass 0 fail, skills/tests 822 OK.
 - 2026-10-16: claim audit: 82 claims read, 3 corrected — CHANGELOG.md, skills/milestone/SKILL.md, skills/tests/test_guest_stacked_milestones.py (the CHANGELOG said "open PR" where the readers take any PR URL; §2 left out the restack's conditional retarget; the guard's docstring overstated it, and the guard now pins the restack sentence); the same reader re-read all three and found that they hold.
 - 2026-10-16: status review; handed to /milestone-review.
+- 2026-10-16: review opened PR #280 at its start (Copilot round on) and requested Copilot (state `none` before the request).
+- 2026-10-16: review return 1: floor return on load-bearing stacked-sync prose defects: a stacked resume can run the plain guest rebase (review step 1 and implement step 2: diff-bug #1, #2), the restack has no stack-base lookup after hygiene and pushes a branch never pushed (#4, #5), and the step-1 checks miss a chained, cross-repo, or fork-headed base PR (#3, #6, #7); fix every finding the Review section marks "fix now (floor return 1)" in one task.
 
 ## Decisions
 
@@ -121,3 +123,36 @@ planned.
 - AC5: AC5's grep returns 29 lines; the five that state the rule carry the exception: tracking-rules 158 ("or in guest mode when one of them is a stack base"), its new Collaboration-mode bullet (397), milestone-plan step 7 (525), milestone-implement step 1 (38), DESIGN.md 167–172, README 186–192; the other hits use the word without stating the rule (tracking-rules 431, 494; milestone-plan 37, 201, 529; DESIGN 40, 164, 184, 274, 291, 733; README 217–220, 252–253, 313, 898). README guest bullet "A milestone can build on one that waits for review" (894) and CHANGELOG's top entry describe stacking and the restack.
 - AC6: from the repo root, code unchanged since 5bfa8237, each exit code 0: `scripts/tests` 409 OK (21 skipped), `hooks/tests` 178 OK, `claude plugin validate` plugin 0 and marketplace 0 with no version warning, `claude plugin test .` 2018 pass 0 fail (235 passing cases name a `stack-` fixture, including the reader's workable and next-step cases for `stack-base` and `stack-two-bases`), hand-run `skills/tests` 822 OK.
 - gate: `cairn_validate.py` exit 0, all checks passed (coverage complete included); no DESIGN.md principle changed, so `cairn_impact` skipped; profile consistency-gate: verify green on the review head (AC6), marketplace validate shows no `plugins[N].version` warning, and CHANGELOG's Unreleased section opens with this milestone's entry, with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: review step 1's guest sync runs the plain `git rebase <base>/<default-branch>` on a stacked branch and replays the stack base's commits — fix now (floor return 1: a load-bearing skill defect)
+- diff-bug #2: implement step 2 never says the stacked `--onto` sync replaces the plain guest rebase, so both can run — fix now (floor return 1)
+- diff-bug #3: a chained stack (a base that is itself stacked) restacks onto the default branch though its base merged elsewhere — fix now (floor return 1): step 1 stops when the base PR's `baseRefName` is not the default branch
+- diff-bug #4: the restack says "push to the PR's head remote" for a branch never pushed, against the check's "push nothing" — fix now (floor return 1)
+- diff-bug #5: after the base's hygiene its row is `done`, so the text never says which dependency the stacked milestone built on — fix now (floor return 1): find it by the first `stack base:` line's branch
+- diff-bug #6: the header's PR URL can name another repo while `gh pr view <n> --repo <base-repo>` reads a different PR — fix now (floor return 1): step 1 stops on a URL outside `<base-repo>`
+- diff-bug #7: step 1 checks the branch by name only, not the PR head's owner — fix now (floor return 1): step 1 stops when `headRepositoryOwner` is not the base repo's owner
+- diff-bug #8: `/milestone` §2 has no route for a stacked milestone whose base PR is `CLOSED` — fix now (floor return 1): §2 reports it as the user's decision
+- diff-bug #9: review step 8's `CLOSED` arm "stop the same way" is ambiguous about setting `in-progress` and writing a `restack:` line — fix now (floor return 1)
+- diff-bug #10: `<sha>` names both the lease tip and the base tip in one step — fix now (floor return 1)
+- diff-bug #11: `<N>` is undefined in implement — fix now (floor return 1)
+- diff-bug #12: a base branch deleted with no merge closes the stacked PR — follow-up, "Stack-base edges (M268 review)"; a closed base PR is the #8 report
+- diff-bug #13: tracking-rules' guest bullets still say the branch is cut from the default branch and list §2's routes with no restack — fix now (floor return 1)
+- diff-bug #14: `check_release_window`'s comment claims it mirrors `cairn_next` — fix now (floor return 1): comment states the done-only rule and why
+- diff-bug #15: the readers list as workable a milestone whose base PR already merged or closed, until hygiene runs — reject, planned change: AC1 defines a stack base by its header URL, and the readers run no `gh`; implement step 1 stops on it
+- diff-bug #16: TS `splitLines` breaks PROFILE.md lines on more characters than Python's file iteration — follow-up, "Stack-base edges (M268 review)"
+- diff-bug #17: `cairn_next` now opens PROFILE.md with no regular-file check, so a FIFO hangs it — fix now (floor return 1)
+- diff-bug #18: no fixture with a padded id, a duplicate dependency, a BOM PROFILE.md, or a done-and-blocked row — follow-up, "Stack-base edges (M268 review)"
+- diff-bug #19: the open-base `--onto` form leaves out `<slug>` — fix now (floor return 1)
+- diff-bug #20: a single-branch fetch refspec leaves no `<base>/<stack-base-branch>` after `ls-remote` passed — follow-up, "Stack-base edges (M268 review)"
+- blame-history #1: GitHub may close the stacked PR when the merged base branch is deleted — reject, false: GitHub retargets open PRs based on a merged PR's deleted head branch to that PR's base; only a deletion without a merge closes them (diff-bug #12)
+- blame-history #2: implement's plain rebase vs stacked sync; garbled sentence; no fetch named; `<slug>` missing — fix now (floor return 1, with diff-bug #2, #19)
+- blame-history #3: the `gh pr edit` retarget is an outward write no question granted — reject, planned change: AC4 names it, and the question set took the stacking scope
+- blame-history #4: `<base-pr>` has no lookup on a resume — fix now (floor return 1, with diff-bug #5)
+- blame-history #5: `check_release_window`'s mirror comment — fix now (floor return 1, with diff-bug #14)
+- blame-history #6: "dependencies all done" wording left at `cairn_next.py`'s docstring, `reader.ts`'s `WorkableRow` comment, and `/milestone` line 372 — fix now (floor return 1)
+- blame-history #7: a stack base's PR state is never read by the readers — reject, planned change (diff-bug #15)
+- blame-history #8: no direct unit tests for `stack_bases`, `_met`, `workableRows` with bases — follow-up, "Stack-base edges (M268 review)" (with diff-bug #18)
+- blame-history #9: a stacked PR merged into the base branch reaches `done` though its code is not on the default branch — follow-up, "Stack-base edges (M268 review)"
+- blame-history #10: chained stacks are unspecified — fix now (floor return 1, with diff-bug #3)
+- prior-review #1: the rulebook's archive clause reads as if an archived base counts as a stack base, which the code excludes — fix now (floor return 1, with diff-bug #5's rewrite)
+- prior-review #2: the TS PROFILE read has no guard like Python's catch-all — follow-up, "Stack-base edges (M268 review)" (with diff-bug #16)
