@@ -468,7 +468,7 @@ approve the merge. After the merge, the row's `◐` and PR number go at
 the pane's first successful PR read, unless another open PR also names
 the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
 has not removed the row by then, the row shows its priority mark again.
-A row that they narrow keeps that look. A PR opened before these skills wrote `Candidate row:` lines
+A row that they narrow also shows its priority mark. A PR opened before these skills wrote `Candidate row:` lines
 has none.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The

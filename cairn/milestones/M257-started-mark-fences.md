@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M257: Started mark skips fenced lines
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -51,12 +51,16 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
       each with one line inside and one after, give only the second title; a
       body whose fence never closes gives no title after its opening line;
       and a second body after that one still gives its title.
-- [ ] AC2: README's started-mark text says that only owner-mode `/hotfix`
-      and `/milestone-review` write the `Candidate row:` line, that any of
-      your open pull requests whose body has one marks the row, and that a
-      row's mark goes at the pane's first pull-request read after the merge,
-      so the row shows no mark until `/milestone-review`'s hygiene commit or
-      `/hotfix`'s step 7 removes or narrows it.
+- [ ] AC2: README's started-mark text says that, of cairn's skills, only
+      owner-mode `/hotfix` and `/milestone-review` write the `Candidate row:`
+      line; that a line written by hand also marks a row when it sits
+      outside a fenced code block as README defines one in a pull request
+      the pane's `gh pr list` call reads and names the row's short title
+      exactly; and that the first successful pull-request read after the
+      merge clears the row's `◐` and number unless another open pull request
+      names the row, after which a row that `/milestone-review`'s hygiene
+      commit or `/hotfix`'s step 7 has not removed shows its priority mark,
+      a narrowed row likewise showing its priority mark.
 - [x] AC3: The active profile's `verify` passes: `python3 -m unittest` for
       `scripts/tests` and `hooks/tests` from the repo root, `claude plugin
       validate` on the plugin and marketplace manifests, and `claude plugin
@@ -113,6 +117,9 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: amendment routed: AC2 — diff-bug #1: AC2 asks README to say the row "shows no mark" after the merge, but pane.ts draws the priority mark again once no open PR names the row, so the README states the true behavior and the criterion's wording is false of the code; status → in-progress for the AC2 amendment alone.
 - 2026-10-15: re-audit: AC2 (full) — 5 findings on the first draft, all taken toward the narrower promise: writers scoped to cairn's skills; a hand-written line marks only outside a fence, naming the exact title, in a PR the `gh pr list` call reads (the 100-PR and base-remote limits); "first successful read", since a failed read keeps the last list; the priority-mark state holds only if hygiene has not removed the row by that read; a narrowed row keeps that look. README's clearing sentences edited to match.
 - 2026-10-15: re-audit: AC2 (full) — re-entry reader on the fixed draft: README states every clause; 2 wording findings ("outside a fenced code block" read in the Markdown sense is wider than AC1's fence lines, so it should say "as README defines one"; "keeping that look" should say a narrowed row likewise shows its priority mark), plus an overlapping-read race (an older successful read dropped while a newer one fails keeps the old `◐`) for the fence-edges follow-up row. This is AC2's second re-audit line, so further wording goes to the user.
+- 2026-10-15: the user chose "Adopt the fixed wording" at the AC2 stop (both re-entry fixes applied); README's narrowed-row sentence now reads "also shows its priority mark".
+- 2026-10-15: amendment return: AC2 — "README's started-mark text says that, of cairn's skills, only owner-mode `/hotfix` and `/milestone-review` write the `Candidate row:` line; that a line written by hand also marks a row when it sits outside a fenced code block as README defines one in a pull request the pane's `gh pr list` call reads and names the row's short title exactly; and that the first successful pull-request read after the merge clears the row's `◐` and number unless another open pull request names the row, after which a row that `/milestone-review`'s hygiene commit or `/hotfix`'s step 7 has not removed shows its priority mark, a narrowed row likewise showing its priority mark."
+- 2026-10-15: amendment done, docs only (README and the AC2 text); status → review.
 
 
 ## Decisions
