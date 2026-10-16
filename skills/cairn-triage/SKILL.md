@@ -1,6 +1,6 @@
 ---
 name: cairn-triage
-description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, or merge lessons.
+description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record the default pass's principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, or merge lessons.
 argument-hint: "[lessons]"
 ---
 
@@ -134,8 +134,8 @@ dispositions, and never `split`, `route`, or `retitle`:
 
 A compressed or merged lesson keeps its `- YYYY-MM-DD (M…)` prefix and any
 `corrected` or `trimmed` mark. A lesson the pass finds false is `keep`, its
-reason naming the record that refutes it. Correcting it is the work of
-whoever proves it false (D-045). A lesson about a path or tool the repo no
+reason naming the record that refutes it. It is corrected in place at a
+milestone, not in this pass (D-045, D-169). A lesson about a path or tool the repo no
 longer has is `keep` in the same way, its reason naming the evidence. A
 lesson compresses only where it restates what another record says, and
 length alone never fires a `compress`. A merge's survivor takes the
@@ -143,14 +143,15 @@ absorbed lesson's milestone into its parenthesized provenance and any
 content of the absorbed lesson it lacks. That is the merge's edit, not a
 re-wording. For a `promote`, the "at least twice" counts over the whole
 family's provenance. A family whose earlier module a decision retired is
-not proposed: search the `### D-` headings for the module's file name
-first. The started-token, title, priority, and records-hygiene §7 rules do
+not proposed: first search the decision bodies for the module's file name
+with `git grep -n "<module>.md" cairn/DECISIONS.md`. The started-token, title, priority, and records-hygiene §7 rules do
 not apply to lessons. The pass never proposes pruning the oldest lesson,
 which stays the last resort at review hygiene.
 
 **Step 3, gate.** The table and the chip are step 3's. A `drop` names its
 exit and its evidence, a `merge` names its survivor, and a `promote` names
-its family and the three conditions. The chip names a lesson by its date
+its family and the three conditions. A lesson merge names no trigger
+class, since a lesson has no trigger. The chip names a lesson by its date
 and provenance, since a lesson has no short title.
 
 **Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A

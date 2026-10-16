@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="679 lines / 65,305 bytes",
+        block="679 lines / 65,365 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4204,11 +4204,12 @@ REGISTRY += [
 TRIAGE = "skills/cairn-triage/SKILL.md"
 
 REGISTRY += [
-    # M263 (D-169): the `/cairn-triage lessons` pass. One entry per pinned
-    # rule: the argument and its stop, the item shape, the pin check both
-    # ways, each lesson disposition and drop exit, the maturation bar, the
-    # false-lesson keep, apply and record, and the two surfaces that name
-    # the pass. Blocks are physical lines; the guard collapses whitespace.
+    # M263 (D-169): the `/cairn-triage lessons` pass. At least one entry per
+    # pinned rule: the argument and its stop, the item shape, the pin check
+    # both ways, each lesson disposition and drop exit, the maturation bar,
+    # the false-lesson keep, apply and record, and the two surfaces that
+    # name the pass. Blocks are exact substrings of the target, one with a
+    # physical line break; the guard collapses whitespace.
     Mutation(
         guard="test_triage_lessons",
         test="TestLessonsArgument.test_no_argument_means_no_lesson",
@@ -4351,7 +4352,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestSurfacesNameThePass.test_rulebook_names_the_on_demand_pass",
         target=RULES,
-        block="and over the whole file only when the user runs `/cairn-triage lessons`",
+        block="and over the whole file only when the\n  user runs `/cairn-triage lessons`",
     ),
     Mutation(
         guard="test_triage_lessons",

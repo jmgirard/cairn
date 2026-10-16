@@ -130,10 +130,10 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   neither other exit applies. The graduating milestone writes the module's line and byte budget into the module's own
   header — set from the graduated size plus stated headroom — hand-read with `wc -l -c` at the repo's hygiene passes
   and covered by no validator. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
-  behind — the archive summary names what it graduated. Retirement removes the redundant, never the merely disputed (a
-  disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to what the
-  milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`; prune-the-stalest is the
-  last resort. The graduated records-hygiene family lives in
+  behind — the archive summary names what it graduated (the stamp and commit message, for `/cairn-triage lessons`).
+  Retirement removes the redundant, never the merely disputed (a disputed lesson is corrected, not deleted). Checked at
+  `/milestone-review` post-merge hygiene, scoped to what the milestone shipped, and over the whole file only when the
+  user runs `/cairn-triage lessons`; prune-the-stalest is the last resort. The graduated records-hygiene family lives in
   `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).

@@ -12,7 +12,8 @@
   warns about, or a tracking file that already holds the lesson. A lesson
   that a test checks for stays as it is, and a lesson the pass finds false
   stays, flagged for correction. Nothing changes until you accept at the
-  gate, and the accepted edits land in one commit. Plain `/cairn-triage`
+  gate, and the accepted edits land in one commit (in guest mode, on disk
+  with no commit). Plain `/cairn-triage`
   still covers only candidate rows and known issues.
 
 - **Candidate short titles hold no icons.** The cairn pane uses glyphs
