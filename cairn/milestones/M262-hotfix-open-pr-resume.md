@@ -51,7 +51,7 @@ Button".
       authored fix the PR is opened, then the marker is written as
       `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, and
       only then does the CI wait run.
-- [ ] AC2: In owner mode, `/hotfix` step 1 states an open-PR re-entry. Its
+- [x] AC2: In owner mode, `/hotfix` step 1 states an open-PR re-entry. Its
       trigger: `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
       reports `OPEN` and a head branch not matching `m<nnn>-*`, and
       `cairn/.merge-approved` starts with `hotfix ` and names that PR
@@ -248,3 +248,14 @@ Review head 97d8a333, PR #274 (opened at review start, Copilot arm). Evidence is
 - prior-review #4: no stale "no command resumes" text; tracking-rules:285 shows the milestone marker without an oid — reject, false: that line is `/milestone-review`'s marker, which this milestone does not change.
 - prior-review #5: same as blame-history #8 — reject.
 - prior-review #6: mutation entries per assertion (PRs #242, #243, #260) — noted, clean.
+
+Pass 2, review head 0cd57149 (after the AC2 amendment return and implement round 2). Same substring read of step 1 and step 6, run 2026-10-16.
+
+- AC1 (re-verified): "In owner mode, on approval, the order is fixed: the push and any `gh pr create` above, then the merge-guard marker, then the CI wait, then the merge.", "On approval of an authored fix, push and open the PR before the marker write below", and the marker line `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>` all found. PASS.
+- AC2 (amended wording): found the read `gh pr view <N> --json state,headRefName,headRefOid,latestReviews` reports `OPEN`; the trigger (head not `m<nnn>-*`, marker starts `hotfix ` and names the PR); the quote and row match; the three conditions word for word (head oid, no `CHANGES_REQUESTED` "even one the user overrode at the earlier chip", "the match names exactly the rows that the PR body's `Candidate row:` lines name"); the skip list; "Go on at step 6's CI wait, then the merge with `--match-head-commit <oid>`, then step 7 as it runs after an approval at step 6's chip"; the refused-merge stop naming the current `headRefOid` with `/hotfix` and the PR reference as next command; the fallback ("say in chat which one. Then take the walk above") with step 6's "A decline at the chip removes any merge-guard marker that names this PR" (the marker step 6 defines as `cairn/.merge-approved`); "Any other open PR takes the walk above." PASS.
+- AC3 (re-verified): guest trigger, read with `--repo <base-repo>`, skip of steps 2 to 7 with the number, state, and review decision reported, CI line and next command, all found. PASS.
+- AC4 (re-verified): "while the PR is still open and the marker names it, step 1's open-PR re-entry resumes at this wait (or takes the walk again when one of its conditions fails), and for a PR merged since, step 1's merged-PR re-entry verifies the merged diff post-hoc" found. PASS.
+- AC5 (re-verified): `git grep -n -i "resumes an open hotfix" -- . ':!cairn/'` exit 1; README.md:434 "no Button. A hotfix PR"; `pane.ts:541` ends at "(M226)."; CHANGELOG.md:363 holds the one entry under Unreleased Fixes. PASS.
+- AC6 (re-verified at 0cd57149): scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, both `claude plugin validate` exit 0 with no `plugins[N].version` warning, `claude plugin test .` 1777 pass 0 fail, `skills/tests` 766 OK. PASS.
+- Consistency gate (pass 2): `cairn_validate.py` exit 0; no principle changed, `cairn_impact` skipped; profile gate green, CHANGELOG entry present with no milestone number.
+- spawned: diff-bug, blame-history, prior-review (pass 2).
