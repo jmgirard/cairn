@@ -31,7 +31,7 @@ stay on that row.
 
 ## Acceptance criteria
 
-- [ ] AC1: In the cairn pane, a candidate row's ` — started M<NNN>` token
+- [x] AC1: In the cairn pane, a candidate row's ` — started M<NNN>` token
       counts while the ROADMAP table holds a row with that id whose status is
       `planned` or `blocked`. A row with a counted M token and no other mark
       source (AC3) draws `◐` in the review color, the lowest counted id at its
@@ -69,7 +69,7 @@ stay on that row.
       say so no longer. `skills/shared/records-hygiene.md` §1 says a narrowed
       row loses the token of the milestone or hotfix that narrows it.
       Evidence: a read of those five sites.
-- [ ] AC6: README's started-mark section says which skill writes each token
+- [x] AC6: README's started-mark section says which skill writes each token
       and in which mode, that cairn writes no `Candidate row:` line in a
       guest-mode PR, so the tokens are the usual source of the mark in guest
       mode, and when each token's mark shows and goes. `cairn/DESIGN.md`
@@ -150,3 +150,10 @@ Pass 1, review head 0ab962ec, PR #269 opened at review start (Copilot round on; 
 - AC5: read: tracking-rules.md:215-220 "Candidate started token" directly after "Candidate priority token"; milestone-plan SKILL.md:473 step 6 appends ` — started M<NNN>` in both modes; hotfix SKILL.md:307 guest arm appends ` — started #<n>` after the create, :328 and :358 no longer say unchanged; records-hygiene.md:20 a narrowed row loses the token.
 - AC6: NOT MET as written — the claim audit corrected README to "the usual source of the mark", since a hand-written `Candidate row:` line counts in guest mode too, so the criterion's "only through the tokens" asks for a false claim. Amendment routed.
 - AC7: verify slot on 0ab962ec: scripts 408 OK (21 skipped), hooks 175 OK, plugin validate passed with warnings, marketplace validate passed, mod tests 1757 pass 0 fail.
+
+Pass 2, review head 037f023f, after return 1 (T6) and the AC6 amendment return.
+
+- AC1: `pane.test.tsx` "a counted milestone id marks its row with the id, the lowest of two (AC1)" passes (planned M258, blocked M240, M300 and M259 give `M259`), and "a done, dropped, or absent id leaves the row unmarked, planned and blocked mark it (AC1)" passes: `takenRows` over a ROADMAP draws `M258` and `M240` with `◐` and no ✎, the done M230, dropped M231, and absent M999 rows draw `○` with ✎, and a row with M230 and M240 shows `M240`. Mod tests 1758 pass, 0 fail.
+- AC6: read: README.md:476-491 names `/milestone-plan` writing ` — started M<NNN>` in owner and guest mode and guest `/hotfix` writing ` — started #<n>` on disk after the PR opens, says cairn writes no `Candidate row:` line in a guest-mode PR so the tokens are the usual source in guest mode, and says when each mark shows (planned or blocked; PR #n open) and goes (done, dropped, gone; PR closed); DESIGN.md:454-464 and CHANGELOG.md "### New" first entry state the token rule; D-165 records D-108's door on its retained trigger and that a token names another record's id, not the row's own (D-035).
+- AC7: verify slot on 037f023f: scripts 408 OK (21 skipped), hooks 175 OK, plugin validate passed with warnings, marketplace validate passed, mod tests 1758 pass 0 fail.
+- Gate: `cairn_validate` all checks passed; consistency-gate: verify green on the head, marketplace validate shows no `plugins[N].version` warning, the unreleased CHANGELOG has the started-token entry with no milestone number; no principle changed, so `cairn_impact` skipped.
