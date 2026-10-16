@@ -378,8 +378,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   with source `clear` or `resume` also starts the read without waiting
   (M230, M237). It does so when `$.ui.panes()` lists the pane placed,
   shown or behind another tab. A pane listed but not placed owes the
-  read, and the Pane's first draw starts it (`owed`, M238). An open
-  before that draw, or a session end, clears the debt. A start's reopen,
+  read, and the Pane's first draw starts it (`owed`, M238). The hook
+  then lists the panes again and reads if the pane is placed and still
+  owed, so a pane placed and drawn during the first list reads with no
+  further draw (M256). An open before that draw, or a session end, clears
+  the debt. A start's reopen,
   its `classic.SessionStart`, and the owed draw read once between them:
   the first to read sets `startRead`, which holds until the next session
   end. The hook checks `startRead` again after it awaits the pane list

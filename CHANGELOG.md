@@ -291,7 +291,8 @@
   that keeps the session's process does. After either one, a placed pane
   reads its PRs again, also when it sits behind another tab. A pane not
   yet shown, as in a narrow terminal, reads them when it is first drawn,
-  unless an open read them first. One start reads them once, also when a
+  unless an open read them first. A pane placed while a `/clear` start
+  lists the panes reads them with no further draw. One start reads them once, also when a
   reopen at a new session start and the `/resume` both run in it. Before, a `/resume` left the band and the pane empty until
   the next prompt.
 

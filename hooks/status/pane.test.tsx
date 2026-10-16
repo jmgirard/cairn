@@ -90,8 +90,10 @@ type Copy = {
   // While set, `$.ui.panes()` beneath the mod throws (M237).
   panesThrow?: boolean
   // While set, the next `$.ui.panes()` beneath the mod computes its answer,
-  // clears this field, and waits for this promise before it answers (M256).
+  // clears this field, keeps that answer in `panesHeld`, and waits for this
+  // promise before it answers (M256).
   panesHold?: Promise<void>
+  panesHeld?: ReturnType<typeof panesOf>
   // While set, the session end beneath the mod throws, and while set, it
   // waits for this promise before it answers (M255).
   endThrows?: boolean
@@ -167,6 +169,7 @@ function seat(on: On, copy: Copy) {
     const hold = copy.panesHold
     if (hold !== undefined) {
       copy.panesHold = undefined
+      copy.panesHeld = value
       await hold
     }
     return { value }
@@ -3629,6 +3632,7 @@ describe('a pane placed while a clear start lists the panes reads with no furthe
         await until(() => copy.panesHold === undefined)
         // The hook's list is held, its answer computed as not placed.
         expect(copy.panesHold).toBeUndefined()
+        expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
         copy.unplaced = []
         await draw($)
         await calls.settled()
@@ -3641,6 +3645,44 @@ describe('a pane placed while a clear start lists the panes reads with no furthe
       expect(sorted(calls.reads)).toEqual(sorted([...urls]))
     })
   }
+
+  // The second list is held too, its answer computed as placed. A draw
+  // while it waits takes the owed read, so the list reads nothing more.
+  test('a draw while the second list waits takes the read, and the list reads nothing more', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    let releaseFirst = () => {}
+    let releaseSecond = () => {}
+    copy.panesHold = new Promise<void>(resolve => {
+      releaseFirst = resolve
+    })
+    const second = new Promise<void>(resolve => {
+      releaseSecond = resolve
+    })
+    const start = $.classic.SessionStart({ source: 'clear' })
+    try {
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
+      copy.unplaced = []
+      copy.panesHold = second
+      releaseFirst()
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHold).toBeUndefined()
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(true)
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+    } finally {
+      releaseFirst()
+      releaseSecond()
+    }
+    await start
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
 })
 
 // A session end clears the read a clear start owed, so the pane's first
