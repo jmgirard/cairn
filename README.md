@@ -442,15 +442,16 @@ there is no section.
 An open PR can name the candidate rows that it fixes. In owner mode,
 `/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
 line in the PR body for each row that the merge removes or narrows. No
-other skill and no guest-mode run writes such a line. The same `gh pr
-list` call reads the body of each listed PR, from any branch. Any of your
-open PRs whose body has a `Candidate row:` line marks the row, also when
-you wrote the line by hand. A candidate row whose short title such a line
-names exactly shows `◐` in the review color in place of its priority
-mark. It also shows the PR's `#<n>` at its right end, the lower number
-when two PRs name it, and no `✎` button. A guest-mode PR carries no
-`Candidate row:` line, because guest mode puts no cairn terms in a PR
-body. Only your own open PRs on the base remote count.
+other cairn skill writes such a line. Cairn writes none in a guest-mode
+PR, because guest mode puts no cairn terms in a PR body. The
+same `gh pr list` call reads the body of each listed PR, from any branch.
+A line counts when it opens with exactly `Candidate row: ` and the rest,
+with outer spaces removed, is a candidate row's short title, exactly. A line that you write by hand
+counts the same way. A candidate row whose short title such a line names
+shows `◐` in the review color in place of its priority mark. It also
+shows the PR's `#<n>` at its right end, the lower number when two PRs
+name it, and no `✎` button. Only your own open PRs on the base remote
+count.
 
 A `Candidate row:` line inside a fenced code block does not count. A
 fence line opens with three backticks or three tildes after optional
@@ -468,8 +469,8 @@ approve the merge. After the merge, the row's `◐` and PR number go at
 the pane's first successful PR read, unless another open PR also names
 the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
 has not removed the row by then, the row shows its priority mark again.
-A row that they narrow also shows its priority mark. A PR opened before these skills wrote `Candidate row:` lines
-has none.
+A row that they narrow also shows its priority mark after that read. A
+PR opened before these skills wrote `Candidate row:` lines has none.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
