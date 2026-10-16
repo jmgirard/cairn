@@ -4048,7 +4048,7 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestHotfixOpenPrReentry.test_reads_the_open_state_and_head",
         target=HOTFIX,
-        block="`gh pr view <N> --json state,headRefName,headRefOid,latestReviews`",
+        block="`gh pr view <N> --json state,headRefName,headRefOid,latestReviews,author`",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4198,6 +4198,180 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry.test_timeout_close_names_the_open_pr_route",
         target=HOTFIX,
         block="step 1's open-PR re-entry resumes at this wait",
+    ),
+    # M266 AC1: the closed-PR stop, one entry per pinned trigger and outcome.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop.test_trigger_is_a_closed_non_milestone_pr",
+        target=HOTFIX,
+        block="branch not matching `m<nnn>-*`, stops here in owner and guest",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_stop_skips_the_walk_after_the_row_match",
+        target=HOTFIX,
+        block="candidate-row match above, then skip the tier check and steps 2",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_owner_removes_only_a_hotfix_marker_naming_the_pr",
+        target=HOTFIX,
+        block="and leave any other\n   marker as it is.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop.test_stop_edits_no_row",
+        target=HOTFIX,
+        block="The stop edits no candidate row.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_close_block_says_closed_and_starts_over",
+        target=HOTFIX,
+        block="the operator's choice. The close block names each matched row",
+    ),
+    # M266 AC2: the operator's own open PR, one entry per pinned clause.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_trigger_is_the_operators_own_hotfix_pr",
+        target=HOTFIX,
+        block="equals `gh api user --jq .login`. Such a PR is the operator's own",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_walk_treats_it_as_an_authored_fix",
+        target=HOTFIX,
+        block="takes the tier-check walk with it as an authored fix whose PR exists,",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr."
+             "test_steps_two_three_five_take_adopting_variants",
+        target=HOTFIX,
+        block="and step 5's contributor fallback does not apply.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_copilot_round_runs_without_a_create",
+        target=HOTFIX,
+        block="Step 1's own open PR\n   is outside that exemption:",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_copilot_round_runs_without_a_create",
+        target=HOTFIX,
+        block="Step 6's Copilot round arm runs for it, with a push to the PR's",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_round_decline_leaves_the_own_pr_open",
+        target=HOTFIX,
+        block="so a decline leaves it open, and the close block says so.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_step_seven_rule_applies_to_it",
+        target=HOTFIX,
+        block="that adopted-PR exemption, so the rule applies to it.",
+    ),
+    # M266 AC3 and AC4: the guest change route, one entry per pinned clause.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_guest_read_has_the_route_fields",
+        target=HOTFIX,
+        block="A PR that the change route\n     below covers takes that route.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_trigger_is_own_pr_with_a_newer_change_request",
+        target=HOTFIX,
+        block="with the state `CHANGES_REQUESTED` and a `submittedAt` later than",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_an_older_change_request_reports_and_stops",
+        target=HOTFIX,
+        block="the PR waits for a new review, so it takes",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="Make a change for each requested item, or",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="The route runs the three reads of step 6's",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_rechecks_the_bar_and_the_test",
+        target=HOTFIX,
+        block="over-the-bar disposition, and nothing is pushed.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_one_chip_lists_each_item",
+        target=HOTFIX,
+        block="Its question text lists each\n     requested item",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_approval_pushes_and_posts_nothing",
+        target=HOTFIX,
+        block="post no comment or reply on the PR.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_decline_pushes_nothing",
+        target=HOTFIX,
+        block="names the unpushed commits.",
+    ),
+    # M266 review fixes: the order, the other-PR fallthrough, the checkout,
+    # and the failed-check stop.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_stop_comes_before_the_merged_pr_re_entry",
+        target=HOTFIX,
+        block="**Closed-PR stop (M266).**",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_every_other_guest_pr_reports_and_stops",
+        target=HOTFIX,
+        block="For any other PR, the arm goes on here.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_checks_out_from_the_base_repo",
+        target=HOTFIX,
+        block="Run step 2's `git status` check, then `gh pr checkout <N> --repo",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_a_failed_check_pushes_nothing",
+        target=HOTFIX,
+        block="If either fails, push nothing, and",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="The reads only read: the Copilot round's replies and resolves",
     ),
 ]
 

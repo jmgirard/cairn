@@ -343,7 +343,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     def test_reads_the_open_state_and_head(self):
         self.assertIn(
             "**Open-PR re-entry (M262).** A PR-reference argument whose "
-            "`gh pr view <N> --json state,headRefName,headRefOid,latestReviews` "
+            "`gh pr view <N> --json "
+            "state,headRefName,headRefOid,latestReviews,author` "
             "reports `OPEN` takes one of the two arms below when its "
             "conditions hold. Any other open PR takes the tier-check walk "
             "that opens this step.",
@@ -480,6 +481,244 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
             "and for a PR merged since, step 1's merged-PR re-entry verifies "
             "the merged diff post-hoc",
             self.step6,
+        )
+
+
+class TestHotfixClosedPrStop(unittest.TestCase):
+    """M266 AC1: `/hotfix` step 1's closed-PR stop. A `CLOSED` PR whose head
+    is not a milestone branch stops in both modes after the candidate-row
+    match, removes only a `hotfix ` marker naming it, edits no row, and
+    ends with a close block whose next command starts over. Trigger and
+    each outcome are pinned on their own (M165 lesson), whitespace
+    collapsed (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+
+    def test_trigger_is_a_closed_non_milestone_pr(self):
+        self.assertIn(
+            "**Closed-PR stop (M266).** A PR-reference argument whose "
+            "`gh pr view <N> --json state,headRefName` reports `CLOSED`, with "
+            "a head branch not matching `m<nnn>-*`, stops here in owner and "
+            "guest mode.",
+            self.step1,
+        )
+
+    def test_stop_skips_the_walk_after_the_row_match(self):
+        self.assertIn(
+            "Make the candidate-row match above, then skip the tier check and "
+            "steps 2 to 7.",
+            self.step1,
+        )
+
+    def test_owner_removes_only_a_hotfix_marker_naming_the_pr(self):
+        self.assertIn(
+            "In owner mode, remove step 6's merge-guard marker when its line "
+            "starts with `hotfix ` and names that PR (`for PR #<N>`), and "
+            "leave any other marker as it is.",
+            self.step1,
+        )
+
+    def test_stop_comes_before_the_merged_pr_re_entry(self):
+        closed = self.step1.index("**Closed-PR stop (M266).**")
+        merged = self.step1.index("**Merged-PR re-entry (M172, M174).**")
+        self.assertLess(closed, merged)
+
+    def test_stop_edits_no_row(self):
+        self.assertIn("The stop edits no candidate row.", self.step1)
+
+    def test_close_block_says_closed_and_starts_over(self):
+        self.assertIn(
+            "End with a close block that says the PR closed without a merge "
+            "and that reopening it on GitHub is the operator's choice. The "
+            "close block names each matched row that ends with ` — started "
+            "#<N>`, a dead token that `/cairn-triage` proposes to remove. Its "
+            "fenced next command is `/hotfix` with a description of the bug, "
+            "which starts over on a new branch.",
+            self.step1,
+        )
+
+
+class TestHotfixOwnOpenPr(unittest.TestCase):
+    """M266 AC2: the operator's own open `hotfix-` PR that the owner arm
+    does not resume takes the walk as an authored fix whose PR exists. The
+    trigger, the adopting variants, and the step 6 and step 7 exemption
+    sentences are pinned on their own (M165 lesson), whitespace collapsed
+    (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+        self.step6 = flat(section(text, "6. **Approval gate:**", "7. If"))
+        self.step7 = flat(text.split("7. If the fix revealed", 1)[1])
+
+    def test_trigger_is_the_operators_own_hotfix_pr(self):
+        self.assertIn(
+            "**Own open PR (M266).** This paragraph covers an `OPEN` PR in "
+            "owner mode whose `headRefName` starts with `hotfix-` and whose "
+            "`author.login` equals `gh api user --jq .login`.",
+            self.step1,
+        )
+
+    def test_walk_treats_it_as_an_authored_fix(self):
+        self.assertIn(
+            "When the owner arm above does not resume it, the run takes the "
+            "tier-check walk with it as an authored fix whose PR exists, not "
+            "as an adopted PR.",
+            self.step1,
+        )
+
+    def test_steps_two_three_five_take_adopting_variants(self):
+        self.assertIn(
+            "Steps 2, 3, and 5 take their adopting variants. Step 2 runs `gh "
+            "pr checkout <N>`, step 3 runs the two-way check of the regression "
+            "test, and step 5 runs the changelog check. Pushes go to the PR's "
+            "head branch, and step 5's contributor fallback does not apply.",
+            self.step1,
+        )
+
+    def test_copilot_round_runs_without_a_create(self):
+        self.assertIn(
+            "Step 6's Copilot round arm runs for it, with a push to the PR's "
+            "head branch and no `gh pr create`. Step 7's off-but-present rule "
+            "applies to it as to an authored fix this run merged.",
+            self.step1,
+        )
+        self.assertIn(
+            "An adopted PR skips the round: the contributor's PR is theirs to "
+            "put to a reviewer. Step 1's own open PR is outside that "
+            "exemption: the round runs for it, with a push to the PR's head "
+            "branch and no `gh pr create`.",
+            self.step6,
+        )
+
+    def test_round_decline_leaves_the_own_pr_open(self):
+        self.assertIn(
+            "Step 1's own open PR existed before the run, so a decline leaves "
+            "it open, and the close block says so. That close block's CI line "
+            "says that nothing waits on CI now, and its fenced next command is "
+            "`/hotfix` with the PR reference, not a new branch.",
+            self.step6,
+        )
+
+    def test_step_seven_rule_applies_to_it(self):
+        self.assertIn(
+            "Step 1's own open PR is outside that adopted-PR exemption, so the "
+            "rule applies to it.",
+            self.step7,
+        )
+
+
+class TestHotfixGuestChangeRoute(unittest.TestCase):
+    """M266 AC3 and AC4: the guest arm's change route for the operator's own
+    `hotfix-` PR with a change request newer than its head. The trigger, the
+    stale-request fallback, the reads, the checks, the chip, the push, and
+    both closes are pinned on their own (M165 lesson), whitespace collapsed
+    (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+
+    def test_guest_read_has_the_route_fields(self):
+        self.assertIn(
+            "--json state,headRefName,reviewDecision,author,latestReviews,"
+            "commits`, and make the candidate-row match above. A PR that the "
+            "change route below covers takes that route.",
+            self.step1,
+        )
+
+    def test_every_other_guest_pr_reports_and_stops(self):
+        self.assertIn(
+            "For any other PR, the arm goes on here. Skip the tier check and "
+            "steps 2 to 7.",
+            self.step1,
+        )
+
+    def test_trigger_is_own_pr_with_a_newer_change_request(self):
+        self.assertIn(
+            "*Change route (M266).* It covers a PR whose `author.login` equals "
+            "`gh api user --jq .login`. The PR's `latestReviews` also has an "
+            "entry with the state `CHANGES_REQUESTED` and a `submittedAt` "
+            "later than the `committedDate` of the last entry of `commits`.",
+            self.step1,
+        )
+
+    def test_an_older_change_request_reports_and_stops(self):
+        self.assertIn(
+            "A change request older than the head means that the PR waits for "
+            "a new review, so it takes the report-and-stop above.",
+            self.step1,
+        )
+
+    def test_route_reads_the_conversation_and_makes_changes(self):
+        self.assertIn(
+            "The route runs the three reads of step 6's PR-conversation read, "
+            "with `--repo <base-repo>`.",
+            self.step1,
+        )
+        self.assertIn(
+            "The reads only read: the Copilot round's replies and resolves "
+            "(`skills/shared/copilot-review.md` §5) do not run on this route.",
+            self.step1,
+        )
+        self.assertIn(
+            "Make a change for each requested item, or name the reason for "
+            "making none, and commit each change on the branch.",
+            self.step1,
+        )
+
+    def test_route_rechecks_the_bar_and_the_test(self):
+        self.assertIn(
+            "tier-check the PR's whole diff against `<base>/<default-branch>`. "
+            "A diff over the hotfix bar takes this step's over-the-bar "
+            "disposition, and nothing is pushed. That close block names the "
+            "commits left on the branch. Re-run step 3's two-way check against "
+            "`<base>/<default-branch>`, and step 4's `verify` slot on the new "
+            "head.",
+            self.step1,
+        )
+
+    def test_a_failed_check_pushes_nothing(self):
+        self.assertIn(
+            "If either fails, push nothing, and stop with a close block that "
+            "names the failure and the local commits.",
+            self.step1,
+        )
+
+    def test_route_checks_out_from_the_base_repo(self):
+        self.assertIn(
+            "Run step 2's `git status` check, then `gh pr checkout <N> --repo "
+            "<base-repo>`.",
+            self.step1,
+        )
+
+    def test_one_chip_lists_each_item(self):
+        self.assertIn(
+            "Then pose one `AskUserQuestion` chip. Its question text lists "
+            "each requested item with its change or its reason, and a decline "
+            "option is present.",
+            self.step1,
+        )
+
+    def test_approval_pushes_and_posts_nothing(self):
+        self.assertIn(
+            "On approval, push with `git push <fork> HEAD:<headRefName>`, and "
+            "post no comment or reply on the PR. Then stop with the close block of "
+            "the report-and-stop above. That close block also says that the "
+            "reply to the maintainers is the operator's.",
+            self.step1,
+        )
+
+    def test_decline_pushes_nothing(self):
+        self.assertIn(
+            "On decline, push nothing, and stop with a close block that names "
+            "the unpushed commits.",
+            self.step1,
         )
 
 

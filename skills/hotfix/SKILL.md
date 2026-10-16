@@ -56,6 +56,19 @@ can resolve against the fork instead of the base repo.
    graduates it (records-hygiene §1). Within a hotfix, only step 7, after
    a merge, removes or narrows a matched row. A search-first absorb on
    another path can add to the row, but it never removes or narrows it.
+   **Closed-PR stop (M266).** A PR-reference argument whose
+   `gh pr view <N> --json state,headRefName` reports `CLOSED`, with a head
+   branch not matching `m<nnn>-*`, stops here in owner and guest mode. The
+   PR closed without a merge, so no walk can merge it. Make the
+   candidate-row match above, then skip the tier check and steps 2 to 7.
+   In owner mode, remove step 6's merge-guard marker when its line starts
+   with `hotfix ` and names that PR (`for PR #<N>`), and leave any other
+   marker as it is. The stop edits no candidate row. End with a close block that
+   says the PR closed without a merge and that reopening it on GitHub is
+   the operator's choice. The close block names each matched row that ends
+   with ` — started #<N>`, a dead token that `/cairn-triage` proposes to
+   remove. Its fenced next command is `/hotfix` with a description of the
+   bug, which starts over on a new branch.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
@@ -123,7 +136,7 @@ can resolve against the fork instead of the base repo.
      the acceptance chip's question text also names each matched row's
      title and says whether step 7 removes the row or narrows it.
    **Open-PR re-entry (M262).** A PR-reference argument whose
-   `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
+   `gh pr view <N> --json state,headRefName,headRefOid,latestReviews,author`
    reports `OPEN` takes one of the two arms below when its conditions
    hold. Any other open PR takes the tier-check walk that opens this step.
    - *Owner arm.* This arm runs in owner mode. Its head branch does not
@@ -157,13 +170,60 @@ can resolve against the fork instead of the base repo.
    - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
      branch starts with `hotfix-`. Such a PR is the operator's handoff,
      still with the maintainers. Read `gh pr view <N> --repo <base-repo>
-     --json state,headRefName,reviewDecision`, and make the candidate-row
-     match above. Skip the tier check and steps 2 to 7. Report the PR's
+     --json state,headRefName,reviewDecision,author,latestReviews,commits`,
+     and make the candidate-row match above. A PR that the change route
+     below covers takes that route. For any other PR, the arm goes on here.
+     Skip the tier check and steps 2 to 7. Report the PR's
      number, state, and review decision (an empty decision shown as
      `none`). Then stop with a close block. Its CI line says that the
      maintainers' CI on the PR is the check that counts. It also says that
      nothing waits on that CI here. Its fenced next command is `/hotfix`
      with the PR reference, to run after they merge.
+     *Change route (M266).* It covers a PR whose `author.login` equals
+     `gh api user --jq .login`. The PR's `latestReviews` also has an entry
+     with the state `CHANGES_REQUESTED` and a `submittedAt` later than the
+     `committedDate` of the last entry of `commits`. A change request older
+     than the head means that the PR waits for a new review, so it takes
+     the report-and-stop above. The route runs the three reads of step 6's
+     PR-conversation read, with `--repo <base-repo>`. The one chip below
+     takes the place of that read's per-item options. That read's
+     blocking rule does not apply, since the chip pushes and never merges.
+     The reads only read: the Copilot round's replies and resolves
+     (`skills/shared/copilot-review.md` §5) do not run on this route.
+     Run step 2's `git status` check, then `gh pr checkout <N> --repo
+     <base-repo>`. When the local branch already holds commits past
+     `headRefOid`, left by a declined run, show them and go on from them.
+     Make a change for each requested item, or
+     name the reason for making none, and commit each change on the
+     branch. Run `git fetch <base>`, then tier-check the PR's whole diff
+     against `<base>/<default-branch>`. A diff over the hotfix bar takes
+     this step's over-the-bar disposition, and nothing is pushed. That
+     close block names the commits left on the branch. Re-run step 3's
+     two-way check against `<base>/<default-branch>`, and step 4's
+     `verify` slot on the new head. If either fails, push nothing, and
+     stop with a close block that names the failure and the local commits.
+     When a change makes step 5's changelog entry wrong, edit the entry.
+     Then pose one `AskUserQuestion` chip. Its question text lists each
+     requested item with its change or its reason, and a decline option is
+     present. On approval, push with `git push <fork> HEAD:<headRefName>`,
+     and post no comment or reply on the PR. Then stop with the close block
+     of the report-and-stop above. That close block also says that the
+     reply to the maintainers is the operator's. On decline, push nothing,
+     and stop with a close block that names the unpushed commits. Every
+     close block of this route carries the report-and-stop's CI line, and
+     its fenced next command is `/hotfix` with the PR reference.
+   **Own open PR (M266).** This paragraph covers an `OPEN` PR in owner
+   mode whose `headRefName` starts with `hotfix-` and whose `author.login`
+   equals `gh api user --jq .login`. Such a PR is the operator's own
+   authored fix. When the owner arm above does not resume it, the run
+   takes the tier-check walk with it as an authored fix whose PR exists,
+   not as an adopted PR. Steps 2, 3, and 5 take their adopting variants.
+   Step 2 runs `gh pr checkout <N>`, step 3 runs the two-way check of the
+   regression test, and step 5 runs the changelog check. Pushes go to the
+   PR's head branch, and step 5's contributor fallback does not apply.
+   Step 6's Copilot round arm runs for it, with a push to the PR's
+   head branch and no `gh pr create`. Step 7's off-but-present rule
+   applies to it as to an authored fix this run merged.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
@@ -258,8 +318,14 @@ can resolve against the fork instead of the base repo.
    (§6); every other item keeps the four options. A decline at the chip
    closes this PR with `gh pr close <N>` and keeps the branch, and the
    close block names both; a later `/hotfix` for the same bug cuts a new
-   branch under a new slug. An adopted PR skips the round: the
-   contributor's PR is theirs to put to a reviewer. With the round off,
+   branch under a new slug. Step 1's own open PR existed before the run,
+   so a decline leaves it open, and the close block says so. That close
+   block's CI line says that nothing waits on CI now, and its fenced next
+   command is `/hotfix` with the PR reference, not a new branch. An
+   adopted PR skips the round: the contributor's PR is theirs to put to a
+   reviewer. Step 1's own open PR
+   is outside that exemption: the round runs for it, with a push to the
+   PR's head branch and no `gh pr create`. With the round off,
    nothing in this arm runs.
 
    **The gate:** present the diff, the regression-test evidence, and
@@ -436,8 +502,10 @@ can resolve against the fork instead of the base repo.
    close after an authored fix this run merged also follows the
    off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
    PR, or the re-entry's already-merged PR, does not, and a follow-up PR
-   the re-entry opens and merges does. End with the close block
-   (tracking-rules "Question gates and phase closes"), composed from the
-   hotfix's end state — recap of what was fixed and merged, status line,
+   the re-entry opens and merges does. Step 1's own open PR is outside
+   that adopted-PR exemption, so the rule applies to it. End with the
+   close block (tracking-rules "Question gates and phase closes"),
+   composed from the hotfix's end state — recap of what was fixed and
+   merged, status line,
    fenced next command(s) where any follow-up exists, and the safety line;
    no chip.

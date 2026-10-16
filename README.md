@@ -789,7 +789,12 @@ actually reach.
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread. A `/hotfix` rerun that resumes a merge you
   already approved skips that read and checks only that no review
-  requests changes.
+  requests changes. A rerun on a PR that closed without a merge stops and
+  points you at a fresh `/hotfix`. A rerun on your own open `hotfix-` PR
+  that no approval resumes runs the full hotfix checks on it as your own
+  fix. In guest mode, when the maintainers request changes on your
+  `hotfix-` PR after its newest commit, a rerun makes the changes, runs
+  the checks again, and asks you once before it pushes to your fork.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with
