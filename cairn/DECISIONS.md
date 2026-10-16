@@ -6241,7 +6241,10 @@ proving routine and always settled by a plain rebase.
 
 **Consequences:** Guest branches can live in the maintainers' repo, where
 M268 builds stacked milestones on them. The line is set by hand, as the
-README says. Pushes to a PR that is already open on the base repo run no
-access read, since the open PR shows the push worked. If a handoff's first
+README says. The change route, the sync of a pushed branch, and the
+Copilot round's fix pushes go to an open PR's head and run no access read,
+since that branch is already on its repo. The head rule stops on a head
+owner that is neither the base repo's owner nor the fork's, where D-171's
+route fell back to the fork. If a handoff's first
 push reaches the base repo without the line, or without the access read,
 this is the entry to supersede.

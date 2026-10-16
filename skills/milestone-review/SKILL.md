@@ -106,9 +106,7 @@ re-enters here, at the step the record shows is next:
   tree), the step-7 chip re-posed, and on approval step 8 skipping `gh pr
   create` — the header already names the open PR — from the push and the
   marker write onward. The step-7 PR-conversation read runs before that
-  chip is re-posed, the PR pre-existing. In guest mode the branch is not
-  pushed before the chip. Step 8's handoff pushes it, with step 1's lease
-  where step 1 rebased it.
+  chip is re-posed, the PR pre-existing.
 - (d) any other state, or a state above whose conditions are not met →
   step 1, then the review with the post-approval open at step 8 skipping
   `gh pr create` when the header already names an open PR. A `gh` that is
@@ -125,10 +123,11 @@ re-enters here, at the step the record shows is next:
    branch is worthless and the squash-merge would conflict anyway. Guest
    arm: the fetch is the whole sync — the default branch is never pushed —
    and a moved default branch is taken by `git rebase
-   <base>/<default-branch>` after `/milestone-implement` step 2's
-   remote-only-commits check, which runs before the rebase and notes the
-   remote tip's sha. The rebased branch is not pushed here. Step 8 pushes
-   it with that sha's lease.
+   <base>/<default-branch>` through `/milestone-implement` step 2's guest
+   sync in full: its remote-only-commits check before the rebase, and, for
+   a branch already pushed, its leased push right after it. That push only
+   re-syncs a branch that is already pushed. A branch never pushed stays
+   local until step 8.
 
 2. Nothing is pushed and no PR is opened here: the push and the `gh pr
    create` sit in step 8, after the step-7 approval, so a
@@ -643,9 +642,7 @@ re-enters here, at the step the record shows is next:
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to
-   the push remote (`git push -u <push> <slug>`). A pushed branch that step 1
-   rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being
-   the remote tip that step 1's check read. `<push>` and `<push-owner>` are the rulebook's push remote and
+   the push remote (`git push -u <push> <slug>`). `<push>` and `<push-owner>` are the rulebook's push remote and
    its owner. A branch whose PR is already open is pushed to that PR's head
    remote, by the rulebook's open-PR head rule. When `<push>` is `<base>`, first run
    `gh api repos/<base-repo> --jq .permissions.push`. On any output but

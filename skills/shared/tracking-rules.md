@@ -266,7 +266,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   repo `<push>` names (`gh repo view "$(git remote get-url <push>)" --json owner -q .owner.login`). A push to a branch
   that already has an open PR goes to the remote that holds that PR's head, whatever `<push>` now says (the **open-PR
   head rule**). Read the head's owner with `gh pr view <N> --repo <base-repo> --json headRepositoryOwner -q
-  .headRepositoryOwner.login`. The head remote is `<base>` when that login equals the base repo's owner, and `<fork>`
+  .headRepositoryOwner.login`. The head remote `<head-remote>` is `<base>` when that login equals the base repo's owner, and `<fork>`
   when it equals `<fork-owner>`, both ignoring case. Any other login, or a failed or empty read, stops the push, and
   the stop names the read. When a guest
   push target resolves to the fork, by `<push>` or by an open PR's head, and no remote matches, or more than one, the

@@ -881,8 +881,9 @@ recommend one) and writes `# Collaboration mode: guest` into
   and open the PR from it. If you can push to the upstream repo and want
   the branch there, add the line `# Push remote: base` near the top of
   `cairn/PROFILE.md`. You can then set another open PR's branch as a PR's
-  base, which GitHub allows only for a branch in the upstream repo. With the line set, cairn reads your push permission on the
-  upstream repo before each handoff push. If it is not `true`, cairn
+  base, which GitHub allows only for a branch in the upstream repo. With
+  the line set, cairn reads your push permission on the upstream repo
+  before each handoff push. If it is not `true`, cairn
   pushes nothing and says why. A branch whose PR is already open keeps
   pushing to where that PR's head lives. Before a resync rebases a pushed
   branch, cairn fetches it. If the remote branch has commits your copy

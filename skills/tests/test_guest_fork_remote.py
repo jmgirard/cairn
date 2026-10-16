@@ -18,8 +18,8 @@ things have to survive:
   4. The push-access read before a handoff push to the base repo, in
      `/milestone-review` and `/hotfix`; implement's stop before it rebases
      over commits it does not have, with no check for a branch never
-     pushed; and review's rebase, which takes that check first and leases
-     step 8's push on the tip it read.
+     pushed; and review's rebase, which takes implement's sync whole, so a
+     pushed branch goes up with its lease right after the checked rebase.
   5. No skill prose calls `origin` the fork.
 
 The pinned phrases wrap across source lines, so this guard collapses
@@ -52,7 +52,7 @@ PUSH_REMOTE = [
     "`<push-owner>` is the owner of the repo `<push>` names",
     "A push to a branch that already has an open PR goes to the remote that holds that PR's head, whatever `<push>` now says (the **open-PR head rule**).",
     "Read the head's owner with `gh pr view <N> --repo <base-repo> --json headRepositoryOwner -q .headRepositoryOwner.login`.",
-    "The head remote is `<base>` when that login equals the base repo's owner, and `<fork>` when it equals `<fork-owner>`, both ignoring case.",
+    "The head remote `<head-remote>` is `<base>` when that login equals the base repo's owner, and `<fork>` when it equals `<fork-owner>`, both ignoring case.",
     "Any other login, or a failed or empty read, stops the push, and the stop names the read.",
 ]
 
@@ -83,18 +83,17 @@ ACCESS_FILES = ["milestone-review/SKILL.md", "hotfix/SKILL.md"]
 
 REMOTE_ONLY_STOP = [
     "so the rebase waits on one check, run before the rebase.",
-    "Read the remote the branch tracks with `git config branch.<slug>.remote`",
-    "With no remote set the branch was never pushed: rebase, and push nothing.",
+    "The remote that holds the branch is the open PR's head remote (the rulebook's open-PR head rule), else `<push>`.",
+    "When `git ls-remote --exit-code --heads <remote> <slug>` finds no such branch, the branch was never pushed: rebase, and push nothing.",
     "read `git rev-list <slug>..<remote>/<slug>`.",
     "If that lists commits, do not rebase, push nothing, and stop with a close block that names those commits.",
     "Otherwise note the remote tip's sha, rebase, and push with",
 ]
 
-# Review's guest rebase takes the check before it, and step 8 leases on its sha.
+# Review's guest rebase takes implement's sync whole: check first, then the leased push.
 REVIEW_REBASE = [
-    "after `/milestone-implement` step 2's remote-only-commits check, which runs before the rebase and notes the remote tip's sha.",
-    "The rebased branch is not pushed here. Step 8 pushes it with that sha's lease.",
-    "A pushed branch that step 1 rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being the remote tip that step 1's check read.",
+    "through `/milestone-implement` step 2's guest sync in full: its remote-only-commits check before the rebase, and, for a branch already pushed, its leased push right after it.",
+    "A branch never pushed stays local until step 8.",
 ]
 
 ORIGIN_IS_FORK = re.compile(r"`origin`,? \(?the fork|the fork,? \(?`origin`", re.I)

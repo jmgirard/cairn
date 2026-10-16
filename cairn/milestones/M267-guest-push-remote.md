@@ -167,4 +167,22 @@ Evidence gathered 2026-10-16 on branch head eae9b417 (current with origin/main 7
 - prior-review #1: mutation coverage of M266's no-post clause thinned — fix now (same as blame-history #5).
 - prior-review #2: the change route pushes to a base-repo head with no access read — reject (false as a gap): an open PR whose head is on the base repo already proves the push; the read guards the handoff's first push, which is what README and CHANGELOG say.
 - prior-review #3: open comments on PR #279 (never-pushed check; access read keyed to `<push>`) — fix now for the first (diff-bug #3), follow-up for the second (diff-bug #6).
-- Consistency gate: `cairn_validate.py` exit 0, all checks passed. No DESIGN.md principle changed, so `cairn_impact --changed` is skipped. Profile consistency-gate: the verify run above.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed.
+- Pass 2 (after return 1), head 7b133f15 then the fix-now commit below. spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: review step 1's rebase left unpushed until step 8 means a later check (after a decline and another default-branch move) lists the operator's own pre-rebase commits — fix now (fails safe as a stop, so no floor return): review step 1 now takes implement's sync whole, so a pushed branch goes up with its lease right after the checked rebase.
+- diff-bug #2: across sessions step 8 can have a rebased branch and no sha for its lease — fix now (same change: step 8 no longer leases; the sync pushes).
+- diff-bug #3: a pushed branch with no tracking config reads as never pushed — fix now: implement finds the branch with `git ls-remote --exit-code --heads` on the head remote, else `<push>`.
+- diff-bug #4: a tracked remote that is a URL, or a deleted remote branch, breaks `rev-list` — fix now (same change).
+- diff-bug #5: `/milestone` §2 says implement re-pushes to the PR's head remote, but implement used the tracked remote — fix now (implement now uses the head rule).
+- diff-bug #6: step 1's sha could come from a different remote than step 8 pushes to — fix now (step 8 no longer leases).
+- diff-bug #7: D-172 says open-PR pushes run no access read, but step 8 keys the read on `<push>` — fix now: D-172 names the paths that run none (change route, sync, Copilot fixes); step 8's keyed read stays the "Guest push remote edges" follow-up.
+- diff-bug #8: `<head-remote>` is undefined outside `/hotfix` — fix now (the rulebook names it).
+- diff-bug #9: no guard pins route (c)'s guest sentence or the cross-session path — reject (planned change): the sentence is removed by this fix, and the guard pins the sync wording that closes the path.
+- blame-history #1: D-172's new sentence contradicts step 8's read — fix now (same as diff-bug #7).
+- blame-history #2: implement's tracked-remote target is a second source of truth beside the head rule — fix now (same as diff-bug #5).
+- blame-history #3: route (c) said "pushed" then the guest sentence said "not pushed" — fix now (the guest sentence is gone; in guest mode step 1's sync pushes a pushed branch, which matches route (c)).
+- blame-history #4: copilot-review's fix push lost its lease clause — reject (false): the round's fix commits sit on top of the pushed head, so the push is a fast-forward and needs no lease.
+- blame-history #5: the head rule stops on a third owner where D-171's route fell back to the fork — fix now (D-172 records the stricter stop; pass 1's blame-history #2 asked for it).
+- blame-history #6: README line 884 runs past the file's wrap — fix now (rewrapped).
+- prior-review: no prior-review evidence for the return's changes; the PR #279 thread on the access read is current-PR, triaged as the "Guest push remote edges" follow-up.
+- Pass 2 evidence at the fix-now commit: AC1/AC4 rulebook clauses re-read present (plus `<head-remote>` named); AC2's grep returns 36 lines, none a guest push to the fork outside `<push>` or the head rule; AC3 both access reads present; AC5 implement step 2 still finds the remote holding a pushed branch and reads `git rev-list <slug>..<remote>/<slug>` before the rebase, stops on output, else leases on the tip; AC6 README/CHANGELOG unchanged in substance; AC7 scripts 0, hooks 0, plugin validate 0, marketplace validate 0, plugin test 0, skills/tests 820 OK, cairn_validate all checks passed. No DESIGN.md principle changed, so `cairn_impact --changed` is skipped. Profile consistency-gate: the verify run above.
