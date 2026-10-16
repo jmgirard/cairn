@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M262: A rerun of /hotfix on an open PR resumes the merge
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -56,7 +56,7 @@ Button".
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: In owner mode, `/hotfix` step 6 states that on approval of an
+- [x] AC1: In owner mode, `/hotfix` step 6 states that on approval of an
       authored fix the PR is opened, then the marker is written as
       `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, and
       only then does the CI wait run.
@@ -76,7 +76,7 @@ Button".
       line names; it names in chat, and leaves alone, any other row the
       rerun's match finds. An `OPEN` PR outside this trigger keeps step 1's
       existing path.
-- [ ] AC3: In guest mode, step 1 states that a PR-reference argument whose
+- [x] AC3: In guest mode, step 1 states that a PR-reference argument whose
       `gh pr view <N> --repo <base-repo> --json
       state,headRefName,reviewDecision` reports `OPEN` and a head branch
       starting `hotfix-` takes no tier check and none of steps 2 to 7. The
@@ -84,15 +84,15 @@ Button".
       with a close block whose CI line says the maintainers' CI on the PR is
       the check that counts and whose fenced next command is `/hotfix` with
       the PR reference.
-- [ ] AC4: Step 6's CI-wait timeout close names step 1's open-PR
+- [x] AC4: Step 6's CI-wait timeout close names step 1's open-PR
       re-entry as the route its rerun takes while the PR is still open and
       the marker names it, and the merged-PR re-entry for a PR merged since.
-- [ ] AC5: README.md's pane paragraph and the hotfix comment in
+- [x] AC5: README.md's pane paragraph and the hotfix comment in
       `hooks/status/pane.ts` give no reason that an open-PR resume makes
       false; `git grep -n -i "resumes an open hotfix"` outside `cairn/`
       returns no match; and CHANGELOG.md's Unreleased section has one entry
       describing the open-PR resume for owner and guest mode.
-- [ ] AC6: The active profile's `verify` slot is green (both gating
+- [x] AC6: The active profile's `verify` slot is green (both gating
       suites, both `claude plugin validate` runs, `claude plugin test .`),
       and the hand-run `skills/tests` suite is green.
 
@@ -170,6 +170,8 @@ Button".
 - 2026-10-16: T5 done: verify slot green (scripts and hooks suites exit 0, both `claude plugin validate` exit 0, `claude plugin test .` 1777 pass 0 fail); `skills/tests` exit 0.
 - 2026-10-16: claim audit: 28 claims read, 4 corrected — skills/hotfix/SKILL.md, CHANGELOG.md, skills/tests/test_resume_routing.py. (1) The PR-body row rule is scoped to a merge resumed with no chip, and an adopted PR's body has no `Candidate row:` line, so its resumed merge edits no row; after a re-posed chip, step 7 runs as for any approved merge (CHANGELOG narrowed to match). (2) The moved-head fetch is `git fetch origin pull/<N>/head`, so a fork PR works, with a failed fetch falling back to `gh pr diff`. (3) The timeout close names the re-asked approval when the head moved. (4) The head oid is read "after any push, just before the marker write". Suites green after the corrections.
 - 2026-10-16: implement done; status `review`. Reading recorded for review: AC2's "a resumed merge" row rule is shipped for a merge resumed with no chip, since a moved head re-poses the gate and that chip names step 1's current matches.
+- 2026-10-16: review pass 1: AC1, AC3–AC6 verified at 97d8a333; three lenses spawned; Copilot requested on PR #274 (pending).
+- 2026-10-16: amendment routed: AC2 — the promise mandates an unsafe resume: a moved head re-poses the gate with steps 2 to 5 skipped, so no fresh regression-test or verify evidence (diff-bug #4, prior-review #1, #2); a same-head resume skips the changes-requested blocking rule (diff-bug #3, blame-history #2); the PR-body row clause drops rows the chip promised and contradicts step 7 (diff-bug #5, blame-history #3). Fix-now items for the same round: diff-bug #1, #2 (Scope Out), #7, #8, #9, #11, #12 (D-entry), #13, #14.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -183,3 +185,47 @@ Button".
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Review head 97d8a333, PR #274 (opened at review start, Copilot arm). Evidence is a whitespace-collapsed substring read of `skills/hotfix/SKILL.md` step 1 (to `2. **Branch`) and step 6 (to `7. If`), run 2026-10-16.
+
+- AC1: step 6 carries "On approval, the order is fixed: the push and any `gh pr create` above, then the merge-guard marker, then the CI wait, then the merge." and the marker line `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>` — both found. `_MARKER_PR` (`hooks/cairn_common.py:184`) matches `for PR #<N>` with trailing text. PASS.
+- AC3: step 1 guest arm found: trigger "This arm runs in guest mode, for an `OPEN` PR whose head branch starts with `hotfix-`", the read `gh pr view <N> --repo <base-repo> --json state,headRefName,reviewDecision`, "Skip the tier check and steps 2 to 7. Report the PR's number, state, and review decision", the CI line ("the maintainers' CI on the PR is the check that counts"), and the fenced `/hotfix` with the PR reference. PASS.
+- AC4: step 6's timeout close found: "while the PR is still open and the marker names it, step 1's open-PR re-entry resumes at this wait (or asks for approval again when the head moved since the approval), and for a PR merged since, step 1's merged-PR re-entry verifies the merged diff post-hoc". PASS.
+- AC5: `git grep -n -i "resumes an open hotfix" -- . ':!cairn/'` exit 1 (no match); README.md:434 reads "A hotfix line has no Button."; `hooks/status/pane.ts:541` ends the comment at "(M226)."; CHANGELOG.md:363, under `## Unreleased` → `### Fixes`, holds the one entry "A `/hotfix` rerun on an open hotfix PR finishes the merge you approved." covering owner and guest mode. PASS.
+- AC6: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, `claude plugin validate` plugin and marketplace exit 0 (no `plugins[N].version` warning), `claude plugin test .` 1777 pass 0 fail, `skills/tests` 761 OK. PASS.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` skipped; profile gate: verify green on the review head, no marketplace version warning, CHANGELOG entry present with no milestone number.
+- AC2: every phrase found in step 1 (trigger, quote, skip of tier check and steps 2 to 5, same-head skip and CI wait, moved-head re-posed gate, PR-body row and issue rule, other open PRs on the walk). Not ticked: the review findings below show the criterion's own promise is unsafe, so it routes to an amendment return.
+- spawned: diff-bug, blame-history, prior-review (pass 1).
+- diff-bug #1: the head is checked once at step 1 and `gh pr merge` carries no `--match-head-commit`, so a push during the wait merges unapproved commits — fix now, in the AC2 amendment round (merge with `--match-head-commit <oid>`).
+- diff-bug #2: the guest arm stops a `CHANGES_REQUESTED` PR while Scope Out says such a PR keeps today's path — fix now, in the amendment round (Scope Out reworded: the stop reports the decision; fixing requested changes stays in the narrowed candidate row).
+- diff-bug #3: the same-head resume skips the PR-conversation read and its changes-requested blocking rule, so a later "request changes" is merged past — amendment return (AC2 mandates the skip).
+- diff-bug #4: the moved-head gate has no fresh regression-test or `verify` evidence, against step 5's "Never merge a fix whose regression test is still missing" and the hotfix bar on every path (D-131) — amendment return (AC2 mandates skipping steps 2 to 5).
+- diff-bug #5: a resumed adopted merge edits no row although the approval chip promised the row edits — amendment return (AC2's PR-body row clause).
+- diff-bug #6: a resumed follow-up PR of the merged-PR re-entry may never close the merged PR's `Fixes #N` issue, which rode on the follow-up's chip — follow-up, new candidate row "Hotfix resume edges (M262 review)".
+- diff-bug #7: the moved-head path's "skip the push" conflicts with step 6's create-skip clause — fix now, in the amendment round (moot once a moved head takes the walk).
+- diff-bug #8: "the read runs at most once per hotfix" is false once a rerun reads again — fix now, in the amendment round (reworded per run).
+- diff-bug #9: the head oid read before the marker write can bind commits pushed after the gate's diff was shown — fix now, in the amendment round (compare with the head the gate presented).
+- diff-bug #10: the guest arm does not check who opened the `hotfix-` PR — follow-up, "Hotfix resume edges (M262 review)".
+- diff-bug #11: step 6's order sentence is not scoped to owner mode — fix now, in the amendment round.
+- diff-bug #12: no D-entry records the no-chip resume against D-130 route (c) — fix now, in the amendment round (D-entry annotating D-130).
+- diff-bug #13: the guard leaves AC3's CI line and next command and AC4's merged half unpinned — fix now, in the amendment round.
+- diff-bug #14: step 6's CI-line clause still says only "re-derives that state and waits again" — fix now, in the amendment round.
+- blame-history #1: a resumed merge closes the issue from the PR body with no chip — reject, false as a new defect: step 7 already reads the body's `Fixes #N` after the CI wait on every path, and the marker shows that step 6's chip, which names that close, was approved.
+- blame-history #2: same as diff-bug #3 — amendment return.
+- blame-history #3: step 1's PR-body row rule contradicts step 7's "edit each row step 1 matched" — amendment return (with diff-bug #5).
+- blame-history #4: same as diff-bug #2 — fix now, in the amendment round.
+- blame-history #5: same as diff-bug #12 — fix now, in the amendment round.
+- blame-history #6: the marker is fragile resume state (a server-side merge failure leaves it consumed; `/milestone-review` writes the same path) — follow-up, "Hotfix resume edges (M262 review)"; the fallback is today's walk, not an unsafe merge.
+- blame-history #7: same as diff-bug #1 — fix now, in the amendment round.
+- blame-history #8: unpushed local commits are invisible to the head check — reject, false as a defect: the merge takes the remote head the approval bound, and unpushed commits were never approved.
+- blame-history #9: same as diff-bug #6, and the narrowing note's PR number is the Out item in "Hotfix row-graduation edges (M249 review)" — follow-up.
+- blame-history #10: same as diff-bug #10 — follow-up.
+- blame-history #11: the one-mechanism pin is met by wording — reject, planned change: step 1 reads the same marker step 6 writes, no second mechanism.
+- blame-history #12: README line 434 rewraps short — reject, style.
+- blame-history #13: mutation blocks embed physical wraps — reject, planned change: the M172 entries use the same convention, and the harness hard-errors on a missing block, so a reflow fails loud.
+- prior-review #1: the moved-head gate does not re-run the hotfix bar (M172 F1, D-131) — amendment return (with diff-bug #4).
+- prior-review #2: an old-format marker with no oid takes the same path — amendment return (with diff-bug #4).
+- prior-review #3: the row match runs before each stop (PR #259) — noted, clean.
+- prior-review #4: no stale "no command resumes" text; tracking-rules:285 shows the milestone marker without an oid — reject, false: that line is `/milestone-review`'s marker, which this milestone does not change.
+- prior-review #5: same as blame-history #8 — reject.
+- prior-review #6: mutation entries per assertion (PRs #242, #243, #260) — noted, clean.
