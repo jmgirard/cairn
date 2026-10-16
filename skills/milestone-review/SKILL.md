@@ -647,7 +647,17 @@ re-enters here, at the step the record shows is next:
    remote, by the rulebook's open-PR head rule. When `<push>` is `<base>`, first run
    `gh api repos/<base-repo> --jq .permissions.push`. On any output but
    `true`, or a failed read, push nothing, open no PR, and stop with a
-   close block that names the read and its result. Then, unless the
+   close block that names the read and its result. **Stacked
+   milestone** (tracking-rules "Collaboration mode"): before the push,
+   read the stack base's PR with `gh pr view <base-pr> --repo <base-repo>
+   --json state`. If it is `MERGED`, push nothing and open no PR. Set
+   status `in-progress`, write the work-log line `restack: PR #<base-pr>
+   merged`, and stop with a close block whose next command is
+   `/milestone-implement M<NNN>`, whose stacked sync does the restack. If
+   it is `CLOSED`, stop the same way, the close block naming the closed
+   PR. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
+   and its body names the stack base's PR (`#<base-pr>`) as the change it
+   builds on. Then, unless the
    header already names an open PR, open the PR against the base repo from
    the pushed branch —
    `gh pr create --repo <base-repo> --head <push-owner>:<slug>`, opened

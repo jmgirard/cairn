@@ -81,7 +81,7 @@ planned.
 - [x] T3: `/milestone-implement` step 1 (line 36) and step 2's guest arm: accept a stack base, stop on two or more or
       on a branch missing from `<base>`, cut from its branch, sync onto it with `--onto`, and write the `stack base:`
       line at the cut and at each sync.
-- [ ] T4: `/milestone-review` step 8's guest arm: read the stack base PR's state; on `OPEN`, `--base
+- [x] T4: `/milestone-review` step 8's guest arm: read the stack base PR's state; on `OPEN`, `--base
       <stack-base-branch>` and the PR body line naming the base PR; on `MERGED`, route to the restack.
 - [ ] T5: The restack: `/milestone` §2's `blocked` bullet (lines 173–185) gains the merged-stack-base route;
       `/milestone-implement`'s guest sync gains the `--onto` rebase, the lease push, and the conditional base edit.
@@ -103,6 +103,7 @@ planned.
 - 2026-10-16: T1: six fixtures `stack-base`, `stack-owner` (push line, no mode line), `stack-no-push-line`, `stack-no-pr` (an issue URL), `stack-in-progress`, `stack-two-bases` (M305 on one of the two bases stays workable); before T2 both readers failed on `stack-base` and `stack-two-bases` only; band tests' IDLE_DRAWN and FLOWS tables gained the new fixtures.
 - 2026-10-16: T2: chose a `push_remote(root)` reader in `hooks/cairn_common.py` sharing one header reader with `collaboration_mode`, a `stack_bases` set built from `blocked()` (non-archived rows with a PR URL), and one `_met` set for both `workable` and `waiting`, so a row on two stack bases lists both as unmet; TS mirrors as `pushRemote`, `unmetDeps`; verify green (scripts 409 OK, hooks 178 OK, both validates 0, plugin test 2018 pass).
 - 2026-10-16: T3: implement step 1 takes the stack base's PR from its milestone header (`<base-pr>`) and the branch from that PR's `headRefName`; a fresh start also stops when the base PR is not `OPEN` (close block → `/milestone`), a case the plan did not name; step 2 gains the cut line and one "Stacked sync" paragraph that holds both the `--onto` sync (T3) and the restack (T5's implement half); verify green (409/178/0/0/2018).
+- 2026-10-16: T4: review step 8's guest arm reads the base PR before the push; `MERGED` sets `in-progress`, writes `restack: PR #<base-pr> merged`, and stops with a close block naming `/milestone-implement M<NNN>` (a close block, not a Skill call, since the user already chose the handoff); `CLOSED` stops the same way; `OPEN` adds `--base` and a body line naming the base PR; verify green (409/178/0/0/2018).
 
 ## Decisions
 
