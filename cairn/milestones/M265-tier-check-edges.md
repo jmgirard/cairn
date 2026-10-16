@@ -1,6 +1,6 @@
 # M265: Close the tier check's five open edges
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -15,13 +15,11 @@
 
 ## Scope
 
-**In:** the five edges of the candidate row "Tier check edges" (M250 review). They are in `skills/milestone-plan/SKILL.md` step 1 and step 4, the git model in `skills/shared/tracking-rules.md`, records-hygiene §1, `skills/shared/templates/claude-md-section.md`, this repo's `CLAUDE.md`, one D-entry, and `CHANGELOG.md`.
+**In:** the five edges of the candidate row "Tier check edges" (M250 review). They are in `skills/milestone-plan/SKILL.md` step 1 and step 4, the git model in `skills/shared/tracking-rules.md`, records-hygiene §1, `skills/shared/templates/claude-md-section.md`, this repo's `CLAUDE.md`, one D-entry, and `CHANGELOG.md`. In both routing files the last bullet ("nothing reaches it without the user's explicit approval at the merge question") also names the tier chip for a trivial edit (amended at implement).
 
 **Out:**
 - `/hotfix`'s own resume routes for an unmarked, closed, or changes-requested PR. These stay in the candidate row "`/hotfix` has no resume route for an open PR".
 - The pane hotfix Button, the pane fixes, and the open-PR audit. These stay candidate rows, at the user's choice in the question set.
-- The routing template's last bullet ("nothing reaches it without the user's explicit approval at the merge question"). It is about code implemented outside a branch, and a trivial edit has no runtime surface.
-
 ## Acceptance criteria
 
 - [ ] AC1: `skills/milestone-plan/SKILL.md` step 1's trivial route matches each row of `cairn/ROADMAP.md`'s Candidates section whose short title the request quotes. It skips a row whose title a `planned`, `in-progress`, `blocked`, or `review` milestone file quotes. The trivial option's description names each matched row. The edit deletes a matched row it covers in full and narrows one it covers in part, as `/hotfix` step 7 does. In owner mode `cairn/ROADMAP.md` is then a file the edit touches, so the five checks and the `git commit -- <paths>` cover it. In guest mode the row changes on disk with no commit. Records-hygiene §1 names the trivial route as a completion that graduates its row.
@@ -47,7 +45,7 @@
 - [x] T3: Reword the two git-model bullets in `skills/shared/tracking-rules.md` (AC2). Re-run the hand-run guards that read that file: `test_default_branch_parameterized.py`, `test_gate_wording.py`, `test_plan_tier_check.py`.
 - [x] T4: Reword the `/milestone-plan` and Trivial bullets of the template and the `/milestone-plan` bullet of `CLAUDE.md` (AC5). Count the template section's lines. Re-run `hooks/tests` (the guest injection reads the template) and `test_positioning_guard.py`.
 - [x] T5: Append a D-entry to `cairn/DECISIONS.md` that annotates D-162. It records the git-model reconciliation, the guest pull-request rule, the §3 exemption, and the trivial route's row graduation. Write the AC6 CHANGELOG entries.
-- [ ] T6: Run both gating suites (`scripts/tests`, `hooks/tests`), `claude plugin validate`, `claude plugin test`, the marketplace validate, every hand-run `skills/tests` file that T1 to T4 touched, the AC2 and AC5 greps, and `python3 scripts/cairn_validate.py`.
+- [x] T6: Run both gating suites (`scripts/tests`, `hooks/tests`), `claude plugin validate`, `claude plugin test`, the marketplace validate, every hand-run `skills/tests` file that T1 to T4 touched, the AC2 and AC5 greps, and `python3 scripts/cairn_validate.py`.
 
 ## Work log
 
@@ -70,3 +68,8 @@
 - 2026-10-16: T1 and T2 pins shown red: an in-memory probe deleted each of the 10 new clauses from the read text, one at a time. Each run failed its test, and the unmutated control passed. `test_plan_tier_check` stays exempt from the mutation registry as at M250.
 - 2026-10-16: T4 done: the template's and `CLAUDE.md`'s `/milestone-plan` bullet now says the plan first offers a fitting hotfix or trivial route, then one question set. The template's Trivial bullet says guest mode leaves the edit on disk. Sections stay at 29 (template) and 26 (`CLAUDE.md`) lines. The AC5 grep exits 1. README.md already describes the tier question (its "Answer two questions in a run" bullet), so it is unchanged.
 - 2026-10-16: T5 done: D-170 annotates D-162 with the four rule changes. CHANGELOG gains three Fixes entries (row graduation, guest PR requests, no second tier question after a §3 pick) and one "Changes that affect existing repos" entry for the routing wording. That entry says to update an old section by hand, because `/cairn-init` §3 repair "never rewrites content the repo authored".
+- 2026-10-16: T6 done: scripts (408 OK), hooks (175 OK), skills/tests (787 OK), both `claude plugin validate` runs, `claude plugin test` (1777 pass, 0 fail), the AC2 and AC5 greps (both exit 1), and `cairn_validate` (all checks passed).
+- 2026-10-16: claim audit: 22 claims read, 0 corrected — CHANGELOG.md, CLAUDE.md, skills/milestone-plan/SKILL.md, skills/milestone/SKILL.md, skills/shared/records-hygiene.md, skills/shared/templates/claude-md-section.md, skills/shared/tracking-rules.md.
+- 2026-10-16: substantive amendment: Scope moves the routing files' last bullet from Out to In. The claim reader read it as conflicting with the new tracking-rules approval sentence, which is the plan's recorded falsifier for leaving it. Both files now name the tier chip beside the merge question. No criterion changed, so no re-audit is owed. The template section stays at 29 lines and `CLAUDE.md`'s at 27.
+- 2026-10-16: claim reader side notes: a guest `CLOSED` unmerged `hotfix-` PR has no `/hotfix` arm (added to the candidate row "`/hotfix` has no resume route for an open PR"). A trivial-route narrowing does not say what happens to a `started #<n>` token, which only a guest `/hotfix` writes. That is left as is, since that token names another record and the trivial route does not own it.
+- 2026-10-16: implement complete: after the amendment, hooks (175 OK), scripts (408 OK), skills/tests (787 OK), plugin validate, and `cairn_validate` passed again. Status set to review.

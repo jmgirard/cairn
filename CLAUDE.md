@@ -27,7 +27,8 @@ first:
   question. Typed `/milestone-implement` or `/milestone-review` resumes it.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without explicit user approval at the merge question.
+  reaches main without explicit user approval at the merge question, or at
+  the tier chip for a trivial edit.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't
