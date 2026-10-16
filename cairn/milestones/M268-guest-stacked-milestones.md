@@ -34,27 +34,27 @@ planned.
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn_next.workable` and the pane reader's workable list count a `planned` milestone as workable when
+- [x] AC1: `cairn_next.workable` and the pane reader's workable list count a `planned` milestone as workable when
       each dependency is `done` or a stack base and at most one is a stack base. The fixtures under
       `hooks/status/fixtures/`, held to both readers by `scripts/tests/test_status_fixtures.py` and `claude plugin
       test`, include a guest repo with the line where a milestone on one stack base is workable, and five trees where
       it is not: owner mode, guest mode without the line, a `blocked` dependency whose header names no PR URL, an
       `in-progress` dependency whose header names a PR URL, and a milestone on two stack bases.
-- [ ] AC2: `/milestone-implement` step 1 accepts a stack base as a met dependency; it stops with a close block naming
+- [x] AC2: `/milestone-implement` step 1 accepts a stack base as a met dependency; it stops with a close block naming
       them when a milestone has two or more, and with one naming the branch when `git ls-remote <base>
       <stack-base-branch>` finds no such branch. Step 2's guest arm cuts the branch from `<base>/<stack-base-branch>`;
       each later sync onto an unmerged stack base runs `git rebase --onto <base>/<stack-base-branch> <sha>` with the
       newest `stack base:` line's `<sha>`; and the cut and each sync write a work-log line `stack base: <branch> at
       <sha>` naming the new base tip.
-- [ ] AC3: While the stack base's PR is `OPEN`, `/milestone-review` step 8's guest arm opens a stacked milestone's PR
+- [x] AC3: While the stack base's PR is `OPEN`, `/milestone-review` step 8's guest arm opens a stacked milestone's PR
       with `--base <stack-base-branch>`, and the PR body names the stack base's PR; when that PR is `MERGED`, step 8
       opens no PR and routes to `/milestone-implement M<NNN>` for the restack of AC4.
-- [ ] AC4: Once the stack base's PR is `MERGED`, `/milestone` §2 routes a `blocked` stacked milestone to
+- [x] AC4: Once the stack base's PR is `MERGED`, `/milestone` §2 routes a `blocked` stacked milestone to
       `/milestone-implement M<NNN>`, whose sync runs `git rebase --onto <base>/<default-branch> <sha> <slug>` with the
       newest `stack base:` line's `<sha>`, force-pushes with lease to the PR's head remote, and runs `gh pr edit <N>
       --repo <base-repo> --base <default-branch>` when `gh pr view <N> --repo <base-repo> --json baseRefName` still
       names the stack-base branch.
-- [ ] AC5: The stack-base exception is stated at each statement of the workable rule that
+- [x] AC5: The stack-base exception is stated at each statement of the workable rule that
       `grep -n -i -e workable -e "Depends on" skills/shared/tracking-rules.md skills/milestone-plan/SKILL.md
       skills/milestone-implement/SKILL.md cairn/DESIGN.md README.md` returns (among them tracking-rules line 158,
       milestone-plan step 7's run chaining, DESIGN.md line 167, README.md line 186); the README's guest-mode section and
@@ -113,3 +113,9 @@ planned.
 ## Decisions
 
 ## Review
+
+- AC1: `python3 -m unittest scripts.tests.test_status_fixtures -v` on the review head: 11 OK, `test_python_helpers_match_expected` and `test_stack_base_fixtures_hold_the_cases` pass; expected workable lists read `stack-base` [M302, M304], `stack-owner`, `stack-no-push-line`, `stack-no-pr`, `stack-in-progress` [M304], `stack-two-bases` [M304, M305]; `fixtures.gen.ts` holds the six trees; planted defect: the same suite with main's `scripts/cairn_next.py` fails on `stack-base` and `stack-two-bases` only; the TS reader side is `claude plugin test` in AC6's run.
+- AC2: whitespace-normalized read of `skills/milestone-implement/SKILL.md`: step 1 holds "except that in guest mode one of them may be a stack base", the two-or-more stop, and the stop when `git ls-remote <base> <stack-base-branch>` prints no `refs/heads/<stack-base-branch>` line, naming the branch; step 2 holds the cut `git checkout -b <slug> <base>/<stack-base-branch>` with its `stack base: <stack-base-branch> at <sha>` line, the open-base sync `git rebase --onto <base>/<stack-base-branch> <old>` where `<old>` is "the `<sha>` of the newest `stack base:` line", and "Each sync writes a work-log line `stack base: <branch> at <sha>`, naming the new base and its tip".
+- AC3: `skills/milestone-review/SKILL.md` step 8's guest arm, normalized read: it reads the base PR with `gh pr view <base-pr> --repo <base-repo> --json state`; on `OPEN` "the create below adds `--base <stack-base-branch>`, and its body names the stack base's PR"; on `MERGED` "push nothing and open no PR" and stop with a close block whose next command is `/milestone-implement M<NNN>`.
+- AC4: `skills/milestone/SKILL.md` §2's blocked bullet routes "`OPEN` on a stacked milestone ... whose stack base's PR reads `MERGED`" to `/milestone-implement M<NNN>`; implement step 1 accepts that `blocked` milestone; step 2's stacked sync runs `git rebase --onto <base>/<default-branch> <old> <slug>` (`<old>` the newest `stack base:` line's `<sha>`), "Then push to the PR's head remote" under "the same check and lease push" (`git push --force-with-lease=<slug>:<sha> <remote> <slug>`), reads `gh pr view <N> --repo <base-repo> --json baseRefName`, and runs `gh pr edit <N> --repo <base-repo> --base <default-branch>` only "If that still names the stack-base branch".
+- AC5: AC5's grep returns 29 lines; the five that state the rule carry the exception: tracking-rules 158 ("or in guest mode when one of them is a stack base"), its new Collaboration-mode bullet (397), milestone-plan step 7 (525), milestone-implement step 1 (38), DESIGN.md 167–172, README 186–192; the other hits use the word without stating the rule (tracking-rules 431, 494; milestone-plan 37, 201, 529; DESIGN 40, 164, 184, 274, 291, 733; README 217–220, 252–253, 313, 898). README guest bullet "A milestone can build on one that waits for review" (894) and CHANGELOG's top entry describe stacking and the restack.
