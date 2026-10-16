@@ -82,7 +82,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
       (pane.test.tsx ~3870), red. Then a per-body fence flag in
       `startedRows` (pane.ts ~194). Run `verify`.
 - [x] T2: README's started-mark text (~441-458) per AC2.
-- [ ] T3: CHANGELOG entry; run `verify`.
+- [x] T3: CHANGELOG entry; run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -105,6 +105,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: implement started on branch m257-started-mark-fences; untracked `cairn-probe.log` left unstaged, not this milestone's.
 - 2026-10-15: T1 done: two `startedRows` tests (backtick, tilde, and spaced fences; an unclosed fence then a second body) ran red with the fenced titles returned, then a per-body `fenced` toggle on a module-private `FENCE_LINE` (`/^ *(```|~~~)/`, any number of leading spaces as AC1's "optional spaces" reads) made them green; verify 5/5 green (plugin test 1740 pass).
 - 2026-10-15: T2 done: README's started-mark paragraph now says no other skill and no guest run writes the line (grep of `skills/` finds it only in hotfix and milestone-review), that any of your open PRs with the line marks the row, hand-written included, that a fenced line does not count, and that the mark goes at the first PR read after the merge until review's hygiene or hotfix step 7 edits the row (read from both skills' text this session). The simple-english hook's 212 README hits predate the branch outside these lines; left as is.
+- 2026-10-15: T3 done: the started mark is unreleased, so its existing `### New` CHANGELOG entry gains the fenced-line sentences (enforced by T1's tests) in place of a separate entry; verify 5/5 green (scripts 408 OK, hooks 175 OK, both validates pass with no version warning, plugin test 1740 pass), `cairn_validate` all checks passed.
 
 
 ## Decisions
