@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-16 (M264 archived; M261 row pruned; "Haiku for the remaining Sonnet roles" narrowed; no lesson; prose guards green; validate green)_
+_Last hygiene check: 2026-10-16 (status audit after M264: validate green; no open issues, PRs, outside merges, or linked-item news)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
