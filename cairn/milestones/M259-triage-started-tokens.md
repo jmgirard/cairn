@@ -114,3 +114,8 @@
 - prior-review #7: README wording; the ROADMAP row still names the absorbed clauses; D-165's body unchanged — README part same as diff-bug #11, fixed 9e1c29c1; the row narrows at post-merge hygiene (records-hygiene §1); D-165 is history (IP4), annotated by D-166
 - After fixes on 9e1c29c1: verify green (408, 175, both validates, 1759), `skills/tests` 752 OK, validate green, AC5 sweep exit 1 (no match). AC1–AC6 evidence re-read on 9e1c29c1: the fixes add rules and change no criterion's promise.
 - Return floor: no finding shows a criterion failing inside its named procedure's domain or a load-bearing defect needing implement; every real finding was fixed on the branch or sent to the follow-up row, so no return. The follow-up row is written at post-merge hygiene as a new row naming "Started mark edges (M252 review)", which is finding-absorbing (§7).
+- copilot: cairn/milestones/M259-triage-started-tokens.md:10 (record the PR URL in Branch/PR) — fix now, fixed 321e3cc7
+- copilot: skills/cairn-triage/SKILL.md:63 (`#` token to the pane's 1–15 digits) — fix now, fixed 9e1c29c1
+- copilot: review body ("live-token exception handling", no thread anchor) — noted; the live-token precedence over §7 was fixed under blame-history #4, 9e1c29c1
+- Copilot level: Lite (set by GitHub's settings); its review covered an earlier head.
+- conversation: PR #270 — no human reviews or comments; the one review is Copilot's (`COMMENTED`, Bot), so the blocking rule does not apply.
