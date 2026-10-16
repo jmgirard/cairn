@@ -108,14 +108,14 @@ row stays as it is until the review hygiene reads it.
       none is drawn. Remove `STARTED_MARK` and its tail ref, and fix the
       comments near lines 307-317 and 559-567 and `pressCandidate`'s in
       `register.tsx` near line 1228.
-- [ ] T3: Docs: README.md (near lines 440-475), cairn/DESIGN.md (near lines
+- [x] T3: Docs: README.md (near lines 440-475), cairn/DESIGN.md (near lines
       79, 313-320, and 737), tracking-rules "Candidate started token",
       `types/index.d.ts` comments, and the CHANGELOG `## Unreleased`
       entries near lines 184-202, rewritten in place since they have not
       shipped. Append a D-entry that annotates D-165 and D-166: the pane
       hides a row that a body line or a counted token marks, in place of
       the mark.
-- [ ] T4: Run the `verify` slot and the AC4 grep.
+- [x] T4: Run the `verify` slot and the AC4 grep.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -139,6 +139,9 @@ row stays as it is until the review hygiene reads it.
 - 2026-10-16: implement started on m261-pane-hide-started; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-16: T1 done: new and rewritten pane tests (16) failed first against the old drawing, e.g. keys `candidate-0..2` drawn where `candidate-0, candidate-2` was expected and a count of 8 for 3.
 - 2026-10-16: T2 done: `paneLines` filters the started rows before the heading, keeps `i` as key and target, and `STARTED_MARK` is removed; mod tests 1777 pass, 0 fail.
+- 2026-10-16: T3 done: README, DESIGN (lines 79, 313-322, 472, 737), tracking-rules "Candidate started token", hotfix and milestone-review SKILL.md pane sentences, CHANGELOG Unreleased entries rewritten in place; D-167 annotates D-165 and D-166; `types/index.d.ts` comments describe data only and needed no change.
+- 2026-10-16: the simple-english plugin's PostToolUse lint hook reported whole-file counts (hundreds of hits) on each edited doc; the hits are in text this milestone did not write, so no rewrite was made.
+- 2026-10-16: T4 done: scripts 408 tests OK (21 skipped), hooks 175 OK, both `claude plugin validate` exit 0, mod tests 1777 pass 0 fail, each exit code 0; the AC4 grep prints only DESIGN.md:79's provenance entry; cairn_validate all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

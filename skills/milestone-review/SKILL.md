@@ -569,7 +569,8 @@ re-enters here, at the step the record shows is next:
    backticks. The
    title is cut from the row in `cairn/ROADMAP.md` as tracking-rules
    "Candidate short title" states. While the PR is open, the cairn pane in
-   a checkout with no active milestone can mark that row (M252). Record the PR
+   a checkout with no active milestone leaves that row out of its
+   Candidates list (M252, M261). Record the PR
    URL in the milestone header — a docs-only commit on the branch, left
    unpushed: the squash never needs it, and pushing it would move the PR
    head past the one CI just ran on; the resume routes and step 9 fall

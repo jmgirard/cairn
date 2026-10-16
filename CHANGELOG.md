@@ -173,37 +173,34 @@
   planned, in-progress, blocked, or review milestone file quotes in double
   quotes outside its Scope Out list. Each token change waits for your answer at the triage gate,
   beside the row's disposition. A row that carries a live token stays
-  `keep`, so no triage disposition removes the token that draws the pane's
-  mark. The row can still be re-rated, gain a merge survivor's lineage
+  `keep`, so no triage disposition removes the token that hides the row
+  in the pane. The row can still be re-rated, gain a merge survivor's lineage
   clause, or lose a dead token beside the live one.
 
-- **A started token on a candidate row marks it in the cairn pane, guest
+- **A started token on a candidate row hides it in the cairn pane, guest
   mode included.** `/milestone-plan` now ends each candidate row that a
   plan absorbs with ` — started M<NNN>`, in owner and guest mode. In guest
   mode, `/hotfix` ends each row it matched with ` — started #<n>` on disk
-  after it opens the PR for the maintainers. The pane shows `◐` on a row
-  with an `M<NNN>` token while that milestone is `planned` or `blocked`,
-  with the milestone id at its right end, and on a row with a `#<n>` token
-  while PR #n is among your open hotfix PRs, with the number. A PR number
-  wins over a milestone id. A marked row has no `✎` button. A row that
-  hygiene narrows loses its token. The token opens with ` — `, so the
-  row's short title stays the same.
+  after it opens the PR for the maintainers. The pane leaves out of its
+  Candidates list a row with an `M<NNN>` token while that milestone is
+  `planned` or `blocked`, and a row with a `#<n>` token while PR #n is
+  among your open hotfix PRs. A row that hygiene narrows loses its token.
+  The token opens with ` — `, so the row's short title stays the same.
 
 - **A normal-priority candidate row in the cairn pane shows `○`.** The
   open circle replaces the `·` mark, so the candidate marks read `↑` for
-  high priority, `↓` for low, `○` for normal, and `◐` for a row whose
-  short title an open PR's `Candidate row:` line names.
+  high priority, `↓` for low, and `○` for normal.
 
-- **The cairn pane marks a candidate row that an open PR already works
+- **The cairn pane hides a candidate row that an open PR already works
   on.** In owner mode, `/hotfix` and `/milestone-review` now put one
   `Candidate row: <short title>` line in the PR body for each candidate
   row that the merge removes or narrows. The pane's existing `gh pr list`
-  call reads each of your open PRs' bodies, and a candidate row whose
-  short title a line names exactly shows `◐` in place of its priority
-  mark, the PR number at its right end, and no `✎` button. A guest-mode
-  PR carries no `Candidate row:` line. The PR numbers behind the mark
-  change only when the pane reads its PRs, and the pane lists candidate
-  rows only while no milestone is active. A PR opened before this change
+  call reads each of your open PRs' bodies, and the pane leaves out of its
+  Candidates list each row whose short title a line names exactly. The
+  Candidates heading counts only the rows it shows. A guest-mode PR
+  carries no `Candidate row:` line. The PRs that hide rows change only
+  when the pane reads its PRs, and the pane lists candidate rows only
+  while no milestone is active. A PR opened before this change
   has no `Candidate row:` line. A `Candidate row:` line inside a fenced
   code block names no row. Such a block runs from a line that opens with
   three backticks or three tildes, after optional spaces, to the next

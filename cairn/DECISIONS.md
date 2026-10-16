@@ -6007,3 +6007,28 @@ the PR; falsified by a guest hotfix PR open with no token on its row.
 step to remove it now holds only until the next triage pass. Tokens stay
 free of status (D-035, D-165): triage reads status from the table and the
 PR, never from the token.
+
+### D-167 (2026-10-16): The cairn pane hides a started candidate row instead of drawing the started mark — annotates D-165 and D-166 (M261)
+
+**Context:** M252 and M258 drew a started row with `◐` and a PR number
+or milestone id, in its place among the other candidate rows. The
+operator found the `◐` rows mixed among the `○` rows hard to read.
+
+**Decision:** At the user's request, planned as M261, the pane draws no
+line for a candidate row that a `Candidate row:` body line or a counted
+started token marks. The Candidates heading counts the drawn rows, and
+the pane draws no heading when it hides every row. The readers, the
+tokens, and the body lines stay as D-165 and D-166 set them. Where those
+entries say the token draws or drops "the pane's mark", read that the
+token hides the row or lets it show.
+
+**Rejected:** A gray line with the count of hidden rows, and drawing the
+`◐` rows after the other rows, both at the user's choice; falsified by an
+operator who misses started work because no other pane section shows it.
+
+**Consequences:** A planned or blocked milestone still shows in the
+pane's Workable, Waiting, or Blocked section, and an open hotfix PR in
+its Hotfixes section. An open milestone PR that names a row shows in no
+other section. A ✎ press keeps
+the row's index in `state.candidates`, so a hidden row moves no other
+row's press.

@@ -263,7 +263,8 @@ can resolve against the fork instead of the base repo.
    candidate row that step 1 matched, each line unwrapped and the title
    bare, with no quotes or backticks. The title is cut from the row in
    `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. While
-   the PR is open, the cairn pane can mark that row (M252). The guest arm
+   the PR is open, the cairn pane leaves that row out of its Candidates
+   list (M252, M261). The guest arm
    below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch`
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
@@ -306,7 +307,7 @@ can resolve against the fork instead of the base repo.
    only prose) — then no marker, no CI wait, no merge. After the create,
    append ` — started #<n>` on disk, `<n>` the new PR's number, to the end
    of each candidate row step 1 matched (tracking-rules "Candidate started
-   token"), so the cairn pane marks the row while the PR is open. With the Copilot
+   token"), so the cairn pane hides the row while the PR is open. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite: the state query, the request on `none`, the bounded
    wait while pending, then the Copilot threads by the module's §5. Use
