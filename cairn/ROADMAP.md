@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-16 (triage: routed to four new Known issues entries "Issue look-in edges (M232 review)", "Intake and guest edges (M234 review)", "Hotfix resume edges (M262 review)", "Hotfix row-graduation edges (M249 review)", "Started mark edges (M252 review)", "Triage token edges (M259 review)", "Lessons triage edges (M263 review)", "Guest triage drop evidence outlives one stamp", "Retitle edges (M251 review)"; retitled "`/milestone` reads each bot thread on the operator's open PRs" → "`/milestone` reads bot threads on open PRs", "Review-side reclassification of record-binding criterion failures" → "Record-binding failures on the amendment track", "Standing-instrument adoption discipline, two plan-gate clauses" → "Plan-gate clauses for standing instruments", "Dedicated `/explore-sources` skill for supply-push exploration" → "`/explore-sources` skill"; no drops, no decision entry; validate green)_
+_Last hygiene check: 2026-10-16 (lessons triage: merged the 2026-07-18 (M72) lesson into 2026-08-29 (M163) and the 2026-10-01 (M191) lesson into 2026-10-01 (M193); compressed 2026-10-03 (M201), its skill.prompt-order sentence held in DESIGN.md; 2026-09-02 (M170) kept and flagged disputed, since `hooks/merge_guard_post.py` documents restoring a failed attempt's marker; no drops, no decision entry; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
