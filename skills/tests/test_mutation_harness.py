@@ -4261,7 +4261,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestPinCheck.test_pin_files_are_found_by_git_grep",
         target=TRIAGE,
-        block="each file that `git grep -l \"LESSONS.md\"` lists whose path contains `test`.",
+        block="each file that `git grep -l \"LESSONS.md\"` lists whose\npath contains `test`.",
     ),
     Mutation(
         guard="test_triage_lessons",

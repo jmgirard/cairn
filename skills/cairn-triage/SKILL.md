@@ -99,18 +99,23 @@ D-169).
 
 **Session start.** In place of the candidate rows and Known issues, read
 `cairn/LESSONS.md` whole, its header included, and `cairn/ROADMAP.md` for
-its size and stamp. Skip the started-token reads. Then find the pin files:
-each file that `git grep -l "LESSONS.md"` lists whose path contains `test`.
-None listed means no pins and no failure. Read each pin file, and note each
-string it asserts is present in `cairn/LESSONS.md` and each string it
-asserts is absent.
+its size and stamp. The bounded `DECISIONS.md` read and the archive listing
+still run. Skip the live-milestone notes and the started-token reads. Then
+find the pin files: each file that `git grep -l "LESSONS.md"` lists whose
+path contains `test`. None listed means no pins and no failure. Read each
+pin file, and note each string it asserts is present in `cairn/LESSONS.md`
+and each string it asserts is absent. Only an assertion made on the live
+`cairn/LESSONS.md` counts. An assertion on a temporary fixture, on skill
+prose, or on README is not a pin. A pattern that every lesson line matches,
+such as a line-format check, pins the format and no single lesson. A line
+count or size assertion is a cap, which step 4's check covers.
 
 **Step 1, enumerate.** A lesson item is one line of `cairn/LESSONS.md` that
 opens with `- ` and a `YYYY-MM-DD` date. List its source, `lesson`. List its
 subject: the text after the first `): `, or after the date when the line
 has none, trimmed to about 80 characters. List its provenance (the
-parenthesized milestone list after the date), its byte length, and its
-date. Its priority is `—`. A missing `cairn/LESSONS.md`, or one with no
+parenthesized milestone list after the date), its byte length (the whole
+line, without its newline), and its date. Its priority is `—`. A missing `cairn/LESSONS.md`, or one with no
 such line, yields zero items with no failure. The pass then reaches the
 gate with an empty table, as step 1 states for empty lists.
 
@@ -130,15 +135,23 @@ dispositions, and never `split`, `route`, or `retitle`:
 A compressed or merged lesson keeps its `- YYYY-MM-DD (M…)` prefix and any
 `corrected` or `trimmed` mark. A lesson the pass finds false is `keep`, its
 reason naming the record that refutes it. Correcting it is the work of
-whoever proves it false (D-045). Step 2's staleness, overlap, and
-overgrowth evidence guide `drop`, `merge`, and `compress`. The
-started-token, title, priority, and records-hygiene §7 rules do not apply
-to lessons. The pass never proposes pruning the oldest lesson, which stays
-the last resort at review hygiene.
+whoever proves it false (D-045). A lesson about a path or tool the repo no
+longer has is `keep` in the same way, its reason naming the evidence. A
+lesson compresses only where it restates what another record says, and
+length alone never fires a `compress`. A merge's survivor takes the
+absorbed lesson's milestone into its parenthesized provenance and any
+content of the absorbed lesson it lacks. That is the merge's edit, not a
+re-wording. For a `promote`, the "at least twice" counts over the whole
+family's provenance. A family whose earlier module a decision retired is
+not proposed: search the `### D-` headings for the module's file name
+first. The started-token, title, priority, and records-hygiene §7 rules do
+not apply to lessons. The pass never proposes pruning the oldest lesson,
+which stays the last resort at review hygiene.
 
 **Step 3, gate.** The table and the chip are step 3's. A `drop` names its
 exit and its evidence, a `merge` names its survivor, and a `promote` names
-its family and the three conditions.
+its family and the three conditions. The chip names a lesson by its date
+and provenance, since a lesson has no short title.
 
 **Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A
 dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no
@@ -153,7 +166,8 @@ stamp and the commit message name each dropped lesson by its date and
 provenance with its exit, and each merged-away lesson with its survivor.
 In guest mode the stamp alone names them, with their evidence.
 
-**Steps 6 and 7.** The stamp says it is a lessons pass. The close block
+**Steps 6 and 7.** The stamp says it is a lessons pass, and it names each
+drop's exit in place of the default pass's drop reason classes. The close block
 fences one `/milestone-plan <family>` per promoted family, not one per
 lesson.
 
