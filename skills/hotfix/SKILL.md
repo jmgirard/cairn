@@ -314,9 +314,11 @@ can resolve against the fork instead of the base repo.
    harness ceiling — the tracking-rules wait rule; a call moved to the
    background at the ceiling is reported from fresh `gh pr checks` state,
    stopped with `TaskStop`, and the session stops there with a close block
-   whose fenced next command is `/hotfix` with the PR reference — step 1's
-   merged-PR re-entry re-derives the merge state and verifies the
-   merged diff post-hoc — and whose CI line (tracking-rules close-block
+   whose fenced next command is `/hotfix` with the PR reference — step 1
+   re-derives the PR's state: while the PR is still open and the marker
+   names it, step 1's open-PR re-entry resumes at this wait, and for a PR
+   merged since, step 1's merged-PR re-entry verifies the merged diff
+   post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,
    then that rerunning `/hotfix` with the PR reference re-derives that state
    and waits again, so waiting for green first is optional and never
@@ -324,11 +326,15 @@ can resolve against the fork instead of the base repo.
    never merged past; a PR created moments ago can report no checks before
    GitHub registers them, so where the profile does not declare the repo
    CI-less, re-read `gh pr checks` after a short wait, up to about a
-   minute, before taking the no-checks case). On approval, write the merge-guard
-   marker first: `cairn/.merge-approved` (gitignored; one line:
-   `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR
-   it approves, and the guard refuses a merge that names a different PR or
-   none) — the plugin's hook denies
+   minute, before taking the no-checks case). On approval, the order is
+   fixed: the push and any `gh pr create` above, then the merge-guard
+   marker, then the CI wait, then the merge. Write the marker before the
+   wait, so a run that stops at the wait leaves it on disk for step 1's
+   open-PR re-entry. The marker is `cairn/.merge-approved` (gitignored; one line:
+   `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the
+   head oid read with `gh pr view <N> --json headRefOid` after the push —
+   the marker names the PR it approves, and the guard refuses a merge that
+   names a different PR or none) — the plugin's hook denies
    merges to the default branch without it and consumes it per attempt. Write the marker
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is

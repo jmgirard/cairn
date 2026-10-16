@@ -121,7 +121,7 @@ Button".
       (line 26) true: every `gh pr` read carries `--repo <base-repo>`. Say
       that step 7's off-but-present Copilot rule (lines 369-373) applies to
       a resumed authored fix.
-- [ ] T2: In step 6 (lines 255-296), state the order of AC1 and the marker
+- [x] T2: In step 6 (lines 255-296), state the order of AC1 and the marker
       line with ` at <headRefOid>` (`_MARKER_PR` in `hooks/cairn_common.py`
       already reads past trailing text); reword the timeout close (lines
       273-284) per AC4; check that the guest handoff close (lines 319-324)
@@ -164,6 +164,7 @@ Button".
 - 2026-10-16: new candidate row "Pane hotfix line Button" (search-first: no overlap in candidates, archive, or DECISIONS).
 - 2026-10-16: branch m262-hotfix-open-pr-resume cut from main at b00d0270; untracked `cairn-probe.log` and `tsconfig.json` (not this milestone's) left unstaged.
 - 2026-10-16: T1 done: step 1 gains the "Open-PR re-entry (M262)" paragraph with owner and guest arms. A moved head's gate shows the commits since the approved oid (`git log -p <oid>..FETCH_HEAD`), or `gh pr diff` when no oid or the oid is not an ancestor, because the chip's regression-test evidence was shown at the earlier approval. Step 1 names the marker as "step 6's merge-guard marker", not by path, so `test_external_pr_intake`'s one-mention pin (one approval mechanism) holds. The simple-english lint hook reports 169 hits for the whole file, all but 2 (one 26-word sentence, one trailing condition) in text this milestone does not change. Gating suites and `skills/tests` green.
+- 2026-10-16: T2 done: step 6 states the order on approval (push and any create, marker, CI wait, merge) and the marker line `… for PR #<N> at <headRefOid>`, the oid read by `gh pr view <N> --json headRefOid` after the push; the timeout close names the open-PR re-entry (still open, marker names it) and the merged-PR re-entry. The guest handoff close ("whose step 1 re-derives the PR's state") reads true against T1's guest arm, unchanged. Suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
