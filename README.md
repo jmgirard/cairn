@@ -469,7 +469,7 @@ default branch. Without the opt-in Copilot round (below), a PR that
 `/milestone-review` or an authored `/hotfix` opens does so only after you
 approve the merge. After the merge, the row shows again at
 the pane's first successful PR read, unless another open PR also names
-the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
+the row or a counted started token (below) is on it. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
 has not removed the row by then, the row shows with its priority mark.
 A row that they narrow also shows again after that read. A
 PR opened before these skills wrote `Candidate row:` lines has none.

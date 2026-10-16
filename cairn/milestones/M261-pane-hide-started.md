@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M261: The cairn pane hides started candidate rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -142,6 +142,8 @@ row stays as it is until the review hygiene reads it.
 - 2026-10-16: T3 done: README, DESIGN (lines 79, 313-322, 472, 737), tracking-rules "Candidate started token", hotfix and milestone-review SKILL.md pane sentences, CHANGELOG Unreleased entries rewritten in place; D-167 annotates D-165 and D-166; `types/index.d.ts` comments describe data only and needed no change.
 - 2026-10-16: the simple-english plugin's PostToolUse lint hook reported whole-file counts (hundreds of hits) on each edited doc; the hits are in text this milestone did not write, so no rewrite was made.
 - 2026-10-16: T4 done: scripts 408 tests OK (21 skipped), hooks 175 OK, both `claude plugin validate` exit 0, mod tests 1777 pass 0 fail, each exit code 0; the AC4 grep prints only DESIGN.md:79's provenance entry; cairn_validate all checks passed.
+- 2026-10-16: claim audit: 52 claims read, 1 corrected — README.md (the after-merge sentence now also names a counted started token; re-read true by the same reader).
+- 2026-10-16: implement complete; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
