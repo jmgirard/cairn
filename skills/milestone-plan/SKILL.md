@@ -57,20 +57,52 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    candidate row, a pane press. A request that names a GitHub issue (`#N`
    or an issue URL, or any other form `/milestone`'s argument accepts) is
    not checked and is planned as a milestone, since `/milestone` with the
-   issue is the door that tiers an issue. Two invocations are already
-   tiered. The first is an invocation from `/milestone` §4's `milestone`
-   verdict. The second is a `/milestone-plan` for work that `/hotfix` found
-   over the hotfix bar earlier in this session, whether that hotfix stopped
-   at step 1 or closed at step 7 after a merged-PR re-entry. The check
-   classifies both `milestone` without re-judging, and the work-log reason
-   names the router. A request that names no work is not checked: its work
-   is chosen at step 3's question set and planned as a milestone.
+   issue is the door that tiers an issue. In guest mode a request that
+   names a pull request is not checked either. Examples are a PR URL,
+   "PR 12", and "adopt PR 12". This guest rule comes before the issue rule
+   and the already-tiered list below. A PR URL, or a §3 item that is a PR,
+   takes it. A bare `#N` stays an issue, as above. The plan reads
+   `gh pr view <N> --repo <base-repo> --json state,headRefName,author` and
+   the operator's login (`gh api user --jq .login`). An `OPEN` or `MERGED`
+   PR whose head branch starts with `hotfix-` and whose author is the
+   operator is the operator's own handoff. For it the plan ends with a
+   close block whose fenced command is `/hotfix` with the PR reference.
+   For any other PR it ends with a close block that says guest mode
+   does not adopt a third party's PR (tracking-rules "Collaboration
+   mode"). A `CLOSED` handoff, or a PR URL whose repo is not
+   `<base-repo>`, takes that close block too. A failed read ends with a
+   close block that names the cause. These close blocks write nothing.
+   Three invocations are already tiered. The first is an invocation from
+   `/milestone` §4's `milestone` verdict. The second is a
+   `/milestone-plan` for work that `/hotfix` found over the hotfix bar
+   earlier in this session, whether that hotfix stopped at step 1 or
+   closed at step 7 after a merged-PR re-entry. The third is a
+   `/milestone-plan` disposition that the user selected in `/milestone` §3
+   earlier in this session. The check classifies all three `milestone`
+   without re-judging, and the work-log reason names the router. A
+   request that names no work is not checked: its work is chosen at step
+   3's question set and planned as a milestone.
 
    **The tier chip.** On a `milestone` finding the plan asks nothing and
    goes on. On a `hotfix` or `trivial` finding it poses one chip before
    step 2. The chip's question text names, in plain words, the tier found
    and the reason. The chip comes before the run's question set and is not
    part of it (tracking-rules "Question gates and phase closes").
+
+   **Candidate-row match (trivial route).** On a `trivial` finding, before
+   the checks, the plan finds the candidate rows the edit fixes. A matched
+   row is a row of `cairn/ROADMAP.md`'s Candidates section whose short
+   title (tracking-rules "Candidate short title") the request quotes. A
+   row whose title a `planned`, `in-progress`, `blocked`, or `review`
+   milestone file quotes is not matched, since that milestone's post-merge
+   hygiene graduates it. A row that ends with a ` — started` token is not
+   matched either, since the record the token names graduates it. The
+   edit deletes each matched row it covers in full. It narrows each row it
+   covers in part to the part left, keeping the row's title, with a
+   `narrowed YYYY-MM-DD by a trivial edit` note, as `/hotfix` step 7 does.
+   A matched row the edit does not fix stays as it is. With a row to edit,
+   `cairn/ROADMAP.md` is a file the edit touches, so the checks and the
+   commit cover it. In guest mode the row changes on disk with no commit.
 
    **Trivial-route checks (owner mode).** Before it poses the chip on a
    `trivial` finding, the plan runs five checks in this order. The repo
@@ -86,7 +118,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      the bug. The request text follows unchanged, with a candidate row's
      title quoted verbatim. The plan writes no file. `trivial`: the
      option's description names the file and the change and says where
-     the edit goes. In owner mode it is committed and pushed to the
+     the edit goes. It also names each matched row and whether the edit
+     deletes or narrows it. In owner mode it is committed and pushed to the
      default branch. In guest mode it is left uncommitted on disk. In
      owner mode the description also names any other uncommitted paths,
      which the commit leaves alone. If

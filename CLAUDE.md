@@ -22,12 +22,13 @@ first:
   or URL.
 - **User-visible bug**: invoke `/hotfix`.
 - **New work, a design decision, or more than one sitting**: invoke
-  `/milestone-plan`. One question set follows, then the run goes on through
-  implement and review to the merge question; typed `/milestone-implement`
-  or `/milestone-review` resumes a stopped run.
+  `/milestone-plan`. Where a hotfix or trivial route fits, it offers that
+  first. Otherwise one question set comes, and the run goes on to the merge
+  question. Typed `/milestone-implement` or `/milestone-review` resumes it.
 - **Status, "what's next", or unsure which tier**: invoke `/milestone`.
 - **Never implement code on main** outside a milestone/hotfix branch; nothing
-  reaches main without explicit user approval at the merge question.
+  reaches main without explicit user approval at the merge question, or for
+  a trivial edit the user's request or the tier chip.
 
 Anything but trivial → invoke the skill *first* so the full rulebook
 (the plugin's `skills/shared/tracking-rules.md`) and its conduct load; don't

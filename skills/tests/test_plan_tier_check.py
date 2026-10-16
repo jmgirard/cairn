@@ -1,8 +1,9 @@
 """Regression guard: the plan checks the work tier before it plans (M250).
 
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
-mixed-request rule, the read bound, the issue exemption, the two already-tiered
-sources, and the no-work exemption), the trivial-route checks, the tier chip
+mixed-request rule, the read bound, the issue exemption, the guest pull-request
+exemption (M265), the three already-tiered sources, and the no-work
+exemption), the trivial-route checks and candidate-row match (M265), the tier chip
 and each option's effect, the `tier check:` work-log line, step 4's pointer
 to it, the rulebook sentence that puts the chip before the run, and
 README.md's `/milestone-plan` row. Text is whitespace-collapsed on read
@@ -71,8 +72,29 @@ class TestPlanTierCheck(unittest.TestCase):
             "over the hotfix bar earlier in this session, whether that hotfix "
             "stopped at step 1 or closed at step 7 after a merged-PR "
             "re-entry.",
-            "The check classifies both `milestone` without re-judging, and "
-            "the work-log reason names the router.",
+            "Three invocations are already tiered.",
+            "The third is a `/milestone-plan` disposition that the user "
+            "selected in `/milestone` §3 earlier in this session.",
+            "The check classifies all three `milestone` without re-judging, "
+            "and the work-log reason names the router.",
+            "In guest mode a request that names a pull request is not "
+            "checked either. Examples are a PR URL, \"PR 12\", and \"adopt "
+            "PR 12\".",
+            "A bare `#N` stays an issue, as above.",
+            "This guest rule comes before the issue rule and the "
+            "already-tiered list below.",
+            "The plan reads `gh pr view <N> --repo <base-repo> --json "
+            "state,headRefName,author` and the operator's login",
+            "An `OPEN` or `MERGED` PR whose head branch starts with `hotfix-` "
+            "and whose author is the operator is the operator's own handoff. "
+            "For it the plan ends with a close block whose fenced command is "
+            "`/hotfix` with the PR reference.",
+            "A `CLOSED` handoff, or a PR URL whose repo is not `<base-repo>`, "
+            "takes that close block too.",
+            "For any other PR it ends with a close block that says guest mode "
+            "does not adopt a third party's PR",
+            "A failed read ends with a close block that names the cause. "
+            "These close blocks write nothing.",
             "A request that names no work is not checked: its work is chosen "
             "at step 3's question set and planned as a milestone.",
         ):
@@ -126,6 +148,54 @@ class TestPlanTierCheck(unittest.TestCase):
             "**Stop.** The close block, and nothing written.",
         ):
             self.assertIn(phrase, self.step1)
+
+    def test_trivial_route_graduates_matched_rows(self):
+        for phrase in (
+            "**Candidate-row match (trivial route).** On a `trivial` finding, "
+            "before the checks, the plan finds the candidate rows the edit "
+            "fixes.",
+            "A matched row is a row of `cairn/ROADMAP.md`'s Candidates section "
+            "whose short title (tracking-rules \"Candidate short title\") the "
+            "request quotes.",
+            "A row whose title a `planned`, `in-progress`, `blocked`, or "
+            "`review` milestone file quotes is not matched",
+            "A row that ends with a ` — started` token is not matched either",
+            "The edit deletes each matched row it covers in full. It narrows "
+            "each row it covers in part to the part left",
+            "A matched row the edit does not fix stays as it is.",
+            "With a row to edit, `cairn/ROADMAP.md` is a file the edit "
+            "touches, so the checks and the commit cover it. In guest mode "
+            "the row changes on disk with no commit.",
+            "It also names each matched row and whether the edit deletes or "
+            "narrows it.",
+        ):
+            self.assertIn(phrase, self.step1)
+        self.assertLess(self.step1.index("**Candidate-row match"),
+                        self.step1.index("**Trivial-route checks"))
+        hygiene = flat(SKILLS / "shared" / "records-hygiene.md")
+        self.assertIn("So does a trivial edit from `/milestone-plan` step 1, "
+                      "in the edit itself.", hygiene)
+
+    def test_git_model_and_routing_name_trivial_commits(self):
+        for phrase in (
+            "trivial-tier commits (a direct commit the user asked for, or one "
+            "the user approved at `/milestone-plan`'s tier chip)",
+            "approval at the merge question**, or for a trivial-tier commit "
+            "the user's own request or `/milestone-plan`'s tier chip.",
+            "Through `/milestone-plan`'s trivial route, the commit also "
+            "graduates the rows it fixes.",
+        ):
+            self.assertIn(phrase, self.rules)
+        template = flat(SKILLS / "shared" / "templates" /
+                        "claude-md-section.md")
+        for phrase in (
+            "in owner mode, commit to the default branch. In guest mode, "
+            "leave the edit on disk (`cairn/` files only).",
+            "Where a hotfix or trivial route fits, it offers that first. "
+            "Otherwise one question set comes",
+            "or for a trivial edit their request or the tier chip.",
+        ):
+            self.assertIn(phrase, template)
 
     def test_tier_check_work_log_line(self):
         for phrase in (

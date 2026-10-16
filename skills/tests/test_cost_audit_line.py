@@ -63,9 +63,10 @@ class TestCostAuditLine(unittest.TestCase):
 
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
         # Growth is reported against a recorded figure, not a remembered one;
-        # the seed is the M263 re-measurement in bytes (M263 added the
-        # `/cairn-triage lessons` clause to the lesson-retirement paragraph).
-        self.assertIn("679 lines / 65,365 bytes", self.text)
+        # the seed is the M265 re-measurement in bytes (M265 added the
+        # trivial-tier clauses to the git model's two default-branch bullets
+        # and the trivial tier's row-graduation sentence).
+        self.assertIn("682 lines / 65,674 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
