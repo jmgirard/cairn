@@ -368,8 +368,9 @@
   its merge approval, with the PR's head commit, before the CI wait. A rerun
   that finds the PR open and that approval on disk goes back to the CI wait
   and merges. If commits were pushed to the PR after the approval, the
-  rerun shows them and asks for approval again. After the merge, it edits
-  only the candidate rows and closes only the issue that the PR body names.
+  rerun shows them and asks for approval again. A merge that goes ahead
+  with no new question edits only the candidate rows and closes only the
+  issue that the PR body names.
   In guest mode, a rerun on your open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
 

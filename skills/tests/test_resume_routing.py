@@ -380,7 +380,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
 
     def test_resumed_step_seven_reads_the_pr_body(self):
         self.assertIn(
-            "A resumed merge's step 7 edits only the rows that the PR body's "
+            "A merge resumed with no chip edits at step 7 only the rows that "
+            "the PR body's "
             "`Candidate row:` lines name. It closes only the issue that the "
             "body's `Fixes #N` line names.",
             self.step1,

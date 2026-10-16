@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M262: A rerun of /hotfix on an open PR resumes the merge
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -168,6 +168,8 @@ Button".
 - 2026-10-16: T3 done: `TestHotfixOpenPrReentry` (9 tests) in `skills/tests/test_resume_routing.py` pins the step-1 route and step 6's order, marker line, and timeout close; 14 mutation entries (each trigger part and each outcome on its own) each turn the guard red when blanked, checked by `guard_fails_when_blanked` per entry; `skills/tests` 761 tests OK.
 - 2026-10-16: T4 done: README's pane paragraph now says "A hotfix line has no Button." with no reason, the `hooks/status/pane.ts` comment drops its "No command resumes" sentence, and CHANGELOG.md's Unreleased Fixes section opens with the open-PR resume entry (owner and guest). A whitespace-collapsed sweep of 323 tracked files outside `cairn/` finds neither stale phrase (control phrase found).
 - 2026-10-16: T5 done: verify slot green (scripts and hooks suites exit 0, both `claude plugin validate` exit 0, `claude plugin test .` 1777 pass 0 fail); `skills/tests` exit 0.
+- 2026-10-16: claim audit: 28 claims read, 4 corrected — skills/hotfix/SKILL.md, CHANGELOG.md, skills/tests/test_resume_routing.py. (1) The PR-body row rule is scoped to a merge resumed with no chip, and an adopted PR's body has no `Candidate row:` line, so its resumed merge edits no row; after a re-posed chip, step 7 runs as for any approved merge (CHANGELOG narrowed to match). (2) The moved-head fetch is `git fetch origin pull/<N>/head`, so a fork PR works, with a failed fetch falling back to `gh pr diff`. (3) The timeout close names the re-asked approval when the head moved. (4) The head oid is read "after any push, just before the marker write". Suites green after the corrections.
+- 2026-10-16: implement done; status `review`. Reading recorded for review: AC2's "a resumed merge" row rule is shipped for a merge resumed with no chip, since a moved head re-poses the gate and that chip names step 1's current matches.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

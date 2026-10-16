@@ -139,15 +139,19 @@ can resolve against the fork instead of the base repo.
      then step 7.
      If the two differ, or the marker names no head oid, say so in chat.
      Then pose step 6's gate on the PR as it stands. Present the commits
-     added since the approved head (`git fetch origin <headRefName>`, then
-     `git log -p <oid>..FETCH_HEAD`). If the marker names no oid, or that
-     oid is not an ancestor of the head, present the whole PR diff
-     (`gh pr diff <N>`) instead. Then run the PR-conversation read and pose
-     the chip. On approval, skip the push and `gh pr create`, because the
-     PR is already open. Rewrite the marker with the current head.
-     A resumed merge's step 7 edits only the rows that the PR body's
+     added since the approved head (`git fetch origin pull/<N>/head`, then
+     `git log -p <oid>..FETCH_HEAD`). If the marker names no oid, that oid
+     is not an ancestor of the head, or the fetch fails, present the whole
+     PR diff (`gh pr diff <N>`) instead. Then run the PR-conversation read
+     and pose the chip. On approval, skip the push and `gh pr create`,
+     because the PR is already open. Rewrite the marker with the current
+     head. After that chip, step 7 runs as it does for any merge this run
+     approved.
+     A merge resumed with no chip edits at step 7 only the rows that the PR body's
      `Candidate row:` lines name. It closes only the issue that the body's
-     `Fixes #N` line names. Those lines are what the approval chip named.
+     `Fixes #N` line names. For an authored or re-landed fix, those lines
+     are what the approval chip named. An adopted PR's body carries no
+     `Candidate row:` line, so a resumed adopted merge edits no row.
      Name in chat any other row the match finds, and leave it alone. Step
      7's off-but-present Copilot rule applies to a resumed authored fix as
      it does to one this run merged.
@@ -316,7 +320,8 @@ can resolve against the fork instead of the base repo.
    stopped with `TaskStop`, and the session stops there with a close block
    whose fenced next command is `/hotfix` with the PR reference — step 1
    re-derives the PR's state: while the PR is still open and the marker
-   names it, step 1's open-PR re-entry resumes at this wait, and for a PR
+   names it, step 1's open-PR re-entry resumes at this wait (or asks for
+   approval again when the head moved since the approval), and for a PR
    merged since, step 1's merged-PR re-entry verifies the merged diff
    post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,
@@ -332,7 +337,8 @@ can resolve against the fork instead of the base repo.
    wait, so a run that stops at the wait leaves it on disk for step 1's
    open-PR re-entry. The marker is `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the
-   head oid read with `gh pr view <N> --json headRefOid` after the push —
+   head oid read with `gh pr view <N> --json headRefOid` after any push,
+   just before the marker write —
    the marker names the PR it approves, and the guard refuses a merge that
    names a different PR or none) — the plugin's hook denies
    merges to the default branch without it and consumes it per attempt. Write the marker
