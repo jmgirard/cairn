@@ -1,8 +1,9 @@
 """Regression guard: the plan checks the work tier before it plans (M250).
 
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
-mixed-request rule, the read bound, the issue exemption, the two already-tiered
-sources, and the no-work exemption), the trivial-route checks, the tier chip
+mixed-request rule, the read bound, the issue exemption, the guest pull-request
+exemption (M265), the three already-tiered sources, and the no-work
+exemption), the trivial-route checks and candidate-row match (M265), the tier chip
 and each option's effect, the `tier check:` work-log line, step 4's pointer
 to it, the rulebook sentence that puts the chip before the run, and
 README.md's `/milestone-plan` row. Text is whitespace-collapsed on read
@@ -71,8 +72,23 @@ class TestPlanTierCheck(unittest.TestCase):
             "over the hotfix bar earlier in this session, whether that hotfix "
             "stopped at step 1 or closed at step 7 after a merged-PR "
             "re-entry.",
-            "The check classifies both `milestone` without re-judging, and "
-            "the work-log reason names the router.",
+            "Three invocations are already tiered.",
+            "The third is a `/milestone-plan` disposition that the user "
+            "selected in `/milestone` §3 earlier in this session.",
+            "The check classifies all three `milestone` without re-judging, "
+            "and the work-log reason names the router.",
+            "In guest mode a request that names a pull request is not "
+            "checked either. Examples are a PR URL, \"PR 12\", and \"adopt "
+            "PR 12\". A bare `#N` stays an issue, as above.",
+            "The plan reads `gh pr view <N> --repo <base-repo> --json "
+            "headRefName`.",
+            "A head branch that starts with `hotfix-` is the operator's own "
+            "handoff. For it the plan ends with a close block whose fenced "
+            "command is `/hotfix` with the PR reference.",
+            "For any other PR it ends with a close block that says guest mode "
+            "does not adopt a third party's PR",
+            "A failed read ends with a close block that names the cause. "
+            "These close blocks write nothing.",
             "A request that names no work is not checked: its work is chosen "
             "at step 3's question set and planned as a milestone.",
         ):

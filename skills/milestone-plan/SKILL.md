@@ -57,13 +57,23 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    candidate row, a pane press. A request that names a GitHub issue (`#N`
    or an issue URL, or any other form `/milestone`'s argument accepts) is
    not checked and is planned as a milestone, since `/milestone` with the
-   issue is the door that tiers an issue. Two invocations are already
+   issue is the door that tiers an issue. In guest mode a request that
+   names a pull request is not checked either. Examples are a PR URL,
+   "PR 12", and "adopt PR 12". A bare `#N` stays an issue, as above. The
+   plan reads `gh pr view <N> --repo <base-repo> --json headRefName`. A head
+   branch that starts with `hotfix-` is the operator's own handoff. For it
+   the plan ends with a close block whose fenced command is `/hotfix` with
+   the PR reference. For any other PR it ends with a close block that says guest
+   mode does not adopt a third party's PR (tracking-rules "Collaboration
+   mode"). A failed read ends with a close block that names the cause.
+   These close blocks write nothing. Three invocations are already
    tiered. The first is an invocation from `/milestone` §4's `milestone`
    verdict. The second is a `/milestone-plan` for work that `/hotfix` found
    over the hotfix bar earlier in this session, whether that hotfix stopped
-   at step 1 or closed at step 7 after a merged-PR re-entry. The check
-   classifies both `milestone` without re-judging, and the work-log reason
-   names the router. A request that names no work is not checked: its work
+   at step 1 or closed at step 7 after a merged-PR re-entry. The third is
+   a `/milestone-plan` disposition that the user selected in `/milestone`
+   §3 earlier in this session. The check classifies all three `milestone`
+   without re-judging, and the work-log reason names the router. A request that names no work is not checked: its work
    is chosen at step 3's question set and planned as a milestone.
 
    **The tier chip.** On a `milestone` finding the plan asks nothing and
