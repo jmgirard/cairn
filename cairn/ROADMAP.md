@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M266 | Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests | planned | — | normal | milestones/M266-hotfix-rerun-gaps.md |
+| M266 | Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests | in-progress | — | normal | milestones/M266-hotfix-rerun-gaps.md |
 | M265 | Close the tier check's five open edges | done | — | normal | milestones/archive/M265-tier-check-edges.md |
 | M264 | Re-test Haiku 5.5 against Sonnet 5.5 on search and history review, three runs each | done | — | normal | milestones/archive/M264-haiku-sonnet-rerun.md |
 | M263 | /cairn-triage lessons triages LESSONS.md | done | — | normal | milestones/archive/M263-triage-lessons.md |

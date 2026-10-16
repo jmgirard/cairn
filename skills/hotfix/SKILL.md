@@ -56,6 +56,19 @@ can resolve against the fork instead of the base repo.
    graduates it (records-hygiene §1). Within a hotfix, only step 7, after
    a merge, removes or narrows a matched row. A search-first absorb on
    another path can add to the row, but it never removes or narrows it.
+   **Closed-PR stop (M266).** A PR-reference argument whose
+   `gh pr view <N> --json state,headRefName` reports `CLOSED`, with a head
+   branch not matching `m<nnn>-*`, stops here in owner and guest mode. The
+   PR closed without a merge, so no walk can merge it. Make the
+   candidate-row match above, then skip the tier check and steps 2 to 7.
+   In owner mode, remove `cairn/.merge-approved` when its line starts with
+   `hotfix ` and names that PR (`for PR #<N>`), and leave any other marker
+   as it is. The stop edits no candidate row. End with a close block that
+   says the PR closed without a merge and that reopening it on GitHub is
+   the operator's choice. The close block names each matched row that ends
+   with ` — started #<N>`, a dead token that `/cairn-triage` proposes to
+   remove. Its fenced next command is `/hotfix` with a description of the
+   bug, which starts over on a new branch.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged

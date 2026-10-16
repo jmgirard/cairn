@@ -4199,6 +4199,40 @@ REGISTRY += [
         target=HOTFIX,
         block="step 1's open-PR re-entry resumes at this wait",
     ),
+    # M266 AC1: the closed-PR stop, one entry per pinned trigger and outcome.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop.test_trigger_is_a_closed_non_milestone_pr",
+        target=HOTFIX,
+        block="branch not matching `m<nnn>-*`, stops here in owner and guest",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_stop_skips_the_walk_after_the_row_match",
+        target=HOTFIX,
+        block="candidate-row match above, then skip the tier check and steps 2",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_owner_removes_only_a_hotfix_marker_naming_the_pr",
+        target=HOTFIX,
+        block="and leave any other marker\n   as it is.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop.test_stop_edits_no_row",
+        target=HOTFIX,
+        block="The stop edits no candidate row.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_close_block_says_closed_and_starts_over",
+        target=HOTFIX,
+        block="the operator's choice. The close block names each matched row",
+    ),
 ]
 
 TRIAGE = "skills/cairn-triage/SKILL.md"

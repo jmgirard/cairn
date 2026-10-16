@@ -1,13 +1,13 @@
 # M266: Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's `/hotfix` rerun on a PR takes these routes
-- **Branch/PR:** —
+- **Branch/PR:** m266-hotfix-rerun-gaps
 
 ## Goal
 
@@ -44,7 +44,7 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 
 ## Tasks
 
-- [ ] T1: Write AC1's closed-PR stop into step 1, ahead of the merged-PR re-entry (`skills/hotfix/SKILL.md:59`). Add a test class for it to `skills/tests/test_resume_routing.py`, pinning its trigger and its outcome on their own, with mutation entries in `skills/tests/test_mutation_harness.py`.
+- [x] T1: Write AC1's closed-PR stop into step 1, ahead of the merged-PR re-entry (`skills/hotfix/SKILL.md:59`). Add a test class for it to `skills/tests/test_resume_routing.py`, pinning its trigger and its outcome on their own, with mutation entries in `skills/tests/test_mutation_harness.py`.
 - [ ] T2: Write AC2's owner route into the open-PR re-entry (`SKILL.md:125-156`), adding `author` to its `gh pr view` read. Edit step 6's "An adopted PR skips the round" (`SKILL.md:261`) and step 7's adopted-PR sentence (`SKILL.md:437-438`). Update the pinned field list at `test_resume_routing.py:346` in the same commit. Add tests with mutation entries.
 - [ ] T3: Write AC3's trigger and checks into the guest arm (`SKILL.md:157-166`), adding `author` and `latestReviews` and the head commit date to its read. Keep the pins at `test_resume_routing.py:418` and the mutation block at `test_mutation_harness.py:4141` green, or update them in the same commit. Add tests with mutation entries.
 - [ ] T4: Write AC4's chip, push, and close into the guest arm. Add tests with mutation entries.
@@ -63,6 +63,8 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - 2026-10-16: plan gate chose a dated `latestReviews` change request (`submittedAt` after the head commit's `committedDate`) over `reviewDecision` because `gh` returns an empty `commit.oid` on `latestReviews` (read on PR #277) and `reviewDecision` is empty without required reviews; falsified by a real guest PR whose change request the route misses or re-handles.
 - 2026-10-16: plan gate chose one chip after the changes are made over a triage chip before them, because the maintainers' requests are the scope and the user still sees each change or reason before any push; falsified by a run where the user wants to reject a request before work is spent on it.
 - 2026-10-16: plan gate chose the adopt walk with an authored-fix label for the owner's own PR over a separate step 1 arm, because the adopting variants of steps 2, 3, and 5 already fit a PR whose fix is committed; falsified by a real run where an adopting step misbehaves on the operator's own branch.
+- 2026-10-16: implement started on `m266-hotfix-rerun-gaps`; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-16: T1 done: closed-PR stop in step 1 ahead of the merged-PR re-entry; `TestHotfixClosedPrStop` (5 tests) and 5 mutation entries, each shown to turn its guard red; verify slot green (5 of 5). The simple-english hook flags pre-existing whole-file hits in `SKILL.md`; rewriting the skill is out of scope.
 
 ## Decisions
 

@@ -483,5 +483,57 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
         )
 
 
+class TestHotfixClosedPrStop(unittest.TestCase):
+    """M266 AC1: `/hotfix` step 1's closed-PR stop. A `CLOSED` PR whose head
+    is not a milestone branch stops in both modes after the candidate-row
+    match, removes only a `hotfix ` marker naming it, edits no row, and
+    ends with a close block whose next command starts over. Trigger and
+    each outcome are pinned on their own (M165 lesson), whitespace
+    collapsed (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+
+    def test_trigger_is_a_closed_non_milestone_pr(self):
+        self.assertIn(
+            "**Closed-PR stop (M266).** A PR-reference argument whose "
+            "`gh pr view <N> --json state,headRefName` reports `CLOSED`, with "
+            "a head branch not matching `m<nnn>-*`, stops here in owner and "
+            "guest mode.",
+            self.step1,
+        )
+
+    def test_stop_skips_the_walk_after_the_row_match(self):
+        self.assertIn(
+            "Make the candidate-row match above, then skip the tier check and "
+            "steps 2 to 7.",
+            self.step1,
+        )
+
+    def test_owner_removes_only_a_hotfix_marker_naming_the_pr(self):
+        self.assertIn(
+            "In owner mode, remove `cairn/.merge-approved` when its line "
+            "starts with `hotfix ` and names that PR (`for PR #<N>`), and "
+            "leave any other marker as it is.",
+            self.step1,
+        )
+
+    def test_stop_edits_no_row(self):
+        self.assertIn("The stop edits no candidate row.", self.step1)
+
+    def test_close_block_says_closed_and_starts_over(self):
+        self.assertIn(
+            "End with a close block that says the PR closed without a merge "
+            "and that reopening it on GitHub is the operator's choice. The "
+            "close block names each matched row that ends with ` — started "
+            "#<N>`, a dead token that `/cairn-triage` proposes to remove. Its "
+            "fenced next command is `/hotfix` with a description of the bug, "
+            "which starts over on a new branch.",
+            self.step1,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
