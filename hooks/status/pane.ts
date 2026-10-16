@@ -169,6 +169,10 @@ export type StartedRow = CairnStartedRow
 // The prefix a body line opens with to name a candidate row (M252).
 export const STARTED_PREFIX = 'Candidate row: '
 
+// A body line that opens or closes a fenced code block: three backticks
+// or three tildes after optional spaces (M257).
+const FENCE_LINE = /^ *(```|~~~)/
+
 // The started items of one `gh pr list --json
 // number,title,url,headRefName,body` result, in the order it lists them,
 // or null for a call that rejected, exited non-zero, or printed something
@@ -176,7 +180,10 @@ export const STARTED_PREFIX = 'Candidate row: '
 // an integer `number` and a string `body` counts, whatever its head
 // branch. Each body line, split on `\n` with a trailing `\r` removed, that
 // opens with exactly `Candidate row: ` gives one item, its title the rest
-// trimmed as `candidateRows` trims a title. A blank rest gives none.
+// trimmed as `candidateRows` trims a title. A blank rest gives none. A
+// line between a fence line and the next fence line gives none (M257):
+// any fence line closes an open fence, and each body starts with no fence
+// open.
 export function startedRows(result: { exitCode: number; stdout: string } | null): StartedRow[] | null {
   if (result === null || result.exitCode !== 0) return null
   let list: unknown
@@ -191,9 +198,14 @@ export function startedRows(result: { exitCode: number; stdout: string } | null)
     if (entry === null || typeof entry !== 'object') continue
     const { number, body } = entry as Record<string, unknown>
     if (typeof body !== 'string' || typeof number !== 'number' || !Number.isInteger(number)) continue
+    let fenced = false
     for (const raw of body.split('\n')) {
       const line = raw.endsWith('\r') ? raw.slice(0, -1) : raw
-      if (!line.startsWith(STARTED_PREFIX)) continue
+      if (FENCE_LINE.test(line)) {
+        fenced = !fenced
+        continue
+      }
+      if (fenced || !line.startsWith(STARTED_PREFIX)) continue
       const title = line.slice(STARTED_PREFIX.length).trim()
       if (title !== '') out.push({ title, number })
     }

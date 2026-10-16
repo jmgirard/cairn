@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M257: Started mark skips fenced lines
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane ships to plugin users   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m257-started-mark-fences   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -78,7 +78,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first: the AC1 `startedRows` cases beside M252's
+- [x] T1: Tests first: the AC1 `startedRows` cases beside M252's
       (pane.test.tsx ~3870), red. Then a per-body fence flag in
       `startedRows` (pane.ts ~194). Run `verify`.
 - [ ] T2: README's started-mark text (~441-458) per AC2.
@@ -102,6 +102,8 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: criteria audit (full, Opus fresh reader, one reader for M255-M257, with throwaway probe tests in a scratch copy) — 8 findings, all taken: see the per-milestone line below.
 - 2026-10-15: audit findings for M257: AC1 pins the closing rule (any fence line) and a per-body reset, with a case table over both fence characters, leading spaces, an unclosed fence, and the next body; AC2 reworded so README makes no false claim (a hand-written line also marks; the mark goes at the next read after a merge; `/hotfix` narrows at step 7).
 - 2026-10-15: plan chose "any fence line closes" over CommonMark's same-character rule because a stray `Candidate row:` line costs one wrong mark and the simple toggle is one line; falsified by a real PR body whose mixed fences mark or hide a row wrongly.
+- 2026-10-15: implement started on branch m257-started-mark-fences; untracked `cairn-probe.log` left unstaged, not this milestone's.
+- 2026-10-15: T1 done: two `startedRows` tests (backtick, tilde, and spaced fences; an unclosed fence then a second body) ran red with the fenced titles returned, then a per-body `fenced` toggle on a module-private `FENCE_LINE` (`/^ *(```|~~~)/`, any number of leading spaces as AC1's "optional spaces" reads) made them green; verify 5/5 green (plugin test 1740 pass).
 
 
 ## Decisions
