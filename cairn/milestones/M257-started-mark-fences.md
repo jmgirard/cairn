@@ -81,7 +81,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - [x] T1: Tests first: the AC1 `startedRows` cases beside M252's
       (pane.test.tsx ~3870), red. Then a per-body fence flag in
       `startedRows` (pane.ts ~194). Run `verify`.
-- [ ] T2: README's started-mark text (~441-458) per AC2.
+- [x] T2: README's started-mark text (~441-458) per AC2.
 - [ ] T3: CHANGELOG entry; run `verify`.
 
 ## Work log
@@ -104,6 +104,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: plan chose "any fence line closes" over CommonMark's same-character rule because a stray `Candidate row:` line costs one wrong mark and the simple toggle is one line; falsified by a real PR body whose mixed fences mark or hide a row wrongly.
 - 2026-10-15: implement started on branch m257-started-mark-fences; untracked `cairn-probe.log` left unstaged, not this milestone's.
 - 2026-10-15: T1 done: two `startedRows` tests (backtick, tilde, and spaced fences; an unclosed fence then a second body) ran red with the fenced titles returned, then a per-body `fenced` toggle on a module-private `FENCE_LINE` (`/^ *(```|~~~)/`, any number of leading spaces as AC1's "optional spaces" reads) made them green; verify 5/5 green (plugin test 1740 pass).
+- 2026-10-15: T2 done: README's started-mark paragraph now says no other skill and no guest run writes the line (grep of `skills/` finds it only in hotfix and milestone-review), that any of your open PRs with the line marks the row, hand-written included, that a fenced line does not count, and that the mark goes at the first PR read after the merge until review's hygiene or hotfix step 7 edits the row (read from both skills' text this session). The simple-english hook's 212 README hits predate the branch outside these lines; left as is.
 
 
 ## Decisions

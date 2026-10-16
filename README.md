@@ -441,8 +441,13 @@ there is no section.
 
 An open PR can name the candidate rows that it fixes. In owner mode,
 `/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
-line in the PR body for each row that the merge removes or narrows. The
-same `gh pr list` call reads the body of each listed PR, from any branch.
+line in the PR body for each row that the merge removes or narrows. No
+other skill and no guest-mode run writes such a line. The same `gh pr list` call reads the body
+of each listed PR, from any branch. Any of your open PRs whose body has
+such a line marks the row, also when you wrote the line by hand. A line
+inside a fenced code block does not count. A fence line opens with three
+backticks or three tildes after optional spaces. Such a block starts at a
+fence line and ends at the next fence line or at the end of the body.
 A candidate row whose short title such a line names exactly shows `◐` in
 the review color in place of its priority mark. It also shows the PR's
 `#<n>` at its right end, the lower number when two PRs name it, and no
@@ -453,8 +458,10 @@ PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
 open. The pane lists candidate rows only
 while no milestone is active, so while a milestone's branch is checked
 out, the mark of that milestone's PR shows only in another checkout of the
-default branch. Without the opt-in Copilot round (below), a PR opens only after you
-approve the merge, so its mark shows only until the merge. A PR opened
+default branch. Without the opt-in Copilot round (below), a PR opens only
+after you approve the merge. A row's mark goes at the pane's first PR read
+after the merge. The row then shows no mark until `/milestone-review`'s
+hygiene commit or `/hotfix`'s step 7 removes or narrows it. A PR opened
 before this change has no such line.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
