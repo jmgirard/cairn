@@ -1,14 +1,14 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-15 (M260 archived; six pane and press rows graduated; one M260 follow-up row; validate, guards green)_
+_Last hygiene check: 2026-10-16 (M261 archived; "Started mark edges" row reworded; validate, guards green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M261 | The cairn pane hides started candidate rows | review | — | normal | milestones/M261-pane-hide-started.md |
+| M261 | The cairn pane hides started candidate rows | done | — | normal | milestones/archive/M261-pane-hide-started.md |
 | M260 | Press and placement races end cleanly | done | — | normal | milestones/archive/M260-press-end-races.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
