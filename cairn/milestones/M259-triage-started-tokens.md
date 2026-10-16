@@ -1,6 +1,6 @@
 # M259: Triage keeps started tokens current
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,3 +67,5 @@
 - 2026-10-15: T2 done: a "Started tokens → a token change" paragraph in step 2; the table's reason cell, the chip's question text, the untouched-items carve-out (a third edit), the skip rule, the apply edit (append at the row's end, remove the token text alone, a survivor's lineage clause before its first token), the cap count, step 5's no-decision list, the stamp, and the close block's status line all count token changes. Lint 184 against 181 on main: three long sentences that already existed grew by a clause each. verify green (408, 175, both validates, 1759).
 - 2026-10-15: T3 done: tracking-rules "Candidate started token" names triage's proposals and what a dead token is; README's sentence that a dead token "stays on the row and marks nothing" replaced; CHANGELOG `### New` entry; D-166 annotates D-165 and records D-108's door ground; DESIGN's reader paragraph names triage as a token writer. Rulebook-mass baseline re-seeded to 677 lines / 65,153 bytes in `skills/milestone/SKILL.md` and its two hand-run pins; main stood at 675 / 64,890 against the old 668 / 64,222 seed, so M258 had not re-seeded it. AC5 sweep (`grep -rn -e "marks nothing" -e "no step removes" -e "stays on the row" README.md skills/ cairn/DESIGN.md`) returns nothing. verify green (408, 175, both validates, 1759); `test_cost_audit_line` OK.
 - 2026-10-15: T4 done: AC1 and AC2's rules applied by a scratch script to the live ROADMAP: "Started mark edges (M252 review)" carries ` — started M258` (dead: absent from the table and archived) and ` — started M259` (live: in-progress); no row is missing a token. Control: the same row without its M259 token reads as missing, since M259's file quotes its title in the work log outside Out. `skills/tests` hand-run: 752 OK. No code changed after T3's verify run.
+- 2026-10-15: claim audit: 23 claims read, 4 corrected — CHANGELOG.md, README.md, skills/shared/tracking-rules.md (a live-token row "kept as it is" → stays `keep` and can still be re-rated, take a lineage clause, or lose a dead token; README and tracking-rules name the four live statuses; the dead-token summaries add the archived case); also SK "the other" → "the second" in the carve-out list. The same reader re-read the corrections: all hold. Rulebook baseline re-seeded again to 678 lines / 65,222 bytes after the tracking-rules fix (three sites). verify green (408, 175, both validates, 1759); `skills/tests` 752 OK; validate green.
+- 2026-10-15: implement complete; status → review.

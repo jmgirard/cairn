@@ -167,14 +167,15 @@
 - **`/cairn-triage` keeps started tokens current.** A triage pass now
   reads each candidate row's ` — started M<NNN>` and ` — started #<n>`
   tokens. It proposes removing a dead token, which names a milestone that
-  is `done`, `dropped`, or gone from the table, or a PR that is merged or
-  closed. It reads each PR's state with `gh pr view`. It also proposes
+  is `done`, `dropped`, gone from the table, or archived, or a PR that is
+  merged or closed. It reads each PR's state with `gh pr view`. It also proposes
   adding a missing ` — started M<NNN>` token to a row whose short title a
   planned, in-progress, blocked, or review milestone file quotes in double
   quotes. Each token change waits for your answer at the triage gate,
-  beside the row's disposition. A row that carries a live token is kept as
-  it is, so no triage rewrite removes the token that draws the pane's
-  mark.
+  beside the row's disposition. A row that carries a live token stays
+  `keep`, so no triage disposition removes the token that draws the pane's
+  mark. The row can still be re-rated, gain a merge survivor's lineage
+  clause, or lose a dead token beside the live one.
 
 - **A started token on a candidate row marks it in the cairn pane, guest
   mode included.** `/milestone-plan` now ends each candidate row that a

@@ -272,7 +272,7 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
      an item the user pulled out of a `merge` or `drop` stays as it was;
      an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out,
      and it touches the row's opening token and the row's place in the order alone. An accepted
-     `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the other: it changes that quote alone.
+     `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the second: it changes that quote alone.
      An accepted token change is a third. It adds or removes the token text
      alone.
 
