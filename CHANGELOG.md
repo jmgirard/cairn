@@ -4,6 +4,18 @@
 
 ### Changes that affect existing repos
 
+- **Guest branches can go to the upstream repo.** In guest mode, add the
+  line `# Push remote: base` near the top of `cairn/PROFILE.md`, and
+  `/milestone-review` and `/hotfix` push the branch to the upstream repo
+  instead of your fork. You can then set another open PR's branch as a
+  PR's base. Before that push, they read your push permission on the upstream
+  repo, and they stop with nothing pushed if it is not `true`. A branch
+  whose PR is already open keeps pushing to the remote that holds that
+  PR's head. A repo without the line still pushes to the fork. In both
+  cases, `/milestone-implement` now fetches a pushed branch before it
+  rebases. If the remote branch has commits your copy lacks, it stops and
+  names them, and its force-push leases on the tip it read.
+
 - **The routing section names the tier question.** The cairn section that
   `/cairn-init` adds to `CLAUDE.md` now names it. Where a hotfix or a
   direct edit fits, `/milestone-plan` offers it before its one question

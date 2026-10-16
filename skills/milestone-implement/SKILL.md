@@ -67,10 +67,20 @@ run ingestion first (see `/milestone-brief`).
    existing branch; if the default branch has moved since the branch was cut
    (e.g., a hotfix merged), merge it into the branch and re-run the active
    profile's `verify` slot before continuing. Guest arm: `git fetch <base>`
-   then `git rebase <base>/<default-branch>` in place of the merge — the
-   branch is the operator's own on the fork, so the rebased branch goes up
-   with `git push --force-with-lease <fork> <slug>` once a PR exists (the
-   force-push guard covers the default branch alone); the maintainers'
+   then `git rebase <base>/<default-branch>` in place of the merge. Once
+   the branch is pushed, other people can push to it too, on the fork or
+   on the base repo, so the rebase waits on one check, run before the
+   rebase. The remote that holds the branch is the open PR's head remote
+   (the rulebook's open-PR head rule), else `<push>`. When
+   `git ls-remote --exit-code --heads <remote> <slug>` finds no such
+   branch, the branch was never pushed: rebase, and push nothing.
+   Otherwise fetch that remote and read
+   `git rev-list <slug>..<remote>/<slug>`.
+   If that lists commits, do not rebase, push nothing, and stop with a
+   close block that names those commits. Otherwise note the remote tip's
+   sha, rebase, and push with
+   `git push --force-with-lease=<slug>:<sha> <remote> <slug>` (the
+   force-push guard covers the default branch alone). The maintainers'
    review comments stay attached to the PR.
 
 3. **No question round.** The agent decides the implementation choices the
