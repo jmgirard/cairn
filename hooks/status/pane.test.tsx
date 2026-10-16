@@ -4602,3 +4602,53 @@ describe("a session end during a ⌂ press's step read cancels its /clear (M260 
     })
   }
 })
+
+// A start's second pane listing that is still pending at a session end
+// reads nothing when it answers, even placed and with a later start's read
+// owed, so the read owed after that end is the pane's next draw's (M260
+// AC4).
+describe('a second listing pending at a session end reads nothing (M260 AC4)', () => {
+  test("the old start's placed second listing adds no read, and the next draw reads once", async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    let releaseFirst = () => {}
+    let releaseSecond = () => {}
+    copy.panesHold = new Promise<void>(resolve => {
+      releaseFirst = resolve
+    })
+    const second = new Promise<void>(resolve => {
+      releaseSecond = resolve
+    })
+    const old = $.classic.SessionStart({ source: 'clear' })
+    try {
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
+      // The second listing's answer is computed placed when it is held.
+      copy.unplaced = []
+      copy.panesHold = second
+      releaseFirst()
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHold).toBeUndefined()
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(true)
+      await $.session.end(CLEAR_END)
+      // The new start lists the pane unplaced twice, so it owes a read and
+      // makes none.
+      copy.unplaced = [PANE]
+      await $.classic.SessionStart({ source: 'clear' })
+      await calls.settled()
+      expect(calls.reads).toEqual([])
+    } finally {
+      releaseFirst()
+      releaseSecond()
+    }
+    await old
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+})
