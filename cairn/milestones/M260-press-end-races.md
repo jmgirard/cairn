@@ -76,3 +76,31 @@ Pass 1, 2026-10-15, branch head 1b247a00 + PR record; PR #271 opened at review s
 - AC5: `CHANGELOG.md` Unreleased › Fixes has one new entry, "Three session-end races in the cairn pane are closed."; its claims read against the tests: Buttons work after a failed end with a `/clear` that never finishes (AC1 test), the next-step Button's held command to the prompt box with the stated toast (AC2 tests), the ⌂ press cancelled and a `/clear` end still opening the pane (AC3 tests), the pending second listing reading nothing and the later start's read its own (AC4 test); no milestone number in the added lines (grep count 0).
 - AC6: verify slot on the review head, each exit code read: plugin test 0 (1766 pass, 0 fail), `scripts/tests` 0, `hooks/tests` 0, `claude plugin validate` plugin.json 0 and marketplace.json 0.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` skipped; marketplace validate output has no `version` warning (grep count 0); the changelog has the entry (AC5).
+- spawned: diff-bug, blame-history, prior-review.
+- diff-bug #1: the `ends` snapshot sits after the first listing, so an end during `refresh` or the first listing still lets the old start read or set `owed` — fix now, fixed c875fae0 (snapshot at hook entry, checked after the first listing; new test fails without it).
+- diff-bug #2: a press made during a pending end that then rejects is freed under its checks, so a double press can overlap — follow-up, row "Rejected end edges (M260 review)" (the success path has had the same exposure since M255).
+- diff-bug #3: a rejected `clear` end opens the pane for ⌂ yet fills the held command — reject, planned change (AC2 asks for the fill on both reasons; AC3 keeps the open).
+- diff-bug #4: no test covers the catch's `pressCheck = null` — fix now, fixed c875fae0 (rejecting-end variant of M255's cut-off press test; fails without the line).
+- diff-bug #5: a cancelled ⌂ press still gets the pane open on a `clear` end — reject, planned change (Scope Out; AC3 asserts it).
+- diff-bug #6: `homeRun` stays set if the step read rejects — follow-up, row "Rejected end edges (M260 review)" (predates M260).
+- diff-bug #7: the catch skips the end's `step`/`expanded`/`dismissed`/`ended` updates while the Buttons are free — follow-up, row "Rejected end edges (M260 review)" (M255 kept the skip; presses re-read `step`).
+- diff-bug #8: absence checks wait about 10 ms — follow-up, row "Rejected end edges (M260 review)" (the kit's `untilRuns`/`untilOpens` convention).
+- diff-bug #9: the AC2 test checks fills only after polling toasts — fix now, fixed c875fae0 (polls both).
+- diff-bug #10: AC4's meaning depends on the hold computing its answer at hold time — reject, false (the `Copy.panesHold` comment states that contract).
+- diff-bug #11: "the pane Buttons now work again" is wider than the Status-press test — reject, false (every action press gates on the one `busy()` check, register.tsx `busy`).
+- blame-history #1: same as diff-bug #7 — follow-up, same row.
+- blame-history #2: if the end's failure also rejects the `/clear` run, two fills and two toasts appear — reject, planned change (each names a line that did not run, as AC2 asks).
+- blame-history #3: DESIGN.md lines on a rejecting end, the ⌂ press, and the start hook are stale; README has no failed-end case — fix now, fixed c875fae0.
+- blame-history #4: same as diff-bug #1 — fix now, fixed c875fae0.
+- blame-history #5: same as diff-bug #5 — reject, planned change.
+- blame-history #6: same as diff-bug #3 — reject, planned change.
+- blame-history #7: the catch does not bump `runs` — reject, false (the reviewer found no failing path; a stale run cannot free a newer one).
+- blame-history #8: the start hook's comments overlap — reject, style.
+- prior-review #1: same as diff-bug #2 — follow-up, same row.
+- prior-review #2: same as diff-bug #8 — follow-up, same row.
+- prior-review #3: the ✎ held-command path is not tested through the catch — reject, false (the catch reads `heldRun` alone, and the changelog claims only the next-step Button).
+- prior-review #4: the AC3 table has no rejecting `other` end — fix now, fixed c875fae0.
+- prior-review #5: the open on a rejecting `clear` end is now asserted though an older row listed it — reject, planned change (AC3).
+- prior-review #6: second-listing not-placed/throws and `/resume` gaps stay open — reject, planned change (pruned at the question set).
+- prior-review #7: the toast cause is not reintroduced wrong — noted.
+- Return floor: no finding shows a criterion failing or a load-bearing defect; no status change. Fix-now verify after c875fae0: plugin test exit 0 (1769 pass), both Python suites 0, both validates 0, `cairn_validate` green. The follow-up row lands at post-merge hygiene, when the six graduated rows leave (ROADMAP is at its 59-line limit now).
