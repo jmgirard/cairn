@@ -34,9 +34,10 @@ CHANGELOG.md gets an entry. `skills/tests/test_resume_routing.py` pins the
 new route.
 
 **Out:** an open owner PR that no `hotfix ` marker names (a Copilot-round
-PR stopped before its chip, or a marker lost), a `CLOSED` unmerged PR the
-marker names, and a guest PR whose maintainers requested changes keep
-today's path; all three stay in the "`/hotfix` has no resume route for an
+PR stopped before its chip, or a marker lost) and a `CLOSED` unmerged PR
+the marker names keep today's path. A guest PR whose maintainers requested
+changes is reported by the guest stop, with no route here to make the
+changes. All three stay in the "`/hotfix` has no resume route for an
 open PR" candidate row, narrowed to them at this milestone's post-merge
 hygiene. `/milestone` §2's "Open hotfix PRs" bullet keeps naming no next
 command. The follow-up PR's lost
@@ -61,21 +62,25 @@ Button".
       `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, and
       only then does the CI wait run.
 - [ ] AC2: In owner mode, `/hotfix` step 1 states an open-PR re-entry. Its
-      trigger: `gh pr view <N> --json state,headRefName,headRefOid` reports
-      `OPEN` and a head branch not matching `m<nnn>-*`, and
+      trigger: `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
+      reports `OPEN` and a head branch not matching `m<nnn>-*`, and
       `cairn/.merge-approved` starts with `hotfix ` and names that PR
-      (`for PR #<N>`). The run quotes the marker's line in chat, still makes
-      step 1's candidate-row match, and skips the tier check and steps 2 to
-      5. When the marker's head oid equals the PR's `headRefOid`, it also
-      skips the Copilot round arm, the PR-conversation read, the approval
-      chip, and the marker write, and goes on at step 6's CI wait, the
-      merge, and step 7. When the two differ, or the marker has no head oid,
-      it says so and re-poses step 6's gate on the PR as it stands. A
-      resumed merge's step 7 edits only the rows the PR body's
-      `Candidate row:` lines name and closes only the issue its `Fixes #N`
-      line names; it names in chat, and leaves alone, any other row the
-      rerun's match finds. An `OPEN` PR outside this trigger keeps step 1's
-      existing path.
+      (`for PR #<N>`). The run quotes the marker's line in chat and makes
+      step 1's candidate-row match. When the marker's head oid equals the
+      PR's `headRefOid`, no entry of `latestReviews` has the state
+      `CHANGES_REQUESTED` (even one the user overrode at the earlier chip),
+      and the match names exactly the rows that the PR body's
+      `Candidate row:` lines name, the run skips the tier check, steps 2 to
+      5, and step 6's Copilot round arm, PR-conversation read, approval
+      chip, and marker write. It goes on at step 6's CI wait, merges with
+      `--match-head-commit` set to that oid, and runs step 7 as it does
+      after an approval at step 6's chip. A merge refused for a moved head
+      stops with a close block that names the refusal and the PR's current
+      head, its fenced next command `/hotfix` with the PR reference. When
+      any of the three conditions fails, or the marker names no oid, the run
+      says which in chat and takes step 1's existing path, where a decline
+      at step 6's chip removes `cairn/.merge-approved`. An `OPEN` PR outside
+      this trigger keeps step 1's existing path.
 - [x] AC3: In guest mode, step 1 states that a PR-reference argument whose
       `gh pr view <N> --repo <base-repo> --json
       state,headRefName,reviewDecision` reports `OPEN` and a head branch
@@ -101,12 +106,12 @@ Button".
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T2, T3
-- AC2 → T1, T3
-- AC3 → T1, T3
-- AC4 → T2
+- AC1 → T2, T3, T7
+- AC2 → T1, T3, T6
+- AC3 → T1, T3, T7
+- AC4 → T2, T7
 - AC5 → T4
-- AC6 → T3, T5
+- AC6 → T3, T5, T7
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -139,6 +144,18 @@ Button".
       comment so neither gives a reason this milestone makes false, and add
       the CHANGELOG.md Unreleased entry.
 - [x] T5: Run the `verify` slot from the repo root, checking each exit code.
+- [ ] T6: Rewrite step 1's owner arm to the amended AC2 (three-condition
+      resume, `--match-head-commit`, refused-merge close, fallback to the
+      existing path, marker removed on a decline at step 6's chip), and
+      update the guard pins and mutation entries to match.
+- [ ] T7: Review pass 1 fix-now items: head pin on every owner merge
+      (diff-bug #1); the gate's presented head recorded and compared at the
+      marker write (diff-bug #9, with the AC1 re-audit's four points); step
+      6's order sentence scoped to owner mode (#11); "read at most once per
+      run" (#8); the timeout close and its CI-line clause (#14); a D-entry
+      annotating D-130 (#12); guard pins for AC3's CI line and next command
+      and AC4's merged half (#13); the CHANGELOG entry; `verify` and
+      `skills/tests` green.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -174,6 +191,11 @@ Button".
 - 2026-10-16: amendment routed: AC2 — the promise mandates an unsafe resume: a moved head re-poses the gate with steps 2 to 5 skipped, so no fresh regression-test or verify evidence (diff-bug #4, prior-review #1, #2); a same-head resume skips the changes-requested blocking rule (diff-bug #3, blame-history #2); the PR-body row clause drops rows the chip promised and contradicts step 7 (diff-bug #5, blame-history #3). Fix-now items for the same round: diff-bug #1, #2 (Scope Out), #7, #8, #9, #11, #12 (D-entry), #13, #14.
 - 2026-10-16: re-audit: AC2 (full) — 5 findings on the first amended wording (moved head or changes requested → existing path; `--match-head-commit`; step 7 as for any approved merge): step 7 could edit rows the earlier chip never named (taken: the match must agree with the body's `Candidate row:` lines); "that run" ambiguous (taken); an earlier override still reads `CHANGES_REQUESTED` (taken, stated); late comments go unread (declined, follow-up); refused-merge outcome unstated (taken).
 - 2026-10-16: re-audit: AC2 (full) — 4 findings on the fixed wording: override parenthetical ambiguous; the row check must be exact, both directions; the refused-merge close needs its object and next command; a declined chip on the fallback path leaves a marker that a later `gh pr merge` passes; plus AC1 should bind the marker's oid to the head the gate presented. Second re-audit on AC2: the repeated review-failure stop; the disposition goes to the user.
+- 2026-10-16: stop answered: the user chose "Adopt the narrowed wording" (over "Always ask again on rerun" and "Stop here"); AC2 takes the second reader's fixes 1-4.
+- 2026-10-16: amendment return: AC2 — "When the marker's head oid equals the PR's `headRefOid`, no entry of `latestReviews` has the state `CHANGES_REQUESTED` (even one the user overrode at the earlier chip), and the match names exactly the rows that the PR body's `Candidate row:` lines name, the run skips the tier check, steps 2 to 5, and step 6's Copilot round arm, PR-conversation read, approval chip, and marker write. It goes on at step 6's CI wait, merges with `--match-head-commit` set to that oid, and runs step 7 as it does after an approval at step 6's chip. A merge refused for a moved head stops with a close block that names the refusal and the PR's current head, its fenced next command `/hotfix` with the PR reference. When any of the three conditions fails, or the marker names no oid, the run says which in chat and takes step 1's existing path, where a decline at step 6's chip removes `cairn/.merge-approved`."
+- 2026-10-16: re-audit: AC1 (full) — 4 findings on the proposed added sentence (presented head undefined for an unpushed authored fix; adopted PRs left out; re-presented gate's decline unstated); the sentence is withdrawn and AC1 stays as written, narrower; the check ships as fix-now diff-bug #9 under T7 with those four points.
+- 2026-10-16: substantive amendment: Scope Out — a guest PR whose maintainers requested changes is reported by the guest stop (AC3 as written) rather than keeping today's path; fixing requested changes stays in the narrowed candidate row (diff-bug #2).
+- 2026-10-16: tasks T6 (AC2 amendment) and T7 (fix-now items) added; Coverage updated.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
