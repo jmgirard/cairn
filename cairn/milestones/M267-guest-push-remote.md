@@ -84,11 +84,11 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
       `CHANGES_REQUESTED` route (line 182) re-pushes to the PR's head remote.
 - [x] T5: Run AC2's grep over the branch (it also finds prose such as review line 640's "from the fork's branch"),
       fix any guest-arm line still naming the fork as a push target, and log the match count in one work-log line.
-- [ ] T6: Update `skills/tests/test_guest_fork_remote.py` for the new targets, and add guards that fail when the
+- [x] T6: Update `skills/tests/test_guest_fork_remote.py` for the new targets, and add guards that fail when the
       `<push>` definition, the access read, or the implement remote-only-commits stop is removed; plant each removal
       once and see the guard go red.
-- [ ] T7: README guest section (lines 848–891, and line 797's "pushes to your fork") and a CHANGELOG entry.
-- [ ] T8: Run `verify` and the hand-run `skills/tests` suite from the repo root, each exit code checked.
+- [x] T7: README guest section (lines 848–891, and line 797's "pushes to your fork") and a CHANGELOG entry.
+- [x] T8: Run `verify` and the hand-run `skills/tests` suite from the repo root, each exit code checked.
 
 ## Work log
 
@@ -109,6 +109,9 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: T1 done: tracking-rules defines `<push>`/`<push-owner>`, the open-PR head rule, and the fork stop scoped to fork-bound pushes; the PROFILE.md file-map row names the line; Collaboration-mode bullets push to `<push>`; D-172 annotates D-137. verify green (5/5).
 - 2026-10-16: T2–T5 done in one checkpoint (the same files carry all four): review step 7 chip and step 8 handoff push to `<push>` with the access read; `/hotfix` guest handoff likewise, and its change route pushes to the head remote `gh pr checkout` set; implement's guest sync checks `rev-list <slug>..<remote>/<slug>` before the rebase and leases on that sha; `/milestone` §2 and copilot-review fix pushes go to the PR's head remote. verify green (5/5).
 - 2026-10-16: T5 sweep: AC2's grep returns 35 lines on the branch; none in a guest arm names the fork as a push target or new-PR head outside `<push>` or the open-PR head rule.
+- 2026-10-16: T6 done: `test_guest_fork_remote.py` now pins the push-remote definition, 15 push sites, both access reads, and implement's remote-only-commits stop; each clause and each site is planted out (removed, or reverted to `<fork>`) in memory and the guard goes red. `test_resume_routing.py`'s change-route pin and its mutation-harness block locator follow the new hotfix wording.
+- 2026-10-16: T7 done: README guest section gains the push-remote bullet and line 797 says "pushes to the PR's branch"; `grep -n -i fork README.md` returns only the new bullet's default-to-fork lines. CHANGELOG Unreleased entry added.
+- 2026-10-16: T8 done: verify green (scripts 0, hooks 0, plugin validate 0, marketplace validate 0, plugin test 0); hand-run skills/tests 818 tests OK; cairn_validate all checks passed.
 - 2026-10-16: decided the change route's push target is the upstream `gh pr checkout` sets, named `<head-remote>`, since that is the remote holding the PR's head whichever repo it is.
 
 ## Decisions

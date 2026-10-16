@@ -4329,7 +4329,7 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestHotfixGuestChangeRoute.test_approval_pushes_and_posts_nothing",
         target=HOTFIX,
-        block="post no comment or reply on the PR.",
+        block="`git push <head-remote> HEAD:<headRefName>`.",
     ),
     Mutation(
         guard="test_resume_routing",

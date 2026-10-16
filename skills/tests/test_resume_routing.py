@@ -707,8 +707,9 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
 
     def test_approval_pushes_and_posts_nothing(self):
         self.assertIn(
-            "On approval, push with `git push <fork> HEAD:<headRefName>`, and "
-            "post no comment or reply on the PR. Then stop with the close block of "
+            "On approval, push to the remote that holds the PR's head, the one "
+            "`gh pr checkout` set as the branch's upstream: `git push <head-remote> "
+            "HEAD:<headRefName>`. Post no comment or reply on the PR. Then stop with the close block of "
             "the report-and-stop above. That close block also says that the "
             "reply to the maintainers is the operator's.",
             self.step1,

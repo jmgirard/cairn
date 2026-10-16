@@ -794,7 +794,7 @@ actually reach.
   that no approval resumes runs the full hotfix checks on it as your own
   fix. In guest mode, when the maintainers request changes on your
   `hotfix-` PR after its newest commit, a rerun makes the changes, runs
-  the checks again, and asks you once before it pushes to your fork.
+  the checks again, and asks you once before it pushes to the PR's branch.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with
@@ -876,6 +876,18 @@ recommend one) and writes `# Collaboration mode: guest` into
   only what it leaves open.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
+- **Branches go to your fork unless you ask for the upstream repo.** By
+  default, `/milestone-review` and `/hotfix` push the branch to your fork
+  and open the PR from it. If you can push to the upstream repo and want
+  the branch there, add the line `# Push remote: base` near the top of
+  `cairn/PROFILE.md`. A PR can then build on another open PR's branch,
+  because GitHub accepts only a branch in the upstream repo as a PR's
+  base. Before the first push, cairn reads your push permission on the
+  upstream repo. If it is not `true`, cairn pushes nothing and says why.
+  A branch whose PR is already open keeps pushing to where that PR's head
+  lives. Before a resync rebases a pushed branch, cairn fetches it. If
+  someone else pushed commits that your copy lacks, it stops and names
+  them.
 - **No release walk.** `/cairn-release` stops at session start and says
   why: a release is the maintainers' act.
 - **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips
