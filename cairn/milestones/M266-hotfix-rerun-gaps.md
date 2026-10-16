@@ -1,6 +1,6 @@
 # M266: Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - [x] T3: Write AC3's trigger and checks into the guest arm (`SKILL.md:157-166`), adding `author` and `latestReviews` and the head commit date to its read. Keep the pins at `test_resume_routing.py:418` and the mutation block at `test_mutation_harness.py:4141` green, or update them in the same commit. Add tests with mutation entries.
 - [x] T4: Write AC4's chip, push, and close into the guest arm. Add tests with mutation entries.
 - [x] T5: Edit the README rerun paragraph (`README.md:784-792`), add the CHANGELOG `## Unreleased` entry, and edit the DESIGN.md Known issues sentences (`cairn/DESIGN.md:791-795`).
-- [ ] T6: Run the five `verify` slot commands, each exit code read on its own. Hand-run `python3 -m unittest discover -s skills/tests` as evidence for T1 to T4 (it gates nothing).
+- [x] T6: Run the five `verify` slot commands, each exit code read on its own. Hand-run `python3 -m unittest discover -s skills/tests` as evidence for T1 to T4 (it gates nothing).
 
 ## Work log
 
@@ -69,6 +69,10 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - 2026-10-16: T2 done: "Own open PR (M266)" paragraph after the guest arm; `author` added to the open-PR read and its pin and mutation block; step 6's round-arm and step 7's off-but-present sentences name the route; `TestHotfixOwnOpenPr` (5 tests) and 5 mutation entries, each red when blanked; verify slot green (5 of 5).
 - 2026-10-16: T3 and T4 done in one commit (one inserted block): the guest arm's read gains `author,latestReviews,commits`; "Change route (M266)" triggers on a change request whose `submittedAt` is after the last commit's `committedDate`, runs step 6's three reads with one chip in place of their per-item options, uses `gh pr checkout <N> --repo <base-repo>`, and pushes with `git push <fork> <headRefName>`. M262's guest pins unchanged and green. `TestHotfixGuestChangeRoute` (8 tests) and 8 mutation entries, each red when blanked; full `skills/tests` green (806); verify slot green (5 of 5).
 - 2026-10-16: T5 done: README rerun paragraph (`README.md:790-797`) and a CHANGELOG `### Fixes` entry under Unreleased name the three routes; DESIGN.md Known issues sentences rewritten and narrowed (marked `narrowed M266`); AC5's `git grep` returns no match (exit 1). Old-phrasing sweep over README, `/milestone`, `/milestone-plan`, tracking-rules, and `hooks/status/*.ts` found nothing else to change.
+- 2026-10-16: claim audit: 20 claims read, 1 corrected — skills/hotfix/SKILL.md, README.md, CHANGELOG.md, skills/tests/test_resume_routing.py, skills/tests/test_mutation_harness.py
+- 2026-10-16: claim audit fixes: the "one entry per pinned clause" comments made true with 2 more mutation entries; the reader also found the round arm's decline would `gh pr close` the operator's own pre-existing PR, fixed with a sentence that leaves it open and names `/hotfix` with the PR reference (new test and entry). Same reader's one re-read: both hold. 24 M266 mutation entries, none survive blanking.
+- 2026-10-16: open concerns for review: `committedDate` is commit time, not push time, so a commit made before a change request and pushed after it still triggers the change route; `latestReviews` masking (already in Known issues) also applies to the change route's trigger.
+- 2026-10-16: T6 done: verify slot green (5 of 5) at the final tree; hand-run `skills/tests` green (807). Status → review.
 
 ## Decisions
 

@@ -4261,6 +4261,18 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_copilot_round_runs_without_a_create",
+        target=HOTFIX,
+        block="Step 6's Copilot round arm runs for it, with a push to the PR's",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_round_decline_leaves_the_own_pr_open",
+        target=HOTFIX,
+        block="so a decline leaves it open, and the close block says so.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
         test="TestHotfixOwnOpenPr.test_step_seven_rule_applies_to_it",
         target=HOTFIX,
         block="that adopted-PR exemption, so the rule applies to it.",
@@ -4292,6 +4304,13 @@ REGISTRY += [
              "test_route_reads_the_conversation_and_makes_changes",
         target=HOTFIX,
         block="Make a change for each requested item, or",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="The route runs the three reads of step 6's",
     ),
     Mutation(
         guard="test_resume_routing",

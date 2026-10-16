@@ -590,6 +590,14 @@ class TestHotfixOwnOpenPr(unittest.TestCase):
             self.step6,
         )
 
+    def test_round_decline_leaves_the_own_pr_open(self):
+        self.assertIn(
+            "Step 1's own open PR existed before the run, so a decline leaves "
+            "it open, and the close block says so. Its fenced next command is "
+            "`/hotfix` with the PR reference, not a new branch.",
+            self.step6,
+        )
+
     def test_step_seven_rule_applies_to_it(self):
         self.assertIn(
             "Step 1's own open PR is outside that adopted-PR exemption, so the "

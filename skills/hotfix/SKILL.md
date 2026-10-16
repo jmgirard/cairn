@@ -308,7 +308,9 @@ can resolve against the fork instead of the base repo.
    (§6); every other item keeps the four options. A decline at the chip
    closes this PR with `gh pr close <N>` and keeps the branch, and the
    close block names both; a later `/hotfix` for the same bug cuts a new
-   branch under a new slug. An adopted PR skips the round: the
+   branch under a new slug. Step 1's own open PR existed before the run,
+   so a decline leaves it open, and the close block says so. Its fenced
+   next command is `/hotfix` with the PR reference, not a new branch. An adopted PR skips the round: the
    contributor's PR is theirs to put to a reviewer. Step 1's own open PR
    is outside that exemption: the round runs for it, with a push to the
    PR's head branch and no `gh pr create`. With the round off,
