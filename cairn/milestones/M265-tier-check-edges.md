@@ -129,3 +129,9 @@ spawned: diff-bug, blame-history, prior-review
 - prior-review #6: the row match reads before the level check — reject, false: a stale checkout fails the level check, so the option says the edit cannot be made and nothing is written
 
 Re-check after 46f64022: AC1 to AC6 text checks re-run on the new wording all hold. AC1 reads "With a row to edit, `cairn/ROADMAP.md` is a file the edit touches". AC2's bullet still names commits "the user approved at `/milestone-plan`'s tier chip". AC5's Trivial line reads "in owner mode, commit to the default branch. In guest mode, leave the edit on disk (`cairn/` files only)". The template stays at 29 lines. `test_plan_tier_check` OK. Both greps exit 1.
+
+PR-conversation read (PR #277, before the merge chip): one Copilot review (`COMMENTED`, bot, on 8385d255), no conversation comments, one unresolved thread.
+- copilot: cairn/milestones/M265-tier-check-edges.md:10 — the `Branch/PR` header lacked the PR URL — fix now, fixed af68634e (replied and resolved)
+- copilot: review body — "Resolve the two milestone-plan routing precedence issues" (no thread anchor) — fix now, the same defects as diff-bug #2 and #3, fixed 46f64022
+- conversation: copilot-pull-request-reviewer[bot] PR #277 review — noted
+- Copilot level: Lite (set by GitHub's settings)
