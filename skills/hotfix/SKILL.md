@@ -125,7 +125,7 @@ can resolve against the fork instead of the base repo.
    **Open-PR re-entry (M262).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
    reports `OPEN` takes one of the two arms below when its conditions
-   hold. Any other open PR takes the walk above.
+   hold. Any other open PR takes the tier-check walk that opens this step.
    - *Owner arm.* This arm runs in owner mode. Its head branch does not
      match `m<nnn>-*`. Step 6's merge-guard marker starts with `hotfix `
      and names that PR (`for PR #<N>`). Such a marker means that an earlier
@@ -136,13 +136,14 @@ can resolve against the fork instead of the base repo.
      First, the marker's ` at <oid>` equals the PR's `headRefOid`. Second,
      no entry of `latestReviews` has the state `CHANGES_REQUESTED`, even
      one the user overrode at the earlier chip. Third, the match names
-     exactly the rows that the PR body's `Candidate row:` lines name. An
-     adopted PR's body has no such line, so its match must name no row.
+     exactly the rows that the PR body's `Candidate row:` lines name.
      When all three hold, say that the run resumes the approved merge. Skip
      the tier check, steps 2 to 5, and step 6's Copilot round arm,
      PR-conversation read, approval chip, and marker write. Go on at step
      6's CI wait, then the merge with `--match-head-commit <oid>`, then step
-     7 as it runs after an approval at step 6's chip. Step 7's
+     7 as it runs after an approval at step 6's chip. Before the merge,
+     read `gh pr view <N> --json isCrossRepository`, and drop
+     `--delete-branch` when it is `true` (a fork PR). Step 7's
      off-but-present Copilot rule applies to a resumed authored fix as it
      does to one this run merged.
      If GitHub refuses the merge because the head moved during the wait,
@@ -150,7 +151,7 @@ can resolve against the fork instead of the base repo.
      `headRefOid`. Its fenced next command is `/hotfix` with the PR
      reference.
      When a condition fails, or the marker names no head oid, say in chat
-     which one. Then take the walk above, which ends at step 6's chip. A
+     which one. Then take the tier-check walk that opens this step, which ends at step 6's chip. A
      decline at that chip removes the marker (step 6). If the walk stops
      before that chip, remove the marker too.
    - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
@@ -341,7 +342,9 @@ can resolve against the fork instead of the base repo.
    wait, so a run that stops at the wait leaves it on disk for step 1's
    open-PR re-entry. Just before the marker write, read the head with
    `gh pr view <N> --json headRefOid`. If it differs from the head the gate
-   showed, write no marker and present the gate again on the new head. The
+   showed, write no marker and stop with a close block that names the new
+   head. Its fenced next command is `/hotfix` with the PR reference, which
+   takes the new commits through the tier-check walk. The
    marker is `cairn/.merge-approved` (gitignored; one line:
    `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the
    head oid that read returned —
@@ -351,7 +354,8 @@ can resolve against the fork instead of the base repo.
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is
    denied. If GitHub refuses the merge because the head no longer matches
-   `--match-head-commit`, do not retry it and do not drop the flag. Stop
+   `--match-head-commit`, do not retry it and do not drop the flag,
+   whatever the guard's restore note says. Stop
    with a close block that names the refusal and the PR's current
    `headRefOid`. Its fenced next command is `/hotfix` with the PR
    reference. The guard restores the marker, and the rerun finds a moved

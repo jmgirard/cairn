@@ -371,7 +371,7 @@
   no review requests changes, and the candidate rows it matches are the
   ones the PR body names. Otherwise, the rerun runs the full hotfix checks
   again and asks you again.
-  In guest mode, a rerun on your open hotfix PR reports its state and
+  In guest mode, a rerun on an open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
 
 - **The cairn pane right-aligns pull request numbers and states.** On a

@@ -4113,7 +4113,7 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestHotfixOpenPrReentry.test_a_failed_condition_takes_the_walk",
         target=HOTFIX,
-        block="Then take the walk above, which ends at step 6's chip.",
+        block="Then take the tier-check walk that opens this step, which ends at step 6's chip.",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4126,7 +4126,7 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry."
              "test_step_six_refused_merge_stops_without_retry",
         target=HOTFIX,
-        block="do not retry it and do not drop the flag.",
+        block="do not retry it and do not drop the flag,",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4159,7 +4159,7 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry."
              "test_step_six_binds_the_marker_to_the_head_the_gate_showed",
         target=HOTFIX,
-        block="write no marker and present the gate again on the new head.",
+        block="write no marker and stop with a close block that names the new",
     ),
     Mutation(
         guard="test_resume_routing",

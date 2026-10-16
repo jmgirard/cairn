@@ -6034,7 +6034,7 @@ there. A ✎ press keeps
 the row's index in `state.candidates`, so a hidden row moves no other
 row's press.
 
-### D-168 (2026-10-16): A `/hotfix` rerun on an open PR merges on the earlier approval with no new chip only when nothing changed since it — annotates D-130 and D-131 (M262)
+### D-168 (2026-10-16): A `/hotfix` rerun on an open PR merges on the earlier approval with no new chip only when its head, its change requests, and its rows still match that approval — annotates D-130 and D-131 (M262)
 
 **Context:** D-130 gave `/hotfix` a re-entry for a merged PR and left an
 open PR unrouted, though step 6's timeout close told the user that a
@@ -6054,6 +6054,11 @@ candidate-row match equals the PR body's `Candidate row:` lines. Any
 other open PR takes the existing walk, which runs the hotfix bar and
 poses the chip again. In guest mode, a rerun on an open `hotfix-` PR
 reports its state and stops. Route (c) stays as it is for milestones.
+A resumed merge skips the tier check, steps 2 to 5, and step 6's
+PR-conversation read: the hotfix bar of D-131 ran at the approved head,
+and the check for a request for changes stands in for that read's
+blocking rule. Comments and threads posted since the approval are not
+read on that path.
 
 **Rejected:** Re-posing the approval chip on every rerun, as route (c)
 does, at the user's choice at M262's review stop, because the timeout
@@ -6065,5 +6070,7 @@ on (D-131).
 
 **Consequences:** The marker is now resume state as well as the merge
 guard's approval record. A marker lost or consumed before the rerun
-sends the rerun to the walk, so the worst case is the second approval
-this entry set out to remove, never an unapproved merge.
+sends the rerun to the walk, so the worst case there is the second
+approval this entry set out to remove. The merge guard reads only the
+PR number in the marker, not its head, so the head pin holds only for a
+merge that the skill runs with `--match-head-commit`.

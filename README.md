@@ -787,7 +787,9 @@ actually reach.
   hotfix's approval chip. Where a PR already exists — a return from an earlier review, an
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
-  is merged past unread.
+  is merged past unread. A `/hotfix` rerun that resumes a merge you
+  already approved skips that read and checks only that no review
+  requests changes.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with

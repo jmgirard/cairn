@@ -345,7 +345,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
             "**Open-PR re-entry (M262).** A PR-reference argument whose "
             "`gh pr view <N> --json state,headRefName,headRefOid,latestReviews` "
             "reports `OPEN` takes one of the two arms below when its "
-            "conditions hold. Any other open PR takes the walk above.",
+            "conditions hold. Any other open PR takes the tier-check walk "
+            "that opens this step.",
             self.step1,
         )
 
@@ -392,7 +393,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     def test_a_failed_condition_takes_the_walk(self):
         self.assertIn(
             "When a condition fails, or the marker names no head oid, say in "
-            "chat which one. Then take the walk above, which ends at step 6's "
+            "chat which one. Then take the tier-check walk that opens this "
+            "step, which ends at step 6's "
             "chip. A decline at that chip removes the marker (step 6). If the "
             "walk stops before that chip, remove the marker too.",
             self.step1,
@@ -401,7 +403,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     def test_step_six_refused_merge_stops_without_retry(self):
         self.assertIn(
             "If GitHub refuses the merge because the head no longer matches "
-            "`--match-head-commit`, do not retry it and do not drop the flag.",
+            "`--match-head-commit`, do not retry it and do not drop the flag, "
+            "whatever the guard's restore note says.",
             self.step6,
         )
 
@@ -447,7 +450,9 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
         )
         self.assertIn(
             "If it differs from the head the gate showed, write no marker and "
-            "present the gate again on the new head.",
+            "stop with a close block that names the new head. Its fenced next "
+            "command is `/hotfix` with the PR reference, which takes the new "
+            "commits through the tier-check walk.",
             self.step6,
         )
 
