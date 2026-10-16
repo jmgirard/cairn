@@ -1,10 +1,10 @@
 ---
 name: cairn-triage
-description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, or sweep the known issues.
-argument-hint: ""
+description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, or merge lessons.
+argument-hint: "[lessons]"
 ---
 
-# /cairn-triage — whole-list triage of candidates and Known issues
+# /cairn-triage — whole-list triage of candidates and Known issues, or of lessons
 
 Plugin root: every `${CLAUDE_PLUGIN_ROOT}` path below is under the plugin
 install directory. When the shell has that variable unset or empty — the
@@ -20,6 +20,8 @@ read, the git model, the record-prose rule). Then read
 gate. This skill is on demand: nothing triggers it, no threshold sizes it,
 and it never runs unasked. It proposes, the user decides at one gate, and
 it writes nothing before that answer.
+With the argument `lessons`, the pass triages `cairn/LESSONS.md` instead
+(the lessons pass, below).
 Phase header: `# Triage` → `## Pass`.
 Chapter markers: mark a chapter at each phase transition and at each numbered
 step (session start implicit).
@@ -82,6 +84,78 @@ quotes the row's non-empty short title in double quotes outside its Scope
 or more rows share is listed as ambiguous, and no token is proposed for
 it. No `#<n>` token is ever missing. Owner mode marks a hotfix through its PR body, and guest
 `/hotfix` writes its token in the step that opens the PR.
+
+## The lessons pass (`/cairn-triage lessons`)
+
+`/cairn-triage lessons` runs the pass over `cairn/LESSONS.md` in place of
+the candidate rows and the Known issues entries. With no argument the pass
+enumerates the candidates and Known issues and no lesson. An argument other
+than `lessons` stops before enumeration with a close block that names
+`lessons` as the one accepted value. The lessons pass runs the same
+preconditions, gate, apply, stamp, and commit as the default pass, with the
+changes below. It runs only when the user types it. A milestone's review
+hygiene still checks only the lessons that milestone's work covers (D-051,
+D-169).
+
+**Session start.** In place of the candidate rows and Known issues, read
+`cairn/LESSONS.md` whole, its header included, and `cairn/ROADMAP.md` for
+its size and stamp. Skip the started-token reads. Then find the pin files:
+each file that `git grep -l "LESSONS.md"` lists whose path contains `test`.
+None listed means no pins and no failure. Read each pin file, and note each
+string it asserts is present in `cairn/LESSONS.md` and each string it
+asserts is absent.
+
+**Step 1, enumerate.** A lesson item is one line of `cairn/LESSONS.md` that
+opens with `- ` and a `YYYY-MM-DD` date. List its source, `lesson`. List its
+subject: the text after the first `): `, or after the date when the line
+has none, trimmed to about 80 characters. List its provenance (the
+parenthesized milestone list after the date), its byte length, and its
+date. Its priority is `—`. A missing `cairn/LESSONS.md`, or one with no
+such line, yields zero items with no failure. The pass then reaches the
+gate with an empty table, as step 1 states for empty lists.
+
+**Step 2, assess.** Before it proposes a disposition for a lesson, the pass
+checks the pins. A lesson that holds a string a pin file asserts is present
+is `keep`, its reason naming that file. A lesson takes one of five
+dispositions, and never `split`, `route`, or `retitle`:
+
+| Disposition | Lesson meaning |
+|---|---|
+| `keep` | Unchanged. The default when no exit below applies. |
+| `compress` | Shortened, or trimmed to the part no other record covers. |
+| `merge` | Folded into a named surviving lesson on the same subject. The survivor's own proposal is `keep`, its reason `survivor of <subject>`. |
+| `drop` | Retired. The reason names its exit. Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about. A test that only sits nearby is not enforcement. Ownership: a `cairn/` tracking file and the section that owns the lesson's content. |
+| `promote` | A family of lessons ready to graduate into a doctrine module under `skills/shared/`. Each lesson of the family gets this proposal, naming the family. The reason states each maturation condition: the family teaches transferable craft, it was extended or consolidated at least twice, and no other exit applies (D-055). |
+
+A compressed or merged lesson keeps its `- YYYY-MM-DD (M…)` prefix and any
+`corrected` or `trimmed` mark. A lesson the pass finds false is `keep`, its
+reason naming the record that refutes it. Correcting it is the work of
+whoever proves it false (D-045). Step 2's staleness, overlap, and
+overgrowth evidence guide `drop`, `merge`, and `compress`. The
+started-token, title, priority, and records-hygiene §7 rules do not apply
+to lessons. The pass never proposes pruning the oldest lesson, which stays
+the last resort at review hygiene.
+
+**Step 3, gate.** The table and the chip are step 3's. A `drop` names its
+exit and its evidence, a `merge` names its survivor, and a `promote` names
+its family and the three conditions.
+
+**Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A
+dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no
+breadcrumb. No accepted edit writes a string that a pin file asserts is
+absent. After the edits, `wc -l -c cairn/LESSONS.md cairn/ROADMAP.md`
+stays under both files' line caps and byte budgets (tracking-rules "Weight
+caps"), the stamp included. Otherwise the pass returns to the step-3 chip
+with the overflow named.
+
+**Step 5, record.** A lesson drop or merge writes no decision entry. The
+stamp and the commit message name each dropped lesson by its date and
+provenance with its exit, and each merged-away lesson with its survivor.
+In guest mode the stamp alone names them, with their evidence.
+
+**Steps 6 and 7.** The stamp says it is a lessons pass. The close block
+fences one `/milestone-plan <family>` per promoted family, not one per
+lesson.
 
 ## Workflow
 

@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M263: /cairn-triage lessons triages LESSONS.md
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — a `/cairn-triage` mode that plugin users run   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m263-triage-lessons   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -112,15 +112,15 @@ repo is the user's, after the merge.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. Every item opens with its positional label. -->
 
-- [ ] T1: In `skills/cairn-triage/SKILL.md`, add the `lessons` argument:
+- [x] T1: In `skills/cairn-triage/SKILL.md`, add the `lessons` argument:
       frontmatter `description` and `argument-hint`, the H1, a session-start
       paragraph (the stop on any other argument; the pass reads
       `cairn/LESSONS.md` and its pin files in place of the two lists), and
       step 1's lesson item shape (AC1, AC2).
-- [ ] T2: Step 2: lesson meanings in the disposition table, the two drop
+- [x] T2: Step 2: lesson meanings in the disposition table, the two drop
       exits with their evidence, the maturation bar for `promote`, the
       false-lesson `keep`, and the pin check before any proposal (AC3, AC4).
-- [ ] T3: Steps 3 to 7 for lessons: the chip and table wording, apply (no
+- [x] T3: Steps 3 to 7 for lessons: the chip and table wording, apply (no
       line left behind; prefix and marks kept), the cap and budget check over
       both files, the stamp and commit naming drops and merges, the guest arm,
       no decision entry, one `/milestone-plan` per promoted family (AC3, AC5).
@@ -152,3 +152,5 @@ repo is the user's, after the merge.
 - 2026-10-16: criteria audit (full mode, fresh Opus reader) returned 12 findings, all taken: D-051's operative text needs a D-entry (AC6) and opt-in posed at the set; subject fallback, provenance, and `—` priority (AC1); ownership exit narrowed to a `cairn/` tracking file (AC3); `promote` states the maturation bar and fences one plan per family (AC3); a false lesson is `keep` (AC3); prefix and marks kept (AC3); "test name" not "method" (AC3); the pin check reads the repo's test files with `git grep` and covers absence asserts (AC4); guest arm and the ROADMAP byte budget (AC5); the stray-argument stop (AC2); the surface list adds the H1 and `argument-hint` and amends the "Checked at" sentence (AC6). AC7 clean.
 - 2026-10-16: plan gate chose annotating D-051 over superseding it, because its rejection's reason (a cost on every milestone) does not reach an opt-in pass and its retirement criteria stand unchanged; falsified by a lessons pass found running unasked, or retiring a lesson whose trap then recurs.
 - 2026-10-16: plan gate chose a subagent dry run to the table (T6) over posing the triage chip at review, because the chip would add a stop for the user and the table is what the criteria bind; falsified by a defect that shows only in steps 4 to 7 of a real pass.
+- 2026-10-16: branch m263-triage-lessons cut from main at 9af1b99d; untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
+- 2026-10-16: T1-T3 done in one section: `skills/cairn-triage/SKILL.md` gains "The lessons pass (`/cairn-triage lessons`)" before the workflow, stating each step's change for lessons (argument and stop, pin-file read, item shape, five lesson dispositions with exits and the maturation bar, false-lesson `keep`, apply with the two-file cap check, record, close), plus the frontmatter `description`, `argument-hint: "[lessons]"`, the H1, and one session-start sentence. Chose one section over threading lesson clauses through steps 1-7, because the existing step text is pinned by guards (priority token, guest arm) and a separate section leaves it untouched. It cites D-169, the entry T4 writes. Suites green.
