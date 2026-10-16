@@ -122,6 +122,45 @@ can resolve against the fork instead of the base repo.
      user gave one, plus a `candidate` row (search-first). In both modes
      the acceptance chip's question text also names each matched row's
      title and says whether step 7 removes the row or narrows it.
+   **Open-PR re-entry (M262).** A PR-reference argument whose
+   `gh pr view <N> --json state,headRefName,headRefOid` reports `OPEN`
+   takes one of the two arms below when its conditions hold. Any other
+   open PR takes the walk above.
+   - *Owner arm.* This arm runs in owner mode. Its head branch does not
+     match `m<nnn>-*`. Step 6's merge-guard marker starts with `hotfix `
+     and names that PR (`for PR #<N>`). Such a marker means that an earlier
+     run approved this merge at step 6 and stopped before the merge, most
+     often at the CI wait. Quote the marker's line in chat and say that the
+     run resumes that approved merge. Make the candidate-row match above.
+     Skip the tier check and steps 2 to 5.
+     If the marker's ` at <oid>` equals the PR's `headRefOid`, also skip
+     step 6's Copilot round arm, its PR-conversation read, its approval
+     chip, and its marker write. Go on at step 6's CI wait, then the merge,
+     then step 7.
+     If the two differ, or the marker names no head oid, say so in chat.
+     Then pose step 6's gate on the PR as it stands. Present the commits
+     added since the approved head (`git fetch origin <headRefName>`, then
+     `git log -p <oid>..FETCH_HEAD`). If the marker names no oid, or that
+     oid is not an ancestor of the head, present the whole PR diff
+     (`gh pr diff <N>`) instead. Then run the PR-conversation read and pose
+     the chip. On approval, skip the push and `gh pr create`, because the
+     PR is already open. Rewrite the marker with the current head.
+     A resumed merge's step 7 edits only the rows that the PR body's
+     `Candidate row:` lines name. It closes only the issue that the body's
+     `Fixes #N` line names. Those lines are what the approval chip named.
+     Name in chat any other row the match finds, and leave it alone. Step
+     7's off-but-present Copilot rule applies to a resumed authored fix as
+     it does to one this run merged.
+   - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
+     branch starts with `hotfix-`. Such a PR is the operator's handoff,
+     still with the maintainers. Read `gh pr view <N> --repo <base-repo>
+     --json state,headRefName,reviewDecision`, and make the candidate-row
+     match above. Skip the tier check and steps 2 to 7. Report the PR's
+     number, state, and review decision (an empty decision shown as
+     `none`). Then stop with a close block. Its CI line says that the
+     maintainers' CI on the PR is the check that counts. It also says that
+     nothing waits on that CI here. Its fenced next command is `/hotfix`
+     with the PR reference, to run after they merge.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).

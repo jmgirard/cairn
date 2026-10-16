@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M262: A rerun of /hotfix on an open PR resumes the merge
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — `/hotfix` conduct that plugin users run   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m262-hotfix-open-pr-resume   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -115,7 +115,7 @@ Button".
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the open-PR re-entry into `skills/hotfix/SKILL.md` step 1,
+- [x] T1: Write the open-PR re-entry into `skills/hotfix/SKILL.md` step 1,
       after the merged-PR re-entry (ends near line 124): the owner arm
       (AC2) and the guest arm (AC3). Keep the session-start guest clause
       (line 26) true: every `gh pr` read carries `--repo <base-repo>`. Say
@@ -162,6 +162,8 @@ Button".
 - 2026-10-16: plan gate chose no D-entry: the route is `/hotfix`-local and works under IP1 (the merge rests on an approval given at a gate, bound to the PR and its head), and D-130's route (c) governs milestones only, so no RB tripwire tag.
 - 2026-10-16: criteria audit (full mode, fresh Opus reader) returned 8 findings, all taken toward the narrower promise: step 6's marker-before-wait order made a criterion (new AC1); the marker records the head oid and a moved head re-poses the gate (AC2); the trigger requires a `hotfix ` marker and a non-`m<nnn>-*` head (AC2); resumed row edits and issue close come from the PR body's lines (AC2); a `CLOSED` PR named by the marker moved to Out; AC4 conditioned on the marker; AC5's grep widened and the `pane.ts` comment added (T4); the off-but-present rule for a resumed fix added to T1. Optional `/milestone` §2 next command declined (Out). AC3 and AC6 clean.
 - 2026-10-16: new candidate row "Pane hotfix line Button" (search-first: no overlap in candidates, archive, or DECISIONS).
+- 2026-10-16: branch m262-hotfix-open-pr-resume cut from main at b00d0270; untracked `cairn-probe.log` and `tsconfig.json` (not this milestone's) left unstaged.
+- 2026-10-16: T1 done: step 1 gains the "Open-PR re-entry (M262)" paragraph with owner and guest arms. A moved head's gate shows the commits since the approved oid (`git log -p <oid>..FETCH_HEAD`), or `gh pr diff` when no oid or the oid is not an ancestor, because the chip's regression-test evidence was shown at the earlier approval. Step 1 names the marker as "step 6's merge-guard marker", not by path, so `test_external_pr_intake`'s one-mention pin (one approval mechanism) holds. The simple-english lint hook reports 169 hits for the whole file, all but 2 (one 26-word sentence, one trailing condition) in text this milestone does not change. Gating suites and `skills/tests` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

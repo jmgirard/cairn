@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M262 | A rerun of /hotfix on an open PR resumes the merge | planned | — | normal | milestones/M262-hotfix-open-pr-resume.md |
+| M262 | A rerun of /hotfix on an open PR resumes the merge | in-progress | — | normal | milestones/M262-hotfix-open-pr-resume.md |
 | M261 | The cairn pane hides started candidate rows | done | — | normal | milestones/archive/M261-pane-hide-started.md |
 | M260 | Press and placement races end cleanly | done | — | normal | milestones/archive/M260-press-end-races.md |
 ## Candidates
