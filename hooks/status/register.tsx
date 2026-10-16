@@ -533,8 +533,14 @@ export const register: Register = on => {
     try {
       result = await next(e)
     } catch (error) {
-      // A ⌂ press's open still runs when the end beneath rejects, and the
-      // rejection goes on (M255). A held command is dropped as before.
+      // An end beneath that rejects still frees the action Buttons, so a
+      // press whose `/clear` run never settles leaves none dead, and a held
+      // command goes to the prompt box with a toast, whatever the end's
+      // reason (M260). A ⌂ press's open still runs, and the rejection goes
+      // on (M255).
+      running = false
+      pressCheck = null
+      if (queued !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
       if (home !== null && e.reason === 'clear') void openHome($)
       throw error
     }

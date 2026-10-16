@@ -1,13 +1,13 @@
 # M260: Press and placement races end cleanly
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane's Buttons and PR read, shipped in the plugin's status mod
-- **Branch/PR:** —
+- **Branch/PR:** m260-press-end-races
 
 ## Goal
 
@@ -41,7 +41,7 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 
 ## Tasks
 
-- [ ] T1: Rejected end. Add a `prompt.fill` record to `pane.test.tsx`'s `seat` (`band.test.tsx:159` records fills). Write the AC1 and AC2 tests and see them fail; then in the end handler (`register.tsx` about :534-566) free `running` and `pressCheck` on the rejecting path too, and hand a held command to `fallBack` with `the session end failed`, for both reasons, before the rethrow.
+- [x] T1: Rejected end. Add a `prompt.fill` record to `pane.test.tsx`'s `seat` (`band.test.tsx:159` records fills). Write the AC1 and AC2 tests and see them fail; then in the end handler (`register.tsx` about :534-566) free `running` and `pressCheck` on the rejecting path too, and hand a held command to `fallBack` with `the session end failed`, for both reasons, before the rethrow.
 - [ ] T2: ⌂ press during an end. Write the AC3 tests with `holdStep` (`pane.test.tsx` about :4363; the unawaited-press pattern at about :4405) and see them fail; then make `pressHome` (`register.tsx` about :1179-1188) return after its step read when a session end came during it (compare `ends`, as `pressChecked` does at about :1157).
 - [ ] T3: Second listing across an end. Write the AC4 test, re-arming `copy.panesHold` for the second listing (pattern at `pane.test.tsx` about :3663-3676; set `unplaced` before release, as the held answer is computed at hold time) and see it fail; then snapshot `ends` before the second listing (`register.tsx` about :282) and read only when it has not moved.
 - [ ] T4: Write the CHANGELOG entry from the tests' observed behavior; run the full verify slot from the repo root and check each exit code.
@@ -55,6 +55,8 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 - 2026-10-15: question set: scope — the three race fixes only; the other 15 items — pruned, no Known issues entry.
 - 2026-10-15: plan gate chose a new `the session end failed` reason over reusing `the session ended before /clear`, because that text is wrong for a `clear` end; falsified by a toast reader keyed to the old text.
 - 2026-10-15: plan gate chose an `ends` snapshot for the ⌂ press and the second listing over per-press tokens, because `pressChecked` already guards with `ends`; falsified by an end that leaves `ends` unchanged.
+- 2026-10-15: implement started on `m260-press-end-races`; untracked `cairn-probe.log` and `tsconfig.json` at the repo root are not this milestone's and stay unstaged.
+- 2026-10-15: T1 done: the three AC1/AC2 tests failed first (Status press did not run; no prompt fill), then the end handler's catch frees `running` and `pressCheck` and hands a held command to `fallBack` with `the session end failed`; plugin test 1762 pass, both Python suites and both validates clean.
 
 ## Decisions
 

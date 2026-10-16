@@ -98,6 +98,9 @@ type Copy = {
   // waits for this promise before it answers (M255).
   endThrows?: boolean
   endHold?: Promise<void>
+  // The text and mode of each prompt box fill that reached beneath the mod
+  // (M260).
+  fills?: { text: string; mode: string }[]
 }
 
 function copyOf(name: string): Copy {
@@ -177,6 +180,10 @@ function seat(on: On, copy: Copy) {
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
     return { value: undefined }
+  })
+  on('prompt.fill', async ($, e) => {
+    copy.fills = [...(copy.fills ?? []), { text: e.text, mode: e.mode }]
+    return { isFilled: true }
   })
   on('command.run', async ($, e) => {
     copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
@@ -4487,4 +4494,67 @@ describe("a ⌂ press's open still runs when the session end beneath rejects (M2
     await untilOpens(copy, before + 1, 10)
     expect(copy.opens.length).toBe(before)
   })
+})
+
+// A session end that rejects frees the action Buttons, so a press whose
+// `/clear` run never settles leaves none dead (M260 AC1).
+describe('a rejected session end frees the action Buttons (M260 AC1)', () => {
+  test("a Status press after a rejected end runs, while the ⌂ press's /clear never settles", async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    let settle = () => {}
+    copy.runHold = new Promise<void>(resolve => (settle = resolve))
+    void ui.press({ key: PANE_HOME })
+    await untilRuns(copy, 1)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    copy.endThrows = undefined
+    void ui.press({ key: PANE_STATUS })
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+    copy.runHold = undefined
+    settle()
+    await ui.unmount()
+  })
+})
+
+// A held command that a rejected session end drops goes to the prompt box,
+// and a toast says why, for an end of either reason (M260 AC2).
+describe('a rejected session end hands its held command to the prompt box (M260 AC2)', () => {
+  const name = PANE_CLEAR_FIRST[0]
+  for (const reason of ['clear', 'other'] as const) {
+    test(`${name}: a rejected ${reason} end fills the held command and toasts`, async ($, on) => {
+      const copy = copyOf(name)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      await ui.press({ key: PANE_NEXT })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      copy.endThrows = true
+      let rejected = false
+      try {
+        await $.session.end({ reason, sessionId: 's1' })
+      } catch {
+        rejected = true
+      }
+      expect(rejected).toBe(true)
+      const run = runOf(name)
+      const line = run.args === '' ? `/${run.command}` : `/${run.command} ${run.args}`
+      for (let i = 0; i < 200 && (copy.toasts ?? []).length < 1; i++) await sleep(5)
+      expect(copy.fills).toEqual([{ text: line, mode: 'append' }])
+      expect(copy.toasts).toEqual([`cairn: the session end failed (${line})`])
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await ui.unmount()
+    })
+  }
 })
