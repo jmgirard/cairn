@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M257: Started mark skips fenced lines
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -106,6 +106,9 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: T1 done: two `startedRows` tests (backtick, tilde, and spaced fences; an unclosed fence then a second body) ran red with the fenced titles returned, then a per-body `fenced` toggle on a module-private `FENCE_LINE` (`/^ *(```|~~~)/`, any number of leading spaces as AC1's "optional spaces" reads) made them green; verify 5/5 green (plugin test 1740 pass).
 - 2026-10-15: T2 done: README's started-mark paragraph now says no other skill and no guest run writes the line (grep of `skills/` finds it only in hotfix and milestone-review), that any of your open PRs with the line marks the row, hand-written included, that a fenced line does not count, and that the mark goes at the first PR read after the merge until review's hygiene or hotfix step 7 edits the row (read from both skills' text this session). The simple-english hook's 212 README hits predate the branch outside these lines; left as is.
 - 2026-10-15: T3 done: the started mark is unreleased, so its existing `### New` CHANGELOG entry gains the fenced-line sentences (enforced by T1's tests) in place of a separate entry; verify 5/5 green (scripts 408 OK, hooks 175 OK, both validates pass with no version warning, plugin test 1740 pass), `cairn_validate` all checks passed.
+- 2026-10-15: claim audit: 16 claims read, 3 corrected — CHANGELOG.md, README.md (fence definition missed leading spaces; "a PR opens only after you approve the merge" missed the hotfix re-land path, now names milestone-review and an authored hotfix; "shows no mark" was wrong, the row shows its priority mark again); the same Opus reader re-read the three, all true.
+- 2026-10-15: AC2's "the row shows no mark" read as no `◐` mark: the README now says the row shows its priority mark again with no PR number, which the claim audit found true against pane.ts; the deliverable is unchanged, so no amendment.
+- 2026-10-15: all tasks done; verify 5/5 green on the claim-audit head (plugin test 1740 pass); status → review.
 
 
 ## Decisions

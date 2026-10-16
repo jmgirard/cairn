@@ -458,10 +458,12 @@ PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
 open. The pane lists candidate rows only
 while no milestone is active, so while a milestone's branch is checked
 out, the mark of that milestone's PR shows only in another checkout of the
-default branch. Without the opt-in Copilot round (below), a PR opens only
-after you approve the merge. A row's mark goes at the pane's first PR read
-after the merge. The row then shows no mark until `/milestone-review`'s
-hygiene commit or `/hotfix`'s step 7 removes or narrows it. A PR opened
+default branch. Without the opt-in Copilot round (below), a PR that
+`/milestone-review` or an authored `/hotfix` opens does so only after you
+approve the merge. A row's `◐` goes at the pane's first PR read after the
+merge. The row then shows its priority mark again, with no PR number.
+It keeps that look until `/milestone-review`'s hygiene commit or
+`/hotfix`'s step 7 removes or narrows it. A PR opened
 before this change has no such line.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The

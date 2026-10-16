@@ -177,8 +177,8 @@
   short title a line names exactly shows `◐` in place of its priority
   mark, the PR number at its right end, and no `✎` button. A line inside
   a fenced code block names no row. Such a block runs from a line that
-  opens with three backticks or three tildes to the next such line or the
-  end of the body. A guest-mode PR carries no such line. The PR numbers behind the mark change only when
+  opens with three backticks or three tildes, after optional spaces, to
+  the next such line or the end of the body. A guest-mode PR carries no such line. The PR numbers behind the mark change only when
   the pane reads its PRs, and the pane lists candidate rows only while no
   milestone is active. A PR opened before this change has no such line.
 
