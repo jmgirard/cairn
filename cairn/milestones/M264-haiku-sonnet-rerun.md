@@ -71,6 +71,7 @@ pointer from the old note's re-measurement section.
 - 2026-10-16: T3 done: 18 history runs and 9 Opus judges (foreground), all final-match `yes`; labels drawn with `random.SystemRandom` into a mapping file outside the judges' directories, read after all nine returned; a first contamination grep hit every transcript on the branch name `m264-haiku-sonnet-rerun` in injected context, so the check was narrowed to tool calls and tool results, which show no read of the mapping or the earlier notes.
 - 2026-10-16: T4 done: verdicts search `stay` (Haiku 1.9962 against Sonnet 2.8865, ratio 0.6916) and history review `move` (4.0000 against 4.3333, ratio 0.9231, one-finding margin; Haiku 0.3092 USD against 0.9762); a script reading the note's own run table recomputes both; INDEX line and the pointer in `haiku-sonnet-roles.md` added; the simple-english hook's hits on INDEX.md and `haiku-sonnet-roles.md` are their existing text, left as is.
 - 2026-10-16: claim audit: not owed — internal tier.
+- 2026-10-16: step-7 approval: m264-haiku-sonnet-rerun approved for merge
 
 ## Decisions
 
