@@ -11,7 +11,7 @@
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane's candidate list is what plugin users see   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m261-pane-hide-started   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m261-pane-hide-started, https://github.com/jmgirard/cairn/pull/272   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,7 +48,7 @@ row stays as it is until the review hygiene reads it.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: With no active milestone, `paneLines` draws no line for a
+- [x] AC1: With no active milestone, `paneLines` draws no line for a
       candidate row that `startedRefs` marks, whichever of its three
       sources marks it: an open PR body's `Candidate row:` line, a `#<n>`
       token whose n the open hotfix list holds, or an `M<NNN>` id in
@@ -60,15 +60,15 @@ row stays as it is until the review hygiene reads it.
       unmarked rows and asserts the drawn candidate lines by key and text.
       One of the three uses a `[high]` and a `[low]` neighbour, one of them
       with an empty short title, and runs with `acts` true and false.
-- [ ] AC2: The Candidates heading's count is the number of candidate lines
+- [x] AC2: The Candidates heading's count is the number of candidate lines
       `paneLines` draws, and the heading and its gap are not drawn when
       every candidate row is hidden. `pane.test.tsx` tests assert both.
-- [ ] AC3: A drawn candidate line's ✎ `target` stays the row's index in
+- [x] AC3: A drawn candidate line's ✎ `target` stays the row's index in
       `state.candidates`, so a ✎ press on a line drawn after a hidden row
       plans that line's own short title. A `pane.test.tsx` test presses ✎
       on such a line through the mod test kit and asserts the held
       command's args.
-- [ ] AC4: `STARTED_MARK` and the started mark are gone:
+- [x] AC4: `STARTED_MARK` and the started mark are gone:
       `grep -rn "◐\|STARTED_MARK\|started mark" hooks README.md cairn/DESIGN.md skills types CHANGELOG.md`
       from the repo root prints no line but the M252 entry in the
       `hooks/status/` provenance list of `cairn/DESIGN.md`, which gains
@@ -76,7 +76,7 @@ row stays as it is until the review hygiene reads it.
       tracking-rules "Candidate started token" paragraph, and
       CHANGELOG.md's `## Unreleased` entries say that the pane hides a
       started row.
-- [ ] AC5: The repo's `verify` slot (`cairn/PROFILE.md`) passes on the
+- [x] AC5: The repo's `verify` slot (`cairn/PROFILE.md`) passes on the
       milestone branch.
 
 ## Coverage
@@ -157,3 +157,12 @@ row stays as it is until the review hygiene reads it.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Pass 1 (2026-10-16), on m261-pane-hide-started at `fcff1e41`, main level with origin/main, PR #272 opened at review start (Copilot arm).
+
+- AC1 evidence: `claude plugin test .` exit 0, 1777 pass 0 fail. Per source, each passing: body line — "matched rows draw no line, and the others draw as before under their own keys" (acts true and false; drawn keys `candidate-3, -6, -7`, each equal to the no-items line) and "a hidden row between a high and an untitled low row leaves both as before" (acts true and false; keys `candidate-0, -2`, marks ↑ and ↓, ✎ only on the titled row with acts); `#<n>` — "a #n token hides its row only while the open hotfix list holds n" (rows 2 and 4 drawn either side of hidden row 3); `M<NNN>` in `state.taken` — "a hidden row between two plain rows leaves them drawn in order" (rows 3 and 5 drawn either side of hidden row 4), plus the mixed-source and done/dropped/absent tests.
+- AC2 evidence: same run; "the heading counts the drawn rows only" passes (count span `3` with 3 rows drawn, `8` in the no-items control) and "with every row hidden there is no heading and no gap" passes (no `candidate*` key; the one-row-left control draws `candidates-head-gap`, `candidates-head`).
+- AC3 evidence: same run; "the hidden row draws no line or ✎, and the next row plans its title" passes: with ` — started M031` (M031 `planned`) on row 0, the first drawn key is `candidate-1`, `candidate-0` is absent, and a kit press of `cairn-pane-plan-1` gives `/clear` then the plan command with args `Normal row`.
+- AC4 evidence: the AC4 grep from the repo root prints one line, `cairn/DESIGN.md:79`, the provenance entry, which holds "a started row hidden in M261". Hiding is described at README.md:452-455 and 483, cairn/DESIGN.md:315-321, tracking-rules.md:218, and CHANGELOG.md:176, 180, 194, all three CHANGELOG lines inside `## Unreleased` (lines 3-460).
+- AC5 evidence: verify slot from the repo root, each exit 0: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, `claude plugin validate` plugin.json and marketplace.json, `claude plugin test .` 1777 pass 0 fail.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; no DESIGN principle text changed, so `cairn_impact` skipped; verify green on the review head (above); marketplace validate shows no `plugins[N].version` warning; CHANGELOG `## Unreleased` carries the change, with no milestone number in its added lines.
