@@ -45,23 +45,23 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: A pane that becomes placed and draws while a clear start's
+- [x] AC1: A pane that becomes placed and draws while a clear start's
       classic hook awaits the pane list gets its pull-request read without a
       further draw. Shown by a `hooks/status/pane.test.tsx` case that holds
       the hook's first `ui.panes` answer (computed as not placed) through a
       `Copy` flag in `seat()`'s `ui.panes` handler, places and draws the pane
       during the hold, releases it, and sees each blocked pull-request URL
       read once with no second draw.
-- [ ] AC2: A pane owed a read when its session ends reads nothing at its
+- [x] AC2: A pane owed a read when its session ends reads nothing at its
       first draw after the end. Shown by a `hooks/status/pane.test.tsx`
       case: a clear start leaves the unplaced pane owed a read, the session
       ends, the pane is placed and drawn, and no read runs; with the `owed`
       reset removed from the `session.end` handler, the case fails.
-- [ ] AC3: `hooks/status/register.tsx` spells the placed-and-shown test
+- [x] AC3: `hooks/status/register.tsx` spells the placed-and-shown test
       once, in one function that the command hook's close branch,
       `isShown`, and `markReopen` call: `grep -c "\.isShown"
       hooks/status/register.tsx` returns 1.
-- [ ] AC4: The active profile's `verify` passes: `python3 -m unittest` for
+- [x] AC4: The active profile's `verify` passes: `python3 -m unittest` for
       `scripts/tests` and `hooks/tests` from the repo root, `claude plugin
       validate` on the plugin and marketplace manifests, and `claude plugin
       test` for the status mod.
@@ -131,3 +131,35 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Review head 1ff4cdee; branch contains origin/main (0/0 ahead-behind on main). PR #267 opened at review start (Copilot arm), Copilot requested.
+
+- AC1 evidence (2026-10-15): `claude plugin test .` on 1ff4cdee passes both "M256 AC1" cases in `hooks/status/pane.test.tsx` (blocked-active, blocked-prs). Each holds the hook's first `ui.panes` answer through `Copy.panesHold` in `seat()`, computed with the pane unplaced; asserts the hold was reached; places and draws during the hold and sees no read; releases and sees each blocked URL read once (sorted equality), with no second draw. Discrimination: a scratch copy with the second listing disabled fails both cases at that final assertion (reads `[]`).
+- AC2 evidence (2026-10-15): the "M256 AC2" case passes on 1ff4cdee: a clear start leaves the unplaced pane owed (no read), `session.end` (`CLEAR_END`), the pane is placed and drawn, and no read runs. The same scratch copy, with `owed = false` removed from the `session.end` handler, fails it at the last assertion, reading `[URL_1250]`; only the three M256 cases failed there (1734 pass, 3 fail).
+- AC3 evidence (2026-10-15): `grep -c "\.isShown" hooks/status/register.tsx` returns 1 (the body of `placedAndShown`, line 777); its callers are the `command.run` close branch (305), `isShown` (771), and `markReopen` (1278), and no other line tests `isShown`.
+- AC4 evidence (2026-10-15): on 1ff4cdee from the repo root, `scripts/tests` 408 tests OK (21 skipped), `hooks/tests` 175 OK, `claude plugin validate` exit 0 on `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, `claude plugin test .` 1737 pass, 0 fail (2.1.299 binary).
+- Consistency gate (2026-10-15): `cairn_validate.py` exit 0, all checks passed; `cairn_impact` skipped (Principles touched —). Profile gate: verify green on the review head (AC4 line); the marketplace validate output has no `plugins[N].version` warning; CHANGELOG.md's Unreleased Fixes carries the entry for the user-visible change, with no milestone number.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: no test covers the second listing's `&& owed` check; dropping it gives two reads when a draw or open lands while the second listing waits — fix now.
+- diff-bug #2: the AC1 test checks only that the hold was reached, not that the held answer was "not placed", so a harness that built its answer after the hold would pass it with the fix removed — fix now.
+- diff-bug #3: "Pane edges (M238 review)" still lists three gaps this branch closes — reject (planned change: records-hygiene §1 narrows the row at step 9's hygiene, where the resume wording is also corrected).
+- diff-bug #4: a "placed" answer built before a `/cairn-pane` close lets the second listing read for a closed pane (wasted `gh` calls) — follow-up, new row "Late placement edges (M256 review)".
+- diff-bug #5: a second listing begun before a session end can take the next start's read, from the older `$` — follow-up, same new row (rests on the end-before-start assumption in Out).
+- diff-bug #6: one more `ui.panes` call per clear or resume start that finds the pane unplaced — reject (planned change: the plan chose the second listing).
+- diff-bug #7: the CHANGELOG entry names `/clear` only, and breaks a line early — reject (planned scope: the claim stays within the clear-only test; the wrap is style).
+- blame-history #1: DESIGN.md (~381) and README.md (~387) still say an unplaced pane's first draw starts the read, with no second listing — fix now.
+- blame-history #2: the ROADMAP row is not narrowed — reject (planned change, as diff-bug #3).
+- blame-history #3: the second listing re-checks `owed` and not `startRead`, an implicit coupling — reject (false as a defect: every `startRead = true` write clears `owed` with it, at register.tsx 271, 283, 329, 1315, so `owed` true implies `startRead` false and the extra check is unreachable).
+- blame-history #4: the cross-start read from an older `$` — follow-up, as diff-bug #5.
+- blame-history #5: the resume path runs the new code with no test — reject (planned change: Out keeps the resume race; the row narrowing says the code now covers it untested).
+- blame-history #6: no test covers the second listing answering not placed or throwing — follow-up, new row.
+- blame-history #7: the hold catches whichever `ui.panes` call comes first, so an earlier call in the clear path would hold the wrong listing — follow-up, new row.
+- blame-history #8: the AC2 test pins an M238-era gap rather than M256 behavior — reject (planned change: Scope In names it).
+- blame-history #9: CHANGELOG wording and wrap — reject (as diff-bug #7).
+- blame-history #10: `placedAndShown`'s long signature line — reject (style).
+- prior-review #1: the `&& owed` guard has no failing test — fix now (as diff-bug #1).
+- prior-review #2: the new no-read assertions trust `settled()`'s 20 ms — reject (planned change: Out keeps the 20 ms window in the row).
+- prior-review #3: DESIGN.md is stale and the ROADMAP row is unnarrowed — fix now for DESIGN (as blame-history #1); the row at hygiene (as diff-bug #3).
+- prior-review #4: CHANGELOG's earlier Unreleased bullet ("The cairn pane fills again after `/resume`…") says an unshown pane reads at its first draw, unless an open read first, which omits the second listing — fix now.
+- prior-review #5: CHANGELOG `/clear` only and the wrap — reject (as diff-bug #7).
+- prior-review #6: the AC1 test's `until` handshake — reject (false as a regression: the file's M238 and M255 held-promise tests use the same pattern).
