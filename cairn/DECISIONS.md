@@ -5943,8 +5943,8 @@ their icon titles until a `/cairn-triage` pass there retitles them.
 ### D-165 (2026-10-15): A candidate row that work has taken ends with a ` — started M<NNN>` or ` — started #<n>` token, which the cairn pane reads for its started mark — annotates D-035 and D-137; passes D-108's door on its retained trigger (M258)
 
 **Context:** M252's started mark `◐` reads `Candidate row:` lines from
-the bodies of open PRs. Guest mode puts no cairn text in a PR body, so in
-guest mode the pane never showed the mark, and the operator could not see
+the bodies of open PRs. Guest mode puts no cairn text in a PR body
+(D-137), so in guest mode the pane never showed the mark, and the operator could not see
 which candidates were already planned or handed off.
 
 **Decision:** At the user's request, planned as M258, `/milestone-plan`
@@ -5970,6 +5970,6 @@ commit there, which M252 declined; owner mode keeps the PR-body line.
 **Consequences:** D-035 keeps a candidate row free of an ID and a
 sub-status. A token names another record's id, not the row's own, and it
 holds no status, since the pane reads the status from the milestone row
-or the PR list. A token can stay on a row after its milestone is dropped
-or its PR closes until a hygiene or triage pass removes it, and it marks
-nothing meanwhile.
+or the PR list. A token stays on a row after its milestone is dropped or
+its PR closes unmerged, since no step removes it there, and it marks
+nothing.

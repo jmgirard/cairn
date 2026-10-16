@@ -486,8 +486,12 @@ among the open hotfix PRs of the pane's last good read, and the row then
 shows `#<n>`. When PR numbers and a milestone id both mark a row, the row
 shows the lowest PR number. A row that a token marks has no `✎` button. The
 mark goes when the milestone's row becomes `done` or `dropped` or leaves the
-table, or when PR #n is no longer open. Hygiene then removes the row, or
-narrows it and removes the token. A token opens
+table, or when PR #n is no longer open. In guest mode, an `M<NNN>` mark
+stays after the maintainers merge, until review's hygiene sets the
+milestone `done`. Hygiene then removes the row, or narrows it and removes
+the token. A note after the token, such as `; narrowed …`, leaves it read.
+A token on a dropped milestone or on a PR closed without a merge stays on
+the row and marks nothing. A token opens
 with ` — `, so the row's short title stays the same.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The

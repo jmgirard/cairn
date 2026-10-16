@@ -378,7 +378,11 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
       waiting: waitingRows(parsed, archived),
       candidates: candidateRows(roadmap),
       blocked,
-      taken: takenRows(roadmap, parsed),
+      taken: takenRows(
+        roadmap,
+        parsed,
+        blocked.filter(row => row.archived).map(row => row.id),
+      ),
     },
   }
 }
@@ -589,8 +593,10 @@ function shortTitle(text: string): string {
 }
 
 // A started token (M258): ` — started ` and a milestone id or a pull
-// request number, ended by the row's end or the next ` — `.
-const STARTED_TOKEN = / — started (M[0-9]+|#[0-9]{1,15})(?= — |$)/g
+// request number, followed by the row's end or by a character that is not
+// a letter or digit, so a note such as `; narrowed …` or a trailing space
+// after the token leaves it read (M258 review).
+const STARTED_TOKEN = / — started (M[0-9]+|#[0-9]{1,15})(?![0-9A-Za-z])/g
 
 // The started tokens of the candidate rows (M258), in ROADMAP order, each
 // with its row's short title. `/milestone-plan` writes ` — started M<NNN>`
@@ -612,11 +618,21 @@ export function startedTokens(roadmap: string): TakenRow[] {
 // table holds that id as `planned` or `blocked`, the two statuses under
 // which that milestone is open and does not hide the candidate list (an
 // `in-progress` or `review` milestone hides it), and every `#<n>` token,
-// which the
-// pane checks against its open hotfix list.
-export function takenRows(roadmap: string, rows: RoadmapRow[]): TakenRow[] {
-  const live = new Set(rows.filter(row => row.status === 'planned' || row.status === 'blocked').map(row => canonId(row.id)))
-  return startedTokens(roadmap).filter(item => item.ref.startsWith('#') || live.has(canonId(item.ref)))
+// which the pane checks against its open hotfix list. A `blocked` id in
+// `archived`, whose file was archived before its row changed (M246), does
+// not count, since that work shipped. A counted id is given at three-digit
+// padding, as the table spells it (M258 review).
+export function takenRows(roadmap: string, rows: RoadmapRow[], archived: string[] = []): TakenRow[] {
+  const shipped = new Set(archived.map(canonId))
+  const live = new Set(
+    rows
+      .filter(row => row.status === 'planned' || row.status === 'blocked')
+      .map(row => canonId(row.id))
+      .filter(id => !shipped.has(id)),
+  )
+  return startedTokens(roadmap)
+    .filter(item => item.ref.startsWith('#') || live.has(canonId(item.ref)))
+    .map(item => (item.ref.startsWith('#') ? item : { title: item.title, ref: canonId(item.ref) }))
 }
 
 // `recommend` in scripts/cairn_next.py, over the rows and the workable list.

@@ -317,7 +317,9 @@ describe('started tokens of the candidate rows (M258)', () => {
     '- Active row: x — started M232',
     '- Two ids: x — started M300 — started M0258',
     '- Hotfix row: x — started #301',
-    '- Not a token: x — started M258 later — started #12x — started  M258',
+    '- Noted row: x — started M258; narrowed 2026-10-15 by the PR #9 hotfix',
+    '- Spaced row: x — started #302 ',
+    '- Not a token: x — started M258x — started #12x — started  M258 — startedM258',
     '- : empty title — started M258',
   ].join('\n')
 
@@ -332,22 +334,38 @@ describe('started tokens of the candidate rows (M258)', () => {
       { title: 'Two ids', ref: 'M300' },
       { title: 'Two ids', ref: 'M0258' },
       { title: 'Hotfix row', ref: '#301' },
+      { title: 'Noted row', ref: 'M258' },
+      { title: 'Spaced row', ref: '#302' },
     ])
   })
 
-  test('takenRows keeps an id only while its row is planned or blocked, and every #n', () => {
+  test('takenRows keeps an id only while its row is planned or blocked, padded, and every #n', () => {
     expect(takenRows(roadmap, parseRoadmapRows(roadmap))).toEqual([
       { title: 'Planned row', ref: 'M258' },
       { title: 'Blocked row', ref: 'M240' },
-      { title: 'Two ids', ref: 'M0258' },
+      { title: 'Two ids', ref: 'M258' },
       { title: 'Hotfix row', ref: '#301' },
+      { title: 'Noted row', ref: 'M258' },
+      { title: 'Spaced row', ref: '#302' },
     ])
   })
 
   test('loadCairn gives the pane the counted tokens', async () => {
     const files = { '/cairn/ROADMAP.md': `# Roadmap\n\n## Milestones\n\n${roadmap}\n` }
     const loaded = await loadCairn(memorySource(files, '/'))
-    expect(loaded?.pane.taken.map(item => item.ref)).toEqual(['M258', 'M240', 'M0258', '#301'])
+    expect(loaded?.pane.taken.map(item => item.ref)).toEqual(['M258', 'M240', 'M258', '#301', 'M258', '#302'])
+  })
+
+  // A blocked row whose file was archived as done (M246) shipped, so its
+  // token no longer counts (M258 review).
+  test('a blocked id whose file was archived as done does not count', async () => {
+    const files = {
+      '/cairn/ROADMAP.md': `# Roadmap\n\n## Milestones\n\n${roadmap}\n`,
+      '/cairn/milestones/archive/M240-b.md': '# M240: B\n\n**Status:** done (2026-10-15)\n',
+    }
+    const loaded = await loadCairn(memorySource(files, '/'))
+    expect(loaded?.pane.blocked.map(row => [row.id, row.archived])).toEqual([['M240', true]])
+    expect(loaded?.pane.taken.map(item => item.ref)).toEqual(['M258', 'M258', '#301', 'M258', '#302'])
   })
 })
 

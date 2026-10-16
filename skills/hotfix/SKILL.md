@@ -360,8 +360,9 @@ can resolve against the fork instead of the base repo.
    merged-PR re-entry finds that the maintainers merged the PR, and its
    post-hoc verification is accepted, remove or narrow each matched row on
    disk with no commit, judged against the merged diff, and show each
-   deleted, narrowed, and new row verbatim in chat. A PR closed without a
-   merge leaves the row.
+   deleted, narrowed, and new row verbatim in chat. A narrowed row loses
+   this hotfix's ` — started #<n>` token and keeps any other token
+   (records-hygiene §1). A PR closed without a merge leaves the row.
    If a milestone branch is currently active, remind the user that its
    next implement/review session will merge the default branch into it (the
    branch-sync rule) — nothing to do now. With the Copilot round off, the
