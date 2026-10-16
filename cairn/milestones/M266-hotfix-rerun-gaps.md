@@ -48,7 +48,7 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - [x] T2: Write AC2's owner route into the open-PR re-entry (`SKILL.md:125-156`), adding `author` to its `gh pr view` read. Edit step 6's "An adopted PR skips the round" (`SKILL.md:261`) and step 7's adopted-PR sentence (`SKILL.md:437-438`). Update the pinned field list at `test_resume_routing.py:346` in the same commit. Add tests with mutation entries.
 - [x] T3: Write AC3's trigger and checks into the guest arm (`SKILL.md:157-166`), adding `author` and `latestReviews` and the head commit date to its read. Keep the pins at `test_resume_routing.py:418` and the mutation block at `test_mutation_harness.py:4141` green, or update them in the same commit. Add tests with mutation entries.
 - [x] T4: Write AC4's chip, push, and close into the guest arm. Add tests with mutation entries.
-- [ ] T5: Edit the README rerun paragraph (`README.md:784-792`), add the CHANGELOG `## Unreleased` entry, and edit the DESIGN.md Known issues sentences (`cairn/DESIGN.md:791-795`).
+- [x] T5: Edit the README rerun paragraph (`README.md:784-792`), add the CHANGELOG `## Unreleased` entry, and edit the DESIGN.md Known issues sentences (`cairn/DESIGN.md:791-795`).
 - [ ] T6: Run the five `verify` slot commands, each exit code read on its own. Hand-run `python3 -m unittest discover -s skills/tests` as evidence for T1 to T4 (it gates nothing).
 
 ## Work log
@@ -68,6 +68,7 @@ A `/hotfix` rerun on a closed PR, on the operator's own open hotfix PR that no a
 - 2026-10-16: correction to the T1 line: T1 ran only the `-k Hotfix` slice of `skills/tests`; the full hand-run suite was red at 813b861d on `test_external_pr_intake.TestIntakeRouting.test_no_second_approval_mechanism` (a second `cairn/.merge-approved` literal). Fixed in T2: the closed-PR stop names "step 6's merge-guard marker", the file step 6 defines, which keeps AC1's removal; full `skills/tests` green (798).
 - 2026-10-16: T2 done: "Own open PR (M266)" paragraph after the guest arm; `author` added to the open-PR read and its pin and mutation block; step 6's round-arm and step 7's off-but-present sentences name the route; `TestHotfixOwnOpenPr` (5 tests) and 5 mutation entries, each red when blanked; verify slot green (5 of 5).
 - 2026-10-16: T3 and T4 done in one commit (one inserted block): the guest arm's read gains `author,latestReviews,commits`; "Change route (M266)" triggers on a change request whose `submittedAt` is after the last commit's `committedDate`, runs step 6's three reads with one chip in place of their per-item options, uses `gh pr checkout <N> --repo <base-repo>`, and pushes with `git push <fork> <headRefName>`. M262's guest pins unchanged and green. `TestHotfixGuestChangeRoute` (8 tests) and 8 mutation entries, each red when blanked; full `skills/tests` green (806); verify slot green (5 of 5).
+- 2026-10-16: T5 done: README rerun paragraph (`README.md:790-797`) and a CHANGELOG `### Fixes` entry under Unreleased name the three routes; DESIGN.md Known issues sentences rewritten and narrowed (marked `narrowed M266`); AC5's `git grep` returns no match (exit 1). Old-phrasing sweep over README, `/milestone`, `/milestone-plan`, tracking-rules, and `hooks/status/*.ts` found nothing else to change.
 
 ## Decisions
 

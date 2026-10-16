@@ -418,6 +418,28 @@
   In guest mode, a rerun on an open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
 
+- **A `/hotfix` rerun on a closed PR, on your own open hotfix PR, or on a
+  guest PR with requested changes has a route that can finish.** Before,
+  these reruns started the walk for adopting an outside PR, which cannot
+  merge a closed PR and which guest mode does not allow, or stopped with
+  no way forward.
+  - A rerun on a PR that closed without a merge now stops. It says the PR
+    closed, leaves reopening it to you on GitHub, and names a candidate
+    row whose started token points at that PR. In owner mode it removes a
+    hotfix merge approval that names the PR. Its next command is `/hotfix`
+    with a description of the bug, which starts over on a new branch.
+  - In owner mode, a rerun on your own open `hotfix-` PR that no recorded
+    approval resumes runs the full hotfix checks on it as your own fix,
+    not as an outside PR. With the Copilot round on, Copilot reviews it as
+    it reviews any hotfix you wrote.
+  - In guest mode, when the maintainers request changes on your open
+    `hotfix-` PR after its newest commit, a rerun reads the PR's
+    conversation and makes a change for each request, or says why it makes
+    none. It runs the hotfix checks again and then asks you once before
+    it pushes to your fork. It posts nothing on the PR, so the reply to
+    the maintainers stays yours. A request older than the newest commit
+    means the PR waits for a new review, so the rerun reports and stops.
+
 - **The cairn pane right-aligns pull request numbers and states.** On a
   Blocked or Hotfixes row, the number and state word (for example `#786  in
   review`) now sit at the right edge of the pane. Before, they followed

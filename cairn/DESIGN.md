@@ -789,12 +789,12 @@ within each type and are never reused.
   #9) and M234 review (diff-bug #12, blame-history #5, prior-review #2;
   Copilot thread on PR #243, checked 2026-10-16T04:10:01Z).
 - The `/hotfix` rerun and row-graduation paths have small gaps, found at
-  the M249 and M262 reviews with no fix planned. The candidate row
-  "`/hotfix` has no resume route for an open PR" holds the older rerun
-  gap. Rerun (M262): the merge guard reads only the marker's PR number, so
+  the M249 and M262 reviews with no fix planned. M266 gave a rerun a route
+  for a closed PR, for the operator's own open PR, and for a guest change
+  request (narrowed M266). Rerun (M262): the merge guard reads only the marker's PR number, so
   a hand-typed `gh pr merge <N>` with no `--match-head-commit` passes on a
-  moved head. A marker whose PR merged or closed outside the session stays
-  on disk. `latestReviews` keeps each reviewer's latest review, so a later
+  moved head. A marker whose PR merged outside the session stays on disk,
+  and since M266 a rerun on a closed PR removes its marker. `latestReviews` keeps each reviewer's latest review, so a later
   comment can mask their change request (`latestOpinionatedReviews` would
   not). Step 6 states no stop for red CI, and the marker stays. A resume
   reads no comment posted since the approval. A resumed follow-up PR of
