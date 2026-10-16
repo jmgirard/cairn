@@ -119,6 +119,8 @@ planned.
 - 2026-10-16: T8: implement step 1 now stops on a base PR URL outside `<base-repo>`, a base PR whose `baseRefName` is not the default branch (chains), and a fork-headed base PR; the stacked sync replaces the plain guest rebase, fetches first, names `<slug>` in both `--onto` forms, pushes only a branch the check found pushed, keeps the lease on the remote tip, and defines `<N>`; review step 1 takes the stacked sync; review step 8's and §2's closed-base arms stop or report with no status change; tracking-rules says how a stacked milestone finds its stack base after hygiene, that an archived dependency is never a stack base, and fixes the two older guest bullets; stale "all done" wording fixed in `cairn_next.py`, `reader.ts`, `/milestone`; `check_release_window`'s comment states the done-only rule; `_profile_header` skips a non-regular file (new FIFO test, shown to fail with the check removed); prose guard updated; verify green (409, 179, 0, 0, 2018), skills/tests 822 OK, cairn_validate clean.
 - 2026-10-16: claim audit not re-run for T8: the step's one-pass rule ran it once above; T8's prose goes to review's fresh lenses.
 - 2026-10-16: status review; handed to /milestone-review.
+- 2026-10-16: review pass 2 fixed 13 findings on the branch (fd375d3c) and Copilot's `--base` thread (a777bd5d), with no status return.
+- 2026-10-16: step-7 approval: m268-guest-stacked-milestones approved for merge
 
 ## Decisions
 
