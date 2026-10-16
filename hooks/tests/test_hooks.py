@@ -224,6 +224,25 @@ class TestPushRemote(RepoFixture):
         self._profile("# Toolchain profile: generic\n\n## verify\n```\n# Push remote: base\n```\n")
         self.assertIsNone(session_context.cc.push_remote(str(self.root)))
 
+    @unittest.skipUnless(hasattr(os, "mkfifo"), "needs os.mkfifo")
+    def test_a_fifo_profile_reads_as_absent_without_blocking(self):
+        # M268 review: opening a FIFO for reading blocks until a writer
+        # comes, so the reader must not open one. A thread bounds the
+        # call, so a regression fails here instead of hanging the suite.
+        import threading
+
+        os.mkfifo(self.root / "cairn" / "PROFILE.md")
+        out = {}
+        worker = threading.Thread(
+            target=lambda: out.update(push=session_context.cc.push_remote(str(self.root)),
+                                      mode=session_context.cc.collaboration_mode(str(self.root))),
+            daemon=True,
+        )
+        worker.start()
+        worker.join(5)
+        self.assertFalse(worker.is_alive(), "the PROFILE.md read blocked on a FIFO")
+        self.assertEqual(out, {"push": None, "mode": "owner"})
+
 
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode

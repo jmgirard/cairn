@@ -125,7 +125,9 @@ re-enters here, at the step the record shows is next:
    and a moved default branch is taken by `git rebase
    <base>/<default-branch>` through `/milestone-implement` step 2's guest
    sync in full: its remote-only-commits check before the rebase, and, for
-   a branch already pushed, its leased push right after it. That push only
+   a branch already pushed, its leased push right after it. A stacked
+   milestone takes that step's stacked sync instead of the plain rebase,
+   whether or not the default branch moved. That push only
    re-syncs a branch that is already pushed. A branch never pushed stays
    local until step 8.
 
@@ -654,8 +656,9 @@ re-enters here, at the step the record shows is next:
    status `in-progress`, write the work-log line `restack: PR #<base-pr>
    merged`, and stop with a close block whose next command is
    `/milestone-implement M<NNN>`, whose stacked sync does the restack. If
-   it is `CLOSED`, stop the same way, the close block naming the closed
-   PR. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
+   it is `CLOSED`, push nothing, open no PR, change no status, and stop
+   with a close block naming the closed PR: what the milestone builds on
+   is gone, and the next step is the user's. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
    and its body names the stack base's PR (`#<base-pr>`) as the change it
    builds on. Then, unless the
    header already names an open PR, open the PR against the base repo from

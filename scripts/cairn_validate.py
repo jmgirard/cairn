@@ -1677,9 +1677,11 @@ def check_release_window(root, rows, today=None):
     out = []
     today = today or datetime.date.today()
     live = {cs.canon_id(mid): p for mid, p in cs.live_files(root).items()}
-    # Dependency satisfaction mirrors cairn_next: a done row, or a done
-    # milestone whose row was pruned under terminal-row retention but whose
-    # archive file remains. IDs compare by canonical spelling (M157).
+    # Dependency satisfaction mirrors cairn_next's done set: a done row, or
+    # a done milestone whose row was pruned under terminal-row retention but
+    # whose archive file remains. IDs compare by canonical spelling (M157).
+    # cairn_next's guest-mode stack bases (M268) are left out: a release is
+    # the maintainers' act in guest mode, where `/cairn-release` stops.
     done = {cs.canon_id(r["id"]) for r in rows if r["status"] == "done"} | {
         cs.canon_id(mid) for mid in cs.archive_files(root)
     }

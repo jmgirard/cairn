@@ -186,7 +186,10 @@ The script deliberately does not judge these — do them yourself and report:
   `MERGED` (`gh pr view <base-pr> --repo <base-repo> --json state`) → the
   restack is owed: route to `/milestone-implement M<NNN>`, whose stacked
   sync rebases the branch onto `<base>/<default-branch>`, re-pushes it, and
-  retargets the PR if GitHub did not; `OPEN` otherwise → report the fresh
+  retargets the PR if GitHub did not; `OPEN` on a stacked milestone whose
+  stack base's PR reads `CLOSED` → report it with no route: what the
+  milestone builds on is gone, and the next step is the user's; `OPEN`
+  otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.
@@ -369,7 +372,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-implement M<NNN>` — resume (an `in-progress` milestone exists)
 - `/milestone-review M<NNN>` — review (a milestone sits at `review`)
 - `/milestone-implement M<NNN>` — implement (a workable planned milestone
-  exists — its dependencies `done`, nothing `in-progress`)
+  exists — its dependencies `done`, or in guest mode one a stack base,
+  nothing `in-progress`)
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,

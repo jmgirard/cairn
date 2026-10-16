@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M268: Let a guest milestone build on one that waits for the maintainers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M267
 - **Driving RR:** —
@@ -65,10 +65,10 @@ planned.
 ## Coverage
 
 - AC1 → T1, T2
-- AC2 → T3
-- AC3 → T4
-- AC4 → T5
-- AC5 → T6
+- AC2 → T3, T8
+- AC3 → T4, T8
+- AC4 → T5, T8
+- AC5 → T6, T8
 - AC6 → T7
 
 ## Tasks
@@ -89,6 +89,10 @@ planned.
       the Collaboration-mode bullets; README guest section; CHANGELOG; a
       D-entry annotating D-137 for the stack-base exception; prose guards in `skills/tests/` for T3–T5.
 - [x] T7: Run `verify` and the hand-run `skills/tests` suite from the repo root, each exit code checked.
+- [x] T8: Review return 1: fix every Review-section finding marked "fix now (floor return 1)" — one stacked sync that
+      replaces the plain guest rebase in implement and review step 1, the stack-base lookup after hygiene, step 1's
+      chained, cross-repo, and fork-head stops, the closed-base routes, the placeholder names, the stale wording, and
+      the PROFILE.md regular-file check; re-run `verify` and `skills/tests`.
 
 ## Work log
 
@@ -111,6 +115,10 @@ planned.
 - 2026-10-16: status review; handed to /milestone-review.
 - 2026-10-16: review opened PR #280 at its start (Copilot round on) and requested Copilot (state `none` before the request).
 - 2026-10-16: review return 1: floor return on load-bearing stacked-sync prose defects: a stacked resume can run the plain guest rebase (review step 1 and implement step 2: diff-bug #1, #2), the restack has no stack-base lookup after hygiene and pushes a branch never pushed (#4, #5), and the step-1 checks miss a chained, cross-repo, or fork-headed base PR (#3, #6, #7); fix every finding the Review section marks "fix now (floor return 1)" in one task.
+- 2026-10-16: resumed for review return 1; added T8 (minor amendment) and mapped it in Coverage to AC2–AC5.
+- 2026-10-16: T8: implement step 1 now stops on a base PR URL outside `<base-repo>`, a base PR whose `baseRefName` is not the default branch (chains), and a fork-headed base PR; the stacked sync replaces the plain guest rebase, fetches first, names `<slug>` in both `--onto` forms, pushes only a branch the check found pushed, keeps the lease on the remote tip, and defines `<N>`; review step 1 takes the stacked sync; review step 8's and §2's closed-base arms stop or report with no status change; tracking-rules says how a stacked milestone finds its stack base after hygiene, that an archived dependency is never a stack base, and fixes the two older guest bullets; stale "all done" wording fixed in `cairn_next.py`, `reader.ts`, `/milestone`; `check_release_window`'s comment states the done-only rule; `_profile_header` skips a non-regular file (new FIFO test, shown to fail with the check removed); prose guard updated; verify green (409, 179, 0, 0, 2018), skills/tests 822 OK, cairn_validate clean.
+- 2026-10-16: claim audit not re-run for T8: the step's one-pass rule ran it once above; T8's prose goes to review's fresh lenses.
+- 2026-10-16: status review; handed to /milestone-review.
 
 ## Decisions
 

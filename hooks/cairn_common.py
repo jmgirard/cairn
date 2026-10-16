@@ -437,8 +437,11 @@ def push_remote(root):
 def _profile_header(root, pattern):
     """The first match of `pattern` in cairn/PROFILE.md's header region (the
     lines before the first `## ` slot heading), its value lowercased, or
-    None."""
+    None. A path that is not a regular file reads as None, so a FIFO there
+    cannot stall `cairn_next` (M268 review)."""
     path = os.path.join(root, "cairn", "PROFILE.md")
+    if not os.path.isfile(path):
+        return None
     try:
         with open(path, encoding="utf-8-sig") as f:
             for line in f:
