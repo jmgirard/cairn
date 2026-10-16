@@ -6206,7 +6206,7 @@ change route is found pushing without the user's yes at its chip, or
 answering a request a maintainer already withdrew, this is the entry to
 supersede.
 
-### D-172 (2026-10-16): In guest mode a repo can opt in to pushing its branches to the base repo, behind a push-access check — annotates D-137 (M267)
+### D-172 (2026-10-16): In guest mode a repo can opt in to pushing its branches to the base repo, behind a push-access check — annotates D-137 and D-171 (M267)
 
 **Context:** D-137 sends every guest branch to the operator's fork. GitHub
 takes only a branch in the base repo as a PR's base, so a guest PR that
@@ -6220,8 +6220,10 @@ remote, and the PR's head is that branch. The rulebook names the target
 the push remote. Before the handoff push to the base repo, the skill reads
 the account's push permission and stops, pushing nothing, on any answer
 but `true`. A push to a branch that already has an open PR goes to the
-remote that holds that PR's head. The fork-remote stop applies only where
-a push resolves to the fork. Before a guest sync rebases a pushed branch,
+remote that holds that PR's head, found from the PR's head owner. This
+covers D-171's guest change route, which pushes to the fork only when the
+PR's head is there. The fork-remote stop applies only where a push
+resolves to the fork. Before a guest sync rebases a pushed branch,
 it fetches the branch and stops when the remote holds commits the local
 branch lacks, and the force-push leases on the tip it read. Owner mode
 never reads the line, and no validator reads it. D-137's other parts stand:
@@ -6239,5 +6241,7 @@ proving routine and always settled by a plain rebase.
 
 **Consequences:** Guest branches can live in the maintainers' repo, where
 M268 builds stacked milestones on them. The line is set by hand, as the
-README says. If a guest push reaches the base repo without the line, or
-without the access read, this is the entry to supersede.
+README says. Pushes to a PR that is already open on the base repo run no
+access read, since the open PR shows the push worked. If a handoff's first
+push reaches the base repo without the line, or without the access read,
+this is the entry to supersede.

@@ -16,8 +16,10 @@ things have to survive:
      is the whole list (M171 lesson): a test fails when any one site goes
      back to `<fork>` or `origin`.
   4. The push-access read before a handoff push to the base repo, in
-     `/milestone-review` and `/hotfix`, and implement's stop before it
-     rebases over commits it does not have.
+     `/milestone-review` and `/hotfix`; implement's stop before it rebases
+     over commits it does not have, with no check for a branch never
+     pushed; and review's rebase, which takes that check first and leases
+     step 8's push on the tip it read.
   5. No skill prose calls `origin` the fork.
 
 The pinned phrases wrap across source lines, so this guard collapses
@@ -48,7 +50,10 @@ PUSH_REMOTE = [
     "In guest mode the **push remote** `<push>` is where a guest branch is pushed: `<base>` when `cairn/PROFILE.md` carries the header line `# Push remote: base`, else `<fork>`.",
     "Owner mode never reads the line.",
     "`<push-owner>` is the owner of the repo `<push>` names",
-    "A push to a branch that already has an open PR goes to the remote that holds that PR's head, whatever `<push>` now says.",
+    "A push to a branch that already has an open PR goes to the remote that holds that PR's head, whatever `<push>` now says (the **open-PR head rule**).",
+    "Read the head's owner with `gh pr view <N> --repo <base-repo> --json headRepositoryOwner -q .headRepositoryOwner.login`.",
+    "The head remote is `<base>` when that login equals the base repo's owner, and `<fork>` when it equals `<fork-owner>`, both ignoring case.",
+    "Any other login, or a failed or empty read, stops the push, and the stop names the read.",
 ]
 
 # (file under skills/, phrase) for every guest-mode push site.
@@ -66,7 +71,7 @@ SITES = [
     ("milestone-review/SKILL.md", "pushes it to `<push>`, the fork or, where `cairn/PROFILE.md` asks, the base repo"),
     ("milestone-review/SKILL.md", "fixed on the branch and pushed to that remote before the close"),
     ("milestone-implement/SKILL.md", "`git push --force-with-lease=<slug>:<sha> <remote> <slug>`"),
-    ("shared/copilot-review.md", "(guest mode: to the remote that holds the PR's head, the fork or the base repo by the rulebook's push remote,"),
+    ("shared/copilot-review.md", "(guest mode: to the remote that holds the PR's head, found by the rulebook's open-PR head rule)"),
     ("milestone/SKILL.md", "re-pushed to the remote that holds the PR's head"),
 ]
 
@@ -77,9 +82,19 @@ ACCESS_READ = [
 ACCESS_FILES = ["milestone-review/SKILL.md", "hotfix/SKILL.md"]
 
 REMOTE_ONLY_STOP = [
+    "so the rebase waits on one check, run before the rebase.",
+    "Read the remote the branch tracks with `git rev-parse --abbrev-ref <slug>@{upstream}`",
+    "With no upstream the branch was never pushed: rebase, and push nothing.",
     "read `git rev-list <slug>..<remote>/<slug>`.",
     "If that lists commits, do not rebase, push nothing, and stop with a close block that names those commits.",
     "Otherwise note the remote tip's sha, rebase, and push with",
+]
+
+# Review's guest rebase takes the check before it, and step 8 leases on its sha.
+REVIEW_REBASE = [
+    "after `/milestone-implement` step 2's remote-only-commits check, which runs before the rebase and notes the remote tip's sha.",
+    "The rebased branch is not pushed here. Step 8 pushes it with that sha's lease.",
+    "A branch that step 1 rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being the remote tip that step 1's check read.",
 ]
 
 ORIGIN_IS_FORK = re.compile(r"`origin`,? \(?the fork|the fork,? \(?`origin`", re.I)
@@ -176,6 +191,16 @@ class TestRemoteOnlyCommitsStop(unittest.TestCase):
         text = read("milestone-implement/SKILL.md")
         for clause in REMOTE_ONLY_STOP:
             self.assertEqual(missing(text.replace(clause, ""), REMOTE_ONLY_STOP), [clause])
+
+
+class TestReviewRebaseLease(unittest.TestCase):
+    def test_present(self):
+        self.assertEqual(missing(read("milestone-review/SKILL.md"), REVIEW_REBASE), [])
+
+    def test_removed_clause_fails(self):
+        text = read("milestone-review/SKILL.md")
+        for clause in REVIEW_REBASE:
+            self.assertEqual(missing(text.replace(clause, ""), REVIEW_REBASE), [clause])
 
 
 class TestNoOriginCalledFork(unittest.TestCase):

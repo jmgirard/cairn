@@ -7,8 +7,8 @@
 - **Guest branches can go to the upstream repo.** In guest mode, add the
   line `# Push remote: base` near the top of `cairn/PROFILE.md`, and
   `/milestone-review` and `/hotfix` push the branch to the upstream repo
-  instead of your fork. A PR can then use another open PR's branch as its
-  base. Before that push, they read your push permission on the upstream
+  instead of your fork. You can then set another open PR's branch as a
+  PR's base. Before that push, they read your push permission on the upstream
   repo, and they stop with nothing pushed if it is not `true`. A branch
   whose PR is already open keeps pushing to the remote that holds that
   PR's head. A repo without the line still pushes to the fork. In both

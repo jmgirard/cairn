@@ -707,12 +707,10 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
 
     def test_approval_pushes_and_posts_nothing(self):
         self.assertIn(
-            "On approval, push to the remote that holds the PR's head. Read "
-            "`headRepositoryOwner` with `gh pr view <N> --repo <base-repo> --json "
-            "headRepositoryOwner`. The head remote is `<base>` when that owner is "
-            "the base repo's owner, else `<fork>` by the rulebook's fork recipe and "
-            "its stop. Then run `git push <head-remote> HEAD:<headRefName>`. Post "
-            "no comment or reply on the PR. Then stop with the close block of "
+            "On approval, push to the remote that holds the PR's head, found by "
+            "the rulebook's open-PR head rule: `git push <head-remote> "
+            "HEAD:<headRefName>`. Post no comment or reply on the PR. Then stop "
+            "with the close block of "
             "the report-and-stop above. That close block also says that the "
             "reply to the maintainers is the operator's.",
             self.step1,

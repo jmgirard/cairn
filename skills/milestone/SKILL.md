@@ -179,8 +179,8 @@ The script deliberately does not judge these — do them yourself and report:
   reason, or set it back to `in-progress` to rework and re-open; `OPEN` with
   `reviewDecision` `CHANGES_REQUESTED` → route to `/milestone-implement
   M<NNN>` (the maintainers' requests become tasks; the branch is rebased on
-  `<base>` and re-pushed to the remote that holds the PR's head, by
-  `/milestone-implement` step 2's guest sync); `OPEN` otherwise → report the fresh
+  `<base>` and re-pushed to the remote that holds the PR's head at
+  `/milestone-review`'s re-handoff); `OPEN` otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.

@@ -69,9 +69,12 @@ run ingestion first (see `/milestone-brief`).
    profile's `verify` slot before continuing. Guest arm: `git fetch <base>`
    then `git rebase <base>/<default-branch>` in place of the merge. Once
    the branch is pushed, other people can push to it too, on the fork or
-   on the base repo, so the rebase waits on one check. Fetch the remote
-   that holds the branch (the open PR's head remote, else `<push>`, the
-   rulebook's push remote) and read `git rev-list <slug>..<remote>/<slug>`.
+   on the base repo, so the rebase waits on one check, run before the
+   rebase. Read the remote the branch tracks with
+   `git rev-parse --abbrev-ref <slug>@{upstream}` (the first `git push -u`
+   sets it). With no upstream the branch was never pushed: rebase, and
+   push nothing. Otherwise fetch that remote and read
+   `git rev-list <slug>..<remote>/<slug>`.
    If that lists commits, do not rebase, push nothing, and stop with a
    close block that names those commits. Otherwise note the remote tip's
    sha, rebase, and push with

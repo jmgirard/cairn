@@ -123,7 +123,10 @@ re-enters here, at the step the record shows is next:
    branch is worthless and the squash-merge would conflict anyway. Guest
    arm: the fetch is the whole sync — the default branch is never pushed —
    and a moved default branch is taken by `git rebase
-   <base>/<default-branch>`, as `/milestone-implement` step 2 states.
+   <base>/<default-branch>` after `/milestone-implement` step 2's
+   remote-only-commits check, which runs before the rebase and notes the
+   remote tip's sha. The rebased branch is not pushed here. Step 8 pushes
+   it with that sha's lease.
 
 2. Nothing is pushed and no PR is opened here: the push and the `gh pr
    create` sit in step 8, after the step-7 approval, so a
@@ -547,7 +550,8 @@ re-enters here, at the step the record shows is next:
    `AskUserQuestion` chip whose recommended option hands the branch to the
    maintainers, naming the branch and the base repo (e.g. `Hand <slug> to
    the maintainers of <base-repo>` — pushes it to `<push>`, the fork or,
-   where `cairn/PROFILE.md` asks, the base repo, and opens the PR for their
+   where `cairn/PROFILE.md` asks, the base repo (a branch whose PR is open
+   goes to that PR's head remote), and opens the PR for their
    review; the milestone waits on them), a decline option present, and
    **no merge option** — the blocking rule above moves the recommendation
    to address-first as in owner mode. Decline → the owner-mode decline
@@ -637,10 +641,11 @@ re-enters here, at the step the record shows is next:
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to
-   the push remote (`git push -u <push> <slug>`, or after a rebase the
-   check and lease of `/milestone-implement` step 2's guest sync). `<push>` and `<push-owner>` are the rulebook's push remote and
-   its owner. A branch whose PR is already open is pushed to the remote
-   that holds that PR's head. When `<push>` is `<base>`, first run
+   the push remote (`git push -u <push> <slug>`). A branch that step 1
+   rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being
+   the remote tip that step 1's check read. `<push>` and `<push-owner>` are the rulebook's push remote and
+   its owner. A branch whose PR is already open is pushed to that PR's head
+   remote, by the rulebook's open-PR head rule. When `<push>` is `<base>`, first run
    `gh api repos/<base-repo> --jq .permissions.push`. On any output but
    `true`, or a failed read, push nothing, open no PR, and stop with a
    close block that names the read and its result. Then, unless the
