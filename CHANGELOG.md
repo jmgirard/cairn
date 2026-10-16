@@ -4,6 +4,18 @@
 
 ### Changes that affect existing repos
 
+- **`/cairn-triage lessons` triages `cairn/LESSONS.md`.** It reads every
+  lesson and proposes one disposition each at the triage gate: keep it,
+  shorten it, merge it into another lesson, retire it, or hand a family of
+  lessons to `/milestone-plan` to become a shared doctrine module. A
+  retirement names its reason: a test that fails on the mistake the lesson
+  warns about, or a tracking file that already holds the lesson. A lesson
+  that a test checks for stays as it is, and a lesson the pass finds false
+  stays, flagged for correction. Nothing changes until you accept at the
+  gate, and the accepted edits land in one commit (in guest mode, on disk
+  with no commit). Plain `/cairn-triage`
+  still covers only candidate rows and known issues.
+
 - **Candidate short titles hold no icons.** The cairn pane uses glyphs
   such as `⌂` and `✎` for its own marks and Buttons, so an icon anywhere in
   a short title can read as one of them. The rulebook now tells whoever writes

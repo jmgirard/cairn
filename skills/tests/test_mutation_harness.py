@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="678 lines / 65,222 bytes",
+        block="679 lines / 65,365 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4198,5 +4198,166 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry.test_timeout_close_names_the_open_pr_route",
         target=HOTFIX,
         block="step 1's open-PR re-entry resumes at this wait",
+    ),
+]
+
+TRIAGE = "skills/cairn-triage/SKILL.md"
+
+REGISTRY += [
+    # M263 (D-169): the `/cairn-triage lessons` pass. At least one entry per
+    # pinned rule: the argument and its stop, the item shape, the pin check
+    # both ways, each lesson disposition and drop exit, the maturation bar,
+    # the false-lesson keep, apply and record, and the two surfaces that
+    # name the pass. Blocks are exact substrings of the target, one with a
+    # physical line break; the guard collapses whitespace.
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsArgument.test_no_argument_means_no_lesson",
+        target=TRIAGE,
+        block="enumerates the candidates and Known issues and no lesson.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsArgument.test_any_other_argument_stops",
+        target=TRIAGE,
+        block="than `lessons` stops before enumeration with a close block that names",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsArgument.test_same_preconditions_gate_and_commit",
+        target=TRIAGE,
+        block="preconditions, gate, apply, stamp, and commit as the default pass",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsArgument.test_frontmatter_names_the_argument",
+        target=TRIAGE,
+        block='argument-hint: "[lessons]"',
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonItems.test_item_shape",
+        target=TRIAGE,
+        block="opens with `- ` and a `YYYY-MM-DD` date. List its source, `lesson`.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonItems.test_item_shape",
+        target=TRIAGE,
+        block="has none, trimmed to about 80 characters.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonItems.test_item_shape",
+        target=TRIAGE,
+        block="Its priority is `—`.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonItems.test_missing_file_yields_no_items",
+        target=TRIAGE,
+        block="such line, yields zero items with no failure.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestPinCheck.test_pin_files_are_found_by_git_grep",
+        target=TRIAGE,
+        block="each file that `git grep -l \"LESSONS.md\"` lists whose\npath contains `test`.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestPinCheck.test_a_pinned_lesson_is_keep",
+        target=TRIAGE,
+        block="is `keep`, its reason naming that file.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestPinCheck.test_no_edit_writes_an_absent_string",
+        target=TRIAGE,
+        block="breadcrumb. No accepted edit writes a string that a pin file asserts is",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_five_dispositions_only",
+        target=TRIAGE,
+        block="dispositions, and never `split`, `route`, or `retitle`:",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_drop_names_an_exit",
+        target=TRIAGE,
+        block="Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_drop_names_an_exit",
+        target=TRIAGE,
+        block="Ownership: a `cairn/` tracking file and the section that already holds the lesson's content.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_promote_states_the_maturation_bar",
+        target=TRIAGE,
+        block="The family teaches transferable craft about authoring or verifying, not a fact about this repo's tools or runtime.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_prefix_and_marks_survive",
+        target=TRIAGE,
+        block="A compressed or merged lesson keeps its `- YYYY-MM-DD (M…)` prefix and any",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_a_false_lesson_is_keep",
+        target=TRIAGE,
+        block="reason naming the record that refutes it.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_no_line_left_behind",
+        target=TRIAGE,
+        block="dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_cap_check_covers_both_files",
+        target=TRIAGE,
+        block="absent. After the edits, `wc -l -c cairn/LESSONS.md cairn/ROADMAP.md`",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_record_names_drops_and_merges",
+        target=TRIAGE,
+        block="**Step 5, record.** A lesson drop or merge writes no decision entry.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_record_names_drops_and_merges",
+        target=TRIAGE,
+        block="provenance with its exit, and each merged-away lesson with its survivor.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_record_names_drops_and_merges",
+        target=TRIAGE,
+        block="In guest mode the stamp alone names them, with their evidence.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_one_plan_per_family",
+        target=TRIAGE,
+        block="fences one `/milestone-plan <family>` per promoted family, not one per",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestSurfacesNameThePass.test_rulebook_names_the_on_demand_pass",
+        target=RULES,
+        block="and over the whole file only when the\n  user runs `/cairn-triage lessons`",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestSurfacesNameThePass.test_readme_names_the_pass",
+        target=README,
+        block="`/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`",
     ),
 ]
