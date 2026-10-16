@@ -1,6 +1,6 @@
 # M258: Started token on candidate rows
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,14 +41,14 @@ stay on that row.
       cairn skill's step is set. `hooks/status/pane.test.tsx` cases cover a
       planned id, a blocked id, a done id, a dropped id, an absent id, and a
       row with two M tokens of which one counts.
-- [ ] AC2: A candidate row's ` — started #<n>` token counts while the open
+- [x] AC2: A candidate row's ` — started #<n>` token counts while the open
       hotfix list that the pane holds for its root (the last successful
       read's) holds PR number n. A row with a counted #n token draws `◐`, the
       lowest counted number at its right end, and no ✎. A row whose #n tokens
       all fail to count, with no other source, draws its priority mark and no
       number. `pane.test.tsx` cases cover n listed, n not listed, and a row
       with two #n tokens of which one is listed.
-- [ ] AC3: When more than one source marks a row (an open PR's
+- [x] AC3: When more than one source marks a row (an open PR's
       `Candidate row:` line, a counted #n token, a counted M token), the
       row's right end shows the lowest PR number among the first two sources,
       and the lowest counted milestone id only when neither gives a number.
@@ -56,11 +56,11 @@ stay on that row.
       counted #n token with a counted M token, and a body line naming #a with
       a counted #b token where b < a, which shows #b. The M252 and M257
       started-mark cases pass unchanged.
-- [ ] AC4: For a candidate row with `: ` in it, one with ` — ` and no `: `,
+- [x] AC4: For a candidate row with `: ` in it, one with ` — ` and no `: `,
       and one with neither, `candidateRows` in `hooks/status/reader.ts` gives
       the same short title with ` — started M258`, ` — started #301`, or both
       appended as without them, shown by `reader.test.ts` cases.
-- [ ] AC5: `skills/shared/tracking-rules.md` defines the two token forms
+- [x] AC5: `skills/shared/tracking-rules.md` defines the two token forms
       beside "Candidate priority token". `/milestone-plan` step 6 appends
       ` — started M<NNN>` to each candidate row the plan absorbs, in both
       modes. `/hotfix`'s guest arm appends ` — started #<n>` on disk to each
@@ -76,7 +76,7 @@ stay on that row.
       records that the token rule passes D-108's door on its retained
       trigger, and that a token names another record's id and is not the
       row's own id (D-035). Evidence: a read of the four files.
-- [ ] AC7: The `verify` slot of `cairn/PROFILE.md` is clean.
+- [x] AC7: The `verify` slot of `cairn/PROFILE.md` is clean.
 
 ## Coverage
 
@@ -125,7 +125,20 @@ stay on that row.
 - 2026-10-15: claim audit: 48 claims read, 4 corrected — README.md, hooks/status/reader.ts, hooks/status/pane.ts (a guest base remote with no `upstream` is `origin`, which the hotfix PR targets, so the "no upstream lists no hotfix PR" claim was false; the planned-or-blocked comment, the unordered `numbers`, and "only source" narrowed to "usual source").
 - 2026-10-15: substantive amendment: Scope Out loses its false sentence that a guest base remote with no `upstream` lists no hotfix PR; the deliverable is unchanged, so no stop. D-165's Consequences sentence saying the same was removed in place on this unmerged branch, before the entry reached the default branch.
 - 2026-10-15: T5 done: verify slot clean — scripts 408 OK (21 skipped), hooks 175 OK, both plugin validates pass, mod tests 1757 pass; cairn_validate all checks passed. Status to review.
+- 2026-10-15: review: PR #269 opened at review start (Copilot arm), Copilot requested on state `none`.
+- 2026-10-15: review return 1: AC1 — `pane.test.tsx` has no done, dropped, or absent id case; those sit only in `reader.test.ts`. Add a `pane.test.tsx` case that runs `takenRows` over a ROADMAP and draws the lines.
+- 2026-10-15: amendment routed: AC6 — "that guest mode gets the mark only through the tokens" asks README for a false claim, since a hand-written `Candidate row:` line in a guest PR body also counts (claim audit).
 
 ## Decisions
 
 ## Review
+
+Pass 1, review head 0ab962ec, PR #269 opened at review start (Copilot round on; state `none`, Copilot requested).
+
+- AC1: NOT MET — the M258 pane block covers a planned id, a blocked id, and two ids of which one counts; the done, dropped, and absent ids are covered only in `reader.test.ts` (`takenRows`), not in `pane.test.tsx` as the criterion names. Returned.
+- AC2: `pane.test.tsx` "a #n token marks its row only while the open hotfix list holds n (AC2)" passes: #301 listed marks with `#301`, #999 unlisted draws the priority mark and ✎, #998 and #305 give `#305`, and an empty hotfix list marks none. Mod tests 1757 pass, 0 fail.
+- AC3: "a pull request number wins over a milestone id, and the lowest number wins (AC3)" passes: body #400 with M258 shows `#400`, #302 with M258 shows `#302`, body #350 with #301 shows `#301`; the three M252 AC2 cases and the M257 fence cases pass unchanged.
+- AC4: `reader.test.ts` "a started token leaves the short title unchanged (M258 AC4)" passes 9 cases: colon, dash, and neither rows, each with ` — started M258`, ` — started #301`, and both.
+- AC5: read: tracking-rules.md:215-220 "Candidate started token" directly after "Candidate priority token"; milestone-plan SKILL.md:473 step 6 appends ` — started M<NNN>` in both modes; hotfix SKILL.md:307 guest arm appends ` — started #<n>` after the create, :328 and :358 no longer say unchanged; records-hygiene.md:20 a narrowed row loses the token.
+- AC6: NOT MET as written — the claim audit corrected README to "the usual source of the mark", since a hand-written `Candidate row:` line counts in guest mode too, so the criterion's "only through the tokens" asks for a false claim. Amendment routed.
+- AC7: verify slot on 0ab962ec: scripts 408 OK (21 skipped), hooks 175 OK, plugin validate passed with warnings, marketplace validate passed, mod tests 1757 pass 0 fail.
