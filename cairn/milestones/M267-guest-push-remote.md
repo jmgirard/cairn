@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M267: Let a guest repo push its branches to the maintainers' repo
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -113,6 +113,10 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: T7 done: README guest section gains the push-remote bullet and line 797 says "pushes to the PR's branch"; `grep -n -i fork README.md` returns only the new bullet's default-to-fork lines. CHANGELOG Unreleased entry added.
 - 2026-10-16: T8 done: verify green (scripts 0, hooks 0, plugin validate 0, marketplace validate 0, plugin test 0); hand-run skills/tests 818 tests OK; cairn_validate all checks passed.
 - 2026-10-16: decided the change route's push target is the upstream `gh pr checkout` sets, named `<head-remote>`, since that is the remote holding the PR's head whichever repo it is.
+- 2026-10-16: claim audit: 40 claims read, 3 corrected — skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md, README.md
+- 2026-10-16: claim-audit fixes: review step 8's guest arm skips `gh pr create` when the header names an open PR; the hotfix change route resolves `<head-remote>` from `headRepositoryOwner` (base remote, else the fork recipe with its stop), replacing the `gh pr checkout` upstream decision above, which can point at a URL or `refs/pull/N/head`; README says the access read runs before each handoff push with the line set, and that the stop fires on any remote commit the local copy lacks. skills/tests 818 OK; verify green (5/5).
+- 2026-10-16: known edge kept: with the line set after a PR opened from the fork, review step 8 still runs the base-repo access read before pushing to the fork head; a non-`true` answer stops with nothing pushed. AC3 gates the read on `<push>`, and the stop fails safe.
+- 2026-10-16: implement complete; status review.
 
 ## Decisions
 

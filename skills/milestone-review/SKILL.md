@@ -643,8 +643,9 @@ re-enters here, at the step the record shows is next:
    that holds that PR's head. When `<push>` is `<base>`, first run
    `gh api repos/<base-repo> --jq .permissions.push`. On any output but
    `true`, or a failed read, push nothing, open no PR, and stop with a
-   close block that names the read and its result. Then open the PR
-   against the base repo from the pushed branch —
+   close block that names the read and its result. Then, unless the
+   header already names an open PR, open the PR against the base repo from
+   the pushed branch —
    `gh pr create --repo <base-repo> --head <push-owner>:<slug>`, opened
    ready for their review (never a draft, so no later ready-marking step)
    — its title and body carrying no cairn

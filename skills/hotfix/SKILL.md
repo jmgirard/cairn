@@ -205,8 +205,11 @@ can resolve against the fork instead of the base repo.
      When a change makes step 5's changelog entry wrong, edit the entry.
      Then pose one `AskUserQuestion` chip. Its question text lists each
      requested item with its change or its reason, and a decline option is
-     present. On approval, push to the remote that holds the PR's head,
-     the one `gh pr checkout` set as the branch's upstream:
+     present. On approval, push to the remote that holds the PR's head.
+     Read `headRepositoryOwner` with `gh pr view <N> --repo <base-repo>
+     --json headRepositoryOwner`. The head remote is `<base>` when that
+     owner is the base repo's owner, else `<fork>` by the rulebook's fork
+     recipe and its stop. Then run
      `git push <head-remote> HEAD:<headRefName>`. Post no comment or reply
      on the PR. Then stop with the close block
      of the report-and-stop above. That close block also says that the

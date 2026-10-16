@@ -882,12 +882,12 @@ recommend one) and writes `# Collaboration mode: guest` into
   the branch there, add the line `# Push remote: base` near the top of
   `cairn/PROFILE.md`. A PR can then build on another open PR's branch,
   because GitHub accepts only a branch in the upstream repo as a PR's
-  base. Before the first push, cairn reads your push permission on the
-  upstream repo. If it is not `true`, cairn pushes nothing and says why.
-  A branch whose PR is already open keeps pushing to where that PR's head
-  lives. Before a resync rebases a pushed branch, cairn fetches it. If
-  someone else pushed commits that your copy lacks, it stops and names
-  them.
+  base. With the line set, cairn reads your push permission on the
+  upstream repo before each handoff push. If it is not `true`, cairn
+  pushes nothing and says why. A branch whose PR is already open keeps
+  pushing to where that PR's head lives. Before a resync rebases a pushed
+  branch, cairn fetches it. If the remote branch has commits your copy
+  lacks, it stops and names them.
 - **No release walk.** `/cairn-release` stops at session start and says
   why: a release is the maintainers' act.
 - **Triage stays on disk.** `/cairn-triage` runs as usual, but it skips
