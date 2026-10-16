@@ -322,5 +322,101 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         )
 
 
+class TestHotfixOpenPrReentry(unittest.TestCase):
+    """M262: `/hotfix` step 1's open-PR re-entry. The owner arm resumes an
+    approved merge at step 6's CI wait when the marker names the PR at its
+    current head, and re-poses the gate when the head moved; the guest arm
+    reports and stops. Step 6 writes the marker, with the head oid, before
+    the wait, and its timeout close names the route. Each trigger part and
+    each outcome is pinned on its own (M165 lesson), whitespace collapsed
+    (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+        self.step6 = flat(section(text, "6. **Approval gate:**", "7. If"))
+
+    def test_reads_the_open_state_and_head(self):
+        self.assertIn(
+            "**Open-PR re-entry (M262).** A PR-reference argument whose "
+            "`gh pr view <N> --json state,headRefName,headRefOid` reports "
+            "`OPEN` takes one of the two arms below when its conditions hold. "
+            "Any other open PR takes the walk above.",
+            self.step1,
+        )
+
+    def test_owner_trigger_is_a_hotfix_marker_naming_the_pr(self):
+        self.assertIn(
+            "*Owner arm.* This arm runs in owner mode. Its head branch does "
+            "not match `m<nnn>-*`. Step 6's merge-guard marker starts with "
+            "`hotfix ` and names that PR (`for PR #<N>`).",
+            self.step1,
+        )
+
+    def test_owner_arm_skips_the_walk(self):
+        self.assertIn(
+            "Quote the marker's line in chat and say that the run resumes "
+            "that approved merge. Make the candidate-row match above. Skip "
+            "the tier check and steps 2 to 5.",
+            self.step1,
+        )
+
+    def test_same_head_goes_on_at_the_ci_wait(self):
+        self.assertIn(
+            "If the marker's ` at <oid>` equals the PR's `headRefOid`, also "
+            "skip step 6's Copilot round arm, its PR-conversation read, its "
+            "approval chip, and its marker write. Go on at step 6's CI wait, "
+            "then the merge, then step 7.",
+            self.step1,
+        )
+
+    def test_moved_head_reposes_the_gate(self):
+        self.assertIn(
+            "If the two differ, or the marker names no head oid, say so in "
+            "chat. Then pose step 6's gate on the PR as it stands.",
+            self.step1,
+        )
+
+    def test_resumed_step_seven_reads_the_pr_body(self):
+        self.assertIn(
+            "A resumed merge's step 7 edits only the rows that the PR body's "
+            "`Candidate row:` lines name. It closes only the issue that the "
+            "body's `Fixes #N` line names.",
+            self.step1,
+        )
+
+    def test_guest_arm_reports_and_stops(self):
+        self.assertIn(
+            "*Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose "
+            "head branch starts with `hotfix-`.",
+            self.step1,
+        )
+        self.assertIn(
+            "Skip the tier check and steps 2 to 7. Report the PR's number, "
+            "state, and review decision",
+            self.step1,
+        )
+
+    def test_step_six_writes_the_marker_before_the_wait(self):
+        self.assertIn(
+            "On approval, the order is fixed: the push and any `gh pr "
+            "create` above, then the merge-guard marker, then the CI wait, "
+            "then the merge.",
+            self.step6,
+        )
+        self.assertIn(
+            "`hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`",
+            self.step6,
+        )
+
+    def test_timeout_close_names_the_open_pr_route(self):
+        self.assertIn(
+            "while the PR is still open and the marker names it, step 1's "
+            "open-PR re-entry resumes at this wait",
+            self.step6,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
