@@ -23,12 +23,12 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 
 ## Acceptance criteria
 
-- [ ] AC1: When the session end beneath a press's `/clear` rejects, the action Buttons work again afterwards: a test in `hooks/status/pane.test.tsx` makes the end reject (`copy.endThrows`) after a press whose `/clear` run never settles (`copy.runHold`), then presses an action Button again and finds that press's command in `copy.commands`.
-- [ ] AC2: When a session end of either reason rejects while a command is held for it, the prompt box gets the command's line and a toast reads `cairn: the session end failed (<line>)`: tests in `hooks/status/pane.test.tsx` cover a rejected `clear` end and a rejected `other` end and assert both the prompt-box text and the toast text.
-- [ ] AC3: A session end that lands while a ⌂ press waits on its step read cancels that press, so the press runs no `/clear`: tests in `hooks/status/pane.test.tsx` hold the step read (`holdStep`), end the session with a resolving `clear` end, a rejecting `clear` end, and a resolving `other` end, release the read, and find no `/clear` in `copy.commands`; for the two `clear` ends they find the one pane open that the end itself gives, and for the `other` end none.
-- [ ] AC4: A start's second pane listing that is still pending at a session end reads nothing: a test in `hooks/status/pane.test.tsx` holds the old start's second listing with a placed answer, ends the session, has a new start list the pane unplaced twice, releases the held listing, and finds no PR-state read added; the pane's next draw then makes exactly one.
-- [ ] AC5: `CHANGELOG.md`'s Unreleased section carries one entry naming these fixes, and each behavior it claims is asserted by one of the AC1–AC4 tests.
-- [ ] AC6: The `cairn/PROFILE.md` verify slot is clean: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`, both `python3 -m unittest` suites, and `claude plugin validate` on the plugin and marketplace manifests.
+- [x] AC1: When the session end beneath a press's `/clear` rejects, the action Buttons work again afterwards: a test in `hooks/status/pane.test.tsx` makes the end reject (`copy.endThrows`) after a press whose `/clear` run never settles (`copy.runHold`), then presses an action Button again and finds that press's command in `copy.commands`.
+- [x] AC2: When a session end of either reason rejects while a command is held for it, the prompt box gets the command's line and a toast reads `cairn: the session end failed (<line>)`: tests in `hooks/status/pane.test.tsx` cover a rejected `clear` end and a rejected `other` end and assert both the prompt-box text and the toast text.
+- [x] AC3: A session end that lands while a ⌂ press waits on its step read cancels that press, so the press runs no `/clear`: tests in `hooks/status/pane.test.tsx` hold the step read (`holdStep`), end the session with a resolving `clear` end, a rejecting `clear` end, and a resolving `other` end, release the read, and find no `/clear` in `copy.commands`; for the two `clear` ends they find the one pane open that the end itself gives, and for the `other` end none.
+- [x] AC4: A start's second pane listing that is still pending at a session end reads nothing: a test in `hooks/status/pane.test.tsx` holds the old start's second listing with a placed answer, ends the session, has a new start list the pane unplaced twice, releases the held listing, and finds no PR-state read added; the pane's next draw then makes exactly one.
+- [x] AC5: `CHANGELOG.md`'s Unreleased section carries one entry naming these fixes, and each behavior it claims is asserted by one of the AC1–AC4 tests.
+- [x] AC6: The `cairn/PROFILE.md` verify slot is clean: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`, both `python3 -m unittest` suites, and `claude plugin validate` on the plugin and marketplace manifests.
 
 ## Coverage
 
@@ -66,3 +66,13 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 ## Decisions
 
 ## Review
+
+Pass 1, 2026-10-15, branch head 1b247a00 + PR record; PR #271 opened at review start (Copilot round on), Copilot requested (state `none` before the request).
+
+- AC1: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` exit 0, 1766 pass; "a rejected session end frees the action Buttons (M260 AC1)" passes (⌂ press with `copy.runHold`, `copy.endThrows` end rejects, a later Status press's run in `copy.commands`); it failed before T1's fix with only `[CLEAR_RUN]` (work log).
+- AC2: same run; both "a rejected session end hands its held command to the prompt box (M260 AC2)" tests pass, one with a rejected `clear` end, one with a rejected `other` end, each asserting `copy.fills` `[{ text: '/cairn:milestone-plan', mode: 'append' }]` and `copy.toasts` `['cairn: the session end failed (/cairn:milestone-plan)']`.
+- AC3: same run; the three "a session end during a ⌂ press's step read cancels its /clear (M260 AC3)" tests pass (resolving `clear`, rejecting `clear`, resolving `other`), each holding the step read with `holdStep`, finding `copy.commands` empty, and finding one pane open for the two `clear` ends and none for the `other` end.
+- AC4: same run; "a second listing pending at a session end reads nothing (M260 AC4)" passes: the old start's second listing held placed, a session end, a new start listing unplaced twice, `calls.reads` `[]` after the release, then `[URL_1250]` after one `draw($)`.
+- AC5: `CHANGELOG.md` Unreleased › Fixes has one new entry, "Three session-end races in the cairn pane are closed."; its claims read against the tests: Buttons work after a failed end with a `/clear` that never finishes (AC1 test), the next-step Button's held command to the prompt box with the stated toast (AC2 tests), the ⌂ press cancelled and a `/clear` end still opening the pane (AC3 tests), the pending second listing reading nothing and the later start's read its own (AC4 test); no milestone number in the added lines (grep count 0).
+- AC6: verify slot on the review head, each exit code read: plugin test 0 (1766 pass, 0 fail), `scripts/tests` 0, `hooks/tests` 0, `claude plugin validate` plugin.json 0 and marketplace.json 0.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` skipped; marketplace validate output has no `version` warning (grep count 0); the changelog has the entry (AC5).

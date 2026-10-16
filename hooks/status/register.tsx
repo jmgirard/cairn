@@ -262,12 +262,16 @@ export const register: Register = on => {
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
     if (e.source === 'clear' || e.source === 'resume') {
+      // A session end during any await below makes the hook read and owe
+      // nothing, as a later start may owe the read and it is that start's
+      // (M260).
+      const at = ends
       await refresh($)
       if (startRead) return result
       const mine = await listedPane($)
       // A reopen that read during the await is this start's read (M238
       // review).
-      if (mine == null || startRead) return result
+      if (mine == null || startRead || ends !== at) return result
       if (mine.isPlaced) {
         startRead = true
         owed = false
@@ -278,10 +282,8 @@ export const register: Register = on => {
       // A pane placed and drawn during the list above drew before the read
       // was owed, so the hook lists it again and reads if it is now placed,
       // unless something cleared `owed` meanwhile: a draw, an open, a
-      // session end, or another start's hook (M256). A session end during
-      // the list makes it read nothing, as a later start may owe `owed` again
-      // and its read is that start's (M260).
-      const at = ends
+      // session end, or another start's hook (M256), or reads nothing after
+      // a session end, as above (M260).
       const again = await listedPane($)
       if (again != null && again.isPlaced && owed && ends === at) {
         owed = false
