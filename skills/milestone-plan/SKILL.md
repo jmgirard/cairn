@@ -79,6 +79,19 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    staged. `git status` shows no uncommitted change in a file the edit
    touches.
 
+   **Candidate-row match (trivial route).** On a `trivial` finding, before
+   the checks, the plan finds the candidate rows the edit fixes. A matched
+   row is a row of `cairn/ROADMAP.md`'s Candidates section whose short
+   title (tracking-rules "Candidate short title") the request quotes. A
+   row whose title a `planned`, `in-progress`, `blocked`, or `review`
+   milestone file quotes is not matched, since that milestone's post-merge
+   hygiene graduates it. The edit deletes each matched row it covers in
+   full. It narrows each row it covers in part to the part left, keeping
+   the row's title, with a `narrowed YYYY-MM-DD by a trivial edit` note,
+   as `/hotfix` step 7 does. With a matched row, `cairn/ROADMAP.md` is a
+   file the edit touches, so the checks and the commit cover it. In guest
+   mode the row changes on disk with no commit.
+
    The chip's options:
    - **The tier's route** (recommended). `hotfix`: invoke `/hotfix`
      through the Skill tool with the request as its argument, in
@@ -86,7 +99,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      the bug. The request text follows unchanged, with a candidate row's
      title quoted verbatim. The plan writes no file. `trivial`: the
      option's description names the file and the change and says where
-     the edit goes. In owner mode it is committed and pushed to the
+     the edit goes. It also names each matched row and whether the edit
+     deletes or narrows it. In owner mode it is committed and pushed to the
      default branch. In guest mode it is left uncommitted on disk. In
      owner mode the description also names any other uncommitted paths,
      which the commit leaves alone. If

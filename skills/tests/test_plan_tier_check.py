@@ -127,6 +127,30 @@ class TestPlanTierCheck(unittest.TestCase):
         ):
             self.assertIn(phrase, self.step1)
 
+    def test_trivial_route_graduates_matched_rows(self):
+        for phrase in (
+            "**Candidate-row match (trivial route).** On a `trivial` finding, "
+            "before the checks, the plan finds the candidate rows the edit "
+            "fixes.",
+            "A matched row is a row of `cairn/ROADMAP.md`'s Candidates section "
+            "whose short title (tracking-rules \"Candidate short title\") the "
+            "request quotes.",
+            "A row whose title a `planned`, `in-progress`, `blocked`, or "
+            "`review` milestone file quotes is not matched",
+            "The edit deletes each matched row it covers in full. It narrows "
+            "each row it covers in part to the part left",
+            "With a matched row, `cairn/ROADMAP.md` is a file the edit "
+            "touches, so the checks and the commit cover it. In guest mode "
+            "the row changes on disk with no commit.",
+            "It also names each matched row and whether the edit deletes or "
+            "narrows it.",
+        ):
+            self.assertIn(phrase, self.step1)
+        hygiene = flat(SKILLS / "shared" / "records-hygiene.md")
+        self.assertIn("A trivial edit from `/milestone-plan` step 1 is its "
+                      "own completion and graduates its rows in the edit "
+                      "itself.", hygiene)
+
     def test_tier_check_work_log_line(self):
         for phrase in (
             "Step 4 writes one work-log line in the first milestone file it "

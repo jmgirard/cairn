@@ -1,13 +1,13 @@
 # M265: Close the tier check's five open edges
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the shipped tier check and routing template change
-- **Branch/PR:** —
+- **Branch/PR:** m265-tier-check-edges
 
 ## Goal
 
@@ -42,7 +42,7 @@
 
 ## Tasks
 
-- [ ] T1: In `skills/milestone-plan/SKILL.md` step 1, add the candidate-row match to the trivial-route checks and the trivial option's description (AC1). Reuse `/hotfix` step 1's match and step 7's delete-or-narrow wording by reference where it fits. Reword records-hygiene §1's hotfix sentence to name the trivial route in the same line, inside the module's 55-line, 4,000-byte budget (`wc -l -c`). Extend `skills/tests/test_plan_tier_check.py` to pin the new sentences.
+- [x] T1: In `skills/milestone-plan/SKILL.md` step 1, add the candidate-row match to the trivial-route checks and the trivial option's description (AC1). Reuse `/hotfix` step 1's match and step 7's delete-or-narrow wording by reference where it fits. Reword records-hygiene §1's hotfix sentence to name the trivial route in the same line, inside the module's 55-line, 4,000-byte budget (`wc -l -c`). Extend `skills/tests/test_plan_tier_check.py` to pin the new sentences.
 - [ ] T2: In step 1, add the guest pull-request clause (AC3) next to the issue clause, with the `gh pr view <N> --repo <base-repo> --json headRefName` read it needs. Add the §3 invocation to the already-tiered list and its form to step 4's `tier check:` line (AC4). Update the "Two invocations" sentences, their pins in `test_plan_tier_check.py`, and any `test_mutation_harness.py` entry that quotes them.
 - [ ] T3: Reword the two git-model bullets in `skills/shared/tracking-rules.md` (AC2). Re-run the hand-run guards that read that file: `test_default_branch_parameterized.py`, `test_gate_wording.py`, `test_plan_tier_check.py`.
 - [ ] T4: Reword the `/milestone-plan` and Trivial bullets of the template and the `/milestone-plan` bullet of `CLAUDE.md` (AC5). Count the template section's lines. Re-run `hooks/tests` (the guest injection reads the template) and `test_positioning_guard.py`.
@@ -62,3 +62,6 @@
 - 2026-10-16: plan gate chose a close block for a guest PR request over planning the PR as a milestone because tracking-rules "Collaboration mode" routes a third party's PR to the maintainers; falsified by a guest user who needs to plan work that names a PR they did not open.
 - 2026-10-16: plan gate chose matching a candidate row by its quoted short title over `/hotfix`'s "a row that describes the bug" judgment because a pane press sends the title and a string match needs no judgment; falsified by a trivial edit that fixes a row the request did not quote.
 - 2026-10-16: plan gate chose to leave the routing template's merge-question bullet unchanged over rewording it because that bullet is about code outside a branch; falsified by a reader who takes it to forbid the trivial route's commit.
+- 2026-10-16: implement: branch m265-tier-check-edges cut from origin/main at b0b2d50a. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-16: T1 done: step 1 gains a "Candidate-row match (trivial route)" paragraph that runs before the checks, so a matched row's ROADMAP edit is covered by them; the trivial option names each row. records-hygiene §1 re-wrapped to keep 54 lines (3,344 bytes). New guard method in `test_plan_tier_check.py`. Verify green (408 + hooks + 1777 mod tests).
+- 2026-10-16: implement: the simple-english style hook reports pre-existing hits across whole files it sees (190 in `skills/milestone-plan/SKILL.md`). Only the added sentences are held to it, since rewriting untouched skill prose is outside this scope.
