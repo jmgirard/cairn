@@ -88,31 +88,40 @@ Pass 1, 2026-10-16, at 0f68faa1 (PR #278; Copilot requested at review start).
 - AC6 evidence: at 0f68faa1 the five `verify` slot commands of `cairn/PROFILE.md` each exited 0, read one at a time (`scripts/tests`, `hooks/tests`, `plugin validate` on plugin.json and marketplace.json, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`).
 - Consistency gate: `cairn_validate` all checks passed (exit 0); no principle text changed, so `cairn_impact` skipped; profile slot: verify green (AC6), marketplace validate shows no `version` warning, CHANGELOG has the entry with no milestone ids. Hand-run `skills/tests` 807 ok.
 - spawned: diff-bug, blame-history, prior-review
-- diff-bug #1: the change route states no stop for a red `verify` or a failed two-way check before the chip and push — fix now (stop with nothing pushed, close names the failure; new pin)
-- diff-bug #2: a decline leaves local commits, and a rerun redoes the route on a branch already ahead — fix now (route goes on from local commits past `headRefOid`; every close names `/hotfix` with the PR)
-- diff-bug #3: the change route narrows D-168's guest sentence with no D-entry — fix now (D-171)
+- diff-bug #1: the change route states no stop for a red `verify` or a failed two-way check before the chip and push — fix now, fixed 73d6ea5b (stop with nothing pushed, close names the failure; new pin)
+- diff-bug #2: a decline leaves local commits, and a rerun redoes the route on a branch already ahead — fix now, fixed 73d6ea5b (route goes on from local commits past `headRefOid`; every close names `/hotfix` with the PR)
+- diff-bug #3: the change route narrows D-168's guest sentence with no D-entry — fix now, fixed 73d6ea5b (D-171)
 - diff-bug #4: the own-PR walk never refreshes the body's `Candidate row:` lines, so a later resume can fail its row condition — follow-up ("Hotfix rerun edges (M266 review)")
-- diff-bug #5: `gh pr checkout` in the change route skips step 2's dirty-tree check — fix now
+- diff-bug #5: `gh pr checkout` in the change route skips step 2's dirty-tree check — fix now, fixed 73d6ea5b
 - diff-bug #6: a contributor PR closed by the re-land fallback gets "start over" though the re-landed PR is open — follow-up (same row)
 - diff-bug #7: the open-PR re-entry's opening sentence does not name the own-PR paragraph — reject (false: the own-PR paragraph is the tier-check walk that sentence names)
-- diff-bug #8: the chip's place in step 6's read leaves the blocking rule unclear — fix now (the rule does not apply, the chip never merges)
-- diff-bug #9: the over-the-bar close does not name the local commits — fix now
-- diff-bug #10: "last entry of `commits`" assumes no cap, and "the new diff" is ambiguous — fix now for the wording ("the PR's whole diff"); the cap goes to follow-up (same row)
-- diff-bug #11: DESIGN Known issues says "no fix planned" beside M266's routes and overstates the closed-marker removal; lines unwrapped — fix now
-- diff-bug #12: the CHANGELOG heading says a closed PR's route "can finish" — fix now ("a route forward")
-- diff-bug #13: no pins for the closed stop's order, the other-guest-PR fallthrough, or the base-repo checkout — fix now (3 pins, 3 mutation entries)
+- diff-bug #8: the chip's place in step 6's read leaves the blocking rule unclear — fix now, fixed 73d6ea5b (the rule does not apply, the chip never merges)
+- diff-bug #9: the over-the-bar close does not name the local commits — fix now, fixed 73d6ea5b
+- diff-bug #10: "last entry of `commits`" assumes no cap, and "the new diff" is ambiguous — fix now, fixed 73d6ea5b for the wording ("the PR's whole diff"); the cap goes to follow-up (same row)
+- diff-bug #11: DESIGN Known issues says "no fix planned" beside M266's routes and overstates the closed-marker removal; lines unwrapped — fix now, fixed 73d6ea5b
+- diff-bug #12: the CHANGELOG heading says a closed PR's route "can finish" — fix now, fixed 73d6ea5b ("a route forward")
+- diff-bug #13: no pins for the closed stop's order, the other-guest-PR fallthrough, or the base-repo checkout — fix now, fixed 73d6ea5b (3 pins, 3 mutation entries)
 - diff-bug #14: a closed guest milestone PR takes the hotfix closed stop; a closed owner `m<nnn>-*` PR falls to the adopt walk — follow-up (same row)
-- diff-bug #15: unclear referent in the round-decline sentence, unwrapped lines — fix now
-- blame-history #1: D-168's guest sentence contradicted with no D-entry — fix now (D-171; same as diff-bug #3)
-- blame-history #2: DESIGN.md "The guest arm stops any open `hotfix-` PR, whoever opened it" is now false — fix now (narrowed to PRs outside the change route)
+- diff-bug #15: unclear referent in the round-decline sentence, unwrapped lines — fix now, fixed 73d6ea5b
+- blame-history #1: D-168's guest sentence contradicted with no D-entry — fix now, fixed 73d6ea5b (D-171; same as diff-bug #3)
+- blame-history #2: DESIGN.md "The guest arm stops any open `hotfix-` PR, whoever opened it" is now false — fix now, fixed 73d6ea5b (narrowed to PRs outside the change route)
 - blame-history #3: a round decline leaving the own PR open departs from M231's close — reject (planned change: the PR predates the run, so the decline closes nothing this run opened; the user can close it by hand)
 - blame-history #4: the adopting variants push before the chip, against D-138 — reject (false: D-138 governs when a PR opens, this PR already exists, and adopted PRs push the same way)
 - blame-history #5: commit time against push time, `latestReviews` masking, and the decline loop — decline loop fixed now (diff-bug #2); masking added to DESIGN Known issues; commit time to follow-up (same row)
-- blame-history #6: `git push <fork> <headRefName>` fails if `gh` names the local branch differently — fix now (`HEAD:<headRefName>`)
+- blame-history #6: `git push <fork> <headRefName>` fails if `gh` names the local branch differently — fix now, fixed 73d6ea5b (`HEAD:<headRefName>`)
 - blame-history #7: the route's commits do not cite the no-cairn-vocabulary rule and D-161 — reject (false: both bind every guest write by the rulebook's Collaboration mode section)
 - blame-history #8: the re-land edge of the closed stop — follow-up (same row; diff-bug #6)
 - blame-history #9: `copilot-review.md` §1 not updated for the own PR — reject (false: its "an authored hotfix PR this run merged" already covers it)
 - blame-history #10: the row promoted over its trigger — reject (planned: a logged user override at the question set)
-- prior-review #1: lines past 80 columns, as in M244, M249, M265 — fix now (rewrapped)
-- prior-review #2: the change route's decline close and the round-decline close carry no CI line (M183) — fix now
-- prior-review #3: `latestReviews` masking applies to the change route's trigger — fix now in DESIGN Known issues (Scope Out keeps the fix there)
+- prior-review #1: lines past 80 columns, as in M244, M249, M265 — fix now, fixed 73d6ea5b (rewrapped)
+- prior-review #2: the change route's decline close and the round-decline close carry no CI line (M183) — fix now, fixed 73d6ea5b
+- prior-review #3: `latestReviews` masking applies to the change route's trigger — fix now, fixed 73d6ea5b in DESIGN Known issues (Scope Out keeps the fix there)
+- Re-check after the fix-now commits, at ccb85e90: AC3 and AC4 re-read against `SKILL.md:182-213` and still hold (the route now tier-checks "the PR's whole diff", which holds the new changes, and pushes with `git push <fork> HEAD:<headRefName>`, still to `<fork>`); AC5's `git grep` still exit 1; verify slot 5 of 5 green; hand-run `skills/tests` 812 ok; 26 M266 mutation entries, none survive.
+- Copilot state at the read: `reviewed earlier-head Lite`, so no wait. No issue comments; one Copilot review (`COMMENTED`, Bot) and four unresolved Copilot threads.
+- copilot: skills/hotfix/SKILL.md:60 — reject (the skill's opening guest clause puts `--repo <base-repo>` on every `gh pr` read, step 1's re-entry reads included; replied and resolved)
+- copilot: skills/hotfix/SKILL.md:191 — fix now (dirty-tree check before checkout, diff-bug #5), fixed 73d6ea5b
+- copilot: skills/hotfix/SKILL.md:201 — fix now (the route's reads post no reply and resolve no thread), fixed ccb85e90
+- copilot: cairn/milestones/M266-hotfix-rerun-gaps.md:10 — fix now (PR URL in the header), fixed 0f68faa1
+- copilot: review body — noted (its four anchored findings are the threads above)
+- Copilot level: Lite (set by GitHub's settings)
+- Defect-return count 0; amendment-return count 0.
