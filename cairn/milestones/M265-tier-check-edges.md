@@ -1,6 +1,6 @@
 # M265: Close the tier check's five open edges
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -35,7 +35,7 @@
 - AC2 → T3, T6
 - AC3 → T2, T6
 - AC4 → T2, T6
-- AC5 → T4, T6
+- AC5 → T4, T6, T7
 - AC6 → T5
 
 ## Tasks
@@ -46,6 +46,7 @@
 - [x] T4: Reword the `/milestone-plan` and Trivial bullets of the template and the `/milestone-plan` bullet of `CLAUDE.md` (AC5). Count the template section's lines. Re-run `hooks/tests` (the guest injection reads the template) and `test_positioning_guard.py`.
 - [x] T5: Append a D-entry to `cairn/DECISIONS.md` that annotates D-162. It records the git-model reconciliation, the guest pull-request rule, the §3 exemption, and the trivial route's row graduation. Write the AC6 CHANGELOG entries.
 - [x] T6: Run both gating suites (`scripts/tests`, `hooks/tests`), `claude plugin validate`, `claude plugin test`, the marketplace validate, every hand-run `skills/tests` file that T1 to T4 touched, the AC2 and AC5 greps, and `python3 scripts/cairn_validate.py`.
+- [x] T7: Review return 1: reword the template's Trivial bullet to name owner mode for the direct commit and guest mode for the on-disk edit, inside the 29-line section (AC5).
 
 ## Work log
 
@@ -75,3 +76,5 @@
 - 2026-10-16: implement complete: after the amendment, hooks (175 OK), scripts (408 OK), skills/tests (787 OK), plugin validate, and `cairn_validate` passed again. Status set to review.
 - 2026-10-16: review: Copilot arm opened PR #277 and requested Copilot (state query `none`, request exit 0).
 - 2026-10-16: review return 1: AC5 fails as written. The template's Trivial bullet reads "commit directly to the default branch (in guest mode, leave the edit on disk)", which names guest mode but does not say the direct commit is for owner mode. The other AC text checks, both greps, `cairn_validate`, and the marketplace version check pass.
+- 2026-10-16: implement: minor amendment adds T7 for review return 1 (Coverage AC5 gains T7).
+- 2026-10-16: T7 done: the template's Trivial bullet now reads "in owner mode, commit to the default branch. In guest mode, leave the edit on disk." The section stays at 29 lines. hooks (175 OK), scripts (408 OK), skills/tests (787 OK), and both plugin validates pass. The mod code is unchanged since T6's `claude plugin test` run. Status set to review.

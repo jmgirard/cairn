@@ -7,8 +7,8 @@ and route** — the tracking rulebook only loads once a cairn skill fires, so
 starting work in plain conversation silently bypasses the work tiers and the
 git model. Classify first:
 
-- **Trivial** (no runtime surface — typo, comment, tracking edit): commit
-  directly to the default branch (in guest mode, leave the edit on disk).
+- **Trivial** (no runtime surface — typo, comment, tracking edit): in owner
+  mode, commit to the default branch. In guest mode, leave the edit on disk.
 - **Look into a GitHub issue**: invoke `/milestone` with the issue number
   or URL.
 - **User-visible bug**: invoke `/hotfix`.
