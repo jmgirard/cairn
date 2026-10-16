@@ -245,9 +245,9 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
 ## Git and approval model
 
 - **The default branch is a distribution channel** — installable at all times; cairn never assumes the name is `main`.
-  It accepts only docs-only tracking commits and squash-merges of milestone/hotfix branches — never implement on it.
-  **The remote's default branch is authoritative**: push docs-only commits immediately, so branches are cut from commits
-  the PR base has.
+  It accepts docs-only tracking commits, trivial-tier commits that the user approved at `/milestone-plan`'s tier chip,
+  and squash-merges of milestone/hotfix branches — never implement on it. **The remote's default branch is
+  authoritative**: push docs-only and trivial-tier commits immediately, so branches are cut from commits the PR base has.
 - **Detecting the default branch (canonical recipe).** Never hardcode `main`; store no branch name. The **base
   remote** `<base>` is `origin` in owner mode; in guest mode it is `upstream` when `git remote` lists it, else `origin`
   (`cairn_common.base_remote`; "Collaboration mode" below). Detect with `git symbolic-ref --short
@@ -267,7 +267,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   sweep strangers into a checkpoint commit. Inside a run the agent leaves them unstaged and logs a work-log line
   instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
-- **Nothing reaches the default branch without the user's explicit approval at the merge question.** Never force-push (the
+- **Nothing reaches the default branch without the user's explicit approval at the merge question**, or for a
+  trivial-tier commit at `/milestone-plan`'s tier chip. Never force-push (the
   force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records
