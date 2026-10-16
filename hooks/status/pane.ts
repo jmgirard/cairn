@@ -215,9 +215,10 @@ export function startedRows(result: { exitCode: number; stdout: string } | null)
 
 // What marks the candidate row with this short title as started (M258):
 // `numbers` the pull requests whose bodies name it and the `#<n>` tokens
-// whose n the open hotfix list holds, `ids` its `M<NNN>` tokens (the
-// reader keeps only those whose milestone is `planned` or `blocked`),
-// lowest first. A row with an empty short title has none.
+// whose n the open hotfix list holds, in no order, and `ids` its
+// `M<NNN>` tokens (the reader keeps only those whose milestone is
+// `planned` or `blocked`), lowest first. A row with an empty short title
+// has none.
 export function startedRefs(
   title: string,
   taken: TakenRow[],

@@ -1,6 +1,6 @@
 # M258: Started token on candidate rows
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -27,8 +27,7 @@ the docs and one D-entry.
 `Candidate row:` lines unchanged, and no token is written at PR open in owner
 mode, because that would need a commit to the default branch. The other
 "Started mark edges (M252 review)" items (a cut `gh pr list`, the fence forms)
-stay on that row. A guest base remote with no `upstream` lists no hotfix PR,
-so its #n token counts nothing; that stays a documented limit, not a fix.
+stay on that row.
 
 ## Acceptance criteria
 
@@ -107,7 +106,7 @@ so its #n token counts nothing; that stays a documented limit, not a fix.
       sentences; records-hygiene §1 narrowing drops the token.
 - [x] T4: README started-mark section, DESIGN, the unreleased CHANGELOG
       entry, and the D-entry AC6 names.
-- [ ] T5: run the `verify` slot and fix what it reports.
+- [x] T5: run the `verify` slot and fix what it reports.
 
 ## Work log
 
@@ -123,6 +122,9 @@ so its #n token counts nothing; that stays a documented limit, not a fix.
 - 2026-10-15: T1, T2 done: the tokens ride in a new `PaneState.taken` list ({title, ref}) built by `takenRows` from `startedTokens`, not in `CandidateRow`, so the fixtures, `fixtures.gen.ts`, and the Python mirror keep their candidate shape; pane shape tag to `pane-6`; `startedRefs` in pane.ts picks the marks for `paneLines` and `pressCandidate`; an id token is `M` plus digits compared through `canonId`, a number token `#` plus 1-15 digits, each ended by the row end or ` — `; mod tests 1757 pass, scripts 408 OK.
 - 2026-10-15: T3 done: tracking-rules "Candidate started token" paragraph after the priority token; milestone-plan step 6; hotfix step 6 guest arm write after the create and the steps 6 and 7 "unchanged" sentences; records-hygiene §1 (one sentence dropped to hold the 55-line budget, now 54 lines, 3,234 bytes); the hand-run `test_hotfix_candidate_graduation` guard follows the new wording, skills/tests 752 OK. The simple-english plugin's lint hook flags each whole edited file; only the added lines were fixed.
 - 2026-10-15: T4 done: README started-token paragraph and a guest pointer in the PR-body paragraph; DESIGN status-mod bullet; unreleased CHANGELOG "New" entry; D-165 (annotates D-035 and D-137, passes D-108's door).
+- 2026-10-15: claim audit: 48 claims read, 4 corrected — README.md, hooks/status/reader.ts, hooks/status/pane.ts (a guest base remote with no `upstream` is `origin`, which the hotfix PR targets, so the "no upstream lists no hotfix PR" claim was false; the planned-or-blocked comment, the unordered `numbers`, and "only source" narrowed to "usual source").
+- 2026-10-15: substantive amendment: Scope Out loses its false sentence that a guest base remote with no `upstream` lists no hotfix PR; the deliverable is unchanged, so no stop. D-165's Consequences sentence saying the same was removed in place on this unmerged branch, before the entry reached the default branch.
+- 2026-10-15: T5 done: verify slot clean — scripts 408 OK (21 skipped), hooks 175 OK, both plugin validates pass, mod tests 1757 pass; cairn_validate all checks passed. Status to review.
 
 ## Decisions
 

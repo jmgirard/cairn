@@ -5972,5 +5972,4 @@ sub-status. A token names another record's id, not the row's own, and it
 holds no status, since the pane reads the status from the milestone row
 or the PR list. A token can stay on a row after its milestone is dropped
 or its PR closes until a hygiene or triage pass removes it, and it marks
-nothing meanwhile. In guest mode with no `upstream` remote the pane lists
-no hotfix PR, so a #n token marks nothing.
+nothing meanwhile.

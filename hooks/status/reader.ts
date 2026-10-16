@@ -610,7 +610,9 @@ export function startedTokens(roadmap: string): TakenRow[] {
 
 // The tokens the pane counts (M258): an `M<NNN>` token while the ROADMAP
 // table holds that id as `planned` or `blocked`, the two statuses under
-// which the pane lists candidate rows, and every `#<n>` token, which the
+// which that milestone is open and does not hide the candidate list (an
+// `in-progress` or `review` milestone hides it), and every `#<n>` token,
+// which the
 // pane checks against its open hotfix list.
 export function takenRows(roadmap: string, rows: RoadmapRow[]): TakenRow[] {
   const live = new Set(rows.filter(row => row.status === 'planned' || row.status === 'blocked').map(row => canonId(row.id)))

@@ -477,9 +477,9 @@ A candidate row can also carry a started token at its end:
 ` — started M<NNN>` or ` — started #<n>`. `/milestone-plan` writes
 ` — started M<NNN>` on each row that the plan absorbs, in owner and guest
 mode. In guest mode, `/hotfix` writes ` — started #<n>` on disk on each row
-it matched, after it opens the PR for the maintainers. A guest-mode PR body
-carries no `Candidate row:` line, so in guest mode the tokens are the only
-source of the mark. An `M<NNN>` token marks the row while the ROADMAP table
+it matched, after it opens the PR for the maintainers. Cairn writes no
+`Candidate row:` line in a guest-mode PR, so in guest mode the tokens are
+the usual source of the mark. An `M<NNN>` token marks the row while the ROADMAP table
 holds that milestone as `planned` or `blocked`, and the row then shows the
 milestone id at its right end. A `#<n>` token marks the row while PR #n is
 among the open hotfix PRs of the pane's last good read, and the row then
@@ -487,8 +487,7 @@ shows `#<n>`. When PR numbers and a milestone id both mark a row, the row
 shows the lowest PR number. A row that a token marks has no `✎` button. The
 mark goes when the milestone's row becomes `done` or `dropped` or leaves the
 table, or when PR #n is no longer open. Hygiene then removes the row, or
-narrows it and removes the token. In guest mode with no `upstream` remote,
-the pane lists no hotfix PR, so a `#<n>` token marks nothing. A token opens
+narrows it and removes the token. A token opens
 with ` — `, so the row's short title stays the same.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
