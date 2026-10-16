@@ -58,7 +58,8 @@ import { PILL_TEXT } from './track'
 // Its `target` is the line's index among the candidate rows, which the
 // Button's key carries, so two rows with one title draw two keys, and its
 // `title` is the row's short title, which the press carries. A candidate
-// line's `grow` puts ✎ at the right end of the row.
+// line's `grow` puts ✎ at the right end of the row, and a blocked or
+// hotfix line with a tail grows so its tail sits there too.
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -525,6 +526,9 @@ export function paneLines(
           held.target = row.id
         }
       }
+      // A line with a tail grows, so its number and state word sit at the
+      // right end whether or not its title is cut.
+      if (held.tail !== undefined) held.grow = true
       out.push(held)
       // The counts sit in the line's text, which is cut at the pane's edge,
       // since a 44-column dock leaves no room for them in the tail (M225).
@@ -546,7 +550,10 @@ export function paneLines(
     for (const pr of shown) {
       const held = line(`hotfix-${pr.number}`, 2, [{ text: `#${pr.number}`, bold: true }, { text: '  ' }], { text: pr.title })
       const got = Object.prototype.hasOwnProperty.call(prs, pr.url) ? prs[pr.url] : undefined
-      if (got !== undefined) held.tail = [{ text: '  ' }, { text: got.word, color: prColor(got.word) }]
+      if (got !== undefined) {
+        held.tail = [{ text: '  ' }, { text: got.word, color: prColor(got.word) }]
+        held.grow = true
+      }
       out.push(held)
       const counts = got?.counts == null ? null : countsText(got.counts)
       if (counts !== null) out.push(line(`hotfix-${pr.number}-counts`, 4, [], { text: counts, color: GRAY }))
