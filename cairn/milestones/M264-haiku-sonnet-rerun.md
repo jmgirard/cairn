@@ -102,3 +102,6 @@ Pass 1, 2026-10-16. PR #276 opened at review start (Copilot round on); Copilot r
 - prior-review #7: contamination narrowing absent from the note — fix now, fixed 9e08fe9 (same fix as blame-history #4).
 - prior-review #8: two repo-state claims in Scope carry no observed date — fix now, fixed 9e08fe9.
 - After the fixes: AC1 and AC2 checks re-run on the edited note (36 rows, 12 pairs of 3; both verdicts recompute and match); verify green. No finding demonstrates a criterion failing, so no return.
+- copilot: cairn/milestones/M264-haiku-sonnet-rerun.md:10 — fix now, fixed 981ab17 (the header names PR #276; replied and resolved).
+- copilot: review body — noted (its one finding is the thread above).
+- Copilot level: Lite (set by GitHub's settings); its review covers an earlier head (920a2c7). No issue comments; no human reviews.
