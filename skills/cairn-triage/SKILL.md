@@ -56,12 +56,13 @@ model), and the file listing of `cairn/milestones/archive/`. Note every
 milestone that is `planned`, `in-progress`, `blocked`, or `review`: a row
 one of them absorbs is never dropped or merged away in this pass
 (records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
-A row that carries a live started token (below) is held the same way.
+A row that carries a live started token (below), or that is missing one,
+is `keep` (step 2).
 
 Then read the candidate rows' started tokens (tracking-rules "Candidate
-started token"). A token is ` — started ` and `M` or `#` with digits, not
-followed by a letter or digit. The cairn pane reads it the same way,
-wherever it sits in the row. Ids compare at three-digit padding, so `M58`
+started token"). A token is ` — started ` and `M` with digits, or `#`
+with one to fifteen digits, not followed by a letter or digit, wherever it
+sits in the row. This is the shape the cairn pane reads. Ids compare at three-digit padding, so `M58`
 is `M058`. For each `#<n>` token, read its PR state with
 `gh pr view <n> --repo <base-repo> --json state`. The rulebook's slug
 recipe gives `<base-repo>`, which is the upstream repo in guest mode. For
@@ -77,8 +78,9 @@ each milestone noted above, read its file directly under
 A row is **missing** a token in one case. The table holds `M<NNN>` as
 `planned`, `in-progress`, `blocked`, or `review`. That milestone's file
 quotes the row's non-empty short title in double quotes outside its Scope
-`**Out:**` list. But the row lacks ` — started M<NNN>`. No `#<n>` token is
-ever missing. Owner mode marks a hotfix through its PR body, and guest
+`**Out:**` list. But the row lacks ` — started M<NNN>`. A title that two
+or more rows share is listed as ambiguous, and no token is proposed for
+it. No `#<n>` token is ever missing. Owner mode marks a hotfix through its PR body, and guest
 `/hotfix` writes its token in the step that opens the PR.
 
 ## Workflow
@@ -131,10 +133,11 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
-   A row carrying a live started token is `keep` before anything else is
-   checked, §7's options included. Its reason names the token.
+   A row carrying a live started token, or missing one, is `keep` before
+   anything else is checked, §7's options included. Its reason names the
+   token. §7 applies to the row again once the token is dead.
    Evidence classes, checked in this order (the first that fires decides,
-   later ones refine the wording) — except that a finding-absorbing row
+   later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
    compressing such a row never substitutes for its disposition
    (records-hygiene §7):
@@ -196,14 +199,15 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
    proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
    `keep` (records-hygiene §1), with that milestone named in the reason. As the
-   rule above says, a row carrying a live started token is `keep` too. So
-   no disposition of the pass rewrites a live token.
+   rule above says, a row carrying a live started token, or missing one,
+   is `keep` too. So no disposition of the pass rewrites a live token.
    **Started tokens → a token change.** A token change is a row fact beside
    the disposition, as a priority change is, never a ninth disposition. It
    rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
    a merge survivor counts as a `keep`. On such a row, propose removing each
-   dead token. Also propose appending each missing token to the row's end,
-   and name the milestone file that quotes the title. A `drop`, `merge`,
+   dead token. Also propose appending each missing token to the row's end.
+   Name the milestone file and quote its line that holds the title, so the
+   user can judge whether that milestone took the row. A `drop`, `merge`,
    `split`, or `route` takes its row out of the list, and it writes no dead
    token into any row it writes. If a `#<n>` read failed, propose no token
    change for that token, and name the failed read in the table.
@@ -247,11 +251,12 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
      proposed token change with its row; the
      table above is the verbatim evidence. Three options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
-        the table is applied.
+        the table is applied, with each priority change and token change.
      2. **Amend** — the user names the items to change and what they become
         (the option description says so); everything unnamed keeps its
         proposed disposition; a named item with no replacement given
-        becomes `keep`.
+        becomes `keep`. The user can also decline a named token change
+        alone, and the row's disposition then stands.
      3. **Apply nothing** — the stop option: no file changes, no commit, no
         D-entry; the pass ends at the close block with the table as its
         record in chat only.
@@ -309,8 +314,12 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
    token) and moves the row to its level. An accepted token change appends
    ` — started M<NNN>` to the row's end, or it removes one
-   ` — started <ref>` text and leaves the rest of the row as it is. A merge
-   survivor's lineage clause goes before the row's first started token.
+   ` — started <ref>` text as the row spells it and leaves the rest of the
+   row as it is. A note right after the removed token stays where it was. A
+   merge survivor's lineage clause, and any trigger it takes from the
+   absorbed row, go before the row's first started token. A `compress`
+   keeps each started token that is not accepted for removal, at the row's
+   end.
    Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.
    After the edits, token changes included, `wc -l -c
@@ -319,7 +328,8 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
-   is longer when it names each `retitle`'s old and new titles, and in
+   is longer when it names each `retitle`'s old and new titles and each
+   token change, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
@@ -380,7 +390,8 @@ ever missing. Owner mode marks a hotfix through its PR body, and guest
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. Then a status line — items enumerated,
    dispositions and token changes applied by kind and the commit hash, or `nothing applied`
-   (an apply-nothing answer and an all-`keep` accept alike). In guest mode
+   (an apply-nothing answer and an all-`keep` accept with no priority or
+   token change alike). In guest mode
    `written to disk, not committed (guest mode)` stands in place of the
    commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.

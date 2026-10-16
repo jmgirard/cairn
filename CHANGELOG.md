@@ -171,7 +171,7 @@
   merged or closed. It reads each PR's state with `gh pr view`. It also proposes
   adding a missing ` — started M<NNN>` token to a row whose short title a
   planned, in-progress, blocked, or review milestone file quotes in double
-  quotes. Each token change waits for your answer at the triage gate,
+  quotes outside its Scope Out list. Each token change waits for your answer at the triage gate,
   beside the row's disposition. A row that carries a live token stays
   `keep`, so no triage disposition removes the token that draws the pane's
   mark. The row can still be re-rated, gain a merge survivor's lineage

@@ -491,12 +491,14 @@ stays after the maintainers merge, until review's hygiene sets the
 milestone `done`. Hygiene then removes the row, or narrows it and removes
 the token. A note after the token, such as `; narrowed …`, leaves it read.
 A token on a dropped milestone or on a PR closed without a merge marks
-nothing. `/cairn-triage` proposes removing such a dead token. It also
-proposes adding a missing ` — started M<NNN>` token to a row whose short
-title a planned, in-progress, blocked, or review milestone's file quotes in
-double quotes. Each change waits
-for your answer at its gate. A token opens
-with ` — `, so the row's short title stays the same.
+nothing. `/cairn-triage` proposes removing a dead token: one whose
+milestone is `done`, `dropped`, gone from the table, or archived, or whose
+PR is merged or closed. A token on an in-progress or review milestone is
+not dead. Triage also proposes adding a missing ` — started M<NNN>` token to a
+row whose short title a planned, in-progress, blocked, or review
+milestone's file quotes in double quotes outside its Out list. Each change
+waits for your answer at its gate. A token opens with ` — `, so the row's
+short title stays the same.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
