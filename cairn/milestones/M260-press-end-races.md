@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane's Buttons and PR read, shipped in the plugin's status mod
-- **Branch/PR:** m260-press-end-races
+- **Branch/PR:** m260-press-end-races · https://github.com/jmgirard/cairn/pull/271
 
 ## Goal
 
