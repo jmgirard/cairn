@@ -15,6 +15,8 @@ import {
   prNumber,
   prUrl,
   sectionFields,
+  startedTokens,
+  takenRows,
   workableRows,
 } from './reader'
 import type { BandState, CandidateRow, FileSource } from './reader'
@@ -275,6 +277,78 @@ describe('the short title is cut at the first `: `, else at the first ` — ` (M
       expect(candidateRows(`## Candidates\n\n- ${text}\n`)).toEqual([row])
     })
   }
+})
+
+// M258 AC4: a started token appended to a row leaves its short title as it
+// was, for a row cut at `: `, one cut at ` — `, and one with neither.
+describe('a started token leaves the short title unchanged (M258 AC4)', () => {
+  const rows = [
+    'Colon row: detail — added 2026-10-15',
+    '[low] Dash row — added 2026-10-15',
+    'A row with no colon and no dash',
+  ]
+  const tokens = [' — started M258', ' — started #301', ' — started M258 — started #301']
+  for (const row of rows) {
+    for (const token of tokens) {
+      test(`${row} + ${token}`, () => {
+        expect(candidateRows(`## Candidates\n\n- ${row}${token}\n`)).toEqual(candidateRows(`## Candidates\n\n- ${row}\n`))
+      })
+    }
+  }
+})
+
+describe('started tokens of the candidate rows (M258)', () => {
+  const roadmap = [
+    '| ID | Title | Status | Depends on | Priority | File/Archive |',
+    '|---|---|---|---|---|---|',
+    '| M258 | P | planned | — | normal | m |',
+    '| M240 | B | blocked | — | normal | m |',
+    '| M230 | D | done | — | normal | m |',
+    '| M231 | X | dropped | — | normal | m |',
+    '| M232 | I | in-progress | — | normal | m |',
+    '',
+    '## Candidates',
+    '',
+    '- Planned row: x — added 2026-10-15 — started M258',
+    '- Blocked row: x — started M240 — added 2026-10-15',
+    '- Done row: x — started M230',
+    '- Dropped row: x — started M231',
+    '- Absent row: x — started M999',
+    '- Active row: x — started M232',
+    '- Two ids: x — started M300 — started M0258',
+    '- Hotfix row: x — started #301',
+    '- Not a token: x — started M258 later — started #12x — started  M258',
+    '- : empty title — started M258',
+  ].join('\n')
+
+  test('startedTokens reads each token with its row title', () => {
+    expect(startedTokens(roadmap)).toEqual([
+      { title: 'Planned row', ref: 'M258' },
+      { title: 'Blocked row', ref: 'M240' },
+      { title: 'Done row', ref: 'M230' },
+      { title: 'Dropped row', ref: 'M231' },
+      { title: 'Absent row', ref: 'M999' },
+      { title: 'Active row', ref: 'M232' },
+      { title: 'Two ids', ref: 'M300' },
+      { title: 'Two ids', ref: 'M0258' },
+      { title: 'Hotfix row', ref: '#301' },
+    ])
+  })
+
+  test('takenRows keeps an id only while its row is planned or blocked, and every #n', () => {
+    expect(takenRows(roadmap, parseRoadmapRows(roadmap))).toEqual([
+      { title: 'Planned row', ref: 'M258' },
+      { title: 'Blocked row', ref: 'M240' },
+      { title: 'Two ids', ref: 'M0258' },
+      { title: 'Hotfix row', ref: '#301' },
+    ])
+  })
+
+  test('loadCairn gives the pane the counted tokens', async () => {
+    const files = { '/cairn/ROADMAP.md': `# Roadmap\n\n## Milestones\n\n${roadmap}\n` }
+    const loaded = await loadCairn(memorySource(files, '/'))
+    expect(loaded?.pane.taken.map(item => item.ref)).toEqual(['M258', 'M240', 'M0258', '#301'])
+  })
 })
 
 describe('reader details', () => {

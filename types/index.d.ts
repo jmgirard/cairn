@@ -64,6 +64,9 @@ export type CairnPaneMilestone = {
 // null (M223), and that pull request's URL up to its number, or null (M224).
 // `archived` is true when the row's file is gone and its one archive file
 // reads done, the number and URL then read from its Status paragraph (M246).
+// `taken` holds each candidate row's ` — started <ref>` token with the row's
+// short title: an `M<NNN>` token only while the table holds that id as
+// `planned` or `blocked`, and every `#<n>` token (M258).
 export type CairnPaneState = {
   found: boolean
   milestones: CairnPaneMilestone[]
@@ -72,6 +75,7 @@ export type CairnPaneState = {
   waiting: { id: string; title: string; unmet: string[] }[]
   candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
   blocked: { id: string; title: string; pr: number | null; url: string | null; archived: boolean }[]
+  taken: { title: string; ref: string }[]
 }
 
 // The state word of a blocked milestone's pull request, as the pane last

@@ -925,6 +925,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
         waiting: [],
         candidates: [],
         blocked: [],
+        taken: [],
       }
       const next = layout(state, [], true).find(line => line.key === 'next')
       expect([action, next?.action]).toEqual([action, undefined])
@@ -1130,6 +1131,7 @@ describe('a running skill hides Status, and its end adds no Clear (M219 AC2, M24
       waiting: [],
       candidates: [],
       blocked: [],
+      taken: [],
     }
     expect(layout(state, [], true).find(line => line.key === 'next')?.buttons).toEqual(['status'])
   })
@@ -1276,6 +1278,7 @@ describe('the first line carries ⌂ before ↻ while no cairn skill runs (M241 
       waiting: [],
       candidates: [],
       blocked: [],
+      taken: [],
     }
     expect(layout(state, [], true)[0]).toMatchObject({ key: 'no-active', buttons: ['home', 'refresh'] })
     expect(layout(state, [], false)[0]).toMatchObject({ key: 'no-active', buttons: ['refresh'] })
@@ -1516,6 +1519,7 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
         { priority: 'normal', title: '' },
       ],
       blocked: [],
+      taken: [],
     }
     const rows = (acts: boolean) => layout(state, [], acts).filter(line => /^candidate-\d+$/.test(line.key))
     expect(rows(true).map(line => [line.buttons, line.target, line.title])).toEqual([
@@ -4103,6 +4107,7 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
       { priority: 'normal', title: '' },
     ],
     blocked: [],
+    taken: [],
   }
   const items = [
     { title: 'High row', number: 11 },
@@ -4148,6 +4153,96 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
       expect([i, line.text]).toEqual([i, row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title }])
       expect([i, line.buttons, line.target]).toEqual(row.title === '' ? [i, undefined, undefined] : [i, ['plan'], `${i}`])
     })
+  })
+})
+
+// M258: a counted ` — started <ref>` token on the row marks it too. The
+// reader keeps an `M<NNN>` token only while its milestone is `planned` or
+// `blocked` (reader.test.ts), so `taken` here holds counted M tokens.
+describe('a candidate line that a started token marks draws as started (M258 AC1-AC3)', () => {
+  const titles = ['Planned', 'Blocked', 'Two ids', 'Listed', 'Unlisted', 'Two numbers', 'Body and id', 'Number and id', 'Body and number', 'Plain']
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: titles.map(title => ({ priority: 'normal', title })),
+    blocked: [],
+    taken: [],
+  }
+  const hotfix = (number: number) => ({ number, title: `Fix ${number}`, url: `https://github.com/o/r/pull/${number}` })
+  const draw = (taken: PaneState['taken'], hotfixes = [hotfix(301), hotfix(302), hotfix(305)], started: { title: string; number: number }[] = []) =>
+    layout({ ...state, taken }, [], true, {}, hotfixes, started).filter(line => /^candidate-\d+$/.test(line.key))
+  const marked = (line, ref: string) => {
+    expect([line.key, line.lead[0]]).toEqual([line.key, STARTED_MARK])
+    expect([line.key, line.tail]).toEqual([line.key, [{ text: '  ' }, { text: ref, color: GRAY }]])
+    expect([line.key, line.buttons, line.target, line.title]).toEqual([line.key, undefined, undefined, undefined])
+  }
+  const plain = (line, i: number) => {
+    expect([line.key, line.lead[0], line.tail]).toEqual([line.key, MARKS.normal, undefined])
+    expect([line.key, line.buttons, line.target]).toEqual([line.key, ['plan'], `${i}`])
+  }
+
+  test('a counted milestone id marks its row with the id, the lowest of two (AC1)', () => {
+    const lines = draw([
+      { title: 'Planned', ref: 'M258' },
+      { title: 'Blocked', ref: 'M240' },
+      { title: 'Two ids', ref: 'M300' },
+      { title: 'Two ids', ref: 'M259' },
+    ])
+    marked(lines[0], 'M258')
+    marked(lines[1], 'M240')
+    marked(lines[2], 'M259')
+    lines.slice(3).forEach((line, i) => plain(line, i + 3))
+  })
+
+  test('a #n token marks its row only while the open hotfix list holds n (AC2)', () => {
+    const taken = [
+      { title: 'Listed', ref: '#301' },
+      { title: 'Unlisted', ref: '#999' },
+      { title: 'Two numbers', ref: '#998' },
+      { title: 'Two numbers', ref: '#305' },
+    ]
+    const lines = draw(taken)
+    marked(lines[3], '#301')
+    plain(lines[4], 4)
+    marked(lines[5], '#305')
+    // With no hotfix list, as before any read or for another root, no #n
+    // token counts.
+    draw(taken, []).forEach((line, i) => plain(line, i))
+  })
+
+  test('a pull request number wins over a milestone id, and the lowest number wins (AC3)', () => {
+    const lines = draw(
+      [
+        { title: 'Body and id', ref: 'M258' },
+        { title: 'Number and id', ref: 'M258' },
+        { title: 'Number and id', ref: '#302' },
+        { title: 'Body and number', ref: '#301' },
+      ],
+      undefined,
+      [
+        { title: 'Body and id', number: 400 },
+        { title: 'Body and number', number: 350 },
+      ],
+    )
+    marked(lines[6], '#400')
+    marked(lines[7], '#302')
+    marked(lines[8], '#301')
+    plain(lines[9], 9)
+  })
+
+  test('a token on a row with an empty short title marks nothing', () => {
+    const lines = layout(
+      { ...state, candidates: [{ priority: 'normal', title: '' }], taken: [{ title: '', ref: 'M258' }] },
+      [],
+      true,
+      {},
+      [],
+      [],
+    ).filter(line => /^candidate-\d+$/.test(line.key))
+    expect([lines[0].lead[0], lines[0].tail, lines[0].buttons]).toEqual([MARKS.normal, undefined, undefined])
   })
 })
 

@@ -13,6 +13,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  startedRefs,
   startedRows,
   nextLabel as labelOf,
   NO_ROADMAP,
@@ -132,9 +133,10 @@ const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: '
 // What the cairn pane shows, written at each refresh (M205). The tag moved
 // to 2 when the state gained the candidate rows (M207), to 3 when it
 // gained the blocked rows (M223), to 4 when each blocked row gained its
-// pull request's URL (M224), and to 5 when each blocked row gained
-// `archived` (M246).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-5' })
+// pull request's URL (M224), to 5 when each blocked row gained
+// `archived` (M246), and to 6 when the state gained the candidate rows'
+// started tokens (M258).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-6' })
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
@@ -1202,12 +1204,14 @@ async function pressCandidate($, index: string, title: string) {
     const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
     const drawn = state.found && state.milestones.length === 0 && row?.title === title
     if (!drawn || knownStep(await read($, step)) !== null) return undefined
-    // A row that an open pull request's body names draws no ✎ (M252), so a
-    // press from a drawing made before the read marked it plans nothing. No
-    // test reaches it, since the test kit presses only the current drawing.
+    // A row that an open pull request's body names draws no ✎ (M252), nor
+    // one a counted started token marks (M258), so a press from a drawing
+    // made before the mark plans nothing. No test reaches it, since the
+    // test kit presses only the current drawing.
     const held = await read($, hotfixes)
     const ours = held.root !== null && held.root === (await read($, band)).root
-    if (ours && held.started.some(item => item.title === title)) return undefined
+    const { numbers, ids } = startedRefs(title, state.taken, ours ? held.prs : [], ours ? held.started : [])
+    if (numbers.length > 0 || ids.length > 0) return undefined
     return { command: PLAN_COMMAND, args: title, clears: true }
   })
 }

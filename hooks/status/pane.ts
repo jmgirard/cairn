@@ -3,7 +3,7 @@ import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
-import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState } from './reader'
+import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
 import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
@@ -211,6 +211,33 @@ export function startedRows(result: { exitCode: number; stdout: string } | null)
     }
   }
   return out
+}
+
+// What marks the candidate row with this short title as started (M258):
+// `numbers` the pull requests whose bodies name it and the `#<n>` tokens
+// whose n the open hotfix list holds, `ids` its `M<NNN>` tokens (the
+// reader keeps only those whose milestone is `planned` or `blocked`),
+// lowest first. A row with an empty short title has none.
+export function startedRefs(
+  title: string,
+  taken: TakenRow[],
+  hotfixes: HotfixPr[],
+  started: StartedRow[],
+): { numbers: number[]; ids: string[] } {
+  if (title === '') return { numbers: [], ids: [] }
+  const mine = taken.filter(item => item.title === title)
+  const numbers = [
+    ...started.filter(item => item.title === title).map(item => item.number),
+    ...mine
+      .filter(item => item.ref.startsWith('#'))
+      .map(item => Number(item.ref.slice(1)))
+      .filter(number => hotfixes.some(pr => pr.number === number)),
+  ]
+  const ids = mine
+    .filter(item => item.ref.startsWith('M'))
+    .map(item => item.ref)
+    .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)))
+  return { numbers, ids }
 }
 
 // The Button a blocked line carries for its state word (M224), from the
@@ -533,22 +560,27 @@ export function paneLines(
   // title, whose press would plan with no args (M242). A row whose short
   // title an open pull request's body names exactly draws the started mark
   // in place of its priority mark, the lowest such number in its tail, and
-  // no ✎, since that pull request already works on it (M252).
+  // no ✎, since that pull request already works on it (M252). A counted
+  // started token on the row does the same (M258): the tail shows the
+  // lowest number among the bodies and the `#<n>` tokens, else the lowest
+  // milestone id.
   if (state.milestones.length === 0 && state.candidates.length > 0) {
     out.push(
       ...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
     )
     state.candidates.forEach((row, i) => {
-      const numbers = row.title === '' ? [] : started.filter(item => item.title === row.title).map(item => item.number)
+      const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
+      const marked = numbers.length > 0 || ids.length > 0
       const candidate = line(
         `candidate-${i}`,
         2,
-        [numbers.length > 0 ? STARTED_MARK : PRIORITY_MARK[row.priority], { text: ' ' }],
+        [marked ? STARTED_MARK : PRIORITY_MARK[row.priority], { text: ' ' }],
         row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
-      if (numbers.length > 0) {
-        candidate.tail = [{ text: '  ' }, { text: `#${Math.min(...numbers)}`, color: GRAY }]
+      if (marked) {
+        const ref = numbers.length > 0 ? `#${Math.min(...numbers)}` : ids[0]
+        candidate.tail = [{ text: '  ' }, { text: ref, color: GRAY }]
       } else if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
