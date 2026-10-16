@@ -70,6 +70,7 @@
 - 2026-10-15: claim audit: 23 claims read, 4 corrected — CHANGELOG.md, README.md, skills/shared/tracking-rules.md (a live-token row "kept as it is" → stays `keep` and can still be re-rated, take a lineage clause, or lose a dead token; README and tracking-rules name the four live statuses; the dead-token summaries add the archived case); also SK "the other" → "the second" in the carve-out list. The same reader re-read the corrections: all hold. Rulebook baseline re-seeded again to 678 lines / 65,222 bytes after the tracking-rules fix (three sites). verify green (408, 175, both validates, 1759); `skills/tests` 752 OK; validate green.
 - 2026-10-15: implement complete; status → review.
 - 2026-10-15: review started; Copilot arm opened PR #270 and requested Copilot (state query `none` before the request).
+- 2026-10-15: step-7 approval: m259-triage-started-tokens approved for merge
 
 ## Review
 
