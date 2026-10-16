@@ -1,6 +1,6 @@
 # M258: Started token on candidate rows
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -70,8 +70,9 @@ stay on that row.
       row loses the token of the milestone or hotfix that narrows it.
       Evidence: a read of those five sites.
 - [ ] AC6: README's started-mark section says which skill writes each token
-      and in which mode, that guest mode gets the mark only through the
-      tokens, and when each token's mark shows and goes. `cairn/DESIGN.md`
+      and in which mode, that cairn writes no `Candidate row:` line in a
+      guest-mode PR, so the tokens are the usual source of the mark in guest
+      mode, and when each token's mark shows and goes. `cairn/DESIGN.md`
       and the unreleased `CHANGELOG.md` entry state the token rule. A D-entry
       records that the token rule passes D-108's door on its retained
       trigger, and that a token names another record's id and is not the
@@ -80,7 +81,7 @@ stay on that row.
 
 ## Coverage
 
-- AC1 → T1, T2
+- AC1 → T1, T2, T6
 - AC2 → T2
 - AC3 → T2
 - AC4 → T1
@@ -107,6 +108,9 @@ stay on that row.
 - [x] T4: README started-mark section, DESIGN, the unreleased CHANGELOG
       entry, and the D-entry AC6 names.
 - [x] T5: run the `verify` slot and fix what it reports.
+- [x] T6: (review return 1) a `pane.test.tsx` case that runs `takenRows`
+      over a ROADMAP with planned, blocked, done, dropped, and absent ids and
+      draws the lines.
 
 ## Work log
 
@@ -128,6 +132,10 @@ stay on that row.
 - 2026-10-15: review: PR #269 opened at review start (Copilot arm), Copilot requested on state `none`.
 - 2026-10-15: review return 1: AC1 — `pane.test.tsx` has no done, dropped, or absent id case; those sit only in `reader.test.ts`. Add a `pane.test.tsx` case that runs `takenRows` over a ROADMAP and draws the lines.
 - 2026-10-15: amendment routed: AC6 — "that guest mode gets the mark only through the tokens" asks README for a false claim, since a hand-written `Candidate row:` line in a guest PR body also counts (claim audit).
+- 2026-10-15: implement (return 1): T6 added as a minor amendment for review return 1, Coverage AC1 → T1, T2, T6; the new `pane.test.tsx` case passes, mod tests 1758 pass 0 fail.
+- 2026-10-15: re-audit: AC6 (full) — nothing blocking; the branch already meets the amended wording; an optional grep of `skills/` for `Candidate row:` writers as extra evidence was not taken, to keep the audited wording.
+- 2026-10-15: amendment return: AC6 — "that cairn writes no `Candidate row:` line in a guest-mode PR, so the tokens are the usual source of the mark in guest mode"
+- 2026-10-15: return 1 done: verify clean (scripts 408 OK, hooks 175 OK, both plugin validates pass, mod tests 1758 pass); status to review.
 
 ## Decisions
 

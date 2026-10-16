@@ -17,7 +17,7 @@ import {
   startedRows,
 } from './pane'
 import type { PaneState } from './reader'
-import { listNames } from './reader'
+import { candidateRows, listNames, parseRoadmapRows, takenRows } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
 // an in-memory copy of a fixture, as band.test.tsx does, and answers the
@@ -4231,6 +4231,44 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
     marked(lines[7], '#302')
     marked(lines[8], '#301')
     plain(lines[9], 9)
+  })
+
+  // The reader's filter and the drawing together (M258 review return 1):
+  // an id counts only while its table row is `planned` or `blocked`.
+  test('a done, dropped, or absent id leaves the row unmarked, planned and blocked mark it (AC1)', () => {
+    const roadmap = [
+      '| ID | Title | Status | Depends on | Priority | File/Archive |',
+      '|---|---|---|---|---|---|',
+      '| M258 | P | planned | — | normal | m |',
+      '| M240 | B | blocked | — | normal | m |',
+      '| M230 | D | done | — | normal | m |',
+      '| M231 | X | dropped | — | normal | m |',
+      '',
+      '## Candidates',
+      '',
+      '- Planned: x — started M258',
+      '- Blocked: x — started M240',
+      '- Done: x — started M230',
+      '- Dropped: x — started M231',
+      '- Absent: x — started M999',
+      '- Two ids: x — started M230 — started M240',
+    ].join('\n')
+    const candidates = candidateRows(roadmap)
+    const lines = layout(
+      { ...state, candidates, taken: takenRows(roadmap, parseRoadmapRows(roadmap)) },
+      [],
+      true,
+      {},
+      [],
+      [],
+    ).filter(line => /^candidate-\d+$/.test(line.key))
+    expect(candidates.map(row => row.title)).toEqual(['Planned', 'Blocked', 'Done', 'Dropped', 'Absent', 'Two ids'])
+    marked(lines[0], 'M258')
+    marked(lines[1], 'M240')
+    plain(lines[2], 2)
+    plain(lines[3], 3)
+    plain(lines[4], 4)
+    marked(lines[5], 'M240')
   })
 
   test('a token on a row with an empty short title marks nothing', () => {
