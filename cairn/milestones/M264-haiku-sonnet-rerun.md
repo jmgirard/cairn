@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — a measurement note under `cairn/references/` that changes no shipped behavior
-- **Branch/PR:** m264-haiku-sonnet-rerun
+- **Branch/PR:** m264-haiku-sonnet-rerun, https://github.com/jmgirard/cairn/pull/276
 
 ## Goal
 
