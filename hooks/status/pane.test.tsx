@@ -2982,9 +2982,14 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
     // Besides the first line, each candidate line's text grows, so ✎ sits at
-    // its right end, and no other line does (M242, M242 review).
-    const candidates = got.lines.map(keyOf).filter(key => /^candidate-\d+$/.test(key ?? ''))
-    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1], ...candidates.map(key => [`${key}-text`, 1])])
+    // its right end (M242, M242 review), and so does each blocked or hotfix
+    // line with a tail, so its number and state word sit at the right end
+    // whether or not its title is cut. No other line grows.
+    const growing = got.lines
+      .filter(line => /^(candidate-\d+|blocked-[^-]+|hotfix-\d+)$/.test(keyOf(line) ?? ''))
+      .filter(line => /^candidate-/.test(keyOf(line) ?? '') || childKeys(line).includes(`${keyOf(line)}-tail`))
+      .map(keyOf)
+    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1], ...growing.map(key => [`${key}-text`, 1])])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
     expect(got.button?.props.label).toBe('↻')
     return got

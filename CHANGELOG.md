@@ -360,6 +360,12 @@
 
 ### Fixes
 
+- **The cairn pane right-aligns pull request numbers and states.** On a
+  Blocked or Hotfixes row, the number and state word (for example `#786  in
+  review`) now sit at the right edge of the pane. Before, they followed
+  the title directly when the title was short enough to fit, and sat at
+  the right edge only when the title was cut.
+
 - **Three session-end races in the cairn pane are closed.** If the session
   end beneath the plugin fails, the pane Buttons now work again after it,
   even when the press's `/clear` never finishes. The next-step Button can
