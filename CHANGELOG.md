@@ -333,6 +333,15 @@
 
 ### Fixes
 
+- **A pane placed during a `/clear` start reads the pull request states at
+  once.** At a `/clear`, the plugin lists the panes. If the cairn pane is
+  placed, the plugin reads the states of the pull requests that blocked
+  rows name. If it is not placed, its first draw starts that read. Some
+  panes were placed and drawn while that list was still waiting. That draw
+  came before the read was owed, so the state words waited for a further
+  draw. Now the plugin lists the panes a second time. If the pane is placed
+  by then, the plugin reads the states.
+
 - **A session end frees the pane Buttons from a press still reading.** A
   Status, Clear, next-step, blocked-line, or `✎` press reads the stored state
   before it runs its command. While that read waited, the other pane
