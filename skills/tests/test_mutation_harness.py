@@ -4337,6 +4337,35 @@ REGISTRY += [
         target=HOTFIX,
         block="names the unpushed commits.",
     ),
+    # M266 review fixes: the order, the other-PR fallthrough, the checkout,
+    # and the failed-check stop.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixClosedPrStop."
+             "test_stop_comes_before_the_merged_pr_re_entry",
+        target=HOTFIX,
+        block="**Closed-PR stop (M266).**",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_every_other_guest_pr_reports_and_stops",
+        target=HOTFIX,
+        block="For any other PR, the arm goes on here.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_checks_out_from_the_base_repo",
+        target=HOTFIX,
+        block="Run step 2's `git status` check, then `gh pr checkout <N> --repo",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_a_failed_check_pushes_nothing",
+        target=HOTFIX,
+        block="If either fails, push nothing, and",
+    ),
 ]
 
 TRIAGE = "skills/cairn-triage/SKILL.md"

@@ -419,7 +419,7 @@
   review decision and stops, since the merge is the maintainers' to make.
 
 - **A `/hotfix` rerun on a closed PR, on your own open hotfix PR, or on a
-  guest PR with requested changes has a route that can finish.** Before,
+  guest PR with requested changes has a route forward.** Before,
   these reruns started the walk for adopting an outside PR, which cannot
   merge a closed PR and which guest mode does not allow, or stopped with
   no way forward.

@@ -521,6 +521,11 @@ class TestHotfixClosedPrStop(unittest.TestCase):
             self.step1,
         )
 
+    def test_stop_comes_before_the_merged_pr_re_entry(self):
+        closed = self.step1.index("**Closed-PR stop (M266).**")
+        merged = self.step1.index("**Merged-PR re-entry (M172, M174).**")
+        self.assertLess(closed, merged)
+
     def test_stop_edits_no_row(self):
         self.assertIn("The stop edits no candidate row.", self.step1)
 
@@ -593,7 +598,8 @@ class TestHotfixOwnOpenPr(unittest.TestCase):
     def test_round_decline_leaves_the_own_pr_open(self):
         self.assertIn(
             "Step 1's own open PR existed before the run, so a decline leaves "
-            "it open, and the close block says so. Its fenced next command is "
+            "it open, and the close block says so. That close block's CI line "
+            "says that nothing waits on CI now, and its fenced next command is "
             "`/hotfix` with the PR reference, not a new branch.",
             self.step6,
         )
@@ -623,6 +629,13 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
             "--json state,headRefName,reviewDecision,author,latestReviews,"
             "commits`, and make the candidate-row match above. A PR that the "
             "change route below covers takes that route.",
+            self.step1,
+        )
+
+    def test_every_other_guest_pr_reports_and_stops(self):
+        self.assertIn(
+            "For any other PR, the arm goes on here. Skip the tier check and "
+            "steps 2 to 7.",
             self.step1,
         )
 
@@ -656,12 +669,26 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
 
     def test_route_rechecks_the_bar_and_the_test(self):
         self.assertIn(
-            "tier-check the new diff against `<base>/<default-branch>`. A diff "
-            "over the hotfix bar takes this step's over-the-bar disposition, "
-            "and nothing is pushed. Re-run step 3's two-way check against "
+            "tier-check the PR's whole diff against `<base>/<default-branch>`. "
+            "A diff over the hotfix bar takes this step's over-the-bar "
+            "disposition, and nothing is pushed. That close block names the "
+            "commits left on the branch. Re-run step 3's two-way check against "
             "`<base>/<default-branch>`, and step 4's `verify` slot on the new "
-            "head. When a change makes step 5's changelog entry wrong, edit "
-            "the entry.",
+            "head.",
+            self.step1,
+        )
+
+    def test_a_failed_check_pushes_nothing(self):
+        self.assertIn(
+            "If either fails, push nothing, and stop with a close block that "
+            "names the failure and the local commits.",
+            self.step1,
+        )
+
+    def test_route_checks_out_from_the_base_repo(self):
+        self.assertIn(
+            "Run step 2's `git status` check, then `gh pr checkout <N> --repo "
+            "<base-repo>`.",
             self.step1,
         )
 
@@ -675,8 +702,8 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
 
     def test_approval_pushes_and_posts_nothing(self):
         self.assertIn(
-            "On approval, push with `git push <fork> <headRefName>`, and post "
-            "no comment or reply on the PR. Then stop with the close block of "
+            "On approval, push with `git push <fork> HEAD:<headRefName>`, and "
+            "post no comment or reply on the PR. Then stop with the close block of "
             "the report-and-stop above. That close block also says that the "
             "reply to the maintainers is the operator's.",
             self.step1,

@@ -6158,3 +6158,50 @@ CLAUDE.md name the tier route before the question set. An adopter's
 CLAUDE.md section keeps the old wording until the adopter updates it. If a
 trivial-tier commit is found reaching the default branch with neither the
 user's request nor the chip's approval, this is the entry to supersede.
+
+### D-171 (2026-10-16): A `/hotfix` rerun stops on a closed PR, walks the operator's own open PR as an authored fix, and in guest mode makes requested changes on it — narrows D-168's guest sentence; annotates D-130 and D-131 (M266)
+
+**Context:** After D-168, three `/hotfix` reruns had no route that could
+finish. A closed PR fell into the adopt-a-PR walk, which cannot merge it,
+and in guest mode that walk is not allowed at all. The operator's own open
+hotfix PR with no usable marker was walked as an outside contributor's PR,
+so the Copilot round skipped it. D-168 decided that in guest mode a rerun
+on an open `hotfix-` PR reports its state and stops, which left the
+operator no route to answer the maintainers' requested changes.
+
+**Decision:** A `CLOSED` PR whose head is not `m<nnn>-*` stops in both
+modes after the candidate-row match. In owner mode it removes a `hotfix `
+marker that names the PR, and its next command starts over with a new
+`/hotfix`. In owner mode the operator's own open `hotfix-` PR that the
+owner arm does not resume takes the walk as an authored fix whose PR
+exists: the adopting variants of steps 2, 3, and 5, then the Copilot round
+with no create. A decline at the round leaves that PR open. D-168's guest
+sentence is narrowed: an open `hotfix-` PR that the operator authored,
+with a `CHANGES_REQUESTED` review submitted after its head commit, takes a
+change route. The route makes a change or names a reason per request,
+re-runs the tier check, the two-way test check, and `verify`, and pushes
+to the fork only after one chip. It posts nothing on the PR. Any other
+guest PR still reports and stops. D-168's owner resume conditions, D-130's
+routes, and D-131's bar on every path to the default branch stand. The
+change is routing in a shipped skill, so D-108's door does not apply.
+
+**Rejected:** Triggering on `reviewDecision`, which is empty when the base
+requires no reviews; falsified by a real guest PR whose change request the
+dated `latestReviews` trigger misses or handles twice. A triage chip
+before the changes are made, because the maintainers' requests are the
+scope and the user still sees each change before any push; falsified by a
+run where the user wants to reject a request before work is spent on it.
+A separate step 1 arm for the owner's own PR, because the adopting
+variants already fit a PR whose fix is committed; falsified by a real run
+where an adopting step misbehaves on the operator's own branch. A
+`gh pr reopen` command in the closed stop's close block, because a deleted
+head, a re-landed PR, or a maintainer's close can make it wrong.
+
+**Consequences:** The guest rerun can now write to the fork, behind its
+own chip. The trigger compares the review time with the head commit's
+commit time, not its push time, and `latestReviews` can mask a change
+request. The masking is recorded in DESIGN.md's Known issues and the
+commit-time edge in a candidate row. If a guest
+change route is found pushing without the user's yes at its chip, or
+answering a request a maintainer already withdrew, this is the entry to
+supersede.

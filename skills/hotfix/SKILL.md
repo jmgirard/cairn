@@ -186,22 +186,30 @@ can resolve against the fork instead of the base repo.
      than the head means that the PR waits for a new review, so it takes
      the report-and-stop above. The route runs the three reads of step 6's
      PR-conversation read, with `--repo <base-repo>`. The one chip below
-     takes the place of that read's per-item options. Run `gh pr checkout
-     <N> --repo <base-repo>`. Make a change for each requested item, or
+     takes the place of that read's per-item options. That read's
+     blocking rule does not apply, since the chip pushes and never merges.
+     Run step 2's `git status` check, then `gh pr checkout <N> --repo
+     <base-repo>`. When the local branch already holds commits past
+     `headRefOid`, left by a declined run, show them and go on from them.
+     Make a change for each requested item, or
      name the reason for making none, and commit each change on the
-     branch. Run `git fetch <base>`, then tier-check the new diff against
-     `<base>/<default-branch>`. A diff over the hotfix bar takes this
-     step's over-the-bar disposition, and nothing is pushed. Re-run step
-     3's two-way check against `<base>/<default-branch>`, and step 4's
-     `verify` slot on the new head. When a change makes step 5's changelog
-     entry wrong, edit the entry.
+     branch. Run `git fetch <base>`, then tier-check the PR's whole diff
+     against `<base>/<default-branch>`. A diff over the hotfix bar takes
+     this step's over-the-bar disposition, and nothing is pushed. That
+     close block names the commits left on the branch. Re-run step 3's
+     two-way check against `<base>/<default-branch>`, and step 4's
+     `verify` slot on the new head. If either fails, push nothing, and
+     stop with a close block that names the failure and the local commits.
+     When a change makes step 5's changelog entry wrong, edit the entry.
      Then pose one `AskUserQuestion` chip. Its question text lists each
      requested item with its change or its reason, and a decline option is
-     present. On approval, push with `git push <fork> <headRefName>`, and
-     post no comment or reply on the PR. Then stop with the close block of
-     the report-and-stop above. That close block also says that the reply
-     to the maintainers is the operator's. On decline, push nothing, and
-     stop with a close block that names the unpushed commits.
+     present. On approval, push with `git push <fork> HEAD:<headRefName>`,
+     and post no comment or reply on the PR. Then stop with the close block
+     of the report-and-stop above. That close block also says that the
+     reply to the maintainers is the operator's. On decline, push nothing,
+     and stop with a close block that names the unpushed commits. Every
+     close block of this route carries the report-and-stop's CI line, and
+     its fenced next command is `/hotfix` with the PR reference.
    **Own open PR (M266).** This paragraph covers an `OPEN` PR in owner
    mode whose `headRefName` starts with `hotfix-` and whose `author.login`
    equals `gh api user --jq .login`. Such a PR is the operator's own
@@ -309,9 +317,11 @@ can resolve against the fork instead of the base repo.
    closes this PR with `gh pr close <N>` and keeps the branch, and the
    close block names both; a later `/hotfix` for the same bug cuts a new
    branch under a new slug. Step 1's own open PR existed before the run,
-   so a decline leaves it open, and the close block says so. Its fenced
-   next command is `/hotfix` with the PR reference, not a new branch. An adopted PR skips the round: the
-   contributor's PR is theirs to put to a reviewer. Step 1's own open PR
+   so a decline leaves it open, and the close block says so. That close
+   block's CI line says that nothing waits on CI now, and its fenced next
+   command is `/hotfix` with the PR reference, not a new branch. An
+   adopted PR skips the round: the contributor's PR is theirs to put to a
+   reviewer. Step 1's own open PR
    is outside that exemption: the round runs for it, with a push to the
    PR's head branch and no `gh pr create`. With the round off,
    nothing in this arm runs.
@@ -491,8 +501,9 @@ can resolve against the fork instead of the base repo.
    off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
    PR, or the re-entry's already-merged PR, does not, and a follow-up PR
    the re-entry opens and merges does. Step 1's own open PR is outside
-   that adopted-PR exemption, so the rule applies to it. End with the close block
-   (tracking-rules "Question gates and phase closes"), composed from the
-   hotfix's end state — recap of what was fixed and merged, status line,
+   that adopted-PR exemption, so the rule applies to it. End with the
+   close block (tracking-rules "Question gates and phase closes"),
+   composed from the hotfix's end state — recap of what was fixed and
+   merged, status line,
    fenced next command(s) where any follow-up exists, and the safety line;
    no chip.

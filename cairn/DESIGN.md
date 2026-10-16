@@ -789,17 +789,22 @@ within each type and are never reused.
   #9) and M234 review (diff-bug #12, blame-history #5, prior-review #2;
   Copilot thread on PR #243, checked 2026-10-16T04:10:01Z).
 - The `/hotfix` rerun and row-graduation paths have small gaps, found at
-  the M249 and M262 reviews with no fix planned. M266 gave a rerun a route
-  for a closed PR, for the operator's own open PR, and for a guest change
-  request (narrowed M266). Rerun (M262): the merge guard reads only the marker's PR number, so
-  a hand-typed `gh pr merge <N>` with no `--match-head-commit` passes on a
-  moved head. A marker whose PR merged outside the session stays on disk,
-  and since M266 a rerun on a closed PR removes its marker. `latestReviews` keeps each reviewer's latest review, so a later
-  comment can mask their change request (`latestOpinionatedReviews` would
-  not). Step 6 states no stop for red CI, and the marker stays. A resume
-  reads no comment posted since the approval. A resumed follow-up PR of
-  the merged-PR re-entry may never close the merged PR's `Fixes #N` issue.
-  The guest arm stops any open `hotfix-` PR, whoever opened it. A
+  the M249 and M262 reviews. The gaps below have no fix planned. M266
+  gave a rerun a route for a closed PR, for the operator's own open PR,
+  and for a guest change request (narrowed M266). Rerun (M262): the merge
+  guard reads only the marker's PR number, so a hand-typed
+  `gh pr merge <N>` with no `--match-head-commit` passes on a moved head.
+  A marker whose PR merged outside the session stays on disk. A closed
+  PR's marker stays until an owner-mode `/hotfix` rerun on that PR
+  removes it (M266). `latestReviews` keeps each reviewer's latest review,
+  so a later comment can mask their change request, both for the resume
+  and for the M266 guest change route's trigger
+  (`latestOpinionatedReviews` would not). Step 6 states no stop for red
+  CI, and the marker stays. A resume reads no comment posted since the
+  approval. A resumed follow-up PR of the merged-PR re-entry may never
+  close the merged PR's `Fixes #N` issue. The guest arm's report-and-stop
+  takes any open `hotfix-` PR outside the change route, whoever opened
+  it (narrowed M266). A
   server-side merge failure (M170) or a `/milestone-review` marker in the
   same file sends the rerun to the walk. Row graduation (M249): a guest
   rerun with owed items never reaches an accepted check, so the row edit
