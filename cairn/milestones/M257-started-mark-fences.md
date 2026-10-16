@@ -122,6 +122,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: amendment done, docs only (README and the AC2 text); status → review.
 - 2026-10-15: correction to the pass-1 line above: pass 1 rejected 6 findings, not 7 (17 in all: 1 amendment return, 6 fixed, 4 follow-up, 6 rejected).
 - 2026-10-15: review pass 2 at 7ffae46e: all three criteria verified; 4 README findings fixed in 7ffae46e, 2 follow-up, 7 rejected; Copilot's 2 threads were already fixed (7d7fe86c, b61a455d), replied to and resolved.
+- 2026-10-15: step-7 approval: m257-started-mark-fences approved for merge
 
 
 ## Decisions
