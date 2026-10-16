@@ -372,8 +372,8 @@
   session end while a `⌂` press reads the stored state now cancels the
   press, so its `/clear` no longer clears the conversation that follows.
   A `/clear` end still opens the pane. At a `/clear` start, a second pane
-  listing still waiting at a session end now reads nothing. The read owed
-  after that end is made at the pane's next draw.
+  listing still waiting at a session end now reads nothing. A read that a
+  later start owes is that start's own read.
 
 - **A pane placed during a `/clear` start reads the pull request states
   with no further draw.** At a `/clear`, the plugin lists the panes. If the

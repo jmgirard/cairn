@@ -4605,8 +4605,8 @@ describe("a session end during a ⌂ press's step read cancels its /clear (M260 
 
 // A start's second pane listing that is still pending at a session end
 // reads nothing when it answers, even placed and with a later start's read
-// owed, so the read owed after that end is the pane's next draw's (M260
-// AC4).
+// owed, so the read a later start owes is that start's; here the pane's next
+// draw makes it (M260 AC4).
 describe('a second listing pending at a session end reads nothing (M260 AC4)', () => {
   test("the old start's placed second listing adds no read, and the next draw reads once", async ($, on) => {
     const calls = gh(on, () => prView('OPEN', ''))

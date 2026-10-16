@@ -539,8 +539,8 @@ export const register: Register = on => {
       // An end beneath that rejects still frees the action Buttons, so a
       // press whose `/clear` run never settles leaves none dead, and a held
       // command goes to the prompt box with a toast, whatever the end's
-      // reason (M260). A ⌂ press's open still runs, and the rejection goes
-      // on (M255).
+      // reason (M260). A ⌂ press's open still runs for a `clear` end, and
+      // the rejection goes on (M255).
       running = false
       pressCheck = null
       if (queued !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
@@ -1138,7 +1138,8 @@ async function pressClear($) {
 let pressCheck: object | null = null
 
 // The number of session ends so far, so a press can tell that an end came
-// while its checks ran (M255). A reload starts it over.
+// while its checks ran (M255), and so can a ⌂ press's step read and a
+// start's second pane listing (M260). A reload starts it over.
 let ends = 0
 
 // What a press's checks give: a command to run, or, with `clears`, a

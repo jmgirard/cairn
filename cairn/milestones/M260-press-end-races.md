@@ -1,6 +1,6 @@
 # M260: Press and placement races end cleanly
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,6 +60,8 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 - 2026-10-15: T2 done: the three AC3 tests failed first (each ran a late `/clear`), then `pressHome` returns when `ends` moved during its step read; plugin test 1765 pass, verify clean.
 - 2026-10-15: T3 done: the AC4 test failed first (the old start's held second listing added one PR read after `await old`; the in-try assertion before the release passed), then the classic SessionStart hook snapshots `ends` before the second listing and reads only when it has not moved; plugin test 1766 pass, verify clean.
 - 2026-10-15: T4 done: CHANGELOG Fixes entry written from the AC1–AC4 tests (held-command claim narrowed to the next-step Button, the press the AC2 tests drive); full verify slot exit 0 on each of its five commands. The simple-english lint hook flags 341 pre-existing hits across CHANGELOG.md; only the new entry's one over-long sentence was fixed.
+- 2026-10-15: claim audit: 21 claims read, 4 corrected — CHANGELOG.md, hooks/status/register.tsx, hooks/status/pane.test.tsx (the owed-read sentence in the changelog and the AC4 comment narrowed to "a later start's read is its own"; the catch comment names the `clear` end; the `ends` comment names its M260 readers; the ✎ and `/resume` widenings were declined as untested; the same reader re-read the four: accurate).
+- 2026-10-15: all tasks done, verify clean (plugin test 1766 pass, both Python suites, both validates exit 0); status → review.
 
 ## Decisions
 
