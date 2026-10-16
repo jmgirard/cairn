@@ -185,4 +185,9 @@ Evidence gathered 2026-10-16 on branch head eae9b417 (current with origin/main 7
 - blame-history #5: the head rule stops on a third owner where D-171's route fell back to the fork — fix now (D-172 records the stricter stop; pass 1's blame-history #2 asked for it).
 - blame-history #6: README line 884 runs past the file's wrap — fix now (rewrapped).
 - prior-review: no prior-review evidence for the return's changes; the PR #279 thread on the access read is current-PR, triaged as the "Guest push remote edges" follow-up.
+- copilot: skills/milestone-implement/SKILL.md:76 (outdated) — fix now: a never-pushed branch has no remote copy and takes no check, fixed f6d77d29 (target by head rule a0f64df0); replied, resolved.
+- copilot: cairn/milestones/M267-guest-push-remote.md:14 (outdated) — fix now: the header records the PR URL, fixed eae9b417; replied, resolved.
+- copilot: skills/milestone-review/SKILL.md:646 (outdated) — follow-up: the access read keyed to `<push>`, the "Guest push remote edges" row; replied, resolved.
+- copilot: review body (COMMENTED on 66d75beb) — noted: indexes the three threads above.
+- Copilot level: unknown (the review body names no `Review effort:` line; set by GitHub's settings). No issue comments; no human reviews.
 - Pass 2 evidence at the fix-now commit: AC1/AC4 rulebook clauses re-read present (plus `<head-remote>` named); AC2's grep returns 36 lines, none a guest push to the fork outside `<push>` or the head rule; AC3 both access reads present; AC5 implement step 2 still finds the remote holding a pushed branch and reads `git rev-list <slug>..<remote>/<slug>` before the rebase, stops on output, else leases on the tip; AC6 README/CHANGELOG unchanged in substance; AC7 scripts 0, hooks 0, plugin validate 0, marketplace validate 0, plugin test 0, skills/tests 820 OK, cairn_validate all checks passed. No DESIGN.md principle changed, so `cairn_impact --changed` is skipped. Profile consistency-gate: the verify run above.
