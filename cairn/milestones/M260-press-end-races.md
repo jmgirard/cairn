@@ -78,7 +78,7 @@ Pass 1, 2026-10-15, branch head 1b247a00 + PR record; PR #271 opened at review s
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` skipped; marketplace validate output has no `version` warning (grep count 0); the changelog has the entry (AC5).
 - spawned: diff-bug, blame-history, prior-review.
 - diff-bug #1: the `ends` snapshot sits after the first listing, so an end during `refresh` or the first listing still lets the old start read or set `owed` — fix now, fixed c875fae0 (snapshot at hook entry, checked after the first listing; new test fails without it).
-- diff-bug #2: a press made during a pending end that then rejects is freed under its checks, so a double press can overlap — follow-up, row "Rejected end edges (M260 review)" (the success path has had the same exposure since M255).
+- diff-bug #2: a press made during a pending end that then rejects is freed under its checks, so a double press can overlap — fix now (moved from follow-up after Copilot's thread on the same point), fixed 40668fcd: both end paths free only the run and press mark current at the end's start; two new tests fail without it.
 - diff-bug #3: a rejected `clear` end opens the pane for ⌂ yet fills the held command — reject, planned change (AC2 asks for the fill on both reasons; AC3 keeps the open).
 - diff-bug #4: no test covers the catch's `pressCheck = null` — fix now, fixed c875fae0 (rejecting-end variant of M255's cut-off press test; fails without the line).
 - diff-bug #5: a cancelled ⌂ press still gets the pane open on a `clear` end — reject, planned change (Scope Out; AC3 asserts it).
@@ -96,7 +96,7 @@ Pass 1, 2026-10-15, branch head 1b247a00 + PR record; PR #271 opened at review s
 - blame-history #6: same as diff-bug #3 — reject, planned change.
 - blame-history #7: the catch does not bump `runs` — reject, false (the reviewer found no failing path; a stale run cannot free a newer one).
 - blame-history #8: the start hook's comments overlap — reject, style.
-- prior-review #1: same as diff-bug #2 — follow-up, same row.
+- prior-review #1: same as diff-bug #2 — fix now, fixed 40668fcd.
 - prior-review #2: same as diff-bug #8 — follow-up, same row.
 - prior-review #3: the ✎ held-command path is not tested through the catch — reject, false (the catch reads `heldRun` alone, and the changelog claims only the next-step Button).
 - prior-review #4: the AC3 table has no rejecting `other` end — fix now, fixed c875fae0.
@@ -104,3 +104,9 @@ Pass 1, 2026-10-15, branch head 1b247a00 + PR record; PR #271 opened at review s
 - prior-review #6: second-listing not-placed/throws and `/resume` gaps stay open — reject, planned change (pruned at the question set).
 - prior-review #7: the toast cause is not reintroduced wrong — noted.
 - Return floor: no finding shows a criterion failing or a load-bearing defect; no status change. Fix-now verify after c875fae0: plugin test exit 0 (1769 pass), both Python suites 0, both validates 0, `cairn_validate` green. The follow-up row lands at post-merge hygiene, when the six graduated rows leave (ROADMAP is at its 59-line limit now).
+- copilot: hooks/status/register.tsx:547 (a rejected end resets a newer press's run and mark) — fix now, fixed 40668fcd.
+- copilot: cairn/milestones/M260-press-end-races.md:10 (header names the branch, not the PR URL) — fix now, fixed 759c92d1 (outdated thread; the record commit landed before the review was read).
+- copilot: review body (2 findings, both anchored to the threads above) — noted.
+- Copilot level: Lite (set by GitHub's settings).
+- conversation: no human reviews, no issue comments on PR #271.
+- After 40668fcd: plugin test exit 0 (1771 pass), both Python suites 0, both validates 0.
