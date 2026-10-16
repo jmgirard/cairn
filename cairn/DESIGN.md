@@ -464,7 +464,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   tokens whose n the held hotfix list has, and its M tokens. The tail shows
   the lowest PR number, else the lowest id. `/milestone-plan` writes the M
   token on each row a plan absorbs, both modes, and `/hotfix`'s guest arm
-  writes the #n token after its create. The pane draws the list only while the band's root is
+  writes the #n token after its create. `/cairn-triage` proposes adding a
+  missing M token and removing a dead token at its gate (M259). The pane draws the list only while the band's root is
   its root, under a `HOTFIXES` heading after `BLOCKED` and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has
