@@ -546,7 +546,8 @@ re-enters here, at the step the record shows is next:
    PR-conversation read (`--repo <base-repo>` on its reads), then one
    `AskUserQuestion` chip whose recommended option hands the branch to the
    maintainers, naming the branch and the base repo (e.g. `Hand <slug> to
-   the maintainers of <base-repo>` — pushes it to `<fork>` and opens the PR for their
+   the maintainers of <base-repo>` — pushes it to `<push>`, the fork or,
+   where `cairn/PROFILE.md` asks, the base repo, and opens the PR for their
    review; the milestone waits on them), a decline option present, and
    **no merge option** — the blocking rule above moves the recommendation
    to address-first as in owner mode. Decline → the owner-mode decline
@@ -636,9 +637,15 @@ re-enters here, at the step the record shows is next:
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to
-   the fork (`git push -u <fork> <slug>`, `--force-with-lease` after a
-   rebase) and open the PR against the base repo from the fork's branch —
-   `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened
+   the push remote (`git push -u <push> <slug>`, or after a rebase the
+   check and lease of `/milestone-implement` step 2's guest sync). `<push>` and `<push-owner>` are the rulebook's push remote and
+   its owner. A branch whose PR is already open is pushed to the remote
+   that holds that PR's head. When `<push>` is `<base>`, first run
+   `gh api repos/<base-repo> --jq .permissions.push`. On any output but
+   `true`, or a failed read, push nothing, open no PR, and stop with a
+   close block that names the read and its result. Then open the PR
+   against the base repo from the pushed branch —
+   `gh pr create --repo <base-repo> --head <push-owner>:<slug>`, opened
    ready for their review (never a draft, so no later ready-marking step)
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
@@ -650,9 +657,10 @@ re-enters here, at the step the record shows is next:
    PR-conversation read with the Copilot-thread rule (§5). Use the
    module's guest forms: `--repo <base-repo>`, the base repo's owner and
    name in each `gh api` call that addresses a repository (the resolve
-   takes only a thread id), and fix pushes to `<fork>`. When the round
+   takes only a thread id), and fix pushes to the remote that holds the
+   PR's head. When the round
    committed fixes, re-run step 4's consistency gate before the close
-   block; a failure is fixed on the branch and pushed to `<fork>` before the close
+   block; a failure is fixed on the branch and pushed to that remote before the close
    block, or named in it. Its `copilot:` lines are written on disk and ride in the close
    block below, which also says that a Copilot review arriving after the
    wait is the operator's to handle by hand.

@@ -205,8 +205,10 @@ can resolve against the fork instead of the base repo.
      When a change makes step 5's changelog entry wrong, edit the entry.
      Then pose one `AskUserQuestion` chip. Its question text lists each
      requested item with its change or its reason, and a decline option is
-     present. On approval, push with `git push <fork> HEAD:<headRefName>`,
-     and post no comment or reply on the PR. Then stop with the close block
+     present. On approval, push to the remote that holds the PR's head,
+     the one `gh pr checkout` set as the branch's upstream:
+     `git push <head-remote> HEAD:<headRefName>`. Post no comment or reply
+     on the PR. Then stop with the close block
      of the report-and-stop above. That close block also says that the
      reply to the maintainers is the operator's. On decline, push nothing,
      and stop with a close block that names the unpushed commits. Every
@@ -430,10 +432,14 @@ can resolve against the fork instead of the base repo.
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of
    <base-repo>`, a decline option, no merge option — and on selection the
-   sequence is the push to the fork (`git push -u <fork> hotfix-<slug>`,
-   `<fork>` being the rulebook's fork remote)
-   and the PR opened against the base repo — `gh pr create --repo
-   <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
+   sequence is the push to the push remote (`git push -u <push>
+   hotfix-<slug>`, `<push>` and `<push-owner>` being the rulebook's push
+   remote and its owner). When `<push>` is `<base>`, first run
+   `gh api repos/<base-repo> --jq .permissions.push`. On any output but
+   `true`, or a failed read, push nothing, open no PR, and stop with a
+   close block that names the read and its result. Otherwise the push is
+   followed by the PR opened against the base repo — `gh pr create --repo
+   <base-repo> --head <push-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
    vocabulary in its title or body, so no `Candidate row:` line (the changelog entry is the branch's
    only prose) — then no marker, no CI wait, no merge. After the create,
@@ -445,7 +451,8 @@ can resolve against the fork instead of the base repo.
    wait while pending, then the Copilot threads by the module's §5. Use
    the module's guest forms: `--repo <base-repo>`, the base repo's owner
    and name in each `gh api` call that addresses a repository (the resolve
-   takes only a thread id), and fix pushes to `<fork>`. Its `copilot:`
+   takes only a thread id), and fix pushes to the remote that holds the
+   PR's head. Its `copilot:`
    lines ride in the close block, which also says that a Copilot review
    arriving after the wait is the operator's to handle by hand. Then
    stop with the close block: the recap says the fix is in the maintainers'

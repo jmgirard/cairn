@@ -96,8 +96,10 @@ read then acts on it:
    agent's disposition under the opt-in line, and an item over the hotfix
    bar is a follow-up.
 2. A fix-now item is committed on the branch with the profile's `verify`
-   slot green, then pushed (guest mode: to `<fork>`, the rulebook's fork remote, with
-   `--force-with-lease` after a rebase).
+   slot green, then pushed (guest mode: to the remote that holds the PR's
+   head, the fork or the base repo by the rulebook's push remote, and
+   after a rebase with the check and lease of `/milestone-implement` step
+   2's guest sync).
 3. Reply on the thread's first comment, with the facts only and no thanks:
    `Fixed in <short-sha>.` plus at most one sentence, or the rejection
    reason, or `Left for a follow-up.` In guest mode the reply carries no

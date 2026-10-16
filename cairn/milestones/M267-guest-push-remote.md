@@ -73,16 +73,16 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
       (lines 253–264), add the open-PR head rule, scope the fork-remote stop to `<push>` = `<fork>`, name the line in
       the `PROFILE.md` file-map row (line 15), and change the Collaboration-mode push targets (lines 369–376) to
       `<push>`. Append a D-entry annotating D-137: guest branches may live on the base repo by the repo's opt-in.
-- [ ] T2: `/milestone-review`: step 7's guest chip names where the branch goes; step 8's guest arm (lines 637–656) runs
+- [x] T2: `/milestone-review`: step 7's guest chip names where the branch goes; step 8's guest arm (lines 637–656) runs
       the access read when `<push>` is `<base>`, pushes to `<push>`, and opens the PR with `--head
       <push-owner>:<slug>`; fix pushes in `skills/shared/copilot-review.md` (line 99) go to the PR's head remote.
-- [ ] T3: `/hotfix`: the guest handoff (lines 429–437) takes the access read, the push to `<push>`, and `--head
+- [x] T3: `/hotfix`: the guest handoff (lines 429–437) takes the access read, the push to `<push>`, and `--head
       <push-owner>:hotfix-<slug>`; the guest change route's push (line 208) goes to the open PR's head remote.
-- [ ] T4: `/milestone-implement` step 2's guest sync (lines 69–74): before the rebase, fetch the branch's remote and
+- [x] T4: `/milestone-implement` step 2's guest sync (lines 69–74): before the rebase, fetch the branch's remote and
       stop on remote-only commits, then rebase and push with the explicit-sha lease; replace the "operator's own on the
       fork" reason. `/milestone` §2's
       `CHANGES_REQUESTED` route (line 182) re-pushes to the PR's head remote.
-- [ ] T5: Run AC2's grep over the branch (it also finds prose such as review line 640's "from the fork's branch"),
+- [x] T5: Run AC2's grep over the branch (it also finds prose such as review line 640's "from the fork's branch"),
       fix any guest-arm line still naming the fork as a push target, and log the match count in one work-log line.
 - [ ] T6: Update `skills/tests/test_guest_fork_remote.py` for the new targets, and add guards that fail when the
       `<push>` definition, the access read, or the implement remote-only-commits stop is removed; plant each removal
@@ -107,6 +107,9 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: implement started on m267-guest-push-remote, cut from origin/main at 78992470.
 - 2026-10-16: the simple-english style hook flags tracking-rules.md and the skills as a whole (about 500 pre-existing hits); only the sentences this milestone adds are written to it, since rewriting the rulebook is outside M267's scope.
 - 2026-10-16: T1 done: tracking-rules defines `<push>`/`<push-owner>`, the open-PR head rule, and the fork stop scoped to fork-bound pushes; the PROFILE.md file-map row names the line; Collaboration-mode bullets push to `<push>`; D-172 annotates D-137. verify green (5/5).
+- 2026-10-16: T2–T5 done in one checkpoint (the same files carry all four): review step 7 chip and step 8 handoff push to `<push>` with the access read; `/hotfix` guest handoff likewise, and its change route pushes to the head remote `gh pr checkout` set; implement's guest sync checks `rev-list <slug>..<remote>/<slug>` before the rebase and leases on that sha; `/milestone` §2 and copilot-review fix pushes go to the PR's head remote. verify green (5/5).
+- 2026-10-16: T5 sweep: AC2's grep returns 35 lines on the branch; none in a guest arm names the fork as a push target or new-PR head outside `<push>` or the open-PR head rule.
+- 2026-10-16: decided the change route's push target is the upstream `gh pr checkout` sets, named `<head-remote>`, since that is the remote holding the PR's head whichever repo it is.
 
 ## Decisions
 
