@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M262: A rerun of /hotfix on an open PR resumes the merge
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -189,6 +189,8 @@ Button".
 - 2026-10-16: the amendment took the plan-owned body to 159 lines; the heaviest section (Acceptance criteria) shed its 10-line template comment in one rewrite, criterion text unchanged; 149 lines, `cairn_validate` green.
 - 2026-10-16: T6 done: step 1's owner arm resumes only on the three conditions (head oid, no `CHANGES_REQUESTED` in `latestReviews`, row match equal to the body's `Candidate row:` lines), merges with `--match-head-commit <oid>`, stops on a refused merge, and otherwise takes the walk, whose step-6 decline removes the marker. `TestHotfixOpenPrReentry` rewritten (13 tests) with 22 mutation entries, each red when blanked; `skills/tests` OK. Diff-bug #8 is moot: the amended route no longer re-runs the read inside step 1, so "at most once per hotfix" (pinned by `test_pr_conversation_gate`) stays as it was.
 - 2026-10-16: T7 done: step 6 notes the head the gate shows (local `HEAD` before a push, else the PR's `headRefOid`), re-reads it before the marker write and re-presents the gate on a mismatch with no marker (diff-bug #9 and the AC1 re-audit's points); a decline at the chip removes the PR's marker; every owner merge carries `--match-head-commit <oid>` (#1; `_first_pr_token` still reads the PR number past it); the order sentence opens "In owner mode" (#11); the timeout close names the walk on a failed condition and its CI-line clause waits "when step 1 resumes" (#14); D-168 annotates D-130 and D-131 (#12); guard pins added for AC3's CI line and next command and AC4's merged half (#13); CHANGELOG entry rewritten. #7 is moot (a moved head takes the walk). Verify slot green (scripts, hooks, both validates, plugin test 1777 pass 0 fail), `skills/tests` OK, `cairn_validate` green.
+- 2026-10-16: claim audit: 38 claims read, 4 corrected — CHANGELOG.md, skills/hotfix/SKILL.md, skills/tests/test_resume_routing.py, skills/tests/test_mutation_harness.py. (1) CHANGELOG says "merges with no new question only when" the three conditions hold, "Otherwise" the walk. (2) Step 6 gains the stop for a merge GitHub refuses under `--match-head-commit`: no retry, the flag kept, a close block naming the current head (`merge_guard_post.py` restores the marker and suggests a retry, which this overrides). (3) The timeout close says "when one of its conditions fails". (4) Step 1 removes the marker when the walk stops before step 6's chip. Two pins and two mutation entries added (24 entries, each red when blanked); suites and `cairn_validate` green.
+- 2026-10-16: implement round 2 done; status `review`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

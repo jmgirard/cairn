@@ -393,8 +393,16 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
         self.assertIn(
             "When a condition fails, or the marker names no head oid, say in "
             "chat which one. Then take the walk above, which ends at step 6's "
-            "chip. A decline at that chip removes the marker (step 6).",
+            "chip. A decline at that chip removes the marker (step 6). If the "
+            "walk stops before that chip, remove the marker too.",
             self.step1,
+        )
+
+    def test_step_six_refused_merge_stops_without_retry(self):
+        self.assertIn(
+            "If GitHub refuses the merge because the head no longer matches "
+            "`--match-head-commit`, do not retry it and do not drop the flag.",
+            self.step6,
         )
 
     def test_guest_arm_reports_and_stops(self):

@@ -367,10 +367,10 @@
   regression test, review, and a second merge question. Now `/hotfix` writes
   its merge approval, with the head commit you approved, before the CI
   wait, and merges only that commit. A rerun goes back to the CI wait and
-  merges with no new question when nothing changed since your approval:
-  the PR's head is the same commit, no review requests changes, and the
-  candidate rows it matches are the ones the PR body names. If anything
-  changed, the rerun runs the full hotfix checks again and asks you again.
+  merges with no new question only when the PR's head is the same commit,
+  no review requests changes, and the candidate rows it matches are the
+  ones the PR body names. Otherwise, the rerun runs the full hotfix checks
+  again and asks you again.
   In guest mode, a rerun on your open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
 

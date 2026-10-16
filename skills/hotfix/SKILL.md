@@ -151,7 +151,8 @@ can resolve against the fork instead of the base repo.
      reference.
      When a condition fails, or the marker names no head oid, say in chat
      which one. Then take the walk above, which ends at step 6's chip. A
-     decline at that chip removes the marker (step 6).
+     decline at that chip removes the marker (step 6). If the walk stops
+     before that chip, remove the marker too.
    - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
      branch starts with `hotfix-`. Such a PR is the operator's handoff,
      still with the maintainers. Read `gh pr view <N> --repo <base-repo>
@@ -324,8 +325,7 @@ can resolve against the fork instead of the base repo.
    whose fenced next command is `/hotfix` with the PR reference — step 1
    re-derives the PR's state: while the PR is still open and the marker
    names it, step 1's open-PR re-entry resumes at this wait (or takes the
-   walk again when the head moved, a review requested changes, or the rows
-   differ), and for a PR
+   walk again when one of its conditions fails), and for a PR
    merged since, step 1's merged-PR re-entry verifies the merged diff
    post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,
@@ -350,7 +350,12 @@ can resolve against the fork instead of the base repo.
    merges to the default branch without it and consumes it per attempt. Write the marker
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is
-   denied.
+   denied. If GitHub refuses the merge because the head no longer matches
+   `--match-head-commit`, do not retry it and do not drop the flag. Stop
+   with a close block that names the refusal and the PR's current
+   `headRefOid`. Its fenced next command is `/hotfix` with the PR
+   reference. The guard restores the marker, and the rerun finds a moved
+   head and takes the walk.
    **Guest arm — the handoff** (tracking-rules "Collaboration mode"): cairn
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of

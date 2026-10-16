@@ -4117,6 +4117,19 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_a_failed_condition_takes_the_walk",
+        target=HOTFIX,
+        block="If the walk stops\n     before that chip, remove the marker too.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry."
+             "test_step_six_refused_merge_stops_without_retry",
+        target=HOTFIX,
+        block="do not retry it and do not drop the flag.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
         test="TestHotfixOpenPrReentry.test_guest_arm_reports_and_stops",
         target=HOTFIX,
         block="This arm runs in guest mode, for an `OPEN` PR whose head",
