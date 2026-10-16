@@ -156,4 +156,41 @@ Pass 2, review head 037f023f, after return 1 (T6) and the AC6 amendment return.
 - AC1: `pane.test.tsx` "a counted milestone id marks its row with the id, the lowest of two (AC1)" passes (planned M258, blocked M240, M300 and M259 give `M259`), and "a done, dropped, or absent id leaves the row unmarked, planned and blocked mark it (AC1)" passes: `takenRows` over a ROADMAP draws `M258` and `M240` with `◐` and no ✎, the done M230, dropped M231, and absent M999 rows draw `○` with ✎, and a row with M230 and M240 shows `M240`. Mod tests 1758 pass, 0 fail.
 - AC6: read: README.md:476-491 names `/milestone-plan` writing ` — started M<NNN>` in owner and guest mode and guest `/hotfix` writing ` — started #<n>` on disk after the PR opens, says cairn writes no `Candidate row:` line in a guest-mode PR so the tokens are the usual source in guest mode, and says when each mark shows (planned or blocked; PR #n open) and goes (done, dropped, gone; PR closed); DESIGN.md:454-464 and CHANGELOG.md "### New" first entry state the token rule; D-165 records D-108's door on its retained trigger and that a token names another record's id, not the row's own (D-035).
 - AC7: verify slot on 037f023f: scripts 408 OK (21 skipped), hooks 175 OK, plugin validate passed with warnings, marketplace validate passed, mod tests 1758 pass 0 fail.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a note appended after the token (`; narrowed …`) stops the regex matching, so the mark goes while the milestone is planned — fix now, fixed 49541a80 (token ends at any non-letter-or-digit; `Noted row` test)
+- diff-bug #2: `/cairn-triage` compress and merge can drop or bury a live token — follow-up, to "Started mark edges (M252 review)" at hygiene
+- diff-bug #3: no step removes a dead token, though D-165 said a hygiene or triage pass would — fix now for the record (D-165 and README now say it stays and marks nothing), fixed 49541a80; the removal step itself is a follow-up to the same row
+- diff-bug #4: hotfix step 7 narrowing does not cite §1 or say which token goes — fix now, fixed 49541a80
+- diff-bug #5: two rows with one short title share marks and the ✎ refusal — follow-up, to the same row (M252's body lines already behave so)
+- diff-bug #6: a trailing space or period after the token defeats the match — fix now, fixed 49541a80 (`Spaced row` test)
+- diff-bug #7: a `: ` added after a token on a row with no earlier `: ` pulls the token into the short title — follow-up, to the same row
+- diff-bug #8: a `blocked` id whose file was archived as done keeps counting — fix now, fixed 49541a80 (archived-blocked test)
+- diff-bug #9: `/hotfix` step 1 may match and delete a row that a planned milestone's token marks — follow-up, to the same row
+- diff-bug #10: the tail shows `M0258` as written though the count pads — fix now, fixed 49541a80 (`takenRows` gives the padded id)
+- diff-bug #11: D-165's heading annotates D-137 but its body never names it — fix now, fixed 49541a80
+- diff-bug #12: records-hygiene §1 lost its "Kept, …" sentence — reject, planned change: cut to hold the module's 55-line budget, logged at T3, rule unchanged
+- diff-bug #13: "your open hotfix PRs" is narrower than it reads — reject, false: that is the `--author @me` `hotfix-` list exactly
+- diff-bug #14: a token on a wrapped row is missed — reject, false: ROADMAP items are one line each (tracking-rules "Weight caps")
+- blame-history #1: README's "mark goes at the merge" sentence does not cover an M token kept until hygiene — fix now, fixed 49541a80 (guest window stated; in owner mode the hygiene commit sets `done` and narrows together)
+- blame-history #2: D-165 calls M252's recorded guest limit a defect to pass D-108's door — reject, false: the user named the missing guest mark as the thing to fix, it is behavior the skills and mod show their users, and D-164 passed the same door at user request
+- blame-history #3: a `#n` token stays on the row after an unmerged close — follow-up, to the same row (one removal step for dead tokens)
+- blame-history #4: §1's new sentence is unclear on whose token goes when a hotfix narrows a row a milestone also marks — fix now, fixed 49541a80 (hotfix step 7 keeps any other token); the removed sentence as diff-bug #12
+- blame-history #5: a narrowing note after the token silently stops the match — fix now, fixed 49541a80 (as diff-bug #1)
+- blame-history #6: triage has no step to remove a stale token — follow-up, to the same row
+- blame-history #7: hotfix step 1's "only step 7 … removes or narrows a matched row" misleads now — reject, false: appending a token neither removes nor narrows a row
+- blame-history #8: no token on the PR-reference or Copilot re-entry paths — reject, false: the Copilot arm is owner-mode only, and a guest PR-reference run finds a PR whose first run wrote the token after its create
+- blame-history #9: the token is the two-places-one-fact drift D-035 rejected — reject, planned change: D-165's Consequences accept it, and the pane reads status from the milestone row or PR list
+- blame-history #10: "Started mark edges (M252 review)" not yet narrowed — reject, planned change: records-hygiene §1 narrows it at step 9
+- prior-review #1: shared short titles share marks — follow-up, as diff-bug #5
+- prior-review #2: a failed, stale, or missing hotfix list hides or keeps the #n mark — reject, planned change: Scope Out leaves these edges on "Started mark edges (M252 review)"
+- prior-review #3: the stale ✎ refusal gains a second untested branch — follow-up, absorbed by "Plan Button edges (M242 review)", which already names the untested stale press
+- prior-review #4: DESIGN still says `pane-5` at two places — fix now, fixed 49541a80
+- prior-review #5: a guest token write is left on disk with no route to remove it after an unmerged close — follow-up, as blame-history #3
+- prior-review #6: the absorbed row is not yet narrowed — reject, planned change, as blame-history #10
+- prior-review #7: the removed §1 sentence — reject, as diff-bug #12
+- copilot: cairn/milestones/M258-started-row-token.md:10 — fix now, fixed 0ab962ec (PR URL recorded before the review; outdated thread, replied and resolved)
+- copilot: cairn/DESIGN.md:460 — fix now, fixed 49541a80 (replied and resolved)
+- copilot: review body — noted (index of the two threads)
+- Copilot level: Lite (set by GitHub's settings)
+- After the fixes, on 49541a80: mod tests 1759 pass 0 fail, scripts 408 OK, hooks 175 OK, skills/tests 752 OK, both plugin validates pass, `cairn_validate` all checks passed.
 - Gate: `cairn_validate` all checks passed; consistency-gate: verify green on the head, marketplace validate shows no `plugins[N].version` warning, the unreleased CHANGELOG has the started-token entry with no milestone number; no principle changed, so `cairn_impact` skipped.
