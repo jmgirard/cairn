@@ -378,6 +378,11 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
       waiting: waitingRows(parsed, archived),
       candidates: candidateRows(roadmap),
       blocked,
+      taken: takenRows(
+        roadmap,
+        parsed,
+        blocked.filter(row => row.archived).map(row => row.id),
+      ),
     },
   }
 }
@@ -433,8 +438,9 @@ export function prUrl(text: string): string | null {
 
 // The cairn pane's state (M205): the active milestones in full, the
 // queue that scripts/cairn_next.py prints, the candidate rows (M207), and
-// the blocked rows with their pull request numbers (M223). `found` is
-// false when no ROADMAP is found.
+// the blocked rows with their pull request numbers (M223), and the
+// started tokens of the candidate rows (M258). `found` is false when no
+// ROADMAP is found.
 export type PaneState = {
   found: boolean
   milestones: PaneMilestone[]
@@ -443,11 +449,16 @@ export type PaneState = {
   waiting: WaitingRow[]
   candidates: CandidateRow[]
   blocked: BlockedRow[]
+  taken: TakenRow[]
 }
 
 // One candidate row of the ROADMAP: its priority token's level, `normal`
 // with no token, and its short title.
 export type CandidateRow = { priority: 'high' | 'normal' | 'low'; title: string }
+
+// One ` — started <ref>` token of a candidate row (M258), with the row's
+// short title: `ref` is `M<NNN>` or `#<n>` as the token spells it.
+export type TakenRow = { title: string; ref: string }
 
 export type PaneItem = { text: string; checked: boolean }
 
@@ -482,6 +493,7 @@ export const NO_PANE: PaneState = {
   waiting: [],
   candidates: [],
   blocked: [],
+  taken: [],
 }
 
 // How many work-log lines the pane shows, newest last.
@@ -544,6 +556,11 @@ const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
 // to the first ` — `, else all of it (M251; tracking-rules "Candidate short
 // title").
 export function candidateRows(roadmap: string): CandidateRow[] {
+  return candidateTexts(roadmap).map(({ priority, text }) => ({ priority, title: shortTitle(text) }))
+}
+
+// Each candidate row's priority and its text after the priority token.
+function candidateTexts(roadmap: string): { priority: CandidateRow['priority']; text: string }[] {
   const bodies: string[][] = []
   let body: string[] | null = null
   for (const line of splitLines(roadmap)) {
@@ -554,7 +571,7 @@ export function candidateRows(roadmap: string): CandidateRow[] {
     }
     if (body !== null) body.push(line)
   }
-  const rows: CandidateRow[] = []
+  const rows: { priority: CandidateRow['priority']; text: string }[] = []
   for (const line of bodies.flatMap(lines => splitLines(lines.join('\n').replace(COMMENT, '')))) {
     if (!line.startsWith('- ')) continue
     let text = line.slice(2)
@@ -564,11 +581,58 @@ export function candidateRows(roadmap: string): CandidateRow[] {
       priority = match[1]
       text = text.slice(match[0].length)
     }
-    let cut = text.indexOf(': ')
-    if (cut < 0) cut = text.indexOf(' — ')
-    rows.push({ priority, title: (cut < 0 ? text : text.slice(0, cut)).trim() })
+    rows.push({ priority, text })
   }
   return rows
+}
+
+function shortTitle(text: string): string {
+  let cut = text.indexOf(': ')
+  if (cut < 0) cut = text.indexOf(' — ')
+  return (cut < 0 ? text : text.slice(0, cut)).trim()
+}
+
+// A started token (M258): ` — started ` and a milestone id or a pull
+// request number, followed by the row's end or by a character that is not
+// a letter or digit, so a note such as `; narrowed …` or a trailing space
+// after the token leaves it read (M258 review).
+const STARTED_TOKEN = / — started (M[0-9]+|#[0-9]{1,15})(?![0-9A-Za-z])/g
+
+// The started tokens of the candidate rows (M258), in ROADMAP order, each
+// with its row's short title. `/milestone-plan` writes ` — started M<NNN>`
+// on a row its plan absorbs, and `/hotfix`'s guest arm ` — started #<n>`
+// on a row its pull request fixes. Since each token opens with ` — `, a
+// row's short title is the same with or without one. A row with an empty
+// short title gives none, since no title names it.
+export function startedTokens(roadmap: string): TakenRow[] {
+  const out: TakenRow[] = []
+  for (const { text } of candidateTexts(roadmap)) {
+    const title = shortTitle(text)
+    if (title === '') continue
+    for (const match of text.matchAll(STARTED_TOKEN)) out.push({ title, ref: match[1] })
+  }
+  return out
+}
+
+// The tokens the pane counts (M258): an `M<NNN>` token while the ROADMAP
+// table holds that id as `planned` or `blocked`, the two statuses under
+// which that milestone is open and does not hide the candidate list (an
+// `in-progress` or `review` milestone hides it), and every `#<n>` token,
+// which the pane checks against its open hotfix list. A `blocked` id in
+// `archived`, whose file was archived before its row changed (M246), does
+// not count, since that work shipped. A counted id is given at three-digit
+// padding, as the table spells it (M258 review).
+export function takenRows(roadmap: string, rows: RoadmapRow[], archived: string[] = []): TakenRow[] {
+  const shipped = new Set(archived.map(canonId))
+  const live = new Set(
+    rows
+      .filter(row => row.status === 'planned' || row.status === 'blocked')
+      .map(row => canonId(row.id))
+      .filter(id => !shipped.has(id)),
+  )
+  return startedTokens(roadmap)
+    .filter(item => item.ref.startsWith('#') || live.has(canonId(item.ref)))
+    .map(item => (item.ref.startsWith('#') ? item : { title: item.title, ref: canonId(item.ref) }))
 }
 
 // `recommend` in scripts/cairn_next.py, over the rows and the workable list.

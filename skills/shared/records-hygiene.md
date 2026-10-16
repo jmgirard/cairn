@@ -16,8 +16,8 @@ validator. Over either figure, compress or retire content here — never "let it
 milestone is planned.** Candidates graduate at *completion*: the row stays
 through planning and implementation and goes in the post-merge hygiene pass.
 Pruned at plan time, the ROADMAP shows shipped work as pending for the life of
-the branch. Kept, the graduation is one step where the work actually lands. A
-hotfix graduates the same way: `/hotfix` step 7 removes or narrows its row.
+the branch. A hotfix graduates the same way: `/hotfix` step 7 removes or narrows
+its row. A narrowed row loses that milestone's or hotfix's started token.
 
 ## 2. Superseding a decision, and sweeping the archive for one
 

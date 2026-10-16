@@ -443,7 +443,8 @@ An open PR can name the candidate rows that it fixes. In owner mode,
 `/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
 line in the PR body for each row that the merge removes or narrows. No
 other cairn skill writes such a line. Cairn writes none in a guest-mode
-PR, because guest mode puts no cairn terms in a PR body. The
+PR, because guest mode puts no cairn terms in a PR body. Guest mode gets
+the mark from the row's started token (below). The
 same `gh pr list` call reads the body of each listed PR, from any branch.
 A line counts when it opens with exactly `Candidate row: ` and the rest,
 with outer spaces removed, is a candidate row's short title, exactly. A line that you write by hand
@@ -471,6 +472,27 @@ the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
 has not removed the row by then, the row shows its priority mark again.
 A row that they narrow also shows its priority mark after that read. A
 PR opened before these skills wrote `Candidate row:` lines has none.
+
+A candidate row can also carry a started token at its end:
+` — started M<NNN>` or ` — started #<n>`. `/milestone-plan` writes
+` — started M<NNN>` on each row that the plan absorbs, in owner and guest
+mode. In guest mode, `/hotfix` writes ` — started #<n>` on disk on each row
+it matched, after it opens the PR for the maintainers. Cairn writes no
+`Candidate row:` line in a guest-mode PR, so in guest mode the tokens are
+the usual source of the mark. An `M<NNN>` token marks the row while the ROADMAP table
+holds that milestone as `planned` or `blocked`, and the row then shows the
+milestone id at its right end. A `#<n>` token marks the row while PR #n is
+among the open hotfix PRs of the pane's last good read, and the row then
+shows `#<n>`. When PR numbers and a milestone id both mark a row, the row
+shows the lowest PR number. A row that a token marks has no `✎` button. The
+mark goes when the milestone's row becomes `done` or `dropped` or leaves the
+table, or when PR #n is no longer open. In guest mode, an `M<NNN>` mark
+stays after the maintainers merge, until review's hygiene sets the
+milestone `done`. Hygiene then removes the row, or narrows it and removes
+the token. A note after the token, such as `; narrowed …`, leaves it read.
+A token on a dropped milestone or on a PR closed without a merge stays on
+the row and marks nothing. A token opens
+with ` — `, so the row's short title stays the same.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's

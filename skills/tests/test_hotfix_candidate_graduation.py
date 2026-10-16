@@ -103,13 +103,20 @@ class TestHotfixCandidateGraduation(unittest.TestCase):
 
     def test_guest_arm_waits_for_the_maintainers_merge(self):
         self.assertIn(
-            "The handoff leaves each matched candidate row unchanged. Step "
-            "7's guest arm edits it on a later `/hotfix` run with the PR "
-            "reference, after the maintainers merge.",
+            "The handoff changes a matched candidate row only by its started "
+            "token. Step 7's guest arm edits it on a later `/hotfix` run with "
+            "the PR reference, after the maintainers merge.",
+            self.step6,
+        )
+        # M258: the guest handoff appends ` — started #<n>` after the create.
+        self.assertIn(
+            "After the create, append ` — started #<n>` on disk, `<n>` the "
+            "new PR's number, to the end of each candidate row step 1 matched",
             self.step6,
         )
         for phrase in (
-            "*Guest arm:* the handoff leaves each matched row unchanged.",
+            "*Guest arm:* the handoff only appends its started token to each "
+            "matched row.",
             "When the merged-PR re-entry finds that the maintainers merged "
             "the PR, and its post-hoc verification is accepted, remove or "
             "narrow each matched row on disk with no commit, judged against "

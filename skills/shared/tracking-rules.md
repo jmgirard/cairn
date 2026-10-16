@@ -212,6 +212,13 @@ order within a level; the token is the fact the order derives from, never a seco
 inserted at its level by whoever adds it, never appended below the `[low]` rows. The token is not a status, a file, or
 an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134).
 
+**Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
+`/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
+`/hotfix`'s guest arm appends the second on disk, with the new PR's number, to each row its step 1 matched. The cairn
+pane draws its started mark on such a row while the milestone's row is `planned` or `blocked`, or while PR #n is among
+your open hotfix PRs. The token names the id of another record, not an id of the row. A token opens with ` — `, so
+the row's short title stays the same. Records-hygiene §1 says when the token goes.
+
 **Candidate short title.** A candidate row's short title is its text after the `- ` and any `[high] `/`[low] ` token,
 up to the first `: `. A row with no `: ` is cut at its first ` — ` (space, em dash, space). A row with neither is all
 of that text. Outer spaces are removed. The cairn pane shows the short title, and the skills name a row by it: a ✎

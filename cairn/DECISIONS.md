@@ -5939,3 +5939,37 @@ the glyph inside them unchanged.
 **Consequences:** Titles such as "© notice" or "≤ bound" also count as
 holding an icon; they are rare and accepted. Rows in other repos keep
 their icon titles until a `/cairn-triage` pass there retitles them.
+
+### D-165 (2026-10-15): A candidate row that work has taken ends with a ` — started M<NNN>` or ` — started #<n>` token, which the cairn pane reads for its started mark — annotates D-035 and D-137; passes D-108's door on its retained trigger (M258)
+
+**Context:** M252's started mark `◐` reads `Candidate row:` lines from
+the bodies of open PRs. Guest mode puts no cairn text in a PR body
+(D-137), so in guest mode the pane never showed the mark, and the operator could not see
+which candidates were already planned or handed off.
+
+**Decision:** At the user's request, planned as M258, `/milestone-plan`
+ends each candidate row that a plan absorbs in full or in part with
+` — started M<NNN>`, in both modes, in the plan commit or on disk. In
+guest mode, `/hotfix` ends each row it matched with ` — started #<n>` on
+disk after it opens the PR. The pane counts an M token while the table
+holds that id as `planned` or `blocked`, and a #n token while its open
+hotfix list holds n, so a token whose work ended marks nothing. A row
+that hygiene narrows loses the token. D-108's door is passed on its
+retained trigger, because the trigger is a defect in shipped behavior:
+the guest-mode pane never drew the mark M252 shipped.
+
+**Rejected:** A `Candidate row:` line in the milestone file, because the
+pane reads the ROADMAP and not planned milestone files, and it would not
+cover a hotfix; falsified by a plan that absorbs a row but writes no
+token. A hotfix file or one tracker file for guest hotfixes, because each
+needs its own format and cleanup, while `/hotfix` step 7 already edits
+the row; falsified by a guest hotfix whose token outlives the row edit.
+A token at PR open in owner mode, because it needs a default-branch
+commit there, which M252 declined; owner mode keeps the PR-body line.
+
+**Consequences:** D-035 keeps a candidate row free of an ID and a
+sub-status. A token names another record's id, not the row's own, and it
+holds no status, since the pane reads the status from the milestone row
+or the PR list. A token stays on a row after its milestone is dropped or
+its PR closes unmerged, since no step removes it there, and it marks
+nothing.
