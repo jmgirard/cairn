@@ -161,5 +161,8 @@ Review head 1ff4cdee; branch contains origin/main (0/0 ahead-behind on main). PR
 - prior-review #2: the new no-read assertions trust `settled()`'s 20 ms — reject (planned change: Out keeps the 20 ms window in the row).
 - prior-review #3: DESIGN.md is stale and the ROADMAP row is unnarrowed — fix now for DESIGN (as blame-history #1), fixed 12f1cbf9; the row at hygiene (as diff-bug #3).
 - prior-review #4: CHANGELOG's earlier Unreleased bullet ("The cairn pane fills again after `/resume`…") says an unshown pane reads at its first draw, unless an open read first, which omits the second listing — fix now, fixed 12f1cbf9.
+- copilot: cairn/milestones/M256-pane-late-placement.md:14 — fix now (the Branch/PR header lacked the PR URL; already added at review start), fixed 1ff4cdee; replied and resolved.
+- copilot: review body (COMMENTED on 4c647a14) — noted; its one anchored finding is the thread above.
+- Copilot level: Lite (set by GitHub's settings). Conversation read: no issue comments; no human reviews.
 - prior-review #5: CHANGELOG `/clear` only and the wrap — reject (as diff-bug #7).
 - prior-review #6: the AC1 test's `until` handshake — reject (false as a regression: the file's M238 and M255 held-promise tests use the same pattern).
