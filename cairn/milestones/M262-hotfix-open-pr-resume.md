@@ -135,10 +135,10 @@ Button".
       on its own (state, marker prefix, PR named, head oid) and each
       outcome, and see each one red. Hand-run
       `python3 -m unittest discover -s skills/tests`.
-- [ ] T4: Reword README.md line 434 and the `hooks/status/pane.ts:541-542`
+- [x] T4: Reword README.md line 434 and the `hooks/status/pane.ts:541-542`
       comment so neither gives a reason this milestone makes false, and add
       the CHANGELOG.md Unreleased entry.
-- [ ] T5: Run the `verify` slot from the repo root, checking each exit code.
+- [x] T5: Run the `verify` slot from the repo root, checking each exit code.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -166,6 +166,8 @@ Button".
 - 2026-10-16: T1 done: step 1 gains the "Open-PR re-entry (M262)" paragraph with owner and guest arms. A moved head's gate shows the commits since the approved oid (`git log -p <oid>..FETCH_HEAD`), or `gh pr diff` when no oid or the oid is not an ancestor, because the chip's regression-test evidence was shown at the earlier approval. Step 1 names the marker as "step 6's merge-guard marker", not by path, so `test_external_pr_intake`'s one-mention pin (one approval mechanism) holds. The simple-english lint hook reports 169 hits for the whole file, all but 2 (one 26-word sentence, one trailing condition) in text this milestone does not change. Gating suites and `skills/tests` green.
 - 2026-10-16: T2 done: step 6 states the order on approval (push and any create, marker, CI wait, merge) and the marker line `… for PR #<N> at <headRefOid>`, the oid read by `gh pr view <N> --json headRefOid` after the push; the timeout close names the open-PR re-entry (still open, marker names it) and the merged-PR re-entry. The guest handoff close ("whose step 1 re-derives the PR's state") reads true against T1's guest arm, unchanged. Suites green.
 - 2026-10-16: T3 done: `TestHotfixOpenPrReentry` (9 tests) in `skills/tests/test_resume_routing.py` pins the step-1 route and step 6's order, marker line, and timeout close; 14 mutation entries (each trigger part and each outcome on its own) each turn the guard red when blanked, checked by `guard_fails_when_blanked` per entry; `skills/tests` 761 tests OK.
+- 2026-10-16: T4 done: README's pane paragraph now says "A hotfix line has no Button." with no reason, the `hooks/status/pane.ts` comment drops its "No command resumes" sentence, and CHANGELOG.md's Unreleased Fixes section opens with the open-PR resume entry (owner and guest). A whitespace-collapsed sweep of 323 tracked files outside `cairn/` finds neither stale phrase (control phrase found).
+- 2026-10-16: T5 done: verify slot green (scripts and hooks suites exit 0, both `claude plugin validate` exit 0, `claude plugin test .` 1777 pass 0 fail); `skills/tests` exit 0.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -431,7 +431,7 @@ or token in it. The pane lists each PR from a `hotfix-` branch under a
 `HOTFIXES` heading with the count, after `BLOCKED` and before the
 candidates. Each line shows `#<n>` and the PR's title, and after a read
 the same word and count line that a blocked line shows. A hotfix line has
-no Button, because no command resumes an open hotfix PR yet. A hotfix PR
+no Button. A hotfix PR
 that is also a blocked milestone's PR shows only on the blocked line, and
 the count leaves it out. When the
 list call fails, the pane keeps the last list it read for the same repo.
