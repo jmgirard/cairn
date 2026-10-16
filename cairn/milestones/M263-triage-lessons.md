@@ -177,3 +177,37 @@ Review head 5fffc716, PR #275 (opened at review start, Copilot arm). Evidence is
 - AC7: scripts/tests 408 OK, hooks/tests 175 OK, both `claude plugin validate` exit 0 with no `plugins[N].version` warning, `claude plugin test .` 1777 pass 0 fail, `skills/tests` 786 OK. PASS.
 - Consistency gate: `cairn_validate.py` exit 0; no principle changed, `cairn_impact` skipped; profile gate green, CHANGELOG entry present with no milestone number.
 - spawned: diff-bug, blame-history, prior-review.
+- diff-bug #1: an ownership drop could delete content the owning section did not already hold, since the pass edits only LESSONS.md — fix now: the exit needs "the section that already holds the lesson's content. The pass moves nothing into it."; D-169 says so, fixed 5020b1cf.
+- diff-bug #2: a false lesson's flag lived only in the chat table, and an all-keep pass writes no stamp — fix now: a lesson flagged false or stale makes steps 4 to 6 run for a stamp naming it and its evidence; the D-045 citation now covers only "corrected in place", fixed 5020b1cf.
+- diff-bug #3: skipping the live-milestone notes let a pass re-promote or drop lessons a planned milestone is moving — fix now: the notes run, and a lesson a live milestone's file quotes or names is `keep`, fixed 5020b1cf.
+- diff-bug #4: D-169's Context said M262's hygiene "could not add a lesson", which M262's archive does not say — fix now: the Context states the cap condition without the M262 claim, fixed 5020b1cf.
+- diff-bug #5: `promote` names `skills/shared/`, which an adopting repo does not have — fix now: "A repo with no `skills/shared/` directory gets no `promote`.", fixed 5020b1cf.
+- diff-bug #6: the default pass's drop reasons and readiness class were not switched off for lessons — fix now: "A lesson leaves only by the two exits above", the default reasons and readiness named as not applying, fixed 5020b1cf.
+- diff-bug #7: a pinned lesson could be edited as a merge survivor — fix now: "A pinned lesson is neither a merge survivor nor merged away.", fixed 5020b1cf.
+- diff-bug #8: in guest mode the pin files and enforcement tests were read from the working tree — fix now: read at `<base>/<default-branch>`, as step 2's guest rule states for code, fixed 5020b1cf.
+- diff-bug #9: the close block's safety line names `/cairn-triage`, which never re-examines a lesson — fix now: the lessons close names `/cairn-triage lessons`, fixed 5020b1cf.
+- diff-bug #10: the two-file cap check sends back a pass that trims but does not get under a cap already exceeded — follow-up, "Lessons triage edges (M263 review)".
+- diff-bug #11: tracking-rules' guest-triage sentence names the default pass's drop classes, and review's "nothing else records it" — reject, false: the tracking-rules sentence describes the default pass, whose guest stamp still names those classes, and the lessons section states its own guest stamp; the review sentence governs review hygiene's own retirements.
+- diff-bug #12: the maturation bar dropped D-055's "about authoring or verifying, not a fact about this repo's tools or runtime" — fix now: the full condition, pin and mutation block updated, fixed 5020b1cf.
+- diff-bug #13: a bad argument was refused only after the owner-mode fetch and pull — fix now: "That check runs first, before the owner-mode preconditions.", fixed 5020b1cf.
+- diff-bug #14: the claim-audit work-log line says "34 entries red" where the M263 entries number 25 — noted: 34 counted the 25 `test_triage_lessons` entries plus the 9 `test_cost_audit_line` entries checked in the same run; 25 are new.
+- diff-bug #15: the H1, DESIGN.md line, CHANGELOG entry, and D-169 have no guard pin — reject, proportionality: AC6 is verified by reading them, and D-109 owes no guard for each surface.
+- diff-bug #16: test comments cite lessons by line number ("LESSONS :49"), which go stale after any drop — follow-up, "Lessons triage edges (M263 review)" (pre-existing pattern).
+- blame-history #1: in guest mode a dropped lesson has no git copy, and the stamp alone outlives it until the next pass — follow-up, "Lessons triage edges (M263 review)" (the same gap as "Guest triage drop evidence outlives one stamp").
+- blame-history #2: same as diff-bug #8 — fix now, fixed 5020b1cf.
+- blame-history #3: review hygiene's cap-bite path did not name the new pass — fix now: `skills/milestone-review/SKILL.md` step 9 fences `/cairn-triage lessons` when the cap bites; the pinned "never re-sweep every lesson" sentence stays, fixed 5020b1cf.
+- blame-history #4: the pass frees almost nothing on this repo (T6: one compress, no drop) — noted, stated at the merge question.
+- blame-history #5: D-169 is framed as an annotation, not a narrowing — reject, planned change: AC6 asks for an entry annotating D-051 and D-055, and D-051's exits stand unchanged.
+- blame-history #6: D-169 did not say how it passes D-108's door on new record rules — fix now: D-169 walks the door on its retained trigger (the review skill's lesson capture had no room at the caps), fixed 5020b1cf; surfaced at the merge question.
+- blame-history #7: the retired-module grep cannot tell a creation from a retirement — fix now: "read each hit, since an entry that created the module did not retire it", fixed 5020b1cf.
+- blame-history #8: same as diff-bug #3 — fix now, fixed 5020b1cf.
+- blame-history #9: the ownership exit cannot move content — fix now, with diff-bug #1, fixed 5020b1cf.
+- blame-history #10: `git grep -l "LESSONS.md"` misses a test that builds the path — follow-up, "Lessons triage edges (M263 review)".
+- prior-review #1: same as diff-bug #8 (M235's guest base-ref fix) — fix now, fixed 5020b1cf.
+- prior-review #2: same as blame-history #1 — follow-up.
+- After the fixes: 25 mutation entries red, verify slot green (scripts 408, hooks 175, both validates, plugin test 1777 pass 0 fail), `skills/tests` 786 OK, `cairn_validate` green, rulebook unchanged at 679 lines / 65,365 bytes.
+- copilot: cairn/milestones/M263-triage-lessons.md:14 (PR URL in the header) — fix now, fixed 5fffc716.
+- copilot: skills/tests/test_triage_lessons.py:211 (pin DESIGN.md and CHANGELOG too) — reject, proportionality (D-109); same as diff-bug #15.
+- copilot: cairn/milestones/M263-triage-lessons.md:157 (work log's 65,305 vs 65,365) — reject: the work log is append-only history, and the later claim-audit line records the re-measure.
+- copilot: review body (3 findings, each anchored to a thread above) and 3 empty-body reviews from the replies — noted.
+- Copilot level: Lite (set by GitHub's settings); reviewed an earlier head. PR conversation: no issue comments, no other reviews.
