@@ -166,3 +166,24 @@ Pass 1 (2026-10-16), on m261-pane-hide-started at `fcff1e41`, main level with or
 - AC4 evidence: the AC4 grep from the repo root prints one line, `cairn/DESIGN.md:79`, the provenance entry, which holds "a started row hidden in M261". Hiding is described at README.md:452-455 and 483, cairn/DESIGN.md:315-321, tracking-rules.md:218, and CHANGELOG.md:176, 180, 194, all three CHANGELOG lines inside `## Unreleased` (lines 3-460).
 - AC5 evidence: verify slot from the repo root, each exit 0: scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, `claude plugin validate` plugin.json and marketplace.json, `claude plugin test .` 1777 pass 0 fail.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed; no DESIGN principle text changed, so `cairn_impact` skipped; verify green on the review head (above); marketplace validate shows no `plugins[N].version` warning; CHANGELOG `## Unreleased` carries the change, with no milestone number in its added lines.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the kit test "a read hides the line" lost its positive control and would pass on an empty drawing — fix now (asserts `blocked-M101` drawn)
+- diff-bug #2: D-167 says an open milestone PR's row shows in no other section, but the milestone reads `planned` on the default branch and shows in Workable or Waiting — fix now (sentence corrected)
+- diff-bug #3: hotfix SKILL.md lines 266 and 310 dropped the no-active-milestone condition that milestone-review's sentence keeps — fix now
+- diff-bug #4: the test comment before `bodied` still said a body line "draws as started" — fix now
+- diff-bug #5: `MARKED = undefined` names a mark that no longer exists — fix now (renamed `HIDDEN`)
+- diff-bug #6: the all-hidden test's control relied on unstated alignment between `all` and `one` — fix now (`all` built from `one`, alignment asserted)
+- diff-bug #7: README "the effect of that milestone's PR shows" is vague — fix now (names the hidden row)
+- blame-history #1: the "Started mark edges (M252 review)" ROADMAP row still describes `◐` — fix now (row reworded, title kept)
+- blame-history #2: D-167's milestone-PR sentence — same as diff-bug #2, fix now
+- blame-history #3: the stale-press branch of `pressCandidate` stays untested — follow-up, already recorded in "Plan Button edges (M242 review)"; no new row
+- blame-history #4: `startedRefs` runs per row as before, no behavior change — reject (false: no defect)
+- blame-history #5: DESIGN.md:79 still names the `◐` mark of M252 — reject (planned change: the provenance entry is history, AC4 keeps it)
+- blame-history #6: one long README line — reject (style)
+- blame-history #7: CHANGELOG entries rewritten in place rather than a new entry — reject (planned change: the entries never shipped, T3)
+- prior-review #1: the "Started mark edges" row is stale — same as blame-history #1, fix now
+- prior-review #2: the row's edges now hide or show a row silently — fix now through the same row rewording
+- prior-review #3: same-title rows hide together — fix now through the same row rewording ("same-title rows hide together")
+- prior-review #4: stale-press branch untested — same as blame-history #3, follow-up in "Plan Button edges (M242 review)"
+- prior-review #5: the no-heading test was hard to follow — same as diff-bug #6, fix now
+- prior-review #6: a guest-mode row has no on-screen cue while hidden before hygiene — reject (planned change: hiding with no trace was the user's choice at the question set)

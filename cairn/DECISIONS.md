@@ -6028,7 +6028,8 @@ operator who misses started work because no other pane section shows it.
 
 **Consequences:** A planned or blocked milestone still shows in the
 pane's Workable, Waiting, or Blocked section, and an open hotfix PR in
-its Hotfixes section. An open milestone PR that names a row shows in no
-other section. A ✎ press keeps
+its Hotfixes section. A milestone whose PR is open still reads `planned`
+on the default branch, so it shows in the Workable or Waiting section
+there. A ✎ press keeps
 the row's index in `state.candidates`, so a hidden row moves no other
 row's press.

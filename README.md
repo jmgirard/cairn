@@ -464,8 +464,8 @@ The PRs that hide rows change only when the pane reads its
 PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
 open. The pane lists candidate rows only
 while no milestone is active, so while a milestone's branch is checked
-out, the effect of that milestone's PR shows only in another checkout of the
-default branch. Without the opt-in Copilot round (below), a PR that
+out, the row that milestone's PR names is hidden only in another checkout of
+the default branch. Without the opt-in Copilot round (below), a PR that
 `/milestone-review` or an authored `/hotfix` opens does so only after you
 approve the merge. After the merge, the row shows again at
 the pane's first successful PR read, unless another open PR also names

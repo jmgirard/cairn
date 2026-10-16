@@ -4015,7 +4015,8 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
 })
 
 // M252: a candidate row that an open pull request's body names in a
-// `Candidate row: <short title>` line draws as started. The items each case
+// `Candidate row: <short title>` line counts as started, and since M261 the
+// pane does not draw it. The items each case
 // expects are written out by hand.
 const bodied = (n: number, branch: string, body: unknown) => ({ ...pr(n, branch), body })
 
@@ -4192,12 +4193,17 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   })
 
   test('with every row hidden there is no heading and no gap (AC2)', () => {
-    const all = state.candidates.map((row, i) => ({ title: row.title === '' ? 'never' : row.title, number: 100 + i }))
-    const one: PaneState = { ...state, candidates: state.candidates.filter(row => row.title !== '' && row.title !== 'case row') }
+    // Every titled row, each named by one item. An empty title is never
+    // hidden, so it is left out.
+    const one: PaneState = { ...state, candidates: state.candidates.filter(row => row.title !== '') }
+    const all = one.candidates.map((row, i) => ({ title: row.title, number: 100 + i }))
     const lines = layout(one, [], true, {}, [], all)
     expect(lines.filter(line => line.key.startsWith('candidate'))).toEqual([])
-    // The control: one row left draws the heading and its gap.
+    // The control: with the first row's item gone, that row draws, with the
+    // heading and its gap.
+    expect(one.candidates[0].title).toBe('High row')
     const left = layout(one, [], true, {}, [], all.slice(1))
+    expect(left.filter(line => /^candidate-\d+$/.test(line.key)).map(line => line.key)).toEqual(['candidate-0'])
     expect(left.filter(line => line.key.startsWith('candidates-head')).map(line => line.key)).toEqual([
       'candidates-head-gap',
       'candidates-head',
@@ -4359,7 +4365,7 @@ describe('a candidate row that a started token marks is not drawn (M258 AC1-AC3,
 // and with it the Candidates heading (M261 AC1, AC2).
 describe('the pane read stores the items with the hotfix list and hides the rows they name (M252 AC3, M261)', () => {
   const STARTED_BODY = 'Fixes it.\nCandidate row: An idea for later\n'
-  const MARKED = undefined
+  const HIDDEN = undefined
   const PLAIN = '○ An idea for later'
   const GOOD = () => listReply([bodied(1265, 'm252-pane', STARTED_BODY)])
   const candidateLine = async $ => (await linesAt($)).find(line => line.key === 'candidate-0')?.text
@@ -4371,8 +4377,10 @@ describe('the pane read stores the items with the hotfix list and hides the rows
     await $.command.run({ command: COMMAND })
     await calls.settled()
     expect(calls.lists).toEqual([listCall(ORIGIN)])
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     expect((await keysOf($)).filter(key => key.startsWith('candidate'))).toEqual([])
+    // The control: the pane drew, with its blocked rows (M261 review).
+    expect(await keysOf($)).toContain('blocked-M101')
     expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
   })
 
@@ -4382,10 +4390,10 @@ describe('the pane read stores the items with the hotfix list and hides the rows
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => 'reject'
     await pressKey($, 'cairn-pane-refresh')
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => listReply([])
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
@@ -4399,7 +4407,7 @@ describe('the pane read stores the items with the hotfix list and hides the rows
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     delete remotes.origin
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
@@ -4414,7 +4422,7 @@ describe('the pane read stores the items with the hotfix list and hides the rows
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => 'reject'
     copy.cwd = '/other'
     await $.turn.complete(turn())
