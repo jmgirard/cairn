@@ -1,6 +1,6 @@
 # M264: Re-test Haiku 5.5 against Sonnet 5.5 on search and history review, three runs each
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —

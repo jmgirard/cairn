@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M264 | Re-test Haiku 5.5 against Sonnet 5.5 on search and history review, three runs each | in-progress | — | normal | milestones/M264-haiku-sonnet-rerun.md |
+| M264 | Re-test Haiku 5.5 against Sonnet 5.5 on search and history review, three runs each | review | — | normal | milestones/M264-haiku-sonnet-rerun.md |
 | M263 | /cairn-triage lessons triages LESSONS.md | done | — | normal | milestones/archive/M263-triage-lessons.md |
 | M262 | A rerun of /hotfix on an open PR resumes the merge | done | — | normal | milestones/archive/M262-hotfix-open-pr-resume.md |
 | M261 | The cairn pane hides started candidate rows | done | — | normal | milestones/archive/M261-pane-hide-started.md |
