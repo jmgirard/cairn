@@ -215,8 +215,8 @@ an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `no
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
 `/hotfix`'s guest arm appends the second on disk, with the new PR's number, to each row its step 1 matched. The cairn
-pane draws its started mark on such a row while the milestone's row is `planned` or `blocked`, or while PR #n is among
-your open hotfix PRs. The token names the id of another record, not an id of the row. A token opens with ` — `, so
+pane leaves such a row out of its Candidates list while the milestone's row is `planned` or `blocked`, or while PR #n
+is among your open hotfix PRs. The token names the id of another record, not an id of the row. A token opens with ` — `, so
 the row's short title stays the same. Records-hygiene §1 says when the token goes. `/cairn-triage` proposes at its gate
 a missing `M<NNN>` token for a row whose short title a `planned`, `in-progress`, `blocked`, or `review` milestone's file
 quotes. It also proposes removing a dead token. A dead token names a milestone that is `done`, `dropped`, gone from the

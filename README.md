@@ -444,34 +444,34 @@ An open PR can name the candidate rows that it fixes. In owner mode,
 `/hotfix` and `/milestone-review` put one `Candidate row: <short title>`
 line in the PR body for each row that the merge removes or narrows. No
 other cairn skill writes such a line. Cairn writes none in a guest-mode
-PR, because guest mode puts no cairn terms in a PR body. Guest mode gets
-the mark from the row's started token (below). The
+PR, because guest mode puts no cairn terms in a PR body. In guest mode,
+the row's started token (below) does this job. The
 same `gh pr list` call reads the body of each listed PR, from any branch.
 A line counts when it opens with exactly `Candidate row: ` and the rest,
 with outer spaces removed, is a candidate row's short title, exactly. A line that you write by hand
-counts the same way. A candidate row whose short title such a line names
-shows `◐` in the review color in place of its priority mark. It also
-shows the PR's `#<n>` at its right end, the lower number when two PRs
-name it, and no `✎` button. Only your own open PRs on the base remote
-count.
+counts the same way. The pane leaves out of its Candidates list each
+candidate row whose short title such a line names, because that PR
+already works on it. The Candidates heading counts only the rows it
+shows, and the pane draws no heading when it hides every row. Only your
+own open PRs on the base remote count.
 
 A `Candidate row:` line inside a fenced code block does not count. A
 fence line opens with three backticks or three tildes after optional
 spaces. Such a block starts at a fence line and ends at the next fence
 line or at the end of the body.
 
-The PR numbers behind the mark change only when the pane reads its
+The PRs that hide rows change only when the pane reads its
 PRs: at an open, a ↻ press, or a `/clear` or `/resume` while the pane is
 open. The pane lists candidate rows only
 while no milestone is active, so while a milestone's branch is checked
-out, the mark of that milestone's PR shows only in another checkout of the
-default branch. Without the opt-in Copilot round (below), a PR that
+out, the row that milestone's PR names is hidden only in another checkout of
+the default branch. Without the opt-in Copilot round (below), a PR that
 `/milestone-review` or an authored `/hotfix` opens does so only after you
-approve the merge. After the merge, the row's `◐` and PR number go at
+approve the merge. After the merge, the row shows again at
 the pane's first successful PR read, unless another open PR also names
-the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
-has not removed the row by then, the row shows its priority mark again.
-A row that they narrow also shows its priority mark after that read. A
+the row or a counted started token (below) is on it. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
+has not removed the row by then, the row shows with its priority mark.
+A row that they narrow also shows again after that read. A
 PR opened before these skills wrote `Candidate row:` lines has none.
 
 A candidate row can also carry a started token at its end:
@@ -480,19 +480,16 @@ A candidate row can also carry a started token at its end:
 mode. In guest mode, `/hotfix` writes ` — started #<n>` on disk on each row
 it matched, after it opens the PR for the maintainers. Cairn writes no
 `Candidate row:` line in a guest-mode PR, so in guest mode the tokens are
-the usual source of the mark. An `M<NNN>` token marks the row while the ROADMAP table
-holds that milestone as `planned` or `blocked`, and the row then shows the
-milestone id at its right end. A `#<n>` token marks the row while PR #n is
-among the open hotfix PRs of the pane's last good read, and the row then
-shows `#<n>`. When PR numbers and a milestone id both mark a row, the row
-shows the lowest PR number. A row that a token marks has no `✎` button. The
-mark goes when the milestone's row becomes `done` or `dropped` or leaves the
-table, or when PR #n is no longer open. In guest mode, an `M<NNN>` mark
-stays after the maintainers merge, until review's hygiene sets the
-milestone `done`. Hygiene then removes the row, or narrows it and removes
-the token. A note after the token, such as `; narrowed …`, leaves it read.
-A token on a dropped milestone or on a PR closed without a merge marks
-nothing. `/cairn-triage` proposes removing a dead token: one whose
+what usually hides a row. An `M<NNN>` token hides the row while the ROADMAP table
+holds that milestone as `planned` or `blocked`. A `#<n>` token hides the
+row while PR #n is among the open hotfix PRs of the pane's last good read.
+The row shows again when the milestone's row becomes `done` or `dropped`
+or leaves the table, or when PR #n is no longer open. In guest mode, an
+`M<NNN>` token keeps the row hidden after the maintainers merge, until
+review's hygiene sets the milestone `done`. Hygiene then removes the row,
+or narrows it and removes the token. A note after the token, such as
+`; narrowed …`, leaves it read. A token on a dropped milestone or on a PR
+closed without a merge hides nothing. `/cairn-triage` proposes removing a dead token: one whose
 milestone is `done`, `dropped`, gone from the table, or archived, or whose
 PR is merged or closed. A token on an in-progress or review milestone is
 not dead. Triage also proposes adding a missing ` — started M<NNN>` token to a

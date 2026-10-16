@@ -1225,10 +1225,10 @@ async function pressCandidate($, index: string, title: string) {
     const row = Object.prototype.hasOwnProperty.call(rows, index) ? rows[Number(index)] : undefined
     const drawn = state.found && state.milestones.length === 0 && row?.title === title
     if (!drawn || knownStep(await read($, step)) !== null) return undefined
-    // A row that an open pull request's body names draws no ✎ (M252), nor
-    // one a counted started token marks (M258), so a press from a drawing
-    // made before the mark plans nothing. No test reaches it, since the
-    // test kit presses only the current drawing.
+    // A row that an open pull request's body names (M252), or that a
+    // counted started token marks (M258), draws no line (M261), so a press
+    // from a drawing made before the row was hidden plans nothing. No test
+    // reaches it, since the test kit presses only the current drawing.
     const held = await read($, hotfixes)
     const ours = held.root !== null && held.root === (await read($, band)).root
     const { numbers, ids } = startedRefs(title, state.taken, ours ? held.prs : [], ours ? held.started : [])

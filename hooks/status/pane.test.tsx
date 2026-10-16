@@ -10,7 +10,6 @@ import {
   NO_ROADMAP,
   OPEN_MARK,
   PRIORITY_MARK,
-  STARTED_MARK,
   nextLabel,
   paneLines as layout,
   prWord,
@@ -466,10 +465,9 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       expect((await titleOf(2)).props.color).toBe('inactive')
       expect((await titleOf(0)).props.color).toBe(undefined)
       expect((await titleOf(1)).props.color).toBe(undefined)
-      // The constants hold exactly these marks, the started one included
-      // (M252), so no stray color or bold rides on the normal mark.
+      // The constant holds exactly these marks, so no stray color or bold
+      // rides on the normal mark.
       expect(PRIORITY_MARK).toEqual(MARKS)
-      expect(STARTED_MARK).toEqual({ text: '◐', color: 'success' })
       await ui.unmount()
     })
 
@@ -1559,6 +1557,31 @@ describe("a press of ✎ runs /clear, and /cairn:milestone-plan with the row's t
       expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: TITLES[i] }])
     })
   }
+})
+
+// The copy's first row gains a counted started token, so it is hidden, and
+// a press on the row after it plans that row's own title (M261 AC3).
+describe('a ✎ press on a line drawn after a hidden row plans its own row (M261 AC3)', () => {
+  test('the hidden row draws no line or ✎, and the next row plans its title', async ($, on) => {
+    const copy = candidatesPlus()
+    const path = Object.keys(copy.files).find(each => each.endsWith('cairn/ROADMAP.md')) as string
+    copy.files[path] = copy.files[path].replace(
+      '- [high] High row: the text after the first colon and space is not shown — added 2026-01-01',
+      '- [high] High row: the text after the first colon and space is not shown — added 2026-01-01 — started M031',
+    )
+    expect(copy.files[path]).toContain('— started M031')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const keys = await keysOf($)
+    expect(keys.filter(key => /^candidate-\d+$/.test(key))[0]).toBe('candidate-1')
+    expect(keys).not.toContain('candidate-0')
+    await pressKey($, `${PANE_PLAN}-1`)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: TITLES[1] }])
+    expect(TITLES[1]).toBe('Normal row')
+  })
 })
 
 describe('a guarded ✎ press runs nothing (M242 AC3)', () => {
@@ -3992,7 +4015,8 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
 })
 
 // M252: a candidate row that an open pull request's body names in a
-// `Candidate row: <short title>` line draws as started. The items each case
+// `Candidate row: <short title>` line counts as started, and since M261 the
+// pane does not draw it. The items each case
 // expects are written out by hand.
 const bodied = (n: number, branch: string, body: unknown) => ({ ...pr(n, branch), body })
 
@@ -4096,7 +4120,7 @@ describe('startedRows reads the Candidate row lines of each listed body (M252 AC
   })
 })
 
-describe('a candidate line that an item names draws as started (M252 AC2)', () => {
+describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () => {
   const state: PaneState = {
     found: true,
     milestones: [],
@@ -4126,28 +4150,65 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
     { title: '', number: 17 },
   ]
   const rows = (acts: boolean, started = items) => layout(state, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+  const heads = (started = items) => layout(state, [], true, {}, [], started).filter(line => line.key.startsWith('candidates-head'))
 
   for (const acts of [true, false]) {
-    test(`matched rows take the mark and number and lose ✎ (acts ${acts})`, () => {
+    test(`matched rows draw no line, and the others draw as before under their own keys (acts ${acts})`, () => {
       const got = rows(acts)
       const before = rows(acts, [])
-      const want: Record<number, number> = { 0: 11, 1: 12, 2: 13, 4: 15, 5: 15 }
-      expect(got.map(line => line.key)).toEqual(state.candidates.map((_, i) => `candidate-${i}`))
-      got.forEach((line, i) => {
-        if (want[i] === undefined) {
-          // Unmatched, a title that differs only by case, and an empty title.
-          expect([i, line]).toEqual([i, before[i]])
-          return
-        }
-        expect([i, line.lead[0]]).toEqual([i, { text: '◐', color: 'success' }])
-        expect([i, line.tail]).toEqual([i, [{ text: '  ' }, { text: `#${want[i]}`, color: GRAY }]])
-        expect([i, line.buttons, line.target, line.title]).toEqual([i, undefined, undefined, undefined])
-        // The title keeps its own style, and so does the rest of the lead.
-        expect([i, line.text, line.lead.slice(1)]).toEqual([i, before[i].text, before[i].lead.slice(1)])
-      })
-      expect(STARTED_MARK).toEqual({ text: '◐', color: 'success' })
+      // Unmatched, a title that differs only by case, and an empty title.
+      const kept = [3, 6, 7]
+      expect(got.map(line => line.key)).toEqual(kept.map(i => `candidate-${i}`))
+      got.forEach((line, n) => expect([line.key, line]).toEqual([line.key, before[kept[n]]]))
+    })
+
+    // A hidden row between a high and a low row, the low one with an empty
+    // short title, so neither a priority mark nor the ✎ rule shifts.
+    test(`a hidden row between a high and an untitled low row leaves both as before (acts ${acts})`, () => {
+      const three: PaneState = {
+        ...state,
+        candidates: [
+          { priority: 'high', title: 'Up' },
+          { priority: 'normal', title: 'Taken' },
+          { priority: 'low', title: '' },
+        ],
+      }
+      const draw = (started: { title: string; number: number }[]) =>
+        layout(three, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+      const before = draw([])
+      const got = draw([{ title: 'Taken', number: 5 }])
+      expect(got.map(line => line.key)).toEqual(['candidate-0', 'candidate-2'])
+      expect(got).toEqual([before[0], before[2]])
+      expect([got[0].lead[0], got[1].lead[0]]).toEqual([MARKS.high, MARKS.low])
+      expect([got[0].buttons, got[1].buttons]).toEqual(acts ? [['plan'], undefined] : [undefined, undefined])
     })
   }
+
+  test('the heading counts the drawn rows only (AC2)', () => {
+    const [gap, head] = heads()
+    expect([gap.key, head.key]).toEqual(['candidates-head-gap', 'candidates-head'])
+    expect(head.lead.slice(-1)).toEqual([{ text: '3', color: GRAY }])
+    // The control: with no items every row draws and counts.
+    expect(heads([])[1].lead.slice(-1)).toEqual([{ text: `${state.candidates.length}`, color: GRAY }])
+  })
+
+  test('with every row hidden there is no heading and no gap (AC2)', () => {
+    // Every titled row, each named by one item. An empty title is never
+    // hidden, so it is left out.
+    const one: PaneState = { ...state, candidates: state.candidates.filter(row => row.title !== '') }
+    const all = one.candidates.map((row, i) => ({ title: row.title, number: 100 + i }))
+    const lines = layout(one, [], true, {}, [], all)
+    expect(lines.filter(line => line.key.startsWith('candidate'))).toEqual([])
+    // The control: with the first row's item gone, that row draws, with the
+    // heading and its gap.
+    expect(one.candidates[0].title).toBe('High row')
+    const left = layout(one, [], true, {}, [], all.slice(1))
+    expect(left.filter(line => /^candidate-\d+$/.test(line.key)).map(line => line.key)).toEqual(['candidate-0'])
+    expect(left.filter(line => line.key.startsWith('candidates-head')).map(line => line.key)).toEqual([
+      'candidates-head-gap',
+      'candidates-head',
+    ])
+  })
 
   // The lines the pre-M252 code drew, written out by hand: the priority
   // mark, no tail, and ✎ on each titled row while `acts` is true.
@@ -4166,7 +4227,7 @@ describe('a candidate line that an item names draws as started (M252 AC2)', () =
 // M258: a counted ` — started <ref>` token on the row marks it too. The
 // reader keeps an `M<NNN>` token only while its milestone is `planned` or
 // `blocked` (reader.test.ts), so `taken` here holds counted M tokens.
-describe('a candidate line that a started token marks draws as started (M258 AC1-AC3)', () => {
+describe('a candidate row that a started token marks is not drawn (M258 AC1-AC3, M261 AC1)', () => {
   const titles = ['Planned', 'Blocked', 'Two ids', 'Listed', 'Unlisted', 'Two numbers', 'Body and id', 'Number and id', 'Body and number', 'Plain']
   const state: PaneState = {
     found: true,
@@ -4181,30 +4242,37 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
   const hotfix = (number: number) => ({ number, title: `Fix ${number}`, url: `https://github.com/o/r/pull/${number}` })
   const draw = (taken: PaneState['taken'], hotfixes = [hotfix(301), hotfix(302), hotfix(305)], started: { title: string; number: number }[] = []) =>
     layout({ ...state, taken }, [], true, {}, hotfixes, started).filter(line => /^candidate-\d+$/.test(line.key))
-  const marked = (line, ref: string) => {
-    expect([line.key, line.lead[0]]).toEqual([line.key, STARTED_MARK])
-    expect([line.key, line.tail]).toEqual([line.key, [{ text: '  ' }, { text: ref, color: GRAY }]])
-    expect([line.key, line.buttons, line.target, line.title]).toEqual([line.key, undefined, undefined, undefined])
-  }
-  const plain = (line, i: number) => {
-    expect([line.key, line.lead[0], line.tail]).toEqual([line.key, MARKS.normal, undefined])
-    expect([line.key, line.buttons, line.target]).toEqual([line.key, ['plan'], `${i}`])
+  // A hidden row draws no line under its key. A drawn row keeps its index
+  // in `state.candidates` as its key and its ✎ target (M261).
+  const hidden = (lines, i: number) => expect([i, lines.find(line => line.key === `candidate-${i}`)]).toEqual([i, undefined])
+  const plain = (lines, i: number) => {
+    const line = lines.find(each => each.key === `candidate-${i}`)
+    expect([i, line?.lead[0], line?.tail, line?.text]).toEqual([i, MARKS.normal, undefined, { text: titles[i] }])
+    expect([i, line?.buttons, line?.target]).toEqual([i, ['plan'], `${i}`])
   }
 
-  test('a counted milestone id marks its row with the id, the lowest of two (AC1)', () => {
+  test('a counted milestone id hides its row (AC1)', () => {
     const lines = draw([
       { title: 'Planned', ref: 'M258' },
       { title: 'Blocked', ref: 'M240' },
       { title: 'Two ids', ref: 'M300' },
       { title: 'Two ids', ref: 'M259' },
     ])
-    marked(lines[0], 'M258')
-    marked(lines[1], 'M240')
-    marked(lines[2], 'M259')
-    lines.slice(3).forEach((line, i) => plain(line, i + 3))
+    hidden(lines, 0)
+    hidden(lines, 1)
+    hidden(lines, 2)
+    for (let i = 3; i < titles.length; i++) plain(lines, i)
   })
 
-  test('a #n token marks its row only while the open hotfix list holds n (AC2)', () => {
+  // The milestone row and its neighbours in table order, as M261 AC1 asks.
+  test('a hidden row between two plain rows leaves them drawn in order', () => {
+    const lines = draw([{ title: 'Unlisted', ref: 'M258' }])
+    expect(lines.map(line => line.key)).toEqual(titles.map((_, i) => `candidate-${i}`).filter(key => key !== 'candidate-4'))
+    plain(lines, 3)
+    plain(lines, 5)
+  })
+
+  test('a #n token hides its row only while the open hotfix list holds n (AC2)', () => {
     const taken = [
       { title: 'Listed', ref: '#301' },
       { title: 'Unlisted', ref: '#999' },
@@ -4212,15 +4280,18 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
       { title: 'Two numbers', ref: '#305' },
     ]
     const lines = draw(taken)
-    marked(lines[3], '#301')
-    plain(lines[4], 4)
-    marked(lines[5], '#305')
+    plain(lines, 2)
+    hidden(lines, 3)
+    plain(lines, 4)
+    hidden(lines, 5)
+    plain(lines, 6)
     // With no hotfix list, as before any read or for another root, no #n
     // token counts.
-    draw(taken, []).forEach((line, i) => plain(line, i))
+    const none = draw(taken, [])
+    titles.forEach((_, i) => plain(none, i))
   })
 
-  test('a pull request number wins over a milestone id, and the lowest number wins (AC3)', () => {
+  test('a body line, a #n token, and a milestone id in any mix hide the row (AC3)', () => {
     const lines = draw(
       [
         { title: 'Body and id', ref: 'M258' },
@@ -4234,15 +4305,15 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
         { title: 'Body and number', number: 350 },
       ],
     )
-    marked(lines[6], '#400')
-    marked(lines[7], '#302')
-    marked(lines[8], '#301')
-    plain(lines[9], 9)
+    hidden(lines, 6)
+    hidden(lines, 7)
+    hidden(lines, 8)
+    plain(lines, 9)
   })
 
   // The reader's filter and the drawing together (M258 review return 1):
   // an id counts only while its table row is `planned` or `blocked`.
-  test('a done, dropped, or absent id leaves the row unmarked, planned and blocked mark it (AC1)', () => {
+  test('a done, dropped, or absent id leaves the row drawn, planned and blocked hide it (AC1)', () => {
     const roadmap = [
       '| ID | Title | Status | Depends on | Priority | File/Archive |',
       '|---|---|---|---|---|---|',
@@ -4270,15 +4341,14 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
       [],
     ).filter(line => /^candidate-\d+$/.test(line.key))
     expect(candidates.map(row => row.title)).toEqual(['Planned', 'Blocked', 'Done', 'Dropped', 'Absent', 'Two ids'])
-    marked(lines[0], 'M258')
-    marked(lines[1], 'M240')
-    plain(lines[2], 2)
-    plain(lines[3], 3)
-    plain(lines[4], 4)
-    marked(lines[5], 'M240')
+    expect(lines.map(line => [line.key, line.text?.text, line.target])).toEqual([
+      ['candidate-2', 'Done', '2'],
+      ['candidate-3', 'Dropped', '3'],
+      ['candidate-4', 'Absent', '4'],
+    ])
   })
 
-  test('a token on a row with an empty short title marks nothing', () => {
+  test('a token on a row with an empty short title hides nothing', () => {
     const lines = layout(
       { ...state, candidates: [{ priority: 'normal', title: '' }], taken: [{ title: '', ref: 'M258' }] },
       [],
@@ -4291,56 +4361,59 @@ describe('a candidate line that a started token marks draws as started (M258 AC1
   })
 })
 
-describe('the pane read stores the items with the hotfix list and draws them (M252 AC3)', () => {
+// The copy's one candidate row: a read whose items name it hides the row,
+// and with it the Candidates heading (M261 AC1, AC2).
+describe('the pane read stores the items with the hotfix list and hides the rows they name (M252 AC3, M261)', () => {
   const STARTED_BODY = 'Fixes it.\nCandidate row: An idea for later\n'
-  const MARKED = '◐ An idea for later  #1265'
+  const HIDDEN = undefined
   const PLAIN = '○ An idea for later'
   const GOOD = () => listReply([bodied(1265, 'm252-pane', STARTED_BODY)])
   const candidateLine = async $ => (await linesAt($)).find(line => line.key === 'candidate-0')?.text
 
-  test('the call asks for body, a read marks the line, and the Hotfixes section skips an m-branch', async ($, on) => {
+  test('the call asks for body, a read hides the line, and the Hotfixes section skips an m-branch', async ($, on) => {
     const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: GOOD })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     await calls.settled()
     expect(calls.lists).toEqual([listCall(ORIGIN)])
-    expect(await candidateLine($)).toBe(MARKED)
-    expect((await blockedView($, 'candidate-0')).buttons).toEqual([])
+    expect(await candidateLine($)).toBe(HIDDEN)
+    expect((await keysOf($)).filter(key => key.startsWith('candidate'))).toEqual([])
+    // The control: the pane drew, with its blocked rows (M261 review).
+    expect(await keysOf($)).toContain('blocked-M101')
     expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
   })
 
-  test('a failed call in the same root keeps the mark', async ($, on) => {
+  test('a failed call in the same root keeps the row hidden', async ($, on) => {
     let answer: () => GhAnswer = GOOD
     gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => answer() })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => 'reject'
     await pressKey($, 'cairn-pane-refresh')
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => listReply([])
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
-    // The unmarked line carries ✎ again, the control for the marked line's
-    // empty Button list (M252 review).
+    // The drawn line carries ✎ again (M252 review).
     expect((await blockedView($, 'candidate-0')).buttons).toEqual([`${PANE_PLAN}-0`])
   })
 
-  test('a root with no base-remote URL empties the mark', async ($, on) => {
+  test('a root with no base-remote URL draws the row again', async ($, on) => {
     const remotes: Record<string, string> = { origin: ORIGIN }
     gh(on, () => prView('MERGED'), undefined, { remotes, list: GOOD })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     delete remotes.origin
     await pressKey($, 'cairn-pane-refresh')
     expect(await candidateLine($)).toBe(PLAIN)
   })
 
-  test('a failed call in another root empties the mark kept for the first root', async ($, on) => {
+  test('a failed call in another root draws the row the first root hid', async ($, on) => {
     let answer: () => GhAnswer = GOOD
     gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, list: () => answer() })
     const copy = copyOf('blocked-prs')
@@ -4349,7 +4422,7 @@ describe('the pane read stores the items with the hotfix list and draws them (M2
     seat(on, copy)
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect(await candidateLine($)).toBe(MARKED)
+    expect(await candidateLine($)).toBe(HIDDEN)
     answer = () => 'reject'
     copy.cwd = '/other'
     await $.turn.complete(turn())
