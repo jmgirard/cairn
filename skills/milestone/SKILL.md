@@ -181,7 +181,12 @@ The script deliberately does not judge these — do them yourself and report:
   M<NNN>` (the maintainers' requests become tasks; the branch is rebased on
   `<base>` and re-pushed to the remote that holds the PR's head by
   `/milestone-implement` step 2's guest sync, and its new commits go up at
-  `/milestone-review`'s re-handoff); `OPEN` otherwise → report the fresh
+  `/milestone-review`'s re-handoff); `OPEN` on a stacked milestone
+  (tracking-rules "Collaboration mode") whose stack base's PR reads
+  `MERGED` (`gh pr view <base-pr> --repo <base-repo> --json state`) → the
+  restack is owed: route to `/milestone-implement M<NNN>`, whose stacked
+  sync rebases the branch onto `<base>/<default-branch>`, re-pushes it, and
+  retargets the PR; `OPEN` otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.

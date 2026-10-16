@@ -33,7 +33,9 @@ run ingestion first (see `/milestone-brief`).
 ## Workflow
 
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
-   with a resolved blocker (resume). Verify all `Depends on:` milestones are
+   with a resolved blocker (resume). A `blocked` stacked milestone whose
+   stack base's PR is `MERGED` resumes for the restack (step 2's stacked
+   sync). Verify all `Depends on:` milestones are
    `done`, except that in guest mode one of them may be a stack base
    (tracking-rules "Collaboration mode"), and that no OTHER milestone is
    `in-progress` (at most one, ever —
