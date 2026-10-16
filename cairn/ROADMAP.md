@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-16 (M262 archived; resume row narrowed, "Hotfix resume edges" row added; validate, guards green)_
+_Last hygiene check: 2026-10-16 (M263 archived; M260 row pruned; "Lessons triage edges" row added; validate, guards green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M263 | /cairn-triage lessons triages LESSONS.md | review | — | normal | milestones/M263-triage-lessons.md |
+| M263 | /cairn-triage lessons triages LESSONS.md | done | — | normal | milestones/archive/M263-triage-lessons.md |
 | M262 | A rerun of /hotfix on an open PR resumes the merge | done | — | normal | milestones/archive/M262-hotfix-open-pr-resume.md |
 | M261 | The cairn pane hides started candidate rows | done | — | normal | milestones/archive/M261-pane-hide-started.md |
-| M260 | Press and placement races end cleanly | done | — | normal | milestones/archive/M260-press-end-races.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (2026-10-10) made it count each call once and read subagent files; earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (A4 row), M153's medians in `record-rule-remeasurement.md`, `effort-experiment-notes.md`. Promote when a decision next relies on one — added 2026-10-09 — M228 review; narrowed 2026-10-10 by the PR #238 hotfix
@@ -33,6 +32,7 @@ _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, u
 - Late Copilot requests with the round off (M244 review): "`/milestone` reads each bot thread on the operator's open PRs" holds the older bot-thread gap. The off-but-present note runs one query at the close, seconds after the PR opens or merges, while Copilot requests on easystats PRs landed about 2 minutes after the open, so the note often stays silent. Promote when an opted-out repo's PR gets a Copilot review that no close or audit reported — added 2026-10-11 — M244 review (blame-history #1; diff-bug #1; prior-review #1)
 - Issue look-in edges (M232 review): M233 and M234 shipped six of its items; the rest stays here. `/hotfix` names no `issue <URL>` argument form. An orphaned issue cannot be closed from the look-in. In guest mode §2's orphan bullet still runs, so §3's `close` (`gh issue close --repo <base-repo>` since M234) can close an upstream issue (found at the M234 plan). Promote when one shows in a real session — added 2026-10-10 — M232 review (blame-history #2, #3, diff-bug #1; pass 2 diff-bug #12, blame-history #2, #5, live-run #9)
 - Intake and guest edges (M234 review): "Issue look-in edges (M232 review)" holds the older edges. `/milestone-review`'s companion arm still pushes to `origin`. A guest checkout with the fork at `origin` and no `upstream` remote stops at the fork recipe, since `<base-repo>` is then the fork, and the plan's access read for its assignment offer (M248) reads the fork too. The reply draft's fixed name in a shared temp directory can collide or meet a planted symlink. Promote when one shows in a real session — added 2026-10-10 — M234 review (diff-bug #12, blame-history #5, prior-review #2; Copilot thread on PR #243, checked 2026-10-16T04:10:01Z)
+- Lessons triage edges (M263 review): "Guest triage drop evidence outlives one stamp" holds the guest stamp gap, which a guest lesson drop widens, since an untracked LESSONS.md keeps no git copy. The two-file cap check sends back a pass that trims a file already over its cap without getting under; test comments cite lessons by line number ("LESSONS :49"); `git grep -l "LESSONS.md"` misses a test that builds the path. Promote when one shows in a real lessons pass — added 2026-10-16 — M263 review (diff-bug #10, #16; blame-history #1, #10)
 - Guest triage drop evidence outlives one stamp: in guest mode a `/cairn-triage` pass names each already-shipped or refuted-premise drop's evidence in the ROADMAP stamp, and the next hygiene pass replaces it, with no git history behind it. Promote when a guest operator needs a dropped item's reason after a later stamp replaced it — added 2026-10-10 — M235 review (diff-bug #1, blame-history #3)
 - Reasoning-effort dial for the Opus and Fable roles: since M240 (D-157, D-158) no subagent role sets the Agent tool's `effort` setting. M239 and M240 measured the Sonnet and Haiku roles (`references/effort-roles.md`, `references/effort-review-medium.md`). The Opus roles (diff review, criteria and claim audits, design work) and the Fable brief reviewer lack scored tasks. Promote when the maintainer wants an Opus or Fable role measured — added 2026-07-27 — M120 Out; measured 2026-10-10 by M239; narrowed 2026-10-10 by M240
 - Archived blocked rows (M246 review): `/milestone` §2 does not route them, owner mode has no route, a no-URL row gets no Button, and a Button drawn before a row turned archived still routes. Python and TS differ on a root with `[` and on invalid UTF-8. Some Status edges are untested. Promote when one shows in a real repo — added 2026-10-12
