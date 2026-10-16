@@ -134,7 +134,7 @@ Button".
       comment so neither gives a reason this milestone makes false, and add
       the CHANGELOG.md Unreleased entry.
 - [x] T5: Run the `verify` slot from the repo root, checking each exit code.
-- [ ] T6: Rewrite step 1's owner arm to the amended AC2 (three-condition
+- [x] T6: Rewrite step 1's owner arm to the amended AC2 (three-condition
       resume, `--match-head-commit`, refused-merge close, fallback to the
       existing path, marker removed on a decline at step 6's chip), and
       update the guard pins and mutation entries to match.
@@ -187,6 +187,7 @@ Button".
 - 2026-10-16: substantive amendment: Scope Out — a guest PR whose maintainers requested changes is reported by the guest stop (AC3 as written) rather than keeping today's path; fixing requested changes stays in the narrowed candidate row (diff-bug #2).
 - 2026-10-16: tasks T6 (AC2 amendment) and T7 (fix-now items) added; Coverage updated.
 - 2026-10-16: the amendment took the plan-owned body to 159 lines; the heaviest section (Acceptance criteria) shed its 10-line template comment in one rewrite, criterion text unchanged; 149 lines, `cairn_validate` green.
+- 2026-10-16: T6 done: step 1's owner arm resumes only on the three conditions (head oid, no `CHANGES_REQUESTED` in `latestReviews`, row match equal to the body's `Candidate row:` lines), merges with `--match-head-commit <oid>`, stops on a refused merge, and otherwise takes the walk, whose step-6 decline removes the marker. `TestHotfixOpenPrReentry` rewritten (13 tests) with 22 mutation entries, each red when blanked; `skills/tests` OK. Diff-bug #8 is moot: the amended route no longer re-runs the read inside step 1, so "at most once per hotfix" (pinned by `test_pr_conversation_gate`) stays as it was.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -4036,17 +4036,19 @@ REGISTRY += [
 ]
 
 REGISTRY += [
-    # M262: `/hotfix` step 1's open-PR re-entry and step 6's marker order.
-    # One entry per trigger part (state, head-branch exclusion, marker
-    # prefix, PR named, head oid) and per outcome (the skipped walk, on at
-    # the wait, the gate re-posed, the PR-body row edits, the guest stop),
-    # plus step 6's order, marker line, and timeout close. Blocks embed the
-    # physical wrap; the guard reads with whitespace collapsed.
+    # M262 (AC2 amended): `/hotfix` step 1's open-PR re-entry and step 6's
+    # marker handling. One entry per trigger part (the read, head-branch
+    # exclusion, marker prefix, PR named), per resume condition (head oid,
+    # changes requested, row match), and per outcome (skip to the wait, the
+    # head pin, the refused merge, the walk on a failed condition, the guest
+    # stop and its close), plus step 6's order, marker line, presented head,
+    # decline, merge pin, and both halves of the timeout close. Blocks embed
+    # the physical wrap; the guard reads with whitespace collapsed.
     Mutation(
         guard="test_resume_routing",
         test="TestHotfixOpenPrReentry.test_reads_the_open_state_and_head",
         target=HOTFIX,
-        block="`gh pr view <N> --json state,headRefName,headRefOid` reports `OPEN`",
+        block="`gh pr view <N> --json state,headRefName,headRefOid,latestReviews`",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4071,33 +4073,47 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixOpenPrReentry.test_owner_arm_skips_the_walk",
+        test="TestHotfixOpenPrReentry.test_resume_needs_three_conditions",
         target=HOTFIX,
-        block="Skip the tier check and steps 2 to 5.",
+        block="First, the marker's ` at <oid>` equals the PR's `headRefOid`.",
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixOpenPrReentry.test_same_head_goes_on_at_the_ci_wait",
+        test="TestHotfixOpenPrReentry.test_resume_needs_three_conditions",
         target=HOTFIX,
-        block="If the marker's ` at <oid>` equals the PR's `headRefOid`",
+        block="no entry of `latestReviews` has the state `CHANGES_REQUESTED`, even",
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixOpenPrReentry.test_same_head_goes_on_at_the_ci_wait",
+        test="TestHotfixOpenPrReentry.test_resume_needs_three_conditions",
         target=HOTFIX,
-        block="Go on at step 6's CI wait, then the merge,",
+        block="exactly the rows that the PR body's `Candidate row:` lines name.",
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixOpenPrReentry.test_moved_head_reposes_the_gate",
+        test="TestHotfixOpenPrReentry."
+             "test_resume_skips_to_the_wait_and_pins_the_head",
         target=HOTFIX,
-        block="Then pose step 6's gate on the PR as it stands.",
+        block="the tier check, steps 2 to 5, and step 6's Copilot round arm,",
     ),
     Mutation(
         guard="test_resume_routing",
-        test="TestHotfixOpenPrReentry.test_resumed_step_seven_reads_the_pr_body",
+        test="TestHotfixOpenPrReentry."
+             "test_resume_skips_to_the_wait_and_pins_the_head",
         target=HOTFIX,
-        block="`Candidate row:` lines name. It closes only the issue that the body's",
+        block="6's CI wait, then the merge with `--match-head-commit <oid>`, then step",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_refused_merge_stops",
+        target=HOTFIX,
+        block="If GitHub refuses the merge because the head moved during the wait,",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_a_failed_condition_takes_the_walk",
+        target=HOTFIX,
+        block="Then take the walk above, which ends at step 6's chip.",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4110,6 +4126,45 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry.test_guest_arm_reports_and_stops",
         target=HOTFIX,
         block="Skip the tier check and steps 2 to 7.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry."
+             "test_guest_stop_names_the_ci_line_and_next_command",
+        target=HOTFIX,
+        block="nothing waits on that CI here.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry."
+             "test_step_six_binds_the_marker_to_the_head_the_gate_showed",
+        target=HOTFIX,
+        block="note the head it shows: local `HEAD`",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry."
+             "test_step_six_binds_the_marker_to_the_head_the_gate_showed",
+        target=HOTFIX,
+        block="write no marker and present the gate again on the new head.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_step_six_decline_removes_the_marker",
+        target=HOTFIX,
+        block="A decline at the chip removes any merge-guard marker",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_step_six_merge_pins_the_head",
+        target=HOTFIX,
+        block="`<oid>` the marker's head oid",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOpenPrReentry.test_timeout_close_names_the_open_pr_route",
+        target=HOTFIX,
+        block="step 1's merged-PR re-entry verifies the merged diff",
     ),
     Mutation(
         guard="test_resume_routing",
