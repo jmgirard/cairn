@@ -51,7 +51,7 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
       each with one line inside and one after, give only the second title; a
       body whose fence never closes gives no title after its opening line;
       and a second body after that one still gives its title.
-- [ ] AC2: README's started-mark text says that, of cairn's skills, only
+- [x] AC2: README's started-mark text says that, of cairn's skills, only
       owner-mode `/hotfix` and `/milestone-review` write the `Candidate row:`
       line; that a line written by hand also marks a row when it sits
       outside a fenced code block as README defines one in a pull request
@@ -120,6 +120,8 @@ the 100-PR list cut, and CommonMark's same-character closing rule stay in
 - 2026-10-15: the user chose "Adopt the fixed wording" at the AC2 stop (both re-entry fixes applied); README's narrowed-row sentence now reads "also shows its priority mark".
 - 2026-10-15: amendment return: AC2 — "README's started-mark text says that, of cairn's skills, only owner-mode `/hotfix` and `/milestone-review` write the `Candidate row:` line; that a line written by hand also marks a row when it sits outside a fenced code block as README defines one in a pull request the pane's `gh pr list` call reads and names the row's short title exactly; and that the first successful pull-request read after the merge clears the row's `◐` and number unless another open pull request names the row, after which a row that `/milestone-review`'s hygiene commit or `/hotfix`'s step 7 has not removed shows its priority mark, a narrowed row likewise showing its priority mark."
 - 2026-10-15: amendment done, docs only (README and the AC2 text); status → review.
+- 2026-10-15: correction to the pass-1 line above: pass 1 rejected 6 findings, not 7 (17 in all: 1 amendment return, 6 fixed, 4 follow-up, 6 rejected).
+- 2026-10-15: review pass 2 at 7ffae46e: all three criteria verified; 4 README findings fixed in 7ffae46e, 2 follow-up, 7 rejected; Copilot's 2 threads were already fixed (7d7fe86c, b61a455d), replied to and resolved.
 
 
 ## Decisions
@@ -160,3 +162,29 @@ Pass 1 (2026-10-15, head b61a455d, PR #268 opened at review start for the Copilo
 - blame-history #5: README's rewritten Copilot sentence loses the contrast with the round on — reject, false: the sentence keeps its "Without the opt-in Copilot round (below)" opening.
 - blame-history #6: README adds claims beyond the fence fix (writers, hand-written lines) and wraps unevenly — reject, planned change (AC2 asks for them) and style.
 - prior-review: no prior-review evidence; M252's archived Review parks the fence edge in the row this milestone narrows.
+
+Pass 2 (2026-10-15, after the AC2 amendment return; head 7ffae46e):
+
+- AC1: `claude plugin test .` at 7ffae46e, 1741 pass, 0 fail; the three fence tests of pass 1 pass (backtick, tilde, and spaced fences; mixed-character closes; an unclosed fence then a next body).
+- AC2: README.md at 7ffae46e, started-mark paragraphs. Writers: "In owner mode, `/hotfix` and `/milestone-review` put one `Candidate row: <short title>` line … No other cairn skill writes such a line." Hand-written: "A line counts when it opens with exactly `Candidate row: ` and the rest, with outer spaces removed, is a candidate row's short title, exactly. A line that you write by hand counts the same way", with the fence paragraph ("A `Candidate row:` line inside a fenced code block does not count", fence lines defined) and the read limits ("Only your own open PRs on the base remote count"; the 100-PR cut above). Clearing: "the row's `◐` and PR number go at the pane's first successful PR read, unless another open PR also names the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7 has not removed the row by then, the row shows its priority mark again. A row that they narrow also shows its priority mark after that read." Each clause matches pane.ts (`startedRows`, `STARTED_MARK` only while `numbers` is non-empty at pane.ts:542-546) and register.tsx's held list on a failed read.
+- AC3: at 7ffae46e, `scripts/tests` 408 OK (21 skipped), `hooks/tests` 175 OK, both `claude plugin validate` runs exit 0 with no version warning, `claude plugin test .` 1741 pass.
+- consistency gate: `cairn_validate` all checks passed; verify green at 7ffae46e; no marketplace version warning; CHANGELOG entry present.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: README's hand-written sentence dropped the line-format and title conditions — fix now, fixed 7ffae46e.
+- diff-bug #2: README said a guest-mode PR carries no line, though a hand-written one in a guest PR is read — fix now, fixed 7ffae46e (cairn writes none in a guest PR).
+- diff-bug #3: README's "No other skill" was wider than AC2's "of cairn's skills" — fix now, fixed 7ffae46e.
+- diff-bug #4: the mark also goes with no successful read when the base remote loses its URL or the held list is another root's — follow-up, to "Fence and read edges (M257 review)".
+- diff-bug #5: "A row that they narrow also shows its priority mark" was not tied to the read — fix now, fixed 7ffae46e.
+- diff-bug #6: one unwrapped 113-character README line — reject, style; rewrapped in 7ffae46e.
+- blame-history #1: the ROADMAP row still says a fenced line counts — reject, planned change (hygiene narrows it).
+- blame-history #2: M252's README sentences were replaced, not extended — reject, planned change (claim audit and AC2).
+- blame-history #3: README promises writers and hand-written lines beyond the fence fix — reject, planned change (AC2).
+- blame-history #4: the fence rule is worded in four places that can drift — reject, false: they agree now, and DESIGN, README, and CHANGELOG each own their text.
+- blame-history #5: README and code differ from CommonMark — follow-up, already in "Fence and read edges (M257 review)".
+- blame-history #6: one long README line — reject, style (as diff-bug #6).
+- prior-review #1: the ROADMAP row still says a fenced line counts — reject, planned change (hygiene).
+- copilot: cairn/milestones/M257-started-mark-fences.md:14 (outdated) — fix now, fixed 7d7fe86c
+- copilot: hooks/status/pane.test.tsx:4045 — fix now, fixed b61a455d
+- copilot: review body, DESIGN contract nit for README and pane.ts — fix now, fixed b61a455d
+- copilot: review on an earlier head — noted
+- Copilot level: Lite (set by GitHub's settings)
