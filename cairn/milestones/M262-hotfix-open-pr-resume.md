@@ -46,16 +46,6 @@ pane Button on a hotfix line becomes a new candidate row, "Pane hotfix line
 Button".
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
-     Every item opens with its positional label — `ACn:` — the item's
-     position counted top-to-bottom, the number Coverage cites; an
-     insertion, removal, or reorder renumbers the labels and the Coverage
-     lines together.
-     Driving RR set → its Binding criteria appear VERBATIM here (binding-
-     criteria check), each ingested as a numbered criterion carrying its tag
-     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
-     coverage-complete counts AC checkboxes positionally (M107); departures:
-     a "Deviations from RR<NN>" table ends this section. -->
 
 - [x] AC1: In owner mode, `/hotfix` step 6 states that on approval of an
       authored fix the PR is opened, then the marker is written as
@@ -196,6 +186,7 @@ Button".
 - 2026-10-16: re-audit: AC1 (full) — 4 findings on the proposed added sentence (presented head undefined for an unpushed authored fix; adopted PRs left out; re-presented gate's decline unstated); the sentence is withdrawn and AC1 stays as written, narrower; the check ships as fix-now diff-bug #9 under T7 with those four points.
 - 2026-10-16: substantive amendment: Scope Out — a guest PR whose maintainers requested changes is reported by the guest stop (AC3 as written) rather than keeping today's path; fixing requested changes stays in the narrowed candidate row (diff-bug #2).
 - 2026-10-16: tasks T6 (AC2 amendment) and T7 (fix-now items) added; Coverage updated.
+- 2026-10-16: the amendment took the plan-owned body to 159 lines; the heaviest section (Acceptance criteria) shed its 10-line template comment in one rewrite, criterion text unchanged; 149 lines, `cairn_validate` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
