@@ -186,4 +186,8 @@ Pass 1 (2026-10-16), on m261-pane-hide-started at `fcff1e41`, main level with or
 - prior-review #3: same-title rows hide together — fix now, fixed 9a8e3e63 through the same row rewording ("same-title rows hide together")
 - prior-review #4: stale-press branch untested — same as blame-history #3, follow-up in "Plan Button edges (M242 review)"
 - prior-review #5: the no-heading test was hard to follow — same as diff-bug #6, fix now
+- copilot: cairn/milestones/M261-pane-hide-started.md:14 (outdated) — record the PR URL in the Branch/PR header — fix now, fixed d848c728; replied and resolved
+- copilot: review body (reviewed fcff1e41, Changes recommended, 1 finding, the thread above) — noted
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: no other reviews, comments, or unresolved threads on PR #272
 - prior-review #6: a guest-mode row has no on-screen cue while hidden before hygiene — reject (planned change: hiding with no trace was the user's choice at the question set)
