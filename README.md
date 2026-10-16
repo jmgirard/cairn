@@ -905,6 +905,8 @@ recommend one) and writes `# Collaboration mode: guest` into
   `/milestone-implement`. It rebases your branch onto the default branch
   and pushes it. If GitHub did not move the PR's base to the default
   branch, it moves it. A milestone can build on only one waiting milestone.
+  cairn stops on three more cases: that milestone is itself stacked, its
+  PR comes from a fork or another repo, or its PR closed with no merge.
   Owner mode and hotfixes do not stack.
 - **No release walk.** `/cairn-release` stops at session start and says
   why: a release is the maintainers' act.

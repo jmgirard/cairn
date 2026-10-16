@@ -13,9 +13,11 @@
   `git rebase --onto`, from the recorded tip. `/milestone-review` opens
   the PR with that branch as its base. Once the first PR merges,
   `/milestone` routes the milestone to `/milestone-implement`, which
-  rebases it onto the default branch and force-pushes it. If GitHub did
-  not retarget the PR, it retargets it to the default branch. A milestone on two or more such dependencies
-  stops at `/milestone-implement`. Owner mode is unchanged.
+  rebases it onto the default branch. A branch pushed before is
+  force-pushed again. If GitHub did not retarget the PR, it retargets it
+  to the default branch. `/milestone-implement` stops on these cases: two
+  or more such dependencies, a base that is itself stacked, a base PR from
+  a fork or another repo, and a closed base PR. Owner mode is unchanged.
 
 - **Guest branches can go to the upstream repo.** In guest mode, add the
   line `# Push remote: base` near the top of `cairn/PROFILE.md`, and

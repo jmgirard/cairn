@@ -127,7 +127,9 @@ re-enters here, at the step the record shows is next:
    sync in full: its remote-only-commits check before the rebase, and, for
    a branch already pushed, its leased push right after it. A stacked
    milestone takes that step's stacked sync instead of the plain rebase,
-   whether or not the default branch moved. That push only
+   whether or not the default branch moved, but only while the stack
+   base's PR is `OPEN`. A merged base is left to step 8, which routes the
+   restack to `/milestone-implement`. That push only
    re-syncs a branch that is already pushed. A branch never pushed stays
    local until step 8.
 
@@ -692,7 +694,8 @@ re-enters here, at the step the record shows is next:
    CI on the PR is the check that counts and nothing waits on it here — the
    session never waits on a guest PR's checks; the fenced next command is
    `/milestone`, labeled as the command that re-reads the PR's state (its
-   §2 routes MERGED to this skill's hygiene, CLOSED to a chip,
+   §2 routes MERGED to this skill's hygiene, a stacked PR whose stack
+   base merged to `/milestone-implement` for the restack, CLOSED to a chip,
    `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line.
    With the Copilot round off, this close also follows the off-but-present
    rule (`skills/shared/copilot-review.md` §1). A
@@ -810,7 +813,8 @@ re-enters here, at the step the record shows is next:
     of the plan there). The next workable milestone of the plan is, in
     ROADMAP order as `/milestone-plan` step 7 picks it, the first other id
     in that subject whose ROADMAP status is `planned` and whose `Depends
-    on:` milestones are all `done`, with no milestone `in-progress`. If one
+    on:` milestones are all `done` (in guest mode one can be a stack base,
+    tracking-rules "Collaboration mode"), with no milestone `in-progress`. If one
     exists, the close block fences `/clear`, then `/milestone-implement <next-id>` as the primary
     next command, labeled as the plan's next milestone. Its question set
     already ran, so no new one is asked.

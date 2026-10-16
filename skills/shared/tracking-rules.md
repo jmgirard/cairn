@@ -393,7 +393,8 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   restack (below). `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
 - **A guest milestone can build on one that waits for the maintainers** (stacking). With `# Push remote: base` in
   `cairn/PROFILE.md`, a **stack base** is a dependency whose ROADMAP row is `blocked` and whose milestone file's
-  `Branch/PR` header names a PR URL. An archived dependency is `done`, never a stack base. That PR is `<base-pr>`, and
+  `Branch/PR` header names a PR URL. An archived dependency is `done`, so it is met as `done`, not as a stack base.
+  That PR is `<base-pr>`, and
   its `headRefName` is `<stack-base-branch>`. If each dependency of a `planned` milestone is
   `done` or a stack base, and at most one is a stack base, the milestone is workable (`cairn_next.workable` and the
   cairn pane). Owner
@@ -401,8 +402,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   the branch from `<base>/<stack-base-branch>`. It writes the work-log line `stack base: <branch> at <sha>` at the cut
   and at each sync. A **stacked milestone** is one whose newest `stack base:` line names a branch other than the
   default branch. Its stack base stays the dependency whose PR's `headRefName` is the branch that its first
-  `stack base:` line names, also after that dependency turns `done`. Its `<base-pr>` is read from that dependency's
-  milestone header, or from its archive summary's Status paragraph once the file is archived. While `<base-pr>` is
+  `stack base:` line names, also after that dependency turns `done`. To find it, take each dependency's PR URL from
+  its milestone header, or from its archive summary's Status paragraph once the file is archived. Read each PR with
+  `gh pr view <n> --repo <base-repo> --json headRefName`. The match is `<base-pr>`. While `<base-pr>` is
   open, the stacked milestone's own PR targets `<stack-base-branch>` (`/milestone-review` step 8).
   Once `<base-pr>` merges, the **restack** rebases the branch onto the default branch and retargets the PR:
   `/milestone` §2 routes a `blocked` stacked milestone to `/milestone-implement`, whose step 2 runs it. Building on

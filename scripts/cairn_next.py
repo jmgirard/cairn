@@ -3,8 +3,8 @@
 
 Surfaces the most sensible next action (resume in-progress / review /
 start a workable planned milestone), lists planned milestones whose
-dependencies are all done, or in guest mode one a stack base (M268), lists
-those still blocked by dependencies, and
+dependencies are all done (in guest mode, at most one may instead be a
+stack base, M268), lists those still blocked by dependencies, and
 lists the `blocked` milestones, each with the number of the pull request
 its header names (M223).
 Read-only; exits 0 on success, 2 outside a cairn repo.

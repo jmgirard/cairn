@@ -32,8 +32,8 @@ export type FileSource = {
   list: (path: string) => Promise<string[] | null>
 }
 
-// A planned milestone whose dependencies are all done, or in guest mode
-// one a stack base (M268).
+// A planned milestone whose dependencies are all done; in guest mode at
+// most one may instead be a stack base (M268, `workableRows`).
 export type WorkableRow = { id: string; title: string }
 
 // What the band reads: the active rows in ROADMAP order, and the workable

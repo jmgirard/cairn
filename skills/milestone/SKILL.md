@@ -372,8 +372,8 @@ examples for the close block's fences — only the applicable subset is offered:
 - `/milestone-implement M<NNN>` — resume (an `in-progress` milestone exists)
 - `/milestone-review M<NNN>` — review (a milestone sits at `review`)
 - `/milestone-implement M<NNN>` — implement (a workable planned milestone
-  exists — its dependencies `done`, or in guest mode one a stack base,
-  nothing `in-progress`)
+  exists — its dependencies `done`, in guest mode with at most one of them
+  a stack base instead, nothing `in-progress`)
 - `/milestone-plan` — plan next (nothing in flight and no workable planned
   milestone)
 - a triage chip — the audit found problems needing user decisions,

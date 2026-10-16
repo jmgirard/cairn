@@ -44,7 +44,8 @@ run ingestion first (see `/milestone-brief`).
    stack-base dependencies stops with a close block naming them: building
    on more than one branch is not supported. For one, `<base-pr>` is the
    number of the PR URL in its milestone header. If that URL's owner and
-   repo are not `<base-repo>`, stop with a close block naming the URL. Read
+   repo are not `<base-repo>`, ignoring case, stop with a close block
+   naming the URL. Read
    the PR with `gh pr view <base-pr> --repo <base-repo> --json
    state,headRefName,baseRefName,headRepositoryOwner`. Each of these
    stops with a close block. A state other than `OPEN` stops, and its next
@@ -130,8 +131,12 @@ run ingestion first (see `/milestone-brief`).
    sync with a close block naming it: what the milestone builds on is
    gone, and the next step is the user's. Each sync writes a work-log line
    `stack base: <branch> at <sha>`, naming the new base and its tip, read
-   with `git rev-parse`. After the restack that line names the default
-   branch, and the milestone is no longer stacked.
+   with `git rev-parse`. It writes the line last, after its rebase, push,
+   and any retarget are done. A sync that stops writes no line, so the
+   next resume runs it again from the same `<old>`. After the restack that
+   line names the default branch, and the milestone is no longer stacked.
+   After any stacked sync, re-run the active profile's `verify` slot
+   before continuing.
 
 3. **No question round.** The agent decides the implementation choices the
    plan left open (API shape, naming, structure) and writes a work-log line
