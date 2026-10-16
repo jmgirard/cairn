@@ -122,6 +122,48 @@ can resolve against the fork instead of the base repo.
      user gave one, plus a `candidate` row (search-first). In both modes
      the acceptance chip's question text also names each matched row's
      title and says whether step 7 removes the row or narrows it.
+   **Open-PR re-entry (M262).** A PR-reference argument whose
+   `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
+   reports `OPEN` takes one of the two arms below when its conditions
+   hold. Any other open PR takes the tier-check walk that opens this step.
+   - *Owner arm.* This arm runs in owner mode. Its head branch does not
+     match `m<nnn>-*`. Step 6's merge-guard marker starts with `hotfix `
+     and names that PR (`for PR #<N>`). Such a marker means that an earlier
+     run approved this merge at step 6 and stopped before the merge, most
+     often at the CI wait. Quote the marker's line in chat. Make the
+     candidate-row match above.
+     The run resumes the approved merge only when three conditions hold.
+     First, the marker's ` at <oid>` equals the PR's `headRefOid`. Second,
+     no entry of `latestReviews` has the state `CHANGES_REQUESTED`, even
+     one the user overrode at the earlier chip. Third, the match names
+     exactly the rows that the PR body's `Candidate row:` lines name.
+     When all three hold, say that the run resumes the approved merge. Skip
+     the tier check, steps 2 to 5, and step 6's Copilot round arm,
+     PR-conversation read, approval chip, and marker write. Go on at step
+     6's CI wait, then the merge with `--match-head-commit <oid>`, then step
+     7 as it runs after an approval at step 6's chip. Before the merge,
+     read `gh pr view <N> --json isCrossRepository`, and drop
+     `--delete-branch` when it is `true` (a fork PR). Step 7's
+     off-but-present Copilot rule applies to a resumed authored fix as it
+     does to one this run merged.
+     If GitHub refuses the merge because the head moved during the wait,
+     stop with a close block that names the refusal and the PR's current
+     `headRefOid`. Its fenced next command is `/hotfix` with the PR
+     reference.
+     When a condition fails, or the marker names no head oid, say in chat
+     which one. Then take the tier-check walk that opens this step, which ends at step 6's chip. A
+     decline at that chip removes the marker (step 6). If the walk stops
+     before that chip, remove the marker too.
+   - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
+     branch starts with `hotfix-`. Such a PR is the operator's handoff,
+     still with the maintainers. Read `gh pr view <N> --repo <base-repo>
+     --json state,headRefName,reviewDecision`, and make the candidate-row
+     match above. Skip the tier check and steps 2 to 7. Report the PR's
+     number, state, and review decision (an empty decision shown as
+     `none`). Then stop with a close block. Its CI line says that the
+     maintainers' CI on the PR is the check that counts. It also says that
+     nothing waits on that CI here. Its fenced next command is `/hotfix`
+     with the PR reference, to run after they merge.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
@@ -252,6 +294,10 @@ can resolve against the fork instead of the base repo.
    question text also names each matched row's title and says whether the
    merge removes the row or narrows it to the part the fix leaves (step 7).
    The guest handoff chip below carries no row text.
+   When the gate presents the diff, note the head it shows: local `HEAD`
+   for an authored fix not yet pushed, or the PR's `headRefOid` where a PR
+   already exists. A decline at the chip removes any merge-guard marker
+   that names this PR.
    On approval of an authored fix, push and
    open the PR before the marker write below — `git push -u origin
    hotfix-<slug>`, then `gh pr create --title <title> --body <body>`
@@ -265,7 +311,9 @@ can resolve against the fork instead of the base repo.
    `cairn/ROADMAP.md` as tracking-rules "Candidate short title" states. While
    the PR is open, the cairn pane in a checkout with no active milestone
    leaves that row out of its Candidates list (M252, M261). The guest arm
-   below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch`
+   below writes no such line. Merge (`gh pr merge <N> --squash --delete-branch
+   --match-head-commit <oid>`, `<oid>` the marker's head oid, so GitHub
+   refuses the merge if the head moved after the approval
    — name the PR number explicitly; a bare `gh pr merge` is denied because the
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
@@ -275,25 +323,43 @@ can resolve against the fork instead of the base repo.
    harness ceiling — the tracking-rules wait rule; a call moved to the
    background at the ceiling is reported from fresh `gh pr checks` state,
    stopped with `TaskStop`, and the session stops there with a close block
-   whose fenced next command is `/hotfix` with the PR reference — step 1's
-   merged-PR re-entry re-derives the merge state and verifies the
-   merged diff post-hoc — and whose CI line (tracking-rules close-block
+   whose fenced next command is `/hotfix` with the PR reference — step 1
+   re-derives the PR's state: while the PR is still open and the marker
+   names it, step 1's open-PR re-entry resumes at this wait (or takes the
+   walk again when one of its conditions fails), and for a PR
+   merged since, step 1's merged-PR re-entry verifies the merged diff
+   post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,
    then that rerunning `/hotfix` with the PR reference re-derives that state
-   and waits again, so waiting for green first is optional and never
+   and, when step 1 resumes, waits again, so waiting for green first is optional and never
    required; never left armed,
    never merged past; a PR created moments ago can report no checks before
    GitHub registers them, so where the profile does not declare the repo
    CI-less, re-read `gh pr checks` after a short wait, up to about a
-   minute, before taking the no-checks case). On approval, write the merge-guard
-   marker first: `cairn/.merge-approved` (gitignored; one line:
-   `hotfix <slug> approved YYYY-MM-DD for PR #<N>` — the marker names the PR
-   it approves, and the guard refuses a merge that names a different PR or
-   none) — the plugin's hook denies
+   minute, before taking the no-checks case). In owner mode, on approval, the order is
+   fixed: the push and any `gh pr create` above, then the merge-guard
+   marker, then the CI wait, then the merge. Write the marker before the
+   wait, so a run that stops at the wait leaves it on disk for step 1's
+   open-PR re-entry. Just before the marker write, read the head with
+   `gh pr view <N> --json headRefOid`. If it differs from the head the gate
+   showed, write no marker and stop with a close block that names the new
+   head. Its fenced next command is `/hotfix` with the PR reference, which
+   takes the new commits through the tier-check walk. The
+   marker is `cairn/.merge-approved` (gitignored; one line:
+   `hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`, the
+   head oid that read returned —
+   the marker names the PR it approves, and the guard refuses a merge that
+   names a different PR or none) — the plugin's hook denies
    merges to the default branch without it and consumes it per attempt. Write the marker
    in a **separate** step before the `gh pr merge` command — the hook checks
    it before the command runs, so writing it in the same shell line is
-   denied.
+   denied. If GitHub refuses the merge because the head no longer matches
+   `--match-head-commit`, do not retry it and do not drop the flag,
+   whatever the guard's restore note says. Stop
+   with a close block that names the refusal and the PR's current
+   `headRefOid`. Its fenced next command is `/hotfix` with the PR
+   reference. The guard restores the marker, and the rerun finds a moved
+   head and takes the walk.
    **Guest arm — the handoff** (tracking-rules "Collaboration mode"): cairn
    never merges in guest mode, so the chip is the same gate with the merge
    taken out — recommended `Hand hotfix-<slug> to the maintainers of

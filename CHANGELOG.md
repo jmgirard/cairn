@@ -360,6 +360,20 @@
 
 ### Fixes
 
+- **A `/hotfix` rerun on an open hotfix PR finishes the merge you
+  approved.** When a hotfix stopped at its CI wait, its close block told you
+  to rerun `/hotfix` with the PR number. While the PR was still open, that
+  rerun started over as if it were adopting an outside PR: tier check,
+  regression test, review, and a second merge question. Now `/hotfix` writes
+  its merge approval, with the head commit you approved, before the CI
+  wait, and merges only that commit. A rerun goes back to the CI wait and
+  merges with no new question only when the PR's head is the same commit,
+  no review requests changes, and the candidate rows it matches are the
+  ones the PR body names. Otherwise, the rerun runs the full hotfix checks
+  again and asks you again.
+  In guest mode, a rerun on an open hotfix PR reports its state and
+  review decision and stops, since the merge is the maintainers' to make.
+
 - **The cairn pane right-aligns pull request numbers and states.** On a
   Blocked or Hotfixes row, the number and state word (for example `#786  in
   review`) now sit at the right edge of the pane. Before, they followed

@@ -538,8 +538,7 @@ export function paneLines(
   }
   // The open hotfix pull requests, after the Blocked rows and before the
   // candidates, each its number and title, and after a read its state word
-  // and counts as a blocked line shows them, with no Button (M226). No
-  // command resumes an open hotfix pull request, so no word routes one.
+  // and counts as a blocked line shows them, with no Button (M226).
   // A hotfix pull request whose URL is a blocked row's draws on that blocked
   // line only, which carries any Button its word calls for, and the count
   // leaves it out (M230).

@@ -322,5 +322,166 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
         )
 
 
+class TestHotfixOpenPrReentry(unittest.TestCase):
+    """M262 (AC2 amended): `/hotfix` step 1's open-PR re-entry. The owner
+    arm resumes an approved merge at step 6's CI wait only when the marker's
+    head oid is the PR's head, no review requests changes, and the row match
+    equals the PR body's `Candidate row:` lines; otherwise it takes the
+    walk. The resumed merge pins the head, and a refused merge stops. The
+    guest arm reports and stops. Step 6 notes the head the gate shows,
+    writes the marker with the head oid before the wait, merges with
+    `--match-head-commit`, and its timeout close names both re-entries.
+    Each trigger part and each outcome is pinned on its own (M165 lesson),
+    whitespace collapsed (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+        self.step6 = flat(section(text, "6. **Approval gate:**", "7. If"))
+
+    def test_reads_the_open_state_and_head(self):
+        self.assertIn(
+            "**Open-PR re-entry (M262).** A PR-reference argument whose "
+            "`gh pr view <N> --json state,headRefName,headRefOid,latestReviews` "
+            "reports `OPEN` takes one of the two arms below when its "
+            "conditions hold. Any other open PR takes the tier-check walk "
+            "that opens this step.",
+            self.step1,
+        )
+
+    def test_owner_trigger_is_a_hotfix_marker_naming_the_pr(self):
+        self.assertIn(
+            "*Owner arm.* This arm runs in owner mode. Its head branch does "
+            "not match `m<nnn>-*`. Step 6's merge-guard marker starts with "
+            "`hotfix ` and names that PR (`for PR #<N>`).",
+            self.step1,
+        )
+
+    def test_resume_needs_three_conditions(self):
+        self.assertIn(
+            "Quote the marker's line in chat. Make the candidate-row match "
+            "above. The run resumes the approved merge only when three "
+            "conditions hold. First, the marker's ` at <oid>` equals the PR's "
+            "`headRefOid`. Second, no entry of `latestReviews` has the state "
+            "`CHANGES_REQUESTED`, even one the user overrode at the earlier "
+            "chip. Third, the match names exactly the rows that the PR body's "
+            "`Candidate row:` lines name.",
+            self.step1,
+        )
+
+    def test_resume_skips_to_the_wait_and_pins_the_head(self):
+        self.assertIn(
+            "When all three hold, say that the run resumes the approved "
+            "merge. Skip the tier check, steps 2 to 5, and step 6's Copilot "
+            "round arm, PR-conversation read, approval chip, and marker "
+            "write. Go on at step 6's CI wait, then the merge with "
+            "`--match-head-commit <oid>`, then step 7 as it runs after an "
+            "approval at step 6's chip.",
+            self.step1,
+        )
+
+    def test_refused_merge_stops(self):
+        self.assertIn(
+            "If GitHub refuses the merge because the head moved during the "
+            "wait, stop with a close block that names the refusal and the "
+            "PR's current `headRefOid`. Its fenced next command is `/hotfix` "
+            "with the PR reference.",
+            self.step1,
+        )
+
+    def test_a_failed_condition_takes_the_walk(self):
+        self.assertIn(
+            "When a condition fails, or the marker names no head oid, say in "
+            "chat which one. Then take the tier-check walk that opens this "
+            "step, which ends at step 6's "
+            "chip. A decline at that chip removes the marker (step 6). If the "
+            "walk stops before that chip, remove the marker too.",
+            self.step1,
+        )
+
+    def test_step_six_refused_merge_stops_without_retry(self):
+        self.assertIn(
+            "If GitHub refuses the merge because the head no longer matches "
+            "`--match-head-commit`, do not retry it and do not drop the flag, "
+            "whatever the guard's restore note says.",
+            self.step6,
+        )
+
+    def test_guest_arm_reports_and_stops(self):
+        self.assertIn(
+            "*Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose "
+            "head branch starts with `hotfix-`.",
+            self.step1,
+        )
+        self.assertIn(
+            "Skip the tier check and steps 2 to 7. Report the PR's number, "
+            "state, and review decision",
+            self.step1,
+        )
+
+    def test_guest_stop_names_the_ci_line_and_next_command(self):
+        self.assertIn(
+            "Its CI line says that the maintainers' CI on the PR is the check "
+            "that counts. It also says that nothing waits on that CI here. "
+            "Its fenced next command is `/hotfix` with the PR reference, to "
+            "run after they merge.",
+            self.step1,
+        )
+
+    def test_step_six_writes_the_marker_before_the_wait(self):
+        self.assertIn(
+            "In owner mode, on approval, the order is fixed: the push and any "
+            "`gh pr create` above, then the merge-guard marker, then the CI "
+            "wait, then the merge.",
+            self.step6,
+        )
+        self.assertIn(
+            "`hotfix <slug> approved YYYY-MM-DD for PR #<N> at <headRefOid>`",
+            self.step6,
+        )
+
+    def test_step_six_binds_the_marker_to_the_head_the_gate_showed(self):
+        self.assertIn(
+            "When the gate presents the diff, note the head it shows: local "
+            "`HEAD` for an authored fix not yet pushed, or the PR's "
+            "`headRefOid` where a PR already exists.",
+            self.step6,
+        )
+        self.assertIn(
+            "If it differs from the head the gate showed, write no marker and "
+            "stop with a close block that names the new head. Its fenced next "
+            "command is `/hotfix` with the PR reference, which takes the new "
+            "commits through the tier-check walk.",
+            self.step6,
+        )
+
+    def test_step_six_decline_removes_the_marker(self):
+        self.assertIn(
+            "A decline at the chip removes any merge-guard marker that names "
+            "this PR.",
+            self.step6,
+        )
+
+    def test_step_six_merge_pins_the_head(self):
+        self.assertIn(
+            "`gh pr merge <N> --squash --delete-branch --match-head-commit "
+            "<oid>`, `<oid>` the marker's head oid",
+            self.step6,
+        )
+
+    def test_timeout_close_names_the_open_pr_route(self):
+        self.assertIn(
+            "while the PR is still open and the marker names it, step 1's "
+            "open-PR re-entry resumes at this wait",
+            self.step6,
+        )
+        self.assertIn(
+            "and for a PR merged since, step 1's merged-PR re-entry verifies "
+            "the merged diff post-hoc",
+            self.step6,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
