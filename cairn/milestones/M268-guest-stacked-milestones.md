@@ -11,7 +11,7 @@
 - **Principles touched:** GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — changes which guest milestones are workable and where their branches and PRs start
-- **Branch/PR:** m268-guest-stacked-milestones
+- **Branch/PR:** m268-guest-stacked-milestones, https://github.com/jmgirard/cairn/pull/280
 
 ## Goal
 
