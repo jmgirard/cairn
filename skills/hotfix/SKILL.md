@@ -303,7 +303,10 @@ can resolve against the fork instead of the base repo.
    <base-repo> --head <fork-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
    vocabulary in its title or body, so no `Candidate row:` line (the changelog entry is the branch's
-   only prose) — then no marker, no CI wait, no merge. With the Copilot
+   only prose) — then no marker, no CI wait, no merge. After the create,
+   append ` — started #<n>` on disk, `<n>` the new PR's number, to the end
+   of each candidate row step 1 matched (tracking-rules "Candidate started
+   token"), so the cairn pane marks the row while the PR is open. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
    asking for Lite: the state query, the request on `none`, the bounded
    wait while pending, then the Copilot threads by the module's §5. Use
@@ -322,9 +325,9 @@ can resolve against the fork instead of the base repo.
    rule (`skills/shared/copilot-review.md` §1).
    Step 7's issue
    close is theirs — the `Fixes` keyword closes it at their merge. The
-   handoff leaves each matched candidate row unchanged. Step 7's guest arm
-   edits it on a later `/hotfix` run with the PR reference, after the
-   maintainers merge.
+   handoff changes a matched candidate row only by its started token. Step
+   7's guest arm edits it on a later `/hotfix` run with the PR reference,
+   after the maintainers merge.
 
 7. If the fix revealed deeper work, add a `candidate` row before closing
    out — sweep first per the search-first candidate-creation rule
@@ -352,7 +355,8 @@ can resolve against the fork instead of the base repo.
    and push at once. When step 7 makes no ROADMAP edit, nothing is checked
    out or committed. Show each deleted, narrowed, and new row verbatim in
    chat (the durable-record preview).
-   *Guest arm:* the handoff leaves each matched row unchanged. When the
+   *Guest arm:* the handoff only appends its started token to each matched
+   row. When the
    merged-PR re-entry finds that the maintainers merged the PR, and its
    post-hoc verification is accepted, remove or narrow each matched row on
    disk with no commit, judged against the merged diff, and show each

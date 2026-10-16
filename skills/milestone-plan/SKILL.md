@@ -469,7 +469,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
 6. **Commit atomically.** Durable-record preview first (tracking-rules):
    show each drafted durable text — the milestone files' plan-owned
    sections, any D-entry, new ROADMAP rows — verbatim in a guaranteed-rendered
-   position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`) and
+   position (Mandated-substance rule). Then update ROADMAP rows (`planned` / `candidate`),
+   append ` — started M<NNN>` to the end of each candidate row the plan
+   absorbs in full or in part, in both modes (tracking-rules "Candidate
+   started token"), and
    commit files + rows together, directly to main, no branch, no PR
    (docs-only carve-out): `plan M<NNN>[, M<NNN>…]: <title>`, naming every
    milestone ID the plan created, since `/milestone-review` step 10 reads
