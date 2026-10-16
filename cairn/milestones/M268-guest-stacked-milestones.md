@@ -165,3 +165,29 @@ planned.
 - prior-review #1: the rulebook's archive clause reads as if an archived base counts as a stack base, which the code excludes — fix now (floor return 1, with diff-bug #5's rewrite)
 - prior-review #2: the TS PROFILE read has no guard like Python's catch-all — follow-up, "Stack-base edges (M268 review)" (with diff-bug #16)
 - pass 2 (head 9e0e1a40, after return 1): AC1 `scripts.tests.test_status_fixtures` OK; AC2–AC4 normalized reads find each clause, now worded as `git rebase --onto <base>/<stack-base-branch> <old> <slug>` with "`<old>` is the base tip that the newest `stack base:` line names", the restack `git rebase --onto <base>/<default-branch> <old> <slug>`, the lease push to the open PR's head remote, and the conditional `gh pr edit`; AC5 grep returns 27 lines and the rule sites are unchanged; AC6 verify green (scripts 409 OK, hooks 179 OK, validates 0 and 0, plugin test 2018 pass), skills/tests 822 OK, cairn_validate clean.
+- pass 2 spawned: diff-bug, blame-history, prior-review
+- pass 2 diff-bug #1: the readers still count a chained base (a stacked milestone) as a stack base, so `cairn_next` recommends what implement step 1 then refuses — follow-up, "Stack-base edges (M268 review)"; reading a dependency's work log in both readers is new reader scope
+- pass 2 diff-bug #2: review step 10 still states the done-only rule — fix now, fixed fd375d3c
+- pass 2 diff-bug #3: a sync that stopped could still write a `stack base:` line and move `<old>` — fix now: the line is written last, and a stopped sync writes none, fixed fd375d3c
+- pass 2 diff-bug #4: the stacked sync never re-runs `verify` — fix now, fixed fd375d3c
+- pass 2 diff-bug #5: `<sha>` still names both the lease tip and the base tip — reject, planned change: AC2 fixes the line's `<sha>` and M267's guard pins the lease's; the step states which tip each names and that the lease never uses `<old>`
+- pass 2 diff-bug #6: the URL-repo check is case-sensitive — fix now, fixed fd375d3c
+- pass 2 diff-bug #7: on a resume, a stack base back at `review` after rework no longer qualifies — follow-up, "Stack-base edges (M268 review)"
+- pass 2 diff-bug #8: review step 1 can run the restack itself, a second restack path — fix now: review step 1 syncs only while the base PR is `OPEN`, and step 8 routes a merged base, fixed fd375d3c
+- pass 2 diff-bug #9: the CHANGELOG says "force-pushes it" unconditionally — fix now, fixed fd375d3c
+- pass 2 diff-bug #10: line-wrap nits — reject, style
+- pass 2 blame-history #1: an interrupted restack can leave the PR on the merged base branch with no route back — fix now (with diff-bug #3), fixed fd375d3c
+- pass 2 blame-history #2: review's handoff close block lists §2's routes without the restack; resume routing has no stacked-merge arm — fix now for the close block, fixed fd375d3c; the merged-into-base case is first-pass blame-history #9's follow-up
+- pass 2 blame-history #3: review steps 1 and 8 disagree on who restacks; the `restack:` line has no reader — fix now (with diff-bug #8), fixed fd375d3c; the `restack:` line is a record for the work log's reader, as `blocked:` lines are
+- pass 2 blame-history #4: a row `blocked` for another cause, with a stale PR URL, counts as a stack base — reject, planned change (first-pass diff-bug #15)
+- pass 2 blame-history #5: D-173 does not name return 1's stops — reject: D-173's decision (one stack base on an open base PR) stands, and the rulebook bullet carries the stops that carry it out
+- pass 2 blame-history #6: `_profile_header` adds a stat to each `collaboration_mode` call — noted, no change in behavior
+- pass 2 blame-history #7: `cairn_next.render` marks no stacked workable row — follow-up, "Stack-base edges (M268 review)"
+- pass 2 blame-history #8: return 1 grew implement step 1 by about 20 lines of edge-case stops — noted; each stop names a case that cuts from the wrong branch
+- pass 2 prior-review #1: "never a stack base" sits beside "stays the dependency ... after it turns `done`" — fix now: reworded to "met as `done`, not as a stack base", fixed fd375d3c
+- pass 2 prior-review #2: the stack-base lookup has no command — fix now: the bullet gives the `gh pr view <n> --json headRefName` read, fixed fd375d3c
+- pass 2 prior-review #3: the mirror comments drop "at most one" — fix now, fixed fd375d3c
+- pass 2 prior-review #4: the rulebook-size seed in `/milestone` and the mutation harness is stale — reject: the seed drifted on main before this branch, and the branch follows the existing practice
+- pass 2 prior-review #5: README and CHANGELOG name only the two-base stop — fix now, fixed fd375d3c
+- pass 2 prior-review #6: the open edges on the two review rows stay open — noted
+- pass 2 fixes on fd375d3c: verify green (scripts 409 OK, hooks 179 OK, validates 0 and 0, plugin test 2018 pass), skills/tests 822 OK, cairn_validate clean.
