@@ -129,7 +129,7 @@ repo is the user's, after the merge.
       backlog" row, DESIGN.md's `cairn-triage` line, and the CHANGELOG
       Unreleased entry. Sweep with `git grep -n "candidates and Known
       issues"` outside `cairn/` for other surfaces that now read short (AC6).
-- [ ] T5: Add `skills/tests/test_triage_lessons.py`, pinning the argument
+- [x] T5: Add `skills/tests/test_triage_lessons.py`, pinning the argument
       and stop, the lesson item shape, each disposition meaning and exit,
       the pin check, and the cap check, with mutation entries in
       `skills/tests/test_mutation_harness.py`, each seen red; hand-run
@@ -155,3 +155,4 @@ repo is the user's, after the merge.
 - 2026-10-16: branch m263-triage-lessons cut from main at 9af1b99d; untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
 - 2026-10-16: T1-T3 done in one section: `skills/cairn-triage/SKILL.md` gains "The lessons pass (`/cairn-triage lessons`)" before the workflow, stating each step's change for lessons (argument and stop, pin-file read, item shape, five lesson dispositions with exits and the maturation bar, false-lesson `keep`, apply with the two-file cap check, record, close), plus the frontmatter `description`, `argument-hint: "[lessons]"`, the H1, and one session-start sentence. Chose one section over threading lesson clauses through steps 1-7, because the existing step text is pinned by guards (priority token, guest arm) and a separate section leaves it untouched. It cites D-169, the entry T4 writes. Suites green.
 - 2026-10-16: T4 done: D-169 annotates D-051 and D-055; the tracking-rules retirement sentence now reads "…scoped to what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`; prune-the-stalest is the last resort."; README's "Prune the backlog" row and DESIGN.md's `cairn-triage` line name the lessons pass; CHANGELOG Unreleased entry added. `git grep -n -i "candidates and Known issues"` outside `cairn/milestones` and DECISIONS.md found only README:624, DESIGN.md:31, and the skill itself, all now naming lessons. The rulebook grew to 679 lines / 65,305 bytes, so its baseline is re-seeded at all three sites (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, the mutation block), per the M149 lesson. Suites and `cairn_validate` green.
+- 2026-10-16: T5 done: `skills/tests/test_triage_lessons.py` (20 tests, six classes: argument, items, pin check, dispositions, apply and record, surfaces) with 25 mutation entries, each red when blanked (`guard_fails_when_blanked` per entry). Verify slot green: scripts/tests 408, hooks/tests 175, both `claude plugin validate` exit 0 with no version warning, `claude plugin test .` 1777 pass 0 fail; `skills/tests` 786 OK.
