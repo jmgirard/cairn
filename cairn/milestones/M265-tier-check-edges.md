@@ -91,3 +91,41 @@ Evidence on head 9759948b, 2026-10-16. Text checks are whitespace-collapsed subs
 - AC4: step 1 reads "The third is a `/milestone-plan` disposition that the user selected in `/milestone` §3 earlier in this session. The check classifies all three `milestone` without re-judging, and the work-log reason names the router." PASS.
 - AC5: the template and `CLAUDE.md` `/milestone-plan` bullets read "Where a hotfix or trivial route fits, it offers that first. Then one question set comes". The template's Trivial bullet reads "in owner mode, commit to the default branch. In guest mode, leave the edit on disk." The template section, heading included, is 29 lines (`awk` from `## Project tracking`). `git grep -n "One question set follows" -- . ':!cairn' ':!CHANGELOG.md'` exit 1. PASS (failed on pass 1, fixed by T7).
 - AC6: `CHANGELOG.md` `## Unreleased` has, under Fixes, "A direct edit from `/milestone-plan` removes the candidate row it fixes." (AC1), "In guest mode, `/milestone-plan` no longer sends a pull request to `/hotfix`." (AC3), and "A plan picked at `/milestone`'s triage gate asks no tier question." (AC4). Under "Changes that affect existing repos" it has "The routing section names the tier question." (AC5), which says "In a repo set up earlier, `CLAUDE.md` keeps the old wording." No entry names a milestone number. PASS.
+
+Consistency gate (head 28997b18): `cairn_validate` all checks passed. Verify: scripts 408 OK, hooks 175 OK, both `claude plugin validate` runs exit 0, `claude plugin test` 1777 pass / 0 fail. Marketplace validate prints no `plugins[N].version` warning. CHANGELOG entry present. No DESIGN.md principle text changed, so `cairn_impact` is skipped.
+
+spawned: diff-bug, blame-history, prior-review
+
+- diff-bug #1: the git model accepted only chip-approved trivial commits, which forbids the plain direct trivial commit the routing section prescribes — fix now, fixed 46f64022
+- diff-bug #2: the issue clause's "any other form `/milestone`'s argument accepts" also takes a PR URL, with no precedence stated — fix now, fixed 46f64022
+- diff-bug #3: a guest §3 item that is a PR met the already-tiered rule before the guest PR rule — fix now, fixed 46f64022
+- diff-bug #4: the guest PR read checked only `headRefName`, so a `CLOSED` handoff or another repo's URL went to `/hotfix` — fix now, fixed 46f64022
+- diff-bug #5: the row match could delete a row whose started token another record holds — fix now, fixed 46f64022
+- diff-bug #6: the tier chip's status as an IP1 gate was unstated — fix now (D-170 sentence), fixed 46f64022
+- diff-bug #7: records-hygiene §1 met its line budget with 101-105 column lines — fix now (rewrapped at 89, 54 lines), fixed 46f64022. Its "never at plan" heading half is rejected as false, because the heading is about milestone planning and the trivial edit is not a milestone plan.
+- diff-bug #8: guest mode has no carve-out for the new push clause — reject, false: the Collaboration mode bullet reads "No docs-only commit and no push to the default branch", which covers every push
+- diff-bug #9: the template's guest Trivial line was wider than the skill's `cairn/`-only rule — fix now, fixed 46f64022
+- diff-bug #10: "Then one question set comes" read as unconditional — fix now ("Otherwise"), fixed 46f64022
+- diff-bug #11: the row-match paragraph sat after the checks it runs before, and step 1 kept a 118-column line — fix now, fixed 46f64022
+- diff-bug #12: no pin guarded the git-model clauses or the template wording — fix now (new pin method, shown red by deletion), fixed 46f64022
+- diff-bug #13: a `hotfix-` branch name does not show that the operator opened the PR — fix now (author compared with `gh api user`), fixed 46f64022
+- diff-bug #14: a matched row the edit does not fix had no rule — fix now, fixed 46f64022
+- diff-bug #15: the changelog routing entry omitted the merge-question line, and D-170 credited D-162 with the two gates — fix now, fixed 46f64022. Its "Four" title is rejected as false, because D-170 records four rule changes and the fifth edge is wording.
+- blame-history #1: same defect as diff-bug #1 — fix now, fixed 46f64022
+- blame-history #2: IP1 read wider with no record — fix now (D-170 states the chip is an IP1 gate, not a run gate), fixed 46f64022
+- blame-history #3: started token on a narrowed or matched row — fix now, fixed 46f64022
+- blame-history #4: the guest Trivial line could read as leave to edit host files — fix now, fixed 46f64022
+- blame-history #5: guest `MERGED`/`CLOSED` `hotfix-` PRs sent to `/hotfix` with no state check — fix now, fixed 46f64022
+- blame-history #6: the §3 exemption lives only in session memory — reject, planned change: AC4 states "earlier in this session", the same bound D-162 accepted for `/hotfix`
+- blame-history #7: the rewrite dropped "through implement and review" and "a stopped run" — reject, planned change: the 29-line template has no spare line, and README.md and the skills describe the run
+- blame-history #8: the template has one line of headroom, and D-137's "~25-line" figure differs — reject, false: the template header and tracking-rules both cap the section at under 30, and D-137's figure is context
+- blame-history #9: the records-hygiene rewrap was noisy — fix now (same fix as diff-bug #7), fixed 46f64022
+- blame-history #10: the row's promotion trigger was unmet — reject, planned change: the user chose this group at the plan question set
+- prior-review #1: tracking-rules' trivial-tier line and README's typo row went stale — fix now, fixed 46f64022
+- prior-review #2: the started-token rule is missing from the trivial narrowing — fix now, fixed 46f64022
+- prior-review #3: the `hotfix-` name is trusted over the author — fix now, fixed 46f64022
+- prior-review #4: wrap debris past 80 columns in step 1 and records-hygiene — fix now, fixed 46f64022
+- prior-review #5: deleting a §7 group's head row orphans the rows that quote it, as in M249 — follow-up: post-merge hygiene adds the trivial route to the DESIGN.md Known issues entry that holds M249's same edge
+- prior-review #6: the row match reads before the level check — reject, false: a stale checkout fails the level check, so the option says the edit cannot be made and nothing is written
+
+Re-check after 46f64022: AC1 to AC6 text checks re-run on the new wording all hold. AC1 reads "With a row to edit, `cairn/ROADMAP.md` is a file the edit touches". AC2's bullet still names commits "the user approved at `/milestone-plan`'s tier chip". AC5's Trivial line reads "in owner mode, commit to the default branch. In guest mode, leave the edit on disk (`cairn/` files only)". The template stays at 29 lines. `test_plan_tier_check` OK. Both greps exit 1.
