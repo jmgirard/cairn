@@ -259,3 +259,39 @@ Pass 2, review head 0cd57149 (after the AC2 amendment return and implement round
 - AC6 (re-verified at 0cd57149): scripts/tests 408 OK (21 skipped), hooks/tests 175 OK, both `claude plugin validate` exit 0 with no `plugins[N].version` warning, `claude plugin test .` 1777 pass 0 fail, `skills/tests` 766 OK. PASS.
 - Consistency gate (pass 2): `cairn_validate.py` exit 0; no principle changed, `cairn_impact` skipped; profile gate green, CHANGELOG entry present with no milestone number.
 - spawned: diff-bug, blame-history, prior-review (pass 2).
+- diff-bug #1: step 6's head re-check re-posed the gate on commits steps 3 and 4 never ran on — fix now: a head that differs at the marker write now writes no marker and stops, its next command `/hotfix` with the PR reference taking the new commits through the walk, fixed ac8c11b2.
+- diff-bug #2: the marker can sit on disk for days and the guard reads only its PR number, so a hand-typed `gh pr merge <N>` with no head pin passes — follow-up, "Hotfix resume edges (M262 review)" (guard enforcement of the ` at <oid>` tail); D-168's "never an unapproved merge" narrowed to say the pin holds only for the skill's own merge, fixed ac8c11b2.
+- diff-bug #3: a marker whose PR merged or closed outside the session is never removed — follow-up, same row.
+- diff-bug #4: `latestReviews` keeps each reviewer's latest review of any state, so a later COMMENTED review can mask a CHANGES_REQUESTED — follow-up, same row (AC2 names `latestReviews`; `latestOpinionatedReviews` would need a third AC2 amendment).
+- diff-bug #5: README.md:790 "nothing is merged past unread" and D-168's title overclaim once the resume skips the read — fix now: README says the resume checks only for a request for changes; D-168's title names head, change requests, and rows, and its Decision says the read is skipped and comments since the approval go unread, fixed ac8c11b2.
+- diff-bug #6: a red CI wait has no stated stop in step 6, and the marker stays on disk — follow-up, same row (a rerun on the same head re-waits; a pushed fix moves the head, and the walk takes it).
+- diff-bug #7: `merge_guard_post.py`'s restore note says to retry, against step 6's "do not retry" — fix now: step 6 adds "whatever the guard's restore note says", fixed ac8c11b2.
+- diff-bug #8: "the read runs at most once per hotfix" is false across runs — reject, false as a new defect: a rerun of an open PR re-ran the walk and its read before M262.
+- diff-bug #9: condition 3 nearly always holds because the match reads the body — reject, false as a defect: the condition exists to catch a row added, deleted, or retitled since the approval, which it does.
+- diff-bug #10: the pass-1 follow-up row is not in ROADMAP.md — noted: step 9's hygiene writes "Hotfix resume edges (M262 review)" with every follow-up of both passes.
+- diff-bug #11: the owner arm's read cannot tell a fork PR, whose merge must drop `--delete-branch` — fix now: step 1 reads `isCrossRepository` before the resumed merge, fixed ac8c11b2.
+- diff-bug #12: "An adopted PR's body has no such line" is not always true — fix now: sentence removed (condition 3 stands alone), fixed ac8c11b2.
+- diff-bug #13: a resumed merge never meets step 6's "only on explicit approval at that chip" — reject, planned change: the marker records that chip's approval from the earlier run (D-168).
+- diff-bug #14: the timeout close's fallback clause and step 6's refused-merge close are unpinned — reject, proportionality: AC4's clause and step 1's refused-merge stop are pinned, and these sentences restate them.
+- diff-bug #15: CHANGELOG says "your open hotfix PR" though the guest arm does not check the author — fix now: "an open hotfix PR", fixed ac8c11b2.
+- diff-bug #16: "the walk above" reads as the merged-PR re-entry — fix now: "the tier-check walk that opens this step", fixed ac8c11b2.
+- blame-history #1: same as diff-bug #2 — follow-up, with D-168 narrowed.
+- blame-history #2: same as diff-bug #7 — fix now, fixed ac8c11b2.
+- blame-history #3: the resume skips M177's PR-conversation read — reject, planned change: the user chose this resume at the review stop, and D-168 now records the skipped read.
+- blame-history #4: same as diff-bug #6 — follow-up.
+- blame-history #5: the resume trusts the earlier chip's issue close with no record of what it named — reject, false as a new defect: step 7 reads the body's `Fixes #N` after the wait on every path.
+- blame-history #6: the guest arm does not check the PR's author — follow-up (pass-1 diff-bug #10).
+- blame-history #7: D-168 does not say how it annotates D-131 — fix now: its Decision states that the bar ran at the approved head, fixed ac8c11b2.
+- blame-history #8: an adopted PR with a matched row never resumes — reject, planned change (condition 3).
+- blame-history #9: tracking-rules and DESIGN describe the marker as single-use and PR-bound — reject, false: both statements stay true.
+- blame-history #10: decline removal unguarded; a crashed walk leaves the marker — noted; the head pin on the skill's merge covers a stale marker.
+- prior-review #1: Copilot asks for `--repo` on the trigger read — reject, false: the session-start guest clause (SKILL.md:26-29) covers every step-1 re-entry read.
+- prior-review #2, #3: Copilot's head-pin and header threads — fixed 21eb3da1 and 97d8a333.
+- prior-review #4: the resume departs from M177's read with no D-entry cited — fix now: D-168 names the skipped read, fixed ac8c11b2.
+- prior-review #5, #6: settled follow-ups and mutation registration — noted, clean.
+- copilot: skills/hotfix/SKILL.md:341 (head moves during the wait) — fix now, fixed 21eb3da1.
+- copilot: skills/hotfix/SKILL.md:128 (`--repo` on the trigger read) — reject: the session-start guest clause covers it.
+- copilot: cairn/milestones/M262-hotfix-open-pr-resume.md:14 (PR URL in the header) — fix now, fixed 97d8a333.
+- copilot: review body (3 findings, each anchored to a thread above) and 3 empty-body reviews from the replies — noted.
+- Copilot level: Lite (set by GitHub's settings); reviewed an earlier head.
+- After the fixes: 24 mutation entries each red when blanked; scripts/tests, hooks/tests, `skills/tests` (766), both validates, and `claude plugin test .` green; `cairn_validate` green.
