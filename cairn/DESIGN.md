@@ -453,7 +453,16 @@ transitions, human-gated merges, and a domain verification doctrine.
   A failed call keeps or empties
   `started` with `prs`. In owner mode `/hotfix` and `/milestone-review`
   write those lines in the PR body, one per candidate row that the merge
-  removes or narrows; a guest PR body carries none. The pane draws the list only while the band's root is
+  removes or narrows; a guest PR body carries none. `takenRows` in
+  `reader.ts` reads each candidate row's ` — started M<NNN>` or
+  ` — started #<n>` token, ended by the row's end or ` — `, into the pane
+  state's `taken` list (`{ title, ref }`, tag `pane-6`, M258), keeping an
+  M token only while the table holds its id as `planned` or `blocked`.
+  `startedRefs` in `pane.ts` marks a row by its body lines, its `#<n>`
+  tokens whose n the held hotfix list has, and its M tokens. The tail shows
+  the lowest PR number, else the lowest id. `/milestone-plan` writes the M
+  token on each row a plan absorbs, both modes, and `/hotfix`'s guest arm
+  writes the #n token after its create. The pane draws the list only while the band's root is
   its root, under a `HOTFIXES` heading after `BLOCKED` and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has

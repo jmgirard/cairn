@@ -164,6 +164,18 @@
 
 ### New
 
+- **A started token on a candidate row marks it in the cairn pane, guest
+  mode included.** `/milestone-plan` now ends each candidate row that a
+  plan absorbs with ` — started M<NNN>`, in owner and guest mode. In guest
+  mode, `/hotfix` ends each row it matched with ` — started #<n>` on disk
+  after it opens the PR for the maintainers. The pane shows `◐` on a row
+  with an `M<NNN>` token while that milestone is `planned` or `blocked`,
+  with the milestone id at its right end, and on a row with a `#<n>` token
+  while PR #n is among your open hotfix PRs, with the number. A PR number
+  wins over a milestone id. A marked row has no `✎` button. A row that
+  hygiene narrows loses its token. The token opens with ` — `, so the
+  row's short title stays the same.
+
 - **A normal-priority candidate row in the cairn pane shows `○`.** The
   open circle replaces the `·` mark, so the candidate marks read `↑` for
   high priority, `↓` for low, `○` for normal, and `◐` for a row whose

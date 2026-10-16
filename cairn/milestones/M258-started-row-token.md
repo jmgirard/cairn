@@ -105,7 +105,7 @@ so its #n token counts nothing; that stays a documented limit, not a fix.
       step 6 (both modes, rows absorbed in full or in part); `/hotfix` guest
       arm write after the PR create, and the steps 6 and 7 "unchanged"
       sentences; records-hygiene §1 narrowing drops the token.
-- [ ] T4: README started-mark section, DESIGN, the unreleased CHANGELOG
+- [x] T4: README started-mark section, DESIGN, the unreleased CHANGELOG
       entry, and the D-entry AC6 names.
 - [ ] T5: run the `verify` slot and fix what it reports.
 
@@ -122,6 +122,7 @@ so its #n token counts nothing; that stays a documented limit, not a fix.
 - 2026-10-15: implement: branch m258-started-row-token cut from main at 2ccf609f; the untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
 - 2026-10-15: T1, T2 done: the tokens ride in a new `PaneState.taken` list ({title, ref}) built by `takenRows` from `startedTokens`, not in `CandidateRow`, so the fixtures, `fixtures.gen.ts`, and the Python mirror keep their candidate shape; pane shape tag to `pane-6`; `startedRefs` in pane.ts picks the marks for `paneLines` and `pressCandidate`; an id token is `M` plus digits compared through `canonId`, a number token `#` plus 1-15 digits, each ended by the row end or ` — `; mod tests 1757 pass, scripts 408 OK.
 - 2026-10-15: T3 done: tracking-rules "Candidate started token" paragraph after the priority token; milestone-plan step 6; hotfix step 6 guest arm write after the create and the steps 6 and 7 "unchanged" sentences; records-hygiene §1 (one sentence dropped to hold the 55-line budget, now 54 lines, 3,234 bytes); the hand-run `test_hotfix_candidate_graduation` guard follows the new wording, skills/tests 752 OK. The simple-english plugin's lint hook flags each whole edited file; only the added lines were fixed.
+- 2026-10-15: T4 done: README started-token paragraph and a guest pointer in the PR-body paragraph; DESIGN status-mod bullet; unreleased CHANGELOG "New" entry; D-165 (annotates D-035 and D-137, passes D-108's door).
 
 ## Decisions
 
