@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-16 (M268 merged and archived; one candidate row graduated, one added; M265 row pruned; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-16 (status audit after M268: no change; validate green; no open issues, PRs, outside merges, or linked-item news)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
