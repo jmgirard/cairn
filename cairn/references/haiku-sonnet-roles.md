@@ -460,3 +460,6 @@ from its subagent transcript and its final call's output from the session
 transcript's Agent tool result, score with the keys and mutants above, and
 apply the verdict rule. A rerun that flips a group's verdict falsifies
 M228's single-run choice for that group.
+
+M264 reran the search and history-review tasks three times per model in
+`haiku-sonnet-rerun.md`. Neither verdict flipped.

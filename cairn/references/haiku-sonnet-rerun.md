@@ -157,3 +157,63 @@ No reviewer or judge tool call named the mapping file or a path under
 notes (`haiku-sonnet-roles.md`, `effort-roles.md`,
 `effort-review-medium.md`). Both checks ran over the 27 transcripts on
 2026-10-16.
+
+## Verdicts
+
+Per task, the mean over three runs (score, then USD):
+
+| Task | Sonnet score | Haiku score | Sonnet USD | Haiku USD | Sonnet calls | Haiku calls |
+|---|---|---|---|---|---|---|
+| S1 | 1.0000 | 1.0000 | 0.1117 | 0.0062 | 3, 2, 4 | 2, 3, 3 |
+| S2 | 1.0000 | 0.0000 | 0.1038 | 0.0063 | 2, 2, 2 | 4, 2, 3 |
+| S3 | 0.8865 | 0.9962 | 0.1626 | 0.0132 | 2, 2, 2 | 3, 6, 6 |
+| H1 | 1.3333 | 1.6667 | 0.4089 | 0.1366 | 16, 14, 18 | 23, 28, 27 |
+| H2 | 1.3333 | 0.6667 | 0.2612 | 0.0575 | 11, 8, 8 | 15, 17, 13 |
+| H3 | 1.6667 | 1.6667 | 0.3061 | 0.1152 | 12, 13, 13 | 29, 32, 21 |
+
+| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict |
+|---|---|---|---|---|---|---|
+| Search | 0.3781 | 0.0257 | 2.8865 | 1.9962 | 0.6916 | stay |
+| History review | 0.9762 | 0.3092 | 4.3333 | 4.0000 | 0.9231 | move |
+
+Each verdict applies the design's rule to the sums above.
+
+Readings that bear on the verdicts:
+
+- Search is `stay`, as in M228. S2 is the whole gap. All three Haiku S2
+  runs dropped `.py`, so the miss is not run-to-run noise. A reading that
+  adds a missing `.py` to each S2 item scores every Haiku S2 run 1.0. Under
+  it, Haiku's search score is 2.9962 against Sonnet's 2.8865. That reading
+  is outside the verdict rule, which was fixed before the runs.
+- History review is `move`, as in M228, now on three runs per task. Haiku
+  scored 12 judged-valid findings over its nine runs and Sonnet 13. The
+  margin is one finding. One fewer Haiku finding makes Haiku's sum 3.6667
+  (ratio 0.8462), and one more Sonnet finding makes the ratio 0.8571. Both
+  are `stay`.
+- Haiku scored lower on H2 in M228 (0 against 1) and here (0.6667 against
+  1.3333). H2 is a skill-prose commit. H1 and H3 are pane-code commits.
+- Haiku used more calls on every history task: a mean of 26 against 16
+  on H1, 15 against 9 on H2, and 27.3 against 12.7 on H3. Of its 205
+  history calls, 90 had a prompt over 100,000 tokens and paid the higher
+  Haiku price. Even so, every Haiku history run cost less than every
+  Sonnet run on the same task.
+- Costs are lower bounds (see Cost). Take Sonnet's unrecorded output as
+  zero and price Haiku's at its higher tier. If Haiku's unrecorded output
+  then costs more than the gap, the group's cost comparison reverses.
+  For history review the gap is 0.6670 USD. That is about 267,000 tokens,
+  or about 4,100 per non-final Haiku call (65.3 such calls per group sum of
+  means). M228's break-even was about 870 per call. For search the gap is
+  0.3524 USD, about 18,400 tokens per non-final Haiku call.
+- The score counts reported findings that the judge rated valid. It does
+  not measure real conflicts that a reviewer missed. D-016 named that
+  risk for a weaker model in a review step: it "can silently drop a real
+  bug". This note does not test that risk.
+
+## Limits and re-measurement
+
+Three runs per model per task, three tasks per group, at default effort,
+on tasks drawn from this repo. One Opus judge rates each run pair. The
+measurement helpers were session-local and are not committed (observed
+2026-10-16). To re-measure, follow the Design section with the same
+models and prompts, and apply the verdict rule. A rerun that flips a
+group's verdict falsifies this note's verdict for that group.
