@@ -190,4 +190,11 @@ planned.
 - pass 2 prior-review #4: the rulebook-size seed in `/milestone` and the mutation harness is stale — reject: the seed drifted on main before this branch, and the branch follows the existing practice
 - pass 2 prior-review #5: README and CHANGELOG name only the two-base stop — fix now, fixed fd375d3c
 - pass 2 prior-review #6: the open edges on the two review rows stay open — noted
+- copilot: skills/milestone-implement/SKILL.md:46 (outdated) — verify the base PR's head repository — fixed 9e0e1a40 (return 1's `headRepositoryOwner` stop)
+- copilot: skills/milestone-implement/SKILL.md:48 (outdated) — a planned milestone whose base merged before the start loops between implement and `/milestone` — reject, false: `/milestone` routes the merged base to hygiene, which marks it `done`, and the milestone then cuts from the default branch
+- copilot: skills/milestone-implement/SKILL.md:106 (outdated) — the plain guest rebase runs before the stacked sync — fixed 9e0e1a40
+- copilot: skills/milestone-review/SKILL.md:668 — the exact `gh pr create` command omits `--base` — fix now, fixed a777bd5d
+- copilot: review body (5bfa8237, COMMENTED) — an index of the four threads above, each anchored — noted
+- Copilot level: unknown (the review body has no `Review effort:` line; set by GitHub's settings); its one review covered 5bfa8237, before return 1
+- conversation: no human reviews, no conversation comments on PR #280; the reads ran on 2026-10-16 before the merge question
 - pass 2 fixes on fd375d3c: verify green (scripts 409 OK, hooks 179 OK, validates 0 and 0, plugin test 2018 pass), skills/tests 822 OK, cairn_validate clean.
