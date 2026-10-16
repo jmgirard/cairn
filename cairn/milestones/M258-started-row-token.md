@@ -136,6 +136,7 @@ stay on that row.
 - 2026-10-15: re-audit: AC6 (full) — nothing blocking; the branch already meets the amended wording; an optional grep of `skills/` for `Candidate row:` writers as extra evidence was not taken, to keep the audited wording.
 - 2026-10-15: amendment return: AC6 — "that cairn writes no `Candidate row:` line in a guest-mode PR, so the tokens are the usual source of the mark in guest mode"
 - 2026-10-15: return 1 done: verify clean (scripts 408 OK, hooks 175 OK, both plugin validates pass, mod tests 1758 pass); status to review.
+- 2026-10-15: step-7 approval: m258-started-row-token approved for merge
 
 ## Decisions
 
