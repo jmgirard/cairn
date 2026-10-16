@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — `/cairn-triage` proposals and the ROADMAP rows it writes for the operator
-- **Branch/PR:** m259-triage-started-tokens
+- **Branch/PR:** m259-triage-started-tokens, https://github.com/jmgirard/cairn/pull/270
 
 ## Goal
 
