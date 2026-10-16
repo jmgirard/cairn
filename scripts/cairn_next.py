@@ -39,11 +39,23 @@ def done_ids(root, rows):
     }
 
 
+def stack_bases(root, rows, read=None):
+    """Canonical ids of the stack bases (M268): in guest mode, when
+    cairn/PROFILE.md carries `# Push remote: base`, each `blocked` row that
+    is not archived and whose milestone file's `Branch/PR` header names a
+    pull request URL. Empty in owner mode or without the line. `read` is as
+    in `blocked`."""
+    if cs.cc.collaboration_mode(root) != "guest" or cs.cc.push_remote(root) != "base":
+        return set()
+    return {cs.canon_id(r["id"]) for r in blocked(root, rows, read) if r["url"] is not None and not r["archived"]}
+
+
 def workable(root, rows):
-    """Planned rows whose dependencies are all done, by priority then id.
-    The status band's reader (hooks/status/reader.ts) mirrors this, held to
-    it by scripts/tests/test_status_fixtures.py (M199)."""
-    return _workable(rows, done_ids(root, rows))
+    """Planned rows whose dependencies are each done or a stack base, with
+    at most one a stack base (M268), by priority then id. The status band's
+    reader (hooks/status/reader.ts) mirrors this, held to it by
+    scripts/tests/test_status_fixtures.py (M199)."""
+    return _workable(rows, done_ids(root, rows), stack_bases(root, rows))
 
 
 def recommend(root, rows):
@@ -64,16 +76,17 @@ def recommend(root, rows):
 
 
 def waiting(root, rows):
-    """Planned rows with a dependency not yet done, in ROADMAP order. Each is
-    a dict of `id`, `title`, and `unmet`, the undone dependencies as written,
-    each with its row's status or `unknown`. The cairn pane mirrors this
-    (M205)."""
+    """Planned rows that are not workable, in ROADMAP order. Each is a dict
+    of `id`, `title`, and `unmet`, the dependencies `_met` leaves out, as
+    written, each with its row's status or `unknown`. The cairn pane mirrors
+    this (M205)."""
     by_id = {cs.canon_id(r["id"]): r for r in rows}
     done = done_ids(root, rows)
+    bases = stack_bases(root, rows)
     return [
-        {"id": r["id"], "title": r["title"], "unmet": _unmet_list(r, done, by_id)}
+        {"id": r["id"], "title": r["title"], "unmet": _unmet_list(r, _met(r, done, bases), by_id)}
         for r in rows
-        if r["status"] == "planned" and not _deps_done(r, done)
+        if r["status"] == "planned" and not _deps_met(r, done, bases)
     ]
 
 
@@ -237,21 +250,30 @@ def render(root):
     return "\n".join(lines)
 
 
-def _deps_done(row, done):
-    return all(cs.canon_id(dep) in done for dep in row["depends"])
+def _met(row, done, bases):
+    """The ids that count as met for `row`'s dependencies: the done ids, and
+    its stack-base dependency when it has exactly one (M268). A row on two
+    or more stack bases has none of them met."""
+    on_bases = {cs.canon_id(dep) for dep in row["depends"]} & (bases - done)
+    return done | on_bases if len(on_bases) <= 1 else done
 
 
-def _workable(rows, done):
+def _deps_met(row, done, bases):
+    met = _met(row, done, bases)
+    return all(cs.canon_id(dep) in met for dep in row["depends"])
+
+
+def _workable(rows, done, bases):
     return cs.sort_by_priority(
-        [r for r in rows if r["status"] == "planned" and _deps_done(r, done)]
+        [r for r in rows if r["status"] == "planned" and _deps_met(r, done, bases)]
     )
 
 
-def _unmet_list(row, done, by_id):
+def _unmet_list(row, met, by_id):
     parts = []
     for dep in row["depends"]:
         dep_c = cs.canon_id(dep)
-        if dep_c in done:
+        if dep_c in met:
             continue
         state = by_id[dep_c]["status"] if dep_c in by_id else "unknown"
         parts.append(f"{dep} ({state})")

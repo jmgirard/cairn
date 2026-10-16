@@ -450,6 +450,27 @@ class StatusFixtureAgreement(unittest.TestCase):
         # M500's `High` sorts it first only when the cell is case-folded.
         self.assertEqual(order["workable"][:2], ["M500", "M030"])
 
+    def test_stack_base_fixtures_hold_the_cases(self):
+        # M268 AC1, stated apart from the helpers: M302 waits on M301 in
+        # each tree, and only the guest repo with `# Push remote: base`, a
+        # `blocked` M301, and a PR URL in M301's header makes it workable.
+        # In the two-base tree M302 builds on two and waits, while M305
+        # builds on one of them and is workable.
+        def workable(name):
+            return json.loads((FIXTURES / name / "expected.json").read_text(encoding="utf-8"))["workable"]
+
+        self.assertIn("M302", workable("stack-base"))
+        for name in ("stack-owner", "stack-no-push-line", "stack-no-pr", "stack-in-progress", "stack-two-bases"):
+            with self.subTest(fixture=name):
+                self.assertNotIn("M302", workable(name))
+        self.assertIn("M305", workable("stack-two-bases"))
+        root = FIXTURES / "stack-owner" / "cairn"
+        self.assertIn("# Push remote: base", (root / "PROFILE.md").read_text(encoding="utf-8"))
+        self.assertNotIn("Collaboration mode", (root / "PROFILE.md").read_text(encoding="utf-8"))
+        held = (FIXTURES / "stack-no-pr" / "cairn" / "milestones" / "M301-waits.md").read_text(encoding="utf-8")
+        self.assertIsNone(cn.pr_url(held))
+        self.assertIn("| M301 | Back in work after review | in-progress |", (FIXTURES / "stack-in-progress" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8"))
+
     def test_generated_module_is_current(self):
         module = STATUS_DIR / "fixtures.gen.ts"
         self.assertTrue(module.is_file(), "run python3 hooks/status/gen_fixtures.py")

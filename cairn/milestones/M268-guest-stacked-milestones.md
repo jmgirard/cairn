@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M268: Let a guest milestone build on one that waits for the maintainers
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M267
 - **Driving RR:** —
 - **Principles touched:** GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — changes which guest milestones are workable and where their branches and PRs start
-- **Branch/PR:** —
+- **Branch/PR:** m268-guest-stacked-milestones
 
 ## Goal
 
@@ -73,9 +73,9 @@ planned.
 
 ## Tasks
 
-- [ ] T1: Fixtures first: add the six trees from AC1 under `hooks/status/fixtures/` with `expected.json`, regenerate
+- [x] T1: Fixtures first: add the six trees from AC1 under `hooks/status/fixtures/` with `expected.json`, regenerate
       `hooks/status/fixtures.gen.ts`, and see the stack-base tree fail on both readers.
-- [ ] T2: Add the stack-base rule to `scripts/cairn_next.py` (`_deps_done`, line 240) using
+- [x] T2: Add the stack-base rule to `scripts/cairn_next.py` (`_deps_done`, line 240) using
       `cairn_common.collaboration_mode` and the `Branch/PR` reader it already has (line 23), and mirror it in
       `hooks/status/reader.ts` (`workableRows`, line 157); the `waiting` list follows the same rule.
 - [ ] T3: `/milestone-implement` step 1 (line 36) and step 2's guest arm: accept a stack base, stop on two or more or
@@ -99,6 +99,9 @@ planned.
 - 2026-10-16: plan gate chose the existing `/milestone-implement` resume path for the restack over a new §2 action that rebases on its own, because §2 writes nothing and implement already re-runs `verify` and hands back to review; falsified by restacks that need no verify and make the review pass pure overhead.
 - 2026-10-16: criteria audit (full mode, fresh Opus reader): 6 findings on M268, all fixed — AC1's negative trees lacked an `in-progress` dependency and a two-stack-base milestone (both added; readers allow at most one stack base); AC2 lacked a check that the base branch exists and a rule for syncing onto a force-pushed base (`ls-remote` stop and `--onto` sync added); AC3 had no condition on the base PR being open (now routes a merged base to the restack); AC4's `gh pr view` lacked `--repo` (added); AC5 missed copies of the workable rule in DESIGN.md, README, and milestone-plan step 7 (now a grep-bounded promise). AC6: no finding.
 - 2026-10-16: absorbed candidate row "Guest milestone branches on the base repo" (with M267).
+- 2026-10-16: implement started on branch m268-guest-stacked-milestones; untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-16: T1: six fixtures `stack-base`, `stack-owner` (push line, no mode line), `stack-no-push-line`, `stack-no-pr` (an issue URL), `stack-in-progress`, `stack-two-bases` (M305 on one of the two bases stays workable); before T2 both readers failed on `stack-base` and `stack-two-bases` only; band tests' IDLE_DRAWN and FLOWS tables gained the new fixtures.
+- 2026-10-16: T2: chose a `push_remote(root)` reader in `hooks/cairn_common.py` sharing one header reader with `collaboration_mode`, a `stack_bases` set built from `blocked()` (non-archived rows with a PR URL), and one `_met` set for both `workable` and `waiting`, so a row on two stack bases lists both as unmet; TS mirrors as `pushRemote`, `unmetDeps`; verify green (scripts 409 OK, hooks 178 OK, both validates 0, plugin test 2018 pass).
 
 ## Decisions
 

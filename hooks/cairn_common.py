@@ -408,6 +408,9 @@ def on_default_branch(cwd):
 # this same regex and reader through cairn_scripts' import of cairn_common,
 # so there is one parser, not two.
 COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
+# `# Push remote: base`, the guest-mode push remote line (M267). No validator
+# reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).
+PUSH_REMOTE_LINE = re.compile(r"#\s*Push remote:\s*(\S+)", re.IGNORECASE)
 
 
 def collaboration_mode(root):
@@ -420,18 +423,33 @@ def collaboration_mode(root):
     The key is matched case-insensitively and a UTF-8 BOM is tolerated
     (`utf-8-sig`), so a hand-edited line is not silently read as owner.
     Never raises."""
+    return _profile_header(root, COLLAB_MODE_LINE) or "owner"
+
+
+def push_remote(root):
+    """The value of the `# Push remote:` header line of cairn/PROFILE.md,
+    lowercased, read as `collaboration_mode` reads its line (M268): `base`
+    when the line asks for the base repo, None when the line or the file is
+    absent. Never raises."""
+    return _profile_header(root, PUSH_REMOTE_LINE)
+
+
+def _profile_header(root, pattern):
+    """The first match of `pattern` in cairn/PROFILE.md's header region (the
+    lines before the first `## ` slot heading), its value lowercased, or
+    None."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     try:
         with open(path, encoding="utf-8-sig") as f:
             for line in f:
                 if line.startswith("## "):
                     break
-                m = COLLAB_MODE_LINE.match(line)
+                m = pattern.match(line)
                 if m:
                     return m.group(1).lower()
     except Exception:
-        return "owner"
-    return "owner"
+        return None
+    return None
 
 
 def parse_roadmap_rows_full(roadmap_text):

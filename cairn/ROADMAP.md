@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M268 | Let a guest milestone build on one that waits for the maintainers | planned | M267 | normal | milestones/M268-guest-stacked-milestones.md |
+| M268 | Let a guest milestone build on one that waits for the maintainers | in-progress | M267 | normal | milestones/M268-guest-stacked-milestones.md |
 | M267 | Let a guest repo push its branches to the maintainers' repo | done | — | normal | milestones/archive/M267-guest-push-remote.md |
 | M266 | Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests | done | — | normal | milestones/archive/M266-hotfix-rerun-gaps.md |
 | M265 | Close the tier check's five open edges | done | — | normal | milestones/archive/M265-tier-check-edges.md |
