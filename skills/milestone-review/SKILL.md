@@ -665,7 +665,8 @@ re-enters here, at the step the record shows is next:
    builds on. Then, unless the
    header already names an open PR, open the PR against the base repo from
    the pushed branch —
-   `gh pr create --repo <base-repo> --head <push-owner>:<slug>`, opened
+   `gh pr create --repo <base-repo> --head <push-owner>:<slug>` (a stacked
+   milestone's adds `--base <stack-base-branch>`), opened
    ready for their review (never a draft, so no later ready-marking step)
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
