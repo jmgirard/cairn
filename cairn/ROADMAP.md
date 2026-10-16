@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M260 | Press and placement races end cleanly | planned | — | normal | milestones/M260-press-end-races.md |
+| M260 | Press and placement races end cleanly | review | — | normal | milestones/M260-press-end-races.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (2026-10-10) made it count each call once and read subagent files; earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (A4 row), M153's medians in `record-rule-remeasurement.md`, `effort-experiment-notes.md`. Promote when a decision next relies on one — added 2026-10-09 — M228 review; narrowed 2026-10-10 by the PR #238 hotfix

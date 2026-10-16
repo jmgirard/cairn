@@ -98,6 +98,9 @@ type Copy = {
   // waits for this promise before it answers (M255).
   endThrows?: boolean
   endHold?: Promise<void>
+  // The text and mode of each prompt box fill that reached beneath the mod
+  // (M260).
+  fills?: { text: string; mode: string }[]
 }
 
 function copyOf(name: string): Copy {
@@ -177,6 +180,10 @@ function seat(on: On, copy: Copy) {
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
     return { value: undefined }
+  })
+  on('prompt.fill', async ($, e) => {
+    copy.fills = [...(copy.fills ?? []), { text: e.text, mode: e.mode }]
+    return { isFilled: true }
   })
   on('command.run', async ($, e) => {
     copy.commands = [...(copy.commands ?? []), { command: e.command, args: e.args }]
@@ -4486,5 +4493,261 @@ describe("a ⌂ press's open still runs when the session end beneath rejects (M2
     expect(rejected).toBe(true)
     await untilOpens(copy, before + 1, 10)
     expect(copy.opens.length).toBe(before)
+  })
+})
+
+// A session end that rejects frees the action Buttons, so a press whose
+// `/clear` run never settles leaves none dead (M260 AC1).
+describe('a rejected session end frees the action Buttons (M260 AC1)', () => {
+  test("a Status press after a rejected end runs, while the ⌂ press's /clear never settles", async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    let settle = () => {}
+    copy.runHold = new Promise<void>(resolve => (settle = resolve))
+    void ui.press({ key: PANE_HOME })
+    await untilRuns(copy, 1)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    copy.endThrows = undefined
+    void ui.press({ key: PANE_STATUS })
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
+    copy.runHold = undefined
+    settle()
+    await ui.unmount()
+  })
+
+  // A press made while the end beneath is pending keeps its run when the
+  // end settles, resolved or rejected, so a second press does not run
+  // beside it (M260 review, PR #271).
+  for (const rejects of [false, true]) {
+    test(`a press made during a ${rejects ? 'rejecting' : 'resolving'} end keeps its run past the end`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      let finish = () => {}
+      copy.endHold = new Promise<void>(resolve => (finish = resolve))
+      copy.endThrows = rejects ? true : undefined
+      const end = $.session.end(CLEAR_END).then(
+        () => false,
+        () => true,
+      )
+      await sleep(20)
+      let settle = () => {}
+      copy.runHold = new Promise<void>(resolve => (settle = resolve))
+      void ui.press({ key: PANE_STATUS })
+      await untilRuns(copy, 1)
+      expect(copy.commands).toEqual([STATUS_RUN])
+      copy.endHold = undefined
+      finish()
+      expect(await end).toBe(rejects)
+      copy.endThrows = undefined
+      void ui.press({ key: PANE_STATUS })
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([STATUS_RUN])
+      copy.runHold = undefined
+      settle()
+      await ui.unmount()
+    })
+  }
+
+  // A press whose checks are still reading at the rejected end leaves the
+  // shared press mark free too, so a later press runs (M260 review).
+  test('a Status press after a rejected end that cut off a press still reading runs once', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const hold = holdStep(on)
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    hold.armed = true
+    const first = ui.press({ key: PANE_STATUS })
+    await until(() => hold.held)
+    expect(hold.held).toBe(true)
+    copy.endThrows = true
+    let rejected = false
+    try {
+      await $.session.end(CLEAR_END)
+    } catch {
+      rejected = true
+    }
+    expect(rejected).toBe(true)
+    copy.endThrows = undefined
+    await ui.press({ key: PANE_STATUS })
+    expect(copy.commands).toEqual([STATUS_RUN])
+    hold.release()
+    await first
+    await untilRuns(copy, 2, 10)
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+})
+
+// A held command that a rejected session end drops goes to the prompt box,
+// and a toast says why, for an end of either reason (M260 AC2).
+describe('a rejected session end hands its held command to the prompt box (M260 AC2)', () => {
+  const name = PANE_CLEAR_FIRST[0]
+  for (const reason of ['clear', 'other'] as const) {
+    test(`${name}: a rejected ${reason} end fills the held command and toasts`, async ($, on) => {
+      const copy = copyOf(name)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      await ui.press({ key: PANE_NEXT })
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      copy.endThrows = true
+      let rejected = false
+      try {
+        await $.session.end({ reason, sessionId: 's1' })
+      } catch {
+        rejected = true
+      }
+      expect(rejected).toBe(true)
+      const run = runOf(name)
+      const line = run.args === '' ? `/${run.command}` : `/${run.command} ${run.args}`
+      for (let i = 0; i < 200 && ((copy.toasts ?? []).length < 1 || (copy.fills ?? []).length < 1); i++) await sleep(5)
+      expect(copy.fills).toEqual([{ text: line, mode: 'append' }])
+      expect(copy.toasts).toEqual([`cairn: the session end failed (${line})`])
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await ui.unmount()
+    })
+  }
+})
+
+// A session end that lands while a ⌂ press reads its step cancels the
+// press, so its `/clear` never reaches the conversation that follows. A
+// `clear` end still gives the pane the open it gives any ⌂ mark, and an
+// `other` end none (M260 AC3).
+describe("a session end during a ⌂ press's step read cancels its /clear (M260 AC3)", () => {
+  const ENDS = [
+    { name: 'a resolving clear end', reason: 'clear', rejects: false, opens: 1 },
+    { name: 'a rejecting clear end', reason: 'clear', rejects: true, opens: 1 },
+    { name: 'a resolving other end', reason: 'other', rejects: false, opens: 0 },
+    { name: 'a rejecting other end', reason: 'other', rejects: true, opens: 0 },
+  ] as const
+  for (const { name, reason, rejects, opens } of ENDS) {
+    test(`${name} runs no /clear and opens the pane ${opens} time(s)`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      const hold = holdStep(on)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      hold.armed = true
+      const first = ui.press({ key: PANE_HOME })
+      await until(() => hold.held)
+      expect(hold.held).toBe(true)
+      expect(copy.commands ?? []).toEqual([])
+      const before = copy.opens.length
+      copy.endThrows = rejects ? true : undefined
+      let rejected = false
+      try {
+        await $.session.end({ reason, sessionId: 's1' })
+      } catch {
+        rejected = true
+      }
+      expect(rejected).toBe(rejects)
+      copy.endThrows = undefined
+      hold.release()
+      await first
+      await untilRuns(copy, 1, 10)
+      expect(copy.commands ?? []).toEqual([])
+      await untilOpens(copy, before + opens)
+      await untilOpens(copy, before + opens + 1, 10)
+      expect(copy.opens.slice(before)).toEqual(opens === 1 ? [{ id: PANE, title: 'cairn' }] : [])
+      await ui.unmount()
+    })
+  }
+})
+
+// A start's second pane listing that is still pending at a session end
+// reads nothing when it answers, even placed and with a later start's read
+// owed, so the read a later start owes is that start's; here the pane's next
+// draw makes it (M260 AC4).
+describe('a second listing pending at a session end reads nothing (M260 AC4)', () => {
+  test("the old start's placed second listing adds no read, and the next draw reads once", async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    let releaseFirst = () => {}
+    let releaseSecond = () => {}
+    copy.panesHold = new Promise<void>(resolve => {
+      releaseFirst = resolve
+    })
+    const second = new Promise<void>(resolve => {
+      releaseSecond = resolve
+    })
+    const old = $.classic.SessionStart({ source: 'clear' })
+    try {
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
+      // The second listing's answer is computed placed when it is held.
+      copy.unplaced = []
+      copy.panesHold = second
+      releaseFirst()
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHold).toBeUndefined()
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(true)
+      await $.session.end(CLEAR_END)
+      // The new start lists the pane unplaced twice, so it owes a read and
+      // makes none.
+      copy.unplaced = [PANE]
+      await $.classic.SessionStart({ source: 'clear' })
+      await calls.settled()
+      expect(calls.reads).toEqual([])
+    } finally {
+      releaseFirst()
+      releaseSecond()
+    }
+    await old
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+
+  // The same holds one list earlier: a first listing pending at a session
+  // end reads nothing when it answers placed, and leaves the later start's
+  // owed read in place (M260 review).
+  test("the old start's placed first listing adds no read, and the next draw reads once", async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = []
+    let release = () => {}
+    copy.panesHold = new Promise<void>(resolve => {
+      release = resolve
+    })
+    const old = $.classic.SessionStart({ source: 'clear' })
+    try {
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(true)
+      await $.session.end(CLEAR_END)
+      copy.unplaced = [PANE]
+      await $.classic.SessionStart({ source: 'clear' })
+      await calls.settled()
+      expect(calls.reads).toEqual([])
+    } finally {
+      release()
+    }
+    await old
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
   })
 })

@@ -198,7 +198,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   reason is `clear`, runs it through `run`, unawaited. Any other end drops
   it and puts its command line in the prompt box with a toast, as `run`
   does for a refused run (`fallBack`). A `clear` run that rejects drops it
-  too, and `run`'s own refusal names `/clear`. While `heldRun` is set,
+  too, and `run`'s own refusal names `/clear`. An end whose `next(e)`
+  rejects, of either reason, gives a held command to `fallBack` with
+  `the session end failed` (M260). While `heldRun` is set,
   `busy` makes every action press do nothing. `busy` also reads the
   shared press mark `pressCheck` (M243). The four presses `pressNext`,
   `pressStatus`, `pressClear`, and `pressBlocked`, and the ✎ press
@@ -212,7 +214,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   before it calls `next(e)`, and checks that settle after that count moved
   run and hold nothing. The end clears the mark beside `running`, after its
   own updates, so a press cut off by the end leaves the Buttons free
-  (M255). A live probe (M221 T1) showed
+  (M255). An end whose `next(e)` rejects skips those updates and clears
+  both before it rethrows. Either way it clears only the run and the mark
+  current when it began, so a press made while `next(e)` is pending keeps
+  its own (M260). A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
   a press of Clear is, which is how the plan gate settled the IP3 point. A
@@ -382,7 +387,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   then lists the panes again and reads if the pane is placed and still
   owed, so a pane placed and drawn during the first list reads with no
   further draw (M256). An open before that draw, or a session end, clears
-  the debt. A start's reopen,
+  the debt. The hook counts `ends` before its first await, and after a
+  session end it reads and owes nothing, so a later start's debt stays
+  that start's (M260). A start's reopen,
   its `classic.SessionStart`, and the owed draw read once between them:
   the first to read sets `startRead`, which holds until the next session
   end. The hook checks `startRead` again after it awaits the pane list
@@ -513,7 +520,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   parameter. A ⌂ press runs `pressHome`: under `busy`, with no `ended`
   check, it sets the module mark `homeRun` before its first await, so a
   second press in the same tick finds `busy` true. It takes the mark back
-  when it finds a step set, and otherwise runs `clear` through `run`. A
+  when it finds a step set, or when a session end came during its step
+  read (M260), and otherwise runs `clear` through `run`. A
   refused run clears the mark. `busy` also reads the
   mark, so every action press does nothing while it is set. `session.end`
   takes and clears the mark, and at reason `clear` it calls `openHome`

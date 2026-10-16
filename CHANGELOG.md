@@ -363,6 +363,18 @@
 
 ### Fixes
 
+- **Three session-end races in the cairn pane are closed.** If the session
+  end beneath the plugin fails, the pane Buttons now work again after it,
+  even when the press's `/clear` never finishes. The next-step Button can
+  hold a command for that end. That command now goes to the prompt box,
+  and a toast reads `cairn: the session end failed (<command>)`. Before,
+  the Buttons stayed dead and the command was dropped with no notice. A
+  session end while a `⌂` press reads the stored state now cancels the
+  press, so its `/clear` no longer clears the conversation that follows.
+  A `/clear` end still opens the pane. At a `/clear` start, a second pane
+  listing still waiting at a session end now reads nothing. A read that a
+  later start owes is that start's own read.
+
 - **A pane placed during a `/clear` start reads the pull request states
   with no further draw.** At a `/clear`, the plugin lists the panes. If the
   cairn pane is placed, the plugin reads the states of the pull requests

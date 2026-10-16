@@ -262,12 +262,16 @@ export const register: Register = on => {
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
     if (e.source === 'clear' || e.source === 'resume') {
+      // A session end during any await below makes the hook read and owe
+      // nothing, as a later start may owe the read and it is that start's
+      // (M260).
+      const at = ends
       await refresh($)
       if (startRead) return result
       const mine = await listedPane($)
       // A reopen that read during the await is this start's read (M238
       // review).
-      if (mine == null || startRead) return result
+      if (mine == null || startRead || ends !== at) return result
       if (mine.isPlaced) {
         startRead = true
         owed = false
@@ -278,9 +282,10 @@ export const register: Register = on => {
       // A pane placed and drawn during the list above drew before the read
       // was owed, so the hook lists it again and reads if it is now placed,
       // unless something cleared `owed` meanwhile: a draw, an open, a
-      // session end, or another start's hook (M256).
+      // session end, or another start's hook (M256), or reads nothing after
+      // a session end, as above (M260).
       const again = await listedPane($)
-      if (again != null && again.isPlaced && owed) {
+      if (again != null && again.isPlaced && owed && ends === at) {
         owed = false
         startRead = true
         void readPrs($)
@@ -525,6 +530,14 @@ export const register: Register = on => {
     // A press whose checks have not settled is cut off: its checks run
     // nothing when they settle (M255).
     ends += 1
+    // The run and the press mark current now are the ones this end frees.
+    // A press made while `next(e)` is pending keeps its own (M260 review).
+    const runAt = runs
+    const checkAt = pressCheck
+    const free = () => {
+      if (runs === runAt) running = false
+      if (pressCheck === checkAt) pressCheck = null
+    }
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -533,8 +546,13 @@ export const register: Register = on => {
     try {
       result = await next(e)
     } catch (error) {
-      // A ⌂ press's open still runs when the end beneath rejects, and the
-      // rejection goes on (M255). A held command is dropped as before.
+      // An end beneath that rejects still frees the action Buttons, so a
+      // press whose `/clear` run never settles leaves none dead, and a held
+      // command goes to the prompt box with a toast, whatever the end's
+      // reason (M260). A ⌂ press's open still runs for a `clear` end, and
+      // the rejection goes on (M255).
+      free()
+      if (queued !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
       if (home !== null && e.reason === 'clear') void openHome($)
       throw error
     }
@@ -546,8 +564,7 @@ export const register: Register = on => {
     // never settle, so the end frees the action Buttons (M216). So does a
     // press whose checks have not settled, once the end's own updates are
     // done, so no press reads the state of the session that ended (M255).
-    running = false
-    pressCheck = null
+    free()
     // The held command runs now when this end is its `/clear` (M221). The
     // run is not awaited, so the session end does not wait on the command.
     // It takes the next run number, so the `/clear` run that settles after
@@ -1129,7 +1146,8 @@ async function pressClear($) {
 let pressCheck: object | null = null
 
 // The number of session ends so far, so a press can tell that an end came
-// while its checks ran (M255). A reload starts it over.
+// while its checks ran (M255), and so can a ⌂ press's step read and a
+// start's second pane listing (M260). A reload starts it over.
 let ends = 0
 
 // What a press's checks give: a command to run, or, with `clears`, a
@@ -1176,11 +1194,14 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
 // consent to drop the conversation, as a press of Clear is. The mark is set
 // before the press's first await, so a second press in the same tick finds
 // `busy` true (M241 review, PR #251), and a step found set takes it back.
+// A session end during the step read cancels the press, so its `/clear`
+// never reaches the conversation that follows (M260).
 async function pressHome($) {
   if (busy()) return
   const mine = {}
   homeRun = mine
-  if (knownStep(await read($, step)) !== null) {
+  const at = ends
+  if (knownStep(await read($, step)) !== null || ends !== at) {
     if (homeRun === mine) homeRun = null
     return
   }
