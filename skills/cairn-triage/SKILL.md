@@ -91,7 +91,8 @@ it. No `#<n>` token is ever missing. Owner mode marks a hotfix through its PR bo
 the candidate rows and the Known issues entries. With no argument the pass
 enumerates the candidates and Known issues and no lesson. An argument other
 than `lessons` stops before enumeration with a close block that names
-`lessons` as the one accepted value. The lessons pass runs the same
+`lessons` as the one accepted value. That check runs first, before the
+owner-mode preconditions. The lessons pass runs the same
 preconditions, gate, apply, stamp, and commit as the default pass, with the
 changes below. It runs only when the user types it. A milestone's review
 hygiene still checks only the lessons that milestone's work covers (D-051,
@@ -100,15 +101,18 @@ D-169).
 **Session start.** In place of the candidate rows and Known issues, read
 `cairn/LESSONS.md` whole, its header included, and `cairn/ROADMAP.md` for
 its size and stamp. The bounded `DECISIONS.md` read and the archive listing
-still run. Skip the live-milestone notes and the started-token reads. Then
-find the pin files: each file that `git grep -l "LESSONS.md"` lists whose
+still run, and so do the live-milestone notes. Skip the started-token
+reads. Then find the pin files: each file that `git grep -l "LESSONS.md"` lists whose
 path contains `test`. None listed means no pins and no failure. Read each
 pin file, and note each string it asserts is present in `cairn/LESSONS.md`
 and each string it asserts is absent. Only an assertion made on the live
 `cairn/LESSONS.md` counts. An assertion on a temporary fixture, on skill
 prose, or on README is not a pin. A pattern that every lesson line matches,
 such as a line-format check, pins the format and no single lesson. A line
-count or size assertion is a cap, which step 4's check covers.
+count or size assertion is a cap, which step 4's check covers. In guest
+mode, find and read the pin files, and any test an enforcement exit cites,
+at `<base>/<default-branch>` (`git grep -l "LESSONS.md"
+<base>/<default-branch>`), as step 2's guest rule states for code.
 
 **Step 1, enumerate.** A lesson item is one line of `cairn/LESSONS.md` that
 opens with `- ` and a `YYYY-MM-DD` date. List its source, `lesson`. List its
@@ -129,14 +133,22 @@ dispositions, and never `split`, `route`, or `retitle`:
 | `keep` | Unchanged. The default when no exit below applies. |
 | `compress` | Shortened, or trimmed to the part no other record covers. |
 | `merge` | Folded into a named surviving lesson on the same subject. The survivor's own proposal is `keep`, its reason `survivor of <subject>`. |
-| `drop` | Retired. The reason names its exit. Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about. A test that only sits nearby is not enforcement. Ownership: a `cairn/` tracking file and the section that owns the lesson's content. |
-| `promote` | A family of lessons ready to graduate into a doctrine module under `skills/shared/`. Each lesson of the family gets this proposal, naming the family. The reason states each maturation condition: the family teaches transferable craft, it was extended or consolidated at least twice, and no other exit applies (D-055). |
+| `drop` | Retired. The reason names its exit. Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about. A test that only sits nearby is not enforcement. Ownership: a `cairn/` tracking file and the section that already holds the lesson's content. The pass moves nothing into it. |
+| `promote` | A family of lessons ready to graduate into a doctrine module under `skills/shared/`. Each lesson of the family gets this proposal, naming the family. The reason states each maturation condition. The family teaches transferable craft about authoring or verifying, not a fact about this repo's tools or runtime. It was extended or consolidated at least twice. No other exit applies (D-055). A repo with no `skills/shared/` directory gets no `promote`. |
 
 A compressed or merged lesson keeps its `- YYYY-MM-DD (M…)` prefix and any
 `corrected` or `trimmed` mark. A lesson the pass finds false is `keep`, its
-reason naming the record that refutes it. It is corrected in place at a
-milestone, not in this pass (D-045, D-169). A lesson about a path or tool the repo no
-longer has is `keep` in the same way, its reason naming the evidence. A
+reason naming the record that refutes it. It is corrected in place
+(D-045) at a milestone, not in this pass (D-169). A lesson about a path or
+tool the repo no longer has is `keep` in the same way, its reason naming
+the evidence. A lesson flagged false or stale makes steps 4 to 6 run for
+the stamp, which names the lesson and the evidence, even when every
+proposal is `keep`. A lesson that a `planned`, `in-progress`, `blocked`,
+or `review` milestone's file quotes, or names by its date and provenance,
+is `keep`, its reason naming the milestone. A pinned lesson is neither a
+merge survivor nor merged away. A lesson leaves only by the two exits
+above: the default pass's drop reasons (refuted premise, already shipped,
+rejected on principle) and its readiness class do not apply. A
 lesson compresses only where it restates what another record says, and
 length alone never fires a `compress`. A merge's survivor takes the
 absorbed lesson's milestone into its parenthesized provenance and any
@@ -144,7 +156,9 @@ content of the absorbed lesson it lacks. That is the merge's edit, not a
 re-wording. For a `promote`, the "at least twice" counts over the whole
 family's provenance. A family whose earlier module a decision retired is
 not proposed: first search the decision bodies for the module's file name
-with `git grep -n "<module>.md" cairn/DECISIONS.md`. The started-token, title, priority, and records-hygiene §7 rules do
+with `git grep -n "<module>.md" cairn/DECISIONS.md`, and read each hit,
+since an entry that created the module did not retire it. The
+started-token, title, priority, and records-hygiene §7 rules do
 not apply to lessons. The pass never proposes pruning the oldest lesson,
 which stays the last resort at review hygiene.
 
@@ -170,7 +184,8 @@ In guest mode the stamp alone names them, with their evidence.
 **Steps 6 and 7.** The stamp says it is a lessons pass, and it names each
 drop's exit in place of the default pass's drop reason classes. The close block
 fences one `/milestone-plan <family>` per promoted family, not one per
-lesson.
+lesson. Its safety line names `/cairn-triage lessons` as the command that
+re-examines a lesson.
 
 ## Workflow
 

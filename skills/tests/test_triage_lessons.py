@@ -132,15 +132,16 @@ class TestLessonDispositions(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "Ownership: a `cairn/` tracking file and the section that owns the "
-            "lesson's content.",
+            "Ownership: a `cairn/` tracking file and the section that already "
+            "holds the lesson's content. The pass moves nothing into it.",
             text,
         )
 
     def test_promote_states_the_maturation_bar(self):
         self.assertIn(
-            "the family teaches transferable craft, it was extended or "
-            "consolidated at least twice, and no other exit applies",
+            "The family teaches transferable craft about authoring or "
+            "verifying, not a fact about this repo's tools or runtime. It was "
+            "extended or consolidated at least twice. No other exit applies",
             section(),
         )
 

@@ -4292,13 +4292,13 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_drop_names_an_exit",
         target=TRIAGE,
-        block="Ownership: a `cairn/` tracking file and the section that owns the lesson's content.",
+        block="Ownership: a `cairn/` tracking file and the section that already holds the lesson's content.",
     ),
     Mutation(
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_promote_states_the_maturation_bar",
         target=TRIAGE,
-        block="the family teaches transferable craft, it was extended or consolidated at least twice, and no other exit applies",
+        block="The family teaches transferable craft about authoring or verifying, not a fact about this repo's tools or runtime.",
     ),
     Mutation(
         guard="test_triage_lessons",
