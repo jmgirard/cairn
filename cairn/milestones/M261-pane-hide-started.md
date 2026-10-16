@@ -144,6 +144,7 @@ row stays as it is until the review hygiene reads it.
 - 2026-10-16: T4 done: scripts 408 tests OK (21 skipped), hooks 175 OK, both `claude plugin validate` exit 0, mod tests 1777 pass 0 fail, each exit code 0; the AC4 grep prints only DESIGN.md:79's provenance entry; cairn_validate all checks passed.
 - 2026-10-16: claim audit: 52 claims read, 1 corrected — README.md (the after-merge sentence now also names a counted started token; re-read true by the same reader).
 - 2026-10-16: implement complete; status set to review.
+- 2026-10-16: step-7 approval: m261-pane-hide-started approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
