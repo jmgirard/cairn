@@ -185,7 +185,8 @@ tasks, a goal sentence needing "and", tasks shippable independently, or no hope 
 slices; every milestone leaves the default branch shippable; splitting never discards the remainder.
 
 Work that isn't a milestone: **Trivial** (no runtime surface — typos, tracking, comments) → direct commit to the default
-branch, no tracking beyond the commit. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,
+branch, no tracking beyond the commit. Through `/milestone-plan`'s trivial route, the commit also graduates the rows
+it fixes. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,
 user approval; NEWS entry; no milestone file. **Milestone** → more than one sitting, changes exported behavior (beyond
 restoring documented behavior), or requires a design decision.
 
@@ -245,9 +246,10 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
 ## Git and approval model
 
 - **The default branch is a distribution channel** — installable at all times; cairn never assumes the name is `main`.
-  It accepts docs-only tracking commits, trivial-tier commits that the user approved at `/milestone-plan`'s tier chip,
-  and squash-merges of milestone/hotfix branches — never implement on it. **The remote's default branch is
-  authoritative**: push docs-only and trivial-tier commits immediately, so branches are cut from commits the PR base has.
+  It accepts docs-only tracking commits, trivial-tier commits (a direct commit the user asked for, or one the user
+  approved at `/milestone-plan`'s tier chip), and squash-merges of milestone/hotfix branches — never implement on it.
+  **The remote's default branch is authoritative**: push docs-only and trivial-tier commits immediately, so branches are
+  cut from commits the PR base has.
 - **Detecting the default branch (canonical recipe).** Never hardcode `main`; store no branch name. The **base
   remote** `<base>` is `origin` in owner mode; in guest mode it is `upstream` when `git remote` lists it, else `origin`
   (`cairn_common.base_remote`; "Collaboration mode" below). Detect with `git symbolic-ref --short
@@ -268,7 +270,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   instead. If the default branch moves under an active branch, merge it into the branch
   and re-run tests before continuing or reviewing.
 - **Nothing reaches the default branch without the user's explicit approval at the merge question**, or for a
-  trivial-tier commit at `/milestone-plan`'s tier chip. Never force-push (the
+  trivial-tier commit the user's own request or `/milestone-plan`'s tier chip. Never force-push (the
   force_push_guard hook denies it on the default branch); never merge red or pending CI.
 - **A branch push starts CI, tracking-only commits included.** A push of a milestone or hotfix branch starts the
   push-triggered workflows whose `branches` filter admits it, phase-boundary checkpoints and review-side records

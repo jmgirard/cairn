@@ -8,7 +8,9 @@
   `/cairn-init` adds to `CLAUDE.md` now names it. Where a hotfix or a
   direct edit fits, `/milestone-plan` offers it before its one question
   set. The section's Trivial line says that guest mode leaves the edit on
-  disk. In a repo set up earlier, `CLAUDE.md` keeps the old wording. To get
+  disk, for `cairn/` files only. Its last line says that a trivial edit
+  reaches the default branch on your request or at the tier question. In a
+  repo set up earlier, `CLAUDE.md` keeps the old wording. To get
   the new wording, update that section by hand. In guest mode the session
   hook reads the plugin's own copy, so the new wording shows at once.
 
@@ -383,17 +385,19 @@
 - **A direct edit from `/milestone-plan` removes the candidate row it
   fixes.** When the plan finds a trivial edit and you take that route, it
   now finds each candidate row whose short title your request quotes, such
-  as a row you pressed in the cairn pane. The edit deletes a row it fixes in
+  as a row you pressed in the cairn pane, and that no started token claims.
+  The edit deletes a row it fixes in
   full and narrows a row it fixes in part, in the same commit (in guest
   mode, on disk). The route's option names each row before you choose. A
   row that a planned or active milestone quotes is left for that milestone.
 
 - **In guest mode, `/milestone-plan` no longer sends a pull request to
   `/hotfix`.** A request that names a pull request, such as a PR URL or
-  "adopt PR 12", skips the tier check. If the PR is your own `hotfix-`
-  handoff, the plan stops and points you at `/hotfix` with the PR. For any
-  other PR it stops and says that guest mode does not adopt someone else's
-  PR. A bare `#N` is still read as an issue.
+  "adopt PR 12", skips the tier check. If the PR is your own open or merged
+  `hotfix-` handoff, the plan stops and points you at `/hotfix` with the
+  PR. For any other PR, a closed one included, it stops and says that guest
+  mode does not adopt someone else's PR. A bare `#N` is still read as an
+  issue.
 
 - **A plan picked at `/milestone`'s triage gate asks no tier question.**
   When you choose `/milestone-plan` for an item at `/milestone`'s triage

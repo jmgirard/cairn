@@ -6127,15 +6127,19 @@ party's PR there. A `/milestone-plan` pick at `/milestone` §3 was checked a
 second time, since D-162 exempted only `/milestone` §4 and `/hotfix`.
 
 **Decision:** The git model's default-branch bullet accepts trivial-tier
-commits that the user approved at the tier chip, and its approval bullet
-names that chip beside the merge question. The trivial route matches each
+commits, a direct one the user asked for or one the user approved at the
+tier chip, and its approval bullet names both beside the merge question.
+The tier chip is not a run gate, but it is a gate in IP1's sense: a
+decision chip whose option names the edit, so IP1's text stands. The trivial route matches each
 candidate row whose short title the request quotes. It deletes or narrows
 that row in the edit itself, as `/hotfix` step 7 does, and records-hygiene
 §1 names that edit a completion. In guest mode a request that names a pull
 request is not checked. The operator's own `hotfix-` handoff ends with a
-close block that points at `/hotfix`. Any other PR ends with a close block
-that says guest mode does not adopt a third party's PR. A bare `#N` stays
-an issue, as D-162 decided. A `/milestone-plan` disposition that the user
+close block that points at `/hotfix`, when the PR is open or merged and the
+operator authored it. Any other PR ends with a close block that says guest
+mode does not adopt a third party's PR. This guest rule comes before the
+issue rule and the already-tiered list. A bare `#N` stays an issue, as
+D-162 decided. A row that ends with a started token is not matched. A `/milestone-plan` disposition that the user
 selected at `/milestone` §3 earlier in the session is a third
 already-tiered invocation. These are routing fixes in shipped skills, not
 a conduct rule about verification or records, so D-108's door does not
@@ -6148,9 +6152,9 @@ Matching rows by `/hotfix`'s "describes the bug" judgment, because a pane
 press sends the quoted title; falsified by a trivial edit that fixes a row
 the request did not quote.
 
-**Consequences:** D-162's chip, its tiers, its issue rule, and its two
-gates stand. The routing template and this repo's CLAUDE.md name the tier
-route before the question set. An adopter's CLAUDE.md section keeps the old
-wording until the adopter updates it. If a trivial-tier commit is found
-reaching the default branch without the chip's approval, this is the entry
-to supersede.
+**Consequences:** D-162's chip, its tiers, and its issue rule stand, and
+so do D-144's two run gates. The routing template and this repo's
+CLAUDE.md name the tier route before the question set. An adopter's
+CLAUDE.md section keeps the old wording until the adopter updates it. If a
+trivial-tier commit is found reaching the default branch with neither the
+user's request nor the chip's approval, this is the entry to supersede.

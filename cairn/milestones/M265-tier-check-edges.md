@@ -79,6 +79,7 @@
 - 2026-10-16: implement: minor amendment adds T7 for review return 1 (Coverage AC5 gains T7).
 - 2026-10-16: T7 done: the template's Trivial bullet now reads "in owner mode, commit to the default branch. In guest mode, leave the edit on disk." The section stays at 29 lines. hooks (175 OK), scripts (408 OK), skills/tests (787 OK), and both plugin validates pass. The mod code is unchanged since T6's `claude plugin test` run. Status set to review.
 - 2026-10-16: review pass 2: resume route (d), PR #277 `OPEN` at head 9759948b with no box ticked. Branch contains origin/main.
+- 2026-10-16: review fix-now: the git model and both routing files name the plain direct trivial commit beside the tier chip. The guest PR rule comes first, reads state and author, and sends a closed or other-repo PR to the maintainers' close block. Rows with a started token are not matched. The row match sits above the checks. records-hygiene §1 is rewrapped to 89 columns at 54 lines. README's typo row is updated. New pins are shown red by deletion. The rulebook baseline is re-seeded at 682 lines / 65,674 bytes. D-170, which exists only on this branch, is edited in place for the IP1 gate sentence, the D-144 attribution, and its falsifier. Suites: skills/tests 788 OK, scripts 408 OK, hooks 175 OK, both validates and `cairn_validate` pass, AC2 and AC5 greps exit 1.
 
 ## Review
 
