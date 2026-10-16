@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M261: The cairn pane hides started candidate rows
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane's candidate list is what plugin users see   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m261-pane-hide-started   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -97,13 +97,13 @@ row stays as it is until the review hygiene reads it.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first in `hooks/status/pane.test.tsx`: the AC1 per-source
+- [x] T1: Tests first in `hooks/status/pane.test.tsx`: the AC1 per-source
       tests, the AC2 count and no-heading tests, and the AC3 press test
       (the kit's ✎ presses near lines 1559-1654 are the model). Rewrite the
       tests that assert `◐` (near lines 472, 4142, 4148, 4185, and the
       `MARKED` kit test near 4296) to assert the row is not drawn. See them
       fail.
-- [ ] T2: `hooks/status/pane.ts` (lines 559-592): skip a marked row, keep
+- [x] T2: `hooks/status/pane.ts` (lines 559-592): skip a marked row, keep
       `i` as key and target, count the drawn rows, draw no heading when
       none is drawn. Remove `STARTED_MARK` and its tail ref, and fix the
       comments near lines 307-317 and 559-567 and `pressCandidate`'s in
@@ -136,6 +136,9 @@ row stays as it is until the review hygiene reads it.
 - 2026-10-16: plan chose keeping `startedRefs` and the readers over removing the started tokens and body lines, because hiding still needs them; falsified by a hiding rule that reads no started source.
 - 2026-10-16: criteria audit (full, fresh Opus reader): 4 findings, all fixed — AC4's grep now spares the DESIGN.md provenance entry (IP4); T3 adds the D-entry annotating D-165 and D-166; AC1 pins keys to the state index; AC1 adds a high/low/empty-title neighbour case with `acts` both ways; the M source is named as `state.taken`.
 - 2026-10-16: lessons harvest: the M56 line (run each gating suite from the repo root and check each exit code) shapes T4; the M193 line (no tool type-checks `types/index.d.ts`) applies if T3 touches more than its comments.
+- 2026-10-16: implement started on m261-pane-hide-started; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-16: T1 done: new and rewritten pane tests (16) failed first against the old drawing, e.g. keys `candidate-0..2` drawn where `candidate-0, candidate-2` was expected and a count of 8 for 3.
+- 2026-10-16: T2 done: `paneLines` filters the started rows before the heading, keeps `i` as key and target, and `STARTED_MARK` is removed; mod tests 1777 pass, 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

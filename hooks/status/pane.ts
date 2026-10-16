@@ -305,16 +305,12 @@ export const NO_ACTIVE = 'no active milestone'
 export const CHECKED_MARK = '✓'
 export const OPEN_MARK = '○'
 // A candidate row's mark for each priority (M207). A normal row's mark is
-// the empty circle that the started mark `◐` half fills, the glyph
-// `OPEN_MARK` also uses (M253).
+// the empty circle that `OPEN_MARK` also uses (M253).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
   normal: { text: '○' },
   low: { text: '↓', color: GRAY },
 }
-// The mark of a candidate row that an open pull request's body names, in
-// place of its priority mark (M252).
-export const STARTED_MARK: Span = { text: '◐', color: FLOW_COLORS.review }
 // A section heading's accent mark, in the phase's color (M208).
 export const ACCENT_MARK = '▎'
 // The meter's squares, filled and empty, and how many it draws (M208).
@@ -558,37 +554,37 @@ export function paneLines(
   }
   // With no active milestone, the ROADMAP's candidate rows (M207), each
   // with ✎ while no cairn skill runs, but for a row with an empty short
-  // title, whose press would plan with no args (M242). A row whose short
-  // title an open pull request's body names exactly draws the started mark
-  // in place of its priority mark, the lowest such number in its tail, and
-  // no ✎, since that pull request already works on it (M252). A counted
-  // started token on the row does the same (M258): the tail shows the
-  // lowest number among the bodies and the `#<n>` tokens, else the lowest
-  // milestone id.
-  if (state.milestones.length === 0 && state.candidates.length > 0) {
-    out.push(
-      ...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${state.candidates.length}`, color: GRAY }]),
-    )
-    state.candidates.forEach((row, i) => {
-      const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
-      const marked = numbers.length > 0 || ids.length > 0
+  // title, whose press would plan with no args (M242). A row that work has
+  // started draws no line (M261): one whose short title an open pull
+  // request's body names exactly (M252), or that a counted started token
+  // marks (M258). The heading counts the drawn rows, and with none it is
+  // not drawn. A drawn line keeps its row's index in `state.candidates` as
+  // its key and its ✎ target, which `pressCandidate` looks up.
+  const drawn = state.milestones.length === 0
+    ? state.candidates
+        .map((row, i) => ({ row, i }))
+        .filter(({ row }) => {
+          const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
+          return numbers.length === 0 && ids.length === 0
+        })
+    : []
+  if (drawn.length > 0) {
+    out.push(...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${drawn.length}`, color: GRAY }]))
+    for (const { row, i } of drawn) {
       const candidate = line(
         `candidate-${i}`,
         2,
-        [marked ? STARTED_MARK : PRIORITY_MARK[row.priority], { text: ' ' }],
+        [PRIORITY_MARK[row.priority], { text: ' ' }],
         row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
-      if (marked) {
-        const ref = numbers.length > 0 ? `#${Math.min(...numbers)}` : ids[0]
-        candidate.tail = [{ text: '  ' }, { text: ref, color: GRAY }]
-      } else if (acts && row.title !== '') {
+      if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
         candidate.title = row.title
       }
       out.push(candidate)
-    })
+    }
   }
   return out
 }
