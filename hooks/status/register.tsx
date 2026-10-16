@@ -530,6 +530,14 @@ export const register: Register = on => {
     // A press whose checks have not settled is cut off: its checks run
     // nothing when they settle (M255).
     ends += 1
+    // The run and the press mark current now are the ones this end frees.
+    // A press made while `next(e)` is pending keeps its own (M260 review).
+    const runAt = runs
+    const checkAt = pressCheck
+    const free = () => {
+      if (runs === runAt) running = false
+      if (pressCheck === checkAt) pressCheck = null
+    }
     // An `other` end marks this folder for a reopen at the next start
     // (M222). A `clear` end needs nothing, as no pane closes when the clear
     // stays in the same process.
@@ -543,8 +551,7 @@ export const register: Register = on => {
       // command goes to the prompt box with a toast, whatever the end's
       // reason (M260). A ⌂ press's open still runs for a `clear` end, and
       // the rejection goes on (M255).
-      running = false
-      pressCheck = null
+      free()
       if (queued !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
       if (home !== null && e.reason === 'clear') void openHome($)
       throw error
@@ -557,8 +564,7 @@ export const register: Register = on => {
     // never settle, so the end frees the action Buttons (M216). So does a
     // press whose checks have not settled, once the end's own updates are
     // done, so no press reads the state of the session that ended (M255).
-    running = false
-    pressCheck = null
+    free()
     // The held command runs now when this end is its `/clear` (M221). The
     // run is not awaited, so the session end does not wait on the command.
     // It takes the next run number, so the `/clear` run that settles after

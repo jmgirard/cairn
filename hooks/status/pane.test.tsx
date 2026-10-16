@@ -4526,6 +4526,41 @@ describe('a rejected session end frees the action Buttons (M260 AC1)', () => {
     await ui.unmount()
   })
 
+  // A press made while the end beneath is pending keeps its run when the
+  // end settles, resolved or rejected, so a second press does not run
+  // beside it (M260 review, PR #271).
+  for (const rejects of [false, true]) {
+    test(`a press made during a ${rejects ? 'rejecting' : 'resolving'} end keeps its run past the end`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      let finish = () => {}
+      copy.endHold = new Promise<void>(resolve => (finish = resolve))
+      copy.endThrows = rejects ? true : undefined
+      const end = $.session.end(CLEAR_END).then(
+        () => false,
+        () => true,
+      )
+      await sleep(20)
+      let settle = () => {}
+      copy.runHold = new Promise<void>(resolve => (settle = resolve))
+      void ui.press({ key: PANE_STATUS })
+      await untilRuns(copy, 1)
+      expect(copy.commands).toEqual([STATUS_RUN])
+      copy.endHold = undefined
+      finish()
+      expect(await end).toBe(rejects)
+      copy.endThrows = undefined
+      void ui.press({ key: PANE_STATUS })
+      await untilRuns(copy, 2, 10)
+      expect(copy.commands).toEqual([STATUS_RUN])
+      copy.runHold = undefined
+      settle()
+      await ui.unmount()
+    })
+  }
+
   // A press whose checks are still reading at the rejected end leaves the
   // shared press mark free too, so a later press runs (M260 review).
   test('a Status press after a rejected end that cut off a press still reading runs once', async ($, on) => {

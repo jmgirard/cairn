@@ -215,7 +215,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   run and hold nothing. The end clears the mark beside `running`, after its
   own updates, so a press cut off by the end leaves the Buttons free
   (M255). An end whose `next(e)` rejects skips those updates and clears
-  both before it rethrows (M260). A live probe (M221 T1) showed
+  both before it rethrows. Either way it clears only the run and the mark
+  current when it began, so a press made while `next(e)` is pending keeps
+  its own (M260). A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
   a press of Clear is, which is how the plan gate settled the IP3 point. A
