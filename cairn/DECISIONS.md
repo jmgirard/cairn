@@ -5973,3 +5973,37 @@ holds no status, since the pane reads the status from the milestone row
 or the PR list. A token stays on a row after its milestone is dropped or
 its PR closes unmerged, since no step removes it there, and it marks
 nothing.
+
+### D-166 (2026-10-15): `/cairn-triage` proposes adding a missing started token and removing a dead one, and keeps a row with a live token — annotates D-165's "no step removes it" consequence; passes D-108's door on its retained trigger (M259)
+
+**Context:** D-165 left a token on a row after its work ended, with no
+step to remove it, and no step added a token that a plan missed or that
+predates M258. A triage `compress` or `retitle` could also rewrite away a
+live `#<n>` token, which drops the pane's mark for an open PR. M258's own
+hygiene left a dead ` — started M258` on the row "Started mark edges (M252
+review)" in this repo.
+
+**Decision:** At the user's request, planned as M259, `/cairn-triage`
+reads each candidate row's started tokens. It proposes removing a dead
+token: an `M<NNN>` whose milestone the table holds as `done` or `dropped`,
+or does not hold, or whose file is archived, or a `#<n>` whose PR
+`gh pr view` reports merged or closed. It proposes adding
+` — started M<NNN>` to a row whose short title a live milestone file
+quotes in double quotes outside its Scope Out list. Each is a token change
+beside the row's disposition, as D-134's priority token is, and never a
+ninth disposition (D-027). A row with a live token is `keep`. D-108's door
+is passed on its retained trigger, because a triage rewrite could remove a
+live token and so the pane's mark, a defect in shipped behavior.
+
+**Rejected:** A `/milestone` health-audit check for missing or dead
+tokens, at the user's choice, because triage already proposes both at a
+gate and a second check would read the same rows; falsified by a dead or
+missing token that stays through several triage passes the operator ran.
+Proposing a missing `#<n>` token, because owner mode marks a hotfix
+through PR-body lines and guest `/hotfix` writes its token when it opens
+the PR; falsified by a guest hotfix PR open with no token on its row.
+
+**Consequences:** D-165's consequence that a dead token stays with no
+step to remove it now holds only until the next triage pass. Tokens stay
+free of status (D-035, D-165): triage reads status from the table and the
+PR, never from the token.

@@ -56,6 +56,32 @@ model), and the file listing of `cairn/milestones/archive/`. Note every
 milestone that is `planned`, `in-progress`, `blocked`, or `review`: a row
 one of them absorbs is never dropped or merged away in this pass
 (records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
+A row that carries a live started token (below), or that is missing one,
+is `keep` (step 2).
+
+Then read the candidate rows' started tokens (tracking-rules "Candidate
+started token"). A token is ` — started ` and `M` with digits, or `#`
+with one to fifteen digits, not followed by a letter or digit, wherever it
+sits in the row. This is the shape the cairn pane reads. Ids compare at three-digit padding, so `M58`
+is `M058`. For each `#<n>` token, read its PR state with
+`gh pr view <n> --repo <base-repo> --json state`. The rulebook's slug
+recipe gives `<base-repo>`, which is the upstream repo in guest mode. For
+each milestone noted above, read its file directly under
+`cairn/milestones/`. Each token is then dead or live:
+
+- **Dead**: an `M<NNN>` token whose id the ROADMAP milestone table holds as
+  `done` or `dropped`. If the table does not hold its id, or if its file
+  sits in `cairn/milestones/archive/`, an `M<NNN>` token is dead too. A `#<n>`
+  token whose read reports `MERGED` or `CLOSED` is dead too.
+- **Live**: every other token, a `#<n>` token whose read failed included.
+
+A row is **missing** a token in one case. The table holds `M<NNN>` as
+`planned`, `in-progress`, `blocked`, or `review`. That milestone's file
+quotes the row's non-empty short title in double quotes outside its Scope
+`**Out:**` list. But the row lacks ` — started M<NNN>`. A title that two
+or more rows share is listed as ambiguous, and no token is proposed for
+it. No `#<n>` token is ever missing. Owner mode marks a hotfix through its PR body, and guest
+`/hotfix` writes its token in the step that opens the PR.
 
 ## Workflow
 
@@ -107,8 +133,11 @@ one of them absorbs is never dropped or merged away in this pass
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
+   A row carrying a live started token, or missing one, is `keep` before
+   anything else is checked, §7's options included. Its reason names the
+   token. §7 applies to the row again once the token is dead.
    Evidence classes, checked in this order (the first that fires decides,
-   later ones refine the wording) — except that a finding-absorbing row
+   later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
    compressing such a row never substitutes for its disposition
    (records-hygiene §7):
@@ -169,7 +198,19 @@ one of them absorbs is never dropped or merged away in this pass
    rest), or `keep` as the explicit choice to extend no further; the
    proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
-   `keep` (records-hygiene §1), with that milestone named in the reason.
+   `keep` (records-hygiene §1), with that milestone named in the reason. As the
+   rule above says, a row carrying a live started token, or missing one,
+   is `keep` too. So no disposition of the pass rewrites a live token.
+   **Started tokens → a token change.** A token change is a row fact beside
+   the disposition, as a priority change is, never a ninth disposition. It
+   rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
+   a merge survivor counts as a `keep`. On such a row, propose removing each
+   dead token. Also propose appending each missing token to the row's end.
+   Name the milestone file and quote its line that holds the title, so the
+   user can judge whether that milestone took the row. A `drop`, `merge`,
+   `split`, or `route` takes its row out of the list, and it writes no dead
+   token into any row it writes. If a `#<n>` read failed, propose no token
+   change for that token, and name the failed read in the table.
    Delegation: the session assesses inline. One Sonnet Explore fan-out is
    warranted only when several items cite code paths or symbols whose
    existence must be checked; give it the list of citations and take back
@@ -196,21 +237,26 @@ one of them absorbs is never dropped or merged away in this pass
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
      that cannot fire soon, is the usual ground; the token is never
-     rewritten to encode order. A `keep` with no priority change sits
-     last so the changes read first.
+     rewritten to encode order. A row of those three, or a `promote` row,
+     can also carry a token change. The reason cell states it, as in
+     `token: + started M260, quoted in M260-<slug>.md` or
+     `token: − started M258, done`. A `keep` with no priority or token
+     change sits last so the changes read first.
    - **The chip** (AskUserQuestion, one question) carries the substance the
      decision needs in its own text (tracking-rules Mandated-substance and
      Acceptance-chips rules): the question text says how many items were
      enumerated and names each item proposed for a disposition other than
      `keep` with its disposition and its reason in a few plain words, and
-     each row proposed for a priority change with its new level; the
+     each row proposed for a priority change with its new level, and each
+     proposed token change with its row; the
      table above is the verbatim evidence. Three options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
-        the table is applied.
+        the table is applied, with each priority change and token change.
      2. **Amend** — the user names the items to change and what they become
         (the option description says so); everything unnamed keeps its
         proposed disposition; a named item with no replacement given
-        becomes `keep`.
+        becomes `keep`. The user can also decline a named token change
+        alone, and the row's disposition then stands.
      3. **Apply nothing** — the stop option: no file changes, no commit, no
         D-entry; the pass ends at the close block with the table as its
         record in chat only.
@@ -231,10 +277,13 @@ one of them absorbs is never dropped or merged away in this pass
      an item the user pulled out of a `merge` or `drop` stays as it was;
      an accepted priority change on a `keep`, `compress`, or `retitle` row is one edit this rule carves out,
      and it touches the row's opening token and the row's place in the order alone. An accepted
-     `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the other: it changes that quote alone.
+     `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the second: it changes that quote alone.
+     An accepted token change is a third. It adds or removes the token text
+     alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
-   `keep` (with no priority change) or `promote`, or nothing enumerated —
+   `keep` (with no priority or token change) or `promote` (with no token
+   change), or nothing enumerated —
    steps 4–6 are skipped
    entirely: no edit, no stamp, no commit, and the close block's status
    line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
@@ -263,15 +312,24 @@ one of them absorbs is never dropped or merged away in this pass
    change nothing of their own, though a `retitle` can rewrite a mention
    inside one; an accepted priority change adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
-   token) and moves the row to its level. Candidates stay one item per line,
+   token) and moves the row to its level. An accepted token change appends
+   ` — started M<NNN>` to the row's end, or it removes one
+   ` — started <ref>` text as the row spells it and leaves the rest of the
+   row as it is. A note right after the removed token stays where it was. A
+   merge survivor's lineage clause, and any trigger it takes from the
+   absorbed row, go before the row's first started token. A `compress`
+   keeps each started token that is not accepted for removal, at the row's
+   end.
+   Candidates stay one item per line,
    ordered by token — high → normal → low — then advisory within a level.
-   After the edits, `wc -l -c
+   After the edits, token changes included, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
-   is longer when it names each `retitle`'s old and new titles, and in
+   is longer when it names each `retitle`'s old and new titles and each
+   token change, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
@@ -300,9 +358,9 @@ one of them absorbs is never dropped or merged away in this pass
      else: deferrals and refuted premises are ROADMAP facts, not decisions.
      In guest mode there is no commit message, and the stamp alone names
      it, with its evidence (step 6's guest arm).
-   `keep`, `compress`, `split`, `route`, `retitle`, and a
-   trigger-preserving `merge` write no decision entry; the stamp is their
-   record.
+   `keep`, `compress`, `split`, `route`, `retitle`, a
+   trigger-preserving `merge`, and a token change write no decision entry;
+   the stamp is their record.
 
 6. **Validate, stamp, and commit.** Run
    `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over the
@@ -311,7 +369,8 @@ one of them absorbs is never dropped or merged away in this pass
    check:` line — replace, never append (tracking-rules); a ROADMAP that
    has none gets one — with one line dated today naming what the pass
    changed: each dropped, merged, split, routed, compressed, retitled
-   (old title → new title), and re-rated item by subject, the drops' reason classes, whether a decision entry was
+   (old title → new title), and re-rated item by subject, each started token
+   added or removed with its row's subject, the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). In owner mode,
    make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
@@ -330,8 +389,9 @@ one of them absorbs is never dropped or merged away in this pass
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. Then a status line — items enumerated,
-   dispositions applied by kind and the commit hash, or `nothing applied`
-   (an apply-nothing answer and an all-`keep` accept alike). In guest mode
+   dispositions and token changes applied by kind and the commit hash, or `nothing applied`
+   (an apply-nothing answer and an all-`keep` accept with no priority or
+   token change alike). In guest mode
    `written to disk, not committed (guest mode)` stands in place of the
    commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.
