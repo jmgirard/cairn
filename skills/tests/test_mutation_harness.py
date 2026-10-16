@@ -4366,6 +4366,13 @@ REGISTRY += [
         target=HOTFIX,
         block="If either fails, push nothing, and",
     ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="The reads only read: the Copilot round's replies and resolves",
+    ),
 ]
 
 TRIAGE = "skills/cairn-triage/SKILL.md"
