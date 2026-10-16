@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M267: Let a guest repo push its branches to the maintainers' repo
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — changes where guest-mode skills push branches and open PRs in other people's repos
-- **Branch/PR:** —
+- **Branch/PR:** m267-guest-push-remote
 
 ## Goal
 
@@ -69,7 +69,7 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 
 ## Tasks
 
-- [ ] T1: In `skills/shared/tracking-rules.md`, define `<push>` and `<push-owner>` beside the fork-remote recipe
+- [x] T1: In `skills/shared/tracking-rules.md`, define `<push>` and `<push-owner>` beside the fork-remote recipe
       (lines 253–264), add the open-PR head rule, scope the fork-remote stop to `<push>` = `<fork>`, name the line in
       the `PROFILE.md` file-map row (line 15), and change the Collaboration-mode push targets (lines 369–376) to
       `<push>`. Append a D-entry annotating D-137: guest branches may live on the base repo by the repo's opt-in.
@@ -103,6 +103,10 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: inbox sweep: 0 open issues, 0 open PRs on jmgirard/cairn.
 - 2026-10-16: criteria audit (full mode, fresh Opus reader): 3 findings on M267, all fixed — AC5 checked after the rebase and so always fired, now checked before it with an explicit-sha lease; AC4 conflicted with AC1's open-PR rule, now the fork stop follows wherever the push resolves; AC2 bound a ledger and its grep missed fork prose, now a grep-bounded promise with `-i fork`. AC1, AC3, AC6, AC7: no finding.
 - 2026-10-16: lessons applied: M185 (sweep every command that resolves against a remote, not the remote's name: AC2's grep covers `git push` and `gh pr create`); M112 (doctrine wording reaches README: AC6's grep).
+
+- 2026-10-16: implement started on m267-guest-push-remote, cut from origin/main at 78992470.
+- 2026-10-16: the simple-english style hook flags tracking-rules.md and the skills as a whole (about 500 pre-existing hits); only the sentences this milestone adds are written to it, since rewriting the rulebook is outside M267's scope.
+- 2026-10-16: T1 done: tracking-rules defines `<push>`/`<push-owner>`, the open-PR head rule, and the fork stop scoped to fork-bound pushes; the PROFILE.md file-map row names the line; Collaboration-mode bullets push to `<push>`; D-172 annotates D-137. verify green (5/5).
 
 ## Decisions
 

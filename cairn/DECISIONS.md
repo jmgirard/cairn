@@ -6205,3 +6205,39 @@ commit-time edge in a candidate row. If a guest
 change route is found pushing without the user's yes at its chip, or
 answering a request a maintainer already withdrew, this is the entry to
 supersede.
+
+### D-172 (2026-10-16): In guest mode a repo can opt in to pushing its branches to the base repo, behind a push-access check — annotates D-137 (M267)
+
+**Context:** D-137 sends every guest branch to the operator's fork. GitHub
+takes only a branch in the base repo as a PR's base, so a guest PR that
+builds on another open guest PR cannot name that PR's branch as its base.
+In easystats/datawizard #723 on #721 the operator, who can push to the
+base repo, kept a hand-synced copy of #721's branch there.
+
+**Decision:** A guest repo whose `cairn/PROFILE.md` carries the header line
+`# Push remote: base` pushes its milestone and hotfix branches to the base
+remote, and the PR's head is that branch. The rulebook names the target
+the push remote. Before the handoff push to the base repo, the skill reads
+the account's push permission and stops, pushing nothing, on any answer
+but `true`. A push to a branch that already has an open PR goes to the
+remote that holds that PR's head. The fork-remote stop applies only where
+a push resolves to the fork. Before a guest sync rebases a pushed branch,
+it fetches the branch and stops when the remote holds commits the local
+branch lacks, and the force-push leases on the tip it read. Owner mode
+never reads the line, and no validator reads it. D-137's other parts stand:
+nothing is pushed to the default branch, cairn never merges, and
+`gh repo set-default` is never run.
+
+**Rejected:** Pushing to the base repo whenever the account can, because a
+repo whose norm is fork PRs would get branches upstream without asking;
+falsified by an operator who sets the line in every repo they can push to.
+A question at each handoff, because a stack needs both branches on the
+base repo and a per-milestone answer can split them. Pulling the remote's
+extra commits in with a rebase, because a shared branch can carry a
+maintainer's commits the operator has not seen; falsified by such stops
+proving routine and always settled by a plain rebase.
+
+**Consequences:** Guest branches can live in the maintainers' repo, where
+M268 builds stacked milestones on them. The line is set by hand, as the
+README says. If a guest push reaches the base repo without the line, or
+without the access read, this is the entry to supersede.

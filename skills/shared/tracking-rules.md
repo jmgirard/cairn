@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`) | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo and no validator reads (the git model's push remote) | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -260,8 +260,14 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   nameWithOwner -q .nameWithOwner`. In guest mode the **fork remote** `<fork>` is the one remote that `git remote`
   lists, other than `<base>`, whose parent equals `<base-repo>`, ignoring case. Read each parent with `gh repo view
   "$(git remote get-url <remote>)" --json parent -q '.parent.owner.login + "/" + .parent.name'`. A remote that is not
-  a fork prints `/`, meaning no parent. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. With no match, or more than
-  one, a guest push stops before the push. The stop names the remotes it read, each parent it found, and each failed read.
+  a fork prints `/`, meaning no parent. A remote whose read fails is not a match. `<fork-owner>` reads `<fork>` with `--json owner -q .owner.login`. In guest
+  mode the **push remote** `<push>` is where a guest branch is pushed: `<base>` when `cairn/PROFILE.md` carries the
+  header line `# Push remote: base`, else `<fork>`. Owner mode never reads the line. `<push-owner>` is the owner of the
+  repo `<push>` names (`gh repo view "$(git remote get-url <push>)" --json owner -q .owner.login`). A push to a branch
+  that already has an open PR goes to the remote that holds that PR's head, whatever `<push>` now says. When a guest
+  push target resolves to the fork, by `<push>` or by an open PR's head, and no remote matches, or more than one, the
+  push stops before it is made. A target that resolves to `<base>` needs no fork. The stop names the remotes it read,
+  each parent it found, and each failed read.
 - Milestone work on `m<nnn>-<slug>` (owner mode; guest mode names the branch `<slug>` alone — "Collaboration mode"
   below); hotfixes on `hotfix-<slug>`; both cut from the up-to-date default branch. Checkpoint
   commits are cheap — squash erases them. Exception: an adopted external PR keeps the contributor's branch and its name.
@@ -367,13 +373,14 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch
-  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `<fork>` (the git model's fork remote) at the handoff, and the PR
-  targets the base repo — `gh pr create --repo <base-repo> --head <fork-owner>:<slug>`, opened ready for the
+  is cut from `<base>/<default-branch>` and synced by rebase, pushed to `<push>` (the git model's push remote: the fork,
+  or the base repo where `cairn/PROFILE.md` asks for it) at the handoff, and the PR targets the base repo — `gh pr
+  create --repo <base-repo> --head <push-owner>:<slug>`, opened ready for the
   maintainers' review at the handoff selection, never earlier and never as a draft; every other `gh pr` command
   carries `--repo <base-repo>` too. `gh repo set-default` is never run (it would route a bare `gh pr merge` past the one-repo
   approval binding).
 - **cairn never merges in guest mode.** `/milestone-review` ends with a handoff gate in the merge gate's shape — hand
-  the branch to the maintainers (the push to `<fork>` plus the `gh pr create` above), or decline; no merge option — and sets the
+  the branch to the maintainers (the push to `<push>` plus the `gh pr create` above), or decline; no merge option — and sets the
   milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
