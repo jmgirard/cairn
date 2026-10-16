@@ -4265,6 +4265,59 @@ REGISTRY += [
         target=HOTFIX,
         block="that adopted-PR exemption, so the rule applies to it.",
     ),
+    # M266 AC3 and AC4: the guest change route, one entry per pinned clause.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_guest_read_has_the_route_fields",
+        target=HOTFIX,
+        block="A PR that the change route\n     below covers takes that route.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_trigger_is_own_pr_with_a_newer_change_request",
+        target=HOTFIX,
+        block="with the state `CHANGES_REQUESTED` and a `submittedAt` later than",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_an_older_change_request_reports_and_stops",
+        target=HOTFIX,
+        block="the PR waits for a new review, so it takes",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_reads_the_conversation_and_makes_changes",
+        target=HOTFIX,
+        block="Make a change for each requested item, or",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute."
+             "test_route_rechecks_the_bar_and_the_test",
+        target=HOTFIX,
+        block="over-the-bar disposition, and nothing is pushed.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_one_chip_lists_each_item",
+        target=HOTFIX,
+        block="Its question text lists each\n     requested item",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_approval_pushes_and_posts_nothing",
+        target=HOTFIX,
+        block="post no comment or reply on the PR.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixGuestChangeRoute.test_decline_pushes_nothing",
+        target=HOTFIX,
+        block="names the unpushed commits.",
+    ),
 ]
 
 TRIAGE = "skills/cairn-triage/SKILL.md"

@@ -170,13 +170,38 @@ can resolve against the fork instead of the base repo.
    - *Guest arm.* This arm runs in guest mode, for an `OPEN` PR whose head
      branch starts with `hotfix-`. Such a PR is the operator's handoff,
      still with the maintainers. Read `gh pr view <N> --repo <base-repo>
-     --json state,headRefName,reviewDecision`, and make the candidate-row
-     match above. Skip the tier check and steps 2 to 7. Report the PR's
+     --json state,headRefName,reviewDecision,author,latestReviews,commits`,
+     and make the candidate-row match above. A PR that the change route
+     below covers takes that route. For any other PR, the arm goes on here.
+     Skip the tier check and steps 2 to 7. Report the PR's
      number, state, and review decision (an empty decision shown as
      `none`). Then stop with a close block. Its CI line says that the
      maintainers' CI on the PR is the check that counts. It also says that
      nothing waits on that CI here. Its fenced next command is `/hotfix`
      with the PR reference, to run after they merge.
+     *Change route (M266).* It covers a PR whose `author.login` equals
+     `gh api user --jq .login`. The PR's `latestReviews` also has an entry
+     with the state `CHANGES_REQUESTED` and a `submittedAt` later than the
+     `committedDate` of the last entry of `commits`. A change request older
+     than the head means that the PR waits for a new review, so it takes
+     the report-and-stop above. The route runs the three reads of step 6's
+     PR-conversation read, with `--repo <base-repo>`. The one chip below
+     takes the place of that read's per-item options. Run `gh pr checkout
+     <N> --repo <base-repo>`. Make a change for each requested item, or
+     name the reason for making none, and commit each change on the
+     branch. Run `git fetch <base>`, then tier-check the new diff against
+     `<base>/<default-branch>`. A diff over the hotfix bar takes this
+     step's over-the-bar disposition, and nothing is pushed. Re-run step
+     3's two-way check against `<base>/<default-branch>`, and step 4's
+     `verify` slot on the new head. When a change makes step 5's changelog
+     entry wrong, edit the entry.
+     Then pose one `AskUserQuestion` chip. Its question text lists each
+     requested item with its change or its reason, and a decline option is
+     present. On approval, push with `git push <fork> <headRefName>`, and
+     post no comment or reply on the PR. Then stop with the close block of
+     the report-and-stop above. That close block also says that the reply
+     to the maintainers is the operator's. On decline, push nothing, and
+     stop with a close block that names the unpushed commits.
    **Own open PR (M266).** This paragraph covers an `OPEN` PR in owner
    mode whose `headRefName` starts with `hotfix-` and whose `author.login`
    equals `gh api user --jq .login`. Such a PR is the operator's own

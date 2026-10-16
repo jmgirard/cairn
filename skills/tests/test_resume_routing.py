@@ -598,5 +598,89 @@ class TestHotfixOwnOpenPr(unittest.TestCase):
         )
 
 
+class TestHotfixGuestChangeRoute(unittest.TestCase):
+    """M266 AC3 and AC4: the guest arm's change route for the operator's own
+    `hotfix-` PR with a change request newer than its head. The trigger, the
+    stale-request fallback, the reads, the checks, the chip, the push, and
+    both closes are pinned on their own (M165 lesson), whitespace collapsed
+    (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+
+    def test_guest_read_has_the_route_fields(self):
+        self.assertIn(
+            "--json state,headRefName,reviewDecision,author,latestReviews,"
+            "commits`, and make the candidate-row match above. A PR that the "
+            "change route below covers takes that route.",
+            self.step1,
+        )
+
+    def test_trigger_is_own_pr_with_a_newer_change_request(self):
+        self.assertIn(
+            "*Change route (M266).* It covers a PR whose `author.login` equals "
+            "`gh api user --jq .login`. The PR's `latestReviews` also has an "
+            "entry with the state `CHANGES_REQUESTED` and a `submittedAt` "
+            "later than the `committedDate` of the last entry of `commits`.",
+            self.step1,
+        )
+
+    def test_an_older_change_request_reports_and_stops(self):
+        self.assertIn(
+            "A change request older than the head means that the PR waits for "
+            "a new review, so it takes the report-and-stop above.",
+            self.step1,
+        )
+
+    def test_route_reads_the_conversation_and_makes_changes(self):
+        self.assertIn(
+            "The route runs the three reads of step 6's PR-conversation read, "
+            "with `--repo <base-repo>`.",
+            self.step1,
+        )
+        self.assertIn(
+            "Make a change for each requested item, or name the reason for "
+            "making none, and commit each change on the branch.",
+            self.step1,
+        )
+
+    def test_route_rechecks_the_bar_and_the_test(self):
+        self.assertIn(
+            "tier-check the new diff against `<base>/<default-branch>`. A diff "
+            "over the hotfix bar takes this step's over-the-bar disposition, "
+            "and nothing is pushed. Re-run step 3's two-way check against "
+            "`<base>/<default-branch>`, and step 4's `verify` slot on the new "
+            "head. When a change makes step 5's changelog entry wrong, edit "
+            "the entry.",
+            self.step1,
+        )
+
+    def test_one_chip_lists_each_item(self):
+        self.assertIn(
+            "Then pose one `AskUserQuestion` chip. Its question text lists "
+            "each requested item with its change or its reason, and a decline "
+            "option is present.",
+            self.step1,
+        )
+
+    def test_approval_pushes_and_posts_nothing(self):
+        self.assertIn(
+            "On approval, push with `git push <fork> <headRefName>`, and post "
+            "no comment or reply on the PR. Then stop with the close block of "
+            "the report-and-stop above. That close block also says that the "
+            "reply to the maintainers is the operator's.",
+            self.step1,
+        )
+
+    def test_decline_pushes_nothing(self):
+        self.assertIn(
+            "On decline, push nothing, and stop with a close block that names "
+            "the unpushed commits.",
+            self.step1,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
