@@ -1,0 +1,11 @@
+# M259: Triage keeps started tokens current
+
+**Status:** done (2026-10-15, PR #270 https://github.com/jmgirard/cairn/pull/270)
+
+**Goal:** `/cairn-triage` proposes, at its one gate, adding a missing ` — started M<NNN>` token to a candidate row that a live milestone file names and removing a started token whose work has ended, and it never rewrites away a live token.
+
+**Outcome:** `/cairn-triage` session start reads each row's tokens (` — started ` with `M` and digits or `#` and 1–15 digits, ids at three-digit padding), each `#<n>` PR with `gh pr view --repo <base-repo> --json state`, and each live milestone's file. A token is dead when its milestone is `done`, `dropped`, absent from the table, or archived, or its PR is `MERGED` or `CLOSED`; a failed read counts as live. A token is missing when a `planned`, `in-progress`, `blocked`, or `review` milestone file double-quotes the row's title outside Scope Out (shared titles listed as ambiguous). A token change is a row fact beside the disposition, like the priority token, riding on keep, compress, retitle, or promote; the table quotes the matched line; Accept applies it and Amend can decline it alone. Rows with a live or missing token are `keep` before §7's options. Apply removes the token as spelled, leaves a following note, puts a survivor's lineage clause before tokens, and compress keeps tokens. Skip rule, cap count, stamp, and close count token changes. tracking-rules, README, CHANGELOG, DESIGN; rulebook baseline re-seeded to 678 / 65,222 (M258 had not re-seeded).
+
+**Decisions:** D-166 (annotates D-165; passes D-108's door). The plan chose a token change beside the disposition over a ninth disposition, a double-quoted title match over a substring, and no `#<n>` add proposal. The `/milestone` audit check was dropped at the user's choice.
+
+**Review:** No returns. Criteria audit 10 findings fixed; claim audit 23 claims, 4 corrected. Three lenses, 31 findings: 24 fixed (decline path at the gate, missing-token rows held, compress and note placement, 15-digit `#`, shared titles, §7 precedence, README dead kinds), 4 to "Triage token edges (M259 review)", 3 rejected. Copilot (Lite) 2 threads fixed and resolved. No lesson captured.
