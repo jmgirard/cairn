@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M256: Pane reads after late placement
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -116,6 +116,7 @@ on a resume start, and the 20 ms `settled()` window stay in "Pane edges
 - 2026-10-15: T2 done: the AC2 case (clear start owes, `CLEAR_END`, place, draw, no read); with the `session.end` handler's `owed = false` removed it alone failed, reading `[URL_1250]` at its last assertion (1 of 1737); restored, `register.tsx` back to no diff. Verify green: 1737 mod tests.
 - 2026-10-15: T3 done: chose the name `placedAndShown(mine)`, taking a listing (`undefined` from `paneOf`, `null` from `listedPane`); the command's close branch, `isShown`, and `markReopen` call it; `grep -c "\.isShown" hooks/status/register.tsx` returns 1; `pane.test.tsx` untouched. Verify green: 1737 mod tests.
 - 2026-10-15: T4 done: a Fixes entry in CHANGELOG.md names the `/clear` start only, since the AC1 test drives `source: 'clear'`; the second list sits in the branch that `clear` and `resume` share, so a resume start runs it too, untested and unclaimed (the resume race stays in "Pane edges (M238 review)" per Out). Verify green, `cairn_validate` all checks passed.
+- 2026-10-15: claim audit: 21 claims read, 4 corrected — CHANGELOG.md (heading "at once" → "with no further draw", "pull requests that blocked rows name" → "that the pane shows", "listed but not placed"), register.tsx (second-listing comment names another start's hook); the `/clear`-only scope kept on purpose (only a clear test); 3 unchanged comments the second listing made stale (the classic hook header, the render comment, the `owed` declaration) updated; the re-read found all true, its one optional note (the `owed` comment omits two starts at once) not taken. Verify green after the fixes.
 
 
 ## Decisions

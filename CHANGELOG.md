@@ -333,10 +333,11 @@
 
 ### Fixes
 
-- **A pane placed during a `/clear` start reads the pull request states at
-  once.** At a `/clear`, the plugin lists the panes. If the cairn pane is
-  placed, the plugin reads the states of the pull requests that blocked
-  rows name. If it is not placed, its first draw starts that read. Some
+- **A pane placed during a `/clear` start reads the pull request states
+  with no further draw.** At a `/clear`, the plugin lists the panes. If the
+  cairn pane is placed, the plugin reads the states of the pull requests
+  that the pane shows. If it is listed but not placed, its first draw
+  starts that read. Some
   panes were placed and drawn while that list was still waiting. That draw
   came before the read was owed, so the state words waited for a further
   draw. Now the plugin lists the panes a second time. If the pane is placed
