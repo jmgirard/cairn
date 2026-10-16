@@ -807,7 +807,8 @@ within each type and are never reused.
   the PR number. No prompt asks a guest to rerun after a merge. The
   decline path's row has no stated commit. Deleting a §7 group's head row
   orphans rows quoting its title, and §7 may read a `narrowed` note as an
-  extension. If a gap shows in a real session, it becomes a `/hotfix` or a
+  extension. `/milestone-plan`'s trivial route deletes and narrows rows the
+  same way and shares both edges (M265 review, prior-review #5). If a gap shows in a real session, it becomes a `/hotfix` or a
   candidate row. Routed from candidates 2026-10-16; added 2026-10-12 —
   M249 review; added 2026-10-16 — M262 review (pass 1 diff-bug #6, #10,
   blame-history #6; pass 2 diff-bug #2, #3, #4, #6).
