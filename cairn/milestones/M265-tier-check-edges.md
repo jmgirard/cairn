@@ -1,13 +1,13 @@
 # M265: Close the tier check's five open edges
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the shipped tier check and routing template change
-- **Branch/PR:** m265-tier-check-edges
+- **Branch/PR:** m265-tier-check-edges, https://github.com/jmgirard/cairn/pull/277
 
 ## Goal
 
@@ -73,3 +73,5 @@
 - 2026-10-16: substantive amendment: Scope moves the routing files' last bullet from Out to In. The claim reader read it as conflicting with the new tracking-rules approval sentence, which is the plan's recorded falsifier for leaving it. Both files now name the tier chip beside the merge question. No criterion changed, so no re-audit is owed. The template section stays at 29 lines and `CLAUDE.md`'s at 27.
 - 2026-10-16: claim reader side notes: a guest `CLOSED` unmerged `hotfix-` PR has no `/hotfix` arm (added to the candidate row "`/hotfix` has no resume route for an open PR"). A trivial-route narrowing does not say what happens to a `started #<n>` token, which only a guest `/hotfix` writes. That is left as is, since that token names another record and the trivial route does not own it.
 - 2026-10-16: implement complete: after the amendment, hooks (175 OK), scripts (408 OK), skills/tests (787 OK), plugin validate, and `cairn_validate` passed again. Status set to review.
+- 2026-10-16: review: Copilot arm opened PR #277 and requested Copilot (state query `none`, request exit 0).
+- 2026-10-16: review return 1: AC5 fails as written. The template's Trivial bullet reads "commit directly to the default branch (in guest mode, leave the edit on disk)", which names guest mode but does not say the direct commit is for owner mode. The other AC text checks, both greps, `cairn_validate`, and the marketplace version check pass.
