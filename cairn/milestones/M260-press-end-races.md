@@ -44,7 +44,7 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 - [x] T1: Rejected end. Add a `prompt.fill` record to `pane.test.tsx`'s `seat` (`band.test.tsx:159` records fills). Write the AC1 and AC2 tests and see them fail; then in the end handler (`register.tsx` about :534-566) free `running` and `pressCheck` on the rejecting path too, and hand a held command to `fallBack` with `the session end failed`, for both reasons, before the rethrow.
 - [x] T2: ⌂ press during an end. Write the AC3 tests with `holdStep` (`pane.test.tsx` about :4363; the unawaited-press pattern at about :4405) and see them fail; then make `pressHome` (`register.tsx` about :1179-1188) return after its step read when a session end came during it (compare `ends`, as `pressChecked` does at about :1157).
 - [x] T3: Second listing across an end. Write the AC4 test, re-arming `copy.panesHold` for the second listing (pattern at `pane.test.tsx` about :3663-3676; set `unplaced` before release, as the held answer is computed at hold time) and see it fail; then snapshot `ends` before the second listing (`register.tsx` about :282) and read only when it has not moved.
-- [ ] T4: Write the CHANGELOG entry from the tests' observed behavior; run the full verify slot from the repo root and check each exit code.
+- [x] T4: Write the CHANGELOG entry from the tests' observed behavior; run the full verify slot from the repo root and check each exit code.
 
 ## Work log
 
@@ -59,6 +59,7 @@ A rejected session end, an end during a ⌂ press's state read, and an end durin
 - 2026-10-15: T1 done: the three AC1/AC2 tests failed first (Status press did not run; no prompt fill), then the end handler's catch frees `running` and `pressCheck` and hands a held command to `fallBack` with `the session end failed`; plugin test 1762 pass, both Python suites and both validates clean.
 - 2026-10-15: T2 done: the three AC3 tests failed first (each ran a late `/clear`), then `pressHome` returns when `ends` moved during its step read; plugin test 1765 pass, verify clean.
 - 2026-10-15: T3 done: the AC4 test failed first (the old start's held second listing added one PR read after `await old`; the in-try assertion before the release passed), then the classic SessionStart hook snapshots `ends` before the second listing and reads only when it has not moved; plugin test 1766 pass, verify clean.
+- 2026-10-15: T4 done: CHANGELOG Fixes entry written from the AC1–AC4 tests (held-command claim narrowed to the next-step Button, the press the AC2 tests drive); full verify slot exit 0 on each of its five commands. The simple-english lint hook flags 341 pre-existing hits across CHANGELOG.md; only the new entry's one over-long sentence was fixed.
 
 ## Decisions
 
