@@ -6033,3 +6033,37 @@ on the default branch, so it shows in the Workable or Waiting section
 there. A ✎ press keeps
 the row's index in `state.candidates`, so a hidden row moves no other
 row's press.
+
+### D-168 (2026-10-16): A `/hotfix` rerun on an open PR merges on the earlier approval with no new chip only when nothing changed since it — annotates D-130 and D-131 (M262)
+
+**Context:** D-130 gave `/hotfix` a re-entry for a merged PR and left an
+open PR unrouted, though step 6's timeout close told the user that a
+rerun re-derives the check state and waits again. A rerun on an open PR
+took the adopt-a-PR walk and asked for merge approval a second time.
+D-130's route (c) for an open, approved milestone PR re-poses the chip.
+M262's review found that a resume which skips the hotfix bar on new
+commits, or merges past a later request for changes, breaks D-131's rule
+that the bar holds on every path to the default branch.
+
+**Decision:** `/hotfix` step 6 writes its merge-guard marker before the
+CI wait, naming the PR and the head commit the gate showed, and merges
+with `--match-head-commit` set to that commit. Step 1's open-PR re-entry
+merges on that recorded approval with no new chip only when the PR's
+head is still that commit, no review requests changes, and the rerun's
+candidate-row match equals the PR body's `Candidate row:` lines. Any
+other open PR takes the existing walk, which runs the hotfix bar and
+poses the chip again. In guest mode, a rerun on an open `hotfix-` PR
+reports its state and stops. Route (c) stays as it is for milestones.
+
+**Rejected:** Re-posing the approval chip on every rerun, as route (c)
+does, at the user's choice at M262's review stop, because the timeout
+close already promises a rerun that waits and merges; falsified by a
+resumed merge whose merged diff, reviews, or row edits differ from what
+the approval chip showed. Re-posing the gate on a moved head with steps
+2 to 5 skipped, because it merges commits the regression test never ran
+on (D-131).
+
+**Consequences:** The marker is now resume state as well as the merge
+guard's approval record. A marker lost or consumed before the rerun
+sends the rerun to the walk, so the worst case is the second approval
+this entry set out to remove, never an unapproved merge.

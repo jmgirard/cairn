@@ -138,7 +138,7 @@ Button".
       resume, `--match-head-commit`, refused-merge close, fallback to the
       existing path, marker removed on a decline at step 6's chip), and
       update the guard pins and mutation entries to match.
-- [ ] T7: Review pass 1 fix-now items: head pin on every owner merge
+- [x] T7: Review pass 1 fix-now items: head pin on every owner merge
       (diff-bug #1); the gate's presented head recorded and compared at the
       marker write (diff-bug #9, with the AC1 re-audit's four points); step
       6's order sentence scoped to owner mode (#11); "read at most once per
@@ -188,6 +188,7 @@ Button".
 - 2026-10-16: tasks T6 (AC2 amendment) and T7 (fix-now items) added; Coverage updated.
 - 2026-10-16: the amendment took the plan-owned body to 159 lines; the heaviest section (Acceptance criteria) shed its 10-line template comment in one rewrite, criterion text unchanged; 149 lines, `cairn_validate` green.
 - 2026-10-16: T6 done: step 1's owner arm resumes only on the three conditions (head oid, no `CHANGES_REQUESTED` in `latestReviews`, row match equal to the body's `Candidate row:` lines), merges with `--match-head-commit <oid>`, stops on a refused merge, and otherwise takes the walk, whose step-6 decline removes the marker. `TestHotfixOpenPrReentry` rewritten (13 tests) with 22 mutation entries, each red when blanked; `skills/tests` OK. Diff-bug #8 is moot: the amended route no longer re-runs the read inside step 1, so "at most once per hotfix" (pinned by `test_pr_conversation_gate`) stays as it was.
+- 2026-10-16: T7 done: step 6 notes the head the gate shows (local `HEAD` before a push, else the PR's `headRefOid`), re-reads it before the marker write and re-presents the gate on a mismatch with no marker (diff-bug #9 and the AC1 re-audit's points); a decline at the chip removes the PR's marker; every owner merge carries `--match-head-commit <oid>` (#1; `_first_pr_token` still reads the PR number past it); the order sentence opens "In owner mode" (#11); the timeout close names the walk on a failed condition and its CI-line clause waits "when step 1 resumes" (#14); D-168 annotates D-130 and D-131 (#12); guard pins added for AC3's CI line and next command and AC4's merged half (#13); CHANGELOG entry rewritten. #7 is moot (a moved head takes the walk). Verify slot green (scripts, hooks, both validates, plugin test 1777 pass 0 fail), `skills/tests` OK, `cairn_validate` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -365,12 +365,12 @@
   to rerun `/hotfix` with the PR number. While the PR was still open, that
   rerun started over as if it were adopting an outside PR: tier check,
   regression test, review, and a second merge question. Now `/hotfix` writes
-  its merge approval, with the PR's head commit, before the CI wait. A rerun
-  that finds the PR open and that approval on disk goes back to the CI wait
-  and merges. If commits were pushed to the PR after the approval, the
-  rerun shows them and asks for approval again. A merge that goes ahead
-  with no new question edits only the candidate rows and closes only the
-  issue that the PR body names.
+  its merge approval, with the head commit you approved, before the CI
+  wait, and merges only that commit. A rerun goes back to the CI wait and
+  merges with no new question when nothing changed since your approval:
+  the PR's head is the same commit, no review requests changes, and the
+  candidate rows it matches are the ones the PR body names. If anything
+  changed, the rerun runs the full hotfix checks again and asks you again.
   In guest mode, a rerun on your open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
 
