@@ -71,9 +71,9 @@ run ingestion first (see `/milestone-brief`).
    the branch is pushed, other people can push to it too, on the fork or
    on the base repo, so the rebase waits on one check, run before the
    rebase. Read the remote the branch tracks with
-   `git rev-parse --abbrev-ref <slug>@{upstream}` (the first `git push -u`
-   sets it). With no upstream the branch was never pushed: rebase, and
-   push nothing. Otherwise fetch that remote and read
+   `git config branch.<slug>.remote` (the first `git push -u` sets it).
+   With no remote set the branch was never pushed: rebase, and push
+   nothing. Otherwise fetch that remote and read
    `git rev-list <slug>..<remote>/<slug>`.
    If that lists commits, do not rebase, push nothing, and stop with a
    close block that names those commits. Otherwise note the remote tip's

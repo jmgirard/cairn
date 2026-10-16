@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M267: Let a guest repo push its branches to the maintainers' repo
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -122,6 +122,9 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: review return 1: diff-bug #1 — review step 1 rebases and step 8 then runs implement's remote-only-commits check after the rebase, so a guest re-handoff after the default branch moved always stops. Fix it with the review's fix-now items: run the check before any rebase and lease on that tip (review step 1/8, copilot-review), handle a never-pushed branch and use the branch's tracked remote in implement, move the head-owner lookup into the rulebook's open-PR head rule (`.login`, case-insensitive, stop on another owner), reword D-172's trigger and annotate D-171, fix README/CHANGELOG stacking wording, `/milestone` §2's re-push wording, review's step-7 chip text, and put the mutation block back on "Post no comment or reply".
 - 2026-10-16: implement resumed on the return; T9 added (minor amendment) and Coverage AC7 → T6, T8, T9.
 - 2026-10-16: T9 done: the rulebook's open-PR head rule now names its lookup (`headRepositoryOwner.login`; `<base>` or `<fork>` ignoring case; any other login or a failed read stops); review step 1's guest rebase runs implement's check first and does not push, and step 8 leases on that tip; implement reads the branch's tracked remote and skips the check for a never-pushed branch; copilot-review, `/hotfix`'s change route, and review step 7/8 point at the head rule; `/milestone` §2 names the re-handoff push; D-172 (unmerged, corrected on the branch) annotates D-171 and narrows its trigger to a handoff's first push; README/CHANGELOG say the operator can set a stacked base; the mutation block is back on "Post no comment or reply". Guards updated (+2 tests). skills/tests 820 OK; verify green (5/5); validate green.
+- 2026-10-16: claim audit: 21 claims read, 4 corrected — skills/milestone-implement/SKILL.md, skills/milestone-review/SKILL.md, skills/milestone/SKILL.md
+- 2026-10-16: claim-audit fixes: implement reads the tracked remote with `git config branch.<slug>.remote` (rev-parse's `@{upstream}` prints `<remote>/<branch>`); review step 8's lease applies to a pushed branch only; route (c) gains a sentence that in guest mode the branch is not pushed before the re-posed chip (the pinned sentence left whole); `/milestone` §2 names implement's re-push and review's push of new commits. skills/tests 820 OK; verify green (5/5); validate green.
+- 2026-10-16: implement complete after return 1; status review.
 
 ## Decisions
 

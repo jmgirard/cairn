@@ -83,8 +83,8 @@ ACCESS_FILES = ["milestone-review/SKILL.md", "hotfix/SKILL.md"]
 
 REMOTE_ONLY_STOP = [
     "so the rebase waits on one check, run before the rebase.",
-    "Read the remote the branch tracks with `git rev-parse --abbrev-ref <slug>@{upstream}`",
-    "With no upstream the branch was never pushed: rebase, and push nothing.",
+    "Read the remote the branch tracks with `git config branch.<slug>.remote`",
+    "With no remote set the branch was never pushed: rebase, and push nothing.",
     "read `git rev-list <slug>..<remote>/<slug>`.",
     "If that lists commits, do not rebase, push nothing, and stop with a close block that names those commits.",
     "Otherwise note the remote tip's sha, rebase, and push with",
@@ -94,7 +94,7 @@ REMOTE_ONLY_STOP = [
 REVIEW_REBASE = [
     "after `/milestone-implement` step 2's remote-only-commits check, which runs before the rebase and notes the remote tip's sha.",
     "The rebased branch is not pushed here. Step 8 pushes it with that sha's lease.",
-    "A branch that step 1 rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being the remote tip that step 1's check read.",
+    "A pushed branch that step 1 rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being the remote tip that step 1's check read.",
 ]
 
 ORIGIN_IS_FORK = re.compile(r"`origin`,? \(?the fork|the fork,? \(?`origin`", re.I)

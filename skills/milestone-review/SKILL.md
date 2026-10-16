@@ -106,7 +106,9 @@ re-enters here, at the step the record shows is next:
   tree), the step-7 chip re-posed, and on approval step 8 skipping `gh pr
   create` — the header already names the open PR — from the push and the
   marker write onward. The step-7 PR-conversation read runs before that
-  chip is re-posed, the PR pre-existing.
+  chip is re-posed, the PR pre-existing. In guest mode the branch is not
+  pushed before the chip. Step 8's handoff pushes it, with step 1's lease
+  where step 1 rebased it.
 - (d) any other state, or a state above whose conditions are not met →
   step 1, then the review with the post-approval open at step 8 skipping
   `gh pr create` when the header already names an open PR. A `gh` that is
@@ -641,7 +643,7 @@ re-enters here, at the step the record shows is next:
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI
    wait, and the merge: only on the handoff selection, push the branch to
-   the push remote (`git push -u <push> <slug>`). A branch that step 1
+   the push remote (`git push -u <push> <slug>`). A pushed branch that step 1
    rebased goes up with `--force-with-lease=<slug>:<sha>`, `<sha>` being
    the remote tip that step 1's check read. `<push>` and `<push-owner>` are the rulebook's push remote and
    its owner. A branch whose PR is already open is pushed to that PR's head
