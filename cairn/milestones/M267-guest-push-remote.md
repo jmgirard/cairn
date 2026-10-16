@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M267: Let a guest repo push its branches to the maintainers' repo
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -34,27 +34,27 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md` defines the push remote `<push>`: in guest mode it is `<base>` when
+- [x] AC1: `skills/shared/tracking-rules.md` defines the push remote `<push>`: in guest mode it is `<base>` when
       `cairn/PROFILE.md` carries the header line `# Push remote: base`, and `<fork>` otherwise; `<push-owner>` is the
       owner of the repo `<push>` names. It also states that a push to a branch that already has an open PR goes to the
       remote that holds that PR's head. The file-map row for `PROFILE.md` names the line and says no validator reads
       it, and the Collaboration-mode bullets name `<push>` where they now name `<fork>` as the push target.
-- [ ] AC2: No line that `git grep -n -i -e fork -e 'gh pr create' -e 'git push' -- skills ':!skills/tests'` returns
+- [x] AC2: No line that `git grep -n -i -e fork -e 'gh pr create' -e 'git push' -- skills ':!skills/tests'` returns
       on the branch head names, in a guest arm, the fork as where a branch is pushed or where a new PR's head lives,
       except through `<push>`/`<push-owner>` or the open-PR head rule of AC1.
-- [ ] AC3: When `<push>` is `<base>`, `/milestone-review` step 8's guest arm and `/hotfix`'s guest handoff run
+- [x] AC3: When `<push>` is `<base>`, `/milestone-review` step 8's guest arm and `/hotfix`'s guest handoff run
       `gh api repos/<base-repo> --jq .permissions.push` before the push; on any output but `true`, or a failed read,
       the step pushes nothing, opens no PR, and stops with a close block that names the read and its result.
-- [ ] AC4: The rulebook's fork-remote stop (no matching remote, or more than one) applies whenever a guest push target
+- [x] AC4: The rulebook's fork-remote stop (no matching remote, or more than one) applies whenever a guest push target
       resolves to the fork, by `<push>` or by an open PR's head, and does not apply when it resolves to `<base>`.
-- [ ] AC5: `/milestone-implement`'s guest sync of a branch that is already pushed, before it rebases, fetches the
+- [x] AC5: `/milestone-implement`'s guest sync of a branch that is already pushed, before it rebases, fetches the
       remote that holds the branch and reads `git rev-list <slug>..<remote>/<slug>`; when that is non-empty it does not
       rebase, pushes nothing, and stops with a close block naming those commits. Otherwise it rebases and pushes with
       `--force-with-lease=<slug>:<sha>`, `<sha>` being the remote branch tip read at that check.
-- [ ] AC6: The README's guest-mode section and a CHANGELOG entry state the line, the push-access check, and that a repo
+- [x] AC6: The README's guest-mode section and a CHANGELOG entry state the line, the push-access check, and that a repo
       without the line still pushes to the fork; `grep -n -i fork README.md` shows no line left saying that guest mode
       always pushes to the fork.
-- [ ] AC7: The `verify` slot is green, and the hand-run prose guards (`python3 -m unittest discover -s skills/tests`
+- [x] AC7: The `verify` slot is green, and the hand-run prose guards (`python3 -m unittest discover -s skills/tests`
       from the repo root) pass on the branch head.
 
 ## Coverage
@@ -117,7 +117,48 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: claim-audit fixes: review step 8's guest arm skips `gh pr create` when the header names an open PR; the hotfix change route resolves `<head-remote>` from `headRepositoryOwner` (base remote, else the fork recipe with its stop), replacing the `gh pr checkout` upstream decision above, which can point at a URL or `refs/pull/N/head`; README says the access read runs before each handoff push with the line set, and that the stop fires on any remote commit the local copy lacks. skills/tests 818 OK; verify green (5/5).
 - 2026-10-16: known edge kept: with the line set after a PR opened from the fork, review step 8 still runs the base-repo access read before pushing to the fork head; a non-`true` answer stops with nothing pushed. AC3 gates the read on `<push>`, and the stop fails safe.
 - 2026-10-16: implement complete; status review.
+- 2026-10-16: review started; PR #279 opened and Copilot requested at review start (state was `none`); AC1–AC7 evidenced at eae9b417.
+- 2026-10-16: review return 1: diff-bug #1 — review step 1 rebases and step 8 then runs implement's remote-only-commits check after the rebase, so a guest re-handoff after the default branch moved always stops. Fix it with the review's fix-now items: run the check before any rebase and lease on that tip (review step 1/8, copilot-review), handle a never-pushed branch and use the branch's tracked remote in implement, move the head-owner lookup into the rulebook's open-PR head rule (`.login`, case-insensitive, stop on another owner), reword D-172's trigger and annotate D-171, fix README/CHANGELOG stacking wording, `/milestone` §2's re-push wording, review's step-7 chip text, and put the mutation block back on "Post no comment or reply".
 
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-10-16 on branch head eae9b417 (current with origin/main 78992470). PR #279 opened at review start (Copilot round on).
+
+- AC1: normalized read of `skills/shared/tracking-rules.md` finds the `<push>` definition (`<base>` under `# Push remote: base`, else `<fork>`), "Owner mode never reads the line.", the `<push-owner>` definition, the open-PR head rule, the PROFILE.md file-map clause naming the line and "no validator reads"; the Collaboration-mode bullets read "pushed to `<push>`", `--head <push-owner>:<slug>`, "(the push to `<push>` plus"; a regex for `<fork>` as a push target there returns nothing. `grep 'Push remote' scripts/*.py hooks/*.py` returns nothing (no validator reads it).
+- AC2: `git grep -n -i -e fork -e 'gh pr create' -e 'git push' HEAD -- skills ':!skills/tests'` returns 35 lines. Owner-mode only: hotfix 313, 373–374, 411; milestone-review 112, 137, 559, 621; milestone-plan 135 (pushes `<base>`); tracking-rules 285 (both modes, names no remote). Guest push or PR head through `<push>`/`<push-owner>` or the open-PR head rule: hotfix 211, 213, 438, 444; milestone-implement 71, 78; milestone-review 549, 640, 649; milestone 182's route (not matched, reads "the remote that holds the PR's head"); copilot-review 100; tracking-rules 376, 383. Lines defining `<fork>`/`<push>`: tracking-rules 260, 263, 265, 268, 269. Fork mentions that are not push targets: cairn-init 99, hotfix 29, 97, 159, 230, 291, 333, 390, milestone 202. No guest-arm line names the fork as a push target or new-PR head outside `<push>` or the head rule.
+- AC3: `skills/milestone-review/SKILL.md` step 8 guest arm and `skills/hotfix/SKILL.md` guest handoff both carry, before the push, "When `<push>` is `<base>`, first run `gh api repos/<base-repo> --jq .permissions.push`." and "On any output but `true`, or a failed read, push nothing, open no PR, and stop with a close block that names the read and its result."; `TestAccessRead` (2 tests) passes and goes red on each clause removed in each file.
+- AC4: tracking-rules: "When a guest push target resolves to the fork, by `<push>` or by an open PR's head, and no remote matches, or more than one, the push stops before it is made. A target that resolves to `<base>` needs no fork."; the unscoped "With no match, or more than one, a guest push stops before the push." is gone. Pinned in `RECIPE` of `test_guest_fork_remote.py` (passes).
+- AC5: `skills/milestone-implement/SKILL.md` step 2 guest arm (lines 69–80): "Fetch the remote that holds the branch (the open PR's head remote, else `<push>` …) and read `git rev-list <slug>..<remote>/<slug>`. If that lists commits, do not rebase, push nothing, and stop with a close block that names those commits. Otherwise note the remote tip's sha, rebase, and push with `git push --force-with-lease=<slug>:<sha> <remote> <slug>`". The check precedes the rebase; `TestRemoteOnlyCommitsStop` passes and goes red on each clause removed.
+- AC6: README guest section bullet "Branches go to your fork unless you ask for the upstream repo." states the line, the push-permission read before each handoff push, and the fork default; CHANGELOG Unreleased entry "Guest branches can go to the upstream repo." states the line, the access check, and "A repo without the line still pushes to the fork." `grep -n -i fork README.md` returns lines 879–880 only, both saying the fork is the default unless the line is set; no line says guest mode always pushes to the fork.
+- AC7: at eae9b417 from the repo root, each exit code read: `scripts/tests` 0 (408 tests), `hooks/tests` 0 (175 tests), `claude plugin validate` plugin.json 0 and marketplace.json 0, `claude plugin test .` 0 (0 fail); hand-run `skills/tests` 0 (818 tests OK).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: review step 1's guest rebase plus step 8's "after a rebase the check and lease of implement step 2" runs the remote-only-commits check after the rebase, so every re-handoff after the default branch moved stops — fix now (load-bearing: floor return 1).
+- diff-bug #2: copilot-review's fix push "after a rebase with the check and lease" has the same after-the-rebase problem — fix now.
+- diff-bug #3: implement's sync gives no path for a never-pushed branch; `rev-list` on a missing `<remote>/<slug>` errors — fix now.
+- diff-bug #4: "open PR's head remote, else `<push>`" fetches the wrong remote for a branch on the fork with no PR once the line is added — fix now (use the branch's tracked remote).
+- diff-bug #5: the open-PR head rule names no lookup outside `/hotfix` — fix now (lookup moves into the rulebook rule).
+- diff-bug #6: with the line set and the PR head on the fork, review's access read still gates the push to the fork — follow-up (row "Guest push remote edges"); fails safe, and AC3 keys the read on `<push>`.
+- diff-bug #7: D-172's supersede trigger is met by designed paths (change route, Copilot fixes, sync to a base head) — fix now (reword the trigger to the handoff's first push).
+- diff-bug #8: `--json headRepositoryOwner` returns an object; the comparison names no `.login` — fix now (with #5).
+- diff-bug #9: `--head <push-owner>:<slug>` for a same-repo PR may not be accepted — reject (false): GitHub's create-PR API documents `head` as `username:branch` and accepts it for a same-repo head; the plan's criteria audit read it the same way.
+- diff-bug #10: the removal tests only show `missing()` notices a removed clause — reject (style of the repo's guards): each test removes the clause from the real text and sees the guard go red, the same plant M234's revert test uses.
+- diff-bug #11: the guards check phrase presence, not order (access read before push, check before rebase) — reject (false as a regression path): the prose carries order in its own words ("first run", "before it rebases"), and the pinned clauses include those words.
+- diff-bug #12: SITES does not catch a new guest site naming `<fork>` — reject (planned change): AC2 is a review-time grep sweep by plan, and widening the guard is checker hardening the plan did not call for.
+- diff-bug #13: README/CHANGELOG "a PR can then build on another open PR's branch" reads as a cairn feature before M268 — fix now (reword as what the operator can set).
+- diff-bug #14: copilot-review ties the head remote to `<push>` instead of the open-PR head rule — fix now (with #2).
+- diff-bug #15: `/milestone` §2 says implement's sync re-pushes the change commits; review's re-handoff pushes them — fix now.
+- diff-bug #16: review's step-7 chip text names `<push>` for a re-handoff whose PR head is elsewhere — fix now.
+- diff-bug #17: the first push to the base repo does not check for a maintainers' branch named `<slug>` — follow-up (row "Guest push remote edges"); a non-fast-forward push is refused.
+- blame-history #1: D-171 still says the guest change route pushes to the fork — fix now (D-172 annotates D-171 too).
+- blame-history #2: the head-owner rule has no case, null-owner, or third-owner handling — fix now (with diff-bug #5: case-insensitive, stop on any other owner).
+- blame-history #3: review/implement/copilot head-remote lookup left to the model — fix now (same as diff-bug #5).
+- blame-history #4: never-pushed branch in implement's check — fix now (same as diff-bug #3).
+- blame-history #5: the mutation block for `test_approval_pushes_and_posts_nothing` moved off the no-post clause — fix now (block back on "Post no comment or reply").
+- blame-history #6: review's new skip of `gh pr create` when the header names an open PR may not match §2's reconciliation — reject (false): step 8's guest arm writes the PR URL to the header on disk, as owner step 8 reads it.
+- blame-history #7: a misspelled `# Push remote:` line falls back to the fork silently — reject (planned change): D-172 and the plan keep the line unvalidated, like the Copilot line.
+- prior-review #1: mutation coverage of M266's no-post clause thinned — fix now (same as blame-history #5).
+- prior-review #2: the change route pushes to a base-repo head with no access read — reject (false as a gap): an open PR whose head is on the base repo already proves the push; the read guards the handoff's first push, which is what README and CHANGELOG say.
+- prior-review #3: open comments on PR #279 (never-pushed check; access read keyed to `<push>`) — fix now for the first (diff-bug #3), follow-up for the second (diff-bug #6).
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed. No DESIGN.md principle changed, so `cairn_impact --changed` is skipped. Profile consistency-gate: the verify run above.
