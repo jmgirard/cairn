@@ -7,7 +7,7 @@
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopter's `/hotfix` rerun on a PR takes these routes
-- **Branch/PR:** m266-hotfix-rerun-gaps
+- **Branch/PR:** m266-hotfix-rerun-gaps, https://github.com/jmgirard/cairn/pull/278
 
 ## Goal
 
