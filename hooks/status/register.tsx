@@ -1182,11 +1182,14 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
 // consent to drop the conversation, as a press of Clear is. The mark is set
 // before the press's first await, so a second press in the same tick finds
 // `busy` true (M241 review, PR #251), and a step found set takes it back.
+// A session end during the step read cancels the press, so its `/clear`
+// never reaches the conversation that follows (M260).
 async function pressHome($) {
   if (busy()) return
   const mine = {}
   homeRun = mine
-  if (knownStep(await read($, step)) !== null) {
+  const at = ends
+  if (knownStep(await read($, step)) !== null || ends !== at) {
     if (homeRun === mine) homeRun = null
     return
   }

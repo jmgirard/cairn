@@ -4558,3 +4558,47 @@ describe('a rejected session end hands its held command to the prompt box (M260 
     })
   }
 })
+
+// A session end that lands while a ⌂ press reads its step cancels the
+// press, so its `/clear` never reaches the conversation that follows. A
+// `clear` end still gives the pane the open it gives any ⌂ mark, and an
+// `other` end none (M260 AC3).
+describe("a session end during a ⌂ press's step read cancels its /clear (M260 AC3)", () => {
+  const ENDS = [
+    { name: 'a resolving clear end', reason: 'clear', rejects: false, opens: 1 },
+    { name: 'a rejecting clear end', reason: 'clear', rejects: true, opens: 1 },
+    { name: 'a resolving other end', reason: 'other', rejects: false, opens: 0 },
+  ] as const
+  for (const { name, reason, rejects, opens } of ENDS) {
+    test(`${name} runs no /clear and opens the pane ${opens} time(s)`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      const hold = holdStep(on)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+      hold.armed = true
+      const first = ui.press({ key: PANE_HOME })
+      await until(() => hold.held)
+      expect(hold.held).toBe(true)
+      expect(copy.commands ?? []).toEqual([])
+      const before = copy.opens.length
+      copy.endThrows = rejects ? true : undefined
+      let rejected = false
+      try {
+        await $.session.end({ reason, sessionId: 's1' })
+      } catch {
+        rejected = true
+      }
+      expect(rejected).toBe(rejects)
+      copy.endThrows = undefined
+      hold.release()
+      await first
+      await untilRuns(copy, 1, 10)
+      expect(copy.commands ?? []).toEqual([])
+      await untilOpens(copy, before + opens)
+      await untilOpens(copy, before + opens + 1, 10)
+      expect(copy.opens.slice(before)).toEqual(opens === 1 ? [{ id: PANE, title: 'cairn' }] : [])
+      await ui.unmount()
+    })
+  }
+})
