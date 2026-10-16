@@ -125,6 +125,8 @@ hand, and a candidate row is added if that proves insufficient. A validator chec
 - 2026-10-16: claim audit: 21 claims read, 4 corrected — skills/milestone-implement/SKILL.md, skills/milestone-review/SKILL.md, skills/milestone/SKILL.md
 - 2026-10-16: claim-audit fixes: implement reads the tracked remote with `git config branch.<slug>.remote` (rev-parse's `@{upstream}` prints `<remote>/<branch>`); review step 8's lease applies to a pushed branch only; route (c) gains a sentence that in guest mode the branch is not pushed before the re-posed chip (the pinned sentence left whole); `/milestone` §2 names implement's re-push and review's push of new commits. skills/tests 820 OK; verify green (5/5); validate green.
 - 2026-10-16: implement complete after return 1; status review.
+- 2026-10-16: review pass 2: 15 reviewer findings (13 fix now, 2 reject), 3 Copilot threads (2 fix now, 1 follow-up) replied and resolved; fixes in a0f64df0.
+- 2026-10-16: step-7 approval: m267-guest-push-remote approved for merge
 
 ## Decisions
 
