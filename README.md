@@ -464,12 +464,11 @@ while no milestone is active, so while a milestone's branch is checked
 out, the mark of that milestone's PR shows only in another checkout of the
 default branch. Without the opt-in Copilot round (below), a PR that
 `/milestone-review` or an authored `/hotfix` opens does so only after you
-approve the merge. After the merge, the row's `◐` goes at the pane's
-first PR read, unless another open PR also names the row. The row then
-shows its priority mark again, with no PR number. After a
-`/milestone-review` or `/hotfix` merge, the row keeps that look until
-`/milestone-review`'s hygiene commit or `/hotfix`'s step 7 removes or
-narrows it. A PR opened before these skills wrote `Candidate row:` lines
+approve the merge. After the merge, the row's `◐` and PR number go at
+the pane's first successful PR read, unless another open PR also names
+the row. If `/milestone-review`'s hygiene commit or `/hotfix`'s step 7
+has not removed the row by then, the row shows its priority mark again.
+A row that they narrow keeps that look. A PR opened before these skills wrote `Candidate row:` lines
 has none.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
