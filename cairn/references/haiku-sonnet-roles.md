@@ -462,4 +462,5 @@ apply the verdict rule. A rerun that flips a group's verdict falsifies
 M228's single-run choice for that group.
 
 M264 reran the search and history-review tasks three times per model in
-`haiku-sonnet-rerun.md`. Neither verdict flipped.
+`haiku-sonnet-rerun.md`. Neither verdict flipped. All three Haiku S2 runs
+there dropped `.py` again, so the S2 gap is systematic.

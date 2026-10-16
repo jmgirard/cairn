@@ -9,14 +9,14 @@ Tasks, keys, and the judge prompt are those of `haiku-sonnet-roles.md`
 (M228), replayed at commit `c023018`. Prices are those
 `haiku-sonnet-roles.md` lists.
 Pagination: —.
-Extraction: prices as `haiku-sonnet-roles.md` read directly from the pricing page 2026-10-09, and liable to change; the run records are first-hand from that day's session store, and a rerun reproduces the method, not the exact figures — observed 2026-10-16.
+Extraction: prices as `haiku-sonnet-roles.md` read directly from the pricing page 2026-10-09, and liable to change; the run records are first-hand from the 2026-10-16 session store, and a rerun reproduces the method, not the exact figures — observed 2026-10-16.
 
 **Scope.** M228 compared Haiku 5.5 with Sonnet 5.5 on one run per task.
 It gave search the verdict `stay` and history review `move`, on a 4-to-4
-tie. D-151 kept both groups on Sonnet. This note replays the same six
-tasks three times per model and states a verdict per group. It changes no
-rule. The ROADMAP candidate "Haiku for the remaining Sonnet roles" acts on
-the verdicts. The edit-work group, which D-151 moved to Haiku, is not
+tie. D-151 kept both groups on Sonnet (observed 2026-10-16). This note
+replays the same six tasks three times per model and states a verdict per
+group. It changes no rule. The ROADMAP candidate "Haiku for the remaining
+Sonnet roles" acts on the verdicts (observed 2026-10-16). The edit-work group, which D-151 moved to Haiku, is not
 re-tested. This is a reference, not an authority. Status lives in
 `ROADMAP.md`, decisions in `DECISIONS.md`.
 
@@ -25,7 +25,8 @@ re-tested. This is a reference, not an authority. Status lives in
 **Runs.** Six tasks of `haiku-sonnet-roles.md`: S1, S2, and S3 (search)
 and H1, H2, and H3 (history review). Each task runs three times with the
 Agent tool's `model` set to `sonnet`. It runs three times with `model` set
-to `haiku`. All six runs use the same prompt, with `effort` unset (D-157).
+to `haiku`. A task's six runs all use that task's prompt, with `effort`
+unset (D-157).
 Run index r is 1, 2, or 3. Agent types are M228's: `Explore` for search
 and `general-purpose` for history review. Every spawn runs in the
 foreground, so its Agent tool result carries `usage`.
@@ -130,9 +131,11 @@ Search notes. Every S1 and S2 Sonnet run and every S1 Haiku run scored 1.0. All
 three Haiku S2 runs listed the nine registrations correctly but wrote each
 script without its `.py` extension, so each scores 0. S3 Sonnet run 3
 applied its own reading of which heading clauses supersede and listed 45
-pairs, as M228's Sonnet run did. The other S3 runs followed the stated rule
-and differ from the key by at most two pairs, from D-085's
-"supersede-on-firing".
+pairs, as M228's Sonnet run did. The other S3 runs followed the stated
+rule. Haiku runs 1 and 3 match the key. Sonnet run 2 and Haiku run 2 miss
+the two pairs from D-085's "supersede-on-firing". Sonnet run 1 misses
+`D-116 D-108`, where D-108 follows "supersedes" in D-116's heading
+(corrected at M264 review).
 
 Judging. Each judge ran on Opus (`claude-opus-5-5`, read from its
 transcript). The mappings were read after all nine judges returned. "Sonnet
@@ -152,39 +155,117 @@ rated a duplicate.
 | H3 | 2 | `aa75203b7c05ee2b5` | A | V I V I | 2 | V V | 2 |
 | H3 | 3 | `a4fe8a23ba090403b` | A | I V I I I | 1 | I V V | 2 |
 
+Per finding, in each report's own order. The short descriptions were
+written at review from the uncommitted reviewer reports. The ratings are
+the judges'.
+
+| Task | Run | Model | # | Finding, in short | Rating |
+|---|---|---|---|---|---|
+| H1 | 1 | sonnet | 1 | Every pane open now runs git and gh calls | I |
+| H1 | 1 | sonnet | 2 | Own-hotfix filter differs from milestone skill rule | I |
+| H1 | 1 | sonnet | 3 | Hotfixes heading has no Refresh when list empty | I |
+| H1 | 1 | sonnet | 4 | Zero-URL branch writes hotfixes but not prs | I |
+| H1 | 1 | sonnet | 5 | Probe note says only a shell probe ran | V |
+| H1 | 1 | haiku | 1 | Hotfixes Refresh missing until a hotfix PR exists | I |
+| H1 | 1 | haiku | 2 | git helper not on PATH silently drops Hotfixes section | V |
+| H1 | 1 | haiku | 3 | README and DESIGN still name only Blocked Refresh | V |
+| H1 | 1 | haiku | 4 | Hotfix list written in a separate update call | I |
+| H1 | 1 | haiku | 5 | Hotfix URL skips the prUrl check blocked rows get | I |
+| H1 | 2 | sonnet | 1 | Stale docs and comments name only Blocked Refresh | V |
+| H1 | 2 | sonnet | 2 | Hotfix list and word written in two updates | I |
+| H1 | 2 | sonnet | 3 | Repos without blocked rows now make GitHub calls | I |
+| H1 | 2 | sonnet | 4 | AC4 wording says seven cases, lists five | I |
+| H1 | 2 | haiku | 1 | Unverified cwd option for git remote calls | I |
+| H1 | 2 | haiku | 2 | List read is awaited before per-URL reads | V |
+| H1 | 2 | haiku | 3 | No control to pick up a new hotfix PR | I |
+| H1 | 2 | haiku | 4 | Words and list written in separate updates | I |
+| H1 | 2 | haiku | 5 | PANE_BUTTONS comment names only Blocked Refresh | V |
+| H1 | 3 | sonnet | 1 | Stale pane comments and docs name only Blocked Refresh | V |
+| H1 | 3 | sonnet | 2 | Serial git and gh calls exceed the old wait bound | V |
+| H1 | 3 | sonnet | 3 | No Refresh when no hotfix PR or blocked URL | I |
+| H1 | 3 | sonnet | 4 | Zero-URL early return leaves prs unwritten | I |
+| H1 | 3 | haiku | 1 | Remote URL with credentials would enter gh argv | I |
+| H1 | 3 | haiku | 2 | Hotfix list read runs in series before PR reads | V |
+| H1 | 3 | haiku | 3 | Words and list written in two separate updates | I |
+| H1 | 3 | haiku | 4 | Zero-URL check now runs git and gh calls | I |
+| H2 | 1 | sonnet | 1 | Inbox bullet line is 117 characters, not rewrapped | V |
+| H2 | 1 | sonnet | 2 | Orphan line Step 7's issue in hotfix handoff | I |
+| H2 | 1 | sonnet | 3 | Guest-mode bullet checked and consistent with lineage | I |
+| H2 | 1 | haiku | 1 | Inbox filter still drops hotfix PRs from others | I |
+| H2 | 1 | haiku | 2 | In-progress milestone PR is reported by no bullet | V |
+| H2 | 2 | sonnet | 1 | Inbox bullet line is over-long despite rewrap claim | V |
+| H2 | 2 | sonnet | 2 | Hotfix PRs from other authors reported nowhere | I |
+| H2 | 2 | sonnet | 3 | Handoff text reverses M185 reports nothing wording | I |
+| H2 | 2 | sonnet | 4 | Guest milestone slug can match hotfix bullet | V |
+| H2 | 2 | sonnet | 5 | Milestone-plan sweep drops hotfix PRs unchanged | I |
+| H2 | 2 | haiku | 1 | Inbox drops hotfix PRs from third parties | I |
+| H2 | 2 | haiku | 2 | Claim that milestone PRs are reported is false | V |
+| H2 | 3 | sonnet | 1 | Claimed rewrap did not happen, 117-character line | V |
+| H2 | 3 | sonnet | 2 | Stranded Step 7's issue fragment left on short line | I |
+| H2 | 3 | sonnet | 3 | Plan sweep still drops third-party hotfix PRs | I |
+| H2 | 3 | sonnet | 4 | Handoff says reports open PR, true only same login | I |
+| H2 | 3 | haiku | 1 | Inbox drops hotfix PRs whoever opened them | I |
+| H3 | 1 | sonnet | 1 | Sequential reads can wait up to 30 seconds | V |
+| H3 | 1 | sonnet | 2 | Third copy of the PR URL pattern | V |
+| H3 | 1 | sonnet | 3 | Ragged wraps in new README and CHANGELOG text | I |
+| H3 | 1 | haiku | 1 | Newest-100 window can drop author review | I |
+| H3 | 1 | haiku | 2 | README does not say late items stay uncounted | I |
+| H3 | 1 | haiku | 3 | Third copy of the PR URL regex | V |
+| H3 | 2 | sonnet | 1 | Count call runs after gh pr view, doubling wait | V |
+| H3 | 2 | sonnet | 2 | Newest-read guard race still untested | I |
+| H3 | 2 | sonnet | 3 | Third copy of PR URL, no parity test | V |
+| H3 | 2 | sonnet | 4 | OPEN_WORDS is a second list of open words | I |
+| H3 | 2 | haiku | 1 | Each open PR can now wait 30 seconds | V |
+| H3 | 2 | haiku | 2 | URL pattern anchored differently in third copy | V |
+| H3 | 3 | sonnet | 1 | OPEN_WORDS adds a third hand-typed word list | I |
+| H3 | 3 | sonnet | 2 | Wait widens an edge M224 already logged | V |
+| H3 | 3 | sonnet | 3 | Newest-read guard race stays untested | I |
+| H3 | 3 | sonnet | 4 | Fourth copy of PR URL pattern | I |
+| H3 | 3 | sonnet | 5 | README has unwrapped 106 character line | I |
+| H3 | 3 | haiku | 1 | Types file has no type check in verify | I |
+| H3 | 3 | haiku | 2 | ROADMAP row still says 15 seconds per read | V |
+| H3 | 3 | haiku | 3 | README and CHANGELOG wraps are ragged | V |
+
 No reviewer or judge tool call named the mapping file or a path under
 `cairn/references/`. No tool result carried text from the three earlier
 notes (`haiku-sonnet-roles.md`, `effort-roles.md`,
 `effort-review-medium.md`). Both checks ran over the 27 transcripts on
-2026-10-16.
+2026-10-16. A first check searched each whole transcript, and it matched
+every transcript on the branch name `m264-haiku-sonnet-rerun` in the
+context each agent receives. So the check reads only tool calls and tool
+results. It cannot see text an agent saw any other way.
 
 ## Verdicts
 
-Per task, the mean over three runs (score, then USD):
+Per task, the mean over three runs, with each score's range over its runs:
 
-| Task | Sonnet score | Haiku score | Sonnet USD | Haiku USD | Sonnet calls | Haiku calls |
-|---|---|---|---|---|---|---|
-| S1 | 1.0000 | 1.0000 | 0.1117 | 0.0062 | 3, 2, 4 | 2, 3, 3 |
-| S2 | 1.0000 | 0.0000 | 0.1038 | 0.0063 | 2, 2, 2 | 4, 2, 3 |
-| S3 | 0.8865 | 0.9962 | 0.1626 | 0.0132 | 2, 2, 2 | 3, 6, 6 |
-| H1 | 1.3333 | 1.6667 | 0.4089 | 0.1366 | 16, 14, 18 | 23, 28, 27 |
-| H2 | 1.3333 | 0.6667 | 0.2612 | 0.0575 | 11, 8, 8 | 15, 17, 13 |
-| H3 | 1.6667 | 1.6667 | 0.3061 | 0.1152 | 12, 13, 13 | 29, 32, 21 |
+| Task | Sonnet score | Sonnet range | Haiku score | Haiku range | Sonnet USD | Haiku USD | Sonnet calls | Haiku calls |
+|---|---|---|---|---|---|---|---|---|
+| S1 | 1.0000 | 1.0000 to 1.0000 | 1.0000 | 1.0000 to 1.0000 | 0.1117 | 0.0062 | 3, 2, 4 | 2, 3, 3 |
+| S2 | 1.0000 | 1.0000 to 1.0000 | 0.0000 | 0.0000 to 0.0000 | 0.1038 | 0.0063 | 2, 2, 2 | 4, 2, 3 |
+| S3 | 0.8865 | 0.6767 to 0.9943 | 0.9962 | 0.9885 to 1.0000 | 0.1626 | 0.0132 | 2, 2, 2 | 3, 6, 6 |
+| H1 | 1.3333 | 1 to 2 | 1.6667 | 1 to 2 | 0.4089 | 0.1366 | 16, 14, 18 | 23, 28, 27 |
+| H2 | 1.3333 | 1 to 2 | 0.6667 | 0 to 1 | 0.2612 | 0.0575 | 11, 8, 8 | 15, 17, 13 |
+| H3 | 1.6667 | 1 to 2 | 1.6667 | 1 to 2 | 0.3061 | 0.1152 | 12, 13, 13 | 29, 32, 21 |
 
-| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict |
-|---|---|---|---|---|---|---|
-| Search | 0.3781 | 0.0257 | 2.8865 | 1.9962 | 0.6916 | stay |
-| History review | 0.9762 | 0.3092 | 4.3333 | 4.0000 | 0.9231 | move |
+| Group | Sonnet USD | Haiku USD | Sonnet score | Haiku score | Haiku ÷ Sonnet score | Verdict | What flips it |
+|---|---|---|---|---|---|---|---|
+| Search | 0.3781 | 0.0257 | 2.8865 | 1.9962 | 0.6916 | stay | A prompt that settles whether `.py` is part of S2's base name |
+| History review | 0.9762 | 0.3092 | 4.3333 | 4.0000 | 0.9231 | move | One judged finding either way (score), and the output undercount (cost) |
 
 Each verdict applies the design's rule to the sums above.
 
 Readings that bear on the verdicts:
 
-- Search is `stay`, as in M228. S2 is the whole gap. All three Haiku S2
-  runs dropped `.py`, so the miss is not run-to-run noise. A reading that
-  adds a missing `.py` to each S2 item scores every Haiku S2 run 1.0. Under
-  it, Haiku's search score is 2.9962 against Sonnet's 2.8865. That reading
-  is outside the verdict rule, which was fixed before the runs.
+- Search is `stay`, as in M228. Haiku's deficit on S2 (1.0000) is larger
+  than the net search gap (0.8903), because Haiku leads on S3. All three
+  Haiku S2 runs dropped `.py`, so the miss is not run-to-run noise. The S2
+  prompt asks for "the Python file's base name" and does not say whether
+  the extension is part of it. So this gap can come from the prompt and
+  not from the model's search. A reading that adds a missing `.py` to each S2 item
+  scores every Haiku S2 run 1.0. Under it, Haiku's search score is 2.9962
+  against Sonnet's 2.8865. That reading is outside the verdict rule, which
+  was fixed before the runs.
 - History review is `move`, as in M228, now on three runs per task. Haiku
   scored 12 judged-valid findings over its nine runs and Sonnet 13. The
   margin is one finding. One fewer Haiku finding makes Haiku's sum 3.6667
@@ -203,7 +284,11 @@ Readings that bear on the verdicts:
   For history review the gap is 0.6670 USD. That is about 267,000 tokens,
   or about 4,100 per non-final Haiku call (65.3 such calls per group sum of
   means). M228's break-even was about 870 per call. For search the gap is
-  0.3524 USD, about 18,400 tokens per non-final Haiku call.
+  0.3524 USD, about 18,400 tokens per non-final Haiku call. The final
+  calls of the Haiku history runs recorded 2,078 to 5,780 output tokens
+  per run (the Output column, almost all from the final call). The
+  break-even is inside that range. Non-final calls that each produced as
+  much output as a final call close the history gap. This note has no measure of non-final output.
 - The score counts reported findings that the judge rated valid. It does
   not measure real conflicts that a reviewer missed. D-016 named that
   risk for a weaker model in a review step: it "can silently drop a real
@@ -212,8 +297,10 @@ Readings that bear on the verdicts:
 ## Limits and re-measurement
 
 Three runs per model per task, three tasks per group, at default effort,
-on tasks drawn from this repo. One Opus judge rates each run pair. The
-measurement helpers were session-local and are not committed (observed
+on tasks drawn from this repo. One Opus judge rates each run pair. In
+M228, two judgings of the same 22 findings under two rules rated 11 of
+them differently. That disagreement is larger than this note's
+one-finding history margin. The measurement helpers were session-local and are not committed (observed
 2026-10-16). To re-measure, follow the Design section with the same
 models and prompts, and apply the verdict rule. A rerun that flips a
 group's verdict falsifies this note's verdict for that group.
