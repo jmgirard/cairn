@@ -1497,6 +1497,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M240 adds the medium-against-default comparison on the history
     # reviewers: first-hand runs of 2026-10-10, priced by the figures its
     # status says `effort-roles.md` read directly that day, hence `ok`.
+    # M264 adds the three-run Haiku-against-Sonnet rerun: first-hand runs of
+    # 2026-10-16, priced by the figures its status says `haiku-sonnet-roles.md`
+    # read directly on 2026-10-09, hence `ok`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1514,6 +1517,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "desktop-toc-mechanism.md": "ok",
         "feature-dev.md": "ok",
         "haiku-sonnet-roles.md": "ok",
+        "haiku-sonnet-rerun.md": "ok",
         "impeccable.md": "ok",
         "llm-wiki.md": "ok",
         "migration-pilot-notes.md": "exempt",
