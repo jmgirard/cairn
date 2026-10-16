@@ -186,7 +186,7 @@ The script deliberately does not judge these — do them yourself and report:
   `MERGED` (`gh pr view <base-pr> --repo <base-repo> --json state`) → the
   restack is owed: route to `/milestone-implement M<NNN>`, whose stacked
   sync rebases the branch onto `<base>/<default-branch>`, re-pushes it, and
-  retargets the PR; `OPEN` otherwise → report the fresh
+  retargets the PR if GitHub did not; `OPEN` otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
   The audit writes nothing to GitHub.

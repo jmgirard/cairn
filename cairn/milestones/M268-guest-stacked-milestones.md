@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M268: Let a guest milestone build on one that waits for the maintainers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M267
 - **Driving RR:** —
@@ -107,6 +107,8 @@ planned.
 - 2026-10-16: T5: `/milestone` §2's blocked bullet routes an `OPEN` stacked milestone whose base PR reads `MERGED` to `/milestone-implement M<NNN>`; implement step 1 names that `blocked` milestone as a legal resume; the sync itself landed in T3's paragraph; verify green (409, 178, 0, 0, 2018).
 - 2026-10-16: T6: stack-base exception stated at tracking-rules line 158, milestone-plan step 7, implement step 1, DESIGN.md's workable-list paragraph, README's idle-row paragraph; new tracking-rules Collaboration-mode bullet defines stack base, stacked milestone, and the restack, and the PROFILE.md file-map row names the two new readers; README guest bullet and CHANGELOG entry; D-173 annotates D-137 and D-172; prose guard `skills/tests/test_guest_stacked_milestones.py` (EXEMPT entry in the mutation harness, as M234's guards); the three verify figures above were rewritten from slash form to commas because `cairn_validate` read them as dates; verify green, skills/tests 822 OK, cairn_validate clean.
 - 2026-10-16: T7: on 17985ff7 from the repo root, each exit code 0: scripts 409 OK (21 skipped), hooks 178 OK, plugin validate 0, marketplace validate 0 with no version warning, plugin test 2018 pass 0 fail, skills/tests 822 OK.
+- 2026-10-16: claim audit: 82 claims read, 3 corrected — CHANGELOG.md, skills/milestone/SKILL.md, skills/tests/test_guest_stacked_milestones.py (the CHANGELOG said "open PR" where the readers take any PR URL; §2 left out the restack's conditional retarget; the guard's docstring overstated it, and the guard now pins the restack sentence); the same reader re-read all three and found that they hold.
+- 2026-10-16: status review; handed to /milestone-review.
 
 ## Decisions
 

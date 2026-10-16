@@ -6,7 +6,7 @@
 
 - **A guest milestone can build on one that waits for review.** In guest
   mode with `# Push remote: base`, a `planned` milestone can depend on one
-  `blocked` milestone whose file names its open PR. `cairn_next.py` and
+  `blocked` milestone whose file names its PR. `cairn_next.py` and
   the cairn pane count it as workable. `/milestone-implement` cuts its
   branch from that PR's branch and records the base tip in a
   `stack base:` work-log line. Each resync rebases onto that branch with

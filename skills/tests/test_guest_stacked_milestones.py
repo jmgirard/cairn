@@ -14,7 +14,7 @@ have to survive:
      the route to the restack once it merged.
   4. `/milestone` §2: the merged-stack-base route.
 
-Each test also removes each clause and sees the check fail on it alone.
+A second test removes each clause and sees the check fail on it alone.
 The pinned phrases wrap across source lines, so this guard collapses
 whitespace on read (the M171 exception to the one-line convention, M23).
 
@@ -34,6 +34,7 @@ CLAUSES = {
         "It writes the work-log line `stack base: <branch> at <sha>` at the cut and at each sync.",
         "A **stacked milestone** is one whose newest `stack base:` line names a branch other than the default branch.",
         "(workable only when dependencies are `done`, or in guest mode when one of them is a stack base and the rest are `done`",
+        "Once `<base-pr>` merges, the **restack** rebases the branch onto the default branch and retargets the PR:",
     ],
     "milestone-implement/SKILL.md": [
         "A milestone with two or more stack-base dependencies stops with a close block naming them",
