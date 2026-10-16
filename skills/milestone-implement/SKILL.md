@@ -34,9 +34,20 @@ run ingestion first (see `/milestone-brief`).
 
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
    with a resolved blocker (resume). Verify all `Depends on:` milestones are
-   `done`, and that no OTHER milestone is `in-progress` (at most one, ever —
+   `done`, except that in guest mode one of them may be a stack base
+   (tracking-rules "Collaboration mode"), and that no OTHER milestone is
+   `in-progress` (at most one, ever —
    if one exists, stop with the close block naming it and its resume
-   command). Set `in-progress` in ROADMAP + header mirror. **On a return
+   command). **Stack base, fresh start.** A milestone with two or more
+   stack-base dependencies stops with a close block naming them: building
+   on more than one branch is not supported. For one, read its PR with
+   `gh pr view <base-pr> --repo <base-repo> --json state,headRefName`. A
+   state other than `OPEN` stops with a close block whose next command is
+   `/milestone`, which routes a merged or closed handoff. When
+   `git ls-remote <base> <stack-base-branch>` prints no
+   `refs/heads/<stack-base-branch>` line, stop with a close block naming
+   the branch: it is not on the base repo, so no PR there can build on
+   it. Set `in-progress` in ROADMAP + header mirror. **On a return
    from review**, the newest `review return <n>:` work-log line names what
    failed; add one task for it (a minor amendment, step 6) before working,
    so step 9 cannot hand back with the failure unfixed.
@@ -63,7 +74,10 @@ run ingestion first (see `/milestone-brief`).
    (tracking-rules "Collaboration mode"): the fetch is the whole sync — the
    default branch is never pushed, and the local copy needs no pull — and
    the branch is cut directly from the base: `git checkout -b <slug>
-   <base>/<default-branch>`. Resume sessions: check out the
+   <base>/<default-branch>`. A milestone on a stack base is cut from that
+   branch instead: `git checkout -b <slug> <base>/<stack-base-branch>`,
+   then a work-log line `stack base: <stack-base-branch> at <sha>`, where
+   `<sha>` is `git rev-parse <base>/<stack-base-branch>`. Resume sessions: check out the
    existing branch; if the default branch has moved since the branch was cut
    (e.g., a hotfix merged), merge it into the branch and re-run the active
    profile's `verify` slot before continuing. Guest arm: `git fetch <base>`
@@ -82,6 +96,25 @@ run ingestion first (see `/milestone-brief`).
    `git push --force-with-lease=<slug>:<sha> <remote> <slug>` (the
    force-push guard covers the default branch alone). The maintainers'
    review comments stay attached to the PR.
+   **Stacked sync** (a stacked milestone, tracking-rules "Collaboration
+   mode"): each resume syncs with the same check and lease push. The
+   stack base's PR state picks the new base. Read it with `gh pr view
+   <base-pr> --repo <base-repo> --json state`. `<old>` is the `<sha>` of
+   the newest `stack base:` line. While the PR is `OPEN`, run
+   `git rebase --onto <base>/<stack-base-branch> <old>`. Then a stack-base
+   branch rebased since the cut gives no duplicate commits. Once it is
+   `MERGED` (the restack), run
+   `git rebase --onto <base>/<default-branch> <old> <slug>`. Then push to
+   the PR's head remote. If the milestone's own PR is open, read
+   `gh pr view <N> --repo <base-repo> --json baseRefName`. If that still
+   names the stack-base branch, run
+   `gh pr edit <N> --repo <base-repo> --base <default-branch>`. GitHub can
+   retarget the PR itself after the base branch is deleted, so the edit
+   runs only where it did not. A `CLOSED` stack-base PR stops with a
+   close block naming it. Each sync writes a work-log line
+   `stack base: <branch> at <sha>`, naming the new base and its tip. After
+   the restack that line names the default branch, and the milestone is
+   no longer stacked.
 
 3. **No question round.** The agent decides the implementation choices the
    plan left open (API shape, naming, structure) and writes a work-log line

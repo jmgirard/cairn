@@ -78,7 +78,7 @@ planned.
 - [x] T2: Add the stack-base rule to `scripts/cairn_next.py` (`_deps_done`, line 240) using
       `cairn_common.collaboration_mode` and the `Branch/PR` reader it already has (line 23), and mirror it in
       `hooks/status/reader.ts` (`workableRows`, line 157); the `waiting` list follows the same rule.
-- [ ] T3: `/milestone-implement` step 1 (line 36) and step 2's guest arm: accept a stack base, stop on two or more or
+- [x] T3: `/milestone-implement` step 1 (line 36) and step 2's guest arm: accept a stack base, stop on two or more or
       on a branch missing from `<base>`, cut from its branch, sync onto it with `--onto`, and write the `stack base:`
       line at the cut and at each sync.
 - [ ] T4: `/milestone-review` step 8's guest arm: read the stack base PR's state; on `OPEN`, `--base
@@ -102,6 +102,7 @@ planned.
 - 2026-10-16: implement started on branch m268-guest-stacked-milestones; untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
 - 2026-10-16: T1: six fixtures `stack-base`, `stack-owner` (push line, no mode line), `stack-no-push-line`, `stack-no-pr` (an issue URL), `stack-in-progress`, `stack-two-bases` (M305 on one of the two bases stays workable); before T2 both readers failed on `stack-base` and `stack-two-bases` only; band tests' IDLE_DRAWN and FLOWS tables gained the new fixtures.
 - 2026-10-16: T2: chose a `push_remote(root)` reader in `hooks/cairn_common.py` sharing one header reader with `collaboration_mode`, a `stack_bases` set built from `blocked()` (non-archived rows with a PR URL), and one `_met` set for both `workable` and `waiting`, so a row on two stack bases lists both as unmet; TS mirrors as `pushRemote`, `unmetDeps`; verify green (scripts 409 OK, hooks 178 OK, both validates 0, plugin test 2018 pass).
+- 2026-10-16: T3: implement step 1 takes the stack base's PR from its milestone header (`<base-pr>`) and the branch from that PR's `headRefName`; a fresh start also stops when the base PR is not `OPEN` (close block → `/milestone`), a case the plan did not name; step 2 gains the cut line and one "Stacked sync" paragraph that holds both the `--onto` sync (T3) and the restack (T5's implement half); verify green (409/178/0/0/2018).
 
 ## Decisions
 
