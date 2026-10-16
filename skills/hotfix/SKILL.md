@@ -61,9 +61,9 @@ can resolve against the fork instead of the base repo.
    branch not matching `m<nnn>-*`, stops here in owner and guest mode. The
    PR closed without a merge, so no walk can merge it. Make the
    candidate-row match above, then skip the tier check and steps 2 to 7.
-   In owner mode, remove `cairn/.merge-approved` when its line starts with
-   `hotfix ` and names that PR (`for PR #<N>`), and leave any other marker
-   as it is. The stop edits no candidate row. End with a close block that
+   In owner mode, remove step 6's merge-guard marker when its line starts
+   with `hotfix ` and names that PR (`for PR #<N>`), and leave any other
+   marker as it is. The stop edits no candidate row. End with a close block that
    says the PR closed without a merge and that reopening it on GitHub is
    the operator's choice. The close block names each matched row that ends
    with ` — started #<N>`, a dead token that `/cairn-triage` proposes to
@@ -136,7 +136,7 @@ can resolve against the fork instead of the base repo.
      the acceptance chip's question text also names each matched row's
      title and says whether step 7 removes the row or narrows it.
    **Open-PR re-entry (M262).** A PR-reference argument whose
-   `gh pr view <N> --json state,headRefName,headRefOid,latestReviews`
+   `gh pr view <N> --json state,headRefName,headRefOid,latestReviews,author`
    reports `OPEN` takes one of the two arms below when its conditions
    hold. Any other open PR takes the tier-check walk that opens this step.
    - *Owner arm.* This arm runs in owner mode. Its head branch does not
@@ -177,6 +177,18 @@ can resolve against the fork instead of the base repo.
      maintainers' CI on the PR is the check that counts. It also says that
      nothing waits on that CI here. Its fenced next command is `/hotfix`
      with the PR reference, to run after they merge.
+   **Own open PR (M266).** This paragraph covers an `OPEN` PR in owner
+   mode whose `headRefName` starts with `hotfix-` and whose `author.login`
+   equals `gh api user --jq .login`. Such a PR is the operator's own
+   authored fix. When the owner arm above does not resume it, the run
+   takes the tier-check walk with it as an authored fix whose PR exists,
+   not as an adopted PR. Steps 2, 3, and 5 take their adopting variants.
+   Step 2 runs `gh pr checkout <N>`, step 3 runs the two-way check of the
+   regression test, and step 5 runs the changelog check. Pushes go to the
+   PR's head branch, and step 5's contributor fallback does not apply.
+   Step 6's Copilot round arm runs for it, with a push to the PR's
+   head branch and no `gh pr create`. Step 7's off-but-present rule
+   applies to it as to an authored fix this run merged.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
@@ -272,7 +284,9 @@ can resolve against the fork instead of the base repo.
    closes this PR with `gh pr close <N>` and keeps the branch, and the
    close block names both; a later `/hotfix` for the same bug cuts a new
    branch under a new slug. An adopted PR skips the round: the
-   contributor's PR is theirs to put to a reviewer. With the round off,
+   contributor's PR is theirs to put to a reviewer. Step 1's own open PR
+   is outside that exemption: the round runs for it, with a push to the
+   PR's head branch and no `gh pr create`. With the round off,
    nothing in this arm runs.
 
    **The gate:** present the diff, the regression-test evidence, and
@@ -449,7 +463,8 @@ can resolve against the fork instead of the base repo.
    close after an authored fix this run merged also follows the
    off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
    PR, or the re-entry's already-merged PR, does not, and a follow-up PR
-   the re-entry opens and merges does. End with the close block
+   the re-entry opens and merges does. Step 1's own open PR is outside
+   that adopted-PR exemption, so the rule applies to it. End with the close block
    (tracking-rules "Question gates and phase closes"), composed from the
    hotfix's end state — recap of what was fixed and merged, status line,
    fenced next command(s) where any follow-up exists, and the safety line;

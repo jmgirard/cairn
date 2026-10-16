@@ -343,7 +343,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     def test_reads_the_open_state_and_head(self):
         self.assertIn(
             "**Open-PR re-entry (M262).** A PR-reference argument whose "
-            "`gh pr view <N> --json state,headRefName,headRefOid,latestReviews` "
+            "`gh pr view <N> --json "
+            "state,headRefName,headRefOid,latestReviews,author` "
             "reports `OPEN` takes one of the two arms below when its "
             "conditions hold. Any other open PR takes the tier-check walk "
             "that opens this step.",
@@ -514,7 +515,7 @@ class TestHotfixClosedPrStop(unittest.TestCase):
 
     def test_owner_removes_only_a_hotfix_marker_naming_the_pr(self):
         self.assertIn(
-            "In owner mode, remove `cairn/.merge-approved` when its line "
+            "In owner mode, remove step 6's merge-guard marker when its line "
             "starts with `hotfix ` and names that PR (`for PR #<N>`), and "
             "leave any other marker as it is.",
             self.step1,
@@ -532,6 +533,68 @@ class TestHotfixClosedPrStop(unittest.TestCase):
             "fenced next command is `/hotfix` with a description of the bug, "
             "which starts over on a new branch.",
             self.step1,
+        )
+
+
+class TestHotfixOwnOpenPr(unittest.TestCase):
+    """M266 AC2: the operator's own open `hotfix-` PR that the owner arm
+    does not resume takes the walk as an authored fix whose PR exists. The
+    trigger, the adopting variants, and the step 6 and step 7 exemption
+    sentences are pinned on their own (M165 lesson), whitespace collapsed
+    (M171 lesson)."""
+
+    def setUp(self):
+        text = read("hotfix", "SKILL.md")
+        self.step1 = flat(section(text, "1. **Tier check first.**",
+                                  "2. **Branch"))
+        self.step6 = flat(section(text, "6. **Approval gate:**", "7. If"))
+        self.step7 = flat(text.split("7. If the fix revealed", 1)[1])
+
+    def test_trigger_is_the_operators_own_hotfix_pr(self):
+        self.assertIn(
+            "**Own open PR (M266).** This paragraph covers an `OPEN` PR in "
+            "owner mode whose `headRefName` starts with `hotfix-` and whose "
+            "`author.login` equals `gh api user --jq .login`.",
+            self.step1,
+        )
+
+    def test_walk_treats_it_as_an_authored_fix(self):
+        self.assertIn(
+            "When the owner arm above does not resume it, the run takes the "
+            "tier-check walk with it as an authored fix whose PR exists, not "
+            "as an adopted PR.",
+            self.step1,
+        )
+
+    def test_steps_two_three_five_take_adopting_variants(self):
+        self.assertIn(
+            "Steps 2, 3, and 5 take their adopting variants. Step 2 runs `gh "
+            "pr checkout <N>`, step 3 runs the two-way check of the regression "
+            "test, and step 5 runs the changelog check. Pushes go to the PR's "
+            "head branch, and step 5's contributor fallback does not apply.",
+            self.step1,
+        )
+
+    def test_copilot_round_runs_without_a_create(self):
+        self.assertIn(
+            "Step 6's Copilot round arm runs for it, with a push to the PR's "
+            "head branch and no `gh pr create`. Step 7's off-but-present rule "
+            "applies to it as to an authored fix this run merged.",
+            self.step1,
+        )
+        self.assertIn(
+            "An adopted PR skips the round: the contributor's PR is theirs to "
+            "put to a reviewer. Step 1's own open PR is outside that "
+            "exemption: the round runs for it, with a push to the PR's head "
+            "branch and no `gh pr create`.",
+            self.step6,
+        )
+
+    def test_step_seven_rule_applies_to_it(self):
+        self.assertIn(
+            "Step 1's own open PR is outside that adopted-PR exemption, so the "
+            "rule applies to it.",
+            self.step7,
         )
 
 

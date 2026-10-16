@@ -4048,7 +4048,7 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestHotfixOpenPrReentry.test_reads_the_open_state_and_head",
         target=HOTFIX,
-        block="`gh pr view <N> --json state,headRefName,headRefOid,latestReviews`",
+        block="`gh pr view <N> --json state,headRefName,headRefOid,latestReviews,author`",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4218,7 +4218,7 @@ REGISTRY += [
         test="TestHotfixClosedPrStop."
              "test_owner_removes_only_a_hotfix_marker_naming_the_pr",
         target=HOTFIX,
-        block="and leave any other marker\n   as it is.",
+        block="and leave any other\n   marker as it is.",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4232,6 +4232,38 @@ REGISTRY += [
              "test_close_block_says_closed_and_starts_over",
         target=HOTFIX,
         block="the operator's choice. The close block names each matched row",
+    ),
+    # M266 AC2: the operator's own open PR, one entry per pinned clause.
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_trigger_is_the_operators_own_hotfix_pr",
+        target=HOTFIX,
+        block="equals `gh api user --jq .login`. Such a PR is the operator's own",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_walk_treats_it_as_an_authored_fix",
+        target=HOTFIX,
+        block="takes the tier-check walk with it as an authored fix whose PR exists,",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr."
+             "test_steps_two_three_five_take_adopting_variants",
+        target=HOTFIX,
+        block="and step 5's contributor fallback does not apply.",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_copilot_round_runs_without_a_create",
+        target=HOTFIX,
+        block="Step 1's own open PR\n   is outside that exemption:",
+    ),
+    Mutation(
+        guard="test_resume_routing",
+        test="TestHotfixOwnOpenPr.test_step_seven_rule_applies_to_it",
+        target=HOTFIX,
+        block="that adopted-PR exemption, so the rule applies to it.",
     ),
 ]
 
