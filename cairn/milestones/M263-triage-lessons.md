@@ -40,7 +40,7 @@ repo is the user's, after the merge.
 
 ## Acceptance criteria
 
-- [ ] AC1: With the argument `lessons`, `/cairn-triage`
+- [x] AC1: With the argument `lessons`, `/cairn-triage`
       (`skills/cairn-triage/SKILL.md`) enumerates each line of
       `cairn/LESSONS.md` that opens with `- ` and a `YYYY-MM-DD` date as one
       `lesson` item, listing its source `lesson`, its subject (the text
@@ -49,12 +49,12 @@ repo is the user's, after the merge.
       milestone list after the date), its byte length, and its date, with
       `—` as its priority. A missing `cairn/LESSONS.md`, or one with no
       such line, yields zero items with no failure.
-- [ ] AC2: The skill states that with no argument the pass enumerates
+- [x] AC2: The skill states that with no argument the pass enumerates
       candidates and Known issues and no lesson, that an argument other than
       `lessons` stops before enumeration with a close block naming `lessons`
       as the one accepted value, and that the `lessons` pass runs the same
       preconditions, gate, apply, stamp, and commit as the default pass.
-- [ ] AC3: The skill states a lesson meaning for each of five dispositions
+- [x] AC3: The skill states a lesson meaning for each of five dispositions
       and proposes no `split`, `route`, or `retitle` for a lesson: `keep`;
       `compress`, shortened or trimmed to the part no other record covers;
       `merge`, folded into a named surviving lesson; `drop`, naming its exit,
@@ -68,13 +68,13 @@ repo is the user's, after the merge.
       any `corrected` or `trimmed` mark. A lesson the pass finds false is
       `keep`, its reason naming the record that refutes it. The close block
       fences one `/milestone-plan` per promoted family.
-- [ ] AC4: The skill states that before it proposes a disposition for a
+- [x] AC4: The skill states that before it proposes a disposition for a
       lesson, the pass reads each file that `git grep -l "LESSONS.md"` lists
       whose path contains `test` (none listed means no pins and no failure).
       A lesson that holds a string such a file asserts is present in
       `cairn/LESSONS.md` is `keep`, its reason naming the file, and no
       accepted edit writes a string such a file asserts is absent.
-- [ ] AC5: The skill states that a dropped or merged-away lesson leaves no
+- [x] AC5: The skill states that a dropped or merged-away lesson leaves no
       line in `cairn/LESSONS.md`; that after the edits
       `wc -l -c cairn/LESSONS.md cairn/ROADMAP.md` stays under both files'
       line caps and byte budgets, or the pass returns to the chip; that the
@@ -82,7 +82,7 @@ repo is the user's, after the merge.
       provenance with its exit, and each merged-away lesson with its
       survivor; that in guest mode the stamp alone names them, with their
       evidence; and that a lesson drop or merge writes no decision entry.
-- [ ] AC6: The skill's frontmatter `description` and `argument-hint`, its
+- [x] AC6: The skill's frontmatter `description` and `argument-hint`, its
       H1, README.md's "Prune the backlog" table row, `cairn/DESIGN.md`'s
       `cairn-triage` line, and the tracking-rules paragraph "Retiring a
       lesson that no longer earns its line" each name `lessons` or
@@ -92,7 +92,7 @@ repo is the user's, after the merge.
       gains an entry annotating D-051 and D-055 that states the pass and
       why D-051's rejected per-hygiene re-sweep does not reach it.
       CHANGELOG.md's Unreleased section has one entry for the pass.
-- [ ] AC7: The active profile's `verify` slot is green and the hand-run
+- [x] AC7: The active profile's `verify` slot is green and the hand-run
       `skills/tests` suite is green.
 
 ## Coverage
@@ -159,3 +159,21 @@ repo is the user's, after the merge.
 - 2026-10-16: T6 done (fresh Opus subagent, read-only, stopped before the chip): 32 lesson items enumerated, equal to `grep -c "^- 20" cairn/LESSONS.md`; 3 of the 10 `git grep` pin files assert on the live file; both lessons pinned by '"green" is only as wide as what you ran' read `keep`. Table: 1 `compress` (the M170 lesson's `cd`-spelling clause, restated by the M163 lesson, about 190 bytes), 31 `keep`, no `drop`, no `promote`. Outcome: under D-051's strict exits this repo's pass frees about 190 bytes and no line. It reported 14 places where the section was unclear; fixed in the skill: only assertions on the live file are pins, a line-format pattern and a size assertion are not lesson pins, which session-start reads still run, byte length is the whole line, a stale lesson is `keep` with evidence, length alone never fires `compress`, the merge survivor's edit, "twice" counts over the family, a family whose module was retired is not proposed, the chip names a lesson by date and provenance, and the stamp names exits. Left as the criteria state them: a pinned lesson is `keep` even for a compress that keeps the pin (AC4), ownership needs a `cairn/` tracking file (AC3), compress keeps marks (AC3). It also noted that a real run on this checkout stops at the dirty-tree precondition because of the untracked `cairn-probe.log` and `tsconfig.json`, a precondition that predates M263. One mutation block re-wrapped; 25 entries red, suites and `cairn_validate` green.
 - 2026-10-16: claim audit: 46 claims read, 8 corrected — skills/cairn-triage/SKILL.md, skills/shared/tracking-rules.md, skills/tests/test_mutation_harness.py, skills/tests/test_cost_audit_line.py, CHANGELOG.md. (1) A retired module is found by `git grep -n "<module>.md" cairn/DECISIONS.md` over the bodies, since no heading names `guard-doctrine.md` (D-114 retired it). (2) The description scopes "principled drops as a decision" to the default pass. (3) A lesson merge names no trigger class. (4) A false lesson "is corrected in place at a milestone, not in this pass (D-045, D-169)". (5) The mutation comment says blocks are exact substrings. (6) The cost-audit pin comment names M263. (7) CHANGELOG adds the guest-mode caveat. (8) The rulebook's "archive summary names what it graduated" adds "(the stamp and commit message, for `/cairn-triage lessons`)", rewrapped to the 120-column margin. The rulebook is re-measured at 679 lines / 65,365 bytes and re-seeded at its three sites; two mutation blocks follow the rewraps. 34 entries red, verify slot and `skills/tests` (786) green.
 - 2026-10-16: implement done; status `review`.
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local. -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, gate results, findings + triage. -->
+
+Review head 5fffc716, PR #275 (opened at review start, Copilot arm). Evidence is a whitespace-collapsed substring read of the "The lessons pass" section of `skills/cairn-triage/SKILL.md` and the named surfaces, run 2026-10-16.
+
+- AC1: found "`/cairn-triage lessons` runs the pass over `cairn/LESSONS.md`", the item rule ("opens with `- ` and a `YYYY-MM-DD` date"), source `lesson`, the subject rule with its no-`): ` fallback and ~80-character trim, provenance, byte length, date, "Its priority is `—`.", and "A missing `cairn/LESSONS.md`, or one with no such line, yields zero items with no failure." T6's dry run enumerated 32 items against `grep -c "^- 20" cairn/LESSONS.md` = 32. PASS.
+- AC2: found "With no argument the pass enumerates the candidates and Known issues and no lesson.", the stop for any other argument naming `lessons`, and "The lessons pass runs the same preconditions, gate, apply, stamp, and commit as the default pass". PASS.
+- AC3: found "A lesson takes one of five dispositions, and never `split`, `route`, or `retitle`"; the table's `keep`, `compress` ("Shortened, or trimmed to the part no other record covers."), `merge` (named survivor), `drop` with both exits word for word, `promote` with the family and the three maturation conditions; the prefix-and-marks sentence; the false-lesson `keep` naming the refuting record; one `/milestone-plan <family>` per promoted family. PASS.
+- AC4: found the pin-file rule (`git grep -l "LESSONS.md"`, paths containing `test`, "None listed means no pins and no failure"), read at session start before step 2's "Before it proposes a disposition for a lesson, the pass checks the pins."; the pinned-lesson `keep` naming the file; "No accepted edit writes a string that a pin file asserts is absent." T6's dry run kept both lessons pinned by '"green" is only as wide as what you ran'. PASS.
+- AC5: found the no-line, no-breadcrumb rule; the `wc -l -c cairn/LESSONS.md cairn/ROADMAP.md` check with the return to the step-3 chip; the stamp and commit naming drops by date and provenance with exit and merges with survivor, the guest stamp; "A lesson drop or merge writes no decision entry." PASS.
+- AC6: frontmatter `description` ("or with the argument `lessons` every cairn/LESSONS.md lesson") and `argument-hint: "[lessons]"`, the H1 ("…, or of lessons"), README.md:624, DESIGN.md:31-32, and the tracking-rules sentence ("…scoped to what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`; prune-the-stalest is the last resort.", old wording gone) all found; D-169 heading and its "rejection (4)'s reason, a cost on every milestone, does not reach it"; one CHANGELOG Unreleased entry. PASS.
+- AC7: scripts/tests 408 OK, hooks/tests 175 OK, both `claude plugin validate` exit 0 with no `plugins[N].version` warning, `claude plugin test .` 1777 pass 0 fail, `skills/tests` 786 OK. PASS.
+- Consistency gate: `cairn_validate.py` exit 0; no principle changed, `cairn_impact` skipped; profile gate green, CHANGELOG entry present with no milestone number.
+- spawned: diff-bug, blame-history, prior-review.
