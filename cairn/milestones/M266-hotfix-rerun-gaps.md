@@ -116,7 +116,7 @@ Pass 1, 2026-10-16, at 0f68faa1 (PR #278; Copilot requested at review start).
 - prior-review #1: lines past 80 columns, as in M244, M249, M265 — fix now, fixed 73d6ea5b (rewrapped)
 - prior-review #2: the change route's decline close and the round-decline close carry no CI line (M183) — fix now, fixed 73d6ea5b
 - prior-review #3: `latestReviews` masking applies to the change route's trigger — fix now, fixed 73d6ea5b in DESIGN Known issues (Scope Out keeps the fix there)
-- Re-check after the fix-now commits, at ccb85e90: AC3 and AC4 re-read against `SKILL.md:182-213` and still hold (the route now tier-checks "the PR's whole diff", which holds the new changes, and pushes with `git push <fork> HEAD:<headRefName>`, still to `<fork>`); AC5's `git grep` still exit 1; verify slot 5 of 5 green; hand-run `skills/tests` 812 ok; 26 M266 mutation entries, none survive.
+- Re-check after the fix-now commits, at ccb85e90: AC3 and AC4 re-read against `SKILL.md:182-213` and still hold (the route now tier-checks "the PR's whole diff", which holds the new changes, and pushes with `git push <fork> HEAD:<headRefName>`, still to `<fork>`); AC5's `git grep` still exit 1; verify slot 5 of 5 green; hand-run `skills/tests` 811 ok; 26 M266 mutation entries, none survive.
 - Copilot state at the read: `reviewed earlier-head Lite`, so no wait. No issue comments; one Copilot review (`COMMENTED`, Bot) and four unresolved Copilot threads.
 - copilot: skills/hotfix/SKILL.md:60 — reject (the skill's opening guest clause puts `--repo <base-repo>` on every `gh pr` read, step 1's re-entry reads included; replied and resolved)
 - copilot: skills/hotfix/SKILL.md:191 — fix now (dirty-tree check before checkout, diff-bug #5), fixed 73d6ea5b
