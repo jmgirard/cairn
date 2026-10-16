@@ -89,6 +89,11 @@ type Copy = {
   reads?: string[]
   // While set, `$.ui.panes()` beneath the mod throws (M237).
   panesThrow?: boolean
+  // While set, the next `$.ui.panes()` beneath the mod computes its answer,
+  // clears this field, keeps that answer in `panesHeld`, and waits for this
+  // promise before it answers (M256).
+  panesHold?: Promise<void>
+  panesHeld?: ReturnType<typeof panesOf>
   // While set, the session end beneath the mod throws, and while set, it
   // waits for this promise before it answers (M255).
   endThrows?: boolean
@@ -160,7 +165,14 @@ function seat(on: On, copy: Copy) {
   })
   on('ui.panes', async () => {
     if (copy.panesThrow === true) throw new Error('no panes')
-    return { value: panesOf(copy) }
+    const value = panesOf(copy)
+    const hold = copy.panesHold
+    if (hold !== undefined) {
+      copy.panesHold = undefined
+      copy.panesHeld = value
+      await hold
+    }
+    return { value }
   })
   on('ui.toast', async ($, e) => {
     copy.toasts = [...(copy.toasts ?? []), e.text]
@@ -3593,6 +3605,104 @@ describe('a pane placed after a clear or resume start reads at its first draw (M
       expect(calls.reads).toEqual([])
     })
   }
+})
+
+// A clear start's pane list answers not placed, and the pane is placed and
+// drawn before that answer reaches the hook. The draw comes before the hook
+// owes a read, so it reads nothing, and the hook's second list reads (M256
+// AC1).
+describe('a pane placed while a clear start lists the panes reads with no further draw (M256 AC1)', () => {
+  const CASES = [
+    { fixture: 'blocked-active', urls: [URL_1250] },
+    { fixture: 'blocked-prs', urls: [prUrl(12), prUrl(34), prUrl(90)] },
+  ] as const
+  for (const { fixture, urls } of CASES) {
+    test(`the hook reads each URL once after its held list (${fixture})`, async ($, on) => {
+      const calls = gh(on, () => prView('OPEN', ''))
+      const copy = copyOf(fixture)
+      seat(on, copy)
+      copy.open = [PANE]
+      copy.unplaced = [PANE]
+      let release = () => {}
+      copy.panesHold = new Promise<void>(resolve => {
+        release = resolve
+      })
+      const start = $.classic.SessionStart({ source: 'clear' })
+      try {
+        await until(() => copy.panesHold === undefined)
+        // The hook's list is held, its answer computed as not placed.
+        expect(copy.panesHold).toBeUndefined()
+        expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
+        copy.unplaced = []
+        await draw($)
+        await calls.settled()
+        expect(calls.reads).toEqual([])
+      } finally {
+        release()
+      }
+      await start
+      await calls.settled()
+      expect(sorted(calls.reads)).toEqual(sorted([...urls]))
+    })
+  }
+
+  // The second list is held too, its answer computed as placed. A draw
+  // while it waits takes the owed read, so the list reads nothing more.
+  test('a draw while the second list waits takes the read, and the list reads nothing more', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    let releaseFirst = () => {}
+    let releaseSecond = () => {}
+    copy.panesHold = new Promise<void>(resolve => {
+      releaseFirst = resolve
+    })
+    const second = new Promise<void>(resolve => {
+      releaseSecond = resolve
+    })
+    const start = $.classic.SessionStart({ source: 'clear' })
+    try {
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(false)
+      copy.unplaced = []
+      copy.panesHold = second
+      releaseFirst()
+      await until(() => copy.panesHold === undefined)
+      expect(copy.panesHold).toBeUndefined()
+      expect(copy.panesHeld?.find(open => open.id === PANE)?.isPlaced).toBe(true)
+      await draw($)
+      await calls.settled()
+      expect(calls.reads).toEqual([URL_1250])
+    } finally {
+      releaseFirst()
+      releaseSecond()
+    }
+    await start
+    await calls.settled()
+    expect(calls.reads).toEqual([URL_1250])
+  })
+})
+
+// A session end clears the read a clear start owed, so the pane's first
+// draw after the end reads nothing (M256 AC2).
+describe('a session end clears an owed read (M256 AC2)', () => {
+  test('a pane owed a read at a session end reads nothing at its first draw after it', async ($, on) => {
+    const calls = gh(on, () => prView('OPEN', ''))
+    const copy = copyOf('blocked-active')
+    seat(on, copy)
+    copy.open = [PANE]
+    copy.unplaced = [PANE]
+    await $.classic.SessionStart({ source: 'clear' })
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+    await $.session.end(CLEAR_END)
+    copy.unplaced = []
+    await draw($)
+    await calls.settled()
+    expect(calls.reads).toEqual([])
+  })
 })
 
 // A process start can raise both the reopen's `session.start` and a resume

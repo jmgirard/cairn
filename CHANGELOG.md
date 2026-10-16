@@ -291,7 +291,8 @@
   that keeps the session's process does. After either one, a placed pane
   reads its PRs again, also when it sits behind another tab. A pane not
   yet shown, as in a narrow terminal, reads them when it is first drawn,
-  unless an open read them first. One start reads them once, also when a
+  unless an open read them first. A pane placed while a `/clear` start
+  lists the panes reads them with no further draw. One start reads them once, also when a
   reopen at a new session start and the `/resume` both run in it. Before, a `/resume` left the band and the pane empty until
   the next prompt.
 
@@ -332,6 +333,16 @@
   clears through the same call.
 
 ### Fixes
+
+- **A pane placed during a `/clear` start reads the pull request states
+  with no further draw.** At a `/clear`, the plugin lists the panes. If the
+  cairn pane is placed, the plugin reads the states of the pull requests
+  that the pane shows. If it is listed but not placed, its first draw
+  starts that read. Some
+  panes were placed and drawn while that list was still waiting. That draw
+  came before the read was owed, so the state words waited for a further
+  draw. Now the plugin lists the panes a second time. If the pane is placed
+  by then, the plugin reads the states.
 
 - **A session end frees the pane Buttons from a press still reading.** A
   Status, Clear, next-step, blocked-line, or `✎` press reads the stored state

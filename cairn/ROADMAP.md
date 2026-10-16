@@ -9,7 +9,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`. `g
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M256 | Pane reads after late placement | planned | — | normal | milestones/M256-pane-late-placement.md |
+| M256 | Pane reads after late placement | review | — | normal | milestones/M256-pane-late-placement.md |
 | M257 | Started mark skips fenced lines | planned | — | normal | milestones/M257-started-mark-fences.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134; rated M179); advisory within a level. Triage: D-027._

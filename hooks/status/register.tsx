@@ -254,7 +254,8 @@ export const register: Register = on => {
   // behind another tab, also reads the pull request states and the hotfix
   // list again, and the hook does not wait for that read (M230, M237). A
   // pane listed but not placed owes that read, and its first draw starts it
-  // (`owed`, M238). A start whose reopen already read starts no second read
+  // (`owed`, M238), unless the hook's second listing finds it placed and
+  // reads first (M256). A start whose reopen already read starts no second read
   // and owes none (`startRead`, M238).
   on('classic.SessionStart', async ($, e, next) => {
     const result = await next(e)
@@ -269,8 +270,18 @@ export const register: Register = on => {
         startRead = true
         owed = false
         void readPrs($)
-      } else {
-        owed = true
+        return result
+      }
+      owed = true
+      // A pane placed and drawn during the list above drew before the read
+      // was owed, so the hook lists it again and reads if it is now placed,
+      // unless something cleared `owed` meanwhile: a draw, an open, a
+      // session end, or another start's hook (M256).
+      const again = await listedPane($)
+      if (again != null && again.isPlaced && owed) {
+        owed = false
+        startRead = true
+        void readPrs($)
       }
     }
     return result
@@ -291,7 +302,7 @@ export const register: Register = on => {
     reopened = false
     try {
       const mine = await paneOf($)
-      if (mine !== undefined && mine.isPlaced && mine.isShown) {
+      if (placedAndShown(mine)) {
         if (afterReopen) return { text: 'cairn pane opened' }
         await $.ui.close({ id: PANE })
         return { text: 'cairn pane closed' }
@@ -309,7 +320,8 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     // A pane that a clear or resume start found listed but not placed reads
-    // the pull request states at its first draw (M238). The flag clears
+    // the pull request states at its first draw (M238), unless that start's
+    // second listing read first (M256). The flag clears
     // before any await, so two draws at once start one read. The read is
     // the start's read, so a reopen after it reads nothing (M238 review).
     if (owed) {
@@ -756,7 +768,13 @@ async function listedPane($) {
 // True when `$.ui.panes()` lists the pane placed and shown, false when it
 // does not or the call throws.
 async function isShown($): Promise<boolean> {
-  const mine = await listedPane($)
+  return placedAndShown(await listedPane($))
+}
+
+// True when a listing of the pane, as `paneOf` or `listedPane` gives it,
+// is placed and shown. The command's close, `isShown`, and `markReopen`
+// test the listing here (M256).
+function placedAndShown(mine: { isPlaced: boolean; isShown: boolean } | null | undefined): boolean {
   return mine != null && mine.isPlaced && mine.isShown
 }
 
@@ -767,8 +785,9 @@ async function isShown($): Promise<boolean> {
 let prReads = 0
 
 // True from a clear or resume start that finds the pane listed but not
-// placed until the pane's next draw starts the read it owes, an open reads,
-// or the session ends (M238). A reload starts it over as false.
+// placed until the pane's next draw starts the read it owes, the start's
+// second listing finds the pane placed and reads (M256), an open reads, or
+// the session ends (M238). A reload starts it over as false.
 let owed = false
 
 // True from the read that a start's reopen, its clear or resume hook, or
@@ -1256,7 +1275,7 @@ async function fallBack($, text: string, why: string) {
 async function markReopen($) {
   try {
     const mine = await paneOf($)
-    if (mine === undefined || !mine.isShown || !mine.isPlaced) return
+    if (!placedAndShown(mine)) return
     const cwd = await $.session.root()
     const held = await reopenList($)
     if (!held.includes(cwd)) await $.store.set(REOPEN_KEY, [...held, cwd])
