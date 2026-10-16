@@ -771,3 +771,81 @@ within each type and are never reused.
   in a real session, it becomes a `/hotfix` or a candidate row. Routed
   from candidates 2026-10-10; added 2026-10-06 — M222–M226, M230, and
   M236 reviews.
+- Issue intake and guest remotes have small gaps, found at the M232 and
+  M234 reviews with no fix planned. M233 and M234 shipped six of M232's
+  items, and these are the rest. `/hotfix` names no `issue <URL>`
+  argument form. An orphaned issue cannot be closed from the look-in. In
+  guest mode `/milestone` §2's orphan bullet still runs, so §3's `close`
+  (`gh issue close --repo <base-repo>` since M234) can close an upstream
+  issue (found at the M234 plan). `/milestone-review`'s companion arm
+  still pushes to `origin`. A guest checkout with the fork at `origin` and
+  no `upstream` remote stops at the fork recipe, since `<base-repo>` is
+  then the fork, and the plan's access read for its assignment offer
+  (M248) reads the fork too. The reply draft's fixed name in a shared temp
+  directory can collide or meet a planted symlink. If a gap shows in a
+  real session, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-16; added 2026-10-10 — M232 review (blame-history #2,
+  #3, diff-bug #1; pass 2 diff-bug #12, blame-history #2, #5, live-run
+  #9) and M234 review (diff-bug #12, blame-history #5, prior-review #2;
+  Copilot thread on PR #243, checked 2026-10-16T04:10:01Z).
+- The `/hotfix` rerun and row-graduation paths have small gaps, found at
+  the M249 and M262 reviews with no fix planned. The candidate row
+  "`/hotfix` has no resume route for an open PR" holds the older rerun
+  gap. Rerun (M262): the merge guard reads only the marker's PR number, so
+  a hand-typed `gh pr merge <N>` with no `--match-head-commit` passes on a
+  moved head. A marker whose PR merged or closed outside the session stays
+  on disk. `latestReviews` keeps each reviewer's latest review, so a later
+  comment can mask their change request (`latestOpinionatedReviews` would
+  not). Step 6 states no stop for red CI, and the marker stays. A resume
+  reads no comment posted since the approval. A resumed follow-up PR of
+  the merged-PR re-entry may never close the merged PR's `Fixes #N` issue.
+  The guest arm stops any open `hotfix-` PR, whoever opened it. A
+  server-side merge failure (M170) or a `/milestone-review` marker in the
+  same file sends the rerun to the walk. Row graduation (M249): a guest
+  rerun with owed items never reaches an accepted check, so the row edit
+  has no route. An owner rerun after a CI stop on the owed path can lose
+  the PR number. No prompt asks a guest to rerun after a merge. The
+  decline path's row has no stated commit. Deleting a §7 group's head row
+  orphans rows quoting its title, and §7 may read a `narrowed` note as an
+  extension. If a gap shows in a real session, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-16; added 2026-10-12 —
+  M249 review; added 2026-10-16 — M262 review (pass 1 diff-bug #6, #10,
+  blame-history #6; pass 2 diff-bug #2, #3, #4, #6).
+- Started tokens have small gaps in the cairn pane and in `/cairn-triage`,
+  found at the M252 to M259 reviews with no fix planned. Since M261 the
+  pane hides a started row instead of marking it, so each edge shows or
+  hides a row with no on-screen sign. Body lines are set at PR open, so
+  older PRs and later row edits leave rows shown. A cut `gh pr list` or a
+  missing base-remote URL shows hidden rows again, and a failed newer read
+  keeps an old row hidden. Fences differ from CommonMark (any fence
+  closes, 4+ spaces open, `-`/`>` fences missed, inline triple backticks
+  toggle). Tokens (M258): same-title rows hide together, a later `: `
+  pulls one into the title, and `/hotfix` step 1 can match a taken row.
+  Triage (M259): a merged guest PR's or done milestone's token goes with
+  no shipped note, before `/hotfix` narrows its row. An M token on a
+  `candidate` table row reads live. An empty-title row with a live token
+  cannot be retitled. The §1 keep still follows §7. If a gap shows in a
+  real session, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-16; added 2026-10-15 — M252 review, narrowed and
+  extended by M257 and M258, narrowed by M259, reworded by M261; M259
+  review.
+- `/cairn-triage` has small gaps, found at the M235, M251, M254, and M263
+  reviews with no fix planned. Guest stamp: in guest mode a pass names
+  each already-shipped or refuted-premise drop's evidence in the ROADMAP
+  stamp, and the next hygiene pass replaces it with no git history behind
+  it. A guest lesson drop widens this, since an untracked LESSONS.md keeps
+  no git copy. Lessons pass: the two-file cap check sends back a pass that
+  trims a file already over its cap without getting under. Test comments
+  cite lessons by line number ("LESSONS :49"). `git grep -l "LESSONS.md"`
+  misses a test that builds the path. Retitle: rows sharing a title get
+  identical triage subjects. An empty title not from a leading `: ` has no
+  anchor. The Amend loop does not re-check a new title's uniqueness or
+  icons. An icon title cut at a late `: ` loses its detail in place. The
+  icon removal has no stated scope (`⋯`, `≥` in detail). A retitle
+  unlinks a PR's `Candidate row:` line. If a gap shows in a real pass, or
+  a guest operator needs a dropped item's reason after a later stamp
+  replaced it, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-16; added 2026-10-10 — M235 review (diff-bug #1,
+  blame-history #3); added 2026-10-15 — M251 review (pass 2 diff-bug #3,
+  #5, #7) and M254 review; added 2026-10-16 — M263 review (diff-bug #10,
+  #16; blame-history #1, #10).
