@@ -79,3 +79,31 @@ Prices, USD per million tokens, as `haiku-sonnet-roles.md` lists them:
 | Sonnet 5.5 | 2.00 | 2.50 | 4.00 | 0.10 | 10.00 |
 | Haiku 5.5, prompt ≤ 100,000 tokens | 0.10 | 0.125 | 0.20 | 0.01 | 0.50 |
 | Haiku 5.5, prompt > 100,000 tokens | 0.50 | 0.625 | 1.00 | 0.05 | 2.50 |
+
+## Runs
+
+Agent ids name each run's transcript, `agent-<id>.jsonl` under the
+Provenance directory. "Model ids" lists every `model` value on the
+transcript's assistant records. "Final match" is the Cost section's
+check. Token columns sum the row's calls. The table holds all 36 runs.
+
+| Task | Model | Run | Agent id | Model ids | Calls | Final match | Input | 5m write | 1h write | Cache read | Output | USD | Score |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| S1 | sonnet | 1 | `a5fa44942dbcaac97` | claude-sonnet-5-5 | 3 | yes | 6 | 38610 | 0 | 73296 | 596 | 0.1098 | 1.0000 |
+| S1 | sonnet | 2 | `a00f30c574503fc75` | claude-sonnet-5-5 | 2 | yes | 4 | 38145 | 0 | 36015 | 1184 | 0.1108 | 1.0000 |
+| S1 | sonnet | 3 | `a3ac6b2bf7defb9b3` | claude-sonnet-5-5 | 4 | yes | 8 | 38907 | 0 | 111129 | 607 | 0.1145 | 1.0000 |
+| S1 | haiku | 1 | `ab074ab0515c0bc67` | claude-haiku-5-5 | 2 | yes | 4 | 38500 | 0 | 36012 | 1890 | 0.0061 | 1.0000 |
+| S1 | haiku | 2 | `a2f88e4a086f2afb6` | claude-haiku-5-5 | 3 | yes | 6 | 38717 | 0 | 73510 | 1184 | 0.0062 | 1.0000 |
+| S1 | haiku | 3 | `a5cf34128cbf6f2fd` | claude-haiku-5-5 | 3 | yes | 6 | 40230 | 0 | 74607 | 959 | 0.0063 | 1.0000 |
+| S2 | sonnet | 1 | `a4cfe5355f7e959dd` | claude-sonnet-5-5 | 2 | yes | 4 | 37977 | 0 | 36034 | 550 | 0.1041 | 1.0000 |
+| S2 | sonnet | 2 | `aca06eb53336304f4` | claude-sonnet-5-5 | 2 | yes | 4 | 37977 | 0 | 36034 | 392 | 0.1025 | 1.0000 |
+| S2 | sonnet | 3 | `affc06843f6869a6e` | claude-sonnet-5-5 | 2 | yes | 4 | 37977 | 0 | 36034 | 613 | 0.1047 | 1.0000 |
+| S2 | haiku | 1 | `ad1536ae5d6f244d4` | claude-haiku-5-5 | 4 | yes | 8 | 40055 | 0 | 111241 | 1257 | 0.0067 | 0.0000 |
+| S2 | haiku | 2 | `a98ca5cc3038ed37f` | claude-haiku-5-5 | 2 | yes | 4 | 39080 | 0 | 36031 | 1018 | 0.0058 | 0.0000 |
+| S2 | haiku | 3 | `a060daa2f00357e53` | claude-haiku-5-5 | 3 | yes | 6 | 39460 | 0 | 74721 | 1402 | 0.0064 | 0.0000 |
+| S3 | sonnet | 1 | `a0dbbf387ce4eecb6` | claude-sonnet-5-5 | 2 | yes | 4 | 42088 | 0 | 36056 | 5726 | 0.1661 | 0.9943 |
+| S3 | sonnet | 2 | `a163d212e2e8c931c` | claude-sonnet-5-5 | 2 | yes | 4 | 42147 | 0 | 36056 | 5891 | 0.1679 | 0.9885 |
+| S3 | sonnet | 3 | `a1017c899f5bb6df8` | claude-sonnet-5-5 | 2 | yes | 4 | 42087 | 0 | 36056 | 4506 | 0.1539 | 0.6767 |
+| S3 | haiku | 1 | `a7b94be94516e19e0` | claude-haiku-5-5 | 3 | yes | 6 | 54478 | 0 | 84600 | 11182 | 0.0132 | 1.0000 |
+| S3 | haiku | 2 | `ab25b41baad6dee08` | claude-haiku-5-5 | 6 | yes | 12 | 63666 | 0 | 248381 | 1624 | 0.0113 | 0.9885 |
+| S3 | haiku | 3 | `a406de22edbdf2c3b` | claude-haiku-5-5 | 6 | yes | 12 | 61946 | 0 | 237164 | 10183 | 0.0152 | 1.0000 |

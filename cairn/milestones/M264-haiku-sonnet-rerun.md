@@ -49,7 +49,7 @@ pointer from the old note's re-measurement section.
 ## Tasks
 
 - [x] T1: Write the note's Provenance block and design section, and checkpoint-commit it before any run. Design: the six task prompts, keys, judge prompt, and cost method of `haiku-sonnet-roles.md`, reused verbatim; search runs on the `Explore` type in a `git archive c023018` copy, the prompt's repo path replaced by the copy's path; history runs on `general-purpose`, ref-based git on this repo; Agent `model` `sonnet` or `haiku`, `effort` unset; one Opus judge per history task and run index r, given Sonnet run r and Haiku run r under labels drawn at random and recorded before the judge runs. Verdict rule: per group and model, take each task's mean score and mean cost over its three runs and sum over the group's three tasks; `move` exactly when Sonnet's sum of scores is above zero, Haiku's cost is below Sonnet's, and Haiku's score is at least 0.9 times Sonnet's; otherwise `stay`.
-- [ ] T2: Run the 18 search spawns, score each against the S1 to S3 keys, read its counts from its subagent transcript and its final-call output from its tool result or completion notification, and add its rows to the run table.
+- [x] T2: Run the 18 search spawns, score each against the S1 to S3 keys, read its counts from its subagent transcript and its final-call output from its tool result or completion notification, and add its rows to the run table.
 - [ ] T3: Run the 18 history-review spawns and the 9 judges; add each run's row and a per-finding rating table, and read the label mappings only after all judges return.
 - [ ] T4: Compute the verdicts by the T1 rule. Add readings: each task's score range over its runs, an S2 reading that ignores a missing `.py` (stated as outside the verdict), and the cost break-even the undercount allows. Add the INDEX line, the `EXPECTED` entry and comment in `scripts/tests/test_scripts.py`'s shipped-page ledger, and one pointer line in `haiku-sonnet-roles.md`'s "Limits and re-measurement". Run `verify` and `cairn_validate.py`.
 
@@ -67,6 +67,7 @@ pointer from the old note's re-measurement section.
 - 2026-10-16: implement started on `m264-haiku-sonnet-rerun`; untracked `cairn-probe.log` and `tsconfig.json` at the root are not this milestone's and stay unstaged.
 - 2026-10-16: T1 done: design section committed before any task run; spawns run in the foreground because this session's Agent tool result carries `usage` (checked on the audit reader), so M228's "Final match" applies; the INDEX line and ledger pin moved forward from T4 (minor amendment) so `verify` passes at this checkpoint; verify green, validate green.
 - 2026-10-16: the simple-english hook flags the note's Pagination and Extraction lines (em dash, semicolon, long sentence); they keep the references template's shape, which `cairn_validate` reads, so they stay.
+- 2026-10-16: T2 done: 18 search runs (Explore, foreground), all final-match `yes`, rows added to the note; scored by a session-local helper that rebuilds M228's S1 to S3 keys at `c023018` (10, 9, 88 items, as M228 recorded). All three Haiku S2 runs listed every registration but dropped `.py` and score 0, which fires the plan's falsifier on the verbatim-prompt choice; the note reports this as a reading, outside the verdict.
 
 ## Decisions
 
