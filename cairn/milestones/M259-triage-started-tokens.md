@@ -1,13 +1,13 @@
 # M259: Triage keeps started tokens current
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — `/cairn-triage` proposals and the ROADMAP rows it writes for the operator
-- **Branch/PR:** —
+- **Branch/PR:** m259-triage-started-tokens
 
 ## Goal
 
@@ -43,7 +43,7 @@
 
 ## Tasks
 
-- [ ] T1: Triage session start and step 2: read the files directly under `cairn/milestones/` of each live milestone, read each `#<n>` token's PR state with `gh pr view <n> --repo <base-repo> --json state` (guest mode reads the base repo too), and state the dead, missing, and live rules; extend the keep rule (`skills/cairn-triage/SKILL.md:56-58`, `:171-172`) to live-token rows.
+- [x] T1: Triage session start and step 2: read the files directly under `cairn/milestones/` of each live milestone, read each `#<n>` token's PR state with `gh pr view <n> --repo <base-repo> --json state` (guest mode reads the base repo too), and state the dead, missing, and live rules; extend the keep rule (`skills/cairn-triage/SKILL.md:56-58`, `:171-172`) to live-token rows.
 - [ ] T2: Steps 3, 4, and 6: the token change in the table's reason cell and the chip's question text, the untouched-items carve-out (`:228-234`), the apply edit (`:264-267`, a token appended at the row's end, removal of the token text alone), the skip rule (`:236-240`), the cap count, the merge survivor's lineage clause before its tokens, and the stamp (`:311-315`). A row a `drop`, `merge`, `split`, or `route` takes out writes no dead token into the rows it writes. Place the live-token keep before §7's options (`:162-172`).
 - [ ] T3: tracking-rules "Candidate started token" (`:215-220`), README's started-token paragraph (`README.md:476-495`), a CHANGELOG `## Unreleased` entry, the DECISIONS entry, and the rulebook-mass baseline in `skills/milestone/SKILL.md:116` plus its two hand-run pins (LESSONS M149). Sweep README and `cairn/DESIGN.md` for other triage or token sentences the change makes stale (LESSONS M112).
 - [ ] T4: Apply AC1 and AC2's rules by hand to this repo's ROADMAP and milestone files and log which tokens are dead, live, and missing. Hand-run `skills/tests` for the triage guards and fix a pinned phrase the edit moved. Run the `verify` slot.
@@ -62,3 +62,5 @@
 - 2026-10-15: question set: a `/milestone` health-audit check for tokens — dropped, triage only, idea not recorded.
 - 2026-10-15: question set: the stale ` — started M258` on "Started mark edges (M252 review)" — left in place; T4's hand run must report it dead, and M259's hygiene removes it.
 - 2026-10-15: ROADMAP: M258's done row pruned to keep the table under the 60-line cap (terminal-row retention).
+- 2026-10-15: implement started on branch m259-triage-started-tokens; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-15: T1 done: triage session start reads tokens, `gh pr view` for `#<n>`, and live milestone files, and defines dead, live, and missing; live-token rows held at session start and `keep` before §7's options. The simple-english lint hook counts the whole file (181 hits on main); the new text was reworded until the count returned to 181. verify green (scripts 408 OK, hooks 175 OK, both validates, mod test 1759 pass).

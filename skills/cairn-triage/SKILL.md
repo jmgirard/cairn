@@ -56,6 +56,30 @@ model), and the file listing of `cairn/milestones/archive/`. Note every
 milestone that is `planned`, `in-progress`, `blocked`, or `review`: a row
 one of them absorbs is never dropped or merged away in this pass
 (records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
+A row that carries a live started token (below) is held the same way.
+
+Then read the candidate rows' started tokens (tracking-rules "Candidate
+started token"). A token is ` — started ` and `M` or `#` with digits, not
+followed by a letter or digit. The cairn pane reads it the same way,
+wherever it sits in the row. Ids compare at three-digit padding, so `M58`
+is `M058`. For each `#<n>` token, read its PR state with
+`gh pr view <n> --repo <base-repo> --json state`. The rulebook's slug
+recipe gives `<base-repo>`, which is the upstream repo in guest mode. For
+each milestone noted above, read its file directly under
+`cairn/milestones/`. Each token is then dead or live:
+
+- **Dead**: an `M<NNN>` token whose id the ROADMAP milestone table holds as
+  `done` or `dropped`. If the table does not hold its id, or if its file
+  sits in `cairn/milestones/archive/`, an `M<NNN>` token is dead too. A `#<n>`
+  token whose read reports `MERGED` or `CLOSED` is dead too.
+- **Live**: every other token, a `#<n>` token whose read failed included.
+
+A row is **missing** a token in one case. The table holds `M<NNN>` as
+`planned`, `in-progress`, `blocked`, or `review`. That milestone's file
+quotes the row's non-empty short title in double quotes outside its Scope
+`**Out:**` list. But the row lacks ` — started M<NNN>`. No `#<n>` token is
+ever missing. Owner mode marks a hotfix through its PR body, and guest
+`/hotfix` writes its token in the step that opens the PR.
 
 ## Workflow
 
@@ -107,6 +131,8 @@ one of them absorbs is never dropped or merged away in this pass
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
+   A row carrying a live started token is `keep` before anything else is
+   checked, §7's options included. Its reason names the token.
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that a finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
@@ -169,7 +195,9 @@ one of them absorbs is never dropped or merged away in this pass
    rest), or `keep` as the explicit choice to extend no further; the
    proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
-   `keep` (records-hygiene §1), with that milestone named in the reason.
+   `keep` (records-hygiene §1), with that milestone named in the reason. As the
+   rule above says, a row carrying a live started token is `keep` too. So
+   no disposition of the pass rewrites a live token.
    Delegation: the session assesses inline. One Sonnet Explore fan-out is
    warranted only when several items cite code paths or symbols whose
    existence must be checked; give it the list of citations and take back
