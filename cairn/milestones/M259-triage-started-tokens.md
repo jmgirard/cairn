@@ -80,3 +80,37 @@
 - AC5: tracking-rules :220-223 names `/cairn-triage`'s missing-token and dead-token proposals; README :493-498 replaces "stays on the row and marks nothing" (the removed line is in `git diff main -- README.md`); CHANGELOG :167 under `## Unreleased`, no milestone ids; D-166 at DECISIONS :5977 annotates D-165's "no step removes it" and records D-108's door ground. Sweep `grep -rn -e "marks nothing" -e "no step removes" -e "stays on the row" README.md skills/ cairn/DESIGN.md` exit 1, no match; README's remaining "marks\nnothing" wraps a line and says only that a dead token marks nothing, which holds (LESSONS M156: a line grep misses a wrapped phrase; read by eye). Pass.
 - AC6: on 321e3cc7: scripts suite 408 OK (21 skipped), hooks suite 175 OK, `claude plugin validate` plugin exit 0 and marketplace exit 0 with no version warning, `claude plugin test .` 1759 pass 0 fail. Pass.
 - Gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` skipped; consistency-gate: verify green, no `plugins[N].version` warning, CHANGELOG entry present with no milestone ids. `skills/tests` hand-run 752 OK.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a row a live milestone quotes can be dropped or merged and its missing token lost — fix now: a row missing a token is `keep`, like a live-token row, fixed 9e1c29c1
+- diff-bug #2: a `MERGED` `#<n>` or `done` M dead token is removed with no note that its work shipped — follow-up: "Triage token edges (M259 review)"
+- diff-bug #3: the chip's Accept and Amend options did not cover a token change — fix now: Accept applies priority and token changes, Amend can decline a token change alone, fixed 9e1c29c1
+- diff-bug #4: the close block's `nothing applied` called any all-`keep` accept a no-op — fix now, fixed 9e1c29c1
+- diff-bug #5: `compress` did not say it keeps tokens — fix now: it keeps each token not accepted for removal at the row's end, fixed 9e1c29c1
+- diff-bug #6: session start held a live-token row more weakly than step 2 — fix now: it says `keep` (step 2), fixed 9e1c29c1
+- diff-bug #7: a note after a removed token had no stated place — fix now: it stays where it was, fixed 9e1c29c1
+- diff-bug #8: "the pane reads it the same way" missed the pane's 15-digit `#` cap; an empty-title row with a live token cannot be retitled — fix now for the shape (`#` with one to fifteen digits), fixed 9e1c29c1; the empty-title case follow-up: "Triage token edges (M259 review)"
+- diff-bug #9: an M token on a `candidate`-status table row counts as live — follow-up: "Triage token edges (M259 review)" (AC1 fixes the dead set)
+- diff-bug #10: removal anchored on padded ids could miss a row's literal `M58` — fix now: removed as the row spells it, fixed 9e1c29c1
+- diff-bug #11: README listed fewer dead kinds than the skill; CHANGELOG omitted "outside its Scope Out list" — fix now, fixed 9e1c29c1
+- diff-bug #12: the §1 absorbed-row keep still follows §7's options while the live-token keep precedes them — follow-up: "Triage token edges (M259 review)" (an ordering choice on main before M259)
+- diff-bug #13: rows sharing a quoted title all get a missing-token proposal — fix now: a shared title is listed as ambiguous with no proposal, fixed 9e1c29c1
+- diff-bug #14: a merge survivor's added trigger had no place relative to tokens — fix now: lineage clause and taken trigger go before the first token, fixed 9e1c29c1
+- blame-history #1: the missing rule matches any double-quoted mention, so a plan's ledger or log line can draw a token onto a row it did not absorb — fix now: the reason cell quotes the line that holds the title so the user judges at the gate, fixed 9e1c29c1 (the match stays AC2's)
+- blame-history #2: shared titles — same as diff-bug #13, fixed 9e1c29c1
+- blame-history #3: a note after a removed token is stranded — same as diff-bug #7, fixed 9e1c29c1
+- blame-history #4: the live-token keep overrides §7 and the icon `retitle` exception without saying so — fix now: §7's clause now reads "any other finding-absorbing row" and §7 applies again once the token is dead, fixed 9e1c29c1; the icon exception already yields to a live milestone's quote (`retitle` exclusion), so no change there
+- blame-history #5: "rides on keep/compress/retitle/promote" overstates reachable pairings — reject, false after diff-bug #1's fix: a dead-token removal does ride on all four, and missing-token rows are `keep`
+- blame-history #6: README's "dead" sits beside "marks nothing" while in-progress and review tokens are live but unmarked — fix now: README says such a token is not dead, fixed 9e1c29c1
+- blame-history #7: D-166's door ground covers only the keep rule — reject, false: a missing token is a taken row the pane fails to mark, a shipped-behavior defect, and D-166's Context names it ("no step added a token that a plan missed or that predates M258")
+- blame-history #8: removing a `MERGED` guest `#<n>` token loses the cue that the row is owed a narrowing — follow-up: "Triage token edges (M259 review)" (with diff-bug #2)
+- blame-history #9: the rulebook-mass gloss implied only M259's delta moved — fix now: it names the whole file, fixed 9e1c29c1
+- blame-history #10: a long DESIGN line and README wrapping — reject, style
+- prior-review #1: §7 precedence clash — same as blame-history #4, fixed 9e1c29c1
+- prior-review #2: the missing rule matches mentions, not absorption — same as blame-history #1, fixed 9e1c29c1
+- prior-review #3: shared titles — same as diff-bug #13, fixed 9e1c29c1
+- prior-review #4: removal leaves a trailing period; 16+ digit `#` tokens — fix now for the digit cap (diff-bug #8), fixed 9e1c29c1; the period stays with the text before the token, which reads correctly, so no change
+- prior-review #5: the stamp-length clause did not list token changes — fix now, fixed 9e1c29c1
+- prior-review #6: the amend loop is silent on token changes — same as diff-bug #3, fixed 9e1c29c1
+- prior-review #7: README wording; the ROADMAP row still names the absorbed clauses; D-165's body unchanged — README part same as diff-bug #11, fixed 9e1c29c1; the row narrows at post-merge hygiene (records-hygiene §1); D-165 is history (IP4), annotated by D-166
+- After fixes on 9e1c29c1: verify green (408, 175, both validates, 1759), `skills/tests` 752 OK, validate green, AC5 sweep exit 1 (no match). AC1–AC6 evidence re-read on 9e1c29c1: the fixes add rules and change no criterion's promise.
+- Return floor: no finding shows a criterion failing inside its named procedure's domain or a load-bearing defect needing implement; every real finding was fixed on the branch or sent to the follow-up row, so no return. The follow-up row is written at post-merge hygiene as a new row naming "Started mark edges (M252 review)", which is finding-absorbing (§7).
