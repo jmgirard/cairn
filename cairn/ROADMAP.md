@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-17 (M270 done: lessons pass drops false, obsolete, and low-value lessons; "Lessons triage drops too little" graduated, M267 row pruned, M149 lesson's pin line corrected; validate and `skills/tests` green)_
+_Last hygiene check: 2026-10-17 (lessons pass: dropped M114 work-log characterizations, M146 registry prune, and M154 plan-time row prune, each by the planner test; corrected M170 merge-marker restore; compressed 18 lessons near the caps; no decision entry; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
