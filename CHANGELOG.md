@@ -12,9 +12,12 @@
   planted history conflicts as Sonnet on a first set, which both models
   caught in full. On a harder set, with each conflict placed away from
   what `git blame` on the changed lines shows and caught by no existing
-  test, Haiku again caught at least as many as Sonnet. Each model reported
-  nearly every planted defect, and the misses that set records are mostly
-  findings that cited other history.
+  test, Haiku again caught at least as many as Sonnet under the test's
+  rule, which also requires a finding to cite the right history. Counted
+  by whether a finding reported the planted defect at all, Haiku reported
+  every one and Sonnet missed one. In two of that set's three test
+  commits the extra changed lines were a README rewrap in another file,
+  not edits around the planted conflicts.
 
 - **A guest milestone can build on one that waits for review.** In guest
   mode with `# Push remote: base`, a `planned` milestone can depend on one
@@ -210,10 +213,10 @@
   writing against a spec, and boilerplate now spawn Haiku 5.5, not
   Sonnet. Explore searches stay on Sonnet (the two history reviewers moved
   to Haiku later; see the entry above), and Opus and Fable roles do not
-  change. The "Never Haiku" rule is gone. The session still reads each Haiku diff and
-  runs the profile's `verify` checks before it commits. A side-by-side
-  test measured migrations and test writing, and boilerplate follows that
-  result untested. On three edit tasks both models scored the same, and
+  change. The "Never Haiku" rule is gone. The session still reads each
+  Haiku diff and runs the profile's `verify` checks before it commits. A
+  side-by-side test measured migrations and test writing, and boilerplate
+  follows that result untested. On three edit tasks both models scored the same, and
   Haiku cost $0.04 where Sonnet cost $0.49 (the cairn repository's
   `cairn/references/haiku-sonnet-roles.md`).
 - **In guest mode, `/milestone-plan` reads the upstream repo's open issues

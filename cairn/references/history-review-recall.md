@@ -417,8 +417,9 @@ are added after all the harder-set judges return.
 ### (1) Tasks
 
 Three commits, each on parent `c56be32`. Each carries two planted conflicts
-and at least 100 other changed lines. In task D those lines rework the
-same two files; in tasks E and F they are a README rewrap in another file,
+and at least 100 other changed lines. In task D those lines are the helper
+split in `scripts/cairn_status.py`, the file both plants sit in, and a
+same-words comment rewrap in `scripts/cairn_scripts.py`; in tasks E and F they are a README rewrap in another file,
 so the plants' own hunks hold only the plants (corrected M269 review; the
 pre-run text said "inside a larger ordinary edit"). No task commit changes a file under a
 `tests/` directory.
@@ -1903,8 +1904,8 @@ other history: the current `cs.id_num` code without M157, or M232 and plan
 step 1's rule without M250. Only F Sonnet run 1 raised a different defect
 at the F1 site (a missing `--repo`). Counted by whether a finding reported
 the planted defect at its site, whatever history it cited, Haiku reported
-all 18 of its plant-runs and Sonnet 17 of 18, so on that reading the set
-is near the ceiling (corrected M269 review).
+all 18 of its plant-runs and Sonnet 17 of 18, so on that reading Haiku is
+at the ceiling and Sonnet one short of it (corrected M269 review).
 
 | Model | Task D mean | Task E mean | Task F mean | Sum |
 |---|---|---|---|---|
@@ -1913,8 +1914,8 @@ is near the ceiling (corrected M269 review).
 
 Haiku's sum is 1.1333 times Sonnet's sum, so the verdict is `move`.
 Neither model caught all 18 of its plant-runs under the catch rule, so
-this set is not at the ceiling by that rule; the detection reading above
-is near it. With Sonnet's count unchanged, one more Haiku miss gives
+this set is not at the ceiling by that rule; by the detection reading
+above, Haiku is at it and Sonnet one short. With Sonnet's count unchanged, one more Haiku miss gives
 2.6667 against 2.5, still `move`, and four more give 2.1667, below 0.9
 times 2.5, which is `stay`. Cost and precision still rest on
 `haiku-sonnet-rerun.md`.
@@ -1924,6 +1925,7 @@ three tasks, two plants per task, at default effort, on one repo, with
 two Opus judges per run pair. The task D plants are the only ones whose
 hunks also hold unrelated changes. To re-measure, apply each patch in
 part (3) to `c56be32` with `git apply` and commit it, then follow parts
-(2) and (6). A set whose plants sit in hunks that also hold real edits,
+(2) and (6), building each judge's `<KEY>` from parts (4) and (5), since
+the key file itself stayed in the session scratchpad. A set whose plants sit in hunks that also hold real edits,
 and that one model catches less often by the detection reading, would
 test the move more sharply.

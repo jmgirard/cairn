@@ -159,6 +159,7 @@ Review pass 2, 2026-10-17, on head `b34d020e` (after the step-7 decline, the ame
 - prior-review #4: tracking-rules short wrap — reject (same as diff-bug #10).
 - prior-review #5: ROADMAP stamp unchanged at status moves — reject (the stamp records hygiene passes only; PR #257 precedent).
 - After fixes: `skills/tests` 822 OK, `scripts/tests` 409 OK, `cairn_validate` exit 0.
+- Consistency gate (pass 2): `cairn_validate.py` exit 0, one advisory WARN (11 tasks, over the split tripwire); no DESIGN principle changed, so `cairn_impact` skipped; marketplace validate output has no `version` warning; CHANGELOG has an Unreleased entry with no milestone id.
 
 Review pass 3, 2026-10-17, on head `9d0317df` (after the AC3 amendment return and the claim-audit correction).
 
@@ -166,4 +167,20 @@ Review pass 3, 2026-10-17, on head `9d0317df` (after the AC3 amendment return an
 - AC1, AC2, AC4 evidence (fresh, same script as pass 2): all checks hold as in pass 2 on this head.
 - AC3 evidence (amended wording): all pass-2 checks hold on this head (pre-run commit, key hash, patches, numstat, no `tests/` paths, forms, six blame rows all pass with D2's range now covering the whole file, four clone rows, 18 reviewer and 18 judge rows, mapping and leak statements, verdict). Part (5)'s key column names M157, M182, M250, and M262, and for D2 and E2, whose histories came from no milestone, the direct commit `1525aa12` and the hotfix `36e03930`, with D-057, D-136, and D-148 where they apply.
 - AC5 evidence (fresh): each exit code 0: `scripts/tests` 409 OK, `hooks/tests` 179 OK, both `claude plugin validate` runs, `claude plugin test .` 2018 pass 0 fail; `skills/tests` 822 OK. Consistency gate: `cairn_validate` exit 0 with the one advisory sizing WARN; no `version` warning; rulebook 715 lines / 69,276 bytes, equal to the seed.
-- Consistency gate: `cairn_validate.py` exit 0, one advisory WARN (11 tasks, over the split tripwire); no DESIGN principle changed, so `cairn_impact` skipped; marketplace validate output has no `version` warning; CHANGELOG has an Unreleased entry with no milestone id.
+- spawned (pass 3): diff-bug (Opus), blame-history (Haiku), prior-review (Haiku), scoped to `88d76d44^..HEAD` within the full diff.
+- diff-bug #1: D-176's Consequences say the CHANGELOG and INDEX state the E and F carrier limit, and neither did — fix now (both now state it).
+- diff-bug #2: D-176 says the sharper hunk-sharing test promotes on D-174's falsifier, but no row held it — follow-up (new row "Hunk-sharing recall test").
+- diff-bug #3: pass 2's consistency-gate line sat after the pass-3 block — fix now (moved back into pass 2).
+- diff-bug #4: D-176 clause (3) says "near the ceiling for both models" where Haiku is at it, and "reported at all" where the note says "at its site" — reject (not false: Haiku at and Sonnet one short both sit near the ceiling; the note states the exact rule and counts).
+- diff-bug #5: CHANGELOG "nearly every planted defect" understates Haiku — fix now (now says Haiku reported every one and Sonnet missed one).
+- diff-bug #6: CHANGELOG "the misses that set records" misreads — fix now (sentence rewritten).
+- diff-bug #7: the note says "near the ceiling" twice where Haiku is at it — fix now (both say Haiku at, Sonnet one short).
+- diff-bug #8: the pass-2 wrap fix left an 85-character CHANGELOG line — fix now (rewrapped).
+- diff-bug #9: D-176's "No skill text changes" against the same commit's seed-sentence edit — reject (the sentence states D-176's own consequence; the seed edit came from pass-2 diff-bug #6, a separate finding).
+- diff-bug #10: the note's task D carrier sentence reads as if the plants were in two files — fix now (names the helper split and the comment rewrap).
+- diff-bug note: INDEX does not name D-176, and the re-measure text points at the scratchpad key — fix now (INDEX names D-176; re-measure text says to build `<KEY>` from parts (4) and (5)).
+- blame-history #1: the 715-line re-seed absorbs M267 and M268's growth — reject (pass 2 settled it by disclosing that growth in the seed sentence; the seed rule re-seeds when a pass changes the file).
+- blame-history #2: same as diff-bug #9 — reject (same reason).
+- blame-history #3: CHANGELOG states the detection reading without the catch-rule count — fix now (same edit as diff-bug #5, which names both).
+- prior-review #1: the re-seed diverges from PR #244's intent — reject (same as blame-history #1).
+- After fixes: `skills/tests` 822 OK, `scripts/tests` 409 OK, `cairn_validate` exit 0 with the one sizing WARN; ROADMAP 54 lines / 21,813 bytes, under its caps.
