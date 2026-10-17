@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M270: Let /cairn-triage lessons drop false, obsolete, and low-value lessons
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing. Adopting repos run `/cairn-triage lessons`, a shipped plugin skill.
-- **Branch/PR:** —
+- **Branch/PR:** m270-lessons-triage-drops
 
 ## Goal
 
@@ -45,7 +45,7 @@
 
 ## Tasks
 
-- [ ] T1: Append the decision entry in the shape of `skills/shared/templates/decision.md` (AC6). Read D-045, D-051, D-055, D-108, and D-169 whole first.
+- [x] T1: Append the decision entry in the shape of `skills/shared/templates/decision.md` (AC6). Read D-045, D-051, D-055, D-108, and D-169 whole first.
 - [ ] T2: Edit the lessons pass in `skills/cairn-triage/SKILL.md` (AC1 to AC5). Change the step-2 table and the rules after it: the five exits, `correct`, the planner test, and the near-cap rule. Change step 3 for the `correct` text and the warning. Change step 4 so `correct` edits the file and counts against the caps. Change steps 5 to 7 so the stamp, the commit message, and the close block name corrections and the new exits. Remove the flag-only run of steps 4 to 6 for a false lesson. Update the skill's description line if its wording no longer fits.
 - [ ] T3: Update the prose guards in `skills/tests/test_triage_lessons.py`. Replace `test_five_dispositions_only`, `test_a_false_lesson_is_keep`, and `test_drop_names_an_exit`, and add one guard per new rule. Hand-run `python3 -m unittest discover -s skills/tests` from the repo root and check its exit code.
 - [ ] T4: Edit the rulebook bullet, the README row, and the CHANGELOG Unreleased entry (AC7). Then run `git grep -n -i -E "found false|stays .keep|two exits|length alone" -- skills README.md CHANGELOG.md` and fix each stale hit outside `skills/tests`.
@@ -64,6 +64,8 @@
 - 2026-10-17: plan gate chose correct-or-drop over always-drop because a partly true lesson keeps its true part; falsified by an accepted `correct` line that a later pass finds false again.
 - 2026-10-17: plan gate chose the planner-test drop over a reason-only test because the reason-only test leaves a full file full; falsified by a planner-test drop whose trap then recurs.
 - 2026-10-17: thresholds 45 lines and 18,000 bytes are 90 percent of the caps, and 400 bytes is the byte budget divided by the line cap. Decided by the agent.
+- 2026-10-17: implement started on m270-lessons-triage-drops. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-17: T1 done: D-177 appended. It supersedes two D-169 clauses, annotates D-045 and D-051, and names the D-108 trigger.
 
 ## Decisions
 
