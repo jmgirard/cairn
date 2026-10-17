@@ -1,6 +1,6 @@
 # M269: Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,6 +43,11 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - [x] T4: Copy the key file's patches and key into Design parts (2) and (3), and check that the file still matches the committed sha256. Run the transcript search (AC2). Write the Runs and Verdict sections. Add the note's `INDEX.md` line, its row in the shipped-page ledger test in `scripts/tests/test_scripts.py` (beside `haiku-sonnet-rerun.md`), and a pointer from the last reading of `haiku-sonnet-rerun.md`. After the note records the SHAs, delete the probe refs.
 - [x] T5: Apply the verdict (AC3). On `move`, edit the two lens bullets in `skills/milestone-review/SKILL.md` and the three bullets of the tracking-rules "Model and agent strategy" section. Update the pins and docstring in `skills/tests/test_review_fanout.py`. Append the superseding D-entry, whose Consequences note that the effort-unset evidence for history review (`effort-roles.md`) was measured on Sonnet. Add the CHANGELOG entry. Grep the repo for "Sonnet blame-history", "reviewer (Sonnet)", and "Sonnet prior-PR", whitespace collapsed, and fix each hit outside history records. On `stay`, change no file under `skills/` and no CHANGELOG line.
 - [x] T6: Run the verify slot from the repo root and check each exit code. Hand-run `skills/tests` (AC4).
+- [ ] T7: Amend the criteria for the harder test the user chose at the step-7 stop (implement step 6, substantive, a widening the user selected): a criterion for a second, harder plant set, and AC3 to follow the harder set's verdict. Re-audit the amended wording with a fresh Opus reader before writing it, and update Coverage.
+- [ ] T8: Build the harder plant set on `c56be32`: three tasks (two blame-history, one prior-PR-comments), two plants each, the same forms and code/prose mix as AC1. Each task diff is large (a plausible refactor of well over 100 changed lines around the plants). Each plant conflicts with history that blame on its own changed lines does not show, and no existing test fails on it. Key file outside the repo, with its sha256 and the design committed before any run.
+- [ ] T9: Run 18 reviewer runs (same prompts and settings as T2) and judge each task and run index with two independent Opus judges under fresh random labels. Record both judges' marks and each disagreement.
+- [ ] T10: Write the harder set's Runs and Verdict in the note. On `stay`, undo the move (both lens names, the tracking-rules bullets, the test pins, the CHANGELOG entry) and replace D-174 with an entry that records the measured result. On `move`, update D-174, the CHANGELOG entry, and the INDEX line to cite the harder set.
+- [ ] T11: Run the verify slot and hand-run `skills/tests`; re-seed the rulebook-size baseline if tracking-rules changed again.
 
 ## Work log
 
@@ -65,6 +70,7 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - 2026-10-17: T6: verify green from the repo root, each exit code 0 (scripts 409 OK, hooks 179 OK, both manifest validates, plugin test 2018 pass). Hand-run `skills/tests` first failed one case: the new note's extraction line lacked its `— observed` stamp; fixed, then 822 OK, and the scripts suite still OK with the `exempt` pin.
 - 2026-10-17: claim audit: 14 claims read, 0 corrected — CHANGELOG.md, scripts/tests/test_scripts.py, skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, skills/tests/test_review_fanout.py
 - 2026-10-17: implement complete; status → review.
+- 2026-10-17: step-7 decline: the user asked "should we test subtle ones?" and then chose "Test first, inside M269": hold the merge, add a harder plant set (larger diffs, conflicts away from the changed lines' blame, no failing test, two judges per run pair), and move the reviewers to Haiku only if Haiku catches at least 0.9 times what Sonnet catches on that set. Tasks T7 to T11 added; PR #281 stays open; status → in-progress. The candidate row "Harder history-reviewer recall test" is absorbed (started token).
 
 ## Decisions
 
