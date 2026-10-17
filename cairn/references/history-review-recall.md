@@ -21,6 +21,11 @@ in `DECISIONS.md`.
 
 ## Design (fixed before any run, 2026-10-17)
 
+Two parts of this section were written after the runs: the **Catch rule.**
+paragraph, whose rule is the judge prompt's text fixed before the runs, and
+the Plants subsection, copied from the key file. The "Plants and answer
+key" paragraph was also corrected after the runs.
+
 **Tasks.** Three commits, each on parent `c56be32` and each with two
 planted conflicts and one neutral edit:
 
@@ -101,7 +106,10 @@ carries the same rule.
 Sonnet run r report and the Haiku run r report under labels A and B. The
 labels are drawn with `random.SystemRandom` and written to a mapping file
 in the session scratchpad before the judge runs. The mappings are read
-after all nine judges return.
+after all nine judges return. Deviation in the runs: each judge's spawn
+prompt told it to read its prompt, with the key inline, from a
+`prompt.txt` file in the same directory as the two reports, and to read
+no other scratchpad file. The prompt text itself is the one above.
 
 **Verdict rule.** For each model, take each task's mean recall (plants
 caught divided by 2) over its three runs, and sum the means over the three
@@ -111,17 +119,36 @@ sum is at least 0.9 times Sonnet's sum. Otherwise the verdict is `stay`.
 ### Plants and answer key (copied from the key file after the judges returned)
 
 The key file matched its design-time sha256 when it was read back on
-2026-10-17. Design part (2), the patch of each task, is `git diff c56be32
-<SHA>` for that task. Each task's neutral edit is one line: a docstring in
-`hooks/commit_guard.py` (A), "for example" to "such as" in the hotfix skill
-(B), and "proceeds on" to "runs on" in review step 2 (C).
+2026-10-17. Design part (2), the patch of each task, is the full
+`git diff c56be32 <SHA>` for that task, given below with each task's
+one-line neutral edit. The three commits were never pushed and their refs
+were deleted after the runs, so to re-measure, apply each patch to
+`c56be32` with `git apply` and commit it.
 
 Task A (`968f932b`):
 
 ```diff
+diff --git a/hooks/commit_guard.py b/hooks/commit_guard.py
+index ed8bd942..48d2353c 100644
+--- a/hooks/commit_guard.py
++++ b/hooks/commit_guard.py
+@@ -35,7 +35,7 @@ an empty set (the original commit was the catchable event); a pathspec
+ commit (`git commit -m x <path>`) is not read, so a tracked cairn/ file
+ committed by path passes the guest deny — reachable only while cairn/ is
+ tracked, which `cairn_validate`'s guest `scaffold present` arm FAILs.
+-No-op outside cairn repos; fail-permissive.
++It does nothing outside cairn repos and fails permissive.
+ """
+ 
+ import os
+diff --git a/hooks/force_push_guard.py b/hooks/force_push_guard.py
+index 31aa78a2..9ad4869d 100644
 --- a/hooks/force_push_guard.py
 +++ b/hooks/force_push_guard.py
 @@ -39,13 +39,12 @@ import sys
+ 
+ import cairn_common as cc
+ 
 -# Command position — the shared `cc.CMD_POS`: start of string or right after
 -# a shell separator, then any leading `VAR=value` assignment words, so
 -# `GH_TOKEN=x git push -f origin main` is seen like the plain spelling. A
@@ -135,21 +162,44 @@ Task A (`968f932b`):
 +# guard's pattern.
 +CMD_POS = r"(?:^|[;&|(\n])\s*"
 +GIT_PUSH = re.compile(CMD_POS + r"git(?:\s+-\S+)*\s+push(?!\S)")
+ 
+ # --force / --force-with-lease[=v] / --force-if-includes, or a short-flag
+ # cluster containing 'f'. The lookbehind keeps the second dash of a long
+diff --git a/hooks/merge_guard.py b/hooks/merge_guard.py
+index df3833e3..06e843cc 100644
 --- a/hooks/merge_guard.py
 +++ b/hooks/merge_guard.py
 @@ -169,9 +169,9 @@ def main():
+                 "repo's own approval gate and rerun." % marker
+             )
+             return
 -        # Every occurrence must clear the check — a chained
 -        # `gh pr merge 7 && gh pr merge 9` must not ride through on the
 -        # first one's approval (M72 review F4).
 +        # The first `gh pr merge` in the command is the one the user
 +        # approved; check it against the marker.
 +        command_prs = command_prs[:1]
+         if any(pr is None for pr in command_prs):
+             deny(
+                 "This merge does not name a PR, so the recorded approval "
 ```
 
-Task B (`08d63c22`, `skills/hotfix/SKILL.md`):
+Task B (`08d63c22`):
 
 ```diff
-@@ -269,16 +269,16 @@
+diff --git a/skills/hotfix/SKILL.md b/skills/hotfix/SKILL.md
+index c83e8ffa..5f6af617 100644
+--- a/skills/hotfix/SKILL.md
++++ b/skills/hotfix/SKILL.md
+@@ -269,16 +269,16 @@ can resolve against the fork instead of the base repo.
+    under the current development version (no milestone/issue jargon in the
+    user-facing text).
+    Then apply each per-change rule DESIGN.md's Conventions section states,
+-   for example a development-version bump on every PR or a NEWS heading
++   such as a development-version bump on every PR or a NEWS heading
+    format. Where
+    the Conventions section states none, no version is bumped: cairn never
+    bumps one on its own cadence (D-041).
 -   *Authoring a fix:* nothing is pushed and no PR is opened here — step 6
 -   pushes and opens the PR after the approval chip, so a
 -   `pull_request`-triggered suite first runs on the head that merges
@@ -162,7 +212,13 @@ Task B (`08d63c22`, `skills/hotfix/SKILL.md`):
 +   `cairn/PROFILE.md` opts in to the Copilot review round
 +   (`skills/shared/copilot-review.md` §1), owner mode requests the round on
 +   that draft at step 6's round arm.
-@@ -289,16 +289,11 @@
+    *Adopting a PR:* the PR already exists — never open a second one, except
+    through the user-gated fallback below. If the
+    contributor added an entry, check it against the declared file and the
+@@ -289,16 +289,11 @@ can resolve against the fork instead of the base repo.
+    "allow edits by maintainers" on (GitHub's default).
+    **When the head branch cannot be pushed to:** ask the contributor on the
+    PR to add the missing pieces — it is their work and their credit.
 -   If they go quiet, re-landing the work locally is the fallback, but it
 -   closes another person's PR under the user's GitHub identity — outward-facing
 -   and irreversible from the contributor's side, so it is **never** done
@@ -170,36 +226,71 @@ Task B (`08d63c22`, `skills/hotfix/SKILL.md`):
 -   = re-land, with a decline option), showing the closing comment's text in
 -   chat first. Only on approval: recreate their commits on a
 +   If they go quiet, re-land the work locally: recreate their commits on a
-@@
+    `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
+    there, open a PR crediting them (`Co-authored-by:`), its body carrying
+    in owner mode the `Candidate row:` lines that step 6 names, and close theirs with
 -   that comment. Declined → leave their PR open and stop.
 +   a comment that names the new PR.
+    Never merge a fix whose regression test
+    is still missing — that is the one gate this path exists to enforce.
+ 
 ```
 
 Task C (`3fcb148c`):
 
 ```diff
+diff --git a/skills/milestone-implement/SKILL.md b/skills/milestone-implement/SKILL.md
+index f64833af..6eae710e 100644
 --- a/skills/milestone-implement/SKILL.md
 +++ b/skills/milestone-implement/SKILL.md
-@@ -95,16 +95,16 @@
+@@ -95,16 +95,16 @@ run ingestion first (see `/milestone-brief`).
+    stacked milestone runs the stacked sync below instead of that rebase.
+    Once
+    the branch is pushed, other people can push to it too, on the fork or
 -   on the base repo, so the rebase waits on one check, run before the
 -   rebase. The remote that holds the branch is the open PR's head remote
 +   on the base repo, so one check follows the rebase. Rebase first. The
 +   remote that holds the branch is the open PR's head remote
+    (the rulebook's open-PR head rule), else `<push>`. When
+    `git ls-remote --exit-code --heads <remote> <slug>` finds no such
 -   branch, the branch was never pushed: rebase, and push nothing.
 +   branch, the branch was never pushed: push nothing.
+    Otherwise fetch that remote and read
+    `git rev-list <slug>..<remote>/<slug>`.
 -   If that lists commits, do not rebase, push nothing, and stop with a
 +   If that lists commits, push nothing, and stop with a
+    close block that names those commits. Otherwise note the remote tip's
 -   sha, rebase, and push with
 +   sha and push with
+    `git push --force-with-lease=<slug>:<sha> <remote> <slug>` (the
+    force-push guard covers the default branch alone). The maintainers'
+    review comments stay attached to the PR.
+diff --git a/skills/milestone-review/SKILL.md b/skills/milestone-review/SKILL.md
+index 4db108e9..4ed0a413 100644
 --- a/skills/milestone-review/SKILL.md
 +++ b/skills/milestone-review/SKILL.md
-@@ -123,9 +123,9 @@
+@@ -123,9 +123,9 @@ re-enters here, at the step the record shows is next:
+    branch is worthless and the squash-merge would conflict anyway. Guest
+    arm: the fetch is the whole sync — the default branch is never pushed —
+    and a moved default branch is taken by `git rebase
 -   <base>/<default-branch>` through `/milestone-implement` step 2's guest
 -   sync in full: its remote-only-commits check before the rebase, and, for
 -   a branch already pushed, its leased push right after it. A stacked
 +   <base>/<default-branch>` here, then `git push --force-with-lease
 +   <push> <slug>` for a branch already pushed; review does not re-run
 +   `/milestone-implement` step 2's sync. A stacked
+    milestone takes that step's stacked sync instead of the plain rebase,
+    whether or not the default branch moved, but only while the stack
+    base's PR is `OPEN`. A merged base is left to step 8, which routes the
+@@ -136,7 +136,7 @@ re-enters here, at the step the record shows is next:
+ 2. Nothing is pushed and no PR is opened here: the push and the `gh pr
+    create` sit in step 8, after the step-7 approval, so a
+    `pull_request`-triggered suite first runs on the head that merges rather
+-   than on every pre-approval push (D-138). The review below proceeds on the
++   than on every pre-approval push (D-138). The review below runs on the
+    local branch.
+ 
+    **Copilot arm** (owner mode, the round on per
 ```
 
 Answer key (design part 3):
@@ -264,6 +355,15 @@ a search for `history-review-recall`, `M269-history-reviewer-recall`,
 `key.json`, and `mapping.json` found 0 hits. The same reader found 18 hits
 for `report_A.md` in the judges' tool calls, so it reads the calls it
 searches. The search cannot see text that an agent saw another way.
+During the runs the branch name and the T1 commit subject named the
+milestone, so a wider search at review, over the 18 reviewer transcripts'
+tool calls and results, looked for `m269` in any case, `planted`, `plant`,
+`refs/probe`, and `af3cb5c2`. It found two hits. In one, task B Haiku run 2
+listed the scratchpad directory and saw the names `m269` and
+`m269-criteria.md`, and its tool calls read neither. In the other, task C
+Haiku run 3 read an older PR review reply (on
+`skills/tests/test_issue_look_in.py`) that uses the word "planted" in
+another sense.
 
 Run notes. Every reviewer named both plants of its task with their history.
 Some reviewers also reported a plant's knock-on effects as further findings:

@@ -6292,23 +6292,25 @@ base's commits, this is the entry to supersede.
 
 **Context:** D-151 moved edit work to Haiku and kept both history
 reviewers on Sonnet by the user's choice, because the valid-finding count
-was a near tie and nothing had tested D-016's reason that a weaker model in
+was a single-run tie and nothing had tested D-016's reason that a weaker model in
 a review step "can silently drop a real bug". M269 tested that reason with
 planted history conflicts (`cairn/references/history-review-recall.md`).
 Its rule, fixed before the runs, gave `move`: Haiku caught as many planted
 conflicts as Sonnet. Both models caught every plant, so the test shows no
 gap on clear conflicts in a small diff and cannot show one on subtler
-plants. Cost and precision rest on M264 (`haiku-sonnet-rerun.md`).
+plants. Cost and precision rest on M264 (`haiku-sonnet-rerun.md`), whose
+history-review precision verdict is `move` on a margin that note states
+is small enough for one judged finding to flip.
 
 **Decision:** The blame-history and prior-PR-comments lenses of the
 `/milestone-review` fan-out run on Haiku 5.5. The diff-bug lens stays on
 Opus, and the single-reviewer mode stays one Opus diff reviewer. Explore
-searches stay on Sonnet (D-151). The user chose at M269's plan question
-set to move the reviewers if Haiku held up on missed findings.
+searches stay on Sonnet (D-151). At M269's plan question set the user
+chose "testing missed findings first and moving only if Haiku holds up".
 
 **Rejected:** Keeping both reviewers on Sonnet until a harder plant set
-runs, because the user's condition was the planted test as designed and
-its rule gave `move`; falsified by a harder planted set on which Haiku's
+runs, because the missed-findings test ran as planned and its rule, fixed
+before the runs, gave `move`; falsified by a harder planted set on which Haiku's
 recall falls below 0.9 times Sonnet's. Moving only one of the two lenses,
 because both lenses caught every plant and M264 scored them as one group.
 

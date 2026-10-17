@@ -593,7 +593,8 @@ These rules bind all chat output while any cairn skill is active.
   type's or the harness's default, which need not be the model the role calls for.
 - **Leave effort unset on every spawn.** No subagent role sets the Agent tool's `effort` setting, the history reviewers
   included. On search and edit work the cost method's output undercount could reverse `low`'s saving, the history
-  reviewers scored fewer judged-valid findings at `low` and at `medium` by margins one rerun could flip, and the Opus
+  reviewers, measured on Sonnet before they moved to Haiku (D-174), scored fewer judged-valid findings at `low` and at
+  `medium` by margins one rerun could flip, and the Opus
   and Fable roles are unmeasured (`cairn/references/effort-roles.md`, `cairn/references/effort-review-medium.md`).
 - **Subagents share the primary checkout.** Every spawned subagent uses ref-based git only (`diff`/`show`/`log`/`blame`
   against refs), never a HEAD-moving command (`checkout`/`switch`/`worktree add`/`reset`) in the shared tree.
@@ -610,9 +611,10 @@ These rules bind all chat output while any cairn skill is active.
   many words; the chip says in plain words what an author-inline run means (the work was checked only by the session
   that produced it). An inline author-run is permitted only as a user-accepted, logged deviation naming the
   instruction, never silent. (Skill-site pointers cite this bullet as tracking-rules' freshness-spawns clause.)
-- **Haiku subagents** (D-151, D-174): well-specified edit work — mechanical migrations, test writing against a spec,
+- **Haiku subagents**: well-specified edit work (D-151) — mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs and run the `verify` slot before committing; summarize results
-  into one work-log line. Also the blame-history and prior-PR-comments lenses of the review fan-out.
+  into one work-log line. Haiku also runs the blame-history and prior-PR-comments lenses of the review fan-out
+  (D-174), whose findings the agent settles at `/milestone-review` step 5 like any lens's.
 - **Sonnet subagents**: fan-out searches (Explore), with a reading list naming the files or areas to read. Summarize an
   Explore fan-out's results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.

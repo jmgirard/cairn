@@ -9,7 +9,9 @@
   reviewers now run on Haiku 5.5 instead of Sonnet 5.5. The diff-bug
   reviewer stays on Opus. In the cairn repository's test, Haiku caught as
   many planted history conflicts as Sonnet
-  (`cairn/references/history-review-recall.md`).
+  (`cairn/references/history-review-recall.md`). Both models caught every
+  planted conflict, so the test does not show how Haiku does on subtler
+  ones.
 
 - **A guest milestone can build on one that waits for review.** In guest
   mode with `# Push remote: base`, a `planned` milestone can depend on one
@@ -203,8 +205,9 @@
   `wc -l -c`.
 - **Edit-work subagents run on Haiku 5.5.** Mechanical migrations, test
   writing against a spec, and boilerplate now spawn Haiku 5.5, not
-  Sonnet. Explore searches and the blame-history and prior-PR-comments
-  reviewers stay on Sonnet, and Opus and Fable roles do not change. The
+  Sonnet. Explore searches stay on Sonnet (the two history reviewers moved
+  to Haiku later; see the entry above), and Opus and Fable roles do not
+  change. The
   "Never Haiku" rule is gone. The session still reads each Haiku diff and
   runs the profile's `verify` checks before it commits. A side-by-side
   test measured migrations and test writing, and boilerplate follows that

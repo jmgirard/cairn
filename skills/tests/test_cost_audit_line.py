@@ -63,10 +63,9 @@ class TestCostAuditLine(unittest.TestCase):
 
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
         # Growth is reported against a recorded figure, not a remembered one;
-        # the seed is the M265 re-measurement in bytes (M265 added the
-        # trivial-tier clauses to the git model's two default-branch bullets
-        # and the trivial tier's row-graduation sentence).
-        self.assertIn("682 lines / 65,674 bytes", self.text)
+        # the seed is the M269 re-measurement in bytes (M269 moved the two
+        # history reviewers to Haiku in the model-strategy bullets).
+        self.assertIn("715 lines / 69,276 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
