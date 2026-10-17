@@ -400,3 +400,50 @@ rebuild the three commits from the Plants section on `c56be32`, follow the
 Design section, and apply the verdict rule. A harder plant set that both
 models do not fully catch is the natural next test. A rerun that flips the
 verdict falsifies this note's verdict.
+
+## Harder set
+
+The first set could not tell the two models apart, so a second set with
+subtler plants decides the move (M269 AC3). This section is written in two
+stages. Parts (1) and (2) below were committed before any harder-set run,
+with the sha256 of a key file kept in the session scratchpad, outside the
+repo: `93e7258691ad6e07f6c4b0bc011bcc46a6f4b6075065420b9a8827ecf3530b17`.
+The plants, the answer key, the blame and test-suite records, and the runs
+are added after all the harder-set judges return.
+
+### (1) Tasks
+
+Three commits, each on parent `c56be32`. Each carries two planted conflicts
+inside a larger ordinary edit. No task commit changes a file under a
+`tests/` directory.
+
+| Task | Lens | Surface | SHA | Message |
+|---|---|---|---|---|
+| D | blame-history | code (`scripts/`) | `6556b980f7dc4b704b053693919b60395fbdf137` | Split the status snapshot into section helpers |
+| E | blame-history | skill prose and README | `fe3218fc6ea6cccab38539cb08caad5867ae45f1` | Tighten implement's start and hand-off wording; rewrap the README band section |
+| F | prior-PR-comments | skill prose and README | `5541bd8d6b2a1847f33b2f39f33c28e34744c920` | Add issue and rerun notes to plan and hotfix; rewrap the README pane section |
+
+### (2) Prompts and rules
+
+The reviewer prompt is the Design section's, with each task's SHA and the
+same `<LENS>` bullets: tasks D and E take the blame-history bullet, and
+task F takes the prior-PR-comments bullet. Each reviewer runs as a
+foreground `general-purpose` Agent call with `model` set to `sonnet` or
+`haiku` and `effort` unset, three times per task and model.
+
+The judge prompt is the Design section's judge prompt, with the task's two
+plants from the key file as `<KEY>`. Each task and run index gets two judge
+runs, 18 in all. Each judge is an Opus run that marks the Sonnet and Haiku
+reports of that run index under its own labels A and B. The labels are
+drawn with `random.SystemRandom` for each judge separately and written to
+a mapping file in the session scratchpad before that judge runs. The two
+judges of one pair do not see each other's marks. All 18 mappings are read
+only after all 18 judges return.
+
+The catch rule is the Design section's. A plant-run counts as caught only
+when both of its judges mark it caught. The verdict rule is the Design
+section's, applied to those counts: for each model, take each task's mean
+recall (plants caught divided by 2) over its three runs, and sum the means
+over the three tasks. The verdict is `move` when Sonnet's sum is above zero
+and Haiku's sum is at least 0.9 times Sonnet's sum. Otherwise the verdict
+is `stay`.
