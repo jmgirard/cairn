@@ -78,25 +78,27 @@ Review pass 1, 2026-10-17, on branch head after `2760a701` plus the AC1 note fix
 - AC4 evidence: from the repo root, each exit code 0: `scripts/tests` 409 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin (passed with warnings) and marketplace (passed), `claude plugin test .` 2018 pass 0 fail; hand-run `skills/tests` 822 OK.
 - Consistency gate: `cairn_validate.py` exit 0, no FAIL or WARN line; no DESIGN principle changed, so `cairn_impact` skipped; marketplace validate shows no `version` warning; CHANGELOG has an Unreleased entry with no milestone id.
 - spawned: diff-bug (Opus), blame-history (Haiku), prior-review (Haiku), per the skill text this branch ships.
-- diff-bug #1: the M229 CHANGELOG entry in the same Unreleased section still says the history reviewers stay on Sonnet — fix now (entry revised to point at the new one).
-- diff-bug #2: the note cannot be re-measured: the commits are unreachable and the patches were abridged — fix now (full patches, byte-equal to `git diff c56be32 <SHA>`, with a `git apply` instruction).
-- diff-bug #3: the leak search terms miss the branch name and the T1 commit subject — fix now (wider search over the 18 reviewer transcripts recorded: one run listed the scratchpad names `m269` and `m269-criteria.md` and read neither; one unrelated "planted" hit).
-- diff-bug #4: the judges read their prompt from a file in the report directory, not inline as the design says, and the note did not call it a deviation — fix now (deviation recorded under Judging).
-- diff-bug #5: the "fixed before any run" heading covers text added after the runs — fix now (sentence under the heading names the post-run parts).
-- diff-bug #6: the effort-unset bullet applies Sonnet-measured history-reviewer evidence to Haiku reviewers — fix now (bullet says it was measured on Sonnet, citing D-174).
+- diff-bug #1: the M229 CHANGELOG entry in the same Unreleased section still says the history reviewers stay on Sonnet — fix now, fixed d110cb73 (entry revised to point at the new one).
+- diff-bug #2: the note cannot be re-measured: the commits are unreachable and the patches were abridged — fix now, fixed d110cb73 (full patches, byte-equal to `git diff c56be32 <SHA>`, with a `git apply` instruction).
+- diff-bug #3: the leak search terms miss the branch name and the T1 commit subject — fix now, fixed d110cb73 (wider search over the 18 reviewer transcripts recorded: one run listed the scratchpad names `m269` and `m269-criteria.md` and read neither; one unrelated "planted" hit).
+- diff-bug #4: the judges read their prompt from a file in the report directory, not inline as the design says, and the note did not call it a deviation — fix now, fixed d110cb73 (deviation recorded under Judging).
+- diff-bug #5: the "fixed before any run" heading covers text added after the runs — fix now, fixed d110cb73 (sentence under the heading names the post-run parts).
+- diff-bug #6: the effort-unset bullet applies Sonnet-measured history-reviewer evidence to Haiku reviewers — fix now, fixed d110cb73 (bullet says it was measured on Sonnet, citing D-174).
 - diff-bug #7: the test had little power; the move rests on a ceiling result — follow-up (new row "Harder history-reviewer recall test").
-- diff-bug #8: the CHANGELOG entry omits that both models caught every plant — fix now (one sentence added).
-- diff-bug #9: D-174 calls D-151's count a "near tie"; D-151 says a single-run tie — fix now.
-- diff-bug #10: the INDEX line states no verdict — fix now (verdict and ceiling added).
-- diff-bug #11: the Haiku bullet's edit-work rules read as covering the review lenses — fix now (lenses in their own sentence, findings settled at review step 5).
+- diff-bug #8: the CHANGELOG entry omits that both models caught every plant — fix now, fixed d110cb73 (one sentence added).
+- diff-bug #9: D-174 calls D-151's count a "near tie"; D-151 says a single-run tie — fix now, fixed d110cb73.
+- diff-bug #10: the INDEX line states no verdict — fix now, fixed d110cb73 (verdict and ceiling added).
+- diff-bug #11: the Haiku bullet's edit-work rules read as covering the review lenses — fix now, fixed d110cb73 (lenses in their own sentence, findings settled at review step 5).
 - diff-bug #12: the "Haiku for the remaining Sonnet roles" row still says the reviewers stay on Sonnet — reject (planned change: post-merge hygiene narrows the row).
 - blame-history #1: D-174 trades D-016's missed-bug reason for cost on a ceiling result — follow-up (same new row; the user's condition and the ceiling go to the merge question).
-- blame-history #2: D-174 cites M264 precision without its margin — fix now (D-174 says the margin is small enough for one judged finding to flip).
-- blame-history #3: the Haiku bullet's verify-the-diff guard does not apply to review lenses — fix now (same edit as diff-bug #11).
-- blame-history #4: D-174 paraphrases the user's condition more loosely than the work log — fix now (D-174 quotes the work-log wording).
-- prior-review #1: same as diff-bug #1 (PR 247's point on revising an earlier Unreleased bullet) — fix now (same edit).
+- blame-history #2: D-174 cites M264 precision without its margin — fix now, fixed d110cb73 (D-174 says the margin is small enough for one judged finding to flip).
+- blame-history #3: the Haiku bullet's verify-the-diff guard does not apply to review lenses — fix now, fixed d110cb73 (same edit as diff-bug #11).
+- blame-history #4: D-174 paraphrases the user's condition more loosely than the work log — fix now, fixed d110cb73 (D-174 quotes the work-log wording).
+- prior-review #1: same as diff-bug #1 (PR 247's point on revising an earlier Unreleased bullet) — fix now, fixed d110cb73 (same edit).
 - prior-review #2: one judge per run pair is fragile against judge disagreement — follow-up (same new row names a second judge).
-- prior-review #3: the rulebook-mass baseline (682 / 65,674) was not re-seeded though this branch edits the rulebook — fix now (re-seeded to 715 lines / 69,276 bytes at all three sites: `skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`).
-- prior-review #4: same as diff-bug #11 — fix now (same edit).
-- prior-review #5: same as diff-bug #8 — fix now (same edit).
+- prior-review #3: the rulebook-mass baseline (682 / 65,674) was not re-seeded though this branch edits the rulebook — fix now, fixed d110cb73 (re-seeded to 715 lines / 69,276 bytes at all three sites: `skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`).
+- prior-review #4: same as diff-bug #11 — fix now, fixed d110cb73 (same edit).
+- prior-review #5: same as diff-bug #8 — fix now, fixed d110cb73 (same edit).
+- conversation: PR #281 — empty read (0 reviews, 0 conversation comments, 0 review threads).
+- Copilot level: no review. The step-2 request (`gh pr edit 281 --add-reviewer @copilot`) exited 0, but at the read the state query printed `none` and the PR's requested reviewers and timeline show no Copilot request, so nothing was waited on.
 - After fixes: verify slot green (scripts 409 OK, hooks 179 OK, both validates, plugin test 2018 pass), `skills/tests` 822 OK, `cairn_validate` exit 0.
