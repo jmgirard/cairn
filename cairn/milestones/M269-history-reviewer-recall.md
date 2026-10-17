@@ -7,7 +7,7 @@
 - **Principles touched:** IP4
 - **Resolves:** —
 - **Surface tier:** user-facing — a `move` verdict changes the model of two reviewers in every adopter's `/milestone-review`
-- **Branch/PR:** m269-history-reviewer-recall
+- **Branch/PR:** m269-history-reviewer-recall, https://github.com/jmgirard/cairn/pull/281
 
 ## Goal
 
