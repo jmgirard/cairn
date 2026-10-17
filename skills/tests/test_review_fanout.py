@@ -10,7 +10,8 @@ the load-bearing pieces against silent regression:
   * the prior-PR lens reading archived Review sections first, walking PR
     threads only behind a probe, always spawned, and scoring nothing itself;
   * the reviewers reminded to use ref-based git only in the shared tree;
-  * the model-strategy section counting three distinct-evidence reviewers.
+  * the model-strategy section counting three distinct-evidence reviewers
+    and naming the two history lenses under Haiku, never Sonnet (M269).
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -82,6 +83,15 @@ class TestReviewFanout(unittest.TestCase):
         r = rules()
         self.assertRegex(r, r"[Tt]hree distinct-evidence reviewers")
         self.assertIn("prior-PR", r)
+
+    def test_model_strategy_routes_history_lenses_to_haiku(self):
+        # M269 (D-174): the review bullet names both history lenses under
+        # Haiku, and no bullet names them under Sonnet. Whitespace is
+        # collapsed so a wrap between the model and the lens name still
+        # matches (the bullet wraps there today).
+        r = " ".join(rules().split())
+        self.assertIn("Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments", r)
+        self.assertNotRegex(r, r"Sonnet (blame-history|prior-PR-comments)")
 
 
 class TestPriorPRLens(unittest.TestCase):
