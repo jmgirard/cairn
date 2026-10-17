@@ -71,6 +71,11 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - 2026-10-17: claim audit: 14 claims read, 0 corrected — CHANGELOG.md, scripts/tests/test_scripts.py, skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, skills/tests/test_review_fanout.py
 - 2026-10-17: implement complete; status → review.
 - 2026-10-17: step-7 decline: the user asked "should we test subtle ones?" and then chose "Test first, inside M269": hold the merge, add a harder plant set (larger diffs, conflicts away from the changed lines' blame, no failing test, two judges per run pair), and move the reviewers to Haiku only if Haiku catches at least 0.9 times what Sonnet catches on that set. Tasks T7 to T11 added; PR #281 stays open; status → in-progress. The candidate row "Harder history-reviewer recall test" is absorbed (started token).
+- 2026-10-17: re-audit: AC3 (full) — revision 1: 7 findings: key and blame ranges committed before the runs would leak; the blame test checked only the commit the key names; no test-file edits rule; the 100-line floor could be met by reflow; "two judges" and "all 18" ambiguous; the clone needs the task commits fetched; the leak search and mapping-timing statement were missing.
+- 2026-10-17: re-audit: AC4 (full) — revision 1: 2 findings: D-174 handling unclear between "new entry", "update", and "replace"; the `stay` branch left other Haiku wording under `skills/` unchecked.
+- 2026-10-17: re-audit: AC3 (full) — revision 2: 3 findings: `--numstat` cannot count lines outside hunks; an in-place revert of a fix or addition always blames the key commit, so those forms need a bypass plant, and the `git log -S` string was ambiguous; no task records the blame runs, clone runs, re-hash, and leak search.
+- 2026-10-17: re-audit: AC4 (full) — revision 2: 1 finding: rewriting D-174 in place breaks the append-only rule (D-102 rules that unmerged entries get no exception); a new entry must annotate or supersede it. The same finding shows that the review fixes at `d110cb73` edited D-174 in place, an IP4 breach the new entry records.
+- 2026-10-17: second re-audit on AC3 and AC4 reached: further wording goes to the user (implement step 6).
 
 ## Decisions
 
