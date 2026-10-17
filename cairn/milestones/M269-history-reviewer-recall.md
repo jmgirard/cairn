@@ -184,3 +184,9 @@ Review pass 3, 2026-10-17, on head `9d0317df` (after the AC3 amendment return an
 - blame-history #3: CHANGELOG states the detection reading without the catch-rule count — fix now (same edit as diff-bug #5, which names both).
 - prior-review #1: the re-seed diverges from PR #244's intent — reject (same as blame-history #1).
 - After fixes: `skills/tests` 822 OK, `scripts/tests` 409 OK, `cairn_validate` exit 0 with the one sizing WARN; ROADMAP 54 lines / 21,813 bytes, under its caps.
+- copilot: cairn/milestones/M269-history-reviewer-recall.md:30 (AC3 to AC5 unticked) — fix now, fixed 63a1cfa2 (replied, resolved).
+- copilot: cairn/references/history-review-recall.md:8 (provenance names three task commits) — fix now, fixed 88d76d44 (replied, resolved).
+- copilot: review body (PR description stale on the harder set) — fix now (PR body rewritten with both sets, the two counts, and the README carrier limit).
+- copilot: review body (fan-out tests lack a focused Haiku/Sonnet routing assertion) — fix now, fixed afb9f56e (new `test_model_strategy_routes_history_lenses_to_haiku`; passes on the branch, fails on `main`'s rulebook with the expected assertion; `skills/tests` 823 OK).
+- Copilot level: Lite (set by GitHub's settings).
+- conversation: PR #281 — one Copilot review (`COMMENTED`, on `b34d020e`), whose two threads and two body items are the `copilot:` lines above; no other review, conversation comment, or thread.
