@@ -1,6 +1,6 @@
 # M269: Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -63,6 +63,8 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - 2026-10-17: T5 decision: the pre-registered rule gives `move`, so T5 takes the `move` branch as planned. The ceiling result goes to the merge question for the user's view instead of a mid-run stop, because the plan fixed the rule and named this reading (AC2's ceiling clause).
 - 2026-10-17: T5: both lens bullets in `skills/milestone-review/SKILL.md` now say Haiku; tracking-rules moves the two lenses from the Sonnet bullet to the Haiku bullet (cites D-174) and names them Haiku in the review bullet; `test_review_fanout.py` pins and docstring updated; D-174 appended; CHANGELOG entry added. Whitespace-collapsed sweep of tracked files outside `cairn/` for the old wordings found no hit; the remaining Sonnet mentions are Explore searches, which stay.
 - 2026-10-17: T6: verify green from the repo root, each exit code 0 (scripts 409 OK, hooks 179 OK, both manifest validates, plugin test 2018 pass). Hand-run `skills/tests` first failed one case: the new note's extraction line lacked its `— observed` stamp; fixed, then 822 OK, and the scripts suite still OK with the `exempt` pin.
+- 2026-10-17: claim audit: 14 claims read, 0 corrected — CHANGELOG.md, scripts/tests/test_scripts.py, skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, skills/tests/test_review_fanout.py
+- 2026-10-17: implement complete; status → review.
 
 ## Decisions
 
