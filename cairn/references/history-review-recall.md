@@ -91,6 +91,12 @@ history it conflicts with):
 > `A <plant id>: MISSED`, each with a one-sentence reason, then the B
 > lines, then `A numbered findings: <n>` and `B numbered findings: <n>`.
 
+**Catch rule.** A run catches a plant when one numbered finding cites the
+plant's file and either a line inside the plant's changed hunk or the
+changed text, and also names the history that the key names, or the
+milestone, commit, D-entry, or review that carries it. The judge prompt
+carries the same rule.
+
 **Judging.** One Opus judge marks each task's run index r. It reads the
 Sonnet run r report and the Haiku run r report under labels A and B. The
 labels are drawn with `random.SystemRandom` and written to a mapping file
@@ -102,7 +108,7 @@ caught divided by 2) over its three runs, and sum the means over the three
 tasks. The verdict is `move` when Sonnet's sum is above zero and Haiku's
 sum is at least 0.9 times Sonnet's sum. Otherwise the verdict is `stay`.
 
-## Plants (copied from the key file after the judges returned)
+### Plants and answer key (copied from the key file after the judges returned)
 
 The key file matched its design-time sha256 when it was read back on
 2026-10-17. Design part (2), the patch of each task, is `git diff c56be32
