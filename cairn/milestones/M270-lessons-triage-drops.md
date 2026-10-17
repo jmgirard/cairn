@@ -88,3 +88,39 @@ Evidence, gathered 2026-10-17 on the review head by whitespace-normalized phrase
 - AC6: `cairn/DECISIONS.md:6407` holds `### D-177`, the one new entry on the branch (`git diff main...HEAD -- cairn/DECISIONS.md` adds one heading). Its heading supersedes D-169's false-lesson clause and its clause that D-051's exits stand, and annotates D-045 and D-051. Its Decision opens "In `/cairn-triage lessons` only" and covers the three exits, `correct`, and the near-cap rule; it states "The `/milestone-review` hygiene check stays as D-051 scopes it"; its Context names the D-108 trigger (the shipped pass kept lessons it found false in a file at its caps).
 - AC7: `skills/shared/tracking-rules.md:126` opens "At review hygiene, three exits", and :134 reads "At review hygiene, retirement removes the redundant, never the merely disputed (a disputed lesson is corrected, not deleted)"; :137-139 name `refuted`, `obsolete`, `planner test`, and "corrects a false lesson in place". `README.md:627` reads "can drop a false or obsolete lesson or correct one". The CHANGELOG.md Unreleased entry for `/cairn-triage lessons` names the false, obsolete, and planner exits and the in-place correction; `grep -n 'flagged for correction\|finds false' CHANGELOG.md` returns nothing. Guards `test_rulebook_names_the_on_demand_pass` and `test_readme_names_the_pass` pass.
 - Consistency gate: `cairn_validate.py` all checks passed. Verify on the review head: scripts, hooks, and skills suites exit 0; plugin validate passes; marketplace validate passes with no `plugins[N].version` warning; `claude plugin test` 2018 pass, 0 fail. CHANGELOG has an Unreleased entry with no milestone number (`grep -c M270 CHANGELOG.md` is 0). No DESIGN.md principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a second Amend shows no table, so a `correct` or `compress` named there has no shown line — fix now, fixed 7c79b987 (every Amend round re-shows new lines).
+- diff-bug #2: `correct` needs no evidence, so a disputed lesson can be rewritten — fix now, fixed 7c79b987 (its reason quotes evidence; D-178).
+- diff-bug #3: guest reads use `ls` on a ref, and `cairn/` is untracked there — fix now, fixed 7c79b987 (`git cat-file -e` at the ref, `cairn/` on disk, reachable commit).
+- diff-bug #4: D-177 Context carries a derived count — fix now by D-178 clause (1), fixed 7c79b987 (D-177 not edited, D-175 precedent).
+- diff-bug #5: the new `corrected YYYY-MM-DD` mark differs from `corrected M75` and leaves an existing mark unstated — fix now in the skill, fixed 7c79b987; the rulebook example is rejected for change (false: it is an example, not the only form).
+- diff-bug #6: "refuted premise" listed as not applying while `refuted` is an exit — fix now, fixed 7c79b987 (the five exits replace the default classes).
+- diff-bug #7: owner-mode commit message names exits without evidence — fix now, fixed 7c79b987.
+- diff-bug #8: D-177 says evidence always makes a lesson leave or be corrected, but pins and live milestones keep it — fix now by D-178 clause (5), fixed 7c79b987.
+- diff-bug #9: D-177 heading says annotates D-051 though it narrows it — fix now by D-178 clause (3), fixed 7c79b987.
+- diff-bug #10: D-177 falsifier misses the plan-gate one — fix now by D-178 clause (6), fixed 7c79b987.
+- diff-bug #11: order of `correct` against a live-milestone `keep` unstated — fix now, fixed 7c79b987 (a pin or live milestone keeps first; the stamp names a false one).
+- diff-bug #12: an `obsolete` commit has no guest reachability rule — fix now, fixed 7c79b987.
+- diff-bug #13: an Amend `keep` has no reason — fix now, fixed 7c79b987 (`kept at the gate`).
+- diff-bug #14: the rulebook reads as six exits — fix now, fixed 7c79b987 ("three drop exits"); rulebook re-seeded to 719 lines / 69,644 bytes at the three sites.
+- diff-bug #15: this repo's LESSONS.md header lists only the review-hygiene exits — reject (false: the header does not say "only", and the file is 108 bytes under its budget).
+- diff-bug #16: CHANGELOG reasons read as facts — fix now, fixed 7c79b987 (one list of five reasons).
+- diff-bug #17: rulebook, README, and some skill sentences unpinned — fix now, fixed 7c79b987 (guards and registry entries added, `assertNotIn` for the removed `keep` sentence).
+- diff-bug #18: D-177 Context fragment — fix now by D-178 clause (2), fixed 7c79b987.
+- blame-history #1: a `refuted` drop deletes a false lesson, which D-177 calls D-045's correction — fix now by D-178 clause (4), fixed 7c79b987; the drop itself is a planned change (question set).
+- blame-history #2: the stamp for a flagged false lesson was removed — fix now, fixed 7c79b987 (restored for a lesson kept by a pin or live milestone).
+- blame-history #3: D-051's two-criteria sentence not marked narrowed — fix now by D-178 clause (3), fixed 7c79b987.
+- blame-history #4: "only" dropped from the compress rule — fix now, fixed 7c79b987.
+- blame-history #5: two mark forms — same as diff-bug #5, fixed 7c79b987.
+- blame-history #6: near-cap figures not derived in D-177, and this repo's file trips the warning — reject (planned change: the derivation is in this file's work log, and D-entries carry no derived measurements).
+- blame-history #7: `planner test` beyond D-108's trigger — reject (planned change: the user asked for it as part of the fix for a file at its caps, and D-177 names the trigger).
+- blame-history #8: seed note lost the M267 and M268 history — reject (style: the note names the prior seed, and git holds the rest).
+- blame-history #9: CHANGELOG fragments; README omits the planner and near-cap parts — CHANGELOG fixed 7c79b987 with diff-bug #16; README part rejected (planned change: the criteria audit kept the README cell short).
+- prior-review #1: CHANGELOG wording unpinned, as on PR #275 — reject (style: release prose stays unpinned, the PR #275 disposition under D-109).
+- prior-review #2: the pass now reverses M263's keep-false and ownership dispositions — reject (planned change: D-177 at the user's choice).
+- prior-review #3: Copilot's header thread may be stale — handled by the Copilot line below.
+- prior-review #4: the work log states two rulebook sizes — reject (false as a defect: the work log is append-only, and the later line supersedes).
+- copilot: cairn/milestones/M270-lessons-triage-drops.md:14 (record the PR URL in the header) — fix now, fixed 9cc062e7; replied and resolved.
+- copilot: review body — noted (its one item is the thread above).
+- Copilot level: unknown, since the review body has no effort line (set by GitHub's settings).
+- Verify after the fixes (head 7c79b987): scripts, hooks, and skills suites exit 0; both plugin validates pass with no version warning; `claude plugin test` 2018 pass; `cairn_validate` all checks passed. Defect-return count 0, amendment-return count 0.
