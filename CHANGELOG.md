@@ -60,8 +60,9 @@
   lesson and proposes one disposition each at the triage gate: keep it,
   shorten it, correct it, merge it into another lesson, retire it, or hand
   a family of lessons to `/milestone-plan` to become a shared doctrine
-  module. A retirement names its reason. A test fails on the mistake the lesson warns
-  about, or a tracking file already holds the lesson. Evidence read in the
+  module. A retirement names its reason. A test fails on the mistake the
+  lesson warns about, or a tracking file already holds the lesson.
+  Evidence read in the
   pass shows the lesson false, or shows that the repo no longer has the
   path or tool it is about. Or a planner loses nothing without the line.
   A false lesson that is still partly useful is corrected in place
