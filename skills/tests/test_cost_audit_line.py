@@ -67,7 +67,7 @@ class TestCostAuditLine(unittest.TestCase):
         # lesson-retirement bullet to review hygiene and named the lessons
         # pass's added exits; the prior seed was M269's 715 lines /
         # 69,276 bytes).
-        self.assertIn("719 lines / 69,612 bytes", self.text)
+        self.assertIn("719 lines / 69,651 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.

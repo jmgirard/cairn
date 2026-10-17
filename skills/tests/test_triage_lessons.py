@@ -207,7 +207,9 @@ class TestLessonDispositions(unittest.TestCase):
     def test_planner_test(self):
         text = section()
         self.assertIn(
-            "Its reason names what a planner loses without the line", text
+            "or else what a planner loses without the line (the planner "
+            "test, below).",
+            text,
         )
         self.assertIn(
             "A `keep` whose reason is already fixed needs no answer: a pin "

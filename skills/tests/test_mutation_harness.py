@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="719 lines / 69,612 bytes",
+        block="719 lines / 69,651 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4523,7 +4523,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_planner_test",
         target=TRIAGE,
-        block="Its reason names what a planner loses without the line",
+        block="or else what a planner loses without the line (the planner test, below).",
     ),
     Mutation(
         guard="test_triage_lessons",

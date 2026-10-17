@@ -133,7 +133,7 @@ dispositions, and never `split`, `route`, or `retitle`:
 
 | Disposition | Lesson meaning |
 |---|---|
-| `keep` | Unchanged. Its reason names what a planner loses without the line (the planner test, below). |
+| `keep` | Unchanged. Its reason names a pin file, a live milestone, or a merge survivor, or else what a planner loses without the line (the planner test, below). |
 | `compress` | Shortened, or trimmed to the part no other record covers. |
 | `merge` | Folded into a named surviving lesson on the same subject. The survivor's own proposal is `keep`, its reason `survivor of <subject>`. |
 | `correct` | Rewritten in place because the lesson is false and still holds a part a planner needs. The table shows the corrected line verbatim. |

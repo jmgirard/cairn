@@ -136,9 +136,9 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`;
   prune-the-stalest is the last resort. That pass adds three exits, each decided by the user at its gate: `refuted`
   and `obsolete`, each with evidence read in the pass, and `planner test`, for a line a planner does not need. It also
-  corrects a false lesson in place, and near the caps it proposes shortening long lessons (D-177). The graduated
-  records-hygiene family lives in `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a
-  decision), read at hygiene or plan gates.
+  corrects a false lesson in place, and near the caps it proposes shortening each long lesson or keeping it with a
+  stated reason (D-177). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`
+  (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).
 - **Git is ground truth for code.** Outside commits are reconciled with a catch-up work-log line, never retroactive

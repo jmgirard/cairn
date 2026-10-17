@@ -58,16 +58,17 @@
 
 - **`/cairn-triage lessons` triages `cairn/LESSONS.md`.** It reads every
   lesson and proposes one disposition each at the triage gate: keep it,
-  shorten it, merge it into another lesson, retire it, or hand a family of
-  lessons to `/milestone-plan` to become a shared doctrine module. A
-  retirement names its reason. A test fails on the mistake the lesson warns
+  shorten it, correct it, merge it into another lesson, retire it, or hand
+  a family of lessons to `/milestone-plan` to become a shared doctrine
+  module. A retirement names its reason. A test fails on the mistake the lesson warns
   about, or a tracking file already holds the lesson. Evidence read in the
   pass shows the lesson false, or shows that the repo no longer has the
   path or tool it is about. Or a planner loses nothing without the line.
   A false lesson that is still partly useful is corrected in place
   instead, and the gate shows the new line. When the file is near its
-  caps, long lessons get a shorter version to accept, and the gate warns
-  if the accepted changes leave the file near its caps. A lesson that a
+  caps, each long lesson is proposed for shortening or kept with a reason
+  for each clause. The gate warns if the proposed changes leave the file
+  near its caps. A lesson that a
   test checks for stays as it is. Nothing changes until you accept at the
   gate, and the accepted edits land in one commit (in guest mode, on disk
   with no commit). Plain `/cairn-triage`
