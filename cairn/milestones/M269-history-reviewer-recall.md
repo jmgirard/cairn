@@ -1,6 +1,6 @@
 # M269: Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -83,6 +83,8 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - 2026-10-17: T9: 18 reviewer runs (prompts equal to the first set's apart from the SHA) and 18 Opus judges, two per task and run index under separate label draws; mappings read after all 18 returned. The two judges of each pair agreed on every plant-run. Misses: Sonnet D1 run 2, Sonnet F1 runs 1 and 2, Haiku F1 run 3.
 - 2026-10-17: T10: key file re-hashed equal to the pre-run sha256; leak search 0 hits over 36 transcripts (control 38); verdict `move`, Haiku 2.8333 against Sonnet 2.5000, not at the ceiling. Parts (3) to (6) were appended to the note by script, a departure from the Write/Edit-only rule for repo files, so the 1,200-line patches stay byte-exact; each patch was then checked equal to `git diff` (task E needed a four-backtick fence, since its README hunk holds code fences). D-175 appended. Following D-102, D-174's in-place edit at `d110cb73` was reverted to its first-committed bytes (checked by diff) and its four corrections moved into D-175. CHANGELOG entry and INDEX line cite both sets. Probe refs deleted.
 - 2026-10-17: T11: verify green (scripts 409, hooks 179, both validates, plugin test 2018 pass), `skills/tests` 822 OK, rulebook unchanged at the re-seeded 715 lines / 69,276 bytes.
+- 2026-10-17: claim audit: 15 claims read, 0 corrected — CHANGELOG.md, scripts/tests/test_scripts.py, skills/milestone/SKILL.md, skills/milestone-review/SKILL.md, skills/shared/tracking-rules.md, skills/tests/test_cost_audit_line.py, skills/tests/test_mutation_harness.py, skills/tests/test_review_fanout.py
+- 2026-10-17: implement complete after the harder set; status → review.
 - 2026-10-17: queued from the intraclass session: candidate row "Lessons triage drops too little" (user request relayed by that session), to promote after M269.
 - 2026-10-17: amendment rejected alternative: the plan gate weighed the simpler harder test (larger diffs and two judges only) and chose revision 3 because each subtlety condition gets a stated check review can run; falsified by a harder set whose blame and clone checks pass while a reader can still see the conflict from the changed lines alone.
 
