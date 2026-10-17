@@ -48,7 +48,7 @@
 - [x] T1: Append the decision entry in the shape of `skills/shared/templates/decision.md` (AC6). Read D-045, D-051, D-055, D-108, and D-169 whole first.
 - [x] T2: Edit the lessons pass in `skills/cairn-triage/SKILL.md` (AC1 to AC5). Change the step-2 table and the rules after it: the five exits, `correct`, the planner test, and the near-cap rule. Change step 3 for the `correct` text and the warning. Change step 4 so `correct` edits the file and counts against the caps. Change steps 5 to 7 so the stamp, the commit message, and the close block name corrections and the new exits. Remove the flag-only run of steps 4 to 6 for a false lesson. Update the skill's description line if its wording no longer fits.
 - [x] T3: Update the prose guards in `skills/tests/test_triage_lessons.py`. Replace `test_five_dispositions_only`, `test_a_false_lesson_is_keep`, and `test_drop_names_an_exit`, and add one guard per new rule. Hand-run `python3 -m unittest discover -s skills/tests` from the repo root and check its exit code.
-- [ ] T4: Edit the rulebook bullet, the README row, and the CHANGELOG Unreleased entry (AC7). Then run `git grep -n -i -E "found false|stays .keep|two exits|length alone" -- skills README.md CHANGELOG.md` and fix each stale hit outside `skills/tests`.
+- [x] T4: Edit the rulebook bullet, the README row, and the CHANGELOG Unreleased entry (AC7). Then run `git grep -n -i -E "found false|stays .keep|two exits|length alone" -- skills README.md CHANGELOG.md` and fix each stale hit outside `skills/tests`.
 - [ ] T5: Run steps 1 to 3 of the new pass read-only over this repo's `cairn/LESSONS.md` (47 lines and 18,996 bytes by `wc` at plan time). Pose no chip and apply nothing. Log one work-log line with the counts of each exit, each `correct`, and each near-cap `compress` that fire.
 
 ## Work log
@@ -68,6 +68,7 @@
 - 2026-10-17: T1 done: D-177 appended. It supersedes two D-169 clauses, annotates D-045 and D-051, and names the D-108 trigger.
 - 2026-10-17: T2 done: the lessons pass has six dispositions, five drop exits, the planner test, the near-cap rule, and the gate warning. The skill description now says "correct". Its review-hygiene pointer cites D-177. The new sentences pass the simple-english sentence checks, and the file's older hits stay as they were.
 - 2026-10-17: T3 done: the guards in `test_triage_lessons.py` now pin each new rule (25 tests). All 10 new or changed guards fail on the main-branch skill text. The mutation-harness registry was updated for the renamed tests and new blocks, which T3 did not name (minor amendment). Verify: scripts, hooks, and skills suites green, both plugin validates pass, `claude plugin test` 2018 pass.
+- 2026-10-17: T4 done: the rulebook bullet scopes its three exits and "corrected, not deleted" to review hygiene and names the pass's three added exits, the correction, and the near-cap rule (D-177). README row and CHANGELOG Unreleased entry updated. The rulebook grew to 719 lines / 69,612 bytes, so the three rulebook-size sites were re-seeded (`skills/milestone/SKILL.md`, `test_cost_audit_line.py`, `test_mutation_harness.py`), and the rulebook registry block was rewrapped (minor amendment). The old-wording `git grep` found two hits outside `skills/tests`, both current text: the near-cap sentence and an unrelated `retitle` keep. Suites green, validate green.
 
 ## Decisions
 

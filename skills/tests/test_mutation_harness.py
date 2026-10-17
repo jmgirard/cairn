@@ -117,7 +117,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="715 lines / 69,276 bytes",
+        block="719 lines / 69,612 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4649,7 +4649,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestSurfacesNameThePass.test_rulebook_names_the_on_demand_pass",
         target=RULES,
-        block="and over the whole file only when the\n  user runs `/cairn-triage lessons`",
+        block="and over the whole file only when the user runs `/cairn-triage lessons`",
     ),
     Mutation(
         guard="test_triage_lessons",

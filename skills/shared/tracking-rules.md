@@ -123,18 +123,22 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   never append a correction leaving the wrong text readable. Exception: a wrong IP/GP *principle* still changes only by
   explicit user decision recorded as a D-entry — in owner mode; in guest mode a principle maintainer feedback
   contradicts is corrected in place with no D-entry, per the "Collaboration mode" bullet on DESIGN.md.
-- **Retiring a lesson that no longer earns its line.** Three exits: **enforcement** — a test *fails* on the mistake the
-  lesson warns about (a guard merely existing nearby is not enforcement); **ownership** — another tracking file's slot
-  owns the content (the retiring milestone may *move* it there); **maturation** — a stabilized family graduates whole
-  into a doctrine module, when it teaches transferable craft, has been extended or consolidated at least twice, and
-  neither other exit applies. The graduating milestone writes the module's line and byte budget into the module's own
-  header — set from the graduated size plus stated headroom — hand-read with `wc -l -c` at the repo's hygiene passes
-  and covered by no validator. A lesson covered in part is trimmed to its remainder; a retired lesson leaves no line
-  behind — the archive summary names what it graduated (the stamp and commit message, for `/cairn-triage lessons`).
-  Retirement removes the redundant, never the merely disputed (a disputed lesson is corrected, not deleted). Checked at
-  `/milestone-review` post-merge hygiene, scoped to what the milestone shipped, and over the whole file only when the
-  user runs `/cairn-triage lessons`; prune-the-stalest is the last resort. The graduated records-hygiene family lives in
-  `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
+- **Retiring a lesson that no longer earns its line.** At review hygiene, three exits: **enforcement** — a test
+  *fails* on the mistake the lesson warns about (a guard merely existing nearby is not enforcement); **ownership** —
+  another tracking file's slot owns the content (the retiring milestone may *move* it there); **maturation** — a
+  stabilized family graduates whole into a doctrine module, when it teaches transferable craft, has been extended or
+  consolidated at least twice, and neither other exit applies. The graduating milestone writes the module's line and
+  byte budget into the module's own header — set from the graduated size plus stated headroom — hand-read with
+  `wc -l -c` at the repo's hygiene passes and covered by no validator. A lesson covered in part is trimmed to its
+  remainder; a retired lesson leaves no line behind — the archive summary names what it graduated (the stamp and
+  commit message, for `/cairn-triage lessons`). At review hygiene, retirement removes the redundant, never the merely
+  disputed (a disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to
+  what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`;
+  prune-the-stalest is the last resort. That pass adds three exits, each decided by the user at its gate: `refuted`
+  and `obsolete`, each with evidence read in the pass, and `planner test`, for a line a planner does not need. It also
+  corrects a false lesson in place, and near the caps it proposes shortening long lessons (D-177). The graduated
+  records-hygiene family lives in `skills/shared/records-hygiene.md` (candidate-row lifecycle; superseding a
+  decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).
 - **Git is ground truth for code.** Outside commits are reconciled with a catch-up work-log line, never retroactive
