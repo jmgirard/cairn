@@ -134,7 +134,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   commit message, for `/cairn-triage lessons`). At review hygiene, retirement removes the redundant, never the merely
   disputed (a disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to
   what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`;
-  prune-the-stalest is the last resort. That pass adds three exits, each decided by the user at its gate: `refuted`
+  prune-the-stalest is the last resort. That pass adds three drop exits, each decided at its gate: `refuted`
   and `obsolete`, each with evidence read in the pass, and `planner test`, for a line a planner does not need. It also
   corrects a false lesson in place, and near the caps it proposes shortening each long lesson or keeping it with a
   stated reason (D-177). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`

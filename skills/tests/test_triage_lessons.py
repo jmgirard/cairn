@@ -167,9 +167,26 @@ class TestLessonDispositions(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "The reads behind a `refuted` or `obsolete` exit run at that ref "
-            "too.",
+            "The reads behind a `refuted`, `obsolete`, or `correct` proposal "
+            "run at that ref too. There a code path is checked with `git "
+            "cat-file -e` at that ref in place of `ls`. A "
+            "`cairn/` path is checked on disk, since `cairn/` is untracked at "
+            "that ref. A commit that an `obsolete` drop names is reachable "
+            "from that ref.",
             text,
+        )
+        self.assertNotIn(
+            "A lesson about a path or tool the repo no longer has is `keep`",
+            text,
+        )
+
+    def test_a_kept_false_lesson_reaches_the_stamp(self):
+        self.assertIn(
+            "A pin or a live milestone makes a lesson `keep` before any other "
+            "rule. If such a lesson is false or obsolete, steps 4 to 6 still "
+            "run for the stamp, even when every proposal is `keep`. The stamp "
+            "names the lesson and the evidence.",
+            section(),
         )
 
     def test_promote_states_the_maturation_bar(self):
@@ -198,11 +215,26 @@ class TestLessonDispositions(unittest.TestCase):
         self.assertIn(
             "adds `corrected YYYY-MM-DD`, the pass date, to the line's "
             "parenthesized provenance. A line with no provenance gets one "
-            "after its date. A false lesson with no such part is `drop` with "
-            "the `refuted` exit.",
+            "after its date.",
+            text,
+        )
+        self.assertIn(
+            "A false lesson with no such part is `drop` with the `refuted` "
+            "exit.",
             text,
         )
         self.assertNotIn("A lesson the pass finds false is `keep`", text)
+        self.assertIn(
+            "The table shows the corrected line verbatim. Its reason quotes "
+            "the evidence for the false part, as a `refuted` drop does.",
+            text,
+        )
+        self.assertIn(
+            "The pass has no milestone id, so its mark takes the date. A "
+            "`corrected` mark already on the line stays, and the new mark "
+            "follows it.",
+            text,
+        )
 
     def test_planner_test(self):
         text = section()
@@ -228,6 +260,11 @@ class TestLessonDispositions(unittest.TestCase):
         self.assertIn(
             "A file at 45 lines or more, or 18,000 bytes or more, is near its "
             "caps",
+            text,
+        )
+        self.assertIn(
+            "A lesson compresses only where it restates what another record "
+            "says, or by the near-cap rule.",
             text,
         )
         self.assertIn(
@@ -272,9 +309,22 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
         )
 
     def test_correct_applies_the_gate_text(self):
+        text = section()
+        self.assertIn(
+            "A `correct`, and a near-cap `compress`, show the new line "
+            "verbatim.",
+            text,
+        )
+        self.assertIn(
+            "An Amend that makes a lesson `correct` or `compress` names its "
+            "new line. In every Amend round, the pass shows that line again "
+            "before it poses the chip. A lesson the user moves to `keep` at "
+            "an Amend takes the reason `kept at the gate`.",
+            text,
+        )
         self.assertIn(
             "A `correct` replaces the line with the text the gate showed.",
-            section(),
+            text,
         )
 
     def test_record_names_drops_merges_and_corrections(self):
@@ -287,8 +337,9 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
             "The stamp and the commit message name each dropped lesson by its "
             "date and provenance with its exit. They name each merged-away "
             "lesson with its survivor, and each corrected lesson by its date "
-            "and provenance. In guest mode the stamp alone names them, with "
-            "their evidence.",
+            "and provenance. The commit message also gives the evidence for "
+            "each `refuted` or `obsolete` drop and each `correct`. In guest "
+            "mode the stamp alone names them, with their evidence.",
             text,
         )
 
@@ -302,17 +353,27 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
 
 class TestSurfacesNameThePass(unittest.TestCase):
     def test_rulebook_names_the_on_demand_pass(self):
+        text = read("shared/tracking-rules.md")
         self.assertIn(
             "and over the whole file only when the user runs `/cairn-triage "
             "lessons`",
-            read("shared/tracking-rules.md"),
+            text,
         )
+        self.assertIn("At review hygiene, three exits:", text)
+        self.assertIn(
+            "That pass adds three drop exits, each decided at its gate: "
+            "`refuted` and `obsolete`, each with evidence read in the pass, "
+            "and `planner test`",
+            text,
+        )
+        self.assertIn("It also corrects a false lesson in place", text)
 
     def test_readme_names_the_pass(self):
         text = norm((ROOT / "README.md").read_text(encoding="utf-8"))
         self.assertIn(
             "`/cairn-triage lessons` does the same for each lesson in "
-            "`cairn/LESSONS.md`",
+            "`cairn/LESSONS.md`, and can drop a false or obsolete lesson or "
+            "correct one",
             text,
         )
 

@@ -6445,3 +6445,34 @@ merely disputed, with no evidence, still stays. D-045's rule that a false
 record is corrected in place holds, and the pass now does it. If a lesson
 dropped by `planner test` or `obsolete` is found to have warned of a trap
 that then recurs, this is the entry to supersede.
+
+### D-178 (2026-10-17): Six clauses of D-177 are corrected in one batched entry, and `/cairn-triage lessons` gains an evidence rule for `correct` and a stamp for a kept false lesson — supersedes those clauses, narrows D-051's truth clause and D-045's correction rule for the pass; D-177's decision stands (M270 review)
+
+**Context:** M270's review found D-177's wording wrong in six places and
+two gaps in the pass that D-177 left open. D-177 is history, so it is
+corrected here, not edited (D-175 precedent).
+
+**Decision:** (1) D-177's Context states a count of kept lessons. That
+count belongs in the milestone file, which holds it. The Context's point
+stands without it: the pass kept almost every lesson in a file at its
+caps. (2) D-177's Context sentence "A lesson left only by enforcement or
+ownership (D-051), or by maturation (D-055)" reads: a lesson left only by
+those exits. (3) D-177's heading says it annotates D-051. For the pass it
+narrows D-051: the clause that retirement is never about whether a lesson
+still reads as true now holds at review hygiene only. D-051's two criteria
+stay the review-hygiene exits. (4) D-177 says D-045's rule "holds, and the
+pass now does it". A `correct` does follow D-045. A `refuted` drop deletes
+a false lesson with no true part, which D-045's correction rule did not
+cover, so for the pass it narrows D-045 too. The user chose correct-or-drop
+at M270's question set. (5) D-177 says a lesson with evidence against it
+"leaves or is corrected". A lesson that a pin or a live milestone holds
+stays `keep` whatever the evidence. (6) D-177's falsifier gains the
+plan-gate one: an accepted `correct` line that a later pass finds false
+again. Two rules join the pass. A `correct` quotes its evidence, as a
+`refuted` drop does, so a lesson merely disputed is never rewritten. A
+false or obsolete lesson kept for a pin or a live milestone is named in the
+stamp with its evidence, the record D-169 gave a flagged lesson.
+
+**Consequences:** The skill states both rules, and the CHANGELOG entry
+says the pass corrects with evidence. D-177's decision stands as
+corrected here.
