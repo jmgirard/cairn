@@ -6403,3 +6403,76 @@ limit. The candidate row "Harder history-reviewer recall test", which
 M269 started, graduates at post-merge hygiene. A set whose plants share
 hunks with real edits is the next sharper test, and it promotes only on
 D-174's falsifier.
+
+### D-177 (2026-10-17): `/cairn-triage lessons` drops a lesson shown false or obsolete, or one a planner does not need, corrects a false lesson in the pass, and shortens long lessons near the caps — supersedes D-169's false-lesson clause and its clause that D-051's exits stand; annotates D-045 and D-051 (M270)
+
+**Context:** In the intraclass repo the pass kept 38 of 40 lessons. The
+file stayed at its byte budget, so review hygiene still had no room to
+capture a lesson. Two kept lessons were false, and the pass knew it. The
+operator had to override the skill to drop one. The causes were in the
+skill. A lesson left only by enforcement or ownership (D-051), or by
+maturation (D-055). D-169 kept a found-false lesson `keep` for a later
+milestone. Length never fired a `compress`. And `keep` was the default.
+This is a change to a rule about auditing a record. It passes D-108's door
+on its retained trigger: the shipped pass kept lessons it found false in a
+file at its caps, a defect in what the skill does for its users.
+
+**Decision:** In `/cairn-triage lessons` only, a `drop` names one of five
+exits. Enforcement and ownership stay as D-051 and D-169 state them.
+`refuted` quotes evidence read in the pass that shows the lesson's premise
+false. `obsolete` quotes a read that shows the repo no longer has the
+path, tool, or command the lesson is about, or names the commit that
+removed it. `planner test` applies when the pass can name nothing a
+planner loses without the line and no tracking file holds it. Each such
+drop states its reason, and the user decides each one at the gate. A
+lesson found false that still holds a useful part takes a new disposition,
+`correct`. The pass shows the corrected line at the gate and marks it
+`corrected YYYY-MM-DD` (D-045's in-place correction, done in the pass). At
+45 lines or 18,000 bytes, each lesson over 400 bytes is proposed for
+`compress` or kept with a reason for each clause. The chip warns when the
+proposals leave the file at or over those figures. The `/milestone-review`
+hygiene check stays as D-051 scopes it, with its three exits.
+
+**Rejected:** Always dropping a false lesson, which loses its true part.
+Keeping the planner test to `keep` reasons alone, which leaves a full file
+full. Keeping length out of `compress`, for the same reason. All three
+were the user's choice at M270's question set.
+
+**Consequences:** D-051's statement that retirement is never about whether
+a lesson still reads as true now holds at review hygiene only. In the pass,
+a lesson with evidence against it leaves or is corrected, and a lesson
+merely disputed, with no evidence, still stays. D-045's rule that a false
+record is corrected in place holds, and the pass now does it. If a lesson
+dropped by `planner test` or `obsolete` is found to have warned of a trap
+that then recurs, this is the entry to supersede.
+
+### D-178 (2026-10-17): Six clauses of D-177 are corrected in one batched entry, and `/cairn-triage lessons` gains an evidence rule for `correct` and a stamp for a kept false lesson — supersedes those clauses, narrows D-051's truth clause and D-045's correction rule for the pass; D-177's decision stands (M270 review)
+
+**Context:** M270's review found D-177's wording wrong in six places and
+two gaps in the pass that D-177 left open. D-177 is history, so it is
+corrected here, not edited (D-175 precedent).
+
+**Decision:** (1) D-177's Context states a count of kept lessons. That
+count belongs in the milestone file, which holds it. The Context's point
+stands without it: the pass kept almost every lesson in a file at its
+caps. (2) D-177's Context sentence "A lesson left only by enforcement or
+ownership (D-051), or by maturation (D-055)" reads: a lesson left only by
+those exits. (3) D-177's heading says it annotates D-051. For the pass it
+narrows D-051: the clause that retirement is never about whether a lesson
+still reads as true now holds at review hygiene only. D-051's two criteria
+stay the review-hygiene exits. (4) D-177 says D-045's rule "holds, and the
+pass now does it". A `correct` does follow D-045. A `refuted` drop deletes
+a false lesson with no true part, which D-045's correction rule did not
+cover, so for the pass it narrows D-045 too. The user chose correct-or-drop
+at M270's question set. (5) D-177 says a lesson with evidence against it
+"leaves or is corrected". A lesson that a pin or a live milestone holds
+stays `keep` whatever the evidence. (6) D-177's falsifier gains the
+plan-gate one: an accepted `correct` line that a later pass finds false
+again. Two rules join the pass. A `correct` quotes its evidence, as a
+`refuted` drop does, so a lesson merely disputed is never rewritten. A
+false or obsolete lesson kept for a pin or a live milestone is named in the
+stamp with its evidence, the record D-169 gave a flagged lesson.
+
+**Consequences:** The skill states both rules, and the CHANGELOG entry
+says the pass corrects with evidence. D-177's decision stands as
+corrected here.
