@@ -73,6 +73,7 @@
 - 2026-10-17: T5 done (read-only, nothing applied): the file is near its caps. `correct` 1: the 2026-08-17 (M149) lesson cites `test_cost_audit_line.py:68`, and the pin now sits at line 70. `refuted` 0. `obsolete` 0: `git grep` finds `check_dangling_ids`, `TestHeadingNormalizationContract`, `CMD_POS`, and `is_guarded_merge`. `planner test` 1 candidate: 2026-08-16 (M146), a one-off count. Ownership 1 candidate: 2026-07-27 (M114), held by the rulebook's record-prose rule. Near-cap: 19 lessons are over 400 bytes, and `compress` fits at least the four over 1,000 bytes (2026-07-16, 2026-08-29, 2026-10-01, 2026-10-03).
 - 2026-10-17: claim audit: 75 claims read, 4 corrected — CHANGELOG.md (the warning counts proposals, not accepted changes; near-cap lessons are shortened or kept with a reason), tracking-rules.md (same near-cap overstatement), skills/cairn-triage/SKILL.md (the `keep` row now names the fixed pin, milestone, and survivor reasons). The CHANGELOG list of dispositions also gained "correct it". The rulebook re-seeded to 719 lines / 69,651 bytes at the three sites. Verify slot green: three unittest suites, both plugin validates, `claude plugin test` 2018 pass, `cairn_validate` green.
 - 2026-10-17: implement done; status set to `review`.
+- 2026-10-17: step-7 approval: m270-lessons-triage-drops approved for merge
 
 ## Decisions
 
