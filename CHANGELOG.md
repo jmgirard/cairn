@@ -4,6 +4,13 @@
 
 ### Changes that affect existing repos
 
+- **The two history reviewers run on Haiku.** In `/milestone-review`'s
+  three-reviewer fan-out, the blame-history and prior-PR-comments
+  reviewers now run on Haiku 5.5 instead of Sonnet 5.5. The diff-bug
+  reviewer stays on Opus. In the cairn repository's test, Haiku caught as
+  many planted history conflicts as Sonnet
+  (`cairn/references/history-review-recall.md`).
+
 - **A guest milestone can build on one that waits for review.** In guest
   mode with `# Push remote: base`, a `planned` milestone can depend on one
   `blocked` milestone whose file names its PR. `cairn_next.py` and

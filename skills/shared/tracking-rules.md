@@ -610,16 +610,15 @@ These rules bind all chat output while any cairn skill is active.
   many words; the chip says in plain words what an author-inline run means (the work was checked only by the session
   that produced it). An inline author-run is permitted only as a user-accepted, logged deviation naming the
   instruction, never silent. (Skill-site pointers cite this bullet as tracking-rules' freshness-spawns clause.)
-- **Haiku subagents** (D-151): well-specified edit work — mechanical migrations, test writing against a spec,
+- **Haiku subagents** (D-151, D-174): well-specified edit work — mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs and run the `verify` slot before committing; summarize results
-  into one work-log line.
-- **Sonnet subagents**: fan-out searches (Explore), with a reading list naming the files or areas to read; the
-  blame-history and prior-PR-comments lenses of the review fan-out. Summarize an Explore fan-out's results into one
-  work-log line.
+  into one work-log line. Also the blame-history and prior-PR-comments lenses of the review fan-out.
+- **Sonnet subagents**: fan-out searches (Explore), with a reading list naming the files or areas to read. Summarize an
+  Explore fan-out's results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
   milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
-  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Sonnet blame-history, Sonnet
+  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Haiku blame-history, Haiku
   prior-PR-comments — always spawned, no-op without prior-review evidence); reviewers rank their findings, the
   agent settles each one, and the merge question lists every disposition.
 - **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —

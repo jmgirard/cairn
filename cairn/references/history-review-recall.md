@@ -7,7 +7,7 @@ under `~/.claude/projects/-Users-jmgirard-github-cairn/<session>/subagents/`.
 The three task commits are local commits built by M269 on parent
 `c56be32`. They were never pushed.
 Pagination: —.
-Extraction: first-hand run records of 2026-10-17 with nothing to re-verify against. A rerun reproduces the method, not the exact marks.
+Extraction: first-hand run records with nothing to re-verify against, and a rerun reproduces the method, not the exact marks — observed 2026-10-17.
 
 **Scope.** M228 (`haiku-sonnet-roles.md`) and M264 (`haiku-sonnet-rerun.md`)
 scored the two history reviewers by the count of reported findings that an

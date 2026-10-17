@@ -5,7 +5,8 @@ bases) whose ranked findings the maintainer triages at the gate. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
   * three reviewers with *distinct* evidence bases, each naming its model
-    (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments — M40);
+    (Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments — M40,
+    the two history lenses moved from Sonnet to Haiku by M269);
   * the prior-PR lens reading archived Review sections first, walking PR
     threads only behind a probe, always spawned, and scoring nothing itself;
   * the reviewers reminded to use ref-based git only in the shared tree;
@@ -36,8 +37,8 @@ class TestReviewFanout(unittest.TestCase):
     def test_three_distinct_evidence_lenses(self):
         t = review()
         self.assertRegex(t, r"Diff-bug reviewer \(Opus\)")
-        self.assertRegex(t, r"Blame-history reviewer \(Sonnet\)")
-        self.assertRegex(t, r"Prior-PR-comments reviewer \(Sonnet\)")
+        self.assertRegex(t, r"Blame-history reviewer \(Haiku\)")
+        self.assertRegex(t, r"Prior-PR-comments reviewer \(Haiku\)")
 
     def test_evidence_bases_are_distinct_by_design(self):
         # the whole point of the fan-out — a shared base finds things twice
@@ -137,7 +138,7 @@ class TestPriorPRLens(unittest.TestCase):
         # bare "scorer"/"80" assertion that pre-exists and passes even with the
         # lens removed (the M39 false-coverage trap; caught by M40's own review).
         t = review()
-        lens = t.split("Prior-PR-comments reviewer (Sonnet)")[1].split("\n\n")[0]
+        lens = t.split("Prior-PR-comments reviewer (Haiku)")[1].split("\n\n")[0]
         self.assertNotIn("score", lens.lower())
 
 
