@@ -7,11 +7,12 @@
 - **The two history reviewers run on Haiku.** In `/milestone-review`'s
   three-reviewer fan-out, the blame-history and prior-PR-comments
   reviewers now run on Haiku 5.5 instead of Sonnet 5.5. The diff-bug
-  reviewer stays on Opus. In the cairn repository's test, Haiku caught as
-  many planted history conflicts as Sonnet
-  (`cairn/references/history-review-recall.md`). Both models caught every
-  planted conflict, so the test does not show how Haiku does on subtler
-  ones.
+  reviewer stays on Opus. In the cairn repository's test
+  (`cairn/references/history-review-recall.md`), Haiku caught as many
+  planted history conflicts as Sonnet on a first set, which both models
+  caught in full. On a harder set, with each conflict hidden in a larger
+  edit and away from what `git blame` on the changed lines shows, Haiku
+  caught at least as many as Sonnet. Both models missed some.
 
 - **A guest milestone can build on one that waits for review.** In guest
   mode with `# Push remote: base`, a `planned` milestone can depend on one
