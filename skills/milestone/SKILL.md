@@ -115,8 +115,10 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-682 lines / 65,674 bytes (M265, 2026-10-16, the whole file after M265's
-trivial-tier clauses in the git model and tiers; bytes, because a
+715 lines / 69,276 bytes (M269, 2026-10-17, the whole file after M269
+moved the two history reviewers to Haiku; M267 and M268 grew it from the
+M265 seed of 682 lines / 65,674 bytes without re-seeding, so this seed
+also absorbs their growth; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is

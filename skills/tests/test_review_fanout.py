@@ -5,11 +5,13 @@ bases) whose ranked findings the maintainer triages at the gate. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
   * three reviewers with *distinct* evidence bases, each naming its model
-    (Opus diff-bug, Sonnet blame-history, Sonnet prior-PR-comments — M40);
+    (Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments — M40,
+    the two history lenses moved from Sonnet to Haiku by M269);
   * the prior-PR lens reading archived Review sections first, walking PR
     threads only behind a probe, always spawned, and scoring nothing itself;
   * the reviewers reminded to use ref-based git only in the shared tree;
-  * the model-strategy section counting three distinct-evidence reviewers.
+  * the model-strategy section counting three distinct-evidence reviewers
+    and naming the two history lenses under Haiku, never Sonnet (M269).
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -36,8 +38,8 @@ class TestReviewFanout(unittest.TestCase):
     def test_three_distinct_evidence_lenses(self):
         t = review()
         self.assertRegex(t, r"Diff-bug reviewer \(Opus\)")
-        self.assertRegex(t, r"Blame-history reviewer \(Sonnet\)")
-        self.assertRegex(t, r"Prior-PR-comments reviewer \(Sonnet\)")
+        self.assertRegex(t, r"Blame-history reviewer \(Haiku\)")
+        self.assertRegex(t, r"Prior-PR-comments reviewer \(Haiku\)")
 
     def test_evidence_bases_are_distinct_by_design(self):
         # the whole point of the fan-out — a shared base finds things twice
@@ -81,6 +83,15 @@ class TestReviewFanout(unittest.TestCase):
         r = rules()
         self.assertRegex(r, r"[Tt]hree distinct-evidence reviewers")
         self.assertIn("prior-PR", r)
+
+    def test_model_strategy_routes_history_lenses_to_haiku(self):
+        # M269 (D-174): the review bullet names both history lenses under
+        # Haiku, and no bullet names them under Sonnet. Whitespace is
+        # collapsed so a wrap between the model and the lens name still
+        # matches (the bullet wraps there today).
+        r = " ".join(rules().split())
+        self.assertIn("Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments", r)
+        self.assertNotRegex(r, r"Sonnet (blame-history|prior-PR-comments)")
 
 
 class TestPriorPRLens(unittest.TestCase):
@@ -137,7 +148,7 @@ class TestPriorPRLens(unittest.TestCase):
         # bare "scorer"/"80" assertion that pre-exists and passes even with the
         # lens removed (the M39 false-coverage trap; caught by M40's own review).
         t = review()
-        lens = t.split("Prior-PR-comments reviewer (Sonnet)")[1].split("\n\n")[0]
+        lens = t.split("Prior-PR-comments reviewer (Haiku)")[1].split("\n\n")[0]
         self.assertNotIn("score", lens.lower())
 
 

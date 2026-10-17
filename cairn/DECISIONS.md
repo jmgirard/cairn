@@ -6287,3 +6287,119 @@ restack re-runs review and the handoff gate. A milestone on two stack
 bases stops at implement. If a stacked PR reaches the maintainers with a
 base other than the stack base's branch, or a restack replays the stack
 base's commits, this is the entry to supersede.
+
+### D-174 (2026-10-17): The blame-history and prior-PR-comments reviewers run on Haiku 5.5 — supersedes D-151's clause that keeps history review on Sonnet (M269)
+
+**Context:** D-151 moved edit work to Haiku and kept both history
+reviewers on Sonnet by the user's choice, because the valid-finding count
+was a near tie and nothing had tested D-016's reason that a weaker model in
+a review step "can silently drop a real bug". M269 tested that reason with
+planted history conflicts (`cairn/references/history-review-recall.md`).
+Its rule, fixed before the runs, gave `move`: Haiku caught as many planted
+conflicts as Sonnet. Both models caught every plant, so the test shows no
+gap on clear conflicts in a small diff and cannot show one on subtler
+plants. Cost and precision rest on M264 (`haiku-sonnet-rerun.md`).
+
+**Decision:** The blame-history and prior-PR-comments lenses of the
+`/milestone-review` fan-out run on Haiku 5.5. The diff-bug lens stays on
+Opus, and the single-reviewer mode stays one Opus diff reviewer. Explore
+searches stay on Sonnet (D-151). The user chose at M269's plan question
+set to move the reviewers if Haiku held up on missed findings.
+
+**Rejected:** Keeping both reviewers on Sonnet until a harder plant set
+runs, because the user's condition was the planted test as designed and
+its rule gave `move`; falsified by a harder planted set on which Haiku's
+recall falls below 0.9 times Sonnet's. Moving only one of the two lenses,
+because both lenses caught every plant and M264 scored them as one group.
+
+**Consequences:** `skills/milestone-review/SKILL.md` names both lenses as
+Haiku, and tracking-rules "Model and agent strategy" lists them under
+Haiku subagents. The effort-unset evidence for history review
+(`effort-roles.md`, `effort-review-medium.md`) was measured on Sonnet, and
+no effort run exists on Haiku for these roles; effort stays unset
+(D-157). This entry is falsified by a real conflict that a later review's
+Haiku history lens missed and that a Sonnet rerun of the same lens on the
+same diff catches.
+
+### D-175 (2026-10-17): A harder planted-conflict set confirms D-174's move of the history reviewers to Haiku; D-174's in-place edit at d110cb73 is recorded as an append-only breach and reverted, and four of its clauses are corrected here — annotates D-174, supersedes those clauses (M269)
+
+**Context:** D-174 rested on a first planted set that both models caught in
+full, so it could not show a gap on subtler conflicts. At M269's merge
+question the user asked to test subtle ones first and chose to run a
+harder set inside M269, moving the reviewers only if Haiku held up on it.
+The harder set (`cairn/references/history-review-recall.md`, section
+"Harder set") hid each conflict in a larger ordinary edit, away from what
+blame on the changed lines shows, with no existing test failing on it,
+and had two Opus judges mark every run pair. Its rule, fixed before the
+runs, gave `move`, and the set was not at the ceiling: both models missed
+some plant-runs, and Haiku's count was at least Sonnet's. The first set's
+verdict (`move`, at the ceiling) stands beside it. Cost and precision
+still rest on M264 (`haiku-sonnet-rerun.md`).
+
+**Decision:** D-174 stands: the blame-history and prior-PR-comments lenses
+run on Haiku 5.5. This entry adds the harder set's verdict as its
+evidence. M269's review edited D-174's text in place at `d110cb73`, after
+D-174 was committed on the branch. The append-only rule for this file has
+no exception for an unmerged entry (D-102), so that edit was a breach. As
+D-102 did for D-101, the edit is reverted, so D-174 carries the bytes it
+was first committed with, and its four corrections are made here instead.
+These clauses of D-174 are superseded:
+(1) Its Context calls D-151's valid-finding count "a near tie". D-151
+calls it a single-run tie; the near tie came later, in M264.
+(2) Its Context cites M264 for precision without M264's margin. That
+note states the margin is small enough for one judged finding to flip.
+(3) Its Decision paraphrases the user's condition. The work log records
+it as "testing missed findings first and moving only if Haiku holds up".
+(4) Its Rejected clause says the user's condition was "the planted test
+as designed". The condition was the missed-findings test, and the rule
+fixed before its runs gave `move`.
+
+**Rejected:** Leaving D-174 as edited and recording the breach only,
+because D-102 settles that an in-place edit of a committed entry is
+reverted and corrected by a superseding entry; falsified by a case where
+the revert leaves a false claim readable with no correction beside it.
+
+**Consequences:** A later re-test that finds Haiku's recall below 0.9
+times Sonnet's on a planted set at least as hard as this one supersedes
+D-174 and this entry. A review that wants to fix a D-entry committed on
+its own branch appends a superseding entry, as this one does, and does
+not edit the committed text. The CHANGELOG entry and the reference note
+cite both plant sets.
+
+### D-176 (2026-10-17): Three clauses of D-175 and two of D-174 are corrected in one batched entry — the harder set supports rather than confirms the move, its E and F plants were not inside a larger edit, its misses were mostly citation misses, and D-174's two rejections no longer hold as written — supersedes those clauses; D-174's and D-175's decisions stand (M269 review pass 2)
+
+**Context:** M269's second review pass read D-175 and D-174 against the
+note and the saved reviewer reports and found five clauses the record
+contradicts.
+
+**Decision:** These clauses are superseded; the move of the two history
+reviewers to Haiku stands.
+(1) D-175's heading says the harder set "confirms" the move. It supports
+it: its rule gave `move`, but three runs per task cannot show that no gap
+exists.
+(2) D-175's Context says the harder set "hid each conflict in a larger
+ordinary edit". Only task D did. Tasks E and F reached their 100-line
+floor with a README rewrap in another file, so their plants' own hunks
+held only the plants.
+(3) D-175's Context says the set "was not at the ceiling: both models
+missed some plant-runs". That holds under the catch rule, which also
+requires the right history. Most recorded misses reported the planted
+defect at its site and cited other history; counted by whether the
+defect was reported at all, the set is near the ceiling for both models.
+The note's section "Harder set" gives the counts.
+(4) D-174 rejects "Keeping both reviewers on Sonnet until a harder plant
+set runs". At the merge question the user chose to hold the merge until
+a harder set ran, and it ran before the merge, so that rejection is
+withdrawn.
+(5) D-174 rejects moving one lens alone "because both lenses caught every
+plant". That holds for the first set only. On the harder set Haiku caught
+at least as many plant-runs as Sonnet under each lens (tasks D and E for
+blame-history, task F for prior-PR-comments), so moving both still holds
+on the new evidence.
+
+**Consequences:** No skill text changes. The note, the CHANGELOG entry,
+and the INDEX line state the detection reading and the E and F carrier
+limit. The candidate row "Harder history-reviewer recall test", which
+M269 started, graduates at post-merge hygiene. A set whose plants share
+hunks with real edits is the next sharper test, and it promotes only on
+D-174's falsifier.

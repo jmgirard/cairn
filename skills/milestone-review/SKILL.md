@@ -306,12 +306,12 @@ re-enters here, at the step the record shows is next:
    - **Diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
-   - **Blame-history reviewer (Sonnet).** Runs `git log` / `git blame` on
+   - **Blame-history reviewer (Haiku).** Runs `git log` / `git blame` on
      the modified lines and judges the change *against the intent of the code
      it touches*: does it silently undo something a past milestone added
      deliberately, resurrect a fixed bug, or contradict a recorded D-entry? It
      reads history, not just the diff.
-   - **Prior-PR-comments reviewer (Sonnet).** Reads the repo's prior
+   - **Prior-PR-comments reviewer (Haiku).** Reads the repo's prior
      review record on the modified files and flags only where the current
      diff *reintroduces or contradicts* a point a past review raised on
      those files — a regression of a lesson review already taught, not every

@@ -292,7 +292,8 @@ Readings that bear on the verdicts:
 - The score counts reported findings that the judge rated valid. It does
   not measure real conflicts that a reviewer missed. D-016 named that
   risk for a weaker model in a review step: it "can silently drop a real
-  bug". This note does not test that risk.
+  bug". This note does not test that risk. `history-review-recall.md`
+  (M269) tests it with planted history conflicts.
 
 ## Limits and re-measurement
 
