@@ -1500,6 +1500,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M264 adds the three-run Haiku-against-Sonnet rerun: first-hand runs of
     # 2026-10-16, priced by the figures its status says `haiku-sonnet-roles.md`
     # read directly on 2026-10-09, hence `ok`.
+    # M269 adds the planted-conflict recall test of the history reviewers:
+    # first-hand runs of 2026-10-17 with no prices and no external source,
+    # its status saying nothing to re-verify against, hence `exempt`.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1518,6 +1521,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "feature-dev.md": "ok",
         "haiku-sonnet-roles.md": "ok",
         "haiku-sonnet-rerun.md": "ok",
+        "history-review-recall.md": "exempt",
         "impeccable.md": "ok",
         "llm-wiki.md": "ok",
         "migration-pilot-notes.md": "exempt",

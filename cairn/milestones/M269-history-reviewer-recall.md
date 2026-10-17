@@ -1,13 +1,13 @@
 # M269: Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP4
 - **Resolves:** —
 - **Surface tier:** user-facing — a `move` verdict changes the model of two reviewers in every adopter's `/milestone-review`
-- **Branch/PR:** —
+- **Branch/PR:** m269-history-reviewer-recall
 
 ## Goal
 
@@ -37,7 +37,7 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 
 ## Tasks
 
-- [ ] T1: Build the plants on parent `c56be32` (main at plan time), picking six conflicts from history at or before it that meet the AC1 form and surface mix. Add one unrelated neutral edit per task. Build each task's commit with a temporary index (`GIT_INDEX_FILE`) and `git commit-tree`, never moving HEAD or the working tree, and store it under a neutral ref name (`refs/probe/<letter>`) with a neutral one-line message. Write the plant patches and the answer key to one key file in the session scratchpad, never in the repo. Write the note's Provenance, Scope, and Design sections with the prompts, the catch rule, the verdict rule, and the key file's sha256 in place of parts (2) and (3). Checkpoint-commit them before any run.
+- [x] T1: Build the plants on parent `c56be32` (main at plan time), picking six conflicts from history at or before it that meet the AC1 form and surface mix. Add one unrelated neutral edit per task. Build each task's commit with a temporary index (`GIT_INDEX_FILE`) and `git commit-tree`, never moving HEAD or the working tree, and store it under a neutral ref name (`refs/probe/<letter>`) with a neutral one-line message. Write the plant patches and the answer key to one key file in the session scratchpad, never in the repo. Write the note's Provenance, Scope, and Design sections with the prompts, the catch rule, the verdict rule, and the key file's sha256 in place of parts (2) and (3). Checkpoint-commit them before any run.
 - [ ] T2: Run the 18 reviewer runs as foreground Agent calls (`general-purpose`, `model` set to `sonnet` or `haiku`, `effort` unset). Use the M228 history prompt, changed for a proposed commit with no milestone file, with the lens paragraph from `skills/milestone-review/SKILL.md` at `c56be32`. Save each report in the session scratchpad.
 - [ ] T3: For each task and run index, draw labels A and B with `random.SystemRandom` and write the mapping to the scratchpad. Run one Opus judge that reads both reports and that task's key entries, and marks each plant caught or missed for each report by the AC1 catch rule. Read the mappings only after all nine judges return.
 - [ ] T4: Copy the key file's patches and key into Design parts (2) and (3), and check that the file still matches the committed sha256. Run the transcript search (AC2). Write the Runs and Verdict sections. Add the note's `INDEX.md` line, its row in the shipped-page ledger test in `scripts/tests/test_scripts.py` (beside `haiku-sonnet-rerun.md`), and a pointer from the last reading of `haiku-sonnet-rerun.md`. After the note records the SHAs, delete the probe refs.
@@ -55,6 +55,8 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) counted reporte
 - 2026-10-17: criteria audit (full mode, fresh Opus reader): 7 items, 6 findings, all fixed. (1) Key could leak to reviewers through the committed note: the key stays in the scratchpad with a committed sha256, and AC2 adds a transcript search. (2) Plants varied location only: AC1 now requires each lens form and both surfaces; AC2 adds a ceiling reading. (3) Recall-only rule: Out now says cost and precision rest on M264; AC2 rows record finding counts. (4) Catch rule lived only in a task: now AC1 part (5) with a hunk-or-text rule. (5) Line-based grep misses wrapped prose: AC3 reads named bullets whole; T5 covers the test docstring and the effort note. (6) Judge rows lacked model id and mapping-read timing: added to AC2. AC4: no finding.
 - 2026-10-17: plan gate chose planted conflicts with an answer key over scoring each run against the pool of valid findings from M264's runs, because a pool drawn from the same reports is blind to conflicts that both models miss; falsified by a ceiling result where both models catch every plant while a later real review shows a Haiku-only miss.
 - 2026-10-17: plan gate chose to take cost and precision from M264 over re-measuring them, because M264 measured both on three runs per task and this milestone's gap is misses only; falsified by a planted-run finding count far from M264's per-run counts.
+- 2026-10-17: implement started on branch `m269-history-reviewer-recall`; untracked `cairn-probe.log` and `tsconfig.json` (2026-10-03/04 leftovers, not this milestone's) left unstaged.
+- 2026-10-17: T1: plants built by a scratchpad script with `git commit-tree` on `c56be32` under `refs/probe/a`, `/b`, `/c`. A (code): force-push guard back to a local command-position pattern (hotfix #180), merge guard checks only the first chained `gh pr merge` (M72). B (hotfix skill): draft PR opened before approval (D-138, M186), re-land fallback without the user's chip (M73). C (implement and review skills): remote-only-commits check moved after the rebase (M267 defect return), review runs its own rebase and push instead of implement's sync (M267 pass 2). Key file sha256 committed in the note; INDEX line and ledger pin (`exempt`, no prices or external source) added now so validate and the scripts suite stay green.
 
 ## Decisions
 
