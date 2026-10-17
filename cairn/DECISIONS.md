@@ -6365,3 +6365,41 @@ D-174 and this entry. A review that wants to fix a D-entry committed on
 its own branch appends a superseding entry, as this one does, and does
 not edit the committed text. The CHANGELOG entry and the reference note
 cite both plant sets.
+
+### D-176 (2026-10-17): Three clauses of D-175 and two of D-174 are corrected in one batched entry — the harder set supports rather than confirms the move, its E and F plants were not inside a larger edit, its misses were mostly citation misses, and D-174's two rejections no longer hold as written — supersedes those clauses; D-174's and D-175's decisions stand (M269 review pass 2)
+
+**Context:** M269's second review pass read D-175 and D-174 against the
+note and the saved reviewer reports and found five clauses the record
+contradicts.
+
+**Decision:** These clauses are superseded; the move of the two history
+reviewers to Haiku stands.
+(1) D-175's heading says the harder set "confirms" the move. It supports
+it: its rule gave `move`, but three runs per task cannot show that no gap
+exists.
+(2) D-175's Context says the harder set "hid each conflict in a larger
+ordinary edit". Only task D did. Tasks E and F reached their 100-line
+floor with a README rewrap in another file, so their plants' own hunks
+held only the plants.
+(3) D-175's Context says the set "was not at the ceiling: both models
+missed some plant-runs". That holds under the catch rule, which also
+requires the right history. Most recorded misses reported the planted
+defect at its site and cited other history; counted by whether the
+defect was reported at all, the set is near the ceiling for both models.
+The note's section "Harder set" gives the counts.
+(4) D-174 rejects "Keeping both reviewers on Sonnet until a harder plant
+set runs". At the merge question the user chose to hold the merge until
+a harder set ran, and it ran before the merge, so that rejection is
+withdrawn.
+(5) D-174 rejects moving one lens alone "because both lenses caught every
+plant". That holds for the first set only. On the harder set Haiku caught
+at least as many plant-runs as Sonnet under each lens (tasks D and E for
+blame-history, task F for prior-PR-comments), so moving both still holds
+on the new evidence.
+
+**Consequences:** No skill text changes. The note, the CHANGELOG entry,
+and the INDEX line state the detection reading and the E and F carrier
+limit. The candidate row "Harder history-reviewer recall test", which
+M269 started, graduates at post-merge hygiene. A set whose plants share
+hunks with real edits is the next sharper test, and it promotes only on
+D-174's falsifier.

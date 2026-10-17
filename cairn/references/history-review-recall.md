@@ -4,8 +4,10 @@
 are subagents spawned with the Agent tool from a Claude Code desktop
 session in this repo. Each run's counts come from its subagent transcript
 under `~/.claude/projects/-Users-jmgirard-github-cairn/<session>/subagents/`.
-The three task commits are local commits built by M269 on parent
-`c56be32`. They were never pushed.
+The six task commits (A to C in the first set, D to F in the harder set)
+are local commits built by M269 on parent `c56be32`. They were never
+pushed, and their refs were deleted after the runs (corrected M269
+review).
 Pagination: —.
 Extraction: first-hand run records with nothing to re-verify against, and a rerun reproduces the method, not the exact marks — observed 2026-10-17.
 
@@ -415,7 +417,10 @@ are added after all the harder-set judges return.
 ### (1) Tasks
 
 Three commits, each on parent `c56be32`. Each carries two planted conflicts
-inside a larger ordinary edit. No task commit changes a file under a
+and at least 100 other changed lines. In task D those lines rework the
+same two files; in tasks E and F they are a README rewrap in another file,
+so the plants' own hunks hold only the plants (corrected M269 review; the
+pre-run text said "inside a larger ordinary edit"). No task commit changes a file under a
 `tests/` directory.
 
 | Task | Lens | Surface | SHA | Message |
@@ -1785,11 +1790,11 @@ contradicted review point.
 | Plant | History | Milestone | D-entry | `git log -S` text | Key commit |
 |---|---|---|---|---|---|
 | D1 | M157 made milestone ids sort numerically across zero-pad widths (`cs.id_num`); a plain `sorted` of ids sorts them as strings, so M57 lists after M100. | M157 | — | `then by numeric ID (M009 before M010)` (in `scripts/cairn_scripts.py`) | `a67bc6c5` M157: milestone IDs sort numerically — three-digit padding, numeric resolution (#158) |
-| D2 | D-057 closed rulebook size governance: the rulebook's mass is reported with no threshold, no verdict, and no pass machinery; the plant adds a 650-line budget and a trim verdict. | — | D-057 | `no threshold, no verdict, no pass machinery` (in `skills/milestone/SKILL.md`) | `9f3586ac` M101: Decommissioning — machinery measured not to work is removed or repointed (#99) |
+| D2 | D-057 closed rulebook size governance: the rulebook's mass is reported with no threshold, no verdict, and no pass machinery; the plant adds a 650-line budget and a trim verdict. | none: D-057 came in direct commit `1525aa12`, and M101 carries its text | D-057 | `no threshold, no verdict, no pass machinery` (in `skills/milestone/SKILL.md`) | `9f3586ac` M101: Decommissioning — machinery measured not to work is removed or repointed (#99) |
 | E1 | M182 (D-136) added implement's claim audit, owed for every user-facing milestone that adds lines outside cairn/, skill prose included; the plant skips it for prose-only diffs. | M182 | D-136 | `claim audit: <N> claims read` (in `skills/milestone-implement/SKILL.md`) | `4982319f` M182: claim audit at implement time for user-facing prose; release-walk changelog claim-read |
-| E2 | D-148: a merge ends the run, and the plan's next milestone starts from its typed command after a /clear; the plant starts it at once in the same run. | — | D-148 | `A merge ends the run` (in `skills/shared/tracking-rules.md`) | `36e03930` hotfix: a merge ends the run, so each milestone starts after a /clear (D-148) (#216) |
+| E2 | D-148: a merge ends the run, and the plan's next milestone starts from its typed command after a /clear; the plant starts it at once in the same run. | none: D-148 came in hotfix `36e03930` | D-148 | `A merge ends the run` (in `skills/shared/tracking-rules.md`) | `36e03930` hotfix: a merge ends the run, so each milestone starts after a /clear (D-148) (#216) |
 | F1 | M250 archive Review: its defect returns included routing an issue request to /hotfix and treating issue text as instructions; the fix plans an issue request as a milestone without the tier check. The plant reads the issue body and takes its tier and steps. | M250 | — | `not checked and is planned as a milestone, since` (in `skills/milestone-plan/SKILL.md`) | `ae284c24` M250: The plan checks that the work needs a milestone before it plans one (#261) |
-| F2 | M262 archive Review: pass 1 found the first design re-posed the gate on untested commits; the fix resumes only when the marker's oid equals the PR head. The plant re-poses the chip on a moved head before the checks run. | M262 | — | `First, the marker's ` at <oid>` equals the PR's `headRefOid`` (in `skills/hotfix/SKILL.md`) | `5569253e` M262: A rerun of /hotfix on an open PR resumes the merge (#274) |
+| F2 | M262 archive Review: pass 1 found the first design re-posed the gate on untested commits; the fix resumes only when the marker's oid equals the PR head. The plant re-poses the chip on a moved head before the checks run. | M262 | — | ``First, the marker's ` at <oid>` equals the PR's `headRefOid` `` (in `skills/hotfix/SKILL.md`) | `5569253e` M262: A rerun of /hotfix on an open PR resumes the merge (#274) |
 
 Blame at `c56be32` over each plant's range: the lines a plant replaces, or
 for an inserted plant the three lines on each side of the insertion point.
@@ -1799,7 +1804,7 @@ listed commit's subject names the plant's milestone id or D-entry id.
 | Plant | File | Range | Listed commits | Result |
 |---|---|---|---|---|
 | D1 | `scripts/cairn_status.py` | 26,26 | `01df0557` M10: deterministic tracking scripts (#7) | pass |
-| D2 | `scripts/cairn_status.py` | 44,50 | `01df0557` M10: deterministic tracking scripts (#7) | pass |
+| D2 | `scripts/cairn_status.py` | 44,50, and the whole file for D2's other insertion points | `01df0557` M10: deterministic tracking scripts (#7); whole file: `01df0557` and `2649efaa` M164 | pass |
 | E1 | `skills/milestone-implement/SKILL.md` | 324,330 | `d1698579` One question set, then the agent runs the milestone to the merge question (#209) | pass |
 | E2 | `skills/milestone-implement/SKILL.md` | 33,39 | `03299445` M268: Let a guest milestone build on one that waits for the maintainers (#280); `2a82bb52` Build rpkg-tracking plugin v0.1 from DRAFT_2 spec | pass |
 | F1 | `skills/milestone-plan/SKILL.md` | 153,159 | `2a82bb52` Build rpkg-tracking plugin v0.1 from DRAFT_2 spec; `2e4d9fb4` M04: skill conduct & output discipline (#1); `361713fb` M190: retire the subagent model-tier title tags (#197); `94b72370` M115: fresh-context reader instruments (RR06 recs 4-5) | pass |
@@ -1892,9 +1897,14 @@ name. Three task F runs read a test at `c56be32` whose variable is named
 `planted`. None read the note, the milestone file, the key, or a mapping.
 
 Misses: task D Sonnet run 2 on D1, task F Sonnet runs 1 and 2 on F1, and task
-F Haiku run 3 on F1. Each missed finding named the plant's site but gave
-other history (for D1, the current `cs.id_num` code without M157; for F1,
-M232 or the missing `--repo` lesson without M250).
+F Haiku run 3 on F1. Three of the four (D Sonnet run 2, F Sonnet run 2, F
+Haiku run 3) reported the planted defect itself at its site, but cited
+other history: the current `cs.id_num` code without M157, or M232 and plan
+step 1's rule without M250. Only F Sonnet run 1 raised a different defect
+at the F1 site (a missing `--repo`). Counted by whether a finding reported
+the planted defect at its site, whatever history it cited, Haiku reported
+all 18 of its plant-runs and Sonnet 17 of 18, so on that reading the set
+is near the ceiling (corrected M269 review).
 
 | Model | Task D mean | Task E mean | Task F mean | Sum |
 |---|---|---|---|---|
@@ -1902,8 +1912,18 @@ M232 or the missing `--repo` lesson without M250).
 | Haiku | 1.0000 | 1.0000 | 0.8333 | 2.8333 |
 
 Haiku's sum is 1.1333 times Sonnet's sum, so the verdict is `move`.
-Neither model caught all 18 of its plant-runs, so this set is not at the
-ceiling. With Sonnet's count unchanged, one more Haiku miss gives 2.6667
-against 2.5, still `move`, and four more give 2.1667, below 0.9 times 2.5,
-which is `stay`. Cost and precision still rest on
+Neither model caught all 18 of its plant-runs under the catch rule, so
+this set is not at the ceiling by that rule; the detection reading above
+is near it. With Sonnet's count unchanged, one more Haiku miss gives
+2.6667 against 2.5, still `move`, and four more give 2.1667, below 0.9
+times 2.5, which is `stay`. Cost and precision still rest on
 `haiku-sonnet-rerun.md`.
+
+Limits and re-measurement for this set. Three runs per model per task,
+three tasks, two plants per task, at default effort, on one repo, with
+two Opus judges per run pair. The task D plants are the only ones whose
+hunks also hold unrelated changes. To re-measure, apply each patch in
+part (3) to `c56be32` with `git apply` and commit it, then follow parts
+(2) and (6). A set whose plants sit in hunks that also hold real edits,
+and that one model catches less often by the detection reading, would
+test the move more sharply.

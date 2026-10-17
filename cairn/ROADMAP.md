@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M269 | Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model | review | — | normal | milestones/M269-history-reviewer-recall.md |
+| M269 | Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model | in-progress | — | normal | milestones/M269-history-reviewer-recall.md |
 | M268 | Let a guest milestone build on one that waits for the maintainers | done | M267 | normal | milestones/archive/M268-guest-stacked-milestones.md |
 | M267 | Let a guest repo push its branches to the maintainers' repo | done | — | normal | milestones/archive/M267-guest-push-remote.md |
 | M266 | Give /hotfix reruns a route for closed PRs, own open PRs, and guest change requests | done | — | normal | milestones/archive/M266-hotfix-rerun-gaps.md |

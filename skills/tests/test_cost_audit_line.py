@@ -64,7 +64,9 @@ class TestCostAuditLine(unittest.TestCase):
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
         # Growth is reported against a recorded figure, not a remembered one;
         # the seed is the M269 re-measurement in bytes (M269 moved the two
-        # history reviewers to Haiku in the model-strategy bullets).
+        # history reviewers to Haiku in the model-strategy bullets; it also
+        # absorbs the growth M266 to M268 made after the M265 seed of
+        # 682 lines / 65,674 bytes without re-seeding).
         self.assertIn("715 lines / 69,276 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
