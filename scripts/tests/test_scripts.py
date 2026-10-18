@@ -291,7 +291,7 @@ class TestNext(ScriptCase):
     def test_plan_passes_over_a_started_high_row(self):
         # M272 AC1: each started token shape is passed over, a token
         # followed by `;` or a space still counts, and a token run on into a
-        # letter or digit does not (so the row after it is not reached).
+        # letter does not (so the row after it is not reached).
         for started in (
             "[high] Taken: x — started M271",
             "[high] Taken: x — started #12",

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M272: The next-step recommendation names the first unstarted high-priority candidate
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -118,6 +118,8 @@ M271.
 - 2026-10-17: T2 done: `highTitle` and `recommend(rows, workable, roadmap)` in `hooks/status/reader.ts`; new fixture `high-candidate` (title "Chosen row"); `"title": null` added to the other 29 fixtures' `next` by a Haiku subagent, diff checked as 29 one-line inserts; T1 and T2 commit together, since either alone fails the fixture parity tests.
 - 2026-10-17: T3 done: `nextTitle` in `hooks/status/pane.ts` drops the title when an open PR body names it; the Next line and `pressNext` both read it; 6 old tests updated to the new planning shape and 6 new AC4 tests (line, pane press, band press, hide rule) added; plants of no hide rule and no title in the press turned 11 tests red, and a press plant without the hide rule turned 1 red.
 - 2026-10-17: T4 done: README's idle-row paragraph (~:187) and the pane's Next-line paragraph (~:297) name the `[high]` row; the empty-row paragraph (~:226) said `Plan` runs with no arguments, now false, so it was corrected too; CHANGELOG entry under Unreleased. The simple-english lint hook reports 218 README and 360 CHANGELOG hits; the README count equals its pre-branch count, and the CHANGELOG's one added hit is the house bold lead-in. verify green: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass.
+- 2026-10-17: claim audit: 41 claims read, 1 corrected — scripts/tests/test_scripts.py (a test comment said a token run on into a digit is not a token; `[0-9]+` absorbs the digit, so it now says a letter); re-read by the same reader: true. Noted, not a claim error: a `[high]` row with a dead started token is skipped by the pill but still listed by the pane, as the criteria audit noted.
+- 2026-10-17: implement complete; status review. verify green on the branch head: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass; cairn_validate all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
