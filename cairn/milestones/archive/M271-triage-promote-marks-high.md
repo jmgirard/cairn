@@ -1,0 +1,11 @@
+# M271: A triage promote gives its candidate row the high-priority token
+
+**Status:** done (2026-10-17, PR #283 https://github.com/jmgirard/cairn/pull/283)
+
+**Goal:** An accepted `/cairn-triage` `promote` on a candidate row gives the row the `[high]` token, so a promoted row sits with the high-priority rows at the head of the ROADMAP order and shows the pane's ↑ after the pass ends.
+
+**Outcome:** In `skills/cairn-triage/SKILL.md`'s default pass, every `promote` of a candidate row not opening with `[high]`, proposed or set at Amend, carries the priority change to `high`. It replaces any other proposed priority change for that row, and step 4 applies it as any priority change (adds `[high] `, replaces `[low] ` or a misspelled opening token, moves the row to the high level). The chip names it once with its level, Amend cannot decline it alone (amend to `keep` instead), and a promoted Known issues entry takes none. It is the fourth byte-for-byte carve-out. The skip and `nothing applied` conditions count a promote as a no-change item only with no priority or token change. The status line, record list, stamp, and cap note cover priority changes. Step 7 fences promotes as candidate rows, then Known issues entries, each in table order. `TestPromoteCarriesHigh` (13 guards) in `skills/tests/test_candidate_priority_token.py`, each with a mutation-registry entry. README pane paragraph and CHANGELOG. The pane needed no change: it already drew ↑ for `[high]`; the trigger was triages reporting promotions the pane never showed.
+
+**Decisions:** D-179 (a promote writes `[high]`; passes D-108's door on its shipped-behavior trigger), D-180 (four D-179 clauses corrected: narrows D-134's meaning of `[high]`, the vocabulary's source, the rejected option, and the fence-order and no-decline changes). Question set: the mark cannot be declined alone; naming the first `[high]` row in the next-step recommendation went to M272.
+
+**Review:** user-facing tier, one pass, defect-return count 0, amendment-return count 0. Criteria audit (full): 4 gaps fixed. Claim audit: 30 claims read, 4 corrected. Fan-out of three lenses: 26 findings, 17 fixed, 6 rejected, 1 noted, 2 to the candidate row "Triage promote edges (M271 review)". Copilot: 2 threads fixed, replied, and resolved. No lesson captured or retired.

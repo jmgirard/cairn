@@ -1,18 +1,17 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-17 (lessons pass: dropped M114 work-log characterizations, M146 registry prune, and M154 plan-time row prune, each by the planner test; corrected M170 merge-marker restore; compressed 18 lessons near the caps; no decision entry; validate green)_
+_Last hygiene check: 2026-10-17 (M271 done, PR #283: a triage promote writes `[high]`; M268 row pruned to retention; "Triage promote edges (M271 review)" filed; no lesson; skills/tests 842 green; budgets ok; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M271 | A triage promote gives its candidate row the high-priority token | review | — | normal | milestones/M271-triage-promote-marks-high.md |
+| M271 | A triage promote gives its candidate row the high-priority token | done | — | normal | milestones/archive/M271-triage-promote-marks-high.md |
 | M272 | The next-step recommendation names the first unstarted high-priority candidate | planned | — | normal | milestones/M272-next-step-names-high-row.md |
 | M270 | Let /cairn-triage lessons drop false, obsolete, and low-value lessons | done | — | normal | milestones/archive/M270-lessons-triage-drops.md |
 | M269 | Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model | done | — | normal | milestones/archive/M269-history-reviewer-recall.md |
-| M268 | Let a guest milestone build on one that waits for the maintainers | done | M267 | normal | milestones/archive/M268-guest-stacked-milestones.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (2026-10-10) made it count each call once and read subagent files; earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (A4 row), M153's medians in `record-rule-remeasurement.md`, `effort-experiment-notes.md`. Promote when a decision next relies on one — added 2026-10-09 — M228 review; narrowed 2026-10-10 by the PR #238 hotfix
