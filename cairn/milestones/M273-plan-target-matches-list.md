@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M273: The plan target is the first high-priority row the Candidates list shows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -112,8 +112,8 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - AC1 → T1
 - AC2 → T2
 - AC3 → T3
-- AC4 → T4
-- AC5 → T5
+- AC4 → T4, T6
+- AC5 → T5, T6
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -142,6 +142,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       output (derived-claims rule); hand-run `skills/tests` after the two
       skill edits.
 - [x] T5: Run the `verify` slot on the code head and record each exit code.
+- [x] T6: Review return 1: restate `hooks/status/band.test.tsx:3002`'s plan-title comment by the AC3 pick, re-run the AC4 sweep over the test files too, and re-run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -173,6 +174,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - 2026-10-17: claim audit: 38 claims read, 4 corrected — hooks/status/reader.ts (`planTitle` → `nextTitle`), scripts/cairn_next.py (`high_title` docstring: the pane's two differences), hooks/status/pane.test.tsx (sibling comment and unused row), README.md and CHANGELOG.md (an archived blocked row's token does not count); the same reader re-read the four and found each true.
 - 2026-10-17: after the claim fixes: scripts 418 OK (21 skipped), hooks 179 OK, plugin test 2074 pass 0 fail; manifests unchanged since the T4 validates.
 - 2026-10-17: review return 1: AC4 — `hooks/status/band.test.tsx:3002` still describes the plan target as "the fixture's first unstarted `[high]` candidate row" (the M272 rule); the sweep's 97 lines include the test files.
+- 2026-10-17: T6 added (minor amendment, review return 1; Coverage AC4 and AC5 gain T6) and done: `band.test.tsx` comment now names the first `[high]` row the fixture's Candidates list shows; "unstarted" grep over the AC4 paths prints nothing; verify: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
 - 2026-10-17: T5 done: verify on the T4 tree: scripts 418 OK (21 skipped), hooks 179 OK, plugin and marketplace validate exit 0, plugin test 2074 pass 0 fail.
 
 ## Decisions

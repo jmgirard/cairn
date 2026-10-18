@@ -2999,8 +2999,8 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
 })
 
 // What a press of `Plan` runs, written out by hand (M213 AC3): planning
-// with no arguments, or with the fixture's first unstarted `[high]`
-// candidate row's short title (M272).
+// with no arguments, or with the short title of the first `[high]`
+// candidate row that the fixture's Candidates list shows (M272, M273).
 const PLAN_RUN = { command: 'cairn:milestone-plan', args: '' }
 const PLAN_TITLES: Record<string, string> = { 'high-candidate': 'Chosen row' }
 const planRun = (name: string) => ({ ...PLAN_RUN, args: PLAN_TITLES[name] ?? '' })

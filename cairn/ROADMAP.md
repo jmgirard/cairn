@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M273 | The plan target is the first high-priority row the Candidates list shows | in-progress | — | normal | milestones/M273-plan-target-matches-list.md |
+| M273 | The plan target is the first high-priority row the Candidates list shows | review | — | normal | milestones/M273-plan-target-matches-list.md |
 | M271 | A triage promote gives its candidate row the high-priority token | done | — | normal | milestones/archive/M271-triage-promote-marks-high.md |
 | M272 | The next-step recommendation names the first unstarted high-priority candidate | done | — | normal | milestones/archive/M272-next-step-names-high-row.md |
 | M270 | Let /cairn-triage lessons drop false, obsolete, and low-value lessons | done | — | normal | milestones/archive/M270-lessons-triage-drops.md |
