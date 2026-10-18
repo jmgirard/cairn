@@ -186,19 +186,19 @@ Consistency gate: `cairn_validate` exit 0, all checks passed. `cairn_impact` ski
 
 spawned: diff-bug, blame-history, prior-review
 
-- diff-bug #1: the implement exclusion for "a narrowed criterion's finding" can read as covering a review descope's remainder (a D-118-shaped case), so no marker is written — fix now: added "A review descope's remainder is work the Goal or Scope `In:` promised, so its row takes the marker."
+- diff-bug #1: the implement exclusion for "a narrowed criterion's finding" can read as covering a review descope's remainder (a D-118-shaped case), so no marker is written — fix now: added "A review descope's remainder is work the Goal or Scope `In:` promised, so its row takes the marker.", fixed 93512655
 - diff-bug #2: a guest cut milestone's PR gets no series sentence, since only the later milestone carries the line — follow-up, row "Cut series edges (M276 review)".
 - diff-bug #3: a cut inside a planned series forks it into two lines with two last parts; a second cut drops the first part — follow-up, same row.
 - diff-bug #4: a `/hotfix` before the later part is planned finds no series and adds a second entry — follow-up, same row.
 - diff-bug #5: a milestone that absorbs a marked row only in part carries no line, and its started token hides the row from the release walk — follow-up, same row.
-- diff-bug #6: the plan bullet still says no part is a candidate row — fix now: "(never a candidate row, except a cut series' unplanned part, below)".
+- diff-bug #6: the plan bullet still says no part is a candidate row — fix now: "(never a candidate row, except a cut series' unplanned part, below)", fixed 93512655
 - diff-bug #7: `/milestone` §1 does not say it reads marked rows — follow-up, same row.
-- diff-bug #8: the marker's place in the row was not pinned, so it could land in the short title — fix now: "The marker goes after the row's first `: `, so it stays out of the short title."
+- diff-bug #8: the marker's place in the row was not pinned, so it could land in the short title — fix now: "The marker goes after the row's first `: `, so it stays out of the short title.", fixed 93512655
 - diff-bug #9: a plain "split from M<n>" anywhere in a row reads as the marker — follow-up, same row.
 - diff-bug #10: review step 4(a) names no marker, and a reviewer could create the split milestone directly — reject (false): the descope runs through `/milestone-implement` step 6, which states the marker, and only `/milestone-plan` writes milestone files; the frozen thrash fixture stays untouched.
-- diff-bug #11: the CHANGELOG release sentence left out that the cut milestone must be done — fix now: "Once the cut milestone is done, …".
-- diff-bug #12: the "`/milestone-plan` then plans that milestone from it" clause had no guard — fix now: assertion extended, mutation entry added.
-- diff-bug #13: the test-file docstring still claims the one-line convention, and the new blocks are wrap-dependent — fix now for the docstring; reject (style) for the blocks, which follow the harness's physical-line convention used by every entry.
+- diff-bug #11: the CHANGELOG release sentence left out that the cut milestone must be done — fix now: "Once the cut milestone is done, …", fixed 93512655
+- diff-bug #12: the "`/milestone-plan` then plans that milestone from it" clause had no guard — fix now: assertion extended, mutation entry added, fixed 93512655
+- diff-bug #13: the test-file docstring still claims the one-line convention, and the new blocks are wrap-dependent — fix now for the docstring; reject (style) for the blocks, which follow the harness's physical-line convention used by every entry; docstring fixed 93512655
 - blame-history #1: a row whose token names a done or dropped milestone is named as unplanned — reject (false): a dropped later part leaves the work unplanned, which is what the walk says; a done one's row leaves at that milestone's hygiene.
 - blame-history #2: the plan bullet's "never a candidate row" — same as diff-bug #6, fixed.
 - blame-history #3: the descope remainder and the follow-up exclusion collide — same as diff-bug #1, fixed.
@@ -209,3 +209,5 @@ spawned: diff-bug, blame-history, prior-review
 - prior-review #1: the cut milestone's guest PR gets no series sentence (M274 blame-history #3 pattern) — follow-up, row "Cut series edges (M276 review)".
 - prior-review #2: the release leave-out ignores ` — started #<n>` tokens — reject (false): that token is written only in guest mode, where `/cairn-release` stops.
 - prior-review #3: the leave-out relies on the later milestone's line; a plan writing the token without the line hides the series — follow-up, same row as diff-bug #5.
+
+Return floor: no finding shows an acceptance criterion failing; diff-bug #1 was judged a wording gap that the added sentence closes, not a load-bearing defect (the paragraph already said "A review descope is one such amendment"), so no return. After the fixes: skills/tests 884 OK, scripts 418 OK, hooks 179 OK, plugin and marketplace validate exit 0, plugin test 0 fail.
