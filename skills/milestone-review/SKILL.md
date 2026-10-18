@@ -676,6 +676,9 @@ re-enters here, at the step the record shows is next:
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
    Under rule (c) it says the rest of the user-facing part comes later.
    For the last, it says the change completes the series and names by number the merged pull request of each earlier milestone that is `done`.
+   It also names the pull request of each earlier milestone that is `blocked` on the maintainers.
+   Such a part is a stack base with an open pull request, or a part that merged before its hygiene ran.
+   A part's status comes from its ROADMAP row, else from its archive summary, as `/cairn-release` step 1 states under "Half-merged feature series".
    Read each number from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.
    It leaves out each `dropped` earlier milestone, because a dropped part shipped nothing for the series to complete.
    With the Copilot review round on (`skills/shared/copilot-review.md`

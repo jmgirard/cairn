@@ -5022,13 +5022,68 @@ REGISTRY += [
         guard="test_feature_series",
         test="TestSeriesNamedElsewhere.test_archive_summary_copies_the_line",
         target=ARCHIVE_TEMPLATE,
-        block="copy that line verbatim here, on its own line after the **Goal:** line.",
+        block="copy its `feature series: …` text verbatim here, on its own line after the **Goal:** line. Leave out the line's date and bullet.",
     ),
     Mutation(
         guard="test_feature_series",
         test="TestSeriesNamedElsewhere.test_status_snapshot_cites_the_release_rule",
         target=MILESTONE,
         block="In owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under \"Half-merged feature series\".",
+    ),
+    # M275 review: one entry per sentence the review fixes added.
+    Mutation(
+        guard="test_feature_series",
+        test="TestSeriesNamedElsewhere.test_status_snapshot_cites_the_release_rule",
+        target=MILESTONE,
+        block="For that report, read `${CLAUDE_PLUGIN_ROOT}/skills/cairn-release/SKILL.md` step 1, every live milestone file, and the archive summaries the rule names.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_last_part_names_blocked_parts",
+        target=REVIEW,
+        block="It also names the pull request of each earlier milestone that is `blocked` on the maintainers.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_last_part_names_blocked_parts",
+        target=REVIEW,
+        block="A part's status comes from its ROADMAP row, else from its archive summary, as `/cairn-release` step 1 states under \"Half-merged feature series\".",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_released_behavior_takes_its_own_entry",
+        target=HOTFIX,
+        block="A bug in behavior that an earlier release shipped is outside this rule and takes its own entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_adopted_pr_keeps_the_credit",
+        target=HOTFIX,
+        block="Keep any credit that the dropped entry gives the contributor, in the series' entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_reentry_removes_a_merged_second_entry",
+        target=HOTFIX,
+        block="If the merged diff added a separate entry for that behavior, its removal is owed.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_downstream_sites_carry_the_rule",
+        target=HOTFIX,
+        block="there (step 5's feature series rule applies), open",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_downstream_sites_carry_the_rule",
+        target=HOTFIX,
+        block="series bug the edited series entry or a note that it needed no edit)",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_status_falls_back_to_the_archive_summary",
+        target=RELEASE,
+        block="A named milestone's status is the status in its ROADMAP row.",
     ),
     # M275: the status fallback to the archive summary, and the unknown reading.
     Mutation(

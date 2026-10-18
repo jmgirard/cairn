@@ -158,8 +158,19 @@ class TestReviewGuestSentence(unittest.TestCase):
         )
 
     def test_last_part_leaves_out_dropped_parts(self):
-        # M275: a part dropped before its PR opened has no number to name.
+        # M275: a dropped part shipped nothing for the series to complete.
         self.assertIn("it leaves out each `dropped` earlier milestone,", self.text())
+
+    def test_last_part_names_blocked_parts(self):
+        # M275 review: an open stack base, or a part merged before hygiene.
+        self.assertIn(
+            "it also names the pull request of each earlier milestone that is `blocked` on the maintainers.",
+            self.text(),
+        )
+        self.assertIn(
+            "a part's status comes from its roadmap row, else from its archive summary, as `/cairn-release` step 1 states under \"half-merged feature series\".",
+            self.text(),
+        )
 
 
 class TestHotfixSeriesEntry(unittest.TestCase):
@@ -196,6 +207,28 @@ class TestHotfixSeriesEntry(unittest.TestCase):
             self.step_five(),
         )
 
+    def test_released_behavior_takes_its_own_entry(self):
+        self.assertIn(
+            "a bug in behavior that an earlier release shipped is outside this rule and takes its own entry.",
+            self.step_five(),
+        )
+
+    def test_adopted_pr_keeps_the_credit(self):
+        self.assertIn(
+            "keep any credit that the dropped entry gives the contributor, in the series' entry.",
+            self.step_five(),
+        )
+
+    def test_reentry_removes_a_merged_second_entry(self):
+        self.assertIn(
+            "if the merged diff added a separate entry for that behavior, its removal is owed.",
+            self.reentry_clause(),
+        )
+
+    def test_downstream_sites_carry_the_rule(self):
+        self.assertIn("there (step 5's feature series rule applies), open", self.text())
+        self.assertIn("series bug the edited series entry or a note that it needed no edit)", self.text())
+
     def test_nothing_owed_accepts_the_series_entry(self):
         self.assertIn(
             "changelog entry present (for a series bug, the series' entry already describes the fixed behavior) or the slot `none`",
@@ -223,7 +256,7 @@ class TestSeriesNamedElsewhere(unittest.TestCase):
 
     def test_archive_summary_copies_the_line(self):
         self.assertIn(
-            "copy that line verbatim here, on its own line after the **goal:** line.",
+            "copy its `feature series: …` text verbatim here, on its own line after the **goal:** line. leave out the line's date and bullet.",
             read("shared", "templates", "archive-summary.md"),
         )
 
@@ -232,6 +265,10 @@ class TestSeriesNamedElsewhere(unittest.TestCase):
         snapshot = text[text.index("## 1. snapshot") : text.index("## 2. health audit")]
         self.assertIn(
             "in owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under \"half-merged feature series\".",
+            snapshot,
+        )
+        self.assertIn(
+            "for that report, read `${claude_plugin_root}/skills/cairn-release/skill.md` step 1, every live milestone file, and the archive summaries the rule names.",
             snapshot,
         )
 
