@@ -11,7 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters with `# Copilot review: on` read the round's report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m281-copilot-request-not-recorded   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m281-copilot-request-not-recorded, https://github.com/jmgirard/cairn/pull/293   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -51,21 +51,21 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/shared/copilot-review.md` §2 states that after the
+- [x] AC1: `skills/shared/copilot-review.md` §2 states that after the
       request command exits 0, the round runs the §3 state query once more.
       On `none` it reports in one line that GitHub may not have recorded the
       request, naming used-up Copilot credits as one possible cause, and
       makes no second request. On `pending` or `reviewed` it goes on as
       before, and on a failed query it follows §3's failure rule. §2 adds no
       wait of its own, and §4's read-time query is unchanged.
-- [ ] AC2: `skills/shared/copilot-review.md` §6's report, where it says why
+- [x] AC2: `skills/shared/copilot-review.md` §6's report, where it says why
       no review exists, names the not-recorded case from AC1 when §2 ran in
       the same pass.
-- [ ] AC3: `README.md`'s Copilot paragraph and a new entry under
+- [x] AC3: `README.md`'s Copilot paragraph and a new entry under
       `CHANGELOG.md`'s `## Unreleased` state that when the state query just
       after a request that exited 0 prints `none`, the run says so in one
       line, makes no second request, and does not wait at that point.
-- [ ] AC4: `wc -l -c skills/shared/copilot-review.md` shows under 140 lines
+- [x] AC4: `wc -l -c skills/shared/copilot-review.md` shows under 140 lines
       and under 8,000 bytes, the figures the module's budget line states,
       and the budget line's figures are unchanged.
 - [ ] AC5: The profile's `verify` slot is clean: both gating
@@ -138,6 +138,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: substantive amendment: AC3 "goes on without Copilot" → "makes no second request, and does not wait at that point", after the claim audit showed the old wording false under §4's read-time wait; the deliverable the user sees is unchanged, so no stop.
 - 2026-10-18: re-audit: AC3 (full) — reachable, no IP or D-entry conflict, bounded, binds the docs' prose, proportionate; noted it does not require the old phrase to go (kept narrower; the docs drop the phrase anyway) and called "at that point" loose.
 - 2026-10-18: claim audit re-read (same reader): the 3 corrected claims are correct; README wrap fixed. Implement complete: both gating suites OK after the last edits, both validates 0, `claude plugin test` 2132/0 at dcf4a52c (later edits are markdown only), skills/tests 886 OK; status → review.
+- 2026-10-18: review step 2 Copilot arm: pushed, opened PR #293; state query `none`, request exited 0, re-query `none`, so the round reported "Copilot request on PR #293 not recorded by GitHub (used-up Copilot credits are one cause)" and made no second request (the new §2 rule, live).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -151,3 +152,8 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC1 evidence (2026-10-18, read of `skills/shared/copilot-review.md` §2 at HEAD): after a zero exit, "run the state query once more"; on `none`, one line "`Copilot request on PR #<N> not recorded by GitHub (used-up Copilot credits are one cause)`" and "Make no second request"; on `pending` or `reviewed`, "go on"; "A failed query follows §3"; "This step adds no wait." §4 still waits only when the query prints `pending` as it reads the PR's conversation, and the §3 query block is byte-identical to main's. Live: on PR #293 the request exited 0 and the re-query printed `none`.
+- AC2 evidence (same read, §6): "or says why no review exists, such as §2's not-recorded line in the same pass."
+- AC3 evidence (`grep` at HEAD): README.md:849-852 "If the request command exits 0 but the PR shows no Copilot request or review just after it, Claude says so in one line, makes no second request, and does not wait there."; CHANGELOG.md:522-530, under `## Unreleased` → `### Fixes` (line 520, before `## 2.0.0` at 704), new entry naming the one line, "It makes no second request and does not wait there."
+- AC4 evidence: `wc -l -c skills/shared/copilot-review.md` → 138 lines, 7,978 bytes; the line "under 140 lines and under 8,000 bytes" appears once on main and once at HEAD.
