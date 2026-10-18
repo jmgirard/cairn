@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M275: A feature series stays listed and keeps one entry until its last part ships
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — changes what the release walk, hotfix, guest review, status snapshot, and templates tell every adopting repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m275-feature-series-edges   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -67,7 +67,7 @@ A feature series stays visible to the release walk and the status snapshot until
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Edit `skills/cairn-release/SKILL.md` step 1 (~lines 58-64): status from the ROADMAP row, else the archive summary's Status line, else unknown, named in the question. Add the guards to `TestReleaseList` and a mutation entry in `skills/tests/test_mutation_harness.py` (~line 4828).
+- [x] T1: Edit `skills/cairn-release/SKILL.md` step 1 (~lines 58-64): status from the ROADMAP row, else the archive summary's Status line, else unknown, named in the question. Add the guards to `TestReleaseList` and a mutation entry in `skills/tests/test_mutation_harness.py` (~line 4828).
 - [ ] T2: Edit `skills/hotfix/SKILL.md` step 5 (~line 265) and the re-entry *Changelog* clause (~lines 109-111): a series' unreleased entry is edited where the fix changes it, never duplicated. Say how the hotfix finds the series: a live milestone file or an archive summary carrying a `feature series:` line. Guards plus mutation entries.
 - [ ] T3: Edit `skills/milestone-review/SKILL.md` step 8 (~lines 678-679): merged PRs of `done` earlier parts only, `dropped` parts left out. Guards in `TestReviewGuestSentence` plus a mutation entry.
 - [ ] T4: Edit the milestone template's work-log comment, the archive-summary template (one optional line after **Goal:**, keeping summaries ≤ 25 lines), and `skills/milestone/SKILL.md` §1 (~line 58). Guards plus mutation entries. Template edits feed the gating suites, so run both after this task.
@@ -95,6 +95,8 @@ A feature series stays visible to the release walk and the status snapshot until
 - 2026-10-18: plan gate chose a hotfix rule scoped to feature-series entries over a rule for every unreleased entry because the narrower promise was asked for and the audit flagged the wider one as beyond the series entry; falsified by a hotfix in a real repo adding a second entry for non-series behavior no release shipped.
 - 2026-10-18: plan gate chose citing `/cairn-release` step 1's rule from `/milestone` §1 over moving it into tracking-rules "Feature series" because a rulebook edit re-seeds three mass pins (LESSONS M149) for two readers; falsified by a third skill needing the same rule.
 - 2026-10-18: the four gaps share one feature and one test file, under the split tripwires (6 ACs, 6 tasks), so one milestone, no split.
+- 2026-10-18: implement started on branch m275-feature-series-edges; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-18: T1 done: release step 1 reads status from the ROADMAP row, else the archive summary's Status line, else unknown; 2 new guards, 1 updated, 3 mutation entries; verify green. The simple-english lint hook flags 67 older hits in the release skill; only the new lines were fitted to it (rewriting the file is out of scope).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

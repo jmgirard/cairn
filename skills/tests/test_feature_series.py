@@ -162,14 +162,31 @@ class TestReleaseList(unittest.TestCase):
     def test_lists_half_merged_series(self):
         self.assertIn("**half-merged feature series.** before the question, list each feature", self.step_one())
         self.assertIn("in a milestone file under `cairn/milestones/` (not `archive/`) where the", self.step_one())
-        self.assertIn("line names at least one milestone whose roadmap status is `done`.", self.step_one())
+        self.assertIn("line names at least one milestone whose status is `done`.", self.step_one())
+
+    def test_status_falls_back_to_the_archive_summary(self):
+        # M275: a pruned `done` row must not hide a half-merged series.
+        self.assertIn("a named milestone's status is the status in its roadmap row.", self.step_one())
+        self.assertIn(
+            "for a milestone with no roadmap row, it is the status on the status line of its archive summary under `cairn/milestones/archive/`.",
+            self.step_one(),
+        )
+
+    def test_status_with_no_source_is_unknown(self):
+        self.assertIn(
+            "a named milestone with neither a roadmap row nor an archive summary has an unknown status.",
+            self.step_one(),
+        )
 
     def test_question_names_them(self):
         self.assertIn(
             "the version-decision question names each listed series and its milestones that are not `done`.",
             self.step_one(),
         )
-        self.assertIn("it gives each such milestone's roadmap status, so a `dropped` part reads as dropped.", self.step_one())
+        self.assertIn(
+            "it gives each such milestone's status, so a `dropped` part reads as dropped and an unknown part reads as unknown.",
+            self.step_one(),
+        )
 
 
 if __name__ == "__main__":

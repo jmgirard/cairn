@@ -4954,13 +4954,32 @@ REGISTRY += [
         guard="test_feature_series",
         test="TestReleaseList.test_lists_half_merged_series",
         target=RELEASE,
-        block="line names at least one milestone whose ROADMAP status is `done`.",
+        block="line names at least one milestone whose status is `done`.",
     ),
     Mutation(
         guard="test_feature_series",
         test="TestReleaseList.test_question_names_them",
         target=RELEASE,
         block="The version-decision question names each listed series and its milestones that are not `done`.",
+    ),
+    # M275: the status fallback to the archive summary, and the unknown reading.
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_status_falls_back_to_the_archive_summary",
+        target=RELEASE,
+        block="For a milestone with no ROADMAP row, it is the status on the Status line of its archive summary under `cairn/milestones/archive/`.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_status_with_no_source_is_unknown",
+        target=RELEASE,
+        block="A named milestone with neither a ROADMAP row nor an archive summary has an unknown status.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_question_names_them",
+        target=RELEASE,
+        block="It gives each such milestone's status, so a `dropped` part reads as dropped and an unknown part reads as unknown.",
     ),
     Mutation(
         guard="test_feature_series",
