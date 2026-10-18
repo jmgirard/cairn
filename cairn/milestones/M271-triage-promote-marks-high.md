@@ -163,3 +163,8 @@ Review head da54fc3b; PR #283 opened at review start (Copilot round on).
 - prior-review #4: only one of three statement sites pinned — fix now (as diff-bug #5)
 - prior-review #5: one guard pins prose, and the step-7 read runs to EOF — reject, false: prose guards pin prose by design, and step 7 is the file's last section
 - prior-review #6: fence order changed from M179's fix — noted (context, no defect)
+- copilot: cairn/milestones/M271-triage-promote-marks-high.md:14 (header lacks the PR URL) — fix now, fixed 363980e1
+- copilot: skills/tests/test_candidate_priority_token.py:117 (new asserts not in the mutation registry) — fix now, fixed 363980e1
+- copilot: review body (index of the two threads above) — noted
+- Copilot level: unknown (set by GitHub's settings; the review body has no `Review effort:` line)
+- conversation: no human reviews, comments, or other threads on PR #283
