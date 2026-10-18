@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M277: Search subagents run on the model a clarified re-test supports
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — a `move` verdict changes the model of every adopter's Explore search subagents   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m277-haiku-search-clarified   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -89,6 +89,8 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) gave search `st
 - 2026-10-18: plan gate chose to clarify S2 alone over clarifying S3 too because S2's "base name" is ambiguous and S3 states its rule in full; falsified by a reading of S3's prompt that admits Sonnet's 45-pair answer.
 - 2026-10-18: plan gate chose a new note over a section in `haiku-sonnet-rerun.md` because that page is M264's fixed run record with its own provenance; falsified by a reader who needs both runs on one page to apply either verdict.
 - 2026-10-18: criteria audit (full, fresh Opus reader): 8 findings, 7 fixed. AC1 now pins the Design text at HEAD byte-identical to its commit; S2's change is the FORM value with "base name" kept and a non-key example; AC2 sets aside runs on other model ids and bars tool calls into the live checkout; AC3 (3) also supersedes D-174's search clause; AC3 (2) names the four Explore sites and judges grep lines in their sentences; the effort gap joins T4's D-entry. Rejected: adding the test pin as a criterion (an instrument, so it stays in T4, widened to the four sites). The candidate row needs no criterion: post-merge hygiene graduates it by its started token.
+- 2026-10-18: implement started on branch `m277-haiku-search-clarified`. Untracked `cairn-probe.log` and `tsconfig.json` predate the milestone and stay unstaged.
+- 2026-10-18: T1: Design section written and committed before any run. Its SHA goes in the Design heading in a later commit, so the section body under the heading stays byte-identical (AC1's "text" read as the body). The INDEX line and the shipped-page ledger row moved up from T3 so the validator and `scripts/tests` stay green at this checkpoint (418 and 179 tests OK).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

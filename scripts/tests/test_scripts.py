@@ -1636,6 +1636,9 @@ class TestShippedPageStateLedger(unittest.TestCase):
     # M269 adds the planted-conflict recall test of the history reviewers:
     # first-hand runs of 2026-10-17 with no prices and no external source,
     # its status saying nothing to re-verify against, hence `exempt`.
+    # M277 adds the clarified-S2 search rerun: first-hand runs of 2026-10-18,
+    # priced by the figures its status says `haiku-sonnet-roles.md` read
+    # directly on 2026-10-09, hence `ok`, as for M264's page.
     EXPECTED = {
         "anthropic-code-review.md": "ok",
         "effort-experiment-notes.md": "exempt",
@@ -1654,6 +1657,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
         "feature-dev.md": "ok",
         "haiku-sonnet-roles.md": "ok",
         "haiku-sonnet-rerun.md": "ok",
+        "haiku-search-clarified.md": "ok",
         "history-review-recall.md": "exempt",
         "impeccable.md": "ok",
         "llm-wiki.md": "ok",
