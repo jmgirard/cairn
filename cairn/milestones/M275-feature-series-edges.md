@@ -143,4 +143,9 @@ Pass 1, 2026-10-18, head 0c845eaa (PR #287; Copilot requested at review start, s
 - prior-review #2: new CHANGELOG clauses have no guard, against M274 diff-bug #9 — reject (false: M274 #9 asked for skill-prose guards, and each clause's behavior has its skill-prose guard in `test_feature_series.py`).
 - prior-review #3: step 8 states no status source or unknown case — fix now with diff-bug #2; an unknown part has no file and so no PR to name, fixed fa38b75a.
 - prior-review #4: same as blame-history #1 — reject (same ground).
+- copilot: cairn/milestones/M275-feature-series-edges.md:14 — the header named only the branch at the reviewed commit 61f570ed — fix now (already fixed: the header names PR #287 since 0c845eaa), replied and resolved, fixed 0c845eaa.
+- copilot: review body — "merged-PR duplicate cleanup" and "the missing primary ROADMAP mutation guard" (no thread anchor) — fix now, the same items as diff-bug #4 and #7, fixed fa38b75a.
+- copilot: review body overview and file table — noted.
+- Copilot level: Lite (set by GitHub's settings); its one review covered 61f570ed, before the review fixes.
+- PR conversation: no human reviews, no conversation comments, 1 Copilot thread (above); no `CHANGES_REQUESTED` review.
 - Post-fix: verify slot five commands exit 0; hand-run `skills/tests` 877 OK, every new mutation entry blanks red.
