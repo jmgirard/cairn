@@ -4,7 +4,7 @@
 store for this repo — `~/.claude/projects/-Users-jmgirard-GitHub-cairn/*.jsonl`,
 115 session files, 44,688 records — read with `scripts/cairn_cost.py`.
 Pagination: —.
-Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19. The 719:1 ratio in `## What the store is`, the 40.7% and 33.9% unattributed shares, and the figures in `## Baseline` came from `cairn_cost.py` before PR #238, which summed every record and skipped subagent files. They are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of their milestones; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279). `## Current-script baseline` holds figures from the current script.
+Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19. The 719:1 ratio in `## What the store is`, the 40.7% and 33.9% unattributed shares, and the figures in `## Baseline` came from `cairn_cost.py` before PR #238, which summed every record and skipped subagent files. They are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of their milestones; its earliest keyed milestone is M139. `## Current-script baseline` holds figures from the current script (corrected M279) — observed 2026-10-18.
 
 **Scope.** This page records the *method* by which cairn measures its own token
 and turn cost, the limits of that method, and a baseline taken once so a later

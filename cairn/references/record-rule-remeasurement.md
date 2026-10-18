@@ -7,7 +7,7 @@ sections, blob-pinned below), the archive summaries, RR13
 row at commit `08bbb07`, and `scripts/cairn_cost.py` over the local session
 store.
 Pagination: —.
-Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22. The Axis 3 cost figures were re-run 2026-10-18 at commit `92edddd4` with `cairn_cost.py` as PR #238 left it, since that PR changed how it counts (corrected M279).
+Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22. The Axis 3 cost figures were re-run 2026-10-18 at commit `92edddd4` with `cairn_cost.py` as PR #238 left it, since that PR changed how it counts (corrected M279) — observed 2026-10-18.
 
 **Scope.** Re-measures three baselines after the record-rule changes — the
 derived-claims family (M134/M136/M137), the RR13 reduction (M144–M147), and

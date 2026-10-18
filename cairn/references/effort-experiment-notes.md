@@ -8,7 +8,7 @@ tidymedia, circumplex, hitop. Archive review lines were read by two
 fresh-context readers; cost figures computed with the M94 attribution method
 (`scripts/cairn_cost.py` conventions). Observed 2026-08-08; the stores are
 live append logs, so every figure is a snapshot.
-Extraction: first-hand read of this machine's session stores and the five repos' own archives, nothing to re-verify against — the stores append live, so a re-run reproduces the method rather than the exact figures — observed 2026-08-08. The cohort table in `## Cost` came from `cairn_cost.py` before PR #238 (2026-10-10), which summed every record and skipped subagent files. Its figures are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of M113–M136; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279).
+Extraction: first-hand read of this machine's session stores and the five repos' own archives, nothing to re-verify against — the stores append live, so a re-run reproduces the method rather than the exact figures — observed 2026-08-08. The cohort table in `## Cost` came from `cairn_cost.py` before PR #238 (2026-10-10), which summed every record and skipped subagent files. Its figures are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of M113–M136; its earliest keyed milestone is M139 (corrected M279) — observed 2026-10-18.
 
 **Scope.** Records the evidence gathered on Jeff's effort experiment —
 switching Opus 5 / Fable 5 from `high` to `medium` reasoning effort — and the
