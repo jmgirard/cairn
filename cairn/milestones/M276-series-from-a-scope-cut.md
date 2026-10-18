@@ -211,3 +211,8 @@ spawned: diff-bug, blame-history, prior-review
 - prior-review #3: the leave-out relies on the later milestone's line; a plan writing the token without the line hides the series — follow-up, same row as diff-bug #5.
 
 Return floor: no finding shows an acceptance criterion failing; diff-bug #1 was judged a wording gap that the added sentence closes, not a load-bearing defect (the paragraph already said "A review descope is one such amendment"), so no return. After the fixes: skills/tests 884 OK, scripts 418 OK, hooks 179 OK, plugin and marketplace validate exit 0, plugin test 0 fail.
+
+PR-conversation read (PR #288, before the merge question): no issue comments; one Copilot review (COMMENTED, Bot, on 8d1620e6); one unresolved thread.
+- copilot: cairn/milestones/M276-series-from-a-scope-cut.md:160 (work log says 18 mutation entries, the block has 21) — reject (false): the T1 line was accurate at its commit 706a7d3f; the claim-audit line records the three added later, and the work log is append-only. Replied and resolved.
+- copilot: review body — noted (its one anchored finding is the thread above).
+- Copilot level: unknown (the review body has no "Review effort" line; set by GitHub's settings).
