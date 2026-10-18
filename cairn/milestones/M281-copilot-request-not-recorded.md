@@ -103,7 +103,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - [x] T2: Add one sentence to `README.md`'s "Copilot can review each PR
       first (opt-in)" paragraph and an entry under `CHANGELOG.md`'s
       `## Unreleased` (section chosen at implement), each stating AC3.
-- [ ] T3: Run the `verify` slot (AC5) and `wc -l -c` on the module (AC4).
+- [x] T3: Run the `verify` slot (AC5) and `wc -l -c` on the module (AC4).
       Hand-run `python3 -m unittest discover -s skills/tests` and note its
       result in the work log (non-gating, D-109).
 
@@ -133,6 +133,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: implement started on branch m281-copilot-request-not-recorded; untracked `cairn-probe.log` and `tsconfig.json` predate this work and stay unstaged.
 - 2026-10-18: T1 done: §2 gains the re-query and the not-recorded line, §6 names it; cuts elsewhere (a redundant §1 note sentence, §4's restated wait-once clause, rewraps, shorter phrasings) bring the module to 138 lines and 7,998 bytes; no guard-pinned string changed; verify green (scripts 423 OK, hooks 179 OK, both validates 0, plugin test 2132 pass).
 - 2026-10-18: T2 done: README Copilot paragraph gains two sentences; CHANGELOG entry placed under Unreleased `### Fixes`, since the round was silent where it owed a reason; both gating suites green after the edits.
+- 2026-10-18: T3 done: module 138 lines / 7,998 bytes, budget line unchanged; both validates 0; `claude plugin test` first run had 2 fails, both "timed out after 5000 ms" in M212 AC4 layout tests (candidates-skeleton, high-candidate plan-row) on a branch with no TS change, and the rerun passed 2132/0; hand-run skills/tests 886 OK (non-gating, D-109).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
