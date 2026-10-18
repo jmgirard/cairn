@@ -230,9 +230,12 @@ run ingestion first (see `/milestone-brief`).
      amendment. The amendment records that work as a candidate row whose
      lineage carries ` — split from M<NNN>`, naming this milestone. If the
      work's home is a split milestone, the amendment writes the same row,
-     and `/milestone-plan` then plans that milestone from it. A follow-up row for a
-     narrowed criterion's finding (the rule above) carries no marker. A
-     remainder row of an internal-tier milestone carries none either.
+     and `/milestone-plan` then plans that milestone from it. The marker goes
+     after the row's first `: `, so it stays out of the short title. A
+     follow-up row for a narrowed criterion's finding (the rule above)
+     carries no marker. A remainder row of an internal-tier milestone carries
+     none either. A review descope's remainder is work the Goal or Scope
+     `In:` promised, so its row takes the marker.
      Amended acceptance-criterion wording — an amendment return from
      `/milestone-review` included — is asked every question the criteria
      audit asks in the mode `/milestone-plan` step 3 assigns the

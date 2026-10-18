@@ -33,9 +33,9 @@
   work. The amendment writes that work as a candidate row marked
   `split from M<NNN>`. The milestone that `/milestone-plan` makes from the
   row gets the `feature series:` line. Its changelog task edits the cut
-  milestone's entry instead of adding a second one. `/cairn-release` names
-  a marked row as an unplanned part of the feature, unless a milestone
-  planned from it is still open.
+  milestone's entry instead of adding a second one. Once the cut milestone
+  is done, `/cairn-release` names a marked row as an unplanned part of the
+  feature. It leaves the row out while a milestone planned from it is open.
 
 - **Planning names the first high-priority candidate.** When no milestone
   is in review, in progress, or workable, `scripts/cairn_next.py`

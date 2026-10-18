@@ -10,6 +10,8 @@ of half-merged series.
 
 Skill-prose guards read the file as one string, so every asserted phrase
 lives on a single source line (M23); phrases are matched case-insensitively.
+M276's `TestCutSeries` departs from this: it collapses whitespace on read
+(see its docstring).
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -358,11 +360,27 @@ class TestCutSeries(unittest.TestCase):
             step,
         )
         self.assertIn(
-            "the amendment records that work as a candidate row whose lineage carries ` — split from m<nnn>`, naming this milestone. if the work's home is a split milestone, the amendment writes the same row,",
+            "the amendment records that work as a candidate row whose lineage carries ` — split from m<nnn>`, naming this milestone. if the work's home is a split milestone, the amendment writes the same row, and `/milestone-plan` then plans that milestone from it.",
+            step,
+        )
+        self.assertIn(
+            "the marker goes after the row's first `: `, so it stays out of the short title.",
             step,
         )
         self.assertIn(
             "a follow-up row for a narrowed criterion's finding (the rule above) carries no marker. a remainder row of an internal-tier milestone carries none either.",
+            step,
+        )
+        self.assertIn(
+            "a review descope's remainder is work the goal or scope `in:` promised, so its row takes the marker.",
+            step,
+        )
+
+    def test_plan_bullet_excepts_the_cut_series(self):
+        text = self.flat("milestone-plan", "SKILL.md")
+        step = text[text.index("4. **solidify autonomously**") : text.index("5. **remainder ledger")]
+        self.assertIn(
+            "every part is a milestone file (never a candidate row, except a cut series' unplanned part, below),",
             step,
         )
 
