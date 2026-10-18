@@ -293,8 +293,9 @@
 - **Edit-work subagents run on Haiku 5.5.** Mechanical migrations, test
   writing against a spec, and boilerplate now spawn Haiku 5.5, not
   Sonnet. Explore searches and the two history reviewers moved to Haiku
-  later (see the entries above), and Opus and Fable roles do not change. The "Never Haiku" rule is gone. The session still reads each
-  Haiku diff and runs the profile's `verify` checks before it commits. A
+  later (see the entries above), and Opus and Fable roles do not change.
+  The "Never Haiku" rule is gone. The session still reads each Haiku diff
+  and runs the profile's `verify` checks before it commits. A
   side-by-side test measured migrations and test writing, and boilerplate
   follows that result untested. On three edit tasks both models scored the same, and
   Haiku cost $0.04 where Sonnet cost $0.49 (the cairn repository's

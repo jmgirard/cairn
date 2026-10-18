@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M277: Search subagents run on the model a clarified re-test supports
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -95,6 +95,8 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) gave search `st
 - 2026-10-18: T3: scored with M228's key code at `c023018` and costed by M264's method in a session-local helper; every final match `yes`. Verdict `move`: Haiku 2.9922 against Sonnet 2.7826 (ratio 1.0754), USD 0.0234 against 0.3491. Counting the set-aside run instead still gives `move`. Design body under the heading is byte-identical to `7da5278a`; the heading now names that SHA. INDEX line completed, and a pointer added to `haiku-sonnet-rerun.md`.
 - 2026-10-18: T4: verdict `move` applied. Fan-out searches moved into the rulebook's Haiku subagents bullet, the Sonnet subagents bullet removed, Sonnet dropped from the set-the-model list, and the four Explore sites changed to Haiku (milestone-implement step 5 now lists Explore searches under Haiku). New `TestSearchModel` in `test_review_fanout.py`, seen red in a scratch copy on a restored Sonnet bullet and on "Sonnet Explore" at milestone-plan. Rulebook seed re-measured at 742 lines / 71,569 bytes at its three sites. D-181 appended. CHANGELOG entry added and the M229 entry's Sonnet sentence revised. The sweep for "Sonnet Explore", "Sonnet for Explore", and "Sonnet subagents" outside history found only the ROADMAP candidate row, which post-merge hygiene graduates.
 - 2026-10-18: T5: verify slot green from the repo root, each exit code 0: `scripts/tests` 418 OK, `hooks/tests` 179 OK, both `claude plugin validate` passed, `claude plugin test` 2076 tests 0 fail. Hand-run `skills/tests` 886 OK.
+- 2026-10-18: claim audit: 20 claims read, 0 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/milestone/SKILL.md, the four Explore skill sites, skills/tests (3 files), scripts/tests/test_scripts.py. Its one format note (a CHANGELOG line left unwrapped by the T4 edit) is fixed by a rewrap.
+- 2026-10-18: implement complete; status set to `review`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
