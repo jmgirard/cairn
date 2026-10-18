@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M283: The status audit lists unresolved bot threads on your open PRs
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters run the `/milestone` health audit and read its report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m283-bot-threads-open-prs   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -128,7 +128,7 @@ not added.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Add the bullet after "Open hotfix PRs" in `skills/milestone/SKILL.md`
+- [x] T1: Add the bullet after "Open hotfix PRs" in `skills/milestone/SKILL.md`
       §2 (lines 199-210). Add `headRefOid` to that bullet's `--json` list.
       The query selects what AC1 filters on and AC2 reports (`isResolved`,
       `isOutdated`, `path`, `line`, `originalLine`, the first comment's
@@ -136,7 +136,7 @@ not added.
       the read in `skills/shared/copilot-review.md` §4. Every `gh pr`
       command keeps `--repo <base-repo>`, which
       `skills/tests/test_milestone_gh_repo.py` pins.
-- [ ] T2: Run the AC4 and AC5 commands by hand, and log one line each.
+- [x] T2: Run the AC4 and AC5 commands by hand, and log one line each.
 - [ ] T3: Update `README.md` (lines 802-816), and add the `### New` entry to
       `CHANGELOG.md`. Grep the repo for "Open hotfix PRs" and
       "unresolved-thread count" to find any other site that the change makes
@@ -170,6 +170,10 @@ not added.
 - 2026-10-18: inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-18: lessons harvested: M112/M249 (grep the old wording, CHANGELOG task, T3), M148 (hand-run `skills/tests` after an edit near guarded text, T4), M185 (every `gh` read names the base repo, T1).
 - 2026-10-18: changelog: one new `### New` entry under Unreleased.
+- 2026-10-18: implement: status in-progress, branch `m283-bot-threads-open-prs` cut from main at 88cd1398; the untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-18: T1: new "Bot threads on your open PRs" bullet in `skills/milestone/SKILL.md` §2 after "Open hotfix PRs", one fenced `gh api graphql --paginate` command (gh's `--paginate` with `$endCursor` does the paging, chosen over a hand-written page loop because gh stops at `hasNextPage` false itself); the hotfix bullet's `--json` list gains `headRefOid`. The simple-english hook reports 193 hits over the whole pre-existing skill file; the file's style is out of scope and was not rewritten.
+- 2026-10-18: T2 (AC4): `gh pr list --repo jmgirard/cairn --state open --author @me --limit 100 --json number,title,url,headRefName,headRefOid,reviewDecision` printed `[]` and exited 0.
+- 2026-10-18: T2 (AC5): the command taken verbatim from the skill printed nothing (exit 0) on cairn #240, #289, and insight #1263; with only the `isResolved` select removed it printed 3 threads for #240 (each `isOutdated` true, `line` null, `originalLine` 30/669/18), 2 for #289 (one `isOutdated` false, `line` 137), none for #1263; a control with the `Bot` select removed printed #1263's one `mattansb` thread. The contents read on insight #1288's head 59da5593 printed DESCRIPTION.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
