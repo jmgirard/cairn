@@ -141,7 +141,7 @@ not added.
       `CHANGELOG.md`. Grep the repo for "Open hotfix PRs" and
       "unresolved-thread count" to find any other site that the change makes
       stale (the M112 lesson).
-- [ ] T4: Run the `verify` slot. Hand-run `skills/tests` after the skill
+- [x] T4: Run the `verify` slot. Hand-run `skills/tests` after the skill
       edit (the M148 lesson).
 
 ## Work log
@@ -174,6 +174,8 @@ not added.
 - 2026-10-18: T1: new "Bot threads on your open PRs" bullet in `skills/milestone/SKILL.md` §2 after "Open hotfix PRs", one fenced `gh api graphql --paginate` command (gh's `--paginate` with `$endCursor` does the paging, chosen over a hand-written page loop because gh stops at `hasNextPage` false itself); the hotfix bullet's `--json` list gains `headRefOid`. The simple-english hook reports 193 hits over the whole pre-existing skill file; the file's style is out of scope and was not rewritten.
 - 2026-10-18: T2 (AC4): `gh pr list --repo jmgirard/cairn --state open --author @me --limit 100 --json number,title,url,headRefName,headRefOid,reviewDecision` printed `[]` and exited 0.
 - 2026-10-18: T2 (AC5): the command taken verbatim from the skill printed nothing (exit 0) on cairn #240, #289, and insight #1263; with only the `isResolved` select removed it printed 3 threads for #240 (each `isOutdated` true, `line` null, `originalLine` 30/669/18), 2 for #289 (one `isOutdated` false, `line` 137), none for #1263; a control with the `Bot` select removed printed #1263's one `mattansb` thread. The contents read on insight #1288's head 59da5593 printed DESCRIPTION.
+- 2026-10-18: T3: README "Contributions come in through you" paragraph and a CHANGELOG Unreleased `### New` entry describe the bullet; `git grep` for "Open hotfix PRs" and "unresolved-thread count" found no other site the change makes stale. (Commit 06ebcb3e first appended this line below `## Review` by mistake; it is moved here.)
+- 2026-10-18: T4: verify green, each exit 0: `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` on the plugin and the marketplace manifest passed, `claude plugin test` 2132 pass 0 fail; hand-run `skills/tests` 886 OK; `cairn_validate` all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -187,4 +189,3 @@ not added.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
-- 2026-10-18: T3: README "Contributions come in through you" paragraph and a CHANGELOG Unreleased `### New` entry describe the bullet; `git grep` for "Open hotfix PRs" and "unresolved-thread count" found no other site the change makes stale.
