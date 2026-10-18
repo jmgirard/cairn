@@ -136,3 +136,9 @@ Review pass 1, 2026-10-18, on `2ba237b6` (PR #289; Copilot requested at the star
 - prior-review #1: the CHANGELOG turns M264's hedged S2 cause into a settled one and gives "about 7%" with no lower-bound caveat — fix now (CHANGELOG reworded and the share named as of measured cost), fixed ab8ccc9b
 - prior-review #2: the ROADMAP row contradicts the rulebook — reject, planned change (as diff-bug #7)
 - Re-run after the fixes: verify slot green from the repo root (`scripts/tests` 418 OK, `hooks/tests` 179 OK, both validates passed, `claude plugin test` 2076 0 fail), `skills/tests` 886 OK, `cairn_validate` all checks passed. The rulebook-size seed is re-measured at 743 lines / 71,631 bytes at its three sites after the effort-bullet edit.
+- PR-conversation read (PR #289, Copilot state `reviewed`, no wait): one review, by `copilot-pull-request-reviewer[bot]` on `1c371f7d`, state `COMMENTED`; no conversation comments; two unresolved threads, both Copilot's, and no human review.
+- copilot: skills/tests/test_review_fanout.py:127 — the new positive guards are not registered in `skills/tests/test_mutation_harness.py` — fix now (six entries, one per protected block; the registry test passes, so blanking each block turns the guard red), replied and resolved, fixed e68adb0e
+- copilot: cairn/milestones/M277-haiku-search-clarified.md:14 — the `Branch/PR` header records only the branch — fix now (the thread was on `1c371f7d`; the URL landed before the review read), replied and resolved, fixed 2ba237b6
+- copilot: review body — noted (its two findings are the two threads above, matched by their anchors)
+- Copilot level: unknown (the review body has no "Review effort" line; set by GitHub's settings)
+- Re-run after e68adb0e: hand-run `skills/tests` 886 OK. The edit is under `skills/tests` only, so the gating suites stand as run above.
