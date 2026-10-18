@@ -3,7 +3,7 @@
 In a repo that opts in (§1), `/hotfix` and `/milestone-review` read this
 where they request Copilot and read the PR's conversation. With the round
 off, they read §1 and §3 at the closes §1 names. It is a module of
-`tracking-rules.md`, read then.
+`tracking-rules.md`, read only then.
 
 Budget (M231, plus headroom): **under 140 lines and under 8,000 bytes**,
 hand-read with `wc -l -c` at hygiene passes, covered by no validator.
@@ -15,8 +15,8 @@ If `cairn/PROFILE.md` carries the header line `# Copilot review: on`, the
 round runs. No line, or any other value, means off: the PR opens
 after the merge approval (D-138), and the skill requests, replies, and
 resolves nothing, but it can add the note below. The opt-in line also
-permits the round's fix pushes, replies, and resolves, and the agent's
-dispositions of Copilot's threads, with no question (M231). The round
+permits the round's outward writes (the request, fix pushes, replies,
+resolves) and its thread dispositions, with no question (M231). The round
 keeps no record that it ran. The PR's signals (§2) decide each step (RR17).
 
 **Off but present (M244).** With the round off, `/hotfix` (step 7, step
@@ -74,7 +74,7 @@ loop's own exit ends the wait and nothing is left armed. The loop runs
 the query as written, with gh's `--jq`, and counts a failed query as
 `pending`. At the 25-minute exit, the read runs on what exists, and the
 presentation says `Copilot review still pending on PR #<N>`. A pass waits
-at most once. If the backstop ever fires, treat it as the 25-minute exit.
+at most once. If the backstop fires, treat it as the 25-minute exit.
 The wait never stops the run.
 
 Then read the threads on the same `<owner>`/`<name>` with a GraphQL

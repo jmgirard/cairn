@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M282: A later Copilot request is a retry, and a late-recorded request is not reported as missing
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -178,6 +178,10 @@ not added.
 - 2026-10-18: T3 done: README Copilot paragraph and a new CHANGELOG Unreleased Fixes entry state the retry and the late-record rule; `git grep` for "second request", "not recorded", and "requests Copilot twice" found no other live site with the old rule (D-153's falsifier is T4's); verify green.
 - 2026-10-18: T4 done: D-183 appended, narrowing D-153's falsifier to a request made while GitHub holds an earlier Copilot request or review; rejects a cairn record of the request; `cairn_validate` green, both gating suites green.
 - 2026-10-18: T5 done at afa7377b: scripts/tests 423 OK, hooks/tests 179 OK, both `claude plugin validate` exit 0, `claude plugin test` 2132 pass 0 fail, hand-run skills/tests 886 OK.
+- 2026-10-18: claim audit: 26 claims read, 1 corrected — CHANGELOG.md (the late-record sentence and heading half did not hold on the hotfix guest arm, which runs no read-time state query; both removed, since the entry already states the read's condition).
+- 2026-10-18: claim audit follow-up: the compression had dropped two rules, now restored in `skills/shared/copilot-review.md`: the module is read "only then", and the opt-in line permits the round's outward writes, the request included. Kept out: the budget's baseline figures and "plain" in the off-note (history and wording, not rules). Module 139 lines, 7,990 bytes; verify and skills/tests green.
+- 2026-10-18: open concern for review: on the hotfix guest arm (`skills/hotfix/SKILL.md` step 6 guest handoff) no state query runs at read time after §2's re-query, so §6's "the read's own state query" has no query to read there.
+- 2026-10-18: implement done; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
