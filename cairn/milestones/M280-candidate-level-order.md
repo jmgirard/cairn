@@ -104,3 +104,22 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
 
 - AC3 evidence (2026-10-18, branch head a9a320b8): `python3 -m unittest scripts.tests.test_scripts -k CandidateOrder -v` — 5 tests ok: in-order rows print `OK    candidate order`; the 7-row out-of-order ROADMAP gives exactly the 4 findings by title and level (`WARN  candidate order (4)`); the `low, normal, normal` case warns both normal rows; exit code 0 with and without the out-of-order rows. This repo's validate prints `OK    candidate order`; ackwards' prints `WARN  candidate order (4)` with exit 0.
 - AC4 evidence: `cairn/DESIGN.md:318-321` (pane paragraph: `paneLines` draws by level, `state.candidates` stays in ROADMAP order, the `candidate order` advisory); `README.md:336-341` (pane section: high, normal, low groups in ROADMAP order, and the validate WARN); `CHANGELOG.md` Unreleased › "Changes that affect existing repos" opens with the entry naming both, with no milestone number in its text.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a misspelled token reads as normal, so the correctly tagged `[high]` rows below it WARN and the CHANGELOG's "move the named rows up" points at the wrong rows — follow-up, row "Candidate order advisory edges (M280 review)"
+- diff-bug #2: the DESIGN.md insert split a sentence, leaving "The `plan` Button, drawn as…" with no verb — fix now
+- diff-bug #3: a row with an empty short title WARNs as `""`, naming no row — follow-up, same row
+- diff-bug #4: D-182's Consequences and the `test_status_fixtures.py` comment say the stable sort draws the first `[high]` row first, false when that row's short title is empty — fix now for the test comment; follow-up for D-182 (history, IP4), same row
+- diff-bug #5: the advisory counts rows the pane hides (started token, PR-named) — follow-up, same row
+- diff-bug #6: the order runs across several `## Candidates…` sections — reject, planned change: the pane sorts across the same sections, so the two agree
+- diff-bug #7: the `|| a.i - b.i` tie-break is untested — reject, style: redundant with the stable `Array.prototype.sort`
+- diff-bug #8: `drawnCandidates` copies the production sort — reject, planned change: AC1 names that per-fixture test, and the hand-written `CANDIDATE_ORDER`, `ORDER_LINES`, and index lists discriminate
+- blame-history #1: the advisory reads the token D-134 rejected a validate check on — reject, planned change: D-182 records that the advisory checks order, not spelling, and D-134's rejection stands
+- blame-history #2: the M252 control test's name and comment still said "as before" (file order) — fix now
+- blame-history #3: the M261 test title said "as before" after the positional check became by key — fix now
+- blame-history #4: promoted `[high]` rows now sort into the top block with important ones — reject, planned change: D-179's falsifier is unchanged
+- blame-history #5: `drawnCandidates` re-implements the sort — reject, as diff-bug #8
+- blame-history #6: the M207 test pinned file order — reject, planned change: M207 stated no order, and D-182 records the new one
+- prior-review #1: the advisory counts rows the pane hides — follow-up, as diff-bug #5
+- prior-review #2: the DESIGN.md sentence split — fix now, as diff-bug #2
+- prior-review #3: the pane.ts comment's two "which" clauses attach ambiguously — fix now
+- prior-review #4: the ROADMAP stamp not updated at the move to `review` — reject, planned change: post-merge hygiene replaces the stamp

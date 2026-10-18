@@ -4231,7 +4231,7 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   const heads = (started = items) => layout(state, [], true, {}, [], started).filter(line => line.key.startsWith('candidates-head'))
 
   for (const acts of [true, false]) {
-    test(`matched rows draw no line, and the others draw as before under their own keys (acts ${acts})`, () => {
+    test(`matched rows draw no line, and each other line matches its line drawn with no items, by key (acts ${acts})`, () => {
       const got = rows(acts)
       const before = rows(acts, [])
       // Unmatched, a title that differs only by case, and an empty title.
@@ -4289,9 +4289,10 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
     ])
   })
 
-  // The lines the pre-M252 code drew, written out by hand: the priority
-  // mark, no tail, and ✎ on each titled row while `acts` is true.
-  test('with no items every candidate line draws as before', () => {
+  // The lines drawn with no items, written out by hand: each row once, in
+  // level order (M280), with its priority mark, no tail, and ✎ on each
+  // titled row while `acts` is true.
+  test('with no items every candidate line draws, in level order', () => {
     const lines = rows(true, [])
     expect(lines.length).toBe(state.candidates.length)
     // Level order (M280): the high row, the five normal rows, then the two
