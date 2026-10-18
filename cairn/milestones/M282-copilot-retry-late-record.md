@@ -130,7 +130,7 @@ not added.
       (139 lines, 7,993 bytes at plan). Leave §4's wait sentences and the
       §5 text that `skills/tests/test_guest_fork_remote.py:74` pins as they
       are, since `skills/tests/test_copilot_review_round.py` pins §4.
-- [ ] T2: Name §6's reason line in `skills/milestone-review/SKILL.md`
+- [x] T2: Name §6's reason line in `skills/milestone-review/SKILL.md`
       step 7 (lines 479-481) and its guest handoff close (line 695), and in
       `skills/hotfix/SKILL.md` step 6's Copilot round arm (lines 333-335)
       and its guest handoff close (lines 468-469).
@@ -174,6 +174,7 @@ not added.
 - 2026-10-18: implement started on branch m282-copilot-retry-late-record, cut from origin/main at 90019173; untracked `cairn-probe.log` and `tsconfig.json` are unrelated and left unstaged.
 - 2026-10-18: T1 done: §2 states a later run that reads `none` requests again, §6 gives the not-recorded line as the reason only while the read's query prints `none`; compressed §1, §3, §4, §5 wording (module 139 lines, 7,987 bytes; budget line figures unchanged); verify green, `skills/tests` 886 green.
 - 2026-10-18: T1 choice: the guest-mode close sentence on a late Copilot review was cut from §6, since the hotfix and review guest closes state it; the guest reply-vocabulary rule was kept in shorter form, since the rulebook's vocabulary bullet does not name replies.
+- 2026-10-18: T2 done: the review step 7 presentation, review step 8 guest close, hotfix step 6 chip, and hotfix guest close each name §6's reason line for a missing review beside the `copilot:` and level or pending lines; verify green, `skills/tests` 886 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
