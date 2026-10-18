@@ -11,7 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters run the `/milestone` health audit and read its report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m283-bot-threads-open-prs   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m283-bot-threads-open-prs, PR https://github.com/jmgirard/cairn/pull/295   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -178,6 +178,7 @@ not added.
 - 2026-10-18: T4: verify green, each exit 0: `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` on the plugin and the marketplace manifest passed, `claude plugin test` 2132 pass 0 fail; hand-run `skills/tests` 886 OK; `cairn_validate` all checks passed.
 - 2026-10-18: claim audit: 22 claims read, 1 corrected — skills/milestone/SKILL.md, README.md, CHANGELOG.md (the CHANGELOG's "Before this change" sentence missed the linked-item read's per-comment listing; the failed-read sentence was also tightened; the same reader re-read both and found them holding).
 - 2026-10-18: implement complete: status review.
+- 2026-10-18: review step 2 (Copilot arm): branch pushed, PR #295 opened; state query `none`, `gh pr edit 295 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #295 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
