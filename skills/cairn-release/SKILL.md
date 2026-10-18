@@ -55,6 +55,13 @@ toolchain-specific work at step 3.
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
    conventions per DESIGN.md). Confirm the target version with the user.
+   **Half-merged feature series.** Before the question, list each feature
+   series (tracking-rules "Feature series") named by a `feature series:` line
+   in a milestone file under `cairn/milestones/` (not `archive/`) where the
+   line names at least one milestone whose ROADMAP status is `done`.
+   The version-decision question names each listed series and its milestones that are not `done`.
+   It gives each such milestone's ROADMAP status, so a `dropped` part reads as dropped.
+   No such series → the question says nothing about series.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
    this step): retitle the development heading to the release version; group

@@ -762,6 +762,10 @@ profile.
   explicitly pause the first.
 - Let milestones be small. The plan skill will propose splitting oversized
   ones; take the split. Three small merges beat one sprawling branch.
+  When the split divides one feature or fix, the plan writes the parts as a
+  feature series: earlier parts stay out of users' reach where they can, the
+  last part adds the exports and docs, and the changelog keeps one entry for
+  the whole feature.
 - Don't hand-maintain status in chat or memory: if it isn't in `cairn/`
   files or git, it didn't happen. Hand-editing the files is fine;
   ROADMAP.md wins any conflict.
