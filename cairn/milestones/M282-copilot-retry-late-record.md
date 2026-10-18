@@ -134,7 +134,7 @@ not added.
       step 7 (lines 479-481) and its guest handoff close (line 695), and in
       `skills/hotfix/SKILL.md` step 6's Copilot round arm (lines 333-335)
       and its guest handoff close (lines 468-469).
-- [ ] T3: Update `README.md`'s Copilot paragraph (lines 849-853) and add a
+- [x] T3: Update `README.md`'s Copilot paragraph (lines 849-853) and add a
       `### Fixes` entry under `CHANGELOG.md`'s `## Unreleased`. Grep the
       repo for "second request" and "not recorded" to find any other site
       that states the old rule (the M112 lesson).
@@ -175,6 +175,7 @@ not added.
 - 2026-10-18: T1 done: §2 states a later run that reads `none` requests again, §6 gives the not-recorded line as the reason only while the read's query prints `none`; compressed §1, §3, §4, §5 wording (module 139 lines, 7,987 bytes; budget line figures unchanged); verify green, `skills/tests` 886 green.
 - 2026-10-18: T1 choice: the guest-mode close sentence on a late Copilot review was cut from §6, since the hotfix and review guest closes state it; the guest reply-vocabulary rule was kept in shorter form, since the rulebook's vocabulary bullet does not name replies.
 - 2026-10-18: T2 done: the review step 7 presentation, review step 8 guest close, hotfix step 6 chip, and hotfix guest close each name §6's reason line for a missing review beside the `copilot:` and level or pending lines; verify green, `skills/tests` 886 green.
+- 2026-10-18: T3 done: README Copilot paragraph and a new CHANGELOG Unreleased Fixes entry state the retry and the late-record rule; `git grep` for "second request", "not recorded", and "requests Copilot twice" found no other live site with the old rule (D-153's falsifier is T4's); verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

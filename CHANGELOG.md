@@ -519,6 +519,19 @@
 
 ### Fixes
 
+- **The Copilot round asks again after a dropped request, and a late
+  record no longer reads as missing.** With `# Copilot review: on`, a
+  later pass that finds no Copilot request or review on the PR, such as
+  a second review pass or a `/hotfix` resume, asks Copilot again. A
+  request that GitHub did not record leaves nothing for the new request
+  to repeat. The report at the read gives the `may not be recorded` line
+  as the reason for a missing review only when the PR still shows no
+  Copilot request or review when the read runs. If GitHub records the
+  request a few seconds late, the report gives the pending or level line
+  instead. The review summary at the merge question, the hotfix approval
+  chip, and both guest-mode closes now show that reason line. The rules
+  are in `skills/shared/copilot-review.md` §2 and §6.
+
 - **The Copilot round reports a request that GitHub did not record.** With
   `# Copilot review: on`, `/hotfix` and `/milestone-review` now read the PR
   again right after `gh pr edit <N> --add-reviewer @copilot` exits 0. If
