@@ -62,7 +62,7 @@ not old-script figures.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: In `cairn/references/record-rule-remeasurement.md`, the Axis 3
+- [x] AC1: In `cairn/references/record-rule-remeasurement.md`, the Axis 3
       table gives, for each of M139–M152, the `turns` and `output` of the
       BY MILESTONE row that `python3 scripts/cairn_cost.py --milestone
       M<NN>` printed in a run the section dates and names by commit. Its
@@ -70,7 +70,7 @@ not old-script figures.
       medium-cohort baseline it cites (165 turns / 169k output) came from
       the script before PR #238, and it does not compare the two as like
       figures. The changed text is marked `corrected M279`.
-- [ ] AC2: The `Extraction:` line of `cairn/references/session-cost-notes.md`
+- [x] AC2: The `Extraction:` line of `cairn/references/session-cost-notes.md`
       names the 719:1 ratio in `## What the store is`, the 40.7% and 33.9%
       unattributed shares, and the figures in `## Baseline`. The
       `Extraction:` line of `cairn/references/effort-experiment-notes.md`
@@ -81,18 +81,18 @@ not old-script figures.
       of their milestones (`observed 2026-10-18`). The `## Baseline` and
       `## Cost` sections each open with a sentence that points to that
       line. The old figures stay on the page.
-- [ ] AC3: `cairn/references/session-cost-notes.md` carries a
+- [x] AC3: `cairn/references/session-cost-notes.md` carries a
       current-script baseline for M269–M278, one row per milestone. Each
       row equals the BY MILESTONE row that `python3 scripts/cairn_cost.py
       --milestone M<NN>` printed in a run the section dates and names by
       commit.
-- [ ] AC4: Each of these sites states the script's current behavior and is
+- [x] AC4: Each of these sites states the script's current behavior and is
       marked `corrected M279`: in session-cost-notes.md, ledger row A4, the
       `## Disposition` bullet on A3 and A4, and the first bullet of
       `## Open questions`; in effort-experiment-notes.md, step 2 of
       `## Re-measurement procedure`; in haiku-sonnet-roles.md, the
       paragraph that opens "Two older records predate the store".
-- [ ] AC5: In `cairn/references/INDEX.md`, the record-rule-remeasurement.md
+- [x] AC5: In `cairn/references/INDEX.md`, the record-rule-remeasurement.md
       line gives the new medians from AC1 and does not compare them with
       165/169k. The session-cost-notes.md line no longer calls subagent
       cost `absent`, and it says that its figures came from the script
@@ -174,3 +174,12 @@ not old-script figures.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+PR #291 opened at review start (Copilot round on); Copilot requested on state `none`.
+
+- AC1 evidence (2026-10-18): fresh `cairn_cost.py --milestone` run for M139–M152 at 3323bcc1 matches the implement run row for row; a parse of the Axis 3 table finds 14 rows M139–M152, each `turns`/`output` equal to the BY MILESTONE row; medians recomputed 130.5 / 112,229.5, as stated; section names 2026-10-18 and `92edddd4`, carries `corrected M279`, and says the 165/169k baseline came from the old script and is not compared.
+- AC2 evidence (2026-10-18): session-cost-notes.md line 7 `Extraction:` names the 719:1 ratio, the 40.7%/33.9% shares, and `## Baseline` figures; effort-experiment-notes.md line 11 names the `## Cost` cohort table; each says before PR #238, not comparable, cannot be re-measured, `observed 2026-10-18`; full report's BY MILESTONE list starts at M139, so M63–M93 and M113–M136 sessions are gone; `## Baseline` (line 79) and `## Cost` (line 36) open with the pointer sentence; old tables still present (M90–M93 rows, the M128–M136 row).
+- AC3 evidence (2026-10-18): a parse of `## Current-script baseline` finds 10 rows, exactly M269–M278, every column equal to the fresh BY MILESTONE row; section names 2026-10-18 and `92edddd4`.
+- AC4 evidence (2026-10-18): read each site: session-cost-notes.md A4 row (line 58) says the script reads subagent files since PR #238, `corrected M279`; the `## Disposition` A3/A4 bullet (lines 156–160) says A4 is no longer a script limit, matching the report's "`agents` counts spawned subagents, whose own turns are included"; first Open question ends with PR #238 and the new baseline, `corrected M279`; effort-experiment-notes.md procedure step 2 (lines 103–107) states the current counting, `corrected M279`; haiku-sonnet-roles.md lines 55–63 put the old behavior in the past and name PR #238, `corrected M279`.
+- AC5 evidence (2026-10-18): INDEX.md line 28 gives "cost medians 130.5 turns / 112k output" (the index's k-rounding of 112,229.5) and says the 165/169k baseline "used the old script, so the two are not compared"; line 18 has no `absent` and says its figures were "made with `cairn_cost.py` before PR #238 and not re-measurable"; line 27 says the same of its cost figures.
+- Consistency gate (2026-10-18): `cairn_validate` exit 0 (coverage complete PASS); no principle changed, so `cairn_impact` skipped; verify 5/5 green on the review head (scripts 418 OK, hooks OK, both plugin validates, plugin test); marketplace validate prints no `version` warning; no user-visible change (diff touches only `cairn/`), so no CHANGELOG entry is owed.
