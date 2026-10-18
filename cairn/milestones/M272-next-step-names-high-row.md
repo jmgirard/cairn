@@ -135,6 +135,8 @@ M271.
 - 2026-10-17: re-audit: AC1 (full) — second wording: the code meets every clause; wording edges answered, not changed (the second line is the bound): "non-empty short title" is the title the sentence trims as JavaScript does, "opens with `[high] `" reads the row text after `- ` as tracking-rules uses it, and "line" splits as `str.splitlines` does, which `reader.ts` mirrors; test gaps closed in T5: a U+FEFF trim, a lower-case heading, a second Candidates section, and a `[high]` row under a later non-Candidates heading, each shown red on a planted defect.
 - 2026-10-17: amendment return: AC1 — "carries in its text after `[high] ` no started token (` — started M<n>` or ` — started #<n>`, `<n>` one or more ASCII digits, followed by the row's end or a character that is not an ASCII letter or digit) … A candidate row is a line that opens with `- ` under a `## ` heading that starts with `## candidates` in any letter case, up to the next `## ` line, read after each `<!--` … `-->` span that opens and closes within that section is removed."
 - 2026-10-17: T5 done; verify green: scripts 416 OK, hooks OK, both validates exit 0, plugin test 2071 pass; cairn_validate all checks passed. Status review.
+- 2026-10-17: review pass 2: AC1-AC6 and the gate pass; 3 lenses ran; 16 findings fixed in 80c63869, 13 rejected, repeats kept their pass-1 dispositions; Copilot's one thread rejected, replied, resolved.
+- 2026-10-17: step-7 approval: m272-next-step-names-high-row approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
