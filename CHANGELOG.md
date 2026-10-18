@@ -15,8 +15,9 @@
   pane and on the band runs `/clear` and then
   `/cairn:milestone-plan <title>`. If the pane's last read of your open
   PRs found one that names that row in a `Candidate row:` line, the pane
-  hides the row. The pill and `Plan` then name no title. With no such row, nothing changes. Before, planning
-  never named a row.
+  hides the row. The pill and `Plan` then name no title. With no
+  unstarted `[high]` row, the output, the pill, and `Plan` are as before.
+  Before, planning never named a row.
 
 - **A triage promote marks its row high priority.** When `/cairn-triage`
   promotes a candidate row (marks it ready to plan), it now also gives the

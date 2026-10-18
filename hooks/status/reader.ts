@@ -13,7 +13,8 @@
 // `blocked` and `pr_number` in scripts/cairn_next.py (M223), and `pr_url`
 // (M224), and `archived_text` and `status_paragraph` (M246), and
 // `stack_bases` and `_met`, with `push_remote` in hooks/cairn_common.py
-// (M268), and `high_title`, which `recommend` reads for planning (M272). The mirror
+// (M268), and `high_title`, which `recommend` reads for planning (M272).
+// The mirror
 // reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
 // also take other Unicode digits, so an id such as `M００５７` reads
 // differently in the two.
@@ -634,7 +635,7 @@ function shortTitle(text: string): string {
 
 // A started token (M258): ` — started ` and a milestone id or a pull
 // request number, followed by the row's end or by a character that is not
-// a letter or digit, so a note such as `; narrowed …` or a trailing space
+// an ASCII letter or digit, so a note such as `; narrowed …` or a trailing space
 // after the token leaves it read (M258 review).
 const STARTED_TOKEN = / — started (M[0-9]+|#[0-9]{1,15})(?![0-9A-Za-z])/g
 
@@ -692,7 +693,8 @@ const STARTED = / — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])/
 
 // `high_title` in scripts/cairn_next.py (M272): the short title of the
 // first candidate row, in ROADMAP order, that opens with `[high] `, has a
-// non-empty short title, and carries no started token, or null.
+// non-empty short title, and carries no `STARTED` token in its text after
+// `[high] `, or null.
 export function highTitle(roadmap: string): string | null {
   for (const { priority, text } of candidateTexts(roadmap)) {
     const title = shortTitle(text)

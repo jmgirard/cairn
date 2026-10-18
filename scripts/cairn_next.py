@@ -41,10 +41,10 @@ STARTED = re.compile(r" — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])")
 # The characters JavaScript's String.prototype.trim removes (ECMAScript's
 # WhiteSpace and LineTerminator), so a short title trims as the pane's
 # `shortTitle` trims it. Python's bare strip() keeps U+FEFF and removes
-# U+001C-U+001F and U+0085 (M251 review).
-JS_TRIM = (
-    "\t\n\v\f\r          "
-    "        　﻿"
+# U+001C-U+001F and U+0085 (M251 review). Built from code points, so no
+# editor can strip an invisible character from the set (M272 review).
+JS_TRIM = "\t\n\v\f\r " + "".join(
+    map(chr, (0x00A0, 0x1680, *range(0x2000, 0x200B), 0x2028, 0x2029, 0x202F, 0x205F, 0x3000, 0xFEFF))
 )
 
 
@@ -100,8 +100,9 @@ def recommend(root, rows, roadmap=None):
 
 def candidate_texts(roadmap):
     """Each candidate row as a (priority, text) pair, in ROADMAP order: each
-    flush-left line that opens with `- ` under a `## Candidates` heading,
-    with HTML comments removed from each such section first. `priority` is
+    flush-left line that opens with `- ` under a `## ` heading that starts
+    with `## candidates` in any letter case, with each HTML comment that
+    opens and closes within such a section removed first. `priority` is
     `high` or `low` when the row opens with exactly `[high] ` or `[low] `,
     else `normal`, and `text` is the row after `- ` and that token. Every
     `## ` line starts or ends a section. The cairn pane's `candidateTexts`
@@ -144,7 +145,8 @@ def short_title(text):
 def high_title(roadmap):
     """The short title of the first candidate row, in ROADMAP order, that
     opens with `[high] `, has a non-empty short title, and carries no
-    started token, or None when no row does (M272)."""
+    `STARTED` token in its text after `[high] `, or None when no row does
+    (M272)."""
     for priority, text in candidate_texts(roadmap):
         title = short_title(text)
         if priority == "high" and title and not STARTED.search(text):

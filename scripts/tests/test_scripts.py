@@ -324,7 +324,7 @@ class TestNext(ScriptCase):
         _load_scripts()
         import cairn_next
 
-        self.assertEqual(cairn_next.high_title("## Candidates\n- [high] Bom﻿: x\n"), "Bom")
+        self.assertEqual(cairn_next.high_title("## Candidates\n- [high] Bom" + chr(0xFEFF) + ": x\n"), "Bom")
         self.assertEqual(cairn_next.high_title("## candidates\n- [high] Lower: x\n"), "Lower")
         two = "## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n\n## Candidates\n- [high] Second: z\n"
         self.assertEqual(cairn_next.high_title(two), "Second")

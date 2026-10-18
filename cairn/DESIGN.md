@@ -294,7 +294,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   The queue is `recommend`, `workable`, and `waiting` in
   `scripts/cairn_next.py`, which `reader.ts` mirrors and
   `scripts/tests/test_status_fixtures.py` holds to each fixture's `pane`
-  and `next` keys. The pane state also holds the candidate rows (M207):
+  and `next` keys. The next step's `title` is null except while planning,
+  when `high_title` (`highTitle`) gives the short title of the first
+  `[high]` candidate row with no started token in its text (M272). The pane state also holds the candidate rows (M207):
   `candidateRows` in `reader.ts` reads each flush-left line that opens
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high` or `low` for an exact
@@ -473,8 +475,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   removes or narrows; a guest PR body carries none. `takenRows` in
   `reader.ts` reads each candidate row's ` — started M<NNN>` or
   ` — started #<n>` token, followed by the row's end or a character that
-  is not a letter or digit, into the pane state's `taken` list
-  (`{ title, ref }`, M258; tag `pane-7` since M272), keeping an M token only while
+  is not an ASCII letter or digit (corrected M272), into the pane state's
+  `taken` list (`{ title, ref }`, tag `pane-6`, M258; `pane-7` since
+  M272), keeping an M token only while
   the table holds its id as `planned` or `blocked` and the id is not an
   archived blocked row's (M246), and giving it at three-digit padding.
   `startedRefs` in `pane.ts` marks a row by its body lines, its `#<n>`
@@ -707,7 +710,7 @@ within each type and are never reused.
   unreadable file before any good read prints `no cairn ROADMAP found`.
   So do the first failed read after a reload from pre-M210 code and a
   moved pane shape tag (`pane-7` since M272) after a reload, until the
-  next refresh (corrected M223, M246, M258). A pane parse
+  next refresh (corrected M223, M246, M258, M272). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare

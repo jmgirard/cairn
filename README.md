@@ -229,14 +229,16 @@ cleared conversation, as `Implement` does with its command. Its argument
 is the short title that the pane's Next line names (below): the first
 `[high]` candidate row with no started token. The pane's last read of your
 open PRs can drop it: a PR that names the row in a `Candidate row:` line
-hides it. Before the pane reads your PRs, nothing drops it. Otherwise
-`Plan` runs planning with no arguments. `Status` runs `/cairn:milestone`. A press runs the command
+hides it. Before the pane reads your PRs, nothing drops it. With no such
+row, or with the row dropped, `Plan` runs planning with no arguments.
+`Status` runs `/cairn:milestone`. A press runs the command
 as if you typed it. A second press while the first run is going does
 nothing. So does a press while `Plan` waits for its `/clear` to end the
 session. If the run is refused, the command goes after the text in the
 prompt box, and a toast says why. If the session refuses `Plan`'s
 `/clear`, `/clear` goes there and planning does not run. If the planning
-run itself is refused, `/cairn:milestone-plan` goes there.
+run itself is refused, `/cairn:milestone-plan` goes there. If `Plan`
+names a row, the row's title follows the command.
 
 When a cairn skill ends, a `Clear` button shows on any row that carries
 the next-step and `Status` buttons, before them. A press runs `/clear` at
