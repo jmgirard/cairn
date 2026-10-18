@@ -506,6 +506,15 @@
 
 ### Fixes
 
+- **A failed read or session end no longer leaves the cairn pane stuck.**
+  If the pane's `⌂` button cannot read whether a cairn skill runs, the
+  press now runs no `/clear`. The other buttons then work again. Before,
+  every pane button did nothing until the next session end. If a `/clear`
+  session end fails beneath the plugin, the band now resets as after an
+  end that succeeds. The step of a running skill goes, a band that you hid
+  shows again, and the `Clear` button goes. Before, the band kept the old
+  step, stayed hidden, and kept `Clear`.
+
 - **A direct edit from `/milestone-plan` removes the candidate row it
   fixes.** When the plan finds a trivial edit and you take that route, it
   now finds each candidate row whose short title your request quotes, such

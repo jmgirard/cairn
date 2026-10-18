@@ -121,12 +121,12 @@ a known issue.
       open; the rejected path rethrows `next(e)`'s error after them. See
       the T3 tests and the four AC3 blocks green with no line in them
       edited.
-- [ ] T5: Add the CHANGELOG Fixes entry, written from the T1 to T4 test
+- [x] T5: Add the CHANGELOG Fixes entry, written from the T1 to T4 test
       output. Update DESIGN.md's two descriptions (the `pressHome` lines
       near 536 and "An end whose `next(e)` rejects skips those updates"
       near 225). Grep README.md and DESIGN.md for other sentences about a
       failed end or the ⌂ step read and fix any the change makes false.
-- [ ] T6: Run the five `verify` commands from the repo root, each exit code
+- [x] T6: Run the five `verify` commands from the repo root, each exit code
       checked on its own.
 
 ## Work log
@@ -156,3 +156,5 @@ a known issue.
 - 2026-10-18: T3: AC2 tests in band.test.tsx (a `stateWrites` record in the kit's one `state.set` hook, since the kit refuses a second; drawing tests for step, dismissed, ended on both surfaces); all 7 red on the pre-T4 handler (rejected end wrote nothing; old step row, hidden band, Clear Button drawn).
 - 2026-10-18: T3: `session.end` takes no `{ deny }` and a throwing hook is skipped, so the rejected `next(e)` carries the kit's "no implementation for session.end"; the test asserts that text (`NO_END`), which `register.tsx` never writes (git grep, no match).
 - 2026-10-18: T4: the `session.end` handler catches `next(e)`'s error, runs the four updates, `free()`, the held-command hand-off (`the session end failed` on a rejected end), and the ⌂ open on both paths, then rethrows; T3 tests and the four AC3 blocks green, no line in those blocks edited; verify green (scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2084 pass).
+- 2026-10-18: T5: CHANGELOG Fixes entry (the ⌂ press after a failed step read; the band reset after a failed `/clear` end), each behavior one the AC1 or AC2 tests assert; DESIGN.md's rejected-end line (near 225) and `pressHome` line (near 539) updated; a grep of README.md and DESIGN.md for failed-end and step-read sentences found none the change makes false. The simple-english hook flags 368 older hits in CHANGELOG.md; the new entry lints clean alone.
+- 2026-10-18: T6: verify green from the repo root, each exit code 0 (scripts 418 OK, hooks 179 OK, plugin and marketplace validate, plugin test 2084 pass); cairn_validate all checks passed.
