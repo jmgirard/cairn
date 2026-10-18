@@ -18,6 +18,7 @@ import os
 import re
 import sys
 
+import cairn_next as cn
 import cairn_scripts as cs
 
 # Non-ISO calendar-date patterns. Conservative by design (M13 Decisions):
@@ -1839,6 +1840,29 @@ def check_dangling_ids(root, rows):
     return out
 
 
+# The order the Candidates section holds each priority level in (tracking-rules
+# "Candidate priority token"): high, then normal, then low.
+_LEVEL_RANK = {"high": 0, "normal": 1, "low": 2}
+
+
+def check_candidate_order(root):
+    """Advisory (M280): each candidate row, as `cairn_next.candidate_texts`
+    reads the rows, whose level ranks above the lowest level of a row before
+    it, so the file breaks the high → normal → low order. One finding per
+    such row, naming its short title, its level, and that lowest level. The
+    cairn pane draws the rows in level order whatever the file holds, and a
+    misspelled token reads as `normal` (D-134), so this WARNs and never
+    fails."""
+    lowest = None
+    out = []
+    for priority, text in cn.candidate_texts(cs.read_roadmap(root)):
+        if lowest is not None and _LEVEL_RANK[priority] < _LEVEL_RANK[lowest]:
+            out.append(f'"{cn.short_title(text)}" ({priority}) sits below a {lowest} row')
+        if lowest is None or _LEVEL_RANK[priority] > _LEVEL_RANK[lowest]:
+            lowest = priority
+    return out
+
+
 CHECKS = [
     ("mirror agreement", lambda root, rows: check_mirror(root, rows)),
     ("at most one in-progress", lambda root, rows: check_single_in_progress(rows)),
@@ -1878,6 +1902,7 @@ ADVISORIES = [
         lambda root, rows: check_references_staleness(root),
     ),
     ("release window", lambda root, rows: check_release_window(root, rows)),
+    ("candidate order", lambda root, rows: check_candidate_order(root)),
 ]
 
 
