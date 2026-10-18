@@ -185,3 +185,25 @@ Review pass 2, 2026-10-17, branch head 7fe3604c (main b1d03358 unmoved), after t
 - AC5: README now states the hide rule as the pane's last PR read (`README.md:229-233`, `:300-303`), and the paragraph at :187-191, both docstrings, and the CHANGELOG entry still say planning names the first unstarted `[high]` candidate. PASS.
 - AC6: verify at 7fe3604c: scripts 416 OK (21 skipped), hooks OK, both `claude plugin validate` exit 0, plugin test 2071 pass 0 fail. PASS.
 - Gate: `cairn_validate.py` all checks passed at 7fe3604c; marketplace validate prints no `version` warning; CHANGELOG entry present with no milestone number. PASS.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: README's "Otherwise `Plan` runs planning with no arguments" followed "Before the pane reads your PRs, nothing drops it", so it said a read always empties the argument — fix now, fixed 80c63869
+- diff-bug #2: README said a refused planning run puts `/cairn:milestone-plan` in the prompt box, but `lineOf` adds the title — fix now, fixed 80c63869
+- diff-bug #3: CHANGELOG's "With no such row, nothing changes" read as "with no PR naming it", and two lines ran past the wrap — fix now, fixed 80c63869
+- diff-bug #4: `DESIGN.md:476` and the `STARTED_TOKEN` comment still said "a letter or digit" over an ASCII class — fix now, fixed 80c63869
+- diff-bug #5: `JS_TRIM` and the U+FEFF test held literal invisible characters (the editor had decoded the `\u` escapes), so a stripping editor would change the set and void the test — fix now (built from `chr` code points; the bare-`strip()` plant still fails the test), fixed 80c63869
+- diff-bug #6: the `candidate_texts` docstring said "under a `## Candidates` heading" and neither `high_title` nor `highTitle` said where a token is read — fix now, fixed 80c63869
+- diff-bug #7: DESIGN.md misses the next step's `title` (:294) and M272 in the shape-tag correction list (:709) — fix now, fixed 80c63869; its :80 feature list — reject (false as a convention: that list already omits M258 and M268)
+- diff-bug #8: a short title holding `#N` reaches `/milestone-plan` from the Plan press — reject (planned change: the ✎ press passes titles the same way, M242; pass 1 blame-history #9)
+- blame-history #1: `types/index.d.ts` `CairnPaneState.next` lacks `title`, where M258 updated that file for `taken` — fix now, fixed 80c63869
+- blame-history #2: DESIGN.md:476 "letter or digit" — fix now (same as diff-bug #4), fixed 80c63869
+- blame-history #3: the shape-tag correction list and the `tag pane-N, M<x>` form at DESIGN.md:477 — fix now, fixed 80c63869
+- blame-history #4, #6, #7, #9: repeats of pass-1 follow-ups and rejects — dispositions as in pass 1 ("Plan target edges (M272 review)", M242 pattern)
+- blame-history #5: `[high]` as the Plan target meets D-179's supersede trigger, and no D-entry records the choice — reject (planned change: the user chose it at M271's question set, recorded in this file's `question set:` line; no operator has hit D-179's case)
+- blame-history #8: `cairn_next.py` prints the title when an open PR names the row — reject (repeat of pass-1 blame-history #3)
+- blame-history #10: `title` was added in 08e8a5da before the tag bump in 5afb3631 — reject (false as a shipped state: the PR squash-merges, so no intermediate commit ships)
+- blame-history #11: `test_a_fixture_names_a_high_row_for_planning` asserts an exact set — reject (planned change: a fact stated apart from the helper, so a new titled fixture must be named there on purpose)
+- blame-history #12: lines past the wrap in CHANGELOG, README, and `reader.ts:16` — fix now (rewrapped with the doc fixes), fixed 80c63869
+- prior-review #1: the uncapped `#[0-9]+` reopens M259's 15-digit cap — reject (false as a regression: M259 caps `#` because triage passes the number to `gh pr view`, and this reader converts no number; AC1 as amended says one or more digits; the pane/pill split is in "Plan target edges (M272 review)")
+- copilot: cairn/milestones/M272-next-step-names-high-row.md:14 (outdated) — reject (the header has named PR #284 since 7e6726f9; the branch stays beside it as the resume route's key); replied and resolved
+- Copilot level: Lite (set by GitHub's settings); review body's one item is that thread.
+- conversation: no human reviews or issue comments on PR #284.
