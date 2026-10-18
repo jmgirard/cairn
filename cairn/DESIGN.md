@@ -315,13 +315,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   key, and to that count where no comment sits in the section. The pane
   draws them only while no row is active. Every candidate line sets `grow`. While `acts`
   is true, a line whose short title is not empty carries the `plan`
-  Button. `paneLines` draws the lines by level (`LEVEL_RANK`: high, normal,
-  low), each level in ROADMAP order, and `state.candidates` stays in
-  ROADMAP order (M280). `cairn_validate`'s `candidate order` advisory
-  WARNs on each row the file holds below a row of a lower level. The `plan`
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
-  Box (M242). The line's `target` is its index and its `title` the short
+  Box (M242). `paneLines` draws the lines by level (`LEVEL_RANK`: high,
+  normal, low), each level in ROADMAP order, and `state.candidates` stays
+  in ROADMAP order (M280). `cairn_validate`'s `candidate order` advisory
+  WARNs on each row the file holds below a row of a lower level. The line's `target` is its index and its `title` the short
   title. `pressCandidate` in register.tsx runs its checks under the shared
   press mark through `pressChecked` (M243). Its checks give no command on
   a set step, on stored state that draws no candidates (no ROADMAP found,

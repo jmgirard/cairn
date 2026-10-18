@@ -452,7 +452,8 @@ class StatusFixtureAgreement(unittest.TestCase):
             if expected["next"] is not None and expected["next"]["title"] is not None:
                 titled[case_dir.name] = expected["next"]["title"]
         # `candidates-order` (M280) names its first `[high]` row in file
-        # order, which the pane's level sort also draws first.
+        # order. Every row there has a short title, so the pane's level sort
+        # draws that row first too.
         self.assertEqual(titled, {"high-candidate": "Chosen row", "candidates-order": "Late high"})
         roadmap = (FIXTURES / "high-candidate" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8")
         self.assertLess(roadmap.index("- Untagged first:"), roadmap.index("- [high] Taken row:"))

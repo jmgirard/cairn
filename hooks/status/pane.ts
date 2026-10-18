@@ -593,10 +593,10 @@ export function paneLines(
   // request's body names exactly (M252), or that a counted started token
   // marks (M258). The heading counts the drawn rows, and with none it is
   // not drawn. The lines draw high rows first, then normal, then low, each
-  // level in ROADMAP order, whatever order the file holds them in (M280). A
-  // drawn line keeps its row's index in `state.candidates`, which stays in
-  // ROADMAP order, as its key and its ✎ target, which `pressCandidate`
-  // looks up.
+  // level in ROADMAP order, whatever order the file holds them in (M280).
+  // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
+  // index there as its key and its ✎ target, and `pressCandidate` looks the
+  // row up by that index.
   const drawn = state.milestones.length === 0
     ? state.candidates
         .map((row, i) => ({ row, i }))
