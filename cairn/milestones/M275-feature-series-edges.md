@@ -71,7 +71,7 @@ A feature series stays visible to the release walk and the status snapshot until
 - [x] T2: Edit `skills/hotfix/SKILL.md` step 5 (~line 265) and the re-entry *Changelog* clause (~lines 109-111): a series' unreleased entry is edited where the fix changes it, never duplicated. Say how the hotfix finds the series: a live milestone file or an archive summary carrying a `feature series:` line. Guards plus mutation entries.
 - [x] T3: Edit `skills/milestone-review/SKILL.md` step 8 (~lines 678-679): merged PRs of `done` earlier parts only, `dropped` parts left out. Guards in `TestReviewGuestSentence` plus a mutation entry.
 - [x] T4: Edit the milestone template's work-log comment, the archive-summary template (one optional line after **Goal:**, keeping summaries ≤ 25 lines), and `skills/milestone/SKILL.md` §1 (~line 58). Guards plus mutation entries. Template edits feed the gating suites, so run both after this task.
-- [ ] T5: Edit the M274 entry in `CHANGELOG.md`'s Unreleased section; add no new entry. Check the README bullet at lines 765-767: it restates only the plan rule, which this milestone leaves alone, so log "no README edit" unless implement changes that.
+- [x] T5: Edit the M274 entry in `CHANGELOG.md`'s Unreleased section; add no new entry. Check the README bullet at lines 765-767: it restates only the plan rule, which this milestone leaves alone, so log "no README edit" unless implement changes that.
 - [ ] T6: Run the `verify` slot's five commands from the repo root, checking each exit code. Hand-run `python3 -m unittest discover -s skills/tests` (not a gate, D-109) and fix any red the edits caused.
 
 ## Work log
@@ -100,6 +100,7 @@ A feature series stays visible to the release walk and the status snapshot until
 - 2026-10-18: T2 done: hotfix step 5 and the re-entry Changelog clause keep a feature series' one unreleased entry, edited only where the fix changes it; step 5 says to find the series from `feature series:` lines in live files and archive summaries; 3 guards, 5 mutation entries; verify green.
 - 2026-10-18: T3 done: review step 8's last-part sentence names merged PRs of `done` earlier parts and leaves out `dropped` ones; the long sentence was split, so the existing guard and its two mutation entries were updated, 1 guard and 1 entry added; verify green.
 - 2026-10-18: T4 done: milestone template work-log comment names the series line; archive-summary template gains a placeholder line after **Goal:** (template now 22 lines, under the 25-line summary cap); `/milestone` §1 cites the release rule in owner mode; 3 guards, 3 mutation entries; verify green, both gating suites included.
+- 2026-10-18: T5 done: the M274 Unreleased entry now covers the guest sentence, the status snapshot, the archive fallback, and the hotfix rule; a whitespace-normalized split of the Unreleased section finds 1 of 60 entries mentioning `feature series`; no README edit (lines 763-768 restate only the unchanged plan rule).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

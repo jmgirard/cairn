@@ -18,9 +18,15 @@
   new sentences to its changelog line by hand. Copy them from
   `skills/shared/profiles/<profile>.md`.
   In guest mode, each series pull request says in one plain sentence
-  whether it completes the series, and the last one names the earlier pull
-  requests. In owner mode, `/cairn-release` names each series that has a
-  merged part and an unmerged part when it asks for the version.
+  whether it completes the series. The last one names the merged pull
+  requests of the earlier parts and leaves out a dropped part. In owner
+  mode, `/cairn-release` names each series that has a merged part and an
+  unmerged part when it asks for the version. The `/milestone` status
+  snapshot reports the same series. A part whose ROADMAP row was pruned
+  takes its status from its archive summary, and new archive summaries
+  copy the `feature series:` line. A `/hotfix` for behavior that the
+  series' entry describes adds no second entry, and it edits that entry
+  only where the fix changes what the entry says.
 
 - **Planning names the first high-priority candidate.** When no milestone
   is in review, in progress, or workable, `scripts/cairn_next.py`
