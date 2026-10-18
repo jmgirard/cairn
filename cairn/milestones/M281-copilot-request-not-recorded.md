@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M281: A Copilot request that GitHub does not record is reported
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -137,6 +137,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: claim audit: 17 claims read, 3 corrected — skills/shared/copilot-review.md (§6 level-line choice restored as alternatives; §2 "whoever made the request" moved back onto the never-request rule), README.md and CHANGELOG.md ("goes on without Copilot" overstated, since a late-recorded request can still be waited for at the read).
 - 2026-10-18: substantive amendment: AC3 "goes on without Copilot" → "makes no second request, and does not wait at that point", after the claim audit showed the old wording false under §4's read-time wait; the deliverable the user sees is unchanged, so no stop.
 - 2026-10-18: re-audit: AC3 (full) — reachable, no IP or D-entry conflict, bounded, binds the docs' prose, proportionate; noted it does not require the old phrase to go (kept narrower; the docs drop the phrase anyway) and called "at that point" loose.
+- 2026-10-18: claim audit re-read (same reader): the 3 corrected claims are correct; README wrap fixed. Implement complete: both gating suites OK after the last edits, both validates 0, `claude plugin test` 2132/0 at dcf4a52c (later edits are markdown only), skills/tests 886 OK; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
