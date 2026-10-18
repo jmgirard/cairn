@@ -4,6 +4,18 @@
 
 ### Changes that affect existing repos
 
+- **The cairn pane lists candidates by priority, and validate warns on
+  the file order.** The pane's Candidates list now shows the `[high]` rows
+  first, then the untagged rows, then the `[low]` rows. Each group keeps
+  its ROADMAP order, whatever order the file holds the groups in. Before,
+  the list followed the file, so a `[high]` row below `[low]` rows showed
+  below them. A row's ✎ still plans that row. `scripts/cairn_validate.py`
+  has a new advisory, `candidate order`. It prints one WARN line for each
+  candidate row that sits below a row of a lower priority. The line names
+  the row's short title, its priority, and that lower priority. Like every
+  advisory, it does not change the exit code. To clear it, move the named
+  rows up to their priority's group.
+
 - **A feature split across milestones reaches users as one change.** When a
   plan splits one user-facing feature or fix into several milestones, it
   writes them as a feature series and puts a
