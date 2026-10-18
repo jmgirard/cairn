@@ -54,12 +54,12 @@ a known issue.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: A ⌂ press whose read of the stored step rejects runs no
+- [x] AC1: A ⌂ press whose read of the stored step rejects runs no
       `/clear` and leaves the Buttons free: a `pane.test.tsx` test denies
       that one read (the first `step` read after the ⌂ press, once) through
       a `state.get` hook, catches the press's rejection, then presses
       Status, and finds `copy.commands` equal to `[STATUS_RUN]`.
-- [ ] AC2: A session end of reason `clear` whose `next(e)` rejects writes
+- [x] AC2: A session end of reason `clear` whose `next(e)` rejects writes
       the stored `step`, `expanded`, `dismissed`, and `ended` values as a
       resolved `clear` end writes them (`null`, `false`, `null`, `false`),
       and rejects with the message of the error `next(e)` threw: a test
@@ -68,7 +68,7 @@ a known issue.
       `step`, `dismissed`, and `ended`, a test gives the value its other
       state, rejects a `clear` end, and finds the band drawn as the same
       setup draws it after a resolved end.
-- [ ] AC3: A rejected end still opens the pane for a ⌂ press's `clear`
+- [x] AC3: A rejected end still opens the pane for a ⌂ press's `clear`
       end, frees the action Buttons, hands a held command to the prompt
       box with a toast, and cancels a ⌂ press whose step read it cut off:
       the four `pane.test.tsx` blocks "a ⌂ press's open still runs when the
@@ -77,10 +77,10 @@ a known issue.
       its held command to the prompt box (M260 AC2)", and "a session end
       during a ⌂ press's step read cancels its /clear (M260 AC3)" pass with
       no line in them changed from main.
-- [ ] AC4: `CHANGELOG.md`'s Unreleased Fixes section carries one entry for
+- [x] AC4: `CHANGELOG.md`'s Unreleased Fixes section carries one entry for
       the two fixes, and each behavior it states is one an AC1 or AC2 test
       asserts.
-- [ ] AC5: The `verify` slot of `cairn/PROFILE.md` is green: both
+- [x] AC5: The `verify` slot of `cairn/PROFILE.md` is green: both
       `unittest` suites, both `claude plugin validate` runs, and
       `claude plugin test .`, each exit code 0.
 
@@ -160,3 +160,24 @@ a known issue.
 - 2026-10-18: T6: verify green from the repo root, each exit code 0 (scripts 418 OK, hooks 179 OK, plugin and marketplace validate, plugin test 2084 pass); cairn_validate all checks passed.
 - 2026-10-18: claim audit: 35 claims read, 3 corrected — CHANGELOG.md (the ⌂ sentence said "now runs no `/clear`", which main also did, and "every pane button", though `↻` was never blocked and the band's action Buttons were), hooks/status/band.test.tsx (the `endTwice` comment named the hook's thrown error, not the kit's `NO_END`); same reader re-read all 3 as true; verify green after (plugin test 2084 pass).
 - 2026-10-18: implement complete; status set to review.
+- 2026-10-18: review: PR #290 opened at review start (Copilot round on); Copilot requested on state `none`.
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md.
+     EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
+     Entries carry their rationale; the counterweight `decisions format`
+     advisory watches for pasted output, not for entry length (D-075). -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
+
+- AC1 (2026-10-18, head 5ceddd3f): `claude plugin test .` exit 0, 2084 pass; "a ⌂ press whose step read rejects leaves the Buttons free (M278 AC1) > the ⌂ press runs no /clear, and a Status press after it runs" passes: one `step` read denied, no command after the ⌂ press, `copy.commands` equal to `[STATUS_RUN]` after Status. Red on main at T1 (Status ran nothing).
+- AC2 (2026-10-18, head 5ceddd3f): the 7 tests under "a rejected session end resets the band as a resolved one does (M278 AC2)" in band.test.tsx pass: the write record finds a resolved `clear` end writing step null, expanded false, dismissed null, ended false and the rejected end writing the same, with the rejection's message equal to the kit's `NO_END` (the error `next(e)` rejected with; `register.tsx` writes no such text, git grep no match); drawing tests for step, dismissed, ended on terminal and desktop find the band after a rejected end equal to the band after a resolved one. All 7 red before T4.
+- AC3 (2026-10-18, head 5ceddd3f): the four named blocks' 12 tests pass (M255 AC3: 2, M260 AC1: 4, M260 AC2: 2, M260 AC3: 4). `git diff main...HEAD -- hooks/status/pane.test.tsx` is 34 added, 0 removed lines in one hunk after main line 4766, the end of the M260 AC3 block; each block's describe name appears once on main and once at head.
+- AC4 (2026-10-18, head 5ceddd3f): `git diff main...HEAD -- CHANGELOG.md` adds 10 lines, 0 removed: one entry, the first under Unreleased `### Fixes` (CHANGELOG.md:509). Its behaviors map to tests: the ⌂ press lets go of its hold and the other action buttons work again (AC1 test: Status runs after the denied read); after a failed `/clear` end the step goes, a hidden band shows, `Clear` goes (AC2 drawing tests for step, dismissed, ended). Its two "Before" sentences state main's behavior, read against `git show main:hooks/status/register.tsx` by the claim audit and shown by the red runs at T1 and T3.
+- AC5 (2026-10-18, head 5ceddd3f): the five verify commands from the repo root, each exit 0: scripts/tests 418 OK (21 skipped), hooks/tests 179 OK, plugin.json validate, marketplace.json validate, `claude plugin test .` 2084 pass 0 fail.
+- gate (2026-10-18): `cairn_validate.py` exit 0, all checks passed; no DESIGN.md principle changed, so `cairn_impact` skipped; consistency-gate slot: verify green on the review head (AC5), marketplace validate shows no `plugins[N].version` warning, CHANGELOG.md has the entry (AC4) with no milestone id in it. No CI in this repo (profile).

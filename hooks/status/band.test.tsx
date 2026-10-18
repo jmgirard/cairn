@@ -98,6 +98,8 @@ type Copy = {
   // While set, the key and value of each value the mod writes, in order,
   // with a shaped value's shape removed (M278).
   stateWrites?: { key: string; value: unknown }[]
+  // While set, each write of the step is refused (M278 review).
+  denyStepWrite?: boolean
 }
 
 function copyOf(name: string): Copy {
@@ -128,6 +130,7 @@ function seat(on: On, copy: Copy) {
   on('state.set', async ($, e, next) => {
     if (e.plugin === 'cairn') copy.stateSets?.push(e.key)
     if (e.plugin === 'cairn') copy.stateWrites?.push({ key: e.key, value: unshaped(e.value) })
+    if (copy.denyStepWrite === true && e.plugin === 'cairn' && e.key === 'step') return { deny: STEP_REFUSED }
     if (copy.dropRoot !== true || e.plugin !== 'cairn' || e.key !== 'band') return next(e)
     const shaped = e.value as { shape: string; value: object }
     return next({ ...e, value: { ...shaped, value: { ...shaped.value, root: null } } })
@@ -3837,6 +3840,10 @@ async function endTwice($, copy: Copy, setup: () => Promise<void>, look: () => P
 // writes no such text, so a rejection carrying it is `next(e)`'s own.
 const NO_END = 'no implementation for session.end'
 
+// The reason the kit's `state.set` hook gives when `denyStepWrite` refuses
+// a write of the step (M278 review).
+const STEP_REFUSED = 'the store refused the step'
+
 // The four values a session end resets, by key, as `update` writes them.
 const END_KEYS = ['step', 'expanded', 'dismissed', 'ended']
 
@@ -3883,7 +3890,11 @@ describe('a rejected session end resets the band as a resolved one does (M278 AC
       seat(on, copy)
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
-      const [resolved, rejected] = await endTwice($, copy, () => prompt($, 'milestone-review'), () => lines(ui))
+      const review = async () => {
+        await prompt($, 'milestone-review')
+        expect(await lines(ui)).toEqual([MIXED_REVIEW, ENGINE])
+      }
+      const [resolved, rejected] = await endTwice($, copy, review, () => lines(ui))
       expect(resolved.seen).toEqual([SHOWN.mixed, ENGINE])
       expect(rejected.seen).toEqual(resolved.seen)
       await ui.unmount()
@@ -3916,6 +3927,42 @@ describe('a rejected session end resets the band as a resolved one does (M278 AC
       const [resolved, rejected] = await endTwice($, copy, ends, () => allActionKeys(ui))
       expect(resolved.seen).toEqual(ACTION_KEYS)
       expect(rejected.seen).toEqual(resolved.seen)
+      await ui.unmount()
+    })
+  }
+})
+
+// A session end whose write of the step is refused still frees the action
+// Buttons, resolved or rejected beneath (M278 review).
+describe("a session end whose step write is refused still frees the Buttons (M278 review)", () => {
+  for (const rejects of [false, true]) {
+    test(`a ${rejects ? 'rejected' : 'resolved'} clear end, while a Clear press's run never settles`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      copy.runHold = new Promise<void>(() => {})
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      await skillEnds($)
+      void ui.press({ key: CLEAR_KEY })
+      for (let i = 0; i < 200 && (copy.commands ?? []).length === 0; i++) await new Promise(resolve => setTimeout(resolve, 5))
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      copy.endThrows = rejects ? true : undefined
+      copy.denyStepWrite = true
+      let message: string | undefined
+      try {
+        await $.session.end({ reason: 'clear', sessionId: 's1' })
+      } catch (error) {
+        message = error instanceof Error ? error.message : String(error)
+      }
+      copy.endThrows = undefined
+      copy.denyStepWrite = undefined
+      copy.runHold = undefined
+      // The engine skips a mod hook that throws, so a resolved end beneath
+      // still resolves for the caller, and only the engine's log names the
+      // write's refusal.
+      expect(message).toBe(rejects ? NO_END : undefined)
+      await ui.press({ key: 'cairn-status' })
+      expect(copy.commands).toEqual([CLEAR_RUN, STATUS_RUN])
       await ui.unmount()
     })
   }

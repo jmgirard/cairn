@@ -551,11 +551,18 @@ export const register: Register = on => {
       failed = { error }
     }
     // An end beneath that rejects resets the band as a resolved end does
-    // (M278).
-    await update($, step, () => null)
-    await update($, expanded, () => false)
-    await update($, dismissed, () => null)
-    await update($, ended, () => false)
+    // (M278). A write that rejects stops the resets but none of what
+    // follows, and its error goes on after them unless `next(e)` rejected
+    // first (M278 review).
+    let wrote: { error: unknown } | null = null
+    try {
+      await update($, step, () => null)
+      await update($, expanded, () => false)
+      await update($, dismissed, () => null)
+      await update($, ended, () => false)
+    } catch (error) {
+      wrote = { error }
+    }
     // A `/clear` from the Clear Button ends the session, and its run may
     // never settle, so the end frees the action Buttons (M216). So does a
     // press whose checks have not settled, once the end's own updates are
@@ -580,6 +587,7 @@ export const register: Register = on => {
     // other end drops the mark with no open (M241).
     if (home !== null && e.reason === 'clear') void openHome($)
     if (failed !== null) throw failed.error
+    if (wrote !== null) throw wrote.error
     return result
   })
 

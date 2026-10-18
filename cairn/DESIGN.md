@@ -223,8 +223,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   run and hold nothing. The end clears the mark beside `running`, after its
   own updates, so a press cut off by the end leaves the Buttons free
   (M255). An end whose `next(e)` rejects makes the same updates and
-  clears both before it rethrows that error (M278). Either way it clears only the run and the mark
-  current when it began, so a press made while `next(e)` is pending keeps
+  clears both before it rethrows that error (M278). A write that rejects
+  stops the updates but not what follows them, and its error goes on
+  after them unless `next(e)` rejected first. Either way it clears only
+  the run and the mark current when it began, so a press made while
+  `next(e)` is pending keeps
   its own (M260). A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as

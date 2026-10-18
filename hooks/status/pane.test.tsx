@@ -4783,11 +4783,15 @@ describe("a ⌂ press whose step read rejects leaves the Buttons free (M278 AC1)
     await $.turn.complete(turn())
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
     deny.armed = true
+    let message: string | undefined
     try {
       await ui.press({ key: PANE_HOME })
-    } catch {
-      // The press's rejection is the read's.
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error)
     }
+    // The press rejects with the denied read's reason, so the one denial
+    // was the ⌂ press's own read (M278 review).
+    expect(message).toContain('the store refused the read')
     expect(deny.denied).toBe(1)
     await untilRuns(copy, 1, 10)
     expect(copy.commands ?? []).toEqual([])
