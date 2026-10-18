@@ -161,6 +161,7 @@ not old-script figures.
 - 2026-10-18: T4 done: haiku-sonnet-roles.md "Two older records" paragraph put in the past tense with PR #238 named; INDEX.md lines for the three notes updated; plan sweep re-run, remaining hits are the tag legend, the corrected A4 row and Open question, and unrelated lower-bound lines; cairn_validate green; verify 5/5 green.
 - 2026-10-18: claim audit: not owed — internal tier.
 - 2026-10-18: implement complete; status review.
+- 2026-10-18: step-7 approval: m279-old-cost-figures approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
