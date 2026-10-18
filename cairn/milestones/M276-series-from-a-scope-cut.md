@@ -167,6 +167,7 @@ candidate row "Series entry after a release (M276 plan)".
 - 2026-10-18: claim audit: 45 claims read, 2 corrected — skills/tests/test_mutation_harness.py (three asserted sentences lacked their own entry; added), skills/cairn-release/SKILL.md and skills/milestone-implement/SKILL.md (cite tracking-rules "A cut series"); same reader re-read both, now hold; skills/tests 883 OK.
 - 2026-10-18: T7: verify green (scripts 418 OK, hooks 179 OK, plugin and marketplace validate exit 0, plugin test 0 fail), skills/tests 883 OK, cairn_validate all checks passed.
 - 2026-10-18: review started; PR https://github.com/jmgirard/cairn/pull/288 opened at review start (Copilot round on); Copilot state `none`, requested.
+- 2026-10-18: step-7 approval: m276-series-from-a-scope-cut approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
