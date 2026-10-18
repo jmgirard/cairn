@@ -14,7 +14,9 @@ second implementation here, and the pane's next step to
 pane's candidate rows to a second reader here, whose count it holds to
 `cairn_scripts.candidate_count` where no HTML comment sits in the
 Candidates section (M207 AC3). It holds the pane's blocked rows and their
-pull request numbers to `cairn_next.blocked` (M223 AC3). A path an
+pull request numbers to `cairn_next.blocked` (M223 AC3). The next step's
+`title`, the `[high]` row that planning names, is held through
+`cairn_next.recommend` too (M272 AC3). A path an
 `expected.json` lists under `unreadable` reads as failing on both sides.
 It also fails when the generated module is stale.
 """
@@ -437,6 +439,21 @@ class StatusFixtureAgreement(unittest.TestCase):
         # `candidate_count` counts all three, and the pane reads none.
         self.assertEqual(cs.candidate_count(skeleton), 3)
         self.assertEqual(load("candidates-skeleton")["candidates"], [])
+
+    def test_a_fixture_names_a_high_row_for_planning(self):
+        # M272 AC3, stated apart from the helpers: at least one compared
+        # fixture gives a non-null title, and in `high-candidate` it is the
+        # first `[high]` row that is neither started nor inside a comment.
+        titled = {}
+        for case_dir in gen_fixtures.cases():
+            expected = json.loads((case_dir / "expected.json").read_text(encoding="utf-8"))
+            if expected["next"] is not None and expected["next"]["title"] is not None:
+                titled[case_dir.name] = expected["next"]["title"]
+        self.assertEqual(titled, {"high-candidate": "Chosen row"})
+        roadmap = (FIXTURES / "high-candidate" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8")
+        self.assertLess(roadmap.index("- Untagged first:"), roadmap.index("- [high] Taken row:"))
+        self.assertIn("- [high] Taken row: work has started on it — added 2026-01-02 — started M900\n", roadmap)
+        self.assertLess(roadmap.index("- [high] Commented row:"), roadmap.index("- [high] Chosen row:"))
 
     def test_workable_fixtures_are_present_and_discriminating(self):
         # The two idle fixtures exist, and each holds a planned row that a

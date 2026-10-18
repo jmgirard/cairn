@@ -262,6 +262,73 @@ class TestNext(ScriptCase):
         root = self.tree.build()
         out = run("cairn_next.py", root).stdout
         self.assertIn("Recommended: plan the next milestone → /milestone-plan", out)
+        # The base tree's candidates carry no `[high]` token, so the line
+        # names no row and ends at the command (M272 AC2).
+        self.assertIn("Recommended: plan the next milestone → /milestone-plan\n", out)
+
+    def _planning_tree(self, candidates):
+        """The base tree with nothing workable and these candidate rows."""
+        self.tree.rows = [("M01", "Old done", "done", "—", "high", "milestones/archive/M01-old.md")]
+        self.tree.files = {"milestones/archive/M01-old.md": archived("done")}
+        self.tree.candidates = candidates
+        return self.tree.build()
+
+    def _recommend(self, root):
+        scripts = _load_scripts()
+        import cairn_next
+
+        return cairn_next.recommend(str(root), scripts.rows(scripts.read_roadmap(str(root))))
+
+    def test_plan_names_the_first_high_row_over_an_earlier_untagged_row(self):
+        # M272 AC1 and AC2: the untagged row comes first in the ROADMAP, and
+        # the `[high]` row after it is the one named, its short title cut at
+        # `: ` and trimmed.
+        root = self._planning_tree(["Untagged first: detail", "[high]  Chosen row : detail — added 2026-01-01"])
+        self.assertEqual(self._recommend(root)["title"], "Chosen row")
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: plan the next milestone → /milestone-plan Chosen row\n", out)
+
+    def test_plan_passes_over_a_started_high_row(self):
+        # M272 AC1: each started token shape is passed over, a token
+        # followed by `;` or a space still counts, and a token run on into a
+        # letter or digit does not (so the row after it is not reached).
+        for started in (
+            "[high] Taken: x — started M271",
+            "[high] Taken: x — started #12",
+            "[high] Taken: x — started M271; narrowed",
+            "[high] Taken: x — started #12 ",
+            "[high] Taken: x — started #1234567890123456",
+        ):
+            with self.subTest(started=started):
+                root = self._planning_tree([started, "[high] Next high: y"])
+                self.assertEqual(self._recommend(root)["title"], "Next high")
+        root = self._planning_tree(["[high] Not taken: x — started M271a", "[high] Next high: y"])
+        self.assertEqual(self._recommend(root)["title"], "Not taken")
+
+    def test_plan_passes_over_a_high_row_in_a_comment_and_an_empty_title(self):
+        # M272 AC1: a `[high]` row inside an HTML comment and one whose
+        # short title is empty are passed over.
+        root = self._planning_tree(
+            ["<!--", "[high] Commented out: x", "-->", "[high] : empty title", "[high] Visible: y"]
+        )
+        self.assertEqual(self._recommend(root)["title"], "Visible")
+
+    def test_plan_with_no_high_row_gives_none(self):
+        # M272 AC1: untagged and `[low]` rows, an upper-case token, and a
+        # token with no space after it name nothing.
+        root = self._planning_tree(["Plain: x", "[low] Low: y", "[HIGH] Upper: z", "[high]Tight: w"])
+        self.assertIsNone(self._recommend(root)["title"])
+        out = run("cairn_next.py", root).stdout
+        self.assertIn("Recommended: plan the next milestone → /milestone-plan\n", out)
+
+    def test_workable_milestone_gives_none_beside_a_high_row(self):
+        # M272 AC1: with a workable planned milestone the recommendation is
+        # implement, and `title` is None though a `[high]` row exists.
+        self.tree.rows = [row for row in self.tree.rows if row[2] != "in-progress"]
+        self.tree.candidates = ["[high] Waiting row: x"]
+        root = self.tree.build()
+        got = self._recommend(root)
+        self.assertEqual((got["action"], got["id"], got["title"]), ("implement", "M03", None))
 
     def test_archived_done_dependency_is_satisfied(self):
         # Regression: a dep on a done milestone whose ROADMAP row was pruned

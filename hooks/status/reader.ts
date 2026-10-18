@@ -13,7 +13,7 @@
 // `blocked` and `pr_number` in scripts/cairn_next.py (M223), and `pr_url`
 // (M224), and `archived_text` and `status_paragraph` (M246), and
 // `stack_bases` and `_met`, with `push_remote` in hooks/cairn_common.py
-// (M268). The mirror
+// (M268), and `high_title`, which `recommend` reads for planning (M272). The mirror
 // reads ASCII digits only, where Python's `isdigit`, `isdecimal`, and `\d`
 // also take other Unicode digits, so an id such as `M００５７` reads
 // differently in the two.
@@ -398,7 +398,7 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
     pane: {
       found: true,
       milestones,
-      next: recommend(parsed, workable),
+      next: recommend(parsed, workable, roadmap),
       workable,
       waiting: waitingRows(parsed, archived, bases),
       candidates: candidateRows(roadmap),
@@ -508,8 +508,10 @@ export type PaneMilestone = {
   file: { goal: string; tasks: PaneItem[]; criteria: PaneItem[]; log: string[] } | null
 }
 
-// `recommend` in scripts/cairn_next.py: `id` is null for planning.
-export type NextStep = { action: string; command: string; id: string | null }
+// `recommend` in scripts/cairn_next.py: `id` is null for planning, and
+// `title` is the short title of the first unstarted `[high]` candidate row
+// when planning, else null (M272).
+export type NextStep = { action: string; command: string; id: string | null; title: string | null }
 
 // `waiting` in scripts/cairn_next.py: `unmet` holds each undone dependency
 // as written, with its row's status or `unknown`.
@@ -673,14 +675,30 @@ export function takenRows(roadmap: string, rows: RoadmapRow[], archived: string[
     .map(item => (item.ref.startsWith('#') ? item : { title: item.title, ref: canonId(item.ref) }))
 }
 
-// `recommend` in scripts/cairn_next.py, over the rows and the workable list.
-export function recommend(rows: RoadmapRow[], workable: WorkableRow[]): NextStep {
+// `recommend` in scripts/cairn_next.py, over the rows, the workable list,
+// and the ROADMAP text, from which planning reads `highTitle` (M272).
+export function recommend(rows: RoadmapRow[], workable: WorkableRow[], roadmap = ''): NextStep {
   const review = rows.find(row => row.status === 'review')
-  if (review !== undefined) return { action: 'review', command: '/milestone-review', id: review.id }
+  if (review !== undefined) return { action: 'review', command: '/milestone-review', id: review.id, title: null }
   const active = rows.find(row => row.status === 'in-progress')
-  if (active !== undefined) return { action: 'resume', command: '/milestone-implement', id: active.id }
-  if (workable.length > 0) return { action: 'implement', command: '/milestone-implement', id: workable[0].id }
-  return { action: 'plan the next milestone', command: '/milestone-plan', id: null }
+  if (active !== undefined) return { action: 'resume', command: '/milestone-implement', id: active.id, title: null }
+  if (workable.length > 0) return { action: 'implement', command: '/milestone-implement', id: workable[0].id, title: null }
+  return { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: highTitle(roadmap) }
+}
+
+// A started token as `STARTED` in scripts/cairn_next.py reads it (M272): as
+// `STARTED_TOKEN`, but with no cap on a pull request number's digits.
+const STARTED = / — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])/
+
+// `high_title` in scripts/cairn_next.py (M272): the short title of the
+// first candidate row, in ROADMAP order, that opens with `[high] `, has a
+// non-empty short title, and carries no started token, or null.
+export function highTitle(roadmap: string): string | null {
+  for (const { priority, text } of candidateTexts(roadmap)) {
+    const title = shortTitle(text)
+    if (priority === 'high' && title !== '' && !STARTED.test(text)) return title
+  }
+  return null
 }
 
 // `waiting` in scripts/cairn_next.py: the planned rows that are not

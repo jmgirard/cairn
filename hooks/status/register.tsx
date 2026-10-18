@@ -13,6 +13,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  nextTitle,
   startedRefs,
   startedRows,
   nextLabel as labelOf,
@@ -1093,7 +1094,9 @@ let homeRun: object | null = null
 // press do nothing. A Button drawn for a milestone (`Implement`, `Resume`,
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
-// planning with no arguments while nothing is workable (M213).
+// planning while nothing is workable (M213), with the first unstarted
+// `[high]` candidate row's short title as its argument when the pane's Next
+// line names one (`nextTitle`, M272), and with none otherwise.
 // `Plan` and `Implement` run `/clear` first and hold the command for the
 // session end it brings (M221). The press is the person's consent to drop
 // the conversation, as a press of Clear is (M216), so it clears only when
@@ -1108,7 +1111,11 @@ async function pressNext($, drawn: string | undefined) {
     if (next === null) return undefined
     if (next.id === null && drawn !== PLAN_LABEL) return undefined
     const clears = CLEARS_FIRST.includes(next.action) && drawn === labelOf(next.action)
-    return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '', clears }
+    // The title the Next line names, under the same hide rule (M272).
+    const held = await read($, hotfixes)
+    const ours = held.root !== null && held.root === (await read($, band)).root
+    const args = next.id ?? nextTitle(next, ours ? held.started : []) ?? ''
+    return { command: `cairn:${next.command.slice(1)}`, args, clears }
   })
 }
 

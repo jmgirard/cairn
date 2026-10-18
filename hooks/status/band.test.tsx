@@ -473,7 +473,7 @@ function shownKey(name: string, skill: string | null = null): string | null {
 
 // The fixtures with a ROADMAP and no active or workable row, written out
 // by hand: each draws the empty row (M213 AC1).
-const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-skeleton']
+const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-skeleton', 'high-candidate']
 const EMPTY_TEXT = 'No milestone ready'
 
 const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow
@@ -2998,13 +2998,17 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
   }
 })
 
-// What a press of `Plan` runs, written out by hand (M213 AC3).
+// What a press of `Plan` runs, written out by hand (M213 AC3): planning
+// with no arguments, or with the fixture's first unstarted `[high]`
+// candidate row's short title (M272).
 const PLAN_RUN = { command: 'cairn:milestone-plan', args: '' }
+const PLAN_TITLES: Record<string, string> = { 'high-candidate': 'Chosen row' }
+const planRun = (name: string) => ({ ...PLAN_RUN, args: PLAN_TITLES[name] ?? '' })
 
 describe('the empty row carries Plan and Status, and a press runs planning (M213 AC2, AC3)', () => {
   for (const name of EMPTY_FIXTURES) {
     for (const surface of SURFACES) {
-      test(`${name}: Plan runs /cairn:milestone-plan with no arguments, and Status runs /cairn:milestone (${surface})`, async ($, on) => {
+      test(`${name}: Plan runs /cairn:milestone-plan with ${PLAN_TITLES[name] ?? 'no arguments'}, and Status runs /cairn:milestone (${surface})`, async ($, on) => {
         const copy = copyOf(name)
         seat(on, copy)
         await $.turn.complete(turn())
@@ -3016,9 +3020,9 @@ describe('the empty row carries Plan and Status, and a press runs planning (M213
         // Plan runs `/clear`, and planning at the clear's session end (M221).
         await $.session.end(CLEAR_END)
         await untilRuns(copy, 2)
-        expect(copy.commands).toEqual([CLEAR_RUN, PLAN_RUN])
+        expect(copy.commands).toEqual([CLEAR_RUN, planRun(name)])
         await ui.press({ key: 'cairn-status' })
-        expect(copy.commands).toEqual([CLEAR_RUN, PLAN_RUN, STATUS_RUN])
+        expect(copy.commands).toEqual([CLEAR_RUN, planRun(name), STATUS_RUN])
         expect([copy.fills ?? [], copy.toasts ?? []]).toEqual([[], []])
         await ui.unmount()
       })
@@ -3537,7 +3541,7 @@ describe('two presses at once of a band Button run its command once (M243 AC1)',
 // The fixtures whose band Button is Plan, and those whose band Button is
 // Implement, with what each press runs after `/clear` (M221 AC1, AC2).
 const CLEAR_FIRST_CASES: { name: string; label: string; run: () => { command: string; args: string } }[] = [
-  ...EMPTY_FIXTURES.map(name => ({ name, label: 'Plan', run: () => PLAN_RUN })),
+  ...EMPTY_FIXTURES.map(name => ({ name, label: 'Plan', run: () => planRun(name) })),
   ...Object.keys(IDLE_DRAWN).map(name => ({ name, label: 'Implement', run: () => nextRun(name) })),
 ]
 

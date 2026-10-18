@@ -6,7 +6,9 @@ start a workable planned milestone), lists planned milestones whose
 dependencies are all done (in guest mode, at most one may instead be a
 stack base, M268), lists those still blocked by dependencies, and
 lists the `blocked` milestones, each with the number of the pull request
-its header names (M223).
+its header names (M223). When it recommends planning, it names the first
+unstarted `[high]` candidate row by its short title, when there is one
+(M272).
 Read-only; exits 0 on success, 2 outside a cairn repo.
 
     python3 scripts/cairn_next.py [ROOT]
@@ -28,6 +30,22 @@ PR_URL = re.compile(r"https://github\.com/[^/ \t]+/[^/ \t]+/pull/([0-9]{1,15})(?
 # and the paragraph of a done milestone starts with `done` (M246).
 BLANK = re.compile(r"^[ \t]*$")
 STATUS_DONE = re.compile(r"^\*\*Status:\*\*[ \t]*done")
+# An HTML comment, removed from each Candidates section before its rows are
+# read, as `candidateTexts` in hooks/status/reader.ts removes it (M272).
+COMMENT = re.compile(r"<!--.*?-->", re.S)
+# A candidate row's started token (tracking-rules "Candidate started
+# token"): ` — started ` and a milestone id or a pull request number,
+# followed by the row's end or a character that is not an ASCII letter or
+# digit (M272).
+STARTED = re.compile(r" — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])")
+# The characters JavaScript's String.prototype.trim removes (ECMAScript's
+# WhiteSpace and LineTerminator), so a short title trims as the pane's
+# `shortTitle` trims it. Python's bare strip() keeps U+FEFF and removes
+# U+001C-U+001F and U+0085 (M251 review).
+JS_TRIM = (
+    "\t\n\v\f\r          "
+    "        　﻿"
+)
 
 
 def done_ids(root, rows):
@@ -59,21 +77,79 @@ def workable(root, rows):
     return _workable(rows, done_ids(root, rows), stack_bases(root, rows))
 
 
-def recommend(root, rows):
+def recommend(root, rows, roadmap=None):
     """The single recommended action, in precedence order: the first review
     row, else the first in-progress row, else the first workable row, else
-    planning. A dict of `action`, `command`, and `id` (None for planning).
+    planning. A dict of `action`, `command`, `id` (None for planning), and
+    `title`: for planning, the short title of the first unstarted `[high]`
+    candidate row, as `high_title` reads it from `roadmap` (the ROADMAP
+    text, read from `root` when None), and None in every other case (M272).
     The cairn pane (hooks/status/reader.ts) mirrors this (M205)."""
     review = [r for r in rows if r["status"] == "review"]
     in_progress = [r for r in rows if r["status"] == "in-progress"]
     ready = workable(root, rows)
     if review:
-        return {"action": "review", "command": "/milestone-review", "id": review[0]["id"]}
+        return {"action": "review", "command": "/milestone-review", "id": review[0]["id"], "title": None}
     if in_progress:
-        return {"action": "resume", "command": "/milestone-implement", "id": in_progress[0]["id"]}
+        return {"action": "resume", "command": "/milestone-implement", "id": in_progress[0]["id"], "title": None}
     if ready:
-        return {"action": "implement", "command": "/milestone-implement", "id": ready[0]["id"]}
-    return {"action": "plan the next milestone", "command": "/milestone-plan", "id": None}
+        return {"action": "implement", "command": "/milestone-implement", "id": ready[0]["id"], "title": None}
+    title = high_title(cs.read_roadmap(root) if roadmap is None else roadmap)
+    return {"action": "plan the next milestone", "command": "/milestone-plan", "id": None, "title": title}
+
+
+def candidate_texts(roadmap):
+    """Each candidate row as a (priority, text) pair, in ROADMAP order: each
+    flush-left line that opens with `- ` under a `## Candidates` heading,
+    with HTML comments removed from each such section first. `priority` is
+    `high` or `low` when the row opens with exactly `[high] ` or `[low] `,
+    else `normal`, and `text` is the row after `- ` and that token. Every
+    `## ` line starts or ends a section. The cairn pane's `candidateTexts`
+    (hooks/status/reader.ts) reads the same rows (M272)."""
+    sections = []
+    current = None
+    for line in roadmap.splitlines():
+        if line.startswith("## "):
+            current = [] if line.strip().lower().startswith("## candidates") else None
+            if current is not None:
+                sections.append(current)
+            continue
+        if current is not None:
+            current.append(line)
+    out = []
+    for section in sections:
+        for line in COMMENT.sub("", "\n".join(section)).splitlines():
+            if not line.startswith("- "):
+                continue
+            text = line[2:]
+            priority = "normal"
+            for token, level in (("[high] ", "high"), ("[low] ", "low")):
+                if text.startswith(token):
+                    priority, text = level, text[len(token) :]
+                    break
+            out.append((priority, text))
+    return out
+
+
+def short_title(text):
+    """A candidate row's short title from its text after the priority token
+    (tracking-rules "Candidate short title"): up to the first `: `, else up
+    to the first ` — `, else all of it, trimmed as JavaScript's `trim`."""
+    cut = text.find(": ")
+    if cut < 0:
+        cut = text.find(" — ")
+    return (text if cut < 0 else text[:cut]).strip(JS_TRIM)
+
+
+def high_title(roadmap):
+    """The short title of the first candidate row, in ROADMAP order, that
+    opens with `[high] `, has a non-empty short title, and carries no
+    started token, or None when no row does (M272)."""
+    for priority, text in candidate_texts(roadmap):
+        title = short_title(text)
+        if priority == "high" and title and not STARTED.search(text):
+            return title
+    return None
 
 
 def waiting(root, rows):
@@ -216,15 +292,18 @@ def blocked(root, rows, read=None):
 
 
 def render(root):
-    rows = cs.rows(cs.read_roadmap(root))
+    roadmap = cs.read_roadmap(root)
+    rows = cs.rows(roadmap)
     lines = [f"cairn next — {root}", ""]
 
     held = blocked(root, rows)
 
     ready = workable(root, rows)
 
-    rec = recommend(root, rows)
-    target = f"{rec['command']} {rec['id']}" if rec["id"] else rec["command"]
+    rec = recommend(root, rows, roadmap)
+    # Planning names its `[high]` row's short title after the command (M272).
+    named = rec["id"] or rec["title"]
+    target = f"{rec['command']} {named}" if named else rec["command"]
     label = f"{rec['action']} {rec['id']}" if rec["id"] else rec["action"]
     lines.append(f"Recommended: {label} → {target}")
     lines.append("")

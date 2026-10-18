@@ -7,6 +7,7 @@ import {
   collaborationMode,
   dirname,
   findRoot,
+  highTitle,
   loadBand,
   loadCairn,
   memorySource,
@@ -15,6 +16,7 @@ import {
   prNumber,
   prUrl,
   pushRemote,
+  recommend,
   sectionFields,
   startedTokens,
   takenRows,
@@ -367,6 +369,38 @@ describe('started tokens of the candidate rows (M258)', () => {
     const loaded = await loadCairn(memorySource(files, '/'))
     expect(loaded?.pane.blocked.map(row => [row.id, row.archived])).toEqual([['M240', true]])
     expect(loaded?.pane.taken.map(item => item.ref)).toEqual(['M258', 'M258', '#301', 'M258', '#302'])
+  })
+})
+
+// The cases test_scripts.py gives `high_title` through `recommend` (M272
+// AC1), held here to `highTitle`.
+describe('highTitle names the first unstarted [high] row (M272)', () => {
+  const rows = (...lines: string[]) => `# Roadmap\n\n## Candidates\n\n${lines.map(line => `- ${line}`).join('\n')}\n`
+  test('a [high] row is chosen over an earlier untagged row, and trimmed', () => {
+    expect(highTitle(rows('Untagged first: detail', '[high]  Chosen row : detail — added 2026-01-01'))).toBe('Chosen row')
+  })
+  test('a started [high] row is passed over, and a token run on into a letter is not a token', () => {
+    for (const started of [
+      '[high] Taken: x — started M271',
+      '[high] Taken: x — started #12',
+      '[high] Taken: x — started M271; narrowed',
+      '[high] Taken: x — started #12 ',
+      '[high] Taken: x — started #1234567890123456',
+    ]) {
+      expect(highTitle(rows(started, '[high] Next high: y'))).toBe('Next high')
+    }
+    expect(highTitle(rows('[high] Not taken: x — started M271a', '[high] Next high: y'))).toBe('Not taken')
+  })
+  test('a [high] row inside a comment and one with an empty title are passed over', () => {
+    expect(highTitle(rows('<!--', '[high] Commented out: x', '-->', '[high] : empty title', '[high] Visible: y'))).toBe('Visible')
+  })
+  test('no [high] row gives null', () => {
+    expect(highTitle(rows('Plain: x', '[low] Low: y', '[HIGH] Upper: z', '[high]Tight: w'))).toBe(null)
+  })
+  test('only planning carries the title', () => {
+    const roadmap = rows('[high] Waiting row: x')
+    expect(recommend([], [{ id: 'M003', title: 'T' }], roadmap).title).toBe(null)
+    expect(recommend([], [], roadmap).title).toBe('Waiting row')
   })
 })
 
