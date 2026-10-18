@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M278: A failed read or session end leaves the cairn pane working
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the cairn pane and band are drawn for every user of the plugin's status mod   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m278-pane-failed-read-end   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -102,12 +102,12 @@ a known issue.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the AC1 test in `pane.test.tsx` first: a `state.get` hook
+- [x] T1: Write the AC1 test in `pane.test.tsx` first: a `state.get` hook
       answers `{ deny }` for the ⌂ press's `step` read (the lesson on
       `claude plugin test` hooks: a throw is skipped, `{ deny }` rejects).
       Run it on the current code and see it red for AC1's reason (the
       Status press runs nothing), not a crash.
-- [ ] T2: In `pressHome`, clear `homeRun` (when it is still the press's
+- [x] T2: In `pressHome`, clear `homeRun` (when it is still the press's
       mark) on a rejected step read, in the `try`/`finally` shape of
       `pressChecked`; the rejection goes on. See the T1 test green.
 - [ ] T3: Write the AC2 tests first: the `state.set` write record (`update`
@@ -150,3 +150,6 @@ a known issue.
 - 2026-10-18: plan gate chose writing the four values on the rejected end path over leaving them (treating a failed end as no end) because M260 already treats a failed end as an end (it frees the Buttons and opens the pane); falsified by a real session that goes on after a rejected `next(e)` with its old step still true.
 - 2026-10-18: plan gate chose a `try`/`finally` inside `pressHome` over routing it through `pressChecked` because the ⌂ press holds `homeRun`, not `pressCheck`, and its `/clear` is not a held command; falsified by a third press kind needing the same mark handling.
 - 2026-10-18: lessons surfaced: `{ deny }` rejects a hooked call where a throw is skipped (M191, M237; T1); doc surfaces restate behavior, so grep README and DESIGN (M112; T5); run each gating suite and check each exit code (M56; T6).
+- 2026-10-18: implement started on branch m278-pane-failed-read-end; untracked `cairn-probe.log` and `tsconfig.json` predate the milestone and stay unstaged.
+- 2026-10-18: T1: AC1 test in pane.test.tsx red on main for its own reason (denied read once, no `/clear`, Status press ran nothing: received undefined).
+- 2026-10-18: T2: `pressHome` takes its mark back in a `finally` when the step read rejects; T1 test green; verify green (scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2077 pass).

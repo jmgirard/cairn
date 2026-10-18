@@ -1207,16 +1207,20 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
 // before the press's first await, so a second press in the same tick finds
 // `busy` true (M241 review, PR #251), and a step found set takes it back.
 // A session end during the step read cancels the press, so its `/clear`
-// never reaches the conversation that follows (M260).
+// never reaches the conversation that follows (M260). A step read that
+// rejects takes the mark back too, and the rejection goes on (M278).
 async function pressHome($) {
   if (busy()) return
   const mine = {}
   homeRun = mine
   const at = ends
-  if (knownStep(await read($, step)) !== null || ends !== at) {
-    if (homeRun === mine) homeRun = null
-    return
+  let stop = true
+  try {
+    stop = knownStep(await read($, step)) !== null || ends !== at
+  } finally {
+    if (stop && homeRun === mine) homeRun = null
   }
+  if (stop) return
   if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
 }
 
