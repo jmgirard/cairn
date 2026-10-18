@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M282: A later Copilot request is a retry, and a late-recorded request is not reported as missing
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters with `# Copilot review: on` get the round's requests and read its report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m282-copilot-retry-late-record, https://github.com/jmgirard/cairn/pull/294   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -69,37 +69,37 @@ not added.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/shared/copilot-review.md` §2 states that a later run of
+- [x] AC1: `skills/shared/copilot-review.md` §2 states that a later run of
       §2 on the same PR (a later review pass, or a `/hotfix` resume) whose
       state query prints `none` requests Copilot again. It gives the
       reason: `none` means the query found no Copilot request or review on
       the PR, and a request GitHub never recorded leaves none (PR #291 to
       #293). §2 still requests nothing on `pending` or `reviewed`, and
       still makes no second request after its own re-query prints `none`.
-- [ ] AC2: `skills/shared/copilot-review.md` §6 states that §2's
+- [x] AC2: `skills/shared/copilot-review.md` §6 states that §2's
       not-recorded line is given as the reason no review exists only when
       the read's own state query still prints `none`. When that query
       prints `pending` or `reviewed`, the report gives the pending or level
       line and not the not-recorded line.
-- [ ] AC3: Four sentences that say what a Copilot report shows name §6's
+- [x] AC3: Four sentences that say what a Copilot report shows name §6's
       reason line for a missing review beside the `copilot:` lines and the
       level or pending line: `skills/milestone-review/SKILL.md` step 7's
       presentation sentence and its guest handoff close (step 8), and
       `skills/hotfix/SKILL.md` step 6's Copilot round arm and its guest close.
-- [ ] AC4: `README.md`'s Copilot paragraph and a new entry under
+- [x] AC4: `README.md`'s Copilot paragraph and a new entry under
       `CHANGELOG.md`'s `## Unreleased` state that a later pass that finds
       no Copilot request or review on the PR asks again, and that the
       report at the read gives the not-recorded line as the reason for a
       missing review only when the PR still shows no Copilot request or
       review when the read runs.
-- [ ] AC5: `wc -l -c skills/shared/copilot-review.md` shows under 140
+- [x] AC5: `wc -l -c skills/shared/copilot-review.md` shows under 140
       lines and under 8,000 bytes, the figures the module's budget line
       states, and the budget line's figures are unchanged.
-- [ ] AC6: `cairn/DECISIONS.md` gains a D-entry that narrows D-153's
+- [x] AC6: `cairn/DECISIONS.md` gains a D-entry that narrows D-153's
       falsifier "requests Copilot twice on one PR" to a request made while
       GitHub holds an earlier Copilot request or review on the PR, and
       names a cairn record of the request as the rejected alternative.
-- [ ] AC7: The profile's `verify` slot is clean: both gating
+- [x] AC7: The profile's `verify` slot is clean: both gating
       `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`),
       `claude plugin validate` on the plugin and marketplace manifests, and
       `claude plugin test`.
@@ -124,26 +124,26 @@ not added.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `skills/shared/copilot-review.md`, add the retry sentence to
+- [x] T1: In `skills/shared/copilot-review.md`, add the retry sentence to
       §2 (lines 37-49) and the late-record rule to §6 (lines 133-135).
       Compress other module text to stay under 140 lines and 8,000 bytes
       (139 lines, 7,993 bytes at plan). Leave §4's wait sentences and the
       §5 text that `skills/tests/test_guest_fork_remote.py:74` pins as they
       are, since `skills/tests/test_copilot_review_round.py` pins §4.
-- [ ] T2: Name §6's reason line in `skills/milestone-review/SKILL.md`
+- [x] T2: Name §6's reason line in `skills/milestone-review/SKILL.md`
       step 7 (lines 479-481) and its guest handoff close (line 695), and in
       `skills/hotfix/SKILL.md` step 6's Copilot round arm (lines 333-335)
       and its guest handoff close (lines 468-469).
-- [ ] T3: Update `README.md`'s Copilot paragraph (lines 849-853) and add a
+- [x] T3: Update `README.md`'s Copilot paragraph (lines 849-853) and add a
       `### Fixes` entry under `CHANGELOG.md`'s `## Unreleased`. Grep the
       repo for "second request" and "not recorded" to find any other site
       that states the old rule (the M112 lesson).
-- [ ] T4: Append a D-entry to `cairn/DECISIONS.md` that narrows D-153's
+- [x] T4: Append a D-entry to `cairn/DECISIONS.md` that narrows D-153's
       falsifier "requests Copilot twice on one PR" to a request made while
       GitHub holds an earlier Copilot request or review on the PR. It
       states the timeline facts from Scope (1), and records the rejected
       alternative: a cairn record of the request, which D-153 rejected.
-- [ ] T5: Run the `verify` slot, and hand-run `skills/tests` after the
+- [x] T5: Run the `verify` slot, and hand-run `skills/tests` after the
       module and skill edits (the M148 and M279 lessons).
 
 ## Work log
@@ -171,6 +171,19 @@ not added.
 - 2026-10-18: inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-18: lessons harvested: M112/M249 (grep old wording, CHANGELOG task, T3), M148/M279 (hand-run `skills/tests` after edits near guarded text, T5).
 - 2026-10-18: changelog: a new Unreleased Fixes entry, not an edit of M281's entry, since the profile gate asks for an entry for this milestone's changes.
+- 2026-10-18: implement started on branch m282-copilot-retry-late-record, cut from origin/main at 90019173; untracked `cairn-probe.log` and `tsconfig.json` are unrelated and left unstaged.
+- 2026-10-18: T1 done: §2 states a later run that reads `none` requests again, §6 gives the not-recorded line as the reason only while the read's query prints `none`; compressed §1, §3, §4, §5 wording (module 139 lines, 7,987 bytes; budget line figures unchanged); verify green, `skills/tests` 886 green.
+- 2026-10-18: T1 choice: the guest-mode close sentence on a late Copilot review was cut from §6, since the hotfix and review guest closes state it; the guest reply-vocabulary rule was kept in shorter form, since the rulebook's vocabulary bullet does not name replies.
+- 2026-10-18: T2 done: the review step 7 presentation, review step 8 guest close, hotfix step 6 chip, and hotfix guest close each name §6's reason line for a missing review beside the `copilot:` and level or pending lines; verify green, `skills/tests` 886 green.
+- 2026-10-18: T3 done: README Copilot paragraph and a new CHANGELOG Unreleased Fixes entry state the retry and the late-record rule; `git grep` for "second request", "not recorded", and "requests Copilot twice" found no other live site with the old rule (D-153's falsifier is T4's); verify green.
+- 2026-10-18: T4 done: D-183 appended, narrowing D-153's falsifier to a request made while GitHub holds an earlier Copilot request or review; rejects a cairn record of the request; `cairn_validate` green, both gating suites green.
+- 2026-10-18: T5 done at afa7377b: scripts/tests 423 OK, hooks/tests 179 OK, both `claude plugin validate` exit 0, `claude plugin test` 2132 pass 0 fail, hand-run skills/tests 886 OK.
+- 2026-10-18: claim audit: 26 claims read, 1 corrected — CHANGELOG.md (the late-record sentence and heading half did not hold on the hotfix guest arm, which runs no read-time state query; both removed, since the entry already states the read's condition).
+- 2026-10-18: claim audit follow-up: the compression had dropped two rules, now restored in `skills/shared/copilot-review.md`: the module is read "only then", and the opt-in line permits the round's outward writes, the request included. Kept out: the budget's baseline figures and "plain" in the off-note (history and wording, not rules). Module 139 lines, 7,990 bytes; verify and skills/tests green.
+- 2026-10-18: open concern for review: on the hotfix guest arm (`skills/hotfix/SKILL.md` step 6 guest handoff) no state query runs at read time after §2's re-query, so §6's "the read's own state query" has no query to read there.
+- 2026-10-18: implement done; status set to review.
+- 2026-10-18: review step 2 Copilot arm: branch pushed, PR #294 opened; state query `none`, `gh pr edit 294 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #294 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request at that step.
+- 2026-10-18: step-7 approval: m282-copilot-retry-late-record approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -184,3 +197,40 @@ not added.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- 2026-10-18 pass 1. Surface tier user-facing: three-lens fan-out. Copilot arm ran at step 2 on PR #294.
+- AC1 evidence: `skills/shared/copilot-review.md` §2 (lines 39-42) reads "A later run of this step on the same PR (a later review pass, a `/hotfix` resume) that reads `none` requests again: `none` means the query found no Copilot request or review, and a request GitHub never recorded leaves none (PR #291 to #293)." Lines 36-39 keep "On `pending` or `reviewed`, never request", and lines 46-48 keep "and make no second request" after the re-query's `none`.
+- AC2 evidence: §6 (lines 134-136) reads "When the read's own state query still prints `none`, that line is the reason. On `pending` or `reviewed`, the report gives the pending or level line." The sentence before (lines 131-134) lists the level line, the pending statement, and the reason as alternatives joined by "or", so on `pending` or `reviewed` the report gives the pending or level line in place of the not-recorded reason.
+- AC3 evidence: all four sites name the reason line beside the `copilot:` and level or pending lines: `skills/milestone-review/SKILL.md:479-481` (step 7 presentation), `skills/milestone-review/SKILL.md:696-698` (step 8 guest close), `skills/hotfix/SKILL.md:332-333` (step 6 Copilot round arm chip), `skills/hotfix/SKILL.md:470-471` (guest close).
+- AC4 evidence: `README.md:853-858` states the report gives the line as the reason "only when the PR still shows no Copilot request or review when the read runs" and that a later pass finding none "asks again". `CHANGELOG.md:522-531`, a new `### Fixes` entry under `## Unreleased`, states both.
+- AC5 evidence: `wc -l -c skills/shared/copilot-review.md` prints 139 lines, 7,990 bytes. The budget line on main and on the branch both read "under 140 lines and under 8,000 bytes".
+- AC6 evidence: `cairn/DECISIONS.md:6590` holds D-183. Its Decision (line 6607) narrows D-153's falsifier from "requests Copilot twice on one PR" to "requests Copilot while GitHub holds an earlier Copilot request or review on the PR". Its Rejected paragraph (line 6610) names "A cairn record that a request was made".
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the hotfix owner and guest Copilot arms run no state query when the read begins, so §6's "the read's own state query" has nothing to read there — fix now (both arms now run the state query again as the read begins, with the bounded wait while it prints `pending`), fixed 810faf9f.
+- diff-bug #2: D-183 pins D-153's falsifier to the step-7 read, where D-153 means the milestone — reject (false): D-183 quotes D-153's own sentence, whose "whose step-7 read ... or requests Copilot twice" clause carries both falsifiers.
+- diff-bug #3: review step 7's PR-conversation read sentence still says "the `copilot:` lines and level line follow §6" — fix now (names the level, pending, or reason line), fixed 810faf9f.
+- diff-bug #4: §6's reason rule says nothing for a failed read-time query; a wait that starts on `pending` and ends on `none` gives a pending line for a PR with no request; "that line" might be read as forcing the not-recorded line after a non-zero request exit — follow-up for the first two (new row "Copilot reason-line edges (M282 review)"); reject the third (false: the not-recorded line exists only after a zero exit, §2).
+- diff-bug #5: a guest `/hotfix` resume never reaches §2, so "a `/hotfix` resume" asks again holds in owner mode only — reject (false): §2's rule binds "a later run of this step", and a resume that does not run §2 is not one; the examples name runs of §2.
+- diff-bug #6: the module's budget line dropped its 126-line / 7,142-byte baseline and the "about one section" headroom that sibling modules state — reject (style): the figures the rule reads are unchanged; the baseline stays in M231's record; tracking-rules' graduation clause sets a budget once, at graduation.
+- diff-bug #7: three citations (M231 T1, tracking-rules wait rule, Collaboration mode) were cut, leaving the guest-reply vocabulary rule uncited — reject (style): every rule stands; only pointers went.
+- diff-bug #8: D-183's late-record consequence names a window passes rarely hit and leaves out that a later pass then reads `pending` — reject (false): the consequence is accurate, and §2's `pending` rule already states the common case.
+- blame-history #1: D-183 narrows D-153's falsifier after it fired on PR #293 — reject (planned change): the user chose the retry at the M282 question set.
+- blame-history #2: the retry relies on §3's `pending` matching a recorded request, and the live reviewRequests login was not confirmed — follow-up (pre-existing: §3's query predates this diff unchanged; added to row "Copilot reason-line edges (M282 review)").
+- blame-history #3: the module has 1 line and 10 bytes of headroom — reject (planned change): the budget rule makes the next edit compress, by design.
+- blame-history #4: the guest-mode base-repo mapping left the module — reject (false): §3 says `<owner>` and `<name>` name the base repo, which the rulebook's slug recipe makes the upstream in guest mode.
+- blame-history #5: three rule pointers were dropped — reject (style), as diff-bug #7.
+- blame-history #6: the §6 operator clause on a late Copilot review moved out of the module — reject (false): both callers state it.
+- blame-history #7: the opt-in line's permission now names the request — reject (false): the old "outward writes" already covered the request; the text names it.
+- blame-history #8: the §5 return-floor sentence and the review-body paragraph merged into one paragraph — reject (style): no rule changed, and the module is at its line budget.
+- blame-history #9: "(PR #291 to #293)" cites this repo's PRs, which an adopter cannot resolve — reject (planned change): AC1 asks for the reason with that citation.
+- blame-history #10: a README line of about 100 characters — fix now (rewrapped), fixed 810faf9f.
+- prior-review #1: the retry contradicts M231's "never requests twice" and M231 pass 2's defect — reject (planned change): the user chose the retry; D-183 records it.
+- prior-review #2: D-183's narrowed falsifier no longer matches PR #293's case — reject (planned change), as blame-history #1.
+- prior-review #3: the late-record defect survives at §2's chat line and in a second request inside seconds — reject (planned change): Scope keeps §2's chat line and moves the durable report to the read.
+- prior-review #4: §6's read-time condition reverses M281's same-pass scope — reject (false): it stores nothing, so D-153's rejection of records holds.
+- prior-review #5: a README line of 97 characters — fix now, as blame-history #10, fixed 810faf9f.
+- prior-review #6: the §6 operator clause dropped — reject (false), as blame-history #6.
+- AC7 evidence: at 0fd71880, `python3 -m unittest discover -s scripts/tests` 423 tests OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate .claude-plugin/plugin.json` exit 0, `claude plugin validate .claude-plugin/marketplace.json` exit 0, `claude plugin test .` 2132 pass 0 fail. Hand-run `skills/tests` 886 OK.
+- Consistency gate: `cairn_validate.py` exit 0 (no FAIL, no WARN); no principle changed, so `cairn_impact` skipped; verify green on the review head (AC7); marketplace validate shows no `plugins[N].version` warning; CHANGELOG has a new Unreleased Fixes entry with no milestone numbers.
+- PR-conversation read (PR #294, 0fd71880): state query `none`, so no wait; 0 reviews, 0 conversation comments, 0 review threads — empty read.
+- Copilot: no review exists. Reason: Copilot request on PR #294 may not be recorded by GitHub (used-up Copilot credits are one cause); the read's own state query still prints `none`.

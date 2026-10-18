@@ -325,12 +325,14 @@ can resolve against the fork instead of the base repo.
    issue exists, and the `Candidate row:` lines the approval paragraph
    below names. Then run the
    round in that module, asking for Lite: the state query (§3), the
-   request on `none` (§2), and the bounded wait while the request is
-   pending (§4). The PR-conversation read below then runs on this PR,
+   request on `none` (§2), then the state query again as the read below
+   begins, with the bounded wait while it prints `pending` (§4). That
+   query is the read's own state query for §6. The PR-conversation read below then runs on this PR,
    which now pre-exists. Each Copilot thread takes the agent's disposition
    under the opt-in line, then the module's reply and resolve (§5), and
-   its `copilot:` line and the level line are stated in chat at the chip
-   (§6); every other item keeps the four options. A decline at the chip
+   its `copilot:` line and the level or pending line, or the reason line
+   for a missing review, are stated in chat at the chip (§6); every other
+   item keeps the four options. A decline at the chip
    closes this PR with `gh pr close <N>` and keeps the branch, and the
    close block names both; a later `/hotfix` for the same bug cuts a new
    branch under a new slug. Step 1's own open PR existed before the run,
@@ -461,13 +463,15 @@ can resolve against the fork instead of the base repo.
    of each candidate row step 1 matched (tracking-rules "Candidate started
    token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
-   asking for Lite: the state query, the request on `none`, the bounded
-   wait while pending, then the Copilot threads by the module's §5. Use
+   asking for Lite: the state query, the request on `none`, the state
+   query again with the bounded wait while it prints `pending` (the read's
+   own state query for §6), then the Copilot threads by the module's §5. Use
    the module's guest forms: `--repo <base-repo>`, the base repo's owner
    and name in each `gh api` call that addresses a repository (the resolve
    takes only a thread id), and fix pushes to the remote that holds the
-   PR's head. Its `copilot:`
-   lines ride in the close block, which also says that a Copilot review
+   PR's head. Its `copilot:` lines and the module's level or pending line,
+   or its reason line for a missing review (§6), ride in the close block,
+   which also says that a Copilot review
    arriving after the wait is the operator's to handle by hand. Then
    stop with the close block: the recap says the fix is in the maintainers'
    hands; the CI line says their CI on the PR is the check that counts and

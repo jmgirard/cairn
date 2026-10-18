@@ -477,7 +477,8 @@ re-enters here, at the step the record shows is next:
    the gap, and selecting it logs the accepted shortfall in the Review
    section.
    Where step 2's Copilot arm ran, each `copilot:` line and the module's
-   level or pending line appear in this presentation, and the chip's
+   level or pending line, or its reason line for a missing review (§6),
+   appear in this presentation, and the chip's
    question text names how many Copilot items took each disposition.
 
    **PR-conversation read (M177).** Only when the milestone header already
@@ -508,7 +509,7 @@ re-enters here, at the step the record shows is next:
    no-added-wait rule. Each
    unresolved Copilot thread then takes its disposition and the module's
    reply and resolve (§5), body findings are matched to their threads, and
-   the `copilot:` lines and level line follow §6.
+   the `copilot:` lines and the level, pending, or reason line follow §6.
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`; a Copilot thread takes the module's `copilot:` line
@@ -692,7 +693,9 @@ re-enters here, at the step the record shows is next:
    PR's head. When the round
    committed fixes, re-run step 4's consistency gate before the close
    block; a failure is fixed on the branch and pushed to that remote before the close
-   block, or named in it. Its `copilot:` lines are written on disk and ride in the close
+   block, or named in it. Its `copilot:` lines and the module's level or
+   pending line, or its reason line for a missing review (§6), are written
+   on disk and ride in the close
    block below, which also says that a Copilot review arriving after the
    wait is the operator's to handle by hand.
    Then set status `blocked` in ROADMAP and the header

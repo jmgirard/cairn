@@ -6586,3 +6586,36 @@ no help in choosing what to promote.
 **Consequences:** The rulebook's "Candidate priority token" text is
 unchanged. `nextTitle` and `high_title` still pick the first `[high]` row in
 file order, which the stable sort also draws first.
+
+### D-183 (2026-10-18): A later Copilot request on a PR whose state query reads `none` is a retry, and D-153's falsifier counts only a request made while GitHub holds an earlier one — narrows D-153's falsifier; D-153's decision and rejections stand (M282)
+
+**Context:** D-153 is falsified by an opted-in milestone whose step-7
+read "requests Copilot twice on one PR". M281 made `copilot-review.md`
+§2 re-query once after a request and report a request GitHub may not
+have recorded, with no second request at that step. M281's own second
+review pass ran §2 again, read `none`, and requested Copilot on PR #293
+a second time. The PR timelines (M282 Scope) show that a request GitHub
+dropped leaves no `review_requested` event, while a request GitHub kept
+leaves one. So the state query's `none` holds no request for a second
+request to duplicate.
+
+**Decision:** At the user's choice in the M282 question set, a later run
+of §2 on the same PR, a later review pass or a `/hotfix` resume, that
+reads `none` requests Copilot again, and the module says so with its
+reason. §2 still never requests on `pending` or `reviewed`, and still
+makes no second request after its own re-query. D-153's falsifier
+narrows from "requests Copilot twice on one PR" to "requests Copilot
+while GitHub holds an earlier Copilot request or review on the PR".
+
+**Rejected:** A cairn record that a request was made, such as review
+reading its own not-recorded line in the milestone file and skipping the
+request. D-153 rejected any record that the round ran, because such
+records went stale against the PR, and a hotfix has no milestone file to
+hold it. Falsified by a PR where a request made on `none` starts a second
+Copilot review.
+
+**Consequences:** A repo whose Copilot credits are used up gets one
+request per pass, each dropped by GitHub, and one not-recorded line per
+pass. A request GitHub records a few seconds after §2's re-query prints
+`none` can still draw a second request from a pass that runs §2 within
+those seconds.
