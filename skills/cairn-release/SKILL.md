@@ -65,7 +65,11 @@ toolchain-specific work at step 3.
    A named milestone with neither a ROADMAP row nor an archive summary has an unknown status.
    The version-decision question names each listed series and its milestones that are not `done`.
    It gives each such milestone's status, so a `dropped` part reads as dropped and an unknown part reads as unknown.
-   No such series → the question says nothing about series.
+   The question also names each unplanned part of a cut series (tracking-rules "Feature series") as a part of M<NNN>'s feature.
+   Such a part is a row of the Candidates section of `cairn/ROADMAP.md` whose text carries `split from M<NNN>`, where M<NNN> is `done` by the rule above.
+   The question leaves out a row whose ` — started M<x>` token names a `planned`, `in-progress`, `blocked`, or `review` milestone by that rule.
+   That milestone's `feature series:` line already lists the series.
+   No such series or row → the question says nothing about series.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
    this step): retitle the development heading to the release version; group

@@ -765,7 +765,10 @@ profile.
   When the split divides one feature or fix, the plan writes the parts as a
   feature series: earlier parts stay out of users' reach where they can, the
   last part adds the exports and docs, and the changelog keeps one entry for
-  the whole feature.
+  the whole feature. A cut at implement or a review descope can also move
+  part of a feature to later work. The cut work becomes a candidate row
+  marked `split from M<NNN>`, and the milestone planned from that row joins
+  the cut milestone as a series.
 - Don't hand-maintain status in chat or memory: if it isn't in `cairn/`
   files or git, it didn't happen. Hand-editing the files is fine;
   ROADMAP.md wins any conflict.

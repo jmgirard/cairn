@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M276: A feature cut short at implement or review still ships as one change
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — changes what implement, plan, and the release walk tell every adopting repo to do when a milestone's scope is cut   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m276-series-from-a-scope-cut   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -81,8 +81,11 @@ candidate row "Series entry after a release (M276 plan)".
 - [ ] AC4: `/cairn-release` step 1's "Half-merged feature series" paragraph
       states that the version-decision question also names each row of
       `cairn/ROADMAP.md`'s Candidates section whose text carries
-      `split from M<NNN>` where M<NNN>'s status, read by that paragraph's
-      status rule, is `done`, as an unplanned part of M<NNN>'s feature.
+      `split from M<NNN>`, where M<NNN>'s status, read by that paragraph's
+      status rule, is `done`, as an unplanned part of M<NNN>'s feature, and
+      that it leaves out such a row whose ` — started M<x>` token names a
+      milestone whose status, read by the same rule, is `planned`,
+      `in-progress`, `blocked`, or `review`.
 - [ ] AC5: README's feature-series tip names the cut-scope case. The
       CHANGELOG's Unreleased feature-series entry is edited to describe it,
       and `git diff <default-branch>...HEAD -- CHANGELOG.md` adds no new
@@ -106,29 +109,29 @@ candidate row "Series entry after a release (M276 plan)".
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Guards first. In `skills/tests/test_feature_series.py`, add one
+- [x] T1: Guards first. In `skills/tests/test_feature_series.py`, add one
       test per sentence AC1–AC4 name, each with its own entry in
       `skills/tests/test_mutation_harness.py`; see each red before its prose
       lands. Update the existing `TestRulebookParagraph` pins and their
       mutation entries where T2 rewords pinned text.
-- [ ] T2: tracking-rules "Feature series" (`skills/shared/tracking-rules.md:192-204`):
+- [x] T2: tracking-rules "Feature series" (`skills/shared/tracking-rules.md:192-204`):
       the cut-scope sentences (AC1), including the exception to "The plan
       writes … in each milestone of the series". Re-seed the rulebook-mass
       baseline in its three places
       (`skills/milestone/SKILL.md:120`,
       `skills/tests/test_cost_audit_line.py:69`,
       `skills/tests/test_mutation_harness.py:121`).
-- [ ] T3: `/milestone-implement` step 6, beside the return-adjacent
+- [x] T3: `/milestone-implement` step 6, beside the return-adjacent
       direction rule (`skills/milestone-implement/SKILL.md:214-226`): the
       `split from M<NNN>` marker sentence (AC2).
-- [ ] T4: `/milestone-plan` step 4's Feature series bullet
+- [x] T4: `/milestone-plan` step 4's Feature series bullet
       (`skills/milestone-plan/SKILL.md:490-497`): the series line for a
       marked row (AC3).
-- [ ] T5: `/cairn-release` step 1, "Half-merged feature series"
+- [x] T5: `/cairn-release` step 1, "Half-merged feature series"
       (`skills/cairn-release/SKILL.md:58-68`): marked rows (AC4).
-- [ ] T6: README tip (`README.md:763-768`) and the CHANGELOG's Unreleased
+- [x] T6: README tip (`README.md:763-768`) and the CHANGELOG's Unreleased
       feature-series entry, edited in place (AC5).
-- [ ] T7: Run the `verify` slot (both gating suites, `claude plugin
+- [x] T7: Run the `verify` slot (both gating suites, `claude plugin
       validate` on both manifests, `claude plugin test`), hand-run
       `skills/tests`, and `cairn_validate`.
 
@@ -153,3 +156,12 @@ candidate row "Series entry after a release (M276 plan)".
 - 2026-10-18: plan gate chose the release walk listing marked rows over making the cut plan the remainder as a milestone at once, because a review descope ends at a merge question and planning there adds a stop; falsified by a marked row whose half-shipped feature reaches a release that the walk did not flag.
 - 2026-10-18: criteria audit (full, fresh Opus reader): 5 findings, all fixed toward the narrower promise. (1) a cut to a split milestone formed no series: AC2 now records that work as a marked row too. (2) the marker's domain was unclear: AC1/AC2 limit it to work the Goal or Scope `In:` promised, with no marker on a narrowed criterion's follow-up row. (3) appending the line to the cut milestone could never run, since the row reaches main only at that milestone's merge and archive: arm dropped, AC1 says only the later milestone carries the line. (4, 5) the released-entry clause contradicted the four profiles' gates and changed every series: removed, sent to the candidate row "Series entry after a release (M276 plan)". The release-walk and docs criteria passed (then AC5, AC6); criteria renumbered AC1–AC5.
 - 2026-10-18: remainder ledger: the absorbed row's two parts (no series line; a second changelog entry) are in M276; the released-entry gap the plan found becomes the candidate row "Series entry after a release (M276 plan)".
+- 2026-10-18: implement started on branch `m276-series-from-a-scope-cut`; untracked `cairn-probe.log` and `tsconfig.json` (not this milestone's) left unstaged.
+- 2026-10-18: T1: `TestCutSeries` (6 tests) in `skills/tests/test_feature_series.py`, reading whitespace-collapsed text so wrapped prose matches whole (docstring says so); all 6 red by AssertionError before the prose; 18 mutation entries, one per asserted sentence.
+- 2026-10-18: T2: tracking-rules gains the "A cut series" paragraph after "Feature series", short sentences per the simple-english hook (its whole-file counts are mostly old text, left alone); rulebook-mass baseline re-seeded to 742 lines / 71,576 bytes at its three sites.
+- 2026-10-18: T3–T5: implement step 6 "A cut series" paragraph; plan step 4 bullet also says the new milestone's changelog task edits the cut milestone's entry under (c); release step 1 names marked rows and "No such series or row".
+- 2026-10-18: substantive amendment: AC4 adds that the walk leaves out a marked row whose ` — started M<x>` token names a `planned`, `in-progress`, `blocked`, or `review` milestone, since that milestone's `feature series:` line already lists the series; found while writing the CHANGELOG claim; wording only, the user-visible plan unchanged.
+- 2026-10-18: re-audit: AC4 (full) — 1 finding: "no ` — started` token" also hid a row whose token names a dropped milestone; fixed to the four live statuses.
+- 2026-10-18: re-audit: AC4 (full) — nothing; passes (re-entry read of the fixed wording).
+- 2026-10-18: T6: README tip and the CHANGELOG's Unreleased series entry edited in place, no new entry.
+- 2026-10-18: T7: verify green (scripts 418 OK, hooks 179 OK, plugin and marketplace validate exit 0, plugin test 0 fail), skills/tests 883 OK, cairn_validate all checks passed.

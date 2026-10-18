@@ -203,6 +203,15 @@ Without `# Push remote: base` a guest part builds on no open part, so every late
 The plan writes a `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone of the series. In guest mode
 `/milestone-review` reads it for the PR body, and in owner mode `/cairn-release` reads it at the version decision.
 
+**A cut series.** A series also forms through a scope cut.
+A scope cut is a substantive amendment that moves work a user-facing milestone's Goal or Scope `In:` promised to later work.
+It comes at implement, or it carries out a review descope.
+The cut milestone and the milestone later planned for that work are the series.
+Rules (a) and (b) do not bind the cut milestone.
+Its changelog entry, where it has one, is the series' one entry under (c).
+The cut records that work as a candidate row carrying `split from M<NNN>` (`/milestone-implement` step 6).
+Only the later milestone carries the `feature series:` line.
+
 Work that isn't a milestone: **Trivial** (no runtime surface — typos, tracking, comments) → direct commit to the default
 branch, no tracking beyond the commit. Through `/milestone-plan`'s trivial route, the commit also graduates the rows
 it fixes. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,

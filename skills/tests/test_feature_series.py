@@ -308,5 +308,93 @@ class TestReleaseList(unittest.TestCase):
         )
 
 
+class TestCutSeries(unittest.TestCase):
+    """M276: a series formed by a scope cut at implement or review.
+
+    Departs from the one-physical-line convention above: wrapped skill prose
+    is whitespace-collapsed on read (the M171 lesson), so a sentence is
+    matched whole however its lines wrap.
+    """
+
+    def flat(self, *parts):
+        return " ".join(read(*parts).split())
+
+    def rules(self):
+        text = self.flat("shared", "tracking-rules.md")
+        start = text.index("## sizing and the work tiers")
+        return text[start : text.index("work that isn't a milestone", start)]
+
+    def test_rulebook_defines_the_cut_series(self):
+        self.assertIn("**a cut series.** a series also forms through a scope cut.", self.rules())
+        self.assertIn(
+            "a scope cut is a substantive amendment that moves work a user-facing milestone's goal or scope `in:` promised to later work.",
+            self.rules(),
+        )
+        self.assertIn("it comes at implement, or it carries out a review descope.", self.rules())
+        self.assertIn(
+            "the cut milestone and the milestone later planned for that work are the series.",
+            self.rules(),
+        )
+
+    def test_rulebook_cut_milestone_owns_the_entry(self):
+        self.assertIn("rules (a) and (b) do not bind the cut milestone.", self.rules())
+        self.assertIn(
+            "its changelog entry, where it has one, is the series' one entry under (c).",
+            self.rules(),
+        )
+
+    def test_rulebook_only_the_later_milestone_carries_the_line(self):
+        self.assertIn(
+            "the cut records that work as a candidate row carrying `split from m<nnn>` (`/milestone-implement` step 6).",
+            self.rules(),
+        )
+        self.assertIn("only the later milestone carries the `feature series:` line.", self.rules())
+
+    def test_implement_marks_the_row(self):
+        text = self.flat("milestone-implement", "SKILL.md")
+        step = text[text.index("6. **plan amendments**") : text.index("7. **claim audit**")]
+        self.assertIn(
+            "a substantive amendment of a user-facing milestone can move work that its goal or scope `in:` promised to later work. a review descope is one such amendment.",
+            step,
+        )
+        self.assertIn(
+            "the amendment records that work as a candidate row whose lineage carries ` — split from m<nnn>`, naming this milestone. if the work's home is a split milestone, the amendment writes the same row,",
+            step,
+        )
+        self.assertIn(
+            "a follow-up row for a narrowed criterion's finding (the rule above) carries no marker. a remainder row of an internal-tier milestone carries none either.",
+            step,
+        )
+
+    def test_plan_writes_the_line_for_a_marked_row(self):
+        text = self.flat("milestone-plan", "SKILL.md")
+        step = text[text.index("4. **solidify autonomously**") : text.index("5. **remainder ledger")]
+        self.assertIn(
+            "a milestone the plan creates from a candidate row carrying `split from m<nnn>` (a cut series) gets the work-log line `feature series: m<nnn> -> m<new>`. the cut milestone's file gets no line.",
+            step,
+        )
+        self.assertIn(
+            "where the cut milestone has a changelog entry, the new milestone's changelog task edits that entry under rule (c).",
+            step,
+        )
+
+    def test_release_names_marked_rows(self):
+        text = self.flat("cairn-release", "SKILL.md")
+        step = text[text.index("1. **version decision**") : text.index("2. **changelog consolidation**")]
+        self.assertIn(
+            "the question also names each unplanned part of a cut series (tracking-rules \"feature series\") as a part of m<nnn>'s feature.",
+            step,
+        )
+        self.assertIn(
+            "such a part is a row of the candidates section of `cairn/roadmap.md` whose text carries `split from m<nnn>`, where m<nnn> is `done` by the rule above.",
+            step,
+        )
+        self.assertIn(
+            "the question leaves out a row whose ` — started m<x>` token names a `planned`, `in-progress`, `blocked`, or `review` milestone by that rule.",
+            step,
+        )
+        self.assertIn("no such series or row → the question says nothing about series.", step)
+
+
 if __name__ == "__main__":
     unittest.main()
