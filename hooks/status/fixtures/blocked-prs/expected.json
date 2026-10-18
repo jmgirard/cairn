@@ -4,7 +4,7 @@
   "workable": [],
   "rows": [],
   "pane": [],
-  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting":[]},
   "candidates": [{"priority": "normal", "title": "An idea for later"}],
   "blocked": [
     {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12", "archived": false},

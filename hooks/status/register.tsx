@@ -13,6 +13,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  nextTitle,
   startedRefs,
   startedRows,
   nextLabel as labelOf,
@@ -134,9 +135,9 @@ const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: '
 // to 2 when the state gained the candidate rows (M207), to 3 when it
 // gained the blocked rows (M223), to 4 when each blocked row gained its
 // pull request's URL (M224), to 5 when each blocked row gained
-// `archived` (M246), and to 6 when the state gained the candidate rows'
-// started tokens (M258).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-6' })
+// `archived` (M246), to 6 when the state gained the candidate rows'
+// started tokens (M258), and to 7 when the next step gained `title` (M272).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-7' })
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
@@ -1093,7 +1094,9 @@ let homeRun: object | null = null
 // press do nothing. A Button drawn for a milestone (`Implement`, `Resume`,
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
-// planning with no arguments while nothing is workable (M213).
+// planning while nothing is workable (M213), with the first unstarted
+// `[high]` candidate row's short title as its argument when the pane's Next
+// line names one (`nextTitle`, M272), and with none otherwise.
 // `Plan` and `Implement` run `/clear` first and hold the command for the
 // session end it brings (M221). The press is the person's consent to drop
 // the conversation, as a press of Clear is (M216), so it clears only when
@@ -1108,7 +1111,11 @@ async function pressNext($, drawn: string | undefined) {
     if (next === null) return undefined
     if (next.id === null && drawn !== PLAN_LABEL) return undefined
     const clears = CLEARS_FIRST.includes(next.action) && drawn === labelOf(next.action)
-    return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '', clears }
+    // The title the Next line names, under the same hide rule (M272).
+    const held = await read($, hotfixes)
+    const ours = held.root !== null && held.root === (await read($, band)).root
+    const args = next.id ?? nextTitle(next, ours ? held.started : []) ?? ''
+    return { command: `cairn:${next.command.slice(1)}`, args, clears }
   })
 }
 

@@ -3,7 +3,7 @@
   "workable": ["M031"],
   "rows": [],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M031", "waiting": []},
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M031", "title": null, "waiting":[]},
   "candidates": [
     {"priority": "high", "title": "High row"},
     {"priority": "normal", "title": "Normal row"},

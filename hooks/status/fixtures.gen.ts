@@ -27,7 +27,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: [],
     pane: [
     ],
-    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": [{"id": "M090", "title": "Waits on a planned milestone", "unmet": ["M091 (planned)"]}, {"id": "M091", "title": "Waits on a blocked milestone", "unmet": ["M092 (blocked)"]}, {"id": "M093", "title": "Waits on an id with no row", "unmet": ["M500 (unknown)"]}]},
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": [{"id": "M090", "title": "Waits on a planned milestone", "unmet": ["M091 (planned)"]}, {"id": "M091", "title": "Waits on a blocked milestone", "unmet": ["M092 (blocked)"]}, {"id": "M093", "title": "Waits on an id with no row", "unmet": ["M500 (unknown)"]}]},
     candidates: [
     ],
     blocked: [
@@ -49,7 +49,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M110", "title": "Work in hand", "status": "in-progress", "file": {"goal": "Implement one fix while another waits on review.", "tasks": [{"text": "T1: Write the test.", "checked": true}, {"text": "T2: Write the fix.", "checked": false}], "criteria": [{"text": "AC1: The fix works.", "checked": false}], "log": ["2026-01-10: created."]}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M110", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M110", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -79,7 +79,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: [],
     pane: [
     ],
-    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -113,7 +113,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: [],
     pane: [
     ],
-    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
     candidates: [
       {"priority": "normal", "title": "An idea for later"},
     ],
@@ -138,7 +138,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M031"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M031", "waiting": []},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M031", "title": null, "waiting": []},
     candidates: [
       {"priority": "high", "title": "High row"},
       {"priority": "normal", "title": "Normal row"},
@@ -170,8 +170,29 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: [],
     pane: [
     ],
-    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "waiting": []},
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
     candidates: [
+    ],
+    blocked: [
+    ],
+    unreadable: [],
+  },
+  "high-candidate": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n_The only authority on milestone status. Grouped by status, not ID._\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M001 | Shipped | done | — | normal | milestones/archive/M001-shipped.md |\n\n## Candidates\n- Untagged first: an earlier normal row, passed over — added 2026-01-01\n- [high] Taken row: work has started on it — added 2026-01-02 — started M900\n<!--\n- [high] Commented row: hidden by the comment\n-->\n- [high] Chosen row: the first unstarted high row — added 2026-01-03\n- [high] Later high: a second unstarted high row — added 2026-01-04\n",
+    },
+    rows: [
+    ],
+    workable: [],
+    pane: [
+    ],
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Chosen row", "waiting": []},
+    candidates: [
+      {"priority": "normal", "title": "Untagged first"},
+      {"priority": "high", "title": "Taken row"},
+      {"priority": "high", "title": "Chosen row"},
+      {"priority": "high", "title": "Later high"},
     ],
     blocked: [
     ],
@@ -190,7 +211,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M040", "M041", "M042", "M043", "M002"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M040", "waiting": [{"id": "M050", "title": "Waits on a planned milestone", "unmet": ["M002 (planned)"]}, {"id": "M051", "title": "Waits on an id with no row and no archive file", "unmet": ["M077 (unknown)"]}, {"id": "M052", "title": "One dependency met, one not", "unmet": ["M002 (planned)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M040", "title": null, "waiting": [{"id": "M050", "title": "Waits on a planned milestone", "unmet": ["M002 (planned)"]}, {"id": "M051", "title": "Waits on an id with no row and no archive file", "unmet": ["M077 (unknown)"]}, {"id": "M052", "title": "One dependency met, one not", "unmet": ["M002 (planned)"]}]},
     candidates: [
     ],
     blocked: [
@@ -207,7 +228,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M500", "M030", "M999", "M1000", "Mfoo", "M010"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M500", "waiting": []},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M500", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -227,7 +248,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}, {"text": "T2: Draw the band.", "checked": false}], "criteria": [{"text": "AC1: The band cuts the title.", "checked": false}], "log": []}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M060", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M060", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -246,7 +267,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M004", "title": "Its file was never written", "status": "review", "file": null},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M004", "waiting": []},
+    next: {"action": "review", "command": "/milestone-review", "id": "M004", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -275,7 +296,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "file": null},
       {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "file": {"goal": "- [x] A box under Goal, which does not count.", "tasks": [], "criteria": [], "log": []}},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M010", "waiting": [{"id": "M011", "title": "Not started", "unmet": ["M010 (review)"]}]},
+    next: {"action": "review", "command": "/milestone-review", "id": "M010", "title": null, "waiting": [{"id": "M011", "title": "Not started", "unmet": ["M010 (review)"]}]},
     candidates: [
       {"priority": "high", "title": "A candidate line with - [x] inside it"},
     ],
@@ -296,7 +317,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M030", "title": "The next task is nested", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Top-level task, done.", "checked": true}, {"text": "T1a: Nested task, open, with extra spaces after the box.", "checked": false}, {"text": "T2: Second top-level task.", "checked": false}], "criteria": [{"text": "AC1: The band names the nested task.", "checked": false}], "log": []}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M030", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M030", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -314,7 +335,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M021"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M021", "waiting": []},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M021", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -358,7 +379,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "file": {"goal": "The first paragraph of the goal.\n\nThe second paragraph, with a  comment inside it.", "tasks": [{"text": "T1: Only task.", "checked": true}], "criteria": [{"text": "AC1: Only criterion.", "checked": true}], "log": ["2026-02-01: created."]}},
       {"id": "M082", "title": "A file whose read fails", "status": "review", "file": null},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M081", "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]},
+    next: {"action": "review", "command": "/milestone-review", "id": "M081", "title": null, "waiting": [{"id": "M083", "title": "Waits on the active milestone", "unmet": ["M080 (in-progress)"]}, {"id": "M084", "title": "Waits on an id with no row", "unmet": ["M080 (in-progress)", "M999 (unknown)"]}]},
     candidates: [
     ],
     blocked: [
@@ -375,7 +396,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M191"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M191", "title": null, "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
     candidates: [
       {"priority": "normal", "title": "`/hotfix` companion arm"},
       {"priority": "normal", "title": "Guest-mode R package builds carry `cairn/`"},
@@ -419,7 +440,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M002", "title": "Add the export command", "status": "in-progress", "file": {"goal": "Export things.", "tasks": [{"text": "T1: Write the parser.", "checked": true}, {"text": "T2: Write the command.", "checked": false}, {"text": "T3: Write the docs.", "checked": false}], "criteria": [{"text": "AC1: The export command writes one file per table.", "checked": false}], "log": ["2026-01-02: started."]}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M002", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M002", "title": null, "waiting": []},
     candidates: [
       {"priority": "normal", "title": "An idea that is not a row"},
     ],
@@ -455,7 +476,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M075", "title": "Fifth active row", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}, {"text": "T2: Done.", "checked": true}, {"text": "T3: Open.", "checked": false}], "criteria": [{"text": "AC1: Open.", "checked": false}], "log": []}},
       {"id": "M076", "title": "Sixth active row", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}, {"text": "AC2: Open.", "checked": false}], "log": []}},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M071", "waiting": []},
+    next: {"action": "review", "command": "/milestone-review", "id": "M071", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -474,7 +495,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M302", "M304"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M302", "waiting": []},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M302", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -496,7 +517,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M301", "title": "Back in work after review", "status": "in-progress", "file": {"goal": "Answer the maintainers' requested changes on an open pull request.", "tasks": [{"text": "T1: Make the requested change.", "checked": false}], "criteria": [{"text": "AC1: The requested change is made.", "checked": false}], "log": ["2026-01-12: changes requested."]}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M301", "waiting": [{"id": "M302", "title": "Builds on the reworked branch", "unmet": ["M301 (in-progress)"]}]},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M301", "title": null, "waiting": [{"id": "M302", "title": "Builds on the reworked branch", "unmet": ["M301 (in-progress)"]}]},
     candidates: [
     ],
     blocked: [
@@ -515,7 +536,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M304"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the waiting branch", "unmet": ["M301 (blocked)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "title": null, "waiting": [{"id": "M302", "title": "Builds on the waiting branch", "unmet": ["M301 (blocked)"]}]},
     candidates: [
     ],
     blocked: [
@@ -535,7 +556,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M304"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "title": null, "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
     candidates: [
     ],
     blocked: [
@@ -555,7 +576,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M304"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "title": null, "waiting": [{"id": "M302", "title": "Builds on the handed-off branch", "unmet": ["M301 (blocked)"]}]},
     candidates: [
     ],
     blocked: [
@@ -576,7 +597,7 @@ export const FIXTURES: Record<string, Fixture> = {
     workable: ["M304", "M305"],
     pane: [
     ],
-    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on both handed-off branches", "unmet": ["M301 (blocked)", "M303 (blocked)"]}]},
+    next: {"action": "implement", "command": "/milestone-implement", "id": "M304", "title": null, "waiting": [{"id": "M302", "title": "Builds on both handed-off branches", "unmet": ["M301 (blocked)", "M303 (blocked)"]}]},
     candidates: [
     ],
     blocked: [
@@ -606,7 +627,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "file": {"goal": "", "tasks": [], "criteria": [], "log": []}},
       {"id": "M043", "title": "Every task checked", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}, {"text": "T1a: Done, nested.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [{"text": "AC1: Open.", "checked": false}], "log": []}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M040", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M040", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -634,7 +655,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [], "log": []}},
       {"id": "M053", "title": "Every criterion checked", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done, capital X.", "checked": true}], "log": []}},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M050", "waiting": []},
+    next: {"action": "review", "command": "/milestone-review", "id": "M050", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -655,7 +676,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: Done, with a capital X.", "checked": true}, {"text": "T2: Done.", "checked": true}], "criteria": [], "log": []}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M007", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M007", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -675,7 +696,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M062", "title": "The next task has no label", "status": "in-progress", "file": {"goal": "", "tasks": [{"text": "T1: A labeled task, done.", "checked": true}, {"text": "Write the docs, with no label.", "checked": false}, {"text": "T3: A labeled task after it.", "checked": false}], "criteria": [{"text": "AC1: The item row stays dim.", "checked": false}], "log": []}},
     ],
-    next: {"action": "resume", "command": "/milestone-implement", "id": "M062", "waiting": []},
+    next: {"action": "resume", "command": "/milestone-implement", "id": "M062", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -695,7 +716,7 @@ export const FIXTURES: Record<string, Fixture> = {
     pane: [
       {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Write the title.", "checked": true}], "criteria": [{"text": "AC1: The title reads.", "checked": true}, {"text": "AC2: The emoji stays whole.", "checked": false}], "log": []}},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M061", "waiting": []},
+    next: {"action": "review", "command": "/milestone-review", "id": "M061", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [
@@ -723,7 +744,7 @@ export const FIXTURES: Record<string, Fixture> = {
       {"id": "M1002", "title": "An open criterion at the widest counts", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Done.", "checked": true}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done.", "checked": true}, {"text": "AC3: Done.", "checked": true}, {"text": "AC4: Done.", "checked": true}, {"text": "AC5: Done.", "checked": true}, {"text": "AC6: Done.", "checked": true}, {"text": "AC7: Done.", "checked": true}, {"text": "AC8: Done.", "checked": true}, {"text": "AC9: Done.", "checked": true}, {"text": "AC10: Done.", "checked": true}, {"text": "AC10a: Open at the widest counts.", "checked": false}, {"text": "AC11: Done.", "checked": true}, {"text": "AC12: Done.", "checked": true}, {"text": "AC13: Done.", "checked": true}, {"text": "AC14: Done.", "checked": true}, {"text": "AC15: Done.", "checked": true}, {"text": "AC16: Done.", "checked": true}, {"text": "AC17: Done.", "checked": true}, {"text": "AC18: Done.", "checked": true}, {"text": "AC19: Done.", "checked": true}, {"text": "AC20: Done.", "checked": true}, {"text": "AC21: Done.", "checked": true}, {"text": "AC22: Done.", "checked": true}, {"text": "AC23: Done.", "checked": true}, {"text": "AC24: Done.", "checked": true}, {"text": "AC25: Done.", "checked": true}, {"text": "AC26: Done.", "checked": true}, {"text": "AC27: Done.", "checked": true}, {"text": "AC28: Done.", "checked": true}, {"text": "AC29: Done.", "checked": true}, {"text": "AC30: Done.", "checked": true}, {"text": "AC31: Done.", "checked": true}, {"text": "AC32: Done.", "checked": true}, {"text": "AC33: Done.", "checked": true}, {"text": "AC34: Done.", "checked": true}, {"text": "AC35: Done.", "checked": true}, {"text": "AC36: Done.", "checked": true}, {"text": "AC37: Done.", "checked": true}, {"text": "AC38: Done.", "checked": true}, {"text": "AC39: Done.", "checked": true}, {"text": "AC40: Done.", "checked": true}, {"text": "AC41: Done.", "checked": true}, {"text": "AC42: Done.", "checked": true}, {"text": "AC43: Done.", "checked": true}, {"text": "AC44: Done.", "checked": true}, {"text": "AC45: Done.", "checked": true}, {"text": "AC46: Done.", "checked": true}, {"text": "AC47: Done.", "checked": true}, {"text": "AC48: Done.", "checked": true}, {"text": "AC49: Done.", "checked": true}, {"text": "AC50: Done.", "checked": true}, {"text": "AC51: Done.", "checked": true}, {"text": "AC52: Done.", "checked": true}, {"text": "AC53: Done.", "checked": true}, {"text": "AC54: Done.", "checked": true}, {"text": "AC55: Done.", "checked": true}, {"text": "AC56: Done.", "checked": true}, {"text": "AC57: Done.", "checked": true}, {"text": "AC58: Done.", "checked": true}, {"text": "AC59: Done.", "checked": true}, {"text": "AC60: Done.", "checked": true}, {"text": "AC61: Done.", "checked": true}, {"text": "AC62: Done.", "checked": true}, {"text": "AC63: Done.", "checked": true}, {"text": "AC64: Done.", "checked": true}, {"text": "AC65: Done.", "checked": true}, {"text": "AC66: Done.", "checked": true}, {"text": "AC67: Done.", "checked": true}, {"text": "AC68: Done.", "checked": true}, {"text": "AC69: Done.", "checked": true}, {"text": "AC70: Done.", "checked": true}, {"text": "AC71: Done.", "checked": true}, {"text": "AC72: Done.", "checked": true}, {"text": "AC73: Done.", "checked": true}, {"text": "AC74: Done.", "checked": true}, {"text": "AC75: Done.", "checked": true}, {"text": "AC76: Done.", "checked": true}, {"text": "AC77: Done.", "checked": true}, {"text": "AC78: Done.", "checked": true}, {"text": "AC79: Done.", "checked": true}, {"text": "AC80: Done.", "checked": true}, {"text": "AC81: Done.", "checked": true}, {"text": "AC82: Done.", "checked": true}, {"text": "AC83: Done.", "checked": true}, {"text": "AC84: Done.", "checked": true}, {"text": "AC85: Done.", "checked": true}, {"text": "AC86: Done.", "checked": true}, {"text": "AC87: Done.", "checked": true}, {"text": "AC88: Done.", "checked": true}, {"text": "AC89: Done.", "checked": true}, {"text": "AC90: Done.", "checked": true}, {"text": "AC91: Done.", "checked": true}, {"text": "AC92: Done.", "checked": true}, {"text": "AC93: Done.", "checked": true}, {"text": "AC94: Done.", "checked": true}, {"text": "AC95: Done.", "checked": true}, {"text": "AC96: Done.", "checked": true}, {"text": "AC97: Done.", "checked": true}, {"text": "AC98: Done.", "checked": true}, {"text": "AC99: Done.", "checked": true}], "log": []}},
       {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "file": {"goal": "", "tasks": [{"text": "T1: Open.", "checked": false}], "criteria": [{"text": "AC1: Done.", "checked": true}, {"text": "AC2: Done.", "checked": true}, {"text": "AC3: Done.", "checked": true}, {"text": "AC4: Done.", "checked": true}, {"text": "AC5: Done.", "checked": true}, {"text": "AC6: Done.", "checked": true}, {"text": "AC7: Done.", "checked": true}, {"text": "AC8: Done.", "checked": true}, {"text": "AC9: Done.", "checked": true}, {"text": "AC10: Done.", "checked": true}, {"text": "AC11: Done.", "checked": true}, {"text": "AC12: Done.", "checked": true}, {"text": "AC13: Done.", "checked": true}, {"text": "AC14: Done.", "checked": true}, {"text": "AC15: Done.", "checked": true}, {"text": "AC16: Done.", "checked": true}, {"text": "AC17: Done.", "checked": true}, {"text": "AC18: Done.", "checked": true}, {"text": "AC19: Done.", "checked": true}, {"text": "AC20: Done.", "checked": true}, {"text": "AC21: Done.", "checked": true}, {"text": "AC22: Done.", "checked": true}, {"text": "AC23: Done.", "checked": true}, {"text": "AC24: Done.", "checked": true}, {"text": "AC25: Done.", "checked": true}, {"text": "AC26: Done.", "checked": true}, {"text": "AC27: Done.", "checked": true}, {"text": "AC28: Done.", "checked": true}, {"text": "AC29: Done.", "checked": true}, {"text": "AC30: Done.", "checked": true}, {"text": "AC31: Done.", "checked": true}, {"text": "AC32: Done.", "checked": true}, {"text": "AC33: Done.", "checked": true}, {"text": "AC34: Done.", "checked": true}, {"text": "AC35: Done.", "checked": true}, {"text": "AC36: Done.", "checked": true}, {"text": "AC37: Done.", "checked": true}, {"text": "AC38: Done.", "checked": true}, {"text": "AC39: Done.", "checked": true}, {"text": "AC40: Done.", "checked": true}, {"text": "AC41: Done.", "checked": true}, {"text": "AC42: Done.", "checked": true}, {"text": "AC43: Done.", "checked": true}, {"text": "AC44: Done.", "checked": true}, {"text": "AC45: Done.", "checked": true}, {"text": "AC46: Done.", "checked": true}, {"text": "AC47: Done.", "checked": true}, {"text": "AC48: Done.", "checked": true}, {"text": "AC49: Done.", "checked": true}, {"text": "AC50: Done.", "checked": true}, {"text": "AC51: Done.", "checked": true}, {"text": "AC52: Done.", "checked": true}, {"text": "AC53: Done.", "checked": true}, {"text": "AC54: Done.", "checked": true}, {"text": "AC55: Done.", "checked": true}, {"text": "AC56: Done.", "checked": true}, {"text": "AC57: Done.", "checked": true}, {"text": "AC58: Done.", "checked": true}, {"text": "AC59: Done.", "checked": true}, {"text": "AC60: Done.", "checked": true}, {"text": "AC61: Done.", "checked": true}, {"text": "AC62: Done.", "checked": true}, {"text": "AC63: Done.", "checked": true}, {"text": "AC64: Done.", "checked": true}, {"text": "AC65: Done.", "checked": true}, {"text": "AC66: Done.", "checked": true}, {"text": "AC67: Done.", "checked": true}, {"text": "AC68: Done.", "checked": true}, {"text": "AC69: Done.", "checked": true}, {"text": "AC70: Done.", "checked": true}, {"text": "AC71: Done.", "checked": true}, {"text": "AC72: Done.", "checked": true}, {"text": "AC73: Done.", "checked": true}, {"text": "AC74: Done.", "checked": true}, {"text": "AC75: Done.", "checked": true}, {"text": "AC76: Done.", "checked": true}, {"text": "AC77: Done.", "checked": true}, {"text": "AC78: Done.", "checked": true}, {"text": "AC79: Done.", "checked": true}, {"text": "AC80: Done.", "checked": true}, {"text": "AC81: Done.", "checked": true}, {"text": "AC82: Done.", "checked": true}, {"text": "AC83: Done.", "checked": true}, {"text": "AC84: Done.", "checked": true}, {"text": "AC85: Done.", "checked": true}, {"text": "AC86: Done.", "checked": true}, {"text": "AC87: Done.", "checked": true}, {"text": "AC88: Done.", "checked": true}, {"text": "AC89: Done.", "checked": true}, {"text": "AC90: Done.", "checked": true}, {"text": "AC91: Done.", "checked": true}, {"text": "AC92: Done.", "checked": true}, {"text": "AC93: Done.", "checked": true}, {"text": "AC94: Done.", "checked": true}, {"text": "AC95: Done.", "checked": true}, {"text": "AC96: Done.", "checked": true}, {"text": "AC97: Done.", "checked": true}, {"text": "AC98: Done.", "checked": true}, {"text": "AC99: Done.", "checked": true}, {"text": "AC100: Done.", "checked": true}], "log": []}},
     ],
-    next: {"action": "review", "command": "/milestone-review", "id": "M1002", "waiting": []},
+    next: {"action": "review", "command": "/milestone-review", "id": "M1002", "title": null, "waiting": []},
     candidates: [
     ],
     blocked: [

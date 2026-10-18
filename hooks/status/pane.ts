@@ -3,7 +3,7 @@ import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
-import type { BandRow, CandidateRow, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
+import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
 import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
@@ -242,6 +242,15 @@ export function startedRefs(
   return { numbers, ids }
 }
 
+// The candidate row's short title that the next step names (M272): the
+// step's `title`, the first unstarted `[high]` row while planning, unless
+// an open pull request's body names that title (M252), since the pane then
+// draws no line for the row. Null with no title.
+export function nextTitle(next: NextStep, started: StartedRow[]): string | null {
+  const title = next.title ?? null
+  return title !== null && !started.some(item => item.title === title) ? title : null
+}
+
 // The Button a blocked line carries for its state word (M224), from the
 // routes that /milestone gives a handed-off PR: a merged one goes to
 // review's hygiene, one with changes requested back to implement, and a
@@ -462,7 +471,9 @@ export function paneLines(
   out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
   out[0].grow = true
   if (state.next !== null) {
-    const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
+    // Planning names its `[high]` row's short title after the command (M272).
+    const named = state.next.id ?? nextTitle(state.next, started)
+    const target = named === null ? state.next.command : `${state.next.command} ${named}`
     out.push(gap('next-gap'))
     const next = line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
       text: ` ${target} `,

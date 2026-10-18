@@ -184,7 +184,11 @@ schedules one-shot wakeups, so it keeps a finished skill this way.
 With no milestone active, the band shows an idle row for the next
 milestone you can start, whether or not a cairn skill runs. That milestone
 is the first `planned` row whose `Depends on` milestones are all done, by
-priority and then by id, the one `cairn_next.py` recommends. A dependency
+priority and then by id, the one `cairn_next.py` recommends. When no
+milestone is workable, `cairn_next.py` recommends planning. It then names
+the first `[high]` candidate row with no started token by its short title,
+for example `/milestone-plan Pane refresh lag`. Rows inside an HTML comment
+do not count. A dependency
 is done when its row is `done` or its file is in
 `cairn/milestones/archive/`. In guest mode with `# Push remote: base`,
 one dependency can instead be a change that waits for the maintainers'
@@ -220,15 +224,21 @@ planned milestone that waits on a dependency, or a `blocked` one, does not
 make a milestone workable, so the empty row shows then too. The row
 carries two buttons before its `≡` and close buttons. They show while no
 cairn skill runs and Claude is not working, in a band 37 columns wide or
-more. `Plan` runs `/clear` and then `/cairn:milestone-plan` with no
-arguments in the cleared conversation, as `Implement` does with its
-command. `Status` runs `/cairn:milestone`. A press runs the command
+more. `Plan` runs `/clear` and then `/cairn:milestone-plan` in the
+cleared conversation, as `Implement` does with its command. Its argument
+is the short title that the pane's Next line names (below): the first
+`[high]` candidate row with no started token. The pane's last read of your
+open PRs can drop it: a PR that names the row in a `Candidate row:` line
+hides it. Before the pane reads your PRs, nothing drops it. With no such
+row, or with the row dropped, `Plan` runs planning with no arguments.
+`Status` runs `/cairn:milestone`. A press runs the command
 as if you typed it. A second press while the first run is going does
 nothing. So does a press while `Plan` waits for its `/clear` to end the
 session. If the run is refused, the command goes after the text in the
 prompt box, and a toast says why. If the session refuses `Plan`'s
 `/clear`, `/clear` goes there and planning does not run. If the planning
-run itself is refused, `/cairn:milestone-plan` goes there.
+run itself is refused, `/cairn:milestone-plan` goes there. If `Plan`
+names a row, the row's title follows the command.
 
 When a cairn skill ends, a `Clear` button shows on any row that carries
 the next-step and `Status` buttons, before them. A press runs `/clear` at
@@ -288,10 +298,16 @@ and the five newest work-log lines. Each item takes one line, a long item
 ends in `…`, and the goal wraps. Each section starts after a blank row
 with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
 headings show their count and eight squares, `■` for the checked share
-and `□` for the rest. The next command sits in a pill. While no cairn
+and `□` for the rest. The next command sits in a pill. When the next step
+is planning, the pill shows `/milestone-plan <title>`, as `cairn_next.py`
+does. The title is the first `[high]` candidate row with no started token.
+If the pane's last read of your open PRs found one that names that row in
+a `Candidate row:` line, the pane hides the row (below). The pill then
+shows `/milestone-plan` alone. While no cairn
 skill runs or waits on its background work, a button after the pill reads `Implement`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
-command as that button does, so `Plan` and `Implement` run `/clear` first. A press while Claude works outside a cairn
+command as that button does, so `Plan` and `Implement` run `/clear` first.
+`Plan` plans the row that the pill names. A press while Claude works outside a cairn
 skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
 `/cairn:milestone`. The Next line has no `Clear` button. The pane's `⌂`

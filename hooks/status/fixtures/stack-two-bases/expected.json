@@ -3,7 +3,7 @@
   "rows": [],
   "workable": ["M304", "M305"],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M304", "waiting": [{"id": "M302", "title": "Builds on both handed-off branches", "unmet": ["M301 (blocked)", "M303 (blocked)"]}]},
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M304", "title": null, "waiting":[{"id": "M302", "title": "Builds on both handed-off branches", "unmet": ["M301 (blocked)", "M303 (blocked)"]}]},
   "candidates": [],
   "blocked": [
     {"id": "M301", "title": "First handed-off change", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false},

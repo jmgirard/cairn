@@ -3,7 +3,7 @@
   "workable": ["M191"],
   "rows": [],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M191", "waiting": [{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M191", "title": null, "waiting":[{"id": "M192", "title": "A claude-plugin toolchain profile for repos that build plugins and mods", "unmet": ["M191 (planned)"]}]},
   "candidates": [
     {"priority": "normal", "title": "`/hotfix` companion arm"},
     {"priority": "normal", "title": "Guest-mode R package builds carry `cairn/`"},

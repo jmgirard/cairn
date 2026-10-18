@@ -385,7 +385,10 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         const next = FIXTURES[name].next
         if (next === null) throw new Error('a fixture with a ROADMAP has a next step')
         // The command sits in a pill, one space of padding each side (M208).
-        expect(textAt(lines, 'next')).toBe(`Next   ${next.id === null ? next.command : `${next.command} ${next.id}`} `)
+        // Planning names the fixture's `[high]` row title, when it has one
+        // (M272).
+        const named = next.id ?? next.title
+        expect(textAt(lines, 'next')).toBe(`Next   ${named === null ? next.command : `${next.command} ${named}`} `)
         // Every id opens with `M`, and the heading lines' keys end in `head`.
         expect(keysLike(lines, /^workable-M/)).toEqual(FIXTURES[name].workable.map(id => `workable-${id}`))
         expect(keysLike(lines, /^waiting-M/)).toEqual(next.waiting.map(row => `waiting-${row.id}`))
@@ -894,8 +897,8 @@ const BY_ACTION: [string, string][] = [
 // What a press runs for a fixture: `cairn:` and the command less its slash,
 // and the id, or no args for planning.
 function runOf(name: string): { command: string; args: string } {
-  const next = FIXTURES[name].next as { command: string; id: string | null }
-  return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? '' }
+  const next = FIXTURES[name].next as { command: string; id: string | null; title: string | null }
+  return { command: `cairn:${next.command.slice(1)}`, args: next.id ?? next.title ?? '' }
 }
 
 // The next actions whose Button runs `/clear` first, and its command only
@@ -925,7 +928,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
       const state: PaneState = {
         found: true,
         milestones: [],
-        next: { action, command: '/milestone-plan', id: null, waiting: [] },
+        next: { action, command: '/milestone-plan', id: null, title: null, waiting: [] },
         workable: [],
         waiting: [],
         candidates: [],
@@ -1131,7 +1134,7 @@ describe('a running skill hides Status, and its end adds no Clear (M219 AC2, M24
     const state: PaneState = {
       found: true,
       milestones: [],
-      next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, waiting: [] },
+      next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null, waiting: [] },
       workable: [],
       waiting: [],
       candidates: [],
@@ -1622,7 +1625,9 @@ describe('a guarded ✎ press runs nothing (M242 AC3)', () => {
     expect(copy.commands).toEqual([CLEAR_RUN])
     await $.session.end(CLEAR_END)
     await untilRuns(copy, 2)
-    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: '' }])
+    // The copy's first candidate row is `[high] High row`, which the held
+    // Plan names (M272).
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: 'High row' }])
   })
 
   test('a press while a ⌂ press is pending runs nothing, and the end opens the pane only', async ($, on) => {
@@ -4828,4 +4833,81 @@ describe('a second listing pending at a session end reads nothing (M260 AC4)', (
     await calls.settled()
     expect(calls.reads).toEqual([URL_1250])
   })
+})
+
+// While planning, the Next line names the first unstarted `[high]` row and
+// the next-step press plans it; with no such row, or with an open pull
+// request's body naming it (M252), both behave as before (M272 AC4). The
+// titles are written out by hand from the fixtures' ROADMAPs.
+describe("planning's Next line and press name the [high] row (M272 AC4)", () => {
+  const plan = (title: string | null): PaneState => ({
+    found: true,
+    milestones: [],
+    next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title },
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [],
+    taken: [],
+  })
+  const nextText = (state: PaneState, started: { title: string; number: number }[] = []) =>
+    layout(state, [], true, {}, [], started).find(line => line.key === 'next')?.text?.text
+
+  test('the line names the title, and with none or a body naming it shows the command alone', () => {
+    expect(nextText(plan('Chosen row'))).toBe(' /milestone-plan Chosen row ')
+    expect(nextText(plan(null))).toBe(' /milestone-plan ')
+    expect(nextText(plan('Chosen row'), [{ title: 'Chosen row', number: 5 }])).toBe(' /milestone-plan ')
+    // The control: a body naming another row hides nothing.
+    expect(nextText(plan('Chosen row'), [{ title: 'Other row', number: 5 }])).toBe(' /milestone-plan Chosen row ')
+  })
+
+  const CASES = [
+    { name: 'high-candidate', args: 'Chosen row' },
+    { name: 'candidates-skeleton', args: '' },
+  ]
+  for (const { name, args } of CASES) {
+    test(`${name}: the press runs /clear, then planning with ${args === '' ? 'no arguments' : 'the title'}`, async ($, on) => {
+      const copy = copyOf(name)
+      seat(on, copy)
+      await $.turn.complete(turn())
+      expect(textAt(await paneLines($, 'desktop'), 'next')).toBe(`Next   /milestone-plan${args === '' ? '' : ` ${args}`} `)
+      await pressKey($, PANE_NEXT)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
+    })
+  }
+
+  for (const [body, args] of [
+    ['Candidate row: Chosen row\n', ''],
+    ['Candidate row: Later high\n', 'Chosen row'],
+  ] as const) {
+    test(`a body naming ${args === '' ? 'the row drops its title' : 'another row keeps the title'} on the line and the press`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: ORIGIN },
+        list: () => listReply([bodied(1265, 'm272-x', body)]),
+      })
+      const copy = copyOf('high-candidate')
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      expect(calls.lists).toEqual([listCall(ORIGIN)])
+      const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
+      expect(next.startsWith('Next   /milestone-plan ')).toBe(true)
+      expect(next.includes('Chosen row')).toBe(args !== '')
+      await pressKey($, PANE_NEXT)
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
+      // The band's Plan shares the press, and reads the same stored list.
+      const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      await band.press({ key: 'cairn-next' })
+      await band.unmount()
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 4)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
+    })
+  }
 })

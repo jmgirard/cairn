@@ -3,7 +3,7 @@
   "rows": [],
   "workable": ["M302", "M304"],
   "pane": [],
-  "next": {"action": "implement", "command": "/milestone-implement", "id": "M302", "waiting": []},
+  "next": {"action": "implement", "command": "/milestone-implement", "id": "M302", "title": null, "waiting":[]},
   "candidates": [],
   "blocked": [
     {"id": "M301", "title": "Handed to the maintainers", "pr": 721, "url": "https://github.com/upstream/repo/pull/721", "archived": false}
