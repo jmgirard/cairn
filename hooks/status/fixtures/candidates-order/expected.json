@@ -1,0 +1,15 @@
+{
+  "cwd": "",
+  "workable": [],
+  "rows": [],
+  "pane": [],
+  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Late high", "waiting": []},
+  "candidates": [
+    {"priority": "low", "title": "First low"},
+    {"priority": "normal", "title": "Normal one"},
+    {"priority": "high", "title": "Late high"},
+    {"priority": "low", "title": "Second low"},
+    {"priority": "normal", "title": "Normal two"},
+    {"priority": "high", "title": "Last high"}
+  ]
+}

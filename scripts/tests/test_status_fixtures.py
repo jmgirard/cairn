@@ -451,7 +451,9 @@ class StatusFixtureAgreement(unittest.TestCase):
             expected = json.loads((case_dir / "expected.json").read_text(encoding="utf-8"))
             if expected["next"] is not None and expected["next"]["title"] is not None:
                 titled[case_dir.name] = expected["next"]["title"]
-        self.assertEqual(titled, {"high-candidate": "Chosen row"})
+        # `candidates-order` (M280) names its first `[high]` row in file
+        # order, which the pane's level sort also draws first.
+        self.assertEqual(titled, {"high-candidate": "Chosen row", "candidates-order": "Late high"})
         roadmap = (FIXTURES / "high-candidate" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8")
         self.assertLess(roadmap.index("- Untagged first:"), roadmap.index("- [high] Taken row:"))
         self.assertIn("- [high] Taken row: work has started on it — added 2026-01-02 — started M2\n", roadmap)

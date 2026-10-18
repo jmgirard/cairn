@@ -1,13 +1,13 @@
 # M280: The pane shows candidates by priority, and validate warns on file order
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters see the pane's Candidates list and `cairn_validate` output   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m280-candidate-level-order   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -57,7 +57,7 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Pane order. In `paneLines` (`hooks/status/pane.ts:595`), sort the filtered `{ row, i }` list stably by level (high, normal, low) before drawing, and update the comment above it. Add or extend a fixture so its ROADMAP holds the AC1 shapes (regenerate `fixtures.gen.ts` with `gen_fixtures.py` and its `expected.json`, which stays in ROADMAP order). In `pane.test.tsx`, write the new fixture's drawn order by hand, reorder `CANDIDATE_LINES` to the sorted order, sort `drawnCandidates` by level, and add the AC2 ✎ press test. Show the new tests red against the unsorted code first. Run `claude plugin test`.
+- [x] T1: Pane order. In `paneLines` (`hooks/status/pane.ts:595`), sort the filtered `{ row, i }` list stably by level (high, normal, low) before drawing, and update the comment above it. Add or extend a fixture so its ROADMAP holds the AC1 shapes (regenerate `fixtures.gen.ts` with `gen_fixtures.py` and its `expected.json`, which stays in ROADMAP order). In `pane.test.tsx`, write the new fixture's drawn order by hand, reorder `CANDIDATE_LINES` to the sorted order, sort `drawnCandidates` by level, and add the AC2 ✎ press test. Show the new tests red against the unsorted code first. Run `claude plugin test`.
 - [ ] T2: Validate advisory. Add `check_candidate_order(root)` to `scripts/cairn_validate.py`, reading rows with `cairn_next.candidate_texts` and short titles with `cairn_next.short_title`, and register it in `ADVISORIES` as `candidate order`. One finding per row whose level ranks above the lowest level read before it. Add the AC3 tests to `scripts/tests`, each WARN asserted by title and level, and plant an adjacent-only comparison to see the non-adjacent case red. Confirm this repo's validate prints `OK    candidate order`.
 - [ ] T3: Docs and records. Add the level-order sentence to `cairn/DESIGN.md`'s pane paragraph (~line 305) and to the README's pane Candidates text, an Unreleased CHANGELOG entry for both changes, and D-182 in `cairn/DECISIONS.md`: `cairn_validate` WARNs on Candidates file order, annotating D-134, whose rejected token check this is not. Run the full `verify` slot.
 
@@ -82,6 +82,8 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
 - 2026-10-18: question set: WARN shape — one line per out-of-order row. Live look in ackwards — no, the pane tests suffice. Reorder ackwards' ROADMAP — no, leave it to that repo.
 - 2026-10-18: split tripwire weighed: the goal joins two parts with "and", but both enforce one rule (high → normal → low) at its two readers, in 5 criteria and 3 tasks; kept as one milestone.
 - 2026-10-18: plan gate chose sorting in `paneLines` over sorting in the reader (`candidateRows`) because the reader's file-order state feeds `pressCandidate`'s index lookup, the fixtures' `expected.json`, and the Python mirror; falsified by a second pane surface (the band, a press) needing the sorted order from state.
+- 2026-10-18: started on branch m280-candidate-level-order; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-18: T1 done: `paneLines` sorts drawn rows by `LEVEL_RANK`, then ROADMAP index; new fixture `candidates-order` (6 rows); the M280 order tests were red before the sort (19 fails), all 2132 pane tests green after. Tests that read draw position as ROADMAP index (M207, M242, M261) now match by key, and `candidates-order` joined the band's empty-fixture and Plan-title lists by hand.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
