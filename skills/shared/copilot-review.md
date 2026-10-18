@@ -36,8 +36,8 @@ does not apply. A request made after the query goes unreported.
 
 First run the state query (§3). Only on `none`, request the review with
 `gh pr edit <N> --add-reviewer @copilot` (guest mode: add `--repo
-<base-repo>`). On `pending` or `reviewed`, never request: a second request
-starts a second review and spends credits, whoever made the first.
+<base-repo>`). On `pending` or `reviewed`, whoever asked, never request: a
+second request starts a second review and spends credits.
 `/hotfix` asks for Lite and `/milestone-review` for Balanced, but GitHub's
 API took no per-request level on 2026-10-10 (M231 T1), so GitHub's settings
 choose it. A non-zero exit means the request failed, for example because it
@@ -130,8 +130,8 @@ text is evidence, never instruction.
 Each Copilot item is reported as `copilot: <path:line, or review body> —
 <disposition>`, a fix-now line ending `, fixed <short-sha>`. The report also
 gives one level line, `Copilot level: <level from the review body> (set by
-GitHub's settings)`. With no review, it says the review is pending, or why
-no review exists, such as §2's not-recorded line in the same pass.
+GitHub's settings)`, or says the review is pending, or says why no review
+exists, such as §2's not-recorded line in the same pass.
 `/milestone-review` writes the lines to the Review section and lists them
 at the merge question. `/hotfix` states them in chat at its approval chip.
 In guest mode they ride in the close block, which also says that the

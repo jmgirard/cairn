@@ -64,7 +64,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - [ ] AC3: `README.md`'s Copilot paragraph and a new entry under
       `CHANGELOG.md`'s `## Unreleased` state that when the state query just
       after a request that exited 0 prints `none`, the run says so in one
-      line and goes on without Copilot.
+      line, makes no second request, and does not wait at that point.
 - [ ] AC4: `wc -l -c skills/shared/copilot-review.md` shows under 140 lines
       and under 8,000 bytes, the figures the module's budget line states,
       and the budget line's figures are unchanged.
@@ -134,6 +134,9 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: T1 done: §2 gains the re-query and the not-recorded line, §6 names it; cuts elsewhere (a redundant §1 note sentence, §4's restated wait-once clause, rewraps, shorter phrasings) bring the module to 138 lines and 7,998 bytes; no guard-pinned string changed; verify green (scripts 423 OK, hooks 179 OK, both validates 0, plugin test 2132 pass).
 - 2026-10-18: T2 done: README Copilot paragraph gains two sentences; CHANGELOG entry placed under Unreleased `### Fixes`, since the round was silent where it owed a reason; both gating suites green after the edits.
 - 2026-10-18: T3 done: module 138 lines / 7,998 bytes, budget line unchanged; both validates 0; `claude plugin test` first run had 2 fails, both "timed out after 5000 ms" in M212 AC4 layout tests (candidates-skeleton, high-candidate plan-row) on a branch with no TS change, and the rerun passed 2132/0; hand-run skills/tests 886 OK (non-gating, D-109).
+- 2026-10-18: claim audit: 17 claims read, 3 corrected — skills/shared/copilot-review.md (§6 level-line choice restored as alternatives; §2 "whoever made the request" moved back onto the never-request rule), README.md and CHANGELOG.md ("goes on without Copilot" overstated, since a late-recorded request can still be waited for at the read).
+- 2026-10-18: substantive amendment: AC3 "goes on without Copilot" → "makes no second request, and does not wait at that point", after the claim audit showed the old wording false under §4's read-time wait; the deliverable the user sees is unchanged, so no stop.
+- 2026-10-18: re-audit: AC3 (full) — reachable, no IP or D-entry conflict, bounded, binds the docs' prose, proportionate; noted it does not require the old phrase to go (kept narrower; the docs drop the phrase anyway) and called "at that point" loose.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
