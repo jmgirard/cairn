@@ -120,6 +120,7 @@ rewritten with a new trigger.
 - 2026-10-17: T4 done: D-179 appended (annotates D-134, passes D-108's door on its retained trigger); validate green; verify green (scripts, hooks, plugin validate x2, plugin test 2018 pass); skills/tests 836 OK.
 - 2026-10-17: claim audit: 30 claims read, 4 corrected — skills/cairn-triage/SKILL.md, CHANGELOG.md (row "sits with the `[high]` rows", not "stays first"; promote changes nothing of its own beyond the carried change; "before" claims limited to normal and low rows; the guard's apply sentence updated to match); the same reader re-read all four as true.
 - 2026-10-17: implement complete; verify green after the claim fixes; status → review.
+- 2026-10-17: step-7 approval: m271-triage-promote-marks-high approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
