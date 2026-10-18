@@ -40,7 +40,7 @@ M271.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
+- [x] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
       the planning case it holds the short title (tracking-rules "Candidate
       short title"), trimmed as JavaScript's `trim` trims, of the first row
       under `## Candidates`, in ROADMAP order and outside HTML comments, that
@@ -52,25 +52,25 @@ M271.
       `[high]` row passed over for a later `[high]` row, a `[high]` row inside
       an HTML comment passed over, no `[high]` row giving `None`, and a
       workable planned milestone giving `None` beside a `[high]` row.
-- [ ] AC2: In the planning case with a title, `cairn_next.py`'s printed
+- [x] AC2: In the planning case with a title, `cairn_next.py`'s printed
       `Recommended:` line reads `Recommended: plan the next milestone →
       /milestone-plan <title>`; with no title the line is unchanged.
-- [ ] AC3: `recommend` in `hooks/status/reader.ts` returns the same `title` as
+- [x] AC3: `recommend` in `hooks/status/reader.ts` returns the same `title` as
       the Python on every fixture `scripts/tests/test_status_fixtures.py`
       compares, and at least one compared fixture gives a non-null title.
-- [ ] AC4: In the planning case with a title, the pane's Next line shows
+- [x] AC4: In the planning case with a title, the pane's Next line shows
       `/milestone-plan <title>`, and the next-step Plan press, from the pane
       or the band, runs `/cairn:milestone-plan` with that title as its
       argument after `/clear`; with no title, or when an open pull request's
       body names that title (the pane's M252 hide rule), both behave as
       before. Tests in `hooks/status` cover the line and the press with and
       without a title.
-- [ ] AC5: The README paragraph on the pane's Next line (~`README.md:290`),
+- [x] AC5: The README paragraph on the pane's Next line (~`README.md:290`),
       the paragraph naming `cairn_next.py`'s recommendation (~`README.md:187`),
       the `cairn_next.py` module and `recommend` docstrings, and a
       `CHANGELOG.md` `## Unreleased` entry each say that planning names the
       first unstarted `[high]` candidate.
-- [ ] AC6: The `verify` slot of `cairn/PROFILE.md` passes on the branch head.
+- [x] AC6: The `verify` slot of `cairn/PROFILE.md` passes on the branch head.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -126,3 +126,13 @@ M271.
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Review pass 1, 2026-10-17, branch head 7e6726f9 (main b1d03358 unmoved). PR #284 opened at review start (Copilot round on).
+
+- AC1: `python3 -m unittest -v scripts.tests.test_scripts -k TestNext` — 13 OK, among them the five cases AC1 names: `test_plan_names_the_first_high_row_over_an_earlier_untagged_row`, `test_plan_passes_over_a_started_high_row` (each token shape, then the later `[high]` row), `test_plan_passes_over_a_high_row_in_a_comment_and_an_empty_title`, `test_plan_with_no_high_row_gives_none`, `test_workable_milestone_gives_none_beside_a_high_row`; `recommend` returns `title` in all four branches (`scripts/cairn_next.py`); the trim is `strip(JS_TRIM)`. PASS.
+- AC2: `python3 scripts/cairn_next.py` on a copy of fixture `high-candidate` prints `Recommended: plan the next milestone → /milestone-plan Chosen row`; on a copy of `candidates-skeleton` (no `[high]` row outside a comment) it prints the line ending at `/milestone-plan` and a newline (`od -c`), unchanged from main; the tests above assert both lines with their newline. PASS.
+- AC3: `python3 -m unittest -v scripts.tests.test_status_fixtures` — 12 OK; `test_python_helpers_match_expected` holds `cairn_next.recommend` (with `title`) to every fixture's `expected.json`, and `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` (2070 pass, 0 fail) passes "the pane's milestones and next step match expected.json" for all 31 fixtures, so `reader.ts` `recommend` gives the same `title` on each; `test_a_fixture_names_a_high_row_for_planning` asserts the only non-null title is `high-candidate`'s "Chosen row". PASS.
+- AC4: same `claude plugin test .` run; the "M272 AC4" block passes: the Next line text ` /milestone-plan Chosen row `, ` /milestone-plan ` with no title, and ` /milestone-plan ` when a body names the title; the pane press on `high-candidate` runs `clear` then `cairn:milestone-plan` "Chosen row", on `candidates-skeleton` with `''`; with a `gh pr list` body naming "Chosen row" both the pane and the band press run planning with `''`, and with a body naming another row both run it with "Chosen row". The band's M213 and M221 press tests run "Chosen row" on `high-candidate`. PASS.
+- AC5: read at head: `README.md:187-191` (the paragraph naming `cairn_next.py`'s recommendation) and `README.md:298-302` (the pane's Next line) each say planning names the first `[high]` candidate row with no started token; the `cairn_next.py` module docstring (:9-11) and the `recommend` docstring (:83-88) say it; `CHANGELOG.md:7-19` under `## Unreleased` has the entry. PASS.
+- AC6: verify on code head 7e6726f9: `scripts/tests` 415 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2070 pass 0 fail. PASS.
+- Gate: `cairn_validate.py` exit 0, all checks passed; no principle touched, so no `cairn_impact`; profile gate: verify green (AC6), the marketplace validate prints no `version` warning, and `CHANGELOG.md` has an Unreleased entry with no milestone number. PASS.
