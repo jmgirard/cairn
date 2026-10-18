@@ -61,6 +61,7 @@ Run `cairn_status.py` and report its output (counts by status, active
 milestone(s), next `planned` by priority, candidate count, last hygiene
 date). Add only what the script can't know: the newest work-log line of
 each active milestone, and open RBs and their age.
+In owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under "Half-merged feature series".
 
 ## 2. Health audit
 

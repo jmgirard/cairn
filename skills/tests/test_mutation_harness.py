@@ -4999,6 +4999,25 @@ REGISTRY += [
         target=HOTFIX,
         block="It owes an edit to that entry only where the fix changes what the entry says (step 5).",
     ),
+    # M275: the templates and the status snapshot name the series.
+    Mutation(
+        guard="test_feature_series",
+        test="TestSeriesNamedElsewhere.test_milestone_template_names_the_line",
+        target=TEMPLATE,
+        block="`feature series: M<a> -> M<b>[ -> …]` line (tracking-rules \"Feature series\").",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestSeriesNamedElsewhere.test_archive_summary_copies_the_line",
+        target=ARCHIVE_TEMPLATE,
+        block="copy that line verbatim here, on its own line after the **Goal:** line.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestSeriesNamedElsewhere.test_status_snapshot_cites_the_release_rule",
+        target=MILESTONE,
+        block="In owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under \"Half-merged feature series\".",
+    ),
     # M275: the status fallback to the archive summary, and the unknown reading.
     Mutation(
         guard="test_feature_series",

@@ -197,6 +197,29 @@ class TestHotfixSeriesEntry(unittest.TestCase):
         )
 
 
+class TestSeriesNamedElsewhere(unittest.TestCase):
+    # M275: the templates and the status snapshot name the series.
+    def test_milestone_template_names_the_line(self):
+        self.assertIn(
+            "`feature series: m<a> -> m<b>[ -> …]` line (tracking-rules \"feature series\").",
+            read("shared", "templates", "milestone.md"),
+        )
+
+    def test_archive_summary_copies_the_line(self):
+        self.assertIn(
+            "copy that line verbatim here, on its own line after the **goal:** line.",
+            read("shared", "templates", "archive-summary.md"),
+        )
+
+    def test_status_snapshot_cites_the_release_rule(self):
+        text = read("milestone", "SKILL.md")
+        snapshot = text[text.index("## 1. snapshot") : text.index("## 2. health audit")]
+        self.assertIn(
+            "in owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under \"half-merged feature series\".",
+            snapshot,
+        )
+
+
 class TestReleaseList(unittest.TestCase):
     def step_one(self):
         text = read("cairn-release", "SKILL.md")

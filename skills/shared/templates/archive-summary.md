@@ -7,6 +7,8 @@ slot was —>)
 
 **Goal:** <the milestone's one-sentence goal>
 
+<feature series line: when the milestone's work log carries a `feature series:` line, copy that line verbatim here, on its own line after the **Goal:** line. Drop this placeholder otherwise.>
+
 **Outcome:** <what shipped and what changed — the mechanisms, named, since
 this is what a later collision sweep searches. Not the process that produced
 them; git holds that.>
