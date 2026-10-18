@@ -99,7 +99,7 @@ not added.
       falsifier "requests Copilot twice on one PR" to a request made while
       GitHub holds an earlier Copilot request or review on the PR, and
       names a cairn record of the request as the rejected alternative.
-- [ ] AC7: The profile's `verify` slot is clean: both gating
+- [x] AC7: The profile's `verify` slot is clean: both gating
       `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`),
       `claude plugin validate` on the plugin and marketplace manifests, and
       `claude plugin test`.
@@ -229,3 +229,7 @@ not added.
 - prior-review #4: §6's read-time condition reverses M281's same-pass scope — reject (false): it stores nothing, so D-153's rejection of records holds.
 - prior-review #5: a README line of 97 characters — fix now, as blame-history #10, fixed 810faf9f.
 - prior-review #6: the §6 operator clause dropped — reject (false), as blame-history #6.
+- AC7 evidence: at 0fd71880, `python3 -m unittest discover -s scripts/tests` 423 tests OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate .claude-plugin/plugin.json` exit 0, `claude plugin validate .claude-plugin/marketplace.json` exit 0, `claude plugin test .` 2132 pass 0 fail. Hand-run `skills/tests` 886 OK.
+- Consistency gate: `cairn_validate.py` exit 0 (no FAIL, no WARN); no principle changed, so `cairn_impact` skipped; verify green on the review head (AC7); marketplace validate shows no `plugins[N].version` warning; CHANGELOG has a new Unreleased Fixes entry with no milestone numbers.
+- PR-conversation read (PR #294, 0fd71880): state query `none`, so no wait; 0 reviews, 0 conversation comments, 0 review threads — empty read.
+- Copilot: no review exists. Reason: Copilot request on PR #294 may not be recorded by GitHub (used-up Copilot credits are one cause); the read's own state query still prints `none`.
