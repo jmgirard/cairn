@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M279: Old cost-script figures are re-measured or marked
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -127,7 +127,7 @@ not old-script figures.
 - [x] T3: In effort-experiment-notes.md, add the AC2 statement and pointer,
       and keep the words "nothing to re-verify against" so that its
       staleness state stays `exempt`. Correct its AC4 site.
-- [ ] T4: Correct the AC4 site in haiku-sonnet-roles.md. Update the three
+- [x] T4: Correct the AC4 site in haiku-sonnet-roles.md. Update the three
       INDEX.md lines. Run the `verify` slot (both gating suites) and
       `cairn_validate`.
 
@@ -158,6 +158,9 @@ not old-script figures.
 - 2026-10-18: T1 done: record-rule-remeasurement.md Axis 3 re-run (medians 130.5 turns / 112,229.5 output, were 137 / 175,620), 165/169k comparison removed, Evidence and Extraction lines marked corrected M279; verify 5/5 green.
 - 2026-10-18: T2 done: session-cost-notes.md gets the old-script statement in Extraction, a pointer opening `## Baseline`, a new `## Current-script baseline` (M269–M278) before `## Disposition`, and corrected A4 row, Disposition bullet, and first Open question; also corrected the A4 paragraph under the ledger, which still said subagent tokens go uncounted; staleness pin stays `ok`; verify 5/5 green.
 - 2026-10-18: T3 done: effort-experiment-notes.md gets the old-script statement in Extraction ("nothing to re-verify against" kept, pin stays `exempt`), a pointer opening `## Cost`, and a corrected step 2 of the re-measurement procedure; verify 5/5 green.
+- 2026-10-18: T4 done: haiku-sonnet-roles.md "Two older records" paragraph put in the past tense with PR #238 named; INDEX.md lines for the three notes updated; plan sweep re-run, remaining hits are the tag legend, the corrected A4 row and Open question, and unrelated lower-bound lines; cairn_validate green; verify 5/5 green.
+- 2026-10-18: claim audit: not owed — internal tier.
+- 2026-10-18: implement complete; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
