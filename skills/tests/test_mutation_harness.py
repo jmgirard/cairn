@@ -4999,6 +4999,18 @@ REGISTRY += [
         target=HOTFIX,
         block="It owes an edit to that entry only where the fix changes what the entry says (step 5).",
     ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_adopted_pr_folds_a_second_entry",
+        target=HOTFIX,
+        block="Drop a contributor's separate entry for that behavior, and edit the series' entry only where the fix changes what it says.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_nothing_owed_accepts_the_series_entry",
+        target=HOTFIX,
+        block="(for a series bug, the series' entry already describes the fixed behavior)",
+    ),
     # M275: the templates and the status snapshot name the series.
     Mutation(
         guard="test_feature_series",

@@ -124,7 +124,7 @@ can resolve against the fork instead of the base repo.
      `Fixes #N` close, so the re-entry poses no separate issue-close chip;
      step 7 then runs for the merged PR.
    - *Nothing owed* — test present and two-way proven, `verify` green on the
-     default branch, changelog entry present or the slot `none` — pose one
+     default branch, changelog entry present (for a series bug, the series' entry already describes the fixed behavior) or the slot `none` — pose one
      `AskUserQuestion` chip whose question text names acceptance of the
      post-hoc verification and, when the PR body carries a `Fixes #N` line,
      the issue close it authorizes (a hotfix keeps no work log to show
@@ -290,7 +290,10 @@ can resolve against the fork instead of the base repo.
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
    user-facing-text rule and edit it in place rather than appending a
-   duplicate; if none is present, add one. Hold the PR to the same
+   duplicate; if none is present, add one.
+   For a bug in behavior that a feature series' entry under the development version describes, the series rule above wins.
+   Drop a contributor's separate entry for that behavior, and edit the series' entry only where the fix changes what it says.
+   Hold the PR to the same
    Conventions rules, adding a missing version bump. Push the test, the
    entry, and any convention edits to the PR's head branch — this works on a fork when the contributor left
    "allow edits by maintainers" on (GitHub's default).

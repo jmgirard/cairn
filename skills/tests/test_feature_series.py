@@ -3,6 +3,10 @@
 Locks the rulebook paragraph in `tracking-rules.md` (AC1), the plan's step 4
 bullet (AC2), the four profiles' changelog gate lines (AC3), review's guest
 PR sentence (AC4), and the release walk's half-merged series list (AC5).
+M275 adds the release walk's archive-summary status fallback, the hotfix rule
+that keeps a series' one entry, the last-part sentence's dropped-part rule,
+the series line in both templates, and the `/milestone` snapshot's report
+of half-merged series.
 
 Skill-prose guards read the file as one string, so every asserted phrase
 lives on a single source line (M23); phrases are matched case-insensitively.
@@ -184,6 +188,18 @@ class TestHotfixSeriesEntry(unittest.TestCase):
         self.assertIn(
             "to find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.",
             self.step_five(),
+        )
+
+    def test_adopted_pr_folds_a_second_entry(self):
+        self.assertIn(
+            "drop a contributor's separate entry for that behavior, and edit the series' entry only where the fix changes what it says.",
+            self.step_five(),
+        )
+
+    def test_nothing_owed_accepts_the_series_entry(self):
+        self.assertIn(
+            "changelog entry present (for a series bug, the series' entry already describes the fixed behavior) or the slot `none`",
+            self.text(),
         )
 
     def test_reentry_owes_no_second_entry(self):
