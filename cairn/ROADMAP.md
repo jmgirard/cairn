@@ -8,6 +8,8 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M271 | A triage promote gives its candidate row the high-priority token | planned | — | normal | milestones/M271-triage-promote-marks-high.md |
+| M272 | The next-step recommendation names the first unstarted high-priority candidate | planned | — | normal | milestones/M272-next-step-names-high-row.md |
 | M270 | Let /cairn-triage lessons drop false, obsolete, and low-value lessons | done | — | normal | milestones/archive/M270-lessons-triage-drops.md |
 | M269 | Test whether Haiku misses history conflicts that Sonnet catches, then pick the history reviewers' model | done | — | normal | milestones/archive/M269-history-reviewer-recall.md |
 | M268 | Let a guest milestone build on one that waits for the maintainers | done | M267 | normal | milestones/archive/M268-guest-stacked-milestones.md |
