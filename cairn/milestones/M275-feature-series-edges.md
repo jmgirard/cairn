@@ -103,6 +103,7 @@ A feature series stays visible to the release walk and the status snapshot until
 - 2026-10-18: T5 done: the M274 Unreleased entry now covers the guest sentence, the status snapshot, the archive fallback, and the hotfix rule; a whitespace-normalized split of the Unreleased section finds 1 of 60 entries mentioning `feature series`; no README edit (lines 763-768 restate only the unchanged plan rule).
 - 2026-10-18: T6 done: verify slot's five commands exit 0; hand-run skills/tests first red (1 error: T1 left a stale M274 mutation entry on the rewritten release sentence, "found 0"), entry removed since T1's entry covers the new sentence, then 870 tests OK; every new mutation entry blanks red.
 - 2026-10-18: claim audit: 56 claims read, 4 corrected — skills/milestone-review/SKILL.md (dropped-part reason narrower than the rule), skills/tests/test_feature_series.py (stale docstring), skills/hotfix/SKILL.md (adopting-a-PR clause still ordered a second entry; *Nothing owed* missed the no-edit series case); same reader re-read all 4 as holding; its two slips after the re-read (docstring wording, adopting sentence lacking "under the development version") fixed by the author, 2 guards and 2 mutation entries added; verify green, skills/tests 872 OK.
+- 2026-10-18: step-7 approval: m275-feature-series-edges approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
