@@ -205,9 +205,9 @@ not added.
 - AC5 evidence: `wc -l -c skills/shared/copilot-review.md` prints 139 lines, 7,990 bytes. The budget line on main and on the branch both read "under 140 lines and under 8,000 bytes".
 - AC6 evidence: `cairn/DECISIONS.md:6590` holds D-183. Its Decision (line 6607) narrows D-153's falsifier from "requests Copilot twice on one PR" to "requests Copilot while GitHub holds an earlier Copilot request or review on the PR". Its Rejected paragraph (line 6610) names "A cairn record that a request was made".
 - spawned: diff-bug, blame-history, prior-review
-- diff-bug #1: the hotfix owner and guest Copilot arms run no state query when the read begins, so §6's "the read's own state query" has nothing to read there — fix now (both arms now run the state query again as the read begins, with the bounded wait while it prints `pending`).
+- diff-bug #1: the hotfix owner and guest Copilot arms run no state query when the read begins, so §6's "the read's own state query" has nothing to read there — fix now (both arms now run the state query again as the read begins, with the bounded wait while it prints `pending`), fixed 810faf9f.
 - diff-bug #2: D-183 pins D-153's falsifier to the step-7 read, where D-153 means the milestone — reject (false): D-183 quotes D-153's own sentence, whose "whose step-7 read ... or requests Copilot twice" clause carries both falsifiers.
-- diff-bug #3: review step 7's PR-conversation read sentence still says "the `copilot:` lines and level line follow §6" — fix now (names the level, pending, or reason line).
+- diff-bug #3: review step 7's PR-conversation read sentence still says "the `copilot:` lines and level line follow §6" — fix now (names the level, pending, or reason line), fixed 810faf9f.
 - diff-bug #4: §6's reason rule says nothing for a failed read-time query; a wait that starts on `pending` and ends on `none` gives a pending line for a PR with no request; "that line" might be read as forcing the not-recorded line after a non-zero request exit — follow-up for the first two (new row "Copilot reason-line edges (M282 review)"); reject the third (false: the not-recorded line exists only after a zero exit, §2).
 - diff-bug #5: a guest `/hotfix` resume never reaches §2, so "a `/hotfix` resume" asks again holds in owner mode only — reject (false): §2's rule binds "a later run of this step", and a resume that does not run §2 is not one; the examples name runs of §2.
 - diff-bug #6: the module's budget line dropped its 126-line / 7,142-byte baseline and the "about one section" headroom that sibling modules state — reject (style): the figures the rule reads are unchanged; the baseline stays in M231's record; tracking-rules' graduation clause sets a budget once, at graduation.
@@ -222,10 +222,10 @@ not added.
 - blame-history #7: the opt-in line's permission now names the request — reject (false): the old "outward writes" already covered the request; the text names it.
 - blame-history #8: the §5 return-floor sentence and the review-body paragraph merged into one paragraph — reject (style): no rule changed, and the module is at its line budget.
 - blame-history #9: "(PR #291 to #293)" cites this repo's PRs, which an adopter cannot resolve — reject (planned change): AC1 asks for the reason with that citation.
-- blame-history #10: a README line of about 100 characters — fix now (rewrapped).
+- blame-history #10: a README line of about 100 characters — fix now (rewrapped), fixed 810faf9f.
 - prior-review #1: the retry contradicts M231's "never requests twice" and M231 pass 2's defect — reject (planned change): the user chose the retry; D-183 records it.
 - prior-review #2: D-183's narrowed falsifier no longer matches PR #293's case — reject (planned change), as blame-history #1.
 - prior-review #3: the late-record defect survives at §2's chat line and in a second request inside seconds — reject (planned change): Scope keeps §2's chat line and moves the durable report to the read.
 - prior-review #4: §6's read-time condition reverses M281's same-pass scope — reject (false): it stores nothing, so D-153's rejection of records holds.
-- prior-review #5: a README line of 97 characters — fix now, as blame-history #10.
+- prior-review #5: a README line of 97 characters — fix now, as blame-history #10, fixed 810faf9f.
 - prior-review #6: the §6 operator clause dropped — reject (false), as blame-history #6.
