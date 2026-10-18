@@ -242,13 +242,28 @@ export function startedRefs(
   return { numbers, ids }
 }
 
-// The candidate row's short title that the next step names (M272): the
-// step's `title`, the first unstarted `[high]` row while planning, unless
-// an open pull request's body names that title (M252), since the pane then
-// draws no line for the row. Null with no title.
-export function nextTitle(next: NextStep, started: StartedRow[]): string | null {
-  const title = next.title ?? null
-  return title !== null && !started.some(item => item.title === title) ? title : null
+// The candidate row's short title that the next step names while planning
+// (M272, M273): the first `[high]` row with a short title that the
+// Candidates list draws, under the list's own test (`startedRefs` over the
+// counted tokens, the open hotfix list, and the PR bodies that name a row),
+// so the Next line, the pane's Plan press, and the band's Plan press never
+// name a hidden row or pass over a drawn one. Null outside planning, or
+// when the list draws no such row. The reader's `next.title` counts every
+// `#` token and reads no PR body, as scripts/cairn_next.py does.
+export function nextTitle(
+  next: NextStep,
+  candidates: CandidateRow[],
+  taken: TakenRow[],
+  hotfixes: HotfixPr[],
+  started: StartedRow[],
+): string | null {
+  if (next.id !== null || next.command !== '/milestone-plan') return null
+  const row = candidates.find(row => {
+    if (row.priority !== 'high' || row.title === '') return false
+    const { numbers, ids } = startedRefs(row.title, taken, hotfixes, started)
+    return numbers.length === 0 && ids.length === 0
+  })
+  return row?.title ?? null
 }
 
 // The Button a blocked line carries for its state word (M224), from the
@@ -472,7 +487,7 @@ export function paneLines(
   out[0].grow = true
   if (state.next !== null) {
     // Planning names its `[high]` row's short title after the command (M272).
-    const named = state.next.id ?? nextTitle(state.next, started)
+    const named = state.next.id ?? nextTitle(state.next, state.candidates, state.taken, hotfixes, started)
     const target = named === null ? state.next.command : `${state.next.command} ${named}`
     out.push(gap('next-gap'))
     const next = line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {

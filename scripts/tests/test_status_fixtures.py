@@ -443,7 +443,9 @@ class StatusFixtureAgreement(unittest.TestCase):
     def test_a_fixture_names_a_high_row_for_planning(self):
         # M272 AC3, stated apart from the helpers: at least one compared
         # fixture gives a non-null title, and in `high-candidate` it is the
-        # first `[high]` row that is neither started nor inside a comment.
+        # first `[high]` row that is neither inside a comment nor named by a
+        # live token: the row before it carries `M2`, the planned M002 at
+        # another padding, and its own token names the done M001 (M273).
         titled = {}
         for case_dir in gen_fixtures.cases():
             expected = json.loads((case_dir / "expected.json").read_text(encoding="utf-8"))
@@ -452,7 +454,9 @@ class StatusFixtureAgreement(unittest.TestCase):
         self.assertEqual(titled, {"high-candidate": "Chosen row"})
         roadmap = (FIXTURES / "high-candidate" / "cairn" / "ROADMAP.md").read_text(encoding="utf-8")
         self.assertLess(roadmap.index("- Untagged first:"), roadmap.index("- [high] Taken row:"))
-        self.assertIn("- [high] Taken row: work has started on it — added 2026-01-02 — started M900\n", roadmap)
+        self.assertIn("- [high] Taken row: work has started on it — added 2026-01-02 — started M2\n", roadmap)
+        self.assertIn("| M002 | Open work | planned | M077 |", roadmap)
+        self.assertIn(" — started M001\n- [high] Later high:", roadmap)
         self.assertLess(roadmap.index("- [high] Commented row:"), roadmap.index("- [high] Chosen row:"))
 
     def test_workable_fixtures_are_present_and_discriminating(self):

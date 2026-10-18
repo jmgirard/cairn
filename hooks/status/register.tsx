@@ -1094,9 +1094,9 @@ let homeRun: object | null = null
 // press do nothing. A Button drawn for a milestone (`Implement`, `Resume`,
 // `Review`) also does nothing when the next step no longer names one, as
 // in M212 (M213 review). `Plan` runs the next step as it is now, which is
-// planning while nothing is workable (M213), with the first unstarted
-// `[high]` candidate row's short title as its argument when the pane's Next
-// line names one (`nextTitle`, M272), and with none otherwise.
+// planning while nothing is workable (M213), with the short title of the
+// first `[high]` candidate row the Candidates list draws as its argument
+// (`nextTitle`, M272, M273), and with none when the list draws no such row.
 // `Plan` and `Implement` run `/clear` first and hold the command for the
 // session end it brings (M221). The press is the person's consent to drop
 // the conversation, as a press of Clear is (M216), so it clears only when
@@ -1107,14 +1107,19 @@ let homeRun: object | null = null
 async function pressNext($, drawn: string | undefined) {
   await pressChecked($, async () => {
     if (knownStep(await read($, step)) !== null) return undefined
-    const next = (await read($, pane)).next
+    const shown = await read($, pane)
+    const next = shown.next
     if (next === null) return undefined
     if (next.id === null && drawn !== PLAN_LABEL) return undefined
     const clears = CLEARS_FIRST.includes(next.action) && drawn === labelOf(next.action)
-    // The title the Next line names, under the same hide rule (M272).
+    // The title the Next line names, under the Candidates list's own hide
+    // rule (M272, M273).
     const held = await read($, hotfixes)
     const ours = held.root !== null && held.root === (await read($, band)).root
-    const args = next.id ?? nextTitle(next, ours ? held.started : []) ?? ''
+    const args =
+      next.id ??
+      nextTitle(next, shown.candidates, shown.taken, ours ? held.prs : [], ours ? held.started : []) ??
+      ''
     return { command: `cairn:${next.command.slice(1)}`, args, clears }
   })
 }

@@ -34,10 +34,11 @@ STATUS_DONE = re.compile(r"^\*\*Status:\*\*[ \t]*done")
 # read, as `candidateTexts` in hooks/status/reader.ts removes it (M272).
 COMMENT = re.compile(r"<!--.*?-->", re.S)
 # A candidate row's started token (tracking-rules "Candidate started
-# token"): ` — started ` and a milestone id or a pull request number,
-# followed by the row's end or a character that is not an ASCII letter or
-# digit (M272).
-STARTED = re.compile(r" — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])")
+# token"): ` — started ` and a milestone id or a pull request number of at
+# most 15 digits, followed by the row's end or a character that is not an
+# ASCII letter or digit, as `STARTED_TOKEN` in hooks/status/reader.ts
+# (M272, M273).
+STARTED = re.compile(r" — started (M[0-9]+|#[0-9]{1,15})(?![0-9A-Za-z])")
 # The characters JavaScript's String.prototype.trim removes (ECMAScript's
 # WhiteSpace and LineTerminator), so a short title trims as the pane's
 # `shortTitle` trims it. Python's bare strip() keeps U+FEFF and removes
@@ -81,10 +82,10 @@ def recommend(root, rows, roadmap=None):
     """The single recommended action, in precedence order: the first review
     row, else the first in-progress row, else the first workable row, else
     planning. A dict of `action`, `command`, `id` (None for planning), and
-    `title`: for planning, the short title of the first unstarted `[high]`
-    candidate row, as `high_title` reads it from `roadmap` (the ROADMAP
-    text, read from `root` when None), and None in every other case (M272).
-    The cairn pane (hooks/status/reader.ts) mirrors this (M205)."""
+    `title`: for planning, the short title `high_title` reads from
+    `roadmap` (the ROADMAP text, read from `root` when None) with the table
+    rows and the archived `blocked` ids, and None in every other case (M272,
+    M273). The cairn pane (hooks/status/reader.ts) mirrors this (M205)."""
     review = [r for r in rows if r["status"] == "review"]
     in_progress = [r for r in rows if r["status"] == "in-progress"]
     ready = workable(root, rows)
@@ -94,7 +95,8 @@ def recommend(root, rows, roadmap=None):
         return {"action": "resume", "command": "/milestone-implement", "id": in_progress[0]["id"], "title": None}
     if ready:
         return {"action": "implement", "command": "/milestone-implement", "id": ready[0]["id"], "title": None}
-    title = high_title(cs.read_roadmap(root) if roadmap is None else roadmap)
+    shipped = [r["id"] for r in blocked(root, rows) if r["archived"]]
+    title = high_title(cs.read_roadmap(root) if roadmap is None else roadmap, rows, shipped)
     return {"action": "plan the next milestone", "command": "/milestone-plan", "id": None, "title": title}
 
 
@@ -142,14 +144,40 @@ def short_title(text):
     return (text if cut < 0 else text[:cut]).strip(JS_TRIM)
 
 
-def high_title(roadmap):
+def taken_titles(roadmap, rows=(), archived=()):
+    """The short titles that a counted started token names, as `takenRows`
+    in hooks/status/reader.ts counts them (M258, M273): an `M<n>` token
+    while some table row holds that canonical id as `planned` or `blocked`,
+    leaving out the ids in `archived` (the `blocked` rows whose file was
+    archived, M246), and every `#<n>` token, since this script reads no
+    pull request. A token names the short title of the row that carries
+    it, and a row with an empty short title names none."""
+    shipped = {cs.canon_id(mid) for mid in archived}
+    live = {
+        cs.canon_id(r["id"]) for r in rows if r["status"] in ("planned", "blocked")
+    } - shipped
+    out = set()
+    for _, text in candidate_texts(roadmap):
+        title = short_title(text)
+        if not title:
+            continue
+        for ref in STARTED.findall(text):
+            if ref.startswith("#") or cs.canon_id(ref) in live:
+                out.add(title)
+    return out
+
+
+def high_title(roadmap, rows=(), archived=()):
     """The short title of the first candidate row, in ROADMAP order, that
-    opens with `[high] `, has a non-empty short title, and carries no
-    `STARTED` token in its text after `[high] `, or None when no row does
-    (M272)."""
+    opens with `[high] `, has a non-empty short title, and whose short title
+    no counted token names (`taken_titles` over `rows` and `archived`), or
+    None when no row does. The cairn pane's Candidates list hides the same
+    rows, but for a `#` token whose pull request is not open (M272,
+    M273)."""
+    taken = taken_titles(roadmap, rows, archived)
     for priority, text in candidate_texts(roadmap):
         title = short_title(text)
-        if priority == "high" and title and not STARTED.search(text):
+        if priority == "high" and title and title not in taken:
             return title
     return None
 
