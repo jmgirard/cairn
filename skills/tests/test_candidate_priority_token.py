@@ -97,5 +97,78 @@ class TestTriageReadsTheToken(unittest.TestCase):
         )
 
 
+class TestPromoteCarriesHigh(unittest.TestCase):
+    """M271: an accepted promote of a candidate row writes `[high]`.
+
+    These sentences wrap across source lines, so each step is read with its
+    whitespace collapsed, a departure from the one-line convention above
+    (M171).
+    """
+
+    def step(self, n):
+        return " ".join(TestTriageReadsTheToken.step(self, n).split())
+
+    triage = TestTriageReadsTheToken.triage
+
+    def test_promote_of_a_candidate_row_carries_high(self):
+        self.assertIn(
+            "every `promote` of a candidate row whose opening token is not `[high]` "
+            "carries the priority change to `high`",
+            self.step(3),
+        )
+
+    def test_promote_set_at_amend_carries_it_too(self):
+        self.assertIn("for a proposed `promote` and for one the user sets at *amend*", self.step(3))
+
+    def test_known_issues_promote_carries_none(self):
+        self.assertIn("a `promote` of a known issues entry carries no priority change", self.step(3))
+
+    def test_amend_cannot_decline_it_alone(self):
+        self.assertIn("a promote's change to `high` is not declined alone", self.step(3))
+
+    def test_apply_writes_the_token(self):
+        self.assertIn(
+            "`promote` changes nothing of its own beyond the priority change a candidate row's promote carries",
+            self.step(4),
+        )
+
+    def test_skip_needs_no_priority_change(self):
+        self.assertIn(
+            "every item `keep` or `promote` with no priority change and no token change", self.step(4)
+        )
+
+    def test_table_row_states_it(self):
+        self.assertIn(
+            "a promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`",
+            self.step(2),
+        )
+
+    def test_readiness_class_states_it(self):
+        self.assertIn(
+            "a promoted candidate row that does not open with `[high]` takes the priority change to `high`",
+            self.step(2),
+        )
+
+    def test_it_replaces_another_proposed_change(self):
+        self.assertIn("it replaces any other priority change proposed for that row", self.step(3))
+
+    def test_chip_names_the_new_level_once(self):
+        self.assertIn("is named once, with its new level `high`, beside the promote", self.step(3))
+
+    def test_it_is_the_fourth_carve_out(self):
+        self.assertIn("a promoted row's change to `high` is a fourth", self.step(3))
+
+    def test_nothing_applied_needs_no_priority_change(self):
+        self.assertIn(
+            "an accept of only `keep` and `promote` items with no priority or token change", self.step(7)
+        )
+
+    def test_fences_put_candidates_before_known_issues(self):
+        self.assertIn(
+            "the candidate rows first, in table order, then the known issues entries, in table order",
+            self.step(7),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

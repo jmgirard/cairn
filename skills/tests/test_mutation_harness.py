@@ -2213,6 +2213,87 @@ REGISTRY = [
         target="skills/cairn-triage/SKILL.md",
         block="ordered by token — high → normal → low — then advisory within a level",
     ),
+    # M271: a triage promote of a candidate row carries the change to
+    # `[high]`. These guards read whitespace-collapsed text, so a block may
+    # span its target's lines as the file wraps it.
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_promote_of_a_candidate_row_carries_high",
+        target="skills/cairn-triage/SKILL.md",
+        block="Every `promote` of a candidate row whose opening token is not `[high]`\n     carries the priority change to `high`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_promote_set_at_amend_carries_it_too",
+        target="skills/cairn-triage/SKILL.md",
+        block="for a proposed\n     `promote` and for one the user sets at *Amend*",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_known_issues_promote_carries_none",
+        target="skills/cairn-triage/SKILL.md",
+        block="A `promote` of a Known issues entry carries no\n     priority change",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_amend_cannot_decline_it_alone",
+        target="skills/cairn-triage/SKILL.md",
+        block="A promote's change\n        to `high` is not declined alone",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_apply_writes_the_token",
+        target="skills/cairn-triage/SKILL.md",
+        block="`promote` changes nothing of its own beyond the priority\n   change a candidate row's promote carries",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_skip_needs_no_priority_change",
+        target="skills/cairn-triage/SKILL.md",
+        block="every item\n   `keep` or `promote` with no priority change and no token change",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_table_row_states_it",
+        target="skills/cairn-triage/SKILL.md",
+        block="A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_readiness_class_states_it",
+        target="skills/cairn-triage/SKILL.md",
+        block="A promoted candidate row that\n     does not open with `[high]` takes the priority change to `high`",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_it_replaces_another_proposed_change",
+        target="skills/cairn-triage/SKILL.md",
+        block="It replaces any other priority change proposed\n     for that row",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_chip_names_the_new_level_once",
+        target="skills/cairn-triage/SKILL.md",
+        block="is named once, with its new level `high`, beside the promote",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_it_is_the_fourth_carve_out",
+        target="skills/cairn-triage/SKILL.md",
+        block="A promoted row's change to `high` is a fourth",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_nothing_applied_needs_no_priority_change",
+        target="skills/cairn-triage/SKILL.md",
+        block="an accept of only `keep` and `promote`\n   items with no priority or token change",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestPromoteCarriesHigh.test_fences_put_candidates_before_known_issues",
+        target="skills/cairn-triage/SKILL.md",
+        block="the candidate rows first, in table order, then the\n   Known issues entries, in table order",
+    ),
 ]
 
 # Prose-guard files deliberately NOT in the registry, each with a reason. The

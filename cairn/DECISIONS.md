@@ -6476,3 +6476,55 @@ stamp with its evidence, the record D-169 gave a flagged lesson.
 **Consequences:** The skill states both rules, and the CHANGELOG entry
 says the pass corrects with evidence. D-177's decision stands as
 corrected here.
+
+### D-179 (2026-10-17): An accepted `/cairn-triage` promote of a candidate row writes the `[high]` token — annotates D-134; passes D-108's door on its retained trigger (M271)
+
+**Context:** The user saw triages report that they promoted a row, and
+then saw no `↑` for it in the cairn pane. The pane was right: a `promote`
+meant "ready to plan" and changed nothing in the ROADMAP, so a promoted
+row looked like any other once the pass ended. D-134 made the priority
+token a row fact re-rated beside the disposition, never a disposition,
+and D-027 fixed the eight-word vocabulary. D-108 bars a new rule about how
+records are written unless its trigger is a defect in shipped behavior.
+
+**Decision:** A `promote` of a candidate row whose opening token is not
+`[high]` carries the priority change to `high`, applied as any accepted
+priority change is. This holds whether the `promote` was proposed or set
+at Amend. Amend cannot decline that change alone; amending the row to
+`keep` avoids it. A promoted Known issues entry takes no token. The
+vocabulary is unchanged, and the token stays a row fact: the promote
+carries a priority change, as a `keep` can, and does not become one.
+D-108's door is passed on its retained trigger: a promote that leaves no
+mark is a defect in what the skill does for its users.
+
+**Rejected:** A separate "ready" marker beside the token, because the
+token, its order, and the pane's `↑` already exist. A promote whose mark
+the user can decline alone, the user's choice at M271's question set,
+because it brings back the unmarked promote.
+
+**Consequences:** `[high]` now means "important" or "ready to plan", and
+the ROADMAP no longer tells the two apart. If an operator needs to tell a
+ready row from an important row that still waits, and cannot, this is the
+entry to supersede.
+
+### D-180 (2026-10-17): Four clauses of D-179 are corrected in one batched entry — it narrows D-134's meaning of `[high]`, its vocabulary source and its rejection are restated, and two skill changes it left out are recorded — supersedes those clauses; D-179's decision stands (M271 review)
+
+**Context:** M271's review found D-179's wording wrong or short in four
+places. D-179 is history, so it is corrected here (D-102 gives no
+exception for an unmerged entry).
+
+**Decision:** (1) D-179's heading says it annotates D-134. It narrows
+D-134: `[high]` meant importance alone, and it now also marks a row a
+triage promoted. The token stays a row fact and not a status. (2) D-179
+says D-027 "fixed the eight-word vocabulary". D-027 records one triage
+pass; the eight words are the triage skill's vocabulary, which cites
+D-027. (3) D-179's Rejected clause names "the user's choice at M271's
+question set". The user chose against a declinable mark there, so the
+declinable mark is the rejected option. (4) Two skill changes ride with
+D-179's decision and it did not name them. Unlike a token change, which
+Amend can decline alone (M259), a promote's change to `high` cannot be.
+Step 7 orders the promotes' `/milestone-plan` fences as candidate rows,
+then Known issues entries, each in table order, in place of M179's order
+by token, since every promoted candidate row is now `[high]`.
+
+**Consequences:** D-179's decision and falsifier stand as corrected here.

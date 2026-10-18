@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **A triage promote marks its row high priority.** When `/cairn-triage`
+  promotes a candidate row (marks it ready to plan), it now also gives the
+  row the `[high]` token. The token is added, or it replaces `[low]`, and
+  the row moves to the high-priority rows at the top of the Candidates
+  list. Before, a promote changed nothing of its own in the ROADMAP. A
+  promoted row kept its old token, so a normal or low row showed no `↑` in
+  the cairn pane. A row that already opens with `[high]` and a promoted
+  Known issues entry take no change. A promote of a row without `[high]`
+  always writes the mark, so to avoid it, amend the row to `keep`.
+
 - **The two history reviewers run on Haiku.** In `/milestone-review`'s
   three-reviewer fan-out, the blame-history and prior-PR-comments
   reviewers now run on Haiku 5.5 instead of Sonnet 5.5. The diff-bug

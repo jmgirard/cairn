@@ -278,7 +278,7 @@ re-examines a lesson.
    | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
-   | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). |
+   | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list. While the cairn pane lists candidates, it marks the row `↑`. A Known issues entry has no token and takes none. |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
@@ -320,7 +320,8 @@ re-examines a lesson.
      describes a limitation the repo lives with; a Known issues entry with a
      fix condition that names future work.
    - **Readiness → `promote`.** The trigger has fired and the work is
-     wanted now; the close block hands it on.
+     wanted now; the close block hands it on. A promoted candidate row that
+     does not open with `[high]` takes the priority change to `high`.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, is
      over 60 code points, equals another row's short title, or holds an
@@ -391,6 +392,13 @@ re-examines a lesson.
      `token: + started M260, quoted in M260-<slug>.md` or
      `token: − started M258, done`. A `keep` with no priority or token
      change sits last so the changes read first.
+     Every `promote` of a candidate row whose opening token is not `[high]`
+     carries the priority change to `high`. This holds for a proposed
+     `promote` and for one the user sets at *Amend*. Its reason cell states
+     `priority: normal → high` or `priority: low → high`, and the promote
+     itself is the reason. It replaces any other priority change proposed
+     for that row. A `promote` of a Known issues entry carries no
+     priority change.
    - **The chip** (AskUserQuestion, one question) carries the substance the
      decision needs in its own text (tracking-rules Mandated-substance and
      Acceptance-chips rules): the question text says how many items were
@@ -398,14 +406,18 @@ re-examines a lesson.
      `keep` with its disposition and its reason in a few plain words, and
      each row proposed for a priority change with its new level, and each
      proposed token change with its row; the
-     table above is the verbatim evidence. Three options, in this order:
+     table above is the verbatim evidence. A promoted row's change to `high`
+     is named once, with its new level `high`, beside the promote, never
+     again as a separate priority change. Three options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
         the table is applied, with each priority change and token change.
      2. **Amend** — the user names the items to change and what they become
         (the option description says so); everything unnamed keeps its
         proposed disposition; a named item with no replacement given
         becomes `keep`. The user can also decline a named token change
-        alone, and the row's disposition then stands.
+        alone, and the row's disposition then stands. A promote's change
+        to `high` is not declined alone. To avoid it, the user amends the
+        item to `keep`.
      3. **Apply nothing** — the stop option: no file changes, no commit, no
         D-entry; the pass ends at the close block with the table as its
         record in chat only.
@@ -428,11 +440,12 @@ re-examines a lesson.
      and it touches the row's opening token and the row's place in the order alone. An accepted
      `retitle`'s rewrite of a listed mention in another ROADMAP row or Known issues entry is the second: it changes that quote alone.
      An accepted token change is a third. It adds or removes the token text
-     alone.
+     alone. A promoted row's change to `high` is a fourth. It touches the
+     row's opening token and the row's place in the order alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
-   `keep` (with no priority or token change) or `promote` (with no token
-   change), or nothing enumerated —
+   `keep` or `promote` with no priority change and no token change, or
+   nothing enumerated —
    steps 4–6 are skipped
    entirely: no edit, no stamp, no commit, and the close block's status
    line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
@@ -457,11 +470,14 @@ re-examines a lesson.
    removed (the `retitle` row of step 2's table); it then
    rewrites each listed mention in the other ROADMAP rows and Known issues
    entries, in each quoting item's text as its own accepted disposition
-   leaves it, and none in an item being dropped; `promote` and `keep`
-   change nothing of their own, though a `retitle` can rewrite a mention
-   inside one; an accepted priority change adds, replaces,
+   leaves it, and none in an item being dropped; `keep` changes nothing of
+   its own, and `promote` changes nothing of its own beyond the priority
+   change a candidate row's promote carries, though a `retitle` can rewrite a
+   mention inside either; an accepted priority change, a promote's
+   included, adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no
-   token) and moves the row to its level. An accepted token change appends
+   token) and moves the row to its level. An opening bracketed token that
+   step 1 reads as a misspelling counts as the row's opening token here. An accepted token change appends
    ` — started M<NNN>` to the row's end, or it removes one
    ` — started <ref>` text as the row spells it and leaves the rest of the
    row as it is. A note right after the removed token stays where it was. A
@@ -477,8 +493,8 @@ re-examines a lesson.
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
-   is longer when it names each `retitle`'s old and new titles and each
-   token change, and in
+   is longer when it names each `retitle`'s old and new titles, each
+   token change, and each re-rated row, a promoted one included, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
@@ -507,8 +523,9 @@ re-examines a lesson.
      else: deferrals and refuted premises are ROADMAP facts, not decisions.
      In guest mode there is no commit message, and the stamp alone names
      it, with its evidence (step 6's guest arm).
-   `keep`, `compress`, `split`, `route`, `retitle`, a
-   trigger-preserving `merge`, and a token change write no decision entry;
+   `keep`, `compress`, `split`, `route`, `retitle`, `promote`, a
+   trigger-preserving `merge`, a priority change, and a token change write
+   no decision entry;
    the stamp is their record.
 
 6. **Validate, stamp, and commit.** Run
@@ -518,7 +535,8 @@ re-examines a lesson.
    check:` line — replace, never append (tracking-rules); a ROADMAP that
    has none gets one — with one line dated today naming what the pass
    changed: each dropped, merged, split, routed, compressed, retitled
-   (old title → new title), and re-rated item by subject, each started token
+   (old title → new title), and re-rated item by subject (a promoted row
+   that took `high` included), each started token
    added or removed with its row's subject, the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). In owner mode,
    make **one docs-only commit on the default branch**, subject
@@ -538,9 +556,9 @@ re-examines a lesson.
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. Then a status line — items enumerated,
-   dispositions and token changes applied by kind and the commit hash, or `nothing applied`
-   (an apply-nothing answer and an all-`keep` accept with no priority or
-   token change alike). In guest mode
+   dispositions, priority changes, and token changes applied by kind and the commit hash, or `nothing applied`
+   (an apply-nothing answer and an accept of only `keep` and `promote`
+   items with no priority or token change alike). In guest mode
    `written to disk, not committed (guest mode)` stands in place of the
    commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.
@@ -550,8 +568,9 @@ re-examines a lesson.
    /milestone-plan <the promoted item's title>
    ```
 
-   labeled as the next command for that item (several promotes → several
-   blocks, ordered by token — high → normal → low); with no promote, one fenced
+   labeled as the next command for that item. Several promotes take
+   several blocks: the candidate rows first, in table order, then the
+   Known issues entries, in table order. With no promote, one fenced
    `/milestone` line labeled as the route to the next action. The safety
    line: the pass is committed
    and pushed (or wrote nothing), or in guest mode its edits are on disk in
