@@ -122,3 +122,25 @@ Pass 1, 2026-10-18, head 0c845eaa (PR #287; Copilot requested at review start, s
 - AC5: `CHANGELOG.md` Unreleased: a whitespace-normalized split into entries finds 60 entries, 1 mentioning `feature series` (the M274 entry); that entry now contains the dropped-part, status-snapshot, archive-summary, and hotfix clauses (substring checks all true).
 - AC6: verify slot on head 0c845eaa: `scripts/tests`, `hooks/tests`, both `claude plugin validate`, and `claude plugin test .` each exit 0.
 - Consistency gate: `cairn_validate.py` all checks passed; no principle text changed, so no `cairn_impact` run; marketplace validate prints no `version` warning; changelog gate met by the edit to the series' entry; hand-run `skills/tests` 872 OK (not a gate, D-109).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the last-part guest sentence leaves out a `blocked` earlier part (an open stack base, or one merged before hygiene) whose PR the old text named — fix now (it now also names each `blocked` part's PR), fixed fa38b75a.
+- diff-bug #2: step 8 names no status source for "is `done`", so a pruned row hides a part — fix now (cites the release rule's ROADMAP-then-archive source), fixed fa38b75a.
+- diff-bug #3: `/milestone` §1 cites the release rule but its reads cannot reach every live file and the archive — fix now (names the release skill path, every live milestone file, and the archive summaries), fixed fa38b75a.
+- diff-bug #4: the re-entry route keeps a separate series entry the merged diff added — fix now (its removal is owed), fixed fa38b75a.
+- diff-bug #5: "no release shipped that behavior" is wrong for a series that changes released behavior — fix now (a bug in behavior an earlier release shipped takes its own entry; CHANGELOG says so), fixed fa38b75a.
+- diff-bug #6: a live file with no ROADMAP row reads as unknown — reject (false: `cairn_validate`'s roadmap-disk orphans check fails on that drift, so the state cannot stand).
+- diff-bug #7: no mutation entry for "A named milestone's status is the status in its ROADMAP row." — fix now (entry added), fixed fa38b75a.
+- diff-bug #8: "copy that line verbatim" would carry the work-log date and bullet — fix now (copy the `feature series: …` text, leaving out the date and bullet), fixed fa38b75a.
+- diff-bug #9: "Status line" against the rulebook's Status paragraph — reject (false: the template puts the status word and `PR #<N>` on the paragraph's first line).
+- diff-bug #10: the approval gate and the re-land fallback ignore the series rule — fix now (both name it), fixed fa38b75a.
+- diff-bug #11: new lines run unwrapped — reject (planned change: asserted phrases sit on one source line by the M23 guard convention, as M274's lines do).
+- blame-history #1: archive summaries before M275 lack the series line, so a hotfix misses an older series — reject (false: the series rule shipped in M274 today and no archive or work log names a series, which prior-review #4 checked).
+- blame-history #2: same as diff-bug #1 — fix now, fixed fa38b75a.
+- blame-history #3: *Nothing owed* passes a series bug whose fix changes the entry — reject (false: an entry that "already describes the fixed behavior" needs no change by definition; a fix that changes it fails the condition).
+- blame-history #4: the adopted-PR path drops a contributor's entry and its credit — fix now (credit kept in the series' entry); the step-6 chip still gates the PR, fixed fa38b75a.
+- blame-history #5: D-131's changelog check is relaxed with no D-entry — reject (false: D-131's check still runs; the series rule only defines what satisfies it, as M274's profile gates did with no D-entry).
+- prior-review #1: the release predicate "at least one `done`" that Copilot flagged on PR #286 — reject (planned change: unchanged; the M274 premise holds because hygiene archives a `done` file, so a live carrying file is an unfinished part).
+- prior-review #2: new CHANGELOG clauses have no guard, against M274 diff-bug #9 — reject (false: M274 #9 asked for skill-prose guards, and each clause's behavior has its skill-prose guard in `test_feature_series.py`).
+- prior-review #3: step 8 states no status source or unknown case — fix now with diff-bug #2; an unknown part has no file and so no PR to name, fixed fa38b75a.
+- prior-review #4: same as blame-history #1 — reject (same ground).
+- Post-fix: verify slot five commands exit 0; hand-run `skills/tests` 877 OK, every new mutation entry blanks red.
