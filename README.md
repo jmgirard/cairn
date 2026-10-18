@@ -227,9 +227,10 @@ cairn skill runs and Claude is not working, in a band 37 columns wide or
 more. `Plan` runs `/clear` and then `/cairn:milestone-plan` in the
 cleared conversation, as `Implement` does with its command. Its argument
 is the short title that the pane's Next line names (below): the first
-`[high]` candidate row with no started token, unless one of your open PRs
-names that row in a `Candidate row:` line. Otherwise `Plan` runs planning
-with no arguments. `Status` runs `/cairn:milestone`. A press runs the command
+`[high]` candidate row with no started token. The pane's last read of your
+open PRs can drop it: a PR that names the row in a `Candidate row:` line
+hides it. Before the pane reads your PRs, nothing drops it. Otherwise
+`Plan` runs planning with no arguments. `Status` runs `/cairn:milestone`. A press runs the command
 as if you typed it. A second press while the first run is going does
 nothing. So does a press while `Plan` waits for its `/clear` to end the
 session. If the run is refused, the command goes after the text in the
@@ -297,9 +298,10 @@ with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
 headings show their count and eight squares, `■` for the checked share
 and `□` for the rest. The next command sits in a pill. When the next step
 is planning, the pill shows `/milestone-plan <title>`, as `cairn_next.py`
-does. The title is the first `[high]` candidate row with no started token. If one of your open PRs names that row in a
-`Candidate row:` line, the pane hides the row (below), and the pill shows
-`/milestone-plan` alone. While no cairn
+does. The title is the first `[high]` candidate row with no started token.
+If the pane's last read of your open PRs found one that names that row in
+a `Candidate row:` line, the pane hides the row (below). The pill then
+shows `/milestone-plan` alone. While no cairn
 skill runs or waits on its background work, a button after the pill reads `Implement`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
 command as that button does, so `Plan` and `Implement` run `/clear` first.

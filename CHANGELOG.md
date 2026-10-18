@@ -13,9 +13,9 @@
   comment. It has no ` — started M<n>` or ` — started #<n>` token. The
   cairn pane's Next pill shows the same command. The `Plan` button on the
   pane and on the band runs `/clear` and then
-  `/cairn:milestone-plan <title>`. If one of your open PRs names that row
-  in a `Candidate row:` line, the pane hides the row. The pill and `Plan`
-  then name no title. With no such row, nothing changes. Before, planning
+  `/cairn:milestone-plan <title>`. If the pane's last read of your open
+  PRs found one that names that row in a `Candidate row:` line, the pane
+  hides the row. The pill and `Plan` then name no title. With no such row, nothing changes. Before, planning
   never named a row.
 
 - **A triage promote marks its row high priority.** When `/cairn-triage`

@@ -135,9 +135,9 @@ const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: '
 // to 2 when the state gained the candidate rows (M207), to 3 when it
 // gained the blocked rows (M223), to 4 when each blocked row gained its
 // pull request's URL (M224), to 5 when each blocked row gained
-// `archived` (M246), and to 6 when the state gained the candidate rows'
-// started tokens (M258).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-6' })
+// `archived` (M246), to 6 when the state gained the candidate rows'
+// started tokens (M258), and to 7 when the next step gained `title` (M272).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-7' })
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has

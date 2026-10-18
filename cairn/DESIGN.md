@@ -177,7 +177,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   no head Box, the gray text `No milestone ready`, and no track or tail.
   `stepLines` returns it when its `found` argument is true. The pane's next
   step is then planning, so the next-step Button reads `Plan`, and a press
-  runs `clear` and then `cairn:milestone-plan` with empty args (M221). `actionsFit` keeps the action
+  runs `clear` and then `cairn:milestone-plan` (M221), its args the short
+  title of the first unstarted `[high]` candidate row that the next step
+  names, unless the pane's last PR read finds an open PR body naming it,
+  else empty (M272, `nextTitle`). `actionsFit` keeps the action
   Buttons on the empty row while its text keeps `TEXT_ROOM`, which with
   both Buttons, the open button, and the close button is 37 columns or
   more. `mark` stores no ids and a null idle id for it, so a press hides it
@@ -353,7 +356,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   In guest mode, `/milestone-review`'s archived-file arm (D-159) sets a
   `blocked` row to `done` and runs a named part of step 9, writing
   nothing to the archive and making no issue write. In owner mode it
-  reports and stops. The pane state's shape tag is `pane-6` (M258).
+  reports and stops. The pane state's shape tag is `pane-7` (M272).
   Each blocked row also keeps that pull request's URL up to its number
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one call per distinct URL
@@ -471,7 +474,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   `reader.ts` reads each candidate row's ` — started M<NNN>` or
   ` — started #<n>` token, followed by the row's end or a character that
   is not a letter or digit, into the pane state's `taken` list
-  (`{ title, ref }`, tag `pane-6`, M258), keeping an M token only while
+  (`{ title, ref }`, M258; tag `pane-7` since M272), keeping an M token only while
   the table holds its id as `planned` or `blocked` and the id is not an
   archived blocked row's (M246), and giving it at three-digit padding.
   `startedRefs` in `pane.ts` marks a row by its body lines, its `#<n>`
@@ -703,7 +706,7 @@ within each type and are never reused.
   shorter, and a file deleted and recreated reads as absent. An empty or
   unreadable file before any good read prints `no cairn ROADMAP found`.
   So do the first failed read after a reload from pre-M210 code and a
-  moved pane shape tag (`pane-6` since M258) after a reload, until the
+  moved pane shape tag (`pane-7` since M272) after a reload, until the
   next refresh (corrected M223, M246, M258). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share

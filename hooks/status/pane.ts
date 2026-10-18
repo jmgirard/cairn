@@ -245,8 +245,7 @@ export function startedRefs(
 // The candidate row's short title that the next step names (M272): the
 // step's `title`, the first unstarted `[high]` row while planning, unless
 // an open pull request's body names that title (M252), since the pane then
-// draws no line for the row. Null with no title, and for a stored step that
-// predates the key.
+// draws no line for the row. Null with no title.
 export function nextTitle(next: NextStep, started: StartedRow[]): string | null {
   const title = next.title ?? null
   return title !== null && !started.some(item => item.title === title) ? title : null
