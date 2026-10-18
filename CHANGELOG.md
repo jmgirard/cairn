@@ -4,6 +4,20 @@
 
 ### Changes that affect existing repos
 
+- **Planning names the first high-priority candidate.** When no milestone
+  is in review, in progress, or workable, `scripts/cairn_next.py`
+  recommends planning. It now names the first unstarted `[high]` candidate
+  row by its short title:
+  `Recommended: plan the next milestone → /milestone-plan <title>`. That
+  row opens with `[high] `, has a short title, and sits outside an HTML
+  comment. It has no ` — started M<n>` or ` — started #<n>` token. The
+  cairn pane's Next pill shows the same command. The `Plan` button on the
+  pane and on the band runs `/clear` and then
+  `/cairn:milestone-plan <title>`. If one of your open PRs names that row
+  in a `Candidate row:` line, the pane hides the row. The pill and `Plan`
+  then name no title. With no such row, nothing changes. Before, planning
+  never named a row.
+
 - **A triage promote marks its row high priority.** When `/cairn-triage`
   promotes a candidate row (marks it ready to plan), it now also gives the
   row the `[high]` token. The token is added, or it replaces `[low]`, and

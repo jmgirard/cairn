@@ -101,7 +101,7 @@ M271.
       and `pressNext`'s args (`hooks/status/register.tsx` ~:1111), both
       falling back to no title when an open pull request's body names it;
       tests in `hooks/status` for the line and the press.
-- [ ] T4: README (~:187, ~:290) and CHANGELOG; run `verify`, including
+- [x] T4: README (~:187, ~:290) and CHANGELOG; run `verify`, including
       `claude plugin test`.
 
 ## Work log
@@ -117,6 +117,7 @@ M271.
 - 2026-10-17: T1 done: `candidate_texts`, `short_title`, and `high_title` in `scripts/cairn_next.py` (not `cairn_scripts.py`, since only `recommend` reads them); `recommend` takes an optional `roadmap` text and returns `title`; 6 tests in `TestNext`, each shown red on a planted defect. Choice: the started token takes any number of digits after `M` or `#` (AC1's `#<n>`), where the pane's `STARTED_TOKEN` caps `#` at 15 digits; a letter after the token is ASCII-only, as in that reader.
 - 2026-10-17: T2 done: `highTitle` and `recommend(rows, workable, roadmap)` in `hooks/status/reader.ts`; new fixture `high-candidate` (title "Chosen row"); `"title": null` added to the other 29 fixtures' `next` by a Haiku subagent, diff checked as 29 one-line inserts; T1 and T2 commit together, since either alone fails the fixture parity tests.
 - 2026-10-17: T3 done: `nextTitle` in `hooks/status/pane.ts` drops the title when an open PR body names it; the Next line and `pressNext` both read it; 6 old tests updated to the new planning shape and 6 new AC4 tests (line, pane press, band press, hide rule) added; plants of no hide rule and no title in the press turned 11 tests red, and a press plant without the hide rule turned 1 red.
+- 2026-10-17: T4 done: README's idle-row paragraph (~:187) and the pane's Next-line paragraph (~:297) name the `[high]` row; the empty-row paragraph (~:226) said `Plan` runs with no arguments, now false, so it was corrected too; CHANGELOG entry under Unreleased. The simple-english lint hook reports 218 README and 360 CHANGELOG hits; the README count equals its pre-branch count, and the CHANGELOG's one added hit is the house bold lead-in. verify green: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
