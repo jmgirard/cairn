@@ -127,3 +127,6 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
 - prior-review #2: the DESIGN.md sentence split — fix now, as diff-bug #2
 - prior-review #3: the pane.ts comment's two "which" clauses attach ambiguously — fix now
 - prior-review #4: the ROADMAP stamp not updated at the move to `review` — reject, planned change: post-merge hygiene replaces the stamp
+- copilot: no review — `gh pr edit 292 --add-reviewer @copilot` exited 0 twice, but the PR timeline shows no `review_requested` event, and PR #291 got no Copilot review either; follow-up, row "Copilot request not registered"
+- Copilot level: none; no review was registered, so no level
+- conversation: PR #292 has no reviews, no conversation comments, and no unresolved threads
