@@ -178,9 +178,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   `stepLines` returns it when its `found` argument is true. The pane's next
   step is then planning, so the next-step Button reads `Plan`, and a press
   runs `clear` and then `cairn:milestone-plan` (M221), its args the short
-  title of the first unstarted `[high]` candidate row that the next step
-  names, unless the pane's last PR read finds an open PR body naming it,
-  else empty (M272, `nextTitle`). `actionsFit` keeps the action
+  title of the first `[high]` candidate row that the Candidates list draws,
+  under the list's `startedRefs` test, else empty (M272, M273,
+  `nextTitle`). `actionsFit` keeps the action
   Buttons on the empty row while its text keeps `TEXT_ROOM`, which with
   both Buttons, the open button, and the close button is 37 columns or
   more. `mark` stores no ids and a null idle id for it, so a press hides it
@@ -296,7 +296,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   `scripts/tests/test_status_fixtures.py` holds to each fixture's `pane`
   and `next` keys. The next step's `title` is null except while planning,
   when `high_title` (`highTitle`) gives the short title of the first
-  `[high]` candidate row with no started token in its text (M272). The pane state also holds the candidate rows (M207):
+  `[high]` candidate row whose short title no token `takenRows` counts
+  names (M272, M273). The pane's Next line and Plan press do not use that
+  `title`: `nextTitle` in `pane.ts` picks the first `[high]` row the
+  Candidates list draws. The pane state also holds the candidate rows (M207):
   `candidateRows` in `reader.ts` reads each flush-left line that opens
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high` or `low` for an exact
@@ -715,7 +718,9 @@ within each type and are never reused.
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare
   mark for an empty title. It shows the date and links of a row with no
-  `: `.
+  `: `. `cairn_next.py` reads no PRs, so its planning title counts every
+  `#` token, and an open PR body hides nothing from it, where the pane's
+  pick checks both (M273).
   `cairn_status` counts commented and indented candidate rows, and the pane
   does not. The band counts a box in an HTML comment, and the pane does not.
   JS and Python differ on a BOM, on `\x1f`, and on trim.

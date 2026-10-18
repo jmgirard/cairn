@@ -394,21 +394,18 @@ async function loadAt(source: FileSource, root: string): Promise<{ band: BandSta
   const stacking = profile !== null && collaborationMode(profile) === 'guest' && pushRemote(profile) === 'base'
   const bases = stacking ? blocked.filter(row => row.url !== null && !row.archived).map(row => canonId(row.id)) : []
   const workable = workableRows(parsed, archived, bases)
+  const shipped = blocked.filter(row => row.archived).map(row => row.id)
   return {
     band: { rows: out, workable },
     pane: {
       found: true,
       milestones,
-      next: recommend(parsed, workable, roadmap),
+      next: recommend(parsed, workable, roadmap, shipped),
       workable,
       waiting: waitingRows(parsed, archived, bases),
       candidates: candidateRows(roadmap),
       blocked,
-      taken: takenRows(
-        roadmap,
-        parsed,
-        blocked.filter(row => row.archived).map(row => row.id),
-      ),
+      taken: takenRows(roadmap, parsed, shipped),
     },
   }
 }
@@ -510,8 +507,8 @@ export type PaneMilestone = {
 }
 
 // `recommend` in scripts/cairn_next.py: `id` is null for planning, and
-// `title` is the short title of the first unstarted `[high]` candidate row
-// when planning, else null (M272).
+// `title` is `highTitle`'s short title when planning, else null (M272,
+// M273).
 export type NextStep = { action: string; command: string; id: string | null; title: string | null }
 
 // `waiting` in scripts/cairn_next.py: `unmet` holds each undone dependency
@@ -677,28 +674,33 @@ export function takenRows(roadmap: string, rows: RoadmapRow[], archived: string[
 }
 
 // `recommend` in scripts/cairn_next.py, over the rows, the workable list,
-// and the ROADMAP text, from which planning reads `highTitle` (M272).
-export function recommend(rows: RoadmapRow[], workable: WorkableRow[], roadmap = ''): NextStep {
+// the ROADMAP text, and the archived `blocked` ids, from which planning
+// reads `highTitle` (M272, M273).
+export function recommend(rows: RoadmapRow[], workable: WorkableRow[], roadmap = '', archived: string[] = []): NextStep {
   const review = rows.find(row => row.status === 'review')
   if (review !== undefined) return { action: 'review', command: '/milestone-review', id: review.id, title: null }
   const active = rows.find(row => row.status === 'in-progress')
   if (active !== undefined) return { action: 'resume', command: '/milestone-implement', id: active.id, title: null }
   if (workable.length > 0) return { action: 'implement', command: '/milestone-implement', id: workable[0].id, title: null }
-  return { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: highTitle(roadmap) }
+  return {
+    action: 'plan the next milestone',
+    command: '/milestone-plan',
+    id: null,
+    title: highTitle(roadmap, rows, archived),
+  }
 }
 
-// A started token as `STARTED` in scripts/cairn_next.py reads it (M272): as
-// `STARTED_TOKEN`, but with no cap on a pull request number's digits.
-const STARTED = / — started (M[0-9]+|#[0-9]+)(?![0-9A-Za-z])/
-
-// `high_title` in scripts/cairn_next.py (M272): the short title of the
-// first candidate row, in ROADMAP order, that opens with `[high] `, has a
-// non-empty short title, and carries no `STARTED` token in its text after
-// `[high] `, or null.
-export function highTitle(roadmap: string): string | null {
+// `high_title` in scripts/cairn_next.py (M272, M273): the short title of
+// the first candidate row, in ROADMAP order, that opens with `[high] `, has
+// a non-empty short title, and whose short title no token `takenRows`
+// counts names, or null. With no pull request read, every `#` token
+// counts here; the pane's own pick (`nextTitle` in pane.ts) checks them
+// against its open hotfix list.
+export function highTitle(roadmap: string, rows: RoadmapRow[] = [], archived: string[] = []): string | null {
+  const taken = new Set(takenRows(roadmap, rows, archived).map(item => item.title))
   for (const { priority, text } of candidateTexts(roadmap)) {
     const title = shortTitle(text)
-    if (priority === 'high' && title !== '' && !STARTED.test(text)) return title
+    if (priority === 'high' && title !== '' && !taken.has(title)) return title
   }
   return null
 }

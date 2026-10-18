@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M273: The plan target is the first high-priority row the Candidates list shows
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters read `cairn_next.py`'s output, the pane's Next pill, and press the Plan Button   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m273-plan-target-matches-list, https://github.com/jmgirard/cairn/pull/285   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -55,7 +55,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: When `cairn_next.recommend` recommends planning, its `title` is
+- [x] AC1: When `cairn_next.recommend` recommends planning, its `title` is
       the short title of the first candidate row, in ROADMAP order, that
       opens with `[high] `, has a non-empty short title, and whose short
       title no counted token names, else None. A counted token is a
@@ -73,12 +73,12 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       same-titled sibling carries a counted token (passed over, the next
       `[high]` row named); a `#` token of 15 digits (passed over) and of 16
       digits (row named).
-- [ ] AC2: `highTitle` and `recommend` in `hooks/status/reader.ts` give the
+- [x] AC2: `highTitle` and `recommend` in `hooks/status/reader.ts` give the
       `title` AC1 gives: `reader.test.ts` passes the AC1 cases against
       `highTitle`, and `python3 -m unittest scripts.tests.test_status_fixtures`
       and `claude plugin test .` pass with every fixture's expected
       `next.title` regenerated under the AC1 rule.
-- [ ] AC3: The pane's Next line, and the Plan press on the pane and on the
+- [x] AC3: The pane's Next line, and the Plan press on the pane and on the
       band, name the first `[high]` candidate row with a non-empty short
       title that `paneLines`' drawn filter keeps over the pane state and
       root-matched PR read current at that draw or press, and no title when
@@ -90,7 +90,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       carries a counted `M` token (row passed over); every `[high]` row is
       hidden (no title); plus one Next-line case and one press case each on
       the pane and the band.
-- [ ] AC4: Every line that `git grep -n -e "started token" -e "unstarted"
+- [x] AC4: Every line that `git grep -n -e "started token" -e "unstarted"
       -e "\[high\]"` prints over `README.md`, `CHANGELOG.md`,
       `cairn/DESIGN.md`, `scripts/cairn_next.py`, `hooks/status/*.ts*`,
       `skills/milestone/SKILL.md`, and `skills/milestone-review/SKILL.md`
@@ -100,7 +100,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       then name no title"` over the same paths prints nothing; and
       `cairn/DESIGN.md`'s Known issues states that `cairn_next.py` counts
       every `#` token and that an open PR body hides nothing from it.
-- [ ] AC5: The profile's `verify` slot passes on the branch head after T4: both gating
+- [x] AC5: The profile's `verify` slot passes on the branch head after T4: both gating
       `python3 -m unittest` suites, `claude plugin validate` on the plugin
       and marketplace manifests, and `claude plugin test .`.
 
@@ -112,8 +112,8 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - AC1 → T1
 - AC2 → T2
 - AC3 → T3
-- AC4 → T4
-- AC5 → T5
+- AC4 → T4, T6
+- AC5 → T5, T6
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -122,26 +122,27 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: `scripts/cairn_next.py`: cap `STARTED`'s `#` digits at 15;
+- [x] T1: `scripts/cairn_next.py`: cap `STARTED`'s `#` digits at 15;
       `high_title(roadmap, rows, archived)` drops a row whose short title a
       counted token names (the `takenRows` rule, `hooks/status/reader.ts`
       ~666); `recommend` passes the table rows and the archived `blocked`
       ids from `blocked()`. Tests first in `TestNext` (flip the 16-digit
       subtest in `test_plan_passes_over_a_started_high_row`).
-- [ ] T2: `hooks/status/reader.ts`: `highTitle` over `takenRows`; drop the
+- [x] T2: `hooks/status/reader.ts`: `highTitle` over `takenRows`; drop the
       uncapped `STARTED`; `recommend` takes the archived ids; `reader.test.ts`
       cases; regenerate every fixture's expected `next.title` via
       `fixtures.gen.ts` (`high-candidate`'s `— started M900`, absent from its
       table, is now dead: give it a live token so the fixture still passes a
       taken row, and let one fixture's named `[high]` row carry a dead token).
-- [ ] T3: `hooks/status/pane.ts`: replace `nextTitle` with one pick over
+- [x] T3: `hooks/status/pane.ts`: replace `nextTitle` with one pick over
       `state.candidates` under the drawn filter's `startedRefs` test; use it
       in the Next line and in `pressNext` (`register.tsx` ~1117); update the
       M272 AC4 block's "a body names the title" case; add the AC3 cases.
-- [ ] T4: Docs per Scope In and AC4, each claim read against T1–T3's
+- [x] T4: Docs per Scope In and AC4, each claim read against T1–T3's
       output (derived-claims rule); hand-run `skills/tests` after the two
       skill edits.
-- [ ] T5: Run the `verify` slot on the code head and record each exit code.
+- [x] T5: Run the `verify` slot on the code head and record each exit code.
+- [x] T6: Review return 1: restate `hooks/status/band.test.tsx:3002`'s plan-title comment by the AC3 pick, re-run the AC4 sweep over the test files too, and re-run `verify`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -164,6 +165,18 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - 2026-10-17: plan gate chose for `cairn_next.py` to count every `#` token over reading hotfix PR state with `gh`, because the script is read-only with no network and the fixture parity needs one rule both readers apply without PR reads; falsified by a session where `cairn_next.py` passes over a row whose hotfix PR closed and the operator plans the wrong row.
 - 2026-10-17: split: the `## Candidates (dropped)` heading, unclosed `<!--`, and untokened-quoted-row edges change every candidate reader, so they stay in the narrowed row "Plan target edges (M272 review)"; the M272 `## Unreleased` CHANGELOG entry is rewritten in place, since it has not shipped.
 - 2026-10-17: criteria audit (full mode, fresh Opus reader) returned 7 findings, all fixed: AC1 names the token's milestone id by `canon_id` and the archived row by `blocked()`'s flag, with a padded-id case; AC2 binds title parity with every fixture regenerated, not a new fixture (`high-candidate`'s M900 token goes dead, T2); AC3 names `paneLines`' drawn filter at draw or press time, one shared pick, an all-hidden case, and one case per surface; AC4 sweeps "started token", "unstarted", and `[high]` over named paths in place of a two-phrase proxy; AC5 runs on the head after T4. No reachability or proportionality finding.
+- 2026-10-17: implement started on branch m273-plan-target-matches-list; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-17: T1 done: `taken_titles` and `high_title(roadmap, rows, archived)` in `cairn_next.py`, `STARTED` capped at 15 digits; TestNext gains the dead/live/padded/archived and sibling cases (red before the change, 6 failures); plants (no archived exclusion; raw-id compare) each turned TestNext red, restored.
+- 2026-10-17: T2 done: `highTitle` in `reader.ts` reads `takenRows`, the uncapped `STARTED` is gone, `recommend` takes the archived ids; `high-candidate` now has a planned M002 whose `— started M2` hides "Taken row", and "Chosen row" carries a dead `— started M001`; pane tests that assumed every fixture row draws now read a hand-written HIDDEN list.
+- 2026-10-17: T3 done: `nextTitle(next, candidates, taken, hotfixes, started)` picks the first drawn `[high]` row with the list's `startedRefs` test, used by the Next line and `pressNext`; the M272 AC4 block's body case now plans "Later high". Implementation choice: kept the name `nextTitle`, since every caller already used it; the pane atom's shape is unchanged, so the `pane-7` tag stays.
+- 2026-10-17: verify on the T3 head: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
+- 2026-10-17: T4 done: README (three paragraphs), the M272 `## Unreleased` CHANGELOG entry rewritten in place, DESIGN.md (two plan-target lines and a Known issues sentence on the PR-read difference), `cairn_next.py` and `reader.ts` doc comments, `skills/milestone/SKILL.md` ("does not read the release window"), and `skills/milestone-review/SKILL.md` step 10's tail; AC4's old-phrase grep prints nothing and each sweep line on the plan target states the new rule; `skills/tests` hand-run 842 OK. The simple-english lint hook reports whole-file counts on README, CHANGELOG, and both skills (all older text); new sentences over its limit were split, older text left as it is.
+- 2026-10-17: claim audit: 38 claims read, 4 corrected — hooks/status/reader.ts (`planTitle` → `nextTitle`), scripts/cairn_next.py (`high_title` docstring: the pane's two differences), hooks/status/pane.test.tsx (sibling comment and unused row), README.md and CHANGELOG.md (an archived blocked row's token does not count); the same reader re-read the four and found each true.
+- 2026-10-17: after the claim fixes: scripts 418 OK (21 skipped), hooks 179 OK, plugin test 2074 pass 0 fail; manifests unchanged since the T4 validates.
+- 2026-10-17: review return 1: AC4 — `hooks/status/band.test.tsx:3002` still describes the plan target as "the fixture's first unstarted `[high]` candidate row" (the M272 rule); the sweep's 97 lines include the test files.
+- 2026-10-17: T6 added (minor amendment, review return 1; Coverage AC4 and AC5 gain T6) and done: `band.test.tsx` comment now names the first `[high]` row the fixture's Candidates list shows; "unstarted" grep over the AC4 paths prints nothing; verify: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
+- 2026-10-17: step-7 approval: m273-plan-target-matches-list approved for merge
+- 2026-10-17: T5 done: verify on the T4 tree: scripts 418 OK (21 skipped), hooks 179 OK, plugin and marketplace validate exit 0, plugin test 2074 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -171,3 +184,42 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
      EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
      Entries carry their rationale; the counterweight `decisions format`
      advisory watches for pasted output, not for entry length (D-075). -->
+
+## Review
+<!-- owner: review · exclusive. -->
+
+Review pass 1, 2026-10-17, branch head 4dd0a5a9 (main 69c8f751 unmoved). PR #285 opened at review start (Copilot round on), Copilot requested on state `none`.
+
+- AC1: `python3 -m unittest -v scripts.tests.test_scripts -k TestNext` — 16 OK; `test_plan_counts_only_a_token_whose_milestone_is_open` holds `done`, `dropped`, absent (M900) named, `planned` and `blocked` with an `M5` token beside an `M005` row passed over, and a `blocked` M006 whose file is archived named; `test_plan_passes_over_a_row_whose_sibling_is_taken` passes over "Shared" and names "Next high"; `test_plan_passes_over_a_started_high_row` passes over the 15-digit `#` token and names the 16-digit one; code: `taken_titles`/`high_title(roadmap, rows, archived)` in `scripts/cairn_next.py`, `STARTED` `#[0-9]{1,15}`. PASS.
+- AC2: `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` at 4dd0a5a9 — 2074 pass, 0 fail, among them the eight `highTitle names the first [high] row no counted token names (M272, M273)` cases (the AC1 set: dead and live `M` tokens with `M5`/`M005`, the archived id, the sibling, 15 and 16 digits) and "the pane's milestones and next step match expected.json" for all 31 fixtures; `python3 -m unittest scripts.tests.test_status_fixtures` OK, holding `cairn_next.recommend` to every `expected.json`; `high-candidate`'s expected `next.title` "Chosen row" carries a dead `— started M001` and follows a row hidden by `— started M2` (planned M002). PASS.
+- AC3: same plugin test run; "the pick passes over each row the list hides and names the first it draws" holds `nextTitle` (the one pick, `hooks/status/pane.ts`, called by the Next line and `pressNext` in `register.tsx`, which the pane and band Plan Buttons share) on: a PR body naming "First high" (names "Second high"), a `#41` token with PR 41 in the hotfix list (passed over) and not in it (named), a counted `M005` token (passed over), every `[high]` row hidden (null), and a non-planning step (null); the Next-line case names the pick and the command alone with no drawn row; "a body naming the row moves planning to the next drawn row on the line and the press" runs the pane press and then the band press, each with `Later high`. PASS.
+- AC4: at 4dd0a5a9, the AC4 sweep over the named paths (`hooks/status/*.ts*` takes in the test files and `fixtures.gen.ts`) prints 97 lines. `hooks/status/band.test.tsx:3002` describes the plan target as "the fixture's first unstarted `[high]` candidate row", the M272 rule: `high-candidate`'s "Chosen row" now carries a dead token. The other plan-target lines (README.md:189-193, :233, :303-308; CHANGELOG.md:9-22; cairn/DESIGN.md:181, :299-302; scripts/cairn_next.py:9-11, :148-177; hooks/status/reader.ts:510, :690-697; pane.ts:245-253; register.tsx:1097-1099; the reader and pane test names) state the new rule; the old-phrase grep prints nothing (exit 1); `cairn/DESIGN.md:721-723` states the Known issues sentence. FAIL (one line).
+- AC5: verify at 4dd0a5a9 (after T4 and the claim-audit fixes): `scripts/tests` 418 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2074 pass 0 fail. PASS.
+- Gate: `cairn_validate.py` exit 0, all checks passed; no principle touched, so no `cairn_impact`; profile gate: verify green (AC5), marketplace validate output has no `version` warning, and `CHANGELOG.md` `## Unreleased` carries the rewritten entry with no milestone number. PASS.
+
+Review pass 2, 2026-10-17, branch head 45440813 (main 69c8f751 unmoved), after review return 1 (T6), pushed to PR #285.
+
+- AC4: at 45440813 the sweep prints 97 lines; `hooks/status/band.test.tsx:3001-3003` now names "the first `[high]` candidate row that the fixture's Candidates list shows"; a grep for "unstarted" and the two old phrases over the AC4 paths prints nothing (exit 1); the other plan-target lines are as pass 1 lists them, unchanged since 4dd0a5a9 but for that comment; `cairn/DESIGN.md:721-723` holds the Known issues sentence. PASS.
+- AC1–AC3, AC5: the T6 diff is one comment in `band.test.tsx`; verify at 45440813: scripts 418 OK (21 skipped, TestNext among them), hooks 179 OK, both validates exit 0, `claude plugin test .` 2074 pass 0 fail (the `highTitle`, `nextTitle`, Next-line, press, and 31 fixture next-step cases among them). Pass-1 evidence stands. PASS.
+- Gate: `cairn_validate.py` exit 0 at 45440813; profile gate as pass 1. PASS.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: no test sends the open hotfix list through the Next line or `pressNext`, so a caller passing `[]` stays green — fix now (a `#41` token on "Chosen row" with hotfix PR 41 open plans "Later high" on the line, the pane press, and the band press, and with PR 42 open plans "Chosen row"; a planted `[]` in `pressNext` turned the PR-41 case red), fixed f477d621
+- diff-bug #2: README and CHANGELOG say an `M` token counts only while "its file is not archived", but the readers leave out only a `blocked` row whose file was archived — fix now (both say so), fixed f477d621
+- diff-bug #3: `types/index.d.ts:58` still calls `next.title` the first unstarted `[high]` row — fix now (names `highTitle` and the pane's own pick), fixed f477d621
+- diff-bug #4: `high_title`/`highTitle`/`recommend` default to no rows and no archived ids, so a caller that omits them counts no `M` token — reject (no defect: every call site passes both; the defaults serve the token-free unit cases)
+- diff-bug #5: the pane's sibling case passes a taken entry by title, with no second same-titled row — reject (false as a gap: `TakenRow` carries only a title, and title keying is the readers' `takenRows`/`taken_titles`, held by their sibling cases)
+- diff-bug #6: `cairn_next.py` counting every `#` token has no D-entry, while D-165 counts a `#` token while the hotfix list holds it — reject (planned change: D-165 speaks of the pane, M272 already counted every token in the script, AC1 and the plan-gate line record the choice, DESIGN.md Known issues states it)
+- diff-bug #7: a press reads state at press time, so a PR read landing after the draw can plan a row the pill did not show — reject (planned design: M212/M213 press-time reads, M272 review diff-bug #10; AC3 names "at that draw or press")
+- diff-bug #8: `_planning_tree` left earlier subtests' files on disk — fix now (each call builds in its own folder; the archived subtest reuses M005 and passes), fixed f477d621
+- blame-history #1: the script counts every `#` token, where the Goal says it names "the row that list would draw with no pull request read" — reject (planned change: AC1 states the rule and the plan-gate line records it; the Goal's phrase is looser than AC1, said at the merge question)
+- blame-history #2: the reader's `next.title` and the pane's `nextTitle` are two picks, the first read only by tests and the fixture parity — reject (planned design: the reader mirrors `cairn_next.py` for parity, DESIGN.md:299-302 says the pane does not use it)
+- blame-history #3: a started token written before a row's first `: ` becomes part of the short title and names no row — follow-up (new row "Started token before the colon (M273 review)"; pre-existing since M258)
+- blame-history #4: `recommend` now reads blocked milestone files for the archived ids — reject (no defect: `render` already reads them through `blocked()`, a few file reads in a read-only script)
+- blame-history #5: the fenced `/milestone-plan <title>` carries a raw title that can hold backticks — reject (false: a fenced block shows backticks as written; the ✎ press passes titles the same way, M242)
+- prior-review #1: CHANGELOG.md:14 (102 columns) and README.md:193 (95) run past the wrap, as M272's review fixed — fix now (rewrapped with diff-bug #2's fix), fixed f477d621
+- verify after the fixes at e399a68c: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2076 pass 0 fail.
+- copilot: cairn/milestones/M273-plan-target-matches-list.md:14 (outdated) — reject (the header has named PR #285 since 4dd0a5a9); replied and resolved
+- copilot: scripts/cairn_next.py:99 — fix now (`render` passes its `blocked` list to `recommend`, so one call reads each blocked file once; this narrows blame-history #4's reject to the snapshot point Copilot adds), fixed e399a68c; replied and resolved
+- copilot: README.md:193 (outdated) — fix now (names the 15-digit limit), fixed e399a68c; replied and resolved
+- Copilot level: unknown (set by GitHub's settings; the review body has no `Review effort:` line); its body's three items are those threads.
+- conversation: no human reviews or issue comments on PR #285.

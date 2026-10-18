@@ -180,14 +180,14 @@ export const FIXTURES: Record<string, Fixture> = {
   "high-candidate": {
     cwd: "/",
     files: {
-      "/cairn/ROADMAP.md": "# Roadmap\n\n_The only authority on milestone status. Grouped by status, not ID._\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M001 | Shipped | done | — | normal | milestones/archive/M001-shipped.md |\n\n## Candidates\n- Untagged first: an earlier normal row, passed over — added 2026-01-01\n- [high] Taken row: work has started on it — added 2026-01-02 — started M900\n<!--\n- [high] Commented row: hidden by the comment\n-->\n- [high] Chosen row: the first unstarted high row — added 2026-01-03\n- [high] Later high: a second unstarted high row — added 2026-01-04\n",
+      "/cairn/ROADMAP.md": "# Roadmap\n\n_The only authority on milestone status. Grouped by status, not ID._\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M002 | Open work | planned | M077 | normal | milestones/M002-open.md |\n| M001 | Shipped | done | — | normal | milestones/archive/M001-shipped.md |\n\n## Candidates\n- Untagged first: an earlier normal row, passed over — added 2026-01-01\n- [high] Taken row: work has started on it — added 2026-01-02 — started M2\n<!--\n- [high] Commented row: hidden by the comment\n-->\n- [high] Chosen row: the first high row no open milestone took — added 2026-01-03 — started M001\n- [high] Later high: a second untaken high row — added 2026-01-04\n",
     },
     rows: [
     ],
     workable: [],
     pane: [
     ],
-    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Chosen row", "waiting": []},
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Chosen row", "waiting": [{"id": "M002", "title": "Open work", "unmet": ["M077 (unknown)"]}]},
     candidates: [
       {"priority": "normal", "title": "Untagged first"},
       {"priority": "high", "title": "Taken row"},

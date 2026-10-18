@@ -11,6 +11,7 @@ import {
   OPEN_MARK,
   PRIORITY_MARK,
   nextLabel,
+  nextTitle,
   paneLines as layout,
   prWord,
   startedRows,
@@ -46,6 +47,16 @@ const BAND = {
 } as const
 // The fixtures whose reader finds a ROADMAP.
 const WITH_ROADMAP = Object.keys(FIXTURES).filter(name => FIXTURES[name].next !== null)
+// The candidate rows a fixture's live started token hides, written out by
+// hand from its ROADMAP (M273): `high-candidate`'s `— started M2` names the
+// planned M002.
+const HIDDEN: Record<string, string[]> = { 'high-candidate': ['Taken row'] }
+// A fixture's drawn candidate rows, each with its index in `candidates`.
+function drawnCandidates(name: string) {
+  return FIXTURES[name].candidates
+    .map((row, i) => ({ row, i }))
+    .filter(({ row }) => !(HIDDEN[name] ?? []).includes(row.title))
+}
 
 type Element = { type: string; key?: string; props: Record<string, unknown>; children: unknown[] }
 type Ui = {
@@ -507,14 +518,15 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         seat(on, copyOf(name))
         await $.turn.complete(turn())
         const lines = await paneLines($, surface)
-        const { pane, candidates } = FIXTURES[name]
+        const { pane } = FIXTURES[name]
+        const candidates = drawnCandidates(name)
         if (pane.length > 0 || candidates.length === 0) {
           expect(keysLike(lines, /^candidate/)).toEqual([])
           return
         }
         expect(textAt(lines, 'candidates-head')).toBe(`▎ CANDIDATES ${candidates.length}`)
         expect(keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))).toEqual(
-          candidates.map(row => `${MARKS[row.priority].text} ${row.title}`),
+          candidates.map(({ row }) => `${MARKS[row.priority].text} ${row.title}`),
         )
       })
     }
@@ -1093,8 +1105,8 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         // the ⌂ and ↻ on the first line (M236, M241) and the ✎ of each
         // candidate line with a short title (M242). Before any read, no
         // blocked line carries one.
-        const candidates = FIXTURES[name].pane.length === 0 ? FIXTURES[name].candidates : []
-        const plans = candidates.flatMap((row, i) => (row.title === '' ? [] : [`cairn-pane-plan-${i}`]))
+        const candidates = FIXTURES[name].pane.length === 0 ? drawnCandidates(name) : []
+        const plans = candidates.flatMap(({ row, i }) => (row.title === '' ? [] : [`cairn-pane-plan-${i}`]))
         expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS, ...plans])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
@@ -4835,30 +4847,58 @@ describe('a second listing pending at a session end reads nothing (M260 AC4)', (
   })
 })
 
-// While planning, the Next line names the first unstarted `[high]` row and
-// the next-step press plans it; with no such row, or with an open pull
-// request's body naming it (M252), both behave as before (M272 AC4). The
-// titles are written out by hand from the fixtures' ROADMAPs.
-describe("planning's Next line and press name the [high] row (M272 AC4)", () => {
-  const plan = (title: string | null): PaneState => ({
+// While planning, the Next line names the first `[high]` row that the
+// Candidates list draws and the next-step press plans it; with no such row
+// both name no title (M272 AC4, M273 AC3). The titles are written out by
+// hand from the fixtures' ROADMAPs.
+describe("planning's Next line and press name the first drawn [high] row (M272 AC4, M273 AC3)", () => {
+  const PLAN = { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null }
+  const ROWS: PaneState['candidates'] = [
+    { priority: 'normal', title: 'Plain row' },
+    { priority: 'high', title: 'First high' },
+    { priority: 'high', title: 'Second high' },
+  ]
+  const plan = (candidates = ROWS, taken: PaneState['taken'] = []): PaneState => ({
     found: true,
     milestones: [],
-    next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title },
+    next: PLAN,
     workable: [],
     waiting: [],
-    candidates: [],
+    candidates,
     blocked: [],
-    taken: [],
+    taken,
   })
   const nextText = (state: PaneState, started: { title: string; number: number }[] = []) =>
     layout(state, [], true, {}, [], started).find(line => line.key === 'next')?.text?.text
+  const hotfix = (number: number) => ({ number, title: 'Fix', url: `https://github.com/o/r/pull/${number}` })
 
-  test('the line names the title, and with none or a body naming it shows the command alone', () => {
-    expect(nextText(plan('Chosen row'))).toBe(' /milestone-plan Chosen row ')
-    expect(nextText(plan(null))).toBe(' /milestone-plan ')
-    expect(nextText(plan('Chosen row'), [{ title: 'Chosen row', number: 5 }])).toBe(' /milestone-plan ')
-    // The control: a body naming another row hides nothing.
-    expect(nextText(plan('Chosen row'), [{ title: 'Other row', number: 5 }])).toBe(' /milestone-plan Chosen row ')
+  test('the pick passes over each row the list hides and names the first it draws', () => {
+    expect(nextTitle(PLAN, ROWS, [], [], [])).toBe('First high')
+    // An open PR body naming the first `[high]` row: the second is named.
+    expect(nextTitle(PLAN, ROWS, [], [], [{ title: 'First high', number: 5 }])).toBe('Second high')
+    // A `#` token whose PR is in the open hotfix list hides the row, and
+    // the same token with the PR not in the list hides nothing.
+    const hashed = [{ title: 'First high', ref: '#41' }]
+    expect(nextTitle(PLAN, ROWS, hashed, [hotfix(41)], [])).toBe('Second high')
+    expect(nextTitle(PLAN, ROWS, hashed, [hotfix(42)], [])).toBe('First high')
+    // A counted `M` token hides every row with its short title (the
+    // readers' `takenRows` gives tokens by title, so a same-titled sibling's
+    // token arrives here as this entry), and the pick moves on.
+    expect(nextTitle(PLAN, ROWS, [{ title: 'First high', ref: 'M005' }], [], [])).toBe('Second high')
+    // Every `[high]` row hidden: no title.
+    const both = [
+      { title: 'First high', ref: 'M005' },
+      { title: 'Second high', ref: '#41' },
+    ]
+    expect(nextTitle(PLAN, ROWS, both, [hotfix(41)], [])).toBe(null)
+    // Outside planning, no title.
+    expect(nextTitle({ ...PLAN, action: 'implement', command: '/milestone-implement', id: 'M003' }, ROWS, [], [], [])).toBe(null)
+  })
+
+  test('the line names the pick, and with no drawn [high] row shows the command alone', () => {
+    expect(nextText(plan())).toBe(' /milestone-plan First high ')
+    expect(nextText(plan(), [{ title: 'First high', number: 5 }])).toBe(' /milestone-plan Second high ')
+    expect(nextText(plan([ROWS[0]]))).toBe(' /milestone-plan ')
   })
 
   const CASES = [
@@ -4880,10 +4920,10 @@ describe("planning's Next line and press name the [high] row (M272 AC4)", () => 
   }
 
   for (const [body, args] of [
-    ['Candidate row: Chosen row\n', ''],
+    ['Candidate row: Chosen row\n', 'Later high'],
     ['Candidate row: Later high\n', 'Chosen row'],
   ] as const) {
-    test(`a body naming ${args === '' ? 'the row drops its title' : 'another row keeps the title'} on the line and the press`, async ($, on) => {
+    test(`a body naming ${args === 'Later high' ? 'the row moves planning to the next drawn row' : 'another row keeps the title'} on the line and the press`, async ($, on) => {
       const calls = gh(on, () => prView('MERGED'), undefined, {
         remotes: { origin: ORIGIN },
         list: () => listReply([bodied(1265, 'm272-x', body)]),
@@ -4895,13 +4935,47 @@ describe("planning's Next line and press name the [high] row (M272 AC4)", () => 
       await calls.settled()
       expect(calls.lists).toEqual([listCall(ORIGIN)])
       const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
-      expect(next.startsWith('Next   /milestone-plan ')).toBe(true)
-      expect(next.includes('Chosen row')).toBe(args !== '')
+      expect(next).toBe(`Next   /milestone-plan ${args} `)
       await pressKey($, PANE_NEXT)
       await $.session.end(CLEAR_END)
       await untilRuns(copy, 2)
       expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
       // The band's Plan shares the press, and reads the same stored list.
+      const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      await band.press({ key: 'cairn-next' })
+      await band.unmount()
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 4)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
+    })
+  }
+
+  // The callers pass the open hotfix list to the pick (M273 review): a
+  // `#41` token on "Chosen row" hides it while hotfix PR 41 is open, and
+  // the line and both presses then plan "Later high"; with another hotfix
+  // PR open, the token hides nothing.
+  for (const [open, args] of [
+    [41, 'Later high'],
+    [42, 'Chosen row'],
+  ] as const) {
+    test(`a #41 token with hotfix PR ${open} open names ${args} on the line and the press`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: ORIGIN },
+        list: () => listReply([pr(open, 'hotfix-x')]),
+      })
+      const copy = copyOf('high-candidate')
+      const path = Object.keys(copy.files).find(key => key.endsWith('/cairn/ROADMAP.md')) as string
+      copy.files[path] = copy.files[path].replace(' — started M001\n', ' — started M001 — started #41\n')
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
+      expect(next).toBe(`Next   /milestone-plan ${args} `)
+      await pressKey($, PANE_NEXT)
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
       const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
       await band.press({ key: 'cairn-next' })
       await band.unmount()

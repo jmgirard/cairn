@@ -22,7 +22,7 @@ import {
   takenRows,
   workableRows,
 } from './reader'
-import type { BandState, CandidateRow, FileSource } from './reader'
+import type { BandState, CandidateRow, FileSource, RoadmapRow } from './reader'
 
 // loadBand gives null for a found ROADMAP it cannot read. These tests read good files.
 async function loaded(source: FileSource): Promise<BandState> {
@@ -373,9 +373,17 @@ describe('started tokens of the candidate rows (M258)', () => {
 })
 
 // The cases test_scripts.py gives `high_title` through `recommend` (M272
-// AC1), held here to `highTitle`.
-describe('highTitle names the first unstarted [high] row (M272)', () => {
+// AC1, M273 AC1), held here to `highTitle`.
+describe('highTitle names the first [high] row no counted token names (M272, M273)', () => {
   const rows = (...lines: string[]) => `# Roadmap\n\n## Candidates\n\n${lines.map(line => `- ${line}`).join('\n')}\n`
+  const open = (id: string, status: string): RoadmapRow => ({
+    id,
+    title: 'Open work',
+    status,
+    depends: '—',
+    priority: 'normal',
+    relpath: `milestones/${id}-open.md`,
+  })
   test('a [high] row is chosen over an earlier untagged row, and trimmed', () => {
     expect(highTitle(rows('Untagged first: detail', '[high]  Chosen row : detail — added 2026-01-01'))).toBe('Chosen row')
   })
@@ -385,12 +393,30 @@ describe('highTitle names the first unstarted [high] row (M272)', () => {
       '[high] Taken: x — started #12',
       '[high] Taken: x — started M271; narrowed',
       '[high] Taken: x — started #12 ',
-      '[high] Taken: x — started #1234567890123456',
-      '[high] Taken: x — started M12é',
+      '[high] Taken: x — started #123456789012345',
+      '[high] Taken: x — started M271é',
     ]) {
-      expect(highTitle(rows(started, '[high] Next high: y'))).toBe('Next high')
+      expect(highTitle(rows(started, '[high] Next high: y'), [open('M271', 'planned')])).toBe('Next high')
     }
-    expect(highTitle(rows('[high] Not taken: x — started M271a', '[high] Next high: y'))).toBe('Not taken')
+    expect(highTitle(rows('[high] Not taken: x — started M271a', '[high] Next high: y'), [open('M271', 'planned')])).toBe('Not taken')
+    expect(highTitle(rows('[high] Long pr: x — started #1234567890123456', '[high] Next high: y'))).toBe('Long pr')
+  })
+  test('an M token counts only while its milestone is planned or blocked and not archived', () => {
+    const roadmap = rows('[high] Tokened: x — started M5', '[high] Next high: y')
+    for (const [status, named] of [
+      ['done', 'Tokened'],
+      ['dropped', 'Tokened'],
+      ['planned', 'Next high'],
+      ['blocked', 'Next high'],
+    ]) {
+      expect(highTitle(roadmap, [open('M005', status)])).toBe(named)
+    }
+    expect(highTitle(rows('[high] Tokened: x — started M900', '[high] Next high: y'), [open('M005', 'planned')])).toBe('Tokened')
+    expect(highTitle(roadmap, [open('M005', 'blocked')], ['M005'])).toBe('Tokened')
+  })
+  test('a counted token on a same-titled sibling passes the row over', () => {
+    const roadmap = rows('[high] Shared: first, no token', 'Shared: second — started M005', '[high] Next high: y')
+    expect(highTitle(roadmap, [open('M005', 'planned')])).toBe('Next high')
   })
   test('a [high] row inside a comment and one with an empty title are passed over', () => {
     expect(highTitle(rows('<!--', '[high] Commented out: x', '-->', '[high] : empty title', '[high] Visible: y'))).toBe('Visible')

@@ -389,7 +389,7 @@ maintainer's unopened release window as the blocker. It is reachable from
 `planned` and from `review` (tracking-rules transitions), it closes no PR, and
 it is reversed by the user declaring the window — never by cairn deciding the
 release looks ready. Offer parking whenever the advisory fired, and lead the close block with it only when `cairn_next`'s own recommendation names that same release milestone.
-`cairn_next` reads status and priority alone, so where it names the flagged
+`cairn_next` does not read the release window, so where it names the flagged
 release its recommendation *is* the nag D-050 exists to stop and parking
 displaces it. Where it names something else — an unrelated `in-progress`
 milestone outranks a workable planned one in its precedence order —

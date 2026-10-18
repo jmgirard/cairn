@@ -6,18 +6,22 @@
 
 - **Planning names the first high-priority candidate.** When no milestone
   is in review, in progress, or workable, `scripts/cairn_next.py`
-  recommends planning. It now names the first unstarted `[high]` candidate
-  row by its short title:
-  `Recommended: plan the next milestone → /milestone-plan <title>`. That
-  row opens with `[high] `, has a short title, and sits outside an HTML
-  comment. It has no ` — started M<n>` or ` — started #<n>` token. The
-  cairn pane's Next pill shows the same command. The `Plan` button on the
-  pane and on the band runs `/clear` and then
-  `/cairn:milestone-plan <title>`. If the pane's last read of your open
-  PRs found one that names that row in a `Candidate row:` line, the pane
-  hides the row. The pill and `Plan` then name no title. With no
-  unstarted `[high]` row, the output, the pill, and `Plan` are as before.
-  Before, planning never named a row.
+  recommends planning. It now names a `[high]` candidate row by its short
+  title: `Recommended: plan the next milestone → /milestone-plan <title>`.
+  That row is the first `[high] ` row with a short title outside an HTML
+  comment that no counted started token hides. A
+  ` — started M<n>` token counts while milestone `M<n>` is `planned` or
+  `blocked`, but not for a `blocked` row whose file was archived. A
+  ` — started #<n>` token of up to 15 digits always counts here, because
+  the script reads no PRs. A counted token hides every row
+  with the same short title. The cairn pane's Next pill shows
+  `/milestone-plan <title>` too. The `Plan` button on the pane and on the
+  band runs `/clear` and then `/cairn:milestone-plan <title>`. In the
+  pane, the title is the first `[high]` row that its Candidates list
+  shows. That list also uses the pane's last read of your open PRs, so the
+  pane can name a different row than the script. With no such row, the
+  output, the pill, and `Plan` are as before. Before, planning never named
+  a row.
 
 - **A triage promote marks its row high priority.** When `/cairn-triage`
   promotes a candidate row (marks it ready to plan), it now also gives the

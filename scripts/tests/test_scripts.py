@@ -266,10 +266,23 @@ class TestNext(ScriptCase):
         # names no row and ends at the command (M272 AC2).
         self.assertIn("Recommended: plan the next milestone → /milestone-plan\n", out)
 
-    def _planning_tree(self, candidates):
-        """The base tree with nothing workable and these candidate rows."""
+    def _planning_tree(self, candidates, open_id=None, status="planned", shipped=False):
+        """The base tree with nothing workable and these candidate rows. With
+        `open_id`, a row of that id and `status` is added: a `planned` one
+        waits on a missing id, so nothing is workable, and with `shipped` its
+        file is missing and an archive file of the id is `done` (M273). Each
+        call builds in a new folder, so no file an earlier call wrote stays
+        on disk (M273 review)."""
+        self.tree = Tree(tempfile.mkdtemp(dir=self._tmp.name))
         self.tree.rows = [("M01", "Old done", "done", "—", "high", "milestones/archive/M01-old.md")]
         self.tree.files = {"milestones/archive/M01-old.md": archived("done")}
+        if open_id is not None:
+            deps = "M099" if status == "planned" else "—"
+            self.tree.rows.append((open_id, "Open work", status, deps, "normal", f"milestones/{open_id}-open.md"))
+            if shipped:
+                self.tree.files[f"milestones/archive/{open_id}-open.md"] = archived("done")
+            else:
+                self.tree.files[f"milestones/{open_id}-open.md"] = live(status)
         self.tree.candidates = candidates
         return self.tree.build()
 
@@ -297,16 +310,52 @@ class TestNext(ScriptCase):
             "[high] Taken: x — started #12",
             "[high] Taken: x — started M271; narrowed",
             "[high] Taken: x — started #12 ",
-            "[high] Taken: x — started #1234567890123456",
+            "[high] Taken: x — started #123456789012345",
             # Only an ASCII letter or digit voids the token, so `é` ends it
             # (M272 AC1 as amended).
-            "[high] Taken: x — started M12é",
+            "[high] Taken: x — started M271é",
         ):
             with self.subTest(started=started):
-                root = self._planning_tree([started, "[high] Next high: y"])
+                root = self._planning_tree([started, "[high] Next high: y"], open_id="M271")
                 self.assertEqual(self._recommend(root)["title"], "Next high")
-        root = self._planning_tree(["[high] Not taken: x — started M271a", "[high] Next high: y"])
+        root = self._planning_tree(["[high] Not taken: x — started M271a", "[high] Next high: y"], open_id="M271")
         self.assertEqual(self._recommend(root)["title"], "Not taken")
+        # A `#` token of 16 digits is no token, as in the pane's list (M273
+        # AC1).
+        root = self._planning_tree(["[high] Long pr: x — started #1234567890123456", "[high] Next high: y"])
+        self.assertEqual(self._recommend(root)["title"], "Long pr")
+
+    def test_plan_counts_only_a_token_whose_milestone_is_open(self):
+        # M273 AC1: an `M` token counts only while its id is `planned` or
+        # `blocked` in the table, compared by canonical id, and not when the
+        # blocked row's file is archived; a dead token leaves its row named.
+        for status, named in (
+            ("done", "Tokened"),
+            ("dropped", "Tokened"),
+            ("planned", "Next high"),
+            ("blocked", "Next high"),
+        ):
+            with self.subTest(status=status):
+                root = self._planning_tree(
+                    ["[high] Tokened: x — started M5", "[high] Next high: y"], open_id="M005", status=status
+                )
+                self.assertEqual(self._recommend(root)["title"], named)
+        with self.subTest(status="absent"):
+            root = self._planning_tree(["[high] Tokened: x — started M900", "[high] Next high: y"])
+            self.assertEqual(self._recommend(root)["title"], "Tokened")
+        with self.subTest(status="blocked, archived"):
+            root = self._planning_tree(
+                ["[high] Tokened: x — started M5", "[high] Next high: y"], open_id="M005", status="blocked", shipped=True
+            )
+            self.assertEqual(self._recommend(root)["title"], "Tokened")
+
+    def test_plan_passes_over_a_row_whose_sibling_is_taken(self):
+        # M273 AC1: a counted token names its row's short title, so a
+        # same-titled `[high]` row with no token is passed over too.
+        root = self._planning_tree(
+            ["[high] Shared: first, no token", "Shared: second — started M005", "[high] Next high: y"], open_id="M005"
+        )
+        self.assertEqual(self._recommend(root)["title"], "Next high")
 
     def test_plan_passes_over_a_high_row_in_a_comment_and_an_empty_title(self):
         # M272 AC1: a `[high]` row inside an HTML comment and one whose
