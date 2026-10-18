@@ -97,6 +97,7 @@ M228 and M264 (`haiku-sonnet-roles.md`, `haiku-sonnet-rerun.md`) gave search `st
 - 2026-10-18: T5: verify slot green from the repo root, each exit code 0: `scripts/tests` 418 OK, `hooks/tests` 179 OK, both `claude plugin validate` passed, `claude plugin test` 2076 tests 0 fail. Hand-run `skills/tests` 886 OK.
 - 2026-10-18: claim audit: 20 claims read, 0 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/milestone/SKILL.md, the four Explore skill sites, skills/tests (3 files), scripts/tests/test_scripts.py. Its one format note (a CHANGELOG line left unwrapped by the T4 edit) is fixed by a rewrap.
 - 2026-10-18: implement complete; status set to `review`.
+- 2026-10-18: step-7 approval: m277-haiku-search-clarified approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
