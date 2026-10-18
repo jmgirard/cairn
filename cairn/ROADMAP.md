@@ -1,16 +1,15 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-17 (M273 done, PR #285: the plan target is the first `[high]` row the Candidates list shows; M270 row pruned to retention; "Plan target edges (M272 review)" narrowed, its token removed; "Started token before the colon (M273 review)" filed; no lesson; skills/tests 842 green; budgets ok; validate green)_
+_Last hygiene check: 2026-10-18 (M274 done, PR #286: feature series rule; M271 row pruned to retention; "Feature series edges (M274 review)" and "Feature series from a review-time split (M274 plan)" filed; one lesson; skills/tests 861 green; budgets ok; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M274 | A feature split across milestones reaches users as one change | review | — | normal | milestones/M274-feature-series-ships-as-one.md |
+| M274 | A feature split across milestones reaches users as one change | done | — | normal | milestones/archive/M274-feature-series-ships-as-one.md |
 | M273 | The plan target is the first high-priority row the Candidates list shows | done | — | normal | milestones/archive/M273-plan-target-matches-list.md |
-| M271 | A triage promote gives its candidate row the high-priority token | done | — | normal | milestones/archive/M271-triage-promote-marks-high.md |
 | M272 | The next-step recommendation names the first unstarted high-priority candidate | done | — | normal | milestones/archive/M272-next-step-names-high-row.md |
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
