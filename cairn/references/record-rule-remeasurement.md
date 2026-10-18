@@ -7,12 +7,14 @@ sections, blob-pinned below), the archive summaries, RR13
 row at commit `08bbb07`, and `scripts/cairn_cost.py` over the local session
 store.
 Pagination: —.
-Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22. The Axis 3 cost figures were re-run 2026-10-18 with the current `cairn_cost.py`, since PR #238 changed how it counts (corrected M279).
+Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22. The Axis 3 cost figures were re-run 2026-10-18 at commit `92edddd4` with `cairn_cost.py` as PR #238 left it, since that PR changed how it counts (corrected M279).
 
 **Scope.** Re-measures three baselines after the record-rule changes — the
 derived-claims family (M134/M136/M137), the RR13 reduction (M144–M147), and
 D-116's narrowing of the family to code-adjacent artifacts — and records a
-three-way verdict (helping / dead weight / self-thrash). It is a measurement,
+three-way verdict (helping / dead weight / self-thrash). Axis 3 no longer
+compares its cost figures with the cost baseline, because that baseline came
+from the old cost script (corrected M279). It is a measurement,
 not a rule change: it supersedes and amends nothing. Method for the effort
 axes: `references/effort-experiment-notes.md`. This is a reference, not an
 authority — status lives in `ROADMAP.md`, decisions in `DECISIONS.md`,
@@ -32,8 +34,9 @@ architecture in `DESIGN.md`.
   made with `cairn_cost.py` before PR #238, corrected M279),
   `references/effort-experiment-notes.md` — observed 2026-08-22.
 - Per-milestone cost: `python3 scripts/cairn_cost.py --milestone M<NN>` for
-  each of M137–M152, run 2026-08-22, and re-run 2026-10-18 at commit
-  `92edddd4` with the script as PR #238 left it (corrected M279).
+  each of M137–M152, run 2026-08-22, and re-run for M139–M152 on
+  2026-10-18 at commit `92edddd4` with the script as PR #238 left it
+  (corrected M279).
 
 ## Method
 

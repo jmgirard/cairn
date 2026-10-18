@@ -4,7 +4,7 @@
 store for this repo — `~/.claude/projects/-Users-jmgirard-GitHub-cairn/*.jsonl`,
 115 session files, 44,688 records — read with `scripts/cairn_cost.py`.
 Pagination: —.
-Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19. The 719:1 ratio in `## What the store is`, the 40.7% and 33.9% unattributed shares, and the figures in `## Baseline` came from `cairn_cost.py` before PR #238 (2026-10-10), which summed every record and skipped subagent files. They are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of their milestones; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279). `## Current-script baseline` holds figures from the current script.
+Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19. The 719:1 ratio in `## What the store is`, the 40.7% and 33.9% unattributed shares, and the figures in `## Baseline` came from `cairn_cost.py` before PR #238, which summed every record and skipped subagent files. They are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of their milestones; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279). `## Current-script baseline` holds figures from the current script.
 
 **Scope.** This page records the *method* by which cairn measures its own token
 and turn cost, the limits of that method, and a baseline taken once so a later
@@ -71,7 +71,7 @@ bit hardest exactly where the cost is highest: `/milestone-review`'s M17
 fan-out spawned four subagents per milestone, and the script before PR #238
 counted none of their tokens. Rather than publish a partial
 number unlabelled, every report carries A5's spawn count beside the tokens.
-The count reads exactly `4` for every reviewed milestone in the baseline below,
+The count reads exactly `4` for every reviewed milestone in `## Baseline`,
 which is independent corroboration that the counter is right.
 
 ## Baseline — the ten milestones before M94
@@ -162,7 +162,7 @@ test of the history reviewers.
   surfaced in the report output: there is no figure to caveat, because the
   per-file share is never computed. It was scoped Out at plan time for the
   reason restated above; nothing in this milestone revisits it.
-- The baseline table → M96's input. M96 owns any ratchet, threshold, or
+- The `## Baseline` table → M96's input. M96 owns any ratchet, threshold, or
   verdict over these numbers; M94 deliberately ships none.
 - The `/milestone` audit line → `skills/milestone/SKILL.md` §2, reported
   verbatim, explicitly boundaried as a reporting surface.
@@ -185,4 +185,6 @@ test of the history reviewers.
   adopting repo might run; this repo's store has it throughout, but that is one
   repo on one version — observed 2026-07-19.
 - Whether the +10.8% per-turn figure holds once M95's slimming lands; the band
-  comparison should be re-run after it merges — observed 2026-07-19.
+  comparison should be re-run after it merges — observed 2026-07-19. That
+  re-run cannot happen now: the band sessions are gone from the store, and
+  current-script figures are not comparable with them (corrected M279).
