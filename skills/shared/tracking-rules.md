@@ -615,11 +615,12 @@ These rules bind all chat output while any cairn skill is active.
 
 - Orchestrator: Opus, running these skills in the main session. Exception: `/design-interview` recommends the user run
   the *main session* on Fable — a session-model choice, not a subagent.
-- **Set the model on every spawn.** Pass the model a role calls for (Haiku, Sonnet, Opus, or Fable, named in words in
+- **Set the model on every spawn.** Pass the model a role calls for (Haiku, Opus, or Fable, named in words in
   each skill) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent
   type's or the harness's default, which need not be the model the role calls for.
 - **Leave effort unset on every spawn.** No subagent role sets the Agent tool's `effort` setting, the history reviewers
-  included. On search and edit work the cost method's output undercount could reverse `low`'s saving, the history
+  included. On search and edit work the cost method's output undercount could reverse `low`'s saving (search measured
+  on Sonnet before it moved to Haiku, D-181), the history
   reviewers, measured on Sonnet before they moved to Haiku (D-174), scored fewer judged-valid findings at `low` and at
   `medium` by margins one rerun could flip, and the Opus
   and Fable roles are unmeasured (`cairn/references/effort-roles.md`, `cairn/references/effort-review-medium.md`).
@@ -641,9 +642,9 @@ These rules bind all chat output while any cairn skill is active.
 - **Haiku subagents**: well-specified edit work (D-151) — mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs and run the `verify` slot before committing; summarize results
   into one work-log line. Haiku also runs the blame-history and prior-PR-comments lenses of the review fan-out
-  (D-174), whose findings the agent settles at `/milestone-review` step 5 like any lens's.
-- **Sonnet subagents**: fan-out searches (Explore), with a reading list naming the files or areas to read. Summarize an
-  Explore fan-out's results into one work-log line.
+  (D-174), whose findings the agent settles at `/milestone-review` step 5 like any lens's. Haiku also runs fan-out
+  searches (Explore, D-181), with a reading list naming the files or areas to read. Summarize an Explore fan-out's
+  results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
   milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the

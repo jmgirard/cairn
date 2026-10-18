@@ -150,7 +150,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    naming the router.
 
 2. **Investigate first.** Read the relevant code and DECISIONS.md. For
-   scopes touching more than a couple of files, fan out Sonnet Explore
+   scopes touching more than a couple of files, fan out Haiku Explore
    subagents with specific focuses; require file:line
    citations. Draft scope, tasks,
    and the list of genuinely open decisions internally.

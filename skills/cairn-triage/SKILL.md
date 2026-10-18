@@ -361,7 +361,7 @@ re-examines a lesson.
    `split`, or `route` takes its row out of the list, and it writes no dead
    token into any row it writes. If a `#<n>` read failed, propose no token
    change for that token, and name the failed read in the table.
-   Delegation: the session assesses inline. One Sonnet Explore fan-out is
+   Delegation: the session assesses inline. One Haiku Explore fan-out is
    warranted only when several items cite code paths or symbols whose
    existence must be checked; give it the list of citations and take back
    one line per citation (exists / moved / gone). Never spawn to assess

@@ -265,7 +265,9 @@ Readings that bear on the verdicts:
   not from the model's search. A reading that adds a missing `.py` to each S2 item
   scores every Haiku S2 run 1.0. Under it, Haiku's search score is 2.9962
   against Sonnet's 2.8865. That reading is outside the verdict rule, which
-  was fixed before the runs.
+  was fixed before the runs. M277 (`haiku-search-clarified.md`) reran the
+  search tasks with S2's base name stated to include `.py`, and gave
+  search `move`.
 - History review is `move`, as in M228, now on three runs per task. Haiku
   scored 12 judged-valid findings over its nine runs and Sonnet 13. The
   margin is one finding. One fewer Haiku finding makes Haiku's sum 3.6667

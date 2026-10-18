@@ -118,7 +118,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="742 lines / 71,576 bytes",
+        block="743 lines / 71,631 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -611,6 +611,45 @@ REGISTRY = [
         test="TestPriorPRLens.test_always_spawns_and_noops_when_empty",
         target=REVIEW,
         block='reports "no prior-review evidence"',
+    ),
+    # M277 (D-181): Explore searches on Haiku. The rulebook's Haiku bullet,
+    # the set-the-model list, and each of the four spawn sites carry the
+    # routing independently, so each gets its own entry.
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_rulebook_haiku_bullet_names_fan_out_searches",
+        target=RULES,
+        block="searches (Explore, D-181)",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_rulebook_haiku_bullet_names_fan_out_searches",
+        target=RULES,
+        block="(Haiku, Opus, or Fable",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_each_explore_site_names_haiku",
+        target=PLAN,
+        block="fan out Haiku Explore",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_each_explore_site_names_haiku",
+        target=IMPLEMENT,
+        block="boilerplate, and Explore",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_each_explore_site_names_haiku",
+        target="skills/design-interview/SKILL.md",
+        block="fan out Haiku Explore subagents with",
+    ),
+    Mutation(
+        guard="test_review_fanout",
+        test="TestSearchModel.test_each_explore_site_names_haiku",
+        target="skills/cairn-triage/SKILL.md",
+        block="One Haiku Explore fan-out",
     ),
     # M86 (D-048): the three handoff steps each carry the directive
     # independently — one skill losing it must not be masked by the other two.
