@@ -54,6 +54,7 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - The declared changelog (`## changelog` slot) has an entry for this
   milestone's user-visible changes (no milestone numbers in user-facing text).
   A milestone of a feature series (tracking-rules "Feature series") meets this with an edit to the series' existing entry.
+  This holds where the series already has an entry. A milestone is in a series when its work log carries a `feature series:` line.
   A milestone before the series' last with no user-visible change needs no entry.
 
 ## test-doctrine

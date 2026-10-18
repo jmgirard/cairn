@@ -14,6 +14,9 @@
   entry is the feature's one entry, and later parts edit it. The changelog
   check in the `python`, `r-package`, `claude-plugin`, and `docker-image`
   profiles accepts that edit, and needs no entry for a hidden earlier part.
+  Review reads the copy of that check in your `cairn/PROFILE.md`, so add the
+  new sentences to its changelog line by hand. Copy them from
+  `skills/shared/profiles/<profile>.md`.
   In guest mode, each series pull request says in one plain sentence
   whether it completes the series, and the last one names the earlier pull
   requests. In owner mode, `/cairn-release` names each series that has a

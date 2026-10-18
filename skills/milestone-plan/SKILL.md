@@ -490,8 +490,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - **Feature series.** When a split divides one user-facing feature or
      fix into several milestones, write them as a feature series under the
      rules of tracking-rules "Feature series": earlier parts stay out of
-     users' reach where they can, each carries the `Out:` item naming the
-     last, and one changelog entry serves the whole series. Write the
+     users' reach where they can, each part but the last carries the `Out:`
+     item naming the last, every part is a milestone file (never a
+     candidate row), and one changelog entry serves the whole series. Write the
      work-log line `feature series: M<a> -> M<b>[ -> …]` in each milestone
      of the series.
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.

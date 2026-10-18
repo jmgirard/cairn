@@ -62,6 +62,8 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
   `.claude-plugin/plugin.json`. At install time, `plugin.json` wins.
 - The declared changelog (`## changelog` slot) has an entry for this
   milestone's user-visible changes (no milestone numbers in user-facing text).
+  A feature series milestone (its work log carries a `feature series:` line; tracking-rules "Feature series") may instead edit
+  the series' existing entry, and one before the series' last with no user-visible change needs no entry.
 
 This repo has **no CI**: `gh pr checks --watch` returns "no checks reported"
 and exits 1 at once (corrected M170). Treat a PR as mergeable on local green.

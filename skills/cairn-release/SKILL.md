@@ -60,6 +60,7 @@ toolchain-specific work at step 3.
    in a milestone file under `cairn/milestones/` (not `archive/`) where the
    line names at least one milestone whose ROADMAP status is `done`.
    The version-decision question names each listed series and its milestones that are not `done`.
+   It gives each such milestone's ROADMAP status, so a `dropped` part reads as dropped.
    No such series → the question says nothing about series.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips

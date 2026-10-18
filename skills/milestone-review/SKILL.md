@@ -674,6 +674,7 @@ re-enters here, at the step the record shows is next:
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
+   Under rule (c) it says the rest of the user-facing part comes later.
    For the last, it says the change completes the series and names each earlier milestone's pull request by number,
    read from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.
    With the Copilot review round on (`skills/shared/copilot-review.md`

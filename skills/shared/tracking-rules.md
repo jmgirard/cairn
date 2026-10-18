@@ -192,12 +192,14 @@ slices; every milestone leaves the default branch shippable; splitting never dis
 **Feature series.** A feature series is two or more milestones that one plan splits from one user-facing feature or
 fix. (a) Each milestone of the series but the last keeps its new behavior out of users' reach where it can,
 adding no export, user doc, or changelog entry.
+Such a part can be an internal layer rather than a vertical slice: it ships tested code that no user can reach yet.
 (b) Each milestone but the last carries an `Out:` item naming the last milestone as where the feature's new
 exports and user docs land, and, unless (c) applies, its changelog entry.
 (c) When a milestone before the last must change user-visible behavior, its changelog entry is the feature's one entry,
 and each later milestone of the series edits that entry instead of adding one.
 (d) In guest mode a later part can build on at most one open earlier part (D-173),
 so a series of three or more waits on the maintainers' merges.
+Without `# Push remote: base` a guest part builds on no open part, so every later part waits on those merges.
 The plan writes a `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone of the series. In guest mode
 `/milestone-review` reads it for the PR body, and in owner mode `/cairn-release` reads it at the version decision.
 
