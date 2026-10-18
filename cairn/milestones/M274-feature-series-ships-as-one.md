@@ -161,6 +161,7 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
 - 2026-10-18: T8: verify on the code head: scripts 0 (418 tests, OK, 21 skipped), hooks 0, plugin validate 0 (passed with warnings), marketplace validate 0, plugin test 0 (2076 tests, 0 fail); cairn_validate all checks passed. Checkpoint is one commit for T1–T8, not one per task.
 - 2026-10-18: claim audit: 38 claims read, 0 corrected — CHANGELOG.md, README.md, skills/shared/tracking-rules.md, skills/milestone-plan/SKILL.md, skills/shared/profiles/{python,r-package,claude-plugin,docker-image}.md, skills/milestone-review/SKILL.md, skills/cairn-release/SKILL.md, skills/tests/test_feature_series.py, skills/tests/test_mutation_harness.py
 - 2026-10-18: status review; handed to /milestone-review.
+- 2026-10-18: step-7 approval: m274-feature-series-ships-as-one approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -214,3 +215,4 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
 - copilot: skills/shared/profiles/claude-plugin.md:56, docker-image.md:43, python.md:36, r-package.md:31 — fix now, fixed 1f1315e0; replied and resolved.
 - copilot: skills/shared/tracking-rules.md:198 — fix now, fixed 181fdad6; replied and resolved.
 - Copilot level: Lite (set by GitHub's settings).
+- conversation: jmgirard PR #286 — noted (six reply reviews this run posted on Copilot threads); no issue comments; 0 unresolved threads.
