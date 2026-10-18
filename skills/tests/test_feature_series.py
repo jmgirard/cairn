@@ -382,7 +382,7 @@ class TestCutSeries(unittest.TestCase):
         text = self.flat("cairn-release", "SKILL.md")
         step = text[text.index("1. **version decision**") : text.index("2. **changelog consolidation**")]
         self.assertIn(
-            "the question also names each unplanned part of a cut series (tracking-rules \"feature series\") as a part of m<nnn>'s feature.",
+            "the question also names each unplanned part of a cut series (tracking-rules \"a cut series\") as a part of m<nnn>'s feature.",
             step,
         )
         self.assertIn(

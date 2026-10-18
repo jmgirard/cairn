@@ -224,7 +224,7 @@ run ingestion first (see `/milestone-brief`).
      records a work-log line naming each criterion widened or added. An amendment that executes a widening-test-reclassified
      return is carved out of this rule by name — D-101's inadmissibility
      (below) governs it unchanged.
-     **A cut series (tracking-rules "Feature series").** A substantive
+     **A cut series (tracking-rules "A cut series").** A substantive
      amendment of a user-facing milestone can move work that its Goal or
      Scope `In:` promised to later work. A review descope is one such
      amendment. The amendment records that work as a candidate row whose

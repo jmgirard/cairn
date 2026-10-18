@@ -5247,6 +5247,18 @@ REGISTRY += [
         guard="test_feature_series",
         test="TestCutSeries.test_implement_marks_the_row",
         target=IMPLEMENT,
+        block="A review descope is one such",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestCutSeries.test_implement_marks_the_row",
+        target=IMPLEMENT,
+        block="work's home is a split milestone, the amendment writes the same row,",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestCutSeries.test_implement_marks_the_row",
+        target=IMPLEMENT,
         block="narrowed criterion's finding (the rule above) carries no marker. A",
     ),
     Mutation(
@@ -5260,6 +5272,12 @@ REGISTRY += [
         test="TestCutSeries.test_plan_writes_the_line_for_a_marked_row",
         target=PLAN,
         block="`split from M<NNN>` (a cut series) gets the work-log line",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestCutSeries.test_plan_writes_the_line_for_a_marked_row",
+        target=PLAN,
+        block="The cut milestone's file gets no",
     ),
     Mutation(
         guard="test_feature_series",

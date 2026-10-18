@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M276: A feature cut short at implement or review still ships as one change
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -164,4 +164,5 @@ candidate row "Series entry after a release (M276 plan)".
 - 2026-10-18: re-audit: AC4 (full) — 1 finding: "no ` — started` token" also hid a row whose token names a dropped milestone; fixed to the four live statuses.
 - 2026-10-18: re-audit: AC4 (full) — nothing; passes (re-entry read of the fixed wording).
 - 2026-10-18: T6: README tip and the CHANGELOG's Unreleased series entry edited in place, no new entry.
+- 2026-10-18: claim audit: 45 claims read, 2 corrected — skills/tests/test_mutation_harness.py (three asserted sentences lacked their own entry; added), skills/cairn-release/SKILL.md and skills/milestone-implement/SKILL.md (cite tracking-rules "A cut series"); same reader re-read both, now hold; skills/tests 883 OK.
 - 2026-10-18: T7: verify green (scripts 418 OK, hooks 179 OK, plugin and marketplace validate exit 0, plugin test 0 fail), skills/tests 883 OK, cairn_validate all checks passed.
