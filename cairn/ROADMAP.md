@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-18 (M279 done, PR #291: old cost-script figures re-measured or marked; M276 row pruned to retention; "Re-measure the figures built with the old `cairn_cost.py`" graduated; three Extraction lines reordered to end on their observed stamp; LESSONS 1 extended; skills/tests 886 green after that fix; budgets ok; validate green)_
+_Last hygiene check: 2026-10-18 (M280 done, PR #292: pane lists candidates by level, validate warns on file order; M277 row pruned to retention; two candidate rows added from review; skills/tests 886 green; budgets ok; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M280 | The pane shows candidates by priority, and validate warns on file order | review | — | normal | milestones/M280-candidate-level-order.md |
+| M280 | The pane shows candidates by priority, and validate warns on file order | done | — | normal | milestones/archive/M280-candidate-level-order.md |
 | M279 | Old cost-script figures are re-measured or marked | done | — | normal | milestones/archive/M279-old-cost-figures.md |
 | M278 | A failed read or session end leaves the cairn pane working | done | — | normal | milestones/archive/M278-pane-failed-read-end.md |
-| M277 | Search subagents run on the model a clarified re-test supports | done | — | normal | milestones/archive/M277-haiku-search-clarified.md |
 
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
