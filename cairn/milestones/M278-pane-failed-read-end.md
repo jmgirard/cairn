@@ -110,13 +110,13 @@ a known issue.
 - [x] T2: In `pressHome`, clear `homeRun` (when it is still the press's
       mark) on a rejected step read, in the `try`/`finally` shape of
       `pressChecked`; the rejection goes on. See the T1 test green.
-- [ ] T3: Write the AC2 tests first: the `state.set` write record (`update`
+- [x] T3: Write the AC2 tests first: the `state.set` write record (`update`
       always writes, so a resolved end writes all four), and one drawing
       test each for `step`, `dismissed`, and `ended` (`expanded` draws
       nothing; only `prompt.submit` reads it). The band tests' `seat` needs
       an `endThrows` switch like the pane tests' copy, or the tests go in
       `pane.test.tsx`. See each red on the current code for its own reason.
-- [ ] T4: Restructure the `session.end` handler so the four updates run on
+- [x] T4: Restructure the `session.end` handler so the four updates run on
       both paths before `free()`, the held-command hand-off, and the ⌂
       open; the rejected path rethrows `next(e)`'s error after them. See
       the T3 tests and the four AC3 blocks green with no line in them
@@ -153,3 +153,6 @@ a known issue.
 - 2026-10-18: implement started on branch m278-pane-failed-read-end; untracked `cairn-probe.log` and `tsconfig.json` predate the milestone and stay unstaged.
 - 2026-10-18: T1: AC1 test in pane.test.tsx red on main for its own reason (denied read once, no `/clear`, Status press ran nothing: received undefined).
 - 2026-10-18: T2: `pressHome` takes its mark back in a `finally` when the step read rejects; T1 test green; verify green (scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2077 pass).
+- 2026-10-18: T3: AC2 tests in band.test.tsx (a `stateWrites` record in the kit's one `state.set` hook, since the kit refuses a second; drawing tests for step, dismissed, ended on both surfaces); all 7 red on the pre-T4 handler (rejected end wrote nothing; old step row, hidden band, Clear Button drawn).
+- 2026-10-18: T3: `session.end` takes no `{ deny }` and a throwing hook is skipped, so the rejected `next(e)` carries the kit's "no implementation for session.end"; the test asserts that text (`NO_END`), which `register.tsx` never writes (git grep, no match).
+- 2026-10-18: T4: the `session.end` handler catches `next(e)`'s error, runs the four updates, `free()`, the held-command hand-off (`the session end failed` on a rejected end), and the ⌂ open on both paths, then rethrows; T3 tests and the four AC3 blocks green, no line in those blocks edited; verify green (scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2084 pass).

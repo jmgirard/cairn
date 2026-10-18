@@ -93,6 +93,11 @@ type Copy = {
   // While set, a slash command run beneath the mod waits for this promise
   // before it answers (M212 review).
   runHold?: Promise<void>
+  // While set, the session end beneath the mod throws (M278).
+  endThrows?: boolean
+  // While set, the key and value of each value the mod writes, in order,
+  // with a shaped value's shape removed (M278).
+  stateWrites?: { key: string; value: unknown }[]
 }
 
 function copyOf(name: string): Copy {
@@ -122,6 +127,7 @@ function seat(on: On, copy: Copy) {
   })
   on('state.set', async ($, e, next) => {
     if (e.plugin === 'cairn') copy.stateSets?.push(e.key)
+    if (e.plugin === 'cairn') copy.stateWrites?.push({ key: e.key, value: unshaped(e.value) })
     if (copy.dropRoot !== true || e.plugin !== 'cairn' || e.key !== 'band') return next(e)
     const shaped = e.value as { shape: string; value: object }
     return next({ ...e, value: { ...shaped, value: { ...shaped.value, root: null } } })
@@ -165,7 +171,12 @@ function seat(on: On, copy: Copy) {
     return { value: undefined }
   })
   on('tool.call', { tool: CHAPTER_TOOL }, async () => ({ result: 'Chapter marked' }))
-  on('session.end', async ($, e) => ({ sessionId: e.sessionId }))
+  // A hook that throws is skipped, so with nothing else beneath to answer
+  // it, the mod's `next(e)` rejects with the kit's `NO_END` (M278).
+  on('session.end', async ($, e) => {
+    if (copy.endThrows === true) throw new Error('the end failed')
+    return { sessionId: e.sessionId }
+  })
   // The engine's own drawing of the band slot, which the mod draws its rows
   // above, or passes to when it has nothing to show.
   on('ui.render', { component: 'AbovePrompt' }, async () => ({ type: 'Text', props: {}, children: [ENGINE] }))
@@ -3796,6 +3807,115 @@ describe('the action Buttons give way before the title loses its room (M212 AC4)
         if (key === 'plan-row' && shown.length !== WIDTHS.length) problems.push(`${surface}: empty row Buttons at ${shown.length} of ${WIDTHS.length} widths`)
       }
       expect(firstFew(problems)).toEqual([])
+    })
+  }
+})
+
+// A `clear` session end, resolved and then rejected, each after `setup`,
+// with what `look` reads after each end. The rejected end rejects with the
+// error the end beneath threw (M278 AC2).
+async function endTwice($, copy: Copy, setup: () => Promise<void>, look: () => Promise<unknown>) {
+  const out: { seen: unknown; message: string | undefined }[] = []
+  for (const rejects of [false, true]) {
+    await setup()
+    copy.endThrows = rejects ? true : undefined
+    let message: string | undefined
+    try {
+      await $.session.end({ reason: 'clear', sessionId: 's1' })
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error)
+    }
+    copy.endThrows = undefined
+    out.push({ seen: await look(), message })
+  }
+  return out
+}
+
+// The message the test kit's `session.end` rejects with when the one hook
+// beneath the mod throws and is skipped, as observed in M278. The mod
+// writes no such text, so a rejection carrying it is `next(e)`'s own.
+const NO_END = 'no implementation for session.end'
+
+// The four values a session end resets, by key, as `update` writes them.
+const END_KEYS = ['step', 'expanded', 'dismissed', 'ended']
+
+// A shaped value crosses `state.set` as `{ shape, value }`.
+function unshaped(value: unknown): unknown {
+  return value !== null && typeof value === 'object' && 'shape' in value ? (value as { value: unknown }).value : value
+}
+
+// A session end whose `next(e)` rejects resets the step, the expansion, the
+// close button's mark, and `ended` as a resolved end does, and rejects with
+// the error it was given (M278 AC2).
+describe('a rejected session end resets the band as a resolved one does (M278 AC2)', () => {
+  test('the end writes the four values as a resolved end writes them', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const [resolved, rejected] = await endTwice(
+      $,
+      copy,
+      async () => {
+        await prompt($, 'milestone-plan')
+        copy.stateWrites = []
+      },
+      async () => {
+        const got = (copy.stateWrites ?? []).filter(write => END_KEYS.includes(write.key))
+        copy.stateWrites = undefined
+        return got
+      },
+    )
+    expect(resolved.seen).toEqual([
+      { key: 'step', value: null },
+      { key: 'expanded', value: false },
+      { key: 'dismissed', value: null },
+      { key: 'ended', value: false },
+    ])
+    expect(rejected.seen).toEqual(resolved.seen)
+    expect(resolved.message).toBeUndefined()
+    expect(rejected.message).toBe(NO_END)
+  })
+
+  for (const surface of SURFACES) {
+    test(`a skill's step is gone after the end (${surface})`, async ($, on) => {
+      const copy = copyOf('mixed')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const [resolved, rejected] = await endTwice($, copy, () => prompt($, 'milestone-review'), () => lines(ui))
+      expect(resolved.seen).toEqual([SHOWN.mixed, ENGINE])
+      expect(rejected.seen).toEqual(resolved.seen)
+      await ui.unmount()
+    })
+
+    test(`a band the close button hid shows again (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const hide = async () => {
+        await ui.press({ key: 'cairn-close' })
+        expect(await lines(ui)).toEqual([ENGINE])
+      }
+      const [resolved, rejected] = await endTwice($, copy, hide, () => lines(ui))
+      expect(resolved.seen).toEqual([...DRAWN['single-in-progress'], ENGINE])
+      expect(rejected.seen).toEqual(resolved.seen)
+      await ui.unmount()
+    })
+
+    test(`the Clear Button is gone after the end (${surface})`, async ($, on) => {
+      const copy = copyOf('single-in-progress')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...BAND })) as Ui
+      const ends = async () => {
+        await skillEnds($)
+        expect(await allActionKeys(ui)).toEqual(WITH_CLEAR)
+      }
+      const [resolved, rejected] = await endTwice($, copy, ends, () => allActionKeys(ui))
+      expect(resolved.seen).toEqual(ACTION_KEYS)
+      expect(rejected.seen).toEqual(resolved.seen)
+      await ui.unmount()
     })
   }
 })
