@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M281: A Copilot request that GitHub does not record is reported
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -51,7 +51,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [x] AC1: `skills/shared/copilot-review.md` §2 states that after the
+- [ ] AC1: `skills/shared/copilot-review.md` §2 states that after the
       request command exits 0, the round runs the §3 state query once more.
       On `none` it reports in one line that GitHub may not have recorded the
       request, naming used-up Copilot credits as one possible cause, and
@@ -139,6 +139,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: re-audit: AC3 (full) — reachable, no IP or D-entry conflict, bounded, binds the docs' prose, proportionate; noted it does not require the old phrase to go (kept narrower; the docs drop the phrase anyway) and called "at that point" loose.
 - 2026-10-18: claim audit re-read (same reader): the 3 corrected claims are correct; README wrap fixed. Implement complete: both gating suites OK after the last edits, both validates 0, `claude plugin test` 2132/0 at dcf4a52c (later edits are markdown only), skills/tests 886 OK; status → review.
 - 2026-10-18: review step 2 Copilot arm: pushed, opened PR #293; state query `none`, request exited 0, re-query `none`, so the round reported "Copilot request on PR #293 not recorded by GitHub (used-up Copilot credits are one cause)" and made no second request (the new §2 rule, live).
+- 2026-10-18: review return 1: AC1 — §2's reported line says "not recorded by GitHub" as a fact, where AC1 requires a line saying GitHub may not have recorded the request (diff-bug #1). The fix-now items diff-bug #5, #6, #7 and blame-history #2, #8 ride the same fix pass, since they touch the same lines and files.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -157,3 +158,22 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - AC2 evidence (same read, §6): "or says why no review exists, such as §2's not-recorded line in the same pass."
 - AC3 evidence (`grep` at HEAD): README.md:849-852 "If the request command exits 0 but the PR shows no Copilot request or review just after it, Claude says so in one line, makes no second request, and does not wait there."; CHANGELOG.md:522-530, under `## Unreleased` → `### Fixes` (line 520, before `## 2.0.0` at 704), new entry naming the one line, "It makes no second request and does not wait there."
 - AC4 evidence: `wc -l -c skills/shared/copilot-review.md` → 138 lines, 7,978 bytes; the line "under 140 lines and under 8,000 bytes" appears once on main and once at HEAD.
+- Pass 1 consistency gate: `cairn_validate` all checks passed; CHANGELOG entry present with no milestone numbers; no principle changed, so `cairn_impact` skipped; the verify run was stopped for the return below, so AC5 waits for pass 2.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the reported line says "not recorded by GitHub" as a fact, while AC1 requires a line saying GitHub may not have recorded the request — floor return (AC1 fails as written), review return 1; AC1 unticked, its evidence above missed this.
+- diff-bug #2: "Make no second request" binds only within §2, so a later review pass or a hotfix resume that reads `none` requests again — follow-up, row "Copilot not-recorded edges (M281 review)".
+- diff-bug #3: §6 names the not-recorded line only as an example — reject, false: AC2 asks that §6 name the case, and it does.
+- diff-bug #4: milestone-review step 2's arm does not say where §2's line goes — reject, false: §6 says `/milestone-review` writes the lines to the Review section.
+- diff-bug #5: "Resolve the thread, the PR's only 'handled' mark" makes the thread the mark — fix now.
+- diff-bug #6: "whoever asked" and "counts a failure" are vaguer than the text they replaced — fix now.
+- diff-bug #7: README.md:853 is a 104-character line; copilot-review.md:124 is a short line — fix now for the README line; reject the module line, style.
+- diff-bug #8: the work log gives 7,998 bytes and the AC4 evidence 7,978 — reject, false: each was true when written, and the work log is append-only.
+- blame-history #1: the dropped "a read that follows a wait in the same pass does not wait again" — reject, planned change: T1's compression, and "A pass waits at most once" keeps the rule.
+- blame-history #2: "whoever asked" weakens M231's "who made an earlier request does not matter" — fix now (with diff-bug #6).
+- blame-history #3: an immediate re-query can mislabel a request that GitHub records late — follow-up, row "Copilot not-recorded edges (M281 review)" (the plan's falsifier).
+- blame-history #4: the dropped "The note requests, replies, and resolves nothing." — reject, planned change: §1's first paragraph still says it.
+- blame-history #5: "(the M231 question set)" shortened to "(M231)" — reject, planned change: D-152 and D-153 hold the consent record, and M231 points to it.
+- blame-history #6: the dropped "so it keeps polling to its 25-minute exit" — reject, planned change: "or after 25 minutes" keeps the behavior.
+- blame-history #7: §6 ties the line to "the same pass" — reject, planned change: AC2's wording after the criteria audit (no stored record, D-153).
+- blame-history #8: README over-long line — fix now (with diff-bug #7).
+- prior-review #1: a lagged `none` after a successful request gives a false "not recorded" line, and the next pass requests again (PR #240 thread on false `none`) — follow-up, row "Copilot not-recorded edges (M281 review)".
