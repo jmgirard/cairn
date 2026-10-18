@@ -6528,3 +6528,35 @@ then Known issues entries, each in table order, in place of M179's order
 by token, since every promoted candidate row is now `[high]`.
 
 **Consequences:** D-179's decision and falsifier stand as corrected here.
+
+### D-181 (2026-10-18): Explore searches run on Haiku 5.5 — supersedes D-151's clause that keeps search on Sonnet and D-174's clause "Explore searches stay on Sonnet (D-151)" (M277)
+
+**Context:** D-151 kept search on Sonnet by M228's `stay` verdict, and
+D-174 repeated that clause. M264 gave `stay` again. In both, every Haiku
+S2 run listed the right hook registrations but wrote each script without
+its `.py` extension and scored 0, and S2's prompt asked for "the Python
+file's base name" without saying whether the extension is part of it.
+M277 (`cairn/references/haiku-search-clarified.md`) reran the three search
+tasks three times per model with that phrase made explicit. Its rule,
+M264's, fixed before the runs, gave `move`: Haiku scored at least 0.9 times
+Sonnet's score, at a lower cost.
+
+**Decision:** Explore fan-out searches run on Haiku 5.5, at every skill
+site that spawns one. With edit work (D-151) and the two history reviewers
+(D-174) already on Haiku, no subagent role runs on Sonnet. Opus and Fable
+roles do not change. These clauses are superseded: D-151's "Search stays on
+Sonnet by its `stay` verdict" and D-174's "Explore searches stay on Sonnet
+(D-151)". The rest of both entries stands.
+
+**Rejected:** Keeping search on Sonnet until an open-answer search task is
+measured, because the maintainer asked for the clarified re-test as the
+condition and its rule gave `move`. Falsified by a real Haiku Explore
+fan-out that misses a site that a Sonnet rerun of the same prompt finds.
+
+**Consequences:** tracking-rules "Model and agent strategy" lists fan-out
+searches under Haiku subagents and has no Sonnet subagents bullet, and the
+four skill sites name Haiku. `skills/tests/test_review_fanout.py` pins
+both. The M277 tasks are closed-answer tasks with keys, so a plan-time
+investigation, whose answer has no key, is not measured. The effort-unset
+evidence for search (`effort-roles.md`) was measured on Sonnet, and no
+effort run exists on Haiku for search; effort stays unset (D-157).

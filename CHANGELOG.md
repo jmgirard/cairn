@@ -66,6 +66,18 @@
   Known issues entry take no change. A promote of a row without `[high]`
   always writes the mark, so to avoid it, amend the row to `keep`.
 
+- **Explore searches run on Haiku.** The search subagents that
+  `/milestone-plan`, `/milestone-implement`, `/design-interview`, and
+  `/cairn-triage` fan out now run on Haiku 5.5 instead of Sonnet 5.5, so
+  no cairn subagent role runs on Sonnet. Opus and Fable roles do not
+  change. In the cairn repository's test
+  (`cairn/references/haiku-search-clarified.md`), three search tasks ran
+  three times on each model. Haiku scored at least as high as Sonnet on
+  each task, at about 7% of Sonnet's cost. An earlier test had Haiku
+  behind, but only because one task's prompt left unclear whether a file
+  name includes its `.py` extension. The tasks have fixed answers, so the
+  test does not cover an open investigation.
+
 - **The two history reviewers run on Haiku.** In `/milestone-review`'s
   three-reviewer fan-out, the blame-history and prior-PR-comments
   reviewers now run on Haiku 5.5 instead of Sonnet 5.5. The diff-bug
@@ -280,9 +292,8 @@
   `wc -l -c`.
 - **Edit-work subagents run on Haiku 5.5.** Mechanical migrations, test
   writing against a spec, and boilerplate now spawn Haiku 5.5, not
-  Sonnet. Explore searches stay on Sonnet (the two history reviewers moved
-  to Haiku later; see the entry above), and Opus and Fable roles do not
-  change. The "Never Haiku" rule is gone. The session still reads each
+  Sonnet. Explore searches and the two history reviewers moved to Haiku
+  later (see the entries above), and Opus and Fable roles do not change. The "Never Haiku" rule is gone. The session still reads each
   Haiku diff and runs the profile's `verify` checks before it commits. A
   side-by-side test measured migrations and test writing, and boilerplate
   follows that result untested. On three edit tasks both models scored the same, and

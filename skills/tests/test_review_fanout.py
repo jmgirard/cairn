@@ -11,7 +11,9 @@ the load-bearing pieces against silent regression:
     threads only behind a probe, always spawned, and scoring nothing itself;
   * the reviewers reminded to use ref-based git only in the shared tree;
   * the model-strategy section counting three distinct-evidence reviewers
-    and naming the two history lenses under Haiku, never Sonnet (M269).
+    and naming the two history lenses under Haiku, never Sonnet (M269);
+  * Explore searches routed to Haiku in the rulebook and at the four skill
+    sites that spawn them, with no Sonnet subagents bullet left (M277).
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -92,6 +94,38 @@ class TestReviewFanout(unittest.TestCase):
         r = " ".join(rules().split())
         self.assertIn("Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments", r)
         self.assertNotRegex(r, r"Sonnet (blame-history|prior-PR-comments)")
+
+
+class TestSearchModel(unittest.TestCase):
+    """M277 (D-181): Explore searches run on Haiku. The rulebook's Haiku
+    bullet names them, the Sonnet subagents bullet is gone, and each skill
+    site that spawns an Explore fan-out names Haiku for it. Whitespace is
+    collapsed so a wrap inside a phrase still matches."""
+
+    SITES = {
+        ("milestone-plan", "SKILL.md"): "fan out Haiku Explore subagents",
+        ("milestone-implement", "SKILL.md"):
+            "Haiku for well-specified mechanical work, test writing against "
+            "a spec, boilerplate, and Explore searches",
+        ("design-interview", "SKILL.md"): "fan out Haiku Explore subagents",
+        ("cairn-triage", "SKILL.md"): "One Haiku Explore fan-out",
+    }
+
+    def test_rulebook_haiku_bullet_names_fan_out_searches(self):
+        r = rules()
+        start = r.index("- **Haiku subagents**")
+        end = r.index("\n- **", start + 1)
+        bullet = " ".join(r[start:end].split())
+        self.assertIn("fan-out searches (Explore", bullet)
+        self.assertIn("reading list", bullet)
+        self.assertNotIn("**Sonnet subagents**", r)
+
+    def test_each_explore_site_names_haiku(self):
+        for parts, phrase in self.SITES.items():
+            with self.subTest(site="/".join(parts)):
+                t = " ".join(read(*parts).split())
+                self.assertIn(phrase, t)
+                self.assertNotRegex(t, r"Sonnet (for )?Explore")
 
 
 class TestPriorPRLens(unittest.TestCase):
