@@ -28,6 +28,8 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - README.md is knitted from README.Rmd; present and out of sync with README.md → `devtools::build_readme()`, commit.
 - pkgdown site present → `pkgdown::check_pkgdown()` passes (catches exports missing from `_pkgdown.yml`).
 - The declared changelog (`## changelog` slot) has an entry for this milestone's user-visible changes (no milestone numbers in user-facing text).
+  A milestone of a feature series (tracking-rules "Feature series") meets this with an edit to the series' existing entry.
+  A milestone before the series' last with no user-visible change needs no entry.
 - New top-level files have `.Rbuildignore` entries (check `check()` NOTEs).
 - Full check at review: `Rscript -e 'devtools::check()'` clean (0 errors, 0 warnings; justify NOTEs). In guest
   collaboration mode (tracking-rules "Collaboration mode") the NOTE for the non-standard top-level `cairn` directory

@@ -189,6 +189,18 @@ sub-milestones; internal structure means split, wired with `Depends on:`. Split 
 tasks, a goal sentence needing "and", tasks shippable independently, or no hope of the 150-line cap. Prefer vertical
 slices; every milestone leaves the default branch shippable; splitting never discards the remainder.
 
+**Feature series.** A feature series is two or more milestones that one plan splits from one user-facing feature or
+fix. (a) Each milestone of the series but the last keeps its new behavior out of users' reach where it can,
+adding no export, user doc, or changelog entry.
+(b) Each milestone but the last carries an `Out:` item naming the last milestone as where the feature's new
+exports and user docs land, and, unless (c) applies, its changelog entry.
+(c) When a milestone before the last must change user-visible behavior, its changelog entry is the feature's one entry,
+and each later milestone of the series edits that entry instead of adding one.
+(d) In guest mode a later part can build on at most one open earlier part (D-173),
+so a series of three or more waits on the maintainers' merges.
+The plan writes a `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone of the series. In guest mode
+`/milestone-review` reads it for the PR body, and in owner mode `/cairn-release` reads it at the version decision.
+
 Work that isn't a milestone: **Trivial** (no runtime surface — typos, tracking, comments) → direct commit to the default
 branch, no tracking beyond the commit. Through `/milestone-plan`'s trivial route, the commit also graduates the rows
 it fixes. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,

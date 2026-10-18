@@ -40,6 +40,8 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
   caches) — stray context is drift.
 - The declared changelog (`## changelog` slot) has an entry for this milestone's
   user-visible changes (no milestone numbers in user-facing text).
+  A milestone of a feature series (tracking-rules "Feature series") meets this with an edit to the series' existing entry.
+  A milestone before the series' last with no user-visible change needs no entry.
 
 ## test-doctrine
 Container-mechanical test expectations layered on the universal "What gets a

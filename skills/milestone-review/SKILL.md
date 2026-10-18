@@ -671,6 +671,11 @@ re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
+   When the milestone's work log carries a `feature series:` line
+   (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
+   For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
+   For the last, it says the change completes the series and names each earlier milestone's pull request by number,
+   read from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.
    With the Copilot review round on (`skills/shared/copilot-review.md`
    §1), run it here, after the create and before the close block: the
    state query (§3), the request on `none` asking for Balanced (§2), the

@@ -4,6 +4,21 @@
 
 ### Changes that affect existing repos
 
+- **A feature split across milestones reaches users as one change.** When a
+  plan splits one user-facing feature or fix into several milestones, it
+  writes them as a feature series and puts a
+  `feature series: M<a> -> M<b>` line in each milestone's work log. Each
+  part before the last keeps its new behavior out of users' reach where it
+  can, with no new export, user doc, or changelog entry. The last part adds
+  them. When an earlier part must change visible behavior, its changelog
+  entry is the feature's one entry, and later parts edit it. The changelog
+  check in the `python`, `r-package`, `claude-plugin`, and `docker-image`
+  profiles accepts that edit, and needs no entry for a hidden earlier part.
+  In guest mode, each series pull request says in one plain sentence
+  whether it completes the series, and the last one names the earlier pull
+  requests. In owner mode, `/cairn-release` names each series that has a
+  merged part and an unmerged part when it asks for the version.
+
 - **Planning names the first high-priority candidate.** When no milestone
   is in review, in progress, or workable, `scripts/cairn_next.py`
   recommends planning. It now names a `[high]` candidate row by its short

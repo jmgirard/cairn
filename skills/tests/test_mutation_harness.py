@@ -46,6 +46,7 @@ ARCHIVE_TEMPLATE = "skills/shared/templates/archive-summary.md"
 README = "README.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
+PROFILES_DIR = "skills/shared/profiles/"
 
 REGISTRY = [
     # M71 (D-042): one entry per positive assert's block — the enumeration,
@@ -4821,5 +4822,144 @@ REGISTRY += [
         test="TestSurfacesNameThePass.test_readme_names_the_pass",
         target=README,
         block="`/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`",
+    ),
+    # M274: the feature series rule. One entry per asserted line.
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_defines_the_series",
+        target=RULES,
+        block="**Feature series.** A feature series is two or more milestones that one plan splits from one user-facing feature or",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_earlier_parts_stay_hidden",
+        target=RULES,
+        block="adding no export, user doc, or changelog entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_out_item_names_the_last",
+        target=RULES,
+        block="(b) Each milestone but the last carries an `Out:` item naming the last milestone as where the feature's new",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_later_parts_edit_the_one_entry",
+        target=RULES,
+        block="and each later milestone of the series edits that entry instead of adding one.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_guest_stack_limit",
+        target=RULES,
+        block="(d) In guest mode a later part can build on at most one open earlier part (D-173),",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestRulebookParagraph.test_work_log_line",
+        target=RULES,
+        block="The plan writes a `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone of the series.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestPlanBullet.test_step_four_writes_the_series",
+        target=PLAN,
+        block="- **Feature series.** When a split divides one user-facing feature or",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestPlanBullet.test_step_four_writes_the_series",
+        target=PLAN,
+        block="work-log line `feature series: M<a> -> M<b>[ -> …]` in each milestone",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_series_edit_meets_the_gate",
+        target=PROFILES_DIR + "python.md",
+        block="A milestone of a feature series (tracking-rules \"Feature series\") meets this with an edit to the series' existing entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_hidden_part_needs_no_entry",
+        target=PROFILES_DIR + "python.md",
+        block="A milestone before the series' last with no user-visible change needs no entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_series_edit_meets_the_gate",
+        target=PROFILES_DIR + "r-package.md",
+        block="A milestone of a feature series (tracking-rules \"Feature series\") meets this with an edit to the series' existing entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_hidden_part_needs_no_entry",
+        target=PROFILES_DIR + "r-package.md",
+        block="A milestone before the series' last with no user-visible change needs no entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_series_edit_meets_the_gate",
+        target=PROFILES_DIR + "claude-plugin.md",
+        block="A milestone of a feature series (tracking-rules \"Feature series\") meets this with an edit to the series' existing entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_hidden_part_needs_no_entry",
+        target=PROFILES_DIR + "claude-plugin.md",
+        block="A milestone before the series' last with no user-visible change needs no entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_series_edit_meets_the_gate",
+        target=PROFILES_DIR + "docker-image.md",
+        block="A milestone of a feature series (tracking-rules \"Feature series\") meets this with an edit to the series' existing entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestProfileGates.test_hidden_part_needs_no_entry",
+        target=PROFILES_DIR + "docker-image.md",
+        block="A milestone before the series' last with no user-visible change needs no entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_sentence_has_no_cairn_vocabulary",
+        target=REVIEW,
+        block="(tracking-rules \"Feature series\"), the body adds one plain sentence with no cairn vocabulary.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_earlier_part_sentence",
+        target=REVIEW,
+        block="the sentence says the change is one part of a series whose user-facing part comes in a later pull request.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_last_part_names_earlier_prs",
+        target=REVIEW,
+        block="For the last, it says the change completes the series and names each earlier milestone's pull request by number,",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_last_part_names_earlier_prs",
+        target=REVIEW,
+        block="read from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_lists_half_merged_series",
+        target=RELEASE,
+        block="in a milestone file under `cairn/milestones/` (not `archive/`) where the",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_lists_half_merged_series",
+        target=RELEASE,
+        block="line names at least one milestone whose ROADMAP status is `done`.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReleaseList.test_question_names_them",
+        target=RELEASE,
+        block="The version-decision question names each listed series and its milestones that are not `done`.",
     ),
 ]

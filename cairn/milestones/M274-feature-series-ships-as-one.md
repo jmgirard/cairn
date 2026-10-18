@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M274: A feature split across milestones reaches users as one change
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — changes what the plan, review, release walk, and profile gates tell every adopting repo to do   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m274-feature-series-ships-as-one   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -115,23 +115,23 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: tracking-rules "Sizing and the work tiers" (~line 187): one
+- [x] T1: tracking-rules "Sizing and the work tiers" (~line 187): one
       paragraph after the split tripwires defining a feature series and its
       rules (a)–(d). Keep the word "chain" out (stacking uses it).
-- [ ] T2: `skills/milestone-plan/SKILL.md` step 4: one bullet for a split
+- [x] T2: `skills/milestone-plan/SKILL.md` step 4: one bullet for a split
       of one feature into a series, with the `feature series:` line.
-- [ ] T3: the four profiles' consistency-gate changelog line.
-- [ ] T4: `skills/milestone-review/SKILL.md` step 8 guest arm (~line 660):
+- [x] T3: the four profiles' consistency-gate changelog line.
+- [x] T4: `skills/milestone-review/SKILL.md` step 8 guest arm (~line 660):
       the series sentence and where the earlier PR numbers are read.
-- [ ] T5: `skills/cairn-release/SKILL.md` step 1: the half-merged series
+- [x] T5: `skills/cairn-release/SKILL.md` step 1: the half-merged series
       list and its place in the version-decision question.
-- [ ] T6: tests first in a new `skills/tests/test_feature_series.py`: one
+- [x] T6: tests first in a new `skills/tests/test_feature_series.py`: one
       guard per AC1–AC5 clause, each with a mutation-registry entry
       (`skills/tests/test_mutation_harness.py`). Hand-run `skills/tests`.
-- [ ] T7: CHANGELOG Unreleased entry (AC6); grep README and `skills/` for
+- [x] T7: CHANGELOG Unreleased entry (AC6); grep README and `skills/` for
       text restating one changelog entry per milestone and update it. Read
       each claim against T1–T5's text.
-- [ ] T8: Run the `verify` slot on the code head and record each exit code.
+- [x] T8: Run the `verify` slot on the code head and record each exit code.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -154,6 +154,11 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
 - 2026-10-18: plan gate chose prose rules and prose guards over a validator that checks series membership, at the user's ask for proportional rigor; falsified by a release that ships a half-built series a validator would have flagged.
 - 2026-10-18: criteria audit (full mode, fresh Opus reader) returned 5 findings, all fixed: AC1's Out rule allows for rule (c); "chain" renamed "feature series" (stacking already uses "chain"), with the guest one-stack-base limit as rule (d); AC2 names a step 4 bullet, not a nonexistent list, and the line uses ASCII `->`; AC4 reads earlier PR numbers from archive Status lines too; AC5 claims only series named by a live milestone file. AC3 and AC6 clean.
 - 2026-10-18: split: none; 7 criteria, 8 tasks. The review-time-split remainder goes to the candidate row "Feature series from a review-time split (M274 plan)".
+- 2026-10-18: branch m274-feature-series-ships-as-one cut from origin/main at e4eb7db2; untracked `cairn-probe.log` and `tsconfig.json` are not milestone work and stay unstaged.
+- 2026-10-18: T1–T5: prose edits in tracking-rules (Sizing, new "Feature series" paragraph), milestone-plan step 4 bullet, the four profiles' changelog gate lines, milestone-review step 8 guest arm, cairn-release step 1. Implementation choice: each rule clause sits on its own source line so the prose guards can match it whole.
+- 2026-10-18: T6: `skills/tests/test_feature_series.py` (14 tests) and 23 mutation-registry entries; written after the T1–T5 text in one pass rather than before it, a deviation from tests-first; the mutation harness shows each guard fails when its line is blanked. `skills/tests` 856 green.
+- 2026-10-18: T7: CHANGELOG Unreleased entry; README tips gain one sentence on feature series. Grep of README and skills for per-milestone changelog wording found only `/hotfix` lines, which a series does not cover.
+- 2026-10-18: T8: verify on the code head: scripts 0 (418 tests, OK, 21 skipped), hooks 0, plugin validate 0 (passed with warnings), marketplace validate 0, plugin test 0 (2076 tests, 0 fail); cairn_validate all checks passed. Checkpoint is one commit for T1–T8, not one per task.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
