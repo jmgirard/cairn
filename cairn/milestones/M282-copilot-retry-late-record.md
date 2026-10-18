@@ -11,7 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters with `# Copilot review: on` get the round's requests and read its report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m282-copilot-retry-late-record   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m282-copilot-retry-late-record, https://github.com/jmgirard/cairn/pull/294   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -182,6 +182,7 @@ not added.
 - 2026-10-18: claim audit follow-up: the compression had dropped two rules, now restored in `skills/shared/copilot-review.md`: the module is read "only then", and the opt-in line permits the round's outward writes, the request included. Kept out: the budget's baseline figures and "plain" in the off-note (history and wording, not rules). Module 139 lines, 7,990 bytes; verify and skills/tests green.
 - 2026-10-18: open concern for review: on the hotfix guest arm (`skills/hotfix/SKILL.md` step 6 guest handoff) no state query runs at read time after §2's re-query, so §6's "the read's own state query" has no query to read there.
 - 2026-10-18: implement done; status set to review.
+- 2026-10-18: review step 2 Copilot arm: branch pushed, PR #294 opened; state query `none`, `gh pr edit 294 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #294 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request at that step.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
