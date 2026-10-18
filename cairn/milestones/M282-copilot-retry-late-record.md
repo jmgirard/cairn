@@ -138,7 +138,7 @@ not added.
       `### Fixes` entry under `CHANGELOG.md`'s `## Unreleased`. Grep the
       repo for "second request" and "not recorded" to find any other site
       that states the old rule (the M112 lesson).
-- [ ] T4: Append a D-entry to `cairn/DECISIONS.md` that narrows D-153's
+- [x] T4: Append a D-entry to `cairn/DECISIONS.md` that narrows D-153's
       falsifier "requests Copilot twice on one PR" to a request made while
       GitHub holds an earlier Copilot request or review on the PR. It
       states the timeline facts from Scope (1), and records the rejected
@@ -176,6 +176,7 @@ not added.
 - 2026-10-18: T1 choice: the guest-mode close sentence on a late Copilot review was cut from §6, since the hotfix and review guest closes state it; the guest reply-vocabulary rule was kept in shorter form, since the rulebook's vocabulary bullet does not name replies.
 - 2026-10-18: T2 done: the review step 7 presentation, review step 8 guest close, hotfix step 6 chip, and hotfix guest close each name §6's reason line for a missing review beside the `copilot:` and level or pending lines; verify green, `skills/tests` 886 green.
 - 2026-10-18: T3 done: README Copilot paragraph and a new CHANGELOG Unreleased Fixes entry state the retry and the late-record rule; `git grep` for "second request", "not recorded", and "requests Copilot twice" found no other live site with the old rule (D-153's falsifier is T4's); verify green.
+- 2026-10-18: T4 done: D-183 appended, narrowing D-153's falsifier to a request made while GitHub holds an earlier Copilot request or review; rejects a cairn record of the request; `cairn_validate` green, both gating suites green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
