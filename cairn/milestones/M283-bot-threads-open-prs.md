@@ -137,7 +137,7 @@ not added.
       command keeps `--repo <base-repo>`, which
       `skills/tests/test_milestone_gh_repo.py` pins.
 - [x] T2: Run the AC4 and AC5 commands by hand, and log one line each.
-- [ ] T3: Update `README.md` (lines 802-816), and add the `### New` entry to
+- [x] T3: Update `README.md` (lines 802-816), and add the `### New` entry to
       `CHANGELOG.md`. Grep the repo for "Open hotfix PRs" and
       "unresolved-thread count" to find any other site that the change makes
       stale (the M112 lesson).
@@ -187,3 +187,4 @@ not added.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+- 2026-10-18: T3: README "Contributions come in through you" paragraph and a CHANGELOG Unreleased `### New` entry describe the bullet; `git grep` for "Open hotfix PRs" and "unresolved-thread count" found no other site the change makes stale.
