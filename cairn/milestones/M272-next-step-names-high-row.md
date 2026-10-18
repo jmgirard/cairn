@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M272: The next-step recommendation names the first unstarted high-priority candidate
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -40,7 +40,7 @@ M271.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [x] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
+- [ ] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
       the planning case it holds the short title (tracking-rules "Candidate
       short title"), trimmed as JavaScript's `trim` trims, of the first row
       under `## Candidates`, in ROADMAP order and outside HTML comments, that
@@ -120,6 +120,8 @@ M271.
 - 2026-10-17: T4 done: README's idle-row paragraph (~:187) and the pane's Next-line paragraph (~:297) name the `[high]` row; the empty-row paragraph (~:226) said `Plan` runs with no arguments, now false, so it was corrected too; CHANGELOG entry under Unreleased. The simple-english lint hook reports 218 README and 360 CHANGELOG hits; the README count equals its pre-branch count, and the CHANGELOG's one added hit is the house bold lead-in. verify green: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass.
 - 2026-10-17: claim audit: 41 claims read, 1 corrected — scripts/tests/test_scripts.py (a test comment said a token run on into a digit is not a token; `[0-9]+` absorbs the digit, so it now says a letter); re-read by the same reader: true. Noted, not a claim error: a `[high]` row with a dead started token is skipped by the pill but still listed by the pane, as the criteria audit noted.
 - 2026-10-17: implement complete; status review. verify green on the branch head: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass; cairn_validate all checks passed.
+- 2026-10-17: review pass 1: AC2-AC6 and the gate pass; 3 lenses ran; 5 findings fixed in 5afb3631, 9 rejected, 9 to the new candidate row "Plan target edges (M272 review)".
+- 2026-10-17: amendment routed: AC1 — diff-bug #8: AC1 says a started token is followed by "a character that is not a letter or digit", but the reader, like the pane's M258 `STARTED_TOKEN`, ends the token at any character that is not an ASCII letter or digit, so `— started M12é` counts; the wording, not the code, is wrong.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -136,3 +138,27 @@ Review pass 1, 2026-10-17, branch head 7e6726f9 (main b1d03358 unmoved). PR #284
 - AC5: read at head: `README.md:187-191` (the paragraph naming `cairn_next.py`'s recommendation) and `README.md:298-302` (the pane's Next line) each say planning names the first `[high]` candidate row with no started token; the `cairn_next.py` module docstring (:9-11) and the `recommend` docstring (:83-88) say it; `CHANGELOG.md:7-19` under `## Unreleased` has the entry. PASS.
 - AC6: verify on code head 7e6726f9: `scripts/tests` 415 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2070 pass 0 fail. PASS.
 - Gate: `cairn_validate.py` exit 0, all checks passed; no principle touched, so no `cairn_impact`; profile gate: verify green (AC6), the marketplace validate prints no `version` warning, and `CHANGELOG.md` has an Unreleased entry with no milestone number. PASS.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: the press names a row an open PR names when the pane has not read the PRs yet (pane closed, or press before the read settles), while README/CHANGELOG stated the hide rule with no condition — fix now (docs: the rule is the pane's last PR read, as AC4's "the pane's M252 hide rule" is; README :230, :300, CHANGELOG), fixed 5afb3631
+- diff-bug #2: two rows with one short title, the other carrying a live started token: the pill names a title the Candidates list hides — follow-up ("Plan target edges (M272 review)")
+- diff-bug #3: a dead started token, or a `#` token of 16+ digits, makes the pill pass over a row the pane still lists — follow-up (same row); AC1 as written skips any token
+- diff-bug #4: `cairn/DESIGN.md:180` still says Plan runs with empty args — fix now, fixed 5afb3631
+- diff-bug #5: `skills/milestone-review/SKILL.md` step 10's `→ /<skill> [M<NNN>]` tail omits a title, and `skills/milestone/SKILL.md:392` says `cairn_next` reads status and priority alone — follow-up (same row); both outside Scope In
+- diff-bug #6: `NextStep` gained `title` with the `pane` atom tag left at `pane-6`, against register.tsx's "bump a tag when its type changes" — fix now (`pane-7`, DESIGN :356, :474, :706), fixed 5afb3631
+- diff-bug #7: a `[high]` row under `## Candidates (dropped)` can be recommended — follow-up (same row); the reader shares the pane's and `candidate_count`'s heading rule, a DESIGN known issue
+- diff-bug #8: AC1 says a token followed by "a character that is not a letter or digit", and the code treats a non-ASCII letter (`M12é`) as ending the token — amendment routed (AC1's wording, not the code: the reader follows the pane's M258 `STARTED_TOKEN`, ASCII-only)
+- diff-bug #9: an unclosed `<!--` hides nothing, so a row after it can be recommended — follow-up (same row); pre-existing reader behavior
+- diff-bug #10: a press after a refresh plans the new first `[high]` row, not the one the stale drawing showed — reject (planned design: the press reads state at press time, M212 review, M213)
+- diff-bug #11: no test holds a live started token, only one compared fixture has a title, and the comment unit tests wrap markers in bullets — reject (no defect behind it; the fixture covers a flush-left comment)
+- blame-history #1: dead started tokens block the row — follow-up (same as diff-bug #3)
+- blame-history #2: `[high]` now picks the Plan target, which D-179 names as the entry to supersede if ready and important rows need telling apart — reject (planned change: the user chose naming the first `[high]` row at M271's question set; no operator has hit the case D-179 names)
+- blame-history #3: `cairn_next.py` prints the title when an open PR names the row, the pane drops it — reject (planned change: the plan gate chose one rule Python can apply, falsifier recorded)
+- blame-history #4: DESIGN.md:179-180 stale — fix now (same as diff-bug #4), fixed 5afb3631
+- blame-history #5: `pane-6` tag not bumped — fix now (same as diff-bug #6), fixed 5afb3631
+- blame-history #6: `## Candidates (dropped)` heading read — follow-up (same as diff-bug #7)
+- blame-history #7: the `#` digit cap differs from the pane's — follow-up (same as diff-bug #3)
+- blame-history #8: no length cap on the pill's title — reject (false: the pill's Text draws `truncate-end` and is cut first, M218)
+- blame-history #9: the title argument goes unquoted — reject (planned change: the ✎ press passes titles the same way, M242)
+- blame-history #10: an untokened row that a planned or blocked milestone already quotes can be named again — follow-up (same row)
+- prior-review #1: a sibling row with the same title and a live token hides the row in the pane while the pill names it — follow-up (same as diff-bug #2)
+- AC1 tick withdrawn: diff-bug #8 shows AC1's token-end wording failing as written; AC1 is re-verified after its amendment.
