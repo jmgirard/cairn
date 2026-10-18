@@ -10,7 +10,9 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 |---|---|---|---|---|---|
 | M276 | A feature cut short at implement or review still ships as one change | done | — | normal | milestones/archive/M276-series-from-a-scope-cut.md |
 | M275 | A feature series stays listed and keeps one entry until its last part ships | done | — | normal | milestones/archive/M275-feature-series-edges.md |
-| M274 | A feature split across milestones reaches users as one change | done | — | normal | milestones/archive/M274-feature-series-ships-as-one.md |## Candidates
+| M274 | A feature split across milestones reaches users as one change | done | — | normal | milestones/archive/M274-feature-series-ships-as-one.md |
+
+## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
 - Re-measure the figures built with the old `cairn_cost.py`: PR #238 (2026-10-10) made it count each call once and read subagent files; earlier figures summed every record and skipped subagents: `session-cost-notes.md`'s baseline (A4 row), M153's medians in `record-rule-remeasurement.md`, `effort-experiment-notes.md`. Promote when a decision next relies on one — added 2026-10-09 — M228 review; narrowed 2026-10-10 by the PR #238 hotfix
 - `/hotfix` companion arm: a hotfix spanning a primary repo and a companion checkout (hitop + hitop-form) has no milestone file to list the companion in, so M188's review-side arm (companions pushed, opened, and merged first via `cd <abs-path> && gh pr merge <N>`) does not reach it; the companions would be named at the step-6 approval chip. Promote when a hotfix actually spans two repos — never on a synthetic case — added 2026-09-27 — M188 Out
