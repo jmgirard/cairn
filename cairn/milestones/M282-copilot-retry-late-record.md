@@ -143,7 +143,7 @@ not added.
       GitHub holds an earlier Copilot request or review on the PR. It
       states the timeline facts from Scope (1), and records the rejected
       alternative: a cairn record of the request, which D-153 rejected.
-- [ ] T5: Run the `verify` slot, and hand-run `skills/tests` after the
+- [x] T5: Run the `verify` slot, and hand-run `skills/tests` after the
       module and skill edits (the M148 and M279 lessons).
 
 ## Work log
@@ -177,6 +177,7 @@ not added.
 - 2026-10-18: T2 done: the review step 7 presentation, review step 8 guest close, hotfix step 6 chip, and hotfix guest close each name §6's reason line for a missing review beside the `copilot:` and level or pending lines; verify green, `skills/tests` 886 green.
 - 2026-10-18: T3 done: README Copilot paragraph and a new CHANGELOG Unreleased Fixes entry state the retry and the late-record rule; `git grep` for "second request", "not recorded", and "requests Copilot twice" found no other live site with the old rule (D-153's falsifier is T4's); verify green.
 - 2026-10-18: T4 done: D-183 appended, narrowing D-153's falsifier to a request made while GitHub holds an earlier Copilot request or review; rejects a cairn record of the request; `cairn_validate` green, both gating suites green.
+- 2026-10-18: T5 done at afa7377b: scripts/tests 423 OK, hooks/tests 179 OK, both `claude plugin validate` exit 0, `claude plugin test` 2132 pass 0 fail, hand-run skills/tests 886 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
