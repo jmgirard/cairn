@@ -78,9 +78,9 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T1
+- AC1 → T1, T4
 - AC2 → T1
-- AC3 → T2
+- AC3 → T2, T4
 - AC4 → T1, T3
 - AC5 → T3
 
@@ -106,6 +106,11 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - [x] T3: Run the `verify` slot (AC5) and `wc -l -c` on the module (AC4).
       Hand-run `python3 -m unittest discover -s skills/tests` and note its
       result in the work log (non-gating, D-109).
+- [x] T4: Review return 1: reword §2's reported line to say GitHub may not
+      have recorded the request, and update the CHANGELOG entry that
+      quotes it. In the same pass, fix review pass 1's fix-now items: §5
+      step 4's appositive, §2's "whoever asked", §4's "counts a failure",
+      and README.md's 104-character line. Keep AC4's budget.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -140,6 +145,8 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: claim audit re-read (same reader): the 3 corrected claims are correct; README wrap fixed. Implement complete: both gating suites OK after the last edits, both validates 0, `claude plugin test` 2132/0 at dcf4a52c (later edits are markdown only), skills/tests 886 OK; status → review.
 - 2026-10-18: review step 2 Copilot arm: pushed, opened PR #293; state query `none`, request exited 0, re-query `none`, so the round reported "Copilot request on PR #293 not recorded by GitHub (used-up Copilot credits are one cause)" and made no second request (the new §2 rule, live).
 - 2026-10-18: review return 1: AC1 — §2's reported line says "not recorded by GitHub" as a fact, where AC1 requires a line saying GitHub may not have recorded the request (diff-bug #1). The fix-now items diff-bug #5, #6, #7 and blame-history #2, #8 ride the same fix pass, since they touch the same lines and files.
+- 2026-10-18: implement resumed for review return 1: added T4 (minor amendment) and its Coverage entries on AC1 and AC3.
+- 2026-10-18: T4 done: §2's line now reads "Copilot request on PR #<N> may not be recorded by GitHub (used-up Copilot credits are one cause)", and the CHANGELOG quote matches; fix-now items done (§5 step 4 split back into two sentences, "whoever made the earlier request", "counts a failed query", README lines rewrapped); bytes recovered from §1 "No line", §2's failure example, and §6's guest sentence. Module 139 lines / 7,993 bytes. Verify green (scripts 423 OK, hooks 179 OK, validates 0 with no version warning, plugin test 2132/0); skills/tests 886 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
