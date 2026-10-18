@@ -50,8 +50,8 @@ no wait.
 
 ## 3. State query
 
-One query reads the PR. `<owner>` and `<name>` are the base repo's (guest
-mode: the upstream's).
+In the query, `<owner>` and `<name>` are the base repo's (guest mode: the
+upstream's).
 
 ```
 gh api graphql -f owner=<owner> -f name=<name> -F n=<N> -f query='query($owner:String!,$name:String!,$n:Int!){repository(owner:$owner,name:$name){pullRequest(number:$n){headRefOid reviewRequests(first:100){nodes{requestedReviewer{... on Bot{login}}}} reviews(author:"copilot-pull-request-reviewer[bot]",last:20){nodes{author{login} commit{oid} body}}}}}' --jq '.data.repository.pullRequest as $p | ([$p.reviewRequests.nodes[].requestedReviewer.login] | index("copilot-pull-request-reviewer") != null) as $pending | [$p.reviews.nodes[] | select(.author.login=="copilot-pull-request-reviewer")] as $cr | if $pending then "pending" elif ($cr|length)>0 then "reviewed \(if any($cr[]; .commit.oid==$p.headRefOid) then "head" else "earlier-head" end) \($cr[-1].body | capture("Review effort:\\*\\* (?<e>[A-Za-z]+)")?.e // "unknown")" else "none" end'
@@ -108,7 +108,7 @@ read then acts on it:
    ```
 
 4. Resolve the thread. The resolve is the PR's only "handled" mark, so a
-   later read skips it.
+   later read skips the thread.
 
    ```
    gh api graphql -f id=<thread id> -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}'

@@ -68,7 +68,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - [x] AC4: `wc -l -c skills/shared/copilot-review.md` shows under 140 lines
       and under 8,000 bytes, the figures the module's budget line states,
       and the budget line's figures are unchanged.
-- [ ] AC5: The profile's `verify` slot is clean: both gating
+- [x] AC5: The profile's `verify` slot is clean: both gating
       `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`),
       `claude plugin validate` on the plugin and marketplace manifests, and
       `claude plugin test`.
@@ -190,3 +190,23 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - AC2 evidence (pass 2): §6 line 135, "or says why no review exists, such as §2's not-recorded line in the same pass."
 - AC3 evidence (pass 2): README.md:849-852 says that when the request exits 0 and the PR shows no request or review just after it, Claude says so in one line, "makes no second request, and does not wait there"; the CHANGELOG `## Unreleased` → `### Fixes` entry (lines 522-531) quotes the line and says "It makes no second request and does not wait there." `grep "goes on without Copilot"` finds neither file.
 - AC4 evidence (pass 2): `wc -l -c` → 139 lines, 7,995 bytes; the budget line "under 140 lines and under 8,000 bytes" appears once, unchanged from main.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1 (pass 2): this pass's second request on PR #293 is the case D-153 names as its falsifier, and the plan's collision check assumed no second request — follow-up: the cause is §2's existing request-on-`none` rule, which a later pass cannot tell apart from a first request without the stored record D-153 rules out; GitHub recorded neither request; row "Copilot not-recorded edges (M281 review)" now names D-153's falsifier, and the merge question names it.
+- diff-bug #2 (pass 2): README and CHANGELOG "makes no second request" read as run-wide — fix now ("at that step").
+- diff-bug #3 (pass 2): `/milestone-review` step 7's presentation lists the `copilot:` and level or pending lines but not §6's reason line — follow-up, same row: the gap predates this diff, since the old "why no review was requested" line was not listed either.
+- diff-bug #4 (pass 2): the hotfix and review arms cite §2 without naming the re-query — reject, false: both cite §2, which carries the rule, and §6 says where the line goes.
+- diff-bug #5 (pass 2): "in the same pass" is loose for `/hotfix` — reject, false: a hotfix run reads once, so its pass is that run, the term §4 already used.
+- diff-bug #6 (pass 2): "read only then" can bind to the round-off closes — reject, planned change: the old "at those moments" had the same antecedent.
+- diff-bug #7 (pass 2): "a refusal or Copilot unavailable" is clipped — reject, style.
+- diff-bug #8 (pass 2): README "Claude says so" states the case as fact — reject, false: "so" refers to the PR showing no request or review, which the query reads.
+- diff-bug #9 (pass 2): AC1 and AC5 unticked — reject, false: bookkeeping in progress; AC1 was ticked at c89205e1, AC5 below.
+- blame-history #1 (pass 2): "so a later read skips it" binds "it" to the mark — fix now ("skips the thread", M231's wording); bytes recovered from §3's opening ("In the query, ...").
+- blame-history #2 (pass 2): AC4 evidence stale — reject, false: the pass-2 line records 139 lines, 7,995 bytes; re-measured below after this pass's fixes.
+- blame-history #3 (pass 2): README states used-up credits as a cause — reject, false: the user said at the question set that their credits were used up, and the text says "one cause".
+- blame-history #4 (pass 2): §6 "says the operator handles by hand" — reject, planned change: the claim audit found the meaning kept.
+- prior-review #1 (pass 2): a later pass re-requests after `none` (PR #240 thread, M231 pass-2 diff-bug #2) — follow-up, same row (already filed in pass 1).
+- prior-review #2 (pass 2): "used-up Copilot credits are one cause" is unconfirmed — reject, false: the user confirmed the credits were used up during PR #291 to #293, and the line hedges.
+- prior-review #3 (pass 2): §5 step 4's diff-bug #5 fix is not visible — reject, false: the fix restored main's two-sentence form, so the diff against main shows no change there.
+- Fix-now commit (pass 2): the three fixes above; re-measured `wc -l -c` → 139 lines, 7,993 bytes; README.md:851 now "makes no second request at that step, and does not wait there"; CHANGELOG entry "At that step it makes no second request and does not wait."
+- AC5 evidence (pass 2, tree with the fix-now edits): `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin 0 and marketplace 0 with no `plugins[N].version` warning, `claude plugin test .` 2132 pass 0 fail; hand-run `skills/tests` 886 OK (non-gating).
+- Pass 2 consistency gate: `cairn_validate` all checks passed; verify green as in AC5; no `plugins[N].version` warning; CHANGELOG entry present under Unreleased Fixes with no milestone numbers; no principle changed, so `cairn_impact` skipped. ROADMAP 59 lines, 23,174 bytes.
