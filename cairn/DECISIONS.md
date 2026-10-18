@@ -6560,3 +6560,29 @@ both. The M277 tasks are closed-answer tasks with keys, so a plan-time
 investigation, whose answer has no key, is not measured. The effort-unset
 evidence for search (`effort-roles.md`) was measured on Sonnet, and no
 effort run exists on Haiku for search; effort stays unset (D-157).
+
+### D-182 (2026-10-18): The cairn pane draws candidate rows in level order, and `cairn_validate` WARNs on file order — annotates D-134; its rejected token check stands (M280)
+
+**Context:** D-134 has the Candidates section order its rows high → normal
+→ low and makes the token the fact that order derives from. Nothing read
+the order: the cairn pane drew rows in file order, and in ackwards a
+`[high]` row added below ten `[low]` rows showed below them. D-134 rejected
+"a `cairn_validate` check on the token", because triage reads the token and
+a misspelling reads as `normal`.
+
+**Decision:** The pane derives its Candidates order from the token: high,
+then normal, then low, each level in ROADMAP order. `cairn_validate` gains
+the `candidate order` advisory, one WARN per row the file holds below a row
+of a lower level. It never fails the gate. It reads the token's level as
+every reader does and does not check the token's spelling, so it is not the
+check D-134 rejected, and that rejection stands.
+
+**Rejected:** Sorting in the reader's state, because `pressCandidate`, the
+fixtures, and the Python mirror read that state by ROADMAP index. A FAIL
+check, because an out-of-order file misleads no tool once the pane sorts.
+Falsified by an operator who reorders rows to clear the WARN and finds it
+no help in choosing what to promote.
+
+**Consequences:** The rulebook's "Candidate priority token" text is
+unchanged. `nextTitle` and `high_title` still pick the first `[high]` row in
+file order, which the stable sort also draws first.

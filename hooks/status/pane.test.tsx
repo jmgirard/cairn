@@ -51,11 +51,15 @@ const WITH_ROADMAP = Object.keys(FIXTURES).filter(name => FIXTURES[name].next !=
 // hand from its ROADMAP (M273): `high-candidate`'s `— started M2` names the
 // planned M002.
 const HIDDEN: Record<string, string[]> = { 'high-candidate': ['Taken row'] }
-// A fixture's drawn candidate rows, each with its index in `candidates`.
+// A fixture's drawn candidate rows, each with its index in `candidates`,
+// high rows first, then normal, then low, each level in ROADMAP order
+// (M280). `candidates-order` states its order by hand.
+const LEVEL = { high: 0, normal: 1, low: 2 }
 function drawnCandidates(name: string) {
   return FIXTURES[name].candidates
     .map((row, i) => ({ row, i }))
     .filter(({ row }) => !(HIDDEN[name] ?? []).includes(row.title))
+    .sort((a, b) => LEVEL[a.row.priority] - LEVEL[b.row.priority] || a.i - b.i)
 }
 
 type Element = { type: string; key?: string; props: Record<string, unknown>; children: unknown[] }
@@ -419,7 +423,8 @@ const MARKS = {
   low: { text: '↓', color: 'inactive' },
 } as const
 
-// The candidates fixture's lines, written out by hand from its ROADMAP.
+// The candidates fixture's lines, written out by hand from its ROADMAP, in
+// ROADMAP order: entry i is the line keyed `candidate-<i>`.
 const CANDIDATE_LINES = [
   '↑ High row',
   '○ Normal row',
@@ -437,6 +442,9 @@ const CANDIDATE_LINES = [
   '○ A `a',
   '○ A row with no colon and no dash',
 ]
+// The order the pane draws them in, by index, written out by hand (M280):
+// the high row, the normal rows in ROADMAP order, then the two low rows.
+const CANDIDATE_ORDER = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 2, 12]
 
 describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
   for (const surface of SURFACES) {
@@ -446,7 +454,8 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       const lines = await paneLines($, surface)
       expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 15')
       const rows = keysLike(lines, /^candidate-\d+$/)
-      expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_LINES)
+      expect(rows).toEqual(CANDIDATE_ORDER.map(i => `candidate-${i}`))
+      expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_ORDER.map(i => CANDIDATE_LINES[i]))
       // The section comes after the queue.
       const at = (key: string) => lines.findIndex(([k]) => k === key)
       expect(at('candidates-head')).toBeGreaterThan(at('next'))
@@ -530,6 +539,47 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         )
       })
     }
+  }
+})
+
+// The candidates-order fixture's rows sit out of level order (M280): a high
+// row below a low row, an untagged row below a low row, and each level's
+// two rows split by rows of other levels. Its drawn order, by index and
+// title, written out by hand.
+const ORDER_LINES: [number, string][] = [
+  [2, '↑ Late high'],
+  [5, '↑ Last high'],
+  [1, '○ Normal one'],
+  [4, '○ Normal two'],
+  [0, '↓ First low'],
+  [3, '↓ Second low'],
+]
+
+describe('the pane draws candidate rows high, then normal, then low (M280 AC1, AC2)', () => {
+  for (const surface of SURFACES) {
+    test(`the candidates-order fixture draws in level order, ROADMAP order within a level (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates-order'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      const rows = keysLike(lines, /^candidate-\d+$/)
+      expect(rows).toEqual(ORDER_LINES.map(([i]) => `candidate-${i}`))
+      expect(rows.map(k => textAt(lines, k))).toEqual(ORDER_LINES.map(([, text]) => text))
+    })
+  }
+
+  // The first drawn line is the ROADMAP's third row, and the last its
+  // fourth; each ✎ plans its own row's title.
+  for (const [i, title] of [[2, 'Late high'], [3, 'Second low']] as [number, string][]) {
+    test(`✎ on the line drawn for row ${i} plans ${title}`, async ($, on) => {
+      const copy = copyOf('candidates-order')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await pressKey($, `cairn-pane-plan-${i}`)
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: 'cairn:milestone-plan', args: title }])
+    })
   }
 })
 
@@ -1494,9 +1544,14 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
     seat(on, candidatesPlus())
     await $.turn.complete(turn())
     const lines = await paneLines($, 'desktop')
-    const rows = keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))
-    expect(rows).toEqual([...CANDIDATE_LINES, '○ ', '○ Same title', '○ Same title'])
-    expect(rows.map(text => (text as string).slice(2))).toEqual(TITLES)
+    // The three extra rows are normal, so they draw after row 14 and before
+    // the two low rows (M280).
+    const order = [...CANDIDATE_ORDER.slice(0, -2), 15, 16, 17, ...CANDIDATE_ORDER.slice(-2)]
+    const keys = keysLike(lines, /^candidate-\d+$/)
+    expect(keys).toEqual(order.map(i => `candidate-${i}`))
+    const rows = keys.map(k => textAt(lines, k))
+    expect(rows).toEqual(order.map(i => [...CANDIDATE_LINES, '○ ', '○ Same title', '○ Same title'][i]))
+    expect(rows.map(text => (text as string).slice(2))).toEqual(order.map(i => TITLES[i]))
   })
 
   for (const surface of SURFACES) {
@@ -1542,17 +1597,18 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
       taken: [],
     }
     const rows = (acts: boolean) => layout(state, [], acts).filter(line => /^candidate-\d+$/.test(line.key))
+    // The untitled normal row draws before the low row (M280).
     expect(rows(true).map(line => [line.buttons, line.target, line.title])).toEqual([
       [['plan'], '0', 'High'],
       [['plan'], '1', 'Normal'],
-      [['plan'], '2', 'Low'],
       [undefined, undefined, undefined],
+      [['plan'], '2', 'Low'],
     ])
     expect(rows(false).map(line => [line.key, line.buttons, line.target, line.title])).toEqual([
       ['candidate-0', undefined, undefined, undefined],
       ['candidate-1', undefined, undefined, undefined],
-      ['candidate-2', undefined, undefined, undefined],
       ['candidate-3', undefined, undefined, undefined],
+      ['candidate-2', undefined, undefined, undefined],
     ])
   })
 })
@@ -4175,13 +4231,14 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   const heads = (started = items) => layout(state, [], true, {}, [], started).filter(line => line.key.startsWith('candidates-head'))
 
   for (const acts of [true, false]) {
-    test(`matched rows draw no line, and the others draw as before under their own keys (acts ${acts})`, () => {
+    test(`matched rows draw no line, and each other line matches its line drawn with no items, by key (acts ${acts})`, () => {
       const got = rows(acts)
       const before = rows(acts, [])
       // Unmatched, a title that differs only by case, and an empty title.
       const kept = [3, 6, 7]
       expect(got.map(line => line.key)).toEqual(kept.map(i => `candidate-${i}`))
-      got.forEach((line, n) => expect([line.key, line]).toEqual([line.key, before[kept[n]]]))
+      // `before` draws in level order (M280), so each line is matched by key.
+      got.forEach(line => expect([line.key, line]).toEqual([line.key, before.find(each => each.key === line.key)]))
     })
 
     // A hidden row between a high and a low row, the low one with an empty
@@ -4232,12 +4289,17 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
     ])
   })
 
-  // The lines the pre-M252 code drew, written out by hand: the priority
-  // mark, no tail, and ✎ on each titled row while `acts` is true.
-  test('with no items every candidate line draws as before', () => {
+  // The lines drawn with no items, written out by hand: each row once, in
+  // level order (M280), with its priority mark, no tail, and ✎ on each
+  // titled row while `acts` is true.
+  test('with no items every candidate line draws, in level order', () => {
     const lines = rows(true, [])
     expect(lines.length).toBe(state.candidates.length)
-    lines.forEach((line, i) => {
+    // Level order (M280): the high row, the five normal rows, then the two
+    // low rows, written out by hand.
+    expect(lines.map(line => line.key)).toEqual([0, 1, 3, 4, 6, 7, 2, 5].map(i => `candidate-${i}`))
+    lines.forEach(line => {
+      const i = Number(line.key.slice('candidate-'.length))
       const row = state.candidates[i]
       expect([i, line.lead, line.tail]).toEqual([i, [MARKS[row.priority], { text: ' ' }], undefined])
       expect([i, line.text]).toEqual([i, row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title }])

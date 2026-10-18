@@ -1,13 +1,13 @@
 # M280: The pane shows candidates by priority, and validate warns on file order
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP2   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters see the pane's Candidates list and `cairn_validate` output   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m280-candidate-level-order, https://github.com/jmgirard/cairn/pull/292   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -33,11 +33,11 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: While no milestone is active, the cairn pane draws its candidate lines in level order: every `high` line before every `normal` line, every `normal` line before every `low` line, and lines of one level in ROADMAP order. A pane test over a fixture whose ROADMAP holds a `[high]` row below a `[low]` row, an untagged row below a `[low]` row, and two rows of one level with a row of another level between them asserts the full drawn title order, written out by hand; the per-fixture test in `hooks/status/pane.test.tsx` asserts that order for every fixture with drawn candidate lines.
-- [ ] AC2: A candidate line drawn away from its ROADMAP position keeps its row's index in the ROADMAP-order `candidates` state as its key and ✎ target, so its ✎ press plans that row: a pane test presses ✎ on such a line and asserts that the held command carries that row's short title.
-- [ ] AC3: `scripts/cairn_validate.py` reports a new advisory, `candidate order`, that WARNs once for each candidate row (as `cairn_next.candidate_texts` reads the rows) whose level ranks above the level of an earlier row, naming the row's short title and its level, and prints `OK` when no row does; the advisory leaves the exit code unchanged. Tests in `scripts/tests` assert OK on an in-order ROADMAP; a WARN naming exactly the out-of-order rows on a ROADMAP holding a `normal` row after a `low` row, a `high` row after a `normal` row, and a row out of order only against a non-adjacent earlier row (`low`, `normal`, `normal`, where both `normal` rows WARN); and the same exit code with and without those rows.
-- [ ] AC4: `cairn/DESIGN.md`'s pane paragraph and the README's cairn pane section say the pane draws candidate rows in level order, and the CHANGELOG's Unreleased section carries one entry naming the pane order and the `candidate order` WARN.
-- [ ] AC5: The `claude-plugin` profile's `verify` slot is clean: both gating `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`), `claude plugin validate` on the plugin and marketplace manifests, and `claude plugin test`.
+- [x] AC1: While no milestone is active, the cairn pane draws its candidate lines in level order: every `high` line before every `normal` line, every `normal` line before every `low` line, and lines of one level in ROADMAP order. A pane test over a fixture whose ROADMAP holds a `[high]` row below a `[low]` row, an untagged row below a `[low]` row, and two rows of one level with a row of another level between them asserts the full drawn title order, written out by hand; the per-fixture test in `hooks/status/pane.test.tsx` asserts that order for every fixture with drawn candidate lines.
+- [x] AC2: A candidate line drawn away from its ROADMAP position keeps its row's index in the ROADMAP-order `candidates` state as its key and ✎ target, so its ✎ press plans that row: a pane test presses ✎ on such a line and asserts that the held command carries that row's short title.
+- [x] AC3: `scripts/cairn_validate.py` reports a new advisory, `candidate order`, that WARNs once for each candidate row (as `cairn_next.candidate_texts` reads the rows) whose level ranks above the level of an earlier row, naming the row's short title and its level, and prints `OK` when no row does; the advisory leaves the exit code unchanged. Tests in `scripts/tests` assert OK on an in-order ROADMAP; a WARN naming exactly the out-of-order rows on a ROADMAP holding a `normal` row after a `low` row, a `high` row after a `normal` row, and a row out of order only against a non-adjacent earlier row (`low`, `normal`, `normal`, where both `normal` rows WARN); and the same exit code with and without those rows.
+- [x] AC4: `cairn/DESIGN.md`'s pane paragraph and the README's cairn pane section say the pane draws candidate rows in level order, and the CHANGELOG's Unreleased section carries one entry naming the pane order and the `candidate order` WARN.
+- [x] AC5: The `claude-plugin` profile's `verify` slot is clean: both gating `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`), `claude plugin validate` on the plugin and marketplace manifests, and `claude plugin test`.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -57,9 +57,9 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Pane order. In `paneLines` (`hooks/status/pane.ts:595`), sort the filtered `{ row, i }` list stably by level (high, normal, low) before drawing, and update the comment above it. Add or extend a fixture so its ROADMAP holds the AC1 shapes (regenerate `fixtures.gen.ts` with `gen_fixtures.py` and its `expected.json`, which stays in ROADMAP order). In `pane.test.tsx`, write the new fixture's drawn order by hand, reorder `CANDIDATE_LINES` to the sorted order, sort `drawnCandidates` by level, and add the AC2 ✎ press test. Show the new tests red against the unsorted code first. Run `claude plugin test`.
-- [ ] T2: Validate advisory. Add `check_candidate_order(root)` to `scripts/cairn_validate.py`, reading rows with `cairn_next.candidate_texts` and short titles with `cairn_next.short_title`, and register it in `ADVISORIES` as `candidate order`. One finding per row whose level ranks above the lowest level read before it. Add the AC3 tests to `scripts/tests`, each WARN asserted by title and level, and plant an adjacent-only comparison to see the non-adjacent case red. Confirm this repo's validate prints `OK    candidate order`.
-- [ ] T3: Docs and records. Add the level-order sentence to `cairn/DESIGN.md`'s pane paragraph (~line 305) and to the README's pane Candidates text, an Unreleased CHANGELOG entry for both changes, and D-182 in `cairn/DECISIONS.md`: `cairn_validate` WARNs on Candidates file order, annotating D-134, whose rejected token check this is not. Run the full `verify` slot.
+- [x] T1: Pane order. In `paneLines` (`hooks/status/pane.ts:595`), sort the filtered `{ row, i }` list stably by level (high, normal, low) before drawing, and update the comment above it. Add or extend a fixture so its ROADMAP holds the AC1 shapes (regenerate `fixtures.gen.ts` with `gen_fixtures.py` and its `expected.json`, which stays in ROADMAP order). In `pane.test.tsx`, write the new fixture's drawn order by hand, reorder `CANDIDATE_LINES` to the sorted order, sort `drawnCandidates` by level, and add the AC2 ✎ press test. Show the new tests red against the unsorted code first. Run `claude plugin test`.
+- [x] T2: Validate advisory. Add `check_candidate_order(root)` to `scripts/cairn_validate.py`, reading rows with `cairn_next.candidate_texts` and short titles with `cairn_next.short_title`, and register it in `ADVISORIES` as `candidate order`. One finding per row whose level ranks above the lowest level read before it. Add the AC3 tests to `scripts/tests`, each WARN asserted by title and level, and plant an adjacent-only comparison to see the non-adjacent case red. Confirm this repo's validate prints `OK    candidate order`.
+- [x] T3: Docs and records. Add the level-order sentence to `cairn/DESIGN.md`'s pane paragraph (~line 305) and to the README's pane Candidates text, an Unreleased CHANGELOG entry for both changes, and D-182 in `cairn/DECISIONS.md`: `cairn_validate` WARNs on Candidates file order, annotating D-134, whose rejected token check this is not. Run the full `verify` slot.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -82,6 +82,13 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
 - 2026-10-18: question set: WARN shape — one line per out-of-order row. Live look in ackwards — no, the pane tests suffice. Reorder ackwards' ROADMAP — no, leave it to that repo.
 - 2026-10-18: split tripwire weighed: the goal joins two parts with "and", but both enforce one rule (high → normal → low) at its two readers, in 5 criteria and 3 tasks; kept as one milestone.
 - 2026-10-18: plan gate chose sorting in `paneLines` over sorting in the reader (`candidateRows`) because the reader's file-order state feeds `pressCandidate`'s index lookup, the fixtures' `expected.json`, and the Python mirror; falsified by a second pane surface (the band, a press) needing the sorted order from state.
+- 2026-10-18: started on branch m280-candidate-level-order; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-18: T1 done: `paneLines` sorts drawn rows by `LEVEL_RANK`, then ROADMAP index; new fixture `candidates-order` (6 rows); the M280 order tests were red before the sort (19 fails), all 2132 pane tests green after. Tests that read draw position as ROADMAP index (M207, M242, M261) now match by key, and `candidates-order` joined the band's empty-fixture and Plan-title lists by hand.
+- 2026-10-18: T2 done: `check_candidate_order` in `cairn_validate.py` imports `cairn_next` for `candidate_texts` and `short_title` (added to `TestStdlibOnly.ALLOWED`, an in-repo module) rather than copying a third reader; 5 new tests red before, green after; a planted adjacent-only comparison turned the non-adjacent test red for the missing second row. This repo prints `OK    candidate order`; ackwards (after its M099 merge removed its `[high]` row) prints 4 WARNs, its untagged rows below `[low]` rows.
+- 2026-10-18: T3 done: DESIGN.md pane paragraph, README pane section, a CHANGELOG entry under "Changes that affect existing repos", and D-182 annotating D-134. Validate green; both gating suites and both manifest validates green; hand-run `skills/tests` 886 green. The simple-english hook flags 368 and 219 file-wide hits in CHANGELOG.md and README.md that predate this branch; the two long sentences this branch added were split, the rest left as out of scope.
+- 2026-10-18: claim audit: 29 claims read, 2 corrected — CHANGELOG.md, README.md (both said one WARN line per row; validate prints one `WARN  candidate order (N)` header with one line per row under it; the same reader re-read both, 0 wrong).
+- 2026-10-18: verify clean at 9bb2924b: scripts/tests 423 OK, hooks/tests 179 OK, both manifest validates exit 0, `claude plugin test` 2132 pass 0 fail; status → review.
+- 2026-10-18: step-7 approval: m280-candidate-level-order approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -95,3 +102,32 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC3 evidence (2026-10-18, branch head a9a320b8): `python3 -m unittest scripts.tests.test_scripts -k CandidateOrder -v` — 5 tests ok: in-order rows print `OK    candidate order`; the 7-row out-of-order ROADMAP gives exactly the 4 findings by title and level (`WARN  candidate order (4)`); the `low, normal, normal` case warns both normal rows; exit code 0 with and without the out-of-order rows. This repo's validate prints `OK    candidate order`; ackwards' prints `WARN  candidate order (4)` with exit 0.
+- AC4 evidence: `cairn/DESIGN.md:318-321` (pane paragraph: `paneLines` draws by level, `state.candidates` stays in ROADMAP order, the `candidate order` advisory); `README.md:336-341` (pane section: high, normal, low groups in ROADMAP order, and the validate WARN); `CHANGELOG.md` Unreleased › "Changes that affect existing repos" opens with the entry naming both, with no milestone number in its text.
+- AC1 evidence (2026-10-18, tree of 55549a1f): `claude plugin test .` 2132 pass, 0 fail. The candidates-order fixture test passes on both surfaces against its hand-written order (Late high, Last high, Normal one, Normal two, First low, Second low by keys 2, 5, 1, 4, 0, 3). The candidates fixture test passes against `CANDIDATE_ORDER` (two normal rows split by a low row, two lows split by normals). The per-fixture "candidates only while idle" test passes for every fixture with drawn lines. The order tests were red against the unsorted code at T1.
+- AC2 evidence: same run. "✎ on the line drawn for row 2 plans Late high" (drawn first, ROADMAP row 3) and "✎ on the line drawn for row 3 plans Second low" (drawn last, ROADMAP row 4) pass. Each press runs `/clear`, then `cairn:milestone-plan` with that row's short title.
+- AC5 evidence (tree of 55549a1f): `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` exits 0 on both manifests (no `plugins[N].version` warning), and `claude plugin test` 2132 pass, 0 fail.
+- Consistency gate: `cairn_validate` all checks passed; `cairn_impact --changed` reports no changed principles; the changelog has the entry (AC4); this repo has no CI.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a misspelled token reads as normal, so the correctly tagged `[high]` rows below it WARN and the CHANGELOG's "move the named rows up" points at the wrong rows — follow-up, row "Candidate order advisory edges (M280 review)"
+- diff-bug #2: the DESIGN.md insert split a sentence, leaving "The `plan` Button, drawn as…" with no verb — fix now
+- diff-bug #3: a row with an empty short title WARNs as `""`, naming no row — follow-up, same row
+- diff-bug #4: D-182's Consequences and the `test_status_fixtures.py` comment say the stable sort draws the first `[high]` row first, false when that row's short title is empty — fix now for the test comment; follow-up for D-182 (history, IP4), same row
+- diff-bug #5: the advisory counts rows the pane hides (started token, PR-named) — follow-up, same row
+- diff-bug #6: the order runs across several `## Candidates…` sections — reject, planned change: the pane sorts across the same sections, so the two agree
+- diff-bug #7: the `|| a.i - b.i` tie-break is untested — reject, style: redundant with the stable `Array.prototype.sort`
+- diff-bug #8: `drawnCandidates` copies the production sort — reject, planned change: AC1 names that per-fixture test, and the hand-written `CANDIDATE_ORDER`, `ORDER_LINES`, and index lists discriminate
+- blame-history #1: the advisory reads the token D-134 rejected a validate check on — reject, planned change: D-182 records that the advisory checks order, not spelling, and D-134's rejection stands
+- blame-history #2: the M252 control test's name and comment still said "as before" (file order) — fix now
+- blame-history #3: the M261 test title said "as before" after the positional check became by key — fix now
+- blame-history #4: promoted `[high]` rows now sort into the top block with important ones — reject, planned change: D-179's falsifier is unchanged
+- blame-history #5: `drawnCandidates` re-implements the sort — reject, as diff-bug #8
+- blame-history #6: the M207 test pinned file order — reject, planned change: M207 stated no order, and D-182 records the new one
+- prior-review #1: the advisory counts rows the pane hides — follow-up, as diff-bug #5
+- prior-review #2: the DESIGN.md sentence split — fix now, as diff-bug #2
+- prior-review #3: the pane.ts comment's two "which" clauses attach ambiguously — fix now
+- prior-review #4: the ROADMAP stamp not updated at the move to `review` — reject, planned change: post-merge hygiene replaces the stamp
+- copilot: no review — `gh pr edit 292 --add-reviewer @copilot` exited 0 twice, but the PR timeline shows no `review_requested` event, and PR #291 got no Copilot review either; follow-up, row "Copilot request not registered"
+- Copilot level: none; no review was registered, so no level
+- conversation: PR #292 has no reviews, no conversation comments, and no unresolved threads

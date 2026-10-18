@@ -487,7 +487,7 @@ function shownKey(name: string, skill: string | null = null): string | null {
 
 // The fixtures with a ROADMAP and no active or workable row, written out
 // by hand: each draws the empty row (M213 AC1).
-const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-skeleton', 'high-candidate']
+const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-order', 'candidates-skeleton', 'high-candidate']
 const EMPTY_TEXT = 'No milestone ready'
 
 const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow
@@ -3016,7 +3016,7 @@ describe('the next-step and status Buttons run their commands (M212 AC1)', () =>
 // with no arguments, or with the short title of the first `[high]`
 // candidate row that the fixture's Candidates list shows (M272, M273).
 const PLAN_RUN = { command: 'cairn:milestone-plan', args: '' }
-const PLAN_TITLES: Record<string, string> = { 'high-candidate': 'Chosen row' }
+const PLAN_TITLES: Record<string, string> = { 'candidates-order': 'Late high', 'high-candidate': 'Chosen row' }
 const planRun = (name: string) => ({ ...PLAN_RUN, args: PLAN_TITLES[name] ?? '' })
 
 describe('the empty row carries Plan and Status, and a press runs planning (M213 AC2, AC3)', () => {

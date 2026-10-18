@@ -336,6 +336,8 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: '○' },
   low: { text: '↓', color: GRAY },
 }
+// The order the Candidates list draws each priority in (M280).
+const LEVEL_RANK: Record<CandidateRow['priority'], number> = { high: 0, normal: 1, low: 2 }
 // A section heading's accent mark, in the phase's color (M208).
 export const ACCENT_MARK = '▎'
 // The meter's squares, filled and empty, and how many it draws (M208).
@@ -590,8 +592,11 @@ export function paneLines(
   // started draws no line (M261): one whose short title an open pull
   // request's body names exactly (M252), or that a counted started token
   // marks (M258). The heading counts the drawn rows, and with none it is
-  // not drawn. A drawn line keeps its row's index in `state.candidates` as
-  // its key and its ✎ target, which `pressCandidate` looks up.
+  // not drawn. The lines draw high rows first, then normal, then low, each
+  // level in ROADMAP order, whatever order the file holds them in (M280).
+  // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
+  // index there as its key and its ✎ target, and `pressCandidate` looks the
+  // row up by that index.
   const drawn = state.milestones.length === 0
     ? state.candidates
         .map((row, i) => ({ row, i }))
@@ -599,6 +604,7 @@ export function paneLines(
           const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
           return numbers.length === 0 && ids.length === 0
         })
+        .sort((a, b) => LEVEL_RANK[a.row.priority] - LEVEL_RANK[b.row.priority] || a.i - b.i)
     : []
   if (drawn.length > 0) {
     out.push(...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${drawn.length}`, color: GRAY }]))

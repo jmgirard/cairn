@@ -4054,7 +4054,7 @@ class TestStdlibOnly(unittest.TestCase):
     ALLOWED = {
         "ast", "copy", "datetime", "glob", "json", "os", "pathlib", "re",
         "subprocess", "sys", "tempfile", "unittest",
-        "cairn_common", "cairn_scripts",
+        "cairn_common", "cairn_next", "cairn_scripts",
     }
     # the one non-stdlib import, admitted for one script: `cairn_ci_paths.py`
     # imports PyYAML inside its `--apply` path, guarded (M181)
@@ -4084,6 +4084,73 @@ class TestStdlibOnly(unittest.TestCase):
             if script.name != "cairn_ci_paths.py":
                 self.assertNotIn("yaml", self.allowed_for(script.name), script.name)
                 self.assertNotIn("yaml", self.imported_names(script.read_text()), script.name)
+
+
+# --- candidate order advisory (M280) -----------------------------------------
+
+
+class TestCandidateOrderAdvisory(ScriptCase):
+    """M280: the `candidate order` advisory WARNs once for each candidate row
+    whose level ranks above an earlier row's level (tracking-rules "Candidate
+    priority token": high → normal → low), and never changes the exit code."""
+
+    def test_in_order_rows_print_ok(self):
+        # Every level, each in ROADMAP order, untagged rows as normal.
+        self.tree.candidates = ["[high] A: x", "[high] B: x", "C: x", "D: x", "[low] E: x", "[low] F: x"]
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    candidate order", proc.stdout)
+
+    def test_each_out_of_order_row_warns_by_title_and_level(self):
+        # Written out by hand: a normal row after a low row, a high row after
+        # a normal row, and in the last three rows two normal rows that
+        # follow a low row, the second of them next to a normal row only.
+        self.tree.candidates = [
+            "[high] Top: x",
+            "[low] Low one: x",
+            "Normal after low: x",
+            "[high] High after normal: x",
+            "[low] Low two: x",
+            "Normal next: x",
+            "Normal again: x",
+        ]
+        root = self.tree.build()
+        cv = _load_validate()
+        self.assertEqual(
+            cv.check_candidate_order(str(root)),
+            [
+                '"Normal after low" (normal) sits below a low row',
+                '"High after normal" (high) sits below a low row',
+                '"Normal next" (normal) sits below a low row',
+                '"Normal again" (normal) sits below a low row',
+            ],
+        )
+        proc = run("cairn_validate.py", root)
+        self.assertIn("WARN  candidate order (4)", proc.stdout)
+
+    def test_a_row_out_of_order_only_against_a_non_adjacent_row_warns(self):
+        # `normal, normal` after `low`: the second normal row follows a row
+        # of its own level, and still warns, because a low row is above it.
+        self.tree.candidates = ["[low] Low: x", "First normal: x", "Second normal: x"]
+        cv = _load_validate()
+        self.assertEqual(
+            cv.check_candidate_order(str(self.tree.build())),
+            ['"First normal" (normal) sits below a low row', '"Second normal" (normal) sits below a low row'],
+        )
+
+    def test_a_high_row_below_a_normal_row_names_normal(self):
+        self.tree.candidates = ["Plain: x", "[high] Late: x"]
+        cv = _load_validate()
+        self.assertEqual(cv.check_candidate_order(str(self.tree.build())), ['"Late" (high) sits below a normal row'])
+
+    def test_the_exit_code_is_the_same_with_and_without_out_of_order_rows(self):
+        self.tree.candidates = ["[high] Top: x", "Middle: x"]
+        before = run("cairn_validate.py", self.tree.build())
+        self.tree.candidates = ["[low] Bottom: x", "Middle: x", "[high] Top: x"]
+        after = run("cairn_validate.py", self.tree.build())
+        self.assertIn("OK    candidate order", before.stdout)
+        self.assertIn("WARN  candidate order (2)", after.stdout)
+        self.assertEqual((before.returncode, after.returncode), (0, 0), after.stdout)
 
 
 # --- release window advisory (M88) ------------------------------------------
