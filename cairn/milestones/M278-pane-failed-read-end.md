@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M278: A failed read or session end leaves the cairn pane working
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -158,3 +158,5 @@ a known issue.
 - 2026-10-18: T4: the `session.end` handler catches `next(e)`'s error, runs the four updates, `free()`, the held-command hand-off (`the session end failed` on a rejected end), and the ⌂ open on both paths, then rethrows; T3 tests and the four AC3 blocks green, no line in those blocks edited; verify green (scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2084 pass).
 - 2026-10-18: T5: CHANGELOG Fixes entry (the ⌂ press after a failed step read; the band reset after a failed `/clear` end), each behavior one the AC1 or AC2 tests assert; DESIGN.md's rejected-end line (near 225) and `pressHome` line (near 539) updated; a grep of README.md and DESIGN.md for failed-end and step-read sentences found none the change makes false. The simple-english hook flags 368 older hits in CHANGELOG.md; the new entry lints clean alone.
 - 2026-10-18: T6: verify green from the repo root, each exit code 0 (scripts 418 OK, hooks 179 OK, plugin and marketplace validate, plugin test 2084 pass); cairn_validate all checks passed.
+- 2026-10-18: claim audit: 35 claims read, 3 corrected — CHANGELOG.md (the ⌂ sentence said "now runs no `/clear`", which main also did, and "every pane button", though `↻` was never blocked and the band's action Buttons were), hooks/status/band.test.tsx (the `endTwice` comment named the hook's thrown error, not the kit's `NO_END`); same reader re-read all 3 as true; verify green after (plugin test 2084 pass).
+- 2026-10-18: implement complete; status set to review.

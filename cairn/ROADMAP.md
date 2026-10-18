@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M278 | A failed read or session end leaves the cairn pane working | in-progress | — | normal | milestones/M278-pane-failed-read-end.md |
+| M278 | A failed read or session end leaves the cairn pane working | review | — | normal | milestones/M278-pane-failed-read-end.md |
 | M277 | Search subagents run on the model a clarified re-test supports | done | — | normal | milestones/archive/M277-haiku-search-clarified.md |
 | M276 | A feature cut short at implement or review still ships as one change | done | — | normal | milestones/archive/M276-series-from-a-scope-cut.md |
 | M275 | A feature series stays listed and keeps one entry until its last part ships | done | — | normal | milestones/archive/M275-feature-series-edges.md |

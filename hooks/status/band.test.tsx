@@ -3812,8 +3812,9 @@ describe('the action Buttons give way before the title loses its room (M212 AC4)
 })
 
 // A `clear` session end, resolved and then rejected, each after `setup`,
-// with what `look` reads after each end. The rejected end rejects with the
-// error the end beneath threw (M278 AC2).
+// with what `look` reads after each end, and the message of each end's
+// rejection. The rejected end rejects with the error its `next(e)` gave,
+// the kit's `NO_END`, since the throwing hook beneath is skipped (M278 AC2).
 async function endTwice($, copy: Copy, setup: () => Promise<void>, look: () => Promise<unknown>) {
   const out: { seen: unknown; message: string | undefined }[] = []
   for (const rejects of [false, true]) {
