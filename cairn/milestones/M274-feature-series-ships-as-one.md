@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M274: A feature split across milestones reaches users as one change
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -159,6 +159,8 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
 - 2026-10-18: T6: `skills/tests/test_feature_series.py` (14 tests) and 23 mutation-registry entries; written after the T1–T5 text in one pass rather than before it, a deviation from tests-first; the mutation harness shows each guard fails when its line is blanked. `skills/tests` 856 green.
 - 2026-10-18: T7: CHANGELOG Unreleased entry; README tips gain one sentence on feature series. Grep of README and skills for per-milestone changelog wording found only `/hotfix` lines, which a series does not cover.
 - 2026-10-18: T8: verify on the code head: scripts 0 (418 tests, OK, 21 skipped), hooks 0, plugin validate 0 (passed with warnings), marketplace validate 0, plugin test 0 (2076 tests, 0 fail); cairn_validate all checks passed. Checkpoint is one commit for T1–T8, not one per task.
+- 2026-10-18: claim audit: 38 claims read, 0 corrected — CHANGELOG.md, README.md, skills/shared/tracking-rules.md, skills/milestone-plan/SKILL.md, skills/shared/profiles/{python,r-package,claude-plugin,docker-image}.md, skills/milestone-review/SKILL.md, skills/cairn-release/SKILL.md, skills/tests/test_feature_series.py, skills/tests/test_mutation_harness.py
+- 2026-10-18: status review; handed to /milestone-review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

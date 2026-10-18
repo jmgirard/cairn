@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M274 | A feature split across milestones reaches users as one change | in-progress | — | normal | milestones/M274-feature-series-ships-as-one.md |
+| M274 | A feature split across milestones reaches users as one change | review | — | normal | milestones/M274-feature-series-ships-as-one.md |
 | M273 | The plan target is the first high-priority row the Candidates list shows | done | — | normal | milestones/archive/M273-plan-target-matches-list.md |
 | M271 | A triage promote gives its candidate row the high-priority token | done | — | normal | milestones/archive/M271-triage-promote-marks-high.md |
 | M272 | The next-step recommendation names the first unstarted high-priority candidate | done | — | normal | milestones/archive/M272-next-step-names-high-row.md |
