@@ -41,7 +41,7 @@ earlier request: a second request starts a second review and spends
 credits. `/hotfix` asks for Lite and `/milestone-review` for Balanced, but
 GitHub's API took no per-request level on 2026-10-10 (M231 T1), so GitHub's
 settings choose it. A non-zero exit means the request failed, for example
-a refusal or no Copilot access: report the error in one line and go on with
+a refusal or Copilot unavailable: report the error in one line and go on with
 no wait. After a zero exit, run the state query once more. On `none`, report
 one line, `Copilot request on PR #<N> may not be recorded by GitHub
 (used-up Copilot credits are one cause)`. Make no second request. On
