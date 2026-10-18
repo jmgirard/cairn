@@ -124,7 +124,7 @@ not old-script figures.
 - [x] T2: Run `cairn_cost.py --milestone` for M269–M278 and add the
       baseline section to session-cost-notes.md. Add the AC2 statement and
       pointer. Correct its AC4 sites.
-- [ ] T3: In effort-experiment-notes.md, add the AC2 statement and pointer,
+- [x] T3: In effort-experiment-notes.md, add the AC2 statement and pointer,
       and keep the words "nothing to re-verify against" so that its
       staleness state stays `exempt`. Correct its AC4 site.
 - [ ] T4: Correct the AC4 site in haiku-sonnet-roles.md. Update the three
@@ -157,6 +157,7 @@ not old-script figures.
 - 2026-10-18: ran `cairn_cost.py --milestone` for M139–M152 and M269–M278 at 92edddd4 (one run, both ranges).
 - 2026-10-18: T1 done: record-rule-remeasurement.md Axis 3 re-run (medians 130.5 turns / 112,229.5 output, were 137 / 175,620), 165/169k comparison removed, Evidence and Extraction lines marked corrected M279; verify 5/5 green.
 - 2026-10-18: T2 done: session-cost-notes.md gets the old-script statement in Extraction, a pointer opening `## Baseline`, a new `## Current-script baseline` (M269–M278) before `## Disposition`, and corrected A4 row, Disposition bullet, and first Open question; also corrected the A4 paragraph under the ledger, which still said subagent tokens go uncounted; staleness pin stays `ok`; verify 5/5 green.
+- 2026-10-18: T3 done: effort-experiment-notes.md gets the old-script statement in Extraction ("nothing to re-verify against" kept, pin stays `exempt`), a pointer opening `## Cost`, and a corrected step 2 of the re-measurement procedure; verify 5/5 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
