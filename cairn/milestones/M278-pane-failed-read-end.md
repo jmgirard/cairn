@@ -181,3 +181,21 @@ a known issue.
 - AC4 (2026-10-18, head 5ceddd3f): `git diff main...HEAD -- CHANGELOG.md` adds 10 lines, 0 removed: one entry, the first under Unreleased `### Fixes` (CHANGELOG.md:509). Its behaviors map to tests: the ⌂ press lets go of its hold and the other action buttons work again (AC1 test: Status runs after the denied read); after a failed `/clear` end the step goes, a hidden band shows, `Clear` goes (AC2 drawing tests for step, dismissed, ended). Its two "Before" sentences state main's behavior, read against `git show main:hooks/status/register.tsx` by the claim audit and shown by the red runs at T1 and T3.
 - AC5 (2026-10-18, head 5ceddd3f): the five verify commands from the repo root, each exit 0: scripts/tests 418 OK (21 skipped), hooks/tests 179 OK, plugin.json validate, marketplace.json validate, `claude plugin test .` 2084 pass 0 fail.
 - gate (2026-10-18): `cairn_validate.py` exit 0, all checks passed; no DESIGN.md principle changed, so `cairn_impact` skipped; consistency-gate slot: verify green on the review head (AC5), marketplace validate shows no `plugins[N].version` warning, CHANGELOG.md has the entry (AC4) with no milestone id in it. No CI in this repo (profile).
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: a state write that rejects on the rejected end path now skips `free()`, the held-command hand-off, and the ⌂ open, which main ran before any await — fix now, fixed a8f725e3 (the four writes sit in their own `try`; two new band tests, red on 5ceddd3f's handler, green after).
+- diff-bug #2: in that case the write's error replaced `next(e)`'s — fix now, fixed a8f725e3 (`next(e)`'s error is rethrown first; on a resolved end the engine skips the throwing hook, so the caller sees no rejection, as the new test asserts).
+- diff-bug #3: the AC1 test's `catch {}` let any press error pass — fix now, fixed a8f725e3 (asserts the press rejects with the denied read's reason).
+- diff-bug #4: the band step test's setup did not check the step drew on the second pass — fix now, fixed a8f725e3 (asserts the review step row in setup).
+- diff-bug #5: the tests check the rejection's message, not the error's identity — reject (false as a defect): the handler rethrows the stored object (`throw failed.error`), and the kit replaces a skipped hook's error with its own, so no test can see identity.
+- diff-bug #6: `stateWrites` records attempted writes, not stored ones — reject (planned change): AC2 promises the writes, and the drawing tests show the stored result for step, dismissed, and ended.
+- diff-bug #7: a press during the end's four awaits reads a half-reset state — reject (planned change): freeing after the updates is M255's order, the resolved path already had it, and the `runAt`/`checkAt` capture keeps a press made then from being freed.
+- diff-bug #8: `pressHome`'s `finally` cannot clear a newer press's mark — noted (no defect).
+- diff-bug #9: hand-off and ⌂ open match main on each path; AC3 blocks untouched — noted (no defect).
+- diff-bug #10: the CHANGELOG entry names only a `/clear` end, though the reset applies to any reason — reject (false as a defect): the sentence is true for the case it names, and the tests cover only `clear` ends; the new failure mode it omitted is gone after #1's fix.
+- diff-bug #11: a DESIGN.md line near 226 was not rewrapped — fix now, fixed a8f725e3.
+- blame-history #1: same defect as diff-bug #1, breaking M260's "frees them before it rethrows" and M255's ⌂ open on a rejecting clear end — fix now, fixed a8f725e3.
+- blame-history #2: the four resets on the rejected path contradict no past intent (M200 clears `dismissed` at every end) — noted.
+- prior-review #1: same defect as diff-bug #1, regressing M260's outcome — fix now, fixed a8f725e3.
+- prior-review #2: the AC1 test adds one more short "nothing more happened" wait (`untilRuns(copy, 1, 10)`) — follow-up: "Rejected end edges (M260 review)" row, whose remaining item names that helper; hygiene adds this instance.
+- prior-review #3: the same DESIGN.md wrap as diff-bug #11 — fix now, fixed a8f725e3.
+- note: diff-bug #1's fix also covers the Scope `Out:` item "an end whose own state write rejects and so skips `free()`", on both paths; hygiene drops that sentence from the candidate row. Verify after the fixes: scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2086 pass.
