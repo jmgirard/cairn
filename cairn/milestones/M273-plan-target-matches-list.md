@@ -138,10 +138,10 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       `state.candidates` under the drawn filter's `startedRefs` test; use it
       in the Next line and in `pressNext` (`register.tsx` ~1117); update the
       M272 AC4 block's "a body names the title" case; add the AC3 cases.
-- [ ] T4: Docs per Scope In and AC4, each claim read against T1–T3's
+- [x] T4: Docs per Scope In and AC4, each claim read against T1–T3's
       output (derived-claims rule); hand-run `skills/tests` after the two
       skill edits.
-- [ ] T5: Run the `verify` slot on the code head and record each exit code.
+- [x] T5: Run the `verify` slot on the code head and record each exit code.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -169,6 +169,8 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - 2026-10-17: T2 done: `highTitle` in `reader.ts` reads `takenRows`, the uncapped `STARTED` is gone, `recommend` takes the archived ids; `high-candidate` now has a planned M002 whose `— started M2` hides "Taken row", and "Chosen row" carries a dead `— started M001`; pane tests that assumed every fixture row draws now read a hand-written HIDDEN list.
 - 2026-10-17: T3 done: `nextTitle(next, candidates, taken, hotfixes, started)` picks the first drawn `[high]` row with the list's `startedRefs` test, used by the Next line and `pressNext`; the M272 AC4 block's body case now plans "Later high". Implementation choice: kept the name `nextTitle`, since every caller already used it; the pane atom's shape is unchanged, so the `pane-7` tag stays.
 - 2026-10-17: verify on the T3 head: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
+- 2026-10-17: T4 done: README (three paragraphs), the M272 `## Unreleased` CHANGELOG entry rewritten in place, DESIGN.md (two plan-target lines and a Known issues sentence on the PR-read difference), `cairn_next.py` and `reader.ts` doc comments, `skills/milestone/SKILL.md` ("does not read the release window"), and `skills/milestone-review/SKILL.md` step 10's tail; AC4's old-phrase grep prints nothing and each sweep line on the plan target states the new rule; `skills/tests` hand-run 842 OK. The simple-english lint hook reports whole-file counts on README, CHANGELOG, and both skills (all older text); new sentences over its limit were split, older text left as it is.
+- 2026-10-17: T5 done: verify on the T4 tree: scripts 418 OK (21 skipped), hooks 179 OK, plugin and marketplace validate exit 0, plugin test 2074 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -7,8 +7,8 @@ dependencies are all done (in guest mode, at most one may instead be a
 stack base, M268), lists those still blocked by dependencies, and
 lists the `blocked` milestones, each with the number of the pull request
 its header names (M223). When it recommends planning, it names the first
-unstarted `[high]` candidate row by its short title, when there is one
-(M272).
+`[high]` candidate row that no counted started token hides by its short
+title, when there is one (M272, M273).
 Read-only; exits 0 on success, 2 outside a cairn repo.
 
     python3 scripts/cairn_next.py [ROOT]

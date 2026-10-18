@@ -507,8 +507,8 @@ export type PaneMilestone = {
 }
 
 // `recommend` in scripts/cairn_next.py: `id` is null for planning, and
-// `title` is the short title of the first unstarted `[high]` candidate row
-// when planning, else null (M272).
+// `title` is `highTitle`'s short title when planning, else null (M272,
+// M273).
 export type NextStep = { action: string; command: string; id: string | null; title: string | null }
 
 // `waiting` in scripts/cairn_next.py: `unmet` holds each undone dependency
