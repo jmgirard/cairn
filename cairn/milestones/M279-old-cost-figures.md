@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M279: Old cost-script figures are re-measured or marked
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** internal — reference notes under `cairn/references/` that no adopting repo reads   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m279-old-cost-figures   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -117,7 +117,7 @@ not old-script figures.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Run `cairn_cost.py --milestone` for M139–M152. In
+- [x] T1: Run `cairn_cost.py --milestone` for M139–M152. In
       record-rule-remeasurement.md, rewrite the Axis 3 table, medians, and
       baseline comparison, the Evidence snapshot bullet, and the re-check in
       the `Extraction:` line. Keep the page's staleness state `ok`.
@@ -153,6 +153,9 @@ not old-script figures.
 - 2026-10-18: criteria audit (reduced mode, fresh Opus reader): 4 findings, all fixed: AC2, AC3, and AC5 named their figures and rows in place of "the page's figures", "matches that command's output", and "agree with those pages"; AC4 dropped "the plan ran" (an instrument clause, moved to Scope) and anchors its sites by section, not line number. AC1's note to name the BY MILESTONE row was also taken.
 - 2026-10-18: plan gate chose marking the old figures in place over deleting them because the pages' conclusions (the 50% cut, the +10.8% trend) cite them; falsified by a later reader taking a marked old figure as a current-script figure.
 - 2026-10-18: plan gate chose adding a current-script baseline (M269–M278) over leaving session-cost-notes.md with none because a later cost comparison needs a same-method figure; falsified by a decision that needs a window other than the latest ten milestones.
+- 2026-10-18: implement started on branch m279-old-cost-figures, cut from main at 92edddd4; untracked `cairn-probe.log` and `tsconfig.json` (not this milestone's) left unstaged.
+- 2026-10-18: ran `cairn_cost.py --milestone` for M139–M152 and M269–M278 at 92edddd4 (one run, both ranges).
+- 2026-10-18: T1 done: record-rule-remeasurement.md Axis 3 re-run (medians 130.5 turns / 112,229.5 output, were 137 / 175,620), 165/169k comparison removed, Evidence and Extraction lines marked corrected M279; verify 5/5 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
