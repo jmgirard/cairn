@@ -386,6 +386,7 @@ describe('highTitle names the first unstarted [high] row (M272)', () => {
       '[high] Taken: x — started M271; narrowed',
       '[high] Taken: x — started #12 ',
       '[high] Taken: x — started #1234567890123456',
+      '[high] Taken: x — started M12é',
     ]) {
       expect(highTitle(rows(started, '[high] Next high: y'))).toBe('Next high')
     }
@@ -393,6 +394,13 @@ describe('highTitle names the first unstarted [high] row (M272)', () => {
   })
   test('a [high] row inside a comment and one with an empty title are passed over', () => {
     expect(highTitle(rows('<!--', '[high] Commented out: x', '-->', '[high] : empty title', '[high] Visible: y'))).toBe('Visible')
+  })
+  test('a trailing U+FEFF is trimmed, and each Candidates section is read', () => {
+    expect(highTitle(`## Candidates\n- [high] Bom${String.fromCharCode(0xfeff)}: x\n`)).toBe('Bom')
+    expect(highTitle('## candidates\n- [high] Lower: x\n')).toBe('Lower')
+    const two = '## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n\n## Candidates\n- [high] Second: z\n'
+    expect(highTitle(two)).toBe('Second')
+    expect(highTitle('## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n')).toBe(null)
   })
   test('no [high] row gives null', () => {
     expect(highTitle(rows('Plain: x', '[low] Low: y', '[HIGH] Upper: z', '[high]Tight: w'))).toBe(null)

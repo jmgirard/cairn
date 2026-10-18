@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M272: The next-step recommendation names the first unstarted high-priority candidate
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -42,16 +42,22 @@ M271.
 
 - [ ] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
       the planning case it holds the short title (tracking-rules "Candidate
-      short title"), trimmed as JavaScript's `trim` trims, of the first row
-      under `## Candidates`, in ROADMAP order and outside HTML comments, that
-      opens with `[high] `, has a non-empty short title, and carries no
-      started token (` — started M<n>` or ` — started #<n>`, followed by the
-      row's end or a character that is not a letter or digit); with no such
-      row, and in every other case, it is `None`. Tests in `scripts/tests`
-      cover: a `[high]` row chosen over an earlier untagged row, a started
-      `[high]` row passed over for a later `[high]` row, a `[high]` row inside
-      an HTML comment passed over, no `[high]` row giving `None`, and a
-      workable planned milestone giving `None` beside a `[high]` row.
+      short title"), trimmed as JavaScript's `trim` trims, of the first
+      candidate row, in ROADMAP order, that opens with `[high] `, has a
+      non-empty short title, and carries in its text after `[high] ` no
+      started token (` — started M<n>` or ` — started #<n>`, `<n>` one or
+      more ASCII digits, followed by the row's end or a character that is
+      not an ASCII letter or digit); with no such row, and in every other
+      case, it is `None`. A candidate row is a line that opens with `- `
+      under a `## ` heading that starts with `## candidates` in any letter
+      case, up to the next `## ` line, read after each `<!--` … `-->` span
+      that opens and closes within that section is removed. Tests in
+      `scripts/tests` cover: a `[high]` row chosen over an earlier untagged
+      row, a started `[high]` row passed over for a later `[high]` row, a
+      token followed by a non-ASCII letter still counting as started, a
+      `[high]` row inside an HTML comment passed over, no `[high]` row giving
+      `None`, and a workable planned milestone giving `None` beside a
+      `[high]` row.
 - [x] AC2: In the planning case with a title, `cairn_next.py`'s printed
       `Recommended:` line reads `Recommended: plan the next milestone →
       /milestone-plan <title>`; with no title the line is unchanged.
@@ -76,7 +82,7 @@ M271.
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
      task(s) satisfying it, by positional number. -->
 
-- AC1 → T1
+- AC1 → T1, T5
 - AC2 → T1
 - AC3 → T2
 - AC4 → T3
@@ -103,6 +109,9 @@ M271.
       tests in `hooks/status` for the line and the press.
 - [x] T4: README (~:187, ~:290) and CHANGELOG; run `verify`, including
       `claude plugin test`.
+- [x] T5: AC1 amendment (review pass 1, diff-bug #8): the token-end
+      wording says ASCII, the candidate-row rule is stated, and tests cover a
+      non-ASCII letter after the token, a U+FEFF trim, and section bounds.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -122,6 +131,10 @@ M271.
 - 2026-10-17: implement complete; status review. verify green on the branch head: scripts 415 OK, hooks OK, both validates exit 0, plugin test 2070 pass; cairn_validate all checks passed.
 - 2026-10-17: review pass 1: AC2-AC6 and the gate pass; 3 lenses ran; 5 findings fixed in 5afb3631, 9 rejected, 9 to the new candidate row "Plan target edges (M272 review)".
 - 2026-10-17: amendment routed: AC1 — diff-bug #8: AC1 says a started token is followed by "a character that is not a letter or digit", but the reader, like the pane's M258 `STARTED_TOKEN`, ends the token at any character that is not an ASCII letter or digit, so `— started M12é` counts; the wording, not the code, is wrong.
+- 2026-10-17: re-audit: AC1 (full) — first wording ("not an ASCII letter or digit" alone): "outside HTML comments" is wider than the per-section comment strip (an unclosed or cross-section `<!--`), "under `## Candidates`" omits the any-case prefix rule, `- [high] — started M1` carries a token the code misses, and no test holds a non-ASCII letter after the token; fixed by stating the candidate-row rule, "in its text after `[high] `", and the `é` test.
+- 2026-10-17: re-audit: AC1 (full) — second wording: the code meets every clause; wording edges answered, not changed (the second line is the bound): "non-empty short title" is the title the sentence trims as JavaScript does, "opens with `[high] `" reads the row text after `- ` as tracking-rules uses it, and "line" splits as `str.splitlines` does, which `reader.ts` mirrors; test gaps closed in T5: a U+FEFF trim, a lower-case heading, a second Candidates section, and a `[high]` row under a later non-Candidates heading, each shown red on a planted defect.
+- 2026-10-17: amendment return: AC1 — "carries in its text after `[high] ` no started token (` — started M<n>` or ` — started #<n>`, `<n>` one or more ASCII digits, followed by the row's end or a character that is not an ASCII letter or digit) … A candidate row is a line that opens with `- ` under a `## ` heading that starts with `## candidates` in any letter case, up to the next `## ` line, read after each `<!--` … `-->` span that opens and closes within that section is removed."
+- 2026-10-17: T5 done; verify green: scripts 416 OK, hooks OK, both validates exit 0, plugin test 2071 pass; cairn_validate all checks passed. Status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

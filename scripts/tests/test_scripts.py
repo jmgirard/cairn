@@ -298,6 +298,9 @@ class TestNext(ScriptCase):
             "[high] Taken: x — started M271; narrowed",
             "[high] Taken: x — started #12 ",
             "[high] Taken: x — started #1234567890123456",
+            # Only an ASCII letter or digit voids the token, so `é` ends it
+            # (M272 AC1 as amended).
+            "[high] Taken: x — started M12é",
         ):
             with self.subTest(started=started):
                 root = self._planning_tree([started, "[high] Next high: y"])
@@ -312,6 +315,20 @@ class TestNext(ScriptCase):
             ["<!--", "[high] Commented out: x", "-->", "[high] : empty title", "[high] Visible: y"]
         )
         self.assertEqual(self._recommend(root)["title"], "Visible")
+
+    def test_high_title_trims_as_javascript_and_reads_each_candidates_section(self):
+        # M272 AC1: a trailing U+FEFF is trimmed, as JavaScript's `trim`
+        # does and Python's bare `strip()` does not; a lower-case heading
+        # opens a section; a later Candidates section is read; and a
+        # `[high]` row under a later non-Candidates heading is not.
+        _load_scripts()
+        import cairn_next
+
+        self.assertEqual(cairn_next.high_title("## Candidates\n- [high] Bom﻿: x\n"), "Bom")
+        self.assertEqual(cairn_next.high_title("## candidates\n- [high] Lower: x\n"), "Lower")
+        two = "## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n\n## Candidates\n- [high] Second: z\n"
+        self.assertEqual(cairn_next.high_title(two), "Second")
+        self.assertIsNone(cairn_next.high_title("## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n"))
 
     def test_plan_with_no_high_row_gives_none(self):
         # M272 AC1: untagged and `[low]` rows, an upper-case token, and a
