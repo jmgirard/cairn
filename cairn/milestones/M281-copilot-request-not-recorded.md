@@ -100,7 +100,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
       `skills/tests/test_copilot_review_round.py` and
       `skills/tests/test_mutation_harness.py` pin, or update those pins in
       the same commit.
-- [ ] T2: Add one sentence to `README.md`'s "Copilot can review each PR
+- [x] T2: Add one sentence to `README.md`'s "Copilot can review each PR
       first (opt-in)" paragraph and an entry under `CHANGELOG.md`'s
       `## Unreleased` (section chosen at implement), each stating AC3.
 - [ ] T3: Run the `verify` slot (AC5) and `wc -l -c` on the module (AC4).
@@ -132,6 +132,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: criteria audit (full mode, fresh Opus reader): 6 findings, all fixed. AC1 narrowed to "adds no wait of its own" (§4's read-time wait stays) and "may not have recorded" (timing). AC2 reworded to "why no review exists" and scoped to the same pass (no stored record, D-153). AC3 narrowed to the re-query case. AC5 dropped the hand-run `skills/tests` clause (D-109; it binds an instrument), now in T3 as a noted non-gating run. Dropped the new-guard task (D-109: not owed). AC4 clean but tight.
 - 2026-10-18: implement started on branch m281-copilot-request-not-recorded; untracked `cairn-probe.log` and `tsconfig.json` predate this work and stay unstaged.
 - 2026-10-18: T1 done: §2 gains the re-query and the not-recorded line, §6 names it; cuts elsewhere (a redundant §1 note sentence, §4's restated wait-once clause, rewraps, shorter phrasings) bring the module to 138 lines and 7,998 bytes; no guard-pinned string changed; verify green (scripts 423 OK, hooks 179 OK, both validates 0, plugin test 2132 pass).
+- 2026-10-18: T2 done: README Copilot paragraph gains two sentences; CHANGELOG entry placed under Unreleased `### Fixes`, since the round was silent where it owed a reason; both gating suites green after the edits.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

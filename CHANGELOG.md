@@ -519,6 +519,16 @@
 
 ### Fixes
 
+- **The Copilot round reports a request that GitHub did not record.** With
+  `# Copilot review: on`, `/hotfix` and `/milestone-review` now read the PR
+  again right after `gh pr edit <N> --add-reviewer @copilot` exits 0. If
+  the PR still shows no Copilot request or review, the run says so in one
+  line, `Copilot request on PR #<N> not recorded by GitHub (used-up Copilot
+  credits are one cause)`, and goes on without Copilot. It makes no second
+  request. Before, only a non-zero exit counted as a failed request, so
+  the round gave no reason for the missing review. The rule is in
+  `skills/shared/copilot-review.md` §2.
+
 - **A failed read or session end no longer leaves the cairn pane stuck.**
   If the pane's `⌂` button cannot read whether a cairn skill runs, the
   press now lets go of its hold. The other action buttons then work again.
