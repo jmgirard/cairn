@@ -175,6 +175,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - 2026-10-17: after the claim fixes: scripts 418 OK (21 skipped), hooks 179 OK, plugin test 2074 pass 0 fail; manifests unchanged since the T4 validates.
 - 2026-10-17: review return 1: AC4 — `hooks/status/band.test.tsx:3002` still describes the plan target as "the fixture's first unstarted `[high]` candidate row" (the M272 rule); the sweep's 97 lines include the test files.
 - 2026-10-17: T6 added (minor amendment, review return 1; Coverage AC4 and AC5 gain T6) and done: `band.test.tsx` comment now names the first `[high]` row the fixture's Candidates list shows; "unstarted" grep over the AC4 paths prints nothing; verify: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
+- 2026-10-17: step-7 approval: m273-plan-target-matches-list approved for merge
 - 2026-10-17: T5 done: verify on the T4 tree: scripts 418 OK (21 skipped), hooks 179 OK, plugin and marketplace validate exit 0, plugin test 2074 pass 0 fail.
 
 ## Decisions
