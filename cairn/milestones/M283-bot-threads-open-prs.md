@@ -103,7 +103,7 @@ not added.
       pull requests in the repo. Each names the file and line, a verdict on
       the claim from the PR's code, and that the audit writes nothing to
       GitHub.
-- [ ] AC7: The profile's `verify` slot is clean: both gating
+- [x] AC7: The profile's `verify` slot is clean: both gating
       `python3 -m unittest` suites (`scripts/tests`, `hooks/tests`),
       `claude plugin validate` on the plugin and marketplace manifests, and
       `claude plugin test`.
@@ -201,3 +201,5 @@ Pass 1 (2026-10-18), branch head 103c1912, PR #295.
 - AC4: `git diff main...HEAD -- skills/milestone/SKILL.md` changes one line of the hotfix bullet, adding `headRefOid` to the `--json` list, and no other line of that bullet; the edited `gh pr list --repo jmgirard/cairn --state open --author @me --limit 100 --json number,title,url,headRefName,headRefOid,reviewDecision` exited 0 and listed PR #295 with its `headRefOid`. Met.
 - AC5: the scratchpad script takes the command verbatim from the skill (first line starting `  gh api graphql --paginate`) and fills the placeholders. As written it printed nothing, exit 0, on cairn #240, #289, and insight #1263. With only `select(.isResolved == false) |` removed it printed 3 threads for #240 (each `isOutdated` true, `line` null, `originalLine` 30, 669, 18), 2 for #289 (one `isOutdated` false with `line` 137), and none for #1263. The contents read at insight #1288's head 59da5593 exited 0 and printed `DESCRIPTION`. Met.
 - AC6: README.md lines 817-821, in the "Contributions come in through you" paragraph, and CHANGELOG.md lines 326-338, under `## Unreleased` `### New` (heading at line 324), each say the audit lists each unresolved review thread a GitHub App bot opened on your open PRs ("in the repo" in README, "every PR in the "Open hotfix PRs" item's list" in CHANGELOG), with file and line, a verdict on the claim from the PR's code at its head commit, and that it writes nothing to GitHub. Met.
+- AC7: fresh verify run on 103c1912's tree, each exit 0: `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate .` and `claude plugin validate .claude-plugin/marketplace.json` passed, `claude plugin test` 2132 pass 0 fail. Met.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` is skipped. Profile checks: verify passes on the review head (AC7); the marketplace validate output has no `version` warning (grep empty); the CHANGELOG has the `### New` entry with no milestone number (AC6). No CI in this repo, per the profile. Gate green.
