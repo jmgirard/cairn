@@ -78,14 +78,16 @@ def workable(root, rows):
     return _workable(rows, done_ids(root, rows), stack_bases(root, rows))
 
 
-def recommend(root, rows, roadmap=None):
+def recommend(root, rows, roadmap=None, held=None):
     """The single recommended action, in precedence order: the first review
     row, else the first in-progress row, else the first workable row, else
     planning. A dict of `action`, `command`, `id` (None for planning), and
     `title`: for planning, the short title `high_title` reads from
     `roadmap` (the ROADMAP text, read from `root` when None) with the table
     rows and the archived `blocked` ids, and None in every other case (M272,
-    M273). The cairn pane (hooks/status/reader.ts) mirrors this (M205)."""
+    M273). `held` is the `blocked` list when the caller already read it,
+    so one call reads each blocked file once (M273 review). The cairn pane
+    (hooks/status/reader.ts) mirrors this (M205)."""
     review = [r for r in rows if r["status"] == "review"]
     in_progress = [r for r in rows if r["status"] == "in-progress"]
     ready = workable(root, rows)
@@ -95,7 +97,7 @@ def recommend(root, rows, roadmap=None):
         return {"action": "resume", "command": "/milestone-implement", "id": in_progress[0]["id"], "title": None}
     if ready:
         return {"action": "implement", "command": "/milestone-implement", "id": ready[0]["id"], "title": None}
-    shipped = [r["id"] for r in blocked(root, rows) if r["archived"]]
+    shipped = [r["id"] for r in (blocked(root, rows) if held is None else held) if r["archived"]]
     title = high_title(cs.read_roadmap(root) if roadmap is None else roadmap, rows, shipped)
     return {"action": "plan the next milestone", "command": "/milestone-plan", "id": None, "title": title}
 
@@ -331,7 +333,7 @@ def render(root):
 
     ready = workable(root, rows)
 
-    rec = recommend(root, rows, roadmap)
+    rec = recommend(root, rows, roadmap, held)
     # Planning names its `[high]` row's short title after the command (M272).
     named = rec["id"] or rec["title"]
     target = f"{rec['command']} {named}" if named else rec["command"]
