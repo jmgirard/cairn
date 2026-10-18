@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M271: A triage promote gives its candidate row the high-priority token
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters run `/cairn-triage` and read its edits in their ROADMAP and the pane   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m271-triage-promote-marks-high   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -85,7 +85,7 @@ rewritten with a new trigger.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Edit `skills/cairn-triage/SKILL.md`: the `promote` table row
+- [x] T1: Edit `skills/cairn-triage/SKILL.md`: the `promote` table row
       (~:281) and Readiness class (~:322); a new sentence after the pinned
       "a `keep`, `compress`, or `retitle` row may also carry a priority
       change" (~:385) making a promote carry `high`; the chip text (~:398) so
@@ -113,6 +113,8 @@ rewritten with a new trigger.
 - 2026-10-17: plan gate chose writing `[high]` on promote over a separate "ready" marker because the token, its ordering, and the pane's ↑ already exist; falsified by an operator who needs to tell a ready row from an important waiting row and cannot.
 - 2026-10-17: criteria audit (full mode, fresh Opus reader): no criterion unreachable; four gaps fixed — AC1 covers a promote set at Amend and the chip's single naming, AC4 added for fence order, other promote paths named Out; the readiness-implies-high tension goes in the D-entry.
 - 2026-10-17: rulebook left unchanged so the three rulebook-mass pins (LESSONS, M149) need no re-seed.
+- 2026-10-17: implement started on m271-triage-promote-marks-high; untracked cairn-probe.log and tsconfig.json predate the branch and stay unstaged. Baseline hand-run skills/tests at the branch point: 829 tests, OK.
+- 2026-10-17: T1 done: promote table row, Readiness class, reason-cell rule (proposed or set at Amend), chip names the change once, Amend cannot decline it alone, fourth byte-for-byte carve-out, skip and `nothing applied` conditions, apply rule, stamp, and fence order (candidates then Known issues, each in table order); both pinned sentences kept verbatim; verify green (scripts 409, hooks 179, plugin validate x2, plugin test 2018), skills/tests 829 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
