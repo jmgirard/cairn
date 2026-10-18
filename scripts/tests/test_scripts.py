@@ -270,7 +270,10 @@ class TestNext(ScriptCase):
         """The base tree with nothing workable and these candidate rows. With
         `open_id`, a row of that id and `status` is added: a `planned` one
         waits on a missing id, so nothing is workable, and with `shipped` its
-        file is missing and an archive file of the id is `done` (M273)."""
+        file is missing and an archive file of the id is `done` (M273). Each
+        call builds in a new folder, so no file an earlier call wrote stays
+        on disk (M273 review)."""
+        self.tree = Tree(tempfile.mkdtemp(dir=self._tmp.name))
         self.tree.rows = [("M01", "Old done", "done", "—", "high", "milestones/archive/M01-old.md")]
         self.tree.files = {"milestones/archive/M01-old.md": archived("done")}
         if open_id is not None:
@@ -340,10 +343,9 @@ class TestNext(ScriptCase):
         with self.subTest(status="absent"):
             root = self._planning_tree(["[high] Tokened: x — started M900", "[high] Next high: y"])
             self.assertEqual(self._recommend(root)["title"], "Tokened")
-        # A fresh id, since the subtests above leave M005's live file on disk.
         with self.subTest(status="blocked, archived"):
             root = self._planning_tree(
-                ["[high] Tokened: x — started M6", "[high] Next high: y"], open_id="M006", status="blocked", shipped=True
+                ["[high] Tokened: x — started M5", "[high] Next high: y"], open_id="M005", status="blocked", shipped=True
             )
             self.assertEqual(self._recommend(root)["title"], "Tokened")
 

@@ -4949,4 +4949,39 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
     })
   }
+
+  // The callers pass the open hotfix list to the pick (M273 review): a
+  // `#41` token on "Chosen row" hides it while hotfix PR 41 is open, and
+  // the line and both presses then plan "Later high"; with another hotfix
+  // PR open, the token hides nothing.
+  for (const [open, args] of [
+    [41, 'Later high'],
+    [42, 'Chosen row'],
+  ] as const) {
+    test(`a #41 token with hotfix PR ${open} open names ${args} on the line and the press`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: ORIGIN },
+        list: () => listReply([pr(open, 'hotfix-x')]),
+      })
+      const copy = copyOf('high-candidate')
+      const path = Object.keys(copy.files).find(key => key.endsWith('/cairn/ROADMAP.md')) as string
+      copy.files[path] = copy.files[path].replace(' — started M001\n', ' — started M001 — started #41\n')
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
+      expect(next).toBe(`Next   /milestone-plan ${args} `)
+      await pressKey($, PANE_NEXT)
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
+      const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+      await band.press({ key: 'cairn-next' })
+      await band.unmount()
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 4)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
+    })
+  }
 })

@@ -11,8 +11,9 @@
   That row is the first `[high] ` row with a short title outside an HTML
   comment that no counted started token hides. A
   ` — started M<n>` token counts while milestone `M<n>` is `planned` or
-  `blocked` and its file is not archived. A ` — started #<n>` token of up to 15 digits always counts
-  here, because the script reads no PRs. A counted token hides every row
+  `blocked`, but not for a `blocked` row whose file was archived. A
+  ` — started #<n>` token of up to 15 digits always counts here, because
+  the script reads no PRs. A counted token hides every row
   with the same short title. The cairn pane's Next pill shows
   `/milestone-plan <title>` too. The `Plan` button on the pane and on the
   band runs `/clear` and then `/cairn:milestone-plan <title>`. In the

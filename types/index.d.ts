@@ -55,8 +55,10 @@ export type CairnPaneMilestone = {
 
 // What the cairn pane shows (M205): `found` is false when no ROADMAP is
 // found. `next` is `recommend` in scripts/cairn_next.py, its `id` null for
-// planning and its `title` the short title of the first unstarted `[high]`
-// candidate row while planning, else null (M272), and `waiting` is its `waiting`, each row's undone dependencies
+// planning and its `title` the short title `highTitle` names while
+// planning (the first `[high]` candidate row no counted started token
+// names, every `#` token counted), else null (M272, M273); the pane's Next
+// line and Plan press pick their own row (`nextTitle`). `waiting` is its `waiting`, each row's undone dependencies
 // as written with their status. `candidates` holds the ROADMAP's candidate
 // rows, each its priority and its short title: the text before its first
 // `: `, else before its first ` — `, else all of it (M207, M251).
