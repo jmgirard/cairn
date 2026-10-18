@@ -66,7 +66,7 @@ class TestCostAuditLine(unittest.TestCase):
         # the seed is the M274 re-measurement in bytes (M274 added the
         # "Feature series" paragraph to the sizing section; the prior seed
         # was M270's 719 lines / 69,644 bytes).
-        self.assertIn("733 lines / 70,904 bytes", self.text)
+        self.assertIn("733 lines / 70,960 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
