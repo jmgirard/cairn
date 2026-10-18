@@ -199,3 +199,7 @@ a known issue.
 - prior-review #2: the AC1 test adds one more short "nothing more happened" wait (`untilRuns(copy, 1, 10)`) — follow-up: "Rejected end edges (M260 review)" row, whose remaining item names that helper; hygiene adds this instance.
 - prior-review #3: the same DESIGN.md wrap as diff-bug #11 — fix now, fixed a8f725e3.
 - note: diff-bug #1's fix also covers the Scope `Out:` item "an end whose own state write rejects and so skips `free()`", on both paths; hygiene drops that sentence from the candidate row. Verify after the fixes: scripts 418 OK, hooks 179 OK, both validates 0, plugin test 2086 pass.
+- copilot: cairn/milestones/M278-pane-failed-read-end.md:14 (outdated) — record the PR URL in the Branch/PR header; fix now, fixed 5ceddd3f (replied and resolved).
+- copilot: review body — its one finding is the thread above; noted.
+- Copilot level: Lite (set by GitHub's settings); its review covered 5605fac6, an earlier head.
+- conversation: PR #290 has no other review, conversation comment, or unresolved thread.
