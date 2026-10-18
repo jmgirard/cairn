@@ -1,0 +1,11 @@
+# M275: A feature series stays listed and keeps one entry until its last part ships
+
+**Status:** done (2026-10-18, PR #287 https://github.com/jmgirard/cairn/pull/287)
+
+**Goal:** A feature series stays visible to the release walk and the status snapshot until its last part ships, and a hotfix or a dropped part no longer breaks its one changelog entry or its guest PR sentence.
+
+**Outcome:** `/cairn-release` step 1 reads a named part's status from its ROADMAP row, else from its archive summary's Status line, else unknown, and the question names unknown parts. `/hotfix` step 5, the adopting-a-PR clause, the merged-PR re-entry's *Changelog* and *Nothing owed* clauses, the re-land fallback, and the approval gate keep a series' one unreleased entry: no second entry, an edit only where the fix changes what the entry says, a merged second entry removed, a contributor's credit kept; a bug in behavior an earlier release shipped takes its own entry. `/milestone-review` step 8's last-part guest sentence names the PRs of `done` and `blocked` earlier parts (status by the release rule) and leaves out `dropped` ones. The milestone template's work-log comment names the `feature series:` line; the archive-summary template copies its text after **Goal:** without date or bullet; `/milestone` §1 reports half-merged series in owner mode by citing the release rule. The M274 CHANGELOG entry was edited, not duplicated. Guards: `skills/tests/test_feature_series.py` (`TestHotfixSeriesEntry`, `TestSeriesNamedElsewhere`, new release and review tests) with mutation entries; one stale M274 entry removed.
+
+**Decisions:** none promoted. Plan gate: the hotfix rule is scoped to feature-series entries, not every unreleased entry; `/milestone` cites the release rule rather than moving it into tracking-rules (no rulebook-mass re-seed).
+
+**Review:** user-facing tier, one pass, defect-return count 0, amendment-return count 0. Criteria audit (full) 12 findings fixed; claim audit 56 claims, 4 corrected. Fan-out of three lenses: 20 findings, 11 fixed, 9 rejected, none deferred. Copilot (Lite): 2 fixed (already covered), 1 noted, thread resolved. Graduated the candidate row "Feature series edges (M274 review)". One lesson captured (a status filter in skill prose drops states the old wording covered).
