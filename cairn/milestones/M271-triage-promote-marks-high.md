@@ -11,7 +11,7 @@
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters run `/cairn-triage` and read its edits in their ROADMAP and the pane   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** m271-triage-promote-marks-high   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m271-triage-promote-marks-high, https://github.com/jmgirard/cairn/pull/283   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -42,30 +42,30 @@ rewritten with a new trigger.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `skills/cairn-triage/SKILL.md` makes every `promote` that stands
+- [x] AC1: `skills/cairn-triage/SKILL.md` makes every `promote` that stands
       at Accept for a candidate row whose opening token is not `[high]`,
       whether proposed or set at an Amend, carry a priority change to `high`,
       stated in the `promote` row of step 2's disposition table and in step
       3's reason-cell rule; the chip names that change once, with the
       promote; Amend cannot decline that change alone; a `promote` of a Known
       issues entry carries none.
-- [ ] AC2: The same file's step 4 applies that change as it applies any
+- [x] AC2: The same file's step 4 applies that change as it applies any
       accepted priority change: `[high] ` is added to an untagged row or
       replaces its `[low] ` token, and the row moves into the high level of
       the order; step 3's byte-for-byte rule names this edit among its
       carve-outs.
-- [ ] AC3: The same file's step 4 skip condition and step 7's `nothing
+- [x] AC3: The same file's step 4 skip condition and step 7's `nothing
       applied` condition count an accepted `promote` as changing no file
       only when it carries no priority change and no token change.
-- [ ] AC4: The same file's step 7 orders the `/milestone-plan` fences of the
+- [x] AC4: The same file's step 7 orders the `/milestone-plan` fences of the
       accepted promotes as candidate rows in table order, then Known issues
       entries in table order.
-- [ ] AC5: `git grep -n -F 'change nothing of their own' -- skills README.md`
+- [x] AC5: `git grep -n -F 'change nothing of their own' -- skills README.md`
       and ``git grep -n -F '`promote` (with no token' -- skills README.md``
       each return no line, and README.md's candidate-pane paragraph and a
       `CHANGELOG.md` `## Unreleased` entry each say that a `/cairn-triage`
       promote gives the row `[high]`.
-- [ ] AC6: The `verify` slot of `cairn/PROFILE.md` passes on the branch
+- [x] AC6: The `verify` slot of `cairn/PROFILE.md` passes on the branch
       head, and the hand-run `python3 -m unittest discover -s skills/tests`
       shows no failing test that does not also fail on the default branch at
       the branch point.
@@ -126,3 +126,40 @@ rewritten with a new trigger.
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Review head da54fc3b; PR #283 opened at review start (Copilot round on).
+
+- AC1: `skills/cairn-triage/SKILL.md:281` (promote table row: a candidate row not `[high]` takes the change to `high`; Known issues entry takes none), `:395-400` (reason-cell rule: every promote of such a row, proposed or set at Amend, carries it; Known issues promote carries none), `:408-410` (chip names it once), `:417-419` (Amend cannot decline it alone). Pass.
+- AC2: `SKILL.md:474-478` — "an accepted priority change, a promote's included, adds, replaces, or removes the row's opening token ... and moves the row to its level"; `:487` orders candidates high → normal → low; `:442-443` names the promote's change as the fourth byte-for-byte carve-out. Pass.
+- AC3: `SKILL.md:445-447` skip condition reads "every item `keep` or `promote` with no priority change and no token change, or nothing enumerated"; `:556-558` `nothing applied` covers "an accept of only `keep` and `promote` items with no priority or token change". Pass.
+- AC4: `SKILL.md:568-570` — "Several promotes take several blocks: the candidate rows first, in table order, then the Known issues entries, in table order." Pass.
+- AC5: both `git grep -n -F` commands exit 1 with no line; `README.md:318-320` and the `CHANGELOG.md` `## Unreleased` entry (line 7-15) each say a `/cairn-triage` promote gives the row `[high]`. Pass.
+- AC6: verify on da54fc3b — scripts/tests 409 OK (21 skipped), hooks/tests 179 OK, plugin validate (plugin, marketplace) exit 0, plugin test 2018 pass 0 fail; hand-run skills/tests 836 OK against 829 OK at the branch point, so no failing test. Pass.
+- Consistency gate: cairn_validate all checks passed; no principle changed (cairn_impact skipped); marketplace validate shows no `plugins[N].version` warning; CHANGELOG has the entry, no milestone numbers.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: Amend-set promote vs. a proposed `→ low` on the same row is unsettled — fix now (the promote's change replaces any other proposed priority change)
+- diff-bug #2: a misspelled opening token (`[HIGH]`) stays beside the written `[high]` — fix now (apply step counts a misspelled opening token as the row's token)
+- diff-bug #3: D-179 changes `[high]`'s meaning but says it only annotates D-134 — fix now (D-180 records it as a narrowing)
+- diff-bug #4: the new guards are not in the mutation registry — fix now (13 entries; the blanking test passes)
+- diff-bug #5: several new rules have no guard — fix now (guards added for the table row, Readiness class, replaces-other-change, chip level, fourth carve-out, `nothing applied`)
+- diff-bug #6: "once, in the promote's own words" may leave `high` unsaid in the chip — fix now (chip names "its new level `high`")
+- diff-bug #7: an Amend-set promote on a row with a live started token writes `[high]` and a fence for taken work — follow-up (candidate row "Triage promote edges (M271 review)")
+- diff-bug #8: unclear whether each row of a §7 group takes `[high]` and a fence — follow-up (same row)
+- diff-bug #9: the cap overflow note omits promoted rows' stamp length — fix now
+- diff-bug #10: status line and step 5's record list omit priority changes — fix now
+- diff-bug #11: D-179 credits D-027 with the vocabulary — fix now (D-180)
+- diff-bug #12: D-179's Rejected clause reads as if the user chose the rejected option — fix now (D-180)
+- diff-bug #13: the D-108 trigger is arguable since promote worked as designed — reject, planned change: the user asked for the mark at the plan, and D-179 records the reasoning
+- diff-bug #14: the Goal says "stays first"; the skill puts the row among the `[high]` rows — reject, false as a criterion failure: review checks the criteria, and AC2 states the placement and passes; the archive summary words the goal as shipped
+- diff-bug #15: "the cairn pane marks it ↑" stated without conditions — fix now ("While the cairn pane lists candidates")
+- diff-bug #16: the rule is written in three places — reject, style: each site is the skill's own place for it, and each is now guarded
+- blame-history #1: the no-mark promote was designed (M173, M251) and other paths keep it — reject, planned change: the user chose the mark; the Out section says why the other paths hand on at once
+- blame-history #2: D-134 overload not recorded — fix now (D-180 (1))
+- blame-history #3: the fence-order change has no decision record — fix now (D-180 (4))
+- blame-history #4: the decline-alone right from M259 is narrowed without a record — fix now (D-180 (4))
+- prior-review #1: no mutation-registry entries — fix now (as diff-bug #4)
+- prior-review #2: the chip may not show the new level — fix now (as diff-bug #6)
+- prior-review #3: barring a decline alone runs against M259's pattern — reject, planned change: the user's answer at the question set
+- prior-review #4: only one of three statement sites pinned — fix now (as diff-bug #5)
+- prior-review #5: one guard pins prose, and the step-7 read runs to EOF — reject, false: prose guards pin prose by design, and step 7 is the file's last section
+- prior-review #6: fence order changed from M179's fix — noted (context, no defect)

@@ -137,6 +137,32 @@ class TestPromoteCarriesHigh(unittest.TestCase):
             "every item `keep` or `promote` with no priority change and no token change", self.step(4)
         )
 
+    def test_table_row_states_it(self):
+        self.assertIn(
+            "a promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`",
+            self.step(2),
+        )
+
+    def test_readiness_class_states_it(self):
+        self.assertIn(
+            "a promoted candidate row that does not open with `[high]` takes the priority change to `high`",
+            self.step(2),
+        )
+
+    def test_it_replaces_another_proposed_change(self):
+        self.assertIn("it replaces any other priority change proposed for that row", self.step(3))
+
+    def test_chip_names_the_new_level_once(self):
+        self.assertIn("is named once, with its new level `high`, beside the promote", self.step(3))
+
+    def test_it_is_the_fourth_carve_out(self):
+        self.assertIn("a promoted row's change to `high` is a fourth", self.step(3))
+
+    def test_nothing_applied_needs_no_priority_change(self):
+        self.assertIn(
+            "an accept of only `keep` and `promote` items with no priority or token change", self.step(7)
+        )
+
     def test_fences_put_candidates_before_known_issues(self):
         self.assertIn(
             "the candidate rows first, in table order, then the known issues entries, in table order",

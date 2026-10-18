@@ -6506,3 +6506,25 @@ because it brings back the unmarked promote.
 the ROADMAP no longer tells the two apart. If an operator needs to tell a
 ready row from an important row that still waits, and cannot, this is the
 entry to supersede.
+
+### D-180 (2026-10-17): Four clauses of D-179 are corrected in one batched entry — it narrows D-134's meaning of `[high]`, its vocabulary source and its rejection are restated, and two skill changes it left out are recorded — supersedes those clauses; D-179's decision stands (M271 review)
+
+**Context:** M271's review found D-179's wording wrong or short in four
+places. D-179 is history, so it is corrected here (D-102 gives no
+exception for an unmerged entry).
+
+**Decision:** (1) D-179's heading says it annotates D-134. It narrows
+D-134: `[high]` meant importance alone, and it now also marks a row a
+triage promoted. The token stays a row fact and not a status. (2) D-179
+says D-027 "fixed the eight-word vocabulary". D-027 records one triage
+pass; the eight words are the triage skill's vocabulary, which cites
+D-027. (3) D-179's Rejected clause names "the user's choice at M271's
+question set". The user chose against a declinable mark there, so the
+declinable mark is the rejected option. (4) Two skill changes ride with
+D-179's decision and it did not name them. Unlike a token change, which
+Amend can decline alone (M259), a promote's change to `high` cannot be.
+Step 7 orders the promotes' `/milestone-plan` fences as candidate rows,
+then Known issues entries, each in table order, in place of M179's order
+by token, since every promoted candidate row is now `[high]`.
+
+**Consequences:** D-179's decision and falsifier stand as corrected here.
