@@ -194,3 +194,5 @@ PR #291 opened at review start (Copilot round on); Copilot requested on state `n
 - diff-bug #8: record-rule Extraction says "the current `cairn_cost.py`", which will age — fix now, names commit `92edddd4`, fixed a443888e.
 - diff-bug #9: "had the cost evidence gone the other way" may read as Axis 3 — reject (false): the sentence follows the bullet on the generator's cost (record-caused returns), not Axis 3.
 - diff-bug #10: no old-script figure presented as current elsewhere in `cairn/references/`, DESIGN, skills, or README — noted, no finding.
+- Copilot level: none; review not requested in effect. `gh pr edit 291 --add-reviewer @copilot` exited 0 twice (at review start, and again when the read found state `none`), but the PR timeline records no `review_requested` event and `requested_reviewers` is empty, so no Copilot review exists and nothing was waited on (PRs #288–#290 did get one).
+- PR-conversation read (2026-10-18): 0 reviews, 0 conversation comments, 0 unresolved threads on PR #291.
