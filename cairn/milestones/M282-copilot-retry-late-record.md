@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M282: A later Copilot request is a retry, and a late-recorded request is not reported as missing
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters with `# Copilot review: on` get the round's requests and read its report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m282-copilot-retry-late-record   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -124,7 +124,7 @@ not added.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `skills/shared/copilot-review.md`, add the retry sentence to
+- [x] T1: In `skills/shared/copilot-review.md`, add the retry sentence to
       §2 (lines 37-49) and the late-record rule to §6 (lines 133-135).
       Compress other module text to stay under 140 lines and 8,000 bytes
       (139 lines, 7,993 bytes at plan). Leave §4's wait sentences and the
@@ -171,6 +171,9 @@ not added.
 - 2026-10-18: inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-18: lessons harvested: M112/M249 (grep old wording, CHANGELOG task, T3), M148/M279 (hand-run `skills/tests` after edits near guarded text, T5).
 - 2026-10-18: changelog: a new Unreleased Fixes entry, not an edit of M281's entry, since the profile gate asks for an entry for this milestone's changes.
+- 2026-10-18: implement started on branch m282-copilot-retry-late-record, cut from origin/main at 90019173; untracked `cairn-probe.log` and `tsconfig.json` are unrelated and left unstaged.
+- 2026-10-18: T1 done: §2 states a later run that reads `none` requests again, §6 gives the not-recorded line as the reason only while the read's query prints `none`; compressed §1, §3, §4, §5 wording (module 139 lines, 7,987 bytes; budget line figures unchanged); verify green, `skills/tests` 886 green.
+- 2026-10-18: T1 choice: the guest-mode close sentence on a late Copilot review was cut from §6, since the hotfix and review guest closes state it; the guest reply-vocabulary rule was kept in shorter form, since the rulebook's vocabulary bullet does not name replies.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

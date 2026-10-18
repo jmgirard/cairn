@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M282 | A later Copilot request is a retry, and a late-recorded request is not reported as missing | planned | — | normal | milestones/M282-copilot-retry-late-record.md |
+| M282 | A later Copilot request is a retry, and a late-recorded request is not reported as missing | in-progress | — | normal | milestones/M282-copilot-retry-late-record.md |
 | M281 | A Copilot request that GitHub does not record is reported | done | — | normal | milestones/archive/M281-copilot-request-not-recorded.md |
 | M280 | The pane shows candidates by priority, and validate warns on file order | done | — | normal | milestones/archive/M280-candidate-level-order.md |
 | M279 | Old cost-script figures are re-measured or marked | done | — | normal | milestones/archive/M279-old-cost-figures.md |
