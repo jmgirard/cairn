@@ -183,6 +183,7 @@ not added.
 - 2026-10-18: open concern for review: on the hotfix guest arm (`skills/hotfix/SKILL.md` step 6 guest handoff) no state query runs at read time after §2's re-query, so §6's "the read's own state query" has no query to read there.
 - 2026-10-18: implement done; status set to review.
 - 2026-10-18: review step 2 Copilot arm: branch pushed, PR #294 opened; state query `none`, `gh pr edit 294 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #294 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request at that step.
+- 2026-10-18: step-7 approval: m282-copilot-retry-late-record approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
