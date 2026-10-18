@@ -122,7 +122,11 @@ claude-sonnet-5-5, USD 0.1506, score 1.0000) read only its own copy. Its
 report, which it delivered through a tool call, names the live checkout's
 `DECISIONS.md` as the file it read. Part 1 counts no run whose tool calls
 name a live checkout path, so this run was set aside, and
-`a2feb9645d2fe5627` ran on a fresh copy with the same prompt. No counted
+`a2feb9645d2fe5627` ran on a fresh copy with the same prompt. Part 1 names
+a replacement run only for a run on other model ids. This replacement was
+a choice made after the runs, so that each task and model has three counted
+runs. It lowered Sonnet's S3 mean, and the second reading under Verdict
+shows the verdict without it. No counted
 run's tool calls name a path under the live checkout. A search of each
 transcript's tool calls and tool results for `/Users/jmgirard/github/cairn/`
 found none.
@@ -156,7 +160,8 @@ score is at least 0.9 times Sonnet's.
 
 Readings that bear on the verdict:
 
-- The S2 change is the whole difference from M264. With S2's base name
+- The S2 prompt change is the only design difference from M264. Sonnet's
+  S3 mean also moved, from 0.8865 to 0.7826, by run-to-run spread. With S2's base name
   stated to include `.py`, all three Haiku S2 runs scored 1.0, where all
   three scored 0 in M264. With every Haiku S2 run at 0, as in M264,
   Haiku's sum is 1.9922, below 0.9 times Sonnet's (2.5043), and the

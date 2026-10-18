@@ -619,7 +619,8 @@ These rules bind all chat output while any cairn skill is active.
   each skill) as the Agent tool's `model` setting, Explore fan-outs included. A spawn that sets none takes the agent
   type's or the harness's default, which need not be the model the role calls for.
 - **Leave effort unset on every spawn.** No subagent role sets the Agent tool's `effort` setting, the history reviewers
-  included. On search and edit work the cost method's output undercount could reverse `low`'s saving, the history
+  included. On search and edit work the cost method's output undercount could reverse `low`'s saving (search measured
+  on Sonnet before it moved to Haiku, D-181), the history
   reviewers, measured on Sonnet before they moved to Haiku (D-174), scored fewer judged-valid findings at `low` and at
   `medium` by margins one rerun could flip, and the Opus
   and Fable roles are unmeasured (`cairn/references/effort-roles.md`, `cairn/references/effort-review-medium.md`).

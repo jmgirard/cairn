@@ -73,10 +73,11 @@
   change. In the cairn repository's test
   (`cairn/references/haiku-search-clarified.md`), three search tasks ran
   three times on each model. Haiku scored at least as high as Sonnet on
-  each task, at about 7% of Sonnet's cost. An earlier test had Haiku
-  behind, but only because one task's prompt left unclear whether a file
-  name includes its `.py` extension. The tasks have fixed answers, so the
-  test does not cover an open investigation.
+  each task, at about 7% of Sonnet's measured cost. Two earlier tests had
+  Haiku behind, and in both its whole deficit was on one task, whose prompt
+  left unclear whether a file name includes its `.py` extension. The test
+  here states it. The tasks have fixed answers, so the test does not cover
+  an open investigation.
 
 - **The two history reviewers run on Haiku.** In `/milestone-review`'s
   three-reviewer fan-out, the blame-history and prior-PR-comments

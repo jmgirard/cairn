@@ -119,6 +119,16 @@ class TestSearchModel(unittest.TestCase):
         self.assertIn("fan-out searches (Explore", bullet)
         self.assertIn("reading list", bullet)
         self.assertNotIn("**Sonnet subagents**", r)
+        # No bullet of the section names Sonnet as a model a spawn sets: the
+        # set-the-model list names the three models in use, and every
+        # remaining "Sonnet" in the section is a past-measurement clause.
+        sec = r[r.index("## Model and agent strategy"):r.index("## Toolchain profiles")]
+        flat = " ".join(sec.split())
+        self.assertIn("a role calls for (Haiku, Opus, or Fable,", flat)
+        self.assertEqual(
+            flat.count("Sonnet"), flat.count("measured on Sonnet"),
+            "a Sonnet mention in the model section is not a past measurement",
+        )
 
     def test_each_explore_site_names_haiku(self):
         for parts, phrase in self.SITES.items():

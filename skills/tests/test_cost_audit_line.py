@@ -66,7 +66,7 @@ class TestCostAuditLine(unittest.TestCase):
         # the seed is the M277 re-measurement in bytes (M277 moved Explore
         # searches into the Haiku subagents bullet; the prior seed was
         # M276's 742 lines / 71,576 bytes).
-        self.assertIn("742 lines / 71,569 bytes", self.text)
+        self.assertIn("743 lines / 71,631 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
