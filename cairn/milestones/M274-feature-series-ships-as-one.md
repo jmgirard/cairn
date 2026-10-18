@@ -1,0 +1,169 @@
+<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
+     section ownership". A phase skill never rewrites another phase's section.
+     Per-section owners are tagged below. The one size check that can fail is
+     cairn_validate's <150 over the plan-owned body. -->
+# M274: A feature split across milestones reaches users as one change
+
+- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
+- **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
+- **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
+- **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
+- **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
+- **Surface tier:** user-facing — changes what the plan, review, release walk, and profile gates tell every adopting repo to do   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
+- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+
+## Goal
+<!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
+
+When a plan splits one user-facing feature or fix across several milestones, the feature reaches users, and the changelog, as one change.
+
+## Scope
+<!-- owner: plan · create/amend-via-gate -->
+
+**In:** a "feature series" rule in tracking-rules "Sizing and the work
+tiers": earlier parts keep new behavior out of users' reach where they can,
+the last part adds the exports, user docs, and changelog entry, and an
+earlier part that must change visible behavior owns the one changelog entry
+that later parts edit. The plan writes a series as such. The four profiles
+whose consistency gate asks for a changelog entry accept an edit to the
+series' entry, or no entry for a hidden earlier part. In guest mode, each
+series PR body says in one plain sentence whether it completes the series.
+In owner mode, `/cairn-release` step 1 names each half-merged series at the
+version decision. README and CHANGELOG.
+
+**Out:** a series formed later by a review-time split (the D-103 shape),
+which no plan writes as a series → the candidate row "Feature series from a
+review-time split (M274 plan)". Guest-mode stacking of more than one open
+earlier part (D-173 allows one) → unchanged. The series rule names the limit.
+Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
+
+## Acceptance criteria
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
+     Every item opens with its positional label — `ACn:` — the item's
+     position counted top-to-bottom, the number Coverage cites; an
+     insertion, removal, or reorder renumbers the labels and the Coverage
+     lines together.
+     Driving RR set → its Binding criteria appear VERBATIM here (binding-
+     criteria check), each ingested as a numbered criterion carrying its tag
+     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
+     coverage-complete counts AC checkboxes positionally (M107); departures:
+     a "Deviations from RR<NN>" table ends this section. -->
+
+- [ ] AC1: `skills/shared/tracking-rules.md` "Sizing and the work tiers"
+      defines a feature series as two or more milestones that one plan
+      splits from one user-facing feature or fix, and states: (a) each
+      milestone of the series but the last keeps its new behavior out of
+      users' reach where it can, adding no export, user doc, or changelog
+      entry; (b) each milestone but the last carries an `Out:` item naming
+      the last milestone as where the feature's new exports and user docs
+      land, and, unless (c) applies, its changelog entry; (c) when a
+      milestone before the last must change user-visible behavior, its
+      changelog entry is the feature's one entry, and each later milestone
+      of the series edits that entry instead of adding one; (d) in guest
+      mode a later part can build on at most one open earlier part (D-173),
+      so a series of three or more waits on the maintainers' merges.
+- [ ] AC2: A `skills/milestone-plan/SKILL.md` step 4 bullet directs a plan
+      that splits one user-facing feature or fix into several milestones to
+      write them as a feature series under AC1's rules, and to write a
+      `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone
+      of the series.
+- [ ] AC3: In each profile that `git grep -l "has an entry for this"
+      skills/shared/profiles/` lists on main before the change
+      (`python.md`, `r-package.md`, `claude-plugin.md`, `docker-image.md`),
+      that consistency-gate line states that a milestone of a feature series
+      meets it with an edit to the series' existing entry, and that a
+      milestone before the series' last with no user-visible change needs
+      no entry.
+- [ ] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm states
+      that when the milestone's work log carries a `feature series:` line,
+      the PR body adds one plain sentence with no cairn vocabulary: for a
+      milestone before the series' last, that the change is one part of a
+      series whose user-facing part comes in a later pull request; for the
+      last, that it completes the series, naming each earlier milestone's
+      pull request by number, read from its live milestone file's
+      `Branch/PR` header or, for an archived milestone, from its archive
+      summary's Status line.
+- [ ] AC5: `skills/cairn-release/SKILL.md` step 1 lists each feature
+      series named by a `feature series:` line in a milestone file under
+      `cairn/milestones/` (not `archive/`) where the line names at least one
+      milestone whose ROADMAP status is `done`, and names those series in
+      the version-decision question.
+- [ ] AC6: `CHANGELOG.md`'s Unreleased section has an entry describing
+      AC1–AC5's rules.
+- [ ] AC7: The profile's `verify` slot passes on the branch head: both
+      gating `python3 -m unittest` suites, `claude plugin validate` on the
+      plugin and marketplace manifests, and `claude plugin test .`.
+
+## Coverage
+<!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
+     task(s) satisfying it, by positional number (AC/Task counted
+     top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
+
+- AC1 → T1, T6
+- AC2 → T2, T6
+- AC3 → T3, T6
+- AC4 → T4, T6
+- AC5 → T5, T6
+- AC6 → T7
+- AC7 → T8
+
+## Tasks
+<!-- owner: plan (create) / implement (check-off, minor edits); substantive
+     change is amend-via-gate. Every item opens with its positional label —
+     `Tn:` — the item's position counted top-to-bottom, the number Coverage
+     cites; an insertion, removal, or reorder renumbers the labels and the
+     Coverage lines together. -->
+
+- [ ] T1: tracking-rules "Sizing and the work tiers" (~line 187): one
+      paragraph after the split tripwires defining a feature series and its
+      rules (a)–(d). Keep the word "chain" out (stacking uses it).
+- [ ] T2: `skills/milestone-plan/SKILL.md` step 4: one bullet for a split
+      of one feature into a series, with the `feature series:` line.
+- [ ] T3: the four profiles' consistency-gate changelog line.
+- [ ] T4: `skills/milestone-review/SKILL.md` step 8 guest arm (~line 660):
+      the series sentence and where the earlier PR numbers are read.
+- [ ] T5: `skills/cairn-release/SKILL.md` step 1: the half-merged series
+      list and its place in the version-decision question.
+- [ ] T6: tests first in a new `skills/tests/test_feature_series.py`: one
+      guard per AC1–AC5 clause, each with a mutation-registry entry
+      (`skills/tests/test_mutation_harness.py`). Hand-run `skills/tests`.
+- [ ] T7: CHANGELOG Unreleased entry (AC6); grep README and `skills/` for
+      text restating one changelog entry per milestone and update it. Read
+      each claim against T1–T5's text.
+- [ ] T8: Run the `verify` slot on the code head and record each exit code.
+
+## Work log
+<!-- owner: any skill · append-only; one line per entry; absolute dates.
+     EXEMPT from the 150-line cap (D-046): history under D-045, never edited,
+     so the cap must never demand a trim here. Wrapped entries get a WARN.
+     The rejected-alternative record (/milestone-plan step 4) takes this form:
+     `- YYYY-MM-DD: plan gate chose <approach> over <alternative> because
+     <reason>; falsified by <evidence class>.` — one per approach choice the
+     gate actually weighed, none where it weighed none, and it is the record
+     `/milestone-review`'s thrash trigger (b) reads. It lives here rather than
+     below so an instantiated file inherits no placeholder to delete. -->
+
+- 2026-10-18: created by /milestone-plan.
+- 2026-10-18: tier check: milestone — changes skill and profile conduct for every adopter and needs a design choice.
+- 2026-10-18: question set: owner-mode release warning for a half-merged series — yes (AC5); firmness of hiding earlier parts — prefer, with the changelog-entry fallback (AC1 (a), (c)).
+- 2026-10-18: surface tier user-facing — the plan, review, release, and profile rules are what adopting repos follow.
+- 2026-10-18: collision check: extends tracking-rules "every milestone leaves the default branch shippable" (Sizing); no D-entry rejects it; works under D-040 (changelog slot), D-050 (release timing stays user-declared, AC5 only informs), D-137 and D-161 (guest PR text carries no cairn vocabulary and matches the host), D-173 (one stack base). Not the checker-regress shape. Inbox: 0 open issues, 0 open PRs.
+- 2026-10-18: lessons surfaced: grep the old phrasing and own a CHANGELOG task (M112, M249); hand-run `skills/tests` near edited SKILL.md slices.
+- 2026-10-18: plan gate chose an `Out:` item plus a `feature series:` work-log line to mark a series over a new milestone-file header slot, because both use existing places and no validator needs to parse them; falsified by a session where review or release misses a series whose files carry the line.
+- 2026-10-18: plan gate chose prose rules and prose guards over a validator that checks series membership, at the user's ask for proportional rigor; falsified by a release that ships a half-built series a validator would have flagged.
+- 2026-10-18: criteria audit (full mode, fresh Opus reader) returned 5 findings, all fixed: AC1's Out rule allows for rule (c); "chain" renamed "feature series" (stacking already uses "chain"), with the guest one-stack-base limit as rule (d); AC2 names a step 4 bullet, not a nonexistent list, and the line uses ASCII `->`; AC4 reads earlier PR numbers from archive Status lines too; AC5 claims only series named by a live milestone file. AC3 and AC6 clean.
+- 2026-10-18: split: none; 7 criteria, 8 tasks. The review-time-split remainder goes to the candidate row "Feature series from a review-time split (M274 plan)".
+
+## Decisions
+<!-- owner: implement / review · append-only; milestone-local; promote
+     cross-cutting ones to cairn/DECISIONS.md.
+     EXEMPT from the 150-line cap (D-074) because D-045 makes it history like the work log — dated dispositions, never edited — so the cap must never demand a trim here either.
+     Entries carry their rationale; the counterweight `decisions format`
+     advisory watches for pasted output, not for entry length (D-075). -->
+
+## Review
+<!-- owner: review · exclusive; evidence per criterion, consistency-gate
+     results, review findings + triage. EXEMPT from the 150-line cap (M55),
+     as are the work log (D-046) and the decisions section (D-074); evidence
+     never scrambles plan-owned content. -->
