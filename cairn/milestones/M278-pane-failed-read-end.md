@@ -161,6 +161,7 @@ a known issue.
 - 2026-10-18: claim audit: 35 claims read, 3 corrected — CHANGELOG.md (the ⌂ sentence said "now runs no `/clear`", which main also did, and "every pane button", though `↻` was never blocked and the band's action Buttons were), hooks/status/band.test.tsx (the `endTwice` comment named the hook's thrown error, not the kit's `NO_END`); same reader re-read all 3 as true; verify green after (plugin test 2084 pass).
 - 2026-10-18: implement complete; status set to review.
 - 2026-10-18: review: PR #290 opened at review start (Copilot round on); Copilot requested on state `none`.
+- 2026-10-18: step-7 approval: m278-pane-failed-read-end approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
