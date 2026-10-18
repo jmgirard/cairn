@@ -278,7 +278,7 @@ re-examines a lesson.
    | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
-   | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row stays first in the order, and the cairn pane marks it. A Known issues entry has no token and takes none. |
+   | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list, and the cairn pane marks it `↑`. A Known issues entry has no token and takes none. |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
@@ -470,8 +470,8 @@ re-examines a lesson.
    rewrites each listed mention in the other ROADMAP rows and Known issues
    entries, in each quoting item's text as its own accepted disposition
    leaves it, and none in an item being dropped; `keep` changes nothing of
-   its own, and `promote` changes only its row's opening token, through
-   the priority change it carries, though a `retitle` can rewrite a
+   its own, and `promote` changes nothing of its own beyond the priority
+   change a candidate row's promote carries, though a `retitle` can rewrite a
    mention inside either; an accepted priority change, a promote's
    included, adds, replaces,
    or removes the row's opening token (`[high]`/`[low]`; `normal` is no

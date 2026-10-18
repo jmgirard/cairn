@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M271: A triage promote gives its candidate row the high-priority token
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -118,6 +118,8 @@ rewritten with a new trigger.
 - 2026-10-17: T2 done: `TestPromoteCarriesHigh` (7 tests, whitespace-collapsed steps) in `skills/tests/test_candidate_priority_token.py`; three planted removals (carries-high sentence, apply clause, fence order) each turned their own test red, file restored byte-identical; skills/tests 836 OK.
 - 2026-10-17: T3 done: README candidate-pane paragraph and a CHANGELOG Unreleased entry; skills/tests 836 OK, scripts 409 OK.
 - 2026-10-17: T4 done: D-179 appended (annotates D-134, passes D-108's door on its retained trigger); validate green; verify green (scripts, hooks, plugin validate x2, plugin test 2018 pass); skills/tests 836 OK.
+- 2026-10-17: claim audit: 30 claims read, 4 corrected — skills/cairn-triage/SKILL.md, CHANGELOG.md (row "sits with the `[high]` rows", not "stays first"; promote changes nothing of its own beyond the carried change; "before" claims limited to normal and low rows; the guard's apply sentence updated to match); the same reader re-read all four as true.
+- 2026-10-17: implement complete; verify green after the claim fixes; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

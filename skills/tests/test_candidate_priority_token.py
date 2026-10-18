@@ -127,7 +127,10 @@ class TestPromoteCarriesHigh(unittest.TestCase):
         self.assertIn("a promote's change to `high` is not declined alone", self.step(3))
 
     def test_apply_writes_the_token(self):
-        self.assertIn("`promote` changes only its row's opening token", self.step(4))
+        self.assertIn(
+            "`promote` changes nothing of its own beyond the priority change a candidate row's promote carries",
+            self.step(4),
+        )
 
     def test_skip_needs_no_priority_change(self):
         self.assertIn(
