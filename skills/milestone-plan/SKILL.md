@@ -492,9 +492,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      rules of tracking-rules "Feature series": earlier parts stay out of
      users' reach where they can, each part but the last carries the `Out:`
      item naming the last, every part is a milestone file (never a
-     candidate row), and one changelog entry serves the whole series. Write the
+     candidate row, except a cut series' unplanned part, below), and one changelog entry serves the whole series. Write the
      work-log line `feature series: M<a> -> M<b>[ -> …]` in each milestone
      of the series.
+     A milestone the plan creates from a candidate row carrying
+     `split from M<NNN>` (a cut series) gets the work-log line
+     `feature series: M<NNN> -> M<new>`. The cut milestone's file gets no
+     line. Where the cut milestone has a changelog entry, the new
+     milestone's changelog task edits that entry under rule (c).
    Deferred chunks not yet plannable get `candidate` ROADMAP rows, not files.
 
 5. **Remainder ledger (conservation check).** Before committing, enumerate
