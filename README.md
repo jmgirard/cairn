@@ -315,7 +315,9 @@ milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
 ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `○` for a normal one, and
-`↓` for a `[low]` one, then the row's short title. Rows
+`↓` for a `[low]` one, then the row's short title. When `/cairn-triage`
+promotes a candidate row (marks it ready to plan), it also gives the row
+`[high]`, so a promoted row shows `↑`. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
 listed. A row's short title is its text after a leading `[high] ` or
 `[low] ` token with its space, up to its first `: `, with outer spaces

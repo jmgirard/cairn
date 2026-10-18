@@ -96,7 +96,7 @@ rewritten with a new trigger.
 - [x] T2: Add a guard class in `skills/tests/test_candidate_priority_token.py`
       pinning the promote-carries-`high` sentence; show it red with the
       sentence removed and green restored; hand-run `skills/tests`.
-- [ ] T3: README candidate-pane paragraph (~`README.md:317`) and a CHANGELOG
+- [x] T3: README candidate-pane paragraph (~`README.md:317`) and a CHANGELOG
       `## Unreleased` entry.
 - [ ] T4: Append the D-entry (annotates the priority-token decision; passes
       the conduct-rule door on its shipped-behavior trigger); run `verify`.
@@ -116,6 +116,7 @@ rewritten with a new trigger.
 - 2026-10-17: implement started on m271-triage-promote-marks-high; untracked cairn-probe.log and tsconfig.json predate the branch and stay unstaged. Baseline hand-run skills/tests at the branch point: 829 tests, OK.
 - 2026-10-17: T1 done: promote table row, Readiness class, reason-cell rule (proposed or set at Amend), chip names the change once, Amend cannot decline it alone, fourth byte-for-byte carve-out, skip and `nothing applied` conditions, apply rule, stamp, and fence order (candidates then Known issues, each in table order); both pinned sentences kept verbatim; verify green (scripts 409, hooks 179, plugin validate x2, plugin test 2018), skills/tests 829 OK.
 - 2026-10-17: T2 done: `TestPromoteCarriesHigh` (7 tests, whitespace-collapsed steps) in `skills/tests/test_candidate_priority_token.py`; three planted removals (carries-high sentence, apply clause, fence order) each turned their own test red, file restored byte-identical; skills/tests 836 OK.
+- 2026-10-17: T3 done: README candidate-pane paragraph and a CHANGELOG Unreleased entry; skills/tests 836 OK, scripts 409 OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
