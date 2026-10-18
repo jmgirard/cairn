@@ -4936,13 +4936,19 @@ REGISTRY += [
         guard="test_feature_series",
         test="TestReviewGuestSentence.test_last_part_names_earlier_prs",
         target=REVIEW,
-        block="For the last, it says the change completes the series and names each earlier milestone's pull request by number,",
+        block="For the last, it says the change completes the series and names by number the merged pull request of each earlier milestone that is `done`.",
     ),
     Mutation(
         guard="test_feature_series",
         test="TestReviewGuestSentence.test_last_part_names_earlier_prs",
         target=REVIEW,
-        block="read from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.",
+        block="Read each number from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestReviewGuestSentence.test_last_part_leaves_out_dropped_parts",
+        target=REVIEW,
+        block="It leaves out each `dropped` earlier milestone,",
     ),
     Mutation(
         guard="test_feature_series",

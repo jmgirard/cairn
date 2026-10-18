@@ -675,8 +675,9 @@ re-enters here, at the step the record shows is next:
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
    Under rule (c) it says the rest of the user-facing part comes later.
-   For the last, it says the change completes the series and names each earlier milestone's pull request by number,
-   read from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.
+   For the last, it says the change completes the series and names by number the merged pull request of each earlier milestone that is `done`.
+   Read each number from its live milestone file's `Branch/PR` header or, for an archived milestone, from its archive summary's Status line.
+   It leaves out each `dropped` earlier milestone, because a part dropped before its pull request opened has no number to name.
    With the Copilot review round on (`skills/shared/copilot-review.md`
    §1), run it here, after the create and before the close block: the
    state query (§3), the request on `none` asking for Balanced (§2), the

@@ -145,13 +145,17 @@ class TestReviewGuestSentence(unittest.TestCase):
 
     def test_last_part_names_earlier_prs(self):
         self.assertIn(
-            "for the last, it says the change completes the series and names each earlier milestone's pull request by number,",
+            "for the last, it says the change completes the series and names by number the merged pull request of each earlier milestone that is `done`.",
             self.text(),
         )
         self.assertIn(
-            "read from its live milestone file's `branch/pr` header or, for an archived milestone, from its archive summary's status line.",
+            "read each number from its live milestone file's `branch/pr` header or, for an archived milestone, from its archive summary's status line.",
             self.text(),
         )
+
+    def test_last_part_leaves_out_dropped_parts(self):
+        # M275: a part dropped before its PR opened has no number to name.
+        self.assertIn("it leaves out each `dropped` earlier milestone,", self.text())
 
 
 class TestHotfixSeriesEntry(unittest.TestCase):
