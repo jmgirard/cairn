@@ -8,7 +8,7 @@ tidymedia, circumplex, hitop. Archive review lines were read by two
 fresh-context readers; cost figures computed with the M94 attribution method
 (`scripts/cairn_cost.py` conventions). Observed 2026-08-08; the stores are
 live append logs, so every figure is a snapshot.
-Extraction: first-hand read of this machine's session stores and the five repos' own archives, nothing to re-verify against — the stores append live, so a re-run reproduces the method rather than the exact figures — observed 2026-08-08.
+Extraction: first-hand read of this machine's session stores and the five repos' own archives, nothing to re-verify against — the stores append live, so a re-run reproduces the method rather than the exact figures — observed 2026-08-08. The cohort table in `## Cost` came from `cairn_cost.py` before PR #238 (2026-10-10), which summed every record and skipped subagent files. Its figures are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of M113–M136; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279).
 
 **Scope.** Records the evidence gathered on Jeff's effort experiment —
 switching Opus 5 / Fable 5 from `high` to `medium` reasoning effort — and the
@@ -32,6 +32,10 @@ that), so the cohorts below are close to an effort-only comparison:
   M128–M136).
 
 ## Cost — medium ≈ half price per milestone
+
+The cohort table below came from the script before PR #238 and cannot be
+re-measured. The `Extraction:` line in the Provenance block says why
+(corrected M279).
 
 This repo, branch-attributed per M94 (plan phase excluded per A3):
 
@@ -97,8 +101,10 @@ that escaped to main under medium.
 1. Effort timeline: tally `effort` × day over `~/.claude/projects/*/**.jsonl`
    assistant records.
 2. Cost: M94 method — per-milestone turns/output via `gitBranch`, four token
-   classes kept separate, plan phase unattributable (A3), subagent tokens
-   unrecorded (A4).
+   classes kept separate, plan phase unattributable (A3). Since PR #238,
+   `cairn_cost.py` counts each API call once and includes subagent turns,
+   and its output counts are a lower bound. Do not compare its figures with
+   the cohort table above (corrected M279).
 3. Thrash: archive `**Review:**` lines — rounds/passes, returns (defect vs
    amendment), actioned ≥80 counts.
 4. Escapes: git log per repo for hotfix/fix/revert commits landing after a

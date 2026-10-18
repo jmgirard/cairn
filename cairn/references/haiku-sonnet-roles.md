@@ -53,13 +53,14 @@ record gives the exact output of earlier calls (observed 2026-10-09), so
 every row's cost is a lower bound.
 
 Two older records predate the store this note reads. `scripts/cairn_cost.py`
-and `session-cost-notes.md` (ledger row A4) say subagent turns are absent
+and `session-cost-notes.md` (ledger row A4) said subagent turns are absent
 from the session store, which held when observed on 2026-07-19; each
 session's `subagents/agent-*.jsonl` now holds them, the oldest such file on
-this machine dated 2026-08-13 (observed 2026-10-09). `cairn_cost.py` also
-sums every assistant record, where this note groups records by
-`message.id`. `session-cost-notes.md` carries the correction; the script is
-the ROADMAP candidate "Session-store reading in `cairn_cost.py`".
+this machine dated 2026-08-13 (observed 2026-10-09). `cairn_cost.py` then
+also summed every assistant record, where this note groups records by
+`message.id`. PR #238 (2026-10-10) changed the script to group records by
+`message.id` and to read the subagent files, and `session-cost-notes.md`
+carries the correction (corrected M279).
 
 Prices, USD per million tokens, from
 <https://platform.claude.com/docs/en/about-claude/pricing> (read 2026-10-09).

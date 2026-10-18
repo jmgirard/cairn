@@ -7,12 +7,14 @@ sections, blob-pinned below), the archive summaries, RR13
 row at commit `08bbb07`, and `scripts/cairn_cost.py` over the local session
 store.
 Pagination: —.
-Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22.
+Extraction: first-hand record — the review blobs and archives were read directly from git 2026-08-22 and are immutable at their commits; the cost figures are a snapshot of a live store — observed 2026-08-22. The Axis 3 cost figures were re-run 2026-10-18 at commit `92edddd4` with `cairn_cost.py` as PR #238 left it, since that PR changed how it counts (corrected M279).
 
 **Scope.** Re-measures three baselines after the record-rule changes — the
 derived-claims family (M134/M136/M137), the RR13 reduction (M144–M147), and
 D-116's narrowing of the family to code-adjacent artifacts — and records a
-three-way verdict (helping / dead weight / self-thrash). It is a measurement,
+three-way verdict (helping / dead weight / self-thrash). Axis 3 no longer
+compares its cost figures with the cost baseline, because that baseline came
+from the old cost script (corrected M279). It is a measurement,
 not a rule change: it supersedes and amends nothing. Method for the effort
 axes: `references/effort-experiment-notes.md`. This is a reference, not an
 authority — status lives in `ROADMAP.md`, decisions in `DECISIONS.md`,
@@ -28,10 +30,13 @@ architecture in `DESIGN.md`.
   2026-08-22.
 - Baselines: record-defect share ~half of actioned ≥80 findings, M113–M136,
   ROADMAP row at `08bbb07`; governance share (b)+(c) ≈ 73–77% of M100–M143,
-  RR13 §2; cost medians (medium cohort M128–M136: 165 turns / 169k output),
+  RR13 §2; cost medians (medium cohort M128–M136: 165 turns / 169k output,
+  made with `cairn_cost.py` before PR #238, corrected M279),
   `references/effort-experiment-notes.md` — observed 2026-08-22.
 - Per-milestone cost: `python3 scripts/cairn_cost.py --milestone M<NN>` for
-  each of M137–M152, run 2026-08-22.
+  each of M137–M152, run 2026-08-22, and re-run for M139–M152 on
+  2026-10-18 at commit `92edddd4` with the script as PR #238 left it
+  (corrected M279).
 
 ## Method
 
@@ -230,33 +235,39 @@ surgery pre-registered.
 
 ## Axis 3 — per-milestone cost
 
-`python3 scripts/cairn_cost.py --milestone M<NN>` (M94 attribution), run
-2026-08-22. The store no longer holds sessions for M137–M138 (0 sessions
-filtered — observed 2026-08-22); figures are the 14 milestones it holds.
+The `turns` and `output` of the BY MILESTONE row that
+`python3 scripts/cairn_cost.py --milestone M<NN>` (M94 attribution) prints,
+run 2026-10-18 at commit `92edddd4`. That script counts each API call once
+and includes subagent turns (PR #238). The first run, 2026-08-22, used the
+script before PR #238, which summed every record and skipped subagent files
+(corrected M279). The store held no sessions for M137–M138 then (0 sessions
+filtered, observed 2026-08-22), so the figures are the 14 milestones it
+holds.
 
 | M | turns | output |
 |---|---|---|
-| M139 | 480 | 706,204 |
-| M140 | 99 | 171,362 |
-| M141 | 91 | 160,748 |
-| M142 | 241 | 251,724 |
-| M143 | 143 | 169,246 |
-| M144 | 133 | 179,878 |
-| M145 | 152 | 196,712 |
-| M146 | 534 | 1,529,214 |
-| M147 | 119 | 316,552 |
-| M148 | 129 | 123,078 |
-| M149 | 135 | 147,045 |
-| M150 | 139 | 81,969 |
-| M151 | 165 | 191,687 |
-| M152 | 116 | 116,922 |
+| M139 | 594 | 596,238 |
+| M140 | 118 | 111,181 |
+| M141 | 94 | 103,147 |
+| M142 | 231 | 178,304 |
+| M143 | 131 | 104,199 |
+| M144 | 147 | 146,007 |
+| M145 | 130 | 116,307 |
+| M146 | 360 | 453,663 |
+| M147 | 74 | 124,918 |
+| M148 | 100 | 69,470 |
+| M149 | 127 | 96,845 |
+| M150 | 148 | 61,521 |
+| M151 | 145 | 113,278 |
+| M152 | 123 | 70,351 |
 
-Medians (n=14): **137 turns / 175,620 output**, against the medium-cohort
-baseline's 165 / 169k (`effort-experiment-notes.md`) — turns down 17%,
-output up 4% — observed 2026-08-22. Post-reduction sub-window M144–M152
-(n=9): 135 turns / 179,878 output. The two high rows are M139 (the
-guard-thrash milestone, 3 defect returns) and M146 (the rulebook reduction
-itself).
+Medians (n=14): **130.5 turns / 112,229.5 output**. Post-reduction
+sub-window M144–M152 (n=9): 130 turns / 113,278 output. The two high rows
+are M139 (the guard-thrash milestone, 3 defect returns) and M146 (the
+rulebook reduction itself). The medium-cohort baseline in
+`effort-experiment-notes.md` (165 turns / 169k output) came from the script
+before PR #238, and its sessions are no longer in the store. So this note
+does not compare these medians with it (corrected M279).
 
 ## Verdict
 
