@@ -337,8 +337,9 @@ Each row takes one line: `↑` for a `[high]` row, `○` for a normal one, and
 `↓` for a `[low]` one, then the row's short title. The `[high]` rows come
 first, then the normal rows, then the `[low]` rows. Each group keeps its
 ROADMAP order, whatever order the file holds the groups in.
-`scripts/cairn_validate.py` prints a `candidate order` WARN line for each
-row that the file holds below a row of a lower priority. When `/cairn-triage`
+`scripts/cairn_validate.py` prints a `candidate order` WARN, with one line
+under it for each row that the file holds below a row of a lower priority.
+When `/cairn-triage`
 promotes a candidate row (marks it ready to plan), it also gives the row
 `[high]`, so a promoted row shows `↑`. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not

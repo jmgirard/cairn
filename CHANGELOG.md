@@ -10,9 +10,10 @@
   its ROADMAP order, whatever order the file holds the groups in. Before,
   the list followed the file, so a `[high]` row below `[low]` rows showed
   below them. A row's ✎ still plans that row. `scripts/cairn_validate.py`
-  has a new advisory, `candidate order`. It prints one WARN line for each
-  candidate row that sits below a row of a lower priority. The line names
-  the row's short title, its priority, and that lower priority. Like every
+  has a new advisory, `candidate order`. It prints a `WARN  candidate order`
+  line with a count, then one line for each candidate row that sits below a
+  row of a lower priority. Each of those lines names the row's short title,
+  its priority, and that lower priority. Like every
   advisory, it does not change the exit code. To clear it, move the named
   rows up to their priority's group.
 
