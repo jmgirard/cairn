@@ -325,8 +325,9 @@ can resolve against the fork instead of the base repo.
    issue exists, and the `Candidate row:` lines the approval paragraph
    below names. Then run the
    round in that module, asking for Lite: the state query (§3), the
-   request on `none` (§2), and the bounded wait while the request is
-   pending (§4). The PR-conversation read below then runs on this PR,
+   request on `none` (§2), then the state query again as the read below
+   begins, with the bounded wait while it prints `pending` (§4). That
+   query is the read's own state query for §6. The PR-conversation read below then runs on this PR,
    which now pre-exists. Each Copilot thread takes the agent's disposition
    under the opt-in line, then the module's reply and resolve (§5), and
    its `copilot:` line and the level or pending line, or the reason line
@@ -462,8 +463,9 @@ can resolve against the fork instead of the base repo.
    of each candidate row step 1 matched (tracking-rules "Candidate started
    token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open. With the Copilot
    review round on (`skills/shared/copilot-review.md` §1), run it next,
-   asking for Lite: the state query, the request on `none`, the bounded
-   wait while pending, then the Copilot threads by the module's §5. Use
+   asking for Lite: the state query, the request on `none`, the state
+   query again with the bounded wait while it prints `pending` (the read's
+   own state query for §6), then the Copilot threads by the module's §5. Use
    the module's guest forms: `--repo <base-repo>`, the base repo's owner
    and name in each `gh api` call that addresses a repository (the resolve
    takes only a thread id), and fix pushes to the remote that holds the
