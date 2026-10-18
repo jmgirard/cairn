@@ -4962,6 +4962,37 @@ REGISTRY += [
         target=RELEASE,
         block="The version-decision question names each listed series and its milestones that are not `done`.",
     ),
+    # M275: a hotfix keeps a feature series' one changelog entry.
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_step_five_adds_no_second_entry",
+        target=HOTFIX,
+        block="When the bug is in behavior that a feature series' entry under the development version describes, the hotfix adds no new entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_step_five_adds_no_second_entry",
+        target=HOTFIX,
+        block="It edits that entry only where the fix changes what the entry says.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_step_five_finds_the_series",
+        target=HOTFIX,
+        block="To find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_reentry_owes_no_second_entry",
+        target=HOTFIX,
+        block="A bug in behavior that a feature series' entry under the development version describes owes no new entry.",
+    ),
+    Mutation(
+        guard="test_feature_series",
+        test="TestHotfixSeriesEntry.test_reentry_owes_no_second_entry",
+        target=HOTFIX,
+        block="It owes an edit to that entry only where the fix changes what the entry says (step 5).",
+    ),
     # M275: the status fallback to the archive summary, and the unknown reading.
     Mutation(
         guard="test_feature_series",

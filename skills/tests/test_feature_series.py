@@ -154,6 +154,45 @@ class TestReviewGuestSentence(unittest.TestCase):
         )
 
 
+class TestHotfixSeriesEntry(unittest.TestCase):
+    # M275: a hotfix to unreleased series behavior edits the series' one entry.
+    def text(self):
+        return read("hotfix", "SKILL.md")
+
+    def step_five(self):
+        text = self.text()
+        start = text.index("5. add a changelog entry")
+        return text[start : text.index("6. **approval gate:**", start)]
+
+    def reentry_clause(self):
+        text = self.text()
+        start = text.index("- *changelog:* when the profile's `changelog` slot declares a file and")
+        return text[start : text.index("- *owed items land through the pr path only.*", start)]
+
+    def test_step_five_adds_no_second_entry(self):
+        self.assertIn(
+            "when the bug is in behavior that a feature series' entry under the development version describes, the hotfix adds no new entry.",
+            self.step_five(),
+        )
+        self.assertIn("it edits that entry only where the fix changes what the entry says.", self.step_five())
+
+    def test_step_five_finds_the_series(self):
+        self.assertIn(
+            "to find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.",
+            self.step_five(),
+        )
+
+    def test_reentry_owes_no_second_entry(self):
+        self.assertIn(
+            "a bug in behavior that a feature series' entry under the development version describes owes no new entry.",
+            self.reentry_clause(),
+        )
+        self.assertIn(
+            "it owes an edit to that entry only where the fix changes what the entry says (step 5).",
+            self.reentry_clause(),
+        )
+
+
 class TestReleaseList(unittest.TestCase):
     def step_one(self):
         text = read("cairn-release", "SKILL.md")

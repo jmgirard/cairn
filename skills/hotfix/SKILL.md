@@ -109,6 +109,8 @@ can resolve against the fork instead of the base repo.
    - *Changelog:* when the profile's `changelog` slot declares a file and
      the merged diff did not update it, an entry is owed (step 5's
      user-facing-text rule).
+     A bug in behavior that a feature series' entry under the development version describes owes no new entry.
+     It owes an edit to that entry only where the fix changes what the entry says (step 5).
    - *Owed items land through the PR path only.* The regression test and
      the changelog entry land on the `hotfix-<slug>` branch (cut here when
      the regression-test move did not) and reach the default branch only
@@ -268,6 +270,11 @@ can resolve against the fork instead of the base repo.
    `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
    under the current development version (no milestone/issue jargon in the
    user-facing text).
+   **A feature series' entry** (tracking-rules "Feature series").
+   When the bug is in behavior that a feature series' entry under the development version describes, the hotfix adds no new entry.
+   It edits that entry only where the fix changes what the entry says.
+   No release shipped that behavior yet, so a second entry describes a fix that no user needs to read.
+   To find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.
    Then apply each per-change rule DESIGN.md's Conventions section states,
    for example a development-version bump on every PR or a NEWS heading
    format. Where

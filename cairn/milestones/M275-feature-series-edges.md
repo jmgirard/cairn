@@ -68,7 +68,7 @@ A feature series stays visible to the release walk and the status snapshot until
      Coverage lines together. -->
 
 - [x] T1: Edit `skills/cairn-release/SKILL.md` step 1 (~lines 58-64): status from the ROADMAP row, else the archive summary's Status line, else unknown, named in the question. Add the guards to `TestReleaseList` and a mutation entry in `skills/tests/test_mutation_harness.py` (~line 4828).
-- [ ] T2: Edit `skills/hotfix/SKILL.md` step 5 (~line 265) and the re-entry *Changelog* clause (~lines 109-111): a series' unreleased entry is edited where the fix changes it, never duplicated. Say how the hotfix finds the series: a live milestone file or an archive summary carrying a `feature series:` line. Guards plus mutation entries.
+- [x] T2: Edit `skills/hotfix/SKILL.md` step 5 (~line 265) and the re-entry *Changelog* clause (~lines 109-111): a series' unreleased entry is edited where the fix changes it, never duplicated. Say how the hotfix finds the series: a live milestone file or an archive summary carrying a `feature series:` line. Guards plus mutation entries.
 - [ ] T3: Edit `skills/milestone-review/SKILL.md` step 8 (~lines 678-679): merged PRs of `done` earlier parts only, `dropped` parts left out. Guards in `TestReviewGuestSentence` plus a mutation entry.
 - [ ] T4: Edit the milestone template's work-log comment, the archive-summary template (one optional line after **Goal:**, keeping summaries ≤ 25 lines), and `skills/milestone/SKILL.md` §1 (~line 58). Guards plus mutation entries. Template edits feed the gating suites, so run both after this task.
 - [ ] T5: Edit the M274 entry in `CHANGELOG.md`'s Unreleased section; add no new entry. Check the README bullet at lines 765-767: it restates only the plan rule, which this milestone leaves alone, so log "no README edit" unless implement changes that.
@@ -97,6 +97,7 @@ A feature series stays visible to the release walk and the status snapshot until
 - 2026-10-18: the four gaps share one feature and one test file, under the split tripwires (6 ACs, 6 tasks), so one milestone, no split.
 - 2026-10-18: implement started on branch m275-feature-series-edges; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
 - 2026-10-18: T1 done: release step 1 reads status from the ROADMAP row, else the archive summary's Status line, else unknown; 2 new guards, 1 updated, 3 mutation entries; verify green. The simple-english lint hook flags 67 older hits in the release skill; only the new lines were fitted to it (rewriting the file is out of scope).
+- 2026-10-18: T2 done: hotfix step 5 and the re-entry Changelog clause keep a feature series' one unreleased entry, edited only where the fix changes it; step 5 says to find the series from `feature series:` lines in live files and archive summaries; 3 guards, 5 mutation entries; verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
