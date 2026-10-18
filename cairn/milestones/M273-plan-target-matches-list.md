@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M273: The plan target is the first high-priority row the Candidates list shows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -170,6 +170,8 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
 - 2026-10-17: T3 done: `nextTitle(next, candidates, taken, hotfixes, started)` picks the first drawn `[high]` row with the list's `startedRefs` test, used by the Next line and `pressNext`; the M272 AC4 block's body case now plans "Later high". Implementation choice: kept the name `nextTitle`, since every caller already used it; the pane atom's shape is unchanged, so the `pane-7` tag stays.
 - 2026-10-17: verify on the T3 head: scripts 418 OK (21 skipped), hooks 179 OK, both validates exit 0, plugin test 2074 pass 0 fail.
 - 2026-10-17: T4 done: README (three paragraphs), the M272 `## Unreleased` CHANGELOG entry rewritten in place, DESIGN.md (two plan-target lines and a Known issues sentence on the PR-read difference), `cairn_next.py` and `reader.ts` doc comments, `skills/milestone/SKILL.md` ("does not read the release window"), and `skills/milestone-review/SKILL.md` step 10's tail; AC4's old-phrase grep prints nothing and each sweep line on the plan target states the new rule; `skills/tests` hand-run 842 OK. The simple-english lint hook reports whole-file counts on README, CHANGELOG, and both skills (all older text); new sentences over its limit were split, older text left as it is.
+- 2026-10-17: claim audit: 38 claims read, 4 corrected — hooks/status/reader.ts (`planTitle` → `nextTitle`), scripts/cairn_next.py (`high_title` docstring: the pane's two differences), hooks/status/pane.test.tsx (sibling comment and unused row), README.md and CHANGELOG.md (an archived blocked row's token does not count); the same reader re-read the four and found each true.
+- 2026-10-17: after the claim fixes: scripts 418 OK (21 skipped), hooks 179 OK, plugin test 2074 pass 0 fail; manifests unchanged since the T4 validates.
 - 2026-10-17: T5 done: verify on the T4 tree: scripts 418 OK (21 skipped), hooks 179 OK, plugin and marketplace validate exit 0, plugin test 2074 pass 0 fail.
 
 ## Decisions

@@ -189,8 +189,8 @@ milestone is workable, `cairn_next.py` recommends planning. It then names
 the first `[high]` candidate row that no counted started token hides, by
 its short title, for example `/milestone-plan Pane refresh lag`. A
 ` — started M<n>` token counts while that milestone's row is `planned` or
-`blocked`, and a ` — started #<n>` token always counts, since the script
-reads no PRs. A token hides every row with its row's short title. Rows
+`blocked` and its file is not archived. A ` — started #<n>` token always
+counts, since the script reads no PRs. A token hides every row with its row's short title. Rows
 inside an HTML comment do not count. A dependency
 is done when its row is `done` or its file is in
 `cairn/milestones/archive/`. In guest mode with `# Push remote: base`,

@@ -4881,9 +4881,10 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
     const hashed = [{ title: 'First high', ref: '#41' }]
     expect(nextTitle(PLAN, ROWS, hashed, [hotfix(41)], [])).toBe('Second high')
     expect(nextTitle(PLAN, ROWS, hashed, [hotfix(42)], [])).toBe('First high')
-    // A counted `M` token on a same-titled sibling hides the row.
-    const sibling: PaneState['candidates'] = [{ priority: 'normal', title: 'Second high' }, ...ROWS]
-    expect(nextTitle(PLAN, sibling, [{ title: 'First high', ref: 'M005' }], [], [])).toBe('Second high')
+    // A counted `M` token hides every row with its short title (the
+    // readers' `takenRows` gives tokens by title, so a same-titled sibling's
+    // token arrives here as this entry), and the pick moves on.
+    expect(nextTitle(PLAN, ROWS, [{ title: 'First high', ref: 'M005' }], [], [])).toBe('Second high')
     // Every `[high]` row hidden: no title.
     const both = [
       { title: 'First high', ref: 'M005' },

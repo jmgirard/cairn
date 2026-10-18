@@ -694,7 +694,7 @@ export function recommend(rows: RoadmapRow[], workable: WorkableRow[], roadmap =
 // the first candidate row, in ROADMAP order, that opens with `[high] `, has
 // a non-empty short title, and whose short title no token `takenRows`
 // counts names, or null. With no pull request read, every `#` token
-// counts here; the pane's own pick (`planTitle` in pane.ts) checks them
+// counts here; the pane's own pick (`nextTitle` in pane.ts) checks them
 // against its open hotfix list.
 export function highTitle(roadmap: string, rows: RoadmapRow[] = [], archived: string[] = []): string | null {
   const taken = new Set(takenRows(roadmap, rows, archived).map(item => item.title))

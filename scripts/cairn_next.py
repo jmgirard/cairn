@@ -172,8 +172,9 @@ def high_title(roadmap, rows=(), archived=()):
     opens with `[high] `, has a non-empty short title, and whose short title
     no counted token names (`taken_titles` over `rows` and `archived`), or
     None when no row does. The cairn pane's Candidates list hides the same
-    rows, but for a `#` token whose pull request is not open (M272,
-    M273)."""
+    rows, except that it counts a `#` token only when its pull request is
+    in the open hotfix list, and it also hides a row that an open pull
+    request's body names (M272, M273)."""
     taken = taken_titles(roadmap, rows, archived)
     for priority, text in candidate_texts(roadmap):
         title = short_title(text)
