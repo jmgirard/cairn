@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M283: The status audit lists unresolved bot threads on your open PRs
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -176,6 +176,8 @@ not added.
 - 2026-10-18: T2 (AC5): the command taken verbatim from the skill printed nothing (exit 0) on cairn #240, #289, and insight #1263; with only the `isResolved` select removed it printed 3 threads for #240 (each `isOutdated` true, `line` null, `originalLine` 30/669/18), 2 for #289 (one `isOutdated` false, `line` 137), none for #1263; a control with the `Bot` select removed printed #1263's one `mattansb` thread. The contents read on insight #1288's head 59da5593 printed DESCRIPTION.
 - 2026-10-18: T3: README "Contributions come in through you" paragraph and a CHANGELOG Unreleased `### New` entry describe the bullet; `git grep` for "Open hotfix PRs" and "unresolved-thread count" found no other site the change makes stale. (Commit 06ebcb3e first appended this line below `## Review` by mistake; it is moved here.)
 - 2026-10-18: T4: verify green, each exit 0: `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` on the plugin and the marketplace manifest passed, `claude plugin test` 2132 pass 0 fail; hand-run `skills/tests` 886 OK; `cairn_validate` all checks passed.
+- 2026-10-18: claim audit: 22 claims read, 1 corrected — skills/milestone/SKILL.md, README.md, CHANGELOG.md (the CHANGELOG's "Before this change" sentence missed the linked-item read's per-comment listing; the failed-read sentence was also tightened; the same reader re-read both and found them holding).
+- 2026-10-18: implement complete: status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
