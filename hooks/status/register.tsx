@@ -544,41 +544,50 @@ export const register: Register = on => {
     // stays in the same process.
     if (e.reason === 'other') await markReopen($)
     let result: unknown
+    let failed: { error: unknown } | null = null
     try {
       result = await next(e)
     } catch (error) {
-      // An end beneath that rejects still frees the action Buttons, so a
-      // press whose `/clear` run never settles leaves none dead, and a held
-      // command goes to the prompt box with a toast, whatever the end's
-      // reason (M260). A ⌂ press's open still runs for a `clear` end, and
-      // the rejection goes on (M255).
-      free()
-      if (queued !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
-      if (home !== null && e.reason === 'clear') void openHome($)
-      throw error
+      failed = { error }
     }
-    await update($, step, () => null)
-    await update($, expanded, () => false)
-    await update($, dismissed, () => null)
-    await update($, ended, () => false)
+    // An end beneath that rejects resets the band as a resolved end does
+    // (M278). A write that rejects stops the resets but none of what
+    // follows, and its error goes on after them unless `next(e)` rejected
+    // first (M278 review).
+    let wrote: { error: unknown } | null = null
+    try {
+      await update($, step, () => null)
+      await update($, expanded, () => false)
+      await update($, dismissed, () => null)
+      await update($, ended, () => false)
+    } catch (error) {
+      wrote = { error }
+    }
     // A `/clear` from the Clear Button ends the session, and its run may
     // never settle, so the end frees the action Buttons (M216). So does a
     // press whose checks have not settled, once the end's own updates are
     // done, so no press reads the state of the session that ended (M255).
+    // An end beneath that rejects frees them too, so a press whose `/clear`
+    // run never settles leaves none dead (M260).
     free()
     // The held command runs now when this end is its `/clear` (M221). The
     // run is not awaited, so the session end does not wait on the command.
     // It takes the next run number, so the `/clear` run that settles after
     // this end does not free a press made while the command runs. Any other
     // end drops the command, and the prompt box and a toast say so, as for
-    // a refused run (M221 review).
+    // a refused run (M221 review). An end beneath that rejects drops it
+    // whatever its reason (M260).
     if (queued !== null) {
-      if (e.reason === 'clear') void run($, queued.command, queued.args)
+      if (failed !== null) void fallBack($, lineOf(queued.command, queued.args), 'the session end failed')
+      else if (e.reason === 'clear') void run($, queued.command, queued.args)
       else void fallBack($, lineOf(queued.command, queued.args), 'the session ended before /clear')
     }
     // A ⌂ press's `/clear` opens the pane at its end, unawaited as the held
-    // command's run is. Any other end drops the mark with no open (M241).
+    // command's run is, and also when the end beneath rejects (M255). Any
+    // other end drops the mark with no open (M241).
     if (home !== null && e.reason === 'clear') void openHome($)
+    if (failed !== null) throw failed.error
+    if (wrote !== null) throw wrote.error
     return result
   })
 
@@ -1207,16 +1216,20 @@ async function pressChecked($, checks: () => Promise<Checked | undefined>) {
 // before the press's first await, so a second press in the same tick finds
 // `busy` true (M241 review, PR #251), and a step found set takes it back.
 // A session end during the step read cancels the press, so its `/clear`
-// never reaches the conversation that follows (M260).
+// never reaches the conversation that follows (M260). A step read that
+// rejects takes the mark back too, and the rejection goes on (M278).
 async function pressHome($) {
   if (busy()) return
   const mine = {}
   homeRun = mine
   const at = ends
-  if (knownStep(await read($, step)) !== null || ends !== at) {
-    if (homeRun === mine) homeRun = null
-    return
+  let stop = true
+  try {
+    stop = knownStep(await read($, step)) !== null || ends !== at
+  } finally {
+    if (stop && homeRun === mine) homeRun = null
   }
+  if (stop) return
   if (!(await run($, CLEAR_COMMAND, '')) && homeRun === mine) homeRun = null
 }
 

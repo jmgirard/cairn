@@ -4764,6 +4764,44 @@ describe("a session end during a ⌂ press's step read cancels its /clear (M260 
   }
 })
 
+// A ⌂ press whose read of the stored step rejects takes its mark back, so
+// it runs no `/clear` and a later press runs (M278 AC1). The hook answers
+// `{ deny }` for the one read, since a hook that throws is skipped.
+describe("a ⌂ press whose step read rejects leaves the Buttons free (M278 AC1)", () => {
+  test('the ⌂ press runs no /clear, and a Status press after it runs', async ($, on) => {
+    const copy = copyOf('single-in-progress')
+    const deny = { armed: false, denied: 0 }
+    on('state.get', async ($, e, next) => {
+      if (deny.armed && e.plugin === 'cairn' && e.key === 'step') {
+        deny.armed = false
+        deny.denied += 1
+        return { deny: 'the store refused the read' }
+      }
+      return next(e)
+    })
+    seat(on, copy)
+    await $.turn.complete(turn())
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    deny.armed = true
+    let message: string | undefined
+    try {
+      await ui.press({ key: PANE_HOME })
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error)
+    }
+    // The press rejects with the denied read's reason, so the one denial
+    // was the ⌂ press's own read (M278 review).
+    expect(message).toContain('the store refused the read')
+    expect(deny.denied).toBe(1)
+    await untilRuns(copy, 1, 10)
+    expect(copy.commands ?? []).toEqual([])
+    await ui.press({ key: PANE_STATUS })
+    await untilRuns(copy, 1)
+    expect(copy.commands).toEqual([STATUS_RUN])
+    await ui.unmount()
+  })
+})
+
 // A start's second pane listing that is still pending at a session end
 // reads nothing when it answers, even placed and with a later start's read
 // owed, so the read a later start owes is that start's; here the pane's next

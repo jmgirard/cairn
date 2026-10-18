@@ -222,9 +222,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   before it calls `next(e)`, and checks that settle after that count moved
   run and hold nothing. The end clears the mark beside `running`, after its
   own updates, so a press cut off by the end leaves the Buttons free
-  (M255). An end whose `next(e)` rejects skips those updates and clears
-  both before it rethrows. Either way it clears only the run and the mark
-  current when it began, so a press made while `next(e)` is pending keeps
+  (M255). An end whose `next(e)` rejects makes the same updates and
+  clears both before it rethrows that error (M278). A write that rejects
+  stops the updates but not what follows them, and its error goes on
+  after them unless `next(e)` rejected first. Either way it clears only
+  the run and the mark current when it began, so a press made while
+  `next(e)` is pending keeps
   its own (M260). A live probe (M221 T1) showed
   that the session end of a Button's `/clear` arrives before that run
   resolves. The press is the person's consent to drop the conversation, as
@@ -536,8 +539,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   parameter. A ⌂ press runs `pressHome`: under `busy`, with no `ended`
   check, it sets the module mark `homeRun` before its first await, so a
   second press in the same tick finds `busy` true. It takes the mark back
-  when it finds a step set, or when a session end came during its step
-  read (M260), and otherwise runs `clear` through `run`. A
+  when it finds a step set, when a session end came during its step
+  read (M260), or when that read rejects, in a `finally` (M278), and
+  otherwise runs `clear` through `run`. A
   refused run clears the mark. `busy` also reads the
   mark, so every action press does nothing while it is set. `session.end`
   takes and clears the mark, and at reason `clear` it calls `openHome`
