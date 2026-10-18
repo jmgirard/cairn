@@ -72,7 +72,9 @@ never "never".
      <reason>; falsified by <evidence class>.` — one per approach choice the
      gate actually weighed, none where it weighed none, and it is the record
      `/milestone-review`'s thrash trigger (b) reads. It lives here rather than
-     below so an instantiated file inherits no placeholder to delete. -->
+     below so an instantiated file inherits no placeholder to delete.
+     A milestone of a feature series also carries the plan's
+     `feature series: M<a> -> M<b>[ -> …]` line (tracking-rules "Feature series"). -->
 
 - YYYY-MM-DD: created by /milestone-plan.
 

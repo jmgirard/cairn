@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M275 | A feature series stays listed and keeps one entry until its last part ships | planned | — | normal | milestones/M275-feature-series-edges.md |
+| M275 | A feature series stays listed and keeps one entry until its last part ships | review | — | normal | milestones/M275-feature-series-edges.md |
 | M274 | A feature split across milestones reaches users as one change | done | — | normal | milestones/archive/M274-feature-series-ships-as-one.md |
 | M273 | The plan target is the first high-priority row the Candidates list shows | done | — | normal | milestones/archive/M273-plan-target-matches-list.md |
 | M272 | The next-step recommendation names the first unstarted high-priority candidate | done | — | normal | milestones/archive/M272-next-step-names-high-row.md |

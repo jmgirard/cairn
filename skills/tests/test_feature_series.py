@@ -3,6 +3,10 @@
 Locks the rulebook paragraph in `tracking-rules.md` (AC1), the plan's step 4
 bullet (AC2), the four profiles' changelog gate lines (AC3), review's guest
 PR sentence (AC4), and the release walk's half-merged series list (AC5).
+M275 adds the release walk's archive-summary status fallback, the hotfix rule
+that keeps a series' one entry, the last-part sentence's dropped-part rule,
+the series line in both templates, and the `/milestone` snapshot's report
+of half-merged series.
 
 Skill-prose guards read the file as one string, so every asserted phrase
 lives on a single source line (M23); phrases are matched case-insensitively.
@@ -145,12 +149,127 @@ class TestReviewGuestSentence(unittest.TestCase):
 
     def test_last_part_names_earlier_prs(self):
         self.assertIn(
-            "for the last, it says the change completes the series and names each earlier milestone's pull request by number,",
+            "for the last, it says the change completes the series and names by number the merged pull request of each earlier milestone that is `done`.",
             self.text(),
         )
         self.assertIn(
-            "read from its live milestone file's `branch/pr` header or, for an archived milestone, from its archive summary's status line.",
+            "read each number from its live milestone file's `branch/pr` header or, for an archived milestone, from its archive summary's status line.",
             self.text(),
+        )
+
+    def test_last_part_leaves_out_dropped_parts(self):
+        # M275: a dropped part shipped nothing for the series to complete.
+        self.assertIn("it leaves out each `dropped` earlier milestone,", self.text())
+
+    def test_last_part_names_blocked_parts(self):
+        # M275 review: an open stack base, or a part merged before hygiene.
+        self.assertIn(
+            "it also names the pull request of each earlier milestone that is `blocked` on the maintainers.",
+            self.text(),
+        )
+        self.assertIn(
+            "a part's status comes from its roadmap row, else from its archive summary, as `/cairn-release` step 1 states under \"half-merged feature series\".",
+            self.text(),
+        )
+
+
+class TestHotfixSeriesEntry(unittest.TestCase):
+    # M275: a hotfix to unreleased series behavior edits the series' one entry.
+    def text(self):
+        return read("hotfix", "SKILL.md")
+
+    def step_five(self):
+        text = self.text()
+        start = text.index("5. add a changelog entry")
+        return text[start : text.index("6. **approval gate:**", start)]
+
+    def reentry_clause(self):
+        text = self.text()
+        start = text.index("- *changelog:* when the profile's `changelog` slot declares a file and")
+        return text[start : text.index("- *owed items land through the pr path only.*", start)]
+
+    def test_step_five_adds_no_second_entry(self):
+        self.assertIn(
+            "when the bug is in behavior that a feature series' entry under the development version describes, the hotfix adds no new entry.",
+            self.step_five(),
+        )
+        self.assertIn("it edits that entry only where the fix changes what the entry says.", self.step_five())
+
+    def test_step_five_finds_the_series(self):
+        self.assertIn(
+            "to find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.",
+            self.step_five(),
+        )
+
+    def test_adopted_pr_folds_a_second_entry(self):
+        self.assertIn(
+            "drop a contributor's separate entry for that behavior, and edit the series' entry only where the fix changes what it says.",
+            self.step_five(),
+        )
+
+    def test_released_behavior_takes_its_own_entry(self):
+        self.assertIn(
+            "a bug in behavior that an earlier release shipped is outside this rule and takes its own entry.",
+            self.step_five(),
+        )
+
+    def test_adopted_pr_keeps_the_credit(self):
+        self.assertIn(
+            "keep any credit that the dropped entry gives the contributor, in the series' entry.",
+            self.step_five(),
+        )
+
+    def test_reentry_removes_a_merged_second_entry(self):
+        self.assertIn(
+            "if the merged diff added a separate entry for that behavior, its removal is owed.",
+            self.reentry_clause(),
+        )
+
+    def test_downstream_sites_carry_the_rule(self):
+        self.assertIn("there (step 5's feature series rule applies), open", self.text())
+        self.assertIn("series bug the edited series entry or a note that it needed no edit)", self.text())
+
+    def test_nothing_owed_accepts_the_series_entry(self):
+        self.assertIn(
+            "changelog entry present (for a series bug, the series' entry already describes the fixed behavior) or the slot `none`",
+            self.text(),
+        )
+
+    def test_reentry_owes_no_second_entry(self):
+        self.assertIn(
+            "a bug in behavior that a feature series' entry under the development version describes owes no new entry.",
+            self.reentry_clause(),
+        )
+        self.assertIn(
+            "it owes an edit to that entry only where the fix changes what the entry says (step 5).",
+            self.reentry_clause(),
+        )
+
+
+class TestSeriesNamedElsewhere(unittest.TestCase):
+    # M275: the templates and the status snapshot name the series.
+    def test_milestone_template_names_the_line(self):
+        self.assertIn(
+            "`feature series: m<a> -> m<b>[ -> …]` line (tracking-rules \"feature series\").",
+            read("shared", "templates", "milestone.md"),
+        )
+
+    def test_archive_summary_copies_the_line(self):
+        self.assertIn(
+            "copy its `feature series: …` text verbatim here, on its own line after the **goal:** line. leave out the line's date and bullet.",
+            read("shared", "templates", "archive-summary.md"),
+        )
+
+    def test_status_snapshot_cites_the_release_rule(self):
+        text = read("milestone", "SKILL.md")
+        snapshot = text[text.index("## 1. snapshot") : text.index("## 2. health audit")]
+        self.assertIn(
+            "in owner mode, also report each half-merged feature series and the status of each of its parts that is not `done`, by the rule `/cairn-release` step 1 states under \"half-merged feature series\".",
+            snapshot,
+        )
+        self.assertIn(
+            "for that report, read `${claude_plugin_root}/skills/cairn-release/skill.md` step 1, every live milestone file, and the archive summaries the rule names.",
+            snapshot,
         )
 
 
@@ -162,14 +281,31 @@ class TestReleaseList(unittest.TestCase):
     def test_lists_half_merged_series(self):
         self.assertIn("**half-merged feature series.** before the question, list each feature", self.step_one())
         self.assertIn("in a milestone file under `cairn/milestones/` (not `archive/`) where the", self.step_one())
-        self.assertIn("line names at least one milestone whose roadmap status is `done`.", self.step_one())
+        self.assertIn("line names at least one milestone whose status is `done`.", self.step_one())
+
+    def test_status_falls_back_to_the_archive_summary(self):
+        # M275: a pruned `done` row must not hide a half-merged series.
+        self.assertIn("a named milestone's status is the status in its roadmap row.", self.step_one())
+        self.assertIn(
+            "for a milestone with no roadmap row, it is the status on the status line of its archive summary under `cairn/milestones/archive/`.",
+            self.step_one(),
+        )
+
+    def test_status_with_no_source_is_unknown(self):
+        self.assertIn(
+            "a named milestone with neither a roadmap row nor an archive summary has an unknown status.",
+            self.step_one(),
+        )
 
     def test_question_names_them(self):
         self.assertIn(
             "the version-decision question names each listed series and its milestones that are not `done`.",
             self.step_one(),
         )
-        self.assertIn("it gives each such milestone's roadmap status, so a `dropped` part reads as dropped.", self.step_one())
+        self.assertIn(
+            "it gives each such milestone's status, so a `dropped` part reads as dropped and an unknown part reads as unknown.",
+            self.step_one(),
+        )
 
 
 if __name__ == "__main__":

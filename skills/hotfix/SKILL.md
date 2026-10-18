@@ -109,6 +109,9 @@ can resolve against the fork instead of the base repo.
    - *Changelog:* when the profile's `changelog` slot declares a file and
      the merged diff did not update it, an entry is owed (step 5's
      user-facing-text rule).
+     A bug in behavior that a feature series' entry under the development version describes owes no new entry.
+     It owes an edit to that entry only where the fix changes what the entry says (step 5).
+     If the merged diff added a separate entry for that behavior, its removal is owed.
    - *Owed items land through the PR path only.* The regression test and
      the changelog entry land on the `hotfix-<slug>` branch (cut here when
      the regression-test move did not) and reach the default branch only
@@ -122,7 +125,7 @@ can resolve against the fork instead of the base repo.
      `Fixes #N` close, so the re-entry poses no separate issue-close chip;
      step 7 then runs for the merged PR.
    - *Nothing owed* — test present and two-way proven, `verify` green on the
-     default branch, changelog entry present or the slot `none` — pose one
+     default branch, changelog entry present (for a series bug, the series' entry already describes the fixed behavior) or the slot `none` — pose one
      `AskUserQuestion` chip whose question text names acceptance of the
      post-hoc verification and, when the PR body carries a `Fixes #N` line,
      the issue close it authorizes (a hotfix keeps no work log to show
@@ -268,6 +271,12 @@ can resolve against the fork instead of the base repo.
    `NEWS.md` for r-package, else the repo's `CHANGELOG.md` / convention)
    under the current development version (no milestone/issue jargon in the
    user-facing text).
+   **A feature series' entry** (tracking-rules "Feature series").
+   When the bug is in behavior that a feature series' entry under the development version describes, the hotfix adds no new entry.
+   It edits that entry only where the fix changes what the entry says.
+   No release shipped that behavior yet, so a second entry describes a fix that no user needs to read.
+   A bug in behavior that an earlier release shipped is outside this rule and takes its own entry.
+   To find the series, read each `feature series:` work-log line in the live milestone files and each such line in the archive summaries.
    Then apply each per-change rule DESIGN.md's Conventions section states,
    for example a development-version bump on every PR or a NEWS heading
    format. Where
@@ -283,7 +292,11 @@ can resolve against the fork instead of the base repo.
    through the user-gated fallback below. If the
    contributor added an entry, check it against the declared file and the
    user-facing-text rule and edit it in place rather than appending a
-   duplicate; if none is present, add one. Hold the PR to the same
+   duplicate; if none is present, add one.
+   For a bug in behavior that a feature series' entry under the development version describes, the series rule above wins.
+   Drop a contributor's separate entry for that behavior, and edit the series' entry only where the fix changes what it says.
+   Keep any credit that the dropped entry gives the contributor, in the series' entry.
+   Hold the PR to the same
    Conventions rules, adding a missing version bump. Push the test, the
    entry, and any convention edits to the PR's head branch — this works on a fork when the contributor left
    "allow edits by maintainers" on (GitHub's default).
@@ -296,7 +309,7 @@ can resolve against the fork instead of the base repo.
    = re-land, with a decline option), showing the closing comment's text in
    chat first. Only on approval: recreate their commits on a
    `hotfix-<slug>` branch (`git cherry-pick`), add the test and changelog
-   there, open a PR crediting them (`Co-authored-by:`), its body carrying
+   there (step 5's feature series rule applies), open a PR crediting them (`Co-authored-by:`), its body carrying
    in owner mode the `Candidate row:` lines that step 6 names, and close theirs with
    that comment. Declined → leave their PR open and stop.
    Never merge a fix whose regression test
@@ -331,7 +344,8 @@ can resolve against the fork instead of the base repo.
    nothing in this arm runs.
 
    **The gate:** present the diff, the regression-test evidence, and
-   the changelog line (when the `changelog` slot declares a file), and
+   the changelog line (when the `changelog` slot declares a file, and for a
+   series bug the edited series entry or a note that it needed no edit), and
    the version bump when a Conventions rule required one; then,
    only when a PR already exists — an adopted PR, or the PR-reference
    re-entry of an authored fix — run the PR-conversation read

@@ -58,9 +58,13 @@ toolchain-specific work at step 3.
    **Half-merged feature series.** Before the question, list each feature
    series (tracking-rules "Feature series") named by a `feature series:` line
    in a milestone file under `cairn/milestones/` (not `archive/`) where the
-   line names at least one milestone whose ROADMAP status is `done`.
+   line names at least one milestone whose status is `done`.
+   A named milestone's status is the status in its ROADMAP row.
+   For a milestone with no ROADMAP row, it is the status on the Status line of its archive summary under `cairn/milestones/archive/`.
+   The ROADMAP prunes old `done` and `dropped` rows, so a finished part can have an archive summary and no row.
+   A named milestone with neither a ROADMAP row nor an archive summary has an unknown status.
    The version-decision question names each listed series and its milestones that are not `done`.
-   It gives each such milestone's ROADMAP status, so a `dropped` part reads as dropped.
+   It gives each such milestone's status, so a `dropped` part reads as dropped and an unknown part reads as unknown.
    No such series → the question says nothing about series.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
