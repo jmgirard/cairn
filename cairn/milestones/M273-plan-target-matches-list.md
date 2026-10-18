@@ -90,7 +90,7 @@ hides nothing) are stated in `cairn/DESIGN.md`'s Known issues.
       carries a counted `M` token (row passed over); every `[high]` row is
       hidden (no title); plus one Next-line case and one press case each on
       the pane and the band.
-- [ ] AC4: Every line that `git grep -n -e "started token" -e "unstarted"
+- [x] AC4: Every line that `git grep -n -e "started token" -e "unstarted"
       -e "\[high\]"` prints over `README.md`, `CHANGELOG.md`,
       `cairn/DESIGN.md`, `scripts/cairn_next.py`, `hooks/status/*.ts*`,
       `skills/milestone/SKILL.md`, and `skills/milestone-review/SKILL.md`
@@ -195,3 +195,10 @@ Review pass 1, 2026-10-17, branch head 4dd0a5a9 (main 69c8f751 unmoved). PR #285
 - AC4: at 4dd0a5a9, the AC4 sweep over the named paths (`hooks/status/*.ts*` takes in the test files and `fixtures.gen.ts`) prints 97 lines. `hooks/status/band.test.tsx:3002` describes the plan target as "the fixture's first unstarted `[high]` candidate row", the M272 rule: `high-candidate`'s "Chosen row" now carries a dead token. The other plan-target lines (README.md:189-193, :233, :303-308; CHANGELOG.md:9-22; cairn/DESIGN.md:181, :299-302; scripts/cairn_next.py:9-11, :148-177; hooks/status/reader.ts:510, :690-697; pane.ts:245-253; register.tsx:1097-1099; the reader and pane test names) state the new rule; the old-phrase grep prints nothing (exit 1); `cairn/DESIGN.md:721-723` states the Known issues sentence. FAIL (one line).
 - AC5: verify at 4dd0a5a9 (after T4 and the claim-audit fixes): `scripts/tests` 418 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2074 pass 0 fail. PASS.
 - Gate: `cairn_validate.py` exit 0, all checks passed; no principle touched, so no `cairn_impact`; profile gate: verify green (AC5), marketplace validate output has no `version` warning, and `CHANGELOG.md` `## Unreleased` carries the rewritten entry with no milestone number. PASS.
+
+Review pass 2, 2026-10-17, branch head 45440813 (main 69c8f751 unmoved), after review return 1 (T6), pushed to PR #285.
+
+- AC4: at 45440813 the sweep prints 97 lines; `hooks/status/band.test.tsx:3001-3003` now names "the first `[high]` candidate row that the fixture's Candidates list shows"; a grep for "unstarted" and the two old phrases over the AC4 paths prints nothing (exit 1); the other plan-target lines are as pass 1 lists them, unchanged since 4dd0a5a9 but for that comment; `cairn/DESIGN.md:721-723` holds the Known issues sentence. PASS.
+- AC1–AC3, AC5: the T6 diff is one comment in `band.test.tsx`; verify at 45440813: scripts 418 OK (21 skipped, TestNext among them), hooks 179 OK, both validates exit 0, `claude plugin test .` 2074 pass 0 fail (the `highTitle`, `nextTitle`, Next-line, press, and 31 fixture next-step cases among them). Pass-1 evidence stands. PASS.
+- Gate: `cairn_validate.py` exit 0 at 45440813; profile gate as pass 1. PASS.
+- spawned: diff-bug, blame-history, prior-review
