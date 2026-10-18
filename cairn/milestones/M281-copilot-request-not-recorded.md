@@ -51,7 +51,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/shared/copilot-review.md` §2 states that after the
+- [x] AC1: `skills/shared/copilot-review.md` §2 states that after the
       request command exits 0, the round runs the §3 state query once more.
       On `none` it reports in one line that GitHub may not have recorded the
       request, naming used-up Copilot credits as one possible cause, and
@@ -185,3 +185,8 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - blame-history #7: §6 ties the line to "the same pass" — reject, planned change: AC2's wording after the criteria audit (no stored record, D-153).
 - blame-history #8: README over-long line — fix now (with diff-bug #7).
 - prior-review #1: a lagged `none` after a successful request gives a false "not recorded" line, and the next pass requests again (PR #240 thread on false `none`) — follow-up, row "Copilot not-recorded edges (M281 review)".
+- Pass 2 (2026-10-18, head 692172fb): Copilot arm on PR #293: state query `none`, request exited 0, re-query `none`, so the round reports "Copilot request on PR #293 may not be recorded by GitHub (used-up Copilot credits are one cause)". This pass's request is the second request on a later pass that the row "Copilot not-recorded edges (M281 review)" records.
+- AC1 evidence (pass 2, read of §2 at HEAD): after a zero exit, "run the state query once more"; on `none`, one line "`Copilot request on PR #<N> may not be recorded by GitHub (used-up Copilot credits are one cause)`" and "Make no second request"; on `pending` or `reviewed`, "go on"; "A failed query follows §3"; "This step adds no wait." §4 still waits only when the query prints `pending` as it reads the PR's conversation, and the §3 query block is byte-identical to main's.
+- AC2 evidence (pass 2): §6 line 135, "or says why no review exists, such as §2's not-recorded line in the same pass."
+- AC3 evidence (pass 2): README.md:849-852 says that when the request exits 0 and the PR shows no request or review just after it, Claude says so in one line, "makes no second request, and does not wait there"; the CHANGELOG `## Unreleased` → `### Fixes` entry (lines 522-531) quotes the line and says "It makes no second request and does not wait there." `grep "goes on without Copilot"` finds neither file.
+- AC4 evidence (pass 2): `wc -l -c` → 139 lines, 7,995 bytes; the budget line "under 140 lines and under 8,000 bytes" appears once, unchanged from main.
