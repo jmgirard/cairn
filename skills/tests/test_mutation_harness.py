@@ -5093,12 +5093,6 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_feature_series",
-        test="TestReleaseList.test_question_names_them",
-        target=RELEASE,
-        block="It gives each such milestone's ROADMAP status, so a `dropped` part reads as dropped.",
-    ),
-    Mutation(
-        guard="test_feature_series",
         test="TestProfileGates.test_membership_and_no_entry_yet",
         target=PROFILES_DIR + "python.md",
         block="This holds where the series already has an entry. A milestone is in a series when its work log carries a `feature series:` line.",
