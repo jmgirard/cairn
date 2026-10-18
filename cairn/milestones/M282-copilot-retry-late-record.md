@@ -69,33 +69,33 @@ not added.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/shared/copilot-review.md` §2 states that a later run of
+- [x] AC1: `skills/shared/copilot-review.md` §2 states that a later run of
       §2 on the same PR (a later review pass, or a `/hotfix` resume) whose
       state query prints `none` requests Copilot again. It gives the
       reason: `none` means the query found no Copilot request or review on
       the PR, and a request GitHub never recorded leaves none (PR #291 to
       #293). §2 still requests nothing on `pending` or `reviewed`, and
       still makes no second request after its own re-query prints `none`.
-- [ ] AC2: `skills/shared/copilot-review.md` §6 states that §2's
+- [x] AC2: `skills/shared/copilot-review.md` §6 states that §2's
       not-recorded line is given as the reason no review exists only when
       the read's own state query still prints `none`. When that query
       prints `pending` or `reviewed`, the report gives the pending or level
       line and not the not-recorded line.
-- [ ] AC3: Four sentences that say what a Copilot report shows name §6's
+- [x] AC3: Four sentences that say what a Copilot report shows name §6's
       reason line for a missing review beside the `copilot:` lines and the
       level or pending line: `skills/milestone-review/SKILL.md` step 7's
       presentation sentence and its guest handoff close (step 8), and
       `skills/hotfix/SKILL.md` step 6's Copilot round arm and its guest close.
-- [ ] AC4: `README.md`'s Copilot paragraph and a new entry under
+- [x] AC4: `README.md`'s Copilot paragraph and a new entry under
       `CHANGELOG.md`'s `## Unreleased` state that a later pass that finds
       no Copilot request or review on the PR asks again, and that the
       report at the read gives the not-recorded line as the reason for a
       missing review only when the PR still shows no Copilot request or
       review when the read runs.
-- [ ] AC5: `wc -l -c skills/shared/copilot-review.md` shows under 140
+- [x] AC5: `wc -l -c skills/shared/copilot-review.md` shows under 140
       lines and under 8,000 bytes, the figures the module's budget line
       states, and the budget line's figures are unchanged.
-- [ ] AC6: `cairn/DECISIONS.md` gains a D-entry that narrows D-153's
+- [x] AC6: `cairn/DECISIONS.md` gains a D-entry that narrows D-153's
       falsifier "requests Copilot twice on one PR" to a request made while
       GitHub holds an earlier Copilot request or review on the PR, and
       names a cairn record of the request as the rejected alternative.
@@ -196,3 +196,11 @@ not added.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- 2026-10-18 pass 1. Surface tier user-facing: three-lens fan-out. Copilot arm ran at step 2 on PR #294.
+- AC1 evidence: `skills/shared/copilot-review.md` §2 (lines 39-42) reads "A later run of this step on the same PR (a later review pass, a `/hotfix` resume) that reads `none` requests again: `none` means the query found no Copilot request or review, and a request GitHub never recorded leaves none (PR #291 to #293)." Lines 36-39 keep "On `pending` or `reviewed`, never request", and lines 46-48 keep "and make no second request" after the re-query's `none`.
+- AC2 evidence: §6 (lines 134-136) reads "When the read's own state query still prints `none`, that line is the reason. On `pending` or `reviewed`, the report gives the pending or level line." The sentence before (lines 131-134) lists the level line, the pending statement, and the reason as alternatives joined by "or", so on `pending` or `reviewed` the report gives the pending or level line in place of the not-recorded reason.
+- AC3 evidence: all four sites name the reason line beside the `copilot:` and level or pending lines: `skills/milestone-review/SKILL.md:479-481` (step 7 presentation), `skills/milestone-review/SKILL.md:696-698` (step 8 guest close), `skills/hotfix/SKILL.md:332-333` (step 6 Copilot round arm chip), `skills/hotfix/SKILL.md:470-471` (guest close).
+- AC4 evidence: `README.md:853-858` states the report gives the line as the reason "only when the PR still shows no Copilot request or review when the read runs" and that a later pass finding none "asks again". `CHANGELOG.md:522-531`, a new `### Fixes` entry under `## Unreleased`, states both.
+- AC5 evidence: `wc -l -c skills/shared/copilot-review.md` prints 139 lines, 7,990 bytes. The budget line on main and on the branch both read "under 140 lines and under 8,000 bytes".
+- AC6 evidence: `cairn/DECISIONS.md:6590` holds D-183. Its Decision (line 6607) narrows D-153's falsifier from "requests Copilot twice on one PR" to "requests Copilot while GitHub holds an earlier Copilot request or review on the PR". Its Rejected paragraph (line 6610) names "A cairn record that a request was made".
