@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M281: A Copilot request that GitHub does not record is reported
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — adopters with `# Copilot review: on` read the round's report   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m281-copilot-request-not-recorded   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -91,7 +91,7 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `skills/shared/copilot-review.md`, add the re-query and the
+- [x] T1: In `skills/shared/copilot-review.md`, add the re-query and the
       not-recorded line to §2 after its non-zero-exit sentence, and the
       not-recorded case to §6's "says why no review was requested" clause
       (worded as why no review exists). Compress other module text by at
@@ -130,6 +130,8 @@ hand-run `skills/tests` are not owed (D-109) and are not added.
 - 2026-10-18: plan gate chose report-and-go-on over a retry through a second request command because the user picked it and no second command was seen working here; falsified by a not-recorded request that a second command would have recorded.
 - 2026-10-18: plan gate chose an immediate re-query over a delayed one because PR #290's request event landed at once (review_requested 19:44:59Z, work started 19:45:29Z); falsified by an opted-in PR whose request was recorded but whose immediate re-query printed `none`.
 - 2026-10-18: criteria audit (full mode, fresh Opus reader): 6 findings, all fixed. AC1 narrowed to "adds no wait of its own" (§4's read-time wait stays) and "may not have recorded" (timing). AC2 reworded to "why no review exists" and scoped to the same pass (no stored record, D-153). AC3 narrowed to the re-query case. AC5 dropped the hand-run `skills/tests` clause (D-109; it binds an instrument), now in T3 as a noted non-gating run. Dropped the new-guard task (D-109: not owed). AC4 clean but tight.
+- 2026-10-18: implement started on branch m281-copilot-request-not-recorded; untracked `cairn-probe.log` and `tsconfig.json` predate this work and stay unstaged.
+- 2026-10-18: T1 done: §2 gains the re-query and the not-recorded line, §6 names it; cuts elsewhere (a redundant §1 note sentence, §4's restated wait-once clause, rewraps, shorter phrasings) bring the module to 138 lines and 7,998 bytes; no guard-pinned string changed; verify green (scripts 423 OK, hooks 179 OK, both validates 0, plugin test 2132 pass).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
