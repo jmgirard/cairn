@@ -88,6 +88,7 @@ The cairn pane lists candidate rows high → normal → low whatever their file 
 - 2026-10-18: T3 done: DESIGN.md pane paragraph, README pane section, a CHANGELOG entry under "Changes that affect existing repos", and D-182 annotating D-134. Validate green; both gating suites and both manifest validates green; hand-run `skills/tests` 886 green. The simple-english hook flags 368 and 219 file-wide hits in CHANGELOG.md and README.md that predate this branch; the two long sentences this branch added were split, the rest left as out of scope.
 - 2026-10-18: claim audit: 29 claims read, 2 corrected — CHANGELOG.md, README.md (both said one WARN line per row; validate prints one `WARN  candidate order (N)` header with one line per row under it; the same reader re-read both, 0 wrong).
 - 2026-10-18: verify clean at 9bb2924b: scripts/tests 423 OK, hooks/tests 179 OK, both manifest validates exit 0, `claude plugin test` 2132 pass 0 fail; status → review.
+- 2026-10-18: step-7 approval: m280-candidate-level-order approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
