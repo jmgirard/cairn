@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-18 (M276 done, PR #288: cut series; M273 row pruned to retention; "Feature series from a review-time split (M274 plan)" graduated; no lesson; skills/tests 884 green; budgets ok; validate green)_
+_Last hygiene check: 2026-10-18 (M277 done, PR #289: Explore searches on Haiku; M274 row pruned to retention; "Haiku for the remaining Sonnet roles" graduated; one lesson; skills/tests 886 green; budgets ok; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M277 | Search subagents run on the model a clarified re-test supports | review | — | normal | milestones/M277-haiku-search-clarified.md |
+| M277 | Search subagents run on the model a clarified re-test supports | done | — | normal | milestones/archive/M277-haiku-search-clarified.md |
 | M276 | A feature cut short at implement or review still ships as one change | done | — | normal | milestones/archive/M276-series-from-a-scope-cut.md |
 | M275 | A feature series stays listed and keeps one entry until its last part ships | done | — | normal | milestones/archive/M275-feature-series-edges.md |
-| M274 | A feature split across milestones reaches users as one change | done | — | normal | milestones/archive/M274-feature-series-ships-as-one.md |
 
 ## Candidates
 _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, untagged = `normal` (tracking-rules "Candidate priority token", D-134); advisory within a level. Triage: D-027._
@@ -26,7 +25,6 @@ _Ordered high → normal → low by each row's opening `[high]`/`[low]` token, u
 - Pane hotfix line Button: a hotfix line in the cairn pane has no Button; once `/hotfix #N` resumes an open hotfix PR (M262), a Button could run it. Promote when an open hotfix PR is resumed from the pane by hand in a real session — added 2026-10-16 — M262 plan (Out)
 - Pane content follow-ons: the pane (M205) shows active milestones, the planned queue, and, while idle, candidate rows (M207). M205's question set left out decisions and lessons. Promote when the pane is in use and one of these is missed in a real session — added 2026-10-04 — M205 plan (Out)
 - Amendment-return and linked-row edge cases (M211 review): an amendment return whose amendment never runs does not count toward the second-occurrence stop (D-150's falsifier). Implement step 1 does not read the `amendment routed:` line on a cold resume. The stop matches on `AC<N>` alone, so a renumbering amendment can hide a repeat. Overlapping §7 groups can draw several disposition chips over the same rows; a triage rewrite can change a quoted title and break its group. Promote when one shows in a real session — added 2026-10-04 — M211 review; narrowed 2026-10-15 by M251
-- Haiku for the remaining Sonnet roles: D-151 (M229) moved edit work to Haiku 5.5 and D-174 (M269) the two history reviewers; Explore searches stay on Sonnet. M264's three-run rerun (`cairn/references/haiku-sonnet-rerun.md`) kept search `stay`: every Haiku S2 run dropped `.py`, which the S2 prompt's wording can explain. Promote when the maintainer wants search re-tested with a clarified S2 prompt — added 2026-10-09 — user request; narrowed 2026-10-10 by M229; narrowed 2026-10-16 by M264; narrowed 2026-10-17 by M269 — started M277
 - Hunk-sharing recall test: M269's harder set (`cairn/references/history-review-recall.md`) put the E and F plants in hunks of their own, with the extra lines a README rewrap elsewhere, and by whether a defect was reported at all both models were at or one short of the ceiling (D-176). A set whose plants share hunks with real edits would test D-174's move more sharply. Promote on D-174's falsifier (a real conflict a Haiku history lens missed that a Sonnet rerun on the same diff catches) — added 2026-10-17 — M269 review pass 3 (diff-bug #2)
 - Live look at `/milestone`'s "Open hotfix PRs" bullet: M227 dropped its live check (no hotfix PR open on 2026-10-09): run `/milestone` with an open hotfix PR and compare the report with the bullet's `gh pr list`. The claim audit found §2's inbox silently drops a `hotfix-*` PR someone else opened. M227 review edges: `--author` makes `gh pr list` use GitHub search, which can miss a PR opened seconds before; a guest milestone slug starting `hotfix-` shows in the blocked bullet and the new one. Promote when a hotfix PR is open in a cairn repo — added 2026-10-09 — M227 implement
 - `/milestone` reads bot threads on open PRs: `/milestone` reads each bot thread on the operator's open PRs: the insight memory asks each audit to report every unresolved Copilot or other bot comment on each of the operator's open PRs, hotfix PRs included, with path, line, and claim checked against the code. M177's audit reports a thread count for `review` milestones only. The "Live look at `/milestone`'s 'Open hotfix PRs' bullet" row is related. Promote when the Copilot round (M231) is in use and a bot comment that arrives after a round is missed — added 2026-10-10 — M231 plan (Out)
