@@ -50,7 +50,7 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/shared/tracking-rules.md` "Sizing and the work tiers"
+- [x] AC1: `skills/shared/tracking-rules.md` "Sizing and the work tiers"
       defines a feature series as two or more milestones that one plan
       splits from one user-facing feature or fix, and states: (a) each
       milestone of the series but the last keeps its new behavior out of
@@ -63,19 +63,19 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
       of the series edits that entry instead of adding one; (d) in guest
       mode a later part can build on at most one open earlier part (D-173),
       so a series of three or more waits on the maintainers' merges.
-- [ ] AC2: A `skills/milestone-plan/SKILL.md` step 4 bullet directs a plan
+- [x] AC2: A `skills/milestone-plan/SKILL.md` step 4 bullet directs a plan
       that splits one user-facing feature or fix into several milestones to
       write them as a feature series under AC1's rules, and to write a
       `feature series: M<a> -> M<b>[ -> …]` work-log line in each milestone
       of the series.
-- [ ] AC3: In each profile that `git grep -l "has an entry for this"
+- [x] AC3: In each profile that `git grep -l "has an entry for this"
       skills/shared/profiles/` lists on main before the change
       (`python.md`, `r-package.md`, `claude-plugin.md`, `docker-image.md`),
       that consistency-gate line states that a milestone of a feature series
       meets it with an edit to the series' existing entry, and that a
       milestone before the series' last with no user-visible change needs
       no entry.
-- [ ] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm states
+- [x] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm states
       that when the milestone's work log carries a `feature series:` line,
       the PR body adds one plain sentence with no cairn vocabulary: for a
       milestone before the series' last, that the change is one part of a
@@ -84,14 +84,14 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
       pull request by number, read from its live milestone file's
       `Branch/PR` header or, for an archived milestone, from its archive
       summary's Status line.
-- [ ] AC5: `skills/cairn-release/SKILL.md` step 1 lists each feature
+- [x] AC5: `skills/cairn-release/SKILL.md` step 1 lists each feature
       series named by a `feature series:` line in a milestone file under
       `cairn/milestones/` (not `archive/`) where the line names at least one
       milestone whose ROADMAP status is `done`, and names those series in
       the version-decision question.
-- [ ] AC6: `CHANGELOG.md`'s Unreleased section has an entry describing
+- [x] AC6: `CHANGELOG.md`'s Unreleased section has an entry describing
       AC1–AC5's rules.
-- [ ] AC7: The profile's `verify` slot passes on the branch head: both
+- [x] AC7: The profile's `verify` slot passes on the branch head: both
       gating `python3 -m unittest` suites, `claude plugin validate` on the
       plugin and marketplace manifests, and `claude plugin test .`.
 
@@ -174,3 +174,43 @@ Owner-mode PR bodies → unchanged, because the owner reads the ROADMAP.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- AC1: tracking-rules "Sizing and the work tiers" holds the "Feature series" paragraph with the definition and rules (a)–(d) (awk over the section, 5 clause lines found; `TestRulebookParagraph`, 10 guards, green). (b) reworded at review so the "unless (c)" clause plainly names where the changelog entry lands.
+- AC2: milestone-plan step 4 carries the "Feature series" bullet and the `feature series: M<a> -> M<b>[ -> …]` line (grep within step 4: 2 hits; `TestPlanBullet` green).
+- AC3: `git grep -l "has an entry for this" main -- skills/shared/profiles/` lists claude-plugin, docker-image, python, r-package; each carries the edit and no-entry sentences (2 hits per file; `TestProfileGates` green).
+- AC4: milestone-review step 8 guest arm carries the trigger, earlier-part, last-part, and read-source sentences (grep: 3 hits; `TestReviewGuestSentence` green).
+- AC5: cairn-release step 1 lists the series from live milestone files whose line names a `done` milestone, and the question names them (grep within step 1: 3 hits; `TestReleaseList` green).
+- AC6: CHANGELOG `## Unreleased` opens with "A feature split across milestones reaches users as one change." (line 5).
+- AC7: verify on head 181fdad6: scripts 0 (OK, 21 skipped), hooks 0 (OK), plugin validate 0 (passed with warnings), marketplace validate 0, plugin test 0 (2076 tests, 0 fail). `skills/tests` 861 green (hand-run). cairn_validate all checks passed.
+- Consistency gate: cairn_validate exit 0; no principle changed, so no cairn_impact run; claude-plugin consistency-gate: changelog entry present (AC6).
+- spawned: diff-bug, blame-history, prior-review.
+- prior-review #1: the rulebook-mass baseline in `/milestone` (719 lines / 69,644 bytes) went stale when the rulebook grew, the M159/M166 pattern — fix now, re-seeded to 733 lines / 70,960 bytes in skills/milestone/SKILL.md, test_cost_audit_line.py, and its mutation entry, fixed 1f1315e0 and 181fdad6.
+- prior-review #2: the CHANGELOG shows `M<a> -> M<b>` — reject (false: placeholders, not milestone numbers).
+- blame-history #1: rule (b) reads as earlier parts carrying an entry — reject (false: the clause named where the entry lands); the wording was still clarified for Copilot's same reading, fixed 181fdad6.
+- blame-history #2: the profile edit line leaves no path when no entry exists yet — fix now, "This holds where the series already has an entry", fixed 1f1315e0.
+- blame-history #3: the guest earlier-part sentence is false under rule (c) — fix now, added "Under rule (c) it says the rest of the user-facing part comes later.", fixed 1f1315e0.
+- blame-history #4: (d) contradicts D-173 for a linear chain — reject (false: a middle part's PR is stacked, and implement refuses a stacked stack base, so a third part waits).
+- blame-history #5: the hidden-part exemption has no check — reject (planned change: prose rules over a validator, chosen at the plan gate).
+- blame-history #6: the release question does not handle a dropped part — fix now, the question gives each part's ROADMAP status, fixed 1f1315e0.
+- blame-history #7: reading a PR number from the header URL is unstated — reject (style: no instruction needed).
+- diff-bug #1: the profile change does not reach an existing repo's `cairn/PROFILE.md` copy, which review reads — fix now: CHANGELOG tells existing repos to copy the sentences, and this repo's `cairn/PROFILE.md` carries them, fixed 1f1315e0.
+- diff-bug #2: (d) misses guest mode without `# Push remote: base` — fix now, added the no-push-remote sentence, fixed 1f1315e0.
+- diff-bug #3: a later part held as a candidate row breaks the series — fix now, the plan bullet says every part is a milestone file, fixed 1f1315e0.
+- diff-bug #4: a pruned `done` row hides a half-merged series from the release list — follow-up, "Feature series edges (M274 review)".
+- diff-bug #5: an all-`done` series with a live file would be listed — reject (false: the live file's own milestone is named by its line and is not `done` until hygiene archives it).
+- diff-bug #6: two earlier visible parts give two owners for the one entry — reject (false: the second is a later milestone relative to the first, so (c) has it edit).
+- diff-bug #7: same as blame-history #3 — fix now, fixed 1f1315e0.
+- diff-bug #8: the plan bullet dropped "but the last" — fix now, fixed 1f1315e0.
+- diff-bug #9: guards skip some clauses — fix now, guards added for (a)'s obligation, (c)'s first line, the internal-layer and no-push-remote lines, the review trigger, the release lead and status lines, and the profile membership line, each with a mutation entry, fixed 1f1315e0.
+- diff-bug #10: profile and review guards read the whole file, not the section — reject (style: the repo's guards use whole-file reads where the phrase is unique).
+- diff-bug #11: a hidden part is not a vertical slice — fix now, added "Such a part can be an internal layer rather than a vertical slice", fixed 1f1315e0.
+- diff-bug #12: a hotfix to unreleased series behavior adds its own entry — follow-up, "Feature series edges (M274 review)".
+- diff-bug #13: the profile line does not say how membership is known — fix now, names the `feature series:` line, fixed 1f1315e0.
+- diff-bug #14: a dropped earlier part may have no PR number — follow-up, "Feature series edges (M274 review)".
+- diff-bug #15: template, archive summary, and `/milestone` do not mention a series — follow-up, "Feature series edges (M274 review)".
+- diff-bug #16: long unwrapped lines — reject (style).
+- diff-bug #17: tests after prose and one checkpoint commit — noted (recorded in the work log).
+- copilot: skills/cairn-release/SKILL.md:61 — reject (the live file's milestone is not done, so a listed series always has an unfinished part); replied and resolved.
+- copilot: skills/shared/profiles/claude-plugin.md:56, docker-image.md:43, python.md:36, r-package.md:31 — fix now, fixed 1f1315e0; replied and resolved.
+- copilot: skills/shared/tracking-rules.md:198 — fix now, fixed 181fdad6; replied and resolved.
+- Copilot level: Lite (set by GitHub's settings).
