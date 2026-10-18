@@ -40,7 +40,7 @@ M271.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
+- [x] AC1: `recommend` in `scripts/cairn_next.py` returns a `title` key. In
       the planning case it holds the short title (tracking-rules "Candidate
       short title"), trimmed as JavaScript's `trim` trims, of the first
       candidate row, in ROADMAP order, that opens with `[high] `, has a
@@ -175,3 +175,13 @@ Review pass 1, 2026-10-17, branch head 7e6726f9 (main b1d03358 unmoved). PR #284
 - blame-history #10: an untokened row that a planned or blocked milestone already quotes can be named again — follow-up (same row)
 - prior-review #1: a sibling row with the same title and a live token hides the row in the pane while the pill names it — follow-up (same as diff-bug #2)
 - AC1 tick withdrawn: diff-bug #8 shows AC1's token-end wording failing as written; AC1 is re-verified after its amendment.
+
+Review pass 2, 2026-10-17, branch head 7fe3604c (main b1d03358 unmoved), after the AC1 amendment and fix-now commit 5afb3631. Copilot state: reviewed earlier-head, so no new request.
+
+- AC1 (as amended): `python3 -m unittest -v scripts.tests.test_scripts -k TestNext` — 14 OK, among them the six cases AC1 names: the `[high]` row over an earlier untagged row, the started `[high]` row passed over (each token shape, `#` of 16 digits, and `— started M12é`, a non-ASCII letter still counting as started), the `[high]` row in a comment and the empty title, no `[high]` row giving `None`, and a workable milestone giving `None`; `test_high_title_trims_as_javascript_and_reads_each_candidates_section` holds the U+FEFF trim, the any-case heading, a second Candidates section, and a later non-Candidates heading; code: `STARTED` `(M[0-9]+|#[0-9]+)(?![0-9A-Za-z])`, `COMMENT` removed per section, heading test `strip().lower().startswith("## candidates")`. PASS.
+- AC2: at 7fe3604c, `cairn_next.py` on a copy of `high-candidate` prints `Recommended: plan the next milestone → /milestone-plan Chosen row`; on `candidates-skeleton` the line ends at `/milestone-plan` and a newline. PASS.
+- AC3: `scripts.tests.test_status_fixtures` OK at 7fe3604c; the verify run at 7fe3604c (`claude plugin test .`, 2071 pass, 0 fail) passes the next-step comparison for all 31 fixtures. PASS.
+- AC4: the same plugin test run passes the "M272 AC4" block (line, pane press, band press, both hide-rule cases) and the band's M213/M221 Plan tests on `high-candidate`; the pane state tag is now `pane-7`, and no test reads the tag. PASS.
+- AC5: README now states the hide rule as the pane's last PR read (`README.md:229-233`, `:300-303`), and the paragraph at :187-191, both docstrings, and the CHANGELOG entry still say planning names the first unstarted `[high]` candidate. PASS.
+- AC6: verify at 7fe3604c: scripts 416 OK (21 skipped), hooks OK, both `claude plugin validate` exit 0, plugin test 2071 pass 0 fail. PASS.
+- Gate: `cairn_validate.py` all checks passed at 7fe3604c; marketplace validate prints no `version` warning; CHANGELOG entry present with no milestone number. PASS.
