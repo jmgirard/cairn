@@ -4,7 +4,7 @@
 store for this repo — `~/.claude/projects/-Users-jmgirard-GitHub-cairn/*.jsonl`,
 115 session files, 44,688 records — read with `scripts/cairn_cost.py`.
 Pagination: —.
-Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19.
+Extraction: a 2026-07-19 snapshot; the store is a live append log and has moved on independently since, so every figure below is a floor rather than a current value — observed 2026-07-19. The 719:1 ratio in `## What the store is`, the 40.7% and 33.9% unattributed shares, and the figures in `## Baseline` came from `cairn_cost.py` before PR #238 (2026-10-10), which summed every record and skipped subagent files. They are not comparable with the script's current output. They cannot be re-measured, because the session store no longer holds the sessions of their milestones; its earliest keyed milestone is M139 — observed 2026-10-18 (corrected M279). `## Current-script baseline` holds figures from the current script.
 
 **Scope.** This page records the *method* by which cairn measures its own token
 and turn cost, the limits of that method, and a baseline taken once so a later
@@ -55,7 +55,7 @@ does not contain it) · `refused` (derivable only by guessing, so not derived).
 | A1 | Phase (`plan`/`implement`/`review`, and the other cairn skills) | `attributionSkill` lookup | `mechanical` |
 | A2 | Milestone id | `gitBranch` matching `^m(\d{2,})-` → `M<NN>` | `mechanical` |
 | A3 | Token cost of a milestone's *plan* phase | plan work runs on the default branch, which names no milestone | `refused` |
-| A4 | Subagent token cost | no store record carried `isSidechain: true` (observed 2026-07-19); since then each session's `<session>/subagents/agent-*.jsonl` records subagent turns with `isSidechain: true`, the oldest such file on this machine dated 2026-08-13 (corrected M228, observed 2026-10-09) | `absent` in this note's figures |
+| A4 | Subagent token cost | no store record carried `isSidechain: true` (observed 2026-07-19); since then each session's `<session>/subagents/agent-*.jsonl` records subagent turns with `isSidechain: true`, the oldest such file on this machine dated 2026-08-13 (corrected M228, observed 2026-10-09). Since PR #238 `cairn_cost.py` reads those files as part of their session, so its figures include subagent turns (corrected M279) | `absent` in `## Baseline`, `mechanical` in `## Current-script baseline` |
 | A5 | Subagent *count* per phase | `tool_use` blocks named `Agent`/`Task` | `mechanical` |
 | A6 | Per-file share of context growth | a shared prompt cache cannot apportion cache reads between files | `refused` |
 
@@ -66,14 +66,19 @@ commits, plain conversation — and imputing a milestone for it would mean
 guessing, since a single plan session legitimately names four milestones (M94
 through M97 were planned in one).
 
-A4 is the method's real blind spot, and it bites hardest exactly where the cost
-is highest: `/milestone-review`'s M17 fan-out spawns four subagents per
-milestone, and none of their tokens are recorded. Rather than publish a partial
+A4 was the method's real blind spot until PR #238 (corrected M279), and it
+bit hardest exactly where the cost is highest: `/milestone-review`'s M17
+fan-out spawned four subagents per milestone, and the script before PR #238
+counted none of their tokens. Rather than publish a partial
 number unlabelled, every report carries A5's spawn count beside the tokens.
 The count reads exactly `4` for every reviewed milestone in the baseline below,
 which is independent corroboration that the counter is right.
 
 ## Baseline — the ten milestones before M94
+
+The figures in this section came from the script before PR #238 and cannot
+be re-measured. The `Extraction:` line in the Provenance block says why
+(corrected M279).
 
 Per-milestone totals, branch-derived (so `plan`-phase cost is excluded per A3):
 
@@ -111,6 +116,33 @@ always-read tracking files are a minority term in the context a turn actually
 carries. Stated as a measurement, not a conclusion: M94 does not judge whether
 +10.8% warrants a mechanism, and nothing here licenses a threshold.
 
+## Current-script baseline — M269–M278
+
+Added by M279 for a later cost comparison, since the figures above cannot
+be re-measured. Each row is the BY MILESTONE row that
+`python3 scripts/cairn_cost.py --milestone M<NN>` printed on 2026-10-18 at
+commit `92edddd4`. That script counts each API call once and includes
+subagent turns (PR #238), and its output counts are a lower bound. Plan
+work is still excluded per A3.
+
+| Milestone | turns | cache-read | cache-create | fresh-in | output | agents |
+|---|---|---|---|---|---|---|
+| M278 | 142 | 25,714,968 | 334,396 | 290 | 58,180 | 4 |
+| M277 | 242 | 41,392,412 | 1,390,627 | 484 | 87,445 | 23 |
+| M276 | 146 | 24,904,428 | 550,144 | 298 | 68,028 | 6 |
+| M275 | 154 | 26,497,404 | 402,013 | 318 | 60,857 | 4 |
+| M274 | 109 | 15,455,153 | 329,144 | 226 | 43,922 | 4 |
+| M273 | 191 | 41,053,182 | 514,519 | 388 | 83,649 | 4 |
+| M272 | 418 | 71,225,732 | 1,371,700 | 850 | 131,224 | 10 |
+| M271 | 105 | 19,768,546 | 404,798 | 214 | 47,005 | 4 |
+| M270 | 147 | 30,060,622 | 597,359 | 300 | 82,078 | 4 |
+| M269 | 1,289 | 209,417,404 | 5,184,551 | 2,584 | 307,549 | 78 |
+
+Medians: 150.5 turns, 28,279,013 cache-read, 75,053 output, 4 agents.
+Over the ten, cache-read per turn is 171,760 and output per turn is 330.
+M269 is the high row, with 78 subagents: it ran the planted-conflict recall
+test of the history reviewers.
+
 ## Disposition
 
 - A1, A2, A5 → implemented in `scripts/cairn_cost.py`, guarded behaviourally
@@ -121,9 +153,11 @@ carries. Stated as a measurement, not a conclusion: M94 does not judge whether
 - The reporting-only boundary on the `/milestone` cost line → prose-guarded by
   `skills/tests/test_cost_audit_line.py`, whose three protected blocks are
   registered in the mutation harness and mutation-verified.
-- A3 and A4 → stated as limits here and in the script docstring, and surfaced
-  in the report output itself (the unattributable share on the attribution
-  line; the `agents` column and its "unrecorded" note).
+- A3 → stated as a limit here and in the script docstring, and surfaced in
+  the report output itself (the unattributable share on the attribution
+  line). A4 → no longer a limit of the script: since PR #238 it reads the
+  subagent files, and its report says that the `agents` column counts
+  spawned subagents whose own turns are included (corrected M279).
 - A6 → stated as a limit here and in the milestone's Scope, and **not**
   surfaced in the report output: there is no figure to caveat, because the
   per-file share is never computed. It was scoped Out at plan time for the
@@ -142,8 +176,11 @@ carries. Stated as a measurement, not a conclusion: M94 does not judge whether
   review-phase figures should be re-measured. Answered (corrected M228): the
   per-session `subagents/` directory is that surface, and
   `references/haiku-sonnet-roles.md` prices runs from it, grouping records by
-  `message.id` — observed 2026-10-09. The re-measurement belongs to the
-  ROADMAP candidate "Session-store reading in `cairn_cost.py`".
+  `message.id` — observed 2026-10-09. PR #238 (2026-10-10) made
+  `cairn_cost.py` read that directory and count each call once. The figures
+  in `## Baseline` cannot be re-measured, because their sessions are no
+  longer in the store, so `## Current-script baseline` gives figures for a
+  later comparison (corrected M279).
 - Whether `attributionSkill` is populated on every Claude Code version an
   adopting repo might run; this repo's store has it throughout, but that is one
   repo on one version — observed 2026-07-19.

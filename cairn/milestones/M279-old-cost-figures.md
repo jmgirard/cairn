@@ -121,7 +121,7 @@ not old-script figures.
       record-rule-remeasurement.md, rewrite the Axis 3 table, medians, and
       baseline comparison, the Evidence snapshot bullet, and the re-check in
       the `Extraction:` line. Keep the page's staleness state `ok`.
-- [ ] T2: Run `cairn_cost.py --milestone` for M269–M278 and add the
+- [x] T2: Run `cairn_cost.py --milestone` for M269–M278 and add the
       baseline section to session-cost-notes.md. Add the AC2 statement and
       pointer. Correct its AC4 sites.
 - [ ] T3: In effort-experiment-notes.md, add the AC2 statement and pointer,
@@ -156,6 +156,7 @@ not old-script figures.
 - 2026-10-18: implement started on branch m279-old-cost-figures, cut from main at 92edddd4; untracked `cairn-probe.log` and `tsconfig.json` (not this milestone's) left unstaged.
 - 2026-10-18: ran `cairn_cost.py --milestone` for M139–M152 and M269–M278 at 92edddd4 (one run, both ranges).
 - 2026-10-18: T1 done: record-rule-remeasurement.md Axis 3 re-run (medians 130.5 turns / 112,229.5 output, were 137 / 175,620), 165/169k comparison removed, Evidence and Extraction lines marked corrected M279; verify 5/5 green.
+- 2026-10-18: T2 done: session-cost-notes.md gets the old-script statement in Extraction, a pointer opening `## Baseline`, a new `## Current-script baseline` (M269–M278) before `## Disposition`, and corrected A4 row, Disposition bullet, and first Open question; also corrected the A4 paragraph under the ledger, which still said subagent tokens go uncounted; staleness pin stays `ok`; verify 5/5 green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
