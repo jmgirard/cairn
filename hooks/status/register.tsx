@@ -487,12 +487,21 @@ export const register: Register = on => {
               // the pointer over the line moves it into the room the info
               // glyph keeps (M290). In the desktop app a Button drawn under
               // `display: 'none'` takes no click once revealed, and one moved
-              // by an offset does. A keyed Box would scope its own hover.
+              // by an offset does. A keyed Box would scope its own hover. The
+              // Box spans the row's height and centers ✎ in it, as the row
+              // centers ⓘ.
               const parks = kind === 'plan' && e.surface !== 'terminal'
               return (
                 <Box
                   {...(parks
-                    ? { position: 'absolute' as const, top: 0, right: PLAN_PARK, hover: { right: 0 } }
+                    ? {
+                        position: 'absolute' as const,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center' as const,
+                        right: PLAN_PARK,
+                        hover: { right: 0 },
+                      }
                     : { key: `${line.key}-${kind}` })}
                   flexShrink={0}
                   marginLeft={1}

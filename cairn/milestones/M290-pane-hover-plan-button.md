@@ -186,6 +186,8 @@ by the drawn props alone.
 - 2026-10-19: live look 3 (circumplex): ⓘ opened the card, but a click on ✎ did nothing, double clicks too. The operator kept the AC5 glyph change.
 - 2026-10-19: probe 2 (commit 978a845b, reverted in 650ac8db): a ✎ under `display: 'none'` took no click once revealed; a ✎ placed past the right edge and moved in by `hover: { right: 0 }` clicked, and so did an always-shown ✎. The slide-in ✎ landed on ⓘ. A desktop fact for LESSONS at review.
 - 2026-10-19: substantive amendment: ✎'s Box off the terminal is `position: 'absolute'`, `top: 0`, `right: -8` with `hover: { right: 0 }` (`PLAN_SLOT`, `PLAN_PARK`), and the hidden ⓘ Box keeps a 4-column right margin for it. AC1 now names the parked Box, AC5 the margin and the card as the absolute child that holds no Button. Tests pick cards by `isCard`. It rides to the operator at the next chip, as before. Mod test 2303 pass, 0 fail.
+- 2026-10-19: live look 4 (circumplex): hover, ⓘ card, and ✎ click all work (the first click on an unfocused pane only focuses it, the known gap). The operator kept the AC1 and AC5 changes. ✎ and ⓘ did not sit at one height: the parked ✎ hung from the row's top.
+- 2026-10-19: implementation choice: the ✎ Box now spans the row (`top: 0`, `bottom: 0`) and centers its Button (`alignItems: 'center'`), as the row centers ⓘ. No criterion changes. Mod test 2303 pass, 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
