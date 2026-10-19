@@ -13,7 +13,8 @@ the load-bearing pieces against silent regression:
   * the reviewers reminded to use ref-based git only in the shared tree;
   * the model-strategy section counting four distinct-evidence reviewers
     and naming the two history lenses under Haiku, never Sonnet (M269);
-  * the ripple lens in both review modes, with its no-op case (M285);
+  * the ripple lens in the docs-only pair and in the four-lens list, with
+    its no-op case (M285);
   * Explore searches routed to Haiku in the rulebook and at the four skill
     sites that spawn them, with no Sonnet subagents bullet left (M277).
 

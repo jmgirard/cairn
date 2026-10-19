@@ -17,12 +17,12 @@
   questions. For code that awaits, can another handler change a value
   between the await and its use? For a skill step, does it hold on a
   first run, in guest mode, with a PR from a fork, with uncommitted
-  changes, and with a remote that moved ahead? With the Copilot review
-  round on, review now pushes the commit that records the PR's URL in
-  the milestone file before it requests Copilot, so the version Copilot
-  reviews already names its PR. In a repo whose CI
-  runs on pull requests, this second push starts that CI again at the
-  start of review.
+  changes, and with a remote that moved ahead? In owner mode with the
+  Copilot review round on, when review opens a new PR, it now pushes the
+  commit that records the PR's URL in the milestone file before it
+  requests Copilot, so the version Copilot reviews already names its PR.
+  In a repo whose CI runs on pull requests, this extra push starts that
+  CI again at the start of review.
 
 - **A candidate row that waits on its trigger is parked, and the pane
   shows it last with an hourglass.** A candidate row can now open with

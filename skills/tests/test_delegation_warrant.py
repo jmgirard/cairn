@@ -25,7 +25,7 @@ independently:
   same section, and with this clause deleted a reader meets "spawn one rather
   than several" and then four reviewers with no stated reconciliation. The
   clause says the fan-out is not the forbidden case (distinct evidence bases,
-  not one task done three times) rather than an exception to be traded off.
+  not one task done four times) rather than an exception to be traded off.
 
 Skill-prose guards read the file as one string, so every asserted phrase lives
 on a single source line (M23/M64), matches through `**bold**` markers rather

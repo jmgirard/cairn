@@ -148,8 +148,8 @@ re-enters here, at the step the record shows is next:
    runs; only the create is skipped when the header already names an open
    PR. If the push or the create fails, report the failure in one line and
    request nothing. For a new PR, add its URL to the header in a commit on
-   the branch, beside the URL of a closed PR the header already names, and
-   push that commit before the request, so the head Copilot reviews names
+   the branch, keeping beside it any closed PR's URL the header already
+   names, and push that commit before the request, so the head Copilot reviews names
    its PR (D-185). If that push fails, report it in one line and go on: the
    commit stays local until step 6's checkpoint push carries it. Then run
    the module's state query (§3) and request Copilot on `none`, asking for
@@ -615,8 +615,8 @@ re-enters here, at the step the record shows is next:
    head past the one CI just ran on; the resume routes and step 9 fall
    back to `gh pr list --head <branch>` once the local branch is gone.
    Where step 2's Copilot arm opened the PR, its URL is already in the
-   header in a commit that the arm pushed, so no record is written here
-   (D-185).
+   header in a commit that the arm pushed, or that step 6's push carried
+   when the arm's push failed, so no record is written here (D-185).
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
