@@ -139,7 +139,7 @@ by the drawn props alone.
       first. Update the AC7 sites. The harness cannot hover, so AC6 is the
       only proof of the hover behavior. If AC6 shows the card opening with
       the row, or the icon not opening it, stop for an amendment.
-- [ ] T6: Live look (AC6) with the operator in circumplex. Tell the
+- [x] T6: Live look (AC6) with the operator in circumplex. Tell the
       operator first that the card can close when the pointer moves from
       the icon onto the card.
 - [ ] T7: Run the `verify` slot (AC8).
@@ -188,6 +188,7 @@ by the drawn props alone.
 - 2026-10-19: substantive amendment: ✎'s Box off the terminal is `position: 'absolute'`, `top: 0`, `right: -8` with `hover: { right: 0 }` (`PLAN_SLOT`, `PLAN_PARK`), and the hidden ⓘ Box keeps a 4-column right margin for it. AC1 now names the parked Box, AC5 the margin and the card as the absolute child that holds no Button. Tests pick cards by `isCard`. It rides to the operator at the next chip, as before. Mod test 2303 pass, 0 fail.
 - 2026-10-19: live look 4 (circumplex): hover, ⓘ card, and ✎ click all work (the first click on an unfocused pane only focuses it, the known gap). The operator kept the AC1 and AC5 changes. ✎ and ⓘ did not sit at one height: the parked ✎ hung from the row's top.
 - 2026-10-19: implementation choice: the ✎ Box now spans the row (`top: 0`, `bottom: 0`) and centers its Button (`alignItems: 'center'`), as the row centers ⓘ. No criterion changes. Mod test 2303 pass, 0 fail.
+- 2026-10-19: T6 done. Live look 5 (circumplex): ⓘ and ✎ sit at one height. AC6's checks all held across looks 4 and 5. The operator asked for a hand cursor over pane Buttons; the mod API has no cursor prop, so it went to item (4) of the parked row "Gaps only the app or mod API can close".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
