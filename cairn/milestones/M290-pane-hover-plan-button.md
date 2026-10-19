@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M290: The desktop cairn pane shows a candidate row's ✎ only under the pointer
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -142,7 +142,7 @@ by the drawn props alone.
 - [x] T6: Live look (AC6) with the operator in circumplex. Tell the
       operator first that the card can close when the pointer moves from
       the icon onto the card.
-- [ ] T7: Run the `verify` slot (AC8).
+- [x] T7: Run the `verify` slot (AC8).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -190,6 +190,7 @@ by the drawn props alone.
 - 2026-10-19: implementation choice: the ✎ Box now spans the row (`top: 0`, `bottom: 0`) and centers its Button (`alignItems: 'center'`), as the row centers ⓘ. No criterion changes. Mod test 2303 pass, 0 fail.
 - 2026-10-19: T6 done. Live look 5 (circumplex): ⓘ and ✎ sit at one height. AC6's checks all held across looks 4 and 5. The operator asked for a hand cursor over pane Buttons; the mod API has no cursor prop, so it went to item (4) of the parked row "Gaps only the app or mod API can close".
 - 2026-10-19: claim audit: 55 claims read, 0 corrected — register.tsx, pane.ts, pane.test.tsx, README.md, CHANGELOG.md, cairn/DESIGN.md. A second pass over the final diff, since the first (19 claims, 2 corrected) ran before T5 and the probes. DESIGN gained the parked Box's `bottom: 0` and `alignItems: 'center'` at the reader's note.
+- 2026-10-19: T7 done. Verify slot clean: scripts/tests, hooks/tests, both validates, mod test 2303 pass, 0 fail. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
