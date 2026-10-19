@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M289: The cairn pane draws each section count as a colored badge
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the pane is part of the plugin that users install
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m289-pane-count-badges   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -87,18 +87,18 @@ AC5 stand in for it.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Set the colors. Read the theme keys near amber, orange, and plan
+- [x] T1: Set the colors. Read the theme keys near amber, orange, and plan
       blue (`warning`, `claude`, `planMode`; `FLOW_COLORS` in band.ts:132,
       `ICON_COLORS` in icons.ts). Pick each fill's hex and its text color
       for legibility on both themes, serving a scratch page from the
       scratchpad with `python3 -m http.server` (LESSONS M201).
-- [ ] T2: Tests first, then `BADGE_KEY`, `BADGE_FILL`, and `badgeSvg(count,
+- [x] T2: Tests first, then `BADGE_KEY`, `BADGE_FILL`, and `badgeSvg(count,
       heading)` (icons.ts or a new badge module): a rounded rect with
       `rx` half its height and the number as text, with `textLength` set as
       in track.ts:195-198. Give `Span` a badge field, or a separate tail
       field, and have `countHeading` (pane.ts:455) emit it with no gray
       count text.
-- [ ] T3: register.tsx draws a pane line's tail through the span drawer,
+- [x] T3: register.tsx draws a pane line's tail through the span drawer,
       with a badge span as `<Svg>` on the desktop and as padded
       `inverseText`-on-key text in the terminal (the pane's tail draws as
       plain `<Text>` today). Update the Blocked, Hotfixes, and Candidates
@@ -123,6 +123,8 @@ AC5 stand in for it.
 - 2026-10-19: collision sweep: no ROADMAP row, archive summary, or D-entry covers heading badges; M208 drew a pill for the Next command, which M286 removed for that line only. Inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-19: criteria audit (full mode, Opus): 6 findings, all taken. AC1 narrowed to the desktop surface and requires the three fills to differ. AC2 names `BADGE_KEY`. AC3 drops "no digit is clipped" for a `textLength` check. AC4 names the Tasks, Criteria, and card cases. AC5 drops its reference to AC1's test clauses. AC6's greps check both that the old wording is gone and that badge wording is present.
 - 2026-10-19: AC5 re-audited after the live look was declined: reworded to "the text color `BADGE_FILL` gives that fill" and to name the numbers 7 and 100. The reader measured white on amber #d9a21b at about 2.3:1, below the 3:1 floor, and the `ink` gray (#1f1f1e) at 5.2:1 or more on all three fills, so T1 starts from one dark text color.
+- 2026-10-19: T1: kept the white number the user picked and darkened the fills instead: the band pill's plan blue rgb(71,103,158) and implement orange rgb(152,85,57) (track.ts `PHASE_FILLS`), and a dark amber rgb(146,103,22) near `warning`. White on each measured 5.0:1 or more (WCAG ratio, computed in a scratch script). Terminal keys: `warning`, `claude`, `planMode`.
+- 2026-10-19: T2, T3: new `hooks/status/badge.ts` (`BADGE_KEY`, `BADGE_FILL`, `badgeWidth`, `badgeSvg`, `badgeSpan`); `Span` gains `badge`; `countHeading` takes the badge name; register.tsx draws a pane tail through `drawSpan` and centers a row with a badge. Six existing heading tests now expect the badge; four new tests. Planted defects (a shared fill, a fixed width, a wrong text key) turned 6 tests red; restored. Mod tests 2281 → 2285, all five verify checks green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

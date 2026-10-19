@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M289 | The cairn pane draws each section count as a colored badge | planned | — | normal | milestones/M289-pane-count-badges.md |
+| M289 | The cairn pane draws each section count as a colored badge | in-progress | — | normal | milestones/M289-pane-count-badges.md |
 | M288 | Sessions read the repo's source shelf before they search the web for a paper | done | — | normal | milestones/archive/M288-shelf-first-sources.md |
 | M287 | A /copilot-review skill handles Copilot's notes on a PR and replies to its summary | done | — | normal | milestones/archive/M287-copilot-review-skill.md |
 | M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | done | — | normal | milestones/archive/M286-pane-card-look.md |
