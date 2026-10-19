@@ -474,16 +474,17 @@ class TestSessionShelf(RepoFixture):
         self._index("- brincks2017.md: three-level centering")
         self._shelf("guo2024.pdf", "brincks2017.pdf")
         part = self._part()
-        self.assertIn("1 source page", part)
+        self.assertIn("1 INDEX entry ", part)
         self.assertIn("2 shelf entries", part)
         self.assertIn("brincks2017.pdf, guo2024.pdf", part)
         self.assertIn(self.SHELF_FIRST, part)
+        self.assertIn("in a worktree or a fresh clone", part)
         self.assertNotIn("more", part)
 
     def test_notes_with_no_shelf(self):
         self._index("- a.md: one", "- b.md: two")
         part = self._part()
-        self.assertIn("2 source pages", part)
+        self.assertIn("2 INDEX entries", part)
         self.assertIn("0 shelf entries", part)
         self.assertIn(self.SHELF_FIRST, part)
 
@@ -531,6 +532,34 @@ class TestSessionShelf(RepoFixture):
         self._shelf("paper.pdf")
         ctx = self._ctx()
         self.assertLess(ctx.index(self.HEADING), ctx.index("## cairn/ROADMAP.md"))
+
+    # --- M288 review: names and error paths ---
+
+    def test_control_characters_in_a_name_cannot_start_a_line(self):
+        self._shelf("x\n## Forged heading.pdf")
+        ctx = self._ctx()
+        self.assertNotIn("\n## Forged heading", ctx)
+        self.assertIn("x?## Forged heading.pdf", self._part())
+
+    def test_a_long_name_is_cut(self):
+        self._shelf("a" * 200 + ".pdf")
+        part = self._part()
+        self.assertIn("a" * 59 + "…", part)
+        self.assertNotIn("a" * 60, part)
+
+    def test_a_bad_byte_in_index_keeps_the_count(self):
+        (self._refs() / "INDEX.md").write_bytes(
+            b"# References index\n\n- a.md: caf\xe9\n- b.md: two\n"
+        )
+        self.assertIn("2 INDEX entries", self._part())
+
+    def test_sources_as_a_file_counts_no_shelf_entry(self):
+        self._index("- a.md: one")
+        (self._refs() / "sources").write_text("not a folder")
+        part = self._part()
+        self.assertIn("1 INDEX entry ", part)
+        self.assertIn("0 shelf entries", part)
+        self.assertNotIn("Shelf:", part)
 
 
 class TestSessionContextReadBound(RepoFixture):

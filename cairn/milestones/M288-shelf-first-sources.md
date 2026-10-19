@@ -131,4 +131,30 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - AC2: `TestShelfFirst` 4 anchors OK, mutation harness OK with the 4 blocks registered; the rulebook's "Shelf first." paragraph says "any source a session needs, numeric or not".
 - AC3: README bullet "The shelf comes before the web." and the CHANGELOG entry "Sessions are told to read the source shelf before the web." describe the notice and the rule; a search of both for "always" and "every session" finds nothing.
 - AC4: verify on the review head: scripts exit 0, hooks exit 0, plugin validate exit 0, marketplace validate exit 0, `claude plugin test .` 0 fail.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: in a worktree or fresh clone the gitignored shelf is empty and the notice sends the session to an empty folder — fix now (the part says the shelf can be full in the main checkout).
+- diff-bug #2: one non-UTF-8 byte in INDEX.md zeroes the count — fix now (`errors="replace"`, test added).
+- diff-bug #3: a newline in a shelf name injects a forged line — fix now (control characters become `?`, test added).
+- diff-bug #4: a comma in a name reads as two entries — reject (style: rare, and the count beside the list disambiguates).
+- diff-bug #5: "source pages" mislabels synthesis notes — fix now (the part says "INDEX entries").
+- diff-bug #6: no length bound on names — fix now (each name cut to 60 characters, test added).
+- diff-bug #7: no error-path tests — fix now (bad-byte INDEX and `sources` as a file added; a broken symlink takes the same `except` path).
+- diff-bug #8: `- ` lines inside fences or comments are counted — reject (planned: AC1 defines the count as column-0 `- ` lines).
+- diff-bug #9: "it" in the doctrine has no clear referent — fix now ("If the source is inaccessible").
+- diff-bug #10: the rule's scope wording differs across the three sites — reject (planned: AC2 puts "any source" in the rulebook).
+- diff-bug #11: T1 names `TestSessionContext`, the cases are in `TestSessionShelf` — reject (record only: the cases are in `TestSessionShelf`, as this line notes).
+- blame-history #1: a repo still on the legacy `pdf/` shelf gets no notice — reject (planned: Scope Out names it).
+- blame-history #2: a note alone counts as "found", skipping the primary source — fix now (the doctrine says a note without the file does not count).
+- blame-history #3: the part shrinks the milestone budget — fix now (bounded by the 60-character name cap; the remaining charge is the planned placement).
+- blame-history #4: "source pages" label — fix now (same as diff-bug #5).
+- prior-review #1: unescaped names (also Copilot's thread) — fix now (same as diff-bug #3).
+- prior-review #2: the hook's INDEX count differs from `cairn_validate`'s `_INDEX_LINE` — reject (planned: AC1 fixes the predicate; the label now says "INDEX entries").
+- prior-review #3: `/milestone`'s rulebook mass baseline is stale — fix now (re-seeded to 753 lines / 72,590 bytes, pins in `test_cost_audit_line` and the harness follow).
+- prior-review #4: no name length cap — fix now (same as diff-bug #6).
+- ripple #1: the preamble calls everything below "files" — fix now (one sentence names the Source shelf part).
+- ripple #2: no notice when ROADMAP.md is unreadable — reject (the hook's existing contract: it no-ops without a readable ROADMAP).
+- ripple #3: the module docstring's first sentence omits the part — reject (style: the next sentence states it).
+- ripple #4: dated reference pages describe the hook as ROADMAP plus milestones — reject (dated analyses, outside the stale-text rule).
+- copilot: hooks/session_context.py:316 (sanitize shelf names) — fix now.
+- copilot: review body (source-page counting) — fix now (label "INDEX entries").
 - gate: `cairn_validate` all checks passed; `cairn_impact` skipped (no principle text changed); marketplace validate shows no version warning; the CHANGELOG entry carries no milestone id; skills/tests OK; `validation-doctrine.md` 101 lines and 6,638 bytes, under its 115 and 8,000 budget.

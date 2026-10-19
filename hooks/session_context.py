@@ -86,15 +86,24 @@ STATUS_ORDER = {"in-progress": 0, "review": 1, "blocked": 2}
 
 # The `## Source shelf` part (M288) lists at most this many shelf entry
 # names; shelves reach 51 entries (circumplex, 2026-10-19), and every
-# character here comes out of MAX_CHARS ahead of the milestone parts.
+# character here comes out of MAX_CHARS ahead of the milestone parts. Each
+# name is cut to SHELF_MAX_NAME_CHARS, so the list stays near 2,000
+# characters whatever the file names are.
 SHELF_MAX_NAMES = 30
+SHELF_MAX_NAME_CHARS = 60
+
+# Shelf names come from a gitignored folder the user fills, so a control
+# character (a newline above all) must not reach the injected text, where
+# it could start a forged heading or instruction line.
+_CONTROL = re.compile(r"[\x00-\x1f\x7f]")
 
 PREAMBLE = (
     "# cairn tracking context (auto-injected by the cairn plugin)\n\n"
     "This repo is cairn-tracked. The files below are authoritative for\n"
     "project status (ROADMAP) and current work (active milestones); they\n"
     "are re-read from disk at injection time. Obey the repo's CLAUDE.md\n"
-    "cairn section; start milestone work via the cairn skills.\n"
+    "cairn section; start milestone work via the cairn skills. A Source\n"
+    "shelf part, when present, lists what is in cairn/references/.\n"
 )
 
 
@@ -280,6 +289,15 @@ def _plural(n, one, many):
     return f"{n} {one if n == 1 else many}"
 
 
+def _shelf_name(name):
+    """A shelf name as the part shows it: control characters replaced by
+    `?`, cut to SHELF_MAX_NAME_CHARS with a trailing `…`."""
+    name = _CONTROL.sub("?", name)
+    if len(name) > SHELF_MAX_NAME_CHARS:
+        name = name[: SHELF_MAX_NAME_CHARS - 1] + "…"
+    return name
+
+
 def shelf_section(cairn_dir):
     """The `## Source shelf` part (M288), or None when `references/` holds
     no INDEX entry and no shelf entry. An INDEX entry is a line that starts
@@ -290,7 +308,10 @@ def shelf_section(cairn_dir):
     web for a paper the repo already holds."""
     refs = os.path.join(cairn_dir, "references")
     try:
-        with open(os.path.join(refs, "INDEX.md"), encoding="utf-8") as f:
+        # errors="replace": one bad byte must not zero the whole count.
+        with open(
+            os.path.join(refs, "INDEX.md"), encoding="utf-8", errors="replace"
+        ) as f:
             pages = sum(1 for line in f if line.startswith("- "))
     except Exception:
         pages = 0
@@ -307,13 +328,17 @@ def shelf_section(cairn_dir):
         "## Source shelf",
         "",
         "`cairn/references/` holds "
-        + _plural(pages, "source page", "source pages")
-        + " listed in `INDEX.md` and "
+        + _plural(pages, "INDEX entry", "INDEX entries")
+        + " in `INDEX.md` and "
         + _plural(len(names), "shelf entry", "shelf entries")
         + " in `sources/`.",
     ]
     if names:
-        lines.append("Shelf: " + ", ".join(names[:SHELF_MAX_NAMES]) + ".")
+        lines.append(
+            "Shelf: "
+            + ", ".join(_shelf_name(n) for n in names[:SHELF_MAX_NAMES])
+            + "."
+        )
     if len(names) > SHELF_MAX_NAMES:
         lines.append(
             f"(and {len(names) - SHELF_MAX_NAMES} more in "
@@ -322,7 +347,9 @@ def shelf_section(cairn_dir):
     lines.append(
         "Before you search the web for a cited paper or other source, read "
         "`cairn/references/INDEX.md`, the source's note, and its file on the "
-        "shelf. Search the web only for a source that is not there."
+        "shelf. Search the web only for a source whose file is not there. "
+        "The shelf is gitignored, so in a worktree or a fresh clone it can "
+        "be empty here and full in the main checkout."
     )
     return "\n".join(lines)
 
