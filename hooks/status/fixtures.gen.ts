@@ -183,6 +183,31 @@ export const FIXTURES: Record<string, Fixture> = {
     ],
     unreadable: [],
   },
+  "candidates-parked": {
+    cwd: "/",
+    files: {
+      "/cairn/ROADMAP.md": "# Roadmap\n\n_The only authority on milestone status. Grouped by status, not ID._\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M001 | Shipped | done | — | normal | milestones/archive/M001-shipped.md |\n\n## Candidates\n- [parked] Parked first: a parked row above every other level; promote when a case appears — added 2026-01-01\n- Normal row: an untagged row below a parked row — added 2026-01-02\n- [PARKED] Upper-case parked, read as normal: the token is case-sensitive — added 2026-01-03\n- [parked]No space after the parked token, kept in the title — added 2026-01-04\n- Token [parked] mid-row, read as normal — added 2026-01-05\n- [low] Low row: a low row between parked rows — added 2026-01-06\n- [parked] : a parked row with an empty short title — added 2026-01-07\n- [parked] Parked last: a second parked row, split from the first — added 2026-01-08\n",
+    },
+    rows: [
+    ],
+    workable: [],
+    pane: [
+    ],
+    next: {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
+    candidates: [
+      {"priority": "parked", "title": "Parked first"},
+      {"priority": "normal", "title": "Normal row"},
+      {"priority": "normal", "title": "[PARKED] Upper-case parked, read as normal"},
+      {"priority": "normal", "title": "[parked]No space after the parked token, kept in the title"},
+      {"priority": "normal", "title": "Token [parked] mid-row, read as normal"},
+      {"priority": "low", "title": "Low row"},
+      {"priority": "parked", "title": ""},
+      {"priority": "parked", "title": "Parked last"},
+    ],
+    blocked: [
+    ],
+    unreadable: [],
+  },
   "candidates-skeleton": {
     cwd: "/",
     files: {

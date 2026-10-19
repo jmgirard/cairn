@@ -52,9 +52,10 @@ const WITH_ROADMAP = Object.keys(FIXTURES).filter(name => FIXTURES[name].next !=
 // planned M002.
 const HIDDEN: Record<string, string[]> = { 'high-candidate': ['Taken row'] }
 // A fixture's drawn candidate rows, each with its index in `candidates`,
-// high rows first, then normal, then low, each level in ROADMAP order
-// (M280). `candidates-order` states its order by hand.
-const LEVEL = { high: 0, normal: 1, low: 2 }
+// high rows first, then normal, then low, then parked (M284), each level in
+// ROADMAP order (M280). `candidates-order` and `candidates-parked` state
+// their order by hand.
+const LEVEL = { high: 0, normal: 1, low: 2, parked: 3 }
 function drawnCandidates(name: string) {
   return FIXTURES[name].candidates
     .map((row, i) => ({ row, i }))
@@ -421,6 +422,8 @@ const MARKS = {
   high: { text: '↑', color: 'claude', bold: true },
   normal: { text: '○' },
   low: { text: '↓', color: 'inactive' },
+  // M284: a parked row's hourglass, gray.
+  parked: { text: '⧗', color: 'inactive' },
 } as const
 
 // The candidates fixture's lines, written out by hand from its ROADMAP, in
@@ -4442,6 +4445,100 @@ describe('a candidate row that a started token marks is not drawn (M258 AC1-AC3,
       [],
     ).filter(line => /^candidate-\d+$/.test(line.key))
     expect([lines[0].lead[0], lines[0].tail, lines[0].buttons]).toEqual([MARKS.normal, undefined, undefined])
+  })
+})
+
+// The candidates-parked fixture (M284): parked rows above and among other
+// levels, three misspelled or misplaced tokens read as normal, and a parked
+// row with an empty short title. Its drawn order, by index and text,
+// written out by hand.
+const PARKED_LINES: [number, string][] = [
+  [1, '○ Normal row'],
+  [2, '○ [PARKED] Upper-case parked, read as normal'],
+  [3, '○ [parked]No space after the parked token, kept in the title'],
+  [4, '○ Token [parked] mid-row, read as normal'],
+  [5, '↓ Low row'],
+  [0, '⧗ Parked first'],
+  [6, '⧗ '],
+  [7, '⧗ Parked last'],
+]
+
+describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', () => {
+  for (const surface of SURFACES) {
+    test(`the candidates-parked fixture draws parked rows after the low row (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates-parked'))
+      await $.turn.complete(turn())
+      const lines = await paneLines($, surface)
+      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 8')
+      const rows = keysLike(lines, /^candidate-\d+$/)
+      expect(rows).toEqual(PARKED_LINES.map(([i]) => `candidate-${i}`))
+      expect(rows.map(k => textAt(lines, k))).toEqual(PARKED_LINES.map(([, text]) => text))
+    })
+
+    test(`a parked row's mark and title are gray (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates-parked'))
+      await $.turn.complete(turn())
+      const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
+      const [lead] = await ui.findAll({ key: 'candidate-0-lead' })
+      expect(textOf(kids(lead)[0])).toBe('⧗')
+      expect(kids(lead)[0].props.color).toBe('inactive')
+      const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
+      expect((await titleOf(0)).props.color).toBe('inactive')
+      // The control: an untagged row's title has no color.
+      expect((await titleOf(1)).props.color).toBe(undefined)
+      await ui.unmount()
+    })
+
+    test(`✎ on the first parked row plans it (${surface})`, async ($, on) => {
+      const copy = copyOf('candidates-parked')
+      seat(on, copy)
+      await $.turn.complete(turn())
+      await pressKey($, 'cairn-pane-plan-0')
+      expect(copy.commands).toEqual([CLEAR_RUN])
+      await $.session.end(CLEAR_END)
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: 'cairn:milestone-plan', args: 'Parked first' }])
+    })
+  }
+
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [
+      { priority: 'parked', title: 'Waits' },
+      { priority: 'parked', title: '' },
+      { priority: 'high', title: 'Up' },
+      { priority: 'parked', title: 'Taken' },
+    ],
+    blocked: [],
+    taken: [],
+  }
+  const draw = (acts: boolean, started: { title: string; number: number }[] = []) =>
+    layout(state, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+
+  for (const acts of [true, false]) {
+    test(`a parked row's ✎, key, and target follow the rules of any row (acts ${acts})`, () => {
+      const lines = draw(acts)
+      expect(lines.map(line => line.key)).toEqual(['candidate-2', 'candidate-0', 'candidate-1', 'candidate-3'])
+      const waits = lines[1]
+      expect([waits.lead, waits.tail, waits.text]).toEqual([[MARKS.parked, { text: ' ' }], undefined, { text: 'Waits', color: GRAY }])
+      expect([waits.buttons, waits.target, waits.title]).toEqual(acts ? [['plan'], '0', 'Waits'] : [undefined, undefined, undefined])
+      // A parked row with an empty short title has no ✎, as any such row.
+      expect([lines[2].buttons, lines[2].target]).toEqual([undefined, undefined])
+    })
+  }
+
+  test('a started parked row is hidden, and the heading counts the drawn rows', () => {
+    const lines = layout(state, [], true, {}, [], [{ title: 'Taken', number: 7 }])
+    expect(lines.filter(line => /^candidate-\d+$/.test(line.key)).map(line => line.key)).toEqual([
+      'candidate-2',
+      'candidate-0',
+      'candidate-1',
+    ])
+    expect(lines.find(line => line.key === 'candidates-head')?.lead.slice(-1)).toEqual([{ text: '3', color: GRAY }])
   })
 })
 

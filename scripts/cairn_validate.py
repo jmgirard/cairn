@@ -1841,14 +1841,14 @@ def check_dangling_ids(root, rows):
 
 
 # The order the Candidates section holds each priority level in (tracking-rules
-# "Candidate priority token"): high, then normal, then low.
-_LEVEL_RANK = {"high": 0, "normal": 1, "low": 2}
+# "Candidate priority token"): high, then normal, then low, then parked (M284).
+_LEVEL_RANK = {"high": 0, "normal": 1, "low": 2, "parked": 3}
 
 
 def check_candidate_order(root):
     """Advisory (M280): each candidate row, as `cairn_next.candidate_texts`
     reads the rows, whose level ranks above the lowest level of a row before
-    it, so the file breaks the high → normal → low order. One finding per
+    it, so the file breaks the high → normal → low → parked order. One finding per
     such row, naming its short title, its level, and that lowest level. The
     cairn pane draws the rows in level order whatever the file holds, and a
     misspelled token reads as `normal` (D-134), so this WARNs and never

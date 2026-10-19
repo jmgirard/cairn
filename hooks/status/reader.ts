@@ -490,7 +490,8 @@ export type PaneState = {
 
 // One candidate row of the ROADMAP: its priority token's level, `normal`
 // with no token, and its short title.
-export type CandidateRow = { priority: 'high' | 'normal' | 'low'; title: string }
+// A `parked` row waits on a promotion condition that has not held (M284).
+export type CandidateRow = { priority: 'high' | 'normal' | 'low' | 'parked'; title: string }
 
 // One ` — started <ref>` token of a candidate row (M258), with the row's
 // short title: `ref` is `M<NNN>` or `#<n>` as the token spells it.
@@ -577,9 +578,10 @@ function paneFile(text: string) {
   }
 }
 
-const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
+const PRIORITY_TOKENS: readonly [string, 'high' | 'low' | 'parked'][] = [
   ['[high] ', 'high'],
   ['[low] ', 'low'],
+  ['[parked] ', 'parked'],
 ]
 
 // The candidate rows (M207): each flush-left line that opens with `- `
@@ -588,8 +590,9 @@ const PRIORITY_TOKENS: readonly [string, 'high' | 'low'][] = [
 // placeholder rows are not read, and a `<!--` in another section hides
 // nothing here. Every `## ` line starts or ends a section, as in
 // `candidate_count` in scripts/cairn_scripts.py, which also counts indented
-// lines and lines inside comments. A row's priority is `high` or `low` when
-// its text opens with exactly `[high] ` or `[low] `, else `normal`. Its
+// lines and lines inside comments. A row's priority is `high`, `low`, or
+// `parked` when its text opens with exactly `[high] `, `[low] `, or
+// `[parked] ` (M284), else `normal`. Its
 // short title is the text after that token up to the first `: `, else up
 // to the first ` — `, else all of it (M251; tracking-rules "Candidate short
 // title").
