@@ -75,8 +75,12 @@ primary-sources rule below; reproducibility is its second, independent half.
 
 **Primary sources rule (hard stop):** never substitute secondary
 descriptions or model memory for a primary source on scoring/algorithmic
-content. Search (DOI, publisher, OSF); if inaccessible, stop and ask the
-user for the PDF.
+content. First read the repo's shelf: `cairn/references/INDEX.md`, the
+source's note, and `cairn/references/sources/`. Search the web (DOI,
+publisher, OSF) only for a source not found there. A note without the
+source's own file on the shelf does not count as found, since the note is
+itself a secondary description. If the source is inaccessible, stop and
+ask the user for the PDF.
 
 **Source ingestion:** the source itself → `cairn/references/sources/`
 (gitignored) — a PDF where there is one, otherwise whatever was retrieved

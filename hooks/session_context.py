@@ -4,7 +4,9 @@
 Injects cairn/ROADMAP.md plus every active (in-progress / blocked /
 review) milestone file as additionalContext, so a fresh session starts
 oriented without relying on the skill remembering to read the files.
-No-op outside cairn repos.
+When cairn/references/ holds source pages or shelf entries, a short
+`## Source shelf` part comes before the ROADMAP and says to read them
+before searching the web (M288). No-op outside cairn repos.
 
 Wired to SessionStart only. Claude Code honors additionalContext on
 `source` startup/resume and ignores it on clear/compact — there is no
@@ -82,12 +84,26 @@ CAP_EXEMPT_SECTIONS = ("work log", "decisions", "review")
 # milestone first when the total budget binds.
 STATUS_ORDER = {"in-progress": 0, "review": 1, "blocked": 2}
 
+# The `## Source shelf` part (M288) lists at most this many shelf entry
+# names; shelves reach 51 entries (circumplex, 2026-10-19), and every
+# character here comes out of MAX_CHARS ahead of the milestone parts. Each
+# name is cut to SHELF_MAX_NAME_CHARS, so the list stays near 2,000
+# characters whatever the file names are.
+SHELF_MAX_NAMES = 30
+SHELF_MAX_NAME_CHARS = 60
+
+# Shelf names come from a gitignored folder the user fills, so a control
+# character (a newline above all) must not reach the injected text, where
+# it could start a forged heading or instruction line.
+_CONTROL = re.compile(r"[\x00-\x1f\x7f]")
+
 PREAMBLE = (
     "# cairn tracking context (auto-injected by the cairn plugin)\n\n"
     "This repo is cairn-tracked. The files below are authoritative for\n"
     "project status (ROADMAP) and current work (active milestones); they\n"
     "are re-read from disk at injection time. Obey the repo's CLAUDE.md\n"
-    "cairn section; start milestone work via the cairn skills.\n"
+    "cairn section; start milestone work via the cairn skills. A Source\n"
+    "shelf part, when present, lists what is in cairn/references/.\n"
 )
 
 
@@ -269,6 +285,75 @@ def routing_section():
     return "\n".join(lines).strip()
 
 
+def _plural(n, one, many):
+    return f"{n} {one if n == 1 else many}"
+
+
+def _shelf_name(name):
+    """A shelf name as the part shows it: control characters replaced by
+    `?`, cut to SHELF_MAX_NAME_CHARS with a trailing `…`."""
+    name = _CONTROL.sub("?", name)
+    if len(name) > SHELF_MAX_NAME_CHARS:
+        name = name[: SHELF_MAX_NAME_CHARS - 1] + "…"
+    return name
+
+
+def shelf_section(cairn_dir):
+    """The `## Source shelf` part (M288), or None when `references/` holds
+    no INDEX entry and no shelf entry. An INDEX entry is a line that starts
+    with `- ` at column 0; a shelf entry is a top-level name under
+    `references/sources/` that does not start with `.`, not recursed. A
+    session that never loads the source rules (plain conversation) still
+    learns the shelf exists, so it reads the shelf before it searches the
+    web for a paper the repo already holds."""
+    refs = os.path.join(cairn_dir, "references")
+    try:
+        # errors="replace": one bad byte must not zero the whole count.
+        with open(
+            os.path.join(refs, "INDEX.md"), encoding="utf-8", errors="replace"
+        ) as f:
+            pages = sum(1 for line in f if line.startswith("- "))
+    except Exception:
+        pages = 0
+    try:
+        names = sorted(
+            n for n in os.listdir(os.path.join(refs, "sources"))
+            if not n.startswith(".")
+        )
+    except Exception:
+        names = []
+    if not pages and not names:
+        return None
+    lines = [
+        "## Source shelf",
+        "",
+        "`cairn/references/` holds "
+        + _plural(pages, "INDEX entry", "INDEX entries")
+        + " in `INDEX.md` and "
+        + _plural(len(names), "shelf entry", "shelf entries")
+        + " in `sources/`.",
+    ]
+    if names:
+        lines.append(
+            "Shelf: "
+            + ", ".join(_shelf_name(n) for n in names[:SHELF_MAX_NAMES])
+            + "."
+        )
+    if len(names) > SHELF_MAX_NAMES:
+        lines.append(
+            f"(and {len(names) - SHELF_MAX_NAMES} more in "
+            "`cairn/references/sources/`)"
+        )
+    lines.append(
+        "Before you search the web for a cited paper or other source, read "
+        "`cairn/references/INDEX.md`, the source's note, and its file on the "
+        "shelf. Search the web only for a source whose file is not there. "
+        "The shelf is gitignored, so in a worktree or a fresh clone it can "
+        "be empty here and full in the main checkout."
+    )
+    return "\n".join(lines)
+
+
 def build_context(root):
     cairn_dir = os.path.join(root, "cairn")
     parts = [PREAMBLE]
@@ -307,6 +392,11 @@ def build_context(root):
             roadmap = f.read()
     except Exception:
         return None
+    # Before the ROADMAP part, so the shedding below never reaches it; it is
+    # charged against MAX_CHARS like the parts above.
+    shelf = shelf_section(cairn_dir)
+    if shelf:
+        parts.append(shelf)
     roadmap_at = len(parts)
     parts.append("## cairn/ROADMAP.md\n\n" + roadmap)
 

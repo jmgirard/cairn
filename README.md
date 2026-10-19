@@ -746,6 +746,14 @@ somewhere else accumulates these.
   including ones only partly verified.
   These are warnings, never gate failures:
   whether the evidence is good enough is your call; no script can settle it.
+- **The shelf comes before the web.** The rules tell a session to read
+  `cairn/references/INDEX.md`, the source's note, and the file in
+  `cairn/references/sources/` before it searches the web for a source. It
+  searches only for a source whose file is not there. When `cairn/references/`
+  holds pages or shelf entries, a session that starts or resumes gets a short
+  "Source shelf" notice. It gives the counts, lists up to 30 shelf entry
+  names, and repeats that rule, so it reaches plain conversation too. It is
+  not injected again after `/clear` or compaction.
 
 Two templates ship for authoring these, one per page type; `/cairn-init` puts
 the directory in place and the shelf of original files stays out of git.

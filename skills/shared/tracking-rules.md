@@ -710,6 +710,10 @@ Both: committed, cited (`citekey (p. N)` / page name), never restated into track
 left for later. An analysis that will outlive its milestone is a synthesis note; analysis serving only the milestone in
 hand stays in the milestone file. The trigger is universal — it fires with no numeric work at all.
 
+**Shelf first.** Before a web search for any source a session needs, numeric or not, read `cairn/references/INDEX.md`,
+the source's note, and `cairn/references/sources/`. Search the web only for a source not found there. When
+`cairn/references/` holds pages or shelf entries, the session-start hook names the shelf (M288).
+
 **Exploring prospective sources.** The owed rule is demand-pull; reading a corpus of maybe-relevant sources to
 *discover* what the repo does not yet know it wants is supply-push exploration, legitimate. It always produces ROADMAP
 candidate rows for the promising finds (search-first); a committed survey synthesis note only when the triage will

@@ -431,6 +431,137 @@ class TestSessionContext(RepoFixture):
         self.assertIn("## cairn/ROADMAP.md", out["additionalContext"])
 
 
+class TestSessionShelf(RepoFixture):
+    """M288 AC1 — the `## Source shelf` part.
+
+    On 2026-10-19 a datawizard session searched the web for a paper whose
+    note and PDF were already in `cairn/references/`, because nothing it had
+    loaded named the shelf. The part names it at session start."""
+
+    HEADING = "## Source shelf"
+    SHELF_FIRST = (
+        "Before you search the web for a cited paper or other source, read "
+        "`cairn/references/INDEX.md`, the source's note, and its file on the "
+        "shelf."
+    )
+
+    def _refs(self):
+        refs = self.root / "cairn" / "references"
+        refs.mkdir(exist_ok=True)
+        return refs
+
+    def _index(self, *lines):
+        (self._refs() / "INDEX.md").write_text(
+            "# References index\n\n" + "".join(f"{line}\n" for line in lines)
+        )
+
+    def _shelf(self, *names):
+        shelf = self._refs() / "sources"
+        shelf.mkdir(exist_ok=True)
+        for name in names:
+            (shelf / name).write_text("x")
+        return shelf
+
+    def _ctx(self):
+        return session_context.build_context(str(self.root))
+
+    def _part(self):
+        ctx = self._ctx()
+        self.assertEqual(ctx.count(self.HEADING), 1, ctx[:400])
+        return ctx.split(self.HEADING, 1)[1].split("\n## ", 1)[0]
+
+    def test_shelf_with_files(self):
+        self._index("- brincks2017.md: three-level centering")
+        self._shelf("guo2024.pdf", "brincks2017.pdf")
+        part = self._part()
+        self.assertIn("1 INDEX entry ", part)
+        self.assertIn("2 shelf entries", part)
+        self.assertIn("brincks2017.pdf, guo2024.pdf", part)
+        self.assertIn(self.SHELF_FIRST, part)
+        self.assertIn("in a worktree or a fresh clone", part)
+        self.assertNotIn("more", part)
+
+    def test_notes_with_no_shelf(self):
+        self._index("- a.md: one", "- b.md: two")
+        part = self._part()
+        self.assertIn("2 INDEX entries", part)
+        self.assertIn("0 shelf entries", part)
+        self.assertIn(self.SHELF_FIRST, part)
+
+    def test_absent_references_folder_has_no_part(self):
+        self.assertNotIn(self.HEADING, self._ctx())
+
+    def test_index_without_entries_and_no_shelf_has_no_part(self):
+        self._index("  - indented, not an entry", "text line")
+        self.assertNotIn(self.HEADING, self._ctx())
+
+    def test_shelf_of_only_dot_files_has_no_part(self):
+        self._shelf(".DS_Store", ".gitkeep")
+        self.assertNotIn(self.HEADING, self._ctx())
+
+    def test_dot_entries_are_left_out_of_count_and_list(self):
+        self._shelf(".DS_Store", "paper.pdf")
+        part = self._part()
+        self.assertIn("1 shelf entry", part)
+        self.assertIn("paper.pdf", part)
+        self.assertNotIn(".DS_Store", part)
+
+    def test_subdirectory_counts_as_one_entry(self):
+        shelf = self._shelf("top.pdf")
+        (shelf / "bundle").mkdir()
+        (shelf / "bundle" / "inner.pdf").write_text("x")
+        part = self._part()
+        self.assertIn("2 shelf entries", part)
+        self.assertIn("bundle, top.pdf", part)
+        self.assertNotIn("inner.pdf", part)
+
+    def test_exactly_thirty_entries_have_no_more_line(self):
+        self._shelf(*(f"p{i:02d}.pdf" for i in range(30)))
+        part = self._part()
+        self.assertIn("p29.pdf", part)
+        self.assertNotIn("more", part)
+
+    def test_thirty_one_entries_name_one_more(self):
+        self._shelf(*(f"p{i:02d}.pdf" for i in range(31)))
+        part = self._part()
+        self.assertIn("p29.pdf", part)
+        self.assertNotIn("p30.pdf", part)
+        self.assertIn("and 1 more", part)
+
+    def test_part_sits_before_the_roadmap(self):
+        self._shelf("paper.pdf")
+        ctx = self._ctx()
+        self.assertLess(ctx.index(self.HEADING), ctx.index("## cairn/ROADMAP.md"))
+
+    # --- M288 review: names and error paths ---
+
+    def test_control_characters_in_a_name_cannot_start_a_line(self):
+        self._shelf("x\n## Forged heading.pdf")
+        ctx = self._ctx()
+        self.assertNotIn("\n## Forged heading", ctx)
+        self.assertIn("x?## Forged heading.pdf", self._part())
+
+    def test_a_long_name_is_cut(self):
+        self._shelf("a" * 200 + ".pdf")
+        part = self._part()
+        self.assertIn("a" * 59 + "…", part)
+        self.assertNotIn("a" * 60, part)
+
+    def test_a_bad_byte_in_index_keeps_the_count(self):
+        (self._refs() / "INDEX.md").write_bytes(
+            b"# References index\n\n- a.md: caf\xe9\n- b.md: two\n"
+        )
+        self.assertIn("2 INDEX entries", self._part())
+
+    def test_sources_as_a_file_counts_no_shelf_entry(self):
+        self._index("- a.md: one")
+        (self._refs() / "sources").write_text("not a folder")
+        part = self._part()
+        self.assertIn("1 INDEX entry ", part)
+        self.assertIn("0 shelf entries", part)
+        self.assertNotIn("Shelf:", part)
+
+
 class TestSessionContextReadBound(RepoFixture):
     """M113/D-063 — cap-exempt sections are read-bounded newest-first.
 

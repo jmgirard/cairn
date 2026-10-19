@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M288 | Sessions read the repo's source shelf before they search the web for a paper | planned | — | normal | milestones/M288-shelf-first-sources.md |
+| M288 | Sessions read the repo's source shelf before they search the web for a paper | review | — | normal | milestones/M288-shelf-first-sources.md |
 | M287 | A /copilot-review skill handles Copilot's notes on a PR and replies to its summary | done | — | normal | milestones/archive/M287-copilot-review-skill.md |
 | M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | done | — | normal | milestones/archive/M286-pane-card-look.md |
 | M285 | Copilot reviews a head that names its PR, and review reads the rest of the repo for stale text | done | — | normal | milestones/archive/M285-review-ripple-lens.md |
