@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+### Changes that affect existing repos
+
+- **A candidate row that waits on its trigger is parked, and the pane
+  shows it last with an hourglass.** A candidate row can now open with
+  `[parked]` in place of `[high]` or `[low]`. The token marks a row whose
+  promotion condition has not held yet. The cairn pane draws a parked row
+  with a gray `⧗` and a gray title, after the `[low]` rows, each group in
+  ROADMAP order. The skills write `[parked]` when they add a row whose
+  condition does not hold. `/cairn-triage` adds or removes the token as a
+  priority change, and a promote replaces it with `[high]`. After a merge,
+  `/milestone-review` removes it from each parked row that the milestone
+  quotes or names, where the merge made the condition hold. The
+  `candidate order` advisory ranks `parked` below `low`. A row that takes
+  `[parked]` gives up a `[low]` token, since a row has one opening token.
+  Your existing rows carry no token, so they keep showing as before. To
+  have the token proposed for rows that wait on a condition, run
+  `/cairn-triage`.
+
 ## 2.1.0 (2026-10-18)
 
 ### Changes that affect existing repos
