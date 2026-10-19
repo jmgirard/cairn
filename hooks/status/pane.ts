@@ -12,8 +12,8 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // planned, blocked, and done milestones. For each active milestone: its id
 // in its phase's color (no phase word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
-// (M208), its goal, its tasks and criteria with their boxes, and its
-// newest work-log lines.
+// (M208), its goal, and its tasks and criteria with their boxes. Its
+// newest work-log lines drew too until the M286 live look.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
 // dependencies. Then the blocked milestones, each with the number of the
@@ -66,6 +66,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // `title` is the row's short title, which the press carries. A candidate
 // line's `grow` puts ✎ at the right end of the row, and a blocked or
 // hotfix line with a tail grows so its tail sits there too.
+// A line's `full`, set on each head, task, criterion, workable, waiting,
+// blocked, hotfix, and candidate line, is its whole text, which the desktop
+// shows in a card while the pointer is over the line (M286).
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -75,6 +78,7 @@ export type PaneLine = {
   tail?: Span[]
   wraps?: true
   card?: true
+  full?: string
   action?: string
   buttons?: PaneButton[]
   target?: string
@@ -468,7 +472,10 @@ function items(prefix: string, list: PaneItem[], current = -1): PaneLine[] {
       : i === current
         ? { text: CURRENT_MARK, icon: 'current' }
         : { text: ITEM_OPEN_MARK, color: GRAY, icon: 'open' }
-    return line(`${prefix}-${i}`, 2, [mark, { text: ITEM_GAP }], item.checked ? { text: item.text, color: GRAY } : { text: item.text })
+    return {
+      ...line(`${prefix}-${i}`, 2, [mark, { text: ITEM_GAP }], item.checked ? { text: item.text, color: GRAY } : { text: item.text }),
+      full: item.text,
+    }
   })
 }
 
@@ -512,6 +519,7 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
     text: row.title,
     bold: true,
   })
+  head.full = row.title
   const file = row.file
   // The band's percent for the row, from its own counts, which count a box
   // inside an HTML comment where the pane's items do not.
@@ -538,10 +546,8 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
     out.push(...counted(`${row.id}-criteria-head`, 'Criteria', file.criteria, phase.color))
     out.push(...items(`${row.id}-criterion`, file.criteria))
   }
-  if (file.log.length > 0) {
-    out.push(...heading(`${row.id}-log-head`, 'Work log'))
-    file.log.forEach((text, i) => out.push(line(`${row.id}-log-${i}`, 2, [], { text, color: GRAY })))
-  }
+  // The work log draws no section since the M286 live look, where the
+  // operator found its one-row lines added little; the file holds it.
   return out
 }
 
@@ -628,7 +634,7 @@ export function cardLines(
 function prLine(key: string, id: string, title: string, number: number | null, archived: boolean, got: PrRead | undefined): PaneLine {
   const word = got?.word
   const mark: Span = word === undefined ? { ...UNREAD_MARK, color: GRAY } : { ...PR_MARK[word], color: prColor(word) }
-  const held = line(key, 2, [mark, { text: ' ' }, { text: id, bold: true }, { text: '  ' }], { text: title })
+  const held: PaneLine = { ...line(key, 2, [mark, { text: ' ' }, { text: id, bold: true }, { text: '  ' }], { text: title }), full: title }
   const tail: Span[] = []
   if (number !== null) tail.push({ text: ' ' }, { text: `#${number}`, color: GRAY })
   if (archived) tail.push({ text: ' ' }, { text: 'archived', color: GRAY })
@@ -705,17 +711,14 @@ export function paneLines(
   if (state.workable.length > 0) {
     out.push(...heading('workable-head', 'Workable'))
     for (const row of state.workable) {
-      out.push(line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }))
+      out.push({ ...line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }), full: row.title })
     }
   }
   if (state.waiting.length > 0) {
     out.push(...heading('waiting-head', 'Waiting'))
     for (const row of state.waiting) {
-      out.push(
-        line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], {
-          text: `${row.title} · on ${row.unmet.join(', ')}`,
-        }),
-      )
+      const text = `${row.title} · on ${row.unmet.join(', ')}`
+      out.push({ ...line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text }), full: text })
     }
   }
   // The blocked rows, each with its pull request's number when its
@@ -782,6 +785,7 @@ export function paneLines(
         row.priority === 'low' || row.priority === 'parked' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
+      candidate.full = row.title
       if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
@@ -790,5 +794,7 @@ export function paneLines(
       out.push(candidate)
     }
   }
+  // A line whose text is empty has no hover card (M286).
+  for (const each of out) if (each.full === '') delete each.full
   return out
 }

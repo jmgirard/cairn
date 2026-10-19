@@ -219,12 +219,14 @@ function seat(on: On, copy: Copy) {
   })
 }
 
-// A node's text. An `Svg` icon reads as its alt text, the glyph the
-// terminal draws in its place (M286).
+// A node's shown text. An `Svg` icon reads as its alt text, the glyph the
+// terminal draws in its place, and a Box drawn `display: 'none'`, as the
+// hover card is until the pointer is over its line, reads as nothing (M286).
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
   if ((node as Element).type === 'Svg') return String((node as Element).props.alt ?? '')
+  if ((node as Element).props?.display === 'none') return ''
   return ((node as Element).children ?? []).map(textOf).join('')
 }
 
@@ -370,9 +372,8 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
           expect(tasks).toEqual(file.tasks.map((item, i) => (i === current ? `⊙  ${item.text}` : itemText(item))))
           const criteria = keysLike(lines, new RegExp(`^${row.id}-criterion-\\d+$`)).map(k => textAt(lines, k))
           expect(criteria).toEqual(file.criteria.map(itemText))
-          const log = keysLike(lines, new RegExp(`^${row.id}-log-\\d+$`)).map(k => textAt(lines, k))
-          expect(log).toEqual(file.log)
-          expect(log.length).toBeLessThanOrEqual(5)
+          // No work-log section, though the file holds log lines (M286).
+          expect(keysLike(lines, new RegExp(`^${row.id}-log`))).toEqual([])
         }
       })
     }
@@ -389,7 +390,7 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
         const [box] = await ui.findAll({ key: `${key}-text` })
         return kids(box)[0].props.wrap
       }
-      for (const key of ['M080-head', 'M080-task-0', 'M080-criterion-0', 'M080-log-4', 'waiting-M083', 'workable-M085', 'next']) {
+      for (const key of ['M080-head', 'M080-task-0', 'M080-criterion-0', 'waiting-M083', 'workable-M085', 'next']) {
         expect([key, await wrapOf(key)]).toEqual([key, 'truncate-end'])
       }
       for (const key of ['M081-goal-0', 'M081-goal-1', 'M081-goal-2']) expect([key, await wrapOf(key)]).toEqual([key, 'wrap'])
@@ -853,7 +854,8 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       const head = await boxOf(ui, 'M060-head')
       if (head === undefined) throw new Error('no M060 head line')
       // The ⌂ and ↻ Boxes sit on the card's first line since M286.
-      expect(kids(head).map(keyOf)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail'])
+      // The hover card's Box has no key (M286).
+      expect(kids(head).map(keyOf).filter(key => key !== undefined)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail'])
       expect(kids(head)[2].props.flexShrink).toBe(0)
       const title = textOf(kids(await boxOf(ui, 'M060-head-text') as Element)[0])
       expect(title.length).toBeGreaterThan(44)
@@ -2011,7 +2013,9 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
         expect(kids(text)[0].props.wrap).toBe('truncate-end')
         if (i === 7) expect(width(textOf(kids(text)[0]))).toBeGreaterThan(44)
         const line = (await boxOf(ui, `candidate-${i}`)) as Element
-        expect(kids(line).map(keyOf).slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
+        // The hover card's Box, which has no key, sits last on the desktop (M286).
+        const keyed = kids(line).map(keyOf).filter(key => key !== undefined)
+        expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
         expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
         await ui.unmount()
       })
@@ -5745,5 +5749,112 @@ describe('a blocked line and a hotfix line share one layout (M286 AC5)', () => {
     approved: undefined,
     'in review': undefined,
     unknown: undefined,
+  }
+})
+
+describe('hovering a line on the desktop shows a card with its full text (M286 AC9)', () => {
+  // One state with an active milestone, the queue, a blocked row, and a
+  // hotfix; one with no active milestone, for the candidate lines. Each
+  // line's full text is written out by hand.
+  const active: PaneState = {
+    found: true,
+    milestones: [
+      {
+        id: 'M7',
+        title: 'A long milestone title',
+        status: 'in-progress',
+        file: {
+          goal: 'Goal.',
+          tasks: [{ text: 'T1: a task', checked: false }],
+          criteria: [{ text: 'AC1: a criterion', checked: true }],
+          log: ['a log line'],
+        },
+      },
+    ],
+    next: { action: 'resume', command: '/milestone-implement', id: 'M7', title: null },
+    workable: [{ id: 'M8', title: 'Ready next' }],
+    waiting: [{ id: 'M9', title: 'Later', unmet: ['M8'] }],
+    candidates: [{ priority: 'high', title: 'Hidden while active' }],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }],
+    taken: [],
+  }
+  const idle: PaneState = {
+    ...active,
+    milestones: [],
+    candidates: [
+      { priority: 'high', title: 'First row' },
+      { priority: 'low', title: '' },
+    ],
+  }
+  const hotfix = { number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }
+  // The blocked row's PR reads open with threads, so a counts line draws
+  // too, and it has no card.
+  const read: Record<string, PrRead> = { 'https://github.com/o/r/pull/9': { word: 'in review', counts: { unresolved: 2 } } }
+  const fulls = (state: PaneState) =>
+    layout(state, [], true, read, [hotfix])
+      .filter(line => line.full !== undefined)
+      .map(line => [line.key, line.full])
+
+  test('with an active milestone: head, task, criterion, workable, waiting, blocked, and hotfix lines, and no other', () => {
+    expect(fulls(active)).toEqual([
+      ['M7-head', 'A long milestone title'],
+      ['M7-task-0', 'T1: a task'],
+      ['M7-criterion-0', 'AC1: a criterion'],
+      ['workable-M8', 'Ready next'],
+      ['waiting-M9', 'Later · on M8'],
+      ['blocked-M5', 'Handed off'],
+      ['hotfix-4', 'Fix a crash'],
+    ])
+  })
+
+  test('the active state draws a counts line, which has no card', () => {
+    expect(layout(active, [], true, read, [hotfix]).some(line => line.key === 'blocked-M5-counts')).toBe(true)
+  })
+
+  test('with no active milestone: each candidate line, but none for an empty title, and no card on the no-active line', () => {
+    expect(fulls(idle)).toEqual([
+      ['workable-M8', 'Ready next'],
+      ['waiting-M9', 'Later · on M8'],
+      ['blocked-M5', 'Handed off'],
+      ['hotfix-4', 'Fix a crash'],
+      ['candidate-0', 'First row'],
+    ])
+    expect(layout(idle, [], true).some(line => line.key === 'no-active')).toBe(true)
+  })
+
+  for (const surface of SURFACES) {
+    for (const fixture of ['pane-full', 'blocked-prs']) {
+      test(`${fixture}: the card's Box on the desktop, none in the terminal (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [root] = await ui.findAll({ key: 'cairn-pane' })
+        const cards = flat(root).flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+        if (surface === 'terminal') {
+          expect(cards).toEqual([])
+        } else {
+          expect(cards.length).toBeGreaterThan(2)
+          for (const card of cards) {
+            expect(card.props).toEqual(
+              expect.objectContaining({
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                right: 0,
+                display: 'none',
+                borderStyle: 'round',
+                borderColor: 'subtle',
+                backgroundColor: 'userMessageBackground',
+              }),
+            )
+            // The drawn tree keeps `hover` beside `props`.
+            expect((card as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
+            expect(keyOf(card)).toBe(undefined)
+            expect(kids(card)[0].props.wrap).toBe('wrap')
+          }
+        }
+        await ui.unmount()
+      })
+    }
   }
 })

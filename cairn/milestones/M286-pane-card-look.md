@@ -29,7 +29,7 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - [ ] AC6: The section headings, each milestone's head line, the Next line, and the card draw in the variant that the operator picks from browser prototypes at T1. `pane.test.tsx` asserts whole the spans of one heading of each form, one head line, the Next line, and the card. The forms are a plain heading (Goal), a count with a meter (Tasks), and a bare count (Blocked).
 - [ ] AC7: README's cairn pane section, DESIGN.md's pane description, and an Unreleased CHANGELOG entry state the card, what it counts, when it reads, the goal wrapping, and the new look. `types/index.d.ts` declares the card's stored value type and any changed `CairnPaneState` field.
 - [ ] AC8: The `verify` slot passes: both gating `unittest` suites, `claude plugin validate` on the plugin and marketplace manifests, and `claude plugin test` for the status mod.
-
+- [ ] AC9: On the desktop, hovering any of these lines shows a card with the line's full text, whether or not the row is cut: each milestone's head line and its task and criterion lines, and each workable, waiting, blocked, hotfix, and candidate line. No other line has a card, and a line whose text is empty has none. `paneLines` sets each such line's `full` to its text. On the desktop, register.tsx draws, inside each line Box with a `full`, an unkeyed Box with `position: 'absolute'`, `bottom: 1`, `left: 0`, `right: 0`, `display: 'none'`, `hover: { display: 'flex' }`, a round border in `subtle`, the background `userMessageBackground`, and the full text wrapped. The terminal draws no card. `pane.test.tsx` asserts, with `layout` on two states (one with an active milestone and workable, waiting, blocked, and hotfix lines, one with no active milestone and a candidate with an empty title), the keys whose line has a `full` and each value, and on the `pane-full` and `blocked-prs` fixtures, the card Box's props on the desktop and no card in the terminal. Whether the card opens above the row and reads well is checked at the live look.
 ## Coverage
 
 - AC1 → T2
@@ -38,8 +38,9 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - AC4 → T5
 - AC5 → T7
 - AC6 → T1, T6, T8
-- AC7 → T4, T9
-- AC8 → T10
+- AC7 → T4, T10
+- AC8 → T11
+- AC9 → T8, T9
 
 ## Tasks
 
@@ -51,8 +52,9 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - [x] T6: Restyle the headings (`heading`, `counted`), the head line, the Next line, and the card to the pick, with the AC6 assertions.
 - [x] T7: The shared blocked and hotfix row layout (`pane.ts:535-591`), with the AC5 cases.
 - [ ] T8: Stop for a live look in a new Code session in this repo: docked at 44 columns and wide, dark and light (LESSONS M193, M201). Fix what the look finds, or record it as a candidate row.
-- [ ] T9: README's cairn pane section, DESIGN.md's pane description, and the CHANGELOG entry.
-- [ ] T10: Run the verify slot.
+- [x] T9: The hover card (`full` in `pane.ts`, the unkeyed absolute Box in `register.tsx`) with the AC9 cases, and the Work log section dropped from the pane, both at the operator's request at the live look.
+- [x] T10: README's cairn pane section, DESIGN.md's pane description, and the CHANGELOG entry.
+- [ ] T11: Run the verify slot.
 
 ## Work log
 
@@ -87,3 +89,10 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - 2026-10-18: re-audit: AC4 (full) — 7 findings, all fixed: one line drawn only when all three calls are good, the rounding boundary cases, the trimmed `git log` rule, a pane test of the drawn line, `readRepo` as the caller, the read's start as the time, and `--` after the tag.
 - 2026-10-18: re-audit: AC4 (full) — 9 findings, all fixed: the latest read decides the line, the line's place in the card, three more parser cases (empty diff, blank line, trimmed tag), a no-read pane case, the time clause no longer names code placement, and the commit-time clause. This is AC4's second re-audit, so further changes to its wording go to the operator, who sees this text at the next live look.
 - 2026-10-18: icons and release line verify green, mod tests 2220 → 2233.
+- 2026-10-18: T8 live look, round 2 (operator's screenshot): icons, headings, and the release line read right. The operator asked to drop the Work log section and to see a row's full text on hover.
+- 2026-10-18: user override at the live look: the pane no longer draws the Work log section. The reader still reads the log, so the stored pane state and the Python twin are unchanged.
+- 2026-10-18: substantive amendment: AC9 added at the operator's selection ("Add to M286" over a candidate row), widening the criteria set: hover cards with the full text on head, task, criterion, workable, waiting, blocked, hotfix, and candidate lines, desktop only. Tasks renumbered: T9 the hover card and the log removal, T10 docs, T11 verify.
+- 2026-10-18: re-audit: AC9 (full) — 5 findings, all fixed: the line list is complete and empty text gets no card, two test states (the active and idle lines never share one), desktop only, `left: 0` and `right: 0`, and the opening direction left to the live look.
+- 2026-10-18: re-audit: AC9 (full) — no wording finding; an optional test gap (no counts line and no idle sweep in the `full` test) was closed in the test.
+- 2026-10-18: the engine refused the first hover card, a keyed Box drawn `display: 'none'`, as a hover scope the pointer can never be over. The card has no key, so the visible line Box is its scope.
+- 2026-10-18: T10 done: README's pane section (the card, the marks and icons, the hover card, the headings, no work log, the blocked and hotfix layout), DESIGN.md's pane description, and the CHANGELOG entry. README's older text draws simple-english hook hits that this milestone leaves alone.

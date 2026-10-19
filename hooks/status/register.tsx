@@ -211,6 +211,9 @@ const STATUS_COMMAND = 'cairn:milestone'
 // The built-in command the Clear Button runs (M216). The Status and Clear
 // labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
+// The hover card's ground, the theme key the band's braille track sits on
+// (M286).
+const HOVER_GROUND = 'userMessageBackground'
 // The command a candidate line's ✎ holds for its `/clear` (M242).
 const PLAN_COMMAND = 'cairn:milestone-plan'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
@@ -382,7 +385,10 @@ export const register: Register = on => {
     // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
-    // before the rest (M286). A lead span that names an icon draws it as an
+    // before the rest (M286). On the desktop a line with a `full` holds a
+    // hidden Box with its whole text, placed above the row out of the flow,
+    // which the pointer over the line reveals; an absolute Box paints over
+    // the rows before it, so it opens upward (M286). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
@@ -444,6 +450,24 @@ export const register: Register = on => {
                 </Box>
               )
             })}
+            {line.full === undefined || e.surface === 'terminal' ? null : (
+              // No key of its own: the keyed line Box is the hover scope, and
+              // the engine refuses a scope drawn hidden.
+              <Box
+                position="absolute"
+                bottom={1}
+                left={0}
+                right={0}
+                display="none"
+                hover={{ display: 'flex' }}
+                borderStyle="round"
+                borderColor={METER_EMPTY_KEY}
+                backgroundColor={HOVER_GROUND}
+                paddingX={1}
+              >
+                <Text wrap="wrap">{line.full}</Text>
+              </Box>
+            )}
           </Box>
     )
     const card = lines.filter(line => line.card)

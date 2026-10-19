@@ -77,7 +77,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284, and the summary card, goals wrapped per paragraph, headings with no accent or rule, the Next command with no pill, one layout for blocked and hotfix lines, desktop icons for the marks, hover cards, and no work-log section in M286).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -292,7 +292,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   `band`. For each active row the pane state holds the goal, the
   `## Tasks` and `## Acceptance criteria` checkbox items, a wrapped item's
   indented lines joined, and the newest five `## Work log` lines that open
-  with `- `. HTML comments are dropped from a section before it is read, so
+  with `- `, which the pane no longer draws (M286). `goalBlocks` in
+  `pane.ts` joins the goal's lines into one wrapping line per paragraph or
+  list item (M286). HTML comments are dropped from a section before it is read, so
   a box inside a comment is not a pane item, though the band counts it.
   The queue is `recommend`, `workable`, and `waiting` in
   `scripts/cairn_next.py`, which `reader.ts` mirrors and
@@ -353,8 +355,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   `scripts/cairn_next.py` compute the same list, which `reader.ts`
   mirrors and `test_status_fixtures.py` holds to each fixture's `blocked`
   key. `cairn_next.py` prints the number after each "Externally blocked"
-  line. The pane draws a `BLOCKED` section after the queue in every
-  state, the number in the line's tail. A guest-mode handoff sets its
+  line. The pane draws a Blocked section after the queue in every
+  state, the number in the line's tail. `prLine` in `pane.ts` draws a
+  blocked line and a hotfix line in one layout (M286): a state mark, the
+  id (`fix` for a hotfix), the title, and a tail of `#<n>`, `archived`,
+  and the word. A guest-mode handoff sets its
   milestone `blocked` with the PR URL in its header, so the section lists
   the PRs that wait on maintainers. The header is the text before the
   first `## ` heading, and a number has at most 15 digits, so both sides
@@ -390,8 +395,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   or the reopen skips it as above, and they return before it settles
   (M230). The press still waits for it. The ↻
   is the pane's one Refresh (M236). `paneLines` gives it to the first
-  line, the first milestone's head line or `no-active`, whenever a
-  ROADMAP is found, and sets that line's `grow`. While `acts` is true,
+  line, the card's `card-repo` line since M286, whenever a ROADMAP is
+  found, and sets that line's `grow`. While `acts` is true,
   `home` comes before it, drawn as a `secondary` Button labeled `⌂`
   (`HOME_LABEL`), key `cairn-pane-home`, in a `-home` Box (M241). The render gives that
   line's text Box `flexGrow: 1`, so the tail and the ↻ Box sit at the
@@ -457,6 +462,37 @@ transitions, human-gated merges, and a domain verification doctrine.
   the earlier count drawn until then. When the count is above zero,
   `paneLines` draws `blocked-<id>-counts` at indent 4 under the line. The
   count sits in the line's text part, which a narrow pane cuts.
+  The summary card (M286) leads the pane: `cardLines` in `pane.ts` gives
+  `card-repo` (open PRs and issues, `?` with no numbers), `card-candidates`
+  (the rows `drawnCandidates` draws, per level, the same filter the
+  Candidates list uses), `card-milestones` (planned is `workable` plus
+  `waiting`, blocked is `blocked`), and `card-release` when the release
+  read holds one. The render draws `card` lines in one Box with a round
+  border in `subtle`. `readPrs` looks up the root, the guest flag, and the
+  base remote URL once (`baseOf`) for `readHotfixes` and `readRepo`. In
+  `readRepo` (`repo.ts` holds the pure parts), `repoArgv` turns a
+  github.com remote URL (scp-like, `ssh://`, or `http(s)://`) into one `gh
+  api graphql` call that counts open pull requests and issues by
+  `totalCount`, and any other host runs none. `repoCounts` gives both
+  numbers or none, and a read with none keeps the last good numbers for
+  the same root. Outside guest mode, `git describe --tags --abbrev=0
+  --match 'v*'`, `git log -1 --format=%ct <tag> --`, and `git diff
+  --no-renames --diff-filter=A --name-only <tag> HEAD --
+  cairn/milestones/archive/` give `doneSince` the tag, the whole days to
+  the read's start, and the archived count. The `repo` state value (`{
+  root, counts, done }`, tag `repo-2`) holds them, and the pane draws them
+  only while its root is the band's.
+  A mark span may name an icon (`icons.ts`, M286). On a surface other than
+  the terminal the render draws it as a 14-pixel `Svg` in a fixed color,
+  since an image has no theme signal, and centers the row. The terminal
+  draws the span's glyph. A line's `full` holds its whole text on head,
+  task, criterion, workable, waiting, blocked, hotfix, and candidate lines,
+  and none when empty. Off the terminal, the render puts an unkeyed Box
+  inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
+  `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
+  `userMessageBackground` ground. The pointer over the line reveals it
+  above the row, and the engine refuses a hover scope drawn hidden, so the
+  card has no key.
   The same read lists the open hotfix PRs (M226, `readHotfixes`). Since
   M230 the blocked URLs' reads (`readPr`) start beside the list call, and
   the hotfix URLs that no blocked row names are read once the list
@@ -500,7 +536,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   token on each row a plan absorbs, both modes, and `/hotfix`'s guest arm
   writes the #n token after its create. `/cairn-triage` proposes adding a
   missing M token and removing a dead token at its gate (M259). The pane draws the list only while the band's root is
-  its root, under a `HOTFIXES` heading after `BLOCKED` and before the
+  its root, under a Hotfixes heading after Blocked and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has
   `hotfix-<n>` lines with the word in the tail and
@@ -515,21 +551,24 @@ transitions, human-gated merges, and a domain verification doctrine.
   with no phase word, which the operator dropped at the M236 live look.
   Each head line's tail is the band's percent for the row, from `flowOf`
   over the `band` value's counts, which `ui.render` reads beside `pane`.
-  The rest of the M208 look is the operator's pick from browser
-  prototypes: a blank row, a `▎`, and a gray bold uppercase label for each
-  section heading, eight `■`/`□` squares beside the Tasks and Criteria
-  counts, and the Next command in a pill. At the live look the operator
-  asked for the phase colors (`FLOW_COLORS`): a milestone's id, `▎` marks,
-  and `■` squares take its phase's color, the queue's `▎` marks take plan's
-  color, and the pill takes the color of the phase its command runs, with
-  `inverseText` text. All are the theme keys of `FLOW_COLORS` (M217), and a
-  high-priority candidate's `↑` takes the implement key.
+  The rest of the look is the operator's pick from the M286 browser
+  prototypes (look B), changed at its live looks: a blank row and a bold
+  label for each section heading, with its tail at the right end, a
+  six-cell `━`/`─` meter beside the Tasks and Criteria counts in the
+  milestone's phase color, the head line's title in bold, and the Next
+  command after a `→`, both bold in the color of the phase the command
+  runs. The live looks dropped look B's rule after each heading, which the
+  desktop drew as two lines, and took the desktop app's task-list marks.
+  Each item mark takes two spaces after it. The M208 look (a `▎`, gray
+  capitals, eight squares, and a pill) is gone. All colors are the theme
+  keys of `FLOW_COLORS` (M217), and a high-priority candidate's `↑` takes
+  the implement key.
   While `knownStep` reads no step, `paneLines` gives the Next line an
   `action` label from `NEXT_LABELS`, which moved to `pane.ts` so the band
   and the pane read one map (M218). The pane's `ui.render` draws it as a
   `secondary` Button, key `cairn-pane-next`, in a `next-action` Box with
-  `flexShrink: 0` and `marginLeft: 1` after the pill, so the pill is cut
-  first. A press is the band's `pressNext`. A pane gets no `isWorking`
+  `flexShrink: 0` and `marginLeft: 1` after the command, so the command is
+  cut first. A press is the band's `pressNext`. A pane gets no `isWorking`
   prop, so the Button also shows during a turn outside a cairn skill, and
   `$.command.run` queues such a press until the session is idle.
   At the same times, with that label, `paneLines` gives the Next line `buttons` (M219):
@@ -759,16 +798,15 @@ within each type and are never reused.
   Layout: `refresh` writes band and pane apart, so a frame can drop a head
   line's percent or show `Plan` or the empty row out of date. Under about
   39 columns a band title gets less than its 10 columns, and under about 38
-  the pane's Boxes overflow. At the 44-column dock the Next pill gets about
-  3 columns, and `Resume` or `Review` cuts it. A cut Next command loses its
-  pad, so `…` draws on the pill's color. Desktop Buttons count at terminal
+  the pane's Boxes overflow. At the 44-column dock the Next line's
+  Buttons can cut its command (M286 live look). Desktop Buttons count at terminal
   width, and the track uses a 7-pixel column estimate (`TRACK_COLUMNS`, 52)
   that no test ties to the app. The engine's scrub can drop the track's
-  `clipPath`. The `▎`, `■`, `□`, and `↑ ○ ↓` marks are ambiguous width in
-  CJK terminals.
+  `clipPath`. The `━`, `─`, `●`, `◌`, `⊙`, and `↑ ○ ↓` marks are
+  ambiguous width in CJK terminals.
   Colors: nobody checked the gray Buttons or the terminal track in other
-  themes. In the light colorblind theme the implement pill is 2.1:1
-  (light: 3.2:1). The desktop track's plan blue and implement orange differ
+  themes. The desktop icons take fixed colors that no theme moves (M286),
+  checked only in the dark theme at the live look. The desktop track's plan blue and implement orange differ
   from the pane's `planMode` teal and `claude` orange.
   Tests: none covers the `vscode` and `mobile` surfaces, presses a stale
   Clear, or starts a skill by a press. The M206 desktop sweep has no Button
