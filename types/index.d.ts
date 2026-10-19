@@ -109,6 +109,15 @@ export type CairnStartedRow = { title: string; number: number }
 // listed bodies name, kept and emptied with `prs` (M252).
 export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; started: CairnStartedRow[] }
 
+// The summary card's numbers (M286): the base remote repo's open pull
+// requests and open issues, and the milestones done since the latest
+// release tag. `counts` is null until a read for `root` gives numbers, and
+// a read that gives none keeps the last good ones for the same root.
+// `done` is the last read's, null when that read could not count.
+export type CairnRepoCounts = { prs: number; issues: number }
+export type CairnRepoDone = { tag: string; count: number }
+export type CairnRepoRead = { root: string | null; counts: CairnRepoCounts | null; done: CairnRepoDone | null }
+
 declare module 'claude-code' {
   interface PluginState {
     // Each value is kept under a shape tag (register.tsx), so a value an
@@ -137,6 +146,8 @@ declare module 'claude-code' {
       // the last read at a pane open or a Refresh press wrote them (M226).
       // Their words and counts sit in `prs` by URL.
       hotfixes: Shaped<CairnHotfixRead>
+      // The summary card's numbers, written by the same read (M286).
+      repo: Shaped<CairnRepoRead>
       // True from the start of a read of the pull request states until the
       // newest read started has settled, while the pane's ↻ Button reads ⋯
       // (M236).
