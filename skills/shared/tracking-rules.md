@@ -480,7 +480,7 @@ is posed in the same turn as its presentation (the Mandated-substance rule below
   present, never a prose yes/no.
 
 Everything else in a run the agent decides itself and records in a work-log line. Skills outside the run (`/hotfix`,
-`/cairn-triage`, `/cairn-init`, `/cairn-release`, `/design-interview`, `/milestone`, `/milestone-brief`) state their own
+`/cairn-triage`, `/cairn-init`, `/cairn-release`, `/copilot-review`, `/design-interview`, `/milestone`, `/milestone-brief`) state their own
 gates. When a chip option names a skill (`→ /skill` notation: an escalation offer, a repair route), selecting it is the
 go. **The orchestrator immediately invokes the target skill via the Skill tool**, and the user never types that command.
 

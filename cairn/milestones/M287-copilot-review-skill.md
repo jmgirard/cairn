@@ -108,7 +108,7 @@ block instead.
       that questions go to chat, never to GitHub. Compress so the module
       stays under its 140-line and 8,000-byte budget. Touch `/hotfix` step 6
       and `/milestone-review` step 7 only where their text contradicts it.
-- [ ] T3: List the skill in `hooks/status/band.ts`, regenerate
+- [x] T3: List the skill in `hooks/status/band.ts`, regenerate
       `hooks/status/fixtures.gen.ts` with `hooks/status/gen_fixtures.py`,
       add it to `scripts/cairn_cost.py` `PHASES`, add a README skill-table
       row, and write the `CHANGELOG.md` Unreleased entry. Also add it to the
@@ -116,15 +116,15 @@ block instead.
       `skills/shared/tracking-rules.md` (Question gates), the list in
       `skills/tests/test_phase_header_levels.py`, and the skill count in
       `cairn/DESIGN.md`.
-- [ ] T4: Add hand-run guards to `skills/tests/test_copilot_review_round.py`
+- [x] T4: Add hand-run guards to `skills/tests/test_copilot_review_round.py`
       for AC2 to AC5. Probe each clause separately and see each guard red
       with its clause removed: AC2's chip-before-reply and no-GitHub-question
       clauses; AC4's after-resolve, link, and skip-when-linked clauses; AC5's
       follow-up route and chip naming.
-- [ ] T5: Append a D-entry to `cairn/DECISIONS.md` for the summary reply,
+- [x] T5: Append a D-entry to `cairn/DECISIONS.md` for the summary reply,
       the chat-only questions, and the skill making no request (annotates
       D-153).
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` suite.
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` suite.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -141,6 +141,11 @@ block instead.
 - 2026-10-19: criteria audit (full, fresh Opus reader): 8 findings, all taken narrower — AC1 bounds summaries to non-empty review bodies from paged queries; AC1/AC4 evidence falls back to a named PR since Copilot may not review this one (D-183, D-185); per-clause guard probes moved from AC2/AC4/AC5 to T4 (instrument property); AC5 excepts the review step-5 return floor; AC6 names its four places, and three other skill lists join T3. AC3, AC7: none.
 - 2026-10-19: T1 done: `skills/copilot-review/SKILL.md` written in plain English to pass the simple-english lint hook; it fences the request command on `none` rather than making the request.
 - 2026-10-19: T2 done: module §5 gains the summary reply and the unsettled-note follow-up route; §1 to §6 compressed to 137 lines and 7,999 bytes (under budget); the §2 reason line now reads "not seen by GitHub" to drop a banned modal; the wait guard follows the reworded "It prints only a result that differs from the last"; `/hotfix` and `/milestone-review` text needed no change, since both cite §5.
+- 2026-10-19: T3 done: skill listed in band.ts, fixtures.gen.ts (regenerated), cairn_cost PHASES, the README table and Copilot bullet, the rulebook's outside-the-run list, test_phase_header_levels, and DESIGN.md (× 11); the band test's count and test_design_interview's "× 11" follow; CHANGELOG has a changes entry and a New entry.
+- 2026-10-19: T4 done: 12 per-clause guards in test_copilot_review_round.py, each registered in the mutation harness and red when its block is blanked; the every-thanks-line guard was seen red by hand with a planted "Thanks for the review!" line, then the line was removed.
+- 2026-10-19: T5 done: D-187 appended (annotates D-153).
+- 2026-10-19: T6 done: verify green (scripts 428 OK, hooks OK, both validates pass, claude plugin test 2281 pass 0 fail); skills/tests 910 OK; cairn_validate all checks passed.
+- 2026-10-19: the simple-english lint hook flags older text in tracking-rules.md, README.md, and CHANGELOG.md on every edit; only this milestone's new text was brought under it.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

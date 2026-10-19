@@ -74,6 +74,7 @@ PHASES = {
     "cairn:cairn-release": "cairn-release",
     "cairn:design-interview": "design-interview",
     "cairn:cairn-triage": "cairn-triage",
+    "cairn:copilot-review": "copilot-review",
 }
 UNATTRIBUTED = "unattributed"
 

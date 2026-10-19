@@ -7,6 +7,7 @@ export const SKILLS: string[] = [
   "cairn-init",
   "cairn-release",
   "cairn-triage",
+  "copilot-review",
   "design-interview",
   "hotfix",
   "milestone",

@@ -6771,3 +6771,33 @@ alone, by path.
 **Consequences:** D-185's decision, rejections, and falsifier stand.
 Step 8's sentence says only that the arm's URL is in a commit on the
 branch, because a failed arm push can also fail at step 6.
+
+### D-187 (2026-10-19): The Copilot round answers each review's summary, a note the agent cannot settle goes to chat, and `/copilot-review` runs the round's steps on one PR without a request — annotates D-153 (M287)
+
+**Context:** The user asked for a skill that reads each Copilot note and
+the review summary, fixes or answers each note, resolves each one, then
+replies to the summary, never thanks Copilot, and asks the user in chat,
+never on GitHub, about what the agent cannot decide alone. The module
+answered body items with a disposition and no reply, and it had no rule
+for a note the agent cannot settle.
+
+**Decision:** After a Copilot review's threads are resolved, the round
+posts one PR comment that answers its summary. The comment's first line
+is the review's URL, and a later read skips a review whose URL a comment
+by the operator already carries. That link is read from the PR, so the
+round still keeps no record that it ran (D-153). In `/hotfix` and
+`/milestone-review`, a note the agent cannot settle without the user
+takes the follow-up disposition, named at the approval chip or the merge
+question, unless it takes the review's return floor. `/copilot-review`
+asks the user in chat instead, before that thread gets a reply. No
+question goes to GitHub. `/copilot-review` runs outside a milestone run,
+needs no opt-in line, and makes no Copilot request. Rejected: an extra
+question at the run's approval chip (an answer that needs a fix would
+land after approval, which D-152 rejected), a stored record of the
+summary reply (D-153's rejection of any record that the round ran), and
+a request from `/copilot-review` (a request spends credits, and the two
+run skills already make it).
+
+**Consequences:** An opted-in PR gets one more comment for each Copilot
+review. Falsified by a summary answered twice on one PR, or by a note
+the user wanted fixed before merge that went to a follow-up row.

@@ -64,6 +64,28 @@
   have the token proposed for rows that wait on a condition, run
   `/cairn-triage`.
 
+- **The Copilot round answers the review's summary.** With
+  `# Copilot review: on`, `/hotfix` and `/milestone-review` now post one
+  PR comment for each Copilot review with a non-empty body, after that
+  review's threads are resolved. The comment starts with the review's link,
+  then gives one line for each note with what was done. It never thanks
+  Copilot. A later read skips a review that one of your comments already
+  links. A thread that Claude cannot settle without you becomes a
+  follow-up row, named at the merge question or the approval chip, and no
+  question goes to GitHub.
+
+### New
+
+- **`/copilot-review` handles Copilot's review on one pull request.** Run
+  it with a PR number or URL, or with nothing for the current branch's PR.
+  It reads each unresolved Copilot note and each review summary. It fixes,
+  rejects, or defers each note, pushes the fixes to the PR's branch, and
+  replies on and resolves each note. Last, it answers each summary. It
+  asks you in chat about a note it cannot settle alone, and it never posts
+  a question to GitHub or thanks Copilot. It does not request a review: on
+  a PR with no Copilot review, it gives you the request command. It works
+  without the `# Copilot review: on` line and in repos without `cairn/`.
+
 ## 2.1.0 (2026-10-18)
 
 ### Changes that affect existing repos

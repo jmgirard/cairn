@@ -47,6 +47,8 @@ README = "README.md"
 SOURCE_NOTE = "skills/shared/templates/source-note.md"
 SYNTHESIS_NOTE = "skills/shared/templates/synthesis-note.md"
 PROFILES_DIR = "skills/shared/profiles/"
+COPILOT_SKILL = "skills/copilot-review/SKILL.md"
+COPILOT_MODULE = "skills/shared/copilot-review.md"
 
 REGISTRY = [
     # M71 (D-042): one entry per positive assert's block — the enumeration,
@@ -4119,6 +4121,88 @@ REGISTRY += [
         test="TestHotfixArms.test_off_arm_keeps_the_post_approval_open",
         target=HOTFIX,
         block="On approval of an authored fix, push and",
+    ),
+]
+
+REGISTRY += [
+    # M287: `/copilot-review` and the module's summary reply. One entry per
+    # clause, so a guard that pins one clause cannot hide the loss of
+    # another (the M287 criteria audit).
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestCopilotReviewSkill.test_unsettled_note_is_asked_in_chat",
+        target=COPILOT_SKILL,
+        block="If the agent cannot decide a note without the user, ask the "
+              "user in",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestCopilotReviewSkill.test_that_thread_waits_for_the_answer",
+        target=COPILOT_SKILL,
+        block="That thread gets no reply until the user answers.",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestCopilotReviewSkill.test_no_question_goes_to_github",
+        target=COPILOT_SKILL,
+        block="Never post a question",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestNoThanks.test_skill_thread_reply_forbids_thanks",
+        target=COPILOT_SKILL,
+        block="never thanks Copilot",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestNoThanks.test_module_thread_reply_forbids_thanks",
+        target=COPILOT_MODULE,
+        block="Never thank",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestNoThanks.test_module_summary_reply_forbids_thanks",
+        target=COPILOT_MODULE,
+        block="It never thanks Copilot",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestSummaryReply."
+             "test_reply_comes_after_the_threads_are_resolved",
+        target=COPILOT_MODULE,
+        block="once all its threads are resolved",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestSummaryReply.test_reply_links_the_review",
+        target=COPILOT_MODULE,
+        block="the review's `url`, then one line per thread and body item",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestSummaryReply.test_a_linked_review_is_skipped",
+        target=COPILOT_MODULE,
+        block="Skip a review whose `url` an operator comment already carries",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestUnsettledNoteInTheRound."
+             "test_unsettled_note_takes_the_follow_up",
+        target=COPILOT_MODULE,
+        block="thread the agent cannot settle without the user takes the "
+              "follow-up",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestUnsettledNoteInTheRound.test_the_gate_chip_names_it",
+        target=COPILOT_MODULE,
+        block="or merge question names it.",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestUnsettledNoteInTheRound.test_questions_go_to_chat",
+        target=COPILOT_MODULE,
+        block="A question for the user goes to chat, never to GitHub.",
     ),
 ]
 
