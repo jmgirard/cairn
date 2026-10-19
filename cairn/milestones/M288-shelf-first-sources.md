@@ -118,6 +118,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - 2026-10-19: T4 done: `TestShelfFirst` in `test_references_pages.py`, 4 one-line anchors, each registered in the mutation harness and red when blanked; skills/tests OK.
 - 2026-10-19: T5 done: README "Keeping track of sources" bullet and CHANGELOG Unreleased entry, written in plain English to pass the lint hook.
 - 2026-10-19: claim audit: 30 claims read, 4 corrected — hooks/session_context.py, CHANGELOG.md, README.md; the same reader re-read all 4 and found them correct, and two wording notes ("shelf files" to "shelf entries", a long CHANGELOG line) were also applied.
+- 2026-10-19: step-7 approval: m288-shelf-first-sources approved for merge
 - 2026-10-19: T6 done: verify green (scripts 0, hooks 0, both validates 0, plugin test 0 fail); skills/tests OK; cairn_validate all checks passed.
 
 ## Decisions
