@@ -78,7 +78,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Add `hooks/tests` cases in `TestSessionContext`, seen failing
+- [x] T1: Add `hooks/tests` cases in `TestSessionContext`, seen failing
       first: a shelf with files; notes with no shelf; an absent
       `references/` folder; an `INDEX.md` with no `- ` line and no shelf; a
       shelf of only dot-files; a mix of dot and other entries (dot entries
@@ -86,7 +86,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
       entries (no "more" line); 31 entries (the "more" line names 1); and
       the part placed before the ROADMAP part. Assert the heading, counts,
       names, the "more" line, the shelf-first sentence, and absence.
-- [ ] T2: Implement the part in `hooks/session_context.py`, placed before
+- [x] T2: Implement the part in `hooks/session_context.py`, placed before
       the ROADMAP part so the existing shedding never drops it, with the
       30-name cap as a named constant. Update the module docstring.
 - [ ] T3: Add the shelf-first clause to the primary-sources rule in
@@ -111,6 +111,8 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - 2026-10-19: inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-19: criteria audit (full, fresh Opus reader): 9 findings, all taken narrower — AC1 scoped to a returned context, top-level entries, column-0 `- ` lines, Python `sorted`, a "more" line only past 30, and placement before the ROADMAP part; its fixtures moved to T1 and widened to 10 cases (instrument property); the legacy `pdf/` shelf went to Out; AC2 says the rulebook sentence covers any source; AC3 describes the notice and rule text, not session compliance. AC4: none.
 - 2026-10-19: origin: the datawizard session web-searched Brincks et al. (2017) while `cairn/references/brincks2017.md` and `sources/brincks2017.pdf` were on its shelf, then saved a per-repo memory note in place of a plugin fix (GP4).
+- 2026-10-19: T1 done: `TestSessionShelf`, 10 cases; 7 failed first on the missing heading, the 3 absence cases passed as silent controls.
+- 2026-10-19: T2 done: `shelf_section` and `SHELF_MAX_NAMES = 30` in `hooks/session_context.py`, appended before the ROADMAP part; the 10 cases pass and hooks/tests is OK; rendered for datawizard (2 pages, 2 entries) and circumplex (36 pages, 51 entries, "and 21 more").
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
