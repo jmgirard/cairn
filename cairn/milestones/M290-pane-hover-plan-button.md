@@ -111,7 +111,7 @@ first click on an unfocused pane only focuses it. That gap stays with item
       by `position: 'absolute'`. The new AC1 and AC4 parts fail.
 - [x] T3: In `register.tsx`, draw the parent Box of the `plan` Button per
       AC1 off the terminal and per AC2 on it. The tests pass.
-- [ ] T4: Update the sites that AC6 names, and add the CHANGELOG entry.
+- [x] T4: Update the sites that AC6 names, and add the CHANGELOG entry.
 - [ ] T5: Live look (AC5) with the operator, at the stop that the
       question set allowed.
 - [ ] T6: Run the `verify` slot (AC7).
@@ -143,6 +143,7 @@ first click on an unfocused pane only focuses it. That gap stays with item
 - 2026-10-19: implementation choice: the hide sits in register.tsx's shared Button loop, keyed on `kind === 'plan'` and the surface, rather than a separate branch for candidate lines, so pane.ts and its `PaneLine` shape do not change.
 - 2026-10-19: T4 in progress (checkpoint): README, DESIGN (two sites), the register.tsx and pane.ts comments, and a CHANGELOG entry written. The verify run and the claim audit are running. The DESIGN history line 82 lists no M289 either, so M290 is not added there.
 - 2026-10-19: claim audit: 19 claims read, 2 corrected — hooks/status/register.tsx (the hidden-scope reason now follows the type docs), CHANGELOG.md (✎ was never on every row). Both held on the one re-read. The reader also named M286's older "engine refuses" wording at register.tsx near line 475 and DESIGN.md near line 498, which this branch does not add, so it stays.
+- 2026-10-19: T4 done. The verify slot is clean: scripts/tests, hooks/tests, both validates, and the mod test (2299 pass, 0 fail). T5 waits on the operator's live look.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
