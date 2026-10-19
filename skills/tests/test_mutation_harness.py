@@ -3136,7 +3136,7 @@ REGISTRY += [
 # M120: the delegation-warrant test. One entry per assert — the inline floor,
 # the one-not-several bar, and the fan-out reconciliation each carry the rule
 # independently, and the third is not commentary: without it the rule and the
-# three-reviewer fan-out sit in one section unreconciled.
+# review fan-out sit in one section unreconciled.
 REGISTRY += [
     Mutation(
         guard="test_delegation_warrant",
