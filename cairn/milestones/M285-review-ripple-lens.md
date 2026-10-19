@@ -7,7 +7,7 @@
 - **Principles touched:** GP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-review` and the rulebook ship to every adopting repo
-- **Branch/PR:** m285-review-ripple-lens
+- **Branch/PR:** m285-review-ripple-lens, https://github.com/jmgirard/cairn/pull/297
 
 ## Goal
 
