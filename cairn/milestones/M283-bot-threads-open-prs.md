@@ -129,13 +129,10 @@ not added.
      Coverage lines together. -->
 
 - [x] T1: Add the bullet after "Open hotfix PRs" in `skills/milestone/SKILL.md`
-      §2 (lines 199-210). Add `headRefOid` to that bullet's `--json` list.
-      The query selects what AC1 filters on and AC2 reports (`isResolved`,
-      `isOutdated`, `path`, `line`, `originalLine`, the first comment's
-      author `__typename`, `login`, and `body`) plus `pageInfo`. Model it on
-      the read in `skills/shared/copilot-review.md` §4. Every `gh pr`
-      command keeps `--repo <base-repo>`, which
-      `skills/tests/test_milestone_gh_repo.py` pins.
+      §2, and `headRefOid` to that bullet's `--json` list. The query selects
+      what AC1 filters on and AC2 reports, plus `pageInfo`, modeled on
+      `skills/shared/copilot-review.md` §4. Every `gh pr` command keeps
+      `--repo <base-repo>` (`skills/tests/test_milestone_gh_repo.py`).
 - [x] T2: Run the AC4 and AC5 commands by hand, and log one line each.
 - [x] T3: Update `README.md` (lines 802-816), and add the `### New` entry to
       `CHANGELOG.md`. Grep the repo for "Open hotfix PRs" and
@@ -143,12 +140,8 @@ not added.
       stale (the M112 lesson).
 - [x] T4: Run the `verify` slot. Hand-run `skills/tests` after the skill
       edit (the M148 lesson).
-- [x] T5: Return 1. In the new bullet, say that a thread with no `line`
-      is found in the head file by its content, not at `originalLine`, and
-      that special characters in `<path>` are percent-encoded before the
-      contents read. Fix the linked-item read's "one exception" sentence
-      (`skills/milestone/SKILL.md:336`) and README's "It also lists".
-      Re-run the AC5 script and the `verify` slot.
+- [x] T5: Return 1: the four fixes the `review return 1:` line names, then
+      the AC5 script and the `verify` slot again.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -189,6 +182,7 @@ not added.
 - 2026-10-18: T5 added for return 1 (minor amendment; Coverage AC2 gains T5). Checkpoint: the four fixes are in the tree; AC5 script printed the same 5 threads; a percent-encoded contents read worked; verify green (scripts 423 OK, hooks 179 OK, both validates passed, plugin test 2132 pass 0 fail); `skills/tests` OK. Claim audit on the fix: 6 claims read, 1 corrected (the `originalLine` sentence narrowed to threads that carry one); re-read pending.
 - 2026-10-18: claim audit: 6 claims read, 1 corrected — skills/milestone/SKILL.md, README.md (return-1 fix diff; the same reader re-read the corrected `originalLine` sentence and found it holding).
 - 2026-10-18: T5 done; implement complete after return 1: status review.
+- 2026-10-18: minor amendment: T1 and T5 text shortened (the plan-owned body reached 152 lines with T5; `cairn_validate` weight caps now pass); no criterion or scope text changed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
