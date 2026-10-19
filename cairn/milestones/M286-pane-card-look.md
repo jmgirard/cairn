@@ -141,3 +141,8 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple #5: tracking-rules lists `✓` among icons — reject, false: the sentence defines an icon by Unicode category, and `✓` is still one.
 - ripple #6: pane.test.tsx "pill" titles and comments and the unused `PILL_TEXT_KEY` — fix now.
 - Verify after the fixes: 2244 mod tests pass, both suites and both validates green.
+- copilot: hooks/status/register.tsx:1066 (now taken after the root lookup, so a slow lookup across midnight shifts the days) — fix now: `Date.now()` is taken before `await where`, fixed (next commit).
+- copilot: hooks/status/register.tsx:1077 (a no-call read falls back to the folder's last numbers, so a repo moved to another host keeps old totals) — reject, planned change: AC3 keeps the last good numbers for a folder on any read that gives none, a no-call read included, and README now states that rule.
+- copilot: review body (summary naming "stale data" and "an ineffective test assertion" with no thread) — noted: no anchor or detail to act on; the stale-write window is diff-bug #1, fixed.
+- Copilot level: Lite (set by GitHub's settings).
+- conversation: no human reviews or comments on PR #298.

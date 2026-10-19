@@ -1057,6 +1057,9 @@ async function baseOf($): Promise<Where> {
 // read's alone: null in guest mode, with no release tag, or when a git call
 // fails. It rejects only when the root and remote lookup rejects.
 async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
+  // The days count to the read's start, taken before the root lookup
+  // (M286 review, Copilot).
+  const now = Date.now()
   const { root, guest, url } = await where
   if (root === null) return { root: null, counts: null, done: null }
   const argv = url === null ? null : repoArgv(url)
@@ -1068,8 +1071,6 @@ async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
       return null
     }
   }
-  // The days count to the read's start.
-  const now = Date.now()
   const count = async () => {
     if (guest) return null
     const tag = await git($, root, DESCRIBE_ARGS)
