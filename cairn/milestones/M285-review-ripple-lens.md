@@ -112,6 +112,7 @@ Pass 1 (2026-10-18), user-facing tier, four-lens fan-out, Copilot round on (PR #
 - ripple #5: step 2's "Nothing is pushed" — reject, false: the arm says "unlike the paragraph above".
 - ripple #6: `test_mutation_harness.py:3139` — fixed e663f573 (as prior-review #3).
 - Return floor: no finding shows a criterion failing; the fixed edges (URL order, a dirty tree, a failed header push, route (b)'s diff) are rare paths of skill prose, judged not load-bearing, so they are fixed on the branch with no return.
+- Verify re-run after the fix-now commit d68b87e6: scripts and hooks suites OK, both manifests validate, `claude plugin test` 2184 pass, 0 fail; `skills/tests` OK; `cairn_validate` all checks passed.
 - PR-conversation read (PR #297): state query read `reviewed earlier-head`; Copilot's review is on 7a2c3246, the head that carried the header commit, and it raised no thread about the header.
 - copilot: skills/tests/test_review_fanout.py:54 (register the new ripple assertions in the mutation harness) — reject: this repo's test doctrine owes a skill or rulebook rule no prose guard and no mutation registration, and the hand-run guards gate nothing; replied and resolved.
 - copilot: review body — noted (its one finding is the thread above).
