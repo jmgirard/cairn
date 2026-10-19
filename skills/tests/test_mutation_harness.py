@@ -2263,7 +2263,13 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestTriageReadsTheToken.test_apply_orders_by_token_then_advisory",
         target="skills/cairn-triage/SKILL.md",
-        block="ordered by token — high → normal → low — then advisory within a level",
+        block="ordered by token — high → normal → low → parked — then advisory within a level",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestTriageReadsTheToken.test_enumeration_lists_the_parked_level",
+        target="skills/cairn-triage/SKILL.md",
+        block="opening `[high]`, `[low]`, or `[parked]` token",
     ),
     # M271: a triage promote of a candidate row carries the change to
     # `[high]`. These guards read whitespace-collapsed text, so a block may

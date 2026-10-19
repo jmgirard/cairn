@@ -771,6 +771,13 @@ re-enters here, at the step the record shows is next:
    audit, which the user runs; review poses no question here. A whole-list
    sweep is `/cairn-triage`, run by the user on demand, never from this
    pass.
+   **Unpark the rows this merge readied:** check each `[parked]` candidate
+   row whose short title the milestone file quotes, or whose text names
+   this milestone's id (tracking-rules "Candidate priority token"). Where
+   the merge made that row's promotion condition hold, remove its
+   `[parked] ` token, so the row reads `normal`, and move it to the normal
+   rows. Leave every other parked row as it is. Name each removal in the
+   archive summary's Review line. No row qualifies → skip.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
    planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
@@ -793,7 +800,7 @@ re-enters here, at the step the record shows is next:
    user's whole-file pass (D-169).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, any Known issues entry, and any
-   candidate graduation verbatim
+   candidate graduation or unparked row verbatim
    in a guaranteed-rendered position (Mandated-substance rule).
    Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
    the completed hygiene edits, before the docs-only commit — it must pass,

@@ -242,10 +242,10 @@ re-examines a lesson.
    characters; for a Known issues entry, the text up to the first colon,
    trimmed; when no colon falls within the first ~80 characters, the first
    clause — up to the first comma — trimmed to that length),
-   its priority (`high` / `normal` / `low`; `—` for a Known issues entry), its byte length, and its added date.
+   its priority (`high` / `normal` / `low` / `parked`; `—` for a Known issues entry), its byte length, and its added date.
    - A candidate item is one `- ` line under `## Candidates` in
      `cairn/ROADMAP.md` (ROADMAP is one item per line, never split); its
-     priority is the row's opening `[high]` or `[low]` token, and an untagged row is `normal`,
+     priority is the row's opening `[high]`, `[low]`, or `[parked]` token, and an untagged row is `normal`,
      as is one opening with any other bracketed token — a misspelling
      (tracking-rules "Candidate priority token"); the subject is read after
      the token; its date is the `added YYYY-MM-DD` token, or `undated` when
@@ -387,7 +387,12 @@ re-examines a lesson.
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
      that cannot fire soon, is the usual ground; the token is never
-     rewritten to encode order. A row of those three, or a `promote` row,
+     rewritten to encode order. The fourth level, `parked`, follows the
+     row's promotion condition (tracking-rules "Candidate priority token",
+     D-184). A row that states a condition that has not held, and does not
+     open with `[parked]`, gets `priority: <level> → parked`. A parked row
+     whose condition held gets `priority: parked → normal`.
+     A row of those three, or a `promote` row,
      can also carry a token change. The reason cell states it, as in
      `token: + started M260, quoted in M260-<slug>.md` or
      `token: − started M258, done`. A `keep` with no priority or token
@@ -395,7 +400,8 @@ re-examines a lesson.
      Every `promote` of a candidate row whose opening token is not `[high]`
      carries the priority change to `high`. This holds for a proposed
      `promote` and for one the user sets at *Amend*. Its reason cell states
-     `priority: normal → high` or `priority: low → high`, and the promote
+     `priority: normal → high`, `priority: low → high`, or
+     `priority: parked → high`, and the promote
      itself is the reason. It replaces any other priority change proposed
      for that row. A `promote` of a Known issues entry carries no
      priority change.
@@ -475,7 +481,7 @@ re-examines a lesson.
    change a candidate row's promote carries, though a `retitle` can rewrite a
    mention inside either; an accepted priority change, a promote's
    included, adds, replaces,
-   or removes the row's opening token (`[high]`/`[low]`; `normal` is no
+   or removes the row's opening token (`[high]`/`[low]`/`[parked]`; `normal` is no
    token) and moves the row to its level. An opening bracketed token that
    step 1 reads as a misspelling counts as the row's opening token here. An accepted token change appends
    ` — started M<NNN>` to the row's end, or it removes one
@@ -486,7 +492,7 @@ re-examines a lesson.
    keeps each started token that is not accepted for removal, at the row's
    end.
    Candidates stay one item per line,
-   ordered by token — high → normal → low — then advisory within a level.
+   ordered by token — high → normal → low → parked — then advisory within a level.
    After the edits, token changes included, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
    (tracking-rules "Weight caps"); a pass that would push it over returns

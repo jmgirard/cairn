@@ -99,9 +99,46 @@ class TestTriageReadsTheToken(unittest.TestCase):
 
     def test_apply_orders_by_token_then_advisory(self):
         self.assertIn(
-            "ordered by token — high → normal → low — then advisory within a level",
+            "ordered by token — high → normal → low → parked — then advisory within a level",
             self.step(4),
         )
+
+    def test_enumeration_lists_the_parked_level(self):
+        # M284/D-184: the fourth level is read, not taken for a misspelling.
+        self.assertIn("its priority (`high` / `normal` / `low` / `parked`", self.step(1))
+        self.assertIn("opening `[high]`, `[low]`, or `[parked]` token", self.step(1))
+
+
+class TestTriageReRatesParked(unittest.TestCase):
+    """M284: a priority change adds or removes `[parked]`, and a promote of a
+    parked row writes `[high]`. These sentences wrap, so each step is read
+    with its whitespace collapsed (M171)."""
+
+    def step(self, n):
+        return " ".join(TestTriageReadsTheToken.step(self, n).split())
+
+    triage = TestTriageReadsTheToken.triage
+
+    def test_a_condition_not_held_adds_parked(self):
+        self.assertIn("does not open with `[parked]`, gets `priority: <level> → parked`", self.step(3))
+
+    def test_a_condition_held_removes_parked(self):
+        self.assertIn("a parked row whose condition held gets `priority: parked → normal`", self.step(3))
+
+    def test_a_promote_of_a_parked_row_names_it(self):
+        self.assertIn("or `priority: parked → high`", self.step(3))
+
+    def test_review_hygiene_unparks_only_the_rows_it_names(self):
+        text = " ".join(read("milestone-review", "SKILL.md").split())
+        self.assertIn(
+            "check each `[parked]` candidate row whose short title the milestone file quotes, "
+            "or whose text names this milestone's id",
+            text,
+        )
+        self.assertIn("leave every other parked row as it is", text)
+
+    def test_apply_writes_the_parked_token(self):
+        self.assertIn("(`[high]`/`[low]`/`[parked]`; `normal` is no token)", self.step(4))
 
 
 class TestPromoteCarriesHigh(unittest.TestCase):
