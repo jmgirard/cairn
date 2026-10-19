@@ -39,7 +39,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: When `hooks/session_context.py`'s `build_context` returns a
+- [x] AC1: When `hooks/session_context.py`'s `build_context` returns a
       context, that context holds one `## Source shelf` part exactly when
       `cairn/references/INDEX.md` has at least one line that begins with
       `- ` at column 0, or `cairn/references/sources/` has at least one
@@ -51,7 +51,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
       line appears. It tells the session to read `INDEX.md`, the source's
       note, and the shelf before it searches the web for a cited source.
       Shown by the `hooks/tests` cases that T1 lists.
-- [ ] AC2: The primary-sources rule in `skills/shared/validation-doctrine.md`
+- [x] AC2: The primary-sources rule in `skills/shared/validation-doctrine.md`
       and the "References pages" section of `skills/shared/tracking-rules.md`
       each say to read `cairn/references/INDEX.md`, the source's note, and
       `cairn/references/sources/` before a web search for a source, and to
@@ -59,11 +59,11 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
       sentence covers any source a session needs, not only scoring or
       algorithmic ones. Shown by the two files' text and hand-run guards in
       `skills/tests`.
-- [ ] AC3: The README section "Keeping track of sources" and a `CHANGELOG.md`
+- [x] AC3: The README section "Keeping track of sources" and a `CHANGELOG.md`
       Unreleased entry each describe the session-start shelf notice and the
       shelf-first rule as text the plugin gives sessions, with no claim that
       sessions always follow it.
-- [ ] AC4: The profile's `verify` slot is green (both unittest suites, the
+- [x] AC4: The profile's `verify` slot is green (both unittest suites, the
       two `claude plugin validate` runs, and `claude plugin test .`).
 
 ## Coverage
@@ -125,3 +125,10 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 
 ## Review
 <!-- owner: review · exclusive -->
+
+- 2026-10-19: copilot arm: PR #300 opened, header record pushed, request exited 0 and the state query read it as pending.
+- AC1: `TestSessionShelf` 10 cases OK on the review head (shelf with files, notes with no shelf, absent folder, INDEX with no entry, only dot-files, mixed dot entries, a subdirectory, exactly 30, 31 with "and 1 more", part before the ROADMAP); rendered output for datawizard and circumplex read at implement.
+- AC2: `TestShelfFirst` 4 anchors OK, mutation harness OK with the 4 blocks registered; the rulebook's "Shelf first." paragraph says "any source a session needs, numeric or not".
+- AC3: README bullet "The shelf comes before the web." and the CHANGELOG entry "Sessions are told to read the source shelf before the web." describe the notice and the rule; a search of both for "always" and "every session" finds nothing.
+- AC4: verify on the review head: scripts exit 0, hooks exit 0, plugin validate exit 0, marketplace validate exit 0, `claude plugin test .` 0 fail.
+- gate: `cairn_validate` all checks passed; `cairn_impact` skipped (no principle text changed); marketplace validate shows no version warning; the CHANGELOG entry carries no milestone id; skills/tests OK; `validation-doctrine.md` 101 lines and 6,638 bytes, under its 115 and 8,000 budget.
