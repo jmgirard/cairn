@@ -105,4 +105,6 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 - blame-history #6: comment wraps in `reader.ts:591-594` and the `cairn_next.py` docstring — reject (style).
 - prior-review #1: unpark said "move it to the normal rows" with no insertion point, so the `candidate order` advisory could WARN — fix now: "move the row to its level, the end of the untagged rows", fixed e5fdde40.
 - prior-review #2: the `candidate order` advisory's accepted gaps (hidden rows counted, empty title shown as "", a misspelled token blamed on the wrong row) now reach the parked level too — follow-up: already recorded in DESIGN.md Known issues (the M280 entry), which covers every level, so there is nothing new to file.
+- conversation: PR #296 — empty read (no reviews, no comments, no unresolved threads).
+- Copilot: state query still `none` at the read. Copilot request on PR #296 may not be recorded by GitHub (used-up Copilot credits are one cause). No Copilot items.
 - Settlement: none takes the return floor. No finding shows a criterion failing, and each fixed defect is skill or record wording whose outcome lands at a user gate (the triage table, the hygiene preview) or in a type that no gate checks. After the fixes, skills/tests OK, validate green, and verify all five green.
