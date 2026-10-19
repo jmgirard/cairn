@@ -243,6 +243,12 @@ function holderOf(node: Element, key: string): Element | undefined {
   return undefined
 }
 
+// A line's hover card: a child placed `position: 'absolute'` that holds no
+// Button, since the desktop's parked ✎ Box is placed too (M290).
+function isCard(child: Element): boolean {
+  return child.props.position === 'absolute' && !kids(child).some(node => node.type === 'Button')
+}
+
 function keyOf(node: Element): string | undefined {
   return node.key ?? (node.props?.key as string | undefined)
 }
@@ -2080,11 +2086,14 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
             expect(all.filter(node => (node as Element & { hover?: unknown }).hover !== undefined)).toEqual([])
             expect(all.filter(node => node.type === 'Svg')).toEqual([])
           } else {
+            // Parked past the edge, never `display: 'none'`, whose Button
+            // takes no click in the desktop app (M290 live look).
             expect(keyOf(holder)).toBeUndefined()
-            expect(holder.props.display).toBe('none')
+            expect(holder.props.display).toBeUndefined()
+            expect(holder.props.position).toBe('absolute')
+            expect(holder.props.right as number).toBeLessThan(0)
             // The drawn tree keeps `hover` beside `props` (M286).
-            expect((holder as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
-            expect(holder.props.position).toBeUndefined()
+            expect((holder as Element & { hover?: unknown }).hover).toEqual({ right: 0 })
           }
         }
         await ui.unmount()
@@ -2117,7 +2126,9 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
         expect(group.type).toBe('Text')
         expect(hoverOf(group)).toEqual({ scope, bold: true })
         expect(textOf(group)).toBe(INFO_LABEL)
-        const cards = parts.filter(child => child.props.position === 'absolute')
+        // The glyph keeps room on its right for the parked ✎ to move into.
+        expect(info.props.marginRight as number).toBeGreaterThan(0)
+        const cards = parts.filter(isCard)
         expect(cards.length).toBe(1)
         expect(hoverOf(cards[0])).toEqual({ display: 'flex', scope })
         scopes.push(scope)
@@ -2134,7 +2145,7 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
       const [root] = await ui.findAll({ key: 'cairn-pane' })
       const cards = flat(root)
         .filter(line => !/^candidate-\d+$/.test(keyOf(line) ?? ''))
-        .flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+        .flatMap(line => kids(line).filter(isCard))
       expect(cards.length).toBeGreaterThan(0)
       for (const card of cards) expect(hoverOf(card)).toEqual({ display: 'flex' })
       await ui.unmount()
@@ -6152,7 +6163,7 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
         const [root] = await ui.findAll({ key: 'cairn-pane' })
         const cards = flat(root).flatMap(line =>
           kids(line)
-            .filter(child => child.props.position === 'absolute')
+            .filter(isCard)
             .map(card => ({ card, candidate: /^candidate-\d+$/.test(keyOf(line) ?? '') })),
         )
         if (surface === 'terminal') {

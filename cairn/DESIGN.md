@@ -322,10 +322,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   is true, a line whose short title is not empty carries the `plan`
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
-  Box (M242). Off the terminal that Box has no key, `display: 'none'`, and
-  `hover: { display: 'flex' }`, so ✎ shows in the row's flow only while the
-  pointer is over its line, after the info glyph that opens the line's card
-  (M290). The terminal draws ✎ as before and has no info glyph. `paneLines` draws the lines by level (`LEVEL_RANK`: high,
+  Box (M242). Off the terminal that Box has no key and is placed
+  `position: 'absolute'`, `top: 0`, `right: -8`, past the row's edge, where
+  the pane clips it, with `hover: { right: 0 }`. So ✎ shows only while the
+  pointer is over its line, in the 4 columns that the info glyph before it
+  keeps as its right margin (M290). A Button drawn under `display: 'none'`
+  takes no click in the desktop app even once revealed, and one moved in by
+  an offset does (M290's probe). The terminal draws ✎ as before and has no
+  info glyph. `paneLines` draws the lines by level (`LEVEL_RANK`: high,
   normal, low, parked), each level in ROADMAP order, and `state.candidates` stays
   in ROADMAP order (M280). A parked row's mark is a gray `⧗`
   (`PRIORITY_MARK.parked`) and its title is gray, as a low row's is (M284,
@@ -498,7 +502,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   `userMessageBackground` ground. The pointer over the line reveals it
   above the row. The card has no key, because a keyed Box scopes its own
   hover and a hidden scope is never under the pointer. A candidate line's
-  ✎ Box is hidden the same way and has no key for the same reason (M290).
+  parked ✎ Box has no key for the same reason (M290).
   A candidate line with a `full` sets `info`. Off the terminal it draws,
   just before ✎, a hidden unkeyed Box that the line reveals, holding a gray
   `Text` `ⓘ` (`INFO_LABEL`) with `hover: { scope: 'cairn-info-<line key>',

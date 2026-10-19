@@ -219,6 +219,10 @@ const HOVER_GROUND = 'userMessageBackground'
 // The hover group of a candidate line's info glyph and card, one per line
 // key (M290).
 const infoScope = (lineKey: string) => `cairn-info-${lineKey}`
+// The columns a candidate line keeps for ✎ while the pointer is over it,
+// and the `right` offset that parks ✎ past the row's edge at rest (M290).
+const PLAN_SLOT = 4
+const PLAN_PARK = -8
 // The command a candidate line's ✎ holds for its `/clear` (M242).
 const PLAN_COMMAND = 'cairn:milestone-plan'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
@@ -388,8 +392,8 @@ export const register: Register = on => {
     // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). Off the terminal, a candidate line's ✎ Box has no
-    // key and stays hidden until the pointer is over the line, and so does
-    // the info glyph before it (M290). A Text drops its
+    // key and sits past the row's edge until the pointer is over the line,
+    // and the info glyph before it stays hidden until then (M290). A Text drops its
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
@@ -460,8 +464,15 @@ export const register: Register = on => {
               // line. It names the hover group that alone opens the line's
               // card, so the card no longer opens with ✎ (M290). In the
               // desktop app a Text in a group heats it and a Box that only
-              // names the group does not (M290 live look).
-              <Box display="none" hover={{ display: 'flex' }} flexShrink={0} marginLeft={1}>
+              // names the group does not (M290 live look). Its right margin
+              // keeps the room that ✎ moves into.
+              <Box
+                display="none"
+                hover={{ display: 'flex' }}
+                flexShrink={0}
+                marginLeft={1}
+                marginRight={(line.buttons ?? []).includes('plan') ? PLAN_SLOT : 0}
+              >
                 <Text color={GRAY} hover={{ scope: infoScope(line.key), bold: true }}>
                   {INFO_LABEL}
                 </Text>
@@ -472,13 +483,17 @@ export const register: Register = on => {
               const target = line.target
               const title = line.title
               // Off the terminal a candidate line's ✎ sits in an unkeyed Box
-              // drawn hidden, which the pointer over the line reveals in the
-              // row's flow (M290). A keyed Box would scope its own hover, and
-              // a hidden scope is never under the pointer, so it would never show.
-              const hides = kind === 'plan' && e.surface !== 'terminal'
+              // placed past the row's right edge, where the pane clips it, and
+              // the pointer over the line moves it into the room the info
+              // glyph keeps (M290). In the desktop app a Button drawn under
+              // `display: 'none'` takes no click once revealed, and one moved
+              // by an offset does. A keyed Box would scope its own hover.
+              const parks = kind === 'plan' && e.surface !== 'terminal'
               return (
                 <Box
-                  {...(hides ? { display: 'none' as const, hover: { display: 'flex' as const } } : { key: `${line.key}-${kind}` })}
+                  {...(parks
+                    ? { position: 'absolute' as const, top: 0, right: PLAN_PARK, hover: { right: 0 } }
+                    : { key: `${line.key}-${kind}` })}
                   flexShrink={0}
                   marginLeft={1}
                 >

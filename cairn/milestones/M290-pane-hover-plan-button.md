@@ -23,9 +23,9 @@ pointer is over that row, and the terminal draws ✎ where it does today.
 <!-- owner: plan · create/amend-via-gate -->
 
 **In:** the Box that holds a candidate line's `plan` Button in
-`hooks/status/register.tsx`. Off the terminal, that Box has no key,
-`display: 'none'`, and `hover: { display: 'flex' }`. It stays in the row's
-flow at the right end, inside the line's keyed Box, which is the hover
+`hooks/status/register.tsx`. Off the terminal, that Box has no key and is
+placed past the row's right edge, and `hover: { right: 0 }` moves it in at
+the right end, inside the line's keyed Box, which is the hover
 scope that the M286 hover card uses. Off the terminal, a candidate line
 with a `full` also draws an info icon, a gray `ⓘ` glyph, before ✎ in the
 same hidden way. The glyph's `Text` names a hover group, and only that
@@ -51,9 +51,9 @@ by the drawn props alone.
 - [ ] AC1: On the `desktop` surface, a mod test loops over each candidate
       line that `paneLines` gives the `plan` Button in the `candidates` and
       `candidates-order` fixtures. For each such line, the parent Box of the
-      Button has no key, `display: 'none'`, `hover: { display: 'flex' }`,
-      and no `position` prop. That Box is a child of the keyed
-      `candidate-<i>` Box of the line.
+      Button has no key and no `display` prop, `position: 'absolute'`, a
+      `right` below 0, and `hover: { right: 0 }`. That Box is a child of the
+      keyed `candidate-<i>` Box of the line.
 - [ ] AC2: On the `terminal` surface, the same loop runs over the same
       lines. For each such line, the parent Box of the Button is the keyed
       `candidate-<i>-plan` Box, with `flexShrink: 0` and no `display` prop.
@@ -72,9 +72,10 @@ by the drawn props alone.
       `candidates-order` fixtures. In each such line, the child just before
       the parent Box of the Button is an unkeyed Box with `display: 'none'`
       and `hover: { display: 'flex' }`. Its only child is a `Text` that
-      reads `ⓘ`, with `hover: { scope: s, bold: true }`. The line's child
-      Box with `position: 'absolute'` has `hover: { display: 'flex',
-      scope: s }`. The string `s` is the same on the `Text` and the Box and
+      reads `ⓘ`, with `hover: { scope: s, bold: true }`, and the hidden Box
+      has a right margin above 0. The line's card, its child Box with
+      `position: 'absolute'` that holds no Button, has `hover: { display:
+      'flex', scope: s }`. The string `s` is the same on the `Text` and the Box and
       differs between lines. The same test over
       `pane-full` and `candidates` shows that each `position: 'absolute'`
       child of a line that is not a candidate line keeps
@@ -182,6 +183,9 @@ by the drawn props alone.
 - 2026-10-19: live look 2 (circumplex): the info icon showed, but hovering it opened no card. T5's stop: the operator chose a probe of variants over dropping the card.
 - 2026-10-19: probe (commit 8756dd60, reverted in 0f66a55b): five rows each opened the card a different way. Only the row whose trigger was a `Text` glyph with `hover: { scope, bold }` worked. A Box with `hover: { scope }` around an image or a glyph failed, hidden or shown, and so did a keyed icon Box that held its own card. A desktop fact for LESSONS at review.
 - 2026-10-19: substantive amendment: the info icon is a gray `Text` `ⓘ` (`INFO_LABEL` in pane.ts) with `hover: { scope, bold: true }`, not an `Svg` in a scoped Box. AC5 now names the `Text`, AC7 drops the `icons.ts` clause, and `icons.ts` is back to main. This follows the operator's probe result, so it rides to the operator at the next chip with no further reader (the criteria spent their re-entry).
+- 2026-10-19: live look 3 (circumplex): ⓘ opened the card, but a click on ✎ did nothing, double clicks too. The operator kept the AC5 glyph change.
+- 2026-10-19: probe 2 (commit 978a845b, reverted in 650ac8db): a ✎ under `display: 'none'` took no click once revealed; a ✎ placed past the right edge and moved in by `hover: { right: 0 }` clicked, and so did an always-shown ✎. The slide-in ✎ landed on ⓘ. A desktop fact for LESSONS at review.
+- 2026-10-19: substantive amendment: ✎'s Box off the terminal is `position: 'absolute'`, `top: 0`, `right: -8` with `hover: { right: 0 }` (`PLAN_SLOT`, `PLAN_PARK`), and the hidden ⓘ Box keeps a 4-column right margin for it. AC1 now names the parked Box, AC5 the margin and the card as the absolute child that holds no Button. Tests pick cards by `isCard`. It rides to the operator at the next chip, as before. Mod test 2303 pass, 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
