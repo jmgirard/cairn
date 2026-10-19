@@ -112,4 +112,9 @@ Pass 1 (2026-10-18), user-facing tier, four-lens fan-out, Copilot round on (PR #
 - ripple #5: step 2's "Nothing is pushed" — reject, false: the arm says "unlike the paragraph above".
 - ripple #6: `test_mutation_harness.py:3139` — fixed e663f573 (as prior-review #3).
 - Return floor: no finding shows a criterion failing; the fixed edges (URL order, a dirty tree, a failed header push, route (b)'s diff) are rare paths of skill prose, judged not load-bearing, so they are fixed on the branch with no return.
+- PR-conversation read (PR #297): state query read `reviewed earlier-head`; Copilot's review is on 7a2c3246, the head that carried the header commit, and it raised no thread about the header.
+- copilot: skills/tests/test_review_fanout.py:54 (register the new ripple assertions in the mutation harness) — reject: this repo's test doctrine owes a skill or rulebook rule no prose guard and no mutation registration, and the hand-run guards gate nothing; replied and resolved.
+- copilot: review body — noted (its one finding is the thread above).
+- Copilot level: unknown (the review body carries no `Review effort:` line; set by GitHub's settings).
+- conversation: jmgirard PR — noted (the empty review GitHub makes for the thread reply). No issue comments.
 - After the fixes, AC1 and AC2 re-checked against the new wording: AC1 holds (step 8 no longer says step 6's push carries the record and cites D-185; the failed-push sentence keeps "step 6's checkpoint push carries it"); AC2 holds (this repo's changelog slot names `CHANGELOG.md`, so the exclusion still covers its released sections).
