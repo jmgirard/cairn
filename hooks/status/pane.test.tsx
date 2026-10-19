@@ -2326,7 +2326,8 @@ type Gh = {
   lists: (readonly string[])[]
   clocks: string[]
   // The card's calls (M286): its `gh api graphql` repo query, and its
-  // `git describe` and `git diff` calls, kept apart from the lists above.
+  // `git describe`, `git log`, and `git diff` calls, kept apart from the
+  // lists above.
   card: (readonly string[])[]
   settled: () => Promise<void>
 }
@@ -3372,7 +3373,7 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     // Besides the first line, each candidate line's text grows, so ✎ sits at
     // its right end (M242, M242 review), and so does each blocked or hotfix
     // line with a tail, so its number and state word sit at the right end
-    // whether or not its title is cut. Each section heading's rule grows
+    // whether or not its title is cut. Each section heading's text grows
     // too (M286), but a milestone's head line does not. No other line grows.
     const growing = got.lines
       .slice(1)

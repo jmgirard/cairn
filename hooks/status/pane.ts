@@ -31,7 +31,7 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // on one screen.
 // The operator picked the look at the M286 prototypes (look B), in place
 // of the M208 look: the card in a round border, each section heading a bold
-// label with its count at the right end, a six-cell meter beside the Tasks
+// label, with any count at the right end, a six-cell meter beside the Tasks
 // and Criteria counts, the head line's title bold, the Next command after
 // an arrow with no pill, and one layout for blocked and hotfix lines. At the
 // live look the operator asked for the app's task-list marks, which the
@@ -407,7 +407,7 @@ const PHASE_COLOR: Record<string, string> = {
   'in-progress': FLOW_COLORS.implement,
   review: FLOW_COLORS.review,
 }
-// The phase each recommended command runs, for the Next pill's color.
+// The phase each recommended command runs, for the Next line's color.
 export const COMMAND_PHASE: Record<string, FlowPhase> = {
   '/milestone-plan': 'plan',
   '/milestone-implement': 'implement',

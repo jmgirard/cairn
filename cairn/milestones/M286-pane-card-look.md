@@ -1,6 +1,6 @@
 # M286: The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -51,10 +51,10 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - [x] T5: Done-since-release read. Add the pure function over the two git results, and run the two git calls in `readPrs`. Guest mode is read as `baseRemoteUrl` reads it.
 - [x] T6: Restyle the headings (`heading`, `counted`), the head line, the Next line, and the card to the pick, with the AC6 assertions.
 - [x] T7: The shared blocked and hotfix row layout (`pane.ts:535-591`), with the AC5 cases.
-- [ ] T8: Stop for a live look in a new Code session in this repo: docked at 44 columns and wide, dark and light (LESSONS M193, M201). Fix what the look finds, or record it as a candidate row.
+- [x] T8: Stop for a live look in a new Code session in this repo: docked at 44 columns and wide, dark and light (LESSONS M193, M201). Fix what the look finds, or record it as a candidate row.
 - [x] T9: The hover card (`full` in `pane.ts`, the unkeyed absolute Box in `register.tsx`) with the AC9 cases, and the Work log section dropped from the pane, both at the operator's request at the live look.
 - [x] T10: README's cairn pane section, DESIGN.md's pane description, and the CHANGELOG entry.
-- [ ] T11: Run the verify slot.
+- [x] T11: Run the verify slot.
 
 ## Work log
 
@@ -96,3 +96,7 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - 2026-10-18: re-audit: AC9 (full) — no wording finding; an optional test gap (no counts line and no idle sweep in the `full` test) was closed in the test.
 - 2026-10-18: the engine refused the first hover card, a keyed Box drawn `display: 'none'`, as a hover scope the pointer can never be over. The card has no key, so the visible line Box is its scope.
 - 2026-10-18: T10 done: README's pane section (the card, the marks and icons, the hover card, the headings, no work log, the blocked and hotfix layout), DESIGN.md's pane description, and the CHANGELOG entry. README's older text draws simple-english hook hits that this milestone leaves alone.
+- 2026-10-18: T8 done: the operator approved the third live look (hover cards open above the row, no Work log section), which also accepts AC4's wording after its second re-audit. Docked and dark were looked at; the light theme and a wide pane were not checked separately.
+- 2026-10-18: T11 done: verify green on 18f20b58, mod tests 2240.
+- 2026-10-18: claim audit: 96 claims read, 7 corrected — README.md, CHANGELOG.md, hooks/status/pane.ts, hooks/status/repo.ts, hooks/status/register.tsx, hooks/status/pane.test.tsx (plus a stale "Next pill" comment and an unsourced CRAN sentence removed); the re-read found all corrected sites true. Verify green after the fixes, mod tests 2240.
+- 2026-10-18: implement done; status set to review.

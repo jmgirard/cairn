@@ -302,8 +302,7 @@ milestones. A fourth line shows the latest release, for example
 `v2.1.0 · 12 days ago · 4 done since`. The tag is the newest `v*` tag
 that `git describe` finds. The days run from that tag's commit to the
 read, and the count is the milestone files added to
-`cairn/milestones/archive/` since the tag. CRAN, for example, asks for 30
-days between releases. The PR and issue numbers come from one `gh api
+`cairn/milestones/archive/` since the tag. The PR and issue numbers come from one `gh api
 graphql` query on a github.com base remote, at the same times as the PR
 states (below). Until a read gives them, and for a remote on another
 host, they show `?`. A read that fails keeps the last numbers for the
@@ -325,8 +324,9 @@ glyphs named below. The pane does not show the work log. Each item takes
 one line, and a long item ends in `…`. In the desktop app, holding the
 pointer over a milestone's line, a task, a criterion, or a workable,
 waiting, blocked, hotfix, or candidate line opens a card above it with the
-whole text. Each section starts after a blank row with its name in bold,
-and its count at the right end. The Tasks and Criteria headings show their
+whole text. Each section starts after a blank row with its name in bold.
+The Tasks, Criteria, Blocked, Hotfixes, and Candidates headings show
+their count at the right end. The Tasks and Criteria headings show their
 count and a six-cell meter, `━` for the checked share and `─` for the
 rest. The next command follows a `→`. When the next step
 is planning, the line shows `/milestone-plan <title>`. The title is the
@@ -409,7 +409,8 @@ milestone file's `Branch/PR` header, before any `companion:` entry. Before
 a read the mark is an empty circle. After a read it shows the state word's
 mark: a check for `merged` and `approved`, an alert for `changes
 requested`, three dots for `in review`, a cross for `closed`, and a dashed
-circle for `unknown`. In
+circle for `unknown`. In the terminal these are `●`, `▲`, `◐`, `✕`, and
+`◌`, and the empty circle is `○`. In
 guest mode, a milestone you handed to the maintainers is `blocked` with
 its PR in that header, so the section lists the PRs that wait on review.
 `scripts/cairn_next.py` prints the same number after each "Externally

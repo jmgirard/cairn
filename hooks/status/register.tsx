@@ -1049,7 +1049,7 @@ async function baseOf($): Promise<Where> {
 // gives none keeps the last good numbers for the same root, and is empty
 // for any other root. The release read (tag, days, done count) is this
 // read's alone: null in guest mode, with no release tag, or when a git call
-// fails. It never rejects.
+// fails. It rejects only when the root and remote lookup rejects.
 async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
   const { root, guest, url } = await where
   if (root === null) return { root: null, counts: null, done: null }

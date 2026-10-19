@@ -1,8 +1,8 @@
 // The summary card's reads (M286): the open pull requests and open issues
-// of the base remote's repo, from one `gh api graphql` call, and the
-// milestones done since the latest release, from two git calls. `readPrs`
-// in register.tsx makes all three, at the times it reads the pull request
-// states, and at no other time.
+// of the base remote's repo, from one `gh api graphql` call, and the latest
+// release tag, its age, and the milestones done since it, from three git
+// calls. `readPrs` in register.tsx makes all four, through `readRepo`, at
+// the times it reads the pull request states, and at no other time.
 
 import type { CairnRepoCounts, CairnRepoDone } from '../../types'
 
