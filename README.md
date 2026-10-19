@@ -324,8 +324,10 @@ follow the theme. The terminal draws them as `●`, `◌`, `⊙`, and the
 glyphs named below. The pane does not show the work log. Each item takes
 one line, and a long item ends in `…`. In the desktop app, holding the
 pointer over a milestone's line, a task, a criterion, or a workable,
-waiting, blocked, hotfix, or candidate line opens a card above it with the
-whole text. Each section starts after a blank row with its name in bold.
+waiting, blocked, or hotfix line opens a card above it with the whole
+text. A candidate row opens its card from an info icon instead: the
+pointer over the row shows the icon and the row's `✎`, and the pointer
+over the icon opens the card. Each section starts after a blank row with its name in bold.
 The Blocked, Hotfixes, and Candidates headings show their count as a
 badge at the right end. The badge is a rounded pill with a white number,
 amber for Blocked, orange for Hotfixes, and blue for Candidates. The
@@ -398,8 +400,8 @@ is longer than 60 characters, is the same as another row's, or holds an
 icon. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end. In the desktop app the
-button shows only while the pointer is over its row, and the terminal
-draws it on each such row.
+button shows only while the pointer is over its row, beside the info
+icon that opens the row's card. The terminal draws it on each such row.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short
 title in the cleared conversation. The band has no such button. As with
 the next-step button, a press while Claude works outside a cairn skill

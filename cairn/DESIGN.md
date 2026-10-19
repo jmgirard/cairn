@@ -324,7 +324,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
   Box (M242). Off the terminal that Box has no key, `display: 'none'`, and
   `hover: { display: 'flex' }`, so ✎ shows in the row's flow only while the
-  pointer is over its line (M290). `paneLines` draws the lines by level (`LEVEL_RANK`: high,
+  pointer is over its line, after the info icon that opens the line's card
+  (M290). The terminal draws ✎ as before and has no info icon. `paneLines` draws the lines by level (`LEVEL_RANK`: high,
   normal, low, parked), each level in ROADMAP order, and `state.candidates` stays
   in ROADMAP order (M280). A parked row's mark is a gray `⧗`
   (`PRIORITY_MARK.parked`) and its title is gray, as a low row's is (M284,
@@ -495,9 +496,14 @@ transitions, human-gated merges, and a domain verification doctrine.
   inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
-  above the row, and the engine refuses a hover scope drawn hidden, so the
-  card has no key. A candidate line's ✎ Box is hidden the same way and has
-  no key for the same reason (M290).
+  above the row. The card has no key, because a keyed Box scopes its own
+  hover and a hidden scope is never under the pointer. A candidate line's
+  ✎ Box is hidden the same way and has no key for the same reason (M290).
+  A candidate line with a `full` sets `info`. Off the terminal it draws,
+  just before ✎, a hidden unkeyed Box that the line reveals, holding a Box
+  with `hover: { scope: 'cairn-info-<line key>' }` around the `info` icon.
+  Its card's `hover` names the same `scope`, so the card opens only from
+  the icon and not with ✎ (M290).
   The same read lists the open hotfix PRs (M226, `readHotfixes`). Since
   M230 the blocked URLs' reads (`readPr`) start beside the list call, and
   the hotfix URLs that no blocked row names are read once the list

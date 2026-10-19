@@ -134,7 +134,7 @@ by the drawn props alone.
       AC1 off the terminal and per AC2 on it. The tests pass.
 - [x] T4: Update the sites that AC7 names (AC6 before the amendment), and
       add the CHANGELOG entry.
-- [ ] T5: Add the `info` icon, the `info` field, the hidden info Box, and
+- [x] T5: Add the `info` icon, the `info` field, the hidden info Box, and
       the scoped card. Write the tests for the new AC2 clause and AC5
       first. Update the AC7 sites. The harness cannot hover, so AC6 is the
       only proof of the hover behavior. If AC6 shows the card opening with
@@ -178,6 +178,8 @@ by the drawn props alone.
 - 2026-10-19: re-audit: AC2 (full) — vacuous terminal check and no info-glyph clause; AC5 (full) — card/summary-card name clash, vague placement, a fixture set that never drew a non-candidate card beside candidates, harness cannot hover, hard-coded scope name; AC6 (full) — pointer onto the card closes it, "short title" ambiguity; AC7 (full) — three missed sites, the "engine refuses" sentence.
 - 2026-10-19: re-audit: AC2 (full) — `hover` must be read beside `props`; AC5 (full) — empty-set guard, lines without ✎ unbound; AC6 (full) — nothing; AC7 (full) — three claims asked of every site. All four applied as narrowings. That second line per criterion is the stop: these last narrowings go to the operator at the next live-look chip.
 - 2026-10-19: the amendment put the plan-owned body at 155 lines; the template comment in Acceptance criteria was cut to one line (criteria text unchanged). The 8-criteria split tripwire WARN is accepted, since splitting mid-run would leave AC5 and AC6 apart from the code they check.
+- 2026-10-19: AC5's non-candidate clause said "more than one Box in each fixture", but `candidates` draws one such card (its workable line); narrowed to "not empty". This joins the narrowings for the operator at the next chip.
+- 2026-10-19: T5 done. Tests first: the two AC5 info tests and the non-candidate test failed before the code. Then `icons.ts` gained `info`, `pane.ts` sets `info` on candidate lines with a title, and `register.tsx` draws the hidden info Box and scopes the card by `infoScope(line.key)`. The M286 card test now expects a scope on candidate lines' cards (`blocked-prs` draws candidates). Docs: README (two sites), DESIGN (two sites, the "engine refuses" sentence replaced), CHANGELOG. Mod test 2303 pass, 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
