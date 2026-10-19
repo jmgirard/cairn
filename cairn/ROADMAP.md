@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-18 (M284 done: `[parked]` token, 24 rows parked; M281 row pruned; mod-facts lesson extended; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-18 (status audit after M284: no tracking change; validate green; no open issues or PRs, no outside merges)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
