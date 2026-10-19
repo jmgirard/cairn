@@ -157,4 +157,6 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - ripple #4: dated reference pages describe the hook as ROADMAP plus milestones — reject (dated analyses, outside the stale-text rule).
 - copilot: hooks/session_context.py:316 (sanitize shelf names) — fix now.
 - copilot: review body (source-page counting) — fix now (label "INDEX entries").
+- fixed: each fix-now finding above and both Copilot items, fixed 9a2d8330; Copilot thread replied on and resolved, and one summary comment posted (issuecomment-6271576057).
+- Copilot level: Lite from the review body (set by GitHub's settings).
 - gate: `cairn_validate` all checks passed; `cairn_impact` skipped (no principle text changed); marketplace validate shows no version warning; the CHANGELOG entry carries no milestone id; skills/tests OK; `validation-doctrine.md` 101 lines and 6,638 bytes, under its 115 and 8,000 budget.
