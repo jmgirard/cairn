@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | planned | — | normal | milestones/M286-pane-card-look.md |
+| M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | in-progress | — | normal | milestones/M286-pane-card-look.md |
 | M285 | Copilot reviews a head that names its PR, and review reads the rest of the repo for stale text | done | — | normal | milestones/archive/M285-review-ripple-lens.md |
 | M284 | A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass | done | — | normal | milestones/archive/M284-parked-candidate-token.md |
 | M283 | The status audit lists unresolved bot threads on your open PRs | done | — | normal | milestones/archive/M283-bot-threads-open-prs.md |

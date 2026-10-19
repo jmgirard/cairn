@@ -1,13 +1,13 @@
 # M286: The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because the cairn pane ships in the plugin to every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m286-pane-card-look
 
 ## Goal
 
@@ -69,3 +69,4 @@ The cairn pane opens with a summary card of the repo's pull requests, issues, ca
 - 2026-10-18: plan gate chose to count done milestones by archive files added since the newest `v*` tag over counting `review M<NNN>: done` commit subjects, because the archive move is the step every owner-mode review makes; falsified by a repo that archives outside review or tags releases another way.
 - 2026-10-18: criteria audit (full) on the first draft: 15 findings, each fixed toward the narrower promise. AC1: the marker test is on trimmed text, and the cases vary the marker, the blank-line count, and a continuation line. AC2: it names the filter, the card and list share it, the sum compares to drawn lines, and ⌂ and ↻ are stated directly. AC3: one-count and non-integer replies, the no-call cases, the stored-value `?` rule, `readPrs` as the one caller, and four remote URL forms. AC5: the PR number span is excepted, and the no-read case is covered. AC6: the recording act moved to T1, and the test covers each heading form. AC7: it names the stored value type. AC8: no finding.
 - 2026-10-18: criteria audit (full) re-run on AC2 and AC4 after the question set added milestone counts: 6 findings, each fixed. AC2 names the planned and blocked counts from `PaneState` and fixes the card test's GitHub and done values. AC4 adds `--no-renames` and the archive pathspec, the not-yet-read case, the guest flag as an input of the pure function, the empty `git describe` case, and an argv test. The other criteria: no finding. This amendment follows the plan commit 19e8ddc2, which landed before the re-audit returned.
+- 2026-10-18: implement started on branch m286-pane-card-look, cut from main at 63324d1f. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
