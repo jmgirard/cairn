@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M283: The status audit lists unresolved bot threads on your open PRs
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -143,7 +143,7 @@ not added.
       stale (the M112 lesson).
 - [x] T4: Run the `verify` slot. Hand-run `skills/tests` after the skill
       edit (the M148 lesson).
-- [ ] T5: Return 1. In the new bullet, say that a thread with no `line`
+- [x] T5: Return 1. In the new bullet, say that a thread with no `line`
       is found in the head file by its content, not at `originalLine`, and
       that special characters in `<path>` are percent-encoded before the
       contents read. Fix the linked-item read's "one exception" sentence
@@ -187,6 +187,8 @@ not added.
 - 2026-10-18: review step 2 (Copilot arm): branch pushed, PR #295 opened; state query `none`, `gh pr edit 295 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #295 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
 - 2026-10-18: review return 1: diff-bug #1 (a thread with no `line` is judged at `originalLine` in the head file; the bullet must say to find the passage by its content); in the same pass, diff-bug #2 (the linked-item read's "one exception" sentence), diff-bug #5 with prior-review #1 (percent-encode `<path>`'s special characters before the contents read), and diff-bug #14 with blame-history #4 (README's "It also lists" names the audit).
 - 2026-10-18: T5 added for return 1 (minor amendment; Coverage AC2 gains T5). Checkpoint: the four fixes are in the tree; AC5 script printed the same 5 threads; a percent-encoded contents read worked; verify green (scripts 423 OK, hooks 179 OK, both validates passed, plugin test 2132 pass 0 fail); `skills/tests` OK. Claim audit on the fix: 6 claims read, 1 corrected (the `originalLine` sentence narrowed to threads that carry one); re-read pending.
+- 2026-10-18: claim audit: 6 claims read, 1 corrected — skills/milestone/SKILL.md, README.md (return-1 fix diff; the same reader re-read the corrected `originalLine` sentence and found it holding).
+- 2026-10-18: T5 done; implement complete after return 1: status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
