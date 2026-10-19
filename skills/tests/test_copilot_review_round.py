@@ -121,7 +121,7 @@ class TestWaitBound(unittest.TestCase):
         self.assertNotRegex(self.wait, r"10[ -]minute")
 
     def test_loop_prints_only_a_changed_state(self):
-        self.assertIn("It prints only a result that differs from the last",
+        self.assertIn("prints a result only when it differs from the last",
                       self.wait)
 
     def test_readme_states_the_same_bound(self):
@@ -196,7 +196,8 @@ class TestSummaryReply(unittest.TestCase):
                                   "**Summary reply.**", "## 6."))
 
     def test_reply_comes_after_the_threads_are_resolved(self):
-        self.assertIn("once all its threads are resolved", self.reply)
+        self.assertIn("once all its threads (the ones its body anchors) are "
+                      "resolved", self.reply)
 
     def test_reply_links_the_review(self):
         self.assertIn("the review's `url`, then one line per thread and "

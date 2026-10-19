@@ -191,8 +191,9 @@ can resolve against the fork instead of the base repo.
      PR-conversation read, with `--repo <base-repo>`. The one chip below
      takes the place of that read's per-item options. That read's
      blocking rule does not apply, since the chip pushes and never merges.
-     The reads only read: the Copilot round's replies and resolves
-     (`skills/shared/copilot-review.md` §5) do not run on this route.
+     The reads only read: the Copilot round's replies, resolves, and
+     summary replies (`skills/shared/copilot-review.md` §5) do not run on
+     this route.
      Run step 2's `git status` check, then `gh pr checkout <N> --repo
      <base-repo>`. When the local branch already holds commits past
      `headRefOid`, left by a declined run, show them and go on from them.

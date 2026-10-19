@@ -4170,7 +4170,7 @@ REGISTRY += [
         test="TestSummaryReply."
              "test_reply_comes_after_the_threads_are_resolved",
         target=COPILOT_MODULE,
-        block="once all its threads are resolved",
+        block="once all its threads (the ones its body anchors) are resolved",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4189,20 +4189,20 @@ REGISTRY += [
         test="TestUnsettledNoteInTheRound."
              "test_unsettled_note_takes_the_follow_up",
         target=COPILOT_MODULE,
-        block="thread the agent cannot settle without the user takes the "
-              "follow-up",
+        block="agent cannot settle without the user takes the follow-up "
+              "disposition,",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestUnsettledNoteInTheRound.test_the_gate_chip_names_it",
         target=COPILOT_MODULE,
-        block="or merge question names it.",
+        block="question names it.",
     ),
     Mutation(
         guard="test_copilot_review_round",
         test="TestUnsettledNoteInTheRound.test_questions_go_to_chat",
         target=COPILOT_MODULE,
-        block="A question for the user goes to chat, never to GitHub.",
+        block="question for the user goes to chat, never to GitHub.",
     ),
 ]
 
@@ -4595,7 +4595,7 @@ REGISTRY += [
         test="TestHotfixGuestChangeRoute."
              "test_route_reads_the_conversation_and_makes_changes",
         target=HOTFIX,
-        block="The reads only read: the Copilot round's replies and resolves",
+        block="The reads only read: the Copilot round's replies, resolves, and",
     ),
 ]
 

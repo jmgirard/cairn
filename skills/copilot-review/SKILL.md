@@ -25,7 +25,9 @@ The module's opt-in line does not apply to this skill. The user's request
 gives this skill permission for its pushes, replies, resolves, and summary
 reply. This skill never requests a Copilot review. The request stays with
 `/hotfix` and `/milestone-review` (module §2). This skill runs outside a
-milestone run. It works in a repo with or without `cairn/`.
+milestone run. It works in a repo with or without `cairn/`. Without
+`cairn/`, owner mode applies. In that case, with an `upstream` remote,
+`<base-repo>` names its repo, and otherwise the repo of `origin`.
 
 Phase header: `# Copilot review: PR #<N>` → `## Pass`.
 Chapter markers: mark a chapter at each numbered step below (session start
@@ -36,15 +38,16 @@ implicit).
 1. **Find the PR.** The argument is a PR number or a PR URL. A URL must
    name `<base-repo>`, from the rulebook's slug recipe. If a URL names
    another repo, end with a close block that names it. With no argument,
-   read the current branch's PR with `gh pr view --json number`. Then read
-   `gh pr view <N> --json state,headRefName,headRepositoryOwner`. In guest
-   mode, every `gh pr` command adds `--repo <base-repo>`.
+   find the open PR for the current branch with
+   `gh pr list --repo <base-repo> --head <branch> --state open --json number`.
+   Then read `gh pr view <N> --json state,headRefName,headRepositoryOwner`.
+   Every `gh pr` command adds `--repo <base-repo>`.
 
    End with a close block that names the cause, and write nothing, in each
    of these cases:
    - `gh` is missing or not signed in, or no PR is found.
    - The PR state is not `OPEN`.
-   - The head branch is the default branch.
+   - The head is the base repo's default branch.
    - The open-PR head rule maps the head to no remote that the operator
      can push to. In owner mode, the head owner must be the base repo's
      owner.
@@ -70,15 +73,18 @@ implicit).
    now, reject with a reason, and follow-up. The agent decides each one.
    If the agent cannot decide a note without the user, ask the user in
    chat. Use one `AskUserQuestion` chip with one question per such note,
-   at most four per chip. Put the agent's recommended disposition first.
+   four questions per chip, and more chips for more notes. Put the agent's
+   recommended disposition first.
    That thread gets no reply until the user answers. Never post a question
    for the user to GitHub.
 
 5. **Fix.** Make each fix-now change. Run the active profile's `verify`
    slot until it is green. The profile is in `cairn/PROFILE.md`, or else
    the one that tracking-rules "Toolchain profiles" infers. Commit on the
-   head branch. On an `m<nnn>-` branch, the commit also adds one work-log
-   line to that milestone's file. A follow-up becomes a candidate row in
+   head branch, and stage only the files the fixes touch, by path. Other
+   local changes stay unstaged. If a live milestone file's `Branch/PR`
+   header names the head branch, the commit also adds one work-log line to
+   that file. A follow-up becomes a candidate row in
    `cairn/ROADMAP.md`, committed with the fixes. With no `cairn/`, the close
    block lists the follow-up instead. In guest mode, commits carry no cairn
    words, and `cairn/` edits stay on disk with no commit.
@@ -91,9 +97,9 @@ implicit).
    A reply states facts only and never thanks Copilot. A fix reply names
    the pushed commit.
 
-7. **Answer the summary.** Wait until every thread of a review is resolved.
-   Then post the module's summary reply (§5) for each Copilot review with a
-   non-empty body that no comment by the operator links yet.
+7. **Answer the summary.** Post the module's summary reply (§5) for each
+   Copilot review with a non-empty body that no comment by the operator
+   links yet, once all of that review's threads are resolved.
 
 8. **Close.** End with a close block. It holds these parts:
    - One or two sentences on what changed.

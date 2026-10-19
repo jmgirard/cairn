@@ -6801,3 +6801,26 @@ run skills already make it).
 **Consequences:** An opted-in PR gets one more comment for each Copilot
 review. Falsified by a summary answered twice on one PR, or by a note
 the user wanted fixed before merge that went to a follow-up row.
+
+### D-188 (2026-10-19): The Copilot module's budget is reset to under 165 lines and 9,600 bytes for the scope M287 added — narrows the rulebook's compress-or-retire remedy for this one reset (M287 review)
+
+**Context:** `skills/shared/copilot-review.md` was at its M231 budget
+with no headroom when M287 added the summary reply and the unsettled-note
+rule. Compressing the module to fit dropped rules that earlier milestones
+added on purpose: M287's four-lens review found eleven such losses, and
+M282's claim audit found two in its own compression. Each loss changes
+what `/hotfix` and `/milestone-review` do.
+
+**Decision:** The module keeps main's text in full plus the M287
+additions, and its header budget is reset to under 165 lines and under
+9,600 bytes, naming M287 and this entry. The compress-or-retire remedy
+still holds for any later growth inside the module's scope. Rejected:
+moving the summary reply into `skills/copilot-review/SKILL.md` (the
+module is the one place `/hotfix` and `/milestone-review` read for the
+round, and M287's criteria cite it), and a further lossless compression
+(none fit; every candidate cut was a rule).
+
+**Consequences:** The module reads about 1,300 bytes longer at each round.
+Falsified by a later milestone that adds scope to the module and fits it
+under the new budget by compression with no lost rule, which would show
+the reset was not needed.

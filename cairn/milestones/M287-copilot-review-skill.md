@@ -50,11 +50,11 @@ block instead.
       review it, on another PR that carries at least one unresolved Copilot
       thread, named in the Review section, with the replies, resolves, and
       summary reply read back from GitHub.
-- [ ] AC2: When the agent cannot settle a thread's disposition without the
+- [x] AC2: When the agent cannot settle a thread's disposition without the
       user, `/copilot-review` asks the user with a chip in chat before it
       replies on that thread, and posts no question to GitHub. Shown by the
       skill's text and hand-run guards in `skills/tests`.
-- [ ] AC3: A case-insensitive search for `thank` in
+- [x] AC3: A case-insensitive search for `thank` in
       `skills/copilot-review/SKILL.md` and `skills/shared/copilot-review.md`
       finds only text that forbids thanking Copilot.
 - [ ] AC4: With the Copilot round on, `/hotfix` and `/milestone-review`
@@ -64,17 +64,17 @@ block instead.
       comment by the operator already carries. Shown by the module's text and
       hand-run guards in `skills/tests`, and, where Copilot reviews this
       milestone's PR, by that PR's summary answered once.
-- [ ] AC5: With the Copilot round on, a thread the agent cannot settle
+- [x] AC5: With the Copilot round on, a thread the agent cannot settle
       without the user takes the follow-up disposition in `/hotfix` and
       `/milestone-review`, unless it takes `/milestone-review` step 5's
       return floor, and the approval chip or merge question names it. Shown
       by the module's text and hand-run guards in `skills/tests`.
-- [ ] AC6: The new skill is listed in these four places: `CAIRN_SKILLS` in
+- [x] AC6: The new skill is listed in these four places: `CAIRN_SKILLS` in
       `hooks/status/band.ts`, the generated `hooks/status/fixtures.gen.ts`,
       `PHASES` in `scripts/cairn_cost.py`, and the README's skill table. The
       `CHANGELOG.md` Unreleased section has an entry for the skill and the
       summary reply.
-- [ ] AC7: The profile's `verify` slot is green (both unittest suites, the
+- [x] AC7: The profile's `verify` slot is green (both unittest suites, the
       two `claude plugin validate` runs, and `claude plugin test .`).
 
 ## Coverage
@@ -146,6 +146,7 @@ block instead.
 - 2026-10-19: T5 done: D-187 appended (annotates D-153).
 - 2026-10-19: T6 done: verify green (scripts 428 OK, hooks OK, both validates pass, claude plugin test 2281 pass 0 fail); skills/tests 910 OK; cairn_validate all checks passed.
 - 2026-10-19: claim audit: 58 claims read, 7 corrected — README.md, CHANGELOG.md, skills/shared/copilot-review.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md, skills/tests/test_copilot_review_round.py; the same reader re-read all 7 and found them correct; verify green again after the fixes (claude plugin test 2281 pass).
+- 2026-10-19: review: T2's compression replaced by main's module text plus the additions, with the budget reset under D-188; review fixes committed with verify green (scripts 0, hooks 0, both validates 0, plugin test 0 fail) and skills/tests 910 OK.
 - 2026-10-19: the simple-english lint hook flags older text in tracking-rules.md, README.md, and CHANGELOG.md on every edit; only this milestone's new text was brought under it.
 
 ## Decisions
@@ -153,3 +154,40 @@ block instead.
 
 ## Review
 <!-- owner: review · exclusive -->
+
+- 2026-10-19: copilot arm: PR #299 opened, header record pushed, first request exited 1 with a GitHub GraphQL server error, one retry exited 0 and the state query read the request as pending.
+- AC2: `test_copilot_review_round.TestCopilotReviewSkill` 3 tests OK (chat chip, wait for the answer, no GitHub question); mutation harness OK with the 3 blocks registered; step 4 of `skills/copilot-review/SKILL.md` states each clause.
+- AC3: `grep -n -i thank` on both files: 4 lines (module 93, 125; skill 3, 91), each "never thank"; `TestNoThanks` 4 tests OK; planted "Thanks for the review!" line seen red at implement.
+- AC5: `TestUnsettledNoteInTheRound` 3 tests OK; module §5 item 1 says an unsettled thread takes the follow-up unless it takes the return floor and the approval chip or merge question names it; mutation harness OK.
+- AC6: `copilot-review` in band.ts:72, fixtures.gen.ts:10, cairn_cost.py:77 PHASES, README skill table and Copilot bullet; CHANGELOG Unreleased has the round entry and the New entry; band test "skill list holds the skill directories" passes.
+- AC7: verify on the review head: scripts exit 0, hooks exit 0, plugin validate exit 0, marketplace validate exit 0, `claude plugin test .` 2281 pass 0 fail.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- cause shared by most findings: the T2 compression dropped rules; the module is restored to main's text plus the M287 additions, and its budget reset to under 165 lines and 9,600 bytes (D-188); now 159 lines, 9,304 bytes.
+- diff-bug #1: guest no-argument lookup `gh pr view --json number --repo` is refused by gh — fix now (step 1 uses `gh pr list --repo <base-repo> --head <branch>`).
+- diff-bug #2: nothing ties a thread to its review for "once all its threads are resolved" — fix now (index rule restored; threads are the ones the body anchors).
+- diff-bug #3: summary on a later pass lacks earlier threads' dispositions — fix now (taken from the operator's reply on each resolved thread).
+- diff-bug #4: body items of an answered review are disposed again each pass — fix now (the read skips a linked review's body items).
+- diff-bug #5: "A Copilot review the read disposed of is logged as noted" lost — fix now (restored).
+- diff-bug #6: §6 lost "in the same pass", the `none` condition, and the pending/level line — fix now (restored).
+- diff-bug #7: DESIGN.md Known issues names the not-recorded line and §6's condition — fix now (resolved by the restoration, which makes them true again).
+- diff-bug #8: "§3's error line does not apply" lost — fix now (restored).
+- diff-bug #9: with no `cairn/` in a fork clone, `<base-repo>` is the fork — fix now (`upstream` first, else `origin`).
+- diff-bug #10: on the head branch with a dirty tree, verify and commit take the user's edits — fix now (stage only the fix files by path).
+- diff-bug #11: "and is skipped" lost for anchored body findings — fix now (restored).
+- diff-bug #12: guest-mode vocabulary rule not stated for the summary — fix now (stated).
+- diff-bug #13: work-log line tied to `m<nnn>-` branches misses guest `<slug>` branches — fix now (keyed to a live milestone header naming the head branch).
+- diff-bug #14: "Wait until" reads as polling — fix now (reworded to "once").
+- diff-bug #15: "one chip ... at most four per chip" contradicts itself — fix now (four per chip, more chips for more notes).
+- diff-bug #16: "head branch is the default branch" blocks a fork's default-branch head — fix now (the base repo's default branch).
+- diff-bug #17: dropped details (PR's signals, go-on line, `--jq`, guest close step numbers, API date) — fix now (restored).
+- diff-bug #18: lines unwrapped past 80 columns — fix now (restored module wraps).
+- diff-bug #19: `--body '<reply>'` breaks on an apostrophe — reject (style: a placeholder in the same form as the existing thread-reply command; the shell quoting is the agent's routine).
+- blame-history #1: the round's own summary comment becomes a later read's item — fix now (logged as noted).
+- blame-history #2 to #5, #7: lost M244, RR17, M281, M282 clauses and evidence — fix now (restored).
+- blame-history #6: no route to reopen an unsettled note sent to a follow-up — reject (planned change: D-187 records the trade and its falsifier).
+- blame-history #8: work log says 137 lines and 7,999 bytes, the file then read 136 and 7,972 — fix now (the claim-audit edits changed the size after that line; this Review line records the current size).
+- prior-review #1: "not seen by GitHub" states as fact what M281's review required to be hedged — fix now ("may not be recorded" restored).
+- prior-review #2: §6 drops M282's gating and disagrees with README — fix now (restored).
+- ripple #1: `/hotfix` guest change route says only "replies and resolves" do not run — fix now (adds summary replies; pins in test_resume_routing and the mutation harness follow).
+- ripple #2, #3: DESIGN.md and README name the not-recorded line — fix now (resolved by the restoration).
+- gate: `cairn_validate` all checks passed; `cairn_impact` skipped (DESIGN.md changed only the skill count, no principle); marketplace validate shows no version warning; CHANGELOG entries carry no milestone ids; skills/tests 910 OK.
