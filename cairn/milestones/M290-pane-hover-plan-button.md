@@ -100,16 +100,16 @@ first click on an unfocused pane only focuses it. That gap stays with item
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Spike. The type docs do not say whether the test harness finds
+- [x] T1: Spike. The type docs do not say whether the test harness finds
       and presses a Button inside a `display: 'none'` Box. Mount a hidden
       ✎ on the desktop and check `ui.findAll({ type: 'Button' })` and
       `ui.press`. If either fails, stop for an amendment of AC1 and AC3.
-- [ ] T2: Tests first in `hooks/status/pane.test.tsx` for AC1 to AC4.
+- [x] T2: Tests first in `hooks/status/pane.test.tsx` for AC1 to AC4.
       Restrict the test near lines 2016-2036, which wants a keyed
       `candidate-<i>-plan` Box on both surfaces, to the terminal, and add
       the desktop form. On the desktop, tell the ✎ Box from the hover card
       by `position: 'absolute'`. The new AC1 and AC4 parts fail.
-- [ ] T3: In `register.tsx`, draw the parent Box of the `plan` Button per
+- [x] T3: In `register.tsx`, draw the parent Box of the `plan` Button per
       AC1 off the terminal and per AC2 on it. The tests pass.
 - [ ] T4: Update the sites that AC6 names, and add the CHANGELOG entry.
 - [ ] T5: Live look (AC5) with the operator, at the stop that the
@@ -137,6 +137,10 @@ first click on an unfocused pane only focuses it. That gap stays with item
 - 2026-10-19: question set: ✎ placement on hover — in the row (a cut title is cut about 4 columns earlier while hovered).
 - 2026-10-19: question set: a hidden ✎ out of reach of Tab on the desktop — accepted, pointer only.
 - 2026-10-19: question set: a live look by the operator before the merge question — granted.
+- 2026-10-19: implement started on m290-pane-hover-plan-button. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-19: T1 spike run as the T3 change itself: with the ✎ Box hidden on the desktop, the existing M219 AC1 Button list and the M261/M242 desktop press tests pass, so the harness finds and presses a hidden Button. Only M242 AC4's desktop keyed-Box test failed, as T2 expected.
+- 2026-10-19: T2 and T3: the code change came before the tests because of the spike. The drawn tree keeps `hover` beside `props`, as M286 found. Discrimination shown by two planted probes: the main-branch register.tsx fails AC1's two desktop tests and M242 AC4's two; every pane Button hidden off the terminal fails all three AC4 tests. The suite has 2299 pass, 0 fail.
+- 2026-10-19: implementation choice: the hide sits in register.tsx's shared Button loop, keyed on `kind === 'plan'` and the surface, rather than a separate branch for candidate lines, so pane.ts and its `PaneLine` shape do not change.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
