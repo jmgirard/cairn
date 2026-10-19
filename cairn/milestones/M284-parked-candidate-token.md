@@ -74,6 +74,7 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 - 2026-10-18: claim audit: 34 claims read, 4 corrected — CHANGELOG.md, README.md (hygiene unparks rows that the milestone file quotes or whose text names the milestone, not the reverse; "no token" narrowed to "no `[parked]` token" twice). The reader also flagged "the skills write `[parked]`" as resting only on the rulebook line. The author narrowed it in both files to the rulebook rule, and moved triage's parked sentences after the "those three" sentence so that its antecedent stays next to it.
 - 2026-10-18: T9 done: verify all five green on the final tree (scripts 428, hooks 179, mod 2184), skills/tests OK. Status → review.
 - 2026-10-18: review started. Copilot round on: pushed the branch, opened PR #296, state query `none`, requested Copilot (exit 0), re-query `none`: Copilot request on PR #296 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
+- 2026-10-18: step-7 approval: m284-parked-candidate-token approved for merge
 
 ## Decisions
 
