@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-18 (triage: 17 review-edge rows routed to 9 new DESIGN.md Known issues entries — report/apply disagree, claim-audit edges, amendment-return edges, late Copilot requests, Copilot reason-line, archived blocked rows, linked-item read, bot-thread report, plan target, started token before the colon, candidate order advisory, triage promote, guest push remote, stack-base, cut series, hotfix rerun, rejected end edges; no drops, no priority or token changes, no decision entry; validate green)_
+_Last hygiene check: 2026-10-18 (M284 done: `[parked]` token, 24 rows parked; M281 row pruned; mod-facts lesson extended; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M284 | A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass | review | — | normal | milestones/M284-parked-candidate-token.md |
+| M284 | A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass | done | — | normal | milestones/archive/M284-parked-candidate-token.md |
 | M283 | The status audit lists unresolved bot threads on your open PRs | done | — | normal | milestones/archive/M283-bot-threads-open-prs.md |
 | M282 | A later Copilot request is a retry, and a late-recorded request is not reported as missing | done | — | normal | milestones/archive/M282-copilot-retry-late-record.md |
-| M281 | A Copilot request that GitHub does not record is reported | done | — | normal | milestones/archive/M281-copilot-request-not-recorded.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - [parked] `/hotfix` companion arm: a hotfix spanning a primary repo and a companion checkout (hitop + hitop-form) has no milestone file to list the companion in, so M188's review-side arm (companions pushed, opened, and merged first via `cd <abs-path> && gh pr merge <N>`) does not reach it; the companions would be named at the step-6 approval chip. Promote when a hotfix actually spans two repos — never on a synthetic case — added 2026-09-27 — M188 Out
