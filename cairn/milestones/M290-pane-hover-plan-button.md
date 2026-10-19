@@ -46,16 +46,7 @@ the line (the user's choice after the first live look). AC5 guards that
 by the drawn props alone.
 
 ## Acceptance criteria
-<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
-     Every item opens with its positional label — `ACn:` — the item's
-     position counted top-to-bottom, the number Coverage cites; an
-     insertion, removal, or reorder renumbers the labels and the Coverage
-     lines together.
-     Driving RR set → its Binding criteria appear VERBATIM here (binding-
-     criteria check), each ingested as a numbered criterion carrying its tag
-     — `- [ ] ACn (BCm): <verbatim>` — with its own Coverage line, since
-     coverage-complete counts AC checkboxes positionally (M107); departures:
-     a "Deviations from RR<NN>" table ends this section. -->
+<!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
 - [ ] AC1: On the `desktop` surface, a mod test loops over each candidate
       line that `paneLines` gives the `plan` Button in the `candidates` and
@@ -186,6 +177,7 @@ by the drawn props alone.
 - 2026-10-19: substantive amendment: AC2 gains a no-hover, no-Svg clause on the terminal; new AC5 (the info icon and its scoped card); AC5-AC7 renumbered to AC6-AC8, with AC6 moved to circumplex and AC7's sites widened for the info icon; new T5; T5-T6 renumbered to T6-T7. A widening at the user's selection: AC5 added, AC2 and AC7 widened.
 - 2026-10-19: re-audit: AC2 (full) — vacuous terminal check and no info-glyph clause; AC5 (full) — card/summary-card name clash, vague placement, a fixture set that never drew a non-candidate card beside candidates, harness cannot hover, hard-coded scope name; AC6 (full) — pointer onto the card closes it, "short title" ambiguity; AC7 (full) — three missed sites, the "engine refuses" sentence.
 - 2026-10-19: re-audit: AC2 (full) — `hover` must be read beside `props`; AC5 (full) — empty-set guard, lines without ✎ unbound; AC6 (full) — nothing; AC7 (full) — three claims asked of every site. All four applied as narrowings. That second line per criterion is the stop: these last narrowings go to the operator at the next live-look chip.
+- 2026-10-19: the amendment put the plan-owned body at 155 lines; the template comment in Acceptance criteria was cut to one line (criteria text unchanged). The 8-criteria split tripwire WARN is accepted, since splitting mid-run would leave AC5 and AC6 apart from the code they check.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
