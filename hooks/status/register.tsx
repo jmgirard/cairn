@@ -420,53 +420,6 @@ export const register: Register = on => {
       )
     // A line that draws the info icon, which then alone opens its card (M290).
     const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && Svg !== undefined
-    // PROBE (M290, to revert): the first five info lines each try one way
-    // to open the card; every later line uses variant 0.
-    const infoKeys = lines.filter(infos).map(line => line.key)
-    const variant = (line: (typeof lines)[number]) => Math.max(0, Math.min(4, infoKeys.indexOf(line.key)))
-    const probeCard = (line: (typeof lines)[number], extra: Record<string, unknown>) => (
-      <Box
-        position="absolute"
-        display="none"
-        borderStyle="round"
-        borderColor={METER_EMPTY_KEY}
-        backgroundColor={HOVER_GROUND}
-        paddingX={1}
-        {...extra}
-      >
-        <Text wrap="wrap">{`[probe ${variant(line)}] ${line.full}`}</Text>
-      </Box>
-    )
-    const probeInfo = (line: (typeof lines)[number]) => {
-      if (Svg === undefined) return null
-      const scope = infoScope(line.key)
-      const icon = <Svg source={iconSvg('info')} alt="i" width={ICON_PX} height={ICON_PX} />
-      const v = variant(line)
-      const inner =
-        v === 1 ? (
-          <Box hover={{ scope }}>
-            <Text>ⓘ</Text>
-          </Box>
-        ) : v === 2 ? (
-          <Text hover={{ scope, bold: true }}>ⓘ</Text>
-        ) : v === 4 ? (
-          <Box key={`${line.key}-info`}>
-            {icon}
-            {probeCard(line, { bottom: 1, right: 0, width: 34, hover: { display: 'flex' } })}
-          </Box>
-        ) : (
-          <Box hover={{ scope }}>{icon}</Box>
-        )
-      return v === 3 ? (
-        <Box flexShrink={0} marginLeft={1}>
-          {inner}
-        </Box>
-      ) : (
-        <Box display="none" hover={{ display: 'flex' }} flexShrink={0} marginLeft={1}>
-          {inner}
-        </Box>
-      )
-    }
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
       (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
@@ -501,7 +454,16 @@ export const register: Register = on => {
                 />
               </Box>
             )}
-            {!infos(line) || Svg === undefined ? null : probeInfo(line)}
+            {!infos(line) || Svg === undefined ? null : (
+              // The info icon, hidden like ✎ until the pointer is over the
+              // line. Its inner Box names the hover group that alone opens
+              // the line's card, so the card no longer opens with ✎ (M290).
+              <Box display="none" hover={{ display: 'flex' }} flexShrink={0} marginLeft={1}>
+                <Box hover={{ scope: infoScope(line.key) }}>
+                  <Svg source={iconSvg('info')} alt="i" width={ICON_PX} height={ICON_PX} />
+                </Box>
+              </Box>
+            )}
             {(line.buttons ?? []).map(kind => {
               const button = PANE_BUTTONS[kind]
               const target = line.target
@@ -526,7 +488,7 @@ export const register: Register = on => {
                 </Box>
               )
             })}
-            {line.full === undefined || e.surface === 'terminal' || (infos(line) && variant(line) === 4) ? null : (
+            {line.full === undefined || e.surface === 'terminal' ? null : (
               // No key of its own: a keyed Box would scope its own hover, and a
               // hidden scope is never under the pointer. The keyed line Box
               // opens it, or on a line with the info icon its group (M290).
@@ -542,7 +504,7 @@ export const register: Register = on => {
                 backgroundColor={HOVER_GROUND}
                 paddingX={1}
               >
-                <Text wrap="wrap">{infos(line) ? `[probe ${variant(line)}] ${line.full}` : line.full}</Text>
+                <Text wrap="wrap">{line.full}</Text>
               </Box>
             )}
           </Box>
