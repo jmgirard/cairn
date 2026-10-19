@@ -4,6 +4,26 @@
 
 ### Changes that affect existing repos
 
+- **Review reads the rest of the repo for text the change left stale,
+  and Copilot sees the PR link in the milestone file.** `/milestone-review`
+  has a fourth reviewer, the ripple reviewer, on Haiku 5.5. It lists each
+  rule, term, number, name, command, flag, and path that the diff removes
+  or changes. It then searches the repo's files for the old wording and
+  for other places that state the same fact, and reports each line that
+  now disagrees with the change. It skips history records such as the
+  archive and `cairn/DECISIONS.md`. Every review runs it. An internal
+  docs-only change now gets two reviewers, the diff reviewer and the
+  ripple reviewer, where it got one. The diff reviewer also asks two new
+  questions. For code that awaits, can another handler change a value
+  between the await and its use? For a skill step, does it hold on a
+  first run, in guest mode, with a PR from a fork, with uncommitted
+  changes, and with a remote that moved ahead? In owner mode with the
+  Copilot review round on, when review opens a new PR, it now pushes the
+  commit that records the PR's URL in the milestone file before it
+  requests Copilot, so the version Copilot reviews already names its PR.
+  In a repo whose CI runs on pull requests, this extra push starts that
+  CI again at the start of review.
+
 - **A candidate row that waits on its trigger is parked, and the pane
   shows it last with an hourglass.** A candidate row can now open with
   `[parked]` in place of `[high]` or `[low]`. The token marks a row whose

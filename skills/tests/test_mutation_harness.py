@@ -118,7 +118,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="743 lines / 71,631 bytes",
+        block="749 lines / 72,247 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3136,7 +3136,7 @@ REGISTRY += [
 # M120: the delegation-warrant test. One entry per assert — the inline floor,
 # the one-not-several bar, and the fan-out reconciliation each carry the rule
 # independently, and the third is not commentary: without it the rule and the
-# three-reviewer fan-out sit in one section unreconciled.
+# review fan-out sit in one section unreconciled.
 REGISTRY += [
     Mutation(
         guard="test_delegation_warrant",

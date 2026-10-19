@@ -146,8 +146,14 @@ re-enters here, at the step the record shows is next:
    <body>` ready for review with the `Closes`/`Refs` and `Candidate row:`
    lines. The push always
    runs; only the create is skipped when the header already names an open
-   PR. Record a new PR's URL in the header in a commit on the branch; step
-   6's checkpoint push carries it. Then run
+   PR. If the push or the create fails, report the failure in one line and
+   request nothing. For a new PR, add its URL to the header in a docs-only
+   commit on the branch that stages the milestone file alone, by path. The
+   new URL goes first, before any closed PR's URL the header already names,
+   because the resume route and the readers take the first URL. Push that
+   commit before the request, so the head Copilot reviews names its PR
+   (D-185, D-186). If that push fails, report it in one line and go on: the
+   commit stays local until step 6's checkpoint push carries it. Then run
    the module's state query (§3) and request Copilot on `none`, asking for
    Balanced (§2). Copilot then reviews while steps 3 to 6 run, and step 7's
    PR-conversation read handles its threads. The arm does not run under
@@ -287,25 +293,35 @@ re-enters here, at the step the record shows is next:
    - **Internal tier, docs-only diff** — the declared tier is internal and
      `git diff <default-branch>...HEAD --name-only` shows only
      markdown/tracking files (no scripts, hooks, or other executable
-     surface): spawn **one** fresh-context reviewer — the Opus diff-bug lens
-     below — and skip the other two lenses.
+     surface): spawn **two** fresh-context reviewers, the Opus diff-bug lens
+     and the Haiku ripple lens below, and skip the two history lenses.
    - **Any other diff** — executable surface touched, user-facing tier, or
      no declared tier (a file without the slot, or the slot left `—`):
-     spawn the full three-lens fan-out.
+     spawn the full four-lens fan-out.
 
-   Spawn the reviewer(s) the routing selected — fresh-context, none having
+   Spawn the reviewers the routing selected — fresh-context, none having
    seen the implementation (under a spawn-restricting harness instruction,
-   tracking-rules' freshness-spawns clause governs); in the fan-out they run in parallel, each with
-   a *distinct evidence base* (a shared base just finds the same things
-   twice), while single-reviewer mode applies the same spawn rules to its
-   one Opus lens and the lens list below describes the fan-out.
+   tracking-rules' freshness-spawns clause governs). In both modes they run
+   in parallel, each with a *distinct evidence base* (a shared base just
+   finds the same things twice). The lens list below describes the fan-out,
+   and the docs-only mode spawns two of its lenses (D-185).
    **Reviewers share this working tree — ref-based git only:** `git diff`/`log`/`blame`
    against refs (e.g. `git diff <default-branch>..HEAD`), never `git checkout`
    or `git worktree add` in it, which parks the primary checkout on another
-   branch mid-review (tracking-rules subagent conduct; hit in M36). The three lenses:
+   branch mid-review (tracking-rules subagent conduct; hit in M36). The four lenses:
    - **Diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
+     It also asks two questions and reports what they find as ranked
+     findings. (a) Where the diff adds or changes code that awaits (an
+     `await`, a promise callback, or a timer): for each value that the code
+     reads or sets before an await and relies on after it, can another
+     handler change the value in between? Examples are a second press, a
+     session end, and a later read. (b) Where the diff adds or changes a
+     skill procedure step: does the step hold on at least these five paths?
+     They are a first run with no remote branch, PR, or file yet, guest
+     mode (`--repo <base-repo>`, a fork or base remote), a PR whose head is
+     on a fork, a dirty working tree, and a remote that moved ahead.
    - **Blame-history reviewer (Haiku).** Runs `git log` / `git blame` on
      the modified lines and judges the change *against the intent of the code
      it touches*: does it silently undo something a past milestone added
@@ -336,6 +352,22 @@ re-enters here, at the step the record shows is next:
      touched files, a probe finding no real threads, or no GitHub remote) it
      reports "no prior-review evidence", contributes zero findings, and
      never errors or blocks the gate.
+   - **Ripple reviewer (Haiku).** Reads the repo outside the diff for text
+     that the diff made stale. It reads the same diff as the diff-bug lens,
+     or `gh pr diff <N>` under route (b). It lists each rule statement, term,
+     number, identifier, command, flag, and path that the diff removes or
+     changes. For each item, it runs `git grep -n -F -e <text> HEAD --` on the
+     tracked files at the branch head, for the old form and for other
+     statements of the same fact. It reports each line outside the diff's
+     added lines that now disagrees with the diff, with its file and line
+     and what the diff now says. It leaves out history records:
+     `cairn/milestones/`, `cairn/DECISIONS.md`, `cairn/legacy/`,
+     `cairn/reviews/`, and the released-version sections of the changelog
+     file that the profile's `changelog` slot names. It
+     does not report a line that states a dated measurement or record of an
+     earlier setup. **Always spawn this lens.** It no-ops cleanly: when the
+     diff removes or changes nothing, it reports "no ripple evidence" and
+     contributes zero findings.
 
    Tell every reviewer spawned to report each candidate finding, filtering
    nothing before reporting, and to **rank its own findings** — most severe
@@ -372,8 +404,8 @@ re-enters here, at the step the record shows is next:
    with the next tracking commit before step 7's merge question, or by the
    next review pass when the fix came through a floor return).
    PR-conversation items keep step 7's `conversation:` line. The lens slugs
-   are `diff-bug`, `blame-history`, and `prior-review`, for the diff-bug,
-   blame-history, and prior-PR-comments reviewers; a lens run inline uses
+   are `diff-bug`, `blame-history`, `prior-review`, and `ripple`, for the
+   diff-bug, blame-history, prior-PR-comments, and ripple reviewers; a lens run inline uses
    its own slug. Each review pass that spawns reviewers writes one Review
    section line naming the lenses it spawned (`spawned: <lens>, …`); a
    degraded (author-inline) pass spawns none and writes no `spawned:` line,
@@ -581,14 +613,13 @@ re-enters here, at the step the record shows is next:
    title is cut from the row in `cairn/ROADMAP.md` as tracking-rules
    "Candidate short title" states. While the PR is open, the cairn pane in
    a checkout with no active milestone leaves that row out of its
-   Candidates list (M252, M261). Record the PR
+   Candidates list (M252, M261). Outside the Copilot arm, record the PR
    URL in the milestone header — a docs-only commit on the branch, left
    unpushed: the squash never needs it, and pushing it would move the PR
    head past the one CI just ran on; the resume routes and step 9 fall
    back to `gh pr list --head <branch>` once the local branch is gone.
    Where step 2's Copilot arm opened the PR, its URL is already in the
-   header in a commit that step 6's checkpoint push carried, so no record
-   is written here (D-153).
+   header in a commit on the branch, so no record is written here (D-185).
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it
