@@ -26,9 +26,13 @@ pointer is over that row, and the terminal draws ✎ where it does today.
 `hooks/status/register.tsx`. Off the terminal, that Box has no key,
 `display: 'none'`, and `hover: { display: 'flex' }`. It stays in the row's
 flow at the right end, inside the line's keyed Box, which is the hover
-scope that the M286 hover card uses. On the terminal, the keyed
-`candidate-<i>-plan` Box stays as it is. Tests, the comments beside the
-code, README, `cairn/DESIGN.md`, and CHANGELOG change too.
+scope that the M286 hover card uses. Off the terminal, a candidate line
+with a `full` also draws an info icon before ✎ in the same hidden way. The
+icon's Box names a hover group, and only that group opens the line's
+card. `pane.ts` marks such a line with an `info` field, and `icons.ts`
+gains an `info` icon. On the terminal, the keyed `candidate-<i>-plan` Box
+stays as it is. Tests, the comments beside the code, README,
+`cairn/DESIGN.md`, and CHANGELOG change too.
 
 **Out:** the other Buttons of the pane (⌂, ↻, Finish, Revise, Check, the
 Next action, Status) stay drawn at rest, since the request names only ✎.
@@ -36,7 +40,10 @@ A ✎ drawn over the title's end is not built (the user's choice at the
 question set). On the desktop, a hidden ✎ can be out of reach of the Tab
 key. The user accepted that at the question set, so no row is filed. A
 first click on an unfocused pane only focuses it. That gap stays with item
-(1) of the parked row "Gaps only the app or mod API can close".
+(1) of the parked row "Gaps only the app or mod API can close". Every
+line that is not a candidate line keeps opening its card from anywhere on
+the line (the user's choice after the first live look). AC5 guards that
+by the drawn props alone.
 
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets.
@@ -59,6 +66,8 @@ first click on an unfocused pane only focuses it. That gap stays with item
 - [ ] AC2: On the `terminal` surface, the same loop runs over the same
       lines. For each such line, the parent Box of the Button is the keyed
       `candidate-<i>-plan` Box, with `flexShrink: 0` and no `display` prop.
+      No Box under the line has a `hover` field in the drawn tree, read
+      beside `props` as M286 found, and no `Svg` sits under the line.
 - [ ] AC3: On each surface, a press of `cairn-pane-plan-<i>` for rows 2
       and 3 of `candidates-order` runs `/clear`, then `cairn:milestone-plan`
       with the short title of that row. A mod test shows this.
@@ -67,18 +76,38 @@ first click on an unfocused pane only focuses it. That gap stays with item
       Finish Button that a `MERGED` read draws on a `blocked-prs` line. No
       such parent Box, other than that of a candidate line's ✎, has a
       `display` prop.
-- [ ] AC5: The operator opens a new Code session in this repo, with the
-      docked desktop pane focused. At rest, no candidate row shows ✎. While
-      the pointer is over a row with a short title, that row shows its ✎.
-      A click on that ✎ runs `/clear`, then `/milestone-plan` with the
-      short title of that row.
-- [ ] AC6: These sites say that the desktop pane shows a candidate row's
-      ✎ only while the pointer is over the row, and that the terminal shows
-      it as before: README.md near lines 397-400, `cairn/DESIGN.md` near
-      lines 320-324 and 490-497, the comment near `register.tsx` lines
-      386-392, and the comment near `pane.ts` lines 66-75. The Unreleased
-      section of CHANGELOG has an entry for the change.
-- [ ] AC7: The `verify` slot of `cairn/PROFILE.md` is clean.
+- [ ] AC5: On the `desktop` surface, a mod test loops over each candidate
+      line that carries the `plan` Button in the `candidates` and
+      `candidates-order` fixtures. In each such line, the child just before
+      the parent Box of the Button is an unkeyed Box with `display: 'none'`
+      and `hover: { display: 'flex' }`. Its only child is a Box whose
+      `hover` is `{ scope: s }`, and that Box's only child is the `Svg` of
+      `iconSvg('info')`. The line's child Box with `position: 'absolute'`
+      has `hover: { display: 'flex', scope: s }`. The string `s` is the
+      same on both Boxes and differs between lines. The same test over
+      `pane-full` and `candidates` shows that each `position: 'absolute'`
+      child of a line that is not a candidate line keeps
+      `hover: { display: 'flex' }` with no `scope`, and that set has more
+      than one Box in each fixture.
+- [ ] AC6: The operator opens a new Code session in a cairn repo with
+      candidate rows and no active milestone (circumplex), with the docked
+      desktop pane focused. At rest, no candidate row shows the info icon
+      or ✎. While the pointer is over a row whose short title is not
+      empty, that row shows its info icon and its ✎, and no card. While the
+      pointer is over the info icon, the row's card shows. A click on ✎
+      runs `/clear`, then `/milestone-plan` with the short title of that
+      row.
+- [ ] AC7: README.md near lines 325-328 and 397-402 and `cairn/DESIGN.md`
+      near lines 320-326 and 490-500 each say three things: the desktop
+      pane shows a candidate row's info icon and ✎ only while the pointer
+      is over the row, the row's card opens from the info icon, and the
+      terminal shows ✎ as before. The comments near `register.tsx` lines
+      386-397, 451-457, and 466-467 and near `pane.ts` lines 66-77 each say
+      the part that their code draws. The `icons.ts` header names the
+      `info` icon. None of these sites says that a hidden Box cannot carry
+      a hover `scope`. The Unreleased section of CHANGELOG has an entry for
+      the change.
+- [ ] AC8: The `verify` slot of `cairn/PROFILE.md` is clean.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -86,12 +115,13 @@ first click on an unfocused pane only focuses it. That gap stays with item
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
 - AC1 → T1, T2, T3
-- AC2 → T2, T3
+- AC2 → T2, T3, T5
 - AC3 → T1, T2, T3
 - AC4 → T2, T3
 - AC5 → T5
-- AC6 → T4
-- AC7 → T6
+- AC6 → T6
+- AC7 → T4, T5
+- AC8 → T7
 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
@@ -111,10 +141,17 @@ first click on an unfocused pane only focuses it. That gap stays with item
       by `position: 'absolute'`. The new AC1 and AC4 parts fail.
 - [x] T3: In `register.tsx`, draw the parent Box of the `plan` Button per
       AC1 off the terminal and per AC2 on it. The tests pass.
-- [x] T4: Update the sites that AC6 names, and add the CHANGELOG entry.
-- [ ] T5: Live look (AC5) with the operator, at the stop that the
-      question set allowed.
-- [ ] T6: Run the `verify` slot (AC7).
+- [x] T4: Update the sites that AC7 names (AC6 before the amendment), and
+      add the CHANGELOG entry.
+- [ ] T5: Add the `info` icon, the `info` field, the hidden info Box, and
+      the scoped card. Write the tests for the new AC2 clause and AC5
+      first. Update the AC7 sites. The harness cannot hover, so AC6 is the
+      only proof of the hover behavior. If AC6 shows the card opening with
+      the row, or the icon not opening it, stop for an amendment.
+- [ ] T6: Live look (AC6) with the operator in circumplex. Tell the
+      operator first that the card can close when the pointer moves from
+      the icon onto the card.
+- [ ] T7: Run the `verify` slot (AC8).
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -144,6 +181,11 @@ first click on an unfocused pane only focuses it. That gap stays with item
 - 2026-10-19: T4 in progress (checkpoint): README, DESIGN (two sites), the register.tsx and pane.ts comments, and a CHANGELOG entry written. The verify run and the claim audit are running. The DESIGN history line 82 lists no M289 either, so M290 is not added there.
 - 2026-10-19: claim audit: 19 claims read, 2 corrected — hooks/status/register.tsx (the hidden-scope reason now follows the type docs), CHANGELOG.md (✎ was never on every row). Both held on the one re-read. The reader also named M286's older "engine refuses" wording at register.tsx near line 475 and DESIGN.md near line 498, which this branch does not add, so it stays.
 - 2026-10-19: T4 done. The verify slot is clean: scripts/tests, hooks/tests, both validates, and the mod test (2299 pass, 0 fail). T5 waits on the operator's live look.
+- 2026-10-19: live look 1 asked for this repo, where M290 is active and the pane draws no candidates; moved to circumplex (no active milestone, 40 rows).
+- 2026-10-19: live look 1 (circumplex): the operator saw the full-text card and ✎ open together on row hover and clash. The operator chose an info icon that opens the card, shown with ✎ only on row hover, on candidate rows only.
+- 2026-10-19: substantive amendment: AC2 gains a no-hover, no-Svg clause on the terminal; new AC5 (the info icon and its scoped card); AC5-AC7 renumbered to AC6-AC8, with AC6 moved to circumplex and AC7's sites widened for the info icon; new T5; T5-T6 renumbered to T6-T7. A widening at the user's selection: AC5 added, AC2 and AC7 widened.
+- 2026-10-19: re-audit: AC2 (full) — vacuous terminal check and no info-glyph clause; AC5 (full) — card/summary-card name clash, vague placement, a fixture set that never drew a non-candidate card beside candidates, harness cannot hover, hard-coded scope name; AC6 (full) — pointer onto the card closes it, "short title" ambiguity; AC7 (full) — three missed sites, the "engine refuses" sentence.
+- 2026-10-19: re-audit: AC2 (full) — `hover` must be read beside `props`; AC5 (full) — empty-set guard, lines without ✎ unbound; AC6 (full) — nothing; AC7 (full) — three claims asked of every site. All four applied as narrowings. That second line per criterion is the stop: these last narrowings go to the operator at the next live-look chip.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
