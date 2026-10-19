@@ -383,7 +383,8 @@ export const register: Register = on => {
     // (M208, LESSONS M194). The action Button sits after them in a Box that
     // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
-    // (M219, M236, M241). A Text drops its
+    // (M219, M236, M241). Off the terminal, a candidate line's ✎ Box has no
+    // key and stays hidden until the pointer is over the line (M290). A Text drops its
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a

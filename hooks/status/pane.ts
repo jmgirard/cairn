@@ -69,7 +69,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // Button's key carries, so two rows with one title draw two keys, and its
 // `title` is the row's short title, which the press carries. A candidate
 // line's `grow` puts ✎ at the right end of the row, and a blocked or
-// hotfix line with a tail grows so its tail sits there too.
+// hotfix line with a tail grows so its tail sits there too. Off the
+// terminal, register.tsx draws ✎ hidden until the pointer is over its
+// line (M290).
 // A line's `full`, set on each head, task, criterion, workable, waiting,
 // blocked, hotfix, and candidate line, is its whole text, which the desktop
 // shows in a card while the pointer is over the line (M286).

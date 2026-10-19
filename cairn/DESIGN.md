@@ -322,7 +322,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   is true, a line whose short title is not empty carries the `plan`
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
-  Box (M242). `paneLines` draws the lines by level (`LEVEL_RANK`: high,
+  Box (M242). Off the terminal that Box has no key, `display: 'none'`, and
+  `hover: { display: 'flex' }`, so ✎ shows in the row's flow only while the
+  pointer is over its line (M290). `paneLines` draws the lines by level (`LEVEL_RANK`: high,
   normal, low, parked), each level in ROADMAP order, and `state.candidates` stays
   in ROADMAP order (M280). A parked row's mark is a gray `⧗`
   (`PRIORITY_MARK.parked`) and its title is gray, as a low row's is (M284,
@@ -494,7 +496,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
   above the row, and the engine refuses a hover scope drawn hidden, so the
-  card has no key.
+  card has no key. A candidate line's ✎ Box is hidden the same way and has
+  no key for the same reason (M290).
   The same read lists the open hotfix PRs (M226, `readHotfixes`). Since
   M230 the blocked URLs' reads (`readPr`) start beside the list call, and
   the hotfix URLs that no blocked row names are read once the list

@@ -397,7 +397,9 @@ the pane draws its own marks and buttons with such glyphs.
 is longer than 60 characters, is the same as another row's, or holds an
 icon. While no cairn skill
 runs or waits on its background work, each row whose short title is not
-empty carries a `✎` button at its right end.
+empty carries a `✎` button at its right end. In the desktop app the
+button shows only while the pointer is over its row, and the terminal
+draws it on each such row.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short
 title in the cleared conversation. The band has no such button. As with
 the next-step button, a press while Claude works outside a cairn skill
