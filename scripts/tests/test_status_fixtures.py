@@ -144,7 +144,7 @@ def python_blocked(start, unreadable=()):
     return cn.blocked(root, rows, read=lambda path: None if os.path.normpath(path) in unreadable else cn.read_file(path))
 
 
-PRIORITY = re.compile(r"\[(high|low)\] ")
+PRIORITY = re.compile(r"\[(high|low|parked)\] ")
 
 # The characters JavaScript's String.prototype.trim removes (ECMAScript's
 # WhiteSpace and LineTerminator), so the twin trims as `candidateRows` does.

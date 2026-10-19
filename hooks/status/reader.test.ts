@@ -428,6 +428,10 @@ describe('highTitle names the first [high] row no counted token names (M272, M27
     expect(highTitle(two)).toBe('Second')
     expect(highTitle('## Candidates\n- Plain: x\n\n## Notes\n- [high] Not a row: y\n')).toBe(null)
   })
+  test('a [parked] row is never named (M284)', () => {
+    expect(highTitle(rows('[parked] First: x', 'Plain: y'))).toBe(null)
+    expect(highTitle(rows('[parked] First: x', '[high] Next: y'))).toBe('Next')
+  })
   test('no [high] row gives null', () => {
     expect(highTitle(rows('Plain: x', '[low] Low: y', '[HIGH] Upper: z', '[high]Tight: w'))).toBe(null)
   })

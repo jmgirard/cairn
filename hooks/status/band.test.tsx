@@ -487,7 +487,7 @@ function shownKey(name: string, skill: string | null = null): string | null {
 
 // The fixtures with a ROADMAP and no active or workable row, written out
 // by hand: each draws the empty row (M213 AC1).
-const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-order', 'candidates-skeleton', 'high-candidate']
+const EMPTY_FIXTURES = ['all-waiting', 'blocked-archived', 'blocked-prs', 'candidates-order', 'candidates-parked', 'candidates-skeleton', 'high-candidate']
 const EMPTY_TEXT = 'No milestone ready'
 
 const rowOf = (name: string, id: string) => FIXTURES[name].rows.find(row => row.id === id) as BandRow

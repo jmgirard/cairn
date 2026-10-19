@@ -41,7 +41,11 @@ class TestRulebookParagraph(unittest.TestCase):
         self.assertIn("a row with neither reads as `normal`", rules())
 
     def test_section_order(self):
-        self.assertIn("orders its rows high → normal → low", rules())
+        self.assertIn("orders its rows high → normal → low → parked", rules())
+
+    def test_parked_is_the_fourth_level(self):
+        # M284/D-184: a row whose promotion condition has not held.
+        self.assertIn("a row may instead open with `[parked]`, the fourth level", rules())
 
     def test_token_is_the_fact(self):
         self.assertIn("the token is the fact the order derives from", rules())
@@ -57,7 +61,10 @@ class TestInitSkeleton(unittest.TestCase):
         self.assertIn("- [high] short title: detail — added yyyy-mm-dd — links", self.skeleton())
 
     def test_skeleton_names_the_token_as_optional(self):
-        self.assertIn("`[high]`/`[low]` or absent (`normal`)", self.skeleton())
+        self.assertIn("`[high]`/`[low]`/`[parked]` or absent (`normal`)", self.skeleton())
+
+    def test_skeleton_states_the_four_level_order(self):
+        self.assertIn("ordered high → normal → low → parked:", self.skeleton())
 
 
 class TestTriageReadsTheToken(unittest.TestCase):
@@ -92,9 +99,57 @@ class TestTriageReadsTheToken(unittest.TestCase):
 
     def test_apply_orders_by_token_then_advisory(self):
         self.assertIn(
-            "ordered by token — high → normal → low — then advisory within a level",
+            "ordered by token — high → normal → low → parked — then advisory within a level",
             self.step(4),
         )
+
+    def test_enumeration_lists_the_parked_level(self):
+        # M284/D-184: the fourth level is read, not taken for a misspelling.
+        self.assertIn("its priority (`high` / `normal` / `low` / `parked`", self.step(1))
+        self.assertIn("opening `[high]`, `[low]`, or `[parked]` token", self.step(1))
+
+
+class TestTriageReRatesParked(unittest.TestCase):
+    """M284: a priority change adds or removes `[parked]`, and a promote of a
+    parked row writes `[high]`. These sentences wrap, so each step is read
+    with its whitespace collapsed (M171)."""
+
+    def step(self, n):
+        return " ".join(TestTriageReadsTheToken.step(self, n).split())
+
+    triage = TestTriageReadsTheToken.triage
+
+    def test_a_condition_not_held_adds_parked(self):
+        self.assertIn(
+            "an untagged or `[low]` row that states a condition that has not held gets `priority: <level> → parked`",
+            self.step(3),
+        )
+
+    def test_parked_applies_to_three_dispositions_and_comes_first(self):
+        self.assertIn("on a `keep`, `compress`, or `retitle` row, the fourth level, `parked`", self.step(3))
+        self.assertIn("and it comes before the grounds above", self.step(3))
+
+    def test_a_high_row_is_never_reparked(self):
+        # M284 review: a promoted row keeps its trigger text.
+        self.assertIn("a `[high]` row is never proposed `→ parked`", self.step(3))
+
+    def test_a_condition_held_removes_parked(self):
+        self.assertIn("a parked row whose condition held gets `priority: parked → normal`", self.step(3))
+
+    def test_a_promote_of_a_parked_row_names_it(self):
+        self.assertIn("or `priority: parked → high`", self.step(3))
+
+    def test_review_hygiene_unparks_only_the_rows_it_names(self):
+        text = " ".join(read("milestone-review", "SKILL.md").split())
+        self.assertIn(
+            "check each `[parked]` candidate row whose short title the milestone file quotes, "
+            "or whose text names this milestone's id",
+            text,
+        )
+        self.assertIn("leave every other parked row as it is", text)
+
+    def test_apply_writes_the_parked_token(self):
+        self.assertIn("(`[high]`/`[low]`/`[parked]`; `normal` is no token)", self.step(4))
 
 
 class TestPromoteCarriesHigh(unittest.TestCase):

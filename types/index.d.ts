@@ -76,7 +76,8 @@ export type CairnPaneState = {
   next: { action: string; command: string; id: string | null; title: string | null } | null
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
-  candidates: { priority: 'high' | 'normal' | 'low'; title: string }[]
+  // `parked`: a row whose promotion condition has not held (M284).
+  candidates: { priority: 'high' | 'normal' | 'low' | 'parked'; title: string }[]
   blocked: { id: string; title: string; pr: number | null; url: string | null; archived: boolean }[]
   taken: { title: string; ref: string }[]
 }

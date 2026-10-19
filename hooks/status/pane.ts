@@ -335,9 +335,12 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
   normal: { text: '○' },
   low: { text: '↓', color: GRAY },
+  // A parked row waits on a promotion condition that has not held (M284).
+  parked: { text: '⧗', color: GRAY },
 }
-// The order the Candidates list draws each priority in (M280).
-const LEVEL_RANK: Record<CandidateRow['priority'], number> = { high: 0, normal: 1, low: 2 }
+// The order the Candidates list draws each priority in (M280), the parked
+// rows last (M284).
+const LEVEL_RANK: Record<CandidateRow['priority'], number> = { high: 0, normal: 1, low: 2, parked: 3 }
 // A section heading's accent mark, in the phase's color (M208).
 export const ACCENT_MARK = '▎'
 // The meter's squares, filled and empty, and how many it draws (M208).
@@ -592,8 +595,9 @@ export function paneLines(
   // started draws no line (M261): one whose short title an open pull
   // request's body names exactly (M252), or that a counted started token
   // marks (M258). The heading counts the drawn rows, and with none it is
-  // not drawn. The lines draw high rows first, then normal, then low, each
-  // level in ROADMAP order, whatever order the file holds them in (M280).
+  // not drawn. The lines draw high rows first, then normal, then low, then
+  // parked (M284), each level in ROADMAP order, whatever order the file
+  // holds them in (M280).
   // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
   // index there as its key and its ✎ target, and `pressCandidate` looks the
   // row up by that index.
@@ -613,7 +617,7 @@ export function paneLines(
         `candidate-${i}`,
         2,
         [PRIORITY_MARK[row.priority], { text: ' ' }],
-        row.priority === 'low' ? { text: row.title, color: GRAY } : { text: row.title },
+        row.priority === 'low' || row.priority === 'parked' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
       if (acts && row.title !== '') {

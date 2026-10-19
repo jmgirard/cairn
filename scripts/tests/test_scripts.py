@@ -4152,6 +4152,64 @@ class TestCandidateOrderAdvisory(ScriptCase):
         self.assertIn("WARN  candidate order (2)", after.stdout)
         self.assertEqual((before.returncode, after.returncode), (0, 0), after.stdout)
 
+    def test_parked_rows_last_print_ok(self):
+        # M284: `[parked]` is the fourth level, below `[low]`.
+        self.tree.candidates = ["[high] A: x", "B: x", "[low] C: x", "[parked] D: x", "[parked] E: x"]
+        proc = run("cairn_validate.py", self.tree.build())
+        self.assertEqual(proc.returncode, 0, proc.stdout)
+        self.assertIn("OK    candidate order", proc.stdout)
+
+    def test_each_row_below_a_parked_row_warns_naming_parked(self):
+        # M284: a row of every other level held below a parked row warns,
+        # and names `parked` as the level it sits below.
+        self.tree.candidates = ["[parked] Waits: x", "[low] Low: x", "Plain: x", "[high] Top: x"]
+        cv = _load_validate()
+        self.assertEqual(
+            cv.check_candidate_order(str(self.tree.build())),
+            [
+                '"Low" (low) sits below a parked row',
+                '"Plain" (normal) sits below a parked row',
+                '"Top" (high) sits below a parked row',
+            ],
+        )
+
+    def test_a_misspelled_parked_token_reads_as_normal(self):
+        # `[PARKED] ` is not the token, so the row is normal and a low row
+        # above it warns, as it would above any untagged row.
+        self.tree.candidates = ["[low] Low: x", "[PARKED] Upper: x"]
+        cv = _load_validate()
+        self.assertEqual(
+            cv.check_candidate_order(str(self.tree.build())),
+            ['"[PARKED] Upper" (normal) sits below a low row'],
+        )
+
+
+class TestParkedCandidateToken(unittest.TestCase):
+    """M284: `cairn_next.candidate_texts` reads `[parked] ` as the level
+    `parked`, and `high_title` never names a parked row."""
+
+    def test_candidate_texts_reads_the_parked_token(self):
+        _load_scripts()
+        import cairn_next
+
+        roadmap = "## Candidates\n- [parked] Waits: x\n- [PARKED] Upper: x\n- [parked]Tight: x\n- Mid [parked] row: x\n"
+        self.assertEqual(
+            cairn_next.candidate_texts(roadmap),
+            [
+                ("parked", "Waits: x"),
+                ("normal", "[PARKED] Upper: x"),
+                ("normal", "[parked]Tight: x"),
+                ("normal", "Mid [parked] row: x"),
+            ],
+        )
+
+    def test_high_title_passes_over_a_parked_row(self):
+        _load_scripts()
+        import cairn_next
+
+        self.assertIsNone(cairn_next.high_title("## Candidates\n- [parked] First: x\n- Plain: y\n"))
+        self.assertEqual(cairn_next.high_title("## Candidates\n- [parked] First: x\n- [high] Next: y\n"), "Next")
+
 
 # --- release window advisory (M88) ------------------------------------------
 # Titles taken from real milestones so the false-positive axis is tested where

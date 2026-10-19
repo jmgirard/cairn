@@ -333,18 +333,28 @@ shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
 ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
-Each row takes one line: `↑` for a `[high]` row, `○` for a normal one, and
-`↓` for a `[low]` one, then the row's short title. The `[high]` rows come
-first, then the normal rows, then the `[low]` rows. Each group keeps its
+Each row takes one line: `↑` for a `[high]` row, `○` for a normal one,
+`↓` for a `[low]` one, and a gray `⧗` for a `[parked]` one, then the row's
+short title. A `[parked]` row waits on a promotion condition that has not
+held, such as "promote when a second repo needs it". Its title is gray, as
+a `[low]` row's is. The `[high]` rows come first, then the normal rows,
+then the `[low]` rows, then the `[parked]` rows. Each group keeps its
 ROADMAP order, whatever order the file holds the groups in.
+The rulebook's "Candidate priority token" rule has whoever adds a row, you
+or a skill, write `[parked]` when the row's condition does not hold yet. `/cairn-triage` adds or removes it as it re-rates a row, and a
+promote replaces it with `[high]`. After a merge, `/milestone-review`
+removes it from each parked row whose short title the milestone file
+quotes, or whose text names the milestone, where the merge made its
+condition hold. A row whose condition is not written down gets no
+`[parked]` token.
 `scripts/cairn_validate.py` prints a `candidate order` WARN, with one line
 under it for each row that the file holds below a row of a lower priority.
 When `/cairn-triage`
 promotes a candidate row (marks it ready to plan), it also gives the row
 `[high]`, so a promoted row shows `↑`. Rows
 inside an HTML comment, such as the placeholders of a new ROADMAP, are not
-listed. A row's short title is its text after a leading `[high] ` or
-`[low] ` token with its space, up to its first `: `, with outer spaces
+listed. A row's short title is its text after a leading `[high] `,
+`[low] `, or `[parked] ` token with its space, up to its first `: `, with outer spaces
 removed. A row with no `: ` is cut at its first ` — ` (space, em dash,
 space), so its date and links stay out of the title. A row with neither
 shows all its text. Open each row with a few words that name it, then

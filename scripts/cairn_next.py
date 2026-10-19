@@ -107,8 +107,9 @@ def candidate_texts(roadmap):
     flush-left line that opens with `- ` under a `## ` heading that starts
     with `## candidates` in any letter case, with each HTML comment that
     opens and closes within such a section removed first. `priority` is
-    `high` or `low` when the row opens with exactly `[high] ` or `[low] `,
-    else `normal`, and `text` is the row after `- ` and that token. Every
+    `high`, `low`, or `parked` when the row opens with exactly `[high] `,
+    `[low] `, or `[parked] ` (M284), else `normal`, and `text` is the row
+    after `- ` and that token. Every
     `## ` line starts or ends a section. The cairn pane's `candidateTexts`
     (hooks/status/reader.ts) reads the same rows (M272)."""
     sections = []
@@ -128,7 +129,7 @@ def candidate_texts(roadmap):
                 continue
             text = line[2:]
             priority = "normal"
-            for token, level in (("[high] ", "high"), ("[low] ", "low")):
+            for token, level in (("[high] ", "high"), ("[low] ", "low"), ("[parked] ", "parked")):
                 if text.startswith(token):
                     priority, text = level, text[len(token) :]
                     break

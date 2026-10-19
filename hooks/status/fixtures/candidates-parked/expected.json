@@ -1,0 +1,17 @@
+{
+  "cwd": "",
+  "workable": [],
+  "rows": [],
+  "pane": [],
+  "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
+  "candidates": [
+    {"priority": "parked", "title": "Parked first"},
+    {"priority": "normal", "title": "Normal row"},
+    {"priority": "normal", "title": "[PARKED] Upper-case parked, read as normal"},
+    {"priority": "normal", "title": "[parked]No space after the parked token, kept in the title"},
+    {"priority": "normal", "title": "Token [parked] mid-row, read as normal"},
+    {"priority": "low", "title": "Low row"},
+    {"priority": "parked", "title": ""},
+    {"priority": "parked", "title": "Parked last"}
+  ]
+}

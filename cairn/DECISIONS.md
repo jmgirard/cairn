@@ -6619,3 +6619,62 @@ request per pass, each dropped by GitHub, and one not-recorded line per
 pass. A request GitHub records a few seconds after §2's re-query prints
 `none` can still draw a second request from a pass that runs §2 within
 those seconds.
+
+### D-184 (2026-10-18): A candidate row whose promotion condition has not held opens with `[parked]`, a fourth level that the cairn pane draws last with a gray `⧗` — narrows D-035's rejection of a "parked" label and D-134's no-grouping clause, supersedes D-179's consequence that `[high]` means "important" or "ready to plan", names D-180, annotates D-182; passes D-108's door on D-179's falsifier (M284)
+
+**Context:** The user asked for a mark on candidate rows whose trigger
+has not fired. D-179 recorded that `[high]` means "important" or "ready
+to plan", and that the ROADMAP no longer tells the two apart. Its
+consequence named the falsifier: "If an operator needs to tell a ready
+row from an important row that still waits, and cannot, this is the
+entry to supersede." D-180 corrected D-179's relation to D-134 from
+"annotates" to "narrows" in its own body. D-035
+rejected category labels such as "parked" as de facto sub-statuses, and
+it kept trigger conditions in row prose. D-134 added the priority token
+and said that D-035's no-grouping rejection stands. D-108 bars a new rule
+about how records are written unless its trigger is a defect in shipped
+behavior.
+
+**Decision:** At the user's choice in the M284 question set, a candidate
+row may open with `[parked]` in place of `[high]` or `[low]`, as a fourth
+level after low. Whoever adds a row writes the token when the row states
+a promotion condition that does not hold at that time. `/cairn-triage`
+adds or removes it as a priority change, and a promote replaces it with
+`[high]`. `/milestone-review` post-merge hygiene removes it from a row
+that the milestone quotes or names, where the merge made the condition
+hold. The cairn pane draws a parked row with a gray `⧗` and a gray title,
+after the `[low]` rows. The `candidate order` advisory ranks it lowest.
+This narrows D-035's rejection of a "parked" label, and D-134's clause
+that the no-grouping rejection stands: the label is a per-row token, and
+the only grouping is the pane's level order that D-182 set. The ROADMAP
+keeps no section per level. It supersedes D-179's consequence that
+`[high]` means "important" or "ready to plan" for rows that wait: a
+waiting row is now `[parked]`. A promoted row is still `[high]`. D-108's
+door is passed on its trigger: the operator could not tell a ready row
+from a waiting one, which is D-179's falsifier and a defect in what the
+pane and the token rule do for their users. D-182's level order gains
+the fourth level, and its rejection of a token check stands.
+
+**Rejected:** Reading the word "promote" in row prose, the plan's first
+draft, at the user's choice. A row that triage promoted keeps its
+trigger text, so it would still read as waiting, and rows word their
+triggers in many ways. Falsified by an operator who finds `[parked]`
+stale on rows whose condition held. A parked row that keeps its `[low]`
+rating (two tokens), because the user asked for one group below low.
+This repo's 13 `[low]` rows with an unmet condition give up `[low]`.
+Falsified by an operator who needs a parked row's importance and cannot
+read it. A mark in place of `○` only, or at the line's end, at the
+user's choice. A check that every row with a condition carries the
+token, because D-134 rejected a token check.
+
+**Consequences:** The token and the row's condition text state one fact
+twice, the drift surface D-035 named. Triage's re-rate and hygiene's
+unpark step are what keep the two in step, and a stale token is this
+entry's falsifier. Nearly every row states a condition, so the writer rule
+reaches most new rows. It is still not the mandatory token D-134 rejected:
+no check reads it, and a row without it stays valid and reads `normal`.
+A row whose condition is not written down gets no
+token, and no check finds a missing one. Hygiene checks only the parked
+rows that the milestone quotes or names, so a parked row that a merge
+readied without naming it waits for `/cairn-triage`. Adopting repos' rows
+carry no token until a triage pass proposes it.
