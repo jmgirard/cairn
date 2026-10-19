@@ -626,9 +626,10 @@ review starts.
 
 **3. Ship it.** Review re-runs every check fresh, gathers evidence for each
 acceptance criterion (no evidence, no tick), and hands the diff to
-independent reviewer agents that didn't write it — a three-lens fan-out for
-anything touching executable or user-facing surface, a single reviewer for
-an internal docs-only diff. Claude settles each finding itself: it fixes a
+independent reviewer agents that didn't write it — a four-lens fan-out for
+anything touching executable or user-facing surface, two reviewers for
+an internal docs-only diff. One lens reads the rest of the repo for text
+the change left stale. Claude settles each finding itself: it fixes a
 real one inside the milestone's scope, sends a real one outside it to a
 ROADMAP candidate row, and rejects a false one with the reason. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front

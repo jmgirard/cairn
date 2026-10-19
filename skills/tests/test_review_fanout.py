@@ -1,17 +1,19 @@
 """Regression guard: the /milestone-review fan-out.
 
-The review gate's independent review is a three-lens fan-out (distinct evidence
+The review gate's independent review is a four-lens fan-out (distinct evidence
 bases) whose ranked findings the maintainer triages at the gate. These are
 skill-text mechanics — nothing at runtime enforces them — so this test locks
 the load-bearing pieces against silent regression:
-  * three reviewers with *distinct* evidence bases, each naming its model
+  * four reviewers with *distinct* evidence bases, each naming its model
     (Opus diff-bug, Haiku blame-history, Haiku prior-PR-comments — M40,
-    the two history lenses moved from Sonnet to Haiku by M269);
+    the two history lenses moved from Sonnet to Haiku by M269 — and Haiku
+    ripple, M285);
   * the prior-PR lens reading archived Review sections first, walking PR
     threads only behind a probe, always spawned, and scoring nothing itself;
   * the reviewers reminded to use ref-based git only in the shared tree;
-  * the model-strategy section counting three distinct-evidence reviewers
+  * the model-strategy section counting four distinct-evidence reviewers
     and naming the two history lenses under Haiku, never Sonnet (M269);
+  * the ripple lens in both review modes, with its no-op case (M285);
   * Explore searches routed to Haiku in the rulebook and at the four skill
     sites that spawn them, with no Sonnet subagents bullet left (M277).
 
@@ -37,11 +39,21 @@ def rules():
 
 
 class TestReviewFanout(unittest.TestCase):
-    def test_three_distinct_evidence_lenses(self):
+    def test_four_distinct_evidence_lenses(self):
         t = review()
         self.assertRegex(t, r"Diff-bug reviewer \(Opus\)")
         self.assertRegex(t, r"Blame-history reviewer \(Haiku\)")
         self.assertRegex(t, r"Prior-PR-comments reviewer \(Haiku\)")
+        self.assertRegex(t, r"Ripple reviewer \(Haiku\)")
+
+    def test_ripple_lens_runs_in_both_modes_and_noops(self):
+        # M285 (D-185): the docs-only mode spawns the ripple lens beside the
+        # diff-bug lens, and a diff that removes or changes nothing gives a
+        # clean no-op. Whitespace is collapsed so a wrap still matches.
+        t = " ".join(review().split())
+        self.assertIn("the Opus diff-bug lens and the Haiku ripple lens below", t)
+        self.assertIn("spawn the full four-lens fan-out", t)
+        self.assertIn('"no ripple evidence"', t)
 
     def test_evidence_bases_are_distinct_by_design(self):
         # the whole point of the fan-out — a shared base finds things twice
@@ -79,12 +91,13 @@ class TestReviewFanout(unittest.TestCase):
         return "\n".join(run)
 
 
-    def test_model_strategy_names_three_reviewers(self):
-        # M40: the fan-out grew a third distinct-evidence lens; the
-        # model-strategy section must count three and name the new lens.
-        r = rules()
-        self.assertRegex(r, r"[Tt]hree distinct-evidence reviewers")
+    def test_model_strategy_names_four_reviewers(self):
+        # M40 grew a third distinct-evidence lens and M285 a fourth; the
+        # model-strategy section must count four and name the ripple lens.
+        r = " ".join(rules().split())
+        self.assertRegex(r, r"[Ff]our distinct-evidence reviewers")
         self.assertIn("prior-PR", r)
+        self.assertIn("Haiku ripple", r)
 
     def test_model_strategy_routes_history_lenses_to_haiku(self):
         # M269 (D-174): the review bullet names both history lenses under

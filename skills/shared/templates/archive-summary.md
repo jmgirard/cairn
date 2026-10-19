@@ -16,6 +16,6 @@ them; git holds that.>
 **Decisions:** <milestone-local decisions, or "none". A cross-cutting one is
 promoted to DECISIONS.md and cited by its D-0NN id, never restated here.>
 
-**Review:** <review result (single reviewer or fan-out per the stakes
+**Review:** <review result (docs-only pair or fan-out per the stakes
 routing), actioned findings and their dispositions, anything graduated or
 retired at post-merge hygiene.>

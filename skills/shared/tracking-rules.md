@@ -646,15 +646,17 @@ These rules bind all chat output while any cairn skill is active.
 - **Haiku subagents**: well-specified edit work (D-151) — mechanical migrations, test writing against a spec,
   boilerplate. Give complete specs; verify their diffs and run the `verify` slot before committing; summarize results
   into one work-log line. Haiku also runs the blame-history and prior-PR-comments lenses of the review fan-out
-  (D-174), whose findings the agent settles at `/milestone-review` step 5 like any lens's. Haiku also runs fan-out
+  (D-174) and the ripple lens in both review modes (D-185), whose findings the agent settles at `/milestone-review`
+  step 5 like any lens's. Haiku also runs fan-out
   searches (Explore, D-181), with a reading list naming the files or areas to read. Summarize an Explore fan-out's
   results into one work-log line.
 - **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
-  milestone whose diff touches only markdown/tracking files gets one Opus diff reviewer; any other diff gets the
-  three distinct-evidence reviewers the review skill defines (Opus diff-bug, Haiku blame-history, Haiku
-  prior-PR-comments — always spawned, no-op without prior-review evidence); reviewers rank their findings, the
-  agent settles each one, and the merge question lists every disposition.
+  milestone whose diff touches only markdown/tracking files gets the Opus diff reviewer and the Haiku ripple reviewer;
+  any other diff gets the four distinct-evidence reviewers the review skill defines (Opus diff-bug, Haiku
+  blame-history, Haiku prior-PR-comments — always spawned, no-op without prior-review evidence — and Haiku ripple,
+  which reads the rest of the repo for text the diff made stale); reviewers rank their findings, the agent settles
+  each one, and the merge question lists every disposition.
 - **Fable subagents**: only through the RB/RR brief protocol (`/milestone-brief`) after a per-instance approval gate —
   costlier than Opus, so a deliberate per-instance choice, never a standing default; ad-hoc Fable spawning is
   prohibited. The implementing session never authors the durable verdict on the review constraining it — that routes to

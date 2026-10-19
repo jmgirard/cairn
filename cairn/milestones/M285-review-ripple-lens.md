@@ -40,9 +40,9 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 ## Tasks
 
 - [x] T1: Reorder the Copilot arm (`skills/milestone-review/SKILL.md:142-157`) and edit step 8's header sentence (`:588-591`). Grep the skill and `skills/shared/copilot-review.md` for other sentences that put the header push at step 6.
-- [ ] T2: Add the ripple reviewer to step 5: the routing bullets (`:287-294`), the lens list (`:305-338`), and the slug sentence (`:374-377`). Write its instruction in the shape of the prior-PR lens's bullet, with its own no-op clause.
-- [ ] T3: Add the two questions to the diff-bug lens bullet (`:306-308`).
-- [ ] T4: Edit tracking-rules "Model and agent strategy" (`skills/shared/tracking-rules.md:646-657`) and `README.md:629`. Run the AC4 sweep and fix each line it returns. Update `skills/tests/test_review_fanout.py`, which pins "three", and hand-run `python3 -m unittest discover -s skills/tests` (LESSONS M148).
+- [x] T2: Add the ripple reviewer to step 5: the routing bullets (`:287-294`), the lens list (`:305-338`), and the slug sentence (`:374-377`). Write its instruction in the shape of the prior-PR lens's bullet, with its own no-op clause.
+- [x] T3: Add the two questions to the diff-bug lens bullet (`:306-308`).
+- [x] T4: Edit tracking-rules "Model and agent strategy" (`skills/shared/tracking-rules.md:646-657`) and `README.md:629`. Run the AC4 sweep and fix each line it returns. Update `skills/tests/test_review_fanout.py`, which pins "three", and hand-run `python3 -m unittest discover -s skills/tests` (LESSONS M148).
 - [ ] T5: Write the CHANGELOG Unreleased entry and the D-entry (D-185).
 - [ ] T6: Run the `verify` slot.
 
@@ -61,3 +61,8 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 - 2026-10-18: plan gate chose pushing the header commit before the Copilot request over telling Copilot to ignore the header in a `.github/copilot-instructions.md`, because the push fixes the record and adds no file to adopting repos; falsified by a header thread from Copilot on a PR whose header commit was on the remote before the request.
 - 2026-10-18: implement started on branch m285-review-ripple-lens; the untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
 - 2026-10-18: T1: the Copilot arm now reports a failed branch push or create and requests nothing, adds a new PR's URL to the header (beside a closed PR's URL), and pushes that commit before the request; a failed header push leaves the commit for step 6. Step 8 cites D-185. No other sentence in the skill, `copilot-review.md`, `/hotfix`, or README placed the header push at step 6. The arm's `D-152, D-153` citation stays, because a hand-run guard pins it, and the arm cites D-185 inline.
+- 2026-10-18: T1 verify: both unittest suites OK (179 scripts tests), both manifests validate, `claude plugin test` 2184 pass, 0 fail.
+- 2026-10-18: T2: step 5's routing gives the docs-only mode the diff-bug and ripple lenses, the fan-out four lenses, and the ripple bullet follows the prior-PR bullet with its own no-op clause. The paragraph that named "single-reviewer mode" now names the docs-only mode, so no step-5 line uses the old name.
+- 2026-10-18: T3: the diff-bug bullet carries questions (a) and (b) as AC3 words them.
+- 2026-10-18: T4: tracking-rules' Haiku bullet and review bullet name the ripple lens; README says four lenses and two reviewers for an internal docs-only diff; the archive-summary template says "docs-only pair". The rulebook grew to 749 lines / 72,248 bytes, so the `/milestone` mass baseline and its two hand-run pins are re-seeded from M277's 743 / 71,631 (LESSONS M149). `test_review_fanout.py` now pins four lenses, the ripple lens in both modes, and its no-op; `test_delegation_warrant.py`'s docstring says four reviewers. `skills/tests`: 897 tests OK.
+- 2026-10-18: T4 sweep: the AC4 command returns 5 lines, none stating a lens or reviewer count: `band.test.tsx:3738` and `tracking-rules.md:73` (other uses of "other two"), `test_lesson_graduation.py:26` and `test_mutation_harness.py:655` (likewise), and `test_mutation_harness.py:3139`, an M120-dated comment on the fan-out of that time.

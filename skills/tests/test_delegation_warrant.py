@@ -23,7 +23,7 @@ independently:
 - the review fan-out's standing, which is load-bearing rather than
   explanatory. The fan-out is described three bullets below this rule in the
   same section, and with this clause deleted a reader meets "spawn one rather
-  than several" and then three reviewers with no stated reconciliation. The
+  than several" and then four reviewers with no stated reconciliation. The
   clause says the fan-out is not the forbidden case (distinct evidence bases,
   not one task done three times) rather than an exception to be traded off.
 
