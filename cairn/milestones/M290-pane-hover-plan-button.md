@@ -189,6 +189,7 @@ by the drawn props alone.
 - 2026-10-19: live look 4 (circumplex): hover, ⓘ card, and ✎ click all work (the first click on an unfocused pane only focuses it, the known gap). The operator kept the AC1 and AC5 changes. ✎ and ⓘ did not sit at one height: the parked ✎ hung from the row's top.
 - 2026-10-19: implementation choice: the ✎ Box now spans the row (`top: 0`, `bottom: 0`) and centers its Button (`alignItems: 'center'`), as the row centers ⓘ. No criterion changes. Mod test 2303 pass, 0 fail.
 - 2026-10-19: T6 done. Live look 5 (circumplex): ⓘ and ✎ sit at one height. AC6's checks all held across looks 4 and 5. The operator asked for a hand cursor over pane Buttons; the mod API has no cursor prop, so it went to item (4) of the parked row "Gaps only the app or mod API can close".
+- 2026-10-19: claim audit: 55 claims read, 0 corrected — register.tsx, pane.ts, pane.test.tsx, README.md, CHANGELOG.md, cairn/DESIGN.md. A second pass over the final diff, since the first (19 claims, 2 corrected) ran before T5 and the probes. DESIGN gained the parked Box's `bottom: 0` and `alignItems: 'center'` at the reader's note.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

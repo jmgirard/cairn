@@ -323,8 +323,9 @@ transitions, human-gated merges, and a domain verification doctrine.
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
   Box (M242). Off the terminal that Box has no key and is placed
-  `position: 'absolute'`, `top: 0`, `right: -8`, past the row's edge, where
-  the pane clips it, with `hover: { right: 0 }`. So ✎ shows only while the
+  `position: 'absolute'`, `top: 0`, `bottom: 0`, `right: -8`, past the row's
+  edge, where the pane clips it, with `hover: { right: 0 }`, and centers its
+  Button with `alignItems: 'center'`. So ✎ shows only while the
   pointer is over its line, in the 4 columns that the info glyph before it
   keeps as its right margin (M290). A Button drawn under `display: 'none'`
   takes no click in the desktop app even once revealed, and one moved in by
