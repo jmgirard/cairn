@@ -221,6 +221,8 @@ const HOVER_GROUND = 'userMessageBackground'
 const infoScope = (lineKey: string) => `cairn-info-${lineKey}`
 // The columns a candidate line keeps for ✎ while the pointer is over it,
 // and the `right` offset that parks ✎ past the row's edge at rest (M290).
+// The park hides ✎ only while its Button is narrower than 8 columns, since
+// the pane clips what lies past its edge; a wider label needs both changed.
 const PLAN_SLOT = 4
 const PLAN_PARK = -8
 // The command a candidate line's ✎ holds for its `/clear` (M242).

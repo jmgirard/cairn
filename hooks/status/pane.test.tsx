@@ -2093,6 +2093,8 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
             expect(holder.props.display).toBeUndefined()
             expect(holder.props.position).toBe('absolute')
             expect(holder.props.right as number).toBeLessThan(0)
+            // It spans the row and centers ✎, as the row centers ⓘ.
+            expect([holder.props.top, holder.props.bottom, holder.props.alignItems]).toEqual([0, 0, 'center'])
             // The drawn tree keeps `hover` beside `props` (M286).
             expect((holder as Element & { hover?: unknown }).hover).toEqual({ right: 0 })
           }
@@ -2138,6 +2140,25 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
       await ui.unmount()
     })
   }
+  // M290 review: while a cairn skill runs, a candidate line keeps its ⓘ, so
+  // its card stays in reach, with no ✎ and no room kept for one.
+  test('while a skill runs, ⓘ shows alone with no margin (desktop)', async ($, on) => {
+    seat(on, copyOf('candidates'))
+    await $.turn.complete(turn())
+    await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    const ui = await mountPane($, 'desktop')
+    const rows = drawnCandidates('candidates').filter(({ row }) => row.title !== '')
+    expect(rows.length).toBeGreaterThan(1)
+    for (const { i } of rows) {
+      const line = (await boxOf(ui, `candidate-${i}`)) as Element
+      expect(holderOf(line, `${PANE_PLAN}-${i}`)).toBeUndefined()
+      const infos = kids(line).filter(child => kids(child).some(node => node.type === 'Text' && textOf(node) === INFO_LABEL))
+      expect(infos.length).toBe(1)
+      expect([infos[0].props.display, infos[0].props.marginRight]).toEqual(['none', 0])
+    }
+    await ui.unmount()
+  })
+
   for (const name of ['pane-full', 'candidates']) {
     test(`${name}: a card on a line that is not a candidate line opens from the whole line (desktop)`, async ($, on) => {
       seat(on, copyOf(name))
@@ -2153,7 +2174,7 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
     })
   }
 
-  // AC3: a press of a hidden ✎ plans its row as on the terminal.
+  // AC3: a press of a parked ✎ plans its row as on the terminal.
   for (const surface of SURFACES) {
     for (const [i, title] of [[2, 'Late high'], [3, 'Second low']] as [number, string][]) {
       test(`✎ on row ${i} plans ${title} (${surface})`, async ($, on) => {
