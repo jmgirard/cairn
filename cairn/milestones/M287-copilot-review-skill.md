@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M287: A /copilot-review skill handles Copilot's notes on a PR and replies to its summary
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — a new user-invoked skill, and a change to what `/hotfix` and `/milestone-review` post on a PR   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m287-copilot-review-skill   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -92,7 +92,7 @@ block instead.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate. -->
 
-- [ ] T1: Write `skills/copilot-review/SKILL.md`: frontmatter, phase
+- [x] T1: Write `skills/copilot-review/SKILL.md`: frontmatter, phase
       header, PR resolution (argument, else `gh pr view` on the current
       branch), checkout of the PR's head on a clean tree, the module's state
       query and wait (§3, §4), the thread and review read, dispositions, the
@@ -101,7 +101,7 @@ block instead.
       resolves (§5), the summary reply, and a close block. On an `m<nnn>-`
       branch a fix commit also carries a work-log line. Guest mode: no cairn
       vocabulary in replies or commits.
-- [ ] T2: Edit `skills/shared/copilot-review.md` §5 and §6: the summary
+- [x] T2: Edit `skills/shared/copilot-review.md` §5 and §6: the summary
       reply (after the review's threads are resolved, linking the review,
       skipped when an operator comment already carries the link, no thanks),
       the follow-up route for a note the agent cannot settle, and the rule
@@ -139,6 +139,8 @@ block instead.
 - 2026-10-19: collision check: M231, M282, M285 shipped the round; D-152, D-153, D-183, D-185 read whole, none rejects a summary reply or a standalone skill; parked `Copilot arm edges (M285 review)` row left as is.
 - 2026-10-19: inbox sweep: 0 open issues, 0 open PRs.
 - 2026-10-19: criteria audit (full, fresh Opus reader): 8 findings, all taken narrower — AC1 bounds summaries to non-empty review bodies from paged queries; AC1/AC4 evidence falls back to a named PR since Copilot may not review this one (D-183, D-185); per-clause guard probes moved from AC2/AC4/AC5 to T4 (instrument property); AC5 excepts the review step-5 return floor; AC6 names its four places, and three other skill lists join T3. AC3, AC7: none.
+- 2026-10-19: T1 done: `skills/copilot-review/SKILL.md` written in plain English to pass the simple-english lint hook; it fences the request command on `none` rather than making the request.
+- 2026-10-19: T2 done: module §5 gains the summary reply and the unsettled-note follow-up route; §1 to §6 compressed to 137 lines and 7,999 bytes (under budget); the §2 reason line now reads "not seen by GitHub" to drop a banned modal; the wait guard follows the reworded "It prints only a result that differs from the last"; `/hotfix` and `/milestone-review` text needed no change, since both cite §5.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

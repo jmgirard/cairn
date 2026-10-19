@@ -121,7 +121,7 @@ class TestWaitBound(unittest.TestCase):
         self.assertNotRegex(self.wait, r"10[ -]minute")
 
     def test_loop_prints_only_a_changed_state(self):
-        self.assertIn("prints a result only when it differs from the last",
+        self.assertIn("It prints only a result that differs from the last",
                       self.wait)
 
     def test_readme_states_the_same_bound(self):
