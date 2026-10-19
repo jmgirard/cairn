@@ -43,7 +43,7 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 - [x] T2: Add the ripple reviewer to step 5: the routing bullets (`:287-294`), the lens list (`:305-338`), and the slug sentence (`:374-377`). Write its instruction in the shape of the prior-PR lens's bullet, with its own no-op clause.
 - [x] T3: Add the two questions to the diff-bug lens bullet (`:306-308`).
 - [x] T4: Edit tracking-rules "Model and agent strategy" (`skills/shared/tracking-rules.md:646-657`) and `README.md:629`. Run the AC4 sweep and fix each line it returns. Update `skills/tests/test_review_fanout.py`, which pins "three", and hand-run `python3 -m unittest discover -s skills/tests` (LESSONS M148).
-- [ ] T5: Write the CHANGELOG Unreleased entry and the D-entry (D-185).
+- [x] T5: Write the CHANGELOG Unreleased entry and the D-entry (D-185).
 - [ ] T6: Run the `verify` slot.
 
 ## Work log
@@ -66,3 +66,4 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 - 2026-10-18: T3: the diff-bug bullet carries questions (a) and (b) as AC3 words them.
 - 2026-10-18: T4: tracking-rules' Haiku bullet and review bullet name the ripple lens; README says four lenses and two reviewers for an internal docs-only diff; the archive-summary template says "docs-only pair". The rulebook grew to 749 lines / 72,248 bytes, so the `/milestone` mass baseline and its two hand-run pins are re-seeded from M277's 743 / 71,631 (LESSONS M149). `test_review_fanout.py` now pins four lenses, the ripple lens in both modes, and its no-op; `test_delegation_warrant.py`'s docstring says four reviewers. `skills/tests`: 897 tests OK.
 - 2026-10-18: T4 sweep: the AC4 command returns 5 lines, none stating a lens or reviewer count: `band.test.tsx:3738` and `tracking-rules.md:73` (other uses of "other two"), `test_lesson_graduation.py:26` and `test_mutation_harness.py:655` (likewise), and `test_mutation_harness.py:3139`, an M120-dated comment on the fan-out of that time.
+- 2026-10-18: T5: CHANGELOG Unreleased entry and D-185 written. D-185 keeps the counts in this file (no derived measurements in a D-entry) and adds a rejected alternative the plan weighed, a `.github/copilot-instructions.md` line. The CHANGELOG's Copilot sentence claims only that the reviewed head names its PR, not that Copilot stops a kind of thread.

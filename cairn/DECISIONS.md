@@ -6678,3 +6678,71 @@ token, and no check finds a missing one. Hygiene checks only the parked
 rows that the milestone quotes or names, so a parked row that a merge
 readied without naming it waits for `/cairn-triage`. Adopting repos' rows
 carry no token until a triage pass proposes it.
+
+### D-185 (2026-10-18): The Copilot arm pushes the header commit before its request, a Haiku ripple lens joins both review modes, and the diff-bug lens asks about await races and untried procedure paths — supersedes D-153's step-6 header clause and D-112's lens count and one-reviewer docs-only mode; annotates D-174; passes D-108's door on its retained trigger (M285)
+
+**Context:** The user asked for these three changes after a read of
+Copilot's review threads on cairn's own PRs. The counts are in M285's
+milestone file. Copilot's most common thread said that the milestone
+header lacked the PR URL. D-153 has the arm record the URL in a commit
+that step 6's checkpoint push carries, so Copilot reviews a head before
+that commit. Copilot's other repeated finds were text that the diff left
+stale in another file or a later step, state that changed across an
+await in the pane code, and skill steps that fail on a path such as a
+first run or a fork. None of cairn's three lenses reads the unchanged
+rest of the repo. D-112 routes an internal-tier docs-only diff to one
+Opus reviewer and every other diff to three lenses. D-108 bars a new
+rule about how verification is conducted unless its trigger is a defect
+in shipped behavior.
+
+**Decision:** In the Copilot arm of `/milestone-review` step 2, a new
+PR's URL goes into the header in a commit that the arm pushes before the
+state query and the request. A failed branch push or create requests
+nothing. A failed header push still requests, and the commit waits for
+step 6. This supersedes D-153's clause that the step-6 checkpoint push
+carries the header record. Step 5 gains a ripple reviewer on Haiku. It
+lists what the diff removes or changes, searches the tracked files at
+the branch head for the old form and other statements of the same fact,
+and reports each line outside the diff's added lines that now disagrees.
+It leaves out history records and dated measurements, and it no-ops on
+a diff that removes or changes nothing. At the user's choice in the M285
+question set it runs in both modes. The docs-only mode now spawns the
+diff-bug and ripple lenses, and the fan-out four lenses. This
+supersedes D-112's three-lens count and its one-reviewer docs-only mode.
+D-112's routing by tier and diff content stands. The diff-bug lens also
+asks (a) whether another handler can change a value between its read or
+write before an await and its use after it, and (b) whether a new or
+changed skill step holds on a first run, in guest mode, with a fork PR
+head, with a dirty tree, and with a remote that moved ahead. Haiku gains
+a third review role, which annotates D-174. D-108's door is passed on
+its retained trigger, with a shipped defect for each new rule. For the
+ripple lens, README's `/hotfix` row shipped with M73 still describing
+the old trigger, and M74 fixed it. For question (a), pane races in
+`hooks/status/register.tsx` shipped and were fixed by M243, M255, M256,
+M260, and M278. For question (b), guest pushes shipped that did not find
+the fork in every remote layout, and M234 fixed them.
+
+**Rejected:** A fourth lens on Opus, because the ripple work is a search
+over files with a stated recipe, the kind of work D-151 and D-181 moved
+to Haiku. Falsified by the move clause below. The ripple search inside
+the diff-bug lens, because a lens with its own evidence base finds what
+a shared base misses (step 5), and the diff-bug lens reads the diff.
+Leaving these misses to Copilot, because the round is opt-in, owner-mode
+only, and stopped reviewing cairn's PRs when GitHub stopped recording the
+requests. A `.github/copilot-instructions.md` line telling Copilot to
+skip the header, because the push fixes the record itself and adds no
+file to adopting repos.
+
+**Consequences:** The header push is a second push right after
+`gh pr create`. In a repo whose CI runs on `pull_request`, it starts
+that CI a second time at the start of review, a cost the arm accepts for
+a header that names its PR. A repo whose GitHub settings start a Copilot
+review when a PR opens still gets a review of the head before the
+header commit. Every review spawns one more Haiku reviewer, and an
+internal docs-only review now spawns two. Question (b) names paths of
+cairn's own skill procedures, so it does not fire in a repo with none.
+The falsifier reads one window, the first five reviews that run the
+ripple lens. If the lens gives no fixed finding there, the lens is
+removed. Otherwise, if Copilot finds stale text in the lens's domain
+that the lens missed on two or more of those PRs, the lens moves to
+Opus. The candidate row "Ripple lens yield check" holds that check.
