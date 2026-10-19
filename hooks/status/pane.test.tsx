@@ -10,6 +10,7 @@ import {
   NO_ROADMAP,
   OPEN_MARK,
   PRIORITY_MARK,
+  goalBlocks,
   nextLabel,
   nextTitle,
   paneLines as layout,
@@ -344,7 +345,7 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
             continue
           }
           const goal = keysLike(lines, new RegExp(`^${row.id}-goal-\\d+$`)).map(k => textAt(lines, k))
-          expect(goal).toEqual(file.goal === '' ? [] : file.goal.split('\n').map(text => (text === '' ? ' ' : text)))
+          expect(goal).toEqual(goalBlocks(file.goal).map(text => (text === '' ? ' ' : text)))
           const tasks = keysLike(lines, new RegExp(`^${row.id}-task-\\d+$`)).map(k => textAt(lines, k))
           expect(tasks).toEqual(file.tasks.map(itemText))
           const criteria = keysLike(lines, new RegExp(`^${row.id}-criterion-\\d+$`)).map(k => textAt(lines, k))
@@ -380,6 +381,50 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
     seat(on, copyOf('no-roadmap'))
     await $.turn.complete(turn())
     for (const surface of SURFACES) expect(await paneLines($, surface)).toEqual([['no-roadmap', NO_ROADMAP]])
+  })
+})
+
+describe('the goal wraps at the pane, one line per paragraph or list item (M286 AC1)', () => {
+  // The goal's lines, as `paneLines` draws them for one active milestone,
+  // each with its `wraps` flag. The expected texts are written out by hand.
+  const goalOf = (goal: string) => {
+    const state: PaneState = {
+      found: true,
+      milestones: [{ id: 'M1', title: 'x', status: 'in-progress', file: { goal, tasks: [], criteria: [], log: [] } }],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [],
+      blocked: [],
+      taken: [],
+    }
+    return layout(state)
+      .filter(line => /^M1-goal-\d+$/.test(line.key))
+      .map(line => [line.text?.text, line.wraps])
+  }
+
+  test('three lines broken by hand draw as one line', () => {
+    expect(goalOf('The pane opens with a card\n  of the repo, and wraps\neach goal at its width.')).toEqual([
+      ['The pane opens with a card of the repo, and wraps each goal at its width.', true],
+    ])
+  })
+
+  test('two paragraphs with two blank lines between them draw two lines and one blank row', () => {
+    expect(goalOf('First paragraph,\nbroken here.\n\n\nSecond paragraph.')).toEqual([
+      ['First paragraph, broken here.', true],
+      [' ', true],
+      ['Second paragraph.', true],
+    ])
+  })
+
+  test('a list mixing markers draws one line per item, a continuation line joining its item', () => {
+    expect(goalOf('Three parts:\n- the card\n* the look,\n  with a new pill\n1. the rows\n12. the docs')).toEqual([
+      ['Three parts:', true],
+      ['- the card', true],
+      ['* the look, with a new pill', true],
+      ['1. the rows', true],
+      ['12. the docs', true],
+    ])
   })
 })
 

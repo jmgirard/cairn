@@ -429,6 +429,39 @@ function items(prefix: string, list: PaneItem[]): PaneLine[] {
   )
 }
 
+// A list item's opening marker: `- `, `* `, or digits and `. ` (M286).
+const LIST_MARK = /^([-*] |\d+\. )/
+
+// The goal's paragraphs and list items, each one string, so the pane wraps
+// them at its own width and not at the file's line breaks (M286). Each line
+// is trimmed. A line joins the one above it with one space, unless a blank
+// line comes between them or its trimmed text opens with a list marker. One
+// or more blank lines give one empty string between blocks.
+export function goalBlocks(goal: string): string[] {
+  const out: string[] = []
+  let open = false
+  let blank = false
+  for (const raw of goal.split('\n')) {
+    const text = raw.trim()
+    if (text === '') {
+      if (out.length > 0) blank = true
+      open = false
+      continue
+    }
+    if (blank) {
+      out.push('')
+      blank = false
+    }
+    if (open && !LIST_MARK.test(text)) {
+      out[out.length - 1] = `${out[out.length - 1]} ${text}`
+    } else {
+      out.push(text)
+      open = true
+    }
+  }
+  return out
+}
+
 function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine[] {
   const phase = { color: PHASE_COLOR[row.status] ?? GRAY }
   const head = line(`${row.id}-head`, 0, [{ text: row.id, color: phase.color, bold: true }, { text: '  ' }], { text: row.title })
@@ -441,8 +474,9 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
   if (file === null) return [...out, line(`${row.id}-nofile`, 2, [], { text: NO_FILE, color: WARNING })]
   if (file.goal !== '') {
     out.push(...heading(`${row.id}-goal-head`, 'Goal', phase.color))
-    // A blank line between paragraphs draws as one space, so it keeps its row.
-    file.goal.split('\n').forEach((text, i) =>
+    // One wrapping line per paragraph or list item (M286). The blank row
+    // between paragraphs draws as one space, so it keeps its row.
+    goalBlocks(file.goal).forEach((text, i) =>
       out.push({ ...line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text }), wraps: true }),
     )
   }
