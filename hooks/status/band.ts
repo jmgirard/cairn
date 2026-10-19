@@ -1,4 +1,5 @@
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
+import type { IconName } from './icons'
 import type { BandRow, BandState, WorkableRow } from './reader'
 
 // The band's one row, as a plain description that register.tsx draws
@@ -17,7 +18,9 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 
 // One run of text and its style. The row draws in `inactive`, the theme's
 // gray, but for the warning labels and the terminal track's cells.
-export type Span = { text: string; color?: string; backgroundColor?: string; bold?: boolean }
+// `icon` names an SVG icon the cairn pane draws in place of the text on a
+// surface with the `Svg` element (M286, icons.ts); the band draws none.
+export type Span = { text: string; color?: string; backgroundColor?: string; bold?: boolean; icon?: IconName }
 
 export const GRAY = 'inactive'
 

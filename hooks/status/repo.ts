@@ -91,13 +91,33 @@ export function archivedArgs(tag: string): string[] {
   return ['diff', '--no-renames', '--diff-filter=A', '--name-only', tag, 'HEAD', '--', 'cairn/milestones/archive/']
 }
 
-// The done count from the guest flag and the two git calls' stdout, each
-// null when its call failed. Null in guest mode, where `cairn/` is never
-// committed, when `git describe` failed or printed nothing, and when the
-// `git diff` call failed. The count is the diff's lines that are not blank.
-export function doneSince(guest: boolean, describe: string | null, diff: string | null): CairnRepoDone | null {
+// The git argv that prints the tagged commit's time in Unix seconds. The
+// release walk tags the release commit, so its time is the release's. The
+// `--` keeps a path named like the tag from being read as one.
+export function tagTimeArgs(tag: string): string[] {
+  return ['log', '-1', '--format=%ct', tag, '--']
+}
+
+const DAY_MS = 86_400_000
+
+// The release read from the guest flag, the three git calls' stdout, each
+// null when its call failed, and the read's start in milliseconds. Null in
+// guest mode, where `cairn/` is never committed, when `git describe` failed
+// or printed nothing, when the `git log` call failed or its trimmed output
+// is not a whole number, and when the `git diff` call failed. The days are
+// whole days from the commit's time to the read's start, rounded down, and
+// 0 for a commit time after it. The count is the diff's non-blank lines.
+export function doneSince(
+  guest: boolean,
+  describe: string | null,
+  log: string | null,
+  diff: string | null,
+  now: number,
+): CairnRepoDone | null {
   if (guest || describe === null) return null
   const tag = describe.trim()
-  if (tag === '' || diff === null) return null
-  return { tag, count: diff.split('\n').filter(line => line.trim() !== '').length }
+  const seconds = log?.trim() ?? ''
+  if (tag === '' || !/^\d+$/.test(seconds) || diff === null) return null
+  const days = Math.max(0, Math.floor((now - Number(seconds) * 1000) / DAY_MS))
+  return { tag, days, count: diff.split('\n').filter(line => line.trim() !== '').length }
 }

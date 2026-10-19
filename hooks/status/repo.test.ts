@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { archivedArgs, DESCRIBE_ARGS, doneSince, REPO_QUERY, repoArgv, repoCounts } from './repo'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs } from './repo'
 
 // The summary card's reads (M286 AC3, AC4). The expected values are written
 // out by hand.
@@ -74,9 +74,18 @@ describe('the parser gives both numbers or none (M286 AC3)', () => {
   }
 })
 
-describe('the done count is the archive files added since the latest v* tag (M286 AC4)', () => {
-  test('the git argv: describe the newest v* tag, then list archive files added since it, renames off', () => {
+describe('the release read: the latest v* tag, the days since its commit, and the archive files added since it (M286 AC4)', () => {
+  // The read's start and the commit times, in whole seconds, written out by
+  // hand.
+  const NOW_S = 1_800_000_000
+  const NOW = NOW_S * 1000
+  const DAY = 86_400
+  const DIFF = 'cairn/milestones/archive/M284-a.md\ncairn/milestones/archive/M285-b.md\n'
+  const at = (seconds: number) => `${seconds}\n`
+
+  test('the git argv: describe the newest v* tag, the commit time, and archive files added, renames off', () => {
     expect(DESCRIBE_ARGS).toEqual(['describe', '--tags', '--abbrev=0', '--match', 'v*'])
+    expect(tagTimeArgs('v2.1.0')).toEqual(['log', '-1', '--format=%ct', 'v2.1.0', '--'])
     expect(archivedArgs('v2.1.0')).toEqual([
       'diff',
       '--no-renames',
@@ -89,25 +98,40 @@ describe('the done count is the archive files added since the latest v* tag (M28
     ])
   })
 
-  test('a count: each listed file, blank lines not counted', () => {
-    const diff = 'cairn/milestones/archive/M284-a.md\ncairn/milestones/archive/M285-b.md\n\n'
-    expect(doneSince(false, 'v2.1.0\n', diff)).toEqual({ tag: 'v2.1.0', count: 2 })
-    expect(doneSince(false, 'v2.1.0\n', '')).toEqual({ tag: 'v2.1.0', count: 0 })
+  const GOOD: [string, string | null, number | null][] = [
+    ['29 days 23 hours rounds down to 29', at(NOW_S - 29 * DAY - 23 * 3600), 29],
+    ['exactly 30 days is 30', at(NOW_S - 30 * DAY), 30],
+    ['one day', at(NOW_S - DAY - 60), 1],
+    ['a commit time after the read is 0', at(NOW_S + 3600), 0],
+    ['git log output without a trailing newline', `${NOW_S - 2 * DAY}`, 2],
+  ]
+  for (const [name, log, days] of GOOD) {
+    test(name, () => {
+      expect(doneSince(false, 'v2.1.0\n', log, DIFF, NOW)).toEqual({ tag: 'v2.1.0', days, count: 2 })
+    })
+  }
+
+  test('a describe output with a trailing newline gives the trimmed tag', () => {
+    expect(doneSince(false, '  v1.0.0\n', at(NOW_S), DIFF, NOW)?.tag).toBe('v1.0.0')
   })
 
-  test('git describe failing gives none', () => {
-    expect(doneSince(false, null, 'cairn/milestones/archive/M1.md\n')).toBe(null)
+  test('a diff that prints nothing counts 0, and a blank line does not count', () => {
+    expect(doneSince(false, 'v2.1.0\n', at(NOW_S), '', NOW)?.count).toBe(0)
+    expect(doneSince(false, 'v2.1.0\n', at(NOW_S), `${DIFF}\n  \n`, NOW)?.count).toBe(2)
   })
 
-  test('git describe printing nothing gives none', () => {
-    expect(doneSince(false, '\n', 'cairn/milestones/archive/M1.md\n')).toBe(null)
-  })
-
-  test('a failed diff gives none', () => {
-    expect(doneSince(false, 'v1.0.0\n', null)).toBe(null)
-  })
-
-  test('guest mode gives none', () => {
-    expect(doneSince(true, 'v1.0.0\n', 'cairn/milestones/archive/M1.md\n')).toBe(null)
-  })
+  const NONE: [string, boolean, string | null, string | null, string | null][] = [
+    ['git describe failing', false, null, at(NOW_S), DIFF],
+    ['git describe printing nothing', false, '\n', at(NOW_S), DIFF],
+    ['a failed git log', false, 'v2.1.0\n', null, DIFF],
+    ['a git log that is not a whole number', false, 'v2.1.0\n', '17.5\n', DIFF],
+    ['a git log that prints a word', false, 'v2.1.0\n', 'fatal\n', DIFF],
+    ['a failed diff', false, 'v2.1.0\n', at(NOW_S), null],
+    ['guest mode', true, 'v2.1.0\n', at(NOW_S), DIFF],
+  ]
+  for (const [name, guest, describe, log, diff] of NONE) {
+    test(`${name} gives none`, () => {
+      expect(doneSince(guest, describe, log, diff, NOW)).toBe(null)
+    })
+  }
 })

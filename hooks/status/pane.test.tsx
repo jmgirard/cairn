@@ -20,7 +20,7 @@ import {
 } from './pane'
 import type { PaneLine, PrRead } from './pane'
 import type { PaneState } from './reader'
-import { archivedArgs, DESCRIBE_ARGS, REPO_QUERY } from './repo'
+import { archivedArgs, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs } from './repo'
 import { candidateRows, listNames, parseRoadmapRows, takenRows } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -219,9 +219,12 @@ function seat(on: On, copy: Copy) {
   })
 }
 
+// A node's text. An `Svg` icon reads as its alt text, the glyph the
+// terminal draws in its place (M286).
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
+  if ((node as Element).type === 'Svg') return String((node as Element).props.alt ?? '')
   return ((node as Element).children ?? []).map(textOf).join('')
 }
 
@@ -243,21 +246,18 @@ function buttonsIn(node: Element): Element[] {
   return kids(node).flatMap(child => (child.type === 'Button' ? [child] : buttonsIn(child)))
 }
 
-// A heading's rule, written out by hand (M286): 200 `─`, which the pane
-// cuts at its edge. The line helpers below show it as one `─`.
-const RULE = '─'.repeat(200)
-// A heading's text as `paneLines` below gives it: the label, the rule, and
-// the tail after a space where it has one (M286).
-const headText = (label: string, tail = '') => `${label} ─${tail === '' ? '' : ` ${tail}`}`
+// A heading's text (M286): the bold label, and the tail after a space
+// where it has one.
+const headText = (label: string, tail = '') => `${label}${tail === '' ? '' : ` ${tail}`}`
 
 // The pane's lines in order, each its key and its text, the card's lines
-// first (M286), and each heading's rule shown as one `─`.
+// first (M286).
 async function paneLines($, surface: (typeof SURFACES)[number]): Promise<[string, string][]> {
   const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
   const [root] = await ui.findAll({ key: 'cairn-pane' })
   const out = kids(root)
     .flatMap(line => (keyOf(line) === 'cairn-card' ? kids(line) : [line]))
-    .map(line => [keyOf(line) ?? '', textOf(line).replace(RULE, '─')] as [string, string])
+    .map(line => [keyOf(line) ?? '', textOf(line)] as [string, string])
   await ui.unmount()
   return out
 }
@@ -483,12 +483,13 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
 
 // Each priority's mark, written out by hand rather than read from
 // `PRIORITY_MARK` (M253).
+// Each names the icon the desktop draws in its place (M286).
 const MARKS = {
-  high: { text: '↑', color: 'claude', bold: true },
-  normal: { text: '○' },
-  low: { text: '↓', color: 'inactive' },
+  high: { text: '↑', color: 'claude', bold: true, icon: 'high' },
+  normal: { text: '○', icon: 'ring' },
+  low: { text: '↓', color: 'inactive', icon: 'low' },
   // M284: a parked row's hourglass, gray.
-  parked: { text: '⧗', color: 'inactive' },
+  parked: { text: '⧗', color: 'inactive', icon: 'parked' },
 } as const
 
 // The candidates fixture's lines, written out by hand from its ROADMAP, in
@@ -539,19 +540,22 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         return kids(lead)[0]
       }
       // Each mark and its color are written out by hand (M253): ↑ high, ○
-      // normal (the open circle, M253), and ↓ low.
+      // normal (the open circle, M253), and ↓ low. On the desktop each draws
+      // as its icon, whose alt text is the mark (M286).
       expect(textOf(await markOf(0))).toBe('↑')
-      // The high mark takes the implement phase's theme key, written out
-      // by hand (M217).
-      expect((await markOf(0)).props.color).toBe('claude')
       expect(textOf(await markOf(1))).toBe('○')
       expect(textOf(await markOf(2))).toBe('↓')
-      expect((await markOf(2)).props.color).toBe('inactive')
-      // The high mark is bold, the normal mark has no color, and only a
-      // low row's title is gray.
-      expect((await markOf(0)).props.bold).toBe(true)
-      expect((await markOf(1)).props.color).toBe(undefined)
-      expect((await markOf(1)).props.bold).toBe(undefined)
+      if (surface === 'desktop') {
+        for (const i of [0, 1, 2]) expect((await markOf(i)).type).toBe('Svg')
+      } else {
+        // The high mark takes the implement phase's theme key, written out
+        // by hand (M217), and is bold; the normal mark has no color.
+        expect((await markOf(0)).props.color).toBe('claude')
+        expect((await markOf(2)).props.color).toBe('inactive')
+        expect((await markOf(0)).props.bold).toBe(true)
+        expect((await markOf(1)).props.color).toBe(undefined)
+        expect((await markOf(1)).props.bold).toBe(undefined)
+      }
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
       expect((await titleOf(2)).props.color).toBe('inactive')
       expect((await titleOf(0)).props.color).toBe(undefined)
@@ -718,13 +722,14 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
       const [tail] = await ui.findAll({ key: 'blocked-M111-tail' })
       expect(textOf(tail)).toBe('  #1250')
-      // The state mark before a read is a gray `○` (M286).
+      // The state mark before a read is the ring: an `Svg` on the desktop,
+      // and a gray `○` in the terminal (M286).
       const [lead] = await ui.findAll({ key: 'blocked-M111-lead' })
-      expect(kids(lead).map(t => [textOf(t), t.props.color])).toEqual([
-        ['○', GRAY],
-        [' ', undefined],
-        ['M111', undefined],
-        ['  ', undefined],
+      expect(kids(lead).map(t => [t.type, textOf(t), t.props.color])).toEqual([
+        surface === 'terminal' ? ['Text', '○', GRAY] : ['Svg', '○', undefined],
+        ['Text', ' ', undefined],
+        ['Text', 'M111', undefined],
+        ['Text', '  ', undefined],
       ])
       await ui.unmount()
     })
@@ -818,7 +823,10 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       expect(await boxOf(ui, 'M082-head-tail')).toBe(undefined)
       expect(textOf((await partOf(ui, 'M082-nofile-text'))[0])).toBe(NO_FILE)
       // No track on any head line: no desktop Svg and no terminal braille.
-      expect(await ui.findAll({ type: 'Svg' })).toEqual([])
+      // The marks' icons draw elsewhere (M286).
+      for (const id of ['M080', 'M081', 'M082']) {
+        expect(kids((await boxOf(ui, `${id}-head`)) as Element).flatMap(kids).filter(t => t.type === 'Svg')).toEqual([])
+      }
       for (const id of ['M080', 'M081', 'M082']) {
         expect([id, /[⠀-⣿]/.test(textOf((await boxOf(ui, `${id}-head`)) as Element))]).toEqual([id, false])
       }
@@ -891,8 +899,9 @@ describe('the Tasks and Criteria headings draw a six-cell meter (M208 AC2, M286)
 
 describe('section headings, the head line, Next, and the card in the picked look (M286 AC6)', () => {
   // The spans of look B, written out by hand from the operator's pick (the
-  // milestone file's T1 work-log line).
-  const RULE_SPAN = { text: RULE, color: 'subtle' }
+  // milestone file's T1 work-log line), with the operator's changes at the
+  // live look: no rule after a heading, and the app's task-list marks.
+  const EMPTY_GROW = { text: { text: '' }, grow: true }
   const state: PaneState = {
     found: true,
     milestones: [
@@ -919,28 +928,25 @@ describe('section headings, the head line, Next, and the card in the picked look
     blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }],
     taken: [],
   }
-  const lines = () => layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', count: 4 } })
+  const lines = () =>
+    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 } })
   const at = (key: string) => lines().find(line => line.key === key)
 
-  test('a plain heading: the bold label, a space, and the rule that grows', () => {
+  test('a plain heading: the bold label and an empty text that grows', () => {
     expect(at('M7-goal-head')).toEqual({
       key: 'M7-goal-head',
       indent: 0,
-      lead: [{ text: 'Goal', bold: true }, { text: ' ' }],
-      text: RULE_SPAN,
-      rule: true,
-      grow: true,
+      lead: [{ text: 'Goal', bold: true }],
+      ...EMPTY_GROW,
     })
   })
 
-  test('a count with a meter: the counts in gray and six cells in the phase color', () => {
+  test('a count with a meter: the counts in gray and six cells in the phase color at the right end', () => {
     expect(at('M7-tasks-head')).toEqual({
       key: 'M7-tasks-head',
       indent: 0,
-      lead: [{ text: 'Tasks', bold: true }, { text: ' ' }],
-      text: RULE_SPAN,
-      rule: true,
-      grow: true,
+      lead: [{ text: 'Tasks', bold: true }],
+      ...EMPTY_GROW,
       tail: [
         { text: ' ' },
         { text: '1/3 ', color: GRAY },
@@ -954,10 +960,8 @@ describe('section headings, the head line, Next, and the card in the picked look
     expect(at('blocked-head')).toEqual({
       key: 'blocked-head',
       indent: 0,
-      lead: [{ text: 'Blocked', bold: true }, { text: ' ' }],
-      text: RULE_SPAN,
-      rule: true,
-      grow: true,
+      lead: [{ text: 'Blocked', bold: true }],
+      ...EMPTY_GROW,
       tail: [{ text: ' ' }, { text: '1', color: GRAY }],
     })
   })
@@ -968,26 +972,47 @@ describe('section headings, the head line, Next, and the card in the picked look
     expect(head?.text).toEqual({ text: 'Add the card', bold: true })
   })
 
-  // At the operator's direction after the pick: a filled and a dotted
-  // circle, both gray, and two spaces after the mark.
-  test('the items: a checked box a filled gray circle with gray text, an open box a dotted gray circle', () => {
-    expect(at('M7-task-0')?.lead).toEqual([{ text: '●', color: GRAY }, { text: '  ' }])
+  // At the operator's direction after the pick: the app's task-list marks,
+  // each naming its icon, gray, and two spaces after the mark.
+  test('the items: a checked box the done icon with gray text, an open box the dashed icon', () => {
+    expect(at('M7-task-0')?.lead).toEqual([{ text: '●', color: GRAY, icon: 'done' }, { text: '  ' }])
     expect(at('M7-task-0')?.text).toEqual({ text: 'T1: one', color: GRAY })
-    expect(at('M7-task-2')?.lead).toEqual([{ text: '◌', color: GRAY }, { text: '  ' }])
+    expect(at('M7-task-2')?.lead).toEqual([{ text: '◌', color: GRAY, icon: 'open' }, { text: '  ' }])
     expect(at('M7-task-2')?.text).toEqual({ text: 'T3: three' })
   })
 
-  // The first open task of an in-progress milestone draws `⊙` in the text
-  // color. A review milestone's open task does not.
-  test('the first open task of an in-progress milestone draws a circled dot', () => {
-    expect(at('M7-task-1')?.lead).toEqual([{ text: '⊙' }, { text: '  ' }])
+  // The first open task of an in-progress milestone draws the in-progress
+  // icon. A review milestone's open task does not.
+  test('the first open task of an in-progress milestone draws the in-progress icon', () => {
+    expect(at('M7-task-1')?.lead).toEqual([{ text: '⊙', icon: 'current' }, { text: '  ' }])
     expect(at('M7-task-1')?.text).toEqual({ text: 'T2: two' })
     const review = layout({ ...state, milestones: [{ ...state.milestones[0], status: 'review' }] }, [], false)
-    expect(review.find(line => line.key === 'M7-task-1')?.lead[0]).toEqual({ text: '◌', color: GRAY })
+    expect(review.find(line => line.key === 'M7-task-1')?.lead[0]).toEqual({ text: '◌', color: GRAY, icon: 'open' })
   })
 
+  // On the desktop each icon draws as an `Svg` of one size, and in the
+  // terminal as its glyph (M286).
+  for (const surface of SURFACES) {
+    test(`the marks draw as icons of one size on the desktop and as glyphs in the terminal (${surface})`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const svgs = await ui.findAll({ type: 'Svg' })
+      if (surface === 'terminal') {
+        expect(svgs).toEqual([])
+        expect(textOf(kids((await boxOf(ui, 'M080-task-0-lead')) as Element)[0])).toMatch(/^[●⊙◌]$/)
+      } else {
+        expect(svgs.length).toBeGreaterThan(3)
+        expect(new Set(svgs.map(svg => `${svg.props.width}x${svg.props.height}`))).toEqual(new Set(['14x14']))
+        expect(svgs.every(svg => String(svg.props.source).startsWith('<svg') && /^[●⊙◌○↑↓⧗▲◐✕]$/.test(String(svg.props.alt)))).toBe(true)
+        expect((await boxOf(ui, 'M080-task-0'))?.props.alignItems).toBe('center')
+      }
+      await ui.unmount()
+    })
+  }
+
   test('a blank row sits under the card', () => {
-    expect(lines()[3]).toEqual({ key: 'card-gap', indent: 0, lead: [], text: { text: ' ' } })
+    expect(lines()[4]).toEqual({ key: 'card-gap', indent: 0, lead: [], text: { text: ' ' } })
   })
 
   test('the Next line: the arrow and the command bold in the phase color, with no pill', () => {
@@ -999,8 +1024,8 @@ describe('section headings, the head line, Next, and the card in the picked look
     })
   })
 
-  test('the card: three lines, the numbers bold and the labels gray', () => {
-    expect(lines().slice(0, 3)).toEqual([
+  test('the card: four lines with a stored release read, the numbers bold and the labels gray', () => {
+    expect(lines().slice(0, 4)).toEqual([
       {
         key: 'card-repo',
         indent: 0,
@@ -1022,17 +1047,17 @@ describe('section headings, the head line, Next, and the card in the picked look
         lead: [
           { text: 'candidates', color: GRAY },
           { text: ' ' },
-          { text: '↑', color: IMPLEMENT_KEY, bold: true },
-          { text: '0' },
-          { text: '  ' },
-          { text: '○' },
-          { text: '0' },
-          { text: '  ' },
-          { text: '↓', color: GRAY },
-          { text: '0' },
-          { text: '  ' },
-          { text: '⧗', color: GRAY },
-          { text: '0' },
+          { text: '↑', color: IMPLEMENT_KEY, bold: true, icon: 'high' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '○', icon: 'ring' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '↓', color: GRAY, icon: 'low' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '⧗', color: GRAY, icon: 'parked' },
+          { text: ' 0' },
         ],
         text: null,
         card: true,
@@ -1041,24 +1066,34 @@ describe('section headings, the head line, Next, and the card in the picked look
         key: 'card-milestones',
         indent: 0,
         lead: [],
-        text: { text: '0 planned · 1 blocked · 4 done since v2.1.0', color: GRAY },
+        text: { text: '0 planned · 1 blocked', color: GRAY },
+        card: true,
+      },
+      {
+        key: 'card-release',
+        indent: 0,
+        lead: [],
+        text: { text: 'v2.1.0 · 12 days ago · 4 done since', color: GRAY },
         card: true,
       },
     ])
   })
 
+  test('one day reads `1 day ago`, and with no release read for this root the card has three lines', () => {
+    const one = layout(state, [], false, {}, [], [], { root: '/', counts: null, done: { tag: 'v1.0.0', days: 1, count: 0 } })
+    expect(one.find(line => line.key === 'card-release')?.text?.text).toBe('v1.0.0 · 1 day ago · 0 done since')
+    const none = layout(state, [], false, {}, [], [], null)
+    expect(none.filter(line => line.card).map(line => line.key)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+  })
+
   for (const surface of SURFACES) {
-    test(`the card draws in a round Box in subtle, and a rule in a one-row Box that hides the rest (${surface})`, async ($, on) => {
+    test(`the card draws in a round Box in subtle (${surface})`, async ($, on) => {
       seat(on, copyOf('pane-full'))
       await $.turn.complete(turn())
       const ui = await mountPane($, surface)
       const card = await boxOf(ui, 'cairn-card')
       expect(card?.props).toEqual(expect.objectContaining({ borderStyle: 'round', borderColor: 'subtle', flexDirection: 'column' }))
       expect(kids(card as Element).map(keyOf)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
-      const rule = await boxOf(ui, 'M080-goal-head-text')
-      expect(rule?.props).toEqual(expect.objectContaining({ height: 1, overflow: 'hidden', flexGrow: 1 }))
-      expect(kids(rule as Element)[0].props.wrap).toBe('wrap')
-      expect(textOf(kids(rule as Element)[0])).toBe(RULE)
       await ui.unmount()
     })
   }
@@ -2291,13 +2326,15 @@ type Gh = {
   card: (readonly string[])[]
   settled: () => Promise<void>
 }
-// `counts` answers the card's repo query, and `describe` and `diff` its git
-// calls (M286). By default the query gives 0 and 0, and both git calls fail.
+// `counts` answers the card's repo query, and `describe`, `log`, and `diff`
+// its git calls (M286). By default the query gives 0 and 0, and the git
+// calls fail.
 type GhRepo = {
   remotes?: Record<string, string>
   list?: () => GhAnswer | Promise<GhAnswer>
   counts?: () => GhAnswer | Promise<GhAnswer>
   describe?: GhAnswer
+  log?: GhAnswer
   diff?: GhAnswer
 }
 // A repo query reply in the shape GitHub returns (M286).
@@ -2319,9 +2356,9 @@ const PR_MARKS: Record<string, string> = {
   'changes requested': '▲',
   'in review': '◐',
   closed: '✕',
-  unknown: '○',
+  unknown: '◌',
 }
-const prText = (id: string, title: string, n: number | null, word?: string, archived = false) => {
+const prText =(id: string, title: string, n: number | null, word?: string, archived = false) => {
   const tail = [n === null ? null : `#${n}`, archived ? 'archived' : null, word ?? null].filter(part => part !== null)
   return `${word === undefined ? '○' : PR_MARKS[word]} ${id}  ${title}${tail.length === 0 ? '' : `  ${tail.join(' ')}`}`
 }
@@ -2351,9 +2388,9 @@ function gh(
   })
   const failed = { exitCode: 128, stdout: '' }
   const reply = async (e: { argv: readonly string[] }) => {
-    if (e.argv[0] === 'git' && (e.argv[1] === 'describe' || e.argv[1] === 'diff')) {
+    if (e.argv[0] === 'git' && (e.argv[1] === 'describe' || e.argv[1] === 'log' || e.argv[1] === 'diff')) {
       out.card.push(e.argv)
-      const got = (e.argv[1] === 'describe' ? repo.describe : repo.diff) ?? failed
+      const got = (e.argv[1] === 'describe' ? repo.describe : e.argv[1] === 'log' ? repo.log : repo.diff) ?? failed
       if (got === 'reject') throw new Error('git cannot start')
       return value(got)
     }
@@ -2452,7 +2489,7 @@ async function blockedView($, key: string): Promise<{ text: string; buttons: str
     .find(child => keyOf(child) === key)
   await ui.unmount()
   return {
-    text: line === undefined ? '' : textOf(line).replace(RULE, '─'),
+    text: line === undefined ? '' : textOf(line),
     buttons: line === undefined ? [] : buttonsIn(line).map(b => keyOf(b) ?? ''),
   }
 }
@@ -4760,7 +4797,9 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
       const [lead] = await ui.findAll({ key: 'candidate-0-lead' })
       expect(textOf(kids(lead)[0])).toBe('⧗')
-      expect(kids(lead)[0].props.color).toBe('inactive')
+      // On the desktop the mark draws as its icon (M286).
+      if (surface === 'terminal') expect(kids(lead)[0].props.color).toBe('inactive')
+      else expect(kids(lead)[0].type).toBe('Svg')
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
       expect((await titleOf(0)).props.color).toBe('inactive')
       // The control: an untagged row's title has no color.
@@ -5490,7 +5529,7 @@ describe('the card counts the drawn candidate rows by level and the planned and 
   }
   const CARD = [
     ['card-repo', '? PRs   ? issues'],
-    ['card-candidates', 'candidates ↑1  ○2  ↓1  ⧗1'],
+    ['card-candidates', 'candidates ↑ 1   ○ 2   ↓ 1   ⧗ 1'],
     ['card-milestones', '2 planned · 1 blocked'],
   ]
   const cardOf = (state: PaneState) =>
@@ -5601,45 +5640,54 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
   }
 })
 
-describe('the card draws the milestones done since the latest release when the read can count them (M286 AC4)', () => {
-  const milestonesText = async $ => (await linesAt($)).find(line => line.key === 'card-milestones')?.text
+describe('the card draws a release line when the read can read the latest release (M286 AC4)', () => {
+  const releaseText = async $ => (await linesAt($)).find(line => line.key === 'card-release')?.text
   const DIFF = { exitCode: 0, stdout: 'cairn/milestones/archive/M1-a.md\ncairn/milestones/archive/M2-b.md\n' }
+  // A commit time three days and a minute before now, in whole seconds.
+  const threeDaysAgo = () => ({ exitCode: 0, stdout: `${Math.floor(Date.now() / 1000) - 3 * 86_400 - 60}\n` })
 
-  test('a tag and a diff draw the count after the read', async ($, on) => {
+  test('a tag, its commit time, and a diff draw the line after the read', async ($, on) => {
     const calls = gh(on, () => prView('MERGED'), undefined, {
       remotes: { origin: ORIGIN },
       describe: { exitCode: 0, stdout: 'v2.1.0\n' },
+      log: threeDaysAgo(),
       diff: DIFF,
     })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
-    const before = await milestonesText($)
-    expect(before).not.toContain('done')
+    expect(await releaseText($)).toBe(undefined)
     await $.command.run({ command: COMMAND })
     await calls.settled()
-    expect(await milestonesText($)).toBe(`${before} · 2 done since v2.1.0`)
+    expect(await releaseText($)).toBe('v2.1.0 · 3 days ago · 2 done since')
     expect(calls.card.filter(argv => argv[0] === 'git')).toEqual([
       ['git', ...DESCRIBE_ARGS],
+      ['git', ...tagTimeArgs('v2.1.0')],
       ['git', ...archivedArgs('v2.1.0')],
     ])
   })
 
-  const CASES: { name: string; describe: GhAnswer; diff: GhAnswer; guest: boolean }[] = [
-    { name: 'describe fails', describe: { exitCode: 128, stdout: '' }, diff: DIFF, guest: false },
-    { name: 'describe prints nothing', describe: { exitCode: 0, stdout: '\n' }, diff: DIFF, guest: false },
-    { name: 'the diff fails', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, diff: { exitCode: 128, stdout: '' }, guest: false },
-    { name: 'guest mode', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, diff: DIFF, guest: true },
+  const CASES: { name: string; describe: GhAnswer; log: GhAnswer | null; diff: GhAnswer; guest: boolean }[] = [
+    { name: 'describe fails', describe: { exitCode: 128, stdout: '' }, log: null, diff: DIFF, guest: false },
+    { name: 'describe prints nothing', describe: { exitCode: 0, stdout: '\n' }, log: null, diff: DIFF, guest: false },
+    { name: 'git log fails', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: { exitCode: 128, stdout: '' }, diff: DIFF, guest: false },
+    { name: 'the diff fails', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: null, diff: { exitCode: 128, stdout: '' }, guest: false },
+    { name: 'guest mode', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: null, diff: DIFF, guest: true },
   ]
   for (const each of CASES) {
-    test(`${each.name}: the count is left out`, async ($, on) => {
-      const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, describe: each.describe, diff: each.diff })
+    test(`${each.name}: no release line`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: ORIGIN },
+        describe: each.describe,
+        log: each.log ?? threeDaysAgo(),
+        diff: each.diff,
+      })
       const copy = copyOf('blocked-prs')
       if (each.guest) copy.files['/cairn/PROFILE.md'] = GUEST_PROFILE
       seat(on, copy)
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
       await calls.settled()
-      expect(await milestonesText($)).not.toContain('done')
+      expect(await releaseText($)).toBe(undefined)
       if (each.guest) expect(calls.card.filter(argv => argv[0] === 'git')).toEqual([])
     })
   }

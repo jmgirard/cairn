@@ -111,11 +111,12 @@ export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; start
 
 // The summary card's numbers (M286): the base remote repo's open pull
 // requests and open issues, and the milestones done since the latest
-// release tag. `counts` is null until a read for `root` gives numbers, and
-// a read that gives none keeps the last good ones for the same root.
-// `done` is the last read's, null when that read could not count.
+// release tag, with the whole days since that tag's commit. `counts` is null
+// until a read for `root` gives numbers, and a read that gives none keeps
+// the last good ones for the same root. `done` is the last read's, null
+// when that read could not count. The shape moved to `repo-2` with `days`.
 export type CairnRepoCounts = { prs: number; issues: number }
-export type CairnRepoDone = { tag: string; count: number }
+export type CairnRepoDone = { tag: string; days: number; count: number }
 export type CairnRepoRead = { root: string | null; counts: CairnRepoCounts | null; done: CairnRepoDone | null }
 
 declare module 'claude-code' {

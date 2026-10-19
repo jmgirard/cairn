@@ -5,7 +5,8 @@ import type { CairnBandHidden, CairnHotfixRead, CairnRepoRead, CairnStep } from 
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prRead } from './counts'
-import { archivedArgs, DESCRIBE_ARGS, doneSince, repoArgv, repoCounts } from './repo'
+import { ICON_PX, iconSvg } from './icons'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
   CHECK_LABEL,
@@ -162,7 +163,8 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 // written by the same read as the hotfix list (`readRepo` says when they
 // are kept). The pane draws them only while the band's root is that root.
 const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null } as CairnRepoRead, {
-  shape: 'repo-1',
+  // The tag moved to 2 when the done read gained its days (M286).
+  shape: 'repo-2',
 })
 
 // True from the start of a read of the pull request states until the newest
@@ -379,29 +381,31 @@ export const register: Register = on => {
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
-    // A heading's rule (M286) wraps in a Box one row high that hides the
-    // rows below, so it ends at the edge with no ellipsis. The card's lines
-    // draw in one Box with a round border in `subtle`, before the rest.
+    // The card's lines draw in one Box with a round border in `subtle`,
+    // before the rest (M286). A lead span that names an icon draws it as an
+    // `Svg` on a surface whose table has the element, and its glyph in the
+    // terminal, and a line with one centers its row (M286).
+    const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
+    const drawSpan = (span: Span) =>
+      span.icon !== undefined && Svg !== undefined ? (
+        <Svg source={iconSvg(span.icon)} alt={span.text} width={ICON_PX} height={ICON_PX} />
+      ) : (
+        <Text wrap="truncate-end" {...style(span)}>
+          {span.text}
+        </Text>
+      )
+    const centers = (line: (typeof lines)[number]) =>
+      Svg !== undefined && line.lead.some(span => span.icon !== undefined) ? { alignItems: 'center' as const } : {}
     const drawLine = (line: (typeof lines)[number]) => (
-          <Box key={line.key} paddingLeft={line.indent} minWidth={0}>
+          <Box key={line.key} paddingLeft={line.indent} minWidth={0} {...centers(line)}>
             {line.lead.length === 0 ? null : (
-              <Box key={`${line.key}-lead`} flexShrink={0}>
-                {line.lead.map(span => (
-                  <Text wrap="truncate-end" {...style(span)}>
-                    {span.text}
-                  </Text>
-                ))}
+              <Box key={`${line.key}-lead`} flexShrink={0} {...centers(line)}>
+                {line.lead.map(drawSpan)}
               </Box>
             )}
             {line.text === null ? null : (
-              <Box
-                key={`${line.key}-text`}
-                flexShrink={1}
-                minWidth={0}
-                {...(line.grow ? { flexGrow: 1 } : {})}
-                {...(line.rule ? { height: 1, overflow: 'hidden' as const } : {})}
-              >
-                <Text wrap={line.wraps || line.rule ? 'wrap' : 'truncate-end'} {...style(line.text)}>
+              <Box key={`${line.key}-text`} flexShrink={1} minWidth={0} {...(line.grow ? { flexGrow: 1 } : {})}>
+                <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
                   {line.text.text}
                 </Text>
               </Box>
@@ -1016,11 +1020,12 @@ async function baseOf($): Promise<Where> {
 }
 
 // The summary card's numbers to write (M286), read with one `gh api
-// graphql` call on the base remote's repo and two git calls in the root.
+// graphql` call on the base remote's repo and three git calls in the root.
 // The GitHub numbers come from a github.com base remote only. A read that
 // gives none keeps the last good numbers for the same root, and is empty
-// for any other root. The done count is this read's alone: null in guest
-// mode, with no release tag, or when a git call fails. It never rejects.
+// for any other root. The release read (tag, days, done count) is this
+// read's alone: null in guest mode, with no release tag, or when a git call
+// fails. It never rejects.
 async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
   const { root, guest, url } = await where
   if (root === null) return { root: null, counts: null, done: null }
@@ -1033,11 +1038,15 @@ async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
       return null
     }
   }
+  // The days count to the read's start.
+  const now = Date.now()
   const count = async () => {
     if (guest) return null
     const tag = await git($, root, DESCRIBE_ARGS)
     const trimmed = tag?.trim() ?? ''
-    return doneSince(guest, tag, trimmed === '' ? null : await git($, root, archivedArgs(trimmed)))
+    if (trimmed === '') return null
+    const [log, diff] = await Promise.all([git($, root, tagTimeArgs(trimmed)), git($, root, archivedArgs(trimmed))])
+    return doneSince(guest, tag, log, diff, now)
   }
   const [counts, done] = await Promise.all([ask(), count()])
   if (counts !== null) return { root, counts, done }
