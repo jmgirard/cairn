@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing, because the cairn pane ships in the plugin to every adopting repo
-- **Branch/PR:** m286-pane-card-look
+- **Branch/PR:** m286-pane-card-look, https://github.com/jmgirard/cairn/pull/298
 
 ## Goal
 
