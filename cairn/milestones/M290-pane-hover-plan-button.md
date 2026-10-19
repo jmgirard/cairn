@@ -78,8 +78,8 @@ by the drawn props alone.
       same on both Boxes and differs between lines. The same test over
       `pane-full` and `candidates` shows that each `position: 'absolute'`
       child of a line that is not a candidate line keeps
-      `hover: { display: 'flex' }` with no `scope`, and that set has more
-      than one Box in each fixture.
+      `hover: { display: 'flex' }` with no `scope`, and that set is not
+      empty in each fixture.
 - [ ] AC6: The operator opens a new Code session in a cairn repo with
       candidate rows and no active milestone (circumplex), with the docked
       desktop pane focused. At rest, no candidate row shows the info icon

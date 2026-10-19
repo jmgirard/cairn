@@ -1,6 +1,7 @@
 // The cairn pane's marks as small SVG icons on the desktop (M286), drawn
 // like the desktop app's own task list: a filled circle with a check, a
-// circle with three dots, and a dashed circle, all one size. A span that
+// circle with three dots, and a dashed circle, all one size. The `info`
+// icon, a circle with an `i`, opens a candidate line's card (M290). A span that
 // names an icon draws it on a surface with the `Svg` element and its text
 // glyph in the terminal. An image has no theme signal (ROADMAP "Gaps only
 // the app or mod API can close"), so each icon takes a fixed color chosen
@@ -18,6 +19,7 @@ export type IconName =
   | 'high'
   | 'low'
   | 'parked'
+  | 'info'
 
 // The icon's drawn size in CSS pixels.
 export const ICON_PX = 14
@@ -48,6 +50,7 @@ const BODIES: Record<IconName, string> = {
   high: RING(orange) + LINE('M8 11V5M5.6 7.4 8 5 10.4 7.4', orange),
   low: RING(gray) + LINE('M8 5V11M5.6 8.6 8 11 10.4 8.6', gray),
   parked: RING(gray, '2.2 1.9') + LINE('M8 5.2V8.2L9.9 9.4', gray),
+  info: RING(gray) + LINE('M8 7.4V11.2', gray) + `<circle cx="8" cy="5" r="0.95" fill="${gray}"/>`,
 }
 
 // The icon's SVG document.

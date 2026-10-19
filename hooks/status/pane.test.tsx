@@ -4,6 +4,7 @@ import type { On } from 'claude-code'
 import { BADGE_PAD, badgeSvg, badgeWidth } from './badge'
 import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
+import { iconSvg } from './icons'
 import {
   CHECKED_MARK,
   COMMAND_PHASE,
@@ -2071,6 +2072,13 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
           if (surface === 'terminal') {
             expect(keyOf(holder)).toBe(`candidate-${i}-plan`)
             expect([holder.props.flexShrink, holder.props.display]).toEqual([0, undefined])
+            // AC2: no hover and no icon under the line on the terminal.
+            const all: Element[] = []
+            const walk = (node: Element) => kids(node).forEach(child => (all.push(child), walk(child)))
+            walk(line)
+            expect(all.length).toBeGreaterThan(2)
+            expect(all.filter(node => (node as Element & { hover?: unknown }).hover !== undefined)).toEqual([])
+            expect(all.filter(node => node.type === 'Svg')).toEqual([])
           } else {
             expect(keyOf(holder)).toBeUndefined()
             expect(holder.props.display).toBe('none')
@@ -2082,6 +2090,55 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
         await ui.unmount()
       })
     }
+  }
+
+  // AC5: on the desktop the info icon, hidden just before ✎, names the one
+  // hover group that opens the line's card; other lines' cards keep theirs.
+  const hoverOf = (node: Element | undefined) => (node as (Element & { hover?: unknown }) | undefined)?.hover
+  for (const name of ['candidates', 'candidates-order']) {
+    test(`${name}: the info icon opens the card (desktop)`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, 'desktop')
+      const rows = drawnCandidates(name).filter(({ row }) => row.title !== '')
+      expect(rows.length).toBeGreaterThan(1)
+      const scopes: unknown[] = []
+      for (const { i } of rows) {
+        const line = (await boxOf(ui, `candidate-${i}`)) as Element
+        const parts = kids(line)
+        const info = parts[parts.indexOf(holderOf(line, `${PANE_PLAN}-${i}`) as Element) - 1]
+        expect(keyOf(info)).toBeUndefined()
+        expect(info.props.display).toBe('none')
+        expect(hoverOf(info)).toEqual({ display: 'flex' })
+        expect(kids(info).length).toBe(1)
+        const group = kids(info)[0]
+        const scope = (hoverOf(group) as { scope?: unknown } | undefined)?.scope
+        expect(typeof scope).toBe('string')
+        expect(hoverOf(group)).toEqual({ scope })
+        expect(kids(group).length).toBe(1)
+        expect([kids(group)[0].type, kids(group)[0].props.source]).toEqual(['Svg', iconSvg('info')])
+        const cards = parts.filter(child => child.props.position === 'absolute')
+        expect(cards.length).toBe(1)
+        expect(hoverOf(cards[0])).toEqual({ display: 'flex', scope })
+        scopes.push(scope)
+      }
+      expect(new Set(scopes).size).toBe(scopes.length)
+      await ui.unmount()
+    })
+  }
+  for (const name of ['pane-full', 'candidates']) {
+    test(`${name}: a card on a line that is not a candidate line opens from the whole line (desktop)`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, 'desktop')
+      const [root] = await ui.findAll({ key: 'cairn-pane' })
+      const cards = flat(root)
+        .filter(line => !/^candidate-\d+$/.test(keyOf(line) ?? ''))
+        .flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+      expect(cards.length).toBeGreaterThan(0)
+      for (const card of cards) expect(hoverOf(card)).toEqual({ display: 'flex' })
+      await ui.unmount()
+    })
   }
 
   // AC3: a press of a hidden ✎ plans its row as on the terminal.
@@ -6093,12 +6150,16 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
         await $.turn.complete(turn())
         const ui = await mountPane($, surface)
         const [root] = await ui.findAll({ key: 'cairn-pane' })
-        const cards = flat(root).flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+        const cards = flat(root).flatMap(line =>
+          kids(line)
+            .filter(child => child.props.position === 'absolute')
+            .map(card => ({ card, candidate: /^candidate-\d+$/.test(keyOf(line) ?? '') })),
+        )
         if (surface === 'terminal') {
           expect(cards).toEqual([])
         } else {
           expect(cards.length).toBeGreaterThan(2)
-          for (const card of cards) {
+          for (const { card, candidate } of cards) {
             expect(card.props).toEqual(
               expect.objectContaining({
                 position: 'absolute',
@@ -6111,8 +6172,11 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
                 backgroundColor: 'userMessageBackground',
               }),
             )
-            // The drawn tree keeps `hover` beside `props`.
-            expect((card as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
+            // The drawn tree keeps `hover` beside `props`. A candidate line's
+            // card opens from its info icon's hover group (M290).
+            expect((card as Element & { hover?: unknown }).hover).toEqual(
+              candidate ? { display: 'flex', scope: expect.any(String) } : { display: 'flex' },
+            )
             expect(keyOf(card)).toBe(undefined)
             expect(kids(card)[0].props.wrap).toBe('wrap')
           }

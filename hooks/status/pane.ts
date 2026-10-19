@@ -74,7 +74,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // line (M290).
 // A line's `full`, set on each head, task, criterion, workable, waiting,
 // blocked, hotfix, and candidate line, is its whole text, which the desktop
-// shows in a card while the pointer is over the line (M286).
+// shows in a card while the pointer is over the line (M286). A candidate
+// line with a `full` sets `info`, and there the desktop shows the card only
+// while the pointer is over an info icon, which shows with ✎ (M290).
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -85,6 +87,7 @@ export type PaneLine = {
   wraps?: true
   card?: true
   full?: string
+  info?: true
   action?: string
   buttons?: PaneButton[]
   target?: string
@@ -794,6 +797,7 @@ export function paneLines(
       )
       candidate.grow = true
       candidate.full = row.title
+      if (row.title !== '') candidate.info = true
       if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
