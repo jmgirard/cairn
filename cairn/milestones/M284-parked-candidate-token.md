@@ -1,6 +1,6 @@
 # M284: A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,7 +49,7 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 - [x] T6: `/milestone-review` step 9: the parked-row check, beside the candidate-row graduation it already does. Each removal shows in the durable-record preview and in the archive summary's Review line, which already holds what hygiene graduated. Add a records-hygiene §1 sentence if §1 is the clause's home.
 - [x] T7: README, DESIGN.md, CHANGELOG, and the D-entry. Grep README and DESIGN for `high → normal → low` and for `↑`, `○`, `↓` lists, so that every restated order or mark list gains the new level (LESSONS M112).
 - [x] T8: Add `[parked]` to this repo's rows, log each row left without it, and move the rows into level order. Update the Candidates header line's order. Run `cairn_validate` to show the `candidate order` advisory silent.
-- [ ] T9: Run the verify slot.
+- [x] T9: Run the verify slot.
 
 ## Work log
 
@@ -71,3 +71,5 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 - 2026-10-18: T5-T6 done. `/cairn-triage` lists `parked` in step 1, reads `[parked]` as a token and not a misspelling, re-rates to and from `parked`, names `priority: parked → high` on a promote, and its apply step's token list and order sentence carry the fourth level. `/milestone-review` step 9 gains "Unpark the rows this merge readied", bounded to rows the milestone file quotes or whose text names its id, and its preview list names an unparked row. Records-hygiene §1 is left unchanged, because the rulebook paragraph points at step 9. New guards in `test_candidate_priority_token.py` pin each clause. skills/tests: 894 OK, hand-run. Verify: all five green.
 - 2026-10-18: T7 done. README's candidate paragraph and short-title sentence, DESIGN.md's reader and pane descriptions and its `hooks/status/` history line, and a new `## Unreleased` CHANGELOG entry name the token, the mark, the order, and the triage step for adopters. `⧗` is left out of DESIGN's ambiguous-width list, because U+29D7 is East Asian Width N (criteria audit finding 8). D-184 is appended. The grep for restated orders and mark lists found README:336-338, README:346, and DESIGN.md:308 and :322, all edited. validate green, verify all five green.
 - 2026-10-18: T8 done. All 24 candidate rows open with `[parked]`: the 11 untagged rows and the 13 `[low]` rows. Rows left without the token: none. Each row states a promotion condition, and the 2026-10-18 triage stamp promoted none. The relative order is unchanged, and the Candidates header line states the four-level order. ROADMAP is 40 lines and 13,963 bytes. validate: `candidate order` OK. Verify: all five green. skills/tests OK, hand-run.
+- 2026-10-18: claim audit: 34 claims read, 4 corrected — CHANGELOG.md, README.md (hygiene unparks rows that the milestone file quotes or whose text names the milestone, not the reverse; "no token" narrowed to "no `[parked]` token" twice). The reader also flagged "the skills write `[parked]`" as resting only on the rulebook line. The author narrowed it in both files to the rulebook rule, and moved triage's parked sentences after the "those three" sentence so that its antecedent stays next to it.
+- 2026-10-18: T9 done: verify all five green on the final tree (scripts 428, hooks 179, mod 2184), skills/tests OK. Status → review.

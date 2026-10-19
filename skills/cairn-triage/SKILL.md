@@ -387,16 +387,16 @@ re-examines a lesson.
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
      that cannot fire soon, is the usual ground; the token is never
-     rewritten to encode order. The fourth level, `parked`, follows the
-     row's promotion condition (tracking-rules "Candidate priority token",
-     D-184). A row that states a condition that has not held, and does not
-     open with `[parked]`, gets `priority: <level> → parked`. A parked row
-     whose condition held gets `priority: parked → normal`.
-     A row of those three, or a `promote` row,
+     rewritten to encode order. A row of those three, or a `promote` row,
      can also carry a token change. The reason cell states it, as in
      `token: + started M260, quoted in M260-<slug>.md` or
      `token: − started M258, done`. A `keep` with no priority or token
      change sits last so the changes read first.
+     The fourth level, `parked`, follows the
+     row's promotion condition (tracking-rules "Candidate priority token",
+     D-184). A row that states a condition that has not held, and does not
+     open with `[parked]`, gets `priority: <level> → parked`. A parked row
+     whose condition held gets `priority: parked → normal`.
      Every `promote` of a candidate row whose opening token is not `[high]`
      carries the priority change to `high`. This holds for a proposed
      `promote` and for one the user sets at *Amend*. Its reason cell states
