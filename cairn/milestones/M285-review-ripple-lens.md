@@ -69,6 +69,7 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 - 2026-10-18: T5: CHANGELOG Unreleased entry and D-185 written. D-185 keeps the counts in this file (no derived measurements in a D-entry) and adds a rejected alternative the plan weighed, a `.github/copilot-instructions.md` line. The CHANGELOG's Copilot sentence claims only that the reviewed head names its PR, not that Copilot stops a kind of thread.
 - 2026-10-18: T6: `verify` slot at f2a2b02d: scripts and hooks unittest suites OK, both manifests validate (the plugin manifest's one warning, CLAUDE.md at the plugin root, is on main too), `claude plugin test` 2184 pass, 0 fail. `skills/tests` hand-run: OK.
 - 2026-10-18: claim audit: 47 claims read, 5 corrected — skills/milestone-review/SKILL.md (step 8 and step 2 wording), CHANGELOG.md (owner mode, new PR only), skills/tests/test_delegation_warrant.py, skills/tests/test_review_fanout.py. The reader re-read the 5 corrections, and all hold. The reader also noted that the `test_delegation_warrant.py` docstring describes a fan-out clause the rulebook no longer has and miscounts its asserts and bullets; that text predates this branch and is left as it is.
+- 2026-10-18: step-7 approval: m285-review-ripple-lens approved for merge
 
 ## Review
 
