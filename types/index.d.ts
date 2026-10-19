@@ -45,7 +45,7 @@ export type CairnPaneItem = { text: string; checked: boolean }
 
 // One active milestone as the cairn pane shows it. `file` is null when the
 // milestone file is missing or its read fails; `log` holds the newest five
-// work-log lines, less their `- `.
+// work-log lines, less their `- `, which the pane has not drawn since M286.
 export type CairnPaneMilestone = {
   id: string
   title: string

@@ -70,7 +70,7 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // the same refreshes as the band. A head line whose file reads ends with
 // the band's percent for its row, so the pane reads the `band` value too
 // (M208). While no cairn skill's step is set, the Next line carries a
-// Button with the band's next-step label after its pill, and a press runs
+// Button with the band's next-step label after its command, and a press runs
 // `pressNext`, as the band's does (M218). At the same times, the line
 // carries Status after that Button, and a press runs `pressStatus` (M219).
 // At the same times, the first line carries ⌂ before ↻, and a press runs
@@ -163,7 +163,7 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 // written by the same read as the hotfix list (`readRepo` says when they
 // are kept). The pane draws them only while the band's root is that root.
 const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null } as CairnRepoRead, {
-  // The tag moved to 2 when the done read gained its days (M286).
+  // `repo-2`: `repo-1`, without the release days, never shipped (M286).
   shape: 'repo-2',
 })
 
@@ -380,7 +380,7 @@ export const register: Register = on => {
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218), and so does Status
+    // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
@@ -930,32 +930,38 @@ async function readPrs($) {
       if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
     }
     // One lookup of the root and its base remote's URL serves the hotfix
-    // list and the card's read (M286), and the blocked reads do not wait
-    // for it.
-    // A lookup that rejects rejects both, so nothing is written.
+    // list and the card's read (M286). Neither the blocked reads nor the
+    // words and list they write wait for the card's read, which is written
+    // last (M286 review, as M230 keeps the blocked reads apart). A lookup
+    // that rejects rejects both, so nothing is written; the card's
+    // rejection is held so it is never unhandled.
     const where = baseOf($)
-    const both = Promise.all([readHotfixes($, where), readRepo($, where)])
+    const listing = readHotfixes($, where)
+    const card = readRepo($, where).catch(() => null)
     const blocked = urls.map(url => readPr($, url))
-    const [listed, counted] = await both
+    const listed = await listing
     const more: string[] = []
     for (const pr of listed.prs) {
       if (!urls.includes(pr.url) && !more.includes(pr.url)) more.push(pr.url)
     }
     urls.push(...more)
-    if (mine === prReads) await update($, repo, () => counted)
-    if (urls.length === 0) {
-      if (mine === prReads) await update($, hotfixes, () => listed)
-      return
+    // Each write checks inside `update`, which retries on a version
+    // conflict, that no newer read started, so a retried write never
+    // replaces a newer read's value (M236 review, M286 review).
+    const newest = <T,>(value: T) => (current: T) => (mine === prReads ? value : current)
+    if (urls.length > 0) {
+      const reads = await Promise.all([...blocked, ...more.map(url => readPr($, url))])
+      const out: Record<string, PrRead> = {}
+      urls.forEach((url, i) => {
+        out[url] = reads[i]
+      })
+      // A newer read that settles between the two writes keeps its list
+      // (M226 review).
+      if (mine === prReads) await update($, prs, newest(out))
     }
-    const reads = await Promise.all([...blocked, ...more.map(url => readPr($, url))])
-    const out: Record<string, PrRead> = {}
-    urls.forEach((url, i) => {
-      out[url] = reads[i]
-    })
-    // Each write checks again that no newer read started, so a newer read
-    // that settles between the two writes keeps its list (M226 review).
-    if (mine === prReads) await update($, prs, () => out)
-    if (mine === prReads) await update($, hotfixes, () => listed)
+    if (mine === prReads) await update($, hotfixes, newest(listed))
+    const counted = await card
+    if (counted !== null && mine === prReads) await update($, repo, newest(counted))
   } catch {
     // No write: the lines keep the words they had.
   } finally {

@@ -15,6 +15,10 @@ describe('the repo query names only the owner and repo of a github.com remote (M
     ['ssh:// with a user and no .git', 'ssh://git@github.com/o/r'],
     ['HTTPS with userinfo', 'https://user:tok@github.com/o/r'],
     ['HTTPS with .git and a trailing slash', 'https://github.com/o/r.git/'],
+    // M286 review: a port, an upper-case host, and scp-like with no user.
+    ['HTTPS with a port', 'https://github.com:443/o/r'],
+    ['ssh:// with a port and upper-case host', 'ssh://git@GitHub.com:22/o/r.git'],
+    ['scp-like with no user', 'github.com:o/r.git'],
   ]
   for (const [name, url] of FORMS) {
     test(name, () => {

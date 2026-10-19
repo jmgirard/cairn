@@ -13,13 +13,14 @@ export const REPO_QUERY =
   'pullRequests(states: OPEN) { totalCount } issues(states: OPEN) { totalCount } } }'
 
 // The github.com remote URL forms, each giving the owner and the repo: the
-// scp-like `git@github.com:o/r`, `ssh://[user@]github.com[:port]/o/r`, and
-// `http(s)://[userinfo@]github.com/o/r`, each with an optional `.git` and
-// trailing `/`. The host matches in any case.
+// scp-like `[user@]github.com:o/r`, `ssh://[user@]github.com[:port]/o/r`,
+// and `http(s)://[userinfo@]github.com[:port]/o/r`, each with an optional
+// `.git` and trailing `/`. The host matches in any case. An ssh host alias
+// names no host, so it runs no call.
 const REMOTE_FORMS = [
-  /^[^@\s/]+@github\.com:([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i,
+  /^(?:[^@\s/]+@)?github\.com:([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i,
   /^ssh:\/\/(?:[^@/\s]+@)?github\.com(?::[0-9]+)?\/([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i,
-  /^https?:\/\/(?:[^@/\s]+@)?github\.com\/([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i,
+  /^https?:\/\/(?:[^@/\s]+@)?github\.com(?::[0-9]+)?\/([^/\s]+)\/([^/\s]+?)(?:\.git)?\/?$/i,
 ]
 
 // The owner and repo of a github.com remote URL, or null for any other URL.

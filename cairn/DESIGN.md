@@ -560,9 +560,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   runs. The live looks dropped look B's rule after each heading, which the
   desktop drew as two lines, and took the desktop app's task-list marks.
   Each item mark takes two spaces after it. The M208 look (a `▎`, gray
-  capitals, eight squares, and a pill) is gone. All colors are the theme
-  keys of `FLOW_COLORS` (M217), and a high-priority candidate's `↑` takes
-  the implement key.
+  capitals, eight squares, and a pill) is gone, and with it the plan
+  color the queue's headings took. The text colors are the theme keys of
+  `FLOW_COLORS` (M217), and a high-priority candidate's `↑` glyph takes the
+  implement key. The desktop icons, that `↑` included, take fixed colors
+  (`icons.ts`), since an image has no theme signal.
   While `knownStep` reads no step, `paneLines` gives the Next line an
   `action` label from `NEXT_LABELS`, which moved to `pane.ts` so the band
   and the pane read one map (M218). The pane's `ui.render` draws it as a

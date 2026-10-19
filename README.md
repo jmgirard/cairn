@@ -304,9 +304,10 @@ that `git describe` finds. The days run from that tag's commit to the
 read, and the count is the milestone files added to
 `cairn/milestones/archive/` since the tag. The PR and issue numbers come from one `gh api
 graphql` query on a github.com base remote, at the same times as the PR
-states (below). Until a read gives them, and for a remote on another
-host, they show `?`. A read that fails keeps the last numbers for the
-same repo. The release line needs the three `git` calls to succeed, and
+states (below). A remote on another host runs no query. Until a read
+gives numbers for the repo folder, they show `?`. A read that fails or
+runs no query keeps the last numbers for the same repo folder, and the
+card holds one folder's numbers at a time. The release line needs the three `git` calls to succeed, and
 guest mode draws none.
 
 For each `in-progress` or `review` milestone, the pane shows the id, in

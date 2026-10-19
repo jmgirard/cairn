@@ -453,7 +453,7 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
   test('the domain reaches every recommended command', () => {
     const commands = new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.command))
     expect([...commands].sort()).toEqual(['/milestone-implement', '/milestone-plan', '/milestone-review'])
-    // Each one has a phase for the Next pill's color (M208 review).
+    // Each one has a phase for the Next line's color (M208 review).
     expect(Object.keys(COMMAND_PHASE).sort()).toEqual([...commands].sort())
     expect(WITH_ROADMAP.some(name => (FIXTURES[name].next?.waiting.length ?? 0) > 0)).toBe(true)
   })
@@ -466,7 +466,7 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         const lines = await paneLines($, surface)
         const next = FIXTURES[name].next
         if (next === null) throw new Error('a fixture with a ROADMAP has a next step')
-        // The command sits in a pill, one space of padding each side (M208).
+        // The command follows `→ ` with no pill and no padding (M286).
         // Planning names the fixture's `[high]` row title, when it has one
         // (M272).
         const named = next.id ?? next.title
@@ -759,12 +759,10 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
 // M208: the operator's picked look. The values below are written out by
 // hand from the fixtures.
 const view = (bodyColumns: number) => ({ ...PANE_VIEW, props: { ...PANE_VIEW.props, bodyColumns } })
-// The theme keys for implement, review, and plan, and the pill's text key
-// (M217).
+// The theme keys for implement, review, and plan (M217).
 const IMPLEMENT_KEY = 'claude'
 const REVIEW_KEY = 'success'
 const PLAN_KEY = 'planMode'
-const PILL_TEXT_KEY = 'inverseText'
 
 async function mountPane($, surface: (typeof SURFACES)[number], bodyColumns = 60) {
   return (await $.ui.mount({ plugin: 'cairn', surface, ...view(bodyColumns) })) as Ui
@@ -1264,7 +1262,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
         expect(buttons.filter(button => keyOf(button) === PANE_NEXT).length).toBe(1)
         const want = ACTION_LABELS[FIXTURES[name].next?.action as string]
         expect([buttons[0].props.label, buttons[0].props.variant]).toEqual([want, 'secondary'])
-        // The Button comes after the pill, in the Box after the pill's.
+        // The Button comes after the command, in the Box after the command's.
         const line = (await boxOf(ui, 'next')) as Element
         expect(kids(line).map(keyOf).slice(0, 3)).toEqual(['next-lead', 'next-text', 'next-action'])
         expect(kids(kids(line)[2]).map(keyOf)).toEqual([PANE_NEXT])
@@ -1280,14 +1278,14 @@ describe("a running cairn skill hides the pane's Button (M218 AC2)", () => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const ui = await mountPane($, surface)
-      const pill = async () => textOf((await partOf(ui, 'next-text'))[0])
+      const command = async () => textOf((await partOf(ui, 'next-text'))[0])
       expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
       await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
       expect(await ui.findAll({ key: PANE_NEXT })).toEqual([])
-      expect(await pill()).toBe('/milestone-implement M002')
+      expect(await command()).toBe('/milestone-implement M002')
       await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
       expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
-      expect(await pill()).toBe('/milestone-implement M002')
+      expect(await command()).toBe('/milestone-implement M002')
       await ui.unmount()
     })
   }
@@ -1352,16 +1350,16 @@ describe("a press of the pane's Button runs the next command (M218 AC3)", () => 
   }
 })
 
-describe('the pill gives way before the Button (M218 AC4)', () => {
+describe('the Next command gives way before the Button (M218 AC4)', () => {
   for (const surface of SURFACES) {
-    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
+    test(`the Button's Box does not shrink, and the command's does (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const ui = await mountPane($, surface)
       const action = (await boxOf(ui, 'next-action')) as Element
       expect(action.props.flexShrink).toBe(0)
-      const pill = (await boxOf(ui, 'next-text')) as Element
-      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
+      const command = (await boxOf(ui, 'next-text')) as Element
+      expect([command.props.flexShrink, command.props.minWidth]).toEqual([1, 0])
       await ui.unmount()
     })
   }
@@ -1407,7 +1405,7 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS, ...plans])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
-        // The Buttons come after the pill, each in its own Box.
+        // The Buttons come after the command, each in its own Box.
         const line = (await boxOf(ui, 'next')) as Element
         expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action', 'next-status'])
         await ui.unmount()
@@ -2023,9 +2021,9 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
   }
 })
 
-describe('the pill gives way before Status (M219 AC4)', () => {
+describe('the Next command gives way before Status (M219 AC4)', () => {
   for (const surface of SURFACES) {
-    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
+    test(`the Button's Box does not shrink, and the command's does (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       await endSkill($)
@@ -2034,8 +2032,8 @@ describe('the pill gives way before Status (M219 AC4)', () => {
         const box = (await boxOf(ui, key)) as Element
         expect([key, box.props.flexShrink]).toEqual([key, 0])
       }
-      const pill = (await boxOf(ui, 'next-text')) as Element
-      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
+      const command = (await boxOf(ui, 'next-text')) as Element
+      expect([command.props.flexShrink, command.props.minWidth]).toEqual([1, 0])
       await ui.unmount()
     })
   }
@@ -5588,6 +5586,39 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
     await $.command.run({ command: COMMAND })
     await calls.settled()
     expect(calls.card.filter(argv => argv[0] === 'gh')).toEqual([ORIGIN_QUERY])
+    expect(await cardText($)).toBe('3 PRs   12 issues')
+  })
+
+  // M286 review: the blocked words and the hotfix list do not wait for the
+  // card's read, as M230 keeps the blocked reads apart.
+  test('a held card query does not hold the blocked words or the hotfix list', async ($, on) => {
+    let release: () => void = () => {}
+    const held = new Promise<void>(resolve => {
+      release = resolve
+    })
+    const calls = gh(on, () => prView('MERGED'), undefined, {
+      remotes: { origin: ORIGIN },
+      list: () => listReply([pr(1265, 'hotfix-a')]),
+      counts: async () => {
+        await held
+        return repoReply(3, 12)
+      },
+    })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    // The held query keeps the fake busy, so these reads mount the pane
+    // directly rather than wait for it to go quiet.
+    let lines = await paneLines($, 'desktop')
+    for (let i = 0; i < 200 && textAt(lines, 'hotfix-1265') === undefined; i++) {
+      await sleep(5)
+      lines = await paneLines($, 'desktop')
+    }
+    expect(textAt(lines, 'blocked-M102')).toBe(prText('M102', 'Two pull request URLs', 34, 'merged'))
+    expect(textAt(lines, 'hotfix-1265')).toBeDefined()
+    expect(textAt(lines, 'card-repo')).toBe('? PRs   ? issues')
+    release()
+    await calls.settled()
     expect(await cardText($)).toBe('3 PRs   12 issues')
   })
 

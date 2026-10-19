@@ -535,7 +535,8 @@ export const NO_PANE: PaneState = {
   taken: [],
 }
 
-// How many work-log lines the pane shows, newest last.
+// How many work-log lines the pane state holds, newest last. The pane has
+// drawn none since M286; the state and its Python twin keep them.
 export const LOG_LINES = 5
 
 const COMMENT = /<!--[\s\S]*?-->/g

@@ -119,3 +119,25 @@ Evidence at head baabd85b, 2026-10-18. Verify: `scripts/tests` 428 tests OK (21 
 - AC9: "hovering a line on the desktop shows a card" describe 7 of 7 pass: with an active milestone, exactly head, task, criterion, workable, waiting, blocked, and hotfix lines carry `full` with their text, and the drawn counts line has none; idle, the queue lines and `candidate-0` carry it, the empty-titled candidate and `no-active` do not; on `pane-full` and `blocked-prs`, every card Box on the desktop is unkeyed with `position: absolute`, `bottom: 1`, `left: 0`, `right: 0`, `display: none`, `hover: { display: flex }`, round, `subtle`, `userMessageBackground`, and wrapped text, and the terminal draws none. The operator saw it open above the row at the third live look. (This line landed just after its box was ticked, by a failed edit; the evidence was gathered before either.)
 
 Consistency gate: `cairn_validate.py` exit 0, all checks pass, two sizing advisories (9 criteria, 11 tasks), not gate failures. No DESIGN principle changed, so `cairn_impact --changed` is skipped. Toolchain slot: verify green on the review head; the marketplace validate prints no `plugins[N].version` warning; CHANGELOG's Unreleased section has the entry for this change, with no milestone number.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: a stale `repo` write could replace a newer read's value on an `update` retry (the newer-read check sat outside `update`; `prs` and `hotfixes` shared the gap) — fix now: each of the three writes checks inside its updater (`newest`).
+- diff-bug #2: the store holds one folder's numbers; README said a remote on another host shows `?`, false once that folder had a good read — fix now: README states AC3's rule (no query for another host, `?` until a read gives numbers for the folder, last numbers kept per folder).
+- diff-bug #3: the days count goes stale between reads, and `now` is taken after the root lookup — reject, planned change: AC4 counts to the read's start and the plan has no timer.
+- diff-bug #4: `https://github.com:443/o/r` and scp-like `github.com:o/r` ran no call — fix now: both forms parse, with three new argv tests (port, upper-case host, no user); ssh host aliases still run none, as no host is named.
+- diff-bug #5: AC2 says "shown hotfixes", the filter passes the whole held list — reject, false: AC2's "shown hotfixes" are the hotfixes the pane is given for its folder, the list `drawnCandidates` reads, unchanged from the old filter.
+- diff-bug #6: the hover scope is the whole line, so a Button opens the card, and a card near the top can clip — reject, planned change: the operator approved the card's behavior at the third live look.
+- diff-bug #7: approved and merged share the check icon, review and current share the dots — reject, planned change: `PR_MARK` maps them so on purpose, and README states it.
+- diff-bug #8: the shape comment named a `repo-1` that never shipped — fix now: the comment says so.
+- diff-bug #9: test gaps (the fixture goal sweep uses `goalBlocks`, AC5 never varies the archived mark, a non-number `git log` has no pane test) — reject, false as gaps: the hand-written AC1 cases, AC5's exception of the archived mark, and the unit test cover each.
+- diff-bug #10: informational (`goalBlocks` splits a prose line opening `2026. `; `doneSince` re-checks guest and trims) — reject, planned change: AC1 names the markers, and the re-checks are harmless.
+- blame-history #1: the blocked words and hotfix list waited on the card's read, against M230 — fix now: `readPrs` writes them before it awaits the card; a new test holds the card query and sees the word and the hotfix line drawn (shown red with the old wait put back, green without).
+- blame-history #2: DESIGN said all colors are theme keys while the icons take fixed colors — fix now: DESIGN names the fixed icon colors.
+- blame-history #3: the queue headings lost the plan color without a record — reject, planned change: look B has no accent; DESIGN now names the dropped color.
+- blame-history #4: `+ ` and `1) ` goal items join the paragraph — reject, planned change: AC1 names `- `, `* `, and digits with `. `.
+- prior-review: no finding; 183 PR review comments on the touched files, each fixed on its PR, none reintroduced.
+- ripple #1–#4: `register.tsx` "pill" comments, `reader.ts` `LOG_LINES` comment, `types/index.d.ts` `log` comment — fix now.
+- ripple #5: tracking-rules lists `✓` among icons — reject, false: the sentence defines an icon by Unicode category, and `✓` is still one.
+- ripple #6: pane.test.tsx "pill" titles and comments and the unused `PILL_TEXT_KEY` — fix now.
+- Verify after the fixes: 2244 mod tests pass, both suites and both validates green.
