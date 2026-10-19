@@ -237,10 +237,14 @@ recording an alternative to a chosen approach states its promotion condition as 
 falsify the chosen approach**, never as a count of failures.
 
 **Candidate priority token.** A candidate row may open with `[high]` or `[low]` (`- [high] short title: detail — added
-YYYY-MM-DD — links`); a row with neither reads as `normal`. The Candidates section orders its rows high → normal → low, advisory
+YYYY-MM-DD — links`); a row with neither reads as `normal`. A row may instead open with `[parked]`, the fourth level,
+when its promotion condition has not held. Whoever adds a row writes `[parked]` when the row states a promotion
+condition that does not hold at that time, in place of `[high]` or `[low]`. The token goes when the condition holds:
+`/cairn-triage` re-rates it, and `/milestone-review` post-merge hygiene removes it from a row whose condition the
+merge made hold. The Candidates section orders its rows high → normal → low → parked, advisory
 order within a level; the token is the fact the order derives from, never a second encoding of it. A new row is
-inserted at its level by whoever adds it, never appended below the `[low]` rows. The token is not a status, a file, or
-an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134).
+inserted at its level by whoever adds it, never appended below the `[parked]` rows. The token is not a status, a file, or
+an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184).
 
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
@@ -252,7 +256,7 @@ a missing `M<NNN>` token for a row whose short title a `planned`, `in-progress`,
 quotes. It also proposes removing a dead token. A dead token names a milestone that is `done`, `dropped`, gone from the
 table, or archived, or a PR that is merged or closed.
 
-**Candidate short title.** A candidate row's short title is its text after the `- ` and any `[high] `/`[low] ` token,
+**Candidate short title.** A candidate row's short title is its text after the `- ` and any `[high] `/`[low] `/`[parked] ` token,
 up to the first `: `. A row with no `: ` is cut at its first ` — ` (space, em dash, space). A row with neither is all
 of that text. Outer spaces are removed. The cairn pane shows the short title, and the skills name a row by it: a ✎
 press plans the row by it, records-hygiene §7 groups the rows that quote it in double quotes, and `/hotfix` matches a

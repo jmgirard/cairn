@@ -1,13 +1,13 @@
 # M284: A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the token rule, the cairn pane, validate, and triage ship to every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m284-parked-candidate-token
 
 ## Goal
 
@@ -41,7 +41,7 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 
 ## Tasks
 
-- [ ] T1: Edit tracking-rules "Candidate priority token" and "Candidate short title" (`skills/shared/tracking-rules.md:239-266`) and the skeleton comment (`skills/cairn-init/SKILL.md:190-196`). Grep `skills/tests` for pinned slices of both before editing (LESSONS M148).
+- [x] T1: Edit tracking-rules "Candidate priority token" and "Candidate short title" (`skills/shared/tracking-rules.md:239-266`) and the skeleton comment (`skills/cairn-init/SKILL.md:190-196`). Grep `skills/tests` for pinned slices of both before editing (LESSONS M148).
 - [ ] T2: Readers. Add `parked` to `CandidateRow['priority']` and the token list in `reader.ts`, and to `candidate_texts` in `cairn_next.py`. Add rows to the `candidates` fixture ROADMAP for `[parked] `, `[PARKED] `, `[parked]` with no space, and `[parked]` mid-row, and update its `expected.json`. Regenerate `fixtures.gen.ts` with `gen_fixtures.py`. The fixture test then holds both twins to the rows. Add a case where a parked row is first in the file and `high_title` names no row.
 - [ ] T3: `_LEVEL_RANK` in `cairn_validate.py:1845` gains `parked: 3`. Add tests for a low row below a parked row (WARN names the low row and the level `parked`) and for a file in level order (no WARN).
 - [ ] T4: Pane. `PRIORITY_MARK.parked` is a gray `⧗`, `LEVEL_RANK.parked` is 3, and a parked title draws gray. In `pane.test.tsx`, add `⧗` to the `MARKS` literal map and assert `PRIORITY_MARK` whole. Add cases for order, key, count, a started parked row, a parked row with an empty short title (no ✎), a parked row while a skill runs (no ✎), and a parked row first in the file that the next step does not name.
@@ -65,3 +65,5 @@ A candidate row whose promotion condition has not held opens with a `[parked]` t
 - 2026-10-18: criteria audit (full) on the first draft, which detected the word "promote": 11 findings, each fixed toward the narrower promise. The question set then replaced that design, so the criteria above went back through the audit (next line).
 - 2026-10-18: criteria audit (full) on the token design: 10 findings, all fixed. AC1 adds `[parked] ` to the short-title rule and the order to the skeleton. AC2's WARN names the row below the parked row, as the check reports, and `high_title` never names a parked row. AC3's missing probe cases moved to T2 and T4. AC4's hygiene check is bounded to rows the milestone file quotes or whose text names its id, and its recording clause moved to T6. AC4 names triage's misspelling clause and order sentence. AC5 states each relation to D-035, D-134, D-179, D-180, and D-182, and records that parked `[low]` rows lose their rating. AC6 became a set a reviewer can check, plus the header line. AC7: no finding.
 - 2026-10-18: a `[low]` row that takes `[parked]` loses its low rating: 13 of this repo's 24 rows are `[low]`. Recorded as a rejected alternative in the D-entry (AC5), and stated in the plan summary.
+- 2026-10-18: implement started on branch m284-parked-candidate-token. Untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-18: T1 done. The tracking-rules token paragraph defines `[parked]` and the four-level order, "Candidate short title" removes `[parked] `, and the `/cairn-init` skeleton shows a parked row. `skills/tests/test_candidate_priority_token.py` and its mutation entries pin the new phrases (27 tests OK). Verify: all five green (scripts 423, hooks 179, mod 2132).

@@ -2203,7 +2203,13 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestRulebookParagraph.test_section_order",
         target=RULES,
-        block="orders its rows high → normal → low",
+        block="orders its rows high → normal → low → parked",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestRulebookParagraph.test_parked_is_the_fourth_level",
+        target=RULES,
+        block="A row may instead open with `[parked]`, the fourth level",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -2221,7 +2227,13 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestInitSkeleton.test_skeleton_names_the_token_as_optional",
         target="skills/cairn-init/SKILL.md",
-        block="`[high]`/`[low]` or absent (`normal`)",
+        block="`[high]`/`[low]`/`[parked]` or absent (`normal`)",
+    ),
+    Mutation(
+        guard="test_candidate_priority_token",
+        test="TestInitSkeleton.test_skeleton_states_the_four_level_order",
+        target="skills/cairn-init/SKILL.md",
+        block="ordered high → normal → low → parked:",
     ),
     Mutation(
         guard="test_candidate_priority_token",

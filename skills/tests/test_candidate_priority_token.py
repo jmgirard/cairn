@@ -41,7 +41,11 @@ class TestRulebookParagraph(unittest.TestCase):
         self.assertIn("a row with neither reads as `normal`", rules())
 
     def test_section_order(self):
-        self.assertIn("orders its rows high → normal → low", rules())
+        self.assertIn("orders its rows high → normal → low → parked", rules())
+
+    def test_parked_is_the_fourth_level(self):
+        # M284/D-184: a row whose promotion condition has not held.
+        self.assertIn("a row may instead open with `[parked]`, the fourth level", rules())
 
     def test_token_is_the_fact(self):
         self.assertIn("the token is the fact the order derives from", rules())
@@ -57,7 +61,10 @@ class TestInitSkeleton(unittest.TestCase):
         self.assertIn("- [high] short title: detail — added yyyy-mm-dd — links", self.skeleton())
 
     def test_skeleton_names_the_token_as_optional(self):
-        self.assertIn("`[high]`/`[low]` or absent (`normal`)", self.skeleton())
+        self.assertIn("`[high]`/`[low]`/`[parked]` or absent (`normal`)", self.skeleton())
+
+    def test_skeleton_states_the_four_level_order(self):
+        self.assertIn("ordered high → normal → low → parked:", self.skeleton())
 
 
 class TestTriageReadsTheToken(unittest.TestCase):
