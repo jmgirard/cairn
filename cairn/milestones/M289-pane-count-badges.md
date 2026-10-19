@@ -147,22 +147,25 @@ Pass 1 (2026-10-19), on f608584d, synced with main (0 behind). PR #301 opened at
 - Gate: `cairn_validate` all checks passed; no principle changed, so `cairn_impact` was skipped; the consistency-gate slot's checks: verify green on the review head (AC4 line), the marketplace validate prints no `version` warning, and CHANGELOG has an Unreleased entry for the badge with no milestone ids. The repo has no CI.
 - spawned: diff-bug, blame-history, prior-review, ripple
 - diff-bug #1: the terminal badge's `inverseText` on `warning` is a pairing the band never draws, unchecked on light themes — follow-up, row "Badge look checks"
-- diff-bug #2: `textLength` stretched a one-digit count about 10–15% (7 px for a 6 px digit) — fix now: `BADGE_DIGIT` 7 → 6 (widths 18, 24, 30)
+- diff-bug #2: `textLength` stretched a one-digit count about 10–15% (7 px for a 6 px digit) — fix now: `BADGE_DIGIT` 7 → 6 (widths 18, 24, 30), fixed 94dabc61
 - diff-bug #3: the 16 px badge may make its heading row taller than the 14 px icon rows; unchecked in the pane — follow-up, row "Badge look checks"
 - diff-bug #4: tail children have no keys — reject, false as a defect: the old tail map had none either, and a Text drops its key
 - diff-bug #5: the terminal tail grows two columns — reject, false as a defect: it fits a 44-column dock
 - diff-bug #6: band.ts and badge.ts import types from each other — reject, false as a defect: type-only imports are erased
-- diff-bug #7: badge.ts said the terminal badge has "the colors of the band's terminal pill", but `warning` is never a band pill ground — fix now: the comment names the shared text key only
-- blame-history #1: track.ts:44 says its palette holds "the only raw colors the mod draws", stale since icons.ts and now badge.ts — fix now: the comment names both
+- diff-bug #7: badge.ts said the terminal badge has "the colors of the band's terminal pill", but `warning` is never a band pill ground — fix now: the comment names the shared text key only, fixed 94dabc61
+- blame-history #1: track.ts:44 says its palette holds "the only raw colors the mod draws", stale since icons.ts and now badge.ts — fix now: the comment names both, fixed 94dabc61
 - blame-history #2: amber Blocked and orange Hotfixes differ mostly by hue — follow-up, row "Badge look checks"
 - blame-history #3: `warning` as the Blocked ground can read as a problem — reject, planned change: the user picked amber for Blocked at the question set
-- blame-history #4: pane.ts said the badge is "in the heading's color", but the desktop fill is fixed — fix now: the comments say theme key in the terminal, a fixed fill near it on the desktop
+- blame-history #4: pane.ts said the badge is "in the heading's color", but the desktop fill is fixed — fix now: the comments say theme key in the terminal, a fixed fill near it on the desktop, fixed 94dabc61
 - blame-history #5: the CHANGELOG entry sits under "Changes that affect existing repos" — reject, false: M286's pane look entry sits there, and the look changes in every adopted repo on update
 - prior-review #1: the terminal badge's theme pairings are unchecked, as M204's review left the pill's — follow-up, row "Badge look checks"
-- prior-review #2: no test computes the badge fills' contrast, as M217's does for the band pill — fix now: "each badge number reads on its fill at 4.5:1 or more" (a planted pale fill turned it red)
+- prior-review #2: no test computes the badge fills' contrast, as M217's does for the band pill — fix now: "each badge number reads on its fill at 4.5:1 or more" (a planted pale fill turned it red), fixed 94dabc61
 - prior-review #3: font-weight 650 on the desktop number, against M208's pill-bold fix — reject, false: the band's own desktop pill label is `font-weight="650"` (track.ts:199)
 - prior-review #4: a desktop surface with no `Svg` falls back to a Text with a background — reject, planned change: the same fallback the icons take (M286)
 - prior-review #5: the fixed desktop fills follow M217's image palette — reject, no defect reported
 - ripple #1: register.tsx:393 says a line with a lead icon centers its row, not a badge — reject, false: the comment added above `drawSpan` says a heading with a badge centers its row too
 - ripple aside: "track.ts `PILL_TEXT` does not exist" — reject, false: `export const PILL_TEXT = 'inverseText'` is track.ts:214
 - After the fixes: verify green (mod tests 2286 pass, 0 fail); AC3's tests pass at widths 18, 24, 30; AC5 re-rendered at the new widths on both grounds, every number legible.
+- conversation: PR #301 has no unresolved thread, no conversation comment before the summary reply, and one review, Copilot's (COMMENTED on f608584d, "No open issues") — noted.
+- copilot: review body — no threads or body items; summary reply posted (issuecomment-6275110645).
+- Copilot level: Lite (set by GitHub's settings). The state query printed `unknown` for the level, the format change the "Copilot level line format" row records; the level is read from the body's `<sub>Review effort: Lite</sub>`. The review covered f608584d; 76cd776f and 94dabc61 came after it.
