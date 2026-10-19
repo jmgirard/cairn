@@ -557,7 +557,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   prototypes (look B), changed at its live looks: a blank row and a bold
   label for each section heading, with its tail at the right end, a
   six-cell `━`/`─` meter beside the Tasks and Criteria counts in the
-  milestone's phase color, the head line's title in bold, and the Next
+  milestone's phase color, and since M289 a badge for the Blocked,
+  Hotfixes, and Candidates counts (`badge.ts`: an `Svg` pill in a fixed
+  fill with a white number on the desktop, the padded number in
+  `inverseText` on the heading's theme key in the terminal), the head
+  line's title in bold, and the Next
   command after a `→`, both bold in the color of the phase the command
   runs. The live looks dropped look B's rule after each heading, which the
   desktop drew as two lines, and took the desktop app's task-list marks.

@@ -104,10 +104,10 @@ AC5 stand in for it.
       plain `<Text>` today). Update the Blocked, Hotfixes, and Candidates
       heading tests (pane.test.tsx:959 and the `headText(…, '15')` cases)
       and add the desktop and terminal draw tests.
-- [ ] T4: Docs: README.md (near line 330), cairn/DESIGN.md (near line 558),
+- [x] T4: Docs: README.md (near line 330), cairn/DESIGN.md (near line 558),
       a new CHANGELOG.md Unreleased entry, and the `pane.ts` and
       `register.tsx` header comments describe the badge; run AC6's greps.
-- [ ] T5: Run the profile's `verify` slot from the repo root and check each
+- [x] T5: Run the profile's `verify` slot from the repo root and check each
       exit code. Render the three badges in the browser pane on a dark and a
       light ground for AC5.
 
@@ -125,6 +125,8 @@ AC5 stand in for it.
 - 2026-10-19: AC5 re-audited after the live look was declined: reworded to "the text color `BADGE_FILL` gives that fill" and to name the numbers 7 and 100. The reader measured white on amber #d9a21b at about 2.3:1, below the 3:1 floor, and the `ink` gray (#1f1f1e) at 5.2:1 or more on all three fills, so T1 starts from one dark text color.
 - 2026-10-19: T1: kept the white number the user picked and darkened the fills instead: the band pill's plan blue rgb(71,103,158) and implement orange rgb(152,85,57) (track.ts `PHASE_FILLS`), and a dark amber rgb(146,103,22) near `warning`. White on each measured 5.0:1 or more (WCAG ratio, computed in a scratch script). Terminal keys: `warning`, `claude`, `planMode`.
 - 2026-10-19: T2, T3: new `hooks/status/badge.ts` (`BADGE_KEY`, `BADGE_FILL`, `badgeWidth`, `badgeSvg`, `badgeSpan`); `Span` gains `badge`; `countHeading` takes the badge name; register.tsx draws a pane tail through `drawSpan` and centers a row with a badge. Six existing heading tests now expect the badge; four new tests. Planted defects (a shared fill, a fixed width, a wrong text key) turned 6 tests red; restored. Mod tests 2281 → 2285, all five verify checks green.
+- 2026-10-19: T4: README, DESIGN, a new CHANGELOG Unreleased entry, and the pane.ts comments describe the badge; AC6's greps: no old phrase, `badge` in all five, no "count at the right end" line left. The simple-english hook flagged README (231) and CHANGELOG (381) counts that predate this branch; the README count did not change with the new lines, and they were left.
+- 2026-10-19: T5: all five verify checks green (mod tests 2285 pass). A scratch page built by node from the repo's `badge.ts` drew 7 and 100 in all three fills on a dark and a light ground in the browser pane; each number read clearly.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

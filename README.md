@@ -326,10 +326,13 @@ one line, and a long item ends in `…`. In the desktop app, holding the
 pointer over a milestone's line, a task, a criterion, or a workable,
 waiting, blocked, hotfix, or candidate line opens a card above it with the
 whole text. Each section starts after a blank row with its name in bold.
-The Tasks, Criteria, Blocked, Hotfixes, and Candidates headings show
-their count at the right end. The Tasks and Criteria headings show their
-count and a six-cell meter, `━` for the checked share and `─` for the
-rest. The next command follows a `→`. When the next step
+The Blocked, Hotfixes, and Candidates headings show their count as a
+badge at the right end. The badge is a rounded pill with a white number,
+amber for Blocked, orange for Hotfixes, and blue for Candidates. The
+terminal draws the badge as the number with a space on each side, on the
+heading's color. The Tasks and Criteria headings show their count at the
+right end with a six-cell meter, `━` for the checked share and `─` for
+the rest. The next command follows a `→`. When the next step
 is planning, the line shows `/milestone-plan <title>`. The title is the
 first `[high]` candidate row that the Candidates list (below) shows. The
 line passes over a row that the list hides. The list also reads the pane's
