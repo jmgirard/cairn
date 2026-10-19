@@ -325,9 +325,9 @@ glyphs named below. The pane does not show the work log. Each item takes
 one line, and a long item ends in `…`. In the desktop app, holding the
 pointer over a milestone's line, a task, a criterion, or a workable,
 waiting, blocked, or hotfix line opens a card above it with the whole
-text. A candidate row opens its card from an info icon instead: the
-pointer over the row shows the icon and the row's `✎`, and the pointer
-over the icon opens the card. Each section starts after a blank row with its name in bold.
+text. A candidate row opens its card from an info icon (`ⓘ`) instead:
+the pointer over the row shows the icon and the row's `✎`, and the
+pointer over the icon opens the card. Each section starts after a blank row with its name in bold.
 The Blocked, Hotfixes, and Candidates headings show their count as a
 badge at the right end. The badge is a rounded pill with a white number,
 amber for Blocked, orange for Hotfixes, and blue for Candidates. The

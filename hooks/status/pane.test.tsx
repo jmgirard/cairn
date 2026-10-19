@@ -4,10 +4,10 @@ import type { On } from 'claude-code'
 import { BADGE_PAD, badgeSvg, badgeWidth } from './badge'
 import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
-import { iconSvg } from './icons'
 import {
   CHECKED_MARK,
   COMMAND_PHASE,
+  INFO_LABEL,
   ITEM_OPEN_MARK,
   NO_FILE,
   NO_ROADMAP,
@@ -2092,11 +2092,11 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
     }
   }
 
-  // AC5: on the desktop the info icon, hidden just before ✎, names the one
+  // AC5: on the desktop the info glyph, hidden just before ✎, names the one
   // hover group that opens the line's card; other lines' cards keep theirs.
   const hoverOf = (node: Element | undefined) => (node as (Element & { hover?: unknown }) | undefined)?.hover
   for (const name of ['candidates', 'candidates-order']) {
-    test(`${name}: the info icon opens the card (desktop)`, async ($, on) => {
+    test(`${name}: the info glyph opens the card (desktop)`, async ($, on) => {
       seat(on, copyOf(name))
       await $.turn.complete(turn())
       const ui = await mountPane($, 'desktop')
@@ -2114,9 +2114,9 @@ describe('the desktop shows a candidate line’s ✎ only under the pointer, and
         const group = kids(info)[0]
         const scope = (hoverOf(group) as { scope?: unknown } | undefined)?.scope
         expect(typeof scope).toBe('string')
-        expect(hoverOf(group)).toEqual({ scope })
-        expect(kids(group).length).toBe(1)
-        expect([kids(group)[0].type, kids(group)[0].props.source]).toEqual(['Svg', iconSvg('info')])
+        expect(group.type).toBe('Text')
+        expect(hoverOf(group)).toEqual({ scope, bold: true })
+        expect(textOf(group)).toBe(INFO_LABEL)
         const cards = parts.filter(child => child.props.position === 'absolute')
         expect(cards.length).toBe(1)
         expect(hoverOf(cards[0])).toEqual({ display: 'flex', scope })

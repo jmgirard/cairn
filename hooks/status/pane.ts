@@ -76,7 +76,7 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // blocked, hotfix, and candidate line, is its whole text, which the desktop
 // shows in a card while the pointer is over the line (M286). A candidate
 // line with a `full` sets `info`, and there the desktop shows the card only
-// while the pointer is over an info icon, which shows with ✎ (M290).
+// while the pointer is over its info glyph `ⓘ`, which shows with ✎ (M290).
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -339,6 +339,8 @@ export const REFRESH_LABEL = '↻'
 export const HOME_LABEL = '⌂'
 // A candidate line's Plan Button (M242).
 export const PLAN_CANDIDATE_LABEL = '✎'
+// A candidate line's info glyph, which opens its card on the desktop (M290).
+export const INFO_LABEL = 'ⓘ'
 export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'

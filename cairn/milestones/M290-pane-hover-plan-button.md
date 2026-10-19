@@ -27,10 +27,10 @@ pointer is over that row, and the terminal draws ✎ where it does today.
 `display: 'none'`, and `hover: { display: 'flex' }`. It stays in the row's
 flow at the right end, inside the line's keyed Box, which is the hover
 scope that the M286 hover card uses. Off the terminal, a candidate line
-with a `full` also draws an info icon before ✎ in the same hidden way. The
-icon's Box names a hover group, and only that group opens the line's
-card. `pane.ts` marks such a line with an `info` field, and `icons.ts`
-gains an `info` icon. On the terminal, the keyed `candidate-<i>-plan` Box
+with a `full` also draws an info icon, a gray `ⓘ` glyph, before ✎ in the
+same hidden way. The glyph's `Text` names a hover group, and only that
+group opens the line's card. `pane.ts` marks such a line with an `info`
+field. On the terminal, the keyed `candidate-<i>-plan` Box
 stays as it is. Tests, the comments beside the code, README,
 `cairn/DESIGN.md`, and CHANGELOG change too.
 
@@ -71,11 +71,11 @@ by the drawn props alone.
       line that carries the `plan` Button in the `candidates` and
       `candidates-order` fixtures. In each such line, the child just before
       the parent Box of the Button is an unkeyed Box with `display: 'none'`
-      and `hover: { display: 'flex' }`. Its only child is a Box whose
-      `hover` is `{ scope: s }`, and that Box's only child is the `Svg` of
-      `iconSvg('info')`. The line's child Box with `position: 'absolute'`
-      has `hover: { display: 'flex', scope: s }`. The string `s` is the
-      same on both Boxes and differs between lines. The same test over
+      and `hover: { display: 'flex' }`. Its only child is a `Text` that
+      reads `ⓘ`, with `hover: { scope: s, bold: true }`. The line's child
+      Box with `position: 'absolute'` has `hover: { display: 'flex',
+      scope: s }`. The string `s` is the same on the `Text` and the Box and
+      differs between lines. The same test over
       `pane-full` and `candidates` shows that each `position: 'absolute'`
       child of a line that is not a candidate line keeps
       `hover: { display: 'flex' }` with no `scope`, and that set is not
@@ -94,8 +94,7 @@ by the drawn props alone.
       is over the row, the row's card opens from the info icon, and the
       terminal shows ✎ as before. The comments near `register.tsx` lines
       386-397, 451-457, and 466-467 and near `pane.ts` lines 66-77 each say
-      the part that their code draws. The `icons.ts` header names the
-      `info` icon. None of these sites says that a hidden Box cannot carry
+      the part that their code draws. None of these sites says that a hidden Box cannot carry
       a hover `scope`. The Unreleased section of CHANGELOG has an entry for
       the change.
 - [ ] AC8: The `verify` slot of `cairn/PROFILE.md` is clean.
@@ -180,6 +179,9 @@ by the drawn props alone.
 - 2026-10-19: the amendment put the plan-owned body at 155 lines; the template comment in Acceptance criteria was cut to one line (criteria text unchanged). The 8-criteria split tripwire WARN is accepted, since splitting mid-run would leave AC5 and AC6 apart from the code they check.
 - 2026-10-19: AC5's non-candidate clause said "more than one Box in each fixture", but `candidates` draws one such card (its workable line); narrowed to "not empty". This joins the narrowings for the operator at the next chip.
 - 2026-10-19: T5 done. Tests first: the two AC5 info tests and the non-candidate test failed before the code. Then `icons.ts` gained `info`, `pane.ts` sets `info` on candidate lines with a title, and `register.tsx` draws the hidden info Box and scopes the card by `infoScope(line.key)`. The M286 card test now expects a scope on candidate lines' cards (`blocked-prs` draws candidates). Docs: README (two sites), DESIGN (two sites, the "engine refuses" sentence replaced), CHANGELOG. Mod test 2303 pass, 0 fail.
+- 2026-10-19: live look 2 (circumplex): the info icon showed, but hovering it opened no card. T5's stop: the operator chose a probe of variants over dropping the card.
+- 2026-10-19: probe (commit 8756dd60, reverted in 0f66a55b): five rows each opened the card a different way. Only the row whose trigger was a `Text` glyph with `hover: { scope, bold }` worked. A Box with `hover: { scope }` around an image or a glyph failed, hidden or shown, and so did a keyed icon Box that held its own card. A desktop fact for LESSONS at review.
+- 2026-10-19: substantive amendment: the info icon is a gray `Text` `ⓘ` (`INFO_LABEL` in pane.ts) with `hover: { scope, bold: true }`, not an `Svg` in a scoped Box. AC5 now names the `Text`, AC7 drops the `icons.ts` clause, and `icons.ts` is back to main. This follows the operator's probe result, so it rides to the operator at the next chip with no further reader (the criteria spent their re-entry).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

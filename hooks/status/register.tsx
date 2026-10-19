@@ -16,6 +16,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  INFO_LABEL,
   METER_EMPTY_KEY,
   nextTitle,
   startedRefs,
@@ -215,7 +216,7 @@ const CLEAR_COMMAND = 'clear'
 // The hover card's ground, the theme key the band's braille track sits on
 // (M286).
 const HOVER_GROUND = 'userMessageBackground'
-// The hover group of a candidate line's info icon and card, one per line
+// The hover group of a candidate line's info glyph and card, one per line
 // key (M290).
 const infoScope = (lineKey: string) => `cairn-info-${lineKey}`
 // The command a candidate line's ✎ holds for its `/clear` (M242).
@@ -388,13 +389,13 @@ export const register: Register = on => {
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). Off the terminal, a candidate line's ✎ Box has no
     // key and stays hidden until the pointer is over the line, and so does
-    // the info icon before it (M290). A Text drops its
+    // the info glyph before it (M290). A Text drops its
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
     // hidden Box with its whole text, placed above the row out of the flow,
     // which the pointer over the line reveals, or on a line with `info` the
-    // pointer over its info icon, which names the card's hover group (M290);
+    // pointer over its info glyph, which names the card's hover group (M290);
     // an absolute Box paints over
     // the rows before it, so it opens upward (M286). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
@@ -418,8 +419,8 @@ export const register: Register = on => {
           {span.text}
         </Text>
       )
-    // A line that draws the info icon, which then alone opens its card (M290).
-    const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && Svg !== undefined
+    // A line that draws the info glyph, which then alone opens its card (M290).
+    const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && e.surface !== 'terminal'
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
       (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
@@ -454,14 +455,16 @@ export const register: Register = on => {
                 />
               </Box>
             )}
-            {!infos(line) || Svg === undefined ? null : (
-              // The info icon, hidden like ✎ until the pointer is over the
-              // line. Its inner Box names the hover group that alone opens
-              // the line's card, so the card no longer opens with ✎ (M290).
+            {!infos(line) ? null : (
+              // The info glyph, hidden like ✎ until the pointer is over the
+              // line. It names the hover group that alone opens the line's
+              // card, so the card no longer opens with ✎ (M290). In the
+              // desktop app a Text in a group heats it and a Box that only
+              // names the group does not (M290 live look).
               <Box display="none" hover={{ display: 'flex' }} flexShrink={0} marginLeft={1}>
-                <Box hover={{ scope: infoScope(line.key) }}>
-                  <Svg source={iconSvg('info')} alt="i" width={ICON_PX} height={ICON_PX} />
-                </Box>
+                <Text color={GRAY} hover={{ scope: infoScope(line.key), bold: true }}>
+                  {INFO_LABEL}
+                </Text>
               </Box>
             )}
             {(line.buttons ?? []).map(kind => {
@@ -491,7 +494,7 @@ export const register: Register = on => {
             {line.full === undefined || e.surface === 'terminal' ? null : (
               // No key of its own: a keyed Box would scope its own hover, and a
               // hidden scope is never under the pointer. The keyed line Box
-              // opens it, or on a line with the info icon its group (M290).
+              // opens it, or on a line with the info glyph its group (M290).
               <Box
                 position="absolute"
                 bottom={1}
