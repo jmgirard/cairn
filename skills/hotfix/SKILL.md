@@ -191,8 +191,9 @@ can resolve against the fork instead of the base repo.
      PR-conversation read, with `--repo <base-repo>`. The one chip below
      takes the place of that read's per-item options. That read's
      blocking rule does not apply, since the chip pushes and never merges.
-     The reads only read: the Copilot round's replies and resolves
-     (`skills/shared/copilot-review.md` §5) do not run on this route.
+     The reads only read: the Copilot round's replies, resolves, and
+     summary replies (`skills/shared/copilot-review.md` §5) do not run on
+     this route.
      Run step 2's `git status` check, then `gh pr checkout <N> --repo
      <base-repo>`. When the local branch already holds commits past
      `headRefOid`, left by a declined run, show them and go on from them.
@@ -329,7 +330,8 @@ can resolve against the fork instead of the base repo.
    begins, with the bounded wait while it prints `pending` (§4). That
    query is the read's own state query for §6. The PR-conversation read below then runs on this PR,
    which now pre-exists. Each Copilot thread takes the agent's disposition
-   under the opt-in line, then the module's reply and resolve (§5), and
+   under the opt-in line, then the module's reply, resolve, and summary
+   reply (§5), and
    its `copilot:` line and the level or pending line, or the reason line
    for a missing review, are stated in chat at the chip (§6); every other
    item keeps the four options. A decline at the chip

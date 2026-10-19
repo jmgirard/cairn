@@ -69,6 +69,7 @@ export const CAIRN_SKILLS: readonly string[] = [
   'milestone-brief',
   'design-interview',
   'cairn-init',
+  'copilot-review',
 ]
 
 // A skill's bare name when it is a cairn skill, from its bare name or its

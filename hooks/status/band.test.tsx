@@ -2056,7 +2056,7 @@ async function drawing(ui: Ui): Promise<string> {
 
 describe('no skill row, and the idle row with no next label (M206 AC4)', () => {
   test('the cairn skill list holds the skill directories', () => {
-    expect(SKILLS.length).toBe(10)
+    expect(SKILLS.length).toBe(11)
     expect([...CAIRN_SKILLS].sort()).toEqual([...SKILLS].sort())
   })
 

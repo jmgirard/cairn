@@ -98,8 +98,9 @@ class TestDesignInterviewSkill(unittest.TestCase):
         self.assertIn('"design-interview"',
                       SKILLS.joinpath("tests",
                                       "test_phase_header_levels.py").read_text())
-        # DESIGN.md architecture count bumped (nine at M63, ten at M173).
-        self.assertIn("× 10", SKILLS.parent.joinpath("cairn", "DESIGN.md").read_text())
+        # DESIGN.md architecture count bumped (nine at M63, ten at M173,
+        # eleven at M287).
+        self.assertIn("× 11", SKILLS.parent.joinpath("cairn", "DESIGN.md").read_text())
         # cairn-init hands off to the skill.
         self.assertIn("/design-interview", norm("cairn-init", "SKILL.md"))
 

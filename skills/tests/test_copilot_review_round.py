@@ -129,5 +129,108 @@ class TestWaitBound(unittest.TestCase):
         self.assertIn("Claude waits up to 25 minutes", readme)
 
 
+class TestCopilotReviewSkill(unittest.TestCase):
+    """M287 AC2: `/copilot-review` asks in chat about a note the agent
+    cannot settle, before that thread gets a reply, and posts no question
+    to GitHub. Each clause has its own test, so a removal of any one fails
+    (the M287 criteria audit)."""
+
+    def setUp(self):
+        self.decide = flat(section(read("copilot-review", "SKILL.md"),
+                                   "4. **Decide.**", "5. **Fix.**"))
+
+    def test_unsettled_note_is_asked_in_chat(self):
+        self.assertIn("If the agent cannot decide a note without the user, "
+                      "ask the user in chat.", self.decide)
+        self.assertIn("Use one `AskUserQuestion` chip", self.decide)
+
+    def test_that_thread_waits_for_the_answer(self):
+        self.assertIn("That thread gets no reply until the user answers.",
+                      self.decide)
+
+    def test_no_question_goes_to_github(self):
+        self.assertIn("Never post a question for the user to GitHub.",
+                      self.decide)
+
+
+class TestNoThanks(unittest.TestCase):
+    """M287 AC3: in the skill and the module, every line that names
+    thanks forbids it, and each file states the rule."""
+
+    FILES = (("copilot-review", "SKILL.md"), ("shared", "copilot-review.md"))
+
+    def test_skill_thread_reply_forbids_thanks(self):
+        step = flat(section(read("copilot-review", "SKILL.md"),
+                            "6. **Reply and resolve.**",
+                            "7. **Answer the summary.**"))
+        self.assertIn("never thanks Copilot", step)
+
+    def test_module_thread_reply_forbids_thanks(self):
+        step = flat(section(read("shared", "copilot-review.md"),
+                            "3. Reply on the thread's first comment",
+                            "4. Resolve the thread."))
+        self.assertIn("Never thank Copilot.", step)
+
+    def test_module_summary_reply_forbids_thanks(self):
+        reply = flat(section(read("shared", "copilot-review.md"),
+                             "**Summary reply.**", "## 6."))
+        self.assertIn("It never thanks Copilot", reply)
+
+    def test_every_thanks_line_forbids_it(self):
+        for parts in self.FILES:
+            hits = [line for line in read(*parts).splitlines()
+                    if "thank" in line.lower()]
+            self.assertTrue(hits, f"no thanks line in {'/'.join(parts)}")
+            for line in hits:
+                with self.subTest(file="/".join(parts), line=line):
+                    self.assertRegex(line.lower(), r"never thank")
+
+
+class TestSummaryReply(unittest.TestCase):
+    """M287 AC4: the module answers each Copilot review's summary after
+    its threads are resolved, links the review, and skips a review an
+    operator comment already links. One test per clause."""
+
+    def setUp(self):
+        self.reply = flat(section(read("shared", "copilot-review.md"),
+                                  "**Summary reply.**", "## 6."))
+
+    def test_reply_comes_after_the_threads_are_resolved(self):
+        self.assertIn("once all its threads (the ones its body anchors) are "
+                      "resolved", self.reply)
+
+    def test_reply_links_the_review(self):
+        self.assertIn("the review's `url`, then one line per thread and "
+                      "body item", self.reply)
+
+    def test_a_linked_review_is_skipped(self):
+        self.assertIn("Skip a review whose `url` an operator comment "
+                      "already carries", self.reply)
+
+
+class TestUnsettledNoteInTheRound(unittest.TestCase):
+    """M287 AC5: in `/hotfix` and `/milestone-review`, a note the agent
+    cannot settle takes the follow-up disposition unless it takes the
+    return floor, the approval chip or merge question names it, and
+    questions go to chat."""
+
+    def setUp(self):
+        self.step = flat(section(read("shared", "copilot-review.md"),
+                                 "1. Dispose of it", "2. A fix-now item"))
+
+    def test_unsettled_note_takes_the_follow_up(self):
+        self.assertIn("thread the agent cannot settle without the user takes "
+                      "the follow-up disposition, unless it takes the return "
+                      "floor below.", self.step)
+
+    def test_the_gate_chip_names_it(self):
+        self.assertIn("The approval chip or merge question names it.",
+                      self.step)
+
+    def test_questions_go_to_chat(self):
+        self.assertIn("A question for the user goes to chat, never to "
+                      "GitHub.", self.step)
+
+
 if __name__ == "__main__":
     unittest.main()
