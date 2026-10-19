@@ -322,7 +322,15 @@ transitions, human-gated merges, and a domain verification doctrine.
   is true, a line whose short title is not empty carries the `plan`
   Button, drawn as a `secondary` Button labeled `✎`
   (`PLAN_CANDIDATE_LABEL`), key `cairn-pane-plan-<index>`, in a `-plan`
-  Box (M242). `paneLines` draws the lines by level (`LEVEL_RANK`: high,
+  Box (M242). Off the terminal that Box has no key and is placed
+  `position: 'absolute'`, `top: 0`, `bottom: 0`, `right: -8`, past the row's
+  edge, where the pane clips it, with `hover: { right: 0 }`, and centers its
+  Button with `alignItems: 'center'`. So ✎ shows only while the
+  pointer is over its line, in the 4 columns that the info glyph before it
+  keeps as its right margin (M290). A Button drawn under `display: 'none'`
+  takes no click in the desktop app even once revealed, and one moved in by
+  an offset does (M290's probe). The terminal draws ✎ as before and has no
+  info glyph. `paneLines` draws the lines by level (`LEVEL_RANK`: high,
   normal, low, parked), each level in ROADMAP order, and `state.candidates` stays
   in ROADMAP order (M280). A parked row's mark is a gray `⧗`
   (`PRIORITY_MARK.parked`) and its title is gray, as a low row's is (M284,
@@ -493,8 +501,17 @@ transitions, human-gated merges, and a domain verification doctrine.
   inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
-  above the row, and the engine refuses a hover scope drawn hidden, so the
-  card has no key.
+  above the row, or on a candidate line the pointer over its ⓘ (below).
+  The card has no key, because a keyed Box scopes its own
+  hover and a hidden scope is never under the pointer. A candidate line's
+  parked ✎ Box has no key for the same reason (M290).
+  A candidate line with a `full` sets `info`. Off the terminal it draws,
+  just before ✎, a hidden unkeyed Box that the line reveals, holding a gray
+  `Text` `ⓘ` (`INFO_LABEL`) with `hover: { scope: 'cairn-info-<line key>',
+  bold: true }`. Its card's `hover` names the same `scope`, so the card
+  opens only from the glyph and not with ✎ (M290). In the desktop app a
+  `Text` in a group heats it, but a `Box` whose `hover` only names the group
+  does not, around an image or a glyph, hidden or shown (M290's probe).
   The same read lists the open hotfix PRs (M226, `readHotfixes`). Since
   M230 the blocked URLs' reads (`readPr`) start beside the list call, and
   the hotfix URLs that no blocked row names are read once the list

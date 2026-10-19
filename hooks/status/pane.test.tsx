@@ -7,6 +7,7 @@ import { GRAY, flowOf, width } from './band'
 import {
   CHECKED_MARK,
   COMMAND_PHASE,
+  INFO_LABEL,
   ITEM_OPEN_MARK,
   NO_FILE,
   NO_ROADMAP,
@@ -222,13 +223,31 @@ function seat(on: On, copy: Copy) {
 
 // A node's shown text. An `Svg` icon reads as its alt text, the glyph the
 // terminal draws in its place, and a Box drawn `display: 'none'`, as the
-// hover card is until the pointer is over its line, reads as nothing (M286).
+// hover card is until the pointer is over its line (over its ⓘ on a
+// candidate line, M290), reads as nothing (M286).
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
   if ((node as Element).type === 'Svg') return String((node as Element).props.alt ?? '')
   if ((node as Element).props?.display === 'none') return ''
   return ((node as Element).children ?? []).map(textOf).join('')
+}
+
+// The Box that holds the Button keyed `key` as its child, found anywhere
+// under `node` (M290).
+function holderOf(node: Element, key: string): Element | undefined {
+  for (const child of kids(node)) {
+    if (child.type === 'Button' && keyOf(child) === key) return node
+    const found = holderOf(child, key)
+    if (found !== undefined) return found
+  }
+  return undefined
+}
+
+// A line's hover card: a child placed `position: 'absolute'` that holds no
+// Button, since the desktop's parked ✎ Box is placed too (M290).
+function isCard(child: Element): boolean {
+  return child.props.position === 'absolute' && !kids(child).some(node => node.type === 'Button')
 }
 
 function keyOf(node: Element): string | undefined {
@@ -2026,14 +2045,194 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
         expect(kids(text)[0].props.wrap).toBe('truncate-end')
         if (i === 7) expect(width(textOf(kids(text)[0]))).toBeGreaterThan(44)
         const line = (await boxOf(ui, `candidate-${i}`)) as Element
-        // The hover card's Box, which has no key, sits last on the desktop (M286).
+        // The hover card's Box, which has no key, sits last on the desktop
+        // (M286), and there ✎ sits in an unkeyed Box just before it (M290).
         const keyed = kids(line).map(keyOf).filter(key => key !== undefined)
-        expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
-        expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
+        if (surface === 'terminal') {
+          expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
+          expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
+        } else {
+          expect(keyed.slice(-1)).toEqual([`candidate-${i}-text`])
+          expect(holderOf(line, `${PANE_PLAN}-${i}`)?.props.flexShrink).toBe(0)
+          expect(kids(line).at(-2)).toBe(holderOf(line, `${PANE_PLAN}-${i}`))
+        }
         await ui.unmount()
       })
     }
   }
+})
+
+describe('the desktop shows a candidate line’s ✎ only under the pointer, and the terminal at rest (M290)', () => {
+  // AC1, AC2: every candidate line that carries ✎ in these fixtures.
+  for (const name of ['candidates', 'candidates-order']) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const rows = drawnCandidates(name).filter(({ row }) => row.title !== '')
+        expect(rows.length).toBeGreaterThan(1)
+        for (const { i } of rows) {
+          const line = (await boxOf(ui, `candidate-${i}`)) as Element
+          const holder = holderOf(line, `${PANE_PLAN}-${i}`) as Element
+          expect(kids(line)).toContain(holder)
+          if (surface === 'terminal') {
+            expect(keyOf(holder)).toBe(`candidate-${i}-plan`)
+            expect([holder.props.flexShrink, holder.props.display]).toEqual([0, undefined])
+            // AC2: no hover and no icon under the line on the terminal.
+            const all: Element[] = []
+            const walk = (node: Element) => kids(node).forEach(child => (all.push(child), walk(child)))
+            walk(line)
+            expect(all.length).toBeGreaterThan(2)
+            expect(all.filter(node => (node as Element & { hover?: unknown }).hover !== undefined)).toEqual([])
+            expect(all.filter(node => node.type === 'Svg')).toEqual([])
+          } else {
+            // Parked past the edge, never `display: 'none'`, whose Button
+            // takes no click in the desktop app (M290 live look).
+            expect(keyOf(holder)).toBeUndefined()
+            expect(holder.props.display).toBeUndefined()
+            expect(holder.props.position).toBe('absolute')
+            expect(holder.props.right as number).toBeLessThan(0)
+            // It spans the row and centers ✎, as the row centers ⓘ.
+            expect([holder.props.top, holder.props.bottom, holder.props.alignItems]).toEqual([0, 0, 'center'])
+            // The drawn tree keeps `hover` beside `props` (M286).
+            expect((holder as Element & { hover?: unknown }).hover).toEqual({ right: 0 })
+          }
+        }
+        await ui.unmount()
+      })
+    }
+  }
+
+  // AC5: on the desktop the info glyph, hidden just before ✎, names the one
+  // hover group that opens the line's card; other lines' cards keep theirs.
+  const hoverOf = (node: Element | undefined) => (node as (Element & { hover?: unknown }) | undefined)?.hover
+  for (const name of ['candidates', 'candidates-order']) {
+    test(`${name}: the info glyph opens the card (desktop)`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, 'desktop')
+      const rows = drawnCandidates(name).filter(({ row }) => row.title !== '')
+      expect(rows.length).toBeGreaterThan(1)
+      const scopes: unknown[] = []
+      for (const { i } of rows) {
+        const line = (await boxOf(ui, `candidate-${i}`)) as Element
+        const parts = kids(line)
+        const info = parts[parts.indexOf(holderOf(line, `${PANE_PLAN}-${i}`) as Element) - 1]
+        expect(keyOf(info)).toBeUndefined()
+        expect(info.props.display).toBe('none')
+        expect(hoverOf(info)).toEqual({ display: 'flex' })
+        expect(kids(info).length).toBe(1)
+        const group = kids(info)[0]
+        const scope = (hoverOf(group) as { scope?: unknown } | undefined)?.scope
+        expect(typeof scope).toBe('string')
+        expect(group.type).toBe('Text')
+        expect(hoverOf(group)).toEqual({ scope, bold: true })
+        expect(textOf(group)).toBe(INFO_LABEL)
+        // The glyph keeps room on its right for the parked ✎ to move into.
+        expect(info.props.marginRight as number).toBeGreaterThan(0)
+        const cards = parts.filter(isCard)
+        expect(cards.length).toBe(1)
+        expect(hoverOf(cards[0])).toEqual({ display: 'flex', scope })
+        scopes.push(scope)
+      }
+      expect(new Set(scopes).size).toBe(scopes.length)
+      await ui.unmount()
+    })
+  }
+  // M290 review: while a cairn skill runs, a candidate line keeps its ⓘ, so
+  // its card stays in reach, with no ✎ and no room kept for one.
+  test('while a skill runs, ⓘ shows alone with no margin (desktop)', async ($, on) => {
+    seat(on, copyOf('candidates'))
+    await $.turn.complete(turn())
+    await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
+    const ui = await mountPane($, 'desktop')
+    const rows = drawnCandidates('candidates').filter(({ row }) => row.title !== '')
+    expect(rows.length).toBeGreaterThan(1)
+    for (const { i } of rows) {
+      const line = (await boxOf(ui, `candidate-${i}`)) as Element
+      expect(holderOf(line, `${PANE_PLAN}-${i}`)).toBeUndefined()
+      const infos = kids(line).filter(child => kids(child).some(node => node.type === 'Text' && textOf(node) === INFO_LABEL))
+      expect(infos.length).toBe(1)
+      expect([infos[0].props.display, infos[0].props.marginRight]).toEqual(['none', 0])
+    }
+    await ui.unmount()
+  })
+
+  for (const name of ['pane-full', 'candidates']) {
+    test(`${name}: a card on a line that is not a candidate line opens from the whole line (desktop)`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, 'desktop')
+      const [root] = await ui.findAll({ key: 'cairn-pane' })
+      const cards = flat(root)
+        .filter(line => !/^candidate-\d+$/.test(keyOf(line) ?? ''))
+        .flatMap(line => kids(line).filter(isCard))
+      expect(cards.length).toBeGreaterThan(0)
+      for (const card of cards) expect(hoverOf(card)).toEqual({ display: 'flex' })
+      await ui.unmount()
+    })
+  }
+
+  // AC3: a press of a parked ✎ plans its row as on the terminal.
+  for (const surface of SURFACES) {
+    for (const [i, title] of [[2, 'Late high'], [3, 'Second low']] as [number, string][]) {
+      test(`✎ on row ${i} plans ${title} (${surface})`, async ($, on) => {
+        const copy = copyOf('candidates-order')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        await ui.press({ key: `${PANE_PLAN}-${i}` })
+        await ui.unmount()
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: title }])
+      })
+    }
+  }
+
+  // AC4: no other Button's Box is drawn hidden.
+  const others = (root: Element) =>
+    flat(root).flatMap(line => {
+      const out: Element[] = []
+      const walk = (node: Element) => {
+        for (const child of kids(node)) {
+          const key = keyOf(child)
+          if (child.type === 'Button' && !key?.startsWith(`${PANE_PLAN}-`)) out.push(holderOf(node, key as string) as Element)
+          walk(child)
+        }
+      }
+      walk(line)
+      return out
+    })
+  for (const name of ['pane-full', 'candidates']) {
+    for (const surface of SURFACES) {
+      test(`${name}: no other Button is hidden (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [root] = await ui.findAll({ key: 'cairn-pane' })
+        const boxes = others(root)
+        expect(boxes.length).toBeGreaterThan(1)
+        for (const box of boxes) expect(box.props.display).toBeUndefined()
+        await ui.unmount()
+      })
+    }
+  }
+  test('blocked-prs: a merged line’s Finish is not hidden', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await ghSettled()
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    const [root] = await ui.findAll({ key: 'cairn-pane' })
+    const finishes = others(root).filter(box => kids(box).some(b => keyOf(b)?.startsWith('cairn-pane-finish-')))
+    expect(finishes.length).toBeGreaterThan(0)
+    for (const box of finishes) expect(box.props.display).toBeUndefined()
+    await ui.unmount()
+  })
 })
 
 describe('the Next command gives way before Status (M219 AC4)', () => {
@@ -3492,7 +3691,8 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
     // Besides the first line, each candidate line's text grows, so ✎ sits at
-    // its right end (M242, M242 review), and so does each blocked or hotfix
+    // its right end (M242, M242 review; on the desktop while the pointer is
+    // over the line, M290), and so does each blocked or hotfix
     // line with a tail, so its number and state word sit at the right end
     // whether or not its title is cut. Each section heading's text grows
     // too (M286), but a milestone's head line does not. No other line grows.
@@ -5984,12 +6184,16 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
         await $.turn.complete(turn())
         const ui = await mountPane($, surface)
         const [root] = await ui.findAll({ key: 'cairn-pane' })
-        const cards = flat(root).flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+        const cards = flat(root).flatMap(line =>
+          kids(line)
+            .filter(isCard)
+            .map(card => ({ card, candidate: /^candidate-\d+$/.test(keyOf(line) ?? '') })),
+        )
         if (surface === 'terminal') {
           expect(cards).toEqual([])
         } else {
           expect(cards.length).toBeGreaterThan(2)
-          for (const card of cards) {
+          for (const { card, candidate } of cards) {
             expect(card.props).toEqual(
               expect.objectContaining({
                 position: 'absolute',
@@ -6002,8 +6206,11 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
                 backgroundColor: 'userMessageBackground',
               }),
             )
-            // The drawn tree keeps `hover` beside `props`.
-            expect((card as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
+            // The drawn tree keeps `hover` beside `props`. A candidate line's
+            // card opens from its info icon's hover group (M290).
+            expect((card as Element & { hover?: unknown }).hover).toEqual(
+              candidate ? { display: 'flex', scope: expect.any(String) } : { display: 'flex' },
+            )
             expect(keyOf(card)).toBe(undefined)
             expect(kids(card)[0].props.wrap).toBe('wrap')
           }

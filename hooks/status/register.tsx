@@ -16,6 +16,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  INFO_LABEL,
   METER_EMPTY_KEY,
   nextTitle,
   startedRefs,
@@ -215,6 +216,15 @@ const CLEAR_COMMAND = 'clear'
 // The hover card's ground, the theme key the band's braille track sits on
 // (M286).
 const HOVER_GROUND = 'userMessageBackground'
+// The hover group of a candidate line's info glyph and card, one per line
+// key (M290).
+const infoScope = (lineKey: string) => `cairn-info-${lineKey}`
+// The columns a candidate line keeps for ✎ while the pointer is over it,
+// and the `right` offset that parks ✎ past the row's edge at rest (M290).
+// The park hides ✎ only while its Button is narrower than 8 columns, since
+// the pane clips what lies past its edge; a wider label needs both changed.
+const PLAN_SLOT = 4
+const PLAN_PARK = -8
 // The command a candidate line's ✎ holds for its `/clear` (M242).
 const PLAN_COMMAND = 'cairn:milestone-plan'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
@@ -383,12 +393,16 @@ export const register: Register = on => {
     // (M208, LESSONS M194). The action Button sits after them in a Box that
     // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
-    // (M219, M236, M241). A Text drops its
+    // (M219, M236, M241). Off the terminal, a candidate line's ✎ Box has no
+    // key and sits past the row's edge until the pointer is over the line,
+    // and the info glyph before it stays hidden until then (M290). A Text drops its
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
     // hidden Box with its whole text, placed above the row out of the flow,
-    // which the pointer over the line reveals; an absolute Box paints over
+    // which the pointer over the line reveals, or on a line with `info` the
+    // pointer over its info glyph, which names the card's hover group (M290);
+    // an absolute Box paints over
     // the rows before it, so it opens upward (M286). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
@@ -411,6 +425,8 @@ export const register: Register = on => {
           {span.text}
         </Text>
       )
+    // A line that draws the info glyph, which then alone opens its card (M290).
+    const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && e.surface !== 'terminal'
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
       (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
@@ -445,12 +461,53 @@ export const register: Register = on => {
                 />
               </Box>
             )}
+            {!infos(line) ? null : (
+              // The info glyph, hidden until the pointer is over the line,
+              // when ✎ also moves in. It names the hover group that alone opens the line's
+              // card, so the card no longer opens with ✎ (M290). In the
+              // desktop app a Text in a group heats it and a Box that only
+              // names the group does not (M290 live look). Its right margin
+              // keeps the room that ✎ moves into.
+              <Box
+                display="none"
+                hover={{ display: 'flex' }}
+                flexShrink={0}
+                marginLeft={1}
+                marginRight={(line.buttons ?? []).includes('plan') ? PLAN_SLOT : 0}
+              >
+                <Text color={GRAY} hover={{ scope: infoScope(line.key), bold: true }}>
+                  {INFO_LABEL}
+                </Text>
+              </Box>
+            )}
             {(line.buttons ?? []).map(kind => {
               const button = PANE_BUTTONS[kind]
               const target = line.target
               const title = line.title
+              // Off the terminal a candidate line's ✎ sits in an unkeyed Box
+              // placed past the row's right edge, where the pane clips it, and
+              // the pointer over the line moves it into the room the info
+              // glyph keeps (M290). In the desktop app a Button drawn under
+              // `display: 'none'` takes no click once revealed, and one moved
+              // by an offset does. A keyed Box would scope its own hover. The
+              // Box spans the row's height and centers ✎ in it, as the row
+              // centers ⓘ.
+              const parks = kind === 'plan' && e.surface !== 'terminal'
               return (
-                <Box key={`${line.key}-${kind}`} flexShrink={0} marginLeft={1}>
+                <Box
+                  {...(parks
+                    ? {
+                        position: 'absolute' as const,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center' as const,
+                        right: PLAN_PARK,
+                        hover: { right: 0 },
+                      }
+                    : { key: `${line.key}-${kind}` })}
+                  flexShrink={0}
+                  marginLeft={1}
+                >
                   <Button
                     key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"
@@ -461,15 +518,16 @@ export const register: Register = on => {
               )
             })}
             {line.full === undefined || e.surface === 'terminal' ? null : (
-              // No key of its own: the keyed line Box is the hover scope, and
-              // the engine refuses a scope drawn hidden.
+              // No key of its own: a keyed Box would scope its own hover, and a
+              // hidden scope is never under the pointer. The keyed line Box
+              // opens it, or on a line with the info glyph its group (M290).
               <Box
                 position="absolute"
                 bottom={1}
                 left={0}
                 right={0}
                 display="none"
-                hover={{ display: 'flex' }}
+                hover={infos(line) ? { display: 'flex', scope: infoScope(line.key) } : { display: 'flex' }}
                 borderStyle="round"
                 borderColor={METER_EMPTY_KEY}
                 backgroundColor={HOVER_GROUND}
