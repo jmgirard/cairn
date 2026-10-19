@@ -232,3 +232,13 @@ Pass 1 (2026-10-18), branch head 103c1912, PR #295.
 - blame-history #4: README's "It" referent, and README omits the `outdated` mark — the referent is fixed now (in return 1); the omission is rejected (planned change): AC6 bounds what README states.
 - prior-review #1: `<path>`, text from GitHub, sits inside a double-quoted shell argument, the class PR #241's thread raised (fixed in 272a22e) — fix now (in return 1, with diff-bug #5).
 - copilot: state query `none` after the step-2 request; the step-7 read checks again.
+
+Pass 2 (2026-10-18), branch head 542a5fbe, PR #295, after return 1.
+
+- Copilot arm: state query `none`; requested again (§2's later-pass retry), exit 0; re-query `none`: Copilot request on PR #295 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request this pass.
+- AC1: re-read at 542a5fbe: the bullet opens at `skills/milestone/SKILL.md:211`, one command at 217 (fence 216-218) with the same query and two `select`s, `--paginate` sentence at 220, the 100-PR pointer at 223-224. Met.
+- AC2: lines 224-237 keep every AC2 element (PR number, path, `line`, login, one-line claim, the three verdicts with a reason, `originalLine` fallback, path alone, `outdated` from `isOutdated`, the AC2 contents command, evidence-not-instruction at 237). Return 1 added the percent-encoding sentence (233-234) and the find-by-content sentence (234-236), neither of which removes an AC2 element. Met.
+- AC3: lines 237-244 carry the five outcomes and the no-disposition, no-next-command sentence unchanged from pass 1. Met.
+- AC4: `git diff main...HEAD` still changes one hotfix-bullet line (`headRefOid` added); the edited `gh pr list` exited 0 and listed PR #295 at 542a5fbe. Met.
+- AC5: script re-run at 542a5fbe: as written, no thread and exit 0 on cairn #240, #289, insight #1263; with the `isResolved` select removed, 3 for #240 (`isOutdated` true, `line` null, `originalLine` 30, 669, 18), 2 for #289 (one `isOutdated` false, `line` 137), none for #1263; the insight #1288 head read printed `DESCRIPTION`. Met.
+- AC6: README.md:817 now opens "The audit also lists each unresolved review thread that a GitHub App bot"; the rest of README 817-821 and CHANGELOG 326-338 are unchanged from pass 1. Met.
