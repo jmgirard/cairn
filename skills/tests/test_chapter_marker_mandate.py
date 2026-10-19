@@ -58,13 +58,14 @@ STRETCH_TOKENS = {
     "milestone": PHASE_LIST,
     "design-interview": PHASE_LIST,
     "cairn-triage": "at each numbered step",
+    "copilot-review": "at each numbered step",
 }
 
 # D-021 sub-choice (3), retained by D-129: the phase skills, review
-# included (ten since M173 added cairn-triage) — pinned by count so a
-# dropped dict entry cannot shrink the domain of the two per-skill tests
-# silently.
-PHASE_SKILL_COUNT = 10
+# included (ten since M173 added cairn-triage, eleven since M287 added
+# copilot-review) — pinned by count so a dropped dict entry cannot shrink
+# the domain of the two per-skill tests silently.
+PHASE_SKILL_COUNT = 11
 
 
 def read(*parts):

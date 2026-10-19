@@ -892,7 +892,9 @@ actually reach.
   handles Copilot's threads: each gets a fix, a reason it was rejected, or
   a follow-up row, and Claude replies on the thread, with no thanks, and
   resolves it. A thread Claude cannot settle without you becomes a
-  follow-up row, named at the merge question or the approval chip. Any
+  follow-up row, named at the merge question or the approval chip. A
+  thread that `/milestone-review` returns to implement stays open instead,
+  and its review's summary waits for a later pass. Any
   question goes to chat, never to GitHub. After a review's threads are resolved,
   Claude posts one PR comment that answers the review's summary: the
   review's link, then one line for each note with what was done. A later
