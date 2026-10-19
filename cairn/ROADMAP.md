@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M290 | The desktop cairn pane shows a candidate row's ✎ only under the pointer | planned | — | normal | milestones/M290-pane-hover-plan-button.md |
+| M290 | The desktop cairn pane shows a candidate row's ✎ only under the pointer | in-progress | — | normal | milestones/M290-pane-hover-plan-button.md |
 | M289 | The cairn pane draws each section count as a colored badge | done | — | normal | milestones/archive/M289-pane-count-badges.md |
 | M288 | Sessions read the repo's source shelf before they search the web for a paper | done | — | normal | milestones/archive/M288-shelf-first-sources.md |
 | M287 | A /copilot-review skill handles Copilot's notes on a PR and replies to its summary | done | — | normal | milestones/archive/M287-copilot-review-skill.md |

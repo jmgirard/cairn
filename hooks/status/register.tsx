@@ -449,8 +449,17 @@ export const register: Register = on => {
               const button = PANE_BUTTONS[kind]
               const target = line.target
               const title = line.title
+              // Off the terminal a candidate line's ✎ sits in an unkeyed Box
+              // drawn hidden, which the pointer over the line reveals in the
+              // row's flow (M290). A keyed Box would scope its own hover, and
+              // the engine refuses a hover scope drawn hidden.
+              const hides = kind === 'plan' && e.surface !== 'terminal'
               return (
-                <Box key={`${line.key}-${kind}`} flexShrink={0} marginLeft={1}>
+                <Box
+                  {...(hides ? { display: 'none' as const, hover: { display: 'flex' as const } } : { key: `${line.key}-${kind}` })}
+                  flexShrink={0}
+                  marginLeft={1}
+                >
                   <Button
                     key={target === undefined ? button.key : `${button.key}-${target}`}
                     variant="secondary"

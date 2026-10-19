@@ -231,6 +231,17 @@ function textOf(node: unknown): string {
   return ((node as Element).children ?? []).map(textOf).join('')
 }
 
+// The Box that holds the Button keyed `key` as its child, found anywhere
+// under `node` (M290).
+function holderOf(node: Element, key: string): Element | undefined {
+  for (const child of kids(node)) {
+    if (child.type === 'Button' && keyOf(child) === key) return node
+    const found = holderOf(child, key)
+    if (found !== undefined) return found
+  }
+  return undefined
+}
+
 function keyOf(node: Element): string | undefined {
   return node.key ?? (node.props?.key as string | undefined)
 }
@@ -2026,14 +2037,112 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
         expect(kids(text)[0].props.wrap).toBe('truncate-end')
         if (i === 7) expect(width(textOf(kids(text)[0]))).toBeGreaterThan(44)
         const line = (await boxOf(ui, `candidate-${i}`)) as Element
-        // The hover card's Box, which has no key, sits last on the desktop (M286).
+        // The hover card's Box, which has no key, sits last on the desktop
+        // (M286), and there ✎ sits in an unkeyed Box just before it (M290).
         const keyed = kids(line).map(keyOf).filter(key => key !== undefined)
-        expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
-        expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
+        if (surface === 'terminal') {
+          expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
+          expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
+        } else {
+          expect(keyed.slice(-1)).toEqual([`candidate-${i}-text`])
+          expect(holderOf(line, `${PANE_PLAN}-${i}`)?.props.flexShrink).toBe(0)
+          expect(kids(line).at(-2)).toBe(holderOf(line, `${PANE_PLAN}-${i}`))
+        }
         await ui.unmount()
       })
     }
   }
+})
+
+describe('the desktop shows a candidate line’s ✎ only under the pointer, and the terminal at rest (M290)', () => {
+  // AC1, AC2: every candidate line that carries ✎ in these fixtures.
+  for (const name of ['candidates', 'candidates-order']) {
+    for (const surface of SURFACES) {
+      test(`${name} (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const rows = drawnCandidates(name).filter(({ row }) => row.title !== '')
+        expect(rows.length).toBeGreaterThan(1)
+        for (const { i } of rows) {
+          const line = (await boxOf(ui, `candidate-${i}`)) as Element
+          const holder = holderOf(line, `${PANE_PLAN}-${i}`) as Element
+          expect(kids(line)).toContain(holder)
+          if (surface === 'terminal') {
+            expect(keyOf(holder)).toBe(`candidate-${i}-plan`)
+            expect([holder.props.flexShrink, holder.props.display]).toEqual([0, undefined])
+          } else {
+            expect(keyOf(holder)).toBeUndefined()
+            expect(holder.props.display).toBe('none')
+            // The drawn tree keeps `hover` beside `props` (M286).
+            expect((holder as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
+            expect(holder.props.position).toBeUndefined()
+          }
+        }
+        await ui.unmount()
+      })
+    }
+  }
+
+  // AC3: a press of a hidden ✎ plans its row as on the terminal.
+  for (const surface of SURFACES) {
+    for (const [i, title] of [[2, 'Late high'], [3, 'Second low']] as [number, string][]) {
+      test(`✎ on row ${i} plans ${title} (${surface})`, async ($, on) => {
+        const copy = copyOf('candidates-order')
+        seat(on, copy)
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        await ui.press({ key: `${PANE_PLAN}-${i}` })
+        await ui.unmount()
+        expect(copy.commands).toEqual([CLEAR_RUN])
+        await $.session.end(CLEAR_END)
+        await untilRuns(copy, 2)
+        expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: title }])
+      })
+    }
+  }
+
+  // AC4: no other Button's Box is drawn hidden.
+  const others = (root: Element) =>
+    flat(root).flatMap(line => {
+      const out: Element[] = []
+      const walk = (node: Element) => {
+        for (const child of kids(node)) {
+          const key = keyOf(child)
+          if (child.type === 'Button' && !key?.startsWith(`${PANE_PLAN}-`)) out.push(holderOf(node, key as string) as Element)
+          walk(child)
+        }
+      }
+      walk(line)
+      return out
+    })
+  for (const name of ['pane-full', 'candidates']) {
+    for (const surface of SURFACES) {
+      test(`${name}: no other Button is hidden (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [root] = await ui.findAll({ key: 'cairn-pane' })
+        const boxes = others(root)
+        expect(boxes.length).toBeGreaterThan(1)
+        for (const box of boxes) expect(box.props.display).toBeUndefined()
+        await ui.unmount()
+      })
+    }
+  }
+  test('blocked-prs: a merged line’s Finish is not hidden', async ($, on) => {
+    gh(on, () => prView('MERGED', ''))
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await ghSettled()
+    const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
+    const [root] = await ui.findAll({ key: 'cairn-pane' })
+    const finishes = others(root).filter(box => kids(box).some(b => keyOf(b)?.startsWith('cairn-pane-finish-')))
+    expect(finishes.length).toBeGreaterThan(0)
+    for (const box of finishes) expect(box.props.display).toBeUndefined()
+    await ui.unmount()
+  })
 })
 
 describe('the Next command gives way before Status (M219 AC4)', () => {
