@@ -142,6 +142,7 @@ first click on an unfocused pane only focuses it. That gap stays with item
 - 2026-10-19: T2 and T3: the code change came before the tests because of the spike. The drawn tree keeps `hover` beside `props`, as M286 found. Discrimination shown by two planted probes: the main-branch register.tsx fails AC1's two desktop tests and M242 AC4's two; every pane Button hidden off the terminal fails all three AC4 tests. The suite has 2299 pass, 0 fail.
 - 2026-10-19: implementation choice: the hide sits in register.tsx's shared Button loop, keyed on `kind === 'plan'` and the surface, rather than a separate branch for candidate lines, so pane.ts and its `PaneLine` shape do not change.
 - 2026-10-19: T4 in progress (checkpoint): README, DESIGN (two sites), the register.tsx and pane.ts comments, and a CHANGELOG entry written. The verify run and the claim audit are running. The DESIGN history line 82 lists no M289 either, so M290 is not added there.
+- 2026-10-19: claim audit: 19 claims read, 2 corrected — hooks/status/register.tsx (the hidden-scope reason now follows the type docs), CHANGELOG.md (✎ was never on every row). Both held on the one re-read. The reader also named M286's older "engine refuses" wording at register.tsx near line 475 and DESIGN.md near line 498, which this branch does not add, so it stays.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

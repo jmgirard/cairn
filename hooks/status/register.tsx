@@ -453,7 +453,7 @@ export const register: Register = on => {
               // Off the terminal a candidate line's ✎ sits in an unkeyed Box
               // drawn hidden, which the pointer over the line reveals in the
               // row's flow (M290). A keyed Box would scope its own hover, and
-              // the engine refuses a hover scope drawn hidden.
+              // a hidden scope is never under the pointer, so it would never show.
               const hides = kind === 'plan' && e.surface !== 'terminal'
               return (
                 <Box

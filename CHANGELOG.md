@@ -95,8 +95,8 @@
   change.
 
 - **The desktop pane shows a candidate row's `✎` only under the
-  pointer.** In the desktop app, the Candidates list no longer draws a
-  `✎` button on every row. A row shows its `✎` at its right end while the
+  pointer.** In the desktop app, the Candidates list no longer draws each
+  row's `✎` button at rest. A row shows its `✎` at its right end while the
   pointer is over the row, and a click on it plans the row as before. The
   terminal pane still draws `✎` on each row that has one.
 
