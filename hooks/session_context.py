@@ -5,8 +5,8 @@ Injects cairn/ROADMAP.md plus every active (in-progress / blocked /
 review) milestone file as additionalContext, so a fresh session starts
 oriented without relying on the skill remembering to read the files.
 When cairn/references/ holds source pages or shelf entries, a short
-`## Source shelf` part comes first and says to read them before searching
-the web (M288). No-op outside cairn repos.
+`## Source shelf` part comes before the ROADMAP and says to read them
+before searching the web (M288). No-op outside cairn repos.
 
 Wired to SessionStart only. Claude Code honors additionalContext on
 `source` startup/resume and ignores it on clear/compact — there is no

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M288: Sessions read the repo's source shelf before they search the web for a paper
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -117,6 +117,7 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - 2026-10-19: T3 done: shelf-first clause in the primary-sources rule (`validation-doctrine.md`, now 101 lines and 6,638 bytes, under its 115 and 8,000 budget) and a "Shelf first." paragraph in tracking-rules "References pages".
 - 2026-10-19: T4 done: `TestShelfFirst` in `test_references_pages.py`, 4 one-line anchors, each registered in the mutation harness and red when blanked; skills/tests OK.
 - 2026-10-19: T5 done: README "Keeping track of sources" bullet and CHANGELOG Unreleased entry, written in plain English to pass the lint hook.
+- 2026-10-19: claim audit: 30 claims read, 4 corrected — hooks/session_context.py, CHANGELOG.md, README.md; the same reader re-read all 4 and found them correct, and two wording notes ("shelf files" to "shelf entries", a long CHANGELOG line) were also applied.
 - 2026-10-19: T6 done: verify green (scripts 0, hooks 0, both validates 0, plugin test 0 fail); skills/tests OK; cairn_validate all checks passed.
 
 ## Decisions

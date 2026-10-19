@@ -750,9 +750,10 @@ somewhere else accumulates these.
   `cairn/references/INDEX.md`, the source's note, and the file in
   `cairn/references/sources/` before it searches the web for a source. It
   searches only for a source that is not there. When `cairn/references/`
-  holds pages or shelf files, each session starts with a short "Source
-  shelf" notice. It gives the counts, lists up to 30 shelf file names, and
-  repeats that rule, so a session sees it even in plain conversation.
+  holds pages or shelf entries, a session that starts or resumes gets a short
+  "Source shelf" notice. It gives the counts, lists up to 30 shelf entry
+  names, and repeats that rule, so it reaches plain conversation too. It is
+  not injected again after `/clear` or compaction.
 
 Two templates ship for authoring these, one per page type; `/cairn-init` puts
 the directory in place and the shelf of original files stays out of git.
