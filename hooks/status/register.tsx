@@ -460,8 +460,8 @@ export const register: Register = on => {
               </Box>
             )}
             {!infos(line) ? null : (
-              // The info glyph, hidden like ✎ until the pointer is over the
-              // line. It names the hover group that alone opens the line's
+              // The info glyph, hidden until the pointer is over the line,
+              // when ✎ also moves in. It names the hover group that alone opens the line's
               // card, so the card no longer opens with ✎ (M290). In the
               // desktop app a Text in a group heats it and a Box that only
               // names the group does not (M290 live look). Its right margin

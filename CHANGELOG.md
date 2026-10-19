@@ -21,8 +21,8 @@
   open task of an in-progress milestone a circle with three dots (`⊙` in
   the terminal). In the desktop app these marks, the candidate marks, and
   the PR state marks are icons of one size, and holding the pointer over a
-  milestone, task, criterion, queue, blocked, hotfix, or candidate line
-  shows its whole text in a card above it. The pane no longer shows the
+  milestone, task, criterion, queue, blocked, or hotfix line shows its
+  whole text in a card above it. The pane no longer shows the
   work log.
 
 - **Review reads the rest of the repo for text the change left stale,

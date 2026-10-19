@@ -501,7 +501,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
-  above the row. The card has no key, because a keyed Box scopes its own
+  above the row, or on a candidate line the pointer over its ⓘ (below).
+  The card has no key, because a keyed Box scopes its own
   hover and a hidden scope is never under the pointer. A candidate line's
   parked ✎ Box has no key for the same reason (M290).
   A candidate line with a `full` sets `info`. Off the terminal it draws,

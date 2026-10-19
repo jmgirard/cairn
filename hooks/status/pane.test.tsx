@@ -223,7 +223,8 @@ function seat(on: On, copy: Copy) {
 
 // A node's shown text. An `Svg` icon reads as its alt text, the glyph the
 // terminal draws in its place, and a Box drawn `display: 'none'`, as the
-// hover card is until the pointer is over its line, reads as nothing (M286).
+// hover card is until the pointer is over its line (over its ⓘ on a
+// candidate line, M290), reads as nothing (M286).
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
@@ -3669,7 +3670,8 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
     // Besides the first line, each candidate line's text grows, so ✎ sits at
-    // its right end (M242, M242 review), and so does each blocked or hotfix
+    // its right end (M242, M242 review; on the desktop while the pointer is
+    // over the line, M290), and so does each blocked or hotfix
     // line with a tail, so its number and state word sit at the right end
     // whether or not its title is cut. Each section heading's text grows
     // too (M286), but a milestone's head line does not. No other line grows.
