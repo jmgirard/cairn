@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M288: Sessions read the repo's source shelf before they search the web for a paper
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP4   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the session-start hook's injected text and the source rules every adopting repo's sessions follow   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m288-shelf-first-sources   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -89,15 +89,15 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - [x] T2: Implement the part in `hooks/session_context.py`, placed before
       the ROADMAP part so the existing shedding never drops it, with the
       30-name cap as a named constant. Update the module docstring.
-- [ ] T3: Add the shelf-first clause to the primary-sources rule in
+- [x] T3: Add the shelf-first clause to the primary-sources rule in
       `skills/shared/validation-doctrine.md` and one sentence to
       tracking-rules "References pages". Keep the doctrine module inside
       the budget its header states.
-- [ ] T4: Add hand-run guards for both clauses to the `skills/tests` file
+- [x] T4: Add hand-run guards for both clauses to the `skills/tests` file
       that covers the references rules, registered in the mutation
       harness, each seen red with its clause removed.
-- [ ] T5: Add the README sentence and the CHANGELOG Unreleased entry.
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` suite.
+- [x] T5: Add the README sentence and the CHANGELOG Unreleased entry.
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` suite.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -113,6 +113,11 @@ that has not taken D-047's rename: the notice reads `sources/` only, and
 - 2026-10-19: origin: the datawizard session web-searched Brincks et al. (2017) while `cairn/references/brincks2017.md` and `sources/brincks2017.pdf` were on its shelf, then saved a per-repo memory note in place of a plugin fix (GP4).
 - 2026-10-19: T1 done: `TestSessionShelf`, 10 cases; 7 failed first on the missing heading, the 3 absence cases passed as silent controls.
 - 2026-10-19: T2 done: `shelf_section` and `SHELF_MAX_NAMES = 30` in `hooks/session_context.py`, appended before the ROADMAP part; the 10 cases pass and hooks/tests is OK; rendered for datawizard (2 pages, 2 entries) and circumplex (36 pages, 51 entries, "and 21 more").
+- 2026-10-19: catch-up: status set to in-progress and the branch recorded with T3's commit; step 1 skipped it before the T1-T2 commit.
+- 2026-10-19: T3 done: shelf-first clause in the primary-sources rule (`validation-doctrine.md`, now 101 lines and 6,638 bytes, under its 115 and 8,000 budget) and a "Shelf first." paragraph in tracking-rules "References pages".
+- 2026-10-19: T4 done: `TestShelfFirst` in `test_references_pages.py`, 4 one-line anchors, each registered in the mutation harness and red when blanked; skills/tests OK.
+- 2026-10-19: T5 done: README "Keeping track of sources" bullet and CHANGELOG Unreleased entry, written in plain English to pass the lint hook.
+- 2026-10-19: T6 done: verify green (scripts 0, hooks 0, both validates 0, plugin test 0 fail); skills/tests OK; cairn_validate all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

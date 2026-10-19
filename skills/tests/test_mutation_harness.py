@@ -4125,6 +4125,37 @@ REGISTRY += [
 ]
 
 REGISTRY += [
+    # M288: read the shelf before a web search, in core and in the module.
+    Mutation(
+        guard="test_references_pages",
+        test="TestShelfFirst.test_core_reads_the_shelf_before_any_web_search",
+        target=RULES,
+        block="Before a web search for any source a session needs, numeric "
+              "or not, read `cairn/references/INDEX.md`,",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestShelfFirst."
+             "test_core_searches_only_for_a_source_not_on_the_shelf",
+        target=RULES,
+        block="Search the web only for a source not found there. When",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestShelfFirst.test_module_reads_the_shelf_first",
+        target=DOCTRINE,
+        block="First read the repo's shelf: `cairn/references/INDEX.md`, the",
+    ),
+    Mutation(
+        guard="test_references_pages",
+        test="TestShelfFirst."
+             "test_module_searches_only_for_a_source_not_on_the_shelf",
+        target=DOCTRINE,
+        block="publisher, OSF) only for a source not found there.",
+    ),
+]
+
+REGISTRY += [
     # M287: `/copilot-review` and the module's summary reply. One entry per
     # clause, so a guard that pins one clause cannot hide the loss of
     # another (the M287 criteria audit).

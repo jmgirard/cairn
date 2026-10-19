@@ -99,6 +99,39 @@ class TestAuthoringTrigger(unittest.TestCase):
         )
 
 
+class TestShelfFirst(unittest.TestCase):
+    """M288 AC2: read the repo's own shelf before searching the web for a
+    source. On 2026-10-19 a datawizard session searched four web sources for
+    a paper whose note and PDF were in `cairn/references/`. The rule sits in
+    core for any source, and in the module's primary-sources rule. Each
+    anchor is one physical line, lowercased."""
+
+    def test_core_reads_the_shelf_before_any_web_search(self):
+        self.assertIn(
+            "before a web search for any source a session needs, numeric or "
+            "not, read `cairn/references/index.md`,",
+            rulebook(),
+        )
+
+    def test_core_searches_only_for_a_source_not_on_the_shelf(self):
+        self.assertIn(
+            "the source's note, and `cairn/references/sources/`. search the "
+            "web only for a source not found there.",
+            rulebook(),
+        )
+
+    def test_module_reads_the_shelf_first(self):
+        self.assertIn(
+            "first read the repo's shelf: `cairn/references/index.md`, the",
+            module(),
+        )
+
+    def test_module_searches_only_for_a_source_not_on_the_shelf(self):
+        self.assertIn(
+            "publisher, osf) only for a source not found there.", module()
+        )
+
+
 class TestExploratorySources(unittest.TestCase):
     """M103: supply-push exploration — reading a corpus of uncited sources to
     DISCOVER new oracles or methods — is a legitimate activity, distinct from

@@ -75,6 +75,16 @@
   question goes to GitHub. A thread that `/milestone-review` returns to
   implement stays open, so its review waits for a later pass.
 
+- **Sessions are told to read the source shelf before the web.** When
+  `cairn/references/` holds source pages or shelf files, the session-start
+  context now opens with a "Source shelf" part. It gives the number of
+  pages in `INDEX.md` and of entries in `sources/`, and lists up to 30
+  entry names. It says to read `INDEX.md`, the source's note, and its file
+  on the shelf before searching the web for a cited source. The rulebook's
+  "References pages" section and the primary-sources rule now say the same
+  for any source. The notice reaches sessions in plain conversation too,
+  where no cairn rule text loads.
+
 ### New
 
 - **`/copilot-review` handles Copilot's review on one pull request.** Run
