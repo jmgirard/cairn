@@ -1,10 +1,12 @@
 import { atom, read, update } from 'claude-code'
 import type { Register } from 'claude-code'
 
-import type { CairnBandHidden, CairnHotfixRead, CairnStep } from '../../types'
+import type { CairnBandHidden, CairnHotfixRead, CairnRepoRead, CairnStep } from '../../types'
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prRead } from './counts'
+import { ICON_PX, iconSvg } from './icons'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
   CHECK_LABEL,
@@ -13,6 +15,7 @@ import {
   FINISH_LABEL,
   HOME_LABEL,
   hotfixPrs,
+  METER_EMPTY_KEY,
   nextTitle,
   startedRefs,
   startedRows,
@@ -67,7 +70,7 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // the same refreshes as the band. A head line whose file reads ends with
 // the band's percent for its row, so the pane reads the `band` value too
 // (M208). While no cairn skill's step is set, the Next line carries a
-// Button with the band's next-step label after its pill, and a press runs
+// Button with the band's next-step label after its command, and a press runs
 // `pressNext`, as the band's does (M218). At the same times, the line
 // carries Status after that Button, and a press runs `pressStatus` (M219).
 // At the same times, the first line carries ⌂ before ↻, and a press runs
@@ -156,6 +159,14 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
   shape: 'hotfixes-2',
 })
 
+// The summary card's numbers and the repo root they are for (M286),
+// written by the same read as the hotfix list (`readRepo` says when they
+// are kept). The pane draws them only while the band's root is that root.
+const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null } as CairnRepoRead, {
+  // `repo-2`: `repo-1`, without the release days, never shipped (M286).
+  shape: 'repo-2',
+})
+
 // True from the start of a read of the pull request states until the newest
 // read started has settled (M236). The pane's ↻ Button reads ⋯ while it is
 // true and a read that this module started is in flight (`inFlight`, M237).
@@ -200,6 +211,9 @@ const STATUS_COMMAND = 'cairn:milestone'
 // The built-in command the Clear Button runs (M216). The Status and Clear
 // labels sit in pane.ts, which the pane's Next line reads too (M219).
 const CLEAR_COMMAND = 'clear'
+// The hover card's ground, the theme key the band's braille track sits on
+// (M286).
+const HOVER_GROUND = 'userMessageBackground'
 // The command a candidate line's ✎ holds for its `/clear` (M242).
 const PLAN_COMMAND = 'cairn:milestone-plan'
 // `CLEARS_FIRST`, the next steps whose Button runs `/clear` first (M221),
@@ -348,7 +362,16 @@ export const register: Register = on => {
     const shown = await read($, band)
     const held = await read($, hotfixes)
     const ours = held.root !== null && held.root === shown.root
-    const lines = paneLines(await read($, pane), shown.rows, acts, await read($, prs), ours ? held.prs : [], ours ? held.started : [])
+    const counts = await read($, repo)
+    const lines = paneLines(
+      await read($, pane),
+      shown.rows,
+      acts,
+      await read($, prs),
+      ours ? held.prs : [],
+      ours ? held.started : [],
+      counts.root !== null && counts.root === shown.root ? counts : null,
+    )
     // ⋯ also needs a read in flight in this module, so a stored true that a
     // reload or a failed write left draws ↻ (M237).
     const busy_ = (await read($, reading)) && inFlight > 0
@@ -357,21 +380,33 @@ export const register: Register = on => {
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
     // (M208, LESSONS M194). The action Button sits after them in a Box that
-    // does not shrink, so the pill is cut first (M218), and so does Status
+    // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). A Text drops its
     // `key`, so each line's key sits on a Box.
-    return (
-      <Box key="cairn-pane" flexDirection="column">
-        {lines.map(line => (
-          <Box key={line.key} paddingLeft={line.indent} minWidth={0}>
+    // The card's lines draw in one Box with a round border in `subtle`,
+    // before the rest (M286). On the desktop a line with a `full` holds a
+    // hidden Box with its whole text, placed above the row out of the flow,
+    // which the pointer over the line reveals; an absolute Box paints over
+    // the rows before it, so it opens upward (M286). A lead span that names an icon draws it as an
+    // `Svg` on a surface whose table has the element, and its glyph in the
+    // terminal, and a line with one centers its row (M286).
+    const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
+    const drawSpan = (span: Span) =>
+      span.icon !== undefined && Svg !== undefined ? (
+        <Svg source={iconSvg(span.icon)} alt={span.text} width={ICON_PX} height={ICON_PX} />
+      ) : (
+        <Text wrap="truncate-end" {...style(span)}>
+          {span.text}
+        </Text>
+      )
+    const centers = (line: (typeof lines)[number]) =>
+      Svg !== undefined && line.lead.some(span => span.icon !== undefined) ? { alignItems: 'center' as const } : {}
+    const drawLine = (line: (typeof lines)[number]) => (
+          <Box key={line.key} paddingLeft={line.indent} minWidth={0} {...centers(line)}>
             {line.lead.length === 0 ? null : (
-              <Box key={`${line.key}-lead`} flexShrink={0}>
-                {line.lead.map(span => (
-                  <Text wrap="truncate-end" {...style(span)}>
-                    {span.text}
-                  </Text>
-                ))}
+              <Box key={`${line.key}-lead`} flexShrink={0} {...centers(line)}>
+                {line.lead.map(drawSpan)}
               </Box>
             )}
             {line.text === null ? null : (
@@ -415,8 +450,35 @@ export const register: Register = on => {
                 </Box>
               )
             })}
+            {line.full === undefined || e.surface === 'terminal' ? null : (
+              // No key of its own: the keyed line Box is the hover scope, and
+              // the engine refuses a scope drawn hidden.
+              <Box
+                position="absolute"
+                bottom={1}
+                left={0}
+                right={0}
+                display="none"
+                hover={{ display: 'flex' }}
+                borderStyle="round"
+                borderColor={METER_EMPTY_KEY}
+                backgroundColor={HOVER_GROUND}
+                paddingX={1}
+              >
+                <Text wrap="wrap">{line.full}</Text>
+              </Box>
+            )}
           </Box>
-        ))}
+    )
+    const card = lines.filter(line => line.card)
+    return (
+      <Box key="cairn-pane" flexDirection="column">
+        {card.length === 0 ? null : (
+          <Box key="cairn-card" flexDirection="column" borderStyle="round" borderColor={METER_EMPTY_KEY} paddingX={1}>
+            {card.map(drawLine)}
+          </Box>
+        )}
+        {lines.filter(line => !line.card).map(drawLine)}
       </Box>
     )
   })
@@ -867,7 +929,15 @@ async function readPrs($) {
     for (const row of (await read($, pane)).blocked) {
       if (row.url !== null && !urls.includes(row.url)) urls.push(row.url)
     }
-    const listing = readHotfixes($)
+    // One lookup of the root and its base remote's URL serves the hotfix
+    // list and the card's read (M286). Neither the blocked reads nor the
+    // words and list they write wait for the card's read, which is written
+    // last (M286 review, as M230 keeps the blocked reads apart). A lookup
+    // that rejects rejects both, so nothing is written; the card's
+    // rejection is held so it is never unhandled.
+    const where = baseOf($)
+    const listing = readHotfixes($, where)
+    const card = readRepo($, where).catch(() => null)
     const blocked = urls.map(url => readPr($, url))
     const listed = await listing
     const more: string[] = []
@@ -875,19 +945,23 @@ async function readPrs($) {
       if (!urls.includes(pr.url) && !more.includes(pr.url)) more.push(pr.url)
     }
     urls.push(...more)
-    if (urls.length === 0) {
-      if (mine === prReads) await update($, hotfixes, () => listed)
-      return
+    // Each write checks inside `update`, which retries on a version
+    // conflict, that no newer read started, so a retried write never
+    // replaces a newer read's value (M236 review, M286 review).
+    const newest = <T,>(value: T) => (current: T) => (mine === prReads ? value : current)
+    if (urls.length > 0) {
+      const reads = await Promise.all([...blocked, ...more.map(url => readPr($, url))])
+      const out: Record<string, PrRead> = {}
+      urls.forEach((url, i) => {
+        out[url] = reads[i]
+      })
+      // A newer read that settles between the two writes keeps its list
+      // (M226 review).
+      if (mine === prReads) await update($, prs, newest(out))
     }
-    const reads = await Promise.all([...blocked, ...more.map(url => readPr($, url))])
-    const out: Record<string, PrRead> = {}
-    urls.forEach((url, i) => {
-      out[url] = reads[i]
-    })
-    // Each write checks again that no newer read started, so a newer read
-    // that settles between the two writes keeps its list (M226 review).
-    if (mine === prReads) await update($, prs, () => out)
-    if (mine === prReads) await update($, hotfixes, () => listed)
+    if (mine === prReads) await update($, hotfixes, newest(listed))
+    const counted = await card
+    if (counted !== null && mine === prReads) await update($, repo, newest(counted))
   } catch {
     // No write: the lines keep the words they had.
   } finally {
@@ -944,10 +1018,9 @@ async function readPr($, url: string): Promise<PrRead> {
 // the same root, and is empty otherwise. A good read replaces it, an empty
 // one included. The same result gives the candidate rows that the listed
 // bodies name (`startedRows`, M252), kept and emptied with the list.
-async function readHotfixes($): Promise<CairnHotfixRead> {
-  const root = (await read($, band)).root
+async function readHotfixes($, where: Promise<Where>): Promise<CairnHotfixRead> {
+  const { root, url } = await where
   if (root === null) return { root: null, prs: [], started: [] }
-  const url = await baseRemoteUrl($, root)
   if (url === null) return { root, prs: [], started: [] }
   let got: HotfixPr[] | null
   let started: StartedRow[] | null
@@ -962,6 +1035,59 @@ async function readHotfixes($): Promise<CairnHotfixRead> {
   if (got !== null && started !== null) return { root, prs: got, started }
   const held = await read($, hotfixes)
   return held.root === root ? held : { root, prs: [], started: [] }
+}
+
+// The band's repo root, whether it is in guest mode, and its base remote's
+// URL, read once per `readPrs` (M286). With no root, the URL is null and no
+// call runs.
+type Where = { root: string | null; guest: boolean; url: string | null }
+async function baseOf($): Promise<Where> {
+  const root = (await read($, band)).root
+  if (root === null) return { root: null, guest: false, url: null }
+  const profile = await readText($, join(root, 'cairn/PROFILE.md'))
+  const guest = profile !== null && collaborationMode(profile) === 'guest'
+  return { root, guest, url: await baseRemoteUrl($, root, guest) }
+}
+
+// The summary card's numbers to write (M286), read with one `gh api
+// graphql` call on the base remote's repo and three git calls in the root.
+// The GitHub numbers come from a github.com base remote only. A read that
+// gives none keeps the last good numbers for the same root, and is empty
+// for any other root. The release read (tag, days, done count) is this
+// read's alone: null in guest mode, with no release tag, or when a git call
+// fails. It rejects only when the root and remote lookup rejects.
+async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
+  // The days count to the read's start, taken before the root lookup
+  // (M286 review, Copilot).
+  const now = Date.now()
+  const { root, guest, url } = await where
+  if (root === null) return { root: null, counts: null, done: null }
+  const argv = url === null ? null : repoArgv(url)
+  const ask = async () => {
+    if (argv === null) return null
+    try {
+      return repoCounts(await $.process.run(argv, { cwd: root, timeoutMs: GH_TIMEOUT_MS }))
+    } catch {
+      return null
+    }
+  }
+  const count = async () => {
+    if (guest) return null
+    const tag = await git($, root, DESCRIBE_ARGS)
+    const trimmed = tag?.trim() ?? ''
+    if (trimmed === '') return null
+    const [log, diff] = await Promise.all([git($, root, tagTimeArgs(trimmed)), git($, root, archivedArgs(trimmed))])
+    return doneSince(guest, tag, log, diff, now)
+  }
+  const [counts, done] = await Promise.all([ask(), count()])
+  if (counts !== null) return { root, counts, done }
+  let held: CairnRepoRead
+  try {
+    held = await read($, repo)
+  } catch {
+    held = { root: null, counts: null, done: null }
+  }
+  return { root, counts: held.root === root ? held.counts : null, done }
 }
 
 // The `gh pr list` call for the operator's open pull requests on a remote
@@ -990,10 +1116,9 @@ function listArgv(url: string): string[] {
 // fails or prints nothing (M226). An `http://` or `https://` URL loses its
 // userinfo, such as `user:token@`, so no credential reaches the `gh` argv,
 // and every other form is kept as it is (M230).
-async function baseRemoteUrl($, root: string): Promise<string | null> {
+async function baseRemoteUrl($, root: string, guest: boolean): Promise<string | null> {
   let base = 'origin'
-  const profile = await readText($, join(root, 'cairn/PROFILE.md'))
-  if (profile !== null && collaborationMode(profile) === 'guest') {
+  if (guest) {
     const names = await git($, root, ['remote'])
     if (names !== null && names.split(/\s+/).includes('upstream')) base = 'upstream'
   }

@@ -4,6 +4,27 @@
 
 ### Changes that affect existing repos
 
+- **The cairn pane opens with a summary card and has a new look.** A card
+  in a round border leads the pane. It shows the open pull requests and
+  open issues of the base remote's repo, the candidate rows at each level,
+  the planned and blocked milestones, and, outside guest mode, the latest
+  `v*` release tag with the days since it and the milestones archived
+  since it. The PR and issue numbers come from one `gh api graphql` query
+  on a github.com remote, at the same times as the PR states, and show `?`
+  until a read gives them. A milestone's goal now wraps at the pane's
+  width instead of at the file's line breaks. Headings are a bold label,
+  with any count at the right end, the Tasks and Criteria meter has six
+  cells, the head line's title is bold, and the Next command follows a
+  `→` with no pill. Blocked lines and hotfix lines share one layout, with
+  a state mark and `fix` in place of a hotfix's milestone id. A checked
+  item shows a filled circle, an open one a dashed circle, and the first
+  open task of an in-progress milestone a circle with three dots (`⊙` in
+  the terminal). In the desktop app these marks, the candidate marks, and
+  the PR state marks are icons of one size, and holding the pointer over a
+  milestone, task, criterion, queue, blocked, hotfix, or candidate line
+  shows its whole text in a card above it. The pane no longer shows the
+  work log.
+
 - **Review reads the rest of the repo for text the change left stale,
   and Copilot sees the PR link in the milestone file.** `/milestone-review`
   has a fourth reviewer, the ripple reviewer, on Haiku 5.5. It lists each

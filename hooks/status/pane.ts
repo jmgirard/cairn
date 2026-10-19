@@ -1,17 +1,19 @@
-import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnStartedRow } from '../../types'
+import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStartedRow } from '../../types'
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
+import type { IconName } from './icons'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
 import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
-import { PILL_TEXT } from './track'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. For each active milestone: its id in its phase's color (no phase
-// word since M236), and its title, with the
+// draws. First, the summary card (M286): the base remote repo's open pull
+// requests and issues, the drawn candidate rows at each level, and the
+// planned, blocked, and done milestones. For each active milestone: its id
+// in its phase's color (no phase word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
-// (M208), its goal, its tasks and criteria with their boxes, and its
-// newest work-log lines.
+// (M208), its goal, and its tasks and criteria with their boxes. Its
+// newest work-log lines drew too until the M286 live look.
 // Below them: the command that scripts/cairn_next.py recommends, the
 // workable planned milestones, and the planned ones that wait on
 // dependencies. Then the blocked milestones, each with the number of the
@@ -27,15 +29,18 @@ import { PILL_TEXT } from './track'
 // line with an ellipsis, but for the goal's lines, which wrap: the operator
 // picked one line per item at the M205 live look, so a long task list fits
 // on one screen.
-// The operator picked the look at the M208 prototypes: a blank row, a
-// `▎`, and a gray uppercase label for each section heading, eight squares
-// beside the Tasks and Criteria counts, the Next command in a pill, and the
-// percent alone on the head line, with no track. At the live look the
-// operator asked for the phase colors: a milestone's marks and meters take
-// its phase's color, the queue's take plan's, and the pill takes the color
-// of the phase its command runs. The colors are theme keys (M217).
+// The operator picked the look at the M286 prototypes (look B), in place
+// of the M208 look: the card in a round border, each section heading a bold
+// label, with any count at the right end, a six-cell meter beside the Tasks
+// and Criteria counts, the head line's title bold, the Next command after
+// an arrow with no pill, and one layout for blocked and hotfix lines. At the
+// live look the operator asked for the app's task-list marks, which the
+// desktop draws as icons of one size (icons.ts), and dropped look B's rule
+// after each heading. A milestone's meters take its phase's color, and the
+// Next line takes the color of the phase its command runs. The colors are
+// theme keys (M217). The `card` lines draw in the card's Box.
 // While no cairn skill runs, the Next line also carries the band's
-// next-step label after the pill, which register.tsx draws as a Button
+// next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
 // draws as a Button (M219). Until M241 it also carried Clear after a cairn
 // skill's end, and the first line's ⌂ took its place.
@@ -47,7 +52,8 @@ import { PILL_TEXT } from './track'
 // tail and any action Button, in order: Status on the Next line (M219),
 // and one of Finish, Revise, or Check on a blocked line (M224). A
 // blocked line's `target` is its milestone id, which its Button's key and
-// press carry. Since M236 the pane's first line carries the one Refresh
+// press carry. Since M236 the pane's first line, the card's first since
+// M286, carries the one Refresh
 // Button, labeled ↻, which reads everything again. Its `grow` makes its
 // text take the free room, so its tail and the Button sit at the right end
 // of the row. Until M236 the Blocked and Hotfixes headings each carried a
@@ -60,6 +66,9 @@ import { PILL_TEXT } from './track'
 // `title` is the row's short title, which the press carries. A candidate
 // line's `grow` puts ✎ at the right end of the row, and a blocked or
 // hotfix line with a tail grows so its tail sits there too.
+// A line's `full`, set on each head, task, criterion, workable, waiting,
+// blocked, hotfix, and candidate line, is its whole text, which the desktop
+// shows in a card while the pointer is over the line (M286).
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -68,6 +77,8 @@ export type PaneLine = {
   text: Span | null
   tail?: Span[]
   wraps?: true
+  card?: true
+  full?: string
   action?: string
   buttons?: PaneButton[]
   target?: string
@@ -327,30 +338,68 @@ export const CHECK_LABEL = 'Check'
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
 export const NO_ACTIVE = 'no active milestone'
-export const CHECKED_MARK = '✓'
+// A task or criterion's marks (M286), as the desktop app's own task list
+// draws them, at the operator's direction after the pick: a checked box is
+// a filled circle with a check, an open one a dashed circle, and the first
+// open task of an `in-progress` milestone, the one being worked, a circle
+// with three dots. Each names its icon (icons.ts), which the desktop draws
+// in place of the glyph, so every mark is one size there; the terminal
+// draws the glyph.
+export const CHECKED_MARK = '●'
+export const ITEM_OPEN_MARK = '◌'
+export const CURRENT_MARK = '⊙'
+// The empty circle a normal candidate row draws (M253), which a blocked or
+// hotfix line also draws before a read (M286).
 export const OPEN_MARK = '○'
 // A candidate row's mark for each priority (M207). A normal row's mark is
-// the empty circle that `OPEN_MARK` also uses (M253).
+// the empty circle `OPEN_MARK` (M253). Each names its icon (M286).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
-  high: { text: '↑', color: FLOW_COLORS.implement, bold: true },
-  normal: { text: '○' },
-  low: { text: '↓', color: GRAY },
+  high: { text: '↑', color: FLOW_COLORS.implement, bold: true, icon: 'high' },
+  normal: { text: OPEN_MARK, icon: 'ring' },
+  low: { text: '↓', color: GRAY, icon: 'low' },
   // A parked row waits on a promotion condition that has not held (M284).
-  parked: { text: '⧗', color: GRAY },
+  parked: { text: '⧗', color: GRAY, icon: 'parked' },
 }
 // The order the Candidates list draws each priority in (M280), the parked
 // rows last (M284).
 const LEVEL_RANK: Record<CandidateRow['priority'], number> = { high: 0, normal: 1, low: 2, parked: 3 }
-// A section heading's accent mark, in the phase's color (M208).
-export const ACCENT_MARK = '▎'
-// The meter's squares, filled and empty, and how many it draws (M208).
-export const METER_FULL = '■'
-export const METER_EMPTY = '□'
-export const METER_CELLS = 8
-// The empty squares' theme key, as the band's terminal track marks use (M208 review).
+// The meter's cells, filled and empty, and how many it draws (M208, look B
+// in M286).
+export const METER_FULL = '━'
+export const METER_EMPTY = '─'
+export const METER_CELLS = 6
+// The empty cells' theme key, as the band's terminal track marks use (M208 review).
 export const METER_EMPTY_KEY = 'subtle'
+// The room after an item's mark: two spaces, for the operator's ask for
+// more space after the pick (M286).
+export const ITEM_GAP = '  '
 // The warning text's theme key, as the band's warning labels use.
 const WARNING = 'warning'
+// The Next line's mark before its command (M286).
+export const NEXT_MARK = '→ '
+// The identifier a hotfix line draws where a blocked line draws its
+// milestone id (M286).
+export const HOTFIX_ID = 'fix'
+// A pull request line's state mark for each word, in the word's color, and
+// for a line with no read yet, each with its icon (M286).
+export const PR_MARK: Record<PrWord, { text: string; icon: IconName }> = {
+  merged: { text: '●', icon: 'merged' },
+  approved: { text: '●', icon: 'merged' },
+  'changes requested': { text: '▲', icon: 'attention' },
+  'in review': { text: '◐', icon: 'review' },
+  closed: { text: '✕', icon: 'closed' },
+  unknown: { text: '◌', icon: 'open' },
+}
+export const UNREAD_MARK = { text: OPEN_MARK, icon: 'ring' as IconName }
+// The card's line keys (M286), and the text a number draws as before a read
+// gives it.
+export const CARD_KEYS = {
+  repo: 'card-repo',
+  candidates: 'card-candidates',
+  milestones: 'card-milestones',
+  release: 'card-release',
+} as const
+export const UNKNOWN_NUMBER = '?'
 
 // A milestone's id draws in its phase's color, with no phase word, which
 // the operator dropped at the M236 live look.
@@ -358,14 +407,12 @@ const PHASE_COLOR: Record<string, string> = {
   'in-progress': FLOW_COLORS.implement,
   review: FLOW_COLORS.review,
 }
-// The phase each recommended command runs, for the Next pill's color.
+// The phase each recommended command runs, for the Next line's color.
 export const COMMAND_PHASE: Record<string, FlowPhase> = {
   '/milestone-plan': 'plan',
   '/milestone-implement': 'implement',
   '/milestone-review': 'review',
 }
-// The queue's headings are about planned, blocked, and candidate work.
-const QUEUE_COLOR = FLOW_COLORS.plan
 
 const line = (key: string, indent: number, lead: Span[], text: Span | null = null): PaneLine => ({
   key,
@@ -394,44 +441,85 @@ export function meter(checked: number, total: number, color: string): Span[] {
   ].filter(span => span.text !== '')
 }
 
-// A section heading and the blank row before it: the accent in `color`,
-// the label in gray uppercase, and its count and meter where it has them.
-function heading(key: string, label: string, color: string, after: Span[] = []): PaneLine[] {
-  return [
-    gap(`${key}-gap`),
-    line(key, 0, [
-      { text: ACCENT_MARK, color },
-      { text: ' ' },
-      { text: label.toUpperCase(), color: GRAY, bold: true },
-      ...after,
-    ]),
-  ]
+// A section heading and the blank row before it (M286): the label in bold,
+// and an empty text that grows, so the heading's tail, where it has one,
+// sits at the right end after a space. Look B's rule after the label was
+// dropped at the live look, where the desktop drew it as two lines.
+function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
+  const head: PaneLine = { ...line(key, 0, [{ text: label, bold: true }], { text: '' }), grow: true }
+  if (tail.length > 0) head.tail = [{ text: ' ' }, ...tail]
+  return [gap(`${key}-gap`), head]
 }
 
+// A heading whose tail is a bare count in gray.
+function countHeading(key: string, label: string, count: number): PaneLine[] {
+  return heading(key, label, [{ text: `${count}`, color: GRAY }])
+}
+
+// A heading whose tail is the checked and total counts and the meter in
+// the phase's color.
 function counted(key: string, label: string, list: PaneItem[], color: string): PaneLine[] {
   const checked = list.filter(item => item.checked).length
-  return heading(key, label, color, [
-    { text: ' ' },
-    { text: `${checked}/${list.length}`, color: GRAY },
-    { text: ' ' },
-    ...meter(checked, list.length, color),
-  ])
+  return heading(key, label, [{ text: `${checked}/${list.length} `, color: GRAY }, ...meter(checked, list.length, color)])
 }
 
-function items(prefix: string, list: PaneItem[]): PaneLine[] {
-  return list.map((item, i) =>
-    line(
-      `${prefix}-${i}`,
-      2,
-      [item.checked ? { text: CHECKED_MARK, color: GRAY } : { text: OPEN_MARK }, { text: ' ' }],
-      item.checked ? { text: item.text, color: GRAY } : { text: item.text },
-    ),
-  )
+// The item lines. `current` is the index of the item that draws
+// `CURRENT_MARK`, or -1 for none.
+function items(prefix: string, list: PaneItem[], current = -1): PaneLine[] {
+  return list.map((item, i) => {
+    const mark: Span = item.checked
+      ? { text: CHECKED_MARK, color: GRAY, icon: 'done' }
+      : i === current
+        ? { text: CURRENT_MARK, icon: 'current' }
+        : { text: ITEM_OPEN_MARK, color: GRAY, icon: 'open' }
+    return {
+      ...line(`${prefix}-${i}`, 2, [mark, { text: ITEM_GAP }], item.checked ? { text: item.text, color: GRAY } : { text: item.text }),
+      full: item.text,
+    }
+  })
+}
+
+// A list item's opening marker: `- `, `* `, or digits and `. ` (M286).
+const LIST_MARK = /^([-*] |\d+\. )/
+
+// The goal's paragraphs and list items, each one string, so the pane wraps
+// them at its own width and not at the file's line breaks (M286). Each line
+// is trimmed. A line joins the one above it with one space, unless a blank
+// line comes between them or its trimmed text opens with a list marker. One
+// or more blank lines give one empty string between blocks.
+export function goalBlocks(goal: string): string[] {
+  const out: string[] = []
+  let open = false
+  let blank = false
+  for (const raw of goal.split('\n')) {
+    const text = raw.trim()
+    if (text === '') {
+      if (out.length > 0) blank = true
+      open = false
+      continue
+    }
+    if (blank) {
+      out.push('')
+      blank = false
+    }
+    if (open && !LIST_MARK.test(text)) {
+      out[out.length - 1] = `${out[out.length - 1]} ${text}`
+    } else {
+      out.push(text)
+      open = true
+    }
+  }
+  return out
 }
 
 function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine[] {
   const phase = { color: PHASE_COLOR[row.status] ?? GRAY }
-  const head = line(`${row.id}-head`, 0, [{ text: row.id, color: phase.color, bold: true }, { text: '  ' }], { text: row.title })
+  // The id bold in the phase's color and the title bold (M286, look B).
+  const head = line(`${row.id}-head`, 0, [{ text: row.id, color: phase.color, bold: true }, { text: '  ' }], {
+    text: row.title,
+    bold: true,
+  })
+  head.full = row.title
   const file = row.file
   // The band's percent for the row, from its own counts, which count a box
   // inside an HTML comment where the pane's items do not.
@@ -440,25 +528,131 @@ function milestoneLines(row: PaneMilestone, band: BandRow | undefined): PaneLine
   const out: PaneLine[] = [head]
   if (file === null) return [...out, line(`${row.id}-nofile`, 2, [], { text: NO_FILE, color: WARNING })]
   if (file.goal !== '') {
-    out.push(...heading(`${row.id}-goal-head`, 'Goal', phase.color))
-    // A blank line between paragraphs draws as one space, so it keeps its row.
-    file.goal.split('\n').forEach((text, i) =>
+    out.push(...heading(`${row.id}-goal-head`, 'Goal'))
+    // One wrapping line per paragraph or list item (M286). The blank row
+    // between paragraphs draws as one space, so it keeps its row.
+    goalBlocks(file.goal).forEach((text, i) =>
       out.push({ ...line(`${row.id}-goal-${i}`, 2, [], { text: text === '' ? ' ' : text }), wraps: true }),
     )
   }
   if (file.tasks.length > 0) {
     out.push(...counted(`${row.id}-tasks-head`, 'Tasks', file.tasks, phase.color))
-    out.push(...items(`${row.id}-task`, file.tasks))
+    // While the milestone is `in-progress`, its first open task is the one
+    // being worked (M286).
+    const current = row.status === 'in-progress' ? file.tasks.findIndex(item => !item.checked) : -1
+    out.push(...items(`${row.id}-task`, file.tasks, current))
   }
   if (file.criteria.length > 0) {
     out.push(...counted(`${row.id}-criteria-head`, 'Criteria', file.criteria, phase.color))
     out.push(...items(`${row.id}-criterion`, file.criteria))
   }
-  if (file.log.length > 0) {
-    out.push(...heading(`${row.id}-log-head`, 'Work log', phase.color))
-    file.log.forEach((text, i) => out.push(line(`${row.id}-log-${i}`, 2, [], { text, color: GRAY })))
-  }
+  // The work log draws no section since the M286 live look, where the
+  // operator found its one-row lines added little; the file holds it.
   return out
+}
+
+// The candidate rows that the Candidates list draws, each with its index in
+// `state.candidates`, high rows first, then normal, low, and parked (M280,
+// M284), each level in ROADMAP order. A row that `startedRefs` marks is left
+// out (M261). The card counts the same rows, so the list and the card share
+// this one filter (M286).
+export function drawnCandidates(
+  state: PaneState,
+  hotfixes: HotfixPr[],
+  started: StartedRow[],
+): { row: CandidateRow; i: number }[] {
+  return state.candidates
+    .map((row, i) => ({ row, i }))
+    .filter(({ row }) => {
+      const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
+      return numbers.length === 0 && ids.length === 0
+    })
+    .sort((a, b) => LEVEL_RANK[a.row.priority] - LEVEL_RANK[b.row.priority] || a.i - b.i)
+}
+
+// The summary card's lines (M286, look B), which register.tsx draws in one
+// Box with a round border. The first holds the base remote repo's open pull
+// requests and open issues, each `?` while the store holds no numbers for
+// this root. The second holds the drawn candidate rows at each level, each
+// after its level's mark. The third holds the planned and blocked
+// milestones. A fourth, the release line, holds the latest release tag, the
+// days since its commit, and the milestones done since it, when the last
+// read could read them.
+export function cardLines(
+  state: PaneState,
+  drawn: { row: CandidateRow }[],
+  repo: CairnRepoRead | null,
+): PaneLine[] {
+  const counts = repo?.counts ?? null
+  const number = (n: number | undefined) => ({ text: n === undefined ? UNKNOWN_NUMBER : `${n}`, bold: true })
+  const first: PaneLine = {
+    ...line(CARD_KEYS.repo, 0, [
+      number(counts?.prs),
+      { text: ' PRs', color: GRAY },
+      { text: '   ' },
+      number(counts?.issues),
+      { text: ' issues', color: GRAY },
+    ]),
+    // An empty text takes the free room, so the Buttons sit at the right end.
+    text: { text: '' },
+  }
+  const levels: CandidateRow['priority'][] = ['high', 'normal', 'low', 'parked']
+  const second = line(CARD_KEYS.candidates, 0, [
+    { text: 'candidates', color: GRAY },
+    ...levels.flatMap((level, i) => [
+      { text: i === 0 ? ' ' : '   ' },
+      PRIORITY_MARK[level],
+      { text: ` ${drawn.filter(({ row }) => row.priority === level).length}` },
+    ]),
+  ])
+  const planned = state.workable.length + state.waiting.length
+  const third = line(CARD_KEYS.milestones, 0, [], { text: `${planned} planned · ${state.blocked.length} blocked`, color: GRAY })
+  // The release line, while the last read written for this root could read
+  // the latest release tag, the days since its commit, and the milestones
+  // archived since it (M286).
+  const done = repo?.done ?? null
+  const release =
+    done === null
+      ? []
+      : [
+          line(CARD_KEYS.release, 0, [], {
+            text: `${done.tag} · ${done.days === 1 ? '1 day' : `${done.days} days`} ago · ${done.count} done since`,
+            color: GRAY,
+          }),
+        ]
+  return [first, second, third, ...release].map(card => ({ ...card, card: true }))
+}
+
+// A blocked milestone's line or a hotfix pull request's line, in one layout
+// (M286): the state mark in its word's color, the identifier bold, the
+// title, and a tail that holds the pull request's number in gray, the
+// archived mark for a blocked row whose file was archived (M246), and the
+// state word in its color. Before a read the mark is `○` in gray and the
+// tail holds no word. A blocked row with no pull request has no number. A
+// line with a tail grows, so the tail sits at the right end whether or not
+// the title is cut.
+function prLine(key: string, id: string, title: string, number: number | null, archived: boolean, got: PrRead | undefined): PaneLine {
+  const word = got?.word
+  const mark: Span = word === undefined ? { ...UNREAD_MARK, color: GRAY } : { ...PR_MARK[word], color: prColor(word) }
+  const held: PaneLine = { ...line(key, 2, [mark, { text: ' ' }, { text: id, bold: true }, { text: '  ' }], { text: title }), full: title }
+  const tail: Span[] = []
+  if (number !== null) tail.push({ text: ' ' }, { text: `#${number}`, color: GRAY })
+  if (archived) tail.push({ text: ' ' }, { text: 'archived', color: GRAY })
+  if (word !== undefined) tail.push({ text: ' ' }, { text: word, color: prColor(word) })
+  if (tail.length > 0) {
+    held.tail = [{ text: ' ' }, ...tail]
+    held.grow = true
+  }
+  return held
+}
+
+// The line under a pull request's line with its unresolved threads, or null
+// when it has no count. The counts sit in the line's text, which is cut at
+// the pane's edge, since a 44-column dock leaves no room for them in the
+// tail (M225).
+function countsLine(key: string, got: PrRead | undefined): PaneLine | null {
+  const counts = got?.counts == null ? null : countsText(got.counts)
+  return counts === null ? null : line(key, 4, [], { text: counts, color: GRAY })
 }
 
 // The pane's lines from its state and the band's rows, whose counts give
@@ -477,32 +671,34 @@ export function paneLines(
   prs: Record<string, PrRead> = {},
   hotfixes: HotfixPr[] = [],
   started: StartedRow[] = [],
+  repo: CairnRepoRead | null = null,
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
-  const out: PaneLine[] = []
+  // The candidate rows the Candidates list draws, whether or not a
+  // milestone is active, which the card counts too (M286).
+  const drawable = drawnCandidates(state, hotfixes, started)
+  const out: PaneLine[] = cardLines(state, drawable, repo)
+  // The card's first line carries the ↻ Button at its right end (M236, on
+  // the card since M286), and ⌂ before it while no cairn skill's step is
+  // set (M241).
+  out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
+  out[0].grow = true
+  // A blank row under the card, for the operator's ask for more space.
+  out.push(gap('card-gap'))
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
   state.milestones.forEach((row, i) => {
     if (i > 0) out.push(gap(`${row.id}-gap`))
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
-  // The first line, the first milestone's head line or the no-active line,
-  // carries the ↻ Button at its right end (M236), and ⌂ before it while no
-  // cairn skill's step is set (M241).
-  out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
-  out[0].grow = true
   if (state.next !== null) {
     // Planning names its `[high]` row's short title after the command (M272).
     const named = state.next.id ?? nextTitle(state.next, state.candidates, state.taken, hotfixes, started)
     const target = named === null ? state.next.command : `${state.next.command} ${named}`
     out.push(gap('next-gap'))
-    const next = line('next', 0, [{ text: 'Next', bold: true }, { text: '  ' }], {
-      text: ` ${target} `,
-      color: PILL_TEXT,
-      backgroundColor: FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement'],
-      // Bold, as the band's pill is. The text and fill are the theme's own
-      // keys (M217), so their contrast is the theme's.
-      bold: true,
-    })
+    // The arrow and the command, bold in the color of the phase the command
+    // runs, with no pill (M286, look B).
+    const color = FLOW_COLORS[COMMAND_PHASE[state.next.command] ?? 'implement']
+    const next = line('next', 0, [{ text: NEXT_MARK, color, bold: true }], { text: target, color, bold: true })
     const label = nextLabel(state.next.action)
     // Status follows the next-step Button and shows only with it, as the
     // band's shows only with a next-step label (M219 review).
@@ -513,19 +709,16 @@ export function paneLines(
     out.push(next)
   }
   if (state.workable.length > 0) {
-    out.push(...heading('workable-head', 'Workable', QUEUE_COLOR))
+    out.push(...heading('workable-head', 'Workable'))
     for (const row of state.workable) {
-      out.push(line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }))
+      out.push({ ...line(`workable-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title }), full: row.title })
     }
   }
   if (state.waiting.length > 0) {
-    out.push(...heading('waiting-head', 'Waiting', QUEUE_COLOR))
+    out.push(...heading('waiting-head', 'Waiting'))
     for (const row of state.waiting) {
-      out.push(
-        line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], {
-          text: `${row.title} · on ${row.unmet.join(', ')}`,
-        }),
-      )
+      const text = `${row.title} · on ${row.unmet.join(', ')}`
+      out.push({ ...line(`waiting-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text }), full: text })
     }
   }
   // The blocked rows, each with its pull request's number when its
@@ -533,21 +726,12 @@ export function paneLines(
   // active (M223). After the number, the state word that the last read
   // found, and the Button that word carries (M224).
   if (state.blocked.length > 0) {
-    const head = heading('blocked-head', 'Blocked', QUEUE_COLOR, [
-      { text: ' ' },
-      { text: `${state.blocked.length}`, color: GRAY },
-    ])
-    out.push(...head)
+    out.push(...countHeading('blocked-head', 'Blocked', state.blocked.length))
     for (const row of state.blocked) {
-      const held = line(`blocked-${row.id}`, 2, [{ text: row.id, bold: true }, { text: '  ' }], { text: row.title })
-      if (row.pr !== null) held.tail = [{ text: '  ' }, { text: `#${row.pr}`, color: GRAY }]
-      // A row whose file was archived before its row changed (M246): the
-      // mark sits after the number and before the state word.
-      if (row.archived) held.tail = [...(held.tail ?? []), { text: '  ' }, { text: 'archived', color: GRAY }]
       const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
+      const held = prLine(`blocked-${row.id}`, row.id, row.title, row.pr, row.archived, got)
       const word = got?.word
       if (word !== undefined) {
-        held.tail = [...(held.tail ?? []), { text: '  ' }, { text: word, color: prColor(word) }]
         // An archived row carries only Finish (M246 review): its milestone
         // file is gone, so Revise and Check have nothing to work on.
         const mapped = PR_BUTTON[word]
@@ -557,14 +741,9 @@ export function paneLines(
           held.target = row.id
         }
       }
-      // A line with a tail grows, so its number and state word sit at the
-      // right end whether or not its title is cut.
-      if (held.tail !== undefined) held.grow = true
       out.push(held)
-      // The counts sit in the line's text, which is cut at the pane's edge,
-      // since a 44-column dock leaves no room for them in the tail (M225).
-      const counts = got?.counts == null ? null : countsText(got.counts)
-      if (counts !== null) out.push(line(`blocked-${row.id}-counts`, 4, [], { text: counts, color: GRAY }))
+      const counts = countsLine(`blocked-${row.id}-counts`, got)
+      if (counts !== null) out.push(counts)
     }
   }
   // The open hotfix pull requests, after the Blocked rows and before the
@@ -575,18 +754,12 @@ export function paneLines(
   // leaves it out (M230).
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
-    const head = heading('hotfixes-head', 'Hotfixes', QUEUE_COLOR, [{ text: ' ' }, { text: `${shown.length}`, color: GRAY }])
-    out.push(...head)
+    out.push(...countHeading('hotfixes-head', 'Hotfixes', shown.length))
     for (const pr of shown) {
-      const held = line(`hotfix-${pr.number}`, 2, [{ text: `#${pr.number}`, bold: true }, { text: '  ' }], { text: pr.title })
       const got = Object.prototype.hasOwnProperty.call(prs, pr.url) ? prs[pr.url] : undefined
-      if (got !== undefined) {
-        held.tail = [{ text: '  ' }, { text: got.word, color: prColor(got.word) }]
-        held.grow = true
-      }
-      out.push(held)
-      const counts = got?.counts == null ? null : countsText(got.counts)
-      if (counts !== null) out.push(line(`hotfix-${pr.number}-counts`, 4, [], { text: counts, color: GRAY }))
+      out.push(prLine(`hotfix-${pr.number}`, HOTFIX_ID, pr.title, pr.number, false, got))
+      const counts = countsLine(`hotfix-${pr.number}-counts`, got)
+      if (counts !== null) out.push(counts)
     }
   }
   // With no active milestone, the ROADMAP's candidate rows (M207), each
@@ -601,17 +774,9 @@ export function paneLines(
   // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
   // index there as its key and its ✎ target, and `pressCandidate` looks the
   // row up by that index.
-  const drawn = state.milestones.length === 0
-    ? state.candidates
-        .map((row, i) => ({ row, i }))
-        .filter(({ row }) => {
-          const { numbers, ids } = startedRefs(row.title, state.taken, hotfixes, started)
-          return numbers.length === 0 && ids.length === 0
-        })
-        .sort((a, b) => LEVEL_RANK[a.row.priority] - LEVEL_RANK[b.row.priority] || a.i - b.i)
-    : []
+  const drawn = state.milestones.length === 0 ? drawable : []
   if (drawn.length > 0) {
-    out.push(...heading('candidates-head', 'Candidates', QUEUE_COLOR, [{ text: ' ' }, { text: `${drawn.length}`, color: GRAY }]))
+    out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
     for (const { row, i } of drawn) {
       const candidate = line(
         `candidate-${i}`,
@@ -620,6 +785,7 @@ export function paneLines(
         row.priority === 'low' || row.priority === 'parked' ? { text: row.title, color: GRAY } : { text: row.title },
       )
       candidate.grow = true
+      candidate.full = row.title
       if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
@@ -628,5 +794,7 @@ export function paneLines(
       out.push(candidate)
     }
   }
+  // A line whose text is empty has no hover card (M286).
+  for (const each of out) if (each.full === '') delete each.full
   return out
 }

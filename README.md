@@ -292,47 +292,75 @@ it again to close the pane, or use the pane's own close mark. The band's
 conversation. In the terminal it docks beside a fullscreen conversation
 of 110 columns or more, and otherwise it sits above the prompt.
 
+The pane opens with a summary card in a round border. Its first line shows
+the number of open pull requests and open issues on the base remote's
+repo, from every author. Its second line shows the candidate rows at each
+level, with the level's mark: `[high]`, normal, `[low]`, and `[parked]`.
+It counts the rows that the Candidates list (below) would show, also
+while a milestone is active. Its third line shows the planned and blocked
+milestones. A fourth line shows the latest release, for example
+`v2.1.0 · 12 days ago · 4 done since`. The tag is the newest `v*` tag
+that `git describe` finds. The days run from that tag's commit to the
+read, and the count is the milestone files added to
+`cairn/milestones/archive/` since the tag. The PR and issue numbers come from one `gh api
+graphql` query on a github.com base remote, at the same times as the PR
+states (below). A remote on another host runs no query. Until a read
+gives numbers for the repo folder, they show `?`. A read that fails or
+runs no query keeps the last numbers for the same repo folder, and the
+card holds one folder's numbers at a time. The release line needs the three `git` calls to succeed, and
+guest mode draws none.
+
 For each `in-progress` or `review` milestone, the pane shows the id, in
-the phase's color, and the title, with the band's percent for the milestone at the end of
-that line when its file reads, and the goal from the milestone file. It lists every task
-and acceptance criterion, `✓` for a checked box and `○` for an open one,
-and the five newest work-log lines. Each item takes one line, a long item
-ends in `…`, and the goal wraps. Each section starts after a blank row
-with a `▎` and its name in gray capitals. The `TASKS` and `CRITERIA`
-headings show their count and eight squares, `■` for the checked share
-and `□` for the rest. The next command sits in a pill. When the next step
-is planning, the pill shows `/milestone-plan <title>`. The title is the
+the phase's color, and the title in bold, with the band's percent for the milestone at the end of
+that line when its file reads, and the goal from the milestone file. The
+goal wraps at the pane's width. The lines of one paragraph join, and each
+list item (`- `, `* `, or `1. `) starts a new line. It lists every task
+and acceptance criterion. A checked box shows a filled circle with a
+check, an open box a dashed circle, and the first open task of an
+`in-progress` milestone, the one being worked, a circle with three dots.
+In the desktop app these marks, the candidate marks, and the PR state
+marks are small icons of one size, in fixed colors, since an image cannot
+follow the theme. The terminal draws them as `●`, `◌`, `⊙`, and the
+glyphs named below. The pane does not show the work log. Each item takes
+one line, and a long item ends in `…`. In the desktop app, holding the
+pointer over a milestone's line, a task, a criterion, or a workable,
+waiting, blocked, hotfix, or candidate line opens a card above it with the
+whole text. Each section starts after a blank row with its name in bold.
+The Tasks, Criteria, Blocked, Hotfixes, and Candidates headings show
+their count at the right end. The Tasks and Criteria headings show their
+count and a six-cell meter, `━` for the checked share and `─` for the
+rest. The next command follows a `→`. When the next step
+is planning, the line shows `/milestone-plan <title>`. The title is the
 first `[high]` candidate row that the Candidates list (below) shows. The
-pill passes over a row that the list hides. The list also reads the pane's
-last read of your open PRs. So the pill can name a row that
+line passes over a row that the list hides. The list also reads the pane's
+last read of your open PRs. So the line can name a row that
 `cairn_next.py` passes over, or pass over a row that it names. With no
-such row, the pill shows `/milestone-plan` alone. While no cairn
-skill runs or waits on its background work, a button after the pill reads `Implement`, `Resume`, `Review`, or
+such row, the line shows `/milestone-plan` alone. While no cairn
+skill runs or waits on its background work, a button after the command reads `Implement`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
 command as that button does, so `Plan` and `Implement` run `/clear` first.
-`Plan` plans the row that the pill names. A press while Claude works outside a cairn
+`Plan` plans the row that the Next line names. A press while Claude works outside a cairn
 skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
 `/cairn:milestone`. The Next line has no `Clear` button. The pane's `⌂`
 button, described below, clears the conversation. Each press runs the
 command of the band's button of the same name. As with the
 next-step button, a press while Claude works outside a cairn skill runs
-when Claude is idle. In a narrow pane, the pill is cut first. In the
+when Claude is idle. In a narrow pane, the command is cut first. In the
 desktop app, a click on the pane while it does not have keyboard focus only
-gives it focus. Then press the button again. The id and the `▎` and `■`
-marks of a milestone draw in its phase's color, the theme's `claude`
-orange for implement and `success` green for review. The `▎` marks of the
-queue draw in the plan color, `planMode`, and the pill draws in the color
-of the phase that its command runs, with `inverseText` text. A
+gives it focus. Then press the button again. The id and the meter of a
+milestone draw in its phase's color, the theme's `claude` orange for
+implement and `success` green for review. The Next line draws in the
+color of the phase that its command runs, `planMode` for planning. A
 high-priority candidate's `↑` draws in the implement color. The
 percent counts boxes as the band does, so a box inside an HTML
-comment counts there but not in the `TASKS` and `CRITERIA` counts, and
+comment counts there but not in the Tasks and Criteria counts, and
 the two can differ. A missing or unreadable
 milestone file shows `no milestone file`. Below the milestones, the pane
 shows the next command, the workable planned milestones, and the planned
 milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
-ROADMAP's candidate rows under a `CANDIDATES` heading with their count.
+ROADMAP's candidate rows under a Candidates heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `○` for a normal one,
 `↓` for a `[low]` one, and a gray `⧗` for a `[parked]` one, then the row's
 short title. A `[parked]` row waits on a promotion condition that has not
@@ -374,11 +402,16 @@ runs when Claude is idle. While another button's command runs or waits
 for its `/clear`, or a `⌂` press waits for its `/clear`, a press does
 nothing.
 
-Whenever a milestone is `blocked`, the pane lists it under a `BLOCKED`
+Whenever a milestone is `blocked`, the pane lists it under a Blocked
 heading with the count, after the queue and before the candidates, with
-or without an active milestone. Each line shows the id and title, and
-then `#<n>`, the number of the first GitHub pull request URL in the
-milestone file's `Branch/PR` header, before any `companion:` entry. In
+or without an active milestone. Each line shows a state mark, the id and
+title, and then `#<n>`, the number of the first GitHub pull request URL in the
+milestone file's `Branch/PR` header, before any `companion:` entry. Before
+a read the mark is an empty circle. After a read it shows the state word's
+mark: a check for `merged` and `approved`, an alert for `changes
+requested`, three dots for `in review`, a cross for `closed`, and a dashed
+circle for `unknown`. In the terminal these are `●`, `▲`, `◐`, `✕`, and
+`◌`, and the empty circle is `○`. In
 guest mode, a milestone you handed to the maintainers is `blocked` with
 its PR in that header, so the section lists the PRs that wait on review.
 `scripts/cairn_next.py` prints the same number after each "Externally
@@ -407,8 +440,7 @@ the read when that start already read the states. An open does not wait
 for the read. The words and counts appear together when the last GitHub
 call answers or times out.
 The pane also reads the states, and the tracking files, when you press
-the ↻ Button at the right end of the pane's first line: the first
-milestone's line, or `no active milestone`. The ↻ shows whenever the pane
+the ↻ Button at the right end of the card's first line. The ↻ shows whenever the pane
 has a ROADMAP, and it reads `⋯` while a read runs. A press while an
 earlier ↻ press's read runs does nothing.
 While no cairn skill runs or waits on its background work, a `⌂` button
@@ -467,10 +499,11 @@ GitHub. The same read runs one `gh pr list --repo <url> --state open
 the base remote's: `upstream` in guest mode when the repo has that remote,
 else `origin`. An `http` or `https` URL goes to `gh` without any user name
 or token in it. The pane lists each PR from a `hotfix-` branch under a
-`HOTFIXES` heading with the count, after `BLOCKED` and before the
-candidates. Each line shows `#<n>` and the PR's title, and after a read
-the same word and count line that a blocked line shows. A hotfix line has
-no Button. A hotfix PR
+Hotfixes heading with the count, after Blocked and before the
+candidates. Each line has the layout of a blocked line, with `fix` in
+place of the milestone id: the state mark, `fix`, the PR's title, and
+`#<n>`, and after a read the same word and count line that a blocked
+line shows. A hotfix line has no Button. A hotfix PR
 that is also a blocked milestone's PR shows only on the blocked line, and
 the count leaves it out. When the
 list call fails, the pane keeps the last list it read for the same repo.

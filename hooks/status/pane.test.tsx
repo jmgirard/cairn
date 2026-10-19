@@ -6,17 +6,21 @@ import { GRAY, flowOf, width } from './band'
 import {
   CHECKED_MARK,
   COMMAND_PHASE,
+  ITEM_OPEN_MARK,
   NO_FILE,
   NO_ROADMAP,
   OPEN_MARK,
   PRIORITY_MARK,
+  goalBlocks,
   nextLabel,
   nextTitle,
   paneLines as layout,
   prWord,
   startedRows,
 } from './pane'
+import type { PaneLine, PrRead } from './pane'
 import type { PaneState } from './reader'
+import { archivedArgs, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs } from './repo'
 import { candidateRows, listNames, parseRoadmapRows, takenRows } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -215,9 +219,14 @@ function seat(on: On, copy: Copy) {
   })
 }
 
+// A node's shown text. An `Svg` icon reads as its alt text, the glyph the
+// terminal draws in its place, and a Box drawn `display: 'none'`, as the
+// hover card is until the pointer is over its line, reads as nothing (M286).
 function textOf(node: unknown): string {
   if (typeof node === 'string') return node
   if (node === null || typeof node !== 'object') return ''
+  if ((node as Element).type === 'Svg') return String((node as Element).props.alt ?? '')
+  if ((node as Element).props?.display === 'none') return ''
   return ((node as Element).children ?? []).map(textOf).join('')
 }
 
@@ -229,23 +238,35 @@ function kids(node: Element): Element[] {
   return (node.children ?? []).filter((c): c is Element => c !== null && typeof c === 'object')
 }
 
+// The pane root's lines in order, the card's lines first (M286).
+function flat(root: Element): Element[] {
+  return kids(root).flatMap(line => (keyOf(line) === 'cairn-card' ? kids(line) : [line]))
+}
+
 // The Buttons under a node, in order (M219).
 function buttonsIn(node: Element): Element[] {
   return kids(node).flatMap(child => (child.type === 'Button' ? [child] : buttonsIn(child)))
 }
 
-// The pane's lines in order, each its key and its text.
+// A heading's text (M286): the bold label, and the tail after a space
+// where it has one.
+const headText = (label: string, tail = '') => `${label}${tail === '' ? '' : ` ${tail}`}`
+
+// The pane's lines in order, each its key and its text, the card's lines
+// first (M286).
 async function paneLines($, surface: (typeof SURFACES)[number]): Promise<[string, string][]> {
   const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
   const [root] = await ui.findAll({ key: 'cairn-pane' })
-  const out = kids(root).map(line => [keyOf(line) ?? '', textOf(line)] as [string, string])
+  const out = kids(root)
+    .flatMap(line => (keyOf(line) === 'cairn-card' ? kids(line) : [line]))
+    .map(line => [keyOf(line) ?? '', textOf(line)] as [string, string])
   await ui.unmount()
   return out
 }
 
 const textAt = (lines: [string, string][], key: string) => lines.find(([k]) => k === key)?.[1]
 const keysLike = (lines: [string, string][], pattern: RegExp) => lines.map(([k]) => k).filter(k => pattern.test(k))
-const itemText = (item: { text: string; checked: boolean }) => `${item.checked ? CHECKED_MARK : OPEN_MARK} ${item.text}`
+const itemText = (item: { text: string; checked: boolean }) => `${item.checked ? CHECKED_MARK : ITEM_OPEN_MARK}  ${item.text}`
 
 describe('/cairn-pane opens and closes the pane (M205 AC1)', () => {
   test('with a ROADMAP, the command opens pane cairn, and run again closes it', async ($, on) => {
@@ -344,14 +365,15 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
             continue
           }
           const goal = keysLike(lines, new RegExp(`^${row.id}-goal-\\d+$`)).map(k => textAt(lines, k))
-          expect(goal).toEqual(file.goal === '' ? [] : file.goal.split('\n').map(text => (text === '' ? ' ' : text)))
+          expect(goal).toEqual(goalBlocks(file.goal).map(text => (text === '' ? ' ' : text)))
           const tasks = keysLike(lines, new RegExp(`^${row.id}-task-\\d+$`)).map(k => textAt(lines, k))
-          expect(tasks).toEqual(file.tasks.map(itemText))
+          // An in-progress milestone's first open task draws `⊙` (M286).
+          const current = row.status === 'in-progress' ? file.tasks.findIndex(item => !item.checked) : -1
+          expect(tasks).toEqual(file.tasks.map((item, i) => (i === current ? `⊙  ${item.text}` : itemText(item))))
           const criteria = keysLike(lines, new RegExp(`^${row.id}-criterion-\\d+$`)).map(k => textAt(lines, k))
           expect(criteria).toEqual(file.criteria.map(itemText))
-          const log = keysLike(lines, new RegExp(`^${row.id}-log-\\d+$`)).map(k => textAt(lines, k))
-          expect(log).toEqual(file.log)
-          expect(log.length).toBeLessThanOrEqual(5)
+          // No work-log section, though the file holds log lines (M286).
+          expect(keysLike(lines, new RegExp(`^${row.id}-log`))).toEqual([])
         }
       })
     }
@@ -368,7 +390,7 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
         const [box] = await ui.findAll({ key: `${key}-text` })
         return kids(box)[0].props.wrap
       }
-      for (const key of ['M080-head', 'M080-task-0', 'M080-criterion-0', 'M080-log-4', 'waiting-M083', 'workable-M085', 'next']) {
+      for (const key of ['M080-head', 'M080-task-0', 'M080-criterion-0', 'waiting-M083', 'workable-M085', 'next']) {
         expect([key, await wrapOf(key)]).toEqual([key, 'truncate-end'])
       }
       for (const key of ['M081-goal-0', 'M081-goal-1', 'M081-goal-2']) expect([key, await wrapOf(key)]).toEqual([key, 'wrap'])
@@ -383,11 +405,55 @@ describe('the pane shows each active milestone in full (M205 AC2)', () => {
   })
 })
 
+describe('the goal wraps at the pane, one line per paragraph or list item (M286 AC1)', () => {
+  // The goal's lines, as `paneLines` draws them for one active milestone,
+  // each with its `wraps` flag. The expected texts are written out by hand.
+  const goalOf = (goal: string) => {
+    const state: PaneState = {
+      found: true,
+      milestones: [{ id: 'M1', title: 'x', status: 'in-progress', file: { goal, tasks: [], criteria: [], log: [] } }],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [],
+      blocked: [],
+      taken: [],
+    }
+    return layout(state)
+      .filter(line => /^M1-goal-\d+$/.test(line.key))
+      .map(line => [line.text?.text, line.wraps])
+  }
+
+  test('three lines broken by hand draw as one line', () => {
+    expect(goalOf('The pane opens with a card\n  of the repo, and wraps\neach goal at its width.')).toEqual([
+      ['The pane opens with a card of the repo, and wraps each goal at its width.', true],
+    ])
+  })
+
+  test('two paragraphs with two blank lines between them draw two lines and one blank row', () => {
+    expect(goalOf('First paragraph,\nbroken here.\n\n\nSecond paragraph.')).toEqual([
+      ['First paragraph, broken here.', true],
+      [' ', true],
+      ['Second paragraph.', true],
+    ])
+  })
+
+  test('a list mixing markers draws one line per item, a continuation line joining its item', () => {
+    expect(goalOf('Three parts:\n- the card\n* the look,\n  with a new pill\n1. the rows\n12. the docs')).toEqual([
+      ['Three parts:', true],
+      ['- the card', true],
+      ['* the look, with a new pill', true],
+      ['1. the rows', true],
+      ['12. the docs', true],
+    ])
+  })
+})
+
 describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => {
   test('the domain reaches every recommended command', () => {
     const commands = new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.command))
     expect([...commands].sort()).toEqual(['/milestone-implement', '/milestone-plan', '/milestone-review'])
-    // Each one has a phase for the Next pill's color (M208 review).
+    // Each one has a phase for the Next line's color (M208 review).
     expect(Object.keys(COMMAND_PHASE).sort()).toEqual([...commands].sort())
     expect(WITH_ROADMAP.some(name => (FIXTURES[name].next?.waiting.length ?? 0) > 0)).toBe(true)
   })
@@ -400,11 +466,11 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         const lines = await paneLines($, surface)
         const next = FIXTURES[name].next
         if (next === null) throw new Error('a fixture with a ROADMAP has a next step')
-        // The command sits in a pill, one space of padding each side (M208).
+        // The command follows `→ ` with no pill and no padding (M286).
         // Planning names the fixture's `[high]` row title, when it has one
         // (M272).
         const named = next.id ?? next.title
-        expect(textAt(lines, 'next')).toBe(`Next   ${named === null ? next.command : `${next.command} ${named}`} `)
+        expect(textAt(lines, 'next')).toBe(`→ ${named === null ? next.command : `${next.command} ${named}`}`)
         // Every id opens with `M`, and the heading lines' keys end in `head`.
         expect(keysLike(lines, /^workable-M/)).toEqual(FIXTURES[name].workable.map(id => `workable-${id}`))
         expect(keysLike(lines, /^waiting-M/)).toEqual(next.waiting.map(row => `waiting-${row.id}`))
@@ -418,12 +484,13 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
 
 // Each priority's mark, written out by hand rather than read from
 // `PRIORITY_MARK` (M253).
+// Each names the icon the desktop draws in its place (M286).
 const MARKS = {
-  high: { text: '↑', color: 'claude', bold: true },
-  normal: { text: '○' },
-  low: { text: '↓', color: 'inactive' },
+  high: { text: '↑', color: 'claude', bold: true, icon: 'high' },
+  normal: { text: '○', icon: 'ring' },
+  low: { text: '↓', color: 'inactive', icon: 'low' },
   // M284: a parked row's hourglass, gray.
-  parked: { text: '⧗', color: 'inactive' },
+  parked: { text: '⧗', color: 'inactive', icon: 'parked' },
 } as const
 
 // The candidates fixture's lines, written out by hand from its ROADMAP, in
@@ -455,7 +522,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
       seat(on, copyOf('candidates'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 15')
+      expect(textAt(lines, 'candidates-head')).toBe(headText('Candidates', '15'))
       const rows = keysLike(lines, /^candidate-\d+$/)
       expect(rows).toEqual(CANDIDATE_ORDER.map(i => `candidate-${i}`))
       expect(rows.map(k => textAt(lines, k))).toEqual(CANDIDATE_ORDER.map(i => CANDIDATE_LINES[i]))
@@ -474,19 +541,22 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
         return kids(lead)[0]
       }
       // Each mark and its color are written out by hand (M253): ↑ high, ○
-      // normal (the open circle, M253), and ↓ low.
+      // normal (the open circle, M253), and ↓ low. On the desktop each draws
+      // as its icon, whose alt text is the mark (M286).
       expect(textOf(await markOf(0))).toBe('↑')
-      // The high mark takes the implement phase's theme key, written out
-      // by hand (M217).
-      expect((await markOf(0)).props.color).toBe('claude')
       expect(textOf(await markOf(1))).toBe('○')
       expect(textOf(await markOf(2))).toBe('↓')
-      expect((await markOf(2)).props.color).toBe('inactive')
-      // The high mark is bold, the normal mark has no color, and only a
-      // low row's title is gray.
-      expect((await markOf(0)).props.bold).toBe(true)
-      expect((await markOf(1)).props.color).toBe(undefined)
-      expect((await markOf(1)).props.bold).toBe(undefined)
+      if (surface === 'desktop') {
+        for (const i of [0, 1, 2]) expect((await markOf(i)).type).toBe('Svg')
+      } else {
+        // The high mark takes the implement phase's theme key, written out
+        // by hand (M217), and is bold; the normal mark has no color.
+        expect((await markOf(0)).props.color).toBe('claude')
+        expect((await markOf(2)).props.color).toBe('inactive')
+        expect((await markOf(0)).props.bold).toBe(true)
+        expect((await markOf(1)).props.color).toBe(undefined)
+        expect((await markOf(1)).props.bold).toBe(undefined)
+      }
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
       expect((await titleOf(2)).props.color).toBe('inactive')
       expect((await titleOf(0)).props.color).toBe(undefined)
@@ -536,7 +606,7 @@ describe('the idle pane lists the candidate rows (M207 AC1, AC2)', () => {
           expect(keysLike(lines, /^candidate/)).toEqual([])
           return
         }
-        expect(textAt(lines, 'candidates-head')).toBe(`▎ CANDIDATES ${candidates.length}`)
+        expect(textAt(lines, 'candidates-head')).toBe(headText('Candidates', `${candidates.length}`))
         expect(keysLike(lines, /^candidate-\d+$/).map(k => textAt(lines, k))).toEqual(
           candidates.map(({ row }) => `${MARKS[row.priority].text} ${row.title}`),
         )
@@ -591,16 +661,16 @@ describe('the pane draws candidate rows high, then normal, then low (M280 AC1, A
 // `companion:` entry, a URL with a trailing path, no URL, a failed read, and
 // a missing file.
 const BLOCKED_LINES = [
-  'M101  One pull request URL  #12',
-  'M102  Two pull request URLs  #34',
-  'M103  A URL only after a companion entry',
-  'M104  A URL with a trailing path  #90',
-  'M105  A branch with no URL',
-  'M106  A file whose read fails',
-  'M107  A missing file',
+  '○ M101  One pull request URL  #12',
+  '○ M102  Two pull request URLs  #34',
+  '○ M103  A URL only after a companion entry',
+  '○ M104  A URL with a trailing path  #90',
+  '○ M105  A branch with no URL',
+  '○ M106  A file whose read fails',
+  '○ M107  A missing file',
 ]
 const blockedLine = (row: { id: string; title: string; pr: number | null; archived: boolean }) =>
-  `${row.id}  ${row.title}${row.pr === null ? '' : `  #${row.pr}`}${row.archived ? '  archived' : ''}`
+  prText(row.id, row.title, row.pr, undefined, row.archived)
 
 describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', () => {
   test('the domain holds blocked rows with and without an active milestone, and fixtures with none', () => {
@@ -617,7 +687,7 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       seat(on, copyOf('blocked-prs'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'blocked-head')).toBe('▎ BLOCKED 7')
+      expect(textAt(lines, 'blocked-head')).toBe(headText('Blocked', '7'))
       expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(BLOCKED_LINES)
       // After the queue's place and before the candidates.
       const at = (key: string) => lines.findIndex(([k]) => k === key)
@@ -630,7 +700,7 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
       expect(textAt(lines, 'M110-head')).toBeDefined()
-      expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(['M111  Handed to the maintainers  #1250'])
+      expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual([line1250()])
       const at = (key: string) => lines.findIndex(([k]) => k === key)
       expect(at('blocked-head')).toBeGreaterThan(at('next'))
       // After the Workable rows (M223 review).
@@ -644,7 +714,7 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       const lines = await paneLines($, surface)
       const at = (key: string) => lines.findIndex(([k]) => k === key)
       expect(at('blocked-head')).toBeGreaterThan(at('waiting-M093'))
-      expect(textAt(lines, 'blocked-M092')).toBe('M092  Blocked outside')
+      expect(textAt(lines, 'blocked-M092')).toBe('○ M092  Blocked outside')
     })
 
     test(`the number sits in the line's tail (${surface})`, async ($, on) => {
@@ -653,6 +723,15 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
       const [tail] = await ui.findAll({ key: 'blocked-M111-tail' })
       expect(textOf(tail)).toBe('  #1250')
+      // The state mark before a read is the ring: an `Svg` on the desktop,
+      // and a gray `○` in the terminal (M286).
+      const [lead] = await ui.findAll({ key: 'blocked-M111-lead' })
+      expect(kids(lead).map(t => [t.type, textOf(t), t.props.color])).toEqual([
+        surface === 'terminal' ? ['Text', '○', GRAY] : ['Svg', '○', undefined],
+        ['Text', ' ', undefined],
+        ['Text', 'M111', undefined],
+        ['Text', '  ', undefined],
+      ])
       await ui.unmount()
     })
   }
@@ -670,7 +749,7 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
           expect(keysLike(lines, /^blocked/)).toEqual([])
           return
         }
-        expect(textAt(lines, 'blocked-head')).toBe(`▎ BLOCKED ${blocked.length}`)
+        expect(textAt(lines, 'blocked-head')).toBe(headText('Blocked', `${blocked.length}`))
         expect(keysLike(lines, /^blocked-M/).map(k => textAt(lines, k))).toEqual(blocked.map(blockedLine))
       })
     }
@@ -680,12 +759,10 @@ describe('the pane lists the blocked milestones and their PRs (M223 AC1, AC2)', 
 // M208: the operator's picked look. The values below are written out by
 // hand from the fixtures.
 const view = (bodyColumns: number) => ({ ...PANE_VIEW, props: { ...PANE_VIEW.props, bodyColumns } })
-// The theme keys for implement, review, and plan, and the pill's text key
-// (M217).
+// The theme keys for implement, review, and plan (M217).
 const IMPLEMENT_KEY = 'claude'
 const REVIEW_KEY = 'success'
 const PLAN_KEY = 'planMode'
-const PILL_TEXT_KEY = 'inverseText'
 
 async function mountPane($, surface: (typeof SURFACES)[number], bodyColumns = 60) {
   return (await $.ui.mount({ plugin: 'cairn', surface, ...view(bodyColumns) })) as Ui
@@ -745,7 +822,10 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       expect(await boxOf(ui, 'M082-head-tail')).toBe(undefined)
       expect(textOf((await partOf(ui, 'M082-nofile-text'))[0])).toBe(NO_FILE)
       // No track on any head line: no desktop Svg and no terminal braille.
-      expect(await ui.findAll({ type: 'Svg' })).toEqual([])
+      // The marks' icons draw elsewhere (M286).
+      for (const id of ['M080', 'M081', 'M082']) {
+        expect(kids((await boxOf(ui, `${id}-head`)) as Element).flatMap(kids).filter(t => t.type === 'Svg')).toEqual([])
+      }
       for (const id of ['M080', 'M081', 'M082']) {
         expect([id, /[⠀-⣿]/.test(textOf((await boxOf(ui, `${id}-head`)) as Element))]).toEqual([id, false])
       }
@@ -757,6 +837,10 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
       expect(textAt(lines, 'M002-head')).toBe('M002  Add the export command  77%')
+      // The head line's title is bold (M286).
+      const ui = await mountPane($, surface)
+      expect(kids((await boxOf(ui, 'M002-head-text')) as Element)[0].props.bold).toBe(true)
+      await ui.unmount()
       // The pane's own items hold two criteria, one checked.
       expect(keysLike(lines, /^M002-criterion-\d+$/).length).toBe(2)
     })
@@ -767,18 +851,10 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
       const ui = await mountPane($, surface, 44)
       const head = await boxOf(ui, 'M060-head')
       if (head === undefined) throw new Error('no M060 head line')
-      // The first line also carries the ⌂ and ↻ Boxes after the tail (M236,
-      // M241).
-      expect(kids(head).map(keyOf)).toEqual([
-        'M060-head-lead',
-        'M060-head-text',
-        'M060-head-tail',
-        'M060-head-home',
-        'M060-head-refresh',
-      ])
+      // The ⌂ and ↻ Boxes sit on the card's first line since M286.
+      // The hover card's Box has no key (M286).
+      expect(kids(head).map(keyOf).filter(key => key !== undefined)).toEqual(['M060-head-lead', 'M060-head-text', 'M060-head-tail'])
       expect(kids(head)[2].props.flexShrink).toBe(0)
-      expect(kids(head)[3].props.flexShrink).toBe(0)
-      expect(kids(head)[4].props.flexShrink).toBe(0)
       const title = textOf(kids(await boxOf(ui, 'M060-head-text') as Element)[0])
       expect(title.length).toBeGreaterThan(44)
       expect((await partOf(ui, 'M060-head-tail')).map(textOf).join('')).toMatch(/^ {2}\d+%$/)
@@ -787,22 +863,22 @@ describe('the head line ends with the band percent (M208 AC1)', () => {
   }
 })
 
-describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => {
+describe('the Tasks and Criteria headings draw a six-cell meter (M208 AC2, M286)', () => {
   for (const surface of SURFACES) {
     test(`partly checked and all checked (${surface})`, async ($, on) => {
       seat(on, copyOf('pane-full'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      // M080 tasks 1/3: three of eight filled, in the implement color.
-      expect(textAt(lines, 'M080-tasks-head')).toBe('▎ TASKS 1/3 ■■■□□□□□')
-      // M081 tasks 1/1: all eight filled.
-      expect(textAt(lines, 'M081-tasks-head')).toBe('▎ TASKS 1/1 ■■■■■■■■')
+      // M080 tasks 1/3: two of six filled, in the implement color.
+      expect(textAt(lines, 'M080-tasks-head')).toBe(headText('Tasks', '1/3 ━━────'))
+      // M081 tasks 1/1: all six filled.
+      expect(textAt(lines, 'M081-tasks-head')).toBe(headText('Tasks', '1/1 ━━━━━━'))
       const ui = await mountPane($, surface)
-      const lead = await partOf(ui, 'M080-tasks-head-lead')
-      expect(lead.find(t => textOf(t) === '■■■')?.props.color).toBe(IMPLEMENT_KEY)
-      expect(lead.find(t => textOf(t) === '□□□□□')?.props.color).toBe('subtle')
-      const review = await partOf(ui, 'M081-tasks-head-lead')
-      expect(review.find(t => textOf(t) === '■■■■■■■■')?.props.color).toBe(REVIEW_KEY)
+      const tail = await partOf(ui, 'M080-tasks-head-tail')
+      expect(tail.find(t => textOf(t) === '━━')?.props.color).toBe(IMPLEMENT_KEY)
+      expect(tail.find(t => textOf(t) === '────')?.props.color).toBe('subtle')
+      const review = await partOf(ui, 'M081-tasks-head-tail')
+      expect(review.find(t => textOf(t) === '━━━━━━')?.props.color).toBe(REVIEW_KEY)
       await ui.unmount()
     })
 
@@ -811,67 +887,233 @@ describe('the Tasks and Criteria headings draw eight squares (M208 AC2)', () => 
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'M002-criteria-head')).toBe('▎ CRITERIA 0/1 □□□□□□□□')
+      expect(textAt(lines, 'M002-criteria-head')).toBe(headText('Criteria', '0/1 ──────'))
       const ui = await mountPane($, surface)
-      const lead = await partOf(ui, 'M002-criteria-head-lead')
-      expect(lead.find(t => textOf(t) === '□□□□□□□□')?.props.color).toBe('subtle')
-      expect(lead.some(t => textOf(t).includes('■'))).toBe(false)
+      const tail = await partOf(ui, 'M002-criteria-head-tail')
+      expect(tail.find(t => textOf(t) === '──────')?.props.color).toBe('subtle')
+      expect(tail.some(t => textOf(t).includes('━'))).toBe(false)
       await ui.unmount()
     })
   }
 })
 
-describe('section headings and Next in the set-off form (M208 AC3)', () => {
-  // The accent takes the phase color: the milestone's own for its sections
-  // (M080 in implement, M081 in review), and plan's for the queue.
-  const HEADS: [string, string, string, string][] = [
-    ['pane-full', 'M080-goal-head', 'GOAL', IMPLEMENT_KEY],
-    ['pane-full', 'M080-tasks-head', 'TASKS', IMPLEMENT_KEY],
-    ['pane-full', 'M080-criteria-head', 'CRITERIA', IMPLEMENT_KEY],
-    ['pane-full', 'M080-log-head', 'WORK LOG', IMPLEMENT_KEY],
-    ['pane-full', 'M081-goal-head', 'GOAL', REVIEW_KEY],
-    ['pane-full', 'M081-tasks-head', 'TASKS', REVIEW_KEY],
-    ['pane-full', 'M081-criteria-head', 'CRITERIA', REVIEW_KEY],
-    ['pane-full', 'M081-log-head', 'WORK LOG', REVIEW_KEY],
-    ['pane-full', 'workable-head', 'WORKABLE', PLAN_KEY],
-    ['pane-full', 'waiting-head', 'WAITING', PLAN_KEY],
-    ['candidates', 'candidates-head', 'CANDIDATES', PLAN_KEY],
-    ['blocked-prs', 'blocked-head', 'BLOCKED', PLAN_KEY],
-    ['blocked-active', 'blocked-head', 'BLOCKED', PLAN_KEY],
+describe('section headings, the head line, Next, and the card in the picked look (M286 AC6)', () => {
+  // The spans of look B, written out by hand from the operator's pick (the
+  // milestone file's T1 work-log line), with the operator's changes at the
+  // live look: no rule after a heading, and the app's task-list marks.
+  const EMPTY_GROW = { text: { text: '' }, grow: true }
+  const state: PaneState = {
+    found: true,
+    milestones: [
+      {
+        id: 'M7',
+        title: 'Add the card',
+        status: 'in-progress',
+        file: {
+          goal: 'Show a card.',
+          tasks: [
+            { text: 'T1: one', checked: true },
+            { text: 'T2: two', checked: false },
+            { text: 'T3: three', checked: false },
+          ],
+          criteria: [],
+          log: [],
+        },
+      },
+    ],
+    next: { action: 'resume', command: '/milestone-implement', id: 'M7', title: null },
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }],
+    taken: [],
+  }
+  const lines = () =>
+    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 } })
+  const at = (key: string) => lines().find(line => line.key === key)
+
+  test('a plain heading: the bold label and an empty text that grows', () => {
+    expect(at('M7-goal-head')).toEqual({
+      key: 'M7-goal-head',
+      indent: 0,
+      lead: [{ text: 'Goal', bold: true }],
+      ...EMPTY_GROW,
+    })
+  })
+
+  test('a count with a meter: the counts in gray and six cells in the phase color at the right end', () => {
+    expect(at('M7-tasks-head')).toEqual({
+      key: 'M7-tasks-head',
+      indent: 0,
+      lead: [{ text: 'Tasks', bold: true }],
+      ...EMPTY_GROW,
+      tail: [
+        { text: ' ' },
+        { text: '1/3 ', color: GRAY },
+        { text: '━━', color: IMPLEMENT_KEY },
+        { text: '────', color: 'subtle' },
+      ],
+    })
+  })
+
+  test('a bare count: the count in gray', () => {
+    expect(at('blocked-head')).toEqual({
+      key: 'blocked-head',
+      indent: 0,
+      lead: [{ text: 'Blocked', bold: true }],
+      ...EMPTY_GROW,
+      tail: [{ text: ' ' }, { text: '1', color: GRAY }],
+    })
+  })
+
+  test('the head line: the id bold in the phase color and the title bold', () => {
+    const head = at('M7-head')
+    expect(head?.lead).toEqual([{ text: 'M7', color: IMPLEMENT_KEY, bold: true }, { text: '  ' }])
+    expect(head?.text).toEqual({ text: 'Add the card', bold: true })
+  })
+
+  // At the operator's direction after the pick: the app's task-list marks,
+  // each naming its icon, gray, and two spaces after the mark.
+  test('the items: a checked box the done icon with gray text, an open box the dashed icon', () => {
+    expect(at('M7-task-0')?.lead).toEqual([{ text: '●', color: GRAY, icon: 'done' }, { text: '  ' }])
+    expect(at('M7-task-0')?.text).toEqual({ text: 'T1: one', color: GRAY })
+    expect(at('M7-task-2')?.lead).toEqual([{ text: '◌', color: GRAY, icon: 'open' }, { text: '  ' }])
+    expect(at('M7-task-2')?.text).toEqual({ text: 'T3: three' })
+  })
+
+  // The first open task of an in-progress milestone draws the in-progress
+  // icon. A review milestone's open task does not.
+  test('the first open task of an in-progress milestone draws the in-progress icon', () => {
+    expect(at('M7-task-1')?.lead).toEqual([{ text: '⊙', icon: 'current' }, { text: '  ' }])
+    expect(at('M7-task-1')?.text).toEqual({ text: 'T2: two' })
+    const review = layout({ ...state, milestones: [{ ...state.milestones[0], status: 'review' }] }, [], false)
+    expect(review.find(line => line.key === 'M7-task-1')?.lead[0]).toEqual({ text: '◌', color: GRAY, icon: 'open' })
+  })
+
+  // On the desktop each icon draws as an `Svg` of one size, and in the
+  // terminal as its glyph (M286).
+  for (const surface of SURFACES) {
+    test(`the marks draw as icons of one size on the desktop and as glyphs in the terminal (${surface})`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const svgs = await ui.findAll({ type: 'Svg' })
+      if (surface === 'terminal') {
+        expect(svgs).toEqual([])
+        expect(textOf(kids((await boxOf(ui, 'M080-task-0-lead')) as Element)[0])).toMatch(/^[●⊙◌]$/)
+      } else {
+        expect(svgs.length).toBeGreaterThan(3)
+        expect(new Set(svgs.map(svg => `${svg.props.width}x${svg.props.height}`))).toEqual(new Set(['14x14']))
+        expect(svgs.every(svg => String(svg.props.source).startsWith('<svg') && /^[●⊙◌○↑↓⧗▲◐✕]$/.test(String(svg.props.alt)))).toBe(true)
+        expect((await boxOf(ui, 'M080-task-0'))?.props.alignItems).toBe('center')
+      }
+      await ui.unmount()
+    })
+  }
+
+  test('a blank row sits under the card', () => {
+    expect(lines()[4]).toEqual({ key: 'card-gap', indent: 0, lead: [], text: { text: ' ' } })
+  })
+
+  test('the Next line: the arrow and the command bold in the phase color, with no pill', () => {
+    expect(at('next')).toEqual({
+      key: 'next',
+      indent: 0,
+      lead: [{ text: '→ ', color: IMPLEMENT_KEY, bold: true }],
+      text: { text: '/milestone-implement M7', color: IMPLEMENT_KEY, bold: true },
+    })
+  })
+
+  test('the card: four lines with a stored release read, the numbers bold and the labels gray', () => {
+    expect(lines().slice(0, 4)).toEqual([
+      {
+        key: 'card-repo',
+        indent: 0,
+        lead: [
+          { text: '3', bold: true },
+          { text: ' PRs', color: GRAY },
+          { text: '   ' },
+          { text: '12', bold: true },
+          { text: ' issues', color: GRAY },
+        ],
+        text: { text: '' },
+        card: true,
+        buttons: ['refresh'],
+        grow: true,
+      },
+      {
+        key: 'card-candidates',
+        indent: 0,
+        lead: [
+          { text: 'candidates', color: GRAY },
+          { text: ' ' },
+          { text: '↑', color: IMPLEMENT_KEY, bold: true, icon: 'high' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '○', icon: 'ring' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '↓', color: GRAY, icon: 'low' },
+          { text: ' 0' },
+          { text: '   ' },
+          { text: '⧗', color: GRAY, icon: 'parked' },
+          { text: ' 0' },
+        ],
+        text: null,
+        card: true,
+      },
+      {
+        key: 'card-milestones',
+        indent: 0,
+        lead: [],
+        text: { text: '0 planned · 1 blocked', color: GRAY },
+        card: true,
+      },
+      {
+        key: 'card-release',
+        indent: 0,
+        lead: [],
+        text: { text: 'v2.1.0 · 12 days ago · 4 done since', color: GRAY },
+        card: true,
+      },
+    ])
+  })
+
+  test('one day reads `1 day ago`, and with no release read for this root the card has three lines', () => {
+    const one = layout(state, [], false, {}, [], [], { root: '/', counts: null, done: { tag: 'v1.0.0', days: 1, count: 0 } })
+    expect(one.find(line => line.key === 'card-release')?.text?.text).toBe('v1.0.0 · 1 day ago · 0 done since')
+    const none = layout(state, [], false, {}, [], [], null)
+    expect(none.filter(line => line.card).map(line => line.key)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+  })
+
+  for (const surface of SURFACES) {
+    test(`the card draws in a round Box in subtle (${surface})`, async ($, on) => {
+      seat(on, copyOf('pane-full'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      const card = await boxOf(ui, 'cairn-card')
+      expect(card?.props).toEqual(expect.objectContaining({ borderStyle: 'round', borderColor: 'subtle', flexDirection: 'column' }))
+      expect(kids(card as Element).map(keyOf)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+      await ui.unmount()
+    })
+  }
+
+  // The Next line takes the color of the phase its command runs.
+  const NEXTS: [string, string, string][] = [
+    ['pane-full', '/milestone-review M081', REVIEW_KEY],
+    ['single-in-progress', '/milestone-implement M002', IMPLEMENT_KEY],
+    ['all-waiting', '/milestone-plan', PLAN_KEY],
   ]
   for (const surface of SURFACES) {
-    for (const [fixture, key, label, accent] of HEADS) {
-      test(`${key} on ${fixture} (${surface})`, async ($, on) => {
-        seat(on, copyOf(fixture))
-        await $.turn.complete(turn())
-        const lines = await paneLines($, surface)
-        // A blank row comes right before the heading.
-        const at = lines.findIndex(([k]) => k === key)
-        expect(lines[at - 1]).toEqual([`${key}-gap`, ' '])
-        const ui = await mountPane($, surface)
-        const lead = await partOf(ui, `${key}-lead`)
-        expect(textOf(lead[0])).toBe('▎')
-        expect(lead[0].props.color).toBe(accent)
-        expect(textOf(lead[2])).toBe(label)
-        expect(lead[2].props).toEqual(expect.objectContaining({ color: 'inactive', bold: true }))
-        await ui.unmount()
-      })
-    }
-
-    // The pill takes the color of the phase its command runs.
-    const PILLS: [string, string, string][] = [
-      ['pane-full', ' /milestone-review M081 ', REVIEW_KEY],
-      ['single-in-progress', ' /milestone-implement M002 ', IMPLEMENT_KEY],
-      ['all-waiting', ' /milestone-plan ', PLAN_KEY],
-    ]
-    for (const [fixture, command, color] of PILLS) {
-      test(`the Next command sits in a pill of its phase's color on ${fixture} (${surface})`, async ($, on) => {
+    for (const [fixture, command, color] of NEXTS) {
+      test(`the Next command takes its phase's color on ${fixture} (${surface})`, async ($, on) => {
         seat(on, copyOf(fixture))
         await $.turn.complete(turn())
         const ui = await mountPane($, surface)
-        const [pill] = await partOf(ui, 'next-text')
-        expect(textOf(pill)).toBe(command)
-        expect(pill.props).toEqual(expect.objectContaining({ backgroundColor: color, color: PILL_TEXT_KEY, bold: true }))
+        const [text] = await partOf(ui, 'next-text')
+        expect(textOf(text)).toBe(command)
+        expect(text.props).toEqual(expect.objectContaining({ color, bold: true }))
+        expect(text.props.backgroundColor).toBe(undefined)
         await ui.unmount()
       })
     }
@@ -888,7 +1130,7 @@ describe("each line's lead and tail fit a 44-column dock, and the line may shrin
         await $.turn.complete(turn())
         const ui = await mountPane($, surface, 44)
         const [root] = await ui.findAll({ key: 'cairn-pane' })
-        const lines = kids(root)
+        const lines = kids(root).flatMap(line => (keyOf(line) === 'cairn-card' ? kids(line) : [line]))
         expect(lines.length).toBeGreaterThan(10)
         for (const line of lines) {
           const key = keyOf(line) ?? ''
@@ -1020,7 +1262,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
         expect(buttons.filter(button => keyOf(button) === PANE_NEXT).length).toBe(1)
         const want = ACTION_LABELS[FIXTURES[name].next?.action as string]
         expect([buttons[0].props.label, buttons[0].props.variant]).toEqual([want, 'secondary'])
-        // The Button comes after the pill, in the Box after the pill's.
+        // The Button comes after the command, in the Box after the command's.
         const line = (await boxOf(ui, 'next')) as Element
         expect(kids(line).map(keyOf).slice(0, 3)).toEqual(['next-lead', 'next-text', 'next-action'])
         expect(kids(kids(line)[2]).map(keyOf)).toEqual([PANE_NEXT])
@@ -1036,14 +1278,14 @@ describe("a running cairn skill hides the pane's Button (M218 AC2)", () => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const ui = await mountPane($, surface)
-      const pill = async () => textOf((await partOf(ui, 'next-text'))[0])
+      const command = async () => textOf((await partOf(ui, 'next-text'))[0])
       expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
       await $.skill.prompt({ skill: 'cairn:milestone-implement', text: 'the prompt' })
       expect(await ui.findAll({ key: PANE_NEXT })).toEqual([])
-      expect(await pill()).toBe(' /milestone-implement M002 ')
+      expect(await command()).toBe('/milestone-implement M002')
       await $.classic.Stop({ stop_hook_active: false, background_tasks: [] })
       expect((await ui.findAll({ key: PANE_NEXT })).length).toBe(1)
-      expect(await pill()).toBe(' /milestone-implement M002 ')
+      expect(await command()).toBe('/milestone-implement M002')
       await ui.unmount()
     })
   }
@@ -1108,16 +1350,16 @@ describe("a press of the pane's Button runs the next command (M218 AC3)", () => 
   }
 })
 
-describe('the pill gives way before the Button (M218 AC4)', () => {
+describe('the Next command gives way before the Button (M218 AC4)', () => {
   for (const surface of SURFACES) {
-    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
+    test(`the Button's Box does not shrink, and the command's does (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       const ui = await mountPane($, surface)
       const action = (await boxOf(ui, 'next-action')) as Element
       expect(action.props.flexShrink).toBe(0)
-      const pill = (await boxOf(ui, 'next-text')) as Element
-      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
+      const command = (await boxOf(ui, 'next-text')) as Element
+      expect([command.props.flexShrink, command.props.minWidth]).toEqual([1, 0])
       await ui.unmount()
     })
   }
@@ -1163,7 +1405,7 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS, ...plans])
         const [status] = await ui.findAll({ key: PANE_STATUS })
         expect([status.props.variant, status.props.label]).toEqual(['secondary', 'Status'])
-        // The Buttons come after the pill, each in its own Box.
+        // The Buttons come after the command, each in its own Box.
         const line = (await boxOf(ui, 'next')) as Element
         expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action', 'next-status'])
         await ui.unmount()
@@ -1304,11 +1546,11 @@ describe("the pane's Plan and Implement run /clear and then their command (M221 
 // M241: the first line's ⌂, written out by hand.
 const HOME = '⌂'
 
-// The first line's key for a fixture: its first milestone's head line, or
-// `no-active`.
-function firstKey(name: string): string {
-  const first = FIXTURES[name].pane[0]
-  return first === undefined ? 'no-active' : `${first.id}-head`
+// The first line's key for a fixture with a ROADMAP: the card's first line
+// since M286, with or without an active milestone. Before M286 it was the
+// first milestone's head line, or `no-active`.
+function firstKey(_name: string): string {
+  return 'card-repo'
 }
 
 // Waits up to `tries` waits of 5 ms for the opens beneath the mod to reach
@@ -1353,8 +1595,10 @@ describe('the first line carries ⌂ before ↻ while no cairn skill runs (M241 
       blocked: [],
       taken: [],
     }
-    expect(layout(state, [], true)[0]).toMatchObject({ key: 'no-active', buttons: ['home', 'refresh'] })
-    expect(layout(state, [], false)[0]).toMatchObject({ key: 'no-active', buttons: ['refresh'] })
+    expect(layout(state, [], true)[0]).toMatchObject({ key: 'card-repo', buttons: ['home', 'refresh'] })
+    expect(layout(state, [], false)[0]).toMatchObject({ key: 'card-repo', buttons: ['refresh'] })
+    // The no-active line follows the card and carries no Button (M286).
+    expect(layout(state, [], true).find(line => line.key === 'no-active')?.buttons).toBe(undefined)
   })
 })
 
@@ -1767,7 +2011,9 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
         expect(kids(text)[0].props.wrap).toBe('truncate-end')
         if (i === 7) expect(width(textOf(kids(text)[0]))).toBeGreaterThan(44)
         const line = (await boxOf(ui, `candidate-${i}`)) as Element
-        expect(kids(line).map(keyOf).slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
+        // The hover card's Box, which has no key, sits last on the desktop (M286).
+        const keyed = kids(line).map(keyOf).filter(key => key !== undefined)
+        expect(keyed.slice(-2)).toEqual([`candidate-${i}-text`, `candidate-${i}-plan`])
         expect((await boxOf(ui, `candidate-${i}-plan`))?.props.flexShrink).toBe(0)
         await ui.unmount()
       })
@@ -1775,9 +2021,9 @@ describe('✎ sits at the right end of a candidate line, and the title gives way
   }
 })
 
-describe('the pill gives way before Status (M219 AC4)', () => {
+describe('the Next command gives way before Status (M219 AC4)', () => {
   for (const surface of SURFACES) {
-    test(`the Button's Box does not shrink, and the pill's does (${surface})`, async ($, on) => {
+    test(`the Button's Box does not shrink, and the command's does (${surface})`, async ($, on) => {
       seat(on, copyOf('single-in-progress'))
       await $.turn.complete(turn())
       await endSkill($)
@@ -1786,8 +2032,8 @@ describe('the pill gives way before Status (M219 AC4)', () => {
         const box = (await boxOf(ui, key)) as Element
         expect([key, box.props.flexShrink]).toEqual([key, 0])
       }
-      const pill = (await boxOf(ui, 'next-text')) as Element
-      expect([pill.props.flexShrink, pill.props.minWidth]).toEqual([1, 0])
+      const command = (await boxOf(ui, 'next-text')) as Element
+      expect([command.props.flexShrink, command.props.minWidth]).toEqual([1, 0])
       await ui.unmount()
     })
   }
@@ -1796,8 +2042,9 @@ describe('the pill gives way before Status (M219 AC4)', () => {
 // M002's task T2 is open in the fixture, and each case ticks it before the
 // event, so the drawing after the event shows it checked.
 const M002 = '/cairn/milestones/M002-export.md'
-const T2_OPEN = `${OPEN_MARK} T2: Write the command.`
-const T2_DONE = `${CHECKED_MARK} T2: Write the command.`
+// T2 is the in-progress M002's first open task, so it draws `⊙` (M286).
+const T2_OPEN = `⊙  T2: Write the command.`
+const T2_DONE = `${CHECKED_MARK}  T2: Write the command.`
 const tick = (copy: Copy) => {
   copy.files[M002] = copy.files[M002].replace('- [ ] T2:', '- [x] T2:')
 }
@@ -2076,15 +2323,49 @@ type Gh = {
   git: (readonly string[])[]
   lists: (readonly string[])[]
   clocks: string[]
+  // The card's calls (M286): its `gh api graphql` repo query, and its
+  // `git describe`, `git log`, and `git diff` calls, kept apart from the
+  // lists above.
+  card: (readonly string[])[]
   settled: () => Promise<void>
 }
-type GhRepo = { remotes?: Record<string, string>; list?: () => GhAnswer | Promise<GhAnswer> }
+// `counts` answers the card's repo query, and `describe`, `log`, and `diff`
+// its git calls (M286). By default the query gives 0 and 0, and the git
+// calls fail.
+type GhRepo = {
+  remotes?: Record<string, string>
+  list?: () => GhAnswer | Promise<GhAnswer>
+  counts?: () => GhAnswer | Promise<GhAnswer>
+  describe?: GhAnswer
+  log?: GhAnswer
+  diff?: GhAnswer
+}
+// A repo query reply in the shape GitHub returns (M286).
+const repoReply = (prs: unknown, issues: unknown): GhAnswer => ({
+  exitCode: 0,
+  stdout: `${JSON.stringify({ data: { repository: { pullRequests: { totalCount: prs }, issues: { totalCount: issues } } } })}\n`,
+})
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 // The newest `gh` set-up's `settled`, which the drawing helpers below wait
 // on before they mount the pane. It holds one set-up only, the newest.
 let ghSettled: () => Promise<void> = async () => {}
 const URL_1250 = 'https://github.com/upstream/repo/pull/1250'
-const LINE_1250 = 'M111  Handed to the maintainers  #1250'
+// A blocked or hotfix line's text, written out by hand (M286): the state
+// mark (`○` before a read), the identifier, the title, and after two spaces
+// the number, the archived mark, and the word, one space apart.
+const PR_MARKS: Record<string, string> = {
+  merged: '●',
+  approved: '●',
+  'changes requested': '▲',
+  'in review': '◐',
+  closed: '✕',
+  unknown: '◌',
+}
+const prText =(id: string, title: string, n: number | null, word?: string, archived = false) => {
+  const tail = [n === null ? null : `#${n}`, archived ? 'archived' : null, word ?? null].filter(part => part !== null)
+  return `${word === undefined ? '○' : PR_MARKS[word]} ${id}  ${title}${tail.length === 0 ? '' : `  ${tail.join(' ')}`}`
+}
+const line1250 = (word?: string) => prText('M111', 'Handed to the maintainers', 1250, word)
 
 // The value of a `name=value` argument in a recorded argv.
 const argOf = (argv: readonly string[], name: string) => argv.find(a => a.startsWith(`${name}=`))?.slice(name.length + 1)
@@ -2102,13 +2383,26 @@ function gh(
       quiet = pending === 0 ? quiet + 1 : 0
     }
   }
-  const out: Gh = { calls: [], graphql: [], reads: [], git: [], lists: [], clocks: [], settled }
+  const out: Gh = { calls: [], graphql: [], reads: [], git: [], lists: [], clocks: [], card: [], settled }
   ghSettled = settled
   const remotes = repo.remotes ?? {}
   const value = (got: { exitCode: number; stdout: string }) => ({
     value: { exitCode: got.exitCode, stdout: got.stdout, stderr: '', isStdoutTruncated: false, isStderrTruncated: false },
   })
+  const failed = { exitCode: 128, stdout: '' }
   const reply = async (e: { argv: readonly string[] }) => {
+    if (e.argv[0] === 'git' && (e.argv[1] === 'describe' || e.argv[1] === 'log' || e.argv[1] === 'diff')) {
+      out.card.push(e.argv)
+      const got = (e.argv[1] === 'describe' ? repo.describe : e.argv[1] === 'log' ? repo.log : repo.diff) ?? failed
+      if (got === 'reject') throw new Error('git cannot start')
+      return value(got)
+    }
+    if (e.argv[1] === 'api' && argOf(e.argv, 'number') === undefined) {
+      out.card.push(e.argv)
+      const got = await (repo.counts ?? (() => repoReply(0, 0)))()
+      if (got === 'reject') throw new Error('gh cannot start')
+      return value(got)
+    }
     if (e.argv[0] === 'git') {
       out.git.push(e.argv)
       if (e.argv[1] === 'remote' && e.argv.length === 2) return value({ exitCode: 0, stdout: Object.keys(remotes).map(n => `${n}\n`).join('') })
@@ -2193,9 +2487,14 @@ async function blockedView($, key: string): Promise<{ text: string; buttons: str
   await ghSettled()
   const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
   const [root] = await ui.findAll({ key: 'cairn-pane' })
-  const line = kids(root).find(child => keyOf(child) === key)
+  const line = kids(root)
+    .flatMap(child => (keyOf(child) === 'cairn-card' ? kids(child) : [child]))
+    .find(child => keyOf(child) === key)
   await ui.unmount()
-  return { text: line === undefined ? '' : textOf(line), buttons: line === undefined ? [] : buttonsIn(line).map(b => keyOf(b) ?? '') }
+  return {
+    text: line === undefined ? '' : textOf(line),
+    buttons: line === undefined ? [] : buttonsIn(line).map(b => keyOf(b) ?? ''),
+  }
 }
 
 describe('each blocked line shows its pull request state (M224 AC1)', () => {
@@ -2221,7 +2520,7 @@ describe('each blocked line shows its pull request state (M224 AC1)', () => {
       expect(calls.reads).toEqual([URL_1250])
       expect(calls.graphql.length).toBe(1)
       expect(calls.calls).toEqual([])
-      expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${shape.word}`)
+      expect((await blockedView($, 'blocked-M111')).text).toBe(line1250(shape.word))
     })
   }
 
@@ -2233,7 +2532,7 @@ describe('each blocked line shows its pull request state (M224 AC1)', () => {
     await calls.settled()
     expect(calls.reads).toEqual([])
     const line = await blockedView($, 'blocked-M111')
-    expect(line.text).toBe(LINE_1250)
+    expect(line.text).toBe(line1250())
     expect(line.buttons).toEqual([])
   })
 })
@@ -2275,14 +2574,14 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     const archived = await blockedView($, 'blocked-M202')
-    expect(archived.text).toBe('M202  The URL on the Status line  #21  archived  merged')
+    expect(archived.text).toBe(prText('M202', 'The URL on the Status line', 21, 'merged', true))
     expect(archived.buttons).toEqual(['cairn-pane-finish-M202'])
     const bare = await blockedView($, 'blocked-M204')
-    expect(bare.text).toBe('M204  A URL only in a later paragraph  archived')
+    expect(bare.text).toBe(prText('M204', 'A URL only in a later paragraph', null, undefined, true))
     expect(bare.buttons).toEqual([])
     const live = await blockedView($, 'blocked-M201')
-    expect(live.text).toBe('M201  A live file  #11  merged')
-    expect((await blockedView($, 'blocked-M206')).text).toBe('M206  A dropped archive')
+    expect(live.text).toBe(prText('M201', 'A live file', 11, 'merged'))
+    expect((await blockedView($, 'blocked-M206')).text).toBe('○ M206  A dropped archive')
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
     await ui.press({ key: 'cairn-pane-finish-M202' })
     await ui.unmount()
@@ -2301,7 +2600,7 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
       const archived = await blockedView($, 'blocked-M202')
-      expect(archived.text).toBe(`M202  The URL on the Status line  #21  archived  ${each.word}`)
+      expect(archived.text).toBe(prText('M202', 'The URL on the Status line', 21, each.word, true))
       expect(archived.buttons).toEqual([])
       expect((await blockedView($, 'blocked-M201')).buttons).toEqual([each.live])
     })
@@ -2340,7 +2639,7 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
       const line = await blockedView($, 'blocked-M111')
-      expect(line.text).toBe(`${LINE_1250}  ${each.word}`)
+      expect(line.text).toBe(line1250(each.word))
       expect(line.buttons).toEqual([])
     })
   }
@@ -2430,7 +2729,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     await calls.settled()
     expect(calls.reads).toEqual(ONE_READ)
     expect(graphOf(calls)).toEqual(ONE_QUERY)
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
     expect(calls.clocks).toEqual([])
   })
 
@@ -2457,9 +2756,9 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     seat(on, copyOf('blocked-active'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
     expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
-    expect((await blockedView($, 'M110-head')).buttons).toEqual(['cairn-pane-home', 'cairn-pane-refresh'])
+    expect((await blockedView($, 'card-repo')).buttons).toEqual(['cairn-pane-home', 'cairn-pane-refresh'])
     const press = async () => {
       const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
       await ui.press({ key: 'cairn-pane-refresh' })
@@ -2474,7 +2773,7 @@ describe('the states are read at each pane open and at a Refresh press, and neve
     expect(calls.reads).toEqual([...ONE_READ, ...ONE_READ, ...ONE_READ])
     expect(graphOf(calls)).toEqual([...ONE_QUERY, ...ONE_QUERY, ...ONE_QUERY])
     expect(calls.calls).toEqual([])
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  merged`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('merged'))
     expect(calls.clocks).toEqual([])
   })
 
@@ -2514,13 +2813,13 @@ describe('a failed read shows `unknown` and no Button (M224 AC4)', () => {
       const opened = await $.command.run({ command: COMMAND })
       expect(opened.text).toBe('cairn pane opened')
       const failed = await blockedView($, 'blocked-M101')
-      expect(failed.text).toBe('M101  One pull request URL  #12  unknown')
+      expect(failed.text).toBe(prText('M101', 'One pull request URL', 12, 'unknown'))
       expect(failed.buttons).toEqual([])
-      expect((await blockedView($, 'blocked-M102')).text).toBe('M102  Two pull request URLs  #34  merged')
+      expect((await blockedView($, 'blocked-M102')).text).toBe(prText('M102', 'Two pull request URLs', 34, 'merged'))
       expect((await blockedView($, 'blocked-M102')).buttons).toEqual(['cairn-pane-finish-M102'])
-      expect((await blockedView($, 'blocked-M104')).text).toBe('M104  A URL with a trailing path  #90  merged')
-      expect((await blockedView($, 'blocked-M103')).text).toBe('M103  A URL only after a companion entry')
-      expect((await blockedView($, 'blocked-M105')).text).toBe('M105  A branch with no URL')
+      expect((await blockedView($, 'blocked-M104')).text).toBe(prText('M104', 'A URL with a trailing path', 90, 'merged'))
+      expect((await blockedView($, 'blocked-M103')).text).toBe('○ M103  A URL only after a companion entry')
+      expect((await blockedView($, 'blocked-M105')).text).toBe('○ M105  A branch with no URL')
     })
   }
 })
@@ -2537,7 +2836,7 @@ async function linesAt(
   await ghSettled()
   const ui = await mountPane($, surface, bodyColumns)
   const [root] = await ui.findAll({ key: 'cairn-pane' })
-  const out = kids(root).map(line => ({
+  const out = flat(root).map(line => ({
     key: keyOf(line) ?? '',
     text: textOf(line),
     indent: (line.props.paddingLeft as number | undefined) ?? 0,
@@ -2624,7 +2923,7 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
       await $.command.run({ command: COMMAND })
       await calls.settled()
       expect(calls.graphql.length).toBe(1)
-      expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  ${each.word}`)
+      expect((await blockedView($, 'blocked-M111')).text).toBe(line1250(each.word))
       expect((await countsOf($))?.text).toBe('1 unresolved thread')
     })
   }
@@ -2645,7 +2944,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
       await $.command.run({ command: COMMAND })
       const lines = await linesAt($)
       const at = lines.findIndex(line => line.key === 'blocked-M111-counts')
-      expect(lines.find(line => line.key === 'blocked-M111')?.text).toBe(`${LINE_1250}  changes requested`)
+      expect(lines.find(line => line.key === 'blocked-M111')?.text).toBe(line1250('changes requested'))
       if (each.text === undefined) {
         expect(at).toBe(-1)
         return
@@ -2721,7 +3020,7 @@ describe('the count line under a blocked line (M225 AC3)', () => {
     expect((counts?.indent ?? 99) + width(counts?.text ?? '')).toBeLessThanOrEqual(44)
     const ui = await mountPane($, 'desktop', 44)
     const [root] = await ui.findAll({ key: 'cairn-pane' })
-    for (const line of kids(root)) {
+    for (const line of flat(root)) {
       const key = keyOf(line) ?? ''
       const indent = (line.props.paddingLeft as number | undefined) ?? 0
       const sum = async (part: string) => (await partOf(ui, `${key}-${part}`)).map(t => width(textOf(t))).reduce((a, b) => a + b, 0)
@@ -2753,7 +3052,7 @@ describe('threads that fail the shape check draw no count line and leave the sta
       await calls.settled()
       expect(calls.graphql.length).toBe(1)
       const line = await blockedView($, 'blocked-M111')
-      expect(line.text).toBe(`${LINE_1250}  changes requested`)
+      expect(line.text).toBe(line1250('changes requested'))
       expect(line.buttons).toEqual(['cairn-pane-revise-M111'])
       expect(await countsOf($)).toBe(undefined)
     })
@@ -2845,8 +3144,8 @@ describe('the Hotfixes section lists the hotfix-* pull requests before the candi
     expect(keys.indexOf('blocked-head')).toBeLessThan(keys.indexOf('hotfixes-head'))
     expect(keys.indexOf('hotfixes-head')).toBeLessThan(keys.indexOf('candidates-head'))
     expect(keys.slice(keys.indexOf('hotfix-1265') + 1)[0]).toBe('candidates-head-gap')
-    expect((await blockedView($, 'hotfixes-head')).text).toBe('▎ HOTFIXES 1')
-    expect((await blockedView($, 'hotfix-1265')).text).toBe('#1265  Return only fixed effects  in review')
+    expect((await blockedView($, 'hotfixes-head')).text).toBe(headText('Hotfixes', '1'))
+    expect((await blockedView($, 'hotfix-1265')).text).toBe(prText('fix', 'Return only fixed effects', 1265, 'in review'))
   })
 })
 
@@ -2871,7 +3170,7 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     expect(calls.reads.sort()).toEqual([OTHER, URL_1250].sort())
     const lines = await linesAt($)
     const textOf_ = (key: string) => lines.find(line => line.key === key)?.text
-    expect(textOf_('hotfix-7')).toBe('#7  Fix 7  in review')
+    expect(textOf_('hotfix-7')).toBe(prText('fix', 'Fix 7', 7, 'in review'))
     expect(textOf_('hotfix-7-counts')).toBe(undefined)
     expect(textOf_('blocked-M111-counts')).toBe('2 unresolved threads')
   })
@@ -2894,9 +3193,9 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     await $.command.run({ command: COMMAND })
     const lines = await linesAt($)
     const textOf_ = (key: string) => lines.find(line => line.key === key)?.text
-    expect(textOf_('hotfix-1265')).toBe('#1265  Fix 1265  in review')
-    expect(textOf_('hotfix-1264')).toBe('#1264  Fix 1264  changes requested')
-    expect(textOf_('hotfix-1263')).toBe('#1263  Fix 1263  merged')
+    expect(textOf_('hotfix-1265')).toBe(prText('fix', 'Fix 1265', 1265, 'in review'))
+    expect(textOf_('hotfix-1264')).toBe(prText('fix', 'Fix 1264', 1264, 'changes requested'))
+    expect(textOf_('hotfix-1263')).toBe(prText('fix', 'Fix 1263', 1263, 'merged'))
     expect(textOf_('hotfix-1265-counts')).toBe('2 unresolved threads')
     expect(textOf_('hotfix-1264-counts')).toBe(undefined)
     expect(textOf_('hotfix-1263-counts')).toBe(undefined)
@@ -2918,8 +3217,8 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     await $.command.run({ command: COMMAND })
     const lines = await linesAt($)
     const textOf_ = (key: string) => lines.find(line => line.key === key)?.text ?? ''
-    expect(textOf_('blocked-M111')).toBe(`${LINE_1250}  changes requested`)
-    expect(textOf_('hotfix-1265').endsWith('  changes requested')).toBe(true)
+    expect(textOf_('blocked-M111')).toBe(line1250('changes requested'))
+    expect(textOf_('hotfix-1265').endsWith(' changes requested')).toBe(true)
     expect(textOf_('hotfix-1265-counts')).toBe(textOf_('blocked-M111-counts'))
     expect(textOf_('hotfix-1265-counts')).toBe('1 unresolved thread')
   })
@@ -2938,7 +3237,13 @@ describe('a failed list keeps the last good read for the root, and an empty one 
   async function setUp($, on, next: () => GhAnswer) {
     const remotes: Record<string, string> = {}
     let answer = GOOD
-    const calls = gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), undefined, { remotes, list: () => answer() })
+    // The card's repo query fails, so its numbers stay `?` across the reads
+    // and the lines compare with the baseline (M286).
+    const calls = gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), undefined, {
+      remotes,
+      list: () => answer(),
+      counts: () => ({ exitCode: 1, stdout: '' }),
+    })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
@@ -2959,7 +3264,7 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     test(`${fail.name} keeps the hotfix line`, async ($, on) => {
       const baseline = await setUp($, on, () => fail.answer)
       const lines = await linesAt($)
-      expect(lines.find(line => line.key === 'hotfix-1265')?.text).toBe('#1265  Fix 1265  in review')
+      expect(lines.find(line => line.key === 'hotfix-1265')?.text).toBe(prText('fix', 'Fix 1265', 1265, 'in review'))
       expect(withoutHotfixes(lines)).toEqual(baseline)
     })
   }
@@ -2996,7 +3301,10 @@ describe('a failed list keeps the last good read for the root, and an empty one 
   test('a kept read from another root is not drawn', async ($, on) => {
     const remotes: Record<string, string> = { origin: ORIGIN }
     let answer = GOOD
-    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes, list: () => answer() })
+    // The card's numbers are good in the first root and fail in the other
+    // (M286), so the other root draws `?` before and after its read.
+    let counts: GhAnswer = repoReply(3, 12)
+    const calls = gh(on, () => prView('OPEN', ''), undefined, { remotes, list: () => answer(), counts: () => counts })
     const copy = copyOf('blocked-prs')
     for (const path of Object.keys(copy.files)) copy.files[`/other${path}`] = copy.files[path]
     copy.unreadable.push(...copy.unreadable.map(path => `/other${path}`))
@@ -3004,10 +3312,13 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     expect((await keysOf($)).includes('hotfix-1265')).toBe(true)
+    expect((await linesAt($)).find(line => line.key === 'card-repo')?.text).toBe('3 PRs   12 issues')
     copy.cwd = '/other'
     await $.turn.complete(turn())
     const moved = await linesAt($)
     expect(moved.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])
+    expect(moved.find(line => line.key === 'card-repo')?.text).toBe('? PRs   ? issues')
+    counts = { exitCode: 1, stdout: '' }
     answer = () => 'reject'
     const viewsOf1265 = () => calls.reads.filter(url => url ===prUrl(1265)).length
     const before = viewsOf1265()
@@ -3036,7 +3347,7 @@ async function refreshOf($, surface: (typeof SURFACES)[number] = 'desktop') {
   const ui = await mountPane($, surface)
   const keys = (await ui.findAll({ type: 'Button' })).map(keyOf)
   const [root] = await ui.findAll({ key: 'cairn-pane' })
-  const lines = root === undefined ? [] : kids(root)
+  const lines = root === undefined ? [] : flat(root)
   const [button] = await ui.findAll({ key: PANE_REFRESH })
   await ui.unmount()
   return { keys, lines, first: lines[0], button }
@@ -3060,10 +3371,16 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     // Besides the first line, each candidate line's text grows, so ✎ sits at
     // its right end (M242, M242 review), and so does each blocked or hotfix
     // line with a tail, so its number and state word sit at the right end
-    // whether or not its title is cut. No other line grows.
+    // whether or not its title is cut. Each section heading's text grows
+    // too (M286), but a milestone's head line does not. No other line grows.
     const growing = got.lines
-      .filter(line => /^(candidate-\d+|blocked-[^-]+|hotfix-\d+)$/.test(keyOf(line) ?? ''))
-      .filter(line => /^candidate-/.test(keyOf(line) ?? '') || childKeys(line).includes(`${keyOf(line)}-tail`))
+      .slice(1)
+      .filter(line => {
+        const key = keyOf(line) ?? ''
+        if (/-head$/.test(key)) return !/^M\d+-head$/.test(key)
+        if (/^candidate-\d+$/.test(key)) return true
+        return /^(blocked-[^-]+|hotfix-\d+)$/.test(key) && childKeys(line).includes(`${key}-tail`)
+      })
       .map(keyOf)
     expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1], ...growing.map(key => [`${key}-text`, 1])])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
@@ -3080,24 +3397,26 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect((await keysOf($)).includes('hotfixes-head')).toBe(true)
     expect((await blockedView($, 'blocked-head')).buttons).toEqual([])
     expect((await blockedView($, 'hotfixes-head')).buttons).toEqual([])
-    await one($, 'no-active')
+    await one($, 'card-repo')
   })
 
-  test('an in-progress and a review milestone: only the first head line carries ↻', async ($, on) => {
+  test('an in-progress and a review milestone: only the card carries ↻, no head line', async ($, on) => {
     gh(on, () => prView('OPEN', ''))
     seat(on, copyOf('pane-full'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
-    const got = await one($, 'M080-head')
-    const second = got.lines.find(line => keyOf(line) === 'M081-head')
-    expect(second).toBeDefined()
-    expect(buttonsIn(second as Element)).toEqual([])
+    const got = await one($, 'card-repo')
+    for (const id of ['M080-head', 'M081-head']) {
+      const head = got.lines.find(line => keyOf(line) === id)
+      expect(head).toBeDefined()
+      expect(buttonsIn(head as Element)).toEqual([])
+    }
   })
 
   test('the Next line with Status after a skill ends, and one active milestone', async ($, on) => {
     seat(on, copyOf('single-in-progress'))
     await endSkill($)
-    const got = await one($, `${FIXTURES['single-in-progress'].pane[0].id}-head`)
+    const got = await one($, 'card-repo')
     expect(got.keys).toEqual([PANE_HOME, PANE_REFRESH, PANE_NEXT, PANE_STATUS])
   })
 
@@ -3107,7 +3426,7 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     expect((await keysOf($)).filter(key => key.startsWith('blocked') || key.startsWith('hotfix'))).toEqual([])
-    await one($, `${FIXTURES['single-in-progress'].pane[0].id}-head`)
+    await one($, 'card-repo')
   })
 
   test('no ROADMAP draws no ↻ Button', async ($, on) => {
@@ -3409,7 +3728,7 @@ describe('an open finishes before the pull request reads settle (M230 AC1)', () 
     } finally {
       release()
     }
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
   })
 
   test("the band's open Button's press returns before any gh call settles", async ($, on) => {
@@ -3425,7 +3744,7 @@ describe('an open finishes before the pull request reads settle (M230 AC1)', () 
       release()
       await ui.unmount()
     }
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
   })
 
   test("the session-start reopen's handler returns before any gh call settles", async ($, on) => {
@@ -3444,7 +3763,7 @@ describe('an open finishes before the pull request reads settle (M230 AC1)', () 
     } finally {
       release()
     }
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
   })
 })
 
@@ -3477,7 +3796,7 @@ describe('a /clear in the same process reads the states again while the pane sho
     seat(on, copy)
     await $.session.start(NEW_START)
     place(copy)
-    expect((await blockedView($, 'blocked-M111')).text).toBe(LINE_1250)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250())
     expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
     return got
   }
@@ -3494,8 +3813,8 @@ describe('a /clear in the same process reads the states again while the pane sho
     } finally {
       release()
     }
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
-    expect((await blockedView($, 'hotfix-1265')).text).toBe('#1265  Fix 1265  in review')
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
+    expect((await blockedView($, 'hotfix-1265')).text).toBe(prText('fix', 'Fix 1265', 1265, 'in review'))
   })
 
   test('a closed pane runs no gh call', async ($, on) => {
@@ -3612,7 +3931,7 @@ describe('a clear or resume start reads the states for a placed pane (M237 AC2)'
         if (reads) {
           expect(calls.lists).toEqual([listCall(ORIGIN)])
           expect(calls.reads.sort()).toEqual([URL_1250, prUrl(1265)].sort())
-          expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+          expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
         } else {
           expect(all).toEqual([])
         }
@@ -3655,7 +3974,7 @@ describe('a pane placed after a clear or resume start reads at its first draw (M
       expect(sorted(calls.reads)).toEqual(sorted([...urls]))
       // The read's words reach the pane (M238 review).
       const key = fixture === 'blocked-active' ? 'blocked-M111' : 'blocked-M101'
-      expect((await blockedView($, key)).text).toMatch(/  in review$/)
+      expect((await blockedView($, key)).text).toMatch(/ in review$/)
     })
   }
 
@@ -3964,9 +4283,9 @@ describe("a hotfix whose URL is a blocked row's draws on the blocked line only (
     await $.session.start(NEW_START)
     await $.command.run({ command: COMMAND })
     const keys = await keysOf($)
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
     expect(keys.filter(key => HOTFIX_KEY.test(key))).toEqual(['hotfixes-head-gap', 'hotfixes-head', 'hotfix-1265'])
-    expect((await blockedView($, 'hotfixes-head')).text).toBe('▎ HOTFIXES 1')
+    expect((await blockedView($, 'hotfixes-head')).text).toBe(headText('Hotfixes', '1'))
     expect(calls.reads.filter(url => url ===URL_1250).length).toBe(1)
   })
 
@@ -3975,7 +4294,7 @@ describe("a hotfix whose URL is a blocked row's draws on the blocked line only (
     seat(on, copyOf('blocked-active'))
     await $.session.start(NEW_START)
     await $.command.run({ command: COMMAND })
-    expect((await blockedView($, 'blocked-M111')).text).toBe(`${LINE_1250}  in review`)
+    expect((await blockedView($, 'blocked-M111')).text).toBe(line1250('in review'))
     expect((await keysOf($)).filter(key => HOTFIX_KEY.test(key))).toEqual([])
   })
 })
@@ -4269,9 +4588,9 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   test('the heading counts the drawn rows only (AC2)', () => {
     const [gap, head] = heads()
     expect([gap.key, head.key]).toEqual(['candidates-head-gap', 'candidates-head'])
-    expect(head.lead.slice(-1)).toEqual([{ text: '3', color: GRAY }])
+    expect(head.tail?.slice(-1)).toEqual([{ text: '3', color: GRAY }])
     // The control: with no items every row draws and counts.
-    expect(heads([])[1].lead.slice(-1)).toEqual([{ text: `${state.candidates.length}`, color: GRAY }])
+    expect(heads([])[1].tail?.slice(-1)).toEqual([{ text: `${state.candidates.length}`, color: GRAY }])
   })
 
   test('with every row hidden there is no heading and no gap (AC2)', () => {
@@ -4469,7 +4788,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       seat(on, copyOf('candidates-parked'))
       await $.turn.complete(turn())
       const lines = await paneLines($, surface)
-      expect(textAt(lines, 'candidates-head')).toBe('▎ CANDIDATES 8')
+      expect(textAt(lines, 'candidates-head')).toBe(headText('Candidates', '8'))
       const rows = keysLike(lines, /^candidate-\d+$/)
       expect(rows).toEqual(PARKED_LINES.map(([i]) => `candidate-${i}`))
       expect(rows.map(k => textAt(lines, k))).toEqual(PARKED_LINES.map(([, text]) => text))
@@ -4481,7 +4800,9 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
       const [lead] = await ui.findAll({ key: 'candidate-0-lead' })
       expect(textOf(kids(lead)[0])).toBe('⧗')
-      expect(kids(lead)[0].props.color).toBe('inactive')
+      // On the desktop the mark draws as its icon (M286).
+      if (surface === 'terminal') expect(kids(lead)[0].props.color).toBe('inactive')
+      else expect(kids(lead)[0].type).toBe('Svg')
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
       expect((await titleOf(0)).props.color).toBe('inactive')
       // The control: an untagged row's title has no color.
@@ -4538,7 +4859,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       'candidate-0',
       'candidate-1',
     ])
-    expect(lines.find(line => line.key === 'candidates-head')?.lead.slice(-1)).toEqual([{ text: '3', color: GRAY }])
+    expect(lines.find(line => line.key === 'candidates-head')?.tail?.slice(-1)).toEqual([{ text: '3', color: GRAY }])
   })
 })
 
@@ -5093,9 +5414,9 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
   })
 
   test('the line names the pick, and with no drawn [high] row shows the command alone', () => {
-    expect(nextText(plan())).toBe(' /milestone-plan First high ')
-    expect(nextText(plan(), [{ title: 'First high', number: 5 }])).toBe(' /milestone-plan Second high ')
-    expect(nextText(plan([ROWS[0]]))).toBe(' /milestone-plan ')
+    expect(nextText(plan())).toBe('/milestone-plan First high')
+    expect(nextText(plan(), [{ title: 'First high', number: 5 }])).toBe('/milestone-plan Second high')
+    expect(nextText(plan([ROWS[0]]))).toBe('/milestone-plan')
   })
 
   const CASES = [
@@ -5107,7 +5428,7 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       const copy = copyOf(name)
       seat(on, copy)
       await $.turn.complete(turn())
-      expect(textAt(await paneLines($, 'desktop'), 'next')).toBe(`Next   /milestone-plan${args === '' ? '' : ` ${args}`} `)
+      expect(textAt(await paneLines($, 'desktop'), 'next')).toBe(`→ /milestone-plan${args === '' ? '' : ` ${args}`}`)
       await pressKey($, PANE_NEXT)
       expect(copy.commands).toEqual([CLEAR_RUN])
       await $.session.end(CLEAR_END)
@@ -5132,7 +5453,7 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       await calls.settled()
       expect(calls.lists).toEqual([listCall(ORIGIN)])
       const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
-      expect(next).toBe(`Next   /milestone-plan ${args} `)
+      expect(next).toBe(`→ /milestone-plan ${args}`)
       await pressKey($, PANE_NEXT)
       await $.session.end(CLEAR_END)
       await untilRuns(copy, 2)
@@ -5168,7 +5489,7 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       await $.command.run({ command: COMMAND })
       await calls.settled()
       const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
-      expect(next).toBe(`Next   /milestone-plan ${args} `)
+      expect(next).toBe(`→ /milestone-plan ${args}`)
       await pressKey($, PANE_NEXT)
       await $.session.end(CLEAR_END)
       await untilRuns(copy, 2)
@@ -5180,5 +5501,392 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       await untilRuns(copy, 4)
       expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
     })
+  }
+})
+
+describe('the card counts the drawn candidate rows by level and the planned and blocked milestones (M286 AC2)', () => {
+  // Rows at all four levels and one started row, which the list hides and
+  // the card leaves out; two planned milestones and one blocked one. The
+  // counts are written out by hand.
+  const idle: PaneState = {
+    found: true,
+    milestones: [],
+    next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null },
+    workable: [{ id: 'M3', title: 'Ready' }],
+    waiting: [{ id: 'M4', title: 'Later', unmet: ['M3'] }],
+    candidates: [
+      { priority: 'low', title: 'Low one' },
+      { priority: 'high', title: 'High one' },
+      { priority: 'normal', title: 'Normal one' },
+      { priority: 'normal', title: 'Started one' },
+      { priority: 'parked', title: 'Parked one' },
+      { priority: 'normal', title: 'Normal two' },
+    ],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: null, url: null, archived: false }],
+    taken: [{ title: 'Started one', ref: 'M3' }],
+  }
+  const active: PaneState = {
+    ...idle,
+    milestones: [{ id: 'M2', title: 'Now', status: 'in-progress', file: null }],
+    next: { action: 'resume', command: '/milestone-implement', id: 'M2', title: null },
+  }
+  const CARD = [
+    ['card-repo', '? PRs   ? issues'],
+    ['card-candidates', 'candidates ↑ 1   ○ 2   ↓ 1   ⧗ 1'],
+    ['card-milestones', '2 planned · 1 blocked'],
+  ]
+  const cardOf = (state: PaneState) =>
+    layout(state, [], true)
+      .filter(line => line.card)
+      .map(line => [line.key, [...line.lead, ...(line.text === null ? [] : [line.text])].map(span => span.text).join('')])
+
+  test('with no active milestone, the card matches the drawn list', () => {
+    expect(cardOf(idle)).toEqual(CARD)
+    const drawn = layout(idle, [], true).filter(line => /^candidate-\d+$/.test(line.key))
+    expect(drawn.length).toBe(5)
+    expect(drawn.map(line => line.title)).not.toContain('Started one')
+  })
+
+  test('with an active milestone, the list is gone and the card counts the same rows', () => {
+    expect(cardOf(active)).toEqual(CARD)
+    expect(layout(active, [], true).filter(line => /^candidate-\d+$/.test(line.key))).toEqual([])
+  })
+
+  test('the card leads the pane, and the no-active line and the milestones follow it', () => {
+    expect(layout(idle, [], true).map(line => line.key).slice(0, 5)).toEqual([
+      'card-repo',
+      'card-candidates',
+      'card-milestones',
+      'card-gap',
+      'no-active',
+    ])
+    expect(layout(active, [], true).map(line => line.key).slice(0, 5)).toEqual([
+      'card-repo',
+      'card-candidates',
+      'card-milestones',
+      'card-gap',
+      'M2-head',
+    ])
+  })
+
+  test('with no ROADMAP there is no card', () => {
+    expect(layout({ ...idle, found: false }).map(line => line.key)).toEqual(['no-roadmap'])
+  })
+})
+
+describe("the card's GitHub numbers come from one query, at the pull request reads only (M286 AC3)", () => {
+  const cardText = async $ => (await linesAt($)).find(line => line.key === 'card-repo')?.text
+  const ORIGIN_QUERY = ['gh', 'api', 'graphql', '--hostname', 'github.com', '-f', `query=${REPO_QUERY}`, '-f', 'owner=fork', '-f', 'repo=repo']
+
+  test('a pane open runs the query on the base remote and draws its numbers', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, counts: () => repoReply(3, 12) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    expect(await cardText($)).toBe('? PRs   ? issues')
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(calls.card.filter(argv => argv[0] === 'gh')).toEqual([ORIGIN_QUERY])
+    expect(await cardText($)).toBe('3 PRs   12 issues')
+  })
+
+  // M286 review: the blocked words and the hotfix list do not wait for the
+  // card's read, as M230 keeps the blocked reads apart.
+  test('a held card query does not hold the blocked words or the hotfix list', async ($, on) => {
+    let release: () => void = () => {}
+    const held = new Promise<void>(resolve => {
+      release = resolve
+    })
+    const calls = gh(on, () => prView('MERGED'), undefined, {
+      remotes: { origin: ORIGIN },
+      list: () => listReply([pr(1265, 'hotfix-a')]),
+      counts: async () => {
+        await held
+        return repoReply(3, 12)
+      },
+    })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    // The held query keeps the fake busy, so these reads mount the pane
+    // directly rather than wait for it to go quiet.
+    let lines = await paneLines($, 'desktop')
+    for (let i = 0; i < 200 && textAt(lines, 'hotfix-1265') === undefined; i++) {
+      await sleep(5)
+      lines = await paneLines($, 'desktop')
+    }
+    expect(textAt(lines, 'blocked-M102')).toBe(prText('M102', 'Two pull request URLs', 34, 'merged'))
+    expect(textAt(lines, 'hotfix-1265')).toBeDefined()
+    expect(textAt(lines, 'card-repo')).toBe('? PRs   ? issues')
+    release()
+    await calls.settled()
+    expect(await cardText($)).toBe('3 PRs   12 issues')
+  })
+
+  test('a turn end runs no query', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, counts: () => repoReply(3, 12) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    const before = calls.card.length
+    await $.turn.complete(turn())
+    await $.turn.complete(turn())
+    await calls.settled()
+    expect(calls.card.length).toBe(before)
+  })
+
+  test('a failed read keeps the last good numbers for the same root', async ($, on) => {
+    let answer: GhAnswer = repoReply(3, 12)
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, counts: () => answer })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    for (const fail of ['reject', { exitCode: 1, stdout: '' }, { exitCode: 0, stdout: 'HTTP 502\n' }] as GhAnswer[]) {
+      answer = fail
+      await pressKey($, 'cairn-pane-refresh')
+      await calls.settled()
+      expect(await cardText($)).toBe('3 PRs   12 issues')
+    }
+  })
+
+  test('a failed first read draws `?`', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ORIGIN }, counts: () => ({ exitCode: 1, stdout: '' }) })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(calls.card.filter(argv => argv[0] === 'gh').length).toBe(1)
+    expect(await cardText($)).toBe('? PRs   ? issues')
+  })
+
+  for (const [name, remotes] of [
+    ['a remote on another host', { origin: 'https://gitlab.com/o/r.git' }],
+    ['a repo with no remote', {}],
+  ] as [string, Record<string, string>][]) {
+    test(`${name} runs no query`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, { remotes, counts: () => repoReply(3, 12) })
+      seat(on, copyOf('blocked-prs'))
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      expect(calls.card.filter(argv => argv[0] === 'gh')).toEqual([])
+      expect(await cardText($)).toBe('? PRs   ? issues')
+    })
+  }
+})
+
+describe('the card draws a release line when the read can read the latest release (M286 AC4)', () => {
+  const releaseText = async $ => (await linesAt($)).find(line => line.key === 'card-release')?.text
+  const DIFF = { exitCode: 0, stdout: 'cairn/milestones/archive/M1-a.md\ncairn/milestones/archive/M2-b.md\n' }
+  // A commit time three days and a minute before now, in whole seconds.
+  const threeDaysAgo = () => ({ exitCode: 0, stdout: `${Math.floor(Date.now() / 1000) - 3 * 86_400 - 60}\n` })
+
+  test('a tag, its commit time, and a diff draw the line after the read', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, {
+      remotes: { origin: ORIGIN },
+      describe: { exitCode: 0, stdout: 'v2.1.0\n' },
+      log: threeDaysAgo(),
+      diff: DIFF,
+    })
+    seat(on, copyOf('blocked-prs'))
+    await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+    expect(await releaseText($)).toBe(undefined)
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(await releaseText($)).toBe('v2.1.0 · 3 days ago · 2 done since')
+    expect(calls.card.filter(argv => argv[0] === 'git')).toEqual([
+      ['git', ...DESCRIBE_ARGS],
+      ['git', ...tagTimeArgs('v2.1.0')],
+      ['git', ...archivedArgs('v2.1.0')],
+    ])
+  })
+
+  const CASES: { name: string; describe: GhAnswer; log: GhAnswer | null; diff: GhAnswer; guest: boolean }[] = [
+    { name: 'describe fails', describe: { exitCode: 128, stdout: '' }, log: null, diff: DIFF, guest: false },
+    { name: 'describe prints nothing', describe: { exitCode: 0, stdout: '\n' }, log: null, diff: DIFF, guest: false },
+    { name: 'git log fails', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: { exitCode: 128, stdout: '' }, diff: DIFF, guest: false },
+    { name: 'the diff fails', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: null, diff: { exitCode: 128, stdout: '' }, guest: false },
+    { name: 'guest mode', describe: { exitCode: 0, stdout: 'v2.1.0\n' }, log: null, diff: DIFF, guest: true },
+  ]
+  for (const each of CASES) {
+    test(`${each.name}: no release line`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: ORIGIN },
+        describe: each.describe,
+        log: each.log ?? threeDaysAgo(),
+        diff: each.diff,
+      })
+      const copy = copyOf('blocked-prs')
+      if (each.guest) copy.files['/cairn/PROFILE.md'] = GUEST_PROFILE
+      seat(on, copy)
+      await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      expect(await releaseText($)).toBe(undefined)
+      if (each.guest) expect(calls.card.filter(argv => argv[0] === 'git')).toEqual([])
+    })
+  }
+})
+
+describe('a blocked line and a hotfix line share one layout (M286 AC5)', () => {
+  const BLOCKED_URL = 'https://github.com/o/r/pull/9'
+  const HOTFIX_URL = 'https://github.com/o/other/pull/9'
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [{ id: 'M5', title: 'Same title', pr: 9, url: BLOCKED_URL, archived: false }],
+    taken: [],
+  }
+  const hotfix = { number: 9, title: 'Same title', url: HOTFIX_URL }
+  const WORDS = ['merged', 'closed', 'changes requested', 'approved', 'in review', 'unknown'] as const
+  const READS: [string, PrRead | undefined][] = [
+    ['no read', undefined],
+    ...WORDS.map(word => [word, { word, counts: ['changes requested', 'approved', 'in review'].includes(word) ? { unresolved: 2 } : null }] as [string, PrRead]),
+  ]
+  for (const [name, got] of READS) {
+    test(name, () => {
+      const prs = got === undefined ? {} : { [BLOCKED_URL]: got, [HOTFIX_URL]: got }
+      const lines = layout(state, [], false, prs, [hotfix])
+      const blocked = lines.find(line => line.key === 'blocked-M5')
+      const fix = lines.find(line => line.key === 'hotfix-9')
+      // Each line differs only in its key, its identifier, and the Button
+      // that the blocked line's word carries.
+      const plain = (line: PaneLine | undefined) => ({
+        ...line,
+        key: '',
+        lead: line?.lead.map((span, i) => (i === 2 ? { ...span, text: 'ID' } : span)),
+        buttons: undefined,
+        target: undefined,
+      })
+      expect(plain(fix)).toEqual(plain(blocked))
+      expect(blocked?.lead[2]).toEqual({ text: 'M5', bold: true })
+      expect(fix?.lead[2]).toEqual({ text: 'fix', bold: true })
+      const counts = (key: string) => {
+        const line = lines.find(each => each.key === key)
+        return line === undefined ? undefined : { ...line, key: '' }
+      }
+      expect(counts('hotfix-9-counts')).toEqual(counts('blocked-M5-counts'))
+      expect(blocked?.buttons).toEqual(got === undefined ? undefined : PR_BUTTONS_OF[got.word])
+    })
+  }
+  const PR_BUTTONS_OF: Record<string, string[] | undefined> = {
+    merged: ['finish'],
+    'changes requested': ['revise'],
+    closed: ['check'],
+    approved: undefined,
+    'in review': undefined,
+    unknown: undefined,
+  }
+})
+
+describe('hovering a line on the desktop shows a card with its full text (M286 AC9)', () => {
+  // One state with an active milestone, the queue, a blocked row, and a
+  // hotfix; one with no active milestone, for the candidate lines. Each
+  // line's full text is written out by hand.
+  const active: PaneState = {
+    found: true,
+    milestones: [
+      {
+        id: 'M7',
+        title: 'A long milestone title',
+        status: 'in-progress',
+        file: {
+          goal: 'Goal.',
+          tasks: [{ text: 'T1: a task', checked: false }],
+          criteria: [{ text: 'AC1: a criterion', checked: true }],
+          log: ['a log line'],
+        },
+      },
+    ],
+    next: { action: 'resume', command: '/milestone-implement', id: 'M7', title: null },
+    workable: [{ id: 'M8', title: 'Ready next' }],
+    waiting: [{ id: 'M9', title: 'Later', unmet: ['M8'] }],
+    candidates: [{ priority: 'high', title: 'Hidden while active' }],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }],
+    taken: [],
+  }
+  const idle: PaneState = {
+    ...active,
+    milestones: [],
+    candidates: [
+      { priority: 'high', title: 'First row' },
+      { priority: 'low', title: '' },
+    ],
+  }
+  const hotfix = { number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }
+  // The blocked row's PR reads open with threads, so a counts line draws
+  // too, and it has no card.
+  const read: Record<string, PrRead> = { 'https://github.com/o/r/pull/9': { word: 'in review', counts: { unresolved: 2 } } }
+  const fulls = (state: PaneState) =>
+    layout(state, [], true, read, [hotfix])
+      .filter(line => line.full !== undefined)
+      .map(line => [line.key, line.full])
+
+  test('with an active milestone: head, task, criterion, workable, waiting, blocked, and hotfix lines, and no other', () => {
+    expect(fulls(active)).toEqual([
+      ['M7-head', 'A long milestone title'],
+      ['M7-task-0', 'T1: a task'],
+      ['M7-criterion-0', 'AC1: a criterion'],
+      ['workable-M8', 'Ready next'],
+      ['waiting-M9', 'Later · on M8'],
+      ['blocked-M5', 'Handed off'],
+      ['hotfix-4', 'Fix a crash'],
+    ])
+  })
+
+  test('the active state draws a counts line, which has no card', () => {
+    expect(layout(active, [], true, read, [hotfix]).some(line => line.key === 'blocked-M5-counts')).toBe(true)
+  })
+
+  test('with no active milestone: each candidate line, but none for an empty title, and no card on the no-active line', () => {
+    expect(fulls(idle)).toEqual([
+      ['workable-M8', 'Ready next'],
+      ['waiting-M9', 'Later · on M8'],
+      ['blocked-M5', 'Handed off'],
+      ['hotfix-4', 'Fix a crash'],
+      ['candidate-0', 'First row'],
+    ])
+    expect(layout(idle, [], true).some(line => line.key === 'no-active')).toBe(true)
+  })
+
+  for (const surface of SURFACES) {
+    for (const fixture of ['pane-full', 'blocked-prs']) {
+      test(`${fixture}: the card's Box on the desktop, none in the terminal (${surface})`, async ($, on) => {
+        seat(on, copyOf(fixture))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        const [root] = await ui.findAll({ key: 'cairn-pane' })
+        const cards = flat(root).flatMap(line => kids(line).filter(child => child.props.position === 'absolute'))
+        if (surface === 'terminal') {
+          expect(cards).toEqual([])
+        } else {
+          expect(cards.length).toBeGreaterThan(2)
+          for (const card of cards) {
+            expect(card.props).toEqual(
+              expect.objectContaining({
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                right: 0,
+                display: 'none',
+                borderStyle: 'round',
+                borderColor: 'subtle',
+                backgroundColor: 'userMessageBackground',
+              }),
+            )
+            // The drawn tree keeps `hover` beside `props`.
+            expect((card as Element & { hover?: unknown }).hover).toEqual({ display: 'flex' })
+            expect(keyOf(card)).toBe(undefined)
+            expect(kids(card)[0].props.wrap).toBe('wrap')
+          }
+        }
+        await ui.unmount()
+      })
+    }
   }
 })

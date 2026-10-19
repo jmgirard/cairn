@@ -45,7 +45,7 @@ export type CairnPaneItem = { text: string; checked: boolean }
 
 // One active milestone as the cairn pane shows it. `file` is null when the
 // milestone file is missing or its read fails; `log` holds the newest five
-// work-log lines, less their `- `.
+// work-log lines, less their `- `, which the pane has not drawn since M286.
 export type CairnPaneMilestone = {
   id: string
   title: string
@@ -109,6 +109,16 @@ export type CairnStartedRow = { title: string; number: number }
 // listed bodies name, kept and emptied with `prs` (M252).
 export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; started: CairnStartedRow[] }
 
+// The summary card's numbers (M286): the base remote repo's open pull
+// requests and open issues, and the milestones done since the latest
+// release tag, with the whole days since that tag's commit. `counts` is null
+// until a read for `root` gives numbers, and a read that gives none keeps
+// the last good ones for the same root. `done` is the last read's, null
+// when that read could not count. The shape moved to `repo-2` with `days`.
+export type CairnRepoCounts = { prs: number; issues: number }
+export type CairnRepoDone = { tag: string; days: number; count: number }
+export type CairnRepoRead = { root: string | null; counts: CairnRepoCounts | null; done: CairnRepoDone | null }
+
 declare module 'claude-code' {
   interface PluginState {
     // Each value is kept under a shape tag (register.tsx), so a value an
@@ -137,6 +147,8 @@ declare module 'claude-code' {
       // the last read at a pane open or a Refresh press wrote them (M226).
       // Their words and counts sit in `prs` by URL.
       hotfixes: Shaped<CairnHotfixRead>
+      // The summary card's numbers, written by the same read (M286).
+      repo: Shaped<CairnRepoRead>
       // True from the start of a read of the pull request states until the
       // newest read started has settled, while the pane's ↻ Button reads ⋯
       // (M236).
