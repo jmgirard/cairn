@@ -129,6 +129,7 @@ AC5 stand in for it.
 - 2026-10-19: T5: all five verify checks green (mod tests 2285 pass). A scratch page built by node from the repo's `badge.ts` drew 7 and 100 in all three fills on a dark and a light ground in the browser pane; each number read clearly.
 - 2026-10-19: claim audit: 33 claims read, 2 corrected — hooks/status/badge.ts (a one-digit badge is a 19×16 short pill, not a circle, and the dead `Math.max` floor went; the terminal badge shares the band pill's colors but is not bold). Re-read once: both true. Mod tests 2285 pass after the width change.
 - 2026-10-19: implement done; status review.
+- 2026-10-19: step-7 approval: m289-pane-count-badges approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
