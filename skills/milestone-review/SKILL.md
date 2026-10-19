@@ -146,8 +146,12 @@ re-enters here, at the step the record shows is next:
    <body>` ready for review with the `Closes`/`Refs` and `Candidate row:`
    lines. The push always
    runs; only the create is skipped when the header already names an open
-   PR. Record a new PR's URL in the header in a commit on the branch; step
-   6's checkpoint push carries it. Then run
+   PR. If the push or the create fails, report the failure in one line and
+   request nothing. For a new PR, add its URL to the header in a commit on
+   the branch, beside the URL of a closed PR the header already names, and
+   push that commit before the request, so the head Copilot reviews names
+   its PR (D-185). If that push fails, report it in one line and go on: the
+   commit stays local until step 6's checkpoint push carries it. Then run
    the module's state query (§3) and request Copilot on `none`, asking for
    Balanced (§2). Copilot then reviews while steps 3 to 6 run, and step 7's
    PR-conversation read handles its threads. The arm does not run under
@@ -587,8 +591,8 @@ re-enters here, at the step the record shows is next:
    head past the one CI just ran on; the resume routes and step 9 fall
    back to `gh pr list --head <branch>` once the local branch is gone.
    Where step 2's Copilot arm opened the PR, its URL is already in the
-   header in a commit that step 6's checkpoint push carried, so no record
-   is written here (D-153).
+   header in a commit that the arm pushed, so no record is written here
+   (D-185).
    Then record the approval for the merge
    guard — write `cairn/.merge-approved` (gitignored; one line:
    `M<NNN> approved YYYY-MM-DD for PR #<N>` — the marker names the PR it

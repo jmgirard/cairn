@@ -1,13 +1,13 @@
 # M285: Copilot reviews a head that names its PR, and review reads the rest of the repo for stale text
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `/milestone-review` and the rulebook ship to every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m285-review-ripple-lens
 
 ## Goal
 
@@ -39,7 +39,7 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 
 ## Tasks
 
-- [ ] T1: Reorder the Copilot arm (`skills/milestone-review/SKILL.md:142-157`) and edit step 8's header sentence (`:588-591`). Grep the skill and `skills/shared/copilot-review.md` for other sentences that put the header push at step 6.
+- [x] T1: Reorder the Copilot arm (`skills/milestone-review/SKILL.md:142-157`) and edit step 8's header sentence (`:588-591`). Grep the skill and `skills/shared/copilot-review.md` for other sentences that put the header push at step 6.
 - [ ] T2: Add the ripple reviewer to step 5: the routing bullets (`:287-294`), the lens list (`:305-338`), and the slug sentence (`:374-377`). Write its instruction in the shape of the prior-PR lens's bullet, with its own no-op clause.
 - [ ] T3: Add the two questions to the diff-bug lens bullet (`:306-308`).
 - [ ] T4: Edit tracking-rules "Model and agent strategy" (`skills/shared/tracking-rules.md:646-657`) and `README.md:629`. Run the AC4 sweep and fix each line it returns. Update `skills/tests/test_review_fanout.py`, which pins "three", and hand-run `python3 -m unittest discover -s skills/tests` (LESSONS M148).
@@ -59,3 +59,5 @@ Copilot reviews a head whose header names the PR, and cairn's own review reads t
 - 2026-10-18: criteria audit (full) re-run on AC2, AC4, and AC5 after the question set changed them: 6 findings, all fixed. AC4's sweep gained `single-reviewer|one Opus`, and its pass condition reads only lines that state a lens or reviewer count. AC2 keeps `cairn/references/` in the search and skips dated measurements instead. AC5's ripple trigger is README's `/hotfix` row (M73 shipped it stale, M74 fixed it), not this repo's DESIGN.md. Its falsifier reads one five-review window, removal first. AC1 states the failed branch push and a header that names a closed PR.
 - 2026-10-18: plan gate chose a separate Haiku ripple lens over adding the search to the Opus diff-bug lens, at the user's request, because a lens with its own evidence base finds what a shared base misses (step 5); falsified by Copilot stale-text threads in the lens's domain, missed by the lens, on two or more of its first five reviews.
 - 2026-10-18: plan gate chose pushing the header commit before the Copilot request over telling Copilot to ignore the header in a `.github/copilot-instructions.md`, because the push fixes the record and adds no file to adopting repos; falsified by a header thread from Copilot on a PR whose header commit was on the remote before the request.
+- 2026-10-18: implement started on branch m285-review-ripple-lens; the untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
+- 2026-10-18: T1: the Copilot arm now reports a failed branch push or create and requests nothing, adds a new PR's URL to the header (beside a closed PR's URL), and pushes that commit before the request; a failed header push leaves the commit for step 6. Step 8 cites D-185. No other sentence in the skill, `copilot-review.md`, `/hotfix`, or README placed the header push at step 6. The arm's `D-152, D-153` citation stays, because a hand-run guard pins it, and the arm cites D-185 inline.
