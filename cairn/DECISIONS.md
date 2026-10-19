@@ -6627,7 +6627,8 @@ has not fired. D-179 recorded that `[high]` means "important" or "ready
 to plan", and that the ROADMAP no longer tells the two apart. Its
 consequence named the falsifier: "If an operator needs to tell a ready
 row from an important row that still waits, and cannot, this is the
-entry to supersede." D-180 corrected D-179's heading to "narrows". D-035
+entry to supersede." D-180 corrected D-179's relation to D-134 from
+"annotates" to "narrows" in its own body. D-035
 rejected category labels such as "parked" as de facto sub-statuses, and
 it kept trigger conditions in row prose. D-134 added the priority token
 and said that D-035's no-grouping rejection stands. D-108 bars a new rule
@@ -6666,7 +6667,13 @@ read it. A mark in place of `○` only, or at the line's end, at the
 user's choice. A check that every row with a condition carries the
 token, because D-134 rejected a token check.
 
-**Consequences:** A row whose condition is not written down gets no
+**Consequences:** The token and the row's condition text state one fact
+twice, the drift surface D-035 named. Triage's re-rate and hygiene's
+unpark step are what keep the two in step, and a stale token is this
+entry's falsifier. Nearly every row states a condition, so the writer rule
+reaches most new rows. It is still not the mandatory token D-134 rejected:
+no check reads it, and a row without it stays valid and reads `normal`.
+A row whose condition is not written down gets no
 token, and no check finds a missing one. Hygiene checks only the parked
 rows that the milestone quotes or names, so a parked row that a merge
 readied without naming it waits for `/cairn-triage`. Adopting repos' rows

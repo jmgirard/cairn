@@ -392,11 +392,14 @@ re-examines a lesson.
      `token: + started M260, quoted in M260-<slug>.md` or
      `token: − started M258, done`. A `keep` with no priority or token
      change sits last so the changes read first.
-     The fourth level, `parked`, follows the
-     row's promotion condition (tracking-rules "Candidate priority token",
-     D-184). A row that states a condition that has not held, and does not
-     open with `[parked]`, gets `priority: <level> → parked`. A parked row
-     whose condition held gets `priority: parked → normal`.
+     On a `keep`, `compress`, or `retitle` row, the fourth level, `parked`,
+     follows the row's promotion condition (tracking-rules "Candidate
+     priority token", D-184), and it comes before the grounds above. An
+     untagged or `[low]` row that states a condition that has not held gets
+     `priority: <level> → parked`, not `→ low`. A parked row
+     whose condition held gets `priority: parked → normal`. A `[high]` row
+     is never proposed `→ parked`, because a promote marks its condition as
+     held.
      Every `promote` of a candidate row whose opening token is not `[high]`
      carries the priority change to `high`. This holds for a proposed
      `promote` and for one the user sets at *Amend*. Its reason cell states

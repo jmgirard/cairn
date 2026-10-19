@@ -120,7 +120,18 @@ class TestTriageReRatesParked(unittest.TestCase):
     triage = TestTriageReadsTheToken.triage
 
     def test_a_condition_not_held_adds_parked(self):
-        self.assertIn("does not open with `[parked]`, gets `priority: <level> → parked`", self.step(3))
+        self.assertIn(
+            "an untagged or `[low]` row that states a condition that has not held gets `priority: <level> → parked`",
+            self.step(3),
+        )
+
+    def test_parked_applies_to_three_dispositions_and_comes_first(self):
+        self.assertIn("on a `keep`, `compress`, or `retitle` row, the fourth level, `parked`", self.step(3))
+        self.assertIn("and it comes before the grounds above", self.step(3))
+
+    def test_a_high_row_is_never_reparked(self):
+        # M284 review: a promoted row keeps its trigger text.
+        self.assertIn("a `[high]` row is never proposed `→ parked`", self.step(3))
 
     def test_a_condition_held_removes_parked(self):
         self.assertIn("a parked row whose condition held gets `priority: parked → normal`", self.step(3))

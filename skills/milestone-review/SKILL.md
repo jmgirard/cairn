@@ -773,10 +773,15 @@ re-enters here, at the step the record shows is next:
    pass.
    **Unpark the rows this merge readied:** check each `[parked]` candidate
    row whose short title the milestone file quotes, or whose text names
-   this milestone's id (tracking-rules "Candidate priority token"). Where
+   this milestone's id (tracking-rules "Candidate priority token"). The
+   pass has already deleted the live file, so read it as the merge left
+   it: `git show HEAD:cairn/milestones/M<NNN>-<slug>.md`. A row that
+   records-hygiene §1 removes in this pass needs nothing here, and a row it
+   narrows is judged on what is left. Where
    the merge made that row's promotion condition hold, remove its
-   `[parked] ` token, so the row reads `normal`, and move it to the normal
-   rows. Leave every other parked row as it is. Name each removal in the
+   `[parked] ` token, so the row reads `normal`, and move the row to its
+   level, the end of the untagged rows. Leave every other parked row as it
+   is. Name each removal in the
    archive summary's Review line. No row qualifies → skip.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
