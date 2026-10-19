@@ -38,7 +38,7 @@ block instead.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `skills/copilot-review/SKILL.md` exists, and `/copilot-review`,
+- [x] AC1: `skills/copilot-review/SKILL.md` exists, and `/copilot-review`,
       given a PR number or URL, or nothing (the current branch's PR), works
       in this order: it reads every unresolved Copilot thread (paged
       `reviewThreads` query) and every Copilot review with a non-empty body
@@ -57,7 +57,7 @@ block instead.
 - [x] AC3: A case-insensitive search for `thank` in
       `skills/copilot-review/SKILL.md` and `skills/shared/copilot-review.md`
       finds only text that forbids thanking Copilot.
-- [ ] AC4: With the Copilot round on, `/hotfix` and `/milestone-review`
+- [x] AC4: With the Copilot round on, `/hotfix` and `/milestone-review`
       post one reply to each Copilot review summary after that review's
       threads are resolved, through `skills/shared/copilot-review.md`. The
       reply links the review, and a later read skips a review whose link a
@@ -190,4 +190,18 @@ block instead.
 - prior-review #2: §6 drops M282's gating and disagrees with README — fix now (restored).
 - ripple #1: `/hotfix` guest change route says only "replies and resolves" do not run — fix now (adds summary replies; pins in test_resume_routing and the mutation harness follow).
 - ripple #2, #3: DESIGN.md and README name the not-recorded line — fix now (resolved by the restoration).
+- fixed: each fix-now finding of the four lenses above, fixed 62c8bf87.
+- copilot: skills/shared/copilot-review.md:138 (GraphQL author filter uses the `[bot]` login) — rejected: the same filter returned this review on PR #299.
+- copilot: skills/copilot-review/SKILL.md:66 (request command and line 80 lack `--repo`) — fix now, fixed 1a1864fd.
+- copilot: review body (matching on full discussion URLs) — rejected: matching uses the `#discussion_r<id>` anchor inside each URL.
+- copilot: review body (summary check not limited to the operator) — rejected: the module names an operator comment.
+- copilot: review body (guest checkout and PR view lack `--repo`) — fix now, fixed 62c8bf87 and 1a1864fd.
+- copilot: review body (empty-body reviews skipped) — rejected: planned; GitHub makes one for each reply.
+- copilot: review body (no clean-tree check on the current-branch path) — fix now, fixed 62c8bf87.
+- copilot: review body (more than four notes) — fix now, fixed 62c8bf87.
+- copilot: review body (chapter-marker test registration missing) — fix now, fixed 1a1864fd.
+- copilot: review body (README omits the return-floor case) — fix now, fixed 1a1864fd.
+- Copilot level: Lite from the review body (set by GitHub's settings); the state query printed `unknown` because the body now uses `<sub>Review effort: Lite</sub>`, filed as the candidate row "Copilot level line format".
+- AC1: the `/copilot-review` steps ran on PR #299 (Copilot reviewed it after one retry of the request): 2 unresolved threads and 8 body items read with the paged queries, each given a disposition, fixes pushed (1a1864fd), each thread replied on and resolved, then one summary comment posted. Read back: both threads `isResolved: true` with the operator's reply last, and one operator comment whose first line is the review URL (issuecomment-6271089733); 0 comments contain "thank".
+- AC4: on PR #299 the summary was answered once, after both threads were resolved, with the review URL as its first line; module §5 states the after-resolve, link, and skip rules; `TestSummaryReply` 3 tests OK with mutation proofs.
 - gate: `cairn_validate` all checks passed; `cairn_impact` skipped (DESIGN.md changed only the skill count, no principle); marketplace validate shows no version warning; CHANGELOG entries carry no milestone ids; skills/tests 910 OK.
