@@ -2,6 +2,8 @@ import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStart
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
+import type { BadgeName } from './badge'
+import { badgeSpan } from './badge'
 import type { IconName } from './icons'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
 import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
@@ -38,7 +40,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // desktop draws as icons of one size (icons.ts), and dropped look B's rule
 // after each heading. A milestone's meters take its phase's color, and the
 // Next line takes the color of the phase its command runs. The colors are
-// theme keys (M217). The `card` lines draw in the card's Box.
+// theme keys (M217). The `card` lines draw in the card's Box. Since M289
+// the Blocked, Hotfixes, and Candidates headings draw their count as a
+// colored badge (badge.ts).
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
@@ -451,9 +455,11 @@ function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
   return [gap(`${key}-gap`), head]
 }
 
-// A heading whose tail is a bare count in gray.
-function countHeading(key: string, label: string, count: number): PaneLine[] {
-  return heading(key, label, [{ text: `${count}`, color: GRAY }])
+// A heading whose tail is its count as a badge (M289, badge.ts): on the
+// heading's theme key in the terminal and in a fixed fill near it on the
+// desktop, where M286 drew a gray number.
+function countHeading(key: string, label: string, count: number, name: BadgeName): PaneLine[] {
+  return heading(key, label, [badgeSpan(count, name)])
 }
 
 // A heading whose tail is the checked and total counts and the meter in
@@ -726,7 +732,7 @@ export function paneLines(
   // active (M223). After the number, the state word that the last read
   // found, and the Button that word carries (M224).
   if (state.blocked.length > 0) {
-    out.push(...countHeading('blocked-head', 'Blocked', state.blocked.length))
+    out.push(...countHeading('blocked-head', 'Blocked', state.blocked.length, 'blocked'))
     for (const row of state.blocked) {
       const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
       const held = prLine(`blocked-${row.id}`, row.id, row.title, row.pr, row.archived, got)
@@ -754,7 +760,7 @@ export function paneLines(
   // leaves it out (M230).
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
-    out.push(...countHeading('hotfixes-head', 'Hotfixes', shown.length))
+    out.push(...countHeading('hotfixes-head', 'Hotfixes', shown.length, 'hotfixes'))
     for (const pr of shown) {
       const got = Object.prototype.hasOwnProperty.call(prs, pr.url) ? prs[pr.url] : undefined
       out.push(prLine(`hotfix-${pr.number}`, HOTFIX_ID, pr.title, pr.number, false, got))
@@ -776,7 +782,7 @@ export function paneLines(
   // row up by that index.
   const drawn = state.milestones.length === 0 ? drawable : []
   if (drawn.length > 0) {
-    out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
+    out.push(...countHeading('candidates-head', 'Candidates', drawn.length, 'candidates'))
     for (const { row, i } of drawn) {
       const candidate = line(
         `candidate-${i}`,

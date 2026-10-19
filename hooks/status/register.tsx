@@ -5,6 +5,7 @@ import type { CairnBandHidden, CairnHotfixRead, CairnRepoRead, CairnStep } from 
 import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prRead } from './counts'
+import { BADGE_H, badgeSvg, badgeWidth } from './badge'
 import { ICON_PX, iconSvg } from './icons'
 import { archivedArgs, DESCRIBE_ARGS, doneSince, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
@@ -392,8 +393,18 @@ export const register: Register = on => {
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
+    // A tail span that names a badge draws as its `Svg` pill on such a
+    // surface, and as its padded text on the heading's key in the terminal
+    // (M289); a heading with one centers its row too.
     const drawSpan = (span: Span) =>
-      span.icon !== undefined && Svg !== undefined ? (
+      span.badge !== undefined && Svg !== undefined ? (
+        <Svg
+          source={badgeSvg(span.badge.count, span.badge.name)}
+          alt={`${span.badge.count}`}
+          width={badgeWidth(span.badge.count)}
+          height={BADGE_H}
+        />
+      ) : span.icon !== undefined && Svg !== undefined ? (
         <Svg source={iconSvg(span.icon)} alt={span.text} width={ICON_PX} height={ICON_PX} />
       ) : (
         <Text wrap="truncate-end" {...style(span)}>
@@ -401,7 +412,10 @@ export const register: Register = on => {
         </Text>
       )
     const centers = (line: (typeof lines)[number]) =>
-      Svg !== undefined && line.lead.some(span => span.icon !== undefined) ? { alignItems: 'center' as const } : {}
+      Svg !== undefined &&
+      (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
+        ? { alignItems: 'center' as const }
+        : {}
     const drawLine = (line: (typeof lines)[number]) => (
           <Box key={line.key} paddingLeft={line.indent} minWidth={0} {...centers(line)}>
             {line.lead.length === 0 ? null : (
@@ -417,12 +431,8 @@ export const register: Register = on => {
               </Box>
             )}
             {line.tail === undefined ? null : (
-              <Box key={`${line.key}-tail`} flexShrink={0}>
-                {line.tail.map(span => (
-                  <Text wrap="truncate-end" {...style(span)}>
-                    {span.text}
-                  </Text>
-                ))}
+              <Box key={`${line.key}-tail`} flexShrink={0} {...centers(line)}>
+                {line.tail.map(drawSpan)}
               </Box>
             )}
             {line.action === undefined ? null : (
