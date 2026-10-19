@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M289: The cairn pane draws each section count as a colored badge
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -127,6 +127,8 @@ AC5 stand in for it.
 - 2026-10-19: T2, T3: new `hooks/status/badge.ts` (`BADGE_KEY`, `BADGE_FILL`, `badgeWidth`, `badgeSvg`, `badgeSpan`); `Span` gains `badge`; `countHeading` takes the badge name; register.tsx draws a pane tail through `drawSpan` and centers a row with a badge. Six existing heading tests now expect the badge; four new tests. Planted defects (a shared fill, a fixed width, a wrong text key) turned 6 tests red; restored. Mod tests 2281 → 2285, all five verify checks green.
 - 2026-10-19: T4: README, DESIGN, a new CHANGELOG Unreleased entry, and the pane.ts comments describe the badge; AC6's greps: no old phrase, `badge` in all five, no "count at the right end" line left. The simple-english hook flagged README (231) and CHANGELOG (381) counts that predate this branch; the README count did not change with the new lines, and they were left.
 - 2026-10-19: T5: all five verify checks green (mod tests 2285 pass). A scratch page built by node from the repo's `badge.ts` drew 7 and 100 in all three fills on a dark and a light ground in the browser pane; each number read clearly.
+- 2026-10-19: claim audit: 33 claims read, 2 corrected — hooks/status/badge.ts (a one-digit badge is a 19×16 short pill, not a circle, and the dead `Math.max` floor went; the terminal badge shares the band pill's colors but is not bold). Re-read once: both true. Mod tests 2285 pass after the width change.
+- 2026-10-19: implement done; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
