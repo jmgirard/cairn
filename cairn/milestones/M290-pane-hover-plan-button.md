@@ -48,26 +48,26 @@ by the drawn props alone.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: On the `desktop` surface, a mod test loops over each candidate
+- [x] AC1: On the `desktop` surface, a mod test loops over each candidate
       line that `paneLines` gives the `plan` Button in the `candidates` and
       `candidates-order` fixtures. For each such line, the parent Box of the
       Button has no key and no `display` prop, `position: 'absolute'`, a
       `right` below 0, and `hover: { right: 0 }`. That Box is a child of the
       keyed `candidate-<i>` Box of the line.
-- [ ] AC2: On the `terminal` surface, the same loop runs over the same
+- [x] AC2: On the `terminal` surface, the same loop runs over the same
       lines. For each such line, the parent Box of the Button is the keyed
       `candidate-<i>-plan` Box, with `flexShrink: 0` and no `display` prop.
       No Box under the line has a `hover` field in the drawn tree, read
       beside `props` as M286 found, and no `Svg` sits under the line.
-- [ ] AC3: On each surface, a press of `cairn-pane-plan-<i>` for rows 2
+- [x] AC3: On each surface, a press of `cairn-pane-plan-<i>` for rows 2
       and 3 of `candidates-order` runs `/clear`, then `cairn:milestone-plan`
       with the short title of that row. A mod test shows this.
-- [ ] AC4: A mod test reads the parent Box of each Button in the mounted
+- [x] AC4: A mod test reads the parent Box of each Button in the mounted
       pane for `pane-full` and `candidates` on both surfaces, and of the
       Finish Button that a `MERGED` read draws on a `blocked-prs` line. No
       such parent Box, other than that of a candidate line's ✎, has a
       `display` prop.
-- [ ] AC5: On the `desktop` surface, a mod test loops over each candidate
+- [x] AC5: On the `desktop` surface, a mod test loops over each candidate
       line that carries the `plan` Button in the `candidates` and
       `candidates-order` fixtures. In each such line, the child just before
       the parent Box of the Button is an unkeyed Box with `display: 'none'`
@@ -81,7 +81,7 @@ by the drawn props alone.
       child of a line that is not a candidate line keeps
       `hover: { display: 'flex' }` with no `scope`, and that set is not
       empty in each fixture.
-- [ ] AC6: The operator opens a new Code session in a cairn repo with
+- [x] AC6: The operator opens a new Code session in a cairn repo with
       candidate rows and no active milestone (circumplex), with the docked
       desktop pane focused. At rest, no candidate row shows the info icon
       or ✎. While the pointer is over a row whose short title is not
@@ -89,7 +89,7 @@ by the drawn props alone.
       pointer is over the info icon, the row's card shows. A click on ✎
       runs `/clear`, then `/milestone-plan` with the short title of that
       row.
-- [ ] AC7: README.md near lines 325-328 and 397-402 and `cairn/DESIGN.md`
+- [x] AC7: README.md near lines 325-328 and 397-402 and `cairn/DESIGN.md`
       near lines 320-326 and 490-500 each say three things: the desktop
       pane shows a candidate row's info icon and ✎ only while the pointer
       is over the row, the row's card opens from the info icon, and the
@@ -98,7 +98,7 @@ by the drawn props alone.
       the part that their code draws. None of these sites says that a hidden Box cannot carry
       a hover `scope`. The Unreleased section of CHANGELOG has an entry for
       the change.
-- [ ] AC8: The `verify` slot of `cairn/PROFILE.md` is clean.
+- [x] AC8: The `verify` slot of `cairn/PROFILE.md` is clean.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -205,3 +205,55 @@ by the drawn props alone.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Review head 4d457acb, 2026-10-19. Mod test run: 2304 pass, 0 fail (`CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`, exit 0).
+
+- AC1 evidence: pass. "candidates (desktop)" and "candidates-order (desktop)" in the M290 describe: each ✎ holder is unkeyed, has no `display`, is `position: 'absolute'` with `right` below 0, `hover: { right: 0 }`, and `top 0, bottom 0, alignItems center`, and is a child of `candidate-<i>`. Discrimination shown at T2 (main's register.tsx fails both).
+- AC2 evidence: pass. "candidates (terminal)" and "candidates-order (terminal)": each holder is the keyed `candidate-<i>-plan` Box, `flexShrink 0`, no `display`; a walk of every node under the line (more than 2) finds no `hover` field and no `Svg`.
+- AC3 evidence: pass. "✎ on row 2 plans Late high" and "✎ on row 3 plans Second low", each on terminal and desktop: the press runs `clear`, then after the clear's end `cairn:milestone-plan` with that title.
+- AC4 evidence: pass. "pane-full: no other Button is hidden" and "candidates: no other Button is hidden" on both surfaces (more than 1 Box each), and "blocked-prs: a merged line's Finish is not hidden" (at least one Finish): no parent Box of a Button other than ✎ has a `display` prop. Discrimination shown at T2 (every Button hidden fails all three).
+- AC5 evidence: pass. "candidates: the info glyph opens the card (desktop)" and "candidates-order: …": the child before each ✎ holder is an unkeyed Box, `display: 'none'`, `hover: { display: 'flex' }`, right margin above 0, whose one child is a `Text` reading `ⓘ` with `hover: { scope, bold: true }`; the line's card (absolute, no Button) has `hover: { display: 'flex', scope }`; scopes differ per line. "pane-full: a card on a line that is not a candidate line …" and "candidates: …" (at least 1 card each): those cards keep `hover: { display: 'flex' }`. The tests failed before T5's code.
+- AC6 evidence: pass, by the operator's report (a live look, no command). Live look 4 (circumplex, head 710f0693): at rest no ⓘ or ✎; pointer on a row shows ⓘ and ✎ beside it, no card; pointer on ⓘ opens the card; a click on ✎ ran `/clear` then `/milestone-plan` with the row's title ("everything works"). Live look 5 (head 8114c69f): ⓘ and ✎ at one height ("working"). Later commits changed comments, docs, and tests only (`git diff 8114c69f..HEAD -- hooks/status/register.tsx hooks/status/pane.ts` changes comment lines only, read at review).
+- AC7 evidence: pass, read at 4d457acb. README.md 325-331 and 400-404 and DESIGN.md 320-333 and 501-514 each say that ⓘ and ✎ show on the desktop only under the pointer, that the card opens from ⓘ, and that the terminal draws ✎ as before. The register.tsx comments (near 219-227, 392-403, 462-469, 488-497, 518-521) and pane.ts 75-80 each state their own part. `grep -rn "engine refuses\|refuses a hover"` over README.md, cairn/DESIGN.md, and hooks/status/ finds nothing. CHANGELOG's Unreleased section has the entry "The desktop pane shows a candidate row's `✎` only under the pointer".
+- AC8 evidence: pass at 4d457acb. `python3 -m unittest discover -s scripts/tests` exit 0; `-s hooks/tests` exit 0 (193 tests); `claude plugin validate` on plugin.json and on marketplace.json exit 0; `claude plugin test .` exit 0, 2304 pass, 0 fail.
+
+Consistency gate: `cairn_validate.py` exit 0 (one WARN: 8 criteria, over the 7 split tripwire, accepted in the work log). No principle changed, so `cairn_impact` is skipped. Toolchain slot: verify green on the review head; the marketplace validate prints no `plugins[N].version` warning; CHANGELOG has the entry, with no milestone number in it.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- ripple #1: CHANGELOG's Unreleased M286 entry says the pointer over a candidate line opens its card — fix now, fixed 9856b34c
+- ripple #2: DESIGN 503 says the pointer over the line opens the card, false for candidate lines — fix now, fixed 9856b34c
+- ripple #3: the M286 AC9 describe title in pane.test.tsx no longer holds for candidate lines — reject, planned change: the title names M286's criterion, a record of what that milestone tested
+- ripple #4: pane.test.tsx's `textOf` comment says the card shows over its line — fix now, fixed 9856b34c
+- ripple #5: pane.test.tsx comment says ✎ sits at the right end, true on the desktop only under the pointer — fix now, fixed 9856b34c
+- ripple #6: the M242 AC4 describe title says the same — reject, planned change: the title names M242's criterion
+- blame-history #1: the candidate card closes when the pointer moves from ⓘ onto it — follow-up, item (5) of "Gaps only the app or mod API can close"
+- blame-history #2: README says a hovered row shows its ✎, false while a skill runs — fix now, fixed 4d457acb
+- blame-history #3: the M242 AC4 keyed-Box check is narrowed to the terminal — reject, planned change (T2)
+- blame-history #4: the M286 line-hover card is narrowed on candidate lines — reject, planned change (the operator's choice after live look 1)
+- blame-history #5: the hidden-scope rationale cites type docs the reviewer could not find — reject, false: the docs are the gitignored `.claude-plugin/types/claude-code/index.d.ts`, lines 741-757
+- blame-history #6: the two desktop facts are not in LESSONS yet — noted, hygiene adds them
+- blame-history #7: a comment breaks mid-sentence and a README line runs long — reject, style
+- diff-bug #1: ⓘ shows alone while a skill runs, untested — fix now, a test added, fixed 4d457acb
+- diff-bug #2: README, CHANGELOG, and pane.ts say ⓘ always shows beside ✎ — fix now, fixed 4d457acb
+- diff-bug #3: the -8 park hides ✎ only while its Button is under 8 columns, tied by nothing — fix now, a comment at `PLAN_PARK`, fixed 4d457acb
+- diff-bug #4: on a pane under about 10 columns the slid-in ✎ can overlap ⓘ — reject, false in practice: a docked pane is 44 columns (LESSONS M201)
+- diff-bug #5: AC1's test does not assert `top`, `bottom`, `alignItems` — fix now, fixed 4d457acb
+- diff-bug #6: the Finish check runs on the desktop only — reject, false: AC4 asks "both surfaces" of the pane-full and candidates part only
+- diff-bug #7: a scope could light in two sites at once — reject, false: the pane draws in one site
+- diff-bug #8: no line has a scoped card with no ⓘ, or ✎ with no ⓘ — noted
+- diff-bug #9: a test comment says "a hidden ✎" — fix now, fixed 4d457acb
+- diff-bug #10: `marginLeft` does nothing on the parked Box — reject, style: the prop is shared with the terminal Box, which needs it
+- diff-bug #11: a README line runs long — fix now, rewrapped, fixed 4d457acb
+- diff-bug #12 to #14: helpers, the terminal path, and awaits checked with no defect — noted
+- prior-review #1: the scoped hidden card is proven only by live looks — reject, false: AC6's live looks 3 to 5 cover it, and the harness cannot hover
+- prior-review #2: the 4-column slot assumes ✎ fits — reject, false: live looks 4 and 5 showed ✎ beside ⓘ
+- prior-review #3: the parked Box gets `key` by spread — reject, false: the classic `h` factory reads it from props, and the terminal tests read the keyed Box
+- prior-review #4: "a candidate line with a `full` sets `info`" overstates — reject, false: pane.ts deletes an empty `full`, so the two sets match
+- prior-review #5: README line length — fix now, fixed 4d457acb (as diff-bug #11)
+- prior-review #6: the card closes when the pointer moves onto it — follow-up, as blame-history #1
+- self: register.tsx said ⓘ is hidden "like ✎" — fix now, fixed 9856b34c
+
+copilot: review body — noted (no threads, no body items; "Approval recommended"); summary reply posted (issuecomment-6278094149)
+Copilot level: Lite (set by GitHub's settings)
+conversation: PR #302 — no human reviews, comments, or threads
