@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M283: The status audit lists unresolved bot threads on your open PRs
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -179,6 +179,7 @@ not added.
 - 2026-10-18: claim audit: 22 claims read, 1 corrected — skills/milestone/SKILL.md, README.md, CHANGELOG.md (the CHANGELOG's "Before this change" sentence missed the linked-item read's per-comment listing; the failed-read sentence was also tightened; the same reader re-read both and found them holding).
 - 2026-10-18: implement complete: status review.
 - 2026-10-18: review step 2 (Copilot arm): branch pushed, PR #295 opened; state query `none`, `gh pr edit 295 --add-reviewer @copilot` exited 0, re-query `none`: Copilot request on PR #295 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
+- 2026-10-18: review return 1: diff-bug #1 (a thread with no `line` is judged at `originalLine` in the head file; the bullet must say to find the passage by its content); in the same pass, diff-bug #2 (the linked-item read's "one exception" sentence), diff-bug #5 with prior-review #1 (percent-encode `<path>`'s special characters before the contents read), and diff-bug #14 with blame-history #4 (README's "It also lists" names the audit).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -203,3 +204,28 @@ Pass 1 (2026-10-18), branch head 103c1912, PR #295.
 - AC6: README.md lines 817-821, in the "Contributions come in through you" paragraph, and CHANGELOG.md lines 326-338, under `## Unreleased` `### New` (heading at line 324), each say the audit lists each unresolved review thread a GitHub App bot opened on your open PRs ("in the repo" in README, "every PR in the "Open hotfix PRs" item's list" in CHANGELOG), with file and line, a verdict on the claim from the PR's code at its head commit, and that it writes nothing to GitHub. Met.
 - AC7: fresh verify run on 103c1912's tree, each exit 0: `scripts/tests` 423 OK (21 skipped), `hooks/tests` 179 OK, `claude plugin validate .` and `claude plugin validate .claude-plugin/marketplace.json` passed, `claude plugin test` 2132 pass 0 fail. Met.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` is skipped. Profile checks: verify passes on the review head (AC7); the marketplace validate output has no `version` warning (grep empty); the CHANGELOG has the `### New` entry with no milestone number (AC6). No CI in this repo, per the profile. Gate green.
+- spawned: diff-bug, blame-history, prior-review
+- diff-bug #1: for a thread with no `line` (outdated), the verdict reads the head file at `originalLine`, which counts lines in an older commit, so the agent judges unrelated code — fix now (floor return 1: a load-bearing defect in the verdict the bullet reports).
+- diff-bug #2: the linked-item read's "the one exception to this section's `--repo <base-repo>` rule" (SKILL.md:336) is now false, since the new bullet's two `gh api` reads also name their repo in the path — fix now (in return 1).
+- diff-bug #3: `diffSide` is not selected, so a thread on a removed line is judged against the head — follow-up, row "Bot-thread report edges (M283 review)".
+- diff-bug #4: a deleted or renamed file gives `cannot tell` though a deletion often settles the claim — follow-up, same row.
+- diff-bug #5: `<path>` goes into the URL raw, so a space, `#`, `?`, or `%` breaks the read — fix now (in return 1, with prior-review #1).
+- diff-bug #6: whether this bullet repeats the 100-PR cut-off note is unclear — reject (style): the hotfix bullet already says the list can be cut, and AC1 asks for the pointer.
+- diff-bug #7: a failed list read is reported by both bullets — reject (planned change): AC3 requires this bullet to report it.
+- diff-bug #8: a thread on a PR a candidate row links to also shows in the linked-item read — follow-up, same row.
+- diff-bug #9: a fork head whose fork was deleted is unproven for the contents read — follow-up, same row.
+- diff-bug #10: the thread query is now written in three places — reject (planned change): the plan gate chose the inline command, with its falsifier logged.
+- diff-bug #11: `startLine` is not selected, so a multi-line thread reports its end line — follow-up, same row.
+- diff-bug #12: a thread whose first author is null (deleted account) is silently not kept — follow-up, same row.
+- diff-bug #13: a bot reply under a human's thread is not kept — reject (false as a defect): AC1 keys on the first comment's author by design.
+- diff-bug #14: README's "It also lists" can read as the row, not the audit — fix now (in return 1, with blame-history #4).
+- diff-bug #15: the CHANGELOG's "only on a milestone's PR" — reject (false): the guest `blocked` handoff PR is a milestone's PR.
+- diff-bug #16: no D-entry or IP conflict — reject (no defect; noted).
+- diff-bug #17: rate limits are no concern at 100 PRs — reject (no defect; noted).
+- diff-bug #18: SKILL.md:202 is longer than its neighbors — reject (style).
+- blame-history #1: the bullet may fall under D-108's door on new conduct rules about verification or records — reject (false): D-108 covers rules about how cairn records are authored, measured, or audited and how milestone verification is conducted; this bullet is what `/milestone` reports to its users about bot comments on their PRs, a shipped skill behavior. The plan's collision check did not name D-108; this line records that it was read.
+- blame-history #2: the bullet re-reports milestone and hotfix PRs that other §2 bullets count — reject (planned change): the row asked for "each of the operator's open PRs, hotfix PRs included", and the plan gate chose every listed PR, with a falsifier logged.
+- blame-history #3: one contents read per kept thread has no cap — reject (false as a defect): each read backs one reported verdict, kept threads are bounded by the 100 listed PRs, and diff-bug #17 found the cost well within limits.
+- blame-history #4: README's "It" referent, and README omits the `outdated` mark — the referent is fixed now (in return 1); the omission is rejected (planned change): AC6 bounds what README states.
+- prior-review #1: `<path>`, text from GitHub, sits inside a double-quoted shell argument, the class PR #241's thread raised (fixed in 272a22e) — fix now (in return 1, with diff-bug #5).
+- copilot: state query `none` after the step-2 request; the step-7 read checks again.
