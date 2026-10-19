@@ -40,31 +40,31 @@ AC5 stand in for it.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: On the desktop surface, the Blocked, Hotfixes, and Candidates
+- [x] AC1: On the desktop surface, the Blocked, Hotfixes, and Candidates
       headings each draw their count as one `Svg` badge in the heading's
       tail, a rounded rectangle holding the number, and draw no count text;
       tests assert, for each of the three headings, the badge element, the
       number it holds, and its fill color as `BADGE_FILL` names it for that
       heading, and that the three fills differ from each other.
-- [ ] AC2: In the terminal, each of those three headings draws its count as
+- [x] AC2: In the terminal, each of those three headings draws its count as
       one text span, the number with one space on each side, in
       `inverseText` on the theme key that `BADGE_KEY` names for that heading
       as background; each `BADGE_FILL` hex is the fixed value near its
       heading's `BADGE_KEY` color, as `ICON_COLORS` does for the icons; a
       test per heading asserts the span's text, color, and backgroundColor.
-- [ ] AC3: A badge's width grows with its number's digits: a test asserts
+- [x] AC3: A badge's width grows with its number's digits: a test asserts
       that `badgeSvg` widths strictly increase for 9, 10, and 100, that each
       SVG's text is the number, and that the text's `textLength` is the
       badge width less its padding, as the band pill's is (track.ts).
-- [ ] AC4: The existing `pane.test.tsx` cases for the Tasks and Criteria
+- [x] AC4: The existing `pane.test.tsx` cases for the Tasks and Criteria
       heading tails and for the summary card pass with no change to their
       expected values, and the profile's `verify` slot passes.
-- [ ] AC5: Rendered in the browser pane on a dark and on a light page
+- [x] AC5: Rendered in the browser pane on a dark and on a light page
       ground, the `badgeSvg` images for 7 and 100 in each of the three
       headings' fills show a rounded pill whose number is legible, in the
       text color `BADGE_FILL` gives that fill; the evidence is the two
       screenshots taken at review.
-- [ ] AC6: `grep -n "bare count\|count in gray"` over README.md,
+- [x] AC6: `grep -n "bare count\|count in gray"` over README.md,
       cairn/DESIGN.md, `hooks/status/pane.ts`, and
       `hooks/status/register.tsx` returns nothing; `grep -n badge` returns
       at least one line in each of README.md, cairn/DESIGN.md, the new
@@ -135,3 +135,14 @@ AC5 stand in for it.
 
 ## Review
 <!-- owner: review · exclusive. -->
+
+Pass 1 (2026-10-19), on f608584d, synced with main (0 behind). PR #301 opened at review start (Copilot arm); Copilot requested, state `pending`.
+
+- AC1: `claude plugin test .` 2285 pass, 0 fail; "desktop: each count is one Svg pill holding the number, in its own fill" passes: for each of the three headings, one `Svg` in the tail with the number as alt and `>N</text>` in its source, the plan's fill per heading, no other tail text than the space, and three distinct fills (Blocked 7, Hotfixes 1).
+- AC2: "terminal: each count is one span, the padded number in inverseText on the heading key" passes for all three headings (no `Svg` drawn; ` 7 ` and ` 1 ` read back); `BADGE_KEY` is `warning`, `claude`, `planMode`. Read in badge.ts: the Hotfixes and Candidates fills equal track.ts `PHASE_FILLS` implement and plan, the band pill's fills for the `claude` and `planMode` phases, and Blocked's rgb(146,103,22) is a dark amber for `warning`, each a fixed value beside its key as `ICON_COLORS` is.
+- AC3: "widths strictly increase for 9, 10, and 100, and each text is its number" and "the text length is the width less the padding, and the Svg width matches" pass (widths 19, 26, 33).
+- AC4: `git diff main...HEAD -- hooks/status/pane.test.tsx` removes 10 lines, all on the Blocked, Hotfixes, or Candidates heading counts; none names Tasks, Criteria, or the card, so those cases' expected values are unchanged, and they pass. Verify slot: scripts/tests 428 OK (21 skipped), hooks/tests OK, both `claude plugin validate` exit 0, `claude plugin test .` 2285 pass 0 fail.
+- AC5: a scratch page built by node from the branch's `badge.ts` drew `badgeSvg` for 7 and 100 in all three fills on a dark (#262624) and a light (#faf9f5) ground; two browser-pane screenshots (dark half, light half) show rounded pills with each number legible in white, the text color `BADGE_FILL` gives every fill.
+- AC6: `grep -n "bare count\|count in gray"` over README.md, cairn/DESIGN.md, pane.ts, register.tsx: no match (exit 1). `grep -c badge`: README 2, DESIGN 2, pane.ts 6, register.tsx 7, and 3 added CHANGELOG lines in the new Unreleased entry. `grep -c "count at the right end"` in README and DESIGN: 0. The CHANGELOG diff removes no line, so released entries are unchanged.
+- Gate: `cairn_validate` all checks passed; no principle changed, so `cairn_impact` was skipped; the consistency-gate slot's checks: verify green on the review head (AC4 line), the marketplace validate prints no `version` warning, and CHANGELOG has an Unreleased entry for the badge with no milestone ids. The repo has no CI.
+- spawned: diff-bug, blame-history, prior-review, ripple
