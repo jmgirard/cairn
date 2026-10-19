@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-18 (M285 merged and archived; M282 row pruned; "Plan-gate clauses for standing instruments" unparked; validate green; skills/tests green)_
+_Last hygiene check: 2026-10-18 (M286 merged and archived; M283 row pruned; mod-facts lesson extended; no rows unparked; validate green; skills/tests green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | review | — | normal | milestones/M286-pane-card-look.md |
+| M286 | The cairn pane opens with a repo summary card, wraps goals at its width, and takes a new look | done | — | normal | milestones/archive/M286-pane-card-look.md |
 | M285 | Copilot reviews a head that names its PR, and review reads the rest of the repo for stale text | done | — | normal | milestones/archive/M285-review-ripple-lens.md |
 | M284 | A candidate row that waits on its trigger is parked, and the pane shows it last with an hourglass | done | — | normal | milestones/archive/M284-parked-candidate-token.md |
-| M283 | The status audit lists unresolved bot threads on your open PRs | done | — | normal | milestones/archive/M283-bot-threads-open-prs.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Plan-gate clauses for standing instruments: Standing-instrument adoption discipline, two plan-gate clauses: (a) a milestone proposing a standing instrument states a pre-registered yield class, a 2–3 milestone advisory-only shadow period, and an autopsy date before it gates; (b) when its falsifier fires, at most one narrowing precedes the exit (D-059). Promote when the next milestone proposes a standing instrument, never on a count of milestones — added 2026-07-31 — M127 post-mortem (user question); weighed M149, not fired; condition held at M285 (the ripple lens, which stated a yield test and a removal falsifier without these clauses)
