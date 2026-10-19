@@ -183,6 +183,7 @@ not added.
 - 2026-10-18: claim audit: 6 claims read, 1 corrected — skills/milestone/SKILL.md, README.md (return-1 fix diff; the same reader re-read the corrected `originalLine` sentence and found it holding).
 - 2026-10-18: T5 done; implement complete after return 1: status review.
 - 2026-10-18: minor amendment: T1 and T5 text shortened (the plan-owned body reached 152 lines with T5; `cairn_validate` weight caps now pass); no criterion or scope text changed.
+- 2026-10-18: step-7 approval: m283-bot-threads-open-prs approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
