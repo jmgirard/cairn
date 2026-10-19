@@ -66,7 +66,7 @@ class TestCostAuditLine(unittest.TestCase):
         # the seed is the M285 re-measurement in bytes (M285 added the ripple
         # lens to the model strategy; the prior seed was M277's 743 lines /
         # 71,631 bytes).
-        self.assertIn("749 lines / 72,248 bytes", self.text)
+        self.assertIn("749 lines / 72,247 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.

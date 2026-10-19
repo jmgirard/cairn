@@ -6746,3 +6746,28 @@ ripple lens. If the lens gives no fixed finding there, the lens is
 removed. Otherwise, if Copilot finds stale text in the lens's domain
 that the lens missed on two or more of those PRs, the lens moves to
 Opus. The candidate row "Ripple lens yield check" holds that check.
+
+### D-186 (2026-10-18): Four relations D-185 left out are named in one batched entry — D-151's Opus-or-Sonnet review clause, D-016's reason, D-174's single-reviewer clause, and D-138's unpushed record — and the header's URL order is set; supersedes those clauses, D-185's decision stands (M285 review)
+
+**Context:** M285's review fan-out found that D-185 moved a review role
+to Haiku and changed the docs-only mode without naming every entry those
+moves touch. It also found that the arm's header write left the order of
+two URLs open, while the resume route and the readers take the first.
+
+**Decision:** D-151's clause that keeps "every review role on Opus or
+Sonnet", already superseded for the history lenses by D-174, is
+superseded for the ripple lens too. D-016's reason, that a weaker model
+in a review step can silently drop a real bug, is answered by D-185's
+falsifier: Copilot stale-text misses on two or more of the lens's first
+five PRs move it to Opus. D-174's sentence that "the single-reviewer mode
+stays one Opus diff reviewer" is superseded: that mode is now the Opus
+diff-bug lens and the Haiku ripple lens. D-138's consequence that the
+header record is never pushed, which D-153 narrowed to the step-6 push,
+narrows again to the arm's push at step 2. When the arm adds a new PR's
+URL to a header that already names a closed PR, the new URL goes first.
+The commit that records it is docs-only and stages the milestone file
+alone, by path.
+
+**Consequences:** D-185's decision, rejections, and falsifier stand.
+Step 8's sentence says only that the arm's URL is in a commit on the
+branch, because a failed arm push can also fail at step 6.

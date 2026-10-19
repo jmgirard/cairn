@@ -650,7 +650,7 @@ These rules bind all chat output while any cairn skill is active.
   step 5 like any lens's. Haiku also runs fan-out
   searches (Explore, D-181), with a reading list naming the files or areas to read. Summarize an Explore fan-out's
   results into one work-log line.
-- **Opus subagents**: design-sensitive implementation; the diff-bug lens of the review fan-out.
+- **Opus subagents**: design-sensitive implementation; the diff-bug lens in both review modes.
 - **The `/milestone-review` review** runs in fresh-context subagents, never the implementing session: an internal-tier
   milestone whose diff touches only markdown/tracking files gets the Opus diff reviewer and the Haiku ripple reviewer;
   any other diff gets the four distinct-evidence reviewers the review skill defines (Opus diff-bug, Haiku
