@@ -1,7 +1,8 @@
-"""Regression guards for two rules in "Model and agent strategy".
+"""Regression guard for M120's delegation warrant in "Model and agent strategy".
 
-M120's delegation warrant (`TestDelegationWarrantRule`, three asserts) and
-M121's self-checking-class rule (`TestSelfCheckingClassRule`, six).
+`TestDelegationWarrantRule` holds one assert, on the one-not-several bar
+(corrected M285: this docstring once named a second class and three asserts
+that the file no longer holds).
 
 Adopted from `cairn/references/prompting-opus-5.md` (§ Controlling subagent
 spawning), which reports that Claude Opus 5 — the tier cairn runs its
@@ -12,20 +13,9 @@ and its per-instance gate). Nothing stated when work should stay inline, so the
 cheapest wrong answer — spawn an Opus subagent for a two-grep question — was
 tier-correct and violated no rule.
 
-The warrant takes three asserts, because it carries three claims
-independently:
-
-- the inline floor — work finishable in a handful of tool calls is not
-  delegated;
-- the one-not-several bar, pinned WITH its predicate: an anchor stopping at
-  `spawn one` would leave `rather than several` on the next physical line and
-  survive inverting the rule;
-- the review fan-out's standing, which is load-bearing rather than
-  explanatory. The fan-out is described three bullets below this rule in the
-  same section, and with this clause deleted a reader meets "spawn one rather
-  than several" and then four reviewers with no stated reconciliation. The
-  clause says the fan-out is not the forbidden case (distinct evidence bases,
-  not one task done four times) rather than an exception to be traded off.
+The assert pins the one-not-several bar WITH its predicate: an anchor stopping
+at `spawn one` would leave `rather than several` on the next physical line and
+survive inverting the rule.
 
 Skill-prose guards read the file as one string, so every asserted phrase lives
 on a single source line (M23/M64), matches through `**bold**` markers rather
