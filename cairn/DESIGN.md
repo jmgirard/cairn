@@ -877,3 +877,150 @@ within each type and are never reused.
   blame-history #3); added 2026-10-15 — M251 review (pass 2 diff-bug #3,
   #5, #7) and M254 review; added 2026-10-16 — M263 review (diff-bug #10,
   #16; blame-history #1, #10).
+- `scripts/cairn_ci_paths.py`'s `--report` and `--apply` can disagree on a
+  workflow file, found at the M181 review with no fix planned. `--report`'s
+  stdlib reader and `--apply`'s PyYAML read some legal forms differently (a
+  quoted `"push":` key, a block-scalar `cairn/**` item), so `/cairn-init`
+  §0's by-hand hint can name an item already there (`--report` stays
+  stdlib, D-135). `--apply` refuses two shapes M181's AC2 named editable, a
+  null `push` and a block scalar whose last line opens with `#`, as
+  `post-edit check failed`. If an adopter's real workflow file draws the
+  verdicts apart or is refused, it becomes a `/hotfix` or a candidate row.
+  Routed from candidates 2026-10-18; added 2026-09-06 — M181 review (G7,
+  G8, H2, H3).
+- Claim audits and amendment returns have small gaps, found at the M182
+  and M211 reviews with no fix planned. Claim audit (M182): the same-reader
+  re-read needs agent continuation, which a harness without `SendMessage`
+  lacks (M182's first run went to a second fresh reader, logged). A
+  milestone whose `Surface tier:` slot is still `—` fits neither not-owed
+  reason, so its mandated line is unwritable. `/cairn-release` step 2's
+  "release-prep commit" anchor is named only by the generic release-walk.
+  Amendment returns (M211): an amendment return whose amendment never runs
+  does not count toward the second-occurrence stop (D-150's falsifier).
+  Implement step 1 does not read the `amendment routed:` line on a cold
+  resume. The stop matches on `AC<N>` alone, so a renumbering amendment can
+  hide a repeat. Overlapping records-hygiene §7 groups can draw several
+  disposition chips over the same rows, and a triage rewrite can change a
+  quoted title and break its group. If a gap shows in a real session, it
+  becomes a `/hotfix` or a candidate row. Routed from candidates
+  2026-10-18; added 2026-09-10 — M182 review; added 2026-10-04 — M211
+  review, narrowed 2026-10-15 by M251.
+- The Copilot review round's reads have small gaps, found at the M244 and
+  M282 reviews with no fix planned. Round off (M244): since M283 the
+  `/milestone` audit lists unresolved bot threads on your open PRs, so the
+  gap left is a late review on a merged PR and the note's silence. The
+  off-but-present note runs one query at the close, seconds after the PR
+  opens or merges, while Copilot requests on easystats PRs landed about 2
+  minutes after the open, so the note often stays silent. Reason line
+  (M282): `skills/shared/copilot-review.md` §6 gives the not-recorded line
+  as the reason only while the read's own state query prints `none`, but
+  says nothing when that query fails, and a §4 wait that starts on
+  `pending` and exits on `none` leaves the report giving a pending line for
+  a PR with no request. §3's `pending` test matches the reviewer login
+  `copilot-pull-request-reviewer`, which no read has checked against a
+  live open request. If an opted-out repo's PR gets a Copilot review that
+  no close or audit reported, or another gap shows in a real session, it
+  becomes a `/hotfix` or a candidate row. Routed from candidates
+  2026-10-18; added 2026-10-11 — M244 review (blame-history #1; diff-bug
+  #1; prior-review #1), corrected M283; added 2026-10-18 — M282 review
+  (diff-bug #4; blame-history #2).
+- The `/milestone` audit's row and PR reads have small gaps, found at the
+  M245, M246, and M283 reviews with no fix planned. Archived blocked rows
+  (M246): `/milestone` §2 does not route them, owner mode has no route, a
+  no-URL row gets no Button, and a Button drawn before a row turned
+  archived still routes. Python and TS differ on a root with `[` and on
+  invalid UTF-8, and some Status edges are untested. Linked-item read
+  (M245): a linked PR merged by others also shows as an outside merge. Any
+  later date in a row (a target date, a "narrowed" date, a triage rewrite)
+  moves its cut-off past unreported news. The `checked` mark takes the edit
+  time, not the read time. A review seconds after midnight can be skipped.
+  The read runs in Bash or zsh only. Bot threads (M283): the bullet does
+  not select `diffSide`, `startLine`, or a null author, so a removed-line
+  thread is judged against the head, a multi-line thread gives its end
+  line, and a deleted account's thread is dropped unstated. A deleted or
+  renamed file, or a deleted fork, gives `cannot tell`. A thread on a PR a
+  candidate row links to also shows in the linked-item read. If a gap shows
+  in a real session or misleads a real audit, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-18; added 2026-10-11 —
+  M245 review (blame #4, #5, #10; diff-bug #5, #12; pass 2 diff-bug #1, #3,
+  prior #1); added 2026-10-12 — M246 review; added 2026-10-18 — M283
+  review (diff-bug #3, #4, #8, #9, #11, #12).
+- Candidate-row readers and the triage promote have small gaps, found at
+  the M271, M272, M273, and M280 reviews with no fix planned. Readers
+  (M272): every candidate reader (the pane list, `candidate_count`, the
+  plan target) reads a row under `## Candidates (dropped)` or after an
+  unclosed `<!--`, and an untokened row a planned or blocked milestone
+  already quotes can be named again (narrowed 2026-10-17 by M273). Started
+  token before the colon (M273): a ` — started M<n>` token written before a
+  row's first `: ` becomes part of the short title in every reader, so it
+  names no row and hides nothing; M258 AC4 covers end-of-row tokens only.
+  Order advisory (M280): the `candidate order` WARN counts rows the pane
+  hides (a counted started token, a row an open PR's body names), so it
+  can name a row the pane never draws. A row with an empty short title
+  WARNs as `""`. A misspelled token reads as normal, so the `[high]` rows
+  below it WARN while the misspelled row is the fault. D-182's sentence on
+  the first `[high]` row holds only when that row has a short title.
+  Triage promote (M271): an Amend can set `promote` on a row that step 2
+  holds as `keep` for a live started token, which writes `[high]` and a
+  `/milestone-plan` fence for work already taken. For a records-hygiene §7
+  group the skill does not say whether each row takes `[high]` and its own
+  fence. If a gap shows in a real session or misleads an operator, it
+  becomes a `/hotfix` or a candidate row. Routed from candidates
+  2026-10-18; added 2026-10-17 — M271 review (diff-bug #7, #8), M272
+  review (diff-bug #7, #9; blame-history #10), and M273 review
+  (blame-history #3); added 2026-10-18 — M280 review (diff-bug #1, #3, #4,
+  #5; prior-review #1).
+- Guest-mode pushes to the base repo and stacking have small gaps, found at
+  the M267 and M268 reviews with no fix planned. Push remote (M267): with
+  `# Push remote: base` set after a PR opened from the fork, review's
+  access read still gates the push to the fork head, and a non-`true`
+  answer stops a push the fork would take. The first push to the base repo
+  does not check for a maintainers' branch already named `<slug>`; a
+  non-fast-forward push is refused, a fast-forward is not. Stacking (M268):
+  TS splits PROFILE.md lines on more characters than Python and has no
+  catch-all on its read. No fixture holds a padded dependency id, a
+  duplicate dependency, a BOM PROFILE.md, or a done-and-blocked row, and
+  `stack_bases` and `_met` have no direct unit test. A stacked PR the
+  maintainers merge into its base branch reaches `done` with its code off
+  the default branch. A base branch deleted with no merge closes the
+  stacked PR. A single-branch fetch refspec leaves no
+  `<base>/<stack-base-branch>` after `ls-remote` passed. The readers count
+  a chained base as a stack base, which implement refuses, and
+  `cairn_next.py` marks no stacked row. A resume fails the dependency check
+  once the base is back at `review`. If a gap shows in a real session, it
+  becomes a `/hotfix` or a candidate row. Routed from candidates
+  2026-10-18; added 2026-10-16 — M267 review (diff-bug #6, #17) and M268
+  review (diff-bug #12, #16, #18, #20; blame-history #8, #9; prior-review
+  #2; pass 2 diff-bug #1, #7; blame-history #7).
+- Cut feature series have small gaps, found at the M276 review with no fix
+  planned. A guest cut milestone's PR gets no series sentence, since only
+  the later milestone carries the `feature series:` line. A cut inside a
+  planned series adds a second line with two last parts, and cutting the
+  later part again drops the first. A `/hotfix` before the later part is
+  planned finds no series and adds a second entry. A milestone that absorbs
+  a marked row only in part carries no line, and its started token hides
+  the row from the release walk. `/milestone` §1 does not say it reads
+  marked rows, and a plain "split from M<n>" in any row reads as the
+  marker. If a gap shows in a real session, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-18; added 2026-10-18 —
+  M276 review (diff-bug #2, #3, #4, #5, #7, #9; prior-review #1, #3).
+- The `/hotfix` own-PR walk and guest change route have small gaps, found
+  at the M266 review with no fix planned. The own-PR walk never refreshes
+  the PR body's `Candidate row:` lines, so a later resume can fail its row
+  condition and ask again. The guest change route compares a review's time
+  with the head's commit time, not its push time, and reads the head from
+  the last of `commits`, which `gh` may cut short. A contributor PR closed
+  by the re-land fallback gets "start over" though its re-landed PR is
+  open. A closed guest milestone PR (named `<slug>`) takes the hotfix
+  closed stop, and a closed owner `m<nnn>-*` PR falls to the adopt walk.
+  If a gap shows in a real session, it becomes a `/hotfix` or a candidate
+  row. Routed from candidates 2026-10-18; added 2026-10-16 — M266 review
+  (diff-bug #4, #6, #10, #14; blame-history #5, #8).
+- The pane tests' "nothing more happened" checks for a rejected session end
+  wait briefly, found at the M260 review with no fix planned:
+  `untilRuns` and `untilOpens` at 10 tries wait about 55 ms, so a late run
+  or open passes unseen, and M278's AC1 test adds one more such check. If
+  one shows in a real session, it becomes a `/hotfix` or a candidate row.
+  Routed from candidates 2026-10-18; added 2026-10-15 — M260 review
+  (diff-bug #6, #7, #8; blame-history #1; prior-review #2), narrowed
+  2026-10-18 by M278 (prior-review #2).
