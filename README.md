@@ -814,7 +814,7 @@ actually reach.
   row's date or its `checked` time (a close or merge you made yourself is
   not reported); you can update the row to carry the news, and the row's
   new `checked` time stops the same news coming back.
-  It also lists each unresolved review thread that a GitHub App bot, such
+  The audit also lists each unresolved review thread that a GitHub App bot, such
   as Copilot, opened on your open pull requests in the repo. Each line gives
   the file and line, the bot's claim, and whether the claim holds in the
   PR's code, read at the PR's head commit. This read also writes nothing
