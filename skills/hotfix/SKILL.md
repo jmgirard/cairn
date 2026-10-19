@@ -329,7 +329,8 @@ can resolve against the fork instead of the base repo.
    begins, with the bounded wait while it prints `pending` (§4). That
    query is the read's own state query for §6. The PR-conversation read below then runs on this PR,
    which now pre-exists. Each Copilot thread takes the agent's disposition
-   under the opt-in line, then the module's reply and resolve (§5), and
+   under the opt-in line, then the module's reply, resolve, and summary
+   reply (§5), and
    its `copilot:` line and the level or pending line, or the reason line
    for a missing review, are stated in chat at the chip (§6); every other
    item keeps the four options. A decline at the chip

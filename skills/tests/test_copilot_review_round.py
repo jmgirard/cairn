@@ -132,8 +132,8 @@ class TestWaitBound(unittest.TestCase):
 class TestCopilotReviewSkill(unittest.TestCase):
     """M287 AC2: `/copilot-review` asks in chat about a note the agent
     cannot settle, before that thread gets a reply, and posts no question
-    to GitHub. Each clause has its own test, so a removal of either one
-    fails (the M287 criteria audit)."""
+    to GitHub. Each clause has its own test, so a removal of any one fails
+    (the M287 criteria audit)."""
 
     def setUp(self):
         self.decide = flat(section(read("copilot-review", "SKILL.md"),
@@ -209,8 +209,9 @@ class TestSummaryReply(unittest.TestCase):
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):
     """M287 AC5: in `/hotfix` and `/milestone-review`, a note the agent
-    cannot settle takes the follow-up disposition, outside the return
-    floor, and the gate chip names it."""
+    cannot settle takes the follow-up disposition unless it takes the
+    return floor, the approval chip or merge question names it, and
+    questions go to chat."""
 
     def setUp(self):
         self.step = flat(section(read("shared", "copilot-review.md"),

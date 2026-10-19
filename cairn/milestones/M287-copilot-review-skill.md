@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M287: A /copilot-review skill handles Copilot's notes on a PR and replies to its summary
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -145,6 +145,7 @@ block instead.
 - 2026-10-19: T4 done: 12 per-clause guards in test_copilot_review_round.py, each registered in the mutation harness and red when its block is blanked; the every-thanks-line guard was seen red by hand with a planted "Thanks for the review!" line, then the line was removed.
 - 2026-10-19: T5 done: D-187 appended (annotates D-153).
 - 2026-10-19: T6 done: verify green (scripts 428 OK, hooks OK, both validates pass, claude plugin test 2281 pass 0 fail); skills/tests 910 OK; cairn_validate all checks passed.
+- 2026-10-19: claim audit: 58 claims read, 7 corrected — README.md, CHANGELOG.md, skills/shared/copilot-review.md, skills/hotfix/SKILL.md, skills/milestone-review/SKILL.md, skills/tests/test_copilot_review_round.py; the same reader re-read all 7 and found them correct; verify green again after the fixes (claude plugin test 2281 pass).
 - 2026-10-19: the simple-english lint hook flags older text in tracking-rules.md, README.md, and CHANGELOG.md on every edit; only this milestone's new text was brought under it.
 
 ## Decisions

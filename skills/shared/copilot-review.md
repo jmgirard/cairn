@@ -13,11 +13,10 @@ Over either figure, compress or retire content here, never "let it grow".
 
 If `cairn/PROFILE.md` carries the header line `# Copilot review: on`, the
 round runs. Else it is off: the PR opens after the merge approval (D-138),
-and the skill requests, replies, and resolves nothing but the note below.
-The opt-in line permits the round's outward writes (request, fix pushes,
-replies, resolves, summary replies) and its dispositions with no question
-(M231). The round keeps no record that it ran: the PR's signals decide each
-step (RR17).
+and the skill requests, replies, and resolves nothing. It can add the note
+below. The opt-in line permits the round's outward writes (request, fix
+pushes, replies, resolves, summary replies) and its dispositions with no
+question (M231). The round keeps no record that it ran (RR17).
 
 **Off but present (M244).** With the round off, the closes of `/hotfix`
 step 7 and `/milestone-review` step 10, or their guest handoffs, run §3

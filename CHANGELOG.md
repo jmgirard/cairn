@@ -72,7 +72,8 @@
   Copilot. A later read skips a review that one of your comments already
   links. A thread that Claude cannot settle without you becomes a
   follow-up row, named at the merge question or the approval chip, and no
-  question goes to GitHub.
+  question goes to GitHub. A thread that `/milestone-review` returns to
+  implement stays open, so its review waits for a later pass.
 
 ### New
 
@@ -80,7 +81,8 @@
   it with a PR number or URL, or with nothing for the current branch's PR.
   It reads each unresolved Copilot note and each review summary. It fixes,
   rejects, or defers each note, pushes the fixes to the PR's branch, and
-  replies on and resolves each note. Last, it answers each summary. It
+  replies on and resolves each note's thread. Last, it answers each
+  summary, which also covers notes in the review body. It
   asks you in chat about a note it cannot settle alone, and it never posts
   a question to GitHub or thanks Copilot. It does not request a review: on
   a PR with no Copilot review, it gives you the request command. It works

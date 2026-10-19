@@ -693,7 +693,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
 | Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. After the merge it removes the candidate row it fixed, or narrows it to the part left. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, and merges on your approval |
-| Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary, fixes, rejects, or defers each note, replies on and resolves each one, then answers the summary. It never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
+| Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note, and replies on and resolves each note's thread. Last, it answers the summary, which also covers notes in the review body. It never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes |
 | Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one |
 | Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself |
@@ -892,13 +892,14 @@ actually reach.
   handles Copilot's threads: each gets a fix, a reason it was rejected, or
   a follow-up row, and Claude replies on the thread, with no thanks, and
   resolves it. A thread Claude cannot settle without you becomes a
-  follow-up row, named at the merge question or the approval chip. Claude
-  asks you in chat, never on GitHub. After a review's threads are resolved,
+  follow-up row, named at the merge question or the approval chip. Any
+  question goes to chat, never to GitHub. After a review's threads are resolved,
   Claude posts one PR comment that answers the review's summary: the
   review's link, then one line for each note with what was done. A later
   read skips a review your comment already links. The line is your
   permission for these pushes, replies, resolves, and summary replies.
-  `/copilot-review` runs the same steps on one PR without the line. A `pull_request`-triggered CI suite also runs on the early
+  `/copilot-review` runs the same read, replies, resolves, and summary
+  reply on one PR without the line. It never requests a review. A `pull_request`-triggered CI suite also runs on the early
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the
   round runs after the handoff opens the PR. If Copilot's review is still
