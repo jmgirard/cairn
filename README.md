@@ -815,9 +815,10 @@ actually reach.
   not reported); you can update the row to carry the news, and the row's
   new `checked` time stops the same news coming back.
   The audit also lists each unresolved review thread that a GitHub App bot, such
-  as Copilot, opened on your open pull requests in the repo. Each line gives
-  the file and line, the bot's claim, and whether the claim holds in the
-  PR's code, read at the PR's head commit. This read also writes nothing
+  as Copilot, opened on your open pull requests in the repo. It reads up
+  to 100 of those PRs. Each line gives the file and line, the bot's claim,
+  and whether the claim holds in the PR's code at its head commit. When
+  the code does not settle the claim, the line says so. This read also writes nothing
   to GitHub.
   `/milestone-plan`'s collision check also reads both open inboxes and settles a disposition only for an item overlapping
   the scope being planned.
