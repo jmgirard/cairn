@@ -192,6 +192,7 @@ by the drawn props alone.
 - 2026-10-19: claim audit: 55 claims read, 0 corrected — register.tsx, pane.ts, pane.test.tsx, README.md, CHANGELOG.md, cairn/DESIGN.md. A second pass over the final diff, since the first (19 claims, 2 corrected) ran before T5 and the probes. DESIGN gained the parked Box's `bottom: 0` and `alignItems: 'center'` at the reader's note.
 - 2026-10-19: T7 done. Verify slot clean: scripts/tests, hooks/tests, both validates, mod test 2303 pass, 0 fail. Status set to review.
 - 2026-10-19: review checkpoint: PR #302 opened (Copilot arm), Copilot requested and pending. Fix-now edits from the ripple lens and a stale "hidden like ✎" comment, comments and docs only; the Review section follows once all lenses report.
+- 2026-10-19: step-7 approval: m290-pane-hover-plan-button approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
