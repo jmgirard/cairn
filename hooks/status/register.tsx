@@ -421,8 +421,6 @@ export const register: Register = on => {
       )
     // A line that draws the info glyph, which then alone opens its card (M290).
     const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && e.surface !== 'terminal'
-    // PROBE (M290, to revert): the candidate lines that carry ✎, in order.
-    const planKeys = lines.filter(line => (line.buttons ?? []).includes('plan')).map(line => line.key)
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
       (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
@@ -478,20 +476,9 @@ export const register: Register = on => {
               // row's flow (M290). A keyed Box would scope its own hover, and
               // a hidden scope is never under the pointer, so it would never show.
               const hides = kind === 'plan' && e.surface !== 'terminal'
-              // PROBE (M290, to revert): row 1 hidden as now, row 2 parked
-              // past the right edge and moved in on hover, row 3 always shown.
-              const pv = hides ? planKeys.indexOf(line.key) : -1
-              const probe =
-                pv === 1
-                  ? { position: 'absolute' as const, top: 0, right: -8, hover: { right: 0 } }
-                  : pv === 2
-                    ? { key: `${line.key}-${kind}` }
-                    : hides
-                      ? { display: 'none' as const, hover: { display: 'flex' as const } }
-                      : { key: `${line.key}-${kind}` }
               return (
                 <Box
-                  {...probe}
+                  {...(hides ? { display: 'none' as const, hover: { display: 'flex' as const } } : { key: `${line.key}-${kind}` })}
                   flexShrink={0}
                   marginLeft={1}
                 >
