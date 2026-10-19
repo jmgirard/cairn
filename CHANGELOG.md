@@ -323,6 +323,20 @@
 
 ### New
 
+- **The `/milestone` health audit lists unresolved bot threads on your open
+  PRs.** A new "Bot threads on your open PRs" item in its §2 reads the
+  review threads of every PR in the "Open hotfix PRs" item's list, whatever
+  its branch, in owner and guest mode. It keeps each thread that is not
+  resolved and whose first comment a GitHub App bot, such as Copilot,
+  wrote. For each one it gives the PR, the file and line (marked
+  `outdated` when GitHub marks the thread so), the bot, the claim, and
+  whether the claim holds in the PR's code, read at the PR's head commit.
+  A failed thread read is reported as a gap, and a failed file read gives
+  `cannot tell`. The item proposes no action and writes nothing to GitHub.
+  Before this change, the audit counted unresolved threads only on a
+  milestone's PR. It listed review-thread comments only on PRs that a
+  candidate row links to, with no claim check.
+
 - **`/cairn-triage` keeps started tokens current.** A triage pass now
   reads each candidate row's ` — started M<NNN>` and ` — started #<n>`
   tokens. It proposes removing a dead token, which names a milestone that
