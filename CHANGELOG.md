@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 (2026-10-18)
 
 ### Changes that affect existing repos
 
@@ -201,9 +201,10 @@
   starts `/hotfix` with your request text. In owner mode the direct-edit
   route makes the edit, shows it, commits only the files it touched, and
   pushes them to the default branch. The question names the file and the
-  change. Before asking, the plan checks three things. The repo has a
-  remote. The checkout is on the default branch and level with the
-  remote. Nothing is staged, and those files hold no uncommitted changes.
+  change. Before asking, the plan checks five things. The repo has a
+  remote. A fetch from it succeeds. The checkout is on the default branch
+  and level with the remote. Nothing is staged. The files the edit touches
+  hold no uncommitted changes.
   If a check fails, the question says so, and the route makes no edit. A
   failed or rejected push is never forced. In guest mode the direct edit
   applies only to `cairn/` files and stays on disk. A small change to
@@ -287,11 +288,12 @@
   holds it. `/cairn-release` still stops in guest mode.
 - **In guest mode, pushes go to your fork, whatever its remote is
   named.** The rulebook finds the fork remote as the one remote whose
-  GitHub parent is the base repo, and every guest push and the PR's
+  GitHub parent is the base repo. Unless `cairn/PROFILE.md` carries
+  `# Push remote: base` (see that entry), every guest push and the PR's
   `--head` owner use it. Before, guest pushes went to `origin`, which is
   the upstream repo in a checkout cloned from upstream with the fork added
-  under another name. With no such remote, or more than one, a guest push
-  stops and names the remotes it read.
+  under another name. When a push goes to the fork and no remote matches,
+  or more than one does, the push stops and names the remotes it read.
 - **`/milestone` names the repo in every `gh pr` and `gh issue`
   command.** The CI re-check, the merged-PR check, the inbox reads, the
   orphaned-issue read, the outside-merge reads, and the orphan close now
@@ -356,7 +358,7 @@
   mode, `/hotfix` ends each row it matched with ` — started #<n>` on disk
   after it opens the PR for the maintainers. The pane leaves out of its
   Candidates list a row with an `M<NNN>` token while that milestone is
-  `planned` or `blocked`, and a row with a `#<n>` token while PR #n is
+  `planned`, or `blocked` with its file not yet archived, and a row with a `#<n>` token while PR #n is
   among your open hotfix PRs. A row that hygiene narrows loses its token.
   The token opens with ` — `, so the row's short title stays the same.
 
@@ -406,9 +408,6 @@
   recommended option adds a candidate row, so the record lands in cairn.
   The rulebook's intake rule names the reply and `/milestone-plan` routes
   for issues.
-  In guest mode, the optional issue comment that `/milestone-plan` offers
-  now names the upstream repo and reads `Working on this: <issue title>`,
-  with no milestone number.
 
 - **An opt-in Copilot review round on hotfix and milestone PRs.** With
   `# Copilot review: on` in `cairn/PROFILE.md`, `/hotfix` and
@@ -418,14 +417,25 @@
   checks, and the PR-conversation read before the merge question handles
   each unresolved Copilot thread: it is fixed, rejected with a reason, or
   sent to a candidate row, then gets a reply with no thanks and is
-  resolved. A review still pending at the read gets a wait of up to 10
-  minutes, once per pass, and then the run goes on and says it is pending.
+  resolved. A review still pending at the read gets a wait of up to 25
+  minutes, once per pass. The wait reports only a change in the review's
+  state. After it, the run goes on and says that the review is pending.
   In owner mode a hotfix opens its PR before its approval chip, and a
   decline closes the PR and keeps the branch. In guest mode the round runs
   after the handoff. Adopted PRs, a review of an already-merged PR, and
   milestones with companion checkouts skip it.
+  Right after `gh pr edit <N> --add-reviewer @copilot` exits 0, the run
+  reads the PR again. If the PR still shows no Copilot request or review,
+  the run says so in one line, `Copilot request on PR #<N> may not be
+  recorded by GitHub (used-up Copilot credits are one cause)`. It makes no
+  second request at that step. A later pass that finds no Copilot request
+  or review asks Copilot again, for example a second review pass or a
+  `/hotfix` rerun that runs the hotfix checks again. The review summary at
+  the merge question, the hotfix approval chip, and both guest-mode closes
+  give that line as the reason for a missing review. They give it only
+  when the PR still shows no Copilot request or review at the read.
   GitHub's settings choose the review level, because its API took none per
-  request when this shipped; the report names the level from the review.
+  request when this shipped. The report names the level from the review.
   The rules live in `skills/shared/copilot-review.md`.
 
 - **The `/milestone` health audit lists your open hotfix PRs.** A new
@@ -440,22 +450,26 @@
 
 - **The cairn pane lists your open hotfix PRs.** A `/hotfix` run has no
   ROADMAP row, so the pane finds its PR on GitHub. Each time the pane
-  opens, and at each ↻ press, it runs one `gh pr list --state open
+  opens, after a `/clear` or `/resume` while it is placed, and at each ↻
+  press, it runs one `gh pr list --state open
   --author @me --limit 100` call on the base remote: `upstream` in guest
   mode when the repo has that remote, else `origin`. Each PR from a
   `hotfix-` branch takes a line under a `HOTFIXES` heading, after
   `BLOCKED` and before the candidates. The line shows `#<n>`, the title,
-  and the same state word and count line that a blocked PR gets. A hotfix
-  line has no Button. When the list call fails, the pane keeps the last
-  list it read for the same repo.
+  and the same state word and count line that a blocked PR gets. The state
+  word sits at the right edge of the pane. A hotfix line has no Button. A
+  hotfix PR that is also a blocked milestone's PR stays on the blocked
+  line, and the `HOTFIXES` list and its count leave it out. When the list
+  call fails, the pane keeps the last list it read for the same repo.
 
 - **The cairn pane counts each open PR's unresolved review threads.**
   Under a `BLOCKED` or `HOTFIXES` line whose PR is open, a line such as
   `3 unresolved threads` shows the review threads not marked resolved, a
   bot's threads included. A review or comment with no thread does not
   count, because GitHub does not link a reply to it. The count covers the
-  newest 100 threads. Each time the pane opens, and at each ↻ press, it
-  reads them in the same `gh api graphql` query that gives the PR's state.
+  newest 100 threads. Each time the pane opens, after a `/clear` or
+  `/resume` while it is placed, and at each ↻ press, it reads them in the
+  same `gh api graphql` query that gives the PR's state.
 
 - **The cairn pane has one ↻ Button.** It sits at the right end of the
   pane's first line, the first milestone's line or `no active milestone`,
@@ -470,7 +484,8 @@
   the pane's `CANDIDATES` list carries ✎ at its right end, but for a row
   whose short title is empty. The short title is the row's text after a
   leading `[high] ` or `[low] ` token with its space, up to its first
-  `: `, with outer spaces removed. A press runs `/clear`, and then
+  `: `, else up to its first ` — `, else all of it, with outer spaces
+  removed. A press runs `/clear`, and then
   `/cairn:milestone-plan` with that short title in the cleared
   conversation. A press while Claude works outside a cairn skill runs when
   Claude is idle. While another button's command runs or waits for its
@@ -501,7 +516,8 @@
 
 - **The cairn pane shows each blocked milestone's PR state.** After its
   `#<n>`, a `BLOCKED` line shows `merged`, `closed`, `changes requested`,
-  `approved`, or `in review`, or `unknown` when the read fails. A PR on
+  `approved`, or `in review`, or `unknown` when the read fails. The number
+  and the state word sit at the right edge of the pane. A PR on
   github.com takes one `gh api graphql` query for its state and its
   count. A hotfix PR on another host takes one `gh pr view <url> --json
   state,reviewDecision` call and gets no count. A `merged` line
@@ -509,8 +525,8 @@
   `changes requested` line a `Revise` Button that runs
   `/cairn:milestone-implement <id>`, and a `closed` line a `Check` Button
   that runs `/cairn:milestone`. None of them runs `/clear` first. The pane
-  reads the states each time it opens and when you press ↻, never on a
-  timer. The read needs `gh` on the
+  reads the states each time it opens, after a `/clear` or `/resume`, and
+  when you press ↻, never on a timer. The read needs `gh` on the
   session's `PATH`.
 
 - **The cairn pane lists blocked milestones and their PRs.** A `BLOCKED`
@@ -528,31 +544,10 @@
   folder. An app quit or a closed terminal that ends the session with
   reason `other` (not checked) also brings the pane back at the next
   session in that folder. The desktop app is the surface checked live, for
-  a typed `/clear` and both Clear Buttons. A `Plan` or `Implement` press
+  a typed `/clear` and the band's Clear Button. A `Plan` or `Implement` press
   clears through the same call.
 
 ### Fixes
-
-- **The Copilot round asks again after a dropped request.** With
-  `# Copilot review: on`, a later pass that finds no Copilot request or
-  review on the PR, such as a second review pass or a `/hotfix` resume,
-  asks Copilot again. A request that GitHub did not record leaves nothing
-  for the new request to repeat. The report at the read gives the
-  `may not be recorded` line as the reason for a missing review only when
-  the PR still shows no Copilot request or review when the read runs. The
-  review summary at the merge question, the hotfix approval chip, and both
-  guest-mode closes now show that reason line. The rules are in
-  `skills/shared/copilot-review.md` §2 and §6.
-
-- **The Copilot round reports a request that GitHub did not record.** With
-  `# Copilot review: on`, `/hotfix` and `/milestone-review` now read the PR
-  again right after `gh pr edit <N> --add-reviewer @copilot` exits 0. If
-  the PR still shows no Copilot request or review, the run says so in one
-  line, `Copilot request on PR #<N> may not be recorded by GitHub (used-up
-  Copilot credits are one cause)`. At that step it makes no second request
-  and does not wait. Before, only a non-zero exit counted as a failed request, so
-  the round gave no reason for the missing review. The rule is in
-  `skills/shared/copilot-review.md` §2.
 
 - **A failed read or session end no longer leaves the cairn pane stuck.**
   If the pane's `⌂` button cannot read whether a cairn skill runs, the
@@ -599,6 +594,8 @@
   again and asks you again.
   In guest mode, a rerun on an open hotfix PR reports its state and
   review decision and stops, since the merge is the maintainers' to make.
+  The exception is a PR whose maintainers requested changes after its
+  newest commit (see the next entry).
 
 - **A `/hotfix` rerun on a closed PR, on your own open hotfix PR, or on a
   guest PR with requested changes has a route forward.** Before,
@@ -622,12 +619,6 @@
     the maintainers stays yours. A request older than the newest commit
     means the PR waits for a new review, so the rerun reports and stops.
 
-- **The cairn pane right-aligns pull request numbers and states.** On a
-  Blocked or Hotfixes row, the number and state word (for example `#786  in
-  review`) now sit at the right edge of the pane. Before, they followed
-  the title directly when the title was short enough to fit, and sat at
-  the right edge only when the title was cut.
-
 - **Three session-end races in the cairn pane are closed.** If the session
   end beneath the plugin fails, the pane Buttons now work again after it,
   even when the press's `/clear` never finishes. The next-step Button can
@@ -640,32 +631,17 @@
   listing still waiting at a session end now reads nothing. A read that a
   later start owes is that start's own read.
 
-- **A pane placed during a `/clear` start reads the pull request states
-  with no further draw.** At a `/clear`, the plugin lists the panes. If the
-  cairn pane is placed, the plugin reads the states of the pull requests
-  that the pane shows. If it is listed but not placed, its first draw
-  starts that read. Some
-  panes were placed and drawn while that list was still waiting. That draw
-  came before the read was owed, so the state words waited for a further
-  draw. Now the plugin lists the panes a second time. If the pane is placed
-  by then, the plugin reads the states.
-
 - **A session end frees the pane Buttons from a press still reading.** A
-  Status, Clear, next-step, blocked-line, or `✎` press reads the stored state
-  before it runs its command. While that read waited, the other pane
-  Buttons except `↻` did nothing, through a session end too. A read that
+  Status, next-step, blocked-line, or `✎` press, or a press of the band's
+  Clear, reads the stored state before it runs its command. While that
+  read waited, the other Buttons in the pane and the band except `↻` did
+  nothing, through a session end too. A read that
   never finished kept them dead until a reload. A read that finished after
   the end then ran its command late. Now the session end frees the
   Buttons, and a press cut off this way runs nothing. If the session end
   beneath the plugin fails, a `⌂` press still opens the pane at its
   `/clear` end.
 
-- **The Copilot review wait lasts 25 minutes, not 10.** With
-  `# Copilot review: on`, a hotfix or a guest handoff waits for a pending
-  Copilot review before it reads the PR. Copilot's reviews often came
-  after the 10-minute wait ended, so their threads went unhandled. The
-  wait now lasts up to 25 minutes. It reports only a change in the
-  review's state, so it no longer posts "pending" every 30 seconds.
 - **A quick second press of a band or pane button runs no second
   command.** The `Plan`, `Implement`, `Resume`, `Review`, `Status`, and
   `Clear` buttons, and a blocked line's `Finish`, `Revise`, and `Check`,
@@ -691,13 +667,6 @@
   a 15 s timeout. The blocked PRs' reads now start without waiting for the
   hotfix list call. The words and counts appear together when the last
   read settles.
-
-- **The pane's PR words come back after an in-process `/clear`.** A
-  `/clear` that keeps the session's process, as a `Clear`, `Plan`, or
-  `Implement` press does, keeps the pane open. Before, the PR words,
-  counts, Buttons, and hotfix list stayed empty until the next open or
-  `Refresh`. Now a placed pane reads them again, also one behind another
-  tab.
 
 - **A hotfix PR that is also a blocked milestone's PR shows once.** It
   stays on the blocked line, which carries any Button its word calls for.

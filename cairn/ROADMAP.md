@@ -4,7 +4,7 @@ _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-10-18 (triage: 17 review-edge rows routed to 9 new DESIGN.md Known issues entries — report/apply disagree, claim-audit edges, amendment-return edges, late Copilot requests, Copilot reason-line, archived blocked rows, linked-item read, bot-thread report, plan target, started token before the colon, candidate order advisory, triage promote, guest push remote, stack-base, cut series, hotfix rerun, rejected end edges; no drops, no priority or token changes, no decision entry; validate green)_
 
 ## Milestones
-_Released 1.0.0 (2026-07-16) to 2.0.0 (2026-10-06), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
+_Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
