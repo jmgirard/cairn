@@ -42,7 +42,7 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // Next line takes the color of the phase its command runs. The colors are
 // theme keys (M217). The `card` lines draw in the card's Box. Since M289
 // the Blocked, Hotfixes, and Candidates headings draw their count as a
-// badge in the heading's color (badge.ts).
+// colored badge (badge.ts).
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
@@ -455,8 +455,9 @@ function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
   return [gap(`${key}-gap`), head]
 }
 
-// A heading whose tail is its count as a badge in the heading's color
-// (M289, badge.ts), where M286 drew a gray number.
+// A heading whose tail is its count as a badge (M289, badge.ts): on the
+// heading's theme key in the terminal and in a fixed fill near it on the
+// desktop, where M286 drew a gray number.
 function countHeading(key: string, label: string, count: number, name: BadgeName): PaneLine[] {
   return heading(key, label, [badgeSpan(count, name)])
 }

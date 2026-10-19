@@ -3242,6 +3242,27 @@ describe('a badge widens with its digits (M289 AC3)', () => {
     expect(ten.width).toBeLessThan(hundred.width)
     expect([nine.text, ten.text, hundred.text]).toEqual(['9', '10', '100'])
   })
+  // The number's color on each fill reaches the WCAG 2.2 text contrast of
+  // 4.5:1, computed as band.test.tsx does for the band pill (M217).
+  test('each badge number reads on its fill at 4.5:1 or more', () => {
+    const rgb = (color: string) => (/^rgb\((\d+),(\d+),(\d+)\)$/.exec(color) ?? []).slice(1).map(Number)
+    const lum = (c: number[]) =>
+      c
+        .map(v => (v / 255 <= 0.04045 ? v / 255 / 12.92 : Math.pow((v / 255 + 0.055) / 1.055, 2.4)))
+        .reduce((sum, v, i) => sum + [0.2126, 0.7152, 0.0722][i] * v, 0)
+    const ratio = (a: number[], b: number[]) => {
+      const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x)
+      return (hi + 0.05) / (lo + 0.05)
+    }
+    expect(Math.abs(ratio([0, 0, 0], [255, 255, 255]) - 21)).toBeLessThan(1e-9)
+    for (const name of ['blocked', 'hotfixes', 'candidates'] as const) {
+      const svg = badgeSvg(7, name)
+      const fill = rgb(/<rect class="badge"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
+      const text = rgb(/<text class="badge-text"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
+      expect([fill.length, text.length]).toEqual([3, 3])
+      expect([name, ratio(text, fill) >= 4.5]).toEqual([name, true])
+    }
+  })
   test('the text length is the width less the padding, and the Svg width matches', () => {
     for (const count of [9, 10, 100]) {
       const got = parts(badgeSvg(count, 'blocked'))

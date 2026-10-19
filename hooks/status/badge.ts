@@ -4,9 +4,9 @@ import type { Span } from './band'
 // (M289), in place of the bare gray count that M286 drew. On the desktop
 // it draws as an `Svg` pill, a rounded rectangle in the heading's fill
 // with the number in white. In the terminal it draws as the number with a
-// space on each side, in `inverseText` on the heading's theme key, the
-// colors of the band's terminal pill (track.ts `PILL_TEXT`), though not
-// bold as that pill is.
+// space on each side, in `inverseText` on the heading's theme key: the band
+// terminal pill's text key (track.ts `PILL_TEXT`), here on keys the band
+// pill does not use, and not bold as that pill is.
 // An image has no theme signal (ROADMAP "Gaps only the app or mod API can
 // close"), so each fill is a fixed color near its key, dark enough that
 // white reads on it at about 5:1 or more: the band pill's own plan blue
@@ -33,12 +33,13 @@ export const BADGE_FILL: Record<BadgeName, { fill: string; text: string }> = {
 export const BADGE_TEXT_KEY = 'inverseText'
 
 // The pill's height in CSS pixels, the estimated width of one digit, and
-// the room left and right of the number together.
+// the room left and right of the number together. A system-font digit at
+// 10.5 px is about 6 px wide, so `textLength` stretches it little.
 export const BADGE_H = 16
-export const BADGE_DIGIT = 7
+export const BADGE_DIGIT = 6
 export const BADGE_PAD = 12
 
-// The pill's width: the number's estimated width and the padding, 19 for
+// The pill's width: the number's estimated width and the padding, 18 for
 // one digit, so even a one-digit count draws as a short pill.
 export function badgeWidth(count: number): number {
   return `${count}`.length * BADGE_DIGIT + BADGE_PAD

@@ -38,7 +38,8 @@ const ROWS = TRACK_H / CELL
 // The least spacing of item ticks, in pixels.
 export const SPACING = 6
 // palette
-// The desktop track's colors, the only raw colors the mod draws (M217). The
+// The desktop track's colors (M217). The pane's icons (icons.ts, M286) and
+// count badges (badge.ts, M289) keep their own raw colors. The
 // image cannot read theme keys, so the ground, the gray specks, and the
 // marks are translucent grays for a light or a dark ground. The phase fills
 // keep the M204 hues, darker, so the pill's white label and its count at
