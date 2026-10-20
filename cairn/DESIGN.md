@@ -588,7 +588,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `paneLines` draws no line for a marked row (M261). `/milestone-plan` writes the M
   token on each row a plan absorbs, both modes, and `/hotfix`'s guest arm
   writes the #n token after its create. `/cairn-triage` proposes adding a
-  missing M token and removing a dead token at its gate (M259). The pane draws the list only while the band's root is
+  missing M token and removing a dead token at its gate (M259), except a
+dead token whose removal changes the row's short title (M299). The pane draws the list only while the band's root is
   its root, under a Hotfixes heading after Blocked and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has
@@ -970,7 +971,10 @@ within each type and are never reused.
   misses a test that builds the path. Retitle: rows sharing a title get
   identical triage subjects. An empty title not from a leading `: ` has no
   anchor. The Amend loop does not re-check a new title's uniqueness or
-  icons. An icon title cut at a late `: ` loses its detail in place. The
+  icons, and a title the user types at Amend is not checked against the
+  titles that open PRs' `Candidate row:` lines name (M299). A dead token
+  whose removal changes the row's short title stays until a person edits
+  the row (M299). An icon title cut at a late `: ` loses its detail in place. The
   icon removal has no stated scope (`⋯`, `≥` in detail). If a gap shows
   in a real pass, or
   a guest operator needs a dropped item's reason after a later stamp
