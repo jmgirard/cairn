@@ -154,9 +154,10 @@ declare module 'claude-code' {
       ended: Shaped<boolean>
       // What the cairn pane shows, written at each refresh (M205).
       pane: Shaped<CairnPaneState>
-      // Each blocked milestone's pull request state word, and its counts,
-      // by its URL, as the last read at a pane open or a Refresh press found
-      // them (M224, M225). A URL with no entry has not been read.
+      // Each blocked milestone's pull request state word, its counts, and
+      // its merge state, by its URL, as the last read at a pane open or a
+      // Refresh press found them (M224, M225, M301). A URL with no entry has
+      // not been read.
       prs: Shaped<Record<string, CairnPrRead>>
       // The open hotfix pull requests and the repo root they are for, as
       // the last read at a pane open or a Refresh press wrote them (M226).

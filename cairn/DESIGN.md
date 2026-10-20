@@ -370,7 +370,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   state, the number in the line's tail. `prLine` in `pane.ts` draws a
   blocked line and a hotfix line in one layout (M286): a state mark, the
   id (`fix` for a hotfix), the title, and a tail of `#<n>`, `archived`,
-  and the word. A guest-mode handoff sets its
+  the word, and an open PR's merge mark (M301). A guest-mode handoff sets its
   milestone `blocked` with the PR URL in its header, so the section lists
   the PRs that wait on maintainers. The header is the text before the
   first `## ` heading, and a number has at most 15 digits, so both sides
@@ -393,7 +393,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one call per distinct URL
   through `$.process.run` (`readPr`), side by side, with a 15-second
-  timeout each. It writes each word, with its counts since M225, to the
+  timeout each. It writes each word, with its counts since M225 and its
+  merge state since M301, to the
   `prs` state value by URL. Since M237 a github.com URL takes one `gh api
   graphql` call for the word and the counts. A URL of another form, as a
   hotfix's on another host, takes one `gh pr view <url> --json
@@ -445,7 +446,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   MERGED to `merged`, CLOSED to `closed`, OPEN by its review decision to
   `changes requested`, `approved`, or `in review` for any other or none,
   and another `state` to `unknown`. `prRead` in `counts.ts` reads it from
-  a graphql reply, and `prWord` in `pane.ts` from a `gh pr view` reply.
+  a graphql reply, and `prViewRead` in `pane.ts` from a `gh pr view` reply.
   A rejected call, a non-zero exit, or a reply with no pull request reads
   `unknown`. The word follows the number in the
   line's tail. `PR_BUTTON` gives a `merged` line a `Finish` Button that
@@ -605,7 +606,7 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   its root, under a Hotfixes heading after Blocked and before the
   candidates. An entry whose URL is a blocked row's draws on that blocked
   line only, and the heading's count leaves it out (M230). The section has
-  `hotfix-<n>` lines with the word in the tail and
+  `hotfix-<n>` lines with the word and an open PR's merge mark in the tail and
   `hotfix-<n>-counts` at indent 4, and no Button.
   `pane.ts` lays out the lines, and each line's text is
   cut to one line with an ellipsis, but for the goal, which wraps (the

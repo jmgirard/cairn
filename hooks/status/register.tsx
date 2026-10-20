@@ -419,7 +419,8 @@ export const register: Register = on => {
     // card that opens downward, whole or cut, is drawn after every line in
     // the pane's root Box (M294). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
-    // terminal, and a line with one centers its row (M286).
+    // terminal, and a line with one centers its row (M286). A tail span
+    // that names an icon, the merge mark, draws the same way (M301).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     // A tail span that names a badge draws as its `Svg` pill on such a
     // surface, and as its padded text on the heading's key in the terminal

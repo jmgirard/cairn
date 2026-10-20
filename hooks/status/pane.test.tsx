@@ -23,7 +23,6 @@ import {
   paneLines as layout,
   PR_VIEW_FIELDS,
   prViewRead,
-  prWord,
   startedRows,
 } from './pane'
 import type { PaneLine, PrRead } from './pane'
@@ -2878,6 +2877,9 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
 // value that is not an object, an object with no state, and a state in
 // another case all read as `unknown`.
 describe('prWord reads only the shapes it names', () => {
+  // The word of a `gh pr view` read, which `prWord` gave until M301 and
+  // `prViewRead` gives now.
+  const prWord = (result: { exitCode: number; stdout: string } | null) => prViewRead(result).word
   test('a rejected call, a non-object, and an unknown state read as unknown', () => {
     const ok = (stdout: string) => ({ exitCode: 0, stdout })
     expect(prWord(null)).toBe('unknown')
@@ -3172,8 +3174,8 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     })
   }
 
-  // Each word `prWord` gives an OPEN pull request gets the query (M225
-  // review), so the open words and `prWord` stay in step.
+  // Each word `wordOf` gives an OPEN pull request gets the query (M225
+  // review), so the open words and `wordOf` stay in step.
   const OPEN: { decision: string; word: string }[] = [
     { decision: 'CHANGES_REQUESTED', word: 'changes requested' },
     { decision: 'APPROVED', word: 'approved' },
@@ -6222,6 +6224,17 @@ describe('an open pull request line ends with its merge state mark (M301 AC2)', 
         expect(tail.length - 1).toBeGreaterThan(wordAt)
       })
     }
+  }
+
+  // A read that is not open draws no mark even when it holds a merge
+  // state, as a stored read rewritten to `closed` can (M301 review).
+  for (const word of ['merged', 'closed', 'unknown'] as const) {
+    test(`a ${word} read holding a merge state draws no mark`, () => {
+      const got: PrRead = { word, counts: null, mergeable: 'conflicts' }
+      const line = layout(state, [], false, { [BLOCKED_URL]: got, [HOTFIX_URL]: got }, [hotfix]).find(each => each.key === 'hotfix-4')
+      expect(line?.tail?.some(span => span.text === word)).toBe(true)
+      expect(line?.tail?.filter(span => span.icon !== undefined)).toEqual([])
+    })
   }
 })
 

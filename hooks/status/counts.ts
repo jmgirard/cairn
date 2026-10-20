@@ -1,5 +1,6 @@
-// The read of one github.com pull request: its state word (M224) and the
-// count under an open pull request's line (M225), from one `gh api graphql`
+// The read of one github.com pull request: its state word (M224), the
+// count under an open pull request's line (M225), and an open pull
+// request's merge state (M301), from one `gh api graphql`
 // call (M237). The count is the review threads not marked resolved. A thread
 // opened by a bot, such as Copilot, counts too. Until M236 a second count
 // showed the reviews and conversation comments that came after the author's
