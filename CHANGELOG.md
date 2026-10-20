@@ -120,8 +120,8 @@
   info icon (`ⓘ`) shows on the hovered row, beside the row's `✎`. The
   row's card now opens only while the pointer is over that icon. The card
   shows the row's whole text after its priority token as plain text, with
-  any HTML comments left out. The row itself shows only its short title. The terminal pane still draws `✎`
-  on each row that has one.
+  any HTML comments left out. The row itself shows only its short title.
+  The terminal pane still draws `✎` on each row that has one.
 
 ### New
 

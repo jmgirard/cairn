@@ -1871,10 +1871,10 @@ describe('each candidate line with a short title carries ✎ while no cairn skil
       workable: [],
       waiting: [],
       candidates: [
-        { priority: 'high', title: 'High' },
-        { priority: 'normal', title: 'Normal' },
-        { priority: 'low', title: 'Low' },
-        { priority: 'normal', title: '' },
+        { priority: 'high', title: 'High', text: 'High' },
+        { priority: 'normal', title: 'Normal', text: 'Normal' },
+        { priority: 'low', title: 'Low', text: 'Low' },
+        { priority: 'normal', title: '', text: '' },
       ],
       blocked: [],
       taken: [],
@@ -4867,14 +4867,14 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
     workable: [],
     waiting: [],
     candidates: [
-      { priority: 'high', title: 'High row' },
-      { priority: 'normal', title: 'Normal row' },
-      { priority: 'low', title: 'Low row' },
-      { priority: 'normal', title: 'Unmatched row' },
-      { priority: 'normal', title: 'Shared title' },
-      { priority: 'low', title: 'Shared title' },
-      { priority: 'normal', title: 'case row' },
-      { priority: 'normal', title: '' },
+      { priority: 'high', title: 'High row', text: 'High row' },
+      { priority: 'normal', title: 'Normal row', text: 'Normal row' },
+      { priority: 'low', title: 'Low row', text: 'Low row' },
+      { priority: 'normal', title: 'Unmatched row', text: 'Unmatched row' },
+      { priority: 'normal', title: 'Shared title', text: 'Shared title' },
+      { priority: 'low', title: 'Shared title', text: 'Shared title' },
+      { priority: 'normal', title: 'case row', text: 'case row' },
+      { priority: 'normal', title: '', text: '' },
     ],
     blocked: [],
     taken: [],
@@ -4908,9 +4908,9 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
       const three: PaneState = {
         ...state,
         candidates: [
-          { priority: 'high', title: 'Up' },
-          { priority: 'normal', title: 'Taken' },
-          { priority: 'low', title: '' },
+          { priority: 'high', title: 'Up', text: 'Up' },
+          { priority: 'normal', title: 'Taken', text: 'Taken' },
+          { priority: 'low', title: '', text: '' },
         ],
       }
       const draw = (started: { title: string; number: number }[]) =>
@@ -4980,7 +4980,7 @@ describe('a candidate row that a started token marks is not drawn (M258 AC1-AC3,
     next: null,
     workable: [],
     waiting: [],
-    candidates: titles.map(title => ({ priority: 'normal', title })),
+    candidates: titles.map(title => ({ priority: 'normal', title, text: title })),
     blocked: [],
     taken: [],
   }
@@ -5095,7 +5095,7 @@ describe('a candidate row that a started token marks is not drawn (M258 AC1-AC3,
 
   test('a token on a row with an empty short title hides nothing', () => {
     const lines = layout(
-      { ...state, candidates: [{ priority: 'normal', title: '' }], taken: [{ title: '', ref: 'M258' }] },
+      { ...state, candidates: [{ priority: 'normal', title: '', text: '' }], taken: [{ title: '', ref: 'M258' }] },
       [],
       true,
       {},
@@ -5168,10 +5168,10 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
     workable: [],
     waiting: [],
     candidates: [
-      { priority: 'parked', title: 'Waits' },
-      { priority: 'parked', title: '' },
-      { priority: 'high', title: 'Up' },
-      { priority: 'parked', title: 'Taken' },
+      { priority: 'parked', title: 'Waits', text: 'Waits' },
+      { priority: 'parked', title: '', text: '' },
+      { priority: 'high', title: 'Up', text: 'Up' },
+      { priority: 'parked', title: 'Taken', text: 'Taken' },
     ],
     blocked: [],
     taken: [],
@@ -5711,9 +5711,9 @@ describe('a second listing pending at a session end reads nothing (M260 AC4)', (
 describe("planning's Next line and press name the first drawn [high] row (M272 AC4, M273 AC3)", () => {
   const PLAN = { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null }
   const ROWS: PaneState['candidates'] = [
-    { priority: 'normal', title: 'Plain row' },
-    { priority: 'high', title: 'First high' },
-    { priority: 'high', title: 'Second high' },
+    { priority: 'normal', title: 'Plain row', text: 'Plain row' },
+    { priority: 'high', title: 'First high', text: 'First high' },
+    { priority: 'high', title: 'Second high', text: 'Second high' },
   ]
   const plan = (candidates = ROWS, taken: PaneState['taken'] = []): PaneState => ({
     found: true,
@@ -5854,12 +5854,12 @@ describe('the card counts the drawn candidate rows by level and the planned and 
     workable: [{ id: 'M3', title: 'Ready' }],
     waiting: [{ id: 'M4', title: 'Later', unmet: ['M3'] }],
     candidates: [
-      { priority: 'low', title: 'Low one' },
-      { priority: 'high', title: 'High one' },
-      { priority: 'normal', title: 'Normal one' },
-      { priority: 'normal', title: 'Started one' },
-      { priority: 'parked', title: 'Parked one' },
-      { priority: 'normal', title: 'Normal two' },
+      { priority: 'low', title: 'Low one', text: 'Low one' },
+      { priority: 'high', title: 'High one', text: 'High one' },
+      { priority: 'normal', title: 'Normal one', text: 'Normal one' },
+      { priority: 'normal', title: 'Started one', text: 'Started one' },
+      { priority: 'parked', title: 'Parked one', text: 'Parked one' },
+      { priority: 'normal', title: 'Normal two', text: 'Normal two' },
     ],
     blocked: [{ id: 'M5', title: 'Handed off', pr: null, url: null, archived: false }],
     taken: [{ title: 'Started one', ref: 'M3' }],
@@ -6237,8 +6237,6 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
   }
 })
 
-// M291: the project name, bold, at the left of the card's first line. The
-// names each case expects are written out by hand.
 // M293 AC1, AC2: a candidate line's card holds its row's whole text after
 // the priority token, trimmed as the short title is, and the line still
 // draws the short title. The rows go through `candidateRows`, so the text
@@ -6298,6 +6296,8 @@ describe("a candidate line's card holds the row's whole text (M293)", () => {
   })
 })
 
+// M291: the project name, bold, at the left of the card's first line. The
+// names each case expects are written out by hand.
 describe('the card names the project at the left of its first line (M291)', () => {
   // A copy of a fixture with its files under `root`, opened there.
   const rootedAt = (name: string, root: string) => {

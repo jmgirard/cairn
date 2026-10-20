@@ -299,7 +299,7 @@ describe('a started token leaves the short title unchanged (M258 AC4)', () => {
   for (const row of rows) {
     for (const token of tokens) {
       test(`${row} + ${token}`, () => {
-        const titles = (text: string) => candidateRows(text).map(each => each.title)
+        const titles = (text: string) => candidateRows(text).map(each => [each.priority, each.title])
         expect(titles(`## Candidates\n\n- ${row}${token}\n`)).toEqual(titles(`## Candidates\n\n- ${row}\n`))
       })
     }

@@ -403,8 +403,8 @@ export const register: Register = on => {
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
-    // hidden Box with its whole text, for a candidate line its row's whole
-    // text after the priority token (M293), placed above the row out of the flow,
+    // hidden Box with its whole text (on a candidate line, its row's text
+    // after the priority token, M293), placed above the row out of the flow,
     // which the pointer over the line reveals, or on a line with `info` the
     // pointer over its info glyph, which names the card's hover group (M290);
     // an absolute Box paints over

@@ -311,9 +311,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high`, `low`, or `parked` for
   an exact `[high] `, `[low] `, or `[parked] ` opening, else `normal`;
-  `parked` since M284) and the short title: the
-  text before the first `: `, else before the first ` — `, else all of it
-  (M251, tracking-rules "Candidate short title"). It walks the sections
+  `parked` since M284), the short title (the
+  text before the first `: `, else before the first ` — `, else all of it;
+  M251, tracking-rules "Candidate short title"), and the text: all of it
+  after the token, trimmed as the title is (M293). It walks the sections
   `candidate_count` walks, but that count also takes indented lines and
   lines inside comments.
   `test_status_fixtures.py` holds the reader to each fixture's `candidates`
@@ -507,8 +508,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   task, criterion, workable, waiting, blocked, hotfix, and candidate lines,
   and none when empty. A candidate line's `full` is its row's whole text
   after the priority token (`CandidateRow.text`, trimmed as the short title
-  is), not the short title the line draws (M293). Off the terminal, the render puts an unkeyed Box
-  inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
+  is), not the short title the line draws (M293). Off the terminal, the
+  render puts an unkeyed Box inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
   above the row, or on a candidate line the pointer over its ⓘ (below).
