@@ -11,7 +11,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — adopting repos' sessions write and retitle candidate rows by the rulebook and `/cairn-triage`
-- **Branch/PR:** m292-candidate-title-format
+- **Branch/PR:** m292-candidate-title-format, https://github.com/jmgirard/cairn/pull/304
 
 ## Goal
 
