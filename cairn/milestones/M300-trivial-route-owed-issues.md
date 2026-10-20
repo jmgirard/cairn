@@ -113,11 +113,11 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - 2026-10-20 gate: `cairn_validate.py` exit 0, all checks passed; `cairn_impact` skipped (no DESIGN.md principle changed); toolchain: verify green at 98a64962 (AC6), marketplace validate prints no `version` warning, CHANGELOG `## Unreleased` entry "A direct edit closes the issue of the row it removes." carries this milestone's change (an edit of that unreleased entry, logged at plan); no CI in this repo.
 - spawned: diff-bug, blame-history, prior-review, ripple
 - diff-bug #1: an open PR whose body says `Fixes #N` but whose `Candidate row:` line is missing or names another row does not protect #N — follow-up, parked row "Close the last trivial-route issue gaps" (pre-existing since M297, not introduced here)
-- diff-bug #2: a failed check plus a failed PR read gives two rules, "names no issue number" and "names each number of a deleted row … with the reason" — fix now (the option sentence now opens "Unless an owner-mode check failed")
+- diff-bug #2: a failed check plus a failed PR read gives two rules, "names no issue number" and "names each number of a deleted row … with the reason" — fix now (the option sentence now opens "Unless an owner-mode check failed"), fixed 2b7862f5
 - diff-bug #3: after a failed PR read the issue read still runs, so one number could carry two reasons — reject, false: the sentence says the route leaves each deleted row's number alone "for that reason", which names the reason to give
 - diff-bug #4: whether a narrowed row's pre-edit or post-edit text protects a number is unstated — follow-up, parked row "Close the last trivial-route issue gaps"
 - diff-bug #5: the row-match paragraph names the four statuses without saying ROADMAP — reject, false: the rulebook makes ROADMAP the only status authority, so both readings are the same
-- diff-bug #6: "When no check failed … in guest mode" suggests guest checks exist — fix now (the sentence now reads "Unless an owner-mode check failed" and "On the same terms")
+- diff-bug #6: "When no check failed … in guest mode" suggests guest checks exist — fix now (the sentence now reads "Unless an owner-mode check failed" and "On the same terms"), fixed 2b7862f5
 - diff-bug #7: a local uncommitted edit to an open milestone's `Resolves:` slot is read as is — follow-up, parked row "Close the last trivial-route issue gaps"
 - diff-bug #8: the test pins presence only, not the old clause's absence — reject, planned change: the guard pins the new sentences as the plan set, and the hand-run suite gates nothing (D-109)
 - diff-bug #9: D-200's Consequences name a URL and the milestone's Out also names "issue 12" — reject, false: the two do not conflict; Out lists one more example
@@ -125,12 +125,13 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - blame-history #1: a failed read of an open milestone file has no rule, unlike the PR read — follow-up, parked row "Close the last trivial-route issue gaps"
 - blame-history #2: D-200's heading does not list that a failed check drops D-195's left-alone naming — reject, false: D-200's Decision states it, and the heading names the clauses whose wording it narrows
 - blame-history #3: "A kept row is a candidate row the edit narrows or leaves in place" can read as every candidate row — reject, false: that is its meaning (every candidate row the edit does not delete), and it errs toward leaving open
-- prior-review #1: the failed-check path contradicts the unconditioned option sentence (M297 diff-bug #6 half fixed) — fix now (same fix as diff-bug #2)
-- prior-review #2: "fails or is cut short" in README and CHANGELOG is not the skill's condition — fix now (both now say "fails or stops at 100 PRs")
+- prior-review #1: the failed-check path contradicts the unconditioned option sentence (M297 diff-bug #6 half fixed) — fix now (same fix as diff-bug #2), fixed 2b7862f5
+- prior-review #2: "fails or is cut short" in README and CHANGELOG is not the skill's condition — fix now (both now say "fails or stops at 100 PRs"), fixed 2b7862f5
 - prior-review #3: Copilot's note on the `Branch/PR` header has precedent — noted; settled in the copilot line below
 - ripple #1: ROADMAP's candidate row still lists the four gaps as open — reject, planned change: post-merge hygiene graduates the row
 - ripple #2: tracking-rules' sentence "closes the open issue of a row it deletes, once its option names the close" is unqualified — reject, false: "once its option names the close" carries every new condition, since the option names no close in those cases
-- ripple #3: README and CHANGELOG call the PR read "its check", next to the five checks — fix now (same fix as prior-review #2, "its read")
-- ripple #4: "no check failed" has no guest-mode check — fix now (same fix as diff-bug #6)
+- ripple #3: README and CHANGELOG call the PR read "its check", next to the five checks — fix now (same fix as prior-review #2, "its read"), fixed 2b7862f5
+- ripple #4: "no check failed" has no guest-mode check — fix now (same fix as diff-bug #6), fixed 2b7862f5
 - copilot: review body — the `Branch/PR` header should hold the PR URL, not the branch — reject, false: the template has implement record the branch and review add the PR URL, as M295 and M299 also settled
 - Copilot level: Lite (set by GitHub's settings)
+- 2026-10-20 after fixes at 2b7862f5: `scripts/tests` 0, `hooks/tests` 0, plugin validate 0, marketplace validate 0, `skills/tests` 0, `cairn_validate` all passed; `claude plugin test .` not re-run, since the fixes touch no file under `hooks/status/`. Tally: 20 lens findings, 6 fixed (4 distinct edits), 4 follow-up (one new parked row), 10 rejected; 1 Copilot body item rejected; 0 substantive amendments.
