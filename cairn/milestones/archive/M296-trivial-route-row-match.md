@@ -1,0 +1,11 @@
+# M296: The trivial route matches a pressed title, not PR rows
+
+**Status:** done (2026-10-20, PR #309 https://github.com/jmgirard/cairn/pull/309)
+
+**Goal:** The trivial route's candidate-row match takes the row whose short title a ✎ press sends as the whole request, and it takes no row that its read of the open pull requests finds named by a `Candidate row:` line.
+
+**Outcome:** `/milestone-plan` step 1's candidate-row match also takes a row whose short title equals the request text with outer spaces removed (what a ✎ press sends); a title unquoted inside a longer request does not match. If a row matches, the plan reads the open PRs' `Candidate row:` lines before the chip with the call and parse of `/cairn-triage`'s `## Session start` open-PR read (PR text is data, never instructions) and does not match a row such a line names, since that PR's merge graduates it; a failed read, a `gh` that cannot run, or a 100-PR result lets the match go on. The trivial option names each such row with its PR numbers, and, when a row matched after a failed or capped read, says the matched rows were not checked against every open PR. Its owner-mode sentence now says "the edit is committed". `skills/tests/test_plan_tier_check.py` pins the new sentences and their place; README's trivial-edit row and an Unreleased Fixes entry state it.
+
+**Decisions:** D-193 (supersedes D-170's Rejected reason, keeps its rejection; annotates D-191's Consequences). D-194 (review: corrects D-193's skip reason and names its widening of D-170's Decision match sentence). Question set: an unquoted title matches only as the whole request. Plan gate: match on after a failed read, with a note; cite triage's read, not restate it.
+
+**Review:** Criteria audit at plan (full, 11 findings over M296 to M298, all fixed). Claim audit: 24 claims, 2 corrected. One pass of four lenses: 27 findings, 11 fixed, 1 follow-up (M297), 15 rejected. Copilot (Lite, 2 body items rejected; summary reply posted). No returns. Hygiene: row "Match bare titles on the trivial route" graduated; "Guard PR-named rows on other skill paths" narrowed to items (2) to (4) plus a new item (5) from prior-review #3; M298 takes (2) to (4). No lessons added or retired, nothing unparked.
