@@ -39,7 +39,7 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 
 - [x] T1: The name read. `Where` (register.tsx ~1110) gains the main-tree name from `git rev-parse --path-format=absolute --git-common-dir` in the root, and `readRepo` writes `name`: `remoteRepo(url)?.repo`, else that name, else null. `CairnRepoRead` in `types/index.d.ts` gains `name`, and the `repo` atom moves to shape `repo-3` with its comment. Tests for each AC2 case in `pane.test.tsx`.
 - [x] T2: The first line. `paneLines` passes the name (the stored read's for this root, else the root's last segment, split on `/` and `\`) to `cardLines`, which puts it bold in the line's `text` with no grow and the counts in its `tail`. A new line flag makes the tail Box grow in `drawLine`, so ⌂ and ↻ stay at the right end. Update the tests that pin the `card-repo` text, and add AC1, AC3, and AC4 tests for both surfaces.
-- [ ] T3: README, DESIGN.md, the CHANGELOG's Unreleased summary-card entry, and the pane.ts and register.tsx comments describe the name; run the `verify` slot.
+- [x] T3: README, DESIGN.md, the CHANGELOG's Unreleased summary-card entry, and the pane.ts and register.tsx comments describe the name; run the `verify` slot.
 
 ## Work log
 
@@ -54,3 +54,4 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 - 2026-10-19: untracked `cairn-probe.log` and `tsconfig.json` predate this plan; left unstaged.
 - 2026-10-19: implement started on branch m291-pane-card-project-name.
 - 2026-10-19: T1+T2 in one commit, since the AC2 tests read the name through the drawn line. `projectName` and `lastSegment` in repo.ts; the common-dir call runs only when the URL is not a github.com one; the first line has no text with no name (root `/`) and no lead space in its tail then. Updated 13 tests that pinned the old first line (text `''` with grow, counts in the lead). Mod tests 2304 → 2330, verify slot green.
+- 2026-10-19: T3: README, DESIGN (card paragraph and `repo-3`), and the CHANGELOG's Unreleased card entry name the project and its rule; the simple-english hook flags older text in README and CHANGELOG, left as is (out of scope). Browser preview (a hand-built page, dark and light, 330 px, short and long names) shows the long name cut and the counts and Buttons kept. Verify slot green, mod tests 2330.

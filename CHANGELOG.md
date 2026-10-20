@@ -5,7 +5,10 @@
 ### Changes that affect existing repos
 
 - **The cairn pane opens with a summary card and has a new look.** A card
-  in a round border leads the pane. It shows the open pull requests and
+  in a round border leads the pane. Its first line names the project in
+  bold. The name is the repo's name on a github.com remote. Otherwise it
+  is the name of the folder that holds the repo's `.git`, so a worktree
+  shows the repo's name. The card shows the open pull requests and
   open issues of the base remote's repo, the candidate rows at each level,
   the planned and blocked milestones, and, outside guest mode, the latest
   `v*` release tag with the days since it and the milestones archived
