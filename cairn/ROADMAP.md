@@ -1,21 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (M294 review: M294 done and archived; M291 row pruned to the 3-row terminal cap; "Fix cut and odd names on the pane card" narrowed to (1) and (2) and parked again; a joined row split back out; LESSONS M193 and M272 lines extended; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-20 (M295 review: M295 done and archived; its two M292 title rows graduated; M292 row pruned to the 3-row terminal cap; two review rows added; no lessons; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M295 | A candidate title's issue number stays part of the title | review | — | normal | milestones/M295-candidate-title-references.md |
+| M295 | A candidate title's issue number stays part of the title | done | — | normal | milestones/archive/M295-candidate-title-references.md |
 | M294 | A candidate row's ⓘ card opens where the cairn pane has room for it | done | — | normal | milestones/archive/M294-pane-card-placement.md |
 | M293 | The cairn pane's ⓘ card shows a candidate row's whole text | done | — | normal | milestones/archive/M293-pane-candidate-card-text.md |
-| M292 | Candidate row titles are one short sentence that fits the cairn pane | done | — | normal | milestones/archive/M292-candidate-title-format.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
-- Keep tier check for issue-titled rows: since M292 a title ends with `(#N)` for an issue row, so a ✎ press or the planning Next line passes `#N` to `/milestone-plan`, whose tier check skips a request that names an issue, and such a row never gets the hotfix or trivial offer; `/hotfix` step 1 may also read a quoted title's `(#N)` as a PR reference. Options: treat a quoted candidate short title as a title, not an issue or PR reference — added 2026-10-19 — M292 review (diff-bug #1, #4) — started M295
-- Keep rows named by open PRs at triage: `/cairn-triage` can propose `retitle` for a row that an open PR's `Candidate row: <title>` line names, which breaks the match that hides the row in the pane; M292's 5-word floor makes such retitles common — added 2026-10-19 — M292 review (diff-bug #5) — started M295
 - Match bare titles on the trivial route: a ✎ press passes a candidate's short title to `/milestone-plan` without quotes, while the trivial route's candidate-row match takes a row whose short title the request quotes, so a trivial edit started from the pane may not delete or narrow the row it came from; D-170's Rejected section rests on "a pane press sends the quoted title", which is false — added 2026-10-20 — M295 plan (criteria audit #1); extended 2026-10-20 by M295 review (blame-history #1, prior-review #3, ripple #4)
 - Guard PR-named rows on other skill paths: a candidate row that an open PR's `Candidate row:` line names is kept by `/cairn-triage` since M295, but (1) the trivial route's row match in `/milestone-plan` step 1 does not skip it, so a trivial commit can delete a row an open hotfix PR carries; (2) triage's Amend can set a non-`keep` disposition on it, unmarked after a failed PR read; (3) a `merge` survivor's lineage clause can lengthen the short title of such a row that has no `: ` or ` — `, as for live-token rows; (4) a `retitle` of another row rewrites each double-quoted mention of its old title, which can change such a row's own short title — added 2026-10-20 — M295 review (blame-history #2, diff-bug #6, #8; pass 2 diff-bug #7)
 - Close the issue a trivial edit fixes: since M295 a candidate row titled `(#N)` gets the tier check, so `/milestone-plan`'s trivial route can fix an issue row, but its commit carries no `Fixes #N` and the route has no issue-close step, so issue #N stays open after the edit; closing it is an outward write the tier chip would have to name — added 2026-10-20 — M295 review pass 2 (diff-bug #1)
