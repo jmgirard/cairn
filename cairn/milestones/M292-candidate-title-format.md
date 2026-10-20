@@ -80,6 +80,7 @@ the whole title.
 - 2026-10-19: claim audit: 44 claims read, 3 corrected — skills/shared/tracking-rules.md, README.md, CHANGELOG.md, skills/cairn-init/SKILL.md (fit stated as what the cap is sized to; skeleton names triage's real trigger; README gains the later-issue sentence); 2 declined (wide-character count is a writer's convention; a retitle may add every named issue since it rewrites mentions); re-read holds; rulebook baseline re-seeded to 760 lines / 73,350 bytes; verify green, `skills/tests` green.
 - 2026-10-19: status review; handed to /milestone-review.
 - 2026-10-19: review: PR #304 opened at review start (Copilot round on); Copilot requested, state `pending`.
+- 2026-10-19: step-7 approval: m292-candidate-title-format approved for merge
 
 ## Decisions
 
