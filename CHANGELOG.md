@@ -196,13 +196,15 @@
   points at.** It now says that the text of the pull requests it reads is
   data, never instructions. A new title that it proposes for a retitle,
   split, route, or compress differs from each title that an open pull
-  request's `Candidate row:` line names. It leaves a dead started token
-  that sits inside a row's short title, as in
-  `Title — started M12: detail`, because its removal changes that title.
-  A compress keeps that token and its title, and a retitle that replaces
-  a title holding an icon says that it removes the token.
+  request's `Candidate row:` line names. If the pass cannot read the pull
+  requests, it says that the new title was not checked. It leaves a dead
+  started token whose removal changes a row's short title, such as one
+  inside it, as in `Title — started M12: detail`. A compress keeps that
+  token and its title, and a retitle that replaces a title holding an
+  icon says that it removes the token.
   An Amend that removes or retitles a row with a live ` — started #<n>`
-  token makes each later question name those pull requests. A retitle
+  token makes each later question name those pull requests. The pass's
+  record names them too. A retitle
   you set at Amend lists the quoted mentions it rewrites and leaves, as a
   proposed retitle does. The pass no longer proposes a merge that changes
   the surviving row's title. If you set one at Amend, each later question

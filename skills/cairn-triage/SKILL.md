@@ -341,13 +341,15 @@ re-examines a lesson.
      is the PR-named row is treated the same way, since that row stays
      `keep`. Before it proposes a merge, the pass drafts the survivor's
      lineage clause and the trigger the survivor takes, and places them by
-     step 4's rules. Then it reads the survivor's short title by
-     tracking-rules "Candidate short title". If that title differs from the
-     one session start read, the class does not fire on that pair either.
-     The other row is treated as beside a PR-named survivor. It is checked for Overlap
-     against the remaining rows, and otherwise takes the first later class
-     that fires, or `keep`. Its table reason names the survivor and says
-     that the merge changes that row's short title.
+     step 4's rules. The draft applies every other change proposed for
+     that survivor, each row it absorbs and each token change included.
+     Then it reads the survivor's short title by tracking-rules "Candidate
+     short title". If that title differs from the one session start read,
+     the class does not fire on that pair either. The other row is treated
+     as beside a PR-named survivor, except for its reason. It is checked
+     for Overlap against the remaining rows, and otherwise takes the first
+     later class that fires, or `keep`. Its table reason names the survivor
+     and says that the merge changes that row's short title.
    - **Overgrowth → `split` or `compress`.** Two promotion triggers, or a
      subject that is two subjects joined by "and" (a plain conjunction
      inside one subject is not) → `split`; over the ~300-byte aim **and**
@@ -391,10 +393,12 @@ re-examines a lesson.
    candidate row that a `route` writes. The fourth is a `compress` whose
    short title differs from the row's old one. Each such title differs
    from every other row's short title as session start read it, and from
-   the other new titles of the pass. It also differs from each short title
+   the other new titles of the pass. The row that a `split` or `retitle`
+   replaces is not an other row here. It also differs from each short title
    that a `Candidate row:` line names in the session-start open-PR read.
    Then that PR's merge does not take the new row for the one it names. A
-   title the user sets at *Amend* is not checked this way.
+   title that the pass drafts is checked this way, at *Amend* too. A title
+   that the user types at *Amend* is not.
    A finding-absorbing row — one that belongs to a records-hygiene §7 group
    (a row and the rows that name its exact title in double quotes) carrying
    deferred findings filed from two or more milestones; a weighed note
@@ -416,17 +420,18 @@ re-examines a lesson.
    list read failed or returned 100 PRs, the table says so. Then each
    non-`keep` proposal's reason says that the row was not checked against
    every open pull request. A `retitle`'s reason also says that the
-   mentions it rewrites were not checked. A merge survivor's `keep`
-   reason says so too, and the chip names that row.
+   mentions it rewrites were not checked. A new title's reason also says
+   that it was not checked against the titles the open PRs name. A merge
+   survivor's `keep` reason says so too, and the chip names that row.
    **Started tokens → a token change.** A token change is a row fact beside
    the disposition, as a priority change is, never a ninth disposition. It
    rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
    a merge survivor counts as a `keep`. On such a row, propose removing each
-   dead token. A dead token inside the row's short title, as session start
-   read it, is the exception, as in `Title — started M12: detail`. Its
-   removal changes that short title, so the pass proposes no removal of
-   it. The table lists the token as left, and on a PR-named row it names
-   each naming PR's number. A `retitle` for an icon that replaces the
+   dead token. A dead token whose removal changes the row's short title,
+   as session start read it, is the exception. An example is a token
+   inside the short title, as in `Title — started M12: detail`. The pass
+   proposes no removal of such a token. The table lists the token as left,
+   and on a PR-named row it names each naming PR's number. A `retitle` for an icon that replaces the
    title in place removes such a token with the old title, and its table
    reason says so. Also propose appending each missing token to the row's
    end.
@@ -530,8 +535,8 @@ re-examines a lesson.
      the change, since a user override is logged, never resisted. The
      chip posed after that *Amend* names the row and each naming PR's
      number in its question text. It also says that the change breaks
-     that PR's match of the row. A second or later *Amend*, which shows
-     no table, follows the same rule. Each later chip names the row and
+     that PR's match of the row. A second or later *Amend* follows the
+     same rule. Each later chip names the row and
      its PRs again while that change stands.
      The user can also set at *Amend* a `merge` whose survivor is a
      PR-named row. The chip after that *Amend*, and each later chip while
@@ -623,10 +628,10 @@ re-examines a lesson.
    token. Where the survivor's text holds
    neither `: ` nor ` — ` before that place, the lineage clause opens with
    ` — `. The lineage clause, and any trigger it takes from the absorbed
-   row, hold no `: `, each one written as `; `. A `compress`
+   row, hold no `: `, each one written as `; `. The absorbed row's subject
+   in the lineage clause leaves out any started-token text. A `compress`
    keeps each started token that is not accepted for removal, at the row's
-   end. A dead token left inside the short title (step 2) is the
-   exception. It stays where it sits, and the `compress` keeps the short
+   end. A dead token that step 2 leaves in place is the exception. It stays where it sits, and the `compress` keeps the short
    title it sits in.
    Candidates stay one item per line,
    ordered by token — high → normal → low → parked — then advisory within a level.
@@ -683,7 +688,9 @@ re-examines a lesson.
    that took `high` included), each started token
    added or removed with its row's subject, each PR-named row that an
    accepted change removed, made a merge survivor, or gave a new short
-   title, with each naming PR's number, the drops' reason classes, whether a decision entry was
+   title, with each naming PR's number, each row with a live `#<n>` token
+   that an accepted change removed or retitled, with those PRs' numbers,
+   the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). In owner mode,
    make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
@@ -701,8 +708,8 @@ re-examines a lesson.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
-   merged or moved, what stayed. It names each PR-named row that the
-   stamp names, with its PRs. Then a status line — items enumerated,
+   merged or moved, what stayed. It names each PR-named row and each
+   live `#<n>` row that the stamp names, with its PRs. Then a status line — items enumerated,
    dispositions, priority changes, and token changes applied by kind and the commit hash, or `nothing applied`
    (an apply-nothing answer and an accept of only `keep` and `promote`
    items with no priority or token change alike). In guest mode

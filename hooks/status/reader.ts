@@ -646,7 +646,8 @@ const STARTED_TOKEN = / — started (M[0-9]+|#[0-9]{1,15})(?![0-9A-Za-z])/g
 // with its row's short title. `/milestone-plan` writes ` — started M<NNN>`
 // on a row its plan absorbs, and `/hotfix`'s guest arm ` — started #<n>`
 // on a row its pull request fixes. Since each token opens with ` — `, a
-// row's short title is the same with or without one. A row with an empty
+// token after the row's first `: ` or ` — ` leaves its short title the
+// same. A row with an empty
 // short title gives none, since no title names it.
 export function startedTokens(roadmap: string): TakenRow[] {
   const out: TakenRow[] = []

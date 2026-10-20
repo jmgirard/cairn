@@ -58,8 +58,7 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "The chip posed after that *Amend* names the row and each "
             "naming PR's number in its question text.",
             "It also says that the change breaks that PR's match of the row.",
-            "A second or later *Amend*, which shows no table, follows the "
-            "same rule.",
+            "A second or later *Amend* follows the same rule.",
             "Each later chip names the row and its PRs again while that "
             "change stands.",
         ), loop)
@@ -205,6 +204,10 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "pass.",
             "It also differs from each short title that a `Candidate row:` "
             "line names in the session-start open-PR read.",
+            "The row that a `split` or `retitle` replaces is not an other "
+            "row here.",
+            "A title that the pass drafts is checked this way, at *Amend* "
+            "too.",
         ), rule)
 
     def test_dead_token_inside_a_title_is_left(self):
@@ -212,9 +215,11 @@ class TestTriagePrNamedRows(unittest.TestCase):
         tokens = section(self.triage, "**Started tokens → a token change.**",
                          "Delegation: the session assesses inline.")
         self.assertPhrases((
-            "A dead token inside the row's short title, as session start "
-            "read it, is the exception, as in `Title — started M12: detail`.",
-            "so the pass proposes no removal of it.",
+            "A dead token whose removal changes the row's short title, as "
+            "session start read it, is the exception.",
+            "An example is a token inside the short title, as in "
+            "`Title — started M12: detail`.",
+            "The pass proposes no removal of such a token.",
             "The table lists the token as left, and on a PR-named row it "
             "names each naming PR's number.",
             "A `retitle` for an icon that replaces the title in place "
@@ -223,9 +228,11 @@ class TestTriagePrNamedRows(unittest.TestCase):
         ), tokens)
         apply = section(self.triage, "4. **Apply.**", "5. **Record.**")
         self.assertPhrases((
-            "A dead token left inside the short title (step 2) is the "
-            "exception. It stays where it sits, and the `compress` keeps the "
-            "short title it sits in.",
+            "A dead token that step 2 leaves in place is the exception. It "
+            "stays where it sits, and the `compress` keeps the short title "
+            "it sits in.",
+            "The absorbed row's subject in the lineage clause leaves out any "
+            "started-token text.",
         ), apply)
 
     def test_amend_names_the_pr_of_a_live_hash_token(self):
@@ -240,8 +247,14 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "It says that the change leaves each such PR pointing at a row "
             "that is gone or retitled.",
         ), loop)
+        step2 = section(self.triage, "2. **Assess.**", "3. **Propose and gate.**")
         self.assertIn("So no proposed disposition of the pass rewrites a "
-                      "live token.", self.triage)
+                      "live token.", step2)
+        stamp = section(self.triage, "6. **Validate, stamp, and commit.**",
+                        "7. **Close block**")
+        self.assertIn("each row with a live `#<n>` token that an accepted "
+                      "change removed or retitled, with those PRs' numbers,",
+                      stamp)
 
     def test_amend_retitle_runs_the_mention_search(self):
         # M299 AC5, with its exception to the no-table rule.
@@ -270,10 +283,14 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "Before it proposes a merge, the pass drafts the survivor's "
             "lineage clause and the trigger the survivor takes, and places "
             "them by step 4's rules.",
+            "The draft applies every other change proposed for that "
+            "survivor, each row it absorbs and each token change included.",
+            "Then it reads the survivor's short title by tracking-rules "
+            "\"Candidate short title\".",
             "If that title differs from the one session start read, the "
             "class does not fire on that pair either.",
-            "It is checked for Overlap against the remaining rows, and "
-            "otherwise takes the first later class that fires, or `keep`.",
+            "The other row is treated as beside a PR-named survivor, except "
+            "for its reason.",
             "Its table reason names the survivor and says that the merge "
             "changes that row's short title.",
         ), overlap)

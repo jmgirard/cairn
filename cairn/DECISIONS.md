@@ -7249,3 +7249,35 @@ Amend, because such a row is never dropped or merged away in a pass.
 survivors stand. A dead token inside a title stays until a person edits
 the row. Item (5) of "Guard PR-named rows on other skill paths" and the
 row "Close the remaining PR-named row gaps" are closed by M299.
+
+### D-199 (2026-10-20): D-198's dead-token rule, its relation to D-166, and its Known issues citation are corrected in one batched entry — supersedes those clauses of D-198; narrows D-166's removal rule and its Consequence (M299 review)
+
+**Context:** The M299 review found three faults in D-198. Its dead-token
+rule named a token inside the short title, but a token outside it can
+also change the title when removed, as in `Title: — started M12`
+(diff-bug #2). Its heading said it annotated only D-166's keep, though it
+also narrows D-166's removal rule and that entry's Consequence that a
+dead token stays "only until the next triage pass" (blame-history #1,
+diff-bug #4). It said DESIGN.md's Known issues entry for `/cairn-triage`
+states that a title set at Amend is not checked, but that entry named
+only uniqueness and icons (blame-history #5).
+
+**Decision:** The pass proposes no removal of a dead token whose removal
+changes the row's short title, as session start read it. A token inside
+the short title is one example. This supersedes D-198's narrower clause.
+D-198 narrows D-166's rule that triage proposes removing each dead
+token, and it narrows D-166's Consequence: such a token stays until a
+person edits the row. A title that the pass drafts is checked against
+the PR-named titles, at Amend too. Only a title the user types at Amend
+is not. DESIGN.md's Known issues entry now states both limitations
+(M299 review). This replaces D-198's claim that the entry already stated
+the first.
+
+**Rationale:** Keying the rule on the removal's effect covers every row
+shape in one rule, as D-198's Overlap check does for merges.
+
+**Consequences:** D-198's other clauses stand. Three related gaps go to
+the parked candidate row "Close the last triage title edge cases": a
+token appended to a row whose text ends in a bare `:` or ` —`, an
+Amend-set change on a row with a live `M<NNN>` token, and an Amend-set
+merge that changes a survivor's title with no mention search.

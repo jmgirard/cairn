@@ -610,14 +610,14 @@ or narrows it and removes the token. A note after the token, such as
 closed without a merge hides nothing. `/cairn-triage` proposes removing a dead token: one whose
 milestone is `done`, `dropped`, gone from the table, or archived, or whose
 PR is merged or closed. A token on an in-progress or review milestone is
-not dead. Triage leaves a dead token that sits inside a row's short
-title, as in `Title — started M12: detail`, because its removal changes
-that title. A retitle for an icon that replaces that title in place
+not dead. Triage leaves a dead token whose removal changes the row's
+short title, such as one inside it, as in `Title — started M12: detail`. A retitle for an icon that replaces that title in place
 removes the token, and says so. Triage also proposes adding a missing ` — started M<NNN>` token to a
 row whose short title a planned, in-progress, blocked, or review
 milestone's file quotes in double quotes outside its Out list. Each change
 waits for your answer at its gate. A token goes at the row's end and
-opens with ` — `, so adding it leaves the row's short title the same.
+opens with ` — `. So adding it leaves the row's short title the same,
+unless the row's text ends in a bare `:` or ` —`.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's

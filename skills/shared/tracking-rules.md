@@ -251,9 +251,10 @@ an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `no
 `/hotfix`'s guest arm appends the second on disk, with the new PR's number, to each row its step 1 matched. The cairn
 pane leaves such a row out of its Candidates list while the milestone's row is `planned` or `blocked`, or while PR #n
 is among your open hotfix PRs. The token names the id of another record, not an id of the row. A token goes at the row's end
-and opens with ` — `, so adding it leaves the row's short title the same. Records-hygiene §1 says when the token goes. `/cairn-triage` proposes at its gate
+and opens with ` — `. So adding it leaves the row's short title the same, unless the row's text ends in a
+bare `:` or ` —`. Records-hygiene §1 says when the token goes. `/cairn-triage` proposes at its gate
 a missing `M<NNN>` token for a row whose short title a `planned`, `in-progress`, `blocked`, or `review` milestone's file
-quotes. It also proposes removing a dead token. A dead token names a milestone that is `done`, `dropped`, gone from the
+quotes. It also proposes removing a dead token, unless the removal changes the row's short title. A dead token names a milestone that is `done`, `dropped`, gone from the
 table, or archived, or a PR that is merged or closed.
 
 **Candidate short title.** A candidate row's short title is its text after the `- ` and any `[high] `/`[low] `/`[parked] ` token,
