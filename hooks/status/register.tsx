@@ -422,9 +422,10 @@ export const register: Register = on => {
     // terminal, and a line with one centers its row (M286). A tail span
     // that names an icon, the merge mark, draws the same way (M301).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
-    // A tail span that names a badge draws as its `Svg` pill on such a
-    // surface, and as its padded text on the heading's key in the terminal
-    // (M289); a heading with one centers its row too.
+    // A span that holds a badge draws as its `Svg` pill on such a surface,
+    // and as its padded text on the theme's gray in the terminal (M289); a
+    // heading with one centers its row too. Since M302 the badge is in the
+    // heading's lead, after the label, where M289 put it in the tail.
     const drawSpan = (span: Span) =>
       span.badge !== undefined && Svg !== undefined ? (
         <Svg
@@ -478,10 +479,11 @@ export const register: Register = on => {
         <Text wrap="wrap">{rows === null ? line.full : cardCut(line.full ?? '', rows, e.props.bodyColumns)}</Text>
       </Box>
     )
-    // A tail icon, the merge state mark, centers its row too (M301).
+    // A tail icon, the merge state mark, centers its row too (M301), and so
+    // does a badge in the lead (M302).
+    const drawsSvg = (span: Span) => span.badge !== undefined || span.icon !== undefined
     const centers = (line: (typeof lines)[number]) =>
-      Svg !== undefined &&
-      (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined || span.icon !== undefined))
+      Svg !== undefined && (line.lead.some(drawsSvg) || (line.tail ?? []).some(drawsSvg))
         ? { alignItems: 'center' as const }
         : {}
     const drawLine = (line: (typeof lines)[number]) => (

@@ -43,7 +43,8 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // Next line takes the color of the phase its command runs. The colors are
 // theme keys (M217). The `card` lines draw in the card's Box. Since M289
 // the Blocked, Hotfixes, and Candidates headings draw their count as a
-// colored badge (badge.ts).
+// badge (badge.ts), and since M302 the badge is gray and comes right after
+// the label, so only the Tasks and Criteria counts sit at the right end.
 // While no cairn skill runs, the Next line also carries the band's
 // next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
@@ -583,11 +584,14 @@ function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
   return [gap(`${key}-gap`), head]
 }
 
-// A heading whose tail is its count as a badge (M289, badge.ts): on the
-// theme's gray in the terminal and in a fixed gray fill on the desktop
-// (M302), where M286 drew a gray number.
+// A heading with its count as a badge (M289, badge.ts) right after the
+// label and a space, in its lead, with no tail (M302, where M289 put the
+// badge at the right end). The badge is on the theme's gray in the
+// terminal and in a fixed gray fill on the desktop, where M286 drew a gray
+// number.
 function countHeading(key: string, label: string, count: number): PaneLine[] {
-  return heading(key, label, [badgeSpan(count)])
+  const [space, head] = heading(key, label)
+  return [space, { ...head, lead: [...head.lead, { text: ' ' }, badgeSpan(count)] }]
 }
 
 // A heading whose tail is the checked and total counts and the meter in

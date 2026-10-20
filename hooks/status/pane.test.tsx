@@ -999,14 +999,61 @@ describe('section headings, the head line, Next, and the card in the picked look
     })
   })
 
-  test('a section count: the count as a badge on the heading key (M289)', () => {
+  test('a section count: the badge right after the label and a space, and no tail (M289, M302)', () => {
     expect(at('blocked-head')).toEqual({
       key: 'blocked-head',
       indent: 0,
-      lead: [{ text: 'Blocked', bold: true }],
+      lead: [{ text: 'Blocked', bold: true }, { text: ' ' }, badgeOf(1)],
       ...EMPTY_GROW,
-      tail: [{ text: ' ' }, badgeOf(1)],
     })
+  })
+
+  // M302 AC4: the Criteria heading, like Tasks above, keeps its counts and
+  // meter in the tail at the right end.
+  test('the Criteria count and meter stay in the tail (M302 AC4)', () => {
+    const [milestone] = state.milestones
+    const withCriteria: PaneState = {
+      ...state,
+      milestones: [{ ...milestone, file: { ...milestone.file!, criteria: [{ text: 'AC1: one', checked: true }, { text: 'AC2: two', checked: false }] } }],
+    }
+    const head = layout(withCriteria, [], false, {}, [], []).find(line => line.key === 'M7-criteria-head')
+    expect(head).toEqual({
+      key: 'M7-criteria-head',
+      indent: 0,
+      lead: [{ text: 'Criteria', bold: true }],
+      ...EMPTY_GROW,
+      tail: [
+        { text: ' ' },
+        { text: '1/2 ', color: GRAY },
+        { text: '━━━', color: IMPLEMENT_KEY },
+        { text: '───', color: 'subtle' },
+      ],
+    })
+    expect(at('M7-tasks-head')?.tail?.slice(1, 2)).toEqual([{ text: '1/3 ', color: GRAY }])
+  })
+
+  // M302 AC1: with no active milestone all three counted headings draw, and
+  // each puts its badge in the lead after the label and a space.
+  test('Blocked, Hotfixes, and Candidates each lead with the label, a space, and the badge (M302 AC1)', () => {
+    const idle: PaneState = {
+      ...state,
+      milestones: [],
+      candidates: [
+        { priority: 'normal', title: 'One', text: 'One' },
+        { priority: 'low', title: 'Two', text: 'Two' },
+      ],
+    }
+    const got = layout(idle, [], false, {}, [{ number: 12, title: 'Fix', url: 'https://github.com/o/r/pull/12' }], [])
+    const heads = [
+      ['blocked-head', 'Blocked', 1],
+      ['hotfixes-head', 'Hotfixes', 1],
+      ['candidates-head', 'Candidates', 2],
+    ] as const
+    for (const [key, label, count] of heads) {
+      const head = got.find(line => line.key === key)
+      expect([key, head?.lead]).toEqual([key, [{ text: label, bold: true }, { text: ' ' }, badgeOf(count)]])
+      expect([key, head?.tail]).toEqual([key, undefined])
+    }
   })
 
   test('the head line: the id bold in the phase color and the title bold', () => {
@@ -3416,10 +3463,12 @@ describe('the Hotfixes section lists the hotfix-* pull requests before the candi
   })
 })
 
-// M289 AC1, AC2, M302 AC2: each section count draws as a badge, an `Svg`
-// pill in the one gray fill on the desktop and the padded number on the
-// theme's gray in the terminal, with no other count text in the tail.
-describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges (M289 AC1, AC2, M302 AC2)', () => {
+// M289 AC1, AC2, M302 AC2, AC3: each section count draws as a badge, an
+// `Svg` pill in the one gray fill on the desktop and the padded number on
+// the theme's gray in the terminal, in the lead after the label and a
+// space, and the row has no tail. On the desktop the line and its lead
+// center the row.
+describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges after the label (M289 AC1, AC2, M302 AC2, AC3)', () => {
   // The plan's fill, written out here rather than read from badge.ts.
   const FILL = 'rgb(110,110,110)'
   const HEADS = [{ key: 'blocked-head' }, { key: 'hotfixes-head' }, { key: 'candidates-head' }] as const
@@ -3436,12 +3485,12 @@ describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges (M289
   test('desktop: each count is one Svg pill holding the number, in the one gray fill', async ($, on) => {
     const ui = await seatAll($, on, 'desktop')
     for (const { key } of HEADS) {
-      const tail = kids((await boxOf(ui, `${key}-tail`)) as Element)
-      const svgs = tail.filter(child => child.type === 'Svg')
-      expect(svgs.length).toBe(1)
-      // No count text beside the pill: only the space before it.
-      expect(tail.filter(child => child.type !== 'Svg').map(textOf)).toEqual([' '])
-      const svg = svgs[0]
+      expect([key, await boxOf(ui, `${key}-tail`)]).toEqual([key, undefined])
+      const lead = kids((await boxOf(ui, `${key}-lead`)) as Element)
+      // The label, the space, then the pill, and no count text beside it.
+      expect(lead.map(child => child.type)).toEqual(['Text', 'Text', 'Svg'])
+      expect(textOf(lead[1])).toBe(' ')
+      const svg = lead[2]
       const count = String(svg.props.alt)
       expect(count).toMatch(/^\d+$/)
       const source = String(svg.props.source)
@@ -3450,10 +3499,11 @@ describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges (M289
       expect(source).toMatch(/<text class="badge-text"[^>]* fill="rgb\(255,255,255\)"/)
       expect(source).toContain(`>${count}</text>`)
       expect(svg.props.height).toBe(16)
-      expect((await boxOf(ui, key))?.props.alignItems).toBe('center')
+      expect([key, (await boxOf(ui, key))?.props.alignItems]).toEqual([key, 'center'])
+      expect([key, (await boxOf(ui, `${key}-lead`))?.props.alignItems]).toEqual([key, 'center'])
     }
-    expect(textOf((await boxOf(ui, 'blocked-head-tail')) as Element)).toBe(' 7')
-    expect(textOf((await boxOf(ui, 'hotfixes-head-tail')) as Element)).toBe(' 1')
+    expect(textOf((await boxOf(ui, 'blocked-head-lead')) as Element)).toBe('Blocked 7')
+    expect(textOf((await boxOf(ui, 'hotfixes-head-lead')) as Element)).toBe('Hotfixes 1')
     await ui.unmount()
   })
 
@@ -3461,15 +3511,17 @@ describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges (M289
     const ui = await seatAll($, on, 'terminal')
     expect(await ui.findAll({ type: 'Svg' })).toEqual([])
     for (const { key } of HEADS) {
-      const tail = kids((await boxOf(ui, `${key}-tail`)) as Element)
-      expect(tail.length).toBe(2)
-      const span = tail[1]
+      expect([key, await boxOf(ui, `${key}-tail`)]).toEqual([key, undefined])
+      const lead = kids((await boxOf(ui, `${key}-lead`)) as Element)
+      expect(lead.length).toBe(3)
+      expect(textOf(lead[1])).toBe(' ')
+      const span = lead[2]
       expect(textOf(span)).toMatch(/^ \d+ $/)
       expect(span.props.color).toBe('inverseText')
       expect(span.props.backgroundColor).toBe(BADGE_KEY)
     }
-    expect(textOf(kids((await boxOf(ui, 'blocked-head-tail')) as Element)[1])).toBe(' 7 ')
-    expect(textOf(kids((await boxOf(ui, 'hotfixes-head-tail')) as Element)[1])).toBe(' 1 ')
+    expect(textOf(kids((await boxOf(ui, 'blocked-head-lead')) as Element)[2])).toBe(' 7 ')
+    expect(textOf(kids((await boxOf(ui, 'hotfixes-head-lead')) as Element)[2])).toBe(' 1 ')
     await ui.unmount()
   })
 })
@@ -4980,9 +5032,9 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   test('the heading counts the drawn rows only (AC2)', () => {
     const [gap, head] = heads()
     expect([gap.key, head.key]).toEqual(['candidates-head-gap', 'candidates-head'])
-    expect(head.tail?.slice(-1)).toEqual([badgeOf(3)])
+    expect(head.lead.slice(-1)).toEqual([badgeOf(3)])
     // The control: with no items every row draws and counts.
-    expect(heads([])[1].tail?.slice(-1)).toEqual([badgeOf(state.candidates.length)])
+    expect(heads([])[1].lead.slice(-1)).toEqual([badgeOf(state.candidates.length)])
   })
 
   test('with every row hidden there is no heading and no gap (AC2)', () => {
@@ -5251,7 +5303,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       'candidate-0',
       'candidate-1',
     ])
-    expect(lines.find(line => line.key === 'candidates-head')?.tail?.slice(-1)).toEqual([badgeOf(3)])
+    expect(lines.find(line => line.key === 'candidates-head')?.lead.slice(-1)).toEqual([badgeOf(3)])
   })
 })
 
