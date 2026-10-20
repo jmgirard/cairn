@@ -1,20 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (M299 review: M299 done and archived; "Guard PR-named rows on other skill paths" and "Close the remaining PR-named row gaps" graduated; parked row "Close the last triage title edge cases" added; M296 row pruned to the 3-row terminal cap; no lessons (LESSONS at 49 lines); skills/tests green; validate green)_
+_Last hygiene check: 2026-10-20 (M300 review: M300 done and archived; "Keep owed issues open on a trivial edit" graduated; parked row "Close the last trivial-route issue gaps" added; M297 row pruned to the 3-row terminal cap; no lessons (LESSONS at 49 lines); skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M300 | A trivial edit keeps owed issues open | review | — | normal | milestones/M300-trivial-route-owed-issues.md |
+| M300 | A trivial edit keeps owed issues open | done | — | normal | milestones/archive/M300-trivial-route-owed-issues.md |
 | M299 | Triage closes the remaining PR-named row gaps | done | — | normal | milestones/archive/M299-triage-row-gaps.md |
 | M298 | Triage keeps a PR-named row's title on every path | done | — | normal | milestones/archive/M298-triage-pr-named-rows.md |
-| M297 | A trivial edit closes the issue of the row it deletes | done | M296 | normal | milestones/archive/M297-trivial-route-issue-close.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
-- Keep owed issues open on a trivial edit: since M297 the trivial route closes the `(#N)` issue of a row it deletes in owner mode, but (1) a kept row that names #N only in its detail does not protect #N; (2) an issue in an open milestone's `Resolves:` slot is not checked; (3) after a failed or capped open-PR read a PR-named row can be deleted, and now its issue closed too; (4) the issue read's order against the five trivial-route checks is unstated, so a failed check can sit beside numbers named to close — added 2026-10-20 — M297 review (diff-bug #4, #5, #6; blame-history #1, #2) — started M300
 - [parked] Close the last triage title edge cases: M299 review findings in `/cairn-triage`: (1) appending a missing started token to a row whose text ends in a bare `:` or ` —` changes its short title, which can break a PR's `Candidate row:` match or a milestone's quote (diff-bug #1, blame-history #2, prior-review #2); (2) an Amend-set `retitle`, `split`, `route`, or title-changing `compress` on a row with a live `M<NNN>` token breaks the title its milestone file quotes, with no chip (diff-bug #5, blame-history #4); (3) an Amend-set merge that changes a survivor's title runs no mention search, and the stamp does not name it (diff-bug #6). Promote when one of these occurs in a real triage pass, never on a count of review findings — added 2026-10-20 — M299 review (D-199)
 - [parked] Close the last trivial-route issue gaps: M300 review findings in `/milestone-plan`'s trivial route: (1) an open PR whose body says `Fixes #N` but whose `Candidate row:` line is missing or names another row does not protect #N (diff-bug #1); (2) whether a narrowed row's text before or after the edit protects a number is unstated (diff-bug #4); (3) an uncommitted local edit to an open milestone's `Resolves:` slot is read as is (diff-bug #7); (4) a failed read of an open milestone file has no rule, unlike the PR read (blame-history #1). Promote when a trivial edit closes an owed issue in a real run, never on a count of review findings — added 2026-10-20 — M300 review
 - [parked] Copilot arm edges (M285 review): (1) a header push rejected because the remote moved ahead after the PR opened, for example a bot commit: neither the arm nor step 6 fetches and merges, so the record waits. (2) An owner-mode PR whose head is on a fork: the arm pushes to `origin`, not to the PR's head remote. Promote when (1) or (2) occurs in a real run — added 2026-10-18 — M285 review (diff-bug #2, #4); narrowed 2026-10-20: item (3), the ripple lens reading additions, not taken (D-192)
