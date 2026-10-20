@@ -55,7 +55,7 @@ the whole title.
 
 - [x] T1: Rewrite tracking-rules "Candidate short title" (`skills/shared/tracking-rules.md:259-270`) to AC1, with example titles inside the bounds in place of `ordinal REML: …` and `Home Button edges`; re-seed the rulebook-mass baseline in `skills/milestone/SKILL.md:120` and its two hand-run pins (`skills/tests/test_cost_audit_line.py`, `skills/tests/test_mutation_harness.py`).
 - [x] T2: Rewrite the `retitle` table row and the "Title → `retitle`" class in `skills/cairn-triage/SKILL.md` (~lines 283 and 325-340) to AC2.
-- [ ] T3: Rewrite README.md's passage (~lines 399-410) and the skeleton comment in `skills/cairn-init/SKILL.md` (~lines 188-197) to AC3.
+- [x] T3: Rewrite README.md's passage (~lines 399-410) and the skeleton comment in `skills/cairn-init/SKILL.md` (~lines 188-197) to AC3.
 - [ ] T4: Add the CHANGELOG entry under `## Unreleased`, and append a D-entry that annotates D-108, D-163, and D-164 (IP4: no edit to them), naming the user's decision at the M292 question set and the pane-width basis of the cap.
 - [ ] T5: Run both gating suites, `claude plugin validate`, the hand-run `skills/tests`, and `cairn_validate`; grep the repo for the old phrasing ("few words", "60 code points", "60 characters") outside history records and fix any live hit.
 
@@ -74,3 +74,4 @@ the whole title.
 - 2026-10-19: plan gate chose to leave an issue absorbed later in the row's detail over changing its title, so double-quoted mentions, `/hotfix` matching, and live milestone quotes keep matching; falsified by a user asking for every issue number in the title.
 - 2026-10-19: T1 done: tracking-rules "Candidate short title" states the one-sentence, 5-word, 40-character format with `(#N)` and new example titles; rulebook baseline re-seeded to 760 lines / 73,320 bytes at its three sites; verify green (5/5).
 - 2026-10-19: T2 done: `/cairn-triage`'s Title class flags fewer than 5 words or more than 40 characters, new titles take the sentence bounds and the issue reference, and the `retitle` table row says one sentence; AC2's grep finds nothing; verify green (5/5).
+- 2026-10-19: T3 done: README's passage states the format, the issue reference, and the triage trigger, its two `Pane refresh lag` examples became `Fix the pane's slow refresh`; the `/cairn-init` skeleton comment states the bounds with the skewness example; AC3's grep finds nothing; verify green (5/5).
