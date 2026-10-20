@@ -42,7 +42,7 @@ Each open pull request line in the cairn pane shows an icon that tells whether t
 - [x] T3: Icons. Add `mergeable` and `conflicts` to `IconName` in `hooks/status/icons.ts`, with a red in `ICON_COLORS`. Draw a merge symbol in green for one and in red for the other, or a red mark that differs from `attention`. Pick terminal glyphs that no other pane mark uses.
 - [x] T4: Draw. In `prLine` (`pane.ts`), push the icon span last in the tail for an open read with a merge state. Check that `centers` in `register.tsx` centers a tail icon on the desktop, and fix it if not. Tests per AC2 on a blocked line and a hotfix line.
 - [x] T5: Docs. Add the changelog entry, and the README and DESIGN passages per AC4, each written against a same-session read of the shipped code.
-- [ ] T6: Live look per AC3. Cut a `hotfix-` branch that edits a line `main` also changes, open it as a draft PR, and look in a new desktop Code session in both themes. Resolve the conflict, push, press ↻ until GitHub answers, and look again. Close the PR unmerged and delete its branch.
+- [x] T6: Live look per AC3. Cut a `hotfix-` branch that edits a line `main` also changes, open it as a draft PR, and look in a new desktop Code session in both themes. Resolve the conflict, push, press ↻ until GitHub answers, and look again. Close the PR unmerged and delete its branch.
 
 ## Work log
 
@@ -59,6 +59,7 @@ Each open pull request line in the cairn pane shows an icon that tells whether t
 - 2026-10-20: T1+T2 done: `mergeOf` and `prViewRead` in pane.ts, `PR_VIEW_FIELDS` used by `readPr`, `mergeable` in `COUNTS_QUERY` and `prRead`, `CairnPrMerge` and the `mergeable` field in types/index.d.ts, `prs` shape tag `prs-4`. Chose a separate `prViewRead` over widening `prWord`, so `prWord`'s word-only tests stand. Verify: all five green (mod suite 2404 pass).
 - 2026-10-20: T3+T4 done: `mergeable` icon is a green merge symbol, `conflicts` a red disc with an ink cross (new `red` in `ICON_COLORS`); terminal glyphs `✓` (success key) and `✗` (error key), which no other pane mark uses. Chose a disc-and-cross for conflicts over a red merge symbol, so the two differ by shape as well as color. `MERGE_MARK` in pane.ts; `prLine` pushes it last in the tail; `centers` now also centers a row with a tail icon. A planted defect (mark never pushed) turned the 4 mergeable/conflicts AC2 tests red. Verify: all five green (mod suite 2412 pass).
 - 2026-10-20: T5 done: CHANGELOG Unreleased New entry, README paragraph after the thread-count paragraph plus the `gh pr view` fields, DESIGN cairn pane part (`mergeOf`, `MERGE_MARK`, `prs-4`, component list). Each written against this session's reads of pane.ts, counts.ts, icons.ts, and register.tsx. Verify all five green; cairn_validate green.
+- 2026-10-20: T6 done: draft PR jmgirard/cairn#314 from `hotfix-m301-merge-probe`, cut from a1e456d6 with a ROADMAP stamp edit that conflicts with main. GitHub read CONFLICTING at once. The operator saw the red conflicts mark on the #314 Hotfixes line in a new session, dark and light. The probe branch then merged main (main's stamp kept) and was pushed; GitHub read CONFLICTING, then UNKNOWN, then MERGEABLE about 10 s later. After a ↻ press the operator saw the green merge symbol, dark and light. #314 closed unmerged, remote and local branch deleted.
 
 ## Decisions
 
