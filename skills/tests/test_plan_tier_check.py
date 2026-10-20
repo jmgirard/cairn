@@ -240,9 +240,12 @@ class TestPlanTierCheck(unittest.TestCase):
             "and one in a kept row's title reference.",
             "A narrowed row's issue stays open, since part of its work is "
             "left: the route closes no narrowed row's number.",
-            "In guest mode no issue is closed",
+            "The read takes no issue body.",
+            "In guest mode no issue is closed and none is read",
         ):
             self.assertIn(phrase, read)
+        option = section(self.step1, "`trivial`: the option's description",
+                         "In owner mode the edit is committed")
         for phrase in (
             "It also names each number the route will close after the push.",
             "It names each number of a deleted row that the route leaves "
@@ -250,10 +253,21 @@ class TestPlanTierCheck(unittest.TestCase):
             "When a narrowed row's title, or in guest mode a deleted row's "
             "title, ends with `(#N)` or `(#N, #M)`, it names that number as "
             "left alone.",
+            "It also says that the commit summary ends with the deleted rows' "
+            "issue references.",
+        ):
+            self.assertIn(phrase, option)
+        for phrase in (
             "If a deleted row's title ends with `(#N)` or `(#N, #M)`, the "
             "one-line summary ends with those references",
+            "If the commit fails, the plan pushes nothing and closes no "
+            "issue, and its close block names the error.",
             "A failed or rejected push closes no issue.",
             "and names each number named for closing as left open.",
+            "It gives the `gh issue close` command to run for each one once "
+            "the commit is pushed.",
+            "When a close exited 0 and its re-read failed, the close block "
+            "also says that the close command succeeded.",
             "After the push succeeds, the route runs `gh issue close <N> "
             "--repo <base-repo>` for each number the description named for "
             "closing.",
@@ -265,6 +279,10 @@ class TestPlanTierCheck(unittest.TestCase):
             "error, the re-read's state, or the failed re-read.",
         ):
             self.assertIn(phrase, self.step1)
+        self.assertLess(
+            self.step1.index("If the push fails or is rejected, it never "
+                             "forces."),
+            self.step1.index("The close block then names the local commit"))
         push = self.step1.index("`git push <base> HEAD:<default-branch>`")
         self.assertLess(push, self.step1.index("After the push succeeds"))
         self.assertLess(self.step1.index("**Candidate-row match"),
@@ -278,6 +296,8 @@ class TestPlanTierCheck(unittest.TestCase):
             "the user's own request or `/milestone-plan`'s tier chip.",
             "Through `/milestone-plan`'s trivial route, the commit also "
             "graduates the rows it fixes.",
+            "In owner mode the route also closes the open issue of a row it "
+            "deletes, once its option names the close.",
         ):
             self.assertIn(phrase, self.rules)
         template = flat(SKILLS / "shared" / "templates" /

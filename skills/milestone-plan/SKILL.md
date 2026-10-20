@@ -162,7 +162,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      number the route will close after the push. It names each number of
      a deleted row that the route leaves alone, with the reason. When a
      narrowed row's title, or in guest mode a deleted row's title, ends
-     with `(#N)` or `(#N, #M)`, it names that number as left alone.
+     with `(#N)` or `(#N, #M)`, it names that number as left alone. It
+     also says that the commit summary ends with the deleted rows' issue
+     references.
      In owner mode the edit is committed and pushed to the
      default branch. In guest mode the edit is left uncommitted on disk. In
      owner mode the description also names any other uncommitted paths,
@@ -178,18 +180,22 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      `git commit -m "<one-line summary>" -- <paths>`, and
      `git push <base> HEAD:<default-branch>`. If a deleted row's title
      ends with `(#N)` or `(#N, #M)`, the one-line summary ends with those
-     references, for example `(#12)`. If the push fails or is rejected, it
-     never forces. A failed or rejected push closes no issue. The close
-     block then names the local commit and the undo command
-     `git reset --soft HEAD~1`, and names each number named for closing as
-     left open. After the push succeeds, the route runs
+     references, for example `(#12)`. If the commit fails, the plan pushes
+     nothing and closes no issue, and its close block names the error. If
+     the push fails or is rejected, it never forces. A failed or rejected
+     push closes no issue. The close block then names the local commit and
+     the undo command `git reset --soft HEAD~1`, and names each number
+     named for closing as left open. It gives the `gh issue close` command
+     to run for each one once the commit is pushed. After the push succeeds, the route runs
      `gh issue close <N> --repo <base-repo>` for each number the
      description named for closing. It then re-reads each one with the
      same `gh issue view` call, whether its close succeeded or not. On
      success it ends with a close block naming the commit. The close block
      names as closed each such number whose re-read reads `CLOSED`. It
      names each other one as left open, with the close command's error,
-     the re-read's state, or the failed re-read. In guest mode it writes the
+     the re-read's state, or the failed re-read. When a close exited 0 and
+     its re-read failed, the close block also says that the close command
+     succeeded. In guest mode it writes the
      edit on disk with no commit and ends with a close block.
    - **Plan a milestone anyway.** The plan goes on to step 2.
    - **Stop.** The close block, and nothing written.
