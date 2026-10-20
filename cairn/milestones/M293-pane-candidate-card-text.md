@@ -76,6 +76,7 @@ On the desktop, the card that a candidate row's ⓘ opens in the cairn pane show
 - 2026-10-19: T5 done: live look by the operator in circumplex's docked pane (the plugin links to this checkout): the card holds the whole row text, and a tall card's top runs past the pane's top. Recorded as item (3) of the parked row "Fix cut and odd names on the pane card", as Out names; the row stays parked for review hygiene to judge.
 - 2026-10-19: claim audit: 25 claims read, 3 corrected — reader.test.ts (the glmmTMB rows are now second and third), CHANGELOG.md and README.md (the card's text has HTML comments removed and is plain text, not the row "as written").
 - 2026-10-19: implement done; status review.
+- 2026-10-19: step-7 approval: m293-pane-candidate-card-text approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
