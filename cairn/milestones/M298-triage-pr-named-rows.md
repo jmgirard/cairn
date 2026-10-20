@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M298: Triage keeps a PR-named row's title on every path
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -51,7 +51,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 
 - AC1 → T1, T4
 - AC2 → T1, T4
-- AC3 → T2, T4
+- AC3 → T2, T4, T7
 - AC4 → T3, T4
 - AC5 → T5
 - AC6 → T4, T6
@@ -69,6 +69,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - [x] T4: Add a hand-run guard under `skills/tests/` (beside the M295 triage guard, if one exists) pinning T1 to T3's sentences, each member pinned on its own. Show each new assertion red against the pre-change skill before trusting its green.
 - [x] T5: Append the D-entry (next free id) and the CHANGELOG entry per AC5.
 - [x] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
+- [x] T7: Review return 1: place the merge survivor's lineage clause before its trigger, and at the row's end where the row has no started token or its first `: ` follows that token, so every survivor keeps its title; apply the pass-1 fix-now items; update the guard's pins; re-run T6's checks.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -102,6 +103,8 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: implement complete; skills/tests 923 OK, cairn_validate green; status → review.
 - 2026-10-20: review pass 1: four lenses, 27 findings (14 fix now, 1 follow-up, 12 rejected); Review section holds each.
 - 2026-10-20: review return 1: AC3 fails as written — a merge survivor's title can still change when its trigger text is placed before the clause's ` — ` opening (diff-bug #1), and when its first `: ` follows its first started token (diff-bug #2); fix both in the skill so every survivor keeps its title, with the pass-1 fix-now items listed in the Review section.
+- 2026-10-20: T7 (minor amendment for review return 1; Coverage AC3 → T2, T4, T7): the lineage clause goes first, then the trigger, at the row's end where the row has no started token or its first `: ` follows that token, so step 4 states the title holds for every survivor (D-196's and the changelog's unbounded claims now hold); fix-now: chip names a standing change on each later chip, Amend option matches the loop's list, a `compress` on a PR-named row keeps its title unless Amend says otherwise, "own short title" is the session-start reading, each naming PR's number, a `retitle`'s not-checked mark covers its mentions, step 2's keep sentence names the Amend override, the M298 changelog entry drops the restated M295 sentence, the M295 entry and README say "proposes to keep"; guard rewritten to 25 pins, all red against main, the 15 changed ones red against c397496f; verify green (scripts 428, hooks 193, validates 0, plugin test 2389), skills/tests 923 OK, cairn_validate green.
+- 2026-10-20: implement complete after return 1; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

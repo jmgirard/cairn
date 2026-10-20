@@ -171,7 +171,7 @@
   write those lines for the rows a merge removes or narrows. When
   `/hotfix` resumes a PR, it checks those lines by title. `/cairn-triage` could retitle
   such a row, which broke those matches. It now reads the `Candidate row:`
-  lines of every open PR and keeps each row they name as it is. If it
+  lines of every open PR and proposes to keep each row they name as it is. If it
   cannot read the PRs, it says so. Each row it then proposes to change,
   other than a keep, is marked as not checked against them.
 
@@ -181,12 +181,12 @@
   and each pull request that names it. It also says that the change
   breaks that pull request's match of the row. When the pass did not read
   the open pull requests, or the list stopped at 100, it marks a change
-  you set at Amend as not checked. It marks a proposed change the same
-  way. A merge no longer makes the title of the surviving row longer. The
-  added lineage text holds no `: `. Where the row has no `: ` or ` — `
-  before that text, it opens with ` — `. A retitle of another row no longer rewrites
-  a quoted mention of the old title inside such a row's title. The pass
-  lists the mention as left, with the pull request's number.
+  you set at Amend as not checked. A merge no longer makes the title of
+  the surviving row longer. The added lineage text holds no `: `. Where
+  the row has no `: ` or ` — ` before that text, it opens with ` — `. A
+  retitle of another row no longer rewrites a quoted mention of the old
+  title inside such a row's title. The pass lists the mention as left,
+  with the pull request's number.
 
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the

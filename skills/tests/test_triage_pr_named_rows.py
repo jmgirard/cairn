@@ -40,7 +40,8 @@ class TestTriagePrNamedRows(unittest.TestCase):
 
     def test_amend_names_the_pr_of_a_changed_row(self):
         # AC1: a title-changing disposition set at Amend on a PR-named row
-        # names the row and its PRs in the next chip, on every Amend.
+        # names the row and its PRs in the next chip, on every Amend, and
+        # on each later chip while the change stands (review return 1).
         loop = section(self.triage, "**The amend loop.**",
                        "Whatever the answer, **every item not accepted")
         self.assertPhrases((
@@ -48,17 +49,28 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "the row or changes its short title.",
             "Those are `drop`, `merge` as the absorbed row, `split`, "
             "`route`, `retitle`, and a `compress` that rewrites the title.",
+            "A `compress` on a PR-named row keeps its short title, unless "
+            "the user's *Amend* says to rewrite it.",
             "The chip posed after that *Amend* names the row and each "
             "naming PR's number in its question text.",
             "It also says that the change breaks that PR's match of the row.",
             "A second or later *Amend*, which shows no table, follows the "
             "same rule.",
+            "Each later chip names the row and its PRs again while that "
+            "change stands.",
         ), loop)
         option = section(self.triage, "2. **Amend**", "3. **Apply nothing**")
         self.assertPhrases((
-            "The user can also amend a PR-named row away from `keep`, and "
-            "the next chip names the PR (the amend loop below).",
+            "The user can also amend a PR-named row to remove it or change "
+            "its short title.",
+            "The next chip then names the PR (the amend loop below).",
         ), option)
+        keep = section(self.triage,
+                       "As that rule also says, a PR-named row is `keep`",
+                       "**Started tokens → a token change.**")
+        self.assertPhrases((
+            "The user can still change it at *Amend* (step 3).",
+        ), keep)
 
     def test_amend_marks_rows_after_a_failed_or_capped_read(self):
         # AC2: a disposition set at Amend after a failed or capped open-PR
@@ -76,18 +88,22 @@ class TestTriagePrNamedRows(unittest.TestCase):
         ), loop)
 
     def test_merge_lineage_clause_keeps_the_survivor_title(self):
-        # AC3: the clause opens with ` — ` where the survivor has no title
-        # end before it, and it holds no `: `.
+        # AC3: the clause goes first, at the row's end where the title runs
+        # past the started token, opens with ` — ` where the survivor has
+        # no title end before it, and holds no `: ` (review return 1).
         apply = section(self.triage, "4. **Apply.**", "5. **Record.**")
         self.assertPhrases((
+            "merge survivor's lineage clause, and then any trigger it takes "
+            "from the absorbed row, go before the row's first started token.",
+            "When the row has no started token, or its first `: ` comes "
+            "after that token, they go at the row's end instead.",
             "Where the survivor's text holds neither `: ` nor ` — ` before "
-            "that place, the clause opens with ` — `.",
+            "that place, the lineage clause opens with ` — `.",
             "The lineage clause, and any trigger it takes from the absorbed "
             "row, hold no `: `, each one written as `; `.",
-            "So the survivor's short title stays as it was, a PR-named row "
-            "and a row with a started token included.",
-            "This holds for every survivor with no `: ` after its first "
-            "started token.",
+            "So the survivor's short title stays as it was, for every "
+            "survivor, a PR-named row and a row with a started token "
+            "included.",
         ), apply)
 
     def test_retitle_leaves_a_mention_in_a_pr_named_title(self):
@@ -98,24 +114,33 @@ class TestTriagePrNamedRows(unittest.TestCase):
         self.assertPhrases((
             "A double-quoted mention of the old title that sits inside a "
             "PR-named row's own short title is not rewritten.",
-            "The table lists it as left, with the PR's number, as it lists "
-            "an ambiguous mention.",
+            "The table lists it as left, with each naming PR's number, as "
+            "it lists an ambiguous mention.",
+            "That short title is the one session start read, whatever the "
+            "row's own disposition.",
         ), row)
         title = section(self.triage, "**Title → `retitle`.**",
                         "A finding-absorbing row")
         self.assertPhrases((
             "A mention found inside a PR-named row's own short title is "
-            "listed as left, with the PR's number.",
+            "listed as left, with each naming PR's number.",
         ), title)
+        keep = section(self.triage,
+                       "As that rule also says, a PR-named row is `keep`",
+                       "**Started tokens → a token change.**")
+        self.assertPhrases((
+            "A `retitle`'s reason also says that the mentions it rewrites "
+            "were not checked.",
+        ), keep)
         table = section(self.triage, "**The table**", "**The chip**")
         self.assertPhrases((
             "It also names each mention it leaves inside a PR-named row's "
-            "short title, with the PR's number.",
+            "short title, with each naming PR's number.",
         ), table)
         apply = section(self.triage, "4. **Apply.**", "5. **Record.**")
         self.assertPhrases((
             "and none in an item being dropped, nor one inside a PR-named "
-            "row's own short title;",
+            "row's own short title as session start read it;",
         ), apply)
 
 
