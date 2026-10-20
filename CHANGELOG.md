@@ -151,8 +151,8 @@
   merge. A red disc with a cross means that it has conflicts with its base
   branch. The terminal shows a green `✓` or a red `✗`. The pane reads
   GitHub's `mergeable` field in the query it already runs. Just after a
-  push GitHub can answer that it does not know yet, and the line then has
-  no mark until a later ↻ press.
+  push GitHub can answer that it does not know yet. The line then has no
+  mark. A later read, at a ↻ press or a new pane open, draws it.
 
 - **`/copilot-review` handles Copilot's review on one pull request.** Run
   it with a PR number or URL, or with nothing for the current branch's PR.

@@ -1,6 +1,6 @@
 # M301: Show each open PR's merge state in the pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,6 +60,8 @@ Each open pull request line in the cairn pane shows an icon that tells whether t
 - 2026-10-20: T3+T4 done: `mergeable` icon is a green merge symbol, `conflicts` a red disc with an ink cross (new `red` in `ICON_COLORS`); terminal glyphs `✓` (success key) and `✗` (error key), which no other pane mark uses. Chose a disc-and-cross for conflicts over a red merge symbol, so the two differ by shape as well as color. `MERGE_MARK` in pane.ts; `prLine` pushes it last in the tail; `centers` now also centers a row with a tail icon. A planted defect (mark never pushed) turned the 4 mergeable/conflicts AC2 tests red. Verify: all five green (mod suite 2412 pass).
 - 2026-10-20: T5 done: CHANGELOG Unreleased New entry, README paragraph after the thread-count paragraph plus the `gh pr view` fields, DESIGN cairn pane part (`mergeOf`, `MERGE_MARK`, `prs-4`, component list). Each written against this session's reads of pane.ts, counts.ts, icons.ts, and register.tsx. Verify all five green; cairn_validate green.
 - 2026-10-20: T6 done: draft PR jmgirard/cairn#314 from `hotfix-m301-merge-probe`, cut from a1e456d6 with a ROADMAP stamp edit that conflicts with main. GitHub read CONFLICTING at once. The operator saw the red conflicts mark on the #314 Hotfixes line in a new session, dark and light. The probe branch then merged main (main's stamp kept) and was pushed; GitHub read CONFLICTING, then UNKNOWN, then MERGEABLE about 10 s later. After a ↻ press the operator saw the green merge symbol, dark and light. #314 closed unmerged, remote and local branch deleted.
+- 2026-10-20: claim audit: 36 claims read, 1 corrected — CHANGELOG.md (the no-mark sentence named only a ↻ press; a pane open also re-reads).
+- 2026-10-20: implement done, all six tasks checked, verify green; status set to review.
 
 ## Decisions
 
