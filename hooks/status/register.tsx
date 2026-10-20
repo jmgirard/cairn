@@ -141,8 +141,9 @@ const ended = atom({ plugin: 'cairn', key: 'ended' } as const, false, { shape: '
 // gained the blocked rows (M223), to 4 when each blocked row gained its
 // pull request's URL (M224), to 5 when each blocked row gained
 // `archived` (M246), to 6 when the state gained the candidate rows'
-// started tokens (M258), and to 7 when the next step gained `title` (M272).
-const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-7' })
+// started tokens (M258), to 7 when the next step gained `title` (M272),
+// and to 8 when each candidate row gained its `text` (M293).
+const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneState, { shape: 'pane-8' })
 
 // Each blocked row's pull request state word by its URL, written by the
 // read at a pane open or a Refresh press (M224). A URL with no entry has
@@ -402,7 +403,8 @@ export const register: Register = on => {
     // `key`, so each line's key sits on a Box.
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
-    // hidden Box with its whole text, placed above the row out of the flow,
+    // hidden Box with its whole text (on a candidate line, its row's text
+    // after the priority token, M293), placed above the row out of the flow,
     // which the pointer over the line reveals, or on a line with `info` the
     // pointer over its info glyph, which names the card's hover group (M290);
     // an absolute Box paints over

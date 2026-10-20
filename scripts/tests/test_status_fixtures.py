@@ -160,7 +160,7 @@ def python_candidates(start):
     (not the indented ones it also counts), each section read after its own
     HTML comments are removed, each row its priority and the text after the
     token before its first `: `, else before its first ` — `, else all of it
-    (M251)."""
+    (M251), and its whole text after the token, trimmed the same way (M293)."""
     root = cs.cc.find_cairn_root(str(start))
     if root is None:
         return []
@@ -185,7 +185,11 @@ def python_candidates(start):
             if m:
                 text = text[m.end():]
             cut = ": " if ": " in text else " — "
-            out.append({"priority": priority, "title": text.split(cut, 1)[0].strip(JS_TRIM)})
+            out.append({
+                "priority": priority,
+                "title": text.split(cut, 1)[0].strip(JS_TRIM),
+                "text": text.strip(JS_TRIM),
+            })
     return out
 
 
@@ -266,11 +270,15 @@ class StatusFixtureAgreement(unittest.TestCase):
         # The same rows and titles as three cases in
         # hooks/status/reader.test.ts, written out by hand on both sides: the
         # M251 AC1 empty title, and the two M251 review trim edges where
-        # Python's bare strip() differs from JavaScript's trim().
+        # Python's bare strip() differs from JavaScript's trim(), plus the
+        # M293 row whose text opens with a byte-order mark and ends with a
+        # unit separator, built from code points (LESSONS M272).
+        bom, us = chr(0xFEFF), chr(0x1F)
         rows = [
             ": an empty short title — added 2026-01-04",
             "Trailing byte-order mark\ufeff: x — added 2026-01-05",
             "Trailing unit separator\u001f: x — added 2026-01-06",
+            f"{bom}Leading byte-order mark: x{us}",
         ]
         with tempfile.TemporaryDirectory() as tmp:
             root = pathlib.Path(tmp) / "repo"
@@ -280,9 +288,13 @@ class StatusFixtureAgreement(unittest.TestCase):
             self.assertEqual(
                 python_candidates(root),
                 [
-                    {"priority": "normal", "title": ""},
-                    {"priority": "normal", "title": "Trailing byte-order mark"},
-                    {"priority": "normal", "title": "Trailing unit separator\u001f"},
+                    {"priority": "normal", "title": "", "text": ": an empty short title — added 2026-01-04"},
+                    {"priority": "normal", "title": "Trailing byte-order mark",
+                     "text": f"Trailing byte-order mark{bom}: x — added 2026-01-05"},
+                    {"priority": "normal", "title": f"Trailing unit separator{us}",
+                     "text": f"Trailing unit separator{us}: x — added 2026-01-06"},
+                    {"priority": "normal", "title": "Leading byte-order mark",
+                     "text": f"Leading byte-order mark: x{us}"},
                 ],
             )
 

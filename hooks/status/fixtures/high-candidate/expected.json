@@ -5,9 +5,9 @@
   "pane": [],
   "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Chosen row", "waiting": [{"id": "M002", "title": "Open work", "unmet": ["M077 (unknown)"]}]},
   "candidates": [
-    {"priority": "normal", "title": "Untagged first"},
-    {"priority": "high", "title": "Taken row"},
-    {"priority": "high", "title": "Chosen row"},
-    {"priority": "high", "title": "Later high"}
+    {"priority": "normal", "title": "Untagged first", "text": "Untagged first: an earlier normal row, passed over — added 2026-01-01"},
+    {"priority": "high", "title": "Taken row", "text": "Taken row: work has started on it — added 2026-01-02 — started M2"},
+    {"priority": "high", "title": "Chosen row", "text": "Chosen row: the first high row no open milestone took — added 2026-01-03 — started M001"},
+    {"priority": "high", "title": "Later high", "text": "Later high: a second untaken high row — added 2026-01-04"}
   ]
 }

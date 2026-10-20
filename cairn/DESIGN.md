@@ -311,9 +311,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high`, `low`, or `parked` for
   an exact `[high] `, `[low] `, or `[parked] ` opening, else `normal`;
-  `parked` since M284) and the short title: the
-  text before the first `: `, else before the first ` — `, else all of it
-  (M251, tracking-rules "Candidate short title"). It walks the sections
+  `parked` since M284), the short title (the
+  text before the first `: `, else before the first ` — `, else all of it;
+  M251, tracking-rules "Candidate short title"), and the text: all of it
+  after the token, trimmed as the title is (M293). It walks the sections
   `candidate_count` walks, but that count also takes indented lines and
   lines inside comments.
   `test_status_fixtures.py` holds the reader to each fixture's `candidates`
@@ -387,7 +388,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   In guest mode, `/milestone-review`'s archived-file arm (D-159) sets a
   `blocked` row to `done` and runs a named part of step 9, writing
   nothing to the archive and making no issue write. In owner mode it
-  reports and stops. The pane state's shape tag is `pane-7` (M272).
+  reports and stops. The pane state's shape tag is `pane-8` (M293).
   Each blocked row also keeps that pull request's URL up to its number
   (M224, `prUrl` and `pr_url`), and the pane reads each PR's state
   from it. `readPrs` in `register.tsx` runs one call per distinct URL
@@ -505,15 +506,18 @@ transitions, human-gated merges, and a domain verification doctrine.
   since an image has no theme signal, and centers the row. The terminal
   draws the span's glyph. A line's `full` holds its whole text on head,
   task, criterion, workable, waiting, blocked, hotfix, and candidate lines,
-  and none when empty. Off the terminal, the render puts an unkeyed Box
-  inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
+  and none when empty. A candidate line's `full` is its row's whole text
+  after the priority token (`CandidateRow.text`, trimmed as the short title
+  is), not the short title the line draws (M293). Off the terminal, the
+  render puts an unkeyed Box inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
   `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
   above the row, or on a candidate line the pointer over its ⓘ (below).
   The card has no key, because a keyed Box scopes its own
   hover and a hidden scope is never under the pointer. A candidate line's
   parked ✎ Box has no key for the same reason (M290).
-  A candidate line with a `full` sets `info`. Off the terminal it draws,
+  A candidate line with a `full`, one whose short title is empty included,
+  sets `info` (M293). Off the terminal it draws,
   just before ✎, a hidden unkeyed Box that the line reveals, holding a gray
   `Text` `ⓘ` (`INFO_LABEL`) with `hover: { scope: 'cairn-info-<line key>',
   bold: true }`. Its card's `hover` names the same `scope`, so the card
@@ -553,8 +557,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `reader.ts` reads each candidate row's ` — started M<NNN>` or
   ` — started #<n>` token, followed by the row's end or a character that
   is not an ASCII letter or digit (corrected M272), into the pane state's
-  `taken` list (`{ title, ref }`, tag `pane-6`, M258; `pane-7` since
-  M272), keeping an M token only while
+  `taken` list (`{ title, ref }`, tag `pane-6`, M258; `pane-8` since
+  M293), keeping an M token only while
   the table holds its id as `planned` or `blocked` and the id is not an
   archived blocked row's (M246), and giving it at three-digit padding.
   `startedRefs` in `pane.ts` marks a row by its body lines, its `#<n>`
@@ -796,8 +800,8 @@ within each type and are never reused.
   shorter, and a file deleted and recreated reads as absent. An empty or
   unreadable file before any good read prints `no cairn ROADMAP found`.
   So do the first failed read after a reload from pre-M210 code and a
-  moved pane shape tag (`pane-7` since M272) after a reload, until the
-  next refresh (corrected M223, M246, M258, M272). A pane parse
+  moved pane shape tag (`pane-8` since M293) after a reload, until the
+  next refresh (corrected M223, M246, M258, M272, M293). A pane parse
   throw keeps the band's old rows, and a throwing refresh skips the
   command's registration. Duplicate ids give duplicate pane keys and share
   one percent. The pane matches `## Candidates (dropped)` and draws a bare

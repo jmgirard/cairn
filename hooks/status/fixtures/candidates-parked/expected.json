@@ -5,13 +5,13 @@
   "pane": [],
   "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting": []},
   "candidates": [
-    {"priority": "parked", "title": "Parked first"},
-    {"priority": "normal", "title": "Normal row"},
-    {"priority": "normal", "title": "[PARKED] Upper-case parked, read as normal"},
-    {"priority": "normal", "title": "[parked]No space after the parked token, kept in the title"},
-    {"priority": "normal", "title": "Token [parked] mid-row, read as normal"},
-    {"priority": "low", "title": "Low row"},
-    {"priority": "parked", "title": ""},
-    {"priority": "parked", "title": "Parked last"}
+    {"priority": "parked", "title": "Parked first", "text": "Parked first: a parked row above every other level; promote when a case appears — added 2026-01-01"},
+    {"priority": "normal", "title": "Normal row", "text": "Normal row: an untagged row below a parked row — added 2026-01-02"},
+    {"priority": "normal", "title": "[PARKED] Upper-case parked, read as normal", "text": "[PARKED] Upper-case parked, read as normal: the token is case-sensitive — added 2026-01-03"},
+    {"priority": "normal", "title": "[parked]No space after the parked token, kept in the title", "text": "[parked]No space after the parked token, kept in the title — added 2026-01-04"},
+    {"priority": "normal", "title": "Token [parked] mid-row, read as normal", "text": "Token [parked] mid-row, read as normal — added 2026-01-05"},
+    {"priority": "low", "title": "Low row", "text": "Low row: a low row between parked rows — added 2026-01-06"},
+    {"priority": "parked", "title": "", "text": ": a parked row with an empty short title — added 2026-01-07"},
+    {"priority": "parked", "title": "Parked last", "text": "Parked last: a second parked row, split from the first — added 2026-01-08"}
   ]
 }
