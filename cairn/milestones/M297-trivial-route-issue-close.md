@@ -67,8 +67,8 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - [x] T2: Extend the owner-mode commit sentence: the summary carries the issue references, and after a successful push each named issue is closed and re-read, with the close block naming each result. Trace each path the new step opens (push fails, push rejected, close fails, `gh` cannot run) to the outward write it reaches (LESSONS M172).
 - [x] T3: Add a test to `skills/tests/test_plan_tier_check.py` pinning T1's and T2's sentences, each member pinned on its own. Show each new assertion red against the pre-change step 1 before trusting its green.
 - [x] T4: Append the D-entry (next free id) per AC4.
-- [ ] T5: Edit README's trivial-edit row and add the CHANGELOG entry.
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
+- [x] T5: Edit README's trivial-edit row and add the CHANGELOG entry.
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -98,6 +98,8 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - 2026-10-20: T1-T3 done: step 1 gains an **Issue read** paragraph after the candidate-row match, three option sentences, and the commit/close sentences; T2 trace: a failed or rejected push reaches no close, a pre-chip read that fails or a `gh` that cannot run leaves the number alone so no close runs for it, a failed close or re-read is named in the close block; `test_trivial_route_closes_deleted_rows_issues` pins 20 phrases, each absent from main's step 1 (checked one by one) and present now; the M265 push pin split in two around the inserted sentence; verify 5/5 green, skills/tests OK.
 - 2026-10-20: implementation choice: the step names a kept row (narrowed or left in place) once in the Issue read paragraph and reuses the term; the summary example is `(#12)`.
 - 2026-10-20: T4 done: D-195 appended (annotates D-170 and D-162; rejects `Fixes #N` with its falsifier; D-108's door does not apply, since the close is a route step, not a conduct rule about verification or records).
+- 2026-10-20: T5 done: README's trivial-edit row and a CHANGELOG Unreleased "Changes that affect existing repos" entry name the owner-mode issue close; long added sentences split for the simple-english hook, whose remaining hits are older text.
+- 2026-10-20: T6 done: from the repo root, scripts/tests 0, hooks/tests 0, plugin validate 0, marketplace validate 0, plugin test 0, skills/tests 0; cairn_validate all checks passed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

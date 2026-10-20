@@ -128,6 +128,18 @@
   card takes. A card can still come out a row or two shorter or longer
   than its room. The terminal pane still draws `✎` on each row that has one.
 
+- **A direct edit closes the issue of the row it removes.** In owner
+  mode, `/milestone-plan`'s direct-edit route can remove a candidate row
+  whose title ends with an issue number, such as `(#12)`. The route now
+  closes that issue after the push. Before you choose, the route's option names
+  each issue it will close. It leaves alone a number that is closed, that
+  names a pull request, or that it cannot read, and an issue that a row
+  it keeps still names, such as a row it narrows. The commit summary ends
+  with the removed rows' issue numbers. After the push, the route closes
+  each named issue, reads it again, and says which issues are closed and
+  which stay open. If the push fails, no issue is closed. In guest mode
+  no issue is closed.
+
 ### New
 
 - **`/copilot-review` handles Copilot's review on one pull request.** Run
