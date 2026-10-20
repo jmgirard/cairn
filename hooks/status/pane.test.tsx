@@ -6178,6 +6178,53 @@ describe('a blocked line and a hotfix line share one layout (M286 AC5)', () => {
   }
 })
 
+describe('an open pull request line ends with its merge state mark (M301 AC2)', () => {
+  const BLOCKED_URL = 'https://github.com/o/r/pull/9'
+  const HOTFIX_URL = 'https://github.com/o/other/pull/4'
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: BLOCKED_URL, archived: false }],
+    taken: [],
+  }
+  const hotfix = { number: 4, title: 'Fix a crash', url: HOTFIX_URL }
+  const read = (mergeable: 'mergeable' | 'conflicts' | null): PrRead => ({ word: 'in review', counts: null, mergeable })
+  // The icon names and glyphs are written out by hand, apart from the
+  // MERGE_MARK table in pane.ts.
+  const CASES: [string, Record<string, PrRead>, { icon: string; text: string } | null][] = [
+    ['mergeable', { [BLOCKED_URL]: read('mergeable'), [HOTFIX_URL]: read('mergeable') }, { icon: 'mergeable', text: '✓' }],
+    ['conflicts', { [BLOCKED_URL]: read('conflicts'), [HOTFIX_URL]: read('conflicts') }, { icon: 'conflicts', text: '✗' }],
+    ['a null merge state', { [BLOCKED_URL]: read(null), [HOTFIX_URL]: read(null) }, null],
+    ['no read yet', {}, null],
+  ]
+  for (const [name, prs, want] of CASES) {
+    for (const key of ['blocked-M5', 'hotfix-4']) {
+      test(`${name} on ${key}`, () => {
+        const line = layout(state, [], false, prs, [hotfix]).find(each => each.key === key)
+        expect(line).not.toBe(undefined)
+        const tail = line?.tail ?? []
+        const icons = tail.filter(span => span.icon !== undefined)
+        if (want === null) {
+          expect(icons).toEqual([])
+          return
+        }
+        expect(icons.length).toBe(1)
+        const last = tail[tail.length - 1]
+        expect(last.icon).toBe(want.icon)
+        expect(last.text).toBe(want.text)
+        // The mark comes after the state word.
+        const wordAt = tail.findIndex(span => span.text === 'in review')
+        expect(wordAt).toBeGreaterThan(-1)
+        expect(tail.length - 1).toBeGreaterThan(wordAt)
+      })
+    }
+  }
+})
+
 describe('hovering a line on the desktop shows a card with its full text (M286 AC9)', () => {
   // One state with an active milestone, the queue, a blocked row, and a
   // hotfix; one with no active milestone, for the candidate lines. Each

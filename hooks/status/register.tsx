@@ -477,9 +477,10 @@ export const register: Register = on => {
         <Text wrap="wrap">{rows === null ? line.full : cardCut(line.full ?? '', rows, e.props.bodyColumns)}</Text>
       </Box>
     )
+    // A tail icon, the merge state mark, centers its row too (M301).
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
-      (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
+      (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined || span.icon !== undefined))
         ? { alignItems: 'center' as const }
         : {}
     const drawLine = (line: (typeof lines)[number]) => (

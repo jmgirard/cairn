@@ -521,6 +521,13 @@ export const PR_MARK: Record<PrWord, { text: string; icon: IconName }> = {
   unknown: { text: '◌', icon: 'open' },
 }
 export const UNREAD_MARK = { text: OPEN_MARK, icon: 'ring' as IconName }
+// An open pull request's merge state mark, last in its line's tail (M301):
+// a green merge symbol when it can merge, a red disc with a cross when it
+// has conflicts, each with the glyph the terminal draws in its place.
+export const MERGE_MARK: Record<PrMerge, Span> = {
+  mergeable: { text: '✓', color: FLOW_COLORS.review, icon: 'mergeable' },
+  conflicts: { text: '✗', color: 'error', icon: 'conflicts' },
+}
 // The card's line keys (M286), and the text a number draws as before a read
 // gives it.
 export const CARD_KEYS = {
@@ -765,10 +772,11 @@ export function cardLines(
 // (M286): the state mark in its word's color, the identifier bold, the
 // title, and a tail that holds the pull request's number in gray, the
 // archived mark for a blocked row whose file was archived (M246), and the
-// state word in its color. Before a read the mark is `○` in gray and the
-// tail holds no word. A blocked row with no pull request has no number. A
-// line with a tail grows, so the tail sits at the right end whether or not
-// the title is cut.
+// state word in its color. An open pull request whose read has a merge
+// state ends the tail with that state's mark (M301). Before a read the mark
+// is `○` in gray and the tail holds no word. A blocked row with no pull
+// request has no number. A line with a tail grows, so the tail sits at the
+// right end whether or not the title is cut.
 function prLine(key: string, id: string, title: string, number: number | null, archived: boolean, got: PrRead | undefined): PaneLine {
   const word = got?.word
   const mark: Span = word === undefined ? { ...UNREAD_MARK, color: GRAY } : { ...PR_MARK[word], color: prColor(word) }
@@ -777,6 +785,8 @@ function prLine(key: string, id: string, title: string, number: number | null, a
   if (number !== null) tail.push({ text: ' ' }, { text: `#${number}`, color: GRAY })
   if (archived) tail.push({ text: ' ' }, { text: 'archived', color: GRAY })
   if (word !== undefined) tail.push({ text: ' ' }, { text: word, color: prColor(word) })
+  const merge = got?.mergeable ?? null
+  if (merge !== null) tail.push({ text: ' ' }, { ...MERGE_MARK[merge] })
   if (tail.length > 0) {
     held.tail = [{ text: ' ' }, ...tail]
     held.grow = true
