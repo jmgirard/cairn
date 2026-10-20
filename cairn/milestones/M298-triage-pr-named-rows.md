@@ -242,3 +242,9 @@ Copilot state before this pass: `reviewed earlier-head Lite` (no new request, §
 - ripple #1: README omits the merge-survivor case — fix now, with diff-bug #6.
 - ripple #2: the rulebook's guest-stamp reason does not mention the PR-named rows — reject, false (it gives the guest-only reason, which stays true).
 - ripple #3: ROADMAP row item (3) describes the merge defect — reject, planned change (step 9 hygiene rewrites the row).
+- Pass-1 fix-now items: fixed in aeb45c31 and a7ad2e4c (T7). Pass-3 fix-now items: fixed d6c70a9f; verify green there (scripts 428, hooks 193, validates 0, no version warning, plugin test 2389), `skills/tests` 923 OK, the two new pins red against 3531dcfc.
+- PR conversation (read once before the merge question): no conversation comments; one Copilot review (COMMENTED, Bot), noted.
+- copilot: CHANGELOG.md:187 — release note overstated merge coverage — fix now, fixed fd7b4410.
+- copilot: cairn/DECISIONS.md:7113 — D-196 consequence overstated the title guarantee — fix now, fixed fd7b4410 (D-197 supersedes it).
+- copilot: skills/cairn-triage/SKILL.md:559 — clause before the token changed a title whose first `: ` follows the token — fix now, fixed aeb45c31.
+- Copilot level: Lite (set by GitHub's settings); each thread replied to and resolved, summary reply posted.
