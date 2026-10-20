@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M299: Triage closes the remaining PR-named row gaps
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP2, IP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what an adopter's `/cairn-triage` pass proposes and writes to candidate rows   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m299-triage-row-gaps   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -65,12 +65,12 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Add the data-never-instructions sentence to the session-start open-PR read in `skills/cairn-triage/SKILL.md` (near line 88), in the words of `skills/milestone-plan/SKILL.md:114`.
-- [ ] T2: Add the new-title rule to step 2 for `retitle`, `split`, `route`, and a title-changing `compress` (the Title class near line 355 and the table rows near line 297).
-- [ ] T3: Add the token exception to step 2's token-change rule (near line 403), and the table's "left" line for such a token.
-- [ ] T4: In step 2's Overlap class (near line 329), draft the lineage clause and trigger, and add the before-and-after title check. Keep step 4's placement rules as they are.
-- [ ] T5: In step 3's amend loop (near line 492), add the `#<n>` live-token chip, the Amend-set `retitle` search and table line, and the title-changing merge chip. Change step 2's "So no disposition of the pass rewrites a live token" (near line 393) to say "no proposed disposition".
-- [ ] T6: Extend `skills/tests/test_triage_pr_named_rows.py` with one pin per new rule, each list member pinned on its own. Show each new pin red against the old skill text first.
+- [x] T1: Add the data-never-instructions sentence to the session-start open-PR read in `skills/cairn-triage/SKILL.md` (near line 88), in the words of `skills/milestone-plan/SKILL.md:114`.
+- [x] T2: Add the new-title rule to step 2 for `retitle`, `split`, `route`, and a title-changing `compress` (the Title class near line 355 and the table rows near line 297).
+- [x] T3: Add the token exception to step 2's token-change rule (near line 403), and the table's "left" line for such a token.
+- [x] T4: In step 2's Overlap class (near line 329), draft the lineage clause and trigger, and add the before-and-after title check. Keep step 4's placement rules as they are.
+- [x] T5: In step 3's amend loop (near line 492), add the `#<n>` live-token chip, the Amend-set `retitle` search and table line, and the title-changing merge chip. Change step 2's "So no disposition of the pass rewrites a live token" (near line 393) to say "no proposed disposition".
+- [x] T6: Extend `skills/tests/test_triage_pr_named_rows.py` with one pin per new rule, each list member pinned on its own. Show each new pin red against the old skill text first.
 - [ ] T7: Write the D-entry and the CHANGELOG Fixes entry. Update README's triage passages (near lines 424 and 603). Search README and `skills/shared/tracking-rules.md` for "short title stays the same", and fix each claim that AC3 makes false.
 - [ ] T8: Run the `verify` slot and the hand-run `skills/tests` from the repo root. Check each exit code.
 
@@ -97,6 +97,9 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - 2026-10-20: plan gate chose for AC6 one before-and-after title check on every merge survivor over leaving D-197's accepted consequence, because the check covers every row shape in one rule; falsified by a proposed merge whose survivor's short title still changes.
 - 2026-10-20: plan gate chose for AC3 to leave a dead token that sits inside a short title over removing it on non-PR-named rows only, because a removal changes the title and breaks each double-quoted mention for every row; falsified by a row whose left dead token a real triage pass reports as a problem.
 - 2026-10-20: plan gate kept the six gaps in one milestone with 7 criteria and 8 tasks, since all edit one skill and ship together.
+- 2026-10-20: implement start: branch m299-triage-row-gaps cut from main at 70bba243; untracked `cairn-probe.log` is not this milestone's and stays unstaged.
+- 2026-10-20: T1–T5: `skills/cairn-triage/SKILL.md` gains the data sentence at the open-PR read, a "New short titles" paragraph after the Title class, the dead-token exception in the token-change rule, the before-and-after title check in the Overlap class, and three amend-loop paragraphs (live `#<n>` chip, title-changing merge chip, Amend-set `retitle` mention search with its table line); "no disposition" now reads "no proposed disposition". Choice: the no-table rule names the `retitle` exception in place rather than only in the new paragraph, so a reader of either sentence sees it.
+- 2026-10-20: T6: six new tests in `skills/tests/test_triage_pr_named_rows.py`, one phrase per subtest; run against main's skill text each new test fails on its own missing phrase or section marker (27 failing subtests), the four M298 tests stay green; on the branch the hand-run `skills/tests` runs 929 tests OK and all five `verify` checks pass (scripts 428 OK, hooks OK, both validates pass, mod test 0 fail).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
