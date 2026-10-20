@@ -439,9 +439,10 @@ export const register: Register = on => {
     // Where each candidate card opens, from the Pane props (M294): above
     // its row when it fits there, else below, else cut to the larger side,
     // or not at all where that side has fewer than 3 rows. A card that
-    // opens below draws last in the pane's root Box, since an absolute Box
-    // paints only over the rows before it, so its line's rows after it
-    // would cover a card drawn in the line.
+    // opens below draws after every line in the pane's root Box: an
+    // absolute Box is painted over the siblings before it, so the lines
+    // after its own, painted later, would cover a card drawn in the line.
+    // The M294 live look saw a card drawn last paint over those lines.
     const places = cardPlaces(lines, {
       bodyColumns: e.props.bodyColumns,
       offset: e.props.scroll.offset,

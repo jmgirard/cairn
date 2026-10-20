@@ -6617,9 +6617,10 @@ describe('each candidate card is placed from the Pane props (M294 AC4)', () => {
 })
 
 // M294 AC5: an upward card is drawn in its line at `bottom: 1`; a card that
-// opens below is drawn last in the pane's root Box at its line's row plus
-// 1, hidden until the line's ⓘ group lights; a cut card has its rows as its
-// height and clips the rest; the terminal draws none. The line's row is
+// opens below is drawn after every line in the pane's root Box at its
+// line's row plus 1, hidden until the line's ⓘ group lights; a cut card
+// holds its text cut by whole words to fit its rows, ending in `…`, and
+// sets no height; the terminal draws none. The line's row is
 // read off the drawn tree: its place in the pane's lines, plus the summary
 // card's two border rows, each line one row.
 describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {

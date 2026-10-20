@@ -349,8 +349,8 @@ export const PLAN_CANDIDATE_LABEL = '✎'
 export const INFO_LABEL = 'ⓘ'
 
 // Where a candidate line's card opens (M294): `up` above its row, as every
-// other card does, or `down` below it, with `rows` the card's height when it
-// is cut to fit, else null. A null place draws no card.
+// other card does, or `down` below it, with `rows` the rows a cut card's
+// text is fitted to (`cardCut`), else null. A null place draws no card.
 export type CardPlace = { side: 'up' | 'down'; rows: number | null } | null
 
 // The fewest rows a cut card keeps: its two border rows and one of text.

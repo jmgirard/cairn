@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M294: A candidate row's ⓘ card opens where the cairn pane has room for it
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -55,7 +55,7 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - [x] T3: `register.tsx` (~527-545): read `bodyColumns`, `scroll`, and `placement` from `e.props`; for a candidate line, keep the `up` card in its line, or draw the `down` card as an absolute Box last in the `cairn-pane` Box, with the cap's `height` and `overflow`. Write the AC4 and AC5 tests first (redraw with new props; `flat(root)` will list the overlay, so line-counting tests allow for it).
 - [x] T4: README, DESIGN, the CHANGELOG ⓘ-card entry (unreleased, so edit it), and the render comments.
 - [x] T5: `pane.ts`: `cardCut`, its AC5 table first; register.tsx's `cardBox` draws a cut card with `cardCut`'s text and no `height`; update the cut-card render test, the DESIGN placement paragraph, and the `cardBox` comment (amendment after the live look).
-- [ ] T6: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
+- [x] T6: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -81,6 +81,9 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: re-audit: AC5 (full) — 5 findings on the fixed wording: "last" with several down cards, the render's `cardCut` arguments, a ` …` that wraps past `rows`, `rows >= CARD_MIN_ROWS` for `…` alone, and the cut/capped terms. Applied; a second re-audit line on AC5 is the stop, so the wording goes to the operator.
 - 2026-10-20: substantive amendment: AC5's cut-card clause now cuts the text by whole words with `cardCut` and sets no `height`, at the operator's approval of the wording shown; T5 added for it, the old T5 renumbered T6, Coverage renumbered. The live look's verify-and-look step stays in the new T6 as a short recheck of the second row.
 - 2026-10-20: T5 done: `cardCut` in pane.ts; `cardBox` draws a cut card with `cardCut(full, cap, bodyColumns)` and no `height` or `overflow`; the cardCut table (6 cases) passes, and the cut-card render test asserts no height and the text `Long row: aaaa bbbb cccc …`. DESIGN's placement paragraph and the `cardBox` comment follow. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2380 pass 0 fail.
+- 2026-10-20: T6 done: verify green (above); the operator's recheck in circumplex found the second row's card ending in "…" with no empty rows.
+- 2026-10-20: claim audit: 75 claims read, 5 corrected — pane.test.tsx (the AC5 comment still said a cut card takes a height), pane.ts (`CardPlace.rows` is the rows the text is fitted to), register.tsx ("only over the rows before it" restated as the type doc's siblings, with the live look as the source), README.md and CHANGELOG.md (the no-card case, "when it fits only below", and the estimate's limit replace "no longer runs past the pane's top").
+- 2026-10-20: implement done; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
