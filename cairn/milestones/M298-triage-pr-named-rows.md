@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M298: Triage keeps a PR-named row's title on every path
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -107,6 +107,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: implement complete after return 1; status → review.
 - 2026-10-20: claim audit: 16 claims read, 1 corrected — skills/cairn-triage/SKILL.md (a survivor with no text before its first started token also takes the clause at the row's end, so the title holds for every survivor; reader's counterexample `- — started M12`); guard pin updated, red against aeb45c31, skills/tests 923 OK, cairn_validate green; no file the verify slot reads changed since its green run at aeb45c31.
 - 2026-10-20: review pass 2: four lenses, 29 findings (9 fix now, 6 follow-up, 9 rejected, 5 held at the stop); AC3 fails a second time by a new mechanism of the same shape (a title ending in a bare `:` or ` —`, a token-only row), so thrash rule (b) stops for the user; the plan gate's recorded alternative (no PR-named row as a merge survivor) has its falsifier met by this finding.
+- 2026-10-20: thrash (b) stop answered: the user chose "No PR-named survivor" — triage never proposes a merge whose survivor is a PR-named row, AC3 is amended to say so and re-audited by a fresh reader, and the merge-placement rules stay for other rows without the every-survivor promise; status → in-progress for that amendment and the pass-2 fix-now items.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
