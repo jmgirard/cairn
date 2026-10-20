@@ -87,3 +87,21 @@ Review head `b86e45b0`, synced with `origin/main` (0 commits behind). PR #316 op
 - AC7: on `b86e45b0`: `scripts/tests` OK (428 run, 21 skipped), `hooks/tests` OK, plugin validate exit 0, marketplace validate exit 0, mod test exit 0 (2417 pass).
 - Record note: the AC6 and AC7 boxes were ticked one edit before these two lines landed, because two inserts failed on a non-unique anchor. The evidence was already gathered above.
 - Consistency gate: `cairn_validate.py` all checks passed. No principle changed, so `cairn_impact` was skipped. Verify is green (AC7). The marketplace validate output has no `plugins[N].version` warning. The CHANGELOG Unreleased badge entry covers the change and names no milestone.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the `headText`/`countHead` test helpers join lead and tail, so they cannot catch a placement change — fix now (comment says placement is checked by the M302 lead and tail tests), fixed f84702cc
+- diff-bug #2: `countHeading` names the gap line `space`, which reads like the one-space span — fix now (renamed `blank`), fixed f84702cc
+- diff-bug #3: the growing empty text in a badge heading now pushes no tail — reject (false as a defect): the `heading()` comment says "where it has one", and the empty text still takes the free room
+- diff-bug #4 to #9: info, no defect (narrow pane width unchanged, centering scope, terminal path, callers and types, track.ts comment, tests not passing for the wrong reason) — reject (false as a defect)
+- blame-history #1: the terminal badge ground `inactive` is the pane's gray text key, so the separation M289 kept is gone — reject (planned change): one gray was the user's request, and the badge is a filled ground, not gray text
+- blame-history #2: terminal contrast of `inverseText` on `inactive` is unmeasured — reject (planned change): the badge Known issue already names it unchecked
+- blame-history #3: `badge.ts` hard-codes `'inactive'` instead of importing `GRAY` — fix now (`BADGE_KEY = GRAY`), fixed f84702cc
+- blame-history #4: the 16 px badge row can be taller than icon rows, pre-existing — reject (false as a new defect): pre-existing and named in the badge Known issue
+- blame-history #5: M286's "count at the right end" text no longer covers these headings — fix now with ripple #1 and #2, fixed f84702cc
+- ripple #1: `CHANGELOG.md` Unreleased new-look entry said "any count at the right end" — fix now (now names the Tasks and Criteria counts), fixed f84702cc
+- ripple #2: `cairn/DESIGN.md` cairn pane part said every heading has "its tail at the right end" — fix now ("any tail"), fixed f84702cc
+- ripple #3: the `headText` comment still spoke of the badge in a tail — fix now with diff-bug #1, fixed f84702cc
+- prior-review #1: the Known issue said no badge heading draws while a milestone is active, but Blocked and Hotfixes draw either way — fix now (states this repo's state during M302), fixed f84702cc
+- prior-review #2: a short hard-wrapped README line — fix now (rewrapped), fixed f84702cc
+- prior-review #3: a `badge.ts` comment sentence wraps and records change history — reject (style): milestone history in comments is the mod's convention
+- prior-review #4: `drawSpan` and `drawsSvg` still handle a tail badge, which nothing produces now — reject (false as a defect): the span drawing stays general for any lead or tail, and `drawsSvg` also serves the tail merge icon
+- Fixes re-verified: mod tests 2417 pass, both Python suites OK, both validates exit 0 (before the last README and DESIGN wording edits, which no check reads).
