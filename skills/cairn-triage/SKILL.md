@@ -98,7 +98,8 @@ title such a line names is **PR-named**, by that PR's number. The call
 reads every author's open PRs, a wider set than the pane's own list,
 which reads only yours. Only the
 PRs that the call returns count, so a list cut at 100 can miss a later
-PR, as the pane's list can. If the read fails or `gh` cannot run, note
+PR, as the pane's list can. If the call returns 100 PRs, note for step
+3's table that the list can be cut there. If the read fails or `gh` cannot run, note
 the failure for step 3's table. A failed `#<n>` read holds its row at
 `keep`, but a failed list read holds no row, so the pass still runs while
 `gh` is down. Step 2 marks rows instead.
@@ -302,7 +303,10 @@ re-examines a lesson.
 
    A row carrying a live started token, or missing one, is `keep` before
    anything else is checked, §7's options included. Its reason names the
-   token. §7 applies to the row again once the token is dead.
+   token. §7 applies to the row again once the token is dead. A PR-named
+   row (session start) is `keep` in the same way, before §7 and every
+   class below, the Title class included. Its reason names that PR's
+   number, and §7 applies to it again once no open PR names it.
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
@@ -378,11 +382,10 @@ re-examines a lesson.
    `keep` (records-hygiene §1), with that milestone named in the reason. As the
    rule above says, a row carrying a live started token, or missing one,
    is `keep` too. So no disposition of the pass rewrites a live token.
-   A PR-named row (session start) is `keep` too, with that PR's number in
-   the reason. So its short title stays the one that the PR's
-   `Candidate row:` line names. A priority change or a token change can
-   still ride on it. If the session-start list read failed, the table
-   names the failure. Then the reason of each candidate row proposed for
+   As that rule also says, a PR-named row is `keep`, so its short title
+   stays the one that the PR's `Candidate row:` line names. A priority
+   change or a token change can still ride on it. If the session-start
+   list read failed, the table names the failure. Then the reason of each candidate row proposed for
    any disposition other than `keep` says that the row was not checked
    against open pull requests.
    **Started tokens → a token change.** A token change is a row fact beside
@@ -409,7 +412,9 @@ re-examines a lesson.
      the chip's own text carries what the decision needs), one row per
      enumerated item: item (source + subject) → disposition → one-line
      reason. In guest mode a line above the table names the
-     `<base>/<default-branch>` ref that step 2's code checks read. Every
+     `<base>/<default-branch>` ref that step 2's code checks read. A line
+     above the table also names an open-PR read (session start) that
+     failed or that can be cut at 100. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.

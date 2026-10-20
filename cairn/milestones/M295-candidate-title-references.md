@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M295: A candidate title's issue number stays part of the title
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -90,8 +90,8 @@ CHANGELOG entry states both changes.
 
 - AC1 → T1, T4
 - AC2 → T2
-- AC3 → T3
-- AC4 → T3
+- AC3 → T3, T7
+- AC4 → T3, T7
 - AC5 → T5
 - AC6 → T6
 
@@ -125,6 +125,11 @@ CHANGELOG entry states both changes.
 - [x] T6: Run the five `verify` commands from the repo root, checking each
       exit code. Hand-run `skills/tests` (non-gating, D-109) and compare its
       reds with main's (LESSONS M148: new prose near pinned slices).
+- [x] T7: Review return 1: in `skills/cairn-triage/SKILL.md`, rank the
+      PR-named keep with the live-token keep (~line 303) before §7 and every
+      class; plan's hotfix-route summary carries no `#N`; `/hotfix`'s
+      title-number sentence covers each number; a 100-PR list read says it
+      may be cut; step 3's table spec names the failed-read notice.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -159,6 +164,7 @@ CHANGELOG entry states both changes.
 - 2026-10-20: claim audit: 30 claims read, 4 corrected — CHANGELOG.md, skills/cairn-triage/SKILL.md (CHANGELOG: the pane counts only your own PRs, `/hotfix` and `/milestone-review` write the lines in owner mode, the failed-read mark covers non-`keep` rows; triage: an unclosed fence runs to the end of the body; also a sentence that triage reads every author's PRs, moved after the PR-named definition at the reader's wording note); the same reader re-read all corrections as true.
 - 2026-10-20: implement complete; status set to review.
 - 2026-10-20: review return 1: AC3 fails — `skills/cairn-triage/SKILL.md` ranks the PR-named keep after §7's options and the Title class, so a PR-named row in a §7 group can be proposed `promote`/`route`/`drop` and one with a bad title `retitle` (diff-bug #1, prior-review #1, ripple #1); rank it with the live-token keep. Fix-now items riding on the return: plan's hotfix-route summary carries no `#N` (diff-bug #2); hotfix "each number names its issue" (#3); a 100-PR list read says it may be cut (#4); step 3's table spec names the failed-read notice (#7).
+- 2026-10-20: T7 added for review return 1 (minor amendment; Coverage AC3, AC4 → T3, T7) and done: the PR-named keep now sits beside the live-token keep before §7 and every class, the Title class included, and step 2's later sentence points back to it; plan's hotfix-route summary carries no `#N`; `/hotfix` says each number names its issue; a 100-PR read is noted as possibly cut, and step 3's table names a failed or cut open-PR read. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -38,8 +38,8 @@ can resolve against the fork instead of the base repo.
    title") that the argument quotes verbatim is part of that title, not a
    PR reference. An argument whose only `#N` sits in such a title is a bug
    report: it takes the candidate-row match below, and no `gh pr view`
-   reads it. That number still names the issue for step 6's `Fixes #N`
-   body line. Either way this stays
+   reads it. Each such number still names its issue for step 6's
+   `Fixes #N` body line. Either way this stays
    a hotfix only if it restores documented behavior and fits one sitting.
    If it needs a design decision, changes exported behavior beyond
    restoring what was documented, or won't fit one sitting — stop: add a
