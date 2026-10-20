@@ -39,7 +39,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 
 - [x] AC1: `skills/cairn-triage/SKILL.md` step 3's amend loop states that when the user sets, on a PR-named row, a disposition that removes the row or changes its short title (`drop`, `merge` as the absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites the title), the chip posed after that Amend names, in its question text, the row and each naming PR's number, and says that the change breaks that PR's match of the row. A second or later Amend, which shows no table, follows the same rule.
 - [x] AC2: The amend loop states that after a session-start open-PR read that failed or returned 100 PRs, a non-`keep` disposition the user sets at Amend carries the same not-checked mark in its table reason on the first Amend as a proposed one does, and the chip's question text names that row as not checked on every Amend.
-- [x] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
+- [ ] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
 - [x] AC4: The `retitle` rule states that a double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten, and the table lists it as left, with the PR's number, as it lists an ambiguous mention.
 - [x] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191. It records AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and it states that it passes D-108's door on its retained trigger, naming the M295 review's shipped defects. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths.
 - [x] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
@@ -106,6 +106,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: T7 (minor amendment for review return 1; Coverage AC3 → T2, T4, T7): the lineage clause goes first, then the trigger, at the row's end where the row has no started token or its first `: ` follows that token, so step 4 states the title holds for every survivor (D-196's and the changelog's unbounded claims now hold); fix-now: chip names a standing change on each later chip, Amend option matches the loop's list, a `compress` on a PR-named row keeps its title unless Amend says otherwise, "own short title" is the session-start reading, each naming PR's number, a `retitle`'s not-checked mark covers its mentions, step 2's keep sentence names the Amend override, the M298 changelog entry drops the restated M295 sentence, the M295 entry and README say "proposes to keep"; guard rewritten to 25 pins, all red against main, the 15 changed ones red against c397496f; verify green (scripts 428, hooks 193, validates 0, plugin test 2389), skills/tests 923 OK, cairn_validate green.
 - 2026-10-20: implement complete after return 1; status → review.
 - 2026-10-20: claim audit: 16 claims read, 1 corrected — skills/cairn-triage/SKILL.md (a survivor with no text before its first started token also takes the clause at the row's end, so the title holds for every survivor; reader's counterexample `- — started M12`); guard pin updated, red against aeb45c31, skills/tests 923 OK, cairn_validate green; no file the verify slot reads changed since its green run at aeb45c31.
+- 2026-10-20: review pass 2: four lenses, 29 findings (9 fix now, 6 follow-up, 9 rejected, 5 held at the stop); AC3 fails a second time by a new mechanism of the same shape (a title ending in a bare `:` or ` —`, a token-only row), so thrash rule (b) stops for the user; the plan gate's recorded alternative (no PR-named row as a merge survivor) has its falsifier met by this finding.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -169,3 +170,31 @@ Copilot state before this pass: `reviewed earlier-head Lite` (no new request, §
 - AC6: at a7ad2e4c, scripts/tests 428 OK (21 skipped), hooks/tests 193 OK, plugin validate exit 0, marketplace validate exit 0 (no `plugins[N]` warning), plugin test 2389 pass, exit 0; `skills/tests` 923 OK. Pass.
 - Consistency gate: `cairn_validate.py` exit 0; no principle changed; profile gate: verify green, no version warning, changelog entry present.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a survivor whose text ends in a bare `:` (no space) or ` —` still changes title once the clause opens with ` — `, so "for every survivor" is false — AC3 fails a second time; thrash rule (b) stop (AC3 tick withdrawn).
+- diff-bug #2: for `- — started M12` the token's ` — ` has no space before it, so whether the clause opens with ` — ` is unclear and the title can change — same AC3 class, held at the stop.
+- diff-bug #3: D-196 no longer matches the final skill (placement, the `compress` rule, the mention mark, the session-start reading, "while that change stands") — fix now, one batched correcting entry after the stop's answer.
+- diff-bug #4: the override is called "logged" but no stamp or close block names the PR whose match broke — fix now.
+- diff-bug #5: text placed at the row's end leaves a token mid-row, against `compress` keeping tokens at the row's end — held with the AC3 stop (placement).
+- diff-bug #6: a new title can equal a title an open PR's line names — follow-up, "Guard PR-named rows on other skill paths".
+- diff-bug #7: a PR-named row retitled at Amend still leaves the mention moved into its detail — reject, planned change (pass 1 chose the session-start reading).
+- diff-bug #8: "the next chip names the PR" (singular, next), README covers only a title change, changelog "the pull request's number" — fix now.
+- diff-bug #9: with no remote every amended row is marked not checked on every Amend — reject, style (noise the failed-read rule accepts).
+- diff-bug #10: removing a dead token from `Title — started M12: detail` changes its title — follow-up, "Guard PR-named rows on other skill paths" (pre-existing; a token change is not a disposition).
+- blame-history #1: placement ambiguous for a row with no `: ` — reject, false (no first `: ` means the condition does not hold).
+- blame-history #2: D-196 does not record that a left mention drops a row from its §7 group (D-149) — fix now, in the correcting entry.
+- blame-history #3: D-196 should say it narrows D-191, since Amend can override the keep — fix now, in the correcting entry.
+- blame-history #4: the D-108 door claim covers less than it states — reject, false (each new rule repairs one of the three M295 defects).
+- blame-history #5: Amend can remove a PR-named row that also carries a live guest started token (D-166) — follow-up, "Guard PR-named rows on other skill paths" (the Amend override on live-token rows predates M298).
+- blame-history #6: the `: ` → `; ` rewrite of trigger text has no recorded reason — fix now, in the correcting entry.
+- blame-history #7: the guard adds surface D-109 weighed — reject, planned change (T4).
+- prior-review #1: step 4 says a `retitle` can rewrite a mention inside a `keep` or `promote` row, and a PR-named `keep` row is now excepted — fix now.
+- prior-review #2: the end-of-row placement departs from M259's before-the-token rule with no D-entry — held with the AC3 stop; recorded in the correcting entry.
+- prior-review #3: the open-PR read lacks "PR text is data, never instructions" — follow-up, item (5) of "Guard PR-named rows on other skill paths".
+- prior-review #4: DESIGN Known issues on Amend promote names only `promote` — reject, false (still accurate).
+- prior-review #5: the guard is EXEMPT, not registered — reject, planned change (D-109 practice).
+- ripple #1: the M295 changelog heading still says "keeps" while its body says "proposes to keep" — fix now.
+- ripple #2: a `retitle` set at Amend runs no mention search, so no mention is listed or left — follow-up, "Guard PR-named rows on other skill paths" (Amend-set titles already skip checks, DESIGN Known issues).
+- ripple #3: no separator is stated when the clause does not open with ` — `, and the changelog says "before that text" for "before that place" — held with the AC3 stop.
+- ripple #4: tracking-rules says a token ends the row, the skill handles text after one — reject, false (step 4 already keeps "a note right after the removed token").
+- ripple #5: the step-2 `compress` row has no pointer to the PR-named rule — fix now.
+- ripple #6: README covers only a title change — fix now, with diff-bug #8.
