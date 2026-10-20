@@ -165,15 +165,32 @@
   title, not as a pull request. It still uses the number for the PR's
   `Fixes #N` line. A `#N` outside the title is read as before.
 
-- **`/cairn-triage` keeps a row that an open pull request names.** The
+- **`/cairn-triage` proposes to keep a row that an open pull request names.** The
   pane hides a candidate row that one of your own open PRs names in a
   `Candidate row:` line. In owner mode, `/hotfix` and `/milestone-review`
   write those lines for the rows a merge removes or narrows. When
   `/hotfix` resumes a PR, it checks those lines by title. `/cairn-triage` could retitle
   such a row, which broke those matches. It now reads the `Candidate row:`
-  lines of every open PR and keeps each row they name as it is. If it
+  lines of every open PR and proposes to keep each row they name as it is. If it
   cannot read the PRs, it says so. Each row it then proposes to change,
   other than a keep, is marked as not checked against them.
+
+- **`/cairn-triage` guards the title of a row a pull request names on
+  three more paths.** You can still amend such a row to a change that
+  removes it or changes its title. Each question after that names the
+  row and each pull request that names it. It also says that the change
+  breaks that pull request's match of the row. When the pass did not read
+  the open pull requests, or the list stopped at 100, it marks a change
+  you set at Amend as not checked. The pass no longer proposes a merge
+  that keeps such a row as the survivor, so a proposed merge leaves its
+  title alone. If you set such a merge at Amend, each question after that
+  names the row and its pull requests. It says that the merge can change
+  the row's title and break their match. A retitle of another row no
+  longer rewrites a quoted mention of the old title inside such a row's
+  title. The pass lists the mention as left, with each naming pull
+  request's number. Every merge now writes its added lineage text with no
+  `: `. It opens that text with ` — ` where the surviving row has neither
+  `: ` nor ` — ` before it.
 
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the
