@@ -22,7 +22,7 @@ import {
 } from './pane'
 import type { PaneLine, PrRead } from './pane'
 import type { PaneState } from './reader'
-import { archivedArgs, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs } from './repo'
+import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs } from './repo'
 import { candidateRows, listNames, parseRoadmapRows, takenRows } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -963,7 +963,7 @@ describe('section headings, the head line, Next, and the card in the picked look
     taken: [],
   }
   const lines = () =>
-    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 } })
+    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 }, name: 'cairn' })
   const at = (key: string) => lines().find(line => line.key === key)
 
   test('a plain heading: the bold label and an empty text that grows', () => {
@@ -1063,17 +1063,19 @@ describe('section headings, the head line, Next, and the card in the picked look
       {
         key: 'card-repo',
         indent: 0,
-        lead: [
+        lead: [],
+        text: { text: 'cairn', bold: true },
+        tail: [
+          { text: '  ' },
           { text: '3', bold: true },
           { text: ' PRs', color: GRAY },
           { text: '   ' },
           { text: '12', bold: true },
           { text: ' issues', color: GRAY },
         ],
-        text: { text: '' },
+        tailGrows: true,
         card: true,
         buttons: ['refresh'],
-        grow: true,
       },
       {
         key: 'card-candidates',
@@ -2553,6 +2555,8 @@ type GhRepo = {
   describe?: GhAnswer
   log?: GhAnswer
   diff?: GhAnswer
+  // The `git rev-parse --git-common-dir` answer (M291).
+  common?: GhAnswer
 }
 // A repo query reply in the shape GitHub returns (M286).
 const repoReply = (prs: unknown, issues: unknown): GhAnswer => ({
@@ -2605,9 +2609,11 @@ function gh(
   })
   const failed = { exitCode: 128, stdout: '' }
   const reply = async (e: { argv: readonly string[] }) => {
-    if (e.argv[0] === 'git' && (e.argv[1] === 'describe' || e.argv[1] === 'log' || e.argv[1] === 'diff')) {
+    if (e.argv[0] === 'git' && ['describe', 'log', 'diff', 'rev-parse'].includes(e.argv[1])) {
       out.card.push(e.argv)
-      const got = (e.argv[1] === 'describe' ? repo.describe : e.argv[1] === 'log' ? repo.log : repo.diff) ?? failed
+      const got =
+        (e.argv[1] === 'describe' ? repo.describe : e.argv[1] === 'log' ? repo.log : e.argv[1] === 'diff' ? repo.diff : repo.common) ??
+        failed
       if (got === 'reject') throw new Error('git cannot start')
       return value(got)
     }
@@ -3560,11 +3566,14 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     const remotes: Record<string, string> = {}
     let answer = GOOD
     // The card's repo query fails, so its numbers stay `?` across the reads
-    // and the lines compare with the baseline (M286).
+    // and the lines compare with the baseline (M286). With no remote the
+    // name comes from the common git dir, the same `repo` that the origin
+    // URL names later (M291).
     const calls = gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), undefined, {
       remotes,
       list: () => answer(),
       counts: () => ({ exitCode: 1, stdout: '' }),
+      common: { exitCode: 0, stdout: '/work/repo/.git\n' },
     })
     seat(on, copyOf('blocked-prs'))
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
@@ -3634,18 +3643,23 @@ describe('a failed list keeps the last good read for the root, and an empty one 
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     expect((await keysOf($)).includes('hotfix-1265')).toBe(true)
-    expect((await linesAt($)).find(line => line.key === 'card-repo')?.text).toBe('3 PRs   12 issues')
+    expect((await linesAt($)).find(line => line.key === 'card-repo')?.text).toBe('repo  3 PRs   12 issues')
     copy.cwd = '/other'
     await $.turn.complete(turn())
     const moved = await linesAt($)
     expect(moved.filter(line => HOTFIX_KEY.test(line.key))).toEqual([])
-    expect(moved.find(line => line.key === 'card-repo')?.text).toBe('? PRs   ? issues')
+    // The other root's own segment, not the name read for the first (M291).
+    expect(moved.find(line => line.key === 'card-repo')?.text).toBe('other  ? PRs   ? issues')
     counts = { exitCode: 1, stdout: '' }
     answer = () => 'reject'
     const viewsOf1265 = () => calls.reads.filter(url => url ===prUrl(1265)).length
     const before = viewsOf1265()
     await pressKey($, 'cairn-pane-refresh')
-    expect(await linesAt($)).toEqual(moved)
+    // Its own read names the project from the URL though its numbers
+    // failed (M291), and the rest of the lines stay.
+    expect(await linesAt($)).toEqual(
+      moved.map(line => (line.key === 'card-repo' ? { ...line, text: 'repo  ? PRs   ? issues' } : line)),
+    )
     // The read itself drops the other root's list, so its URL is not read
     // again, apart from the drawing's root check (M226 review).
     expect(viewsOf1265()).toBe(before)
@@ -3690,6 +3704,8 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
     expect(keyOf(got.first as Element)).toBe(firstKey)
     const children = childKeys(got.first)
     expect(children[children.length - 1]).toBe(`${firstKey}-refresh`)
+    // The first line's tail grows, so ↻ sits at its right end after the
+    // project name and the counts (M291).
     // Besides the first line, each candidate line's text grows, so ✎ sits at
     // its right end (M242, M242 review; on the desktop while the pointer is
     // over the line, M290), and so does each blocked or hotfix
@@ -3705,7 +3721,7 @@ describe('the pane has one ↻ Refresh Button, at the right end of its first lin
         return /^(blocked-[^-]+|hotfix-\d+)$/.test(key) && childKeys(line).includes(`${key}-tail`)
       })
       .map(keyOf)
-    expect(grows(got.lines)).toEqual([[`${firstKey}-text`, 1], ...growing.map(key => [`${key}-text`, 1])])
+    expect(grows(got.lines)).toEqual([[`${firstKey}-tail`, 1], ...growing.map(key => [`${key}-text`, 1])])
     expect(got.lines.filter(line => line.props.justifyContent !== undefined).map(keyOf)).toEqual([])
     expect(got.button?.props.label).toBe('↻')
     return got
@@ -5861,7 +5877,7 @@ describe('the card counts the drawn candidate rows by level and the planned and 
   const cardOf = (state: PaneState) =>
     layout(state, [], true)
       .filter(line => line.card)
-      .map(line => [line.key, [...line.lead, ...(line.text === null ? [] : [line.text])].map(span => span.text).join('')])
+      .map(line => [line.key, [...line.lead, ...(line.text === null ? [] : [line.text]), ...(line.tail ?? [])].map(span => span.text).join('')])
 
   test('with no active milestone, the card matches the drawn list', () => {
     expect(cardOf(idle)).toEqual(CARD)
@@ -5909,7 +5925,7 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
     await $.command.run({ command: COMMAND })
     await calls.settled()
     expect(calls.card.filter(argv => argv[0] === 'gh')).toEqual([ORIGIN_QUERY])
-    expect(await cardText($)).toBe('3 PRs   12 issues')
+    expect(await cardText($)).toBe('repo  3 PRs   12 issues')
   })
 
   // M286 review: the blocked words and the hotfix list do not wait for the
@@ -5942,7 +5958,7 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
     expect(textAt(lines, 'card-repo')).toBe('? PRs   ? issues')
     release()
     await calls.settled()
-    expect(await cardText($)).toBe('3 PRs   12 issues')
+    expect(await cardText($)).toBe('repo  3 PRs   12 issues')
   })
 
   test('a turn end runs no query', async ($, on) => {
@@ -5969,7 +5985,7 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
       answer = fail
       await pressKey($, 'cairn-pane-refresh')
       await calls.settled()
-      expect(await cardText($)).toBe('3 PRs   12 issues')
+      expect(await cardText($)).toBe('repo  3 PRs   12 issues')
     }
   })
 
@@ -5980,7 +5996,7 @@ describe("the card's GitHub numbers come from one query, at the pull request rea
     await $.command.run({ command: COMMAND })
     await calls.settled()
     expect(calls.card.filter(argv => argv[0] === 'gh').length).toBe(1)
-    expect(await cardText($)).toBe('? PRs   ? issues')
+    expect(await cardText($)).toBe('repo  ? PRs   ? issues')
   })
 
   for (const [name, remotes] of [
@@ -6219,4 +6235,154 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
       })
     }
   }
+})
+
+// M291: the project name, bold, at the left of the card's first line. The
+// names each case expects are written out by hand.
+describe('the card names the project at the left of its first line (M291)', () => {
+  // A copy of a fixture with its files under `root`, opened there.
+  const rootedAt = (name: string, root: string) => {
+    const copy = copyOf(name)
+    const files: Record<string, string> = {}
+    for (const [path, text] of Object.entries(copy.files)) files[`${root}${path}`] = text
+    copy.files = files
+    copy.unreadable = copy.unreadable.map(path => `${root}${path}`)
+    copy.cwd = root
+    return copy
+  }
+  const firstText = async $ => (await linesAt($)).find(line => line.key === 'card-repo')?.text
+  const ok = (stdout: string): GhAnswer => ({ exitCode: 0, stdout: `${stdout}\n` })
+  const ALPHA = 'https://github.com/o/alpha.git'
+
+  for (const surface of SURFACES) {
+    test(`the name bold, then the counts, then ⌂ and ↻, with the other card lines unchanged (AC1, ${surface})`, async ($, on) => {
+      const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ALPHA }, counts: () => repoReply(3, 12) })
+      seat(on, rootedAt('pane-full', '/work/zeta'))
+      await $.session.start({ cwd: '/work/zeta', surface, isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      const ui = await mountPane($, surface)
+      const card = await boxOf(ui, 'cairn-card')
+      expect(kids(card as Element).map(keyOf)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+      const first = kids(card as Element)[0]
+      expect(kids(first).map(keyOf)).toEqual(['card-repo-text', 'card-repo-tail', 'card-repo-home', 'card-repo-refresh'])
+      const [name] = kids((await boxOf(ui, 'card-repo-text')) as Element)
+      expect(name.props.bold).toBe(true)
+      expect(textOf(name)).toBe('alpha')
+      expect(textOf(await boxOf(ui, 'card-repo-tail'))).toBe('  3 PRs   12 issues')
+      expect((await boxOf(ui, 'card-repo-tail'))?.props.flexGrow).toBe(1)
+      expect((await boxOf(ui, 'card-repo-text'))?.props.flexGrow).toBe(undefined)
+      expect(textOf(first)).toBe('alpha  3 PRs   12 issues')
+      await ui.unmount()
+    })
+
+    test(`a long name is the part that is cut, and the counts and Buttons keep their width (AC4, ${surface})`, async ($, on) => {
+      const long = 'a-project-name-far-longer-than-the-docked-pane-is-wide'
+      const calls = gh(on, () => prView('MERGED'), undefined, {
+        remotes: { origin: `https://github.com/o/${long}.git` },
+        counts: () => repoReply(3, 12),
+      })
+      seat(on, rootedAt('pane-full', '/work/zeta'))
+      await $.session.start({ cwd: '/work/zeta', surface, isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      const ui = await mountPane($, surface, 44)
+      const first = (await boxOf(ui, 'card-repo')) as Element
+      expect(first.props.minWidth).toBe(0)
+      const text = (await boxOf(ui, 'card-repo-text')) as Element
+      expect(text.props).toEqual(expect.objectContaining({ flexShrink: 1, minWidth: 0 }))
+      expect(kids(text)[0].props.wrap).toBe('truncate-end')
+      expect(textOf(kids(text)[0])).toBe(long)
+      for (const key of ['card-repo-tail', 'card-repo-home', 'card-repo-refresh']) {
+        expect((await boxOf(ui, key))?.props.flexShrink).toBe(0)
+      }
+      await ui.unmount()
+    })
+  }
+
+  const NAMES: { name: string; profile: string | null; remotes: Record<string, string>; root?: string; common?: GhAnswer; want: string }[] = [
+    { name: 'an origin github.com remote', profile: null, remotes: { origin: ALPHA }, want: 'alpha' },
+    {
+      name: 'guest mode with an upstream github.com remote',
+      profile: GUEST_PROFILE,
+      remotes: { origin: 'https://github.com/me/fork-name.git', upstream: 'git@github.com:up/beta.git' },
+      want: 'beta',
+    },
+    { name: 'guest mode with only origin', profile: GUEST_PROFILE, remotes: { origin: 'https://github.com/me/fork-name.git' }, want: 'fork-name' },
+    { name: 'a remote not on github.com', profile: null, remotes: { origin: 'https://gitlab.com/o/r.git' }, common: ok('/work/gamma/.git'), want: 'gamma' },
+    { name: 'no remote', profile: null, remotes: {}, common: ok('/work/delta/.git'), want: 'delta' },
+    { name: 'a root inside a linked worktree', profile: null, remotes: {}, root: '/work/main/.claude/worktrees/w1', common: ok('/work/main/.git'), want: 'main' },
+    { name: 'a common dir not named .git', profile: null, remotes: {}, root: '/work/super/subdir', common: ok('/work/super/.git/modules/sub'), want: 'subdir' },
+    { name: 'a failed git call', profile: null, remotes: {}, root: '/work/epsilon', common: { exitCode: 128, stdout: '' }, want: 'epsilon' },
+  ]
+  for (const each of NAMES) {
+    test(`${each.name} names ${each.want} (AC2)`, async ($, on) => {
+      const root = each.root ?? '/work/zeta'
+      const calls = gh(on, () => prView('MERGED'), undefined, { remotes: each.remotes, counts: () => repoReply(3, 12), common: each.common })
+      const copy = rootedAt('blocked-prs', root)
+      if (each.profile !== null) copy.files[`${root}/cairn/PROFILE.md`] = each.profile
+      seat(on, copy)
+      await $.session.start({ cwd: root, surface: 'desktop', isInteractive: true })
+      await $.command.run({ command: COMMAND })
+      await calls.settled()
+      expect((await firstText($))?.split('  ')[0]).toBe(each.want)
+      // Only a URL that is not a github.com one, or none, asks git for the
+      // common dir.
+      const asked = calls.card.filter(argv => argv[1] === 'rev-parse')
+      expect(asked).toEqual(each.common === undefined ? [] : [['git', ...COMMON_DIR_ARGS]])
+    })
+  }
+
+  test('a failed GitHub read still names the project from the URL (AC2)', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ALPHA }, counts: () => ({ exitCode: 1, stdout: '' }) })
+    seat(on, rootedAt('blocked-prs', '/work/zeta'))
+    await $.session.start({ cwd: '/work/zeta', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(await firstText($)).toBe('alpha  ? PRs   ? issues')
+  })
+
+  test('a linked worktree draws its own folder name until the read is written (AC3)', async ($, on) => {
+    gh(on, () => prView('MERGED'), undefined, { remotes: {}, common: ok('/work/main/.git') })
+    seat(on, rootedAt('blocked-prs', '/work/main/.claude/worktrees/w1'))
+    await $.session.start({ cwd: '/work/main/.claude/worktrees/w1', surface: 'desktop', isInteractive: true })
+    expect(await firstText($)).toBe('w1  ? PRs   ? issues')
+  })
+
+  test('a held read draws the root folder name, then the name it reads (AC3)', async ($, on) => {
+    let release: () => void = () => {}
+    const held = new Promise<void>(resolve => {
+      release = resolve
+    })
+    const calls = gh(on, () => prView('MERGED'), undefined, {
+      remotes: { origin: ALPHA },
+      counts: async () => {
+        await held
+        return repoReply(3, 12)
+      },
+    })
+    seat(on, rootedAt('blocked-prs', '/work/proj'))
+    await $.session.start({ cwd: '/work/proj', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    // The held query keeps the fake busy, so this mounts the pane directly.
+    expect(textAt(await paneLines($, 'desktop'), 'card-repo')).toBe('proj  ? PRs   ? issues')
+    release()
+    await calls.settled()
+    expect(await firstText($)).toBe('alpha  3 PRs   12 issues')
+  })
+
+  test('a name stored for another root is not drawn (AC3)', async ($, on) => {
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes: { origin: ALPHA }, counts: () => repoReply(3, 12) })
+    const copy = rootedAt('blocked-prs', '/work/one')
+    for (const path of Object.keys(copy.files)) copy.files[path.replace('/work/one', '/work/two')] = copy.files[path]
+    copy.unreadable.push(...copy.unreadable.map(path => path.replace('/work/one', '/work/two')))
+    seat(on, copy)
+    await $.session.start({ cwd: '/work/one', surface: 'desktop', isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    expect(await firstText($)).toBe('alpha  3 PRs   12 issues')
+    copy.cwd = '/work/two'
+    await $.turn.complete(turn())
+    expect(await firstText($)).toBe('two  ? PRs   ? issues')
+  })
 })

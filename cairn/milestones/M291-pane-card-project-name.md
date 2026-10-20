@@ -1,13 +1,13 @@
 # M291: The cairn pane's summary card names the project at its top left
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the pane ships to every plugin user
-- **Branch/PR:** —
+- **Branch/PR:** m291-pane-card-project-name
 
 ## Goal
 
@@ -37,8 +37,8 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 
 ## Tasks
 
-- [ ] T1: The name read. `Where` (register.tsx ~1110) gains the main-tree name from `git rev-parse --path-format=absolute --git-common-dir` in the root, and `readRepo` writes `name`: `remoteRepo(url)?.repo`, else that name, else null. `CairnRepoRead` in `types/index.d.ts` gains `name`, and the `repo` atom moves to shape `repo-3` with its comment. Tests for each AC2 case in `pane.test.tsx`.
-- [ ] T2: The first line. `paneLines` passes the name (the stored read's for this root, else the root's last segment, split on `/` and `\`) to `cardLines`, which puts it bold in the line's `text` with no grow and the counts in its `tail`. A new line flag makes the tail Box grow in `drawLine`, so ⌂ and ↻ stay at the right end. Update the tests that pin the `card-repo` text, and add AC1, AC3, and AC4 tests for both surfaces.
+- [x] T1: The name read. `Where` (register.tsx ~1110) gains the main-tree name from `git rev-parse --path-format=absolute --git-common-dir` in the root, and `readRepo` writes `name`: `remoteRepo(url)?.repo`, else that name, else null. `CairnRepoRead` in `types/index.d.ts` gains `name`, and the `repo` atom moves to shape `repo-3` with its comment. Tests for each AC2 case in `pane.test.tsx`.
+- [x] T2: The first line. `paneLines` passes the name (the stored read's for this root, else the root's last segment, split on `/` and `\`) to `cardLines`, which puts it bold in the line's `text` with no grow and the counts in its `tail`. A new line flag makes the tail Box grow in `drawLine`, so ⌂ and ↻ stay at the right end. Update the tests that pin the `card-repo` text, and add AC1, AC3, and AC4 tests for both surfaces.
 - [ ] T3: README, DESIGN.md, the CHANGELOG's Unreleased summary-card entry, and the pane.ts and register.tsx comments describe the name; run the `verify` slot.
 
 ## Work log
@@ -52,3 +52,5 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 - 2026-10-19: plan gate chose the folder name before the first read over a blank placeholder, because the folder name is right outside worktrees; falsified by an operator reading the worktree name as wrong in a real session.
 - 2026-10-19: criteria audit (full mode, Opus): 5 findings on the first draft, all taken (stored-read wording for AC3, main-tree fallback, written-not-settled and failed-`gh` wording, guest-only-`origin` case, line Box in AC4's test). Re-audit after the placement answer: 3 findings, all taken (common dir not named `.git`, worktree name before the read stated in AC3, AC4 narrowed to a too-narrow line).
 - 2026-10-19: untracked `cairn-probe.log` and `tsconfig.json` predate this plan; left unstaged.
+- 2026-10-19: implement started on branch m291-pane-card-project-name.
+- 2026-10-19: T1+T2 in one commit, since the AC2 tests read the name through the drawn line. `projectName` and `lastSegment` in repo.ts; the common-dir call runs only when the URL is not a github.com one; the first line has no text with no name (root `/`) and no lead space in its tail then. Updated 13 tests that pinned the old first line (text `''` with grow, counts in the lead). Mod tests 2304 → 2330, verify slot green.

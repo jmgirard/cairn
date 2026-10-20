@@ -99,6 +99,34 @@ export function tagTimeArgs(tag: string): string[] {
   return ['log', '-1', '--format=%ct', tag, '--']
 }
 
+// The git argv that prints the absolute path of the repo's common git dir,
+// which a linked worktree shares with its main working tree (M291).
+export const COMMON_DIR_ARGS = ['rev-parse', '--path-format=absolute', '--git-common-dir']
+
+// The last path segment of a path, split on `/` and `\`, with trailing
+// separators dropped. A path with no segment, such as `/`, gives ''.
+export function lastSegment(path: string): string {
+  const parts = path.split(/[\\/]/).filter(part => part !== '')
+  return parts.length === 0 ? '' : parts[parts.length - 1]
+}
+
+// The project name the card shows (M291) from the base remote's URL, the
+// common git dir call's stdout, and the repo root. The repo part of a
+// github.com URL comes first. Otherwise, when the trimmed common dir's own
+// name is `.git`, the name of the folder that holds it, which is the main
+// working tree's, so a linked worktree shows the repo's name. Otherwise,
+// or when the call failed (null), the root's last segment.
+export function projectName(url: string | null, common: string | null, root: string): string {
+  const named = url === null ? null : remoteRepo(url)
+  if (named !== null) return named.repo
+  const dir = common?.trim() ?? ''
+  if (lastSegment(dir) === '.git') {
+    const holder = lastSegment(dir.replace(/[\\/]*\.git[\\/]*$/, ''))
+    if (holder !== '') return holder
+  }
+  return lastSegment(root)
+}
+
 const DAY_MS = 86_400_000
 
 // The release read from the guest flag, the three git calls' stdout, each

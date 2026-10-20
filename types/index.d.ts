@@ -114,10 +114,17 @@ export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; start
 // release tag, with the whole days since that tag's commit. `counts` is null
 // until a read for `root` gives numbers, and a read that gives none keeps
 // the last good ones for the same root. `done` is the last read's, null
-// when that read could not count. The shape moved to `repo-2` with `days`.
+// when that read could not count. `name` is the project name the last read
+// for `root` found (M291), null only with no root. The shape moved to
+// `repo-2` with `days`, and to `repo-3` with `name`.
 export type CairnRepoCounts = { prs: number; issues: number }
 export type CairnRepoDone = { tag: string; days: number; count: number }
-export type CairnRepoRead = { root: string | null; counts: CairnRepoCounts | null; done: CairnRepoDone | null }
+export type CairnRepoRead = {
+  root: string | null
+  counts: CairnRepoCounts | null
+  done: CairnRepoDone | null
+  name: string | null
+}
 
 declare module 'claude-code' {
   interface PluginState {

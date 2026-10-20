@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { archivedArgs, DESCRIBE_ARGS, doneSince, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs } from './repo'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, lastSegment, projectName, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs } from './repo'
 
 // The summary card's reads (M286 AC3, AC4). The expected values are written
 // out by hand.
@@ -138,4 +138,29 @@ describe('the release read: the latest v* tag, the days since its commit, and th
       expect(doneSince(guest, describe, log, diff, NOW)).toBe(null)
     })
   }
+})
+
+describe('the project name: the github.com repo, else the main tree folder, else the root folder (M291 AC2)', () => {
+  const CASES: [string, string | null, string | null, string, string][] = [
+    ['a github.com URL', 'git@github.com:o/alpha.git', '/work/x/.git\n', '/work/x', 'alpha'],
+    ['a URL on another host', 'https://gitlab.com/o/r.git', '/work/gamma/.git\n', '/work/gamma', 'gamma'],
+    ['no URL, a worktree root', null, '/work/main/.git\n', '/work/main/.claude/worktrees/w1', 'main'],
+    ['a common dir with a trailing slash', null, '/work/main/.git/\n', '/work/w', 'main'],
+    ['a Windows common dir', null, 'C:\\work\\main\\.git\r\n', 'C:\\work\\w', 'main'],
+    ['a submodule common dir', null, '/work/super/.git/modules/sub\n', '/work/super/subdir', 'subdir'],
+    ['a bare repo common dir', null, '/work/repo.git\n', '/work/wt', 'wt'],
+    ['a failed call', null, null, '/work/epsilon/', 'epsilon'],
+    ['a root with no segment', null, null, '/', ''],
+  ]
+  for (const [name, url, common, root, want] of CASES) {
+    test(name, () => {
+      expect(projectName(url, common, root)).toBe(want)
+    })
+  }
+
+  test('lastSegment splits on both separators and drops trailing ones', () => {
+    expect(lastSegment('/a/b/')).toBe('b')
+    expect(lastSegment('C:\\a\\b')).toBe('b')
+    expect(lastSegment('')).toBe('')
+  })
 })
