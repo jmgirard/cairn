@@ -199,6 +199,8 @@
   request's `Candidate row:` line names. It leaves a dead started token
   that sits inside a row's short title, as in
   `Title — started M12: detail`, because its removal changes that title.
+  A compress keeps that token and its title, and a retitle that replaces
+  a title holding an icon says that it removes the token.
   An Amend that removes or retitles a row with a live ` — started #<n>`
   token makes each later question name those pull requests. A retitle
   you set at Amend lists the quoted mentions it rewrites and leaves, as a

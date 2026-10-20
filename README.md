@@ -612,7 +612,8 @@ milestone is `done`, `dropped`, gone from the table, or archived, or whose
 PR is merged or closed. A token on an in-progress or review milestone is
 not dead. Triage leaves a dead token that sits inside a row's short
 title, as in `Title — started M12: detail`, because its removal changes
-that title. Triage also proposes adding a missing ` — started M<NNN>` token to a
+that title. A retitle for an icon that replaces that title in place
+removes the token, and says so. Triage also proposes adding a missing ` — started M<NNN>` token to a
 row whose short title a planned, in-progress, blocked, or review
 milestone's file quotes in double quotes outside its Out list. Each change
 waits for your answer at its gate. A token goes at the row's end and

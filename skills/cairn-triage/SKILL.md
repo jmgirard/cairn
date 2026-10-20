@@ -426,8 +426,10 @@ re-examines a lesson.
    read it, is the exception, as in `Title — started M12: detail`. Its
    removal changes that short title, so the pass proposes no removal of
    it. The table lists the token as left, and on a PR-named row it names
-   each naming PR's number. Also propose appending each missing token to
-   the row's end.
+   each naming PR's number. A `retitle` for an icon that replaces the
+   title in place removes such a token with the old title, and its table
+   reason says so. Also propose appending each missing token to the row's
+   end.
    Name the milestone file and quote its line that holds the title, so the
    user can judge whether that milestone took the row. A `drop`, `merge`,
    `split`, or `route` takes its row out of the list, and it writes no dead
@@ -551,8 +553,8 @@ re-examines a lesson.
      A `retitle` that the user sets at *Amend*, in any round, runs the same
      search for double-quoted mentions as a proposed `retitle`. After that
      *Amend* the pass shows that row's table line again, a later round
-     included. This is the one exception to the rule that a later round
-     shows no table. The line lists each mention the `retitle` rewrites
+     included. This is the default pass's one exception to the rule that
+     a later round shows no table. The line lists each mention the `retitle` rewrites
      and each ambiguous mention it leaves. It also lists each mention it
      leaves inside a PR-named row's short title, with each naming PR's
      number. After a failed or capped open-PR read, the line says that the
@@ -623,7 +625,9 @@ re-examines a lesson.
    ` — `. The lineage clause, and any trigger it takes from the absorbed
    row, hold no `: `, each one written as `; `. A `compress`
    keeps each started token that is not accepted for removal, at the row's
-   end.
+   end. A dead token left inside the short title (step 2) is the
+   exception. It stays where it sits, and the `compress` keeps the short
+   title it sits in.
    Candidates stay one item per line,
    ordered by token — high → normal → low → parked — then advisory within a level.
    After the edits, token changes included, `wc -l -c

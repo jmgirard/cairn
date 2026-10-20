@@ -217,7 +217,16 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "so the pass proposes no removal of it.",
             "The table lists the token as left, and on a PR-named row it "
             "names each naming PR's number.",
+            "A `retitle` for an icon that replaces the title in place "
+            "removes such a token with the old title, and its table reason "
+            "says so.",
         ), tokens)
+        apply = section(self.triage, "4. **Apply.**", "5. **Record.**")
+        self.assertPhrases((
+            "A dead token left inside the short title (step 2) is the "
+            "exception. It stays where it sits, and the `compress` keeps the "
+            "short title it sits in.",
+        ), apply)
 
     def test_amend_names_the_pr_of_a_live_hash_token(self):
         # M299 AC4, and step 2's "no proposed disposition".

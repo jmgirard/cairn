@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M299: Triage closes the remaining PR-named row gaps
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -72,7 +72,7 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - [x] T5: In step 3's amend loop (near line 492), add the `#<n>` live-token chip, the Amend-set `retitle` search and table line, and the title-changing merge chip. Change step 2's "So no disposition of the pass rewrites a live token" (near line 393) to say "no proposed disposition".
 - [x] T6: Extend `skills/tests/test_triage_pr_named_rows.py` with one pin per new rule, each list member pinned on its own. Show each new pin red against the old skill text first.
 - [x] T7: Write the D-entry and the CHANGELOG Fixes entry. Update README's triage passages (near lines 424 and 603). Search README and `skills/shared/tracking-rules.md` for "short title stays the same", and fix each claim that AC3 makes false.
-- [ ] T8: Run the `verify` slot and the hand-run `skills/tests` from the repo root. Check each exit code.
+- [x] T8: Run the `verify` slot and the hand-run `skills/tests` from the repo root. Check each exit code.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -101,6 +101,9 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - 2026-10-20: T1–T5: `skills/cairn-triage/SKILL.md` gains the data sentence at the open-PR read, a "New short titles" paragraph after the Title class, the dead-token exception in the token-change rule, the before-and-after title check in the Overlap class, and three amend-loop paragraphs (live `#<n>` chip, title-changing merge chip, Amend-set `retitle` mention search with its table line); "no disposition" now reads "no proposed disposition". Choice: the no-table rule names the `retitle` exception in place rather than only in the new paragraph, so a reader of either sentence sees it.
 - 2026-10-20: T6: six new tests in `skills/tests/test_triage_pr_named_rows.py`, one phrase per subtest; run against main's skill text each new test fails on its own missing phrase or section marker (27 failing subtests), the four M298 tests stay green; on the branch the hand-run `skills/tests` runs 929 tests OK and all five `verify` checks pass (scripts 428 OK, hooks OK, both validates pass, mod test 0 fail).
 - 2026-10-20: T7: D-198 appended (supersedes D-197's last Consequences sentence, annotates D-166, passes D-108's door; says the AC1 sentence needs no entry and an Amend-set title can still equal a PR-named title); one CHANGELOG Unreleased Fixes entry; README gains the new triage rules beside the PR-named passage and the dead-token exception beside the token passage. The search for "short title stays the same" found README:610 and tracking-rules:254; both now say that adding a token at the row's end leaves the title the same, since AC3 shows a removal can change it. Validate green; skills/tests green.
+- 2026-10-20: T8: at 07804d99 all five `verify` checks exit 0 (scripts 428 OK, hooks 193 OK, both validates, mod test 0 fail) and the hand-run skills/tests exits 0 (929 OK).
+- 2026-10-20: claim audit: 34 claims read, 3 corrected — skills/cairn-triage/SKILL.md, CHANGELOG.md, README.md (a dead token left in a title could still move on a `compress` or go with an icon `retitle`'s in-place title, so step 4 and the token rule now say what happens; "the one exception" now reads "the default pass's one exception", since the lessons pass shows its line each round; the CHANGELOG and README wording follows). The re-read found all three true and README's token sentence still overstated, which now names the icon retitle. The dead-token pin gained both new sentences and stays red on main.
+- 2026-10-20: implement complete: all tasks checked; after the claim fixes all five `verify` checks, the hand-run skills/tests, and cairn_validate pass; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
