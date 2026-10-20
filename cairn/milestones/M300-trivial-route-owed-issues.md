@@ -66,7 +66,7 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - [x] T1: In `skills/milestone-plan/SKILL.md` step 1's issue read, widen the kept-row clause from the title reference to the whole row, add the open milestone's `Resolves:` slot, the failed or capped open-PR read, and the order after the five checks. With a failed check the option names no issue number at all. Check that the trivial option's description names each new reason, and trace each new path to the close it reaches (LESSONS M172).
 - [x] T2: In `skills/tests/test_plan_tier_check.py`, replace the pinned kept-row phrases and pin each new sentence on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
 - [x] T3: Append the D-entry (next free id) per AC4.
-- [ ] T4: Edit README's trivial-edit row and M297's CHANGELOG Unreleased entry; grep both for the old wording first (LESSONS M112).
+- [x] T4: Edit README's trivial-edit row and M297's CHANGELOG Unreleased entry; grep both for the old wording first (LESSONS M112).
 - [ ] T5: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
@@ -94,3 +94,4 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - 2026-10-20: T1 done: step 1's issue read now runs after the five checks pass, protects a number a kept row holds anywhere as `#N` or an open milestone's `Resolves:` slot holds, and closes nothing after a failed or capped open-PR read; paths traced: each new case ends at "left alone", and the post-push close still runs only on numbers the option named. The simple-english lint hook flags 200 pre-existing style hits in the file; only the new sentences were kept short, the rest left alone as out of scope.
 - 2026-10-20: T2 done: `test_trivial_route_closes_deleted_rows_issues` drops the two title-reference phrases and pins 10 phrases, each its own member; against main's step 1 all 10 are absent and the test fails on its own assertion (`AssertionError` in that test, not a crash), against the branch all 10 are present; full `skills/tests` green.
 - 2026-10-20: T3 done: D-200 appended (narrows D-195's kept-row clause and detail Consequence; rejected alternative and falsifier recorded; D-108's door does not apply).
+- 2026-10-20: T4 done: README's trivial-edit row and M297's Unreleased CHANGELOG entry now name a kept row's whole text, an open milestone's `Resolves:` slot, and no close after a failed or cut-short PR check; a grep for "still names" and "row it keeps" found no other restatement. The simple-english lint hook's hits in both files are pre-existing; the new sentences are short.

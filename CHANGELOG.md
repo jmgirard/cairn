@@ -133,8 +133,11 @@
   whose title ends with an issue number, such as `(#12)`. The route now
   closes that issue after the push. Before you choose, the route's option names
   each issue it will close. It leaves alone a number that is closed, that
-  names a pull request, or that it cannot read, and an issue that a row
-  it keeps still names, such as a row it narrows. The commit summary ends
+  names a pull request, or that it cannot read. It also leaves alone an
+  issue that a row it keeps names anywhere in its text, such as a row it
+  narrows, and an issue that an open milestone's `Resolves:` slot names.
+  If its check of the open pull requests fails or is cut short, it closes
+  no issue. It reads issues only after its checks pass. The commit summary ends
   with the removed rows' issue numbers. After the push, the route closes
   each named issue, reads it again, and says which issues are closed and
   which stay open. If the push fails, no issue is closed. In guest mode
