@@ -375,7 +375,7 @@ export type PaneView = { bodyColumns: number; offset: number; bodyRows: number; 
 
 // Where each candidate line's card opens, by line key (M294). The line's
 // row in the window is its `rowsAbove` less the window's offset. In a dock
-// the room is the body's rows. Inline the frame fits the tree, so the room
+// the room is the body's rows. Inline, the frame fits the tree, so the room
 // is the fewer of the body's rows and the tree's rows (its lines and the
 // summary card's two border rows).
 export function cardPlaces(lines: PaneLine[], view: PaneView): Record<string, CardPlace> {

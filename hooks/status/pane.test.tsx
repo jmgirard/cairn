@@ -6781,7 +6781,7 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
       const inline = await drawn($, surface, 6, 200, 14, 'inline')
       const dock = await drawn($, surface, 6, 200, 14, 'dock')
       if (surface === 'terminal') {
-        expect(kids(inline.root).filter(isCard)).toEqual([])
+        for (const draw of [inline, dock]) expect([...kids(draw.root), ...kids(draw.line)].filter(isCard)).toEqual([])
       } else {
         const [cut] = kids(inline.root).filter(isCard)
         const [whole] = kids(dock.root).filter(isCard)
@@ -6789,6 +6789,21 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
         expect(textOf(kids(cut)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee …')
         expect(whole.props.top).toBe(12)
         expect(textOf(kids(whole)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh')
+      }
+    })
+
+    test(`a window too short on both sides draws no card (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      // At offset 10 the line shows on its row 1 of a 3-row window: 1 row
+      // above and 1 below, under the 3 a card needs at the least.
+      const short = await drawn($, surface, 10, 3)
+      expect([...kids(short.root), ...kids(short.line)].filter(isCard)).toEqual([])
+      // The same line with room draws its card, so the empty result above
+      // is the placement's and not a missing line.
+      if (surface !== 'terminal') {
+        const roomy = await drawn($, surface, 10, 200)
+        expect([...kids(roomy.root), ...kids(roomy.line)].filter(isCard).length).toBe(1)
       }
     })
   }

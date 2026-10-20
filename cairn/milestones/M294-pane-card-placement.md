@@ -42,7 +42,7 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - AC1 → T1
 - AC2 → T1
 - AC3 → T2, T8
-- AC4 → T3, T7
+- AC4 → T3, T7, T9
 - AC5 → T3, T5
 - AC6 → T4, T5
 - AC7 → T6
@@ -58,6 +58,7 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - [x] T6: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
 - [x] T7: review return 1: render tests that redraw at a second `bodyColumns` and with `placement: 'inline'`, asserting the side and cut against values written out by hand (AC4).
 - [x] T8: review pass 1's fix-now batch: the stale "above the row" comments and DESIGN lines, the two comment grammar fixes, the `isCard` and `flat` comments, the `unplaced` rename, the down list taking only lines with the ⓘ scope, and a `rowsAbove` case after a hidden started row.
+- [x] T9: review return 2: a redraw too short on both sides that asserts no card (AC4), and pass 2's fix-now wording.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -92,6 +93,10 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: T8 done: register.tsx's card comment and the `cardPlaces` comment reworded; the down list takes only lines with the ⓘ glyph (`infos`); DESIGN's two candidate-card sentences fixed; the `isCard` and `flat` comments name the root's down card; the M261 helper renamed `withoutRow`; an AC3 case shows the row after a hidden started row moving up. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2387 pass 0 fail.
 - 2026-10-20: claim audit: 27 claims read, 2 corrected — register.tsx (the card comment now names the tie, the no-card case, and a cut card drawn at the root) and pane.test.tsx (two test names say no card draws in the terminal); scoped to the return's added lines, `git diff f5df4519..HEAD`.
 - 2026-10-20: implement done after review return 1; status review.
+- 2026-10-20: review return 2: AC4 fails as written: its test clause names a no-card result, and no redraw asserts one (pass 2 diff-bug #1). Pass 2's fix-now wording items ride with it.
+- 2026-10-20: task T9 added for return 2 (a minor amendment), Coverage AC4 → T3, T7, T9.
+- 2026-10-20: T9 done: a redraw at `scroll.offset` 10 and `bodyRows` 3 draws no card on either surface, with a control at 200 rows that draws one on the desktop; the inline test's terminal branch checks both draws' lines and roots; DESIGN's card paragraph names where each card sits and that `cardPlaces` reads `bodyColumns`; the `cardPlaces` comment gains its comma. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2389 pass 0 fail.
+- 2026-10-20: implement done after review return 2; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -142,3 +147,30 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple #4: the `flat` comment says the root holds only lines — fix now.
 - ripple #5: the helper name `unplaced` collides with the pane's "unplaced" term — fix now (renamed).
 - ripple #6: DESIGN.md:512-513 "inside such a line's keyed Box" is false for a down card — fix now.
+
+Pass 2, 2026-10-20, head acaaac1c after review return 1; main is an ancestor. `claude plugin test .` exit 0, 2387 pass, 0 fail; the M294 blocks: AC1 9, AC2 7, AC3 9 (the hidden-row case added), AC4 8, AC5 18 (6 cardCut, 6 placement renders, 6 return-1 redraws), all passing. `scripts/tests` 428 OK (21 skipped), `hooks/tests` 193 OK, both `claude plugin validate` runs exit 0 with no `version` warning, `cairn_validate.py` all checks passed. AC1-AC3 and AC5-AC7 hold at this head with those counts.
+
+- AC4: the `cardPlaces` table passes 8 of 8 as in pass 1, and the review-return-1 render tests redraw the pane with varied props on both surfaces, passing 6 of 6: the line on row 11 (counted by hand); at `scroll.offset` 7, `bodyColumns` 60 draws the card in its line at `bottom: 1` and `bodyColumns` 14 draws it at the root at `top: 12`; at offset 6, `placement: 'inline'` cuts the card to `Long row: aaaa bbbb cccc dddd eeee …` where `dock` opens it whole, both at `top: 12`; the terminal draws no card. With the pass 1 render tests varying `scroll.offset` and `scroll.bodyRows`, the redraws vary all four props.
+
+AC4 unticked again: pass 2 diff-bug #1 shows that no redraw asserts the no-card result that AC4's test clause names.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: no redraw asserts a no-card result, which AC4's test clause names — fix now through review return 2 (a redraw too short for any card).
+- diff-bug #2: the inline test's terminal branch checks only the root — fix now (it checks both draws' lines and roots).
+- diff-bug #3: DESIGN.md:515-516 still says the pointer reveals a card above the row — fix now (the paragraph is rewritten; pass 1's fix added a sentence and left the phrase).
+- diff-bug #4: DESIGN's "the one card drawn outside its line" suggests one such card — fix now.
+- diff-bug #5: DESIGN's `cardPlaces` sentence leaves out `bodyColumns` — fix now.
+- diff-bug #6: the row-11 test checks tree order, not drawn height — reject, already a follow-up (pass 1 diff-bug #1).
+- ripple #1: the "Fix cut and odd names on the pane card" row's item (3) describes a cut this merge removes — reject, planned change: post-merge hygiene narrows the row (records-hygiene §1), since the row's started token names M294.
+- blame-history #1: `flat` lists a root down card as an entry, so line-wise card checks skip it — reject, false: no fixture there draws a down card, and the AC5 tests read the root's children directly.
+- blame-history #2: M286's and M290's facts still stated — reject, no finding.
+- blame-history #3: DESIGN.md:515-516's "(below)" reads as the card's side — fix now (as diff-bug #3).
+- blame-history #4: DESIGN.md:512-513 gives `bottom: 1` as the only placement — fix now (as diff-bug #3).
+- blame-history #5: DESIGN's "opens where it fits" is loose for a cut card — fix now.
+- blame-history #6: the `below` filter's reason rests on M290's keyed-scope claim — reject, no finding (M290's probe and DESIGN record it).
+- blame-history #7: `withoutRow` rename complete — reject, no finding.
+- blame-history #8: the hidden-row test agrees with D-167 — reject, no finding.
+- prior-review #1: the `cardPlaces` comment's "Inline the frame fits the tree" still reads as a fragment (PR #264's point) — fix now.
+- prior-review #2: as diff-bug #3 — fix now.
+- prior-review #3: DESIGN.md:512-513's rule before its exception (pass 1 ripple #6) — fix now (as diff-bug #3).
