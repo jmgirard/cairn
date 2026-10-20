@@ -557,9 +557,10 @@ re-examines a lesson.
    ` — started <ref>` text as the row spells it and leaves the rest of the
    row as it is. A note right after the removed token stays where it was. A
    merge survivor's lineage clause, and then any trigger it takes from
-   the absorbed row, go before the row's first started token. When the
-   row has no started token, or its first `: ` comes after that token,
-   they go at the row's end instead. Where the survivor's text holds
+   the absorbed row, go before the row's first started token. They go at
+   the row's end instead in three cases: the row has no started token, it
+   has no text before that token, or its first `: ` comes after that
+   token. Where the survivor's text holds
    neither `: ` nor ` — ` before that place, the lineage clause opens with
    ` — `. The lineage clause, and any trigger it takes from the absorbed
    row, hold no `: `, each one written as `; `. So the survivor's short

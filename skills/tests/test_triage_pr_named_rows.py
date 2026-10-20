@@ -95,8 +95,9 @@ class TestTriagePrNamedRows(unittest.TestCase):
         self.assertPhrases((
             "merge survivor's lineage clause, and then any trigger it takes "
             "from the absorbed row, go before the row's first started token.",
-            "When the row has no started token, or its first `: ` comes "
-            "after that token, they go at the row's end instead.",
+            "They go at the row's end instead in three cases: the row has "
+            "no started token, it has no text before that token, or its "
+            "first `: ` comes after that token.",
             "Where the survivor's text holds neither `: ` nor ` — ` before "
             "that place, the lineage clause opens with ` — `.",
             "The lineage clause, and any trigger it takes from the absorbed "
