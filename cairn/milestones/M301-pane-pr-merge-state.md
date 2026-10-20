@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane's PR lines are what operators read
-- **Branch/PR:** m301-pane-pr-merge-state
+- **Branch/PR:** m301-pane-pr-merge-state https://github.com/jmgirard/cairn/pull/315
 
 ## Goal
 
