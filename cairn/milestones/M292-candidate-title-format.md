@@ -92,17 +92,17 @@ the whole title.
 - Gate: `cairn_validate` exit 0 (all checks passed); verify 5/5 green on the review head; marketplace validate carries no `version` warning; the changelog entry carries no milestone id; no principle changed, so `cairn_impact` skipped.
 - spawned: diff-bug, blame-history, prior-review, ripple
 - diff-bug #1: a ✎ press or Next line on a `(#N)` title passes `#N`, so `/milestone-plan` skips its tier check — follow-up, new row "Keep tier check for issue-titled rows"; D-189 Consequences names it.
-- diff-bug #2: a retitle can drop the `(#N)` the old title carried, since triage read only issues the row "calls" an issue — fix now (the old title counts, and `(#N)` ending it is a form).
-- diff-bug #3: a title in a script without spaces counts as one word and never passes the floor — fix now (no word floor for such a script, rulebook and D-189).
+- diff-bug #2: a retitle can drop the `(#N)` the old title carried, since triage read only issues the row "calls" an issue — fix now (the old title counts, and `(#N)` ending it is a form), fixed fc9af90b.
+- diff-bug #3: a title in a script without spaces counts as one word and never passes the floor — fix now (no word floor for such a script, rulebook and D-189), fixed fc9af90b.
 - diff-bug #4: `/hotfix` step 1 may read a quoted title's `(#N)` as a PR reference — follow-up, joins "Keep tier check for issue-titled rows".
 - diff-bug #5: triage can retitle a row an open PR's `Candidate row:` line names, which un-hides it; widened by the floor — follow-up, new row "Keep rows named by open PRs at triage".
-- diff-bug #6: "the repo" is unclear in guest mode, `owner/repo#N` for this repo is not a form, and another repo's `#N` can be misread — fix now (`<base-repo>`, `<base-repo>#N` form, other repos' `#N` excluded).
+- diff-bug #6: "the repo" is unclear in guest mode, `owner/repo#N` for this repo is not a form, and another repo's `#N` can be misread — fix now (`<base-repo>`, `<base-repo>#N` form, other repos' `#N` excluded), fixed fc9af90b.
 - diff-bug #7: triage adds `(#N)` for any named issue though a later issue leaves the title alone — reject (planned change: a retitle replaces the title and rewrites its mentions; the later-issue rule governs writes outside a retitle).
-- diff-bug #8: D-189's heading said "passes D-108's door" though T4 says it annotates D-108 — fix now (heading annotates D-108 and excepts its door by name, door unchanged, as D-132 did).
+- diff-bug #8: D-189's heading said "passes D-108's door" though T4 says it annotates D-108 — fix now (heading annotates D-108 and excepts its door by name, door unchanged, as D-132 did), fixed fc9af90b.
 - diff-bug #9: `/milestone`'s "Add a candidate row" step does not mention `(#N)` — reject (planned change: the rule lives once in tracking-rules, which loads with every cairn skill, D-163).
 - diff-bug #10: the 40 cap may not hold in the terminal or with an ambiguous-width mark — reject (planned change: the cap is scoped to the desktop's docked pane at rest; the live-look falsifier is in the work log and D-189).
-- diff-bug #11: README and skeleton restate the rule in part, and the skeleton had a doubled colon — fix now for the colon; the partial restatements reject (planned: both point to tracking-rules for the whole rule).
-- diff-bug #12: two new README and CHANGELOG lines ran past the wrap width — fix now (rewrapped).
+- diff-bug #11: README and skeleton restate the rule in part, and the skeleton had a doubled colon — fix now for the colon; the partial restatements reject (planned: both point to tracking-rules for the whole rule), colon fixed fc9af90b.
+- diff-bug #12: two new README and CHANGELOG lines ran past the wrap width — fix now (rewrapped), fixed fc9af90b.
 - diff-bug #13: the skeleton fixture holds the old comment — reject (false as a defect: the fixture tests comment handling and has differed from the template since M284; no test reads its prose).
 - diff-bug #14: apostrophes in new examples may break shell-quoted mention searches — reject (style: quoting a title is the agent's job, and titles already hold apostrophes).
 - blame-history #1: "runs between spaces" disagrees with not counting `(#N)` — reject (false: the rulebook counts runs in the title less its trailing reference, as stated in the same paragraph).
@@ -114,5 +114,6 @@ the whole title.
 - ripple #1: the skeleton fixture holds the old comment — reject (as diff-bug #13).
 - copilot: cairn/milestones/M292-candidate-title-format.md:75 — reject (the work log is append-only; the claim-audit line records the re-seed).
 - copilot: review body, regenerate the initialization fixture — reject (as diff-bug #13).
-- copilot: review body, align whitespace-based word-count guidance — fixed with diff-bug #3 (the rulebook counts runs between spaces less the reference, with no floor for scripts without spaces).
+- copilot: review body, align whitespace-based word-count guidance — fixed with diff-bug #3 (the rulebook counts runs between spaces less the reference, with no floor for scripts without spaces), fixed fc9af90b.
 - Copilot level: Lite (set by GitHub's settings)
+- conversation: PR #304 — no items beyond the Copilot review and thread above and the operator's summary reply (noted).
