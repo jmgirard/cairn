@@ -93,3 +93,30 @@ Pass 1, 2026-10-19, head 40598619 (the PR-URL commit); main at ce40bc7b is an an
 - AC6: from the repo root, each exit checked: `scripts/tests` 428 OK (21 skipped), `hooks/tests` 193 OK, both `claude plugin validate` runs exit 0, `claude plugin test .` exit 0 with 2336 pass and 0 fail.
 
 Consistency gate: `cairn_validate.py` exit 0, all checks passed. No principle changed, so `cairn_impact` is skipped. Profile slot: the verify checks pass on the review head (AC6). The marketplace validate output holds no `version` warning (grep exit 1). CHANGELOG: the unreleased ⓘ-card entry now says what the card holds, and the added lines carry no milestone id. That entry is edited rather than a new one added, since no release shipped the card.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: 29 `pane.test.tsx` candidate literals lacked `text`, so they set `info` with no `full`, a state the reader cannot produce — fix now, fixed cc7cd3ae (all 30 literals gain `text`).
+- diff-bug #2: a drawn row whose started token is not counted (an empty title, a closed `#n`, a done M id) shows the token in its card — reject, planned change: the operator chose the whole row, and a dead token is `/cairn-triage`'s to remove (D-166).
+- diff-bug #3: the new M293 block sat between the M291 comment and its `describe` — fix now, fixed cc7cd3ae.
+- diff-bug #4: no render-level test draws ⓘ on an empty-title row — reject, planned change: AC2 sets the test at `paneLines`, and `infos()` in register.tsx reads only `info` and `full`, which that test asserts.
+- diff-bug #5: removing an inline HTML comment leaves its spaces (`trigger  — added`) — reject, style: `candidateTexts` has always kept them, and the card shows the row as the reader reads it.
+- diff-bug #6: one reader.test.ts row lists `text` before `title` — reject, style (`toEqual` ignores key order; kept so the Edit tool leaves its `\u001F` escape text alone).
+- diff-bug #7: edited DESIGN, CHANGELOG, and pane.ts lines were not rewrapped — fix now, fixed cc7cd3ae.
+- ripple #1: the same `text`-less literals as diff-bug #1 — fix now, fixed cc7cd3ae.
+- ripple #2: DESIGN.md's `candidateRows` sentence named only priority and short title — fix now, fixed cc7cd3ae.
+- ripple #3: CHANGELOG's M286 entry lists the whole-text card lines without candidate rows — reject, false: the M290 entry moved candidate cards to ⓘ and now says what they hold.
+- ripple #4: README's "beside the info icon that opens the row's card" for ✎ rows — reject, false: the reviewer found it still holds.
+- prior-review #1: the `text`-less literals, also named by Copilot on PR #306 — fix now, fixed cc7cd3ae.
+- prior-review #2: DESIGN.md:510 ran 98 characters (M292's wrap fix) — fix now, fixed cc7cd3ae.
+- prior-review #3: the pane.ts comment split mid-sentence (PR #264's unclear-comment note) — fix now, fixed cc7cd3ae.
+- prior-review #4: CHANGELOG.md:123 ran long — fix now, fixed cc7cd3ae.
+- blame-history #1: the card shows a dead started token on a drawn row — reject, planned change (as diff-bug #2).
+- blame-history #2: D-189's rejected alternative rests on "the line's hover card shows the whole title" — reject, false: the card still shows the whole title, as the start of the row's text.
+- blame-history #3: a tall card opens past the pane's top — reject, already recorded as item (3) of "Fix cut and odd names on the pane card" at the live look.
+- blame-history #4: the M258 started-token test dropped its priority check — fix now, fixed cc7cd3ae (it compares priority and title).
+- blame-history #5: `info` now keys on the text, not the title (M290) — reject, planned change (AC2).
+- blame-history #6: the pane.ts and register.tsx comments split M286's sentences — fix now, fixed cc7cd3ae.
+- blame-history #7: the same `text`-less literals — fix now, fixed cc7cd3ae.
+
+After the fixes: the five verify checks pass again (scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2336 pass 0 fail), and `cairn_validate.py` passes.
