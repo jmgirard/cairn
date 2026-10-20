@@ -8,6 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M301 | Show each open PR's merge state in the pane | planned | — | normal | milestones/M301-pane-pr-merge-state.md |
 | M300 | A trivial edit keeps owed issues open | done | — | normal | milestones/archive/M300-trivial-route-owed-issues.md |
 | M299 | Triage closes the remaining PR-named row gaps | done | — | normal | milestones/archive/M299-triage-row-gaps.md |
 | M298 | Triage keeps a PR-named row's title on every path | done | — | normal | milestones/archive/M298-triage-pr-named-rows.md |
