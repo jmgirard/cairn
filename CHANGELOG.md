@@ -163,6 +163,19 @@
   cannot read the PRs, it says so. Each row it then proposes to change,
   other than a keep, is marked as not checked against them.
 
+- **A direct edit from the pane removes the row you pressed.** When
+  `/milestone-plan` finds a trivial edit, it removes or narrows the
+  candidate row the edit fixes. It took only a row whose title your
+  request quotes, but a ✎ press sends the title with no quotes, so the
+  pressed row stayed. If your whole request is a row's title, that row
+  now matches too. A title that appears unquoted inside a longer request
+  still does not match. The plan also reads the `Candidate row:` lines of
+  the open pull requests. It leaves alone a row that one of them names,
+  since that PR's merge removes or narrows it. The route's option names
+  each row it leaves for a PR. If a row matched but the plan cannot read
+  the PRs, or the list stops at 100, the option says so. It says that the
+  matched rows were not checked against every open pull request.
+
 - **The Copilot report names the review level again.** Copilot now ends
   its review with `<sub>Review effort: Lite</sub>` in place of
   `🧠 **Review effort:** Lite`. The Copilot round's state query read only
