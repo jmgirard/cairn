@@ -418,6 +418,20 @@ export function cardRows(text: string, columns: number): number {
   if (used > 0) rows += 1
   return rows + 2
 }
+
+// A cut card's text (M294, amended after the live look): `text` as it is
+// when `cardRows` fits it in `rows`, else its longest run of words from the
+// start that fits with ` …` after it, then ` …`, or `…` alone. Adding a
+// word never lowers `cardRows`, so the scan stops at the first word that
+// does not fit. The card sets no height, so the desktop's own wrap, which
+// can differ, leaves no empty rows.
+export function cardCut(text: string, rows: number, columns: number): string {
+  if (cardRows(text, columns) <= rows) return text
+  const words = text.split(/ +/).filter(each => each !== '')
+  let kept = 0
+  while (kept < words.length && cardRows(`${words.slice(0, kept + 1).join(' ')} …`, columns) <= rows) kept += 1
+  return kept === 0 ? '…' : `${words.slice(0, kept).join(' ')} …`
+}
 export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'

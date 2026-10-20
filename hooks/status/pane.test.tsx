@@ -6,6 +6,7 @@ import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
 import {
   CHECKED_MARK,
+  cardCut,
   cardPlace,
   cardPlaces,
   cardRows,
@@ -6707,8 +6708,32 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
       if (surface === 'terminal') {
         expect(kids(root).filter(isCard)).toEqual([])
       } else {
-        expect(last.props).toEqual(expect.objectContaining({ position: 'absolute', top: row + 1, height: 5, overflow: 'hidden' }))
+        // A cap of 5 holds 3 text rows of 10 columns: `Long row:`,
+        // `aaaa bbbb`, `cccc …`. The card sets no height (amended AC5).
+        expect(last.props).toEqual(expect.objectContaining({ position: 'absolute', top: row + 1, display: 'none' }))
+        expect(last.props.height).toBeUndefined()
+        expect(last.props.overflow).toBeUndefined()
+        expect(textOf(kids(last)[0])).toBe('Long row: aaaa bbbb cccc …')
       }
+    })
+  }
+})
+
+// M294 AC5 (amended after the live look): a cut card's text is its longest
+// run of whole words from the start that fits in its rows with ` …` after
+// it. With 14 columns a row holds 10. Each value is written out by hand.
+describe('cardCut cuts the text of a card by whole words (M294 AC5)', () => {
+  const table: [string, string, number, string][] = [
+    ['a cut mid-text', 'aaaa bbbb cccc dddd eeee ffff gggg', 5, 'aaaa bbbb cccc dddd eeee …'],
+    ['a run whose … would wrap past the rows', 'aaaa bbbb cccc dddd eeee ffff', 4, 'aaaa bbbb cccc …'],
+    ['a first word that does not fit alone', 'abcdefghij klm', 3, '…'],
+    ['a text that fits whole', 'aaaa bbbb', 3, 'aaaa bbbb'],
+    ['repeated and leading spaces', '  aaaa   bbbb cccc dddd', 3, 'aaaa …'],
+    ['a word longer than a row that fits once split', 'abcdefghijklmno uvw xyz', 4, 'abcdefghijklmno …'],
+  ]
+  for (const [name, text, rows, cut] of table) {
+    test(name, () => {
+      expect(cardCut(text, rows, 14)).toBe(cut)
     })
   }
 })

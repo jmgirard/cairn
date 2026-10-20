@@ -10,6 +10,7 @@ import { ICON_PX, iconSvg } from './icons'
 import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { CardPlace, HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
+  cardCut,
   cardPlaces,
   CHECK_LABEL,
   CLEAR_LABEL,
@@ -451,7 +452,9 @@ export const register: Register = on => {
       Object.prototype.hasOwnProperty.call(places, line.key) ? places[line.key] : { side: 'up', rows: null }
     // A card's Box: no key of its own, since a keyed Box would scope its own
     // hover and a hidden scope is never under the pointer (M290). `at` places
-    // it, and a cut card takes its rows as its height and clips the rest.
+    // it. A cut card holds its text cut by whole words to its rows, ending in
+    // `…`, and sets no height, since a fixed height left empty rows where the
+    // desktop wraps more per row than `cardRows` counts (M294 live look).
     const cardBox = (line: (typeof lines)[number], at: { top: number } | { bottom: number }, rows: number | null) => (
       <Box
         position="absolute"
@@ -464,9 +467,8 @@ export const register: Register = on => {
         borderColor={METER_EMPTY_KEY}
         backgroundColor={HOVER_GROUND}
         paddingX={1}
-        {...(rows === null ? {} : { height: rows, overflow: 'hidden' as const })}
       >
-        <Text wrap="wrap">{line.full}</Text>
+        <Text wrap="wrap">{rows === null ? line.full : cardCut(line.full ?? '', rows, e.props.bodyColumns)}</Text>
       </Box>
     )
     const centers = (line: (typeof lines)[number]) =>

@@ -524,8 +524,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   summary card's 2 border rows). `cardPlaces` reads the Pane props
   `scroll.offset`, `scroll.bodyRows`, and `placement`, and `cardPlace` puts
   the card above when it fits, else below, else on the side with more rows
-  (above on a tie), cut to that side's rows with `height` and
-  `overflow: 'hidden'`, and draws none on a side of fewer than 3 rows. A
+  (above on a tie), cut to that side's rows, and draws none on a side of
+  fewer than 3 rows. A cut card holds `cardCut`'s text (the longest run of
+  whole words that fits with ` …` after it) and sets no `height`, since a
+  fixed height left empty rows where the desktop wraps more per row than
+  `cardRows` counts; that wrap can also make a cut card a row or two
+  shorter or longer than its cap. A
   card that opens below is drawn last in the pane's root Box at `top` equal
   to its line's `rowsAbove` plus 1, so it paints over the rows under its
   line. The cards of other lines still open upward.
