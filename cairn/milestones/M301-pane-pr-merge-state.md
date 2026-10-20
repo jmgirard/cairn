@@ -62,6 +62,7 @@ Each open pull request line in the cairn pane shows an icon that tells whether t
 - 2026-10-20: T6 done: draft PR jmgirard/cairn#314 from `hotfix-m301-merge-probe`, cut from a1e456d6 with a ROADMAP stamp edit that conflicts with main. GitHub read CONFLICTING at once. The operator saw the red conflicts mark on the #314 Hotfixes line in a new session, dark and light. The probe branch then merged main (main's stamp kept) and was pushed; GitHub read CONFLICTING, then UNKNOWN, then MERGEABLE about 10 s later. After a ↻ press the operator saw the green merge symbol, dark and light. #314 closed unmerged, remote and local branch deleted.
 - 2026-10-20: claim audit: 36 claims read, 1 corrected — CHANGELOG.md (the no-mark sentence named only a ↻ press; a pane open also re-reads).
 - 2026-10-20: implement done, all six tasks checked, verify green; status set to review.
+- 2026-10-20: step-7 approval: m301-pane-pr-merge-state approved for merge
 
 ## Decisions
 
