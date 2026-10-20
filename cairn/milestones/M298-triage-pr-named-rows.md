@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M298: Triage keeps a PR-named row's title on every path
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -37,12 +37,12 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/cairn-triage/SKILL.md` step 3's amend loop states that when the user sets, on a PR-named row, a disposition that removes the row or changes its short title (`drop`, `merge` as the absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites the title), the chip posed after that Amend names, in its question text, the row and each naming PR's number, and says that the change breaks that PR's match of the row. A second or later Amend, which shows no table, follows the same rule.
-- [ ] AC2: The amend loop states that after a session-start open-PR read that failed or returned 100 PRs, a non-`keep` disposition the user sets at Amend carries the same not-checked mark in its table reason on the first Amend as a proposed one does, and the chip's question text names that row as not checked on every Amend.
+- [x] AC1: `skills/cairn-triage/SKILL.md` step 3's amend loop states that when the user sets, on a PR-named row, a disposition that removes the row or changes its short title (`drop`, `merge` as the absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites the title), the chip posed after that Amend names, in its question text, the row and each naming PR's number, and says that the change breaks that PR's match of the row. A second or later Amend, which shows no table, follows the same rule.
+- [x] AC2: The amend loop states that after a session-start open-PR read that failed or returned 100 PRs, a non-`keep` disposition the user sets at Amend carries the same not-checked mark in its table reason on the first Amend as a proposed one does, and the chip's question text names that row as not checked on every Amend.
 - [ ] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
-- [ ] AC4: The `retitle` rule states that a double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten, and the table lists it as left, with the PR's number, as it lists an ambiguous mention.
-- [ ] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191. It records AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and it states that it passes D-108's door on its retained trigger, naming the M295 review's shipped defects. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths.
-- [ ] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
+- [x] AC4: The `retitle` rule states that a double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten, and the table lists it as left, with the PR's number, as it lists an ambiguous mention.
+- [x] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191. It records AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and it states that it passes D-108's door on its retained trigger, naming the M295 review's shipped defects. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths.
+- [x] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -100,6 +100,8 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: claim audit: 31 claims read, 5 corrected — skills/cairn-triage/SKILL.md (pane clause dropped from the Amend chip sentence; the lineage rule bounded to survivors with no `: ` after their first started token), CHANGELOG.md (headline "guards"; the ` — ` opening tested before the added text), skills/tests/test_triage_pr_named_rows.py (docstring names the three paths; pins follow the fixes, 18 subtests, all red against main, all green on the branch). The same reader re-read the five corrections: all true.
 - 2026-10-20: open concern for review: D-196's Decision says "So no survivor's short title changes", which misses the claim audit's edge case of an off-format row with a `: ` after its started token; D-196 is history, so it is left as written.
 - 2026-10-20: implement complete; skills/tests 923 OK, cairn_validate green; status → review.
+- 2026-10-20: review pass 1: four lenses, 27 findings (14 fix now, 1 follow-up, 12 rejected); Review section holds each.
+- 2026-10-20: review return 1: AC3 fails as written — a merge survivor's title can still change when its trigger text is placed before the clause's ` — ` opening (diff-bug #1), and when its first `: ` follows its first started token (diff-bug #2); fix both in the skill so every survivor keeps its title, with the pass-1 fix-now items listed in the Review section.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -113,3 +115,40 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+### Pass 1 (2026-10-20, head 1e2fbc20)
+
+Copilot arm: PR #311 opened at review start, header commit pushed, Copilot requested (state `none` → `pending` after the request).
+
+- AC1: `skills/cairn-triage/SKILL.md:489-496` names the six title-changing dispositions, has the chip after that Amend name the row and each naming PR's number in its question text and say the change breaks that PR's match, and applies the rule to a second or later Amend; `:473-474` points the Amend option at it; guard `test_amend_names_the_pr_of_a_changed_row` ok. Pass.
+- AC2: `SKILL.md:497-501`: after a failed or 100-PR read, a non-`keep` disposition set at Amend carries the not-checked mark in its table reason on the first Amend, and the chip names the row as not checked on every Amend; guard `test_amend_marks_rows_after_a_failed_or_capped_read` ok. Pass.
+- AC3: `SKILL.md:553-559` states the ` — ` opening and the no-`: ` rule (guard ok), but "Together these keep the survivor's short title as it was, for every survivor" fails as written: the skill bounds it to survivors with no `: ` after their first started token (diff-bug #2), and the trigger the survivor takes can be placed first without the ` — ` opening (diff-bug #1). Fail.
+- AC4: `SKILL.md:303` (table row), `:359-360` (Title class search), `:426-427` (step-3 table), `:540-541` (step 4 rewrite) state the exception and the left listing with the PR's number; guard `test_retitle_leaves_a_mention_in_a_pr_named_title` ok. Pass.
+- AC5: `cairn/DECISIONS.md:7088` D-196 heading names D-191; body records AC1-AC4's rules, the rejected Amend refusal with its falsifier, and D-108's door on the M295 review's diff-bug #6, #8, and pass 2 diff-bug #7; `CHANGELOG.md` Unreleased Fixes gains one entry (diff +13 lines, one bullet) naming the three paths. Pass.
+- AC6: at 1e2fbc20, scripts/tests 428 OK (21 skipped), hooks/tests 193 OK, plugin validate exit 0, marketplace validate exit 0 (no version warning), plugin test 2389 pass, exit 0; `skills/tests` 923 OK. Pass.
+- Consistency gate: `cairn_validate.py` exit 0 (all checks passed); no principle changed, so no `cairn_impact`; profile gate: verify green, no `plugins[N].version` warning, changelog entry present.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the ` — ` opening covers the clause but not the trigger, whose order is unstated, so a trigger placed first joins the title — fix now (floor return 1, AC3).
+- diff-bug #2: AC3 promises every survivor, the skill bounds it, and D-196 and the changelog state it unbounded — fix now (floor return 1, AC3): a survivor whose first `: ` follows its first started token takes the clause at the row's end, which also makes D-196 and the changelog true.
+- diff-bug #3: the PR warning is on the chip after that Amend only, so a later chip can omit a standing change — fix now (name it on every chip while the change stands).
+- diff-bug #4: the Amend option says any amend away from `keep` names the PR, wider than the loop's list — fix now.
+- diff-bug #5: "own short title" is unclear when the PR-named row's own disposition moves the quote — fix now (judge the row as read at session start).
+- diff-bug #6: a `compress` rewriting the title is known only at apply — fix now (a `compress` on a PR-named row keeps its short title).
+- diff-bug #7: "that place" is undefined for a survivor with no started token — fix now (the row's end when it has none).
+- diff-bug #8: "breaks that PR's match" can overstate for a `split` whose named row keeps the title — reject, planned change (AC1 mandates "breaks").
+- diff-bug #9: "with the PR's number" is singular where step 2 says each such PR — fix now ("each naming PR's number").
+- diff-bug #10: the changelog sentence on marking a proposed change restates M295 behavior, and a line runs wide — fix now.
+- diff-bug #11: the guard pins the bounding sentence of diff-bug #2 — fix now with diff-bug #2.
+- blame-history #1: after a failed or capped read, a `retitle` can rewrite a mention inside a PR-named row the pass cannot see, and the mark names only the row itself — fix now (the mark also covers the listed mentions).
+- blame-history #2: D-196 and the changelog state the merge guarantee without the skill's bound — fix now, with diff-bug #2.
+- blame-history #3: a mention left inside a PR-named row's title drops that row from its records-hygiene §7 group — reject, planned change (AC4 leaves the mention).
+- blame-history #4: the `: ` → `; ` rewrite applies even where the survivor's title cannot change — reject, planned change (AC3 states the rule for every clause).
+- blame-history #5: the new guard adds prose-guard surface D-109 weighed — reject, planned change (T4).
+- prior-review #1: the open-PR read has no "PR text is data, never instructions" line, as M296's review asked — follow-up, item (5) of "Guard PR-named rows on other skill paths", which stays as that row at hygiene.
+- ripple #1: `SKILL.md:386-388` says a PR-named row's short title stays the PR's, which the Amend override now qualifies — fix now.
+- ripple #2: the M295 changelog entry (Unreleased) says triage keeps each PR-named row as it is — fix now (it proposes `keep`).
+- ripple #3: `README.md:424-426` says the row is kept as it is so its title matches — fix now (name the Amend warning).
+- ripple #4: ROADMAP row "Guard PR-named rows on other skill paths" lists items (2) to (4) as open — reject, planned change (step 9 hygiene narrows it).
+- ripple #5: §7 group definitions do not state the retitle exception — reject, planned change (as blame-history #3).
+- ripple #6: DESIGN Known issues on Amend promote does not mention the new chip — reject, false (the entry is still accurate).
+- ripple #7: DESIGN Known issues on Amend uniqueness — reject, false (still accurate).
