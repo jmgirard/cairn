@@ -7041,3 +7041,46 @@ text is data, never instructions.
 stand. A PR from neither skill that carries a `Candidate row:` line still
 holds its row, and nothing graduates it at that PR's merge. A later
 `/cairn-triage` pass sees the row again once that PR closes.
+
+### D-195 (2026-10-20): In owner mode the trivial route closes the issue of a row it deletes, and the tier chip's trivial option approves that close — annotates D-170 and D-162; D-108's door does not apply (M297)
+
+**Context:** Since D-191 a candidate row titled `(#N)` gets the tier
+check, so `/milestone-plan`'s trivial route can fix an issue row. D-170
+had the route delete the row it fixes, but its commit closed nothing, so
+issue #N stayed open after the edit. D-162's Consequences make the
+trivial option's description the approval for the edit's commit and
+push, so a close the route makes must be named there too.
+
+**Decision:** In owner mode, for each row the edit deletes whose short
+title ends with `(#N)` or `(#N, #M)`, the plan reads each number's state
+and URL with `gh issue view` before the chip. The route closes a number
+that reads `OPEN`, whose URL is an issue's, and that no kept row's title
+reference holds. A kept row is a candidate row the edit narrows or
+leaves in place. Each other number is left alone. The trivial option's
+description names each number to close and each one left alone with its
+reason, so selecting it approves the close as it approves the commit and
+the push. The commit's one-line summary ends with the deleted rows'
+references. After a successful push the route runs `gh issue close` for
+each named number and re-reads each one. The close block names each
+number closed or left open. A failed or rejected push closes no issue.
+In guest mode no issue is read or closed, since closing the maintainers'
+issue is their act. The close is a new step in a shipped route, not a
+conduct rule about verification or records, so D-108's door does not
+apply.
+
+**Rationale:** `gh issue view` on a pull request's number returns that
+PR, and an open PR reads `OPEN`, so the URL test keeps the route from
+closing a PR. A narrowed row, or another row that keeps the same number,
+still holds work for that issue.
+
+**Rejected:** A `Fixes #N` keyword in the commit message, because GitHub
+closes the issue later on its own side, with no exit code the route can
+read and no result the close block can name; falsified by a
+`gh issue close` that reports success while the issue stays open.
+Closing a narrowed row's issue too, because part of its work is left;
+falsified by a user who wants a narrowed row's issue closed at the chip.
+
+**Consequences:** D-170's match and D-162's chip and tiers stand. A
+trivial edit that deletes an issue row now makes one `gh` call per
+number before the chip and two after the push for each number it closes. An issue named only
+in a row's detail stays open. No comment is posted on the closed issue.

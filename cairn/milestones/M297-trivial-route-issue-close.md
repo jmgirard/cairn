@@ -66,7 +66,7 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - [x] T1: In `skills/milestone-plan/SKILL.md` step 1, add the issue-state read for deleted rows with an issue-ending title to the trivial-route checks, and add the named issues, the narrowed-row case, and the guest case to the trivial option's description.
 - [x] T2: Extend the owner-mode commit sentence: the summary carries the issue references, and after a successful push each named issue is closed and re-read, with the close block naming each result. Trace each path the new step opens (push fails, push rejected, close fails, `gh` cannot run) to the outward write it reaches (LESSONS M172).
 - [x] T3: Add a test to `skills/tests/test_plan_tier_check.py` pinning T1's and T2's sentences, each member pinned on its own. Show each new assertion red against the pre-change step 1 before trusting its green.
-- [ ] T4: Append the D-entry (next free id) per AC4.
+- [x] T4: Append the D-entry (next free id) per AC4.
 - [ ] T5: Edit README's trivial-edit row and add the CHANGELOG entry.
 - [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
@@ -97,6 +97,7 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - 2026-10-20: re-audit: AC3 (full) — its "stays open" against "leaves alone" for a closed or PR number, answered: step 1 states both, "stays open" meaning the route does not close it, AC3 kept.
 - 2026-10-20: T1-T3 done: step 1 gains an **Issue read** paragraph after the candidate-row match, three option sentences, and the commit/close sentences; T2 trace: a failed or rejected push reaches no close, a pre-chip read that fails or a `gh` that cannot run leaves the number alone so no close runs for it, a failed close or re-read is named in the close block; `test_trivial_route_closes_deleted_rows_issues` pins 20 phrases, each absent from main's step 1 (checked one by one) and present now; the M265 push pin split in two around the inserted sentence; verify 5/5 green, skills/tests OK.
 - 2026-10-20: implementation choice: the step names a kept row (narrowed or left in place) once in the Issue read paragraph and reuses the term; the summary example is `(#12)`.
+- 2026-10-20: T4 done: D-195 appended (annotates D-170 and D-162; rejects `Fixes #N` with its falsifier; D-108's door does not apply, since the close is a route step, not a conduct rule about verification or records).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
