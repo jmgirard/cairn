@@ -13,8 +13,11 @@ collapsed (the M171 lesson). Hand-run only (M144, D-109):
     python3 -m unittest discover -s skills/tests
 """
 
+import json
 import pathlib
 import re
+import shutil
+import subprocess
 import unittest
 
 SKILLS = pathlib.Path(__file__).resolve().parent.parent
@@ -230,6 +233,49 @@ class TestUnsettledNoteInTheRound(unittest.TestCase):
     def test_questions_go_to_chat(self):
         self.assertIn("A question for the user goes to chat, never to "
                       "GitHub.", self.step)
+
+
+@unittest.skipUnless(shutil.which("jq"), "jq not installed")
+class TestStateQueryLevel(unittest.TestCase):
+    """Hotfix 2026-10-19: §3's state query reads the level from both forms
+    of Copilot's level line. Copilot wrote `🧠 **Review effort:** Lite` up
+    to PR #275 and `<sub>Review effort: Lite</sub>` from PR #282, and the
+    capture that needed the `**` printed `unknown` for the new form. The
+    test runs the module's own `--jq` filter with jq over a fixture
+    response. gh runs `--jq` with gojq, so a live query backs this one."""
+
+    def setUp(self):
+        block = section(read("shared", "copilot-review.md"),
+                        "## 3. State query", "## 4. Wait and read")
+        line = next(ln for ln in block.splitlines()
+                    if ln.startswith("gh api graphql"))
+        self.jq = line.split("--jq '", 1)[1].rsplit("'", 1)[0]
+
+    def state(self, body):
+        response = {"data": {"repository": {"pullRequest": {
+            "headRefOid": "abc",
+            "reviewRequests": {"nodes": []},
+            "reviews": {"nodes": [{
+                "author": {"login": "copilot-pull-request-reviewer"},
+                "commit": {"oid": "abc"},
+                "body": body,
+            }]},
+        }}}}
+        run = subprocess.run(["jq", "-r", self.jq], input=json.dumps(response),
+                             capture_output=True, text=True, check=True)
+        return run.stdout.strip()
+
+    def test_sub_form_gives_the_level(self):
+        self.assertEqual(self.state("Summary.\n\n<sub>Review effort: Lite</sub>"),
+                         "reviewed head Lite")
+
+    def test_bold_form_gives_the_level(self):
+        self.assertEqual(self.state("Summary.\n\n🧠 **Review effort:** Balanced"),
+                         "reviewed head Balanced")
+
+    def test_no_level_line_gives_unknown(self):
+        self.assertEqual(self.state("Summary with no level line."),
+                         "reviewed head unknown")
 
 
 if __name__ == "__main__":

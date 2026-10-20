@@ -134,6 +134,15 @@
   a PR with no Copilot review, it gives you the request command. It works
   without the `# Copilot review: on` line and in repos without `cairn/`.
 
+### Fixes
+
+- **The Copilot report names the review level again.** Copilot now ends
+  its review with `<sub>Review effort: Lite</sub>` in place of
+  `🧠 **Review effort:** Lite`. The Copilot round's state query read only
+  the old form, so the report's level line said `unknown`. The query now
+  reads both forms. It also runs under the standalone `jq` command, which
+  rejected the old query's syntax, so you can run it by hand.
+
 ## 2.1.0 (2026-10-18)
 
 ### Changes that affect existing repos
