@@ -131,27 +131,34 @@ Copilot arm: PR #310 opened at review start, header commit pushed, state query `
 
 spawned: diff-bug, blame-history, prior-review, ripple
 
-- diff-bug #1: a failed `git commit` still reaches the close, since a push with nothing new exits 0 — fix now
-- diff-bug #2: a close that exits 0 with a failed re-read is reported as left open — fix now (the close block also says the close command succeeded; AC2's "left open … the failed re-read" stands)
-- diff-bug #3: the summary's references reach GitHub as timeline cross-references the chip does not name — fix now (the option says the summary carries them)
+- diff-bug #1: a failed `git commit` still reaches the close, since a push with nothing new exits 0 — fix now, fixed ba1f2f15
+- diff-bug #2: a close that exits 0 with a failed re-read is reported as left open — fix now (the close block also says the close command succeeded; AC2's "left open … the failed re-read" stands), fixed ba1f2f15
+- diff-bug #3: the summary's references reach GitHub as timeline cross-references the chip does not name — fix now (the option says the summary carries them), fixed ba1f2f15
 - diff-bug #4: a kept row holding #N only in its detail does not protect #N — follow-up, row "Keep owed issues open on a trivial edit"
 - diff-bug #5: an issue in an open milestone's `Resolves:` slot can be closed early — follow-up, same row
 - diff-bug #6: the issue read's order against the five checks is unstated (a failed check can sit beside numbers named to close) — follow-up, same row
-- diff-bug #7: a failed push's close block gives no close command for later — fix now
+- diff-bug #7: a failed push's close block gives no close command for later — fix now, fixed ba1f2f15
 - diff-bug #8: the close passes no `--comment`, unlike `/hotfix` and `/milestone` — reject, planned change (Scope Out: no comment is posted)
 - diff-bug #9: an issue closed by someone else between read and close is reported as closed — reject, false: the block reports the re-read state, which is `CLOSED`, and claims nothing about who closed it
-- diff-bug #10: the test does not pin "and none is read" or "The read takes no issue body", and option phrases are pinned against the whole step — fix now
+- diff-bug #10: the test does not pin "and none is read" or "The read takes no issue body", and option phrases are pinned against the whole step — fix now, fixed ba1f2f15
 - diff-bug #11: README leaves out the closed and unreadable cases — reject, false: the row states nothing wrong and points at the option, which names each case
 - blame-history #1: after a failed open-PR read the route can delete a PR-named row and now also close its issue — follow-up, same row
 - blame-history #2: an issue a planned milestone still owes can be closed — follow-up, same row (diff-bug #5)
 - blame-history #3: no `--comment` on the close — reject, planned change (diff-bug #8)
-- blame-history #4: the split push pin no longer pins the close-block sentence's place after the failed-push sentence — fix now (order assert)
+- blame-history #4: the split push pin no longer pins the close-block sentence's place after the failed-push sentence — fix now (order assert), fixed ba1f2f15
 - blame-history #5: whether an unmatched row citing `(#N)` protects it — reject, false: a kept row is "a candidate row the edit narrows or leaves in place", which includes every unmatched row
-- prior-review #1: chip phrases pinned against the whole step — fix now (diff-bug #10)
+- prior-review #1: chip phrases pinned against the whole step — fix now (diff-bug #10), fixed ba1f2f15
 - prior-review #2: a mid-title `(#N)` is not read — reject, planned change (Scope Out: only the title-ending form)
 - prior-review #3: narrowed against kept is an edit-time judgment — reject, planned change (D-170's delete-or-narrow judgment, unchanged)
 - ripple #1: ROADMAP's "Close the issue a trivial edit fixes" row says the route has no issue-close step — reject, planned change: step 9's hygiene deletes the row at this merge
 - ripple #2: the git model and CLAUDE.md say the chip approves a trivial-tier commit, not the issue close — reject, false: they name what may reach the default branch, which is still the commit alone; the close is approved in step 1 and D-195
 - ripple #3: tracking-rules Intake does not list the trivial route as an issue exit — reject, false: Intake lists routes for an incoming issue, and this close follows a row, not an issue
-- ripple #4: tracking-rules' trivial-tier sentence says only that the commit graduates rows — fix now (adds the owner-mode issue close)
+- ripple #4: tracking-rules' trivial-tier sentence says only that the commit graduates rows — fix now (adds the owner-mode issue close), fixed ba1f2f15
 - ripple #5 and #6: `/milestone` §3's "only on the user's selection" and `/milestone-review`'s "no other issue write … on the review path" — reject, false: each is scoped to its own path, as the lens notes
+
+Fix-now work landed in ba1f2f15 (verify 5/5 green, skills/tests OK, cairn_validate clean); the new pins were red against 47fedc7f, a moved option sentence and a swapped push-failure order each turned the test red, and the file was restored.
+
+PR-conversation read (PR #310, before the chip): state query `reviewed earlier-head Lite`; 0 review threads; 1 review, 0 issue comments before the summary reply.
+- copilot: review body — the guest-mode guard must pin that no issue is read as well as not closed — fix now, fixed ba1f2f15
+- conversation: copilot-pull-request-reviewer[bot] PR — review COMMENTED, its one body item settled above; summary reply posted (issuecomment-6294067053) — noted
+- Copilot level: Lite (set by GitHub's settings)
