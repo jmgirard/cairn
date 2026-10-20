@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M300: A trivial edit keeps owed issues open
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -67,7 +67,7 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - [x] T2: In `skills/tests/test_plan_tier_check.py`, replace the pinned kept-row phrases and pin each new sentence on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
 - [x] T3: Append the D-entry (next free id) per AC4.
 - [x] T4: Edit README's trivial-edit row and M297's CHANGELOG Unreleased entry; grep both for the old wording first (LESSONS M112).
-- [ ] T5: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
+- [x] T5: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -95,3 +95,5 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - 2026-10-20: T2 done: `test_trivial_route_closes_deleted_rows_issues` drops the two title-reference phrases and pins 10 phrases, each its own member; against main's step 1 all 10 are absent and the test fails on its own assertion (`AssertionError` in that test, not a crash), against the branch all 10 are present; full `skills/tests` green.
 - 2026-10-20: T3 done: D-200 appended (narrows D-195's kept-row clause and detail Consequence; rejected alternative and falsifier recorded; D-108's door does not apply).
 - 2026-10-20: T4 done: README's trivial-edit row and M297's Unreleased CHANGELOG entry now name a kept row's whole text, an open milestone's `Resolves:` slot, and no close after a failed or cut-short PR check; a grep for "still names" and "row it keeps" found no other restatement. The simple-english lint hook's hits in both files are pre-existing; the new sentences are short.
+- 2026-10-20: T5 done: verify green at 5a5d634e (scripts, hooks, plugin validate, marketplace validate, mod test 2389 pass) and hand-run `skills/tests` green; after the claim-audit fixes the Python suites, `skills/tests`, and both validates re-ran green (the fixes touch no mod file).
+- 2026-10-20: claim audit: 21 claims read, 2 corrected — skills/milestone-plan/SKILL.md (the close rule split into a condition and a fact, rejoined; the option's narrowed-row sentence now applies only when no check failed), pins in skills/tests/test_plan_tier_check.py updated; the same reader re-read both once and found them matching.

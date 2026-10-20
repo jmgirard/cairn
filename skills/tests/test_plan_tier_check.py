@@ -231,8 +231,8 @@ class TestPlanTierCheck(unittest.TestCase):
             "state,url` before the chip.",
             "A kept row is a candidate row the edit narrows or leaves in "
             "place.",
-            "The route will close a number that reads `OPEN` and whose URL "
-            "path holds `/issues/`.",
+            "The route will close a number that reads `OPEN`, whose URL path "
+            "holds `/issues/`,",
             "It leaves each other number alone:",
             "one read as closed,",
             "one whose URL path holds `/pull/`, since `gh issue view` reads a "
@@ -243,9 +243,8 @@ class TestPlanTierCheck(unittest.TestCase):
             # open-PR read closes nothing; the read follows the checks.
             "A text holds a number when it holds `#N` with no digit right "
             "after it.",
-            "No kept row's text holds that number, in its title or its "
-            "detail, and no open milestone file's `Resolves:` header slot "
-            "holds it.",
+            "that no kept row's text holds, in its title or its detail, and "
+            "that no open milestone file's `Resolves:` header slot holds.",
             "An open milestone file is one whose ROADMAP status is "
             "`planned`, `in-progress`, `blocked`, or `review`.",
             "one that a kept row holds, since that row still owes work on "
@@ -272,8 +271,8 @@ class TestPlanTierCheck(unittest.TestCase):
             "It also names each number the route will close after the push.",
             "It names each number of a deleted row that the route leaves "
             "alone, with the reason.",
-            "When a narrowed row's title, or in guest mode a deleted row's "
-            "title, ends with `(#N)` or `(#N, #M)`, it names that number as "
+            "When no check failed and a narrowed row's title, or in guest "
+            "mode a deleted row's title, ends with `(#N)` or `(#N, #M)`, it names that number as "
             "left alone.",
             "It also says that the commit summary ends with the deleted rows' "
             "issue references.",

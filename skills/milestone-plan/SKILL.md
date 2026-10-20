@@ -132,9 +132,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    edit narrows or leaves in place. A text holds a number when it holds
    `#N` with no digit right after it. An open milestone file is one whose
    ROADMAP status is `planned`, `in-progress`, `blocked`, or `review`. The
-   route will close a number that reads `OPEN` and whose URL path holds
-   `/issues/`. No kept row's text holds that number, in its title or its
-   detail, and no open milestone file's `Resolves:` header slot holds it.
+   route will close a number that reads `OPEN`, whose URL path holds
+   `/issues/`, that no kept row's text holds, in its title or its detail,
+   and that no open milestone file's `Resolves:` header slot holds.
    It leaves each other number alone: one read as closed, one whose
    URL path holds `/pull/`, since `gh issue view` reads a pull request too,
    one whose read fails or whose `gh` cannot run, one that a kept row
@@ -172,8 +172,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      matched, the description says so. It says that the matched rows were
      not checked against every open pull request. It also names each
      number the route will close after the push. It names each number of
-     a deleted row that the route leaves alone, with the reason. When a
-     narrowed row's title, or in guest mode a deleted row's title, ends
+     a deleted row that the route leaves alone, with the reason. When no
+     check failed and a narrowed row's title, or in guest mode a deleted
+     row's title, ends
      with `(#N)` or `(#N, #M)`, it names that number as left alone. It
      also says that the commit summary ends with the deleted rows' issue
      references.
