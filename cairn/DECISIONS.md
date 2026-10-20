@@ -7135,3 +7135,63 @@ is a defect for every row; falsified by a survivor whose short title the
 lineage-clause rule also covers rows with a live started token. Item (5)
 of the candidate row "Guard PR-named rows on other skill paths", the
 open-PR read's statement that PR text is data, is outside this entry.
+
+### D-197 (2026-10-20): `/cairn-triage` never proposes a merge whose survivor is a PR-named row, and D-196's merge clauses are corrected in one batched entry — supersedes D-196's sentence "So no survivor's short title changes", its Rationale sentence on the lineage clause, and its Rejected alternative for PR-named rows; narrows D-191's keep (M298 review)
+
+**Context:** D-196 kept a PR-named row's title on the merge path through
+the lineage clause's placement and its ` — ` opening, and rejected
+excluding PR-named rows from being merge survivors, falsified by a
+survivor whose short title the ` — ` opening still changes. Review pass 2
+of M298 found such survivors: a title that ends in a bare `:` or ` —`,
+and a row that holds only a started token (diff-bug #1 and #2). That was
+AC3's second failure, and at the stop the user chose the rejected
+alternative for PR-named rows. The same pass found D-196 behind the
+skill's final text, and its relations to D-191, D-149, and M259's
+placement rule unstated.
+
+**Decision:** Step 2's Overlap class does not fire on a pair whose
+survivor, by its survivor rule, is a PR-named row. The other row is still
+checked for Overlap against the remaining rows, and otherwise takes the
+first later class that fires, or `keep`. Its table reason names each
+PR-named row it was not merged into, with each naming PR's number. When
+the user sets at Amend a merge whose survivor is a PR-named row, the chip
+after that Amend, and each later chip while that change stands, names
+that row and each naming PR's number in its question text and says that
+the merge can change the row's short title and so break that PR's match.
+Step 4's placement rules stay for every merge, with no promise that every
+survivor's short title stays as it was: the lineage clause, then any
+trigger, go before the row's first started token, or at the row's end
+when the row has no started token, has no text before it, or has its
+first `: ` after it. That replaces M259's before-the-token placement in
+those three cases. The clause opens with ` — ` where the survivor's text
+holds neither `: ` nor ` — ` before that place. The clause and the
+trigger hold no `: `, each written as `; `, because an added `: ` could
+become the row's first `: ` and so end its short title. Review also set
+these rules: a `compress` on a PR-named row keeps its short title unless
+the user's Amend says to rewrite it; a PR-named row's own short title is
+the one session start read; after a failed or capped open-PR read, a
+`retitle`'s not-checked mark also covers the mentions it rewrites; and
+the stamp and the close block name each PR whose match an accepted change
+can break. This entry supersedes D-196's Decision sentence "So no
+survivor's short title changes, a PR-named row and a row with a started
+token included", its Rationale sentence that the fix is to the clause and
+not to which rows can survive a merge, and its Rejected alternative as it
+applies to PR-named rows. A row with a started token can still be a merge
+survivor. Since D-196 an Amend can override D-191's keep with the PR
+named in the chip, so D-196 narrows D-191's keep rather than only
+annotating it.
+
+**Rationale:** Excluding a PR-named row from being a survivor keeps its
+short title on every proposed merge without a rule for each row shape.
+Two review passes each found a new shape that the placement rules missed.
+
+**Rejected:** One more placement rule for each row shape found, because
+each pass found another; falsified by a proposed merge that changes a
+PR-named row's short title with no chip naming the PR.
+
+**Consequences:** An overlap whose survivor would be a PR-named row stays
+unmerged while the PR is open. A mention left inside a PR-named row's own
+short title takes that row out of its records-hygiene §7 group (D-149)
+until the quote matches a row title again. A non-PR-named survivor whose
+title ends in a bare `:` or ` —`, or that holds only a started token, can
+still have its short title changed by a merge.

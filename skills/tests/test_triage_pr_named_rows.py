@@ -3,8 +3,8 @@
 Pins `/cairn-triage`'s rules for a candidate row that an open PR's
 `Candidate row:` line names: the amend loop names the PR when the user
 changes such a row, and marks a row set at Amend after a failed or capped
-open-PR read (AC1, AC2); a `merge` survivor's lineage clause keeps the
-survivor's short title (AC3); a `retitle` leaves a mention inside a
+open-PR read (AC1, AC2); no proposed `merge` keeps a PR-named row as its
+survivor, and one set at Amend names the PR (AC3); a `retitle` leaves a mention inside a
 PR-named row's own short title (AC4). Each sentence is its own subtest, so
 a removed sentence fails alone. Text is whitespace-collapsed on read
 (M171), so a phrase may wrap across lines.
@@ -63,7 +63,8 @@ class TestTriagePrNamedRows(unittest.TestCase):
         self.assertPhrases((
             "The user can also amend a PR-named row to remove it or change "
             "its short title.",
-            "The next chip then names the PR (the amend loop below).",
+            "Each chip after that names the row and each naming PR (the "
+            "amend loop below).",
         ), option)
         keep = section(self.triage,
                        "As that rule also says, a PR-named row is `keep`",
@@ -87,25 +88,42 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "not checked.",
         ), loop)
 
-    def test_merge_lineage_clause_keeps_the_survivor_title(self):
-        # AC3: the clause goes first, at the row's end where the title runs
-        # past the started token, opens with ` — ` where the survivor has
-        # no title end before it, and holds no `: ` (review return 1).
+    def test_no_merge_keeps_a_pr_named_survivor(self):
+        # AC3 (amended at the review thrash stop): Overlap does not fire on
+        # a pair whose survivor is a PR-named row, a merge the user sets at
+        # Amend with such a survivor names the PR, and step 4 makes no
+        # every-survivor title claim.
+        overlap = section(self.triage, "**Overlap → `merge`.**",
+                          "**Overgrowth → `split` or `compress`.**")
+        self.assertPhrases((
+            "The class does not fire on a pair whose survivor, by this rule, "
+            "is a PR-named row (session start).",
+            "The other row is still checked for Overlap against the "
+            "remaining rows, and otherwise takes the first later class that "
+            "fires, or `keep`.",
+            "In either case its table reason names each PR-named row it was "
+            "not merged into, with each naming PR's number.",
+        ), overlap)
+        loop = section(self.triage, "**The amend loop.**",
+                       "Whatever the answer, **every item not accepted")
+        self.assertPhrases((
+            "The user can also set at *Amend* a `merge` whose survivor is a "
+            "PR-named row.",
+            "The chip after that *Amend*, and each later chip while that "
+            "change stands, names that row and each naming PR's number in "
+            "its question text.",
+            "It says that the merge can change the row's short title and so "
+            "break that PR's match.",
+        ), loop)
         apply = section(self.triage, "4. **Apply.**", "5. **Record.**")
         self.assertPhrases((
             "merge survivor's lineage clause, and then any trigger it takes "
             "from the absorbed row, go before the row's first started token.",
-            "They go at the row's end instead in three cases: the row has "
-            "no started token, it has no text before that token, or its "
-            "first `: ` comes after that token.",
-            "Where the survivor's text holds neither `: ` nor ` — ` before "
-            "that place, the lineage clause opens with ` — `.",
             "The lineage clause, and any trigger it takes from the absorbed "
             "row, hold no `: `, each one written as `; `.",
-            "So the survivor's short title stays as it was, for every "
-            "survivor, a PR-named row and a row with a started token "
-            "included.",
         ), apply)
+        with self.subTest(claim="no every-survivor title claim"):
+            self.assertNotIn("for every survivor", apply)
 
     def test_retitle_leaves_a_mention_in_a_pr_named_title(self):
         # AC4: the table row, the Title class's search, the step-3 table,

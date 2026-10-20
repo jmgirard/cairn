@@ -165,7 +165,7 @@
   title, not as a pull request. It still uses the number for the PR's
   `Fixes #N` line. A `#N` outside the title is read as before.
 
-- **`/cairn-triage` keeps a row that an open pull request names.** The
+- **`/cairn-triage` proposes to keep a row that an open pull request names.** The
   pane hides a candidate row that one of your own open PRs names in a
   `Candidate row:` line. In owner mode, `/hotfix` and `/milestone-review`
   write those lines for the rows a merge removes or narrows. When
@@ -177,16 +177,16 @@
 
 - **`/cairn-triage` guards the title of a row a pull request names on
   three more paths.** You can still amend such a row to a change that
-  removes it or changes its title. The next question then names the row
-  and each pull request that names it. It also says that the change
+  removes it or changes its title. Each question after that names the
+  row and each pull request that names it. It also says that the change
   breaks that pull request's match of the row. When the pass did not read
   the open pull requests, or the list stopped at 100, it marks a change
-  you set at Amend as not checked. A merge no longer makes the title of
-  the surviving row longer. The added lineage text holds no `: `. Where
-  the row has no `: ` or ` — ` before that text, it opens with ` — `. A
-  retitle of another row no longer rewrites a quoted mention of the old
-  title inside such a row's title. The pass lists the mention as left,
-  with the pull request's number.
+  you set at Amend as not checked. The pass no longer proposes a merge
+  that keeps such a row as the survivor, so a proposed merge leaves its
+  title alone. If you set such a merge at Amend, the question names the
+  row and its pull requests. A retitle of another row no longer rewrites
+  a quoted mention of the old title inside such a row's title. The pass
+  lists the mention as left, with each naming pull request's number.
 
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the
