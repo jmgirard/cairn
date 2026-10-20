@@ -104,6 +104,8 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - 2026-10-20: T8: at 07804d99 all five `verify` checks exit 0 (scripts 428 OK, hooks 193 OK, both validates, mod test 0 fail) and the hand-run skills/tests exits 0 (929 OK).
 - 2026-10-20: claim audit: 34 claims read, 3 corrected — skills/cairn-triage/SKILL.md, CHANGELOG.md, README.md (a dead token left in a title could still move on a `compress` or go with an icon `retitle`'s in-place title, so step 4 and the token rule now say what happens; "the one exception" now reads "the default pass's one exception", since the lessons pass shows its line each round; the CHANGELOG and README wording follows). The re-read found all three true and README's token sentence still overstated, which now names the icon retitle. The dead-token pin gained both new sentences and stays red on main.
 - 2026-10-20: implement complete: all tasks checked; after the claim fixes all five `verify` checks, the hand-run skills/tests, and cairn_validate pass; status → review.
+- 2026-10-20: review pass 1: PR #312 opened at review start (Copilot arm); four lenses, 28 findings (19 fixed in 13953bbd, 6 follow-up to the parked row "Close the last triage title edge cases", 3 rejected); Copilot Lite, 1 body note rejected, summary reply posted; no return.
+- 2026-10-20: step-7 approval: m299-triage-row-gaps approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
