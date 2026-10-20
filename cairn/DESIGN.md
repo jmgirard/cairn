@@ -513,11 +513,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   `position: 'absolute'`, `bottom: 1`, `display: 'none'`,
   `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
-  above the row, or on a candidate line the pointer over its ⓘ (below).
+  above the row, or on a candidate line the pointer over its ⓘ (below). A
+  candidate card that opens below its row is the one card drawn outside
+  its line, after every line in the pane's root Box (M294, below).
   The card has no key, because a keyed Box scopes its own
   hover and a hidden scope is never under the pointer. A candidate line's
   parked ✎ Box has no key for the same reason (M290).
-  A candidate card opens above its row only when it fits there (M294).
+  A candidate card opens where it fits (M294).
   `cardRows` estimates its rows (a greedy wrap at spaces at the pane's
   `bodyColumns` less 4, in code points, plus 2 border rows), and the line's
   `rowsAbove` is its row in the pane's tree (each line one row, plus the

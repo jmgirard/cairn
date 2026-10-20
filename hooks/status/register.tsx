@@ -406,13 +406,15 @@ export const register: Register = on => {
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
     // hidden Box with its whole text (on a candidate line, its row's text
-    // after the priority token, M293), placed above the row out of the flow,
-    // which the pointer over the line reveals, or on a line with `info` the
-    // pointer over its info glyph, which names the card's hover group (M290).
-    // An absolute Box paints over the rows before it, so a card opens upward
-    // (M286). A candidate card opens below its row instead when it does not
-    // fit above, from the end of the pane, or is cut to the larger side when
-    // it fits on neither (M294). A lead span that names an icon draws it as an
+    // after the priority token, M293), placed out of the flow, which the
+    // pointer over the line reveals, or on a line with `info` the pointer
+    // over its info glyph, which names the card's hover group (M290). An
+    // absolute Box is painted over the siblings before it, so a card drawn
+    // in its line opens upward (M286). A candidate card opens upward when it
+    // fits above its row. When it fits only below, it is drawn after every
+    // line in the pane's root Box and opens below. When it fits neither
+    // side, it opens on the larger side, its text cut (M294). A lead span
+    // that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
@@ -574,7 +576,10 @@ export const register: Register = on => {
     const card = lines.filter(line => line.card)
     // The cards that open below their rows, each at its line's row plus 1
     // in the pane's tree, drawn after every line (M294).
-    const below = e.surface === 'terminal' ? [] : lines.filter(line => line.full !== undefined && placeOf(line)?.side === 'down')
+    // Only a line with the info glyph: its card names the glyph's hover
+    // group, where a card at the root with no group would light from
+    // anywhere in the pane.
+    const below = lines.filter(line => infos(line) && placeOf(line)?.side === 'down')
     return (
       <Box key="cairn-pane" flexDirection="column">
         {card.length === 0 ? null : (

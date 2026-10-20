@@ -248,8 +248,10 @@ function holderOf(node: Element, key: string): Element | undefined {
   return undefined
 }
 
-// A line's hover card: a child placed `position: 'absolute'` that holds no
-// Button, since the desktop's parked ✎ Box is placed too (M290).
+// A hover card: a child placed `position: 'absolute'` that holds no
+// Button, since the desktop's parked ✎ Box is placed too (M290). Most
+// cards are a line's child; a candidate card that opens below is a child
+// of the pane's root, after every line (M294).
 function isCard(child: Element): boolean {
   return child.props.position === 'absolute' && !kids(child).some(node => node.type === 'Button')
 }
@@ -262,7 +264,8 @@ function kids(node: Element): Element[] {
   return (node.children ?? []).filter((c): c is Element => c !== null && typeof c === 'object')
 }
 
-// The pane root's lines in order, the card's lines first (M286).
+// The pane root's lines in order, the card's lines first (M286), and after
+// them any candidate card that opens below its row (M294), which is no line.
 function flat(root: Element): Element[] {
   return kids(root).flatMap(line => (keyOf(line) === 'cairn-card' ? kids(line) : [line]))
 }
@@ -4894,11 +4897,11 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   ]
   // A hidden row moves the rows after it up, so `rowsAbove` (M294) is left
   // out of the comparison.
-  const unplaced = ({ rowsAbove: _, ...rest }: PaneLine) => rest
+  const withoutRow = ({ rowsAbove: _, ...rest }: PaneLine) => rest
   const rows = (acts: boolean, started = items) =>
     layout(state, [], acts, {}, [], started)
       .filter(line => /^candidate-\d+$/.test(line.key))
-      .map(unplaced)
+      .map(withoutRow)
   const heads = (started = items) => layout(state, [], true, {}, [], started).filter(line => line.key.startsWith('candidates-head'))
 
   for (const acts of [true, false]) {
@@ -4926,7 +4929,7 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
       const draw = (started: { title: string; number: number }[]) =>
         layout(three, [], acts, {}, [], started)
           .filter(line => /^candidate-\d+$/.test(line.key))
-          .map(unplaced)
+          .map(withoutRow)
       const before = draw([])
       const got = draw([{ title: 'Taken', number: 5 }])
       expect(got.map(line => line.key)).toEqual(['candidate-0', 'candidate-2'])
@@ -6573,6 +6576,14 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
     expectRows(layout(state), 16)
   })
 
+  test('a row an open pull request names is hidden, and the row after it moves up (review pass 1)', () => {
+    const lines = layout(base, [], false, {}, [], [{ title: 'Mid row', number: 5 }])
+    expect(rows(lines)).toEqual([
+      ['candidate-0', 9],
+      ['candidate-2', 10],
+    ])
+  })
+
   test('no other line carries a row', () => {
     expect(layout(base).filter(line => line.rowsAbove !== undefined).every(line => /^candidate-\d+$/.test(line.key))).toBe(true)
   })
@@ -6642,16 +6653,30 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
     copy.files[Object.keys(copy.files).find(path => path.endsWith('cairn/ROADMAP.md')) as string] = ROADMAP
     return copy
   }
-  const mountAt = async ($, surface: (typeof SURFACES)[number], offset: number, bodyRows: number) =>
+  const mountAt = async (
+    $,
+    surface: (typeof SURFACES)[number],
+    offset: number,
+    bodyRows: number,
+    bodyColumns = 14,
+    placement: 'dock' | 'inline' = 'dock',
+  ) =>
     (await $.ui.mount({
       plugin: 'cairn',
       surface,
       ...PANE_VIEW,
-      props: { ...PANE_VIEW.props, bodyColumns: 14, scroll: { offset, bodyRows } },
+      props: { ...PANE_VIEW.props, bodyColumns, placement, scroll: { offset, bodyRows } },
     })) as Ui
   // The candidate line's row and the pane's root.
-  const drawn = async ($, surface: (typeof SURFACES)[number], offset: number, bodyRows: number) => {
-    const ui = await mountAt($, surface, offset, bodyRows)
+  const drawn = async (
+    $,
+    surface: (typeof SURFACES)[number],
+    offset: number,
+    bodyRows: number,
+    bodyColumns = 14,
+    placement: 'dock' | 'inline' = 'dock',
+  ) => {
+    const ui = await mountAt($, surface, offset, bodyRows, bodyColumns, placement)
     const [root] = await ui.findAll({ key: 'cairn-pane' })
     // A pane mounts once per surface, so each read unmounts it.
     await ui.unmount()
@@ -6715,6 +6740,55 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
         expect(last.props.height).toBeUndefined()
         expect(last.props.overflow).toBeUndefined()
         expect(textOf(kids(last)[0])).toBe('Long row: aaaa bbbb cccc …')
+      }
+    })
+
+    // M294 AC4 (review return 1): redraws that vary `bodyColumns` and
+    // `placement`. The line is on row 11, counted by hand: the card's top
+    // border, its three lines, its bottom border, the card's gap row,
+    // `no active milestone`, the Next line's gap and the Next line, and the
+    // Candidates gap and heading.
+    test(`the line sits on row 11 (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      expect((await drawn($, surface, 0, 200)).row).toBe(11)
+    })
+
+    test(`with 4 rows showing above, a 60-column pane opens the card above and a 14-column one below (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      // At 60 columns the card needs 3 rows; at 14 it needs 7.
+      const wide = await drawn($, surface, 7, 200, 60)
+      const narrow = await drawn($, surface, 7, 200, 14)
+      if (surface === 'terminal') {
+        expect([...kids(wide.root), ...kids(wide.line)].filter(isCard)).toEqual([])
+        expect([...kids(narrow.root), ...kids(narrow.line)].filter(isCard)).toEqual([])
+      } else {
+        expect(kids(wide.line).filter(isCard).map(card => card.props.bottom)).toEqual([1])
+        expect(kids(wide.root).filter(isCard)).toEqual([])
+        expect(kids(narrow.line).filter(isCard)).toEqual([])
+        expect(kids(narrow.root).filter(isCard).map(card => card.props.top)).toEqual([12])
+      }
+    })
+
+    test(`inline, the frame fits the tree, so the card is cut where a dock opens it whole (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      // With the window at offset 6 the line shows on its row 5. Inline the
+      // room is the tree's 12 rows, so 6 rows lie below: the card's 7 fit
+      // neither side, and it is cut to the 6 below. In a dock of 200 rows it
+      // opens below whole.
+      const inline = await drawn($, surface, 6, 200, 14, 'inline')
+      const dock = await drawn($, surface, 6, 200, 14, 'dock')
+      if (surface === 'terminal') {
+        expect(kids(inline.root).filter(isCard)).toEqual([])
+      } else {
+        const [cut] = kids(inline.root).filter(isCard)
+        const [whole] = kids(dock.root).filter(isCard)
+        expect(cut.props.top).toBe(12)
+        expect(textOf(kids(cut)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee …')
+        expect(whole.props.top).toBe(12)
+        expect(textOf(kids(whole)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh')
       }
     })
   }

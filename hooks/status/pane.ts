@@ -374,10 +374,10 @@ export function cardPlace(need: number, above: number, below: number): CardPlace
 export type PaneView = { bodyColumns: number; offset: number; bodyRows: number; placement: 'dock' | 'inline' }
 
 // Where each candidate line's card opens, by line key (M294). The line's
-// row in the window is its `rowsAbove` less the window's offset. The room
-// is the body's rows in a dock, and inline, where the frame fits the tree,
-// the fewer of those and the tree's rows (its lines and the summary card's
-// two border rows).
+// row in the window is its `rowsAbove` less the window's offset. In a dock
+// the room is the body's rows. Inline the frame fits the tree, so the room
+// is the fewer of the body's rows and the tree's rows (its lines and the
+// summary card's two border rows).
 export function cardPlaces(lines: PaneLine[], view: PaneView): Record<string, CardPlace> {
   const room = view.placement === 'dock' ? view.bodyRows : Math.min(view.bodyRows, lines.length + 2)
   const out: Record<string, CardPlace> = {}

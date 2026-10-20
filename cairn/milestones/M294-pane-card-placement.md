@@ -41,8 +41,8 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 
 - AC1 → T1
 - AC2 → T1
-- AC3 → T2
-- AC4 → T3
+- AC3 → T2, T8
+- AC4 → T3, T7
 - AC5 → T3, T5
 - AC6 → T4, T5
 - AC7 → T6
@@ -56,6 +56,8 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - [x] T4: README, DESIGN, the CHANGELOG ⓘ-card entry (unreleased, so edit it), and the render comments.
 - [x] T5: `pane.ts`: `cardCut`, its AC5 table first; register.tsx's `cardBox` draws a cut card with `cardCut`'s text and no `height`; update the cut-card render test, the DESIGN placement paragraph, and the `cardBox` comment (amendment after the live look).
 - [x] T6: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
+- [x] T7: review return 1: render tests that redraw at a second `bodyColumns` and with `placement: 'inline'`, asserting the side and cut against values written out by hand (AC4).
+- [x] T8: review pass 1's fix-now batch: the stale "above the row" comments and DESIGN lines, the two comment grammar fixes, the `isCard` and `flat` comments, the `unplaced` rename, the down list taking only lines with the ⓘ scope, and a `rowsAbove` case after a hidden started row.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -85,6 +87,9 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: claim audit: 75 claims read, 5 corrected — pane.test.tsx (the AC5 comment still said a cut card takes a height), pane.ts (`CardPlace.rows` is the rows the text is fitted to), register.tsx ("only over the rows before it" restated as the type doc's siblings, with the live look as the source), README.md and CHANGELOG.md (the no-card case, "when it fits only below", and the estimate's limit replace "no longer runs past the pane's top").
 - 2026-10-20: implement done; status review.
 - 2026-10-20: review return 1: AC4 fails as written: its test clause names a redraw varying `bodyColumns` and `placement`, and the render tests vary only `scroll.offset` and `scroll.bodyRows` (diff-bug #3). The pass's fix-now findings ride with the return (Review section).
+- 2026-10-20: tasks T7 (the return's AC4 redraw tests) and T8 (the pass's fix-now batch) added after T6, Coverage updated (AC3 → T2, T8; AC4 → T3, T7); a minor amendment.
+- 2026-10-20: T7 done: three render tests per surface redraw the hand-built pane: the line on row 11 (counted by hand), a 60-column pane opening the card above where a 14-column one opens it below (`top` 12), and `inline` cutting the card to `Long row: aaaa bbbb cccc dddd eeee …` where a dock opens it whole. The `mountAt` and `drawn` helpers take `bodyColumns` and `placement`.
+- 2026-10-20: T8 done: register.tsx's card comment and the `cardPlaces` comment reworded; the down list takes only lines with the ⓘ glyph (`infos`); DESIGN's two candidate-card sentences fixed; the `isCard` and `flat` comments name the root's down card; the M261 helper renamed `withoutRow`; an AC3 case shows the row after a hidden started row moving up. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2387 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
