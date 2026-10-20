@@ -7281,3 +7281,44 @@ the parked candidate row "Close the last triage title edge cases": a
 token appended to a row whose text ends in a bare `:` or ` —`, an
 Amend-set change on a row with a live `M<NNN>` token, and an Amend-set
 merge that changes a survivor's title with no mention search.
+
+### D-200 (2026-10-20): The trivial route leaves open an issue that a kept row names anywhere or an open milestone resolves, and closes none after a failed open-PR read or a failed check — narrows D-195's kept-row clause and its Consequence on a number named only in a row's detail; D-108's door does not apply (M300)
+
+**Context:** D-195 has the trivial route close the `(#N)` issue of a row
+it deletes, unless a kept row's title reference holds the number. M297's
+review found four ways an issue that still owes work can be closed: a
+kept row names #N only in its detail, an open milestone's `Resolves:`
+slot holds #N, the open-PR read failed or was capped so a PR-named row
+was deleted, and the issue read had no stated order against the five
+trivial-route checks.
+
+**Decision:** In owner mode the route leaves alone a number that a kept
+row's text holds, in its title or its detail, and a number that the
+`Resolves:` header slot of a `planned`, `in-progress`, `blocked`, or
+`review` milestone file holds. A text holds a number when it holds `#N`
+with no digit right after it. When the open-PR read failed, `gh` could
+not run for it, or it returned 100 PRs, the route closes no issue and
+names each deleted row's number as left alone for that reason. The issue
+read runs only after the five checks pass; when a check fails, the plan
+reads no issue and the option names no number. This narrows D-195's
+clause "no kept row's title reference holds" to "no kept row's text
+holds", and its Consequence "An issue named only in a row's detail stays
+open" to a deleted row's detail: a kept row's detail now protects the
+number. D-108's door does not apply: the change fixes which issues a
+shipped route closes on GitHub and adds no conduct rule about
+verification or records.
+
+**Rationale:** Each case is a wrong close of an issue the user still
+needs. A wrong protect only leaves an issue open, and the option names
+it, so the rule errs toward leaving open.
+
+**Rejected:** Protecting only issue-shaped references in a kept row's
+detail (a `(#N)` or "issue #N"), because review-finding numbers such as
+`diff-bug #4` share the `#N` spelling and no form the rows use tells them
+apart; falsified by a user who wants an issue closed that a kept row
+names only as a finding number.
+
+**Consequences:** D-195's other clauses stand. A kept row that cites
+review findings can keep an unrelated issue of the same number open; the
+option names it. An issue that an open milestone names only outside its
+`Resolves:` slot, or that a row names as a URL, is not protected.

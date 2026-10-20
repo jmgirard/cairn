@@ -4,7 +4,8 @@ Pins the `/milestone-plan` step 1 tier check (the three tiers, the
 mixed-request rule, the read bound, the issue exemption, the guest pull-request
 exemption (M265), the three already-tiered sources, and the no-work
 exemption), the trivial-route checks and candidate-row match (M265), the
-trivial route's issue read and close (M297), the tier chip
+trivial route's issue read and close (M297) and the numbers it leaves
+open (M300), the tier chip
 and each option's effect, the `tier check:` work-log line, step 4's pointer
 to it, the rulebook sentence that puts the chip before the run, and
 README.md's `/milestone-plan` row. Text is whitespace-collapsed on read
@@ -231,13 +232,33 @@ class TestPlanTierCheck(unittest.TestCase):
             "A kept row is a candidate row the edit narrows or leaves in "
             "place.",
             "The route will close a number that reads `OPEN`, whose URL path "
-            "holds `/issues/`, and that no kept row's title reference holds.",
+            "holds `/issues/`,",
             "It leaves each other number alone:",
             "one read as closed,",
             "one whose URL path holds `/pull/`, since `gh issue view` reads a "
             "pull request too,",
             "one whose read fails or whose `gh` cannot run,",
-            "and one in a kept row's title reference.",
+            # M300: a kept row's whole text and an open milestone's
+            # `Resolves:` slot protect a number; a failed or capped
+            # open-PR read closes nothing; the read follows the checks.
+            "A text holds a number when it holds `#N` with no digit right "
+            "after it.",
+            "that no kept row's text holds, in its title or its detail, and "
+            "that no open milestone file's `Resolves:` header slot holds.",
+            "An open milestone file is one whose ROADMAP status is "
+            "`planned`, `in-progress`, `blocked`, or `review`.",
+            "one that a kept row holds, since that row still owes work on "
+            "it,",
+            "and one that an open milestone's `Resolves:` slot holds, since "
+            "that milestone resolves it.",
+            "If the open-PR read above failed, `gh` could not run for it, or "
+            "it returned 100 PRs, the route closes no issue.",
+            "It then leaves each number of a deleted row alone for that "
+            "reason,",
+            "The read runs after the five trivial-route checks below, and "
+            "only when all five pass.",
+            "When a check fails, the plan reads no issue and the option names "
+            "no issue number, none for closing and none as left alone.",
             "A narrowed row's issue stays open, since part of its work is "
             "left: the route closes no narrowed row's number.",
             "The read takes no issue body.",
@@ -248,10 +269,10 @@ class TestPlanTierCheck(unittest.TestCase):
                          "In owner mode the edit is committed")
         for phrase in (
             "It also names each number the route will close after the push.",
-            "It names each number of a deleted row that the route leaves "
-            "alone, with the reason.",
-            "When a narrowed row's title, or in guest mode a deleted row's "
-            "title, ends with `(#N)` or `(#N, #M)`, it names that number as "
+            "Unless an owner-mode check failed, it names each number of a "
+            "deleted row that the route leaves alone, with the reason.",
+            "On the same terms, when a narrowed row's title, or in guest "
+            "mode a deleted row's title, ends with `(#N)` or `(#N, #M)`, it names that number as "
             "left alone.",
             "It also says that the commit summary ends with the deleted rows' "
             "issue references.",
