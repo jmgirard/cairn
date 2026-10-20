@@ -269,9 +269,9 @@ class TestPlanTierCheck(unittest.TestCase):
                          "In owner mode the edit is committed")
         for phrase in (
             "It also names each number the route will close after the push.",
-            "It names each number of a deleted row that the route leaves "
-            "alone, with the reason.",
-            "When no check failed and a narrowed row's title, or in guest "
+            "Unless an owner-mode check failed, it names each number of a "
+            "deleted row that the route leaves alone, with the reason.",
+            "On the same terms, when a narrowed row's title, or in guest "
             "mode a deleted row's title, ends with `(#N)` or `(#N, #M)`, it names that number as "
             "left alone.",
             "It also says that the commit summary ends with the deleted rows' "

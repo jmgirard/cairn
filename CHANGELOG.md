@@ -136,7 +136,7 @@
   names a pull request, or that it cannot read. It also leaves alone an
   issue that a row it keeps names anywhere in its text, such as a row it
   narrows, and an issue that an open milestone's `Resolves:` slot names.
-  If its check of the open pull requests fails or is cut short, it closes
+  If its read of the open pull requests fails or stops at 100 PRs, it closes
   no issue. It reads issues only after its checks pass. The commit summary ends
   with the removed rows' issue numbers. After the push, the route closes
   each named issue, reads it again, and says which issues are closed and

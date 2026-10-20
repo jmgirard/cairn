@@ -171,10 +171,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      alone. If the open-PR read failed or returned 100 PRs and a row
      matched, the description says so. It says that the matched rows were
      not checked against every open pull request. It also names each
-     number the route will close after the push. It names each number of
-     a deleted row that the route leaves alone, with the reason. When no
-     check failed and a narrowed row's title, or in guest mode a deleted
-     row's title, ends
+     number the route will close after the push. Unless an owner-mode
+     check failed, it names each number of a deleted row that the route
+     leaves alone, with the reason. On the same terms, when a narrowed
+     row's title, or in guest mode a deleted row's title, ends
      with `(#N)` or `(#N, #M)`, it names that number as left alone. It
      also says that the commit summary ends with the deleted rows' issue
      references.
