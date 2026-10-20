@@ -6824,3 +6824,47 @@ round, and M287's criteria cite it), and a further lossless compression
 Falsified by a later milestone that adds scope to the module and fits it
 under the new budget by compression with no lost rule, which would show
 the reset was not needed.
+
+### D-189 (2026-10-19): A candidate row's short title is one sentence of at least 5 words and at most 40 characters, ending with its issue number — annotates D-108, D-163, and D-164; D-108's door excepted by name at the user's decision, the door unchanged (M292)
+
+**Context:** D-163 told a writer to open each row with "a few words that
+name the row", and its `retitle` trigger flagged titles over 60 code
+points. Rows written that way, such as "Card name edges", name a row
+without saying what the work is. The user asked for a title that is one
+sentence explaining the idea, with issue numbers where they apply, and
+at the M292 question set asked that it fit the cairn pane's line without
+an ellipsis while avoiding three-word titles. No defect in shipped
+behavior triggers this, so D-108's door bars it unless the user decides
+otherwise.
+
+**Decision:** At the M292 question set the user chose to go ahead past
+D-108's door for this one rule; the door stands for all other work.
+tracking-rules "Candidate short title" tells a writer to open a row with
+one sentence, no ending period, of at least 5 words and at most 40
+characters, a wide character counting as 2, so that the desktop app's
+docked pane shows it whole while the pointer is elsewhere. A row written
+for GitHub issues ends its title with `(#N)`, or `(#N, #M)` where it
+fits, counted in the characters and not in the words. An issue absorbed
+into a row later goes in its detail and leaves the title alone, so the
+title's double-quoted mentions, `/hotfix` matching, and milestone quotes
+keep matching. `/cairn-triage`'s `retitle` trigger for length becomes
+fewer than 5 words or more than 40 characters. D-163's cut rule, its
+uniqueness rule, and D-164's icon rule stand.
+
+**Rejected:** the user's first range of 5 to 15 words, because the
+user's later answer put pane fit first and a 15-word title is cut;
+falsified by the user finding titles at the cap too terse. A cap set by
+the room left under the pointer, because the line's hover card shows the
+whole title then; falsified by a title within the cap cut with an
+ellipsis at rest in a docked desktop pane. A `cairn_validate` check, as
+D-163 declined one.
+
+**Consequences:** Many existing rows fall under 5 words, so the next
+`/cairn-triage` pass in each repo proposes a new title for them. A row
+citing several issues may fit only one number in its title. The cap
+assumes the pane's current layout, so a change to the candidate line's
+marks or Buttons is the moment to re-check it. A title in a script written
+without spaces has no word floor. A ✎ press or a planning Next line on a
+row whose title ends with `(#N)` carries `#N`, so `/milestone-plan` plans
+it as a milestone without its tier check; the candidate row "Keep tier
+check for issue-titled rows" holds that.

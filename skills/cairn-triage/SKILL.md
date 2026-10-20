@@ -280,7 +280,7 @@ re-examines a lesson.
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list. While the cairn pane lists candidates, it marks the row `↑`. A Known issues entry has no token and takes none. |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), a few words that name the row, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), one sentence that names the work to do, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
 
    A row carrying a live started token, or missing one, is `keep` before
    anything else is checked, §7's options included. Its reason names the
@@ -323,17 +323,26 @@ re-examines a lesson.
      wanted now; the close block hands it on. A promoted candidate row that
      does not open with `[high]` takes the priority change to `high`.
    - **Title → `retitle`.** A candidate row that the classes above leave
-     `keep` is proposed for `retitle` when its short title is empty, is
-     over 60 code points, equals another row's short title, or holds an
-     icon (tracking-rules "Candidate short title"; the `retitle` row of the
-     table above gives the icon case its own edit). Each row
+     `keep` is proposed for `retitle` when its short title is empty, has
+     fewer than 5 words or more than 40 characters as tracking-rules
+     "Candidate short title" counts them, equals another row's short
+     title, or holds an icon (the `retitle` row of the table above gives
+     the icon case its own edit). Each row
      that shares a title gets its own proposal, and each new title differs
      from every other row's title,
      the other new titles of the pass included. The row's byte length does
      not matter here. The mentions it lists are found by a search for the
      old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
-     Known issues. Each new title is not empty, holds no `: `, ` — `, or
-     icon, and runs to 60 code points at most. A row whose title a live
+     Known issues. Each new title is one sentence with no ending period.
+     It has at least 5 words and at most 40 characters by that count, and
+     it holds no `: `, ` — `, or icon. A row's text, its old title
+     included, can name a GitHub issue of `<base-repo>`. The forms are an
+     `/issues/N` URL, `<base-repo>#N`, `(#N)` at the end of the old title,
+     and `#N` that the row calls an issue. Then the new title ends with the issue
+     reference in the rulebook's form: `(#N)`, or, where it fits,
+     `(#N, #M)`. A ` — started #<n>` token names a pull request, not an
+     issue, and `#N` after another repo's `owner/repo` names that repo's
+     issue. A row whose title a live
      milestone file quotes, or that a live milestone absorbs, is not
      proposed for `retitle`: it stays `keep` with that milestone named, as
      below. Nor is a `merge` survivor in the

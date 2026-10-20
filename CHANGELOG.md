@@ -4,6 +4,21 @@
 
 ### Changes that affect existing repos
 
+- **Candidate short titles are one short sentence.** The rulebook now
+  tells whoever writes a candidate row to open it with one sentence that
+  says what the work does, with no ending period, of at least 5 words and
+  at most 40 characters, the room that the docked cairn pane in the
+  desktop app leaves for a candidate line. A wide character, such as a
+  CJK character, counts as 2. A row written for GitHub issues ends its title with the issue number in
+  parentheses, for example `Fix SE of skewness calculation (#100)`. The
+  number counts toward the 40 characters and not toward the words. An
+  issue added to an existing row later goes in the row's details, so its
+  title stays the same. `/cairn-triage` now proposes a `retitle` for a
+  title with fewer than 5 words or more than 40 characters, in place of
+  the old 60-character limit, and gives each new title these bounds.
+  Existing rows keep their titles until a `/cairn-triage` pass retitles
+  them.
+
 - **The cairn pane opens with a summary card and has a new look.** A card
   in a round border leads the pane. Its first line names the project in
   bold. The name is the repo's name on a github.com base remote.

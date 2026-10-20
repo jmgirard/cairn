@@ -260,14 +260,22 @@ table, or archived, or a PR that is merged or closed.
 up to the first `: `. A row with no `: ` is cut at its first ` — ` (space, em dash, space). A row with neither is all
 of that text. Outer spaces are removed. The cairn pane shows the short title, and the skills name a row by it: a ✎
 press plans the row by it, records-hygiene §7 groups the rows that quote it in double quotes, and `/hotfix` matches a
-row whose title the argument quotes. Open each row with a few words that name the row and differ from every other
-row's title, then `: ` and the detail. An area word joins the title and does not stand before it: write
-`ordinal REML: …`, not `ordinal: REML. …`. Name things in words and put no icon in a short title, because the cairn
+row whose title the argument quotes. Open each row with a short title that says what the work would do in one
+sentence with no ending period, then `: ` and the detail, for example `Fix SE of skewness calculation (#100): …`. The
+title holds at least 5 words, counted as runs between spaces, and at most 40 characters, a wide character such as a
+CJK character counting as 2, so that it fits the room the desktop app's docked cairn pane leaves for a candidate
+line while the pointer is elsewhere. A title in a script written without spaces, such as Chinese or Japanese, has
+no word floor. It differs from every other row's title. A row written for one or more of the repo's GitHub issues ends
+its title with an issue number in parentheses, `(#N)`, or `(#N, #M)` when that fits. The reference counts toward the
+40 characters and not toward the words. An issue absorbed into an existing row later goes in the row's detail and
+leaves its title as it is. An area word joins the sentence and does not stand before it: write
+`Fit ordinal models by REML: …`, not `ordinal: REML. …`. Name things in words and put no icon in a short title, because the cairn
 pane draws its own marks and Buttons with such glyphs, and some sit beside the title. An icon is a non-ASCII
 character whose Unicode general category is `So` or `Sm`, between backticks or not. Most emoji are icons, and so are
-○, ✓, ⌂, ✎, ↑, and ⋯. Write `Home Button edges`, not `⌂ edges`. `/cairn-triage`'s `retitle` disposition puts a new
-short title before a row whose title is empty, long, or shared. It replaces a title that holds an icon in place
-when a `: ` ends it, and otherwise puts the new title before the row's text with its icons removed (D-163, D-164).
+○, ✓, ⌂, ✎, ↑, and ⋯. Write `Fix the Home Button's edge cases`, not `⌂ edges`. `/cairn-triage`'s `retitle` disposition
+puts a new short title before a row whose title is empty, outside these bounds, or shared. It replaces a title that
+holds an icon in place when a `: ` ends it, and otherwise puts the new title before the row's text with its icons
+removed (D-163, D-164, D-189).
 
 **Bounded `DECISIONS.md` read.** Read `DECISIONS.md` by scanning its `### D-` headings — never whole. A matched
 heading's entry is read whole before anything is surfaced; a match is back-referenced (its own `D-0NN` id searched

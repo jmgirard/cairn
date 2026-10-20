@@ -187,7 +187,7 @@ is the first `planned` row whose `Depends on` milestones are all done, by
 priority and then by id, the one `cairn_next.py` recommends. When no
 milestone is workable, `cairn_next.py` recommends planning. It then names
 the first `[high]` candidate row that no counted started token hides, by
-its short title, for example `/milestone-plan Pane refresh lag`. A
+its short title, for example `/milestone-plan Fix the pane's slow refresh`. A
 ` — started M<n>` token counts while that milestone's row is `planned` or
 `blocked`, but not for a `blocked` row whose file was archived. A
 ` — started #<n>` token of up to 15 digits always counts, since the
@@ -400,14 +400,22 @@ listed. A row's short title is its text after a leading `[high] `,
 `[low] `, or `[parked] ` token with its space, up to its first `: `, with outer spaces
 removed. A row with no `: ` is cut at its first ` — ` (space, em dash,
 space), so its date and links stay out of the title. A row with neither
-shows all its text. Open each row with a few words that name it, then
-`: ` and the details, for example
-`- [high] Pane refresh lag: details — added 2026-10-15`. Name things in
+shows all its text. Open each row with a short title that says what the
+work does in one sentence with no ending period, then `: ` and the
+details, for example
+`- [high] Fix the pane's slow refresh: details — added 2026-10-15`. The
+title has at least 5 words and at most 40 characters, the room that the
+docked pane in the desktop app leaves for a candidate line. A wide
+character, such as a CJK character, counts as 2. A row written for a GitHub issue ends its title
+with the issue number in parentheses, for example
+`Fix SE of skewness calculation (#100)`. The number counts toward the 40
+characters and not toward the 5 words. An issue added to a row later goes
+in its details, and its title stays the same. Name things in
 words and put no icon, such as an emoji or `⌂`, in a short title, because
 the pane draws its own marks and buttons with such glyphs.
 `/cairn-triage` offers a new short title for a row whose title is empty,
-is longer than 60 characters, is the same as another row's, or holds an
-icon. While no cairn skill
+has fewer than 5 words, is longer than 40 characters, is the same as
+another row's, or holds an icon. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end. In the desktop app the
 button shows only while the pointer is over its row, beside the info
