@@ -153,3 +153,8 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple #6: tracking-rules' list of title matchers omits the whole-request match — reject (false): the list names example uses and is not wrong.
 - ripple #7: the hotfix option says the title is "quoted verbatim" — reject (false): it tells the plan to quote the title when it passes it.
 - ripple #8: DESIGN's "shares both edges" — reject (false): the reviewer found both edges still hold.
+
+PR-conversation read (PR #309, before the merge chip): state query `reviewed earlier-head Lite`; 0 review threads; 0 conversation comments before the summary reply; 1 Copilot review (COMMENTED, at 156ceff1).
+- copilot: review body — "caveat wording needs scoping" (SKILL.md, CHANGELOG.md, DECISIONS.md) — reject (false): each caveat at 156ceff1 is already scoped to a matched row (checked with `git show 156ceff1:<file>`).
+- copilot: review body — "stale branch metadata" in the milestone file — reject (false): the header at 156ceff1 names the branch and PR #309.
+- Copilot level: Lite (set by GitHub's settings). Summary reply posted: https://github.com/jmgirard/cairn/pull/309#issuecomment-6293239330 (noted).
