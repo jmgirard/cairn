@@ -3,7 +3,8 @@
 Pins the `/milestone-plan` step 1 tier check (the three tiers, the
 mixed-request rule, the read bound, the issue exemption, the guest pull-request
 exemption (M265), the three already-tiered sources, and the no-work
-exemption), the trivial-route checks and candidate-row match (M265), the tier chip
+exemption), the trivial-route checks and candidate-row match (M265), the
+trivial route's issue read and close (M297), the tier chip
 and each option's effect, the `tier check:` work-log line, step 4's pointer
 to it, the rulebook sentence that puts the chip before the run, and
 README.md's `/milestone-plan` row. Text is whitespace-collapsed on read
@@ -137,10 +138,9 @@ class TestPlanTierCheck(unittest.TestCase):
             "Otherwise the plan shows the edit verbatim in chat and runs `git "
             "add -- <paths>`, `git commit -m \"<one-line summary>\" -- "
             "<paths>`, and `git push <base> HEAD:<default-branch>`.",
-            "If the push fails or is rejected, it never forces. The close "
-            "block then "
-            "names the local commit and the undo command `git reset --soft "
-            "HEAD~1`.",
+            "If the push fails or is rejected, it never forces.",
+            "The close block then names the local commit and the undo "
+            "command `git reset --soft HEAD~1`,",
             "On success it ends with a close block naming the commit.",
             "In guest mode it writes the edit on disk with no commit and ends "
             "with a close block.",
@@ -217,6 +217,58 @@ class TestPlanTierCheck(unittest.TestCase):
             "the match goes on.",
         ):
             self.assertIn(phrase, match)
+
+    def test_trivial_route_closes_deleted_rows_issues(self):
+        # M297: in owner mode a deleted row's `(#N)` issue is read before
+        # the chip, named in the option, and closed after the push.
+        read = section(self.step1, "**Issue read (trivial route, owner "
+                       "mode).**", "**Trivial-route checks")
+        for phrase in (
+            "For each matched row the edit deletes whose short title ends "
+            "with `(#N)` or `(#N, #M)`, in owner mode the plan reads each such "
+            "number with `gh issue view <N> --repo <base-repo> --json "
+            "state,url` before the chip.",
+            "A kept row is a candidate row the edit narrows or leaves in "
+            "place.",
+            "The route will close a number that reads `OPEN`, whose URL path "
+            "holds `/issues/`, and that no kept row's title reference holds.",
+            "It leaves each other number alone:",
+            "one read as closed,",
+            "one whose URL path holds `/pull/`, since `gh issue view` reads a "
+            "pull request too,",
+            "one whose read fails or whose `gh` cannot run,",
+            "and one in a kept row's title reference.",
+            "A narrowed row's issue stays open, since part of its work is "
+            "left: the route closes no narrowed row's number.",
+            "In guest mode no issue is closed",
+        ):
+            self.assertIn(phrase, read)
+        for phrase in (
+            "It also names each number the route will close after the push.",
+            "It names each number of a deleted row that the route leaves "
+            "alone, with the reason.",
+            "When a narrowed row's title, or in guest mode a deleted row's "
+            "title, ends with `(#N)` or `(#N, #M)`, it names that number as "
+            "left alone.",
+            "If a deleted row's title ends with `(#N)` or `(#N, #M)`, the "
+            "one-line summary ends with those references",
+            "A failed or rejected push closes no issue.",
+            "and names each number named for closing as left open.",
+            "After the push succeeds, the route runs `gh issue close <N> "
+            "--repo <base-repo>` for each number the description named for "
+            "closing.",
+            "It then re-reads each one with the same `gh issue view` call, "
+            "whether its close succeeded or not.",
+            "The close block names as closed each such number whose re-read "
+            "reads `CLOSED`.",
+            "It names each other one as left open, with the close command's "
+            "error, the re-read's state, or the failed re-read.",
+        ):
+            self.assertIn(phrase, self.step1)
+        push = self.step1.index("`git push <base> HEAD:<default-branch>`")
+        self.assertLess(push, self.step1.index("After the push succeeds"))
+        self.assertLess(self.step1.index("**Candidate-row match"),
+                        self.step1.index("**Issue read"))
 
     def test_git_model_and_routing_name_trivial_commits(self):
         for phrase in (

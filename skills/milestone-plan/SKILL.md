@@ -121,6 +121,21 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    `cairn/ROADMAP.md` is a file the edit touches, so the checks and the
    commit cover it. In guest mode the row changes on disk with no commit.
 
+   **Issue read (trivial route, owner mode).** For each matched row the
+   edit deletes whose short title ends with `(#N)` or `(#N, #M)`, in owner
+   mode the plan reads each such number with
+   `gh issue view <N> --repo <base-repo> --json state,url` before the
+   chip. The read takes no issue body. A kept row is a candidate row the
+   edit narrows or leaves in place. The route will close a number that
+   reads `OPEN`, whose URL path holds `/issues/`, and that no kept row's
+   title reference holds. It leaves each other number alone: one read as
+   closed, one whose URL path holds `/pull/`, since `gh issue view` reads a
+   pull request too, one whose read fails or whose `gh` cannot run, and
+   one in a kept row's title reference. A narrowed row's issue stays open,
+   since part of its work is left: the route closes no narrowed row's
+   number. In guest mode no issue is closed and none is read, since
+   closing the maintainers' issue is their act.
+
    **Trivial-route checks (owner mode).** Before it poses the chip on a
    `trivial` finding, the plan runs five checks in this order. The repo
    has a remote. `git fetch <base>` succeeds. The checkout is on the
@@ -143,7 +158,11 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      gives each naming PR's number and says that the edit leaves the row
      alone. If the open-PR read failed or returned 100 PRs and a row
      matched, the description says so. It says that the matched rows were
-     not checked against every open pull request.
+     not checked against every open pull request. It also names each
+     number the route will close after the push. It names each number of
+     a deleted row that the route leaves alone, with the reason. When a
+     narrowed row's title, or in guest mode a deleted row's title, ends
+     with `(#N)` or `(#N, #M)`, it names that number as left alone.
      In owner mode the edit is committed and pushed to the
      default branch. In guest mode the edit is left uncommitted on disk. In
      owner mode the description also names any other uncommitted paths,
@@ -157,10 +176,20 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      failed check ends the same way. Otherwise the plan shows the edit
      verbatim in chat and runs `git add -- <paths>`,
      `git commit -m "<one-line summary>" -- <paths>`, and
-     `git push <base> HEAD:<default-branch>`. If the push fails or is
-     rejected, it never forces. The close block then names the local
-     commit and the undo command `git reset --soft HEAD~1`. On success it
-     ends with a close block naming the commit. In guest mode it writes the
+     `git push <base> HEAD:<default-branch>`. If a deleted row's title
+     ends with `(#N)` or `(#N, #M)`, the one-line summary ends with those
+     references, for example `(#12)`. If the push fails or is rejected, it
+     never forces. A failed or rejected push closes no issue. The close
+     block then names the local commit and the undo command
+     `git reset --soft HEAD~1`, and names each number named for closing as
+     left open. After the push succeeds, the route runs
+     `gh issue close <N> --repo <base-repo>` for each number the
+     description named for closing. It then re-reads each one with the
+     same `gh issue view` call, whether its close succeeded or not. On
+     success it ends with a close block naming the commit. The close block
+     names as closed each such number whose re-read reads `CLOSED`. It
+     names each other one as left open, with the close command's error,
+     the re-read's state, or the failed re-read. In guest mode it writes the
      edit on disk with no commit and ends with a close block.
    - **Plan a milestone anyway.** The plan goes on to step 2.
    - **Stop.** The close block, and nothing written.
