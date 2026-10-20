@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M293: The cairn pane's ⓘ card shows a candidate row's whole text
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -52,7 +52,7 @@ On the desktop, the card that a candidate row's ⓘ opens in the cairn pane show
 - [x] T2: `pane.ts` (~line 813): write the AC1 and AC2 tests first in `pane.test.tsx` (the M286 AC9 block, ~6126), show them red against `full = row.title`, then set `full` to `row.text` and `info` when it is not empty, and show them green. Update the M286 AC9 block's hand-written candidate values.
 - [x] T3: add `text` to `python_candidates` and to each fixture's expected `candidates`; regenerate `fixtures.gen.ts` with `gen_fixtures.py`; add `text` to `test_python_candidates_cut_and_trim_edges` and its `reader.test.ts` twin.
 - [x] T4: README, DESIGN (the hover-card entry, and the `pane-7` mentions near lines 390, 556, 799), and the code comments that AC5 names. Edit the unreleased M290 CHANGELOG entry's card sentence rather than adding an entry.
-- [ ] T5: run the five `verify` checks. Ask the operator for the live look: the desktop pane in circumplex, the pointer over the ⓘ of a long row and of the first row. Record what they see, and add a cut or closing card to the parked rows that Out names.
+- [x] T5: run the five `verify` checks. Ask the operator for the live look: the desktop pane in circumplex, the pointer over the ⓘ of a long row and of the first row. Record what they see, and add a cut or closing card to the parked rows that Out names.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -73,6 +73,9 @@ On the desktop, the card that a candidate row's ⓘ opens in the cairn pane show
 - 2026-10-19: T3 done: 60 expected candidate entries in 8 fixtures gained `text` through a scratch script that read each fixture ROADMAP on its own and checked every title against the one written; a script, not Edit, because of the count (a departure from the rulebook's Write/Edit rule). `python_candidates` gives `text`; its trim-edge test gained the leading-BOM row, built from code points.
 - 2026-10-19: T4 done: README, DESIGN (card entry, `info`, three `pane-7` mentions), the M290 CHANGELOG sentence, and the pane.ts and register.tsx comments say the card holds the whole row. A `git grep` for card-with-title phrasing and `pane-7` over those files finds nothing stale.
 - 2026-10-19: verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2336 pass 0 fail; `gen_fixtures.py --check` clean.
+- 2026-10-19: T5 done: live look by the operator in circumplex's docked pane (the plugin links to this checkout): the card holds the whole row text, and a tall card's top runs past the pane's top. Recorded as item (3) of the parked row "Fix cut and odd names on the pane card", as Out names; the row stays parked for review hygiene to judge.
+- 2026-10-19: claim audit: 25 claims read, 3 corrected — reader.test.ts (the glmmTMB rows are now second and third), CHANGELOG.md and README.md (the card's text has HTML comments removed and is plain text, not the row "as written").
+- 2026-10-19: implement done; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

@@ -258,8 +258,8 @@ describe('candidate rows (M207 review)', () => {
 })
 
 // The short title (M251 AC1): the text after the token up to the first
-// `: `, else up to the first ` — `, else all of it. The first two rows
-// open as glmmTMB's ROADMAP rows do. Each row's text is all of it after the
+// `: `, else up to the first ` — `, else all of it. The second and third
+// rows open as glmmTMB's ROADMAP rows do. Each row's text is all of it after the
 // token, trimmed as the title is (M293). BOM and US are built from code
 // points, as the LESSONS M272 line says.
 const BOM = String.fromCharCode(0xfeff)
