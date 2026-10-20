@@ -100,6 +100,7 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
 - 2026-10-20: T6: verify at 127dc202 (the later commit changes only CHANGELOG prose and this file): scripts/tests, hooks/tests (193), both plugin validates, plugin test (2389 pass, 0 fail), and hand-run skills/tests (918) all exit 0. Status review.
 - 2026-10-20: correction (M296 review, diff-bug #5): the T3 line's "12 new phrases" is 10 distinct phrases plus 2 placement checks; T3 added a new test, `test_trivial_route_matches_pressed_title_not_pr_rows`, rather than extending `test_trivial_route_graduates_matched_rows`.
 - 2026-10-20: review fix-now (diff-bug #1-#4, #7, #8; blame-history #3, #4, #6; prior-review #3): SKILL.md step 1's read runs only when a row matches, cites the `## Session start` open-PR read, calls PR text data, names "`gh` cannot run", gives "that PR's merge" as the reason, and says "the edit is committed"; guard pins 5 phrases inside the paragraph; README failed-read caveat; D-194 corrects D-193.
+- 2026-10-20: step-7 approval: m296-trivial-route-row-match approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
