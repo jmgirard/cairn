@@ -108,7 +108,7 @@ CHANGELOG entry states both changes.
 - [x] T2: Edit `skills/hotfix/SKILL.md` step 1 (~lines 33-36) for AC2. Read
       each `grep -n "PR.reference"` hit in the file and confirm that it relies
       on step 1's definition rather than spotting `#N` on its own.
-- [ ] T3: Edit `skills/cairn-triage/SKILL.md` for AC3 and AC4: the open-PR
+- [x] T3: Edit `skills/cairn-triage/SKILL.md` for AC3 and AC4: the open-PR
       read beside the started-token reads (~lines 64-90), the `keep` rule
       beside the live-token rule (~lines 345-362), and the failed-read mark
       in the proposal table. Say in the skill that this marks rows rather
@@ -152,6 +152,7 @@ CHANGELOG entry states both changes.
 - 2026-10-20: implement started on m295-candidate-title-references, cut from origin/main at e4e9701b; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-20: T1 done: the plan skill's issue rule now reads a candidate title's `(#N)` as part of the title (step 1, after "the door that tiers an issue"); the simple-english PostToolUse hook flagged 194 file-wide STE hits that predate this edit, left as they are (out of scope; the added sentences carry none of the flagged kinds).
 - 2026-10-20: T2 done: `/hotfix` step 1 reads a quoted candidate title's `(#N)` as part of the title and keeps it for `Fixes #N`; the 16 other `grep -n "PR.reference"` hits each say "PR-reference argument" or "the PR reference", the term step 1 defines, and none spots a bare `#N` on its own; same pre-existing hook hits, left.
+- 2026-10-20: T3 done: `/cairn-triage` session start reads open PRs' `Candidate row:` lines with one `gh pr list`, parsed as `startedRows` parses them; step 2 keeps each PR-named row and, on a failed read, marks every non-`keep` proposal as unchecked; the read sits in Session start, not a numbered step, so the plan's "~lines 64-90" placement held and the cross-references say "session start" and "step 3's table".
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

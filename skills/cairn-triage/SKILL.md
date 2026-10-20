@@ -59,7 +59,7 @@ milestone that is `planned`, `in-progress`, `blocked`, or `review`: a row
 one of them absorbs is never dropped or merged away in this pass
 (records-hygiene §1 — it graduates at that milestone's post-merge hygiene).
 A row that carries a live started token (below), or that is missing one,
-is `keep` (step 2).
+is `keep` (step 2), and so is a PR-named row (below).
 
 Then read the candidate rows' started tokens (tracking-rules "Candidate
 started token"). A token is ` — started ` and `M` with digits, or `#`
@@ -84,6 +84,21 @@ quotes the row's non-empty short title in double quotes outside its Scope
 or more rows share is listed as ambiguous, and no token is proposed for
 it. No `#<n>` token is ever missing. Owner mode marks a hotfix through its PR body, and guest
 `/hotfix` writes its token in the step that opens the PR.
+
+Then read the open pull requests' `Candidate row:` lines with one call,
+`gh pr list --repo <base-repo> --state open --limit 100 --json
+number,body`. Parse each body as the cairn pane's `startedRows`
+(`hooks/status/pane.ts`) parses it. Split it on `\n` and remove a
+trailing `\r`. A line that opens with exactly `Candidate row: ` names the
+short title after it, trimmed, and a blank rest names none. A line
+between a fence line (three backticks or three tildes after optional
+spaces) and the next fence line names none. A candidate row whose short
+title such a line names is **PR-named**, by that PR's number. Only the
+PRs that the call returns count, so a list cut at 100 can miss a later
+PR, as the pane's list can. If the read fails or `gh` cannot run, note
+the failure for step 3's table. A failed `#<n>` read holds its row at
+`keep`, but a failed list read holds no row, so the pass still runs while
+`gh` is down. Step 2 marks rows instead.
 
 ## The lessons pass (`/cairn-triage lessons`)
 
@@ -360,6 +375,13 @@ re-examines a lesson.
    `keep` (records-hygiene §1), with that milestone named in the reason. As the
    rule above says, a row carrying a live started token, or missing one,
    is `keep` too. So no disposition of the pass rewrites a live token.
+   A PR-named row (session start) is `keep` too, with that PR's number in
+   the reason. So its short title stays the one that the PR's
+   `Candidate row:` line names. A priority change or a token change can
+   still ride on it. If the session-start list read failed, the table
+   names the failure. Then the reason of each candidate row proposed for
+   any disposition other than `keep` says that the row was not checked
+   against open pull requests.
    **Started tokens → a token change.** A token change is a row fact beside
    the disposition, as a priority change is, never a ninth disposition. It
    rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
