@@ -21,7 +21,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 ## Scope
 <!-- owner: plan · create/amend-via-gate -->
 
-**In:** `skills/cairn-triage/SKILL.md` steps 2 to 4: the amend loop, the `merge` survivor's lineage clause, and `retitle`'s rewrite of double-quoted mentions; one D-entry; a CHANGELOG Unreleased Fixes entry; a hand-run guard under `skills/tests/`. Absorbs parts (2) to (4) of the candidate row "Guard PR-named rows on other skill paths".
+**In:** `skills/cairn-triage/SKILL.md` steps 2 to 4: the amend loop, the Overlap class's survivor choice, the `merge` survivor's lineage clause, and `retitle`'s rewrite of double-quoted mentions; one D-entry and one batched correction of it; a CHANGELOG Unreleased Fixes entry; a hand-run guard under `skills/tests/`. Absorbs parts (2) to (4) of the candidate row "Guard PR-named rows on other skill paths".
 
 **Out:** part (1) of that row, the trivial route's match → M296. A mention inside a row that a live milestone quotes or that carries a live started token: those rows are not named by a PR's line, so the PR match this milestone guards does not reach them; no row holds it. The lessons pass, which reads no PRs.
 
@@ -39,9 +39,9 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 
 - [x] AC1: `skills/cairn-triage/SKILL.md` step 3's amend loop states that when the user sets, on a PR-named row, a disposition that removes the row or changes its short title (`drop`, `merge` as the absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites the title), the chip posed after that Amend names, in its question text, the row and each naming PR's number, and says that the change breaks that PR's match of the row. A second or later Amend, which shows no table, follows the same rule.
 - [x] AC2: The amend loop states that after a session-start open-PR read that failed or returned 100 PRs, a non-`keep` disposition the user sets at Amend carries the same not-checked mark in its table reason on the first Amend as a proposed one does, and the chip's question text names that row as not checked on every Amend.
-- [ ] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
+- [ ] AC3: Step 2's Overlap class states that it does not fire on a pair whose survivor, by its survivor rule, would be a PR-named row. The other row is still checked for Overlap against the remaining rows, and otherwise takes the first later class that fires, or `keep`. In either case its table reason names each PR-named row it was not merged into, with each naming PR's number. The amend loop states that when the user sets at Amend a merge whose survivor is a PR-named row, the chip after that Amend, and each later chip while that change stands, names, in its question text, that row and each naming PR's number and says the merge can change the row's short title and so break that PR's match. Step 4 makes no claim that every survivor's short title stays as it was.
 - [x] AC4: The `retitle` rule states that a double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten, and the table lists it as left, with the PR's number, as it lists an ambiguous mention.
-- [x] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191. It records AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and it states that it passes D-108's door on its retained trigger, naming the M295 review's shipped defects. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths.
+- [ ] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191, and one batched entry correcting it. Together they record AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and they state that they pass D-108's door on its retained trigger, naming the M295 review's shipped defects. The batched entry supersedes D-196's merge-survivor clause and its Rejected alternative of excluding PR-named survivors, naming the falsifier that review pass 2 met. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths and makes no claim that every survivor's short title stays as it was.
 - [x] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
 
 ## Coverage
@@ -51,9 +51,9 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 
 - AC1 → T1, T4
 - AC2 → T1, T4
-- AC3 → T2, T4, T7
+- AC3 → T2, T4, T7, T8
 - AC4 → T3, T4
-- AC5 → T5
+- AC5 → T5, T8
 - AC6 → T4, T6
 
 ## Tasks
@@ -70,6 +70,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - [x] T5: Append the D-entry (next free id) and the CHANGELOG entry per AC5.
 - [x] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 - [x] T7: Review return 1: place the merge survivor's lineage clause before its trigger, and at the row's end where the row has no started token or its first `: ` follows that token, so every survivor keeps its title; apply the pass-1 fix-now items; update the guard's pins; re-run T6's checks.
+- [ ] T8: Thrash-stop answer: the Overlap class does not fire on a pair whose survivor would be a PR-named row, the amend loop warns on a user-set merge with a PR-named survivor, step 4 drops the every-survivor claim; apply the pass-2 fix-now items; append the batched correcting entry for D-196; reword the changelog entry; update the guard's pins; re-run T6's checks.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -111,6 +112,11 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: re-audit: AC3 (full) — 5 findings on the first draft: Overlap must "not fire" on such a pair and the other row still checked against the rest; the other row's reason names the PR-named row; the Amend chip says the merge "can" change the title; step 4 must drop the every-survivor claim; the placement sentence dropped from AC3 (left unpromised, its held findings to a candidate row); all taken.
 - 2026-10-20: re-audit: AC3 (full) — 3 findings on the fixed wording: names "in its question text"; the reason names each PR-named row it was not merged into; Scope In must name the Overlap class's survivor choice. Second line on AC3, so the stop.
 - 2026-10-20: re-audit: AC5 (full) — 4 findings: "one" (not "at most one") correcting entry, since D-196 is history; the entry supersedes D-196's merge-survivor clause and its rejected alternative, naming the falsifier pass 2 met; the changelog entry makes no every-survivor claim; the second entry follows the batching rule (no change).
+- 2026-10-20: AC3 re-audit stop answered: the user accepted the AC3 and AC5 wording shown at the chip, with one more reader for AC5.
+- 2026-10-20: substantive amendment: AC3 now reads "Step 2's Overlap class states that it does not fire on a pair whose survivor, by its survivor rule, would be a PR-named row. …"; the every-survivor title promise and the placement sentence leave AC3; Scope In adds "the Overlap class's survivor choice" and "one batched correction of it".
+- 2026-10-20: substantive amendment: AC5 now requires D-196 plus one batched correcting entry that supersedes D-196's merge-survivor clause and its Rejected alternative, and a changelog entry with no every-survivor claim.
+- 2026-10-20: widening adopted at the user's selection: AC5 (a second D-entry, the supersession, the changelog negative), from the thrash-stop answer and pass-2 diff-bug #3.
+- 2026-10-20: re-audit: AC5 (full) — 4 findings on the written wording: a later defect in the correcting entry would need a further entry (rejected: the batching rule already routes that, wording unchanged); the supersession must cover only PR-named rows, and token rows can still be survivors (taken in the entry's content); "merge-survivor clause" names D-196's "So no survivor's short title changes" and its Rationale sentence on the clause (taken in the entry's content); AC5 widens (logged above). AC5's wording stays as the user accepted it.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
