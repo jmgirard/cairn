@@ -404,12 +404,13 @@ shows all its text. Open each row with a short title that says what the
 work does in one sentence with no ending period, then `: ` and the
 details, for example
 `- [high] Fix the pane's slow refresh: details — added 2026-10-15`. The
-title has at least 5 words and at most 40 characters, so the docked pane
-in the desktop app shows it whole. A wide character, such as a CJK
+title has at least 5 words and at most 40 characters, the room that the
+docked pane in the desktop app leaves for a candidate line. A wide character, such as a CJK
 character, counts as 2. A row written for a GitHub issue ends its title
 with the issue number in parentheses, for example
 `Fix SE of skewness calculation (#100)`. The number counts toward the 40
-characters and not toward the 5 words. Name things in
+characters and not toward the 5 words. An issue added to a row later goes
+in its details, and its title stays the same. Name things in
 words and put no icon, such as an emoji or `⌂`, in a short title, because
 the pane draws its own marks and buttons with such glyphs.
 `/cairn-triage` offers a new short title for a row whose title is empty,

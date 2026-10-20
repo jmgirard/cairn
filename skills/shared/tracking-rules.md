@@ -263,8 +263,8 @@ press plans the row by it, records-hygiene §7 groups the rows that quote it in 
 row whose title the argument quotes. Open each row with a short title that says what the work would do in one
 sentence with no ending period, then `: ` and the detail, for example `Fix SE of skewness calculation (#100): …`. The
 title holds at least 5 words, counted as runs between spaces, and at most 40 characters, a wide character such as a
-CJK character counting as 2, so that the desktop app's docked cairn pane shows it whole while the pointer is
-elsewhere. It differs from every other row's title. A row written for one or more of the repo's GitHub issues ends
+CJK character counting as 2, so that it fits the room the desktop app's docked cairn pane leaves for a candidate
+line while the pointer is elsewhere. It differs from every other row's title. A row written for one or more of the repo's GitHub issues ends
 its title with an issue number in parentheses, `(#N)`, or `(#N, #M)` when that fits. The reference counts toward the
 40 characters and not toward the words. An issue absorbed into an existing row later goes in the row's detail and
 leaves its title as it is. An area word joins the sentence and does not stand before it: write

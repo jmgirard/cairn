@@ -197,7 +197,7 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
      one sentence with no ending period, at least 5 words and at most 40 characters,
      ending with `(#N)` for a row written for GitHub issue N, such as
      `Fix SE of skewness calculation (#100)`; `/cairn-triage` offers a new title for one
-     outside those bounds; tracking-rules "Candidate short title" has the whole rule -->
+     with fewer than 5 words or more than 40 characters; tracking-rules "Candidate short title" has the whole rule -->
 ```
 
 Then:

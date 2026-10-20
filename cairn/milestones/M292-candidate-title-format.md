@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M292: Candidate row titles are one short sentence that fits the cairn pane
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -77,3 +77,5 @@ the whole title.
 - 2026-10-19: T3 done: README's passage states the format, the issue reference, and the triage trigger, its two `Pane refresh lag` examples became `Fix the pane's slow refresh`; the `/cairn-init` skeleton comment states the bounds with the skewness example; AC3's grep finds nothing; verify green (5/5).
 - 2026-10-19: T4 done: CHANGELOG `## Unreleased` entry "Candidate short titles are one short sentence"; D-189 appended, annotating D-163 and D-164 and passing D-108's door by the user's decision.
 - 2026-10-19: T5 done: verify green (5/5), hand-run `skills/tests` green (914 tests), `cairn_validate` green; the old-phrasing sweep outside history records hits only CHANGELOG.md:320, the released 2.1.0 entry, left as history.
+- 2026-10-19: claim audit: 44 claims read, 3 corrected — skills/shared/tracking-rules.md, README.md, CHANGELOG.md, skills/cairn-init/SKILL.md (fit stated as what the cap is sized to; skeleton names triage's real trigger; README gains the later-issue sentence); 2 declined (wide-character count is a writer's convention; a retitle may add every named issue since it rewrites mentions); re-read holds; rulebook baseline re-seeded to 760 lines / 73,350 bytes; verify green, `skills/tests` green.
+- 2026-10-19: status review; handed to /milestone-review.
