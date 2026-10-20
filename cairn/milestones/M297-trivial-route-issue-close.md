@@ -37,12 +37,12 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: `skills/milestone-plan/SKILL.md` step 1 states that in owner mode, for each matched row the edit deletes whose short title ends with `(#N)` or `(#N, #M)`, the plan reads each such number with `gh issue view <N> --repo <base-repo> --json state,url` before the chip. It states that the trivial option's description names as one the route will close each such number that it reads as `OPEN`, whose URL path holds `/issues/`, and that is in the `(#N)` or `(#N, #M)` ending no kept row's title, a kept row being a candidate row the edit narrows or leaves in place. It states that the description names each other such number as one the route leaves alone: one read as closed, one whose URL path holds `/pull/`, one it cannot read, and one in a kept row's title reference.
-- [ ] AC2: Step 1 states that the commit's one-line summary ends with the deleted rows' issue references, and that after the push succeeds the route runs `gh issue close <N> --repo <base-repo>` for each issue the description named for closing, then re-reads each one's state. It states that the close block names as closed each issue named for closing whose re-read reads `CLOSED`, and names each other one as left open with the close command's error, the re-read's state, or the failed re-read. It states that a failed or rejected push closes no issue.
-- [ ] AC3: Step 1 states that a narrowed row's issue stays open and that in guest mode no issue is closed. It states that when a narrowed row's title, or in guest mode a deleted row's title, ends with `(#N)` or `(#N, #M)`, the option description names that number as one the route leaves alone.
-- [ ] AC4: `cairn/DECISIONS.md` gains one entry whose heading names D-170 and D-162. It records that the tier chip's trivial option approves the issue close, with the rejected alternative of a `Fixes #N` keyword in the commit message and its falsifier, and it states whether D-108's door applies and why.
-- [ ] AC5: README's trivial-edit row and one new CHANGELOG `## Unreleased` → `### Changes that affect existing repos` entry state that the route closes the issue of a row it deletes, in owner mode, after naming the close in its option.
-- [ ] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
+- [x] AC1: `skills/milestone-plan/SKILL.md` step 1 states that in owner mode, for each matched row the edit deletes whose short title ends with `(#N)` or `(#N, #M)`, the plan reads each such number with `gh issue view <N> --repo <base-repo> --json state,url` before the chip. It states that the trivial option's description names as one the route will close each such number that it reads as `OPEN`, whose URL path holds `/issues/`, and that is in the `(#N)` or `(#N, #M)` ending no kept row's title, a kept row being a candidate row the edit narrows or leaves in place. It states that the description names each other such number as one the route leaves alone: one read as closed, one whose URL path holds `/pull/`, one it cannot read, and one in a kept row's title reference.
+- [x] AC2: Step 1 states that the commit's one-line summary ends with the deleted rows' issue references, and that after the push succeeds the route runs `gh issue close <N> --repo <base-repo>` for each issue the description named for closing, then re-reads each one's state. It states that the close block names as closed each issue named for closing whose re-read reads `CLOSED`, and names each other one as left open with the close command's error, the re-read's state, or the failed re-read. It states that a failed or rejected push closes no issue.
+- [x] AC3: Step 1 states that a narrowed row's issue stays open and that in guest mode no issue is closed. It states that when a narrowed row's title, or in guest mode a deleted row's title, ends with `(#N)` or `(#N, #M)`, the option description names that number as one the route leaves alone.
+- [x] AC4: `cairn/DECISIONS.md` gains one entry whose heading names D-170 and D-162. It records that the tier chip's trivial option approves the issue close, with the rejected alternative of a `Fixes #N` keyword in the commit message and its falsifier, and it states whether D-108's door applies and why.
+- [x] AC5: README's trivial-edit row and one new CHANGELOG `## Unreleased` → `### Changes that affect existing repos` entry state that the route closes the issue of a row it deletes, in owner mode, after naming the close in its option.
+- [x] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -115,3 +115,43 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Evidence at head a4af303d, 2026-10-20, read by a whitespace-collapsed substring check of step 1 (`1. Confirm` to `2. **Investigate first.**`) and of the other named files.
+
+- AC1: step 1's **Issue read (trivial route, owner mode)** paragraph states the owner-mode read `gh issue view <N> --repo <base-repo> --json state,url` before the chip for each deleted row ending `(#N)`/`(#N, #M)`, defines a kept row, the close set (`OPEN`, URL path `/issues/`, in no kept row's title reference), and the leave-alone set (closed, `/pull/`, failed read or no `gh`, kept-row reference); the option text names each number to close and each deleted row's number left alone with the reason — all 6 phrases present; `test_trivial_route_closes_deleted_rows_issues` OK.
+- AC2: step 1 states the summary ends with the deleted rows' references, the `gh issue close <N> --repo <base-repo>` after a successful push for each number named for closing, the re-read with the same `gh issue view` call, the close block naming `CLOSED` re-reads as closed and each other as left open with the close error, re-read state, or failed re-read, and "A failed or rejected push closes no issue." — all 4 phrases present; the test's order assert puts the close after the `git push` command.
+- AC3: step 1 states "A narrowed row's issue stays open … the route closes no narrowed row's number", "In guest mode no issue is closed and none is read", and that the option names a narrowed row's number, or in guest mode a deleted row's, as left alone — all 3 phrases present.
+- AC4: `cairn/DECISIONS.md` D-195's heading names D-170 and D-162; its Decision says the trivial option's description names each close so selecting it approves the close; its Rejected section has the `Fixes #N` keyword with the falsifier "a `gh issue close` that reports success while the issue stays open"; it says D-108's door does not apply because the close is a route step, not a conduct rule about verification or records.
+- AC5: README's trivial-edit row states that in owner mode the edit closes the open issue of a row it removes after the push, once its option names the close; CHANGELOG `## Unreleased` → `### Changes that affect existing repos` holds the entry "A direct edit closes the issue of the row it removes", owner mode, the option naming each issue before the choice.
+- AC6: at a4af303d from the repo root, `scripts/tests` 0, `hooks/tests` 0, plugin validate 0, marketplace validate 0, `claude plugin test .` 0 (with `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1`), hand-run `skills/tests` 0.
+
+Consistency gate at a4af303d: `cairn_validate.py` all checks passed (exit 0); no principle changed, so `cairn_impact` skipped; profile gate: verify green (AC6), marketplace validate shows no `plugins[N].version` warning, CHANGELOG Unreleased holds this milestone's entry.
+
+Copilot arm: PR #310 opened at review start, header commit pushed, state query `none`, request made (exit 0), re-query `pending`.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: a failed `git commit` still reaches the close, since a push with nothing new exits 0 — fix now
+- diff-bug #2: a close that exits 0 with a failed re-read is reported as left open — fix now (the close block also says the close command succeeded; AC2's "left open … the failed re-read" stands)
+- diff-bug #3: the summary's references reach GitHub as timeline cross-references the chip does not name — fix now (the option says the summary carries them)
+- diff-bug #4: a kept row holding #N only in its detail does not protect #N — follow-up, row "Keep owed issues open on a trivial edit"
+- diff-bug #5: an issue in an open milestone's `Resolves:` slot can be closed early — follow-up, same row
+- diff-bug #6: the issue read's order against the five checks is unstated (a failed check can sit beside numbers named to close) — follow-up, same row
+- diff-bug #7: a failed push's close block gives no close command for later — fix now
+- diff-bug #8: the close passes no `--comment`, unlike `/hotfix` and `/milestone` — reject, planned change (Scope Out: no comment is posted)
+- diff-bug #9: an issue closed by someone else between read and close is reported as closed — reject, false: the block reports the re-read state, which is `CLOSED`, and claims nothing about who closed it
+- diff-bug #10: the test does not pin "and none is read" or "The read takes no issue body", and option phrases are pinned against the whole step — fix now
+- diff-bug #11: README leaves out the closed and unreadable cases — reject, false: the row states nothing wrong and points at the option, which names each case
+- blame-history #1: after a failed open-PR read the route can delete a PR-named row and now also close its issue — follow-up, same row
+- blame-history #2: an issue a planned milestone still owes can be closed — follow-up, same row (diff-bug #5)
+- blame-history #3: no `--comment` on the close — reject, planned change (diff-bug #8)
+- blame-history #4: the split push pin no longer pins the close-block sentence's place after the failed-push sentence — fix now (order assert)
+- blame-history #5: whether an unmatched row citing `(#N)` protects it — reject, false: a kept row is "a candidate row the edit narrows or leaves in place", which includes every unmatched row
+- prior-review #1: chip phrases pinned against the whole step — fix now (diff-bug #10)
+- prior-review #2: a mid-title `(#N)` is not read — reject, planned change (Scope Out: only the title-ending form)
+- prior-review #3: narrowed against kept is an edit-time judgment — reject, planned change (D-170's delete-or-narrow judgment, unchanged)
+- ripple #1: ROADMAP's "Close the issue a trivial edit fixes" row says the route has no issue-close step — reject, planned change: step 9's hygiene deletes the row at this merge
+- ripple #2: the git model and CLAUDE.md say the chip approves a trivial-tier commit, not the issue close — reject, false: they name what may reach the default branch, which is still the commit alone; the close is approved in step 1 and D-195
+- ripple #3: tracking-rules Intake does not list the trivial route as an issue exit — reject, false: Intake lists routes for an incoming issue, and this close follows a row, not an issue
+- ripple #4: tracking-rules' trivial-tier sentence says only that the commit graduates rows — fix now (adds the owner-mode issue close)
+- ripple #5 and #6: `/milestone` §3's "only on the user's selection" and `/milestone-review`'s "no other issue write … on the review path" — reject, false: each is scoped to its own path, as the lens notes
