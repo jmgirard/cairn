@@ -8,8 +8,8 @@
   tells whoever writes a candidate row to open it with one sentence that
   says what the work does, with no ending period, of at least 5 words and
   at most 40 characters, the room that the docked cairn pane in the
-  desktop app leaves for a candidate line. A wide character, such as a CJK character, counts as 2. A row
-  written for GitHub issues ends its title with the issue number in
+  desktop app leaves for a candidate line. A wide character, such as a
+  CJK character, counts as 2. A row written for GitHub issues ends its title with the issue number in
   parentheses, for example `Fix SE of skewness calculation (#100)`. The
   number counts toward the 40 characters and not toward the words. An
   issue added to an existing row later goes in the row's details, so its

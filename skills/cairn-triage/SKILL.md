@@ -335,11 +335,14 @@ re-examines a lesson.
      old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
      Known issues. Each new title is one sentence with no ending period.
      It has at least 5 words and at most 40 characters by that count, and
-     it holds no `: `, ` — `, or icon. A row's text can name a GitHub
-     issue of the repo by an `/issues/N` URL or as `#N` that the row calls
-     an issue. Then the new title ends with the issue reference in the
-     rulebook's form: `(#N)`, or, where it fits, `(#N, #M)`. A
-     ` — started #<n>` token names a pull request, not an issue. A row whose title a live
+     it holds no `: `, ` — `, or icon. A row's text, its old title
+     included, can name a GitHub issue of `<base-repo>`. The forms are an
+     `/issues/N` URL, `<base-repo>#N`, `(#N)` at the end of the old title,
+     and `#N` that the row calls an issue. Then the new title ends with the issue
+     reference in the rulebook's form: `(#N)`, or, where it fits,
+     `(#N, #M)`. A ` — started #<n>` token names a pull request, not an
+     issue, and `#N` after another repo's `owner/repo` names that repo's
+     issue. A row whose title a live
      milestone file quotes, or that a live milestone absorbs, is not
      proposed for `retitle`: it stays `keep` with that milestone named, as
      below. Nor is a `merge` survivor in the

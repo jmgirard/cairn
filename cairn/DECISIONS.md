@@ -6825,7 +6825,7 @@ Falsified by a later milestone that adds scope to the module and fits it
 under the new budget by compression with no lost rule, which would show
 the reset was not needed.
 
-### D-189 (2026-10-19): A candidate row's short title is one sentence of at least 5 words and at most 40 characters, ending with its issue number — annotates D-163 and D-164; passes D-108's door by the user's decision (M292)
+### D-189 (2026-10-19): A candidate row's short title is one sentence of at least 5 words and at most 40 characters, ending with its issue number — annotates D-108, D-163, and D-164; D-108's door excepted by name at the user's decision, the door unchanged (M292)
 
 **Context:** D-163 told a writer to open each row with "a few words that
 name the row", and its `retitle` trigger flagged titles over 60 code
@@ -6863,4 +6863,8 @@ D-163 declined one.
 `/cairn-triage` pass in each repo proposes a new title for them. A row
 citing several issues may fit only one number in its title. The cap
 assumes the pane's current layout, so a change to the candidate line's
-marks or Buttons is the moment to re-check it.
+marks or Buttons is the moment to re-check it. A title in a script written
+without spaces has no word floor. A ✎ press or a planning Next line on a
+row whose title ends with `(#N)` carries `#N`, so `/milestone-plan` plans
+it as a milestone without its tier check; the candidate row "Keep tier
+check for issue-titled rows" holds that.

@@ -193,8 +193,8 @@ _Last hygiene check: YYYY-MM-DD (one short line, replaced each pass — never ap
      - [parked] short title: detail; promote when <condition> — added YYYY-MM-DD — links
      the opening token is `[high]`/`[low]`/`[parked]` or absent (`normal`); `[parked]` marks a row whose
      promotion condition has not held — tracking-rules "Candidate priority token";
-     open each row with its short title, the words the cairn pane shows, then `: `:
-     one sentence with no ending period, at least 5 words and at most 40 characters,
+     open each row with its short title, the words the cairn pane shows, then `: `;
+     the title is one sentence with no ending period, at least 5 words and at most 40 characters,
      ending with `(#N)` for a row written for GitHub issue N, such as
      `Fix SE of skewness calculation (#100)`; `/cairn-triage` offers a new title for one
      with fewer than 5 words or more than 40 characters; tracking-rules "Candidate short title" has the whole rule -->

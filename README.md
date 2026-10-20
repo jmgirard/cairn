@@ -405,8 +405,8 @@ work does in one sentence with no ending period, then `: ` and the
 details, for example
 `- [high] Fix the pane's slow refresh: details — added 2026-10-15`. The
 title has at least 5 words and at most 40 characters, the room that the
-docked pane in the desktop app leaves for a candidate line. A wide character, such as a CJK
-character, counts as 2. A row written for a GitHub issue ends its title
+docked pane in the desktop app leaves for a candidate line. A wide
+character, such as a CJK character, counts as 2. A row written for a GitHub issue ends its title
 with the issue number in parentheses, for example
 `Fix SE of skewness calculation (#100)`. The number counts toward the 40
 characters and not toward the 5 words. An issue added to a row later goes
