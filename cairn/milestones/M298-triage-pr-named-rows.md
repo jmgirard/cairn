@@ -39,7 +39,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 
 - [x] AC1: `skills/cairn-triage/SKILL.md` step 3's amend loop states that when the user sets, on a PR-named row, a disposition that removes the row or changes its short title (`drop`, `merge` as the absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites the title), the chip posed after that Amend names, in its question text, the row and each naming PR's number, and says that the change breaks that PR's match of the row. A second or later Amend, which shows no table, follows the same rule.
 - [x] AC2: The amend loop states that after a session-start open-PR read that failed or returned 100 PRs, a non-`keep` disposition the user sets at Amend carries the same not-checked mark in its table reason on the first Amend as a proposed one does, and the chip's question text names that row as not checked on every Amend.
-- [ ] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
+- [x] AC3: Step 4's merge sentence states that where the survivor's text holds neither `: ` nor ` — ` before the place the lineage clause goes, the clause opens with ` — `. It also states that the lineage clause, and any trigger it takes from the absorbed row, hold no `: `, each one written as `; `. Together these keep the survivor's short title as it was, for every survivor, a PR-named row and a row with a started token included.
 - [x] AC4: The `retitle` rule states that a double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten, and the table lists it as left, with the PR's number, as it lists an ambiguous mention.
 - [x] AC5: `cairn/DECISIONS.md` gains one entry whose heading names D-191. It records AC1 to AC4's rules, with the rejected alternative of refusing an Amend on a PR-named row and its falsifier, and it states that it passes D-108's door on its retained trigger, naming the M295 review's shipped defects. One new CHANGELOG `## Unreleased` → `### Fixes` entry states the three paths.
 - [x] AC6: The profile's `verify` slot passes at the branch head, and so does the hand-run `python3 -m unittest discover -s skills/tests`.
@@ -156,3 +156,16 @@ Copilot arm: PR #311 opened at review start, header commit pushed, Copilot reque
 - ripple #5: §7 group definitions do not state the retitle exception — reject, planned change (as blame-history #3).
 - ripple #6: DESIGN Known issues on Amend promote does not mention the new chip — reject, false (the entry is still accurate).
 - ripple #7: DESIGN Known issues on Amend uniqueness — reject, false (still accurate).
+
+### Pass 2 (2026-10-20, head a7ad2e4c)
+
+Copilot state before this pass: `reviewed earlier-head Lite` (no new request, §2).
+
+- AC1: `SKILL.md:492-502` names the six dispositions, the chip after that Amend names the row and each naming PR's number and says the change breaks that PR's match, a second or later Amend follows the same rule, and each later chip names them again while the change stands; `:475-477` points the Amend option at it; guard `test_amend_names_the_pr_of_a_changed_row` ok. Pass.
+- AC2: `SKILL.md:503-507`; guard `test_amend_marks_rows_after_a_failed_or_capped_read` ok. Pass.
+- AC3: `SKILL.md:559-568`: clause then trigger, before the first started token, at the row's end when the row has no token, no text before it, or its first `: ` after it; the ` — ` opening where the text before that place holds neither `: ` nor ` — `; no `: ` in clause or trigger, each written as `; `; "So the survivor's short title stays as it was, for every survivor, a PR-named row and a row with a started token included." The return-1 claim audit read each row shape against tracking-rules "Candidate short title" and its one counterexample is now covered; guard `test_merge_lineage_clause_keeps_the_survivor_title` ok. Pass.
+- AC4: `SKILL.md:303`, `:359-360`, `:427-429`, `:546-547` state the exception and the left listing with each naming PR's number; guard `test_retitle_leaves_a_mention_in_a_pr_named_title` ok. Pass.
+- AC5: D-196 (`cairn/DECISIONS.md:7088`) unchanged since pass 1; its "So no survivor's short title changes" now matches `SKILL.md:566-568`; the CHANGELOG Unreleased Fixes M298 entry (`CHANGELOG.md:178-189`) names the three paths. Pass.
+- AC6: at a7ad2e4c, scripts/tests 428 OK (21 skipped), hooks/tests 193 OK, plugin validate exit 0, marketplace validate exit 0 (no `plugins[N]` warning), plugin test 2389 pass, exit 0; `skills/tests` 923 OK. Pass.
+- Consistency gate: `cairn_validate.py` exit 0; no principle changed; profile gate: verify green, no version warning, changelog entry present.
+- spawned: diff-bug, blame-history, prior-review, ripple
