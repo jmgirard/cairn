@@ -94,7 +94,8 @@ short title after it, trimmed, and a blank rest names none. A fence
 line opens with three backticks or three tildes after optional spaces. A
 line between a fence line and the next fence line, or the end of the
 body, names none. A candidate row whose short
-title such a line names is **PR-named**, by that PR's number. The call
+title such a line names is **PR-named**, by the number of each PR whose
+line names it. The call
 reads every author's open PRs, a wider set than the pane's own list,
 which reads only yours. Only the
 PRs that the call returns count, so a list cut at 100 can miss a later
@@ -121,7 +122,7 @@ D-169, D-177).
 `cairn/LESSONS.md` whole, its header included, and `cairn/ROADMAP.md` for
 its size and stamp. The bounded `DECISIONS.md` read and the archive listing
 still run, and so do the live-milestone notes. Skip the started-token
-reads. Then find the pin files: each file that `git grep -l "LESSONS.md"` lists whose
+reads and the open-PR read. Then find the pin files: each file that `git grep -l "LESSONS.md"` lists whose
 path contains `test`. None listed means no pins and no failure. Read each
 pin file, and note each string it asserts is present in `cairn/LESSONS.md`
 and each string it asserts is absent. Only an assertion made on the live
@@ -305,8 +306,8 @@ re-examines a lesson.
    anything else is checked, §7's options included. Its reason names the
    token. §7 applies to the row again once the token is dead. A PR-named
    row (session start) is `keep` in the same way, before §7 and every
-   class below, the Title class included. Its reason names that PR's
-   number, and §7 applies to it again once no open PR names it.
+   class below, the Title class included. Its reason names each such
+   PR's number, and §7 applies to it again once no open PR names it.
    Evidence classes, checked in this order (the first that fires decides,
    later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
@@ -385,9 +386,9 @@ re-examines a lesson.
    As that rule also says, a PR-named row is `keep`, so its short title
    stays the one that the PR's `Candidate row:` line names. A priority
    change or a token change can still ride on it. If the session-start
-   list read failed, the table names the failure. Then the reason of each candidate row proposed for
-   any disposition other than `keep` says that the row was not checked
-   against open pull requests.
+   list read failed or returned 100 PRs, the table says so. Then each
+   non-`keep` proposal's reason says that the row was not checked against
+   every open pull request.
    **Started tokens → a token change.** A token change is a row fact beside
    the disposition, as a priority change is, never a ninth disposition. It
    rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
@@ -414,7 +415,7 @@ re-examines a lesson.
      reason. In guest mode a line above the table names the
      `<base>/<default-branch>` ref that step 2's code checks read. A line
      above the table also names an open-PR read (session start) that
-     failed or that can be cut at 100. Every
+     failed or that returned 100 PRs. Every
      `drop` and `merge` reason names its evidence class (refuted premise /
      already shipped / rejected on principle for a drop; trigger survives /
      trigger lost for a merge) and the record or path the evidence sits in.
@@ -456,7 +457,9 @@ re-examines a lesson.
      proposed token change with its row; the
      table above is the verbatim evidence. A promoted row's change to `high`
      is named once, with its new level `high`, beside the promote, never
-     again as a separate priority change. Three options, in this order:
+     again as a separate priority change. If the session-start open-PR
+     read failed or returned 100 PRs, the question text says so. Three
+     options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
         the table is applied, with each priority change and token change.
      2. **Amend** — the user names the items to change and what they become
