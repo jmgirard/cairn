@@ -6971,3 +6971,48 @@ because the user chose a recorded rejection over a deferral.
 **Consequences:** A miss of kind (3) in a hand-run test or other
 internal file does not reopen this. The falsifier above is the entry to
 supersede.
+
+### D-193 (2026-10-20): The trivial route matches a row whose title is the whole request, and skips a row that an open PR names — supersedes the reason in D-170's Rejected section, keeping its rejection; annotates D-191's Consequences; passes D-108's door on its retained trigger (M296)
+
+**Context:** D-170 had `/milestone-plan`'s trivial route match each
+candidate row whose short title the request quotes. A ✎ press in the
+cairn pane sends the bare title, with no quotes, so a trivial edit
+started from the pane did not delete or narrow the row it came from.
+The match also took a row that an open hotfix PR's `Candidate row:` line
+names, so a trivial commit could delete a row that the PR's merge was
+due to graduate. The M295 plan and review found both.
+
+**Decision:** A row also matches when the request text, with its outer
+spaces removed, equals its short title. A short title that appears
+unquoted inside a longer request does not match. Before the chip, the
+trivial route reads the open PRs' `Candidate row:` lines with the call
+and parse of `/cairn-triage` session start, and a row such a line names
+is not matched. The trivial option's description names each such row
+that the request otherwise matches, with each PR's number. A failed read,
+or one that returns 100 PRs, does not stop the match. When a row matched,
+the description says the matched rows were not checked against every
+open PR.
+
+**Rationale:** The reason in D-170's Rejected section, "because a pane
+press sends the quoted title", is false, since `register.tsx` passes the
+bare title as the press's argument. D-170's rejection of matching by the
+"describes the bug" judgment stands: an exact match on the whole request
+still matches by title, and no judgment decides it. The PR-named rule
+copies the one D-191 gave `/cairn-triage`, so a row that a PR carries is
+left for `/hotfix` step 7 on both paths. D-108's door is passed on its
+retained trigger, since both are defects in shipped behavior: the pane's
+✎ press left its row in place, and the trivial route could delete a row
+an open PR carries.
+
+**Rejected:** Matching a title that appears anywhere in the request,
+quoted or not, at the user's choice in the M296 plan's question set,
+because a passing mention could delete or narrow a row; falsified by a
+trivial edit whose request names a row unquoted inside longer text and
+fixes it, and the row stays. Matching no row after a failed or capped
+open-PR read, because every trivial edit then leaves its row while `gh`
+is down; falsified by a trivial edit that deletes a row an open PR names
+after a failed read.
+
+**Consequences:** D-191's Consequences sentence that the match "still
+asks for a quoted title" no longer holds. The match reads one `gh` list
+call that it did not read before.
