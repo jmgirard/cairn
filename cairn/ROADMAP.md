@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (triage: split "Live-check the open hotfix PRs bullet" into it and "Live-check the audit's bot-thread bullet"; re-rated "Gate standing instruments at plan time" parked → normal, its condition held at M285; no drops, no decision entry; validate green)_
+_Last hygiene check: 2026-10-20 (review M301: done, M298 row pruned to the terminal cap; caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M301 | Show each open PR's merge state in the pane | review | — | normal | milestones/M301-pane-pr-merge-state.md |
+| M301 | Show each open PR's merge state in the pane | done | — | normal | milestones/archive/M301-pane-pr-merge-state.md |
 | M300 | A trivial edit keeps owed issues open | done | — | normal | milestones/archive/M300-trivial-route-owed-issues.md |
 | M299 | Triage closes the remaining PR-named row gaps | done | — | normal | milestones/archive/M299-triage-row-gaps.md |
-| M298 | Triage keeps a PR-named row's title on every path | done | — | normal | milestones/archive/M298-triage-pr-named-rows.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - [parked] Close the last triage title edge cases: M299 review findings in `/cairn-triage`: (1) appending a missing started token to a row whose text ends in a bare `:` or ` —` changes its short title, which can break a PR's `Candidate row:` match or a milestone's quote (diff-bug #1, blame-history #2, prior-review #2); (2) an Amend-set `retitle`, `split`, `route`, or title-changing `compress` on a row with a live `M<NNN>` token breaks the title its milestone file quotes, with no chip (diff-bug #5, blame-history #4); (3) an Amend-set merge that changes a survivor's title runs no mention search, and the stamp does not name it (diff-bug #6). Promote when one of these occurs in a real triage pass, never on a count of review findings — added 2026-10-20 — M299 review (D-199)
