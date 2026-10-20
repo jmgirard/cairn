@@ -120,3 +120,8 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - blame-history #7: the same `text`-less literals — fix now, fixed cc7cd3ae.
 
 After the fixes: the five verify checks pass again (scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2336 pass 0 fail), and `cairn_validate.py` passes.
+
+PR-conversation read (PR #306): one Copilot review (COMMENTED), one thread, no other comment.
+- copilot: hooks/status/reader.ts:495 — fix now, fixed cc7cd3ae (the same literals as diff-bug #1)
+- copilot: review body — reject: its "replace the milestone header value with the PR URL" is false, since the header names PR #306 from 40598619
+- Copilot level: Lite (set by GitHub's settings). Summary reply posted.
