@@ -945,8 +945,8 @@ within each type and are never reused.
   identical triage subjects. An empty title not from a leading `: ` has no
   anchor. The Amend loop does not re-check a new title's uniqueness or
   icons. An icon title cut at a late `: ` loses its detail in place. The
-  icon removal has no stated scope (`⋯`, `≥` in detail). A retitle
-  unlinks a PR's `Candidate row:` line. If a gap shows in a real pass, or
+  icon removal has no stated scope (`⋯`, `≥` in detail). If a gap shows
+  in a real pass, or
   a guest operator needs a dropped item's reason after a later stamp
   replaced it, it becomes a `/hotfix` or a candidate row. Routed from
   candidates 2026-10-16; added 2026-10-10 — M235 review (diff-bug #1,
