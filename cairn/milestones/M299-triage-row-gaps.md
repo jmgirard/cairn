@@ -128,3 +128,33 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - AC6: `SKILL.md:342-350`: step 2 drafts and places the lineage clause and trigger before proposing a merge, reads the survivor's short title by the rulebook rule, and does not fire when it differs; the other row is checked against the rest, else the first later class or `keep`, its reason naming the survivor and the title change. `SKILL.md:548-552`: the Amend-set merge chip names the survivor, says its short title will change, and repeats while the change stands. Pass.
 - AC7: `cairn/DECISIONS.md:7199` D-198, heading supersedes D-197's last Consequences sentence and annotates D-166; body records AC2 to AC6's rules, says the data sentence needs no entry and an Amend-set title can equal a PR-named title, passes D-108's door, and names M298 pass 2 diff-bug #6 and #10, blame-history #5, ripple #2, pass 3 blame-history #1, M296 and M298 prior-review. `git diff main...HEAD -- CHANGELOG.md` adds one Unreleased Fixes bullet naming the six fixes. At 88c13aa6 all five `verify` checks exit 0 (scripts 428 OK, hooks 193 OK, both validates, mod test 0 fail) and `python3 -m unittest discover -s skills/tests` exits 0 (929 OK). Pass.
 - Gate: `cairn_validate.py` exit 0, all checks passed; no DESIGN principle changed, so `cairn_impact` is skipped; profile gate: verify green at the review head (AC7 line), the marketplace validate prints no `version` warning, CHANGELOG Unreleased Fixes has the entry, and the added CHANGELOG and README lines hold no `M<NNN>` or `D-<NNN>` id. Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: appending a token to a row ending in a bare `:` or ` —` changes its short title, and the rewritten rulebook and README sentence says it cannot — follow-up, item (1) of new parked row "Close the last triage title edge cases"; the sentence is qualified, fixed 13953bbd.
+- diff-bug #2: the dead-token exception covers only a token inside the title, but `Title: — started M12` also changes on removal — fix now (the rule is keyed on the removal's effect), fixed 13953bbd.
+- diff-bug #3: "a title the user sets at Amend" can include a title the pass drafts — fix now (drafted titles are checked, typed ones are not), fixed 13953bbd.
+- diff-bug #4: D-198 narrows D-166's removal rule and Consequence but its heading names only the keep; DESIGN Known issues lacks both limitations — fix now (D-199; DESIGN entry), fixed 13953bbd.
+- diff-bug #5: the reason for leaving live `M<NNN>` tokens out of the Amend chip covers only drop and merge — follow-up, item (2) of the new parked row.
+- diff-bug #6: an Amend-set merge that changes a survivor's title runs no mention search and is not in the stamp — follow-up, item (3) of the new parked row.
+- diff-bug #7: a dead token inside an absorbed row's title is copied into the lineage clause's subject — fix now (the subject leaves out token text), fixed 13953bbd.
+- diff-bug #8: the Overlap draft does not say it applies the survivor's other proposed changes — fix now, fixed 13953bbd.
+- diff-bug #9: "treated as beside a PR-named survivor" can pull in PR numbers that do not exist — fix now ("except for its reason"), fixed 13953bbd.
+- diff-bug #10: a split's new row could be barred from keeping the replaced row's title — fix now (the replaced row is not an other row), fixed 13953bbd.
+- diff-bug #11: a live `#<n>` Amend change is not named in the stamp or close block — fix now, fixed 13953bbd; its second half (a retitle keeps the token, so "retitled" is loose) rejected, false: the PR still points at the row, whose title changed, which the sentence says.
+- diff-bug #12: the pins miss "Then it reads the survivor's short title", and "no proposed disposition" is not scoped to step 2 — fix now, fixed 13953bbd.
+- diff-bug #13: after a failed or capped read nothing says a new title went unchecked against PR-named titles — fix now (reason clause and CHANGELOG), fixed 13953bbd.
+- blame-history #1: a dead token left in a title is now permanent, against D-166's Consequence — fix now (D-199 records the narrowing; DESIGN Known issues states it), fixed 13953bbd.
+- blame-history #2: the rulebook token sentence is false for a bare `:` or ` —` end — follow-up with diff-bug #1, sentence fixed 13953bbd.
+- blame-history #3: the Overlap paragraph mislabels the non-PR survivor case — fix now with diff-bug #9, fixed 13953bbd.
+- blame-history #4: live `M<NNN>` tokens get no Amend chip on a retitle — follow-up with diff-bug #5.
+- blame-history #5: D-198 says DESIGN's Known issues entry already states the Amend-title exemption — fix now (D-199; DESIGN entry), fixed 13953bbd.
+- prior-review #1: the live `#<n>` path stops at the chip, as M298 pass 2 diff-bug #4 found for PR-named rows — fix now with diff-bug #11, fixed 13953bbd.
+- prior-review #2: the token-append claim fails on the bare-colon shape M298 pass 2 diff-bug #1 found — follow-up with diff-bug #1, sentence fixed 13953bbd.
+- prior-review #3: the non-PR survivor's reason wording — fix now with diff-bug #9, fixed 13953bbd.
+- prior-review #4: the CHANGELOG says six gaps but lists seven — reject, false: it lists six fixes, and the compress and icon sentence describes the dead-token fix.
+- ripple #1: SKILL "A second or later Amend, which shows no table, follows the same rule" contradicts the retitle exception — fix now (pin updated), fixed 13953bbd.
+- ripple #2: tracking-rules "It also proposes removing a dead token" lacks the exception — fix now, fixed 13953bbd.
+- ripple #3: DESIGN.md's pane paragraph says triage proposes removing a dead token, with no exception — fix now, fixed 13953bbd.
+- ripple #4: ROADMAP row "Guard PR-named rows on other skill paths" lacks ` — started M299` — reject, false: the row ends with that token since plan commit 70bba243.
+- ripple #5: README "proposes removing a dead token" is unqualified — reject, false: the same paragraph states the exception two sentences later.
+- ripple #6: `hooks/status/reader.ts` comment says a row's short title is the same with or without a token — fix now (scoped to a token after the first `: ` or ` — `), fixed 13953bbd.
+- After the fixes: all five `verify` checks exit 0, skills/tests 929 OK, cairn_validate green. No finding demonstrates a criterion failing or a load-bearing defect, so no return.
