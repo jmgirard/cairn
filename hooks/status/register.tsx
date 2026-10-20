@@ -7,7 +7,7 @@ import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same
 import { countsArgv, prRead } from './counts'
 import { BADGE_H, badgeSvg, badgeWidth } from './badge'
 import { ICON_PX, iconSvg } from './icons'
-import { archivedArgs, DESCRIBE_ARGS, doneSince, repoArgv, repoCounts, tagTimeArgs } from './repo'
+import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
   CHECK_LABEL,
@@ -161,12 +161,14 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
   shape: 'hotfixes-2',
 })
 
-// The summary card's numbers and the repo root they are for (M286),
-// written by the same read as the hotfix list (`readRepo` says when they
-// are kept). The pane draws them only while the band's root is that root.
-const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null } as CairnRepoRead, {
+// The summary card's numbers, the project name (M291), and the repo root
+// they are for (M286), written by the same read as the hotfix list
+// (`readRepo` says when they are kept). The pane draws them only while the
+// band's root is that root, and otherwise names the root's last segment.
+const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null, name: null } as CairnRepoRead, {
   // `repo-2`: `repo-1`, without the release days, never shipped (M286).
-  shape: 'repo-2',
+  // `repo-3` adds the project name (M291).
+  shape: 'repo-3',
 })
 
 // True from the start of a read of the pull request states until the newest
@@ -382,6 +384,7 @@ export const register: Register = on => {
       ours ? held.prs : [],
       ours ? held.started : [],
       counts.root !== null && counts.root === shown.root ? counts : null,
+      shown.root,
     )
     // ⋯ also needs a read in flight in this module, so a stored true that a
     // reload or a failed write left draws ↻ (M237).
@@ -447,7 +450,9 @@ export const register: Register = on => {
               </Box>
             )}
             {line.tail === undefined ? null : (
-              <Box key={`${line.key}-tail`} flexShrink={0} {...centers(line)}>
+              // A tail that grows takes the free room, so the Buttons after
+              // it sit at the right end (the card's first line, M291).
+              <Box key={`${line.key}-tail`} flexShrink={0} {...(line.tailGrows ? { flexGrow: 1 } : {})} {...centers(line)}>
                 {line.tail.map(drawSpan)}
               </Box>
             )}
@@ -1118,19 +1123,24 @@ async function baseOf($): Promise<Where> {
 }
 
 // The summary card's numbers to write (M286), read with one `gh api
-// graphql` call on the base remote's repo and three git calls in the root.
+// graphql` call on the base remote's repo and three git calls in the root,
+// and a fourth for the name when the URL is not a github.com one.
 // The GitHub numbers come from a github.com base remote only. A read that
 // gives none keeps the last good numbers for the same root, and is empty
 // for any other root. The release read (tag, days, done count) is this
 // read's alone: null in guest mode, with no release tag, or when a git call
-// fails. It rejects only when the root and remote lookup rejects.
+// fails. The project name is this read's too (`projectName` in repo.ts,
+// M291): a URL that is not a github.com one, or no URL, takes one more git
+// call for the common git dir. It rejects only when the root and remote
+// lookup rejects.
 async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
   // The days count to the read's start, taken before the root lookup
   // (M286 review, Copilot).
   const now = Date.now()
   const { root, guest, url } = await where
-  if (root === null) return { root: null, counts: null, done: null }
+  if (root === null) return { root: null, counts: null, done: null, name: null }
   const argv = url === null ? null : repoArgv(url)
+  const naming = async () => projectName(url, argv === null ? await git($, root, COMMON_DIR_ARGS) : null, root)
   const ask = async () => {
     if (argv === null) return null
     try {
@@ -1147,15 +1157,15 @@ async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
     const [log, diff] = await Promise.all([git($, root, tagTimeArgs(trimmed)), git($, root, archivedArgs(trimmed))])
     return doneSince(guest, tag, log, diff, now)
   }
-  const [counts, done] = await Promise.all([ask(), count()])
-  if (counts !== null) return { root, counts, done }
+  const [counts, done, name] = await Promise.all([ask(), count(), naming()])
+  if (counts !== null) return { root, counts, done, name }
   let held: CairnRepoRead
   try {
     held = await read($, repo)
   } catch {
-    held = { root: null, counts: null, done: null }
+    held = { root: null, counts: null, done: null, name: null }
   }
-  return { root, counts: held.root === root ? held.counts : null, done }
+  return { root, counts: held.root === root ? held.counts : null, done, name }
 }
 
 // The `gh pr list` call for the operator's open pull requests on a remote

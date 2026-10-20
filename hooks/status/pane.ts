@@ -6,11 +6,12 @@ import type { BadgeName } from './badge'
 import { badgeSpan } from './badge'
 import type { IconName } from './icons'
 import { FLOW_COLORS, flowOf, GRAY } from './band'
+import { lastSegment } from './repo'
 import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. First, the summary card (M286): the base remote repo's open pull
-// requests and issues, the drawn candidate rows at each level, and the
+// draws. First, the summary card (M286): the project name (M291), the base
+// remote repo's open pull requests and issues, the drawn candidate rows at each level, and the
 // planned, blocked, and done milestones. For each active milestone: its id
 // in its phase's color (no phase word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
@@ -58,9 +59,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // blocked line's `target` is its milestone id, which its Button's key and
 // press carry. Since M236 the pane's first line, the card's first since
 // M286, carries the one Refresh
-// Button, labeled ↻, which reads everything again. Its `grow` makes its
-// text take the free room, so its tail and the Button sit at the right end
-// of the row. Until M236 the Blocked and Hotfixes headings each carried a
+// Button, labeled ↻, which reads everything again. Its `tailGrows` makes
+// its tail, the counts after the project name, take the free room, so the
+// Button sits at the right end of the row (M291). Until M236 the Blocked and Hotfixes headings each carried a
 // Refresh. While no cairn skill runs, the Home Button, labeled ⌂, comes
 // before ↻: it clears the conversation and opens the pane again (M241).
 // While no cairn skill runs, each candidate line whose short title is not
@@ -94,6 +95,7 @@ export type PaneLine = {
   target?: string
   title?: string
   grow?: true
+  tailGrows?: true
 }
 
 // A blocked milestone's pull request state, as `wordOf` maps it from a
@@ -585,9 +587,9 @@ export function drawnCandidates(
 }
 
 // The summary card's lines (M286, look B), which register.tsx draws in one
-// Box with a round border. The first holds the base remote repo's open pull
-// requests and open issues, each `?` while the store holds no numbers for
-// this root. The second holds the drawn candidate rows at each level, each
+// Box with a round border. The first holds the project name, bold (M291),
+// then the base remote repo's open pull requests and open issues, each `?`
+// while the store holds no numbers for this root. The second holds the drawn candidate rows at each level, each
 // after its level's mark. The third holds the planned and blocked
 // milestones. A fourth, the release line, holds the latest release tag, the
 // days since its commit, and the milestones done since it, when the last
@@ -596,19 +598,25 @@ export function cardLines(
   state: PaneState,
   drawn: { row: CandidateRow }[],
   repo: CairnRepoRead | null,
+  name: string | null = null,
 ): PaneLine[] {
   const counts = repo?.counts ?? null
   const number = (n: number | undefined) => ({ text: n === undefined ? UNKNOWN_NUMBER : `${n}`, bold: true })
+  // The project name, bold, in the text, which is cut first when the line
+  // is too narrow, and the counts in the tail after it (M291). The tail
+  // takes the free room, so the Buttons sit at the right end.
+  const named = name !== null && name !== ''
   const first: PaneLine = {
-    ...line(CARD_KEYS.repo, 0, [
+    ...line(CARD_KEYS.repo, 0, [], named ? { text: name, bold: true } : null),
+    tail: [
+      ...(named ? [{ text: '  ' }] : []),
       number(counts?.prs),
       { text: ' PRs', color: GRAY },
       { text: '   ' },
       number(counts?.issues),
       { text: ' issues', color: GRAY },
-    ]),
-    // An empty text takes the free room, so the Buttons sit at the right end.
-    text: { text: '' },
+    ],
+    tailGrows: true,
   }
   const levels: CandidateRow['priority'][] = ['high', 'normal', 'low', 'parked']
   const second = line(CARD_KEYS.candidates, 0, [
@@ -686,17 +694,20 @@ export function paneLines(
   hotfixes: HotfixPr[] = [],
   started: StartedRow[] = [],
   repo: CairnRepoRead | null = null,
+  root: string | null = null,
 ): PaneLine[] {
   if (!state.found) return [line('no-roadmap', 0, [], { text: NO_ROADMAP, color: GRAY })]
   // The candidate rows the Candidates list draws, whether or not a
   // milestone is active, which the card counts too (M286).
   const drawable = drawnCandidates(state, hotfixes, started)
-  const out: PaneLine[] = cardLines(state, drawable, repo)
+  // The project name of the read for this root, or before one is stored
+  // the root's last segment (M291). `repo` is for this root or null.
+  const name = repo?.name ?? (root === null ? null : lastSegment(root))
+  const out: PaneLine[] = cardLines(state, drawable, repo, name)
   // The card's first line carries the ↻ Button at its right end (M236, on
   // the card since M286), and ⌂ before it while no cairn skill's step is
   // set (M241).
   out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
-  out[0].grow = true
   // A blank row under the card, for the operator's ask for more space.
   out.push(gap('card-gap'))
   if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))

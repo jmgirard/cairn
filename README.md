@@ -293,8 +293,17 @@ conversation. In the terminal it docks beside a fullscreen conversation
 of 110 columns or more, and otherwise it sits above the prompt.
 
 The pane opens with a summary card in a round border. Its first line shows
-the number of open pull requests and open issues on the base remote's
-repo, from every author. Its second line shows the candidate rows at each
+the project's name in bold. After the name it shows the number of open
+pull requests and open issues on the base remote's repo, from every
+author. The name is the
+repo's name on a github.com base remote. With a remote on another host,
+or none, it is the name of the folder that holds the repo's `.git`
+directory. A worktree thus shows the repo's name. Before the first read
+for a repo folder, the name is that folder's own name, so a worktree
+shows its own name until the read. If `git` cannot say, the name is also
+that folder's own name. If the git dir is not a `.git` folder, as in a
+submodule or a bare repo, the same holds. A name too long
+for the pane is cut with `…`. Its second line shows the candidate rows at each
 level, with the level's mark: `[high]`, normal, `[low]`, and `[parked]`.
 It counts the rows that the Candidates list (below) would show, also
 while a milestone is active. Its third line shows the planned and blocked
