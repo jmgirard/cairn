@@ -590,8 +590,8 @@ function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
 // terminal and in a fixed gray fill on the desktop, where M286 drew a gray
 // number.
 function countHeading(key: string, label: string, count: number): PaneLine[] {
-  const [space, head] = heading(key, label)
-  return [space, { ...head, lead: [...head.lead, { text: ' ' }, badgeSpan(count)] }]
+  const [blank, head] = heading(key, label)
+  return [blank, { ...head, lead: [...head.lead, { text: ' ' }, badgeSpan(count)] }]
 }
 
 // A heading whose tail is the checked and total counts and the meter in

@@ -32,7 +32,7 @@
   on a github.com remote, at the same times as the PR states, and show `?`
   until a read gives them. A milestone's goal now wraps at the pane's
   width instead of at the file's line breaks. Headings are a bold label,
-  with any count at the right end, the Tasks and Criteria meter has six
+  with the Tasks and Criteria counts at the right end, the meter has six
   cells, the head line's title is bold, and the Next command follows a
   `→` with no pill. Blocked lines and hotfix lines share one layout, with
   a state mark and `fix` in place of a hotfix's milestone id. A checked

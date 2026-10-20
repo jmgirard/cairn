@@ -1,4 +1,5 @@
 import type { Span } from './band'
+import { GRAY } from './band'
 
 // The count badge on the Blocked, Hotfixes, and Candidates headings
 // (M289), in place of the bare gray count that M286 drew. On the desktop
@@ -12,8 +13,8 @@ import type { Span } from './band'
 // close"), so the fill is a fixed mid gray, dark enough that white reads
 // on it at about 5:1, and light enough to show on a dark ground.
 
-// The terminal badge's ground: the theme's gray.
-export const BADGE_KEY = 'inactive'
+// The terminal badge's ground: the theme's gray, the band's `GRAY`.
+export const BADGE_KEY = GRAY
 
 // The desktop pill's fill and the number's color.
 export const BADGE_FILL = { fill: 'rgb(110,110,110)', text: 'rgb(255,255,255)' }

@@ -620,7 +620,7 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   over the `band` value's counts, which `ui.render` reads beside `pane`.
   The rest of the look is the operator's pick from the M286 browser
   prototypes (look B), changed at its live looks: a blank row and a bold
-  label for each section heading, with its tail at the right end, a
+  label for each section heading, with any tail at the right end, a
   six-cell `━`/`─` meter beside the Tasks and Criteria counts in the
   milestone's phase color, and since M289 a badge for the Blocked,
   Hotfixes, and Candidates counts (`badge.ts`: an `Svg` pill in one fixed
@@ -1166,8 +1166,10 @@ within each type and are never reused.
   `inactive` in the light and other themes. M302 checked the gray pill in
   a browser preview only, so its place after the label, its row's
   centering, and any clipping by the lead Box wait for a desktop look
-  after the merge, since no badge heading draws in this repo while a
-  milestone is active. A 16 px badge can make its heading row
+  after the merge. During M302 no badge heading drew in this repo:
+  Candidates draws only with no active milestone, and the repo had no
+  blocked milestone and no open hotfix PR, which draw either way. A
+  16 px badge can make its heading row
   taller than the 14 px icon rows on the desktop, and since M294 a taller
   row, or a row of Buttons, also shifts a candidate card's `rowsAbove` and
   its `top`. If a badge reads poorly or a heading row draws taller in a

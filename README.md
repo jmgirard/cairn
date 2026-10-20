@@ -350,9 +350,8 @@ The Blocked, Hotfixes, and Candidates headings show their count as a
 badge right after the heading name. The badge is a gray rounded pill
 with a white number. The terminal draws the badge as the number with a
 space on each side, on the theme's gray. The Tasks and Criteria headings
-show their count at the
-right end with a six-cell meter, `━` for the checked share and `─` for
-the rest. The next command follows a `→`. When the next step
+show their count at the right end with a six-cell meter, `━` for the
+checked share and `─` for the rest. The next command follows a `→`. When the next step
 is planning, the line shows `/milestone-plan <title>`. The title is the
 first `[high]` candidate row that the Candidates list (below) shows. The
 line passes over a row that the list hides. The list also reads the pane's

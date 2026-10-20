@@ -276,9 +276,11 @@ function buttonsIn(node: Element): Element[] {
   return kids(node).flatMap(child => (child.type === 'Button' ? [child] : buttonsIn(child)))
 }
 
-// A heading's text (M286): the bold label, and the tail after a space
-// where it has one.
-const headText = (label: string, tail = '') => `${label}${tail === '' ? '' : ` ${tail}`}`
+// A heading's text (M286): the bold label, and what follows it after a
+// space where it has more: a tail, or since M302 a badge in the lead.
+// The joined text is the same either way, so placement is checked by the
+// M302 lead and tail tests, not by this helper.
+const headText = (label: string, rest = '') => `${label}${rest === '' ? '' : ` ${rest}`}`
 // A counted heading's text (M289): its badge reads as the number, the
 // `Svg`'s alt text, on the desktop, and as the number with a space on each
 // side in the terminal.
