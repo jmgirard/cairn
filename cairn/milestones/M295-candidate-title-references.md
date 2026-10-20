@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M295: A candidate title's issue number stays part of the title
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — skill routing and triage behavior that operators of adopting repos rely on   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m295-candidate-title-references   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -102,7 +102,7 @@ CHANGELOG entry states both changes.
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Edit the issue rule in `skills/milestone-plan/SKILL.md` step 1
+- [x] T1: Edit the issue rule in `skills/milestone-plan/SKILL.md` step 1
       (~lines 57-64) for AC1: the title-number sentence and the clause that
       the check judges from the row's text, not issue #N's body.
 - [ ] T2: Edit `skills/hotfix/SKILL.md` step 1 (~lines 33-36) for AC2. Read
@@ -149,6 +149,8 @@ CHANGELOG entry states both changes.
 - 2026-10-20: plan gate chose editing the two skills over a rulebook sentence in "Candidate short title" because the skills hold the issue and PR-reference rules and a rulebook edit re-seeds three rulebook-mass pins; falsified by a third skill that reads a title's `(#N)` as an issue or PR.
 - 2026-10-20: plan gate chose making a PR-named row `keep` over excluding it from `retitle` alone because `merge`, `drop`, `route`, and `compress` also remove or rewrite the title the line names, as the live-token rule already treats such rows; falsified by a needed disposition of a PR-named row that `keep` blocks.
 - 2026-10-20: plan gate chose marking rows on a failed PR read over holding every row at `keep` because holding them all would stop the candidate pass whenever `gh` is down; falsified by a marked row being retitled or dropped at the gate while an open PR names it.
+- 2026-10-20: implement started on m295-candidate-title-references, cut from origin/main at e4e9701b; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-20: T1 done: the plan skill's issue rule now reads a candidate title's `(#N)` as part of the title (step 1, after "the door that tiers an issue"); the simple-english PostToolUse hook flagged 194 file-wide STE hits that predate this edit, left as they are (out of scope; the added sentences carry none of the flagged kinds).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
