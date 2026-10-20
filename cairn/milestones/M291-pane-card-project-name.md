@@ -21,11 +21,11 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 
 ## Acceptance criteria
 
-- [ ] AC1: The summary card's first line holds the project name in bold at its left, then the open pull request and issue counts, with ⌂ (while no cairn skill's step is set) and ↻ at its right end; the candidates, milestones, and release lines follow it unchanged. Tested on `paneLines` output and on the drawn tree for the desktop and terminal surfaces.
-- [ ] AC2: Once a card read for the band's root has been written, whether or not its `gh` call gave counts, the project name is the repository part of the base remote's URL as `remoteRepo` in `repo.ts` parses it. When that URL is not a github.com one or the root has no base remote, the name is the name of the parent folder of the absolute `git rev-parse --git-common-dir` when that dir's own name is `.git`, so a linked worktree shows the repo's name and not the worktree's; otherwise, or when that git call fails, it is the last path segment of the band's root. Tested for an `origin` github.com remote, guest mode with an `upstream` github.com remote, guest mode with only `origin`, a remote not on github.com, no remote, a root inside a linked worktree, a common dir not named `.git`, and a failed git call.
-- [ ] AC3: While the store holds no card read written for the band's current root (a first read for that root, or after a change of root), the first line shows the last path segment of that root, never a name stored for another root; in a linked worktree that segment is the worktree's name until the read is written. Tested with a read held unsettled and with a stored read written for another root.
-- [ ] AC4: When the first line is too narrow for the whole name, the name is cut with an ellipsis, and the counts, ⌂, and ↻ keep their width. Tested on the drawn tree's props: the name's Text carries `wrap: 'truncate-end'` in a Box that may shrink, inside a line Box that may shrink below its content, and the counts' Box and each Button's Box have `flexShrink: 0`.
-- [ ] AC5: README's pane section, DESIGN.md's summary-card paragraph, the CHANGELOG's Unreleased summary-card entry, and `types/index.d.ts` describe the name and its rule, and the `verify` slot passes (`python3 -m unittest` in `scripts/tests` and `hooks/tests`, `claude plugin validate` on the plugin and marketplace manifests, and `claude plugin test` for the status mod).
+- [x] AC1: The summary card's first line holds the project name in bold at its left, then the open pull request and issue counts, with ⌂ (while no cairn skill's step is set) and ↻ at its right end; the candidates, milestones, and release lines follow it unchanged. Tested on `paneLines` output and on the drawn tree for the desktop and terminal surfaces.
+- [x] AC2: Once a card read for the band's root has been written, whether or not its `gh` call gave counts, the project name is the repository part of the base remote's URL as `remoteRepo` in `repo.ts` parses it. When that URL is not a github.com one or the root has no base remote, the name is the name of the parent folder of the absolute `git rev-parse --git-common-dir` when that dir's own name is `.git`, so a linked worktree shows the repo's name and not the worktree's; otherwise, or when that git call fails, it is the last path segment of the band's root. Tested for an `origin` github.com remote, guest mode with an `upstream` github.com remote, guest mode with only `origin`, a remote not on github.com, no remote, a root inside a linked worktree, a common dir not named `.git`, and a failed git call.
+- [x] AC3: While the store holds no card read written for the band's current root (a first read for that root, or after a change of root), the first line shows the last path segment of that root, never a name stored for another root; in a linked worktree that segment is the worktree's name until the read is written. Tested with a read held unsettled and with a stored read written for another root.
+- [x] AC4: When the first line is too narrow for the whole name, the name is cut with an ellipsis, and the counts, ⌂, and ↻ keep their width. Tested on the drawn tree's props: the name's Text carries `wrap: 'truncate-end'` in a Box that may shrink, inside a line Box that may shrink below its content, and the counts' Box and each Button's Box have `flexShrink: 0`.
+- [x] AC5: README's pane section, DESIGN.md's summary-card paragraph, the CHANGELOG's Unreleased summary-card entry, and `types/index.d.ts` describe the name and its rule, and the `verify` slot passes (`python3 -m unittest` in `scripts/tests` and `hooks/tests`, `claude plugin validate` on the plugin and marketplace manifests, and `claude plugin test` for the status mod).
 
 ## Coverage
 
@@ -59,3 +59,42 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 - 2026-10-19: claim re-read: all 3 hold; one README sentence order slip (the worktree sentence) moved beside the first-read sentence.
 - 2026-10-19: all tasks done, verify slot green (mod tests 2330 before the README reorder; Python suites rerun after it); status review.
 - 2026-10-19: review: PR #303 opened at review start (Copilot round on), Copilot requested (pending). Fix-now work from the diff-bug and ripple lenses in progress (old-git common-dir output, type and header comments, DESIGN's grow sentence); verify not yet re-run on it.
+- 2026-10-19: review fixes verified: verify slot green on 550da7b4 (mod tests 2332, scripts and hooks suites OK, both validates exit 0, no `plugins[N].version` warning), `cairn_validate` all checks passed.
+
+## Review
+
+Evidence on head 550da7b4, 2026-10-19, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .`: 2332 pass, 0 fail; all 28 M291-named tests pass.
+
+- AC1: pane.test.tsx "the name bold, then the counts, then ⌂ and ↻ … (AC1, desktop|terminal)" pass: card children `card-repo`, `card-candidates`, `card-milestones`; first line children text, tail, home, refresh; name Text bold `alpha`; tail `  3 PRs   12 issues` with `flexGrow` 1. The M286 AC6 layout test pins the `paneLines` first line (`cairn` bold text, counts tail, `tailGrows`) and the unchanged candidates, milestones, and release lines; M236 tests pin ⌂ only while `acts`.
+- AC2: eight "names <x> (AC2)" tests pass (origin github.com, guest upstream, guest origin only, gitlab, no remote, linked worktree, common dir `.git/modules/sub` → `subdir`, failed git call), each also asserting the common-dir call runs only without a github.com URL; "a failed GitHub read still names the project from the URL" pass; repo.test.ts `projectName` table (13 cases incl. Windows, bare repo, old git) pass.
+- AC3: "a linked worktree draws its own folder name until the read is written", "a held read draws the root folder name, then the name it reads", and "a name stored for another root is not drawn" pass (`w1`, `proj` → `alpha`, `two`).
+- AC4: "a long name is the part that is cut … (AC4, desktop|terminal)" pass at 44 columns: line Box `minWidth` 0, text Box `flexShrink` 1 and `minWidth` 0, its Text `wrap: 'truncate-end'`, tail, home, and refresh Boxes `flexShrink` 0.
+- AC5: README (summary-card paragraph), DESIGN (card paragraph, `repo-3`, ↻ paragraph), CHANGELOG Unreleased card entry, and `types/index.d.ts` (`name`) describe it; verify slot: scripts OK, hooks OK, plugin validate 0, marketplace validate 0, mod test 0.
+
+Consistency gate: `cairn_validate` all checks passed; no principle changed (no `cairn_impact` run); profile gate: verify green on the head, no marketplace version warning, CHANGELOG Unreleased entry covers the change.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: a cut name has no hover card on the desktop — follow-up, row "Card name edges"
+- diff-bug #2: git before 2.31 echoes `--path-format=absolute` before the dir — fix now, fixed 96581092
+- diff-bug #3: type comment omits the empty name for root `/` — fix now, fixed 96581092
+- diff-bug #4: `cardLines` header comment omits the name — fix now, fixed 96581092
+- diff-bug #5: one reflowed comment line runs long — reject (style)
+- diff-bug #6: AC1 drawn-tree test does not pin the other lines' text or the ⌂-absent case — reject (false: the M286 AC6 layout test and the M236 tests pin both)
+- diff-bug #7: a drive-root `C:\` names the card `C:` — reject (false as a defect: a drive root has no folder name, and `C:` names it)
+- diff-bug #8: odd github.com repo segments reach the card as parsed — follow-up, row "Card name edges" (pre-existing parser)
+- prior-review #1: no live look though LESSONS says drawing needs one — reject (planned change: the user chose a browser preview at the question set); recorded in row "Card name edges"
+- prior-review #2: a cut name has no hover card — follow-up, row "Card name edges" (same as diff-bug #1)
+- ripple #1: DESIGN's ↻ paragraph says the first line's text grows — fix now, fixed 96581092
+- ripple #2: `readRepo` comment says three git calls — fix now, fixed 96581092
+- ripple #3: repo.ts header omits the name read — fix now, fixed 96581092
+- ripple #4: `cardLines` comment omits the name — fix now, fixed 96581092 (same as diff-bug #4)
+- ripple #5: pane.ts file header omits the name — fix now, fixed 96581092
+- ripple #6: the `repo` atom comment omits the name — fix now, fixed 96581092
+- blame-history #1: the `repo-3` bump drops shipped `repo-2` counts until the first read — reject (planned change: LESSONS M193 requires a new tag for a changed value layout)
+- blame-history #2: DESIGN's ↻ paragraph stale — fix now, fixed 96581092 (same as ripple #1)
+- blame-history #3: git before 2.31 — fix now, fixed 96581092 (same as diff-bug #2)
+- blame-history #4: one more git call per read without a github.com remote — reject (planned change, AC2)
+- blame-history #5: the M236 test now pins the tail's grow — reject (planned change; ↻ stays at the right end)
+- blame-history #6: the M226 test's `repo` after the move is a mock artifact — reject (false: that name comes from the origin URL; the M291 tests cover a name per root)
+- blame-history #7: comments at pane.ts:654 and pane.test.tsx:3709 drift — reject (false: both still describe what grows)
