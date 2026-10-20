@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M298: Triage keeps a PR-named row's title on every path
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -118,6 +118,8 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: widening adopted at the user's selection: AC5 (a second D-entry, the supersession, the changelog negative), from the thrash-stop answer and pass-2 diff-bug #3.
 - 2026-10-20: re-audit: AC5 (full) — 4 findings on the written wording: a later defect in the correcting entry would need a further entry (rejected: the batching rule already routes that, wording unchanged); the supersession must cover only PR-named rows, and token rows can still be survivors (taken in the entry's content); "merge-survivor clause" names D-196's "So no survivor's short title changes" and its Rationale sentence on the clause (taken in the entry's content); AC5 widens (logged above). AC5's wording stays as the user accepted it.
 - 2026-10-20: T8: Overlap does not fire on a pair whose survivor is a PR-named row (the other row checked against the rest, its reason naming the PR-named rows and PRs); the amend loop warns on a user-set merge with a PR-named survivor; step 4 drops the every-survivor sentence and keeps the placement rules unpromised; pass-2 fix-now: the stamp and close block name each PR whose match an accepted change can break, the Amend option and README say each chip names each PR, the `retitle` exception reaches step 4's keep/promote clause, the `compress` row points to the PR-named rule, the M295 changelog heading says "proposes to keep"; D-197 appended (batched correction of D-196; supersedes its every-survivor sentence, its Rationale sentence on the clause, and its Rejected alternative for PR-named rows; names D-191's narrowing, M259's placement, D-149's §7 cost, the `; ` reason); the M298 changelog entry now states the no-survivor rule and makes no every-survivor claim; guard: AC3 test replaced, 8 changed pins red against a7ad2e4c, all new pins red against main; skills/tests 923 OK.
+- 2026-10-20: claim audit: 16 claims read, 1 corrected — skills/cairn-triage/SKILL.md (the stamp names each PR-named row an accepted change removed, made a merge survivor, or gave a new short title, a title-rewriting `compress` included, and step 4's stamp-length count includes those rows); "the merge can change the row's short title" kept as AC3 words it; verify green at fd7b4410 (scripts 428, hooks 193, validates 0, no version warning, plugin test 2389).
+- 2026-10-20: implement complete after the thrash stop; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -586,7 +586,8 @@ re-examines a lesson.
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
    is longer when it names each `retitle`'s old and new titles, each
-   token change, and each re-rated row, a promoted one included, and in
+   token change, each re-rated row, a promoted one included, and each
+   PR-named row it names with its PRs, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
@@ -629,9 +630,9 @@ re-examines a lesson.
    changed: each dropped, merged, split, routed, compressed, retitled
    (old title → new title), and re-rated item by subject (a promoted row
    that took `high` included), each started token
-   added or removed with its row's subject, each PR-named row an accepted
-   change removed or retitled or made a merge survivor, with each naming
-   PR's number, the drops' reason classes, whether a decision entry was
+   added or removed with its row's subject, each PR-named row that an
+   accepted change removed, made a merge survivor, or gave a new short
+   title, with each naming PR's number, the drops' reason classes, whether a decision entry was
    written, and `validate green` (the run just observed). In owner mode,
    make **one docs-only commit on the default branch**, subject
    prefixed `triage:`, body naming the refuted-premise and already-shipped
