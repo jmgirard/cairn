@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M300 | A trivial edit keeps owed issues open | planned | — | normal | milestones/M300-trivial-route-owed-issues.md |
+| M300 | A trivial edit keeps owed issues open | in-progress | — | normal | milestones/M300-trivial-route-owed-issues.md |
 | M299 | Triage closes the remaining PR-named row gaps | done | — | normal | milestones/archive/M299-triage-row-gaps.md |
 | M298 | Triage keeps a PR-named row's title on every path | done | — | normal | milestones/archive/M298-triage-pr-named-rows.md |
 | M297 | A trivial edit closes the issue of the row it deletes | done | M296 | normal | milestones/archive/M297-trivial-route-issue-close.md |

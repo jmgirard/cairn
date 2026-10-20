@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M300: A trivial edit keeps owed issues open
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes which GitHub issues an adopter's trivial-tier route closes   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m300-trivial-route-owed-issues   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -63,7 +63,7 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `skills/milestone-plan/SKILL.md` step 1's issue read, widen the kept-row clause from the title reference to the whole row, add the open milestone's `Resolves:` slot, the failed or capped open-PR read, and the order after the five checks. With a failed check the option names no issue number at all. Check that the trivial option's description names each new reason, and trace each new path to the close it reaches (LESSONS M172).
+- [x] T1: In `skills/milestone-plan/SKILL.md` step 1's issue read, widen the kept-row clause from the title reference to the whole row, add the open milestone's `Resolves:` slot, the failed or capped open-PR read, and the order after the five checks. With a failed check the option names no issue number at all. Check that the trivial option's description names each new reason, and trace each new path to the close it reaches (LESSONS M172).
 - [ ] T2: In `skills/tests/test_plan_tier_check.py`, replace the pinned kept-row phrases and pin each new sentence on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
 - [ ] T3: Append the D-entry (next free id) per AC4.
 - [ ] T4: Edit README's trivial-edit row and M297's CHANGELOG Unreleased entry; grep both for the old wording first (LESSONS M112).
@@ -90,3 +90,5 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - 2026-10-20: plan gate chose to protect any `#N` in a kept row's text over protecting only issue-shaped references, because review-finding numbers (`diff-bug #4`) share the spelling and a wrong protect only leaves an issue open, which the option names; falsified by a user who wants an issue closed that a kept row names only as a finding number.
 - 2026-10-20: plan gate chose to edit M297's Unreleased CHANGELOG entry over adding a new one, because that behavior has not shipped in a release; falsified by a release cut before this merges.
 - 2026-10-20: criteria audit (full mode, one fresh Opus reader): 5 findings, all fixed. The Goal narrowed to `#N` in a kept row and the `Resolves:` slot (Out names the rest); AC1's naming clause limited to deleted rows' numbers; AC2 scoped to owner mode, so guest mode keeps its own reason; AC4 states what the entry does to D-195 and no longer says "one"; AC5 also names a kept row's detail. AC3 and AC6 passed; T1 settles that a failed check names no number.
+- 2026-10-20: implement started on branch m300-trivial-route-owed-issues; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-20: T1 done: step 1's issue read now runs after the five checks pass, protects a number a kept row holds anywhere as `#N` or an open milestone's `Resolves:` slot holds, and closes nothing after a failed or capped open-PR read; paths traced: each new case ends at "left alone", and the post-push close still runs only on numbers the option named. The simple-english lint hook flags 200 pre-existing style hits in the file; only the new sentences were kept short, the rest left alone as out of scope.

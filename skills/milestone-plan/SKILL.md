@@ -125,13 +125,25 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    edit deletes whose short title ends with `(#N)` or `(#N, #M)`, in owner
    mode the plan reads each such number with
    `gh issue view <N> --repo <base-repo> --json state,url` before the
-   chip. The read takes no issue body. A kept row is a candidate row the
-   edit narrows or leaves in place. The route will close a number that
-   reads `OPEN`, whose URL path holds `/issues/`, and that no kept row's
-   title reference holds. It leaves each other number alone: one read as
-   closed, one whose URL path holds `/pull/`, since `gh issue view` reads a
-   pull request too, one whose read fails or whose `gh` cannot run, and
-   one in a kept row's title reference. A narrowed row's issue stays open,
+   chip. The read runs after the five trivial-route checks below, and only
+   when all five pass. When a check fails, the plan reads no issue and
+   the option names no issue number, none for closing and none as left
+   alone. The read takes no issue body. A kept row is a candidate row the
+   edit narrows or leaves in place. A text holds a number when it holds
+   `#N` with no digit right after it. An open milestone file is one whose
+   ROADMAP status is `planned`, `in-progress`, `blocked`, or `review`. The
+   route will close a number that reads `OPEN` and whose URL path holds
+   `/issues/`. No kept row's text holds that number, in its title or its
+   detail, and no open milestone file's `Resolves:` header slot holds it.
+   It leaves each other number alone: one read as closed, one whose
+   URL path holds `/pull/`, since `gh issue view` reads a pull request too,
+   one whose read fails or whose `gh` cannot run, one that a kept row
+   holds, since that row still owes work on it, and one that an open
+   milestone's `Resolves:` slot holds, since that milestone resolves it.
+   If the open-PR read above failed, `gh` could not run for it, or it
+   returned 100 PRs, the route closes no issue. It then leaves each number
+   of a deleted row alone for that reason, because an open PR that it did
+   not see can still owe work on the issue. A narrowed row's issue stays open,
    since part of its work is left: the route closes no narrowed row's
    number. In guest mode no issue is closed and none is read, since
    closing the maintainers' issue is their act.
