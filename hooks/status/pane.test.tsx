@@ -6754,7 +6754,7 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
       expect((await drawn($, surface, 0, 200)).row).toBe(11)
     })
 
-    test(`with 4 rows showing above, a 60-column pane opens the card above and a 14-column one below (${surface})`, async ($, on) => {
+    test(`with 4 rows showing above, a 60-column pane opens the card above and a 14-column one below, none in the terminal (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
       // At 60 columns the card needs 3 rows; at 14 it needs 7.
@@ -6771,7 +6771,7 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
       }
     })
 
-    test(`inline, the frame fits the tree, so the card is cut where a dock opens it whole (${surface})`, async ($, on) => {
+    test(`inline, the frame fits the tree, so the card is cut where a dock opens it whole, none in the terminal (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
       // With the window at offset 6 the line shows on its row 5. Inline the

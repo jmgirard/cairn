@@ -411,10 +411,11 @@ export const register: Register = on => {
     // over its info glyph, which names the card's hover group (M290). An
     // absolute Box is painted over the siblings before it, so a card drawn
     // in its line opens upward (M286). A candidate card opens upward when it
-    // fits above its row. When it fits only below, it is drawn after every
-    // line in the pane's root Box and opens below. When it fits neither
-    // side, it opens on the larger side, its text cut (M294). A lead span
-    // that names an icon draws it as an
+    // fits above its row, else downward when it fits below. When it fits
+    // neither side, it opens on the larger side (above on a tie) with its
+    // text cut, and is not drawn when that side has fewer than 3 rows. A
+    // card that opens downward, whole or cut, is drawn after every line in
+    // the pane's root Box (M294). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M294: A candidate row's ⓘ card opens where the cairn pane has room for it
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -90,6 +90,8 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: tasks T7 (the return's AC4 redraw tests) and T8 (the pass's fix-now batch) added after T6, Coverage updated (AC3 → T2, T8; AC4 → T3, T7); a minor amendment.
 - 2026-10-20: T7 done: three render tests per surface redraw the hand-built pane: the line on row 11 (counted by hand), a 60-column pane opening the card above where a 14-column one opens it below (`top` 12), and `inline` cutting the card to `Long row: aaaa bbbb cccc dddd eeee …` where a dock opens it whole. The `mountAt` and `drawn` helpers take `bodyColumns` and `placement`.
 - 2026-10-20: T8 done: register.tsx's card comment and the `cardPlaces` comment reworded; the down list takes only lines with the ⓘ glyph (`infos`); DESIGN's two candidate-card sentences fixed; the `isCard` and `flat` comments name the root's down card; the M261 helper renamed `withoutRow`; an AC3 case shows the row after a hidden started row moving up. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2387 pass 0 fail.
+- 2026-10-20: claim audit: 27 claims read, 2 corrected — register.tsx (the card comment now names the tie, the no-card case, and a cut card drawn at the root) and pane.test.tsx (two test names say no card draws in the terminal); scoped to the return's added lines, `git diff f5df4519..HEAD`.
+- 2026-10-20: implement done after review return 1; status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
