@@ -17,7 +17,7 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 
 **In:** `hooks/status/badge.ts` takes one desktop fill, `rgb(110,110,110)` with a white number, and one terminal key, `inverseText` on `inactive`, for all three headings. The heading layout in `hooks/status/pane.ts` puts the badge in the line's lead after the label and a space. `hooks/status/register.tsx` centers a row whose lead holds a badge. The unreleased CHANGELOG entry for the badges (M289), the README's pane section, the DESIGN.md status mod bullets, the badge Known issue, and the comments in `hooks/status/` describe the new look. A live look checks the desktop pane.
 
-**Out:** the Tasks and Criteria headings keep their counts and meter at the right end (the user's choice at the question set). The summary card's counts do not change. The terminal badge's look in light themes stays unchecked and stays in the badge Known issue, because the live look covers the desktop app only. The desktop look waits until after the merge, when the idle pane in this repo draws the Candidates heading, because no badge heading draws here while M302 is active (the user's choice at the T4 stop). A poor look then becomes a `/hotfix`.
+**Out:** the Tasks and Criteria headings keep their counts and meter at the right end (the user's choice at the question set). The summary card's counts do not change. The terminal badge's look in light themes stays unchecked and stays in the badge Known issue, because no look in this milestone covers the terminal. The desktop look waits until after the merge, when the idle pane in this repo draws the Candidates heading, because no badge heading draws here while M302 is active (the user's choice at the T4 stop). A poor look then becomes a `/hotfix`.
 
 ## Acceptance criteria
 
@@ -71,6 +71,7 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 - 2026-10-20: T4 done. A scratch page built by `node` from the shipped `badgeSvg` drew the gray pill for counts 1, 12, and 123 after bold labels on a dark (#1f1f1e) and a light (#faf9f5) ground in the browser pane. The operator accepted the look. The badge Known issue names the desktop placement, centering, and clipping as unchecked until a look after the merge.
 - 2026-10-20: claim audit: 39 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/badge.ts, band.ts, pane.ts, register.tsx, pane.test.tsx. Two unclear wordings were reworded: the badge.ts "not bold" clause and the AC1 test comment on why no milestone is active.
 - 2026-10-20: implement done. All four tasks are checked, verify is green (mod tests 2417 pass), and the status is review.
+- 2026-10-20: substantive amendment: Scope Out's "because the live look covers the desktop app only" became "because no look in this milestone covers the terminal", since the T4 amendment removed the desktop live look (Copilot body item on PR #316). What the user gets is unchanged.
 
 ## Decisions
 
@@ -104,4 +105,7 @@ Review head `b86e45b0`, synced with `origin/main` (0 commits behind). PR #316 op
 - prior-review #2: a short hard-wrapped README line — fix now (rewrapped), fixed f84702cc
 - prior-review #3: a `badge.ts` comment sentence wraps and records change history — reject (style): milestone history in comments is the mod's convention
 - prior-review #4: `drawSpan` and `drawsSvg` still handle a tail badge, which nothing produces now — reject (false as a defect): the span drawing stays general for any lead or tail, and `drawsSvg` also serves the tail merge icon
+- copilot: review body, `hooks/status/pane.ts` "introduces an extra terminal space" — reject (false): the lead is the label, one plain space, then the badge, whose own padding sits on its gray ground, the same spans M289 drew in the tail
+- copilot: review body, milestone file "contradictory desktop verification wording" — fix now: Scope Out still said "the live look covers the desktop app only" after the T4 amendment, and now says no look in this milestone covers the terminal
+- Copilot level: Lite (set by GitHub's settings). The review has no threads.
 - Fixes re-verified: mod tests 2417 pass, both Python suites OK, both validates exit 0 (before the last README and DESIGN wording edits, which no check reads).
