@@ -285,13 +285,14 @@ const headText = (label: string, tail = '') => `${label}${tail === '' ? '' : ` $
 const countHead = (label: string, count: number | string, surface: (typeof SURFACES)[number]) =>
   headText(label, surface === 'terminal' ? ` ${count} ` : `${count}`)
 // A heading's badge span as the layout gives it (M289), written out here
-// from the plan's colors rather than read from badge.ts.
-const BADGE_KEYS = { blocked: 'warning', hotfixes: 'claude', candidates: 'planMode' } as const
-const badgeOf = (name: keyof typeof BADGE_KEYS, count: number) => ({
+// from the plan's colors rather than read from badge.ts: since M302 every
+// heading's badge takes the theme's gray.
+const BADGE_KEY = 'inactive'
+const badgeOf = (count: number) => ({
   text: ` ${count} `,
   color: 'inverseText',
-  backgroundColor: BADGE_KEYS[name],
-  badge: { name, count },
+  backgroundColor: BADGE_KEY,
+  badge: { count },
 })
 
 // The pane's lines in order, each its key and its text, the card's lines
@@ -1004,7 +1005,7 @@ describe('section headings, the head line, Next, and the card in the picked look
       indent: 0,
       lead: [{ text: 'Blocked', bold: true }],
       ...EMPTY_GROW,
-      tail: [{ text: ' ' }, badgeOf('blocked', 1)],
+      tail: [{ text: ' ' }, badgeOf(1)],
     })
   })
 
@@ -3415,17 +3416,13 @@ describe('the Hotfixes section lists the hotfix-* pull requests before the candi
   })
 })
 
-// M289 AC1, AC2: each section count draws as a badge, an `Svg` pill in the
-// heading's fill on the desktop and the padded number on the heading's key
-// in the terminal, with no other count text in the tail.
-describe('the Blocked, Hotfixes, and Candidates counts draw as badges (M289 AC1, AC2)', () => {
-  // The plan's fills, written out here rather than read from badge.ts.
-  const FILLS = { blocked: 'rgb(146,103,22)', hotfixes: 'rgb(152,85,57)', candidates: 'rgb(71,103,158)' } as const
-  const HEADS = [
-    { key: 'blocked-head', name: 'blocked' },
-    { key: 'hotfixes-head', name: 'hotfixes' },
-    { key: 'candidates-head', name: 'candidates' },
-  ] as const
+// M289 AC1, AC2, M302 AC2: each section count draws as a badge, an `Svg`
+// pill in the one gray fill on the desktop and the padded number on the
+// theme's gray in the terminal, with no other count text in the tail.
+describe('the Blocked, Hotfixes, and Candidates counts draw as gray badges (M289 AC1, AC2, M302 AC2)', () => {
+  // The plan's fill, written out here rather than read from badge.ts.
+  const FILL = 'rgb(110,110,110)'
+  const HEADS = [{ key: 'blocked-head' }, { key: 'hotfixes-head' }, { key: 'candidates-head' }] as const
   async function seatAll($, on, surface: (typeof SURFACES)[number]) {
     const list = () => listReply([pr(1265, 'hotfix-clmm', 'Return only fixed effects')])
     gh(on, url => (url === prUrl(1265) ? prView('OPEN', '') : prView('MERGED')), () => countsReply(0), { remotes: { origin: ORIGIN }, list })
@@ -3436,10 +3433,9 @@ describe('the Blocked, Hotfixes, and Candidates counts draw as badges (M289 AC1,
     return mountPane($, surface)
   }
 
-  test('desktop: each count is one Svg pill holding the number, in its own fill', async ($, on) => {
+  test('desktop: each count is one Svg pill holding the number, in the one gray fill', async ($, on) => {
     const ui = await seatAll($, on, 'desktop')
-    const fills: string[] = []
-    for (const { key, name } of HEADS) {
+    for (const { key } of HEADS) {
       const tail = kids((await boxOf(ui, `${key}-tail`)) as Element)
       const svgs = tail.filter(child => child.type === 'Svg')
       expect(svgs.length).toBe(1)
@@ -3449,29 +3445,28 @@ describe('the Blocked, Hotfixes, and Candidates counts draw as badges (M289 AC1,
       const count = String(svg.props.alt)
       expect(count).toMatch(/^\d+$/)
       const source = String(svg.props.source)
-      expect(source).toContain(`fill="${FILLS[name]}"`)
+      expect(source).toMatch(new RegExp(`<rect class="badge" [^>]*fill="${FILL.replace(/[()]/g, '\\$&')}"`))
       expect(source).toMatch(new RegExp(`<rect class="badge" [^>]*rx="`))
+      expect(source).toMatch(/<text class="badge-text"[^>]* fill="rgb\(255,255,255\)"/)
       expect(source).toContain(`>${count}</text>`)
       expect(svg.props.height).toBe(16)
-      fills.push(FILLS[name])
       expect((await boxOf(ui, key))?.props.alignItems).toBe('center')
     }
     expect(textOf((await boxOf(ui, 'blocked-head-tail')) as Element)).toBe(' 7')
     expect(textOf((await boxOf(ui, 'hotfixes-head-tail')) as Element)).toBe(' 1')
-    expect(new Set(fills).size).toBe(3)
     await ui.unmount()
   })
 
-  test('terminal: each count is one span, the padded number in inverseText on the heading key', async ($, on) => {
+  test('terminal: each count is one span, the padded number in inverseText on the gray key', async ($, on) => {
     const ui = await seatAll($, on, 'terminal')
     expect(await ui.findAll({ type: 'Svg' })).toEqual([])
-    for (const { key, name } of HEADS) {
+    for (const { key } of HEADS) {
       const tail = kids((await boxOf(ui, `${key}-tail`)) as Element)
       expect(tail.length).toBe(2)
       const span = tail[1]
       expect(textOf(span)).toMatch(/^ \d+ $/)
       expect(span.props.color).toBe('inverseText')
-      expect(span.props.backgroundColor).toBe(BADGE_KEYS[name])
+      expect(span.props.backgroundColor).toBe(BADGE_KEY)
     }
     expect(textOf(kids((await boxOf(ui, 'blocked-head-tail')) as Element)[1])).toBe(' 7 ')
     expect(textOf(kids((await boxOf(ui, 'hotfixes-head-tail')) as Element)[1])).toBe(' 1 ')
@@ -3488,14 +3483,14 @@ describe('a badge widens with its digits (M289 AC3)', () => {
     text: />([^<>]*)<\/text>/.exec(svg)?.[1],
   })
   test('widths strictly increase for 9, 10, and 100, and each text is its number', () => {
-    const [nine, ten, hundred] = [9, 10, 100].map(count => parts(badgeSvg(count, 'candidates')))
+    const [nine, ten, hundred] = [9, 10, 100].map(count => parts(badgeSvg(count)))
     expect(nine.width).toBeLessThan(ten.width)
     expect(ten.width).toBeLessThan(hundred.width)
     expect([nine.text, ten.text, hundred.text]).toEqual(['9', '10', '100'])
   })
   // The number's color on each fill reaches the WCAG 2.2 text contrast of
   // 4.5:1, computed as band.test.tsx does for the band pill (M217).
-  test('each badge number reads on its fill at 4.5:1 or more', () => {
+  test('the badge number reads on its fill at 4.5:1 or more', () => {
     const rgb = (color: string) => (/^rgb\((\d+),(\d+),(\d+)\)$/.exec(color) ?? []).slice(1).map(Number)
     const lum = (c: number[]) =>
       c
@@ -3506,17 +3501,18 @@ describe('a badge widens with its digits (M289 AC3)', () => {
       return (hi + 0.05) / (lo + 0.05)
     }
     expect(Math.abs(ratio([0, 0, 0], [255, 255, 255]) - 21)).toBeLessThan(1e-9)
-    for (const name of ['blocked', 'hotfixes', 'candidates'] as const) {
-      const svg = badgeSvg(7, name)
-      const fill = rgb(/<rect class="badge"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
-      const text = rgb(/<text class="badge-text"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
-      expect([fill.length, text.length]).toEqual([3, 3])
-      expect([name, ratio(text, fill) >= 4.5]).toEqual([name, true])
-    }
+    const svg = badgeSvg(7)
+    const fill = rgb(/<rect class="badge"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
+    const text = rgb(/<text class="badge-text"[^>]* fill="([^"]+)"/.exec(svg)?.[1] ?? '')
+    expect([fill, text]).toEqual([
+      [110, 110, 110],
+      [255, 255, 255],
+    ])
+    expect(ratio(text, fill)).toBeGreaterThanOrEqual(4.5)
   })
   test('the text length is the width less the padding, and the Svg width matches', () => {
     for (const count of [9, 10, 100]) {
-      const got = parts(badgeSvg(count, 'blocked'))
+      const got = parts(badgeSvg(count))
       expect(got.textLength).toBe(got.width - BADGE_PAD)
       expect(got.width).toBe(badgeWidth(count))
     }
@@ -4984,9 +4980,9 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
   test('the heading counts the drawn rows only (AC2)', () => {
     const [gap, head] = heads()
     expect([gap.key, head.key]).toEqual(['candidates-head-gap', 'candidates-head'])
-    expect(head.tail?.slice(-1)).toEqual([badgeOf('candidates', 3)])
+    expect(head.tail?.slice(-1)).toEqual([badgeOf(3)])
     // The control: with no items every row draws and counts.
-    expect(heads([])[1].tail?.slice(-1)).toEqual([badgeOf('candidates', state.candidates.length)])
+    expect(heads([])[1].tail?.slice(-1)).toEqual([badgeOf(state.candidates.length)])
   })
 
   test('with every row hidden there is no heading and no gap (AC2)', () => {
@@ -5255,7 +5251,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       'candidate-0',
       'candidate-1',
     ])
-    expect(lines.find(line => line.key === 'candidates-head')?.tail?.slice(-1)).toEqual([badgeOf('candidates', 3)])
+    expect(lines.find(line => line.key === 'candidates-head')?.tail?.slice(-1)).toEqual([badgeOf(3)])
   })
 })
 

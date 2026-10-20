@@ -2,32 +2,21 @@ import type { Span } from './band'
 
 // The count badge on the Blocked, Hotfixes, and Candidates headings
 // (M289), in place of the bare gray count that M286 drew. On the desktop
-// it draws as an `Svg` pill, a rounded rectangle in the heading's fill
-// with the number in white. In the terminal it draws as the number with a
-// space on each side, in `inverseText` on the heading's theme key: the band
-// terminal pill's text key (track.ts `PILL_TEXT`), here on keys the band
-// pill does not use, and not bold as that pill is.
+// it draws as an `Svg` pill, a rounded rectangle in one gray fill with
+// the number in white. In the terminal it draws as the number with a
+// space on each side, in `inverseText` on `inactive`, the theme's gray:
+// the band terminal pill's text key (track.ts `PILL_TEXT`), not bold as
+// that pill is. Since M302 the three headings share the one gray, where
+// M289 gave each its own color.
 // An image has no theme signal (ROADMAP "Gaps only the app or mod API can
-// close"), so each fill is a fixed color near its key, dark enough that
-// white reads on it at about 5:1 or more: the band pill's own plan blue
-// and implement orange (track.ts `PHASE_FILLS`), and a dark amber near
-// `warning`.
+// close"), so the fill is a fixed mid gray, dark enough that white reads
+// on it at about 5:1, and light enough to show on a dark ground.
 
-export type BadgeName = 'blocked' | 'hotfixes' | 'candidates'
+// The terminal badge's ground: the theme's gray.
+export const BADGE_KEY = 'inactive'
 
-// The theme key each heading's terminal badge takes as its ground.
-export const BADGE_KEY: Record<BadgeName, string> = {
-  blocked: 'warning',
-  hotfixes: 'claude',
-  candidates: 'planMode',
-}
-
-// Each heading's desktop pill: its fill and the number's color.
-export const BADGE_FILL: Record<BadgeName, { fill: string; text: string }> = {
-  blocked: { fill: 'rgb(146,103,22)', text: 'rgb(255,255,255)' },
-  hotfixes: { fill: 'rgb(152,85,57)', text: 'rgb(255,255,255)' },
-  candidates: { fill: 'rgb(71,103,158)', text: 'rgb(255,255,255)' },
-}
+// The desktop pill's fill and the number's color.
+export const BADGE_FILL = { fill: 'rgb(110,110,110)', text: 'rgb(255,255,255)' }
 
 // The terminal badge's text color.
 export const BADGE_TEXT_KEY = 'inverseText'
@@ -48,9 +37,9 @@ export function badgeWidth(count: number): number {
 // The pill's SVG document. As in the band's pill (track.ts), `textLength`
 // holds the number to the width less the padding, so a wider fallback font
 // squeezes the digits rather than running past the pill's ends.
-export function badgeSvg(count: number, name: BadgeName): string {
+export function badgeSvg(count: number): string {
   const width = badgeWidth(count)
-  const { fill, text } = BADGE_FILL[name]
+  const { fill, text } = BADGE_FILL
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${BADGE_H}" viewBox="0 0 ${width} ${BADGE_H}">` +
     `<rect class="badge" width="${width}" height="${BADGE_H}" rx="${BADGE_H / 2}" fill="${fill}"/>` +
@@ -60,7 +49,7 @@ export function badgeSvg(count: number, name: BadgeName): string {
 }
 
 // The badge as a span: the terminal's text and colors, and the badge's
-// name and count, which the desktop draws as `badgeSvg`.
-export function badgeSpan(count: number, name: BadgeName): Span {
-  return { text: ` ${count} `, color: BADGE_TEXT_KEY, backgroundColor: BADGE_KEY[name], badge: { name, count } }
+// count, which the desktop draws as `badgeSvg`.
+export function badgeSpan(count: number): Span {
+  return { text: ` ${count} `, color: BADGE_TEXT_KEY, backgroundColor: BADGE_KEY, badge: { count } }
 }

@@ -428,7 +428,7 @@ export const register: Register = on => {
     const drawSpan = (span: Span) =>
       span.badge !== undefined && Svg !== undefined ? (
         <Svg
-          source={badgeSvg(span.badge.count, span.badge.name)}
+          source={badgeSvg(span.badge.count)}
           alt={`${span.badge.count}`}
           width={badgeWidth(span.badge.count)}
           height={BADGE_H}

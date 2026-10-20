@@ -2,7 +2,6 @@ import type { CairnHotfixPr, CairnPrMerge, CairnPrRead, CairnPrWord, CairnRepoRe
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
-import type { BadgeName } from './badge'
 import { badgeSpan } from './badge'
 import type { IconName } from './icons'
 import { FLOW_COLORS, flowOf, GRAY, width } from './band'
@@ -585,10 +584,10 @@ function heading(key: string, label: string, tail: Span[] = []): PaneLine[] {
 }
 
 // A heading whose tail is its count as a badge (M289, badge.ts): on the
-// heading's theme key in the terminal and in a fixed fill near it on the
-// desktop, where M286 drew a gray number.
-function countHeading(key: string, label: string, count: number, name: BadgeName): PaneLine[] {
-  return heading(key, label, [badgeSpan(count, name)])
+// theme's gray in the terminal and in a fixed gray fill on the desktop
+// (M302), where M286 drew a gray number.
+function countHeading(key: string, label: string, count: number): PaneLine[] {
+  return heading(key, label, [badgeSpan(count)])
 }
 
 // A heading whose tail is the checked and total counts and the meter in
@@ -874,7 +873,7 @@ export function paneLines(
   // active (M223). After the number, the state word that the last read
   // found, and the Button that word carries (M224).
   if (state.blocked.length > 0) {
-    out.push(...countHeading('blocked-head', 'Blocked', state.blocked.length, 'blocked'))
+    out.push(...countHeading('blocked-head', 'Blocked', state.blocked.length))
     for (const row of state.blocked) {
       const got = row.url !== null && Object.prototype.hasOwnProperty.call(prs, row.url) ? prs[row.url] : undefined
       const held = prLine(`blocked-${row.id}`, row.id, row.title, row.pr, row.archived, got)
@@ -902,7 +901,7 @@ export function paneLines(
   // leaves it out (M230).
   const shown = hotfixes.filter(pr => !state.blocked.some(row => row.url === pr.url))
   if (shown.length > 0) {
-    out.push(...countHeading('hotfixes-head', 'Hotfixes', shown.length, 'hotfixes'))
+    out.push(...countHeading('hotfixes-head', 'Hotfixes', shown.length))
     for (const pr of shown) {
       const got = Object.prototype.hasOwnProperty.call(prs, pr.url) ? prs[pr.url] : undefined
       out.push(prLine(`hotfix-${pr.number}`, HOTFIX_ID, pr.title, pr.number, false, got))
@@ -924,7 +923,7 @@ export function paneLines(
   // row up by that index.
   const drawn = state.milestones.length === 0 ? drawable : []
   if (drawn.length > 0) {
-    out.push(...countHeading('candidates-head', 'Candidates', drawn.length, 'candidates'))
+    out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
     for (const { row, i } of drawn) {
       const candidate = line(
         `candidate-${i}`,

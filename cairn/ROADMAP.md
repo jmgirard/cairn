@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M302 | Put the pane's count badges after their labels in gray | planned | — | normal | milestones/M302-pane-badge-after-label.md |
+| M302 | Put the pane's count badges after their labels in gray | in-progress | — | normal | milestones/M302-pane-badge-after-label.md |
 | M301 | Show each open PR's merge state in the pane | done | — | normal | milestones/archive/M301-pane-pr-merge-state.md |
 | M300 | A trivial edit keeps owed issues open | done | — | normal | milestones/archive/M300-trivial-route-owed-issues.md |
 | M299 | Triage closes the remaining PR-named row gaps | done | — | normal | milestones/archive/M299-triage-row-gaps.md |

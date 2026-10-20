@@ -1,13 +1,13 @@
 # M302: Put the pane's count badges after their labels in gray
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane's headings are what operators read
-- **Branch/PR:** —
+- **Branch/PR:** m302-pane-badge-after-label
 
 ## Goal
 
@@ -41,7 +41,7 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 
 ## Tasks
 
-- [ ] T1: Badge colors. In `hooks/status/badge.ts`, replace the per-heading `BADGE_FILL` and `BADGE_KEY` with one fill and one terminal key. Drop `BadgeName` from `Span.badge` (`band.ts`) and from `countHeading` if nothing else reads it, and update `types/index.d.ts` if it carries the type. Update the M289 tests in `pane.test.tsx` (about lines 282-300 and 3418-3510) to the one fill and key, and add the AC2 tests.
+- [x] T1: Badge colors. In `hooks/status/badge.ts`, replace the per-heading `BADGE_FILL` and `BADGE_KEY` with one fill and one terminal key. Drop `BadgeName` from `Span.badge` (`band.ts`) and from `countHeading` if nothing else reads it, and update `types/index.d.ts` if it carries the type. Update the M289 tests in `pane.test.tsx` (about lines 282-300 and 3418-3510) to the one fill and key, and add the AC2 tests.
 - [ ] T2: Badge place. In `pane.ts`, give `countHeading` a lead of the label, a `' '` span, and the badge span, with the empty growing text and no tail. In `register.tsx`, make `centers` also read a badge in the lead. Add the AC1, AC3, and AC4 tests. Update the `pane.ts` and `register.tsx` comments on the heading and the badge.
 - [ ] T3: Docs. Edit the CHANGELOG Unreleased badge entry, the README pane section (about line 350), the DESIGN.md status mod history bullet (line 82) and cairn pane part (about line 625), and the badge Known issue (about line 1162): drop the amber and orange hue clause, name `inactive` as the terminal ground, and keep the light-theme terminal look and the row height as unchecked. Run the AC6 sweep.
 - [ ] T4: Live look in a new desktop Code session on this repo, dark and light theme (AC5). Record what the look saw.
@@ -61,6 +61,8 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 - 2026-10-20: plan gate chose a mid gray pill over a plain gray number with no pill because the user picked it; falsified by a live look where the pill reads poorly on one theme.
 - 2026-10-20: plan chose to put the badge in the line's lead over keeping it in the tail with a non-growing text, because the lead already draws spans through `drawSpan` and keeps its width; falsified by the lead Box clipping or misaligning the badge at the live look.
 - 2026-10-20: changelog: T3 edits the unreleased M289 badge entry and adds no new entry, since the badges have not shipped in a release.
+- 2026-10-20: implement started on branch m302-pane-badge-after-label. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-20: T1 done. `badge.ts` has one `BADGE_FILL` (`rgb(110,110,110)`, white number) and `BADGE_KEY = 'inactive'`. `BadgeName` is gone, so `badgeSvg`, `badgeSpan`, `countHeading`, and `Span.badge` take the count only, and `types/index.d.ts` never carried the type. The M289 tests now assert the one fill, the white number, the 4.5:1 contrast, and the `inactive` key. Mod tests 2415 pass. Verify green.
 
 ## Decisions
 
