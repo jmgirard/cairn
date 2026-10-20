@@ -1131,3 +1131,30 @@ within each type and are never reused.
   Routed from candidates 2026-10-18; added 2026-10-15 — M260 review
   (diff-bug #6, #7, #8; blame-history #1; prior-review #2), narrowed
   2026-10-18 by M278 (prior-review #2).
+- The cairn pane has five gaps that only the desktop app or the mod API can
+  close, accepted with no fix planned. A click on an unfocused pane only
+  focuses it, so a Button takes two clicks. The bar uses a monospace font
+  and the band the text font, and `Text` has no font prop. The desktop
+  track's fixed-palette image has no theme signal, and its implement orange
+  and review green look alike to red-green colorblind eyes. Nobody checked
+  the dim `✕` by the gray row or 256-color terminals. The pointer over a
+  pane Button keeps the arrow cursor, because no mod prop sets a hand. A Box
+  in a hover group does not light the group, only a Text does, so a
+  candidate row's card, opened from its ⓘ, closes when the pointer moves
+  onto the card. If the app or the mod API gains the missing signal or
+  prop, or a gap shows in a real session, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-20; added 2026-10-02 —
+  M198 Out and review; added 2026-10-04 — M209, M219; added 2026-10-19 —
+  M290 live look and review (blame-history #1, prior-review #6).
+- The cairn pane's count badges (M289) were seen only in a browser preview,
+  so three looks are unchecked, with no fix planned. Nobody checked the
+  terminal badge's `inverseText` on `warning`, `claude`, and `planMode` in
+  the light and other themes. Amber Blocked and orange Hotfixes differ
+  mostly by hue, which red-green colorblind eyes can miss. A 16 px badge
+  can make its heading row taller than the 14 px icon rows on the desktop,
+  and since M294 a taller row, or a row of Buttons, also shifts a candidate
+  card's `rowsAbove` and its `top`. If a badge reads poorly or a heading
+  row draws taller in a real session, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-20; added 2026-10-19 —
+  M289 review (diff-bug #1, #3; prior-review #1; blame-history #2);
+  extended 2026-10-20 — M294 review (diff-bug #1).
