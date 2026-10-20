@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (M300 review: M300 done and archived; "Keep owed issues open on a trivial edit" graduated; parked row "Close the last trivial-route issue gaps" added; M297 row pruned to the 3-row terminal cap; no lessons (LESSONS at 49 lines); skills/tests green; validate green)_
+_Last hygiene check: 2026-10-20 (status audit: validate green; no open issues, PRs, orphans, outside merges, or linked-item news; two finding-absorbing rows, "Gaps only the app or mod API can close" and "Check the pane badges in a real session", put to a disposition chip)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
