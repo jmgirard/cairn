@@ -7322,3 +7322,25 @@ names only as a finding number.
 review findings can keep an unrelated issue of the same number open; the
 option names it. An issue that an open milestone names only outside its
 `Resolves:` slot, or that a row names as a URL, is not protected.
+
+### D-201 (2026-10-20): The candidate row "Gate standing instruments at plan time" is dropped on principle, since D-108's door bars it — applies D-108; supersedes nothing
+
+**Context:** The row, added 2026-07-31 from the M127 post-mortem, proposed
+two plan-gate clauses for a milestone that adopts a standing instrument:
+(a) a stated yield class, a 2–3 milestone advisory-only period, and a
+review date before the instrument gates; (b) at most one narrowing before
+the exit once its falsifier fires. Its promotion condition held at M285,
+and triage re-rated it to normal on 2026-10-20. A `/milestone-plan` run
+the same day chose the row, and its collision sweep then surfaced D-108.
+
+**Decision:** The user dropped the row at that plan gate. Both clauses are
+new conduct rules about how verification is conducted, which D-108's door
+bars, and the row names no defect in shipped behavior, the door's one
+trigger. M285 adopted the ripple lens without these clauses and stated its
+own yield test and removal falsifier
+(`milestones/archive/M285-review-ripple-lens.md`).
+
+**Consequences:** No milestone is planned. D-108's door and D-107's
+checker-regress recommendation stand unchanged. The row re-opens by
+superseding this entry, on D-108's trigger: a shipped-behavior defect that
+these clauses would have prevented.
