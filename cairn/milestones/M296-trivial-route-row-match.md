@@ -96,6 +96,7 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
 - 2026-10-20: verify after T1-T3: scripts/tests, hooks/tests (193), both plugin validates, plugin test (2389 pass), and hand-run skills/tests (918) all exit 0.
 - 2026-10-20: T4: D-193 appended (supersedes D-170's Rejected reason, keeps its rejection; annotates D-191's Consequences; D-108's door passed on the two shipped defects).
 - 2026-10-20: T5: README trivial-edit row and a CHANGELOG Unreleased Fixes entry; lint counts on both files equal main's after two sentences were split. AC4's grep lists CHANGELOG.md:169 (the new entry, stating the old behavior in the past), :402 and :746 (released sections), the widened SKILL.md:102 sentence, and test_plan_tier_check.py:159 (the kept pin of the quote sentence); none states the quote as the only match.
+- 2026-10-20: claim audit: 24 claims read, 2 corrected — CHANGELOG.md (a PR's merge "removes or narrows" the row; the not-checked note also covers a list cut at 100, and only when a row matched); the reader re-read both and found them holding.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
