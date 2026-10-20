@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M295: A candidate title's issue number stays part of the title
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -122,7 +122,7 @@ CHANGELOG entry states both changes.
       `skills/`, and tracking-rules for the old phrasings ("names a GitHub
       issue", "names an issue", "PR reference", "retitle") and fix any
       statement the change made stale (LESSONS M112).
-- [ ] T6: Run the five `verify` commands from the repo root, checking each
+- [x] T6: Run the five `verify` commands from the repo root, checking each
       exit code. Hand-run `skills/tests` (non-gating, D-109) and compare its
       reds with main's (LESSONS M148: new prose near pinned slices).
 
@@ -155,6 +155,9 @@ CHANGELOG entry states both changes.
 - 2026-10-20: T3 done: `/cairn-triage` session start reads open PRs' `Candidate row:` lines with one `gh pr list`, parsed as `startedRows` parses them; step 2 keeps each PR-named row and, on a failed read, marks every non-`keep` proposal as unchecked; the read sits in Session start, not a numbered step, so the plan's "~lines 64-90" placement held and the cross-references say "session start" and "step 3's table".
 - 2026-10-20: T4 done: D-191 appended (narrows D-162's issue rule; annotates D-189 and D-166; passes D-108's door on its retained trigger, the M292 review's shipped-behavior defects).
 - 2026-10-20: T5 done: two Unreleased Fixes entries in CHANGELOG.md; README's candidate-title paragraph gains the triage keep and the ✎ press's issue-number sentence; sweep (`git grep` for "names a GitHub issue", "names an issue", "request that names", "tier check", "retitle" over README.md, docs, CHANGELOG.md, skills/shared) found only released CHANGELOG entries (history, left) and profile changelog-heading "retitle" uses (unrelated).
+- 2026-10-20: T6 done: verify clean (scripts and hooks suites OK, both `claude plugin validate` exit 0, `claude plugin test` 2389 pass 0 fail); hand-run `skills/tests` 917 OK with no reds, so no comparison with main was needed.
+- 2026-10-20: claim audit: 30 claims read, 4 corrected — CHANGELOG.md, skills/cairn-triage/SKILL.md (CHANGELOG: the pane counts only your own PRs, `/hotfix` and `/milestone-review` write the lines in owner mode, the failed-read mark covers non-`keep` rows; triage: an unclosed fence runs to the end of the body; also a sentence that triage reads every author's PRs, moved after the PR-named definition at the reader's wording note); the same reader re-read all corrections as true.
+- 2026-10-20: implement complete; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M295 | A candidate title's issue number stays part of the title | in-progress | — | normal | milestones/M295-candidate-title-references.md |
+| M295 | A candidate title's issue number stays part of the title | review | — | normal | milestones/M295-candidate-title-references.md |
 | M294 | A candidate row's ⓘ card opens where the cairn pane has room for it | done | — | normal | milestones/archive/M294-pane-card-placement.md |
 | M293 | The cairn pane's ⓘ card shows a candidate row's whole text | done | — | normal | milestones/archive/M293-pane-candidate-card-text.md |
 | M292 | Candidate row titles are one short sentence that fits the cairn pane | done | — | normal | milestones/archive/M292-candidate-title-format.md |

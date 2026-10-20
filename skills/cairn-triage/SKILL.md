@@ -90,10 +90,13 @@ Then read the open pull requests' `Candidate row:` lines with one call,
 number,body`. Parse each body as the cairn pane's `startedRows`
 (`hooks/status/pane.ts`) parses it. Split it on `\n` and remove a
 trailing `\r`. A line that opens with exactly `Candidate row: ` names the
-short title after it, trimmed, and a blank rest names none. A line
-between a fence line (three backticks or three tildes after optional
-spaces) and the next fence line names none. A candidate row whose short
-title such a line names is **PR-named**, by that PR's number. Only the
+short title after it, trimmed, and a blank rest names none. A fence
+line opens with three backticks or three tildes after optional spaces. A
+line between a fence line and the next fence line, or the end of the
+body, names none. A candidate row whose short
+title such a line names is **PR-named**, by that PR's number. The call
+reads every author's open PRs, a wider set than the pane's own list,
+which reads only yours. Only the
 PRs that the call returns count, so a list cut at 100 can miss a later
 PR, as the pane's list can. If the read fails or `gh` cannot run, note
 the failure for step 3's table. A failed `#<n>` read holds its row at

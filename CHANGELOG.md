@@ -154,12 +154,14 @@
   `Fixes #N` line. A `#N` outside the title is read as before.
 
 - **`/cairn-triage` keeps a row that an open pull request names.** The
-  pane hides a candidate row whose short title an open PR's
-  `Candidate row:` line names. After a merge, `/hotfix` removes such rows
-  by that title. `/cairn-triage` could retitle such a row, which
-  broke both matches. It now reads the open PRs' `Candidate row:` lines
-  and keeps each row they name as it is. If it cannot read the PRs, it
-  says so and marks each change it proposes as not checked against them.
+  pane hides a candidate row that one of your own open PRs names in a
+  `Candidate row:` line. In owner mode, `/hotfix` and `/milestone-review`
+  write those lines for the rows a merge removes or narrows. When
+  `/hotfix` resumes a PR, it checks those lines by title. `/cairn-triage` could retitle
+  such a row, which broke those matches. It now reads the `Candidate row:`
+  lines of every open PR and keeps each row they name as it is. If it
+  cannot read the PRs, it says so. Each row it then proposes to change,
+  other than a keep, is marked as not checked against them.
 
 - **The Copilot report names the review level again.** Copilot now ends
   its review with `<sub>Review effort: Lite</sub>` in place of
