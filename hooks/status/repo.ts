@@ -1,8 +1,10 @@
 // The summary card's reads (M286): the open pull requests and open issues
 // of the base remote's repo, from one `gh api graphql` call, and the latest
 // release tag, its age, and the milestones done since it, from three git
-// calls. `readPrs` in register.tsx makes all four, through `readRepo`, at
-// the times it reads the pull request states, and at no other time.
+// calls, and the project name (M291), from the URL or from one more git
+// call when the URL is not a github.com one. `readPrs` in register.tsx
+// makes them all, through `readRepo`, at the times it reads the pull
+// request states, and at no other time.
 
 import type { CairnRepoCounts, CairnRepoDone } from '../../types'
 
@@ -115,11 +117,13 @@ export function lastSegment(path: string): string {
 // github.com URL comes first. Otherwise, when the trimmed common dir's own
 // name is `.git`, the name of the folder that holds it, which is the main
 // working tree's, so a linked worktree shows the repo's name. Otherwise,
-// or when the call failed (null), the root's last segment.
+// or when the call failed (null), the root's last segment. Only the last
+// output line counts: a git before 2.31 echoes the unknown
+// `--path-format=absolute` on a line of its own before the dir.
 export function projectName(url: string | null, common: string | null, root: string): string {
   const named = url === null ? null : remoteRepo(url)
   if (named !== null) return named.repo
-  const dir = common?.trim() ?? ''
+  const dir = (common ?? '').trim().split(/\r?\n/).pop()?.trim() ?? ''
   if (lastSegment(dir) === '.git') {
     const holder = lastSegment(dir.replace(/[\\/]*\.git[\\/]*$/, ''))
     if (holder !== '') return holder

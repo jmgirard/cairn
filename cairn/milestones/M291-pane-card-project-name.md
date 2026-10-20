@@ -58,3 +58,4 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 - 2026-10-19: claim audit: 48 claims read, 3 corrected — CHANGELOG.md, README.md, cairn/DESIGN.md (base remote only; a common dir not named `.git` and the first read fall back to the folder's own name; when the common-dir call runs). Re-read of the 3 pending.
 - 2026-10-19: claim re-read: all 3 hold; one README sentence order slip (the worktree sentence) moved beside the first-read sentence.
 - 2026-10-19: all tasks done, verify slot green (mod tests 2330 before the README reorder; Python suites rerun after it); status review.
+- 2026-10-19: review: PR #303 opened at review start (Copilot round on), Copilot requested (pending). Fix-now work from the diff-bug and ripple lenses in progress (old-git common-dir output, type and header comments, DESIGN's grow sentence); verify not yet re-run on it.

@@ -150,6 +150,9 @@ describe('the project name: the github.com repo, else the main tree folder, else
     ['a submodule common dir', null, '/work/super/.git/modules/sub\n', '/work/super/subdir', 'subdir'],
     ['a bare repo common dir', null, '/work/repo.git\n', '/work/wt', 'wt'],
     ['a failed call', null, null, '/work/epsilon/', 'epsilon'],
+    // A git before 2.31 echoes the unknown flag before the dir (M291 review).
+    ['an old git, a worktree', null, '--path-format=absolute\n/work/main/.git\n', '/work/w', 'main'],
+    ['an old git, the main tree', null, '--path-format=absolute\n.git\n', '/work/main', 'main'],
     ['a root with no segment', null, null, '/', ''],
   ]
   for (const [name, url, common, root, want] of CASES) {

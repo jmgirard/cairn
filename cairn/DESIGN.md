@@ -406,11 +406,12 @@ transitions, human-gated merges, and a domain verification doctrine.
   (M230). The press still waits for it. The ↻
   is the pane's one Refresh (M236). `paneLines` gives it to the first
   line, the card's `card-repo` line since M286, whenever a ROADMAP is
-  found, and sets that line's `grow`. While `acts` is true,
+  found. While `acts` is true,
   `home` comes before it, drawn as a `secondary` Button labeled `⌂`
-  (`HOME_LABEL`), key `cairn-pane-home`, in a `-home` Box (M241). The render gives that
-  line's text Box `flexGrow: 1`, so the tail and the ↻ Box sit at the
-  right end. The `reading` state value (tag `reading-1`) is true from the
+  (`HOME_LABEL`), key `cairn-pane-home`, in a `-home` Box (M241). That
+  line sets `tailGrows`, and the render gives its tail Box `flexGrow: 1`,
+  so the ↻ Box sits at the right end after the name and the counts (M291;
+  before it, the line's empty text grew). The `reading` state value (tag `reading-1`) is true from the
   start of any read until the newest read started settles. The ↻
   Button's label is `⋯` (`READING_LABEL`) while it is true and
   `inFlight` is above 0 (M237). `inFlight` is a module-level count of

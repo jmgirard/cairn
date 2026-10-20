@@ -10,8 +10,8 @@ import { lastSegment } from './repo'
 import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
 
 // The cairn pane's lines (M205), as a plain description that register.tsx
-// draws. First, the summary card (M286): the base remote repo's open pull
-// requests and issues, the drawn candidate rows at each level, and the
+// draws. First, the summary card (M286): the project name (M291), the base
+// remote repo's open pull requests and issues, the drawn candidate rows at each level, and the
 // planned, blocked, and done milestones. For each active milestone: its id
 // in its phase's color (no phase word since M236), and its title, with the
 // band's percent for the row at the end of the line when its file reads
@@ -587,9 +587,9 @@ export function drawnCandidates(
 }
 
 // The summary card's lines (M286, look B), which register.tsx draws in one
-// Box with a round border. The first holds the base remote repo's open pull
-// requests and open issues, each `?` while the store holds no numbers for
-// this root. The second holds the drawn candidate rows at each level, each
+// Box with a round border. The first holds the project name, bold (M291),
+// then the base remote repo's open pull requests and open issues, each `?`
+// while the store holds no numbers for this root. The second holds the drawn candidate rows at each level, each
 // after its level's mark. The third holds the planned and blocked
 // milestones. A fourth, the release line, holds the latest release tag, the
 // days since its commit, and the milestones done since it, when the last

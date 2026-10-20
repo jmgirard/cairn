@@ -161,9 +161,10 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
   shape: 'hotfixes-2',
 })
 
-// The summary card's numbers and the repo root they are for (M286),
-// written by the same read as the hotfix list (`readRepo` says when they
-// are kept). The pane draws them only while the band's root is that root.
+// The summary card's numbers, the project name (M291), and the repo root
+// they are for (M286), written by the same read as the hotfix list
+// (`readRepo` says when they are kept). The pane draws them only while the
+// band's root is that root, and otherwise names the root's last segment.
 const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null, name: null } as CairnRepoRead, {
   // `repo-2`: `repo-1`, without the release days, never shipped (M286).
   // `repo-3` adds the project name (M291).
@@ -1122,7 +1123,8 @@ async function baseOf($): Promise<Where> {
 }
 
 // The summary card's numbers to write (M286), read with one `gh api
-// graphql` call on the base remote's repo and three git calls in the root.
+// graphql` call on the base remote's repo and three git calls in the root,
+// and a fourth for the name when the URL is not a github.com one.
 // The GitHub numbers come from a github.com base remote only. A read that
 // gives none keeps the last good numbers for the same root, and is empty
 // for any other root. The release read (tag, days, done count) is this
