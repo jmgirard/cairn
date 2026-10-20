@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-19 (M291 merged and archived; M288 row pruned; new parked row "Card name edges"; no lessons; validate green; skills/tests green)_
+_Last hygiene check: 2026-10-19 (M292 merged and archived; M289 row pruned; new rows "Keep tier check for issue-titled rows" and "Keep rows named by open PRs at triage"; no lessons; validate green; skills/tests green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M292 | Candidate row titles are one short sentence that fits the cairn pane | review | — | normal | milestones/M292-candidate-title-format.md |
+| M292 | Candidate row titles are one short sentence that fits the cairn pane | done | — | normal | milestones/archive/M292-candidate-title-format.md |
 | M291 | The cairn pane's summary card names the project at its top left | done | — | normal | milestones/archive/M291-pane-card-project-name.md |
 | M290 | The desktop cairn pane shows a candidate row's ✎ only under the pointer | done | — | normal | milestones/archive/M290-pane-hover-plan-button.md |
-| M289 | The cairn pane draws each section count as a colored badge | done | — | normal | milestones/archive/M289-pane-count-badges.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Plan-gate clauses for standing instruments: Standing-instrument adoption discipline, two plan-gate clauses: (a) a milestone proposing a standing instrument states a pre-registered yield class, a 2–3 milestone advisory-only shadow period, and an autopsy date before it gates; (b) when its falsifier fires, at most one narrowing precedes the exit (D-059). Promote when the next milestone proposes a standing instrument, never on a count of milestones — added 2026-07-31 — M127 post-mortem (user question); weighed M149, not fired; condition held at M285 (the ripple lens, which stated a yield test and a removal falsifier without these clauses)
