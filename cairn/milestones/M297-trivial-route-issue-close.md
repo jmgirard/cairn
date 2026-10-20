@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M297: A trivial edit closes the issue of the row it deletes
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** M296   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -100,6 +100,8 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - 2026-10-20: T4 done: D-195 appended (annotates D-170 and D-162; rejects `Fixes #N` with its falsifier; D-108's door does not apply, since the close is a route step, not a conduct rule about verification or records).
 - 2026-10-20: T5 done: README's trivial-edit row and a CHANGELOG Unreleased "Changes that affect existing repos" entry name the owner-mode issue close; long added sentences split for the simple-english hook, whose remaining hits are older text.
 - 2026-10-20: T6 done: from the repo root, scripts/tests 0, hooks/tests 0, plugin validate 0, marketplace validate 0, plugin test 0, skills/tests 0; cairn_validate all checks passed.
+- 2026-10-20: claim audit: 37 claims read, 0 corrected — CHANGELOG.md, README.md, skills/milestone-plan/SKILL.md, skills/tests/test_plan_tier_check.py
+- 2026-10-20: implement done; status review. Open concern: the summary's references can include a PR or kept-row number (the second AC1 re-audit's AC2 point, answered, AC2 kept).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
