@@ -121,6 +121,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: claim audit: 16 claims read, 1 corrected — skills/cairn-triage/SKILL.md (the stamp names each PR-named row an accepted change removed, made a merge survivor, or gave a new short title, a title-rewriting `compress` included, and step 4's stamp-length count includes those rows); "the merge can change the row's short title" kept as AC3 words it; verify green at fd7b4410 (scripts 428, hooks 193, validates 0, no version warning, plugin test 2389).
 - 2026-10-20: implement complete after the thrash stop; status → review.
 - 2026-10-20: review pass 3: all six criteria pass with fresh evidence; four lenses, 22 findings (11 fix now, 1 follow-up, 10 rejected); no return.
+- 2026-10-20: step-7 approval: m298-triage-pr-named-rows approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
