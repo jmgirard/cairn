@@ -97,6 +97,7 @@ In owner mode, the trivial route closes no issue whose number a kept candidate r
 - 2026-10-20: T4 done: README's trivial-edit row and M297's Unreleased CHANGELOG entry now name a kept row's whole text, an open milestone's `Resolves:` slot, and no close after a failed or cut-short PR check; a grep for "still names" and "row it keeps" found no other restatement. The simple-english lint hook's hits in both files are pre-existing; the new sentences are short.
 - 2026-10-20: T5 done: verify green at 5a5d634e (scripts, hooks, plugin validate, marketplace validate, mod test 2389 pass) and hand-run `skills/tests` green; after the claim-audit fixes the Python suites, `skills/tests`, and both validates re-ran green (the fixes touch no mod file).
 - 2026-10-20: claim audit: 21 claims read, 2 corrected — skills/milestone-plan/SKILL.md (the close rule split into a condition and a fact, rejoined; the option's narrowed-row sentence now applies only when no check failed), pins in skills/tests/test_plan_tier_check.py updated; the same reader re-read both once and found them matching.
+- 2026-10-20: step-7 approval: m300-trivial-route-owed-issues approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
