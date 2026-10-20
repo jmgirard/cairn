@@ -122,9 +122,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - **The tier's route** (recommended). `hotfix`: invoke `/hotfix`
      through the Skill tool with the request as its argument, in
      `/milestone` §4's form. The argument opens with a one-line summary of
-     the bug. The summary carries no `#N`, so `/hotfix` reads no issue
-     number in it as a pull request. The request text follows unchanged, with a candidate row's
-     title quoted verbatim. The plan writes no file. `trivial`: the
+     the bug. The request text follows unchanged, with a candidate row's
+     title quoted verbatim. The plan writes no file. The bug summary that
+     opens the argument carries no `#N`, so `/hotfix` reads no issue
+     number in it as a pull request. `trivial`: the
      option's description names the file and the change and says where
      the edit goes. It also names each matched row and whether the edit
      deletes or narrows it. In owner mode it is committed and pushed to the
