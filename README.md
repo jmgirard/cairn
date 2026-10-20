@@ -535,9 +535,18 @@ When the query fails, the PR's word is `unknown` and the line is left out.
 When the query answers but its thread list comes back in a shape the pane
 does not read, the count line is left out, and the PR keeps its state word
 and its Button.
-A hotfix PR whose URL is on a host other than github.com gets its word
-from one `gh pr view <url> --json state,reviewDecision` call instead, and
-no count line.
+
+For a PR that GitHub reports as OPEN, the same query also reads
+`mergeable`, and the line ends with a mark after its word. A green merge
+symbol means GitHub reports MERGEABLE: the PR can merge. A red disc with a
+cross means GitHub reports CONFLICTING: the PR has conflicts with its base
+branch. In the terminal these are a green `✓` and a red `✗`. GitHub
+answers UNKNOWN while it computes the value, for example just after a
+push. The line then has no mark until a later read gives an answer.
+A PR that is merged or closed has no mark.
+A hotfix PR whose URL is on a host other than github.com gets no count
+line. It gets its word and its mark from one call:
+`gh pr view <url> --json state,reviewDecision,mergeable`.
 
 A `/hotfix` run has no ROADMAP row, so the pane finds its open PR on
 GitHub. The same read runs one `gh pr list --repo <url> --state open

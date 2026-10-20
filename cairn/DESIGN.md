@@ -79,7 +79,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284, and the summary card, goals wrapped per paragraph, headings with no accent or rule, the Next command with no pill, one layout for blocked and hotfix lines, desktop icons for the marks, hover cards, and no work-log section in M286).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284, and the summary card, goals wrapped per paragraph, headings with no accent or rule, the Next command with no pill, one layout for blocked and hotfix lines, desktop icons for the marks, hover cards, and no work-log section in M286, and each open PR's merge state mark in M301).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -397,7 +397,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   `prs` state value by URL. Since M237 a github.com URL takes one `gh api
   graphql` call for the word and the counts. A URL of another form, as a
   hotfix's on another host, takes one `gh pr view <url> --json
-  state,reviewDecision` call for its word and gets no counts. It runs
+  state,reviewDecision,mergeable` call (`PR_VIEW_FIELDS`, `prViewRead`)
+  for its word and merge state and gets no counts. It runs
   after each pane open (the `/cairn-pane` command, the band's open
   button, the session-start reopen, which skips it when its start
   already read, M238), at a press of the ↻ Refresh Button, which first
@@ -459,8 +460,19 @@ transitions, human-gated merges, and a domain verification doctrine.
   `$.process.run` with an `on('process.run')` hook (M224 probe), and a
   desktop Code session's mod runs `gh` from the app's `PATH`.
   The graphql query (M225, `counts.ts`) names the URL's owner, repo, and
-  number, and returns `state`, `reviewDecision`, and
+  number, and returns `state`, `reviewDecision`, `mergeable` (M301), and
   `reviewThreads(last: 100)` with each thread's `isResolved` (M237).
+  `mergeOf` in `pane.ts` gives a word in `OPEN_WORDS` its merge state:
+  MERGEABLE reads `mergeable` and CONFLICTING reads `conflicts`. UNKNOWN,
+  which GitHub answers while it computes the value, as just after a push,
+  any other value, an absent field, and a word not in `OPEN_WORDS` read
+  null. Threads that fail the shape check leave the merge state standing.
+  `prLine` ends the tail of a line whose read has a merge state with its
+  `MERGE_MARK` after the word: the `mergeable` icon, a green merge symbol
+  (`✓` in the terminal), or the `conflicts` icon, a red disc with a cross
+  (`✗`). A null merge state draws no mark until a later read. No timer
+  re-reads an UNKNOWN answer. A row with a tail icon centers on the
+  desktop (`centers` in register.tsx).
   Only a word in `OPEN_WORDS` carries counts. `prNodes` checks the
   threads' shape, and `countPr` gives one count, `unresolved`:
   the threads with `isResolved` false, a bot's threads included. Until
@@ -469,8 +481,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   review, so that count took items with nothing to answer, such as a
   Copilot summary review with no threads, and the operator dropped it. The
   count covers the newest 100 threads. Threads that fail the shape check
-  leave the counts null and the word standing. The `prs` value holds `{ word, counts }` per URL under the
-  tag `prs-3`. It is written once every call settles, so a ↻ press keeps
+  leave the counts null and the word standing. The `prs` value holds `{ word, counts, mergeable }` per URL under the
+  tag `prs-4` (M301). It is written once every call settles, so a ↻ press keeps
   the earlier count drawn until then. When the count is above zero,
   `paneLines` draws `blocked-<id>-counts` at indent 4 under the line. The
   count sits in the line's text part, which a narrow pane cuts.
