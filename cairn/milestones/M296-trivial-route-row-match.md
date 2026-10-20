@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M296: The trivial route matches a pressed title, not PR rows
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP1   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes which candidate rows an adopter's trivial-tier commit deletes or narrows   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m296-trivial-route-row-match   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -61,9 +61,9 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Widen the match sentence in `skills/milestone-plan/SKILL.md` step 1 (the "Candidate-row match (trivial route)" paragraph, about line 99) to the whole-request case, and add the unquoted-mention sentence.
-- [ ] T2: Add the open-PR read to the same paragraph, citing `skills/cairn-triage/SKILL.md` session start (about line 88), with the PR-named exclusion, the description's naming, and the failed or 100-PR case. Add the PR-named rows to the trivial option's description sentence.
-- [ ] T3: Update `skills/tests/test_plan_tier_check.py`'s `test_trivial_route_graduates_matched_rows` to pin T1's and T2's sentences, each member of a list pinned on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
+- [x] T1: Widen the match sentence in `skills/milestone-plan/SKILL.md` step 1 (the "Candidate-row match (trivial route)" paragraph, about line 99) to the whole-request case, and add the unquoted-mention sentence.
+- [x] T2: Add the open-PR read to the same paragraph, citing `skills/cairn-triage/SKILL.md` session start (about line 88), with the PR-named exclusion, the description's naming, and the failed or 100-PR case. Add the PR-named rows to the trivial option's description sentence.
+- [x] T3: Update `skills/tests/test_plan_tier_check.py`'s `test_trivial_route_graduates_matched_rows` to pin T1's and T2's sentences, each member of a list pinned on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
 - [ ] T4: Append the D-entry (next free id) per AC3.
 - [ ] T5: Edit README's trivial-edit row (about line 734) and add the CHANGELOG Fixes entry; run AC4's grep and fix any line it lists.
 - [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
@@ -90,6 +90,9 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
 - 2026-10-20: plan gate chose to cite triage's read and parse over restating them, because one parse in two places drifts; falsified by a skill reading that needs a parse the triage section does not give.
 - 2026-10-20: inbox sweep: 0 open issues, 0 open PRs on jmgirard/cairn.
 - 2026-10-20: criteria audit (full mode, one Opus reader over M296 to M298): 11 findings, all fixed. Here: AC4's grep left the absorbed ROADMAP row in its domain (pathspec now excludes `cairn/ROADMAP.md`); the Goal claimed every open PR, past a read capped at 100 (narrowed to what the read finds); AC2's "each such row" and the not-checked note made definite; AC3 now supersedes only D-170's reason, annotates D-191's Consequences, and names D-108's door.
+- 2026-10-20: status in-progress; branch m296-trivial-route-row-match cut from origin/main at dd99e0ba; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-20: T1, T2: step 1's match takes a trimmed whole-request title and skips a PR-named row, citing triage's read and parse; the option description names skipped rows and the not-checked case. The simple-english lint hook counts the whole file (196 hits before the edit); the new sentences were rewritten until the file count fell to 195, and the file's older hits are left alone, outside this scope.
+- 2026-10-20: T3: `test_trivial_route_matches_pressed_title_not_pr_rows` pins 12 new phrases and their place in the match paragraph; red against main's step 1 on the first phrase, and a scratch check found none of the 12 in main's text; green after.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

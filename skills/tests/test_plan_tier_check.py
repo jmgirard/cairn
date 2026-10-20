@@ -176,6 +176,37 @@ class TestPlanTierCheck(unittest.TestCase):
         self.assertIn("So does a trivial edit from `/milestone-plan` step 1, "
                       "in the edit itself.", hygiene)
 
+    def test_trivial_route_matches_pressed_title_not_pr_rows(self):
+        # M296: a pane press sends the bare title, and a row that an open
+        # PR's `Candidate row:` line names is left for that PR.
+        for phrase in (
+            "If the request text, with its outer spaces removed, equals a "
+            "row's short title, that row matches too.",
+            "A ✎ press in the cairn pane sends such a request.",
+            "A short title that appears unquoted inside a longer request does "
+            "not match.",
+            "Before the chip, the plan reads the open pull requests' "
+            "`Candidate row:` lines with the call and the parse that "
+            "`/cairn-triage` session start names "
+            "(`skills/cairn-triage/SKILL.md`).",
+            "A row such a line names is not matched,",
+            "When the read fails or returns 100 PRs, the match goes on.",
+            "It also names each row that the request otherwise matches but an "
+            "open PR's `Candidate row:` line names.",
+            "It gives each naming PR's number and says that the edit leaves "
+            "the row alone.",
+            "If the open-PR read failed or returned 100 PRs and a row matched, "
+            "the description says so.",
+            "It says that the matched rows were not checked against every "
+            "open pull request.",
+        ):
+            self.assertIn(phrase, self.step1)
+        match = section(self.step1, "**Candidate-row match (trivial route).**",
+                        "**Trivial-route checks")
+        self.assertIn("A ✎ press in the cairn pane sends such a request.",
+                      match)
+        self.assertIn("A row such a line names is not matched,", match)
+
     def test_git_model_and_routing_name_trivial_commits(self):
         for phrase in (
             "trivial-tier commits (a direct commit the user asked for, or one "
