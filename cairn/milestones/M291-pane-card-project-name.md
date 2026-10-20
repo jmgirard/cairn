@@ -1,6 +1,6 @@
 # M291: The cairn pane's summary card names the project at its top left
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,3 +56,5 @@ The cairn pane's summary card shows the project's name in bold at the left of it
 - 2026-10-19: T1+T2 in one commit, since the AC2 tests read the name through the drawn line. `projectName` and `lastSegment` in repo.ts; the common-dir call runs only when the URL is not a github.com one; the first line has no text with no name (root `/`) and no lead space in its tail then. Updated 13 tests that pinned the old first line (text `''` with grow, counts in the lead). Mod tests 2304 → 2330, verify slot green.
 - 2026-10-19: T3: README, DESIGN (card paragraph and `repo-3`), and the CHANGELOG's Unreleased card entry name the project and its rule; the simple-english hook flags older text in README and CHANGELOG, left as is (out of scope). Browser preview (a hand-built page, dark and light, 330 px, short and long names) shows the long name cut and the counts and Buttons kept. Verify slot green, mod tests 2330.
 - 2026-10-19: claim audit: 48 claims read, 3 corrected — CHANGELOG.md, README.md, cairn/DESIGN.md (base remote only; a common dir not named `.git` and the first read fall back to the folder's own name; when the common-dir call runs). Re-read of the 3 pending.
+- 2026-10-19: claim re-read: all 3 hold; one README sentence order slip (the worktree sentence) moved beside the first-read sentence.
+- 2026-10-19: all tasks done, verify slot green (mod tests 2330 before the README reorder; Python suites rerun after it); status review.
