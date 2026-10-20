@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M297 | A trivial edit closes the issue of the row it deletes | planned | M296 | normal | milestones/M297-trivial-route-issue-close.md |
+| M297 | A trivial edit closes the issue of the row it deletes | in-progress | M296 | normal | milestones/M297-trivial-route-issue-close.md |
 | M298 | Triage keeps a PR-named row's title on every path | planned | — | normal | milestones/M298-triage-pr-named-rows.md |
 | M296 | The trivial route matches a pressed title, not PR rows | done | — | normal | milestones/archive/M296-trivial-route-row-match.md |
 | M295 | A candidate title's issue number stays part of the title | done | — | normal | milestones/archive/M295-candidate-title-references.md |
