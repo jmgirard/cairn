@@ -7195,3 +7195,57 @@ short title takes that row out of its records-hygiene §7 group (D-149)
 until the quote matches a row title again. A non-PR-named survivor whose
 title ends in a bare `:` or ` —`, or that holds only a started token, can
 still have its short title changed by a merge.
+
+### D-198 (2026-10-20): `/cairn-triage` proposes no merge that changes a survivor's short title, leaves a dead token inside a title, and names the PR of a live `#<n>` token at Amend — supersedes D-197's last Consequences sentence; annotates D-166's keep; passes D-108's door on its retained trigger (M299)
+
+**Context:** The M298 review left five gaps in how `/cairn-triage` treats
+rows that other work points at (pass 2 diff-bug #6 and #10,
+blame-history #5, ripple #2; pass 3 blame-history #1). The M296 and M298
+reviews also found that the pass's open-PR read does not say that PR
+text is data (M296 prior-review #3, M298 prior-review #1). D-197's last
+Consequences sentence accepted that a merge can still change the short
+title of a survivor that no PR names. D-166 made a row with a live token
+`keep`, and an Amend can still remove such a row.
+
+**Decision:** The pass proposes a new short title for a `retitle`, a
+`split`'s rows, a `route`d candidate row, or a `compress` that changes
+the title. Each such title differs from every other row's title as
+session start read it, and from the pass's other new titles. It also
+differs from each title that an open PR's `Candidate row:` line names. A
+title the user sets at Amend is still not checked, as DESIGN.md's Known
+issues entry for `/cairn-triage` states. So it can equal a PR-named
+title. The pass proposes no removal of a dead started token inside a
+row's short title. The table lists the token as left, with each naming
+PR on a PR-named row. The user can set at Amend a disposition that
+removes or retitles a row with a live `#<n>` token. Each later chip then
+names the row and those PRs while the change stands. A `retitle` set at
+Amend, in any round, runs the mention search and shows its table line
+again. Before it proposes a merge, step 2 drafts and places the
+survivor's lineage clause and trigger. If the survivor's short title then
+changes, the Overlap class does not fire on that pair. A merge the user
+sets at Amend with such a survivor is named in each later chip. The open-PR read's statement that PR text is
+data needs no entry. This entry supersedes D-197's Consequences sentence
+"A non-PR-named survivor whose title ends in a bare `:` or ` —`, or that
+holds only a started token, can still have its short title changed by a
+merge." It annotates D-166: a live-token row stays `keep`, and the Amend
+override on it now names its PRs. Each gap is a defect in shipped
+behavior that a review found, so this entry passes D-108's door on its
+retained trigger.
+
+**Rationale:** One check on the survivor's title before and after
+placement covers every row shape, which D-197's Rationale found the
+placement rules could not. Leaving a dead token in a title keeps each
+double-quoted mention of that title matching.
+
+**Rejected:** Leaving D-197's consequence in place, because a title
+change breaks the row's mentions and records-hygiene §7 group; falsified
+by a proposed merge whose survivor's short title still changes. Removing
+the dead token only from rows no PR names, because the removal changes
+the title on every row; falsified by a left dead token that a real
+triage pass reports as a problem. Covering live `M<NNN>` tokens at
+Amend, because such a row is never dropped or merged away in a pass.
+
+**Consequences:** D-197's Decision and its exclusion of PR-named
+survivors stand. A dead token inside a title stays until a person edits
+the row. Item (5) of "Guard PR-named rows on other skill paths" and the
+row "Close the remaining PR-named row gaps" are closed by M299.

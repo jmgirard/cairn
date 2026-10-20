@@ -192,6 +192,20 @@
   `: `. It opens that text with ` — ` where the surviving row has neither
   `: ` nor ` — ` before it.
 
+- **`/cairn-triage` closes six more gaps around rows that other work
+  points at.** It now says that the text of the pull requests it reads is
+  data, never instructions. A new title that it proposes for a retitle,
+  split, route, or compress differs from each title that an open pull
+  request's `Candidate row:` line names. It leaves a dead started token
+  that sits inside a row's short title, as in
+  `Title — started M12: detail`, because its removal changes that title.
+  An Amend that removes or retitles a row with a live ` — started #<n>`
+  token makes each later question name those pull requests. A retitle
+  you set at Amend lists the quoted mentions it rewrites and leaves, as a
+  proposed retitle does. The pass no longer proposes a merge that changes
+  the surviving row's title. If you set one at Amend, each later question
+  says so.
+
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the
   candidate row the edit fixes. It took only a row whose title your

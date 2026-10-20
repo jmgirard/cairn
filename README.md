@@ -427,7 +427,14 @@ another row's, or holds an icon. It proposes to keep a row that an open
 PR's `Candidate row:` line names (below) as it is, so its title still
 matches that line. An Amend that removes such a row, changes its title,
 or makes it a merge's survivor makes each later question name its PRs.
-This lasts while that change stands. While no cairn skill
+This lasts while that change stands. Each new title the pass proposes
+also differs from each title that an open PR's `Candidate row:` line
+names. An Amend that removes or retitles a row with a live
+` — started #<n>` token makes each later question name those PRs. A
+retitle you set at Amend lists the quoted mentions it rewrites, as a
+proposed one does. The pass does not propose a merge that changes the
+surviving row's title. If you set one at Amend, each later question says
+so. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end. In the desktop app the
 button shows only while the pointer is over its row, beside the info
@@ -603,11 +610,13 @@ or narrows it and removes the token. A note after the token, such as
 closed without a merge hides nothing. `/cairn-triage` proposes removing a dead token: one whose
 milestone is `done`, `dropped`, gone from the table, or archived, or whose
 PR is merged or closed. A token on an in-progress or review milestone is
-not dead. Triage also proposes adding a missing ` — started M<NNN>` token to a
+not dead. Triage leaves a dead token that sits inside a row's short
+title, as in `Title — started M12: detail`, because its removal changes
+that title. Triage also proposes adding a missing ` — started M<NNN>` token to a
 row whose short title a planned, in-progress, blocked, or review
 milestone's file quotes in double quotes outside its Out list. Each change
-waits for your answer at its gate. A token opens with ` — `, so the row's
-short title stays the same.
+waits for your answer at its gate. A token goes at the row's end and
+opens with ` — `, so adding it leaves the row's short title the same.
 
 The read needs `gh` on the session's `PATH`, signed in to GitHub. The
 pane writes nothing to GitHub, and `/milestone` still sets a milestone's
