@@ -183,10 +183,14 @@
   the open pull requests, or the list stopped at 100, it marks a change
   you set at Amend as not checked. The pass no longer proposes a merge
   that keeps such a row as the survivor, so a proposed merge leaves its
-  title alone. If you set such a merge at Amend, the question names the
-  row and its pull requests. A retitle of another row no longer rewrites
-  a quoted mention of the old title inside such a row's title. The pass
-  lists the mention as left, with each naming pull request's number.
+  title alone. If you set such a merge at Amend, each question after that
+  names the row and its pull requests. It says that the merge can change
+  the row's title and break their match. A retitle of another row no
+  longer rewrites a quoted mention of the old title inside such a row's
+  title. The pass lists the mention as left, with each naming pull
+  request's number. Every merge now writes its added lineage text with no
+  `: `. It opens that text with ` — ` where the surviving row has neither
+  `: ` nor ` — ` before it.
 
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the

@@ -425,8 +425,9 @@ the pane draws its own marks and buttons with such glyphs.
 has fewer than 5 words, is longer than 40 characters, is the same as
 another row's, or holds an icon. It proposes to keep a row that an open
 PR's `Candidate row:` line names (below) as it is, so its title still
-matches that line. If you remove such a row or change its title at
-Amend, each question after that names each PR that names the row. While no cairn skill
+matches that line. An Amend that removes such a row, changes its title,
+or makes it a merge's survivor makes each later question name its PRs.
+This lasts while that change stands. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end. In the desktop app the
 button shows only while the pointer is over its row, beside the info

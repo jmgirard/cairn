@@ -337,7 +337,9 @@ re-examines a lesson.
      other row is still checked for Overlap against the remaining rows,
      and otherwise takes the first later class that fires, or `keep`. In
      either case its table reason names each PR-named row it was not
-     merged into, with each naming PR's number.
+     merged into, with each naming PR's number. A pair whose absorbed row
+     is the PR-named row is treated the same way, since that row stays
+     `keep`.
    - **Overgrowth → `split` or `compress`.** Two promotion triggers, or a
      subject that is two subjects joined by "and" (a plain conjunction
      inside one subject is not) → `split`; over the ~300-byte aim **and**
@@ -396,7 +398,8 @@ re-examines a lesson.
    list read failed or returned 100 PRs, the table says so. Then each
    non-`keep` proposal's reason says that the row was not checked against
    every open pull request. A `retitle`'s reason also says that the
-   mentions it rewrites were not checked.
+   mentions it rewrites were not checked. A merge survivor's `keep`
+   reason says so too, and the chip names that row.
    **Started tokens → a token change.** A token change is a row fact beside
    the disposition, as a priority change is, never a ninth disposition. It
    rides on a row proposed `keep`, `compress`, `retitle`, or `promote`, and
@@ -650,8 +653,8 @@ re-examines a lesson.
 
 7. **Close block** (tracking-rules "Question gates and phase closes"), no
    chip. Lead with the outcome in plain words: what left the lists, what
-   merged or moved, what stayed. It names each PR whose match an accepted
-   change can break, as the stamp does. Then a status line — items enumerated,
+   merged or moved, what stayed. It names each PR-named row that the
+   stamp names, with its PRs. Then a status line — items enumerated,
    dispositions, priority changes, and token changes applied by kind and the commit hash, or `nothing applied`
    (an apply-nothing answer and an accept of only `keep` and `promote`
    items with no priority or token change alike). In guest mode

@@ -103,7 +103,16 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "fires, or `keep`.",
             "In either case its table reason names each PR-named row it was "
             "not merged into, with each naming PR's number.",
+            "A pair whose absorbed row is the PR-named row is treated the "
+            "same way, since that row stays `keep`.",
         ), overlap)
+        keep = section(self.triage,
+                       "As that rule also says, a PR-named row is `keep`",
+                       "**Started tokens → a token change.**")
+        self.assertPhrases((
+            "A merge survivor's `keep` reason says so too, and the chip "
+            "names that row.",
+        ), keep)
         loop = section(self.triage, "**The amend loop.**",
                        "Whatever the answer, **every item not accepted")
         self.assertPhrases((
@@ -119,6 +128,12 @@ class TestTriagePrNamedRows(unittest.TestCase):
         self.assertPhrases((
             "merge survivor's lineage clause, and then any trigger it takes "
             "from the absorbed row, go before the row's first started token.",
+            # Placement rules D-197 records; no criterion promises them.
+            "They go at the row's end instead in three cases: the row has "
+            "no started token, it has no text before that token, or its "
+            "first `: ` comes after that token.",
+            "Where the survivor's text holds neither `: ` nor ` — ` before "
+            "that place, the lineage clause opens with ` — `.",
             "The lineage clause, and any trigger it takes from the absorbed "
             "row, hold no `: `, each one written as `; `.",
         ), apply)
