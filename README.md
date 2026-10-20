@@ -337,7 +337,9 @@ waiting, blocked, or hotfix line opens a card above it with the whole
 text. A candidate row opens its card from an info icon (`ⓘ`) instead.
 That card holds the row's whole text after the priority token, with any
 HTML comments left out. The row itself shows only its short title.
-The pointer over the row shows the icon, and on a row with a `✎`, the
+When the card fits above the row, it opens there. Otherwise it opens
+below the row. A card too tall for either side opens on the side with
+more room and is cut to fit. The pointer over the row shows the icon, and on a row with a `✎`, the
 `✎` beside it. The pointer over the icon opens the card. Each
 section starts after a blank row with its name in bold.
 The Blocked, Hotfixes, and Candidates headings show their count as a

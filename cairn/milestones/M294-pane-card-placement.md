@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M294: A candidate row's ⓘ card opens where the cairn pane has room for it
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the cairn pane is the mod that adopters see   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m294-pane-card-placement   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -50,10 +50,10 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive change is amend-via-gate. -->
 
-- [ ] T1: `pane.ts`: write the AC1 and AC2 tables first in `pane.test.tsx`, then `cardPlace` and `cardRows` (the latter on `width` from `band.ts`).
-- [ ] T2: `pane.ts`: add `rowsAbove` to `PaneLine` for candidate lines in `paneLines` (~line 800), as each line's index in the returned list plus 2. Write the AC3 table first.
-- [ ] T3: `register.tsx` (~527-545): read `bodyColumns`, `scroll`, and `placement` from `e.props`; for a candidate line, keep the `up` card in its line, or draw the `down` card as an absolute Box last in the `cairn-pane` Box, with the cap's `height` and `overflow`. Write the AC4 and AC5 tests first (redraw with new props; `flat(root)` will list the overlay, so line-counting tests allow for it).
-- [ ] T4: README, DESIGN, the CHANGELOG ⓘ-card entry (unreleased, so edit it), and the render comments.
+- [x] T1: `pane.ts`: write the AC1 and AC2 tables first in `pane.test.tsx`, then `cardPlace` and `cardRows` (the latter on `width` from `band.ts`).
+- [x] T2: `pane.ts`: add `rowsAbove` to `PaneLine` for candidate lines in `paneLines` (~line 800), as each line's index in the returned list plus 2. Write the AC3 table first.
+- [x] T3: `register.tsx` (~527-545): read `bodyColumns`, `scroll`, and `placement` from `e.props`; for a candidate line, keep the `up` card in its line, or draw the `down` card as an absolute Box last in the `cairn-pane` Box, with the cap's `height` and `overflow`. Write the AC4 and AC5 tests first (redraw with new props; `flat(root)` will list the overlay, so line-counting tests allow for it).
+- [x] T4: README, DESIGN, the CHANGELOG ⓘ-card entry (unreleased, so edit it), and the render comments.
 - [ ] T5: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
 
 ## Work log
@@ -69,6 +69,12 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: plan chose an overlay at the pane's end for a card that opens below, over an in-line card at `top: 1`, because an absolute Box paints only over the rows before it, so later rows would cover an in-line card; falsified by a live look where the overlay is covered or lights from anywhere in the pane.
 - 2026-10-20: plan chose render props (`scroll`, `bodyColumns`) over tracking `ui.scroll` events, because the props are given on every render and a scroll asks for a new one; falsified by a live look where a scrolled pane places cards from a stale offset.
 - 2026-10-20: changelog: edit the unreleased ⓘ-card entry, since no release shipped the card.
+- 2026-10-20: implement started on branch m294-pane-card-placement; untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-20: T1 done: `cardPlace` and `cardRows` in pane.ts with `CardPlace`, `CARD_MIN_ROWS` (3), and `CARD_FRAME_COLUMNS` (4); the AC1 (9 cases) and AC2 (7 cases) tables pass. The tables were appended with a shell heredoc, not Edit (a departure from the rulebook's Write/Edit rule).
+- 2026-10-20: T2 done: `PaneLine.rowsAbove` is set on each candidate line as `out.length + 2` at its push; the AC3 table (8 cases) passes. The M261 tests that compare lines with and without hidden rows now leave `rowsAbove` out, since a hidden row moves the rows after it.
+- 2026-10-20: T3 done: `cardPlaces(lines, view)` in pane.ts, which the render calls with `e.props.bodyColumns`, `scroll.offset`, `scroll.bodyRows`, and `placement`. register.tsx's `cardBox` draws an up card in its line at `bottom: 1` and a down card last in the `cairn-pane` Box at `top: rowsAbove + 1`, with `height` and `overflow: 'hidden'` when cut. The AC4 table (8 cases) and the AC5 render tests (3 per surface, each mount unmounted after its read) pass. A planted defect (placement ignoring the scroll offset) failed 7 of them, 5 AC4 and 2 AC5, then was restored.
+- 2026-10-20: T4 done: README, DESIGN (the placement paragraph and two rewrapped lines), the CHANGELOG ⓘ-card entry, and the register.tsx comments state the three-way rule. A `git grep` for upward-only phrasing finds only the other lines' cards, which still open upward.
+- 2026-10-20: verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2374 pass 0 fail.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

@@ -509,13 +509,26 @@ transitions, human-gated merges, and a domain verification doctrine.
   and none when empty. A candidate line's `full` is its row's whole text
   after the priority token (`CandidateRow.text`, trimmed as the short title
   is), not the short title the line draws (M293). Off the terminal, the
-  render puts an unkeyed Box inside such a line's keyed Box: `position: 'absolute'`, `bottom: 1`,
-  `display: 'none'`, `hover: { display: 'flex' }`, a round border, and the
+  render puts an unkeyed Box inside such a line's keyed Box:
+  `position: 'absolute'`, `bottom: 1`, `display: 'none'`,
+  `hover: { display: 'flex' }`, a round border, and the
   `userMessageBackground` ground. The pointer over the line reveals it
   above the row, or on a candidate line the pointer over its ⓘ (below).
   The card has no key, because a keyed Box scopes its own
   hover and a hidden scope is never under the pointer. A candidate line's
   parked ✎ Box has no key for the same reason (M290).
+  A candidate card opens above its row only when it fits there (M294).
+  `cardRows` estimates its rows (a greedy wrap at spaces at the pane's
+  `bodyColumns` less 4, in code points, plus 2 border rows), and the line's
+  `rowsAbove` is its row in the pane's tree (each line one row, plus the
+  summary card's 2 border rows). `cardPlaces` reads the Pane props
+  `scroll.offset`, `scroll.bodyRows`, and `placement`, and `cardPlace` puts
+  the card above when it fits, else below, else on the side with more rows
+  (above on a tie), cut to that side's rows with `height` and
+  `overflow: 'hidden'`, and draws none on a side of fewer than 3 rows. A
+  card that opens below is drawn last in the pane's root Box at `top` equal
+  to its line's `rowsAbove` plus 1, so it paints over the rows under its
+  line. The cards of other lines still open upward.
   A candidate line with a `full`, one whose short title is empty included,
   sets `info` (M293). Off the terminal it draws,
   just before ✎, a hidden unkeyed Box that the line reveals, holding a gray

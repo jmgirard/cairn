@@ -6,6 +6,9 @@ import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
 import {
   CHECKED_MARK,
+  cardPlace,
+  cardPlaces,
+  cardRows,
   COMMAND_PHASE,
   INFO_LABEL,
   ITEM_OPEN_MARK,
@@ -4888,7 +4891,13 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
     { title: 'Case row', number: 16 },
     { title: '', number: 17 },
   ]
-  const rows = (acts: boolean, started = items) => layout(state, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+  // A hidden row moves the rows after it up, so `rowsAbove` (M294) is left
+  // out of the comparison.
+  const unplaced = ({ rowsAbove: _, ...rest }: PaneLine) => rest
+  const rows = (acts: boolean, started = items) =>
+    layout(state, [], acts, {}, [], started)
+      .filter(line => /^candidate-\d+$/.test(line.key))
+      .map(unplaced)
   const heads = (started = items) => layout(state, [], true, {}, [], started).filter(line => line.key.startsWith('candidates-head'))
 
   for (const acts of [true, false]) {
@@ -4914,7 +4923,9 @@ describe('a candidate row that an item names is not drawn (M261 AC1, AC2)', () =
         ],
       }
       const draw = (started: { title: string; number: number }[]) =>
-        layout(three, [], acts, {}, [], started).filter(line => /^candidate-\d+$/.test(line.key))
+        layout(three, [], acts, {}, [], started)
+          .filter(line => /^candidate-\d+$/.test(line.key))
+          .map(unplaced)
       const before = draw([])
       const got = draw([{ title: 'Taken', number: 5 }])
       expect(got.map(line => line.key)).toEqual(['candidate-0', 'candidate-2'])
@@ -6444,4 +6455,260 @@ describe('the card names the project at the left of its first line (M291)', () =
     await $.turn.complete(turn())
     expect(await firstText($)).toBe('two  ? PRs   ? issues')
   })
+})
+
+// M294 AC1: a card opens above its row when it fits there, else below,
+// else on the side with more rows (above on a tie), cut to that side's
+// rows, and with no card when that side has fewer than 3 rows. Each value
+// is written out by hand.
+describe('cardPlace picks the side a candidate card opens on (M294 AC1)', () => {
+  const table: [string, number, number, number, ReturnType<typeof cardPlace>][] = [
+    ['fits above', 5, 10, 2, { side: 'up', rows: null }],
+    ['exactly fits above', 10, 10, 0, { side: 'up', rows: null }],
+    ['fits only below', 8, 4, 20, { side: 'down', rows: null }],
+    ['exactly fits below', 20, 4, 20, { side: 'down', rows: null }],
+    ['fits neither, more room above', 30, 12, 9, { side: 'up', rows: 12 }],
+    ['fits neither, more room below', 30, 6, 15, { side: 'down', rows: 15 }],
+    ['fits neither, a tie', 30, 8, 8, { side: 'up', rows: 8 }],
+    ['fits neither, larger side under 3 rows', 30, 2, 1, null],
+    ['fits neither, larger side of exactly 3 rows', 30, 1, 3, { side: 'down', rows: 3 }],
+  ]
+  for (const [name, need, above, below, place] of table) {
+    test(name, () => {
+      expect(cardPlace(need, above, below)).toEqual(place)
+    })
+  }
+})
+
+// M294 AC2: the rows a card's text takes, an estimate: a greedy wrap at
+// spaces at four columns less than the pane's (the card's border and
+// padding), a word longer than a row split across rows, plus the two
+// border rows. Columns are code points, as `width` in band.ts counts them.
+// With 14 columns a row holds 10. Each value is written out by hand.
+describe('cardRows estimates the rows a candidate card takes (M294 AC2)', () => {
+  const table: [string, string, number][] = [
+    ['an empty text', '', 2],
+    ['one short word', 'ab', 3],
+    ['a text that fills a row exactly', 'abcd efghi', 3],
+    ['a row plus one word', 'abcd efghi jk', 4],
+    ['a word longer than a row', 'abcdefghijklm', 4],
+    ['repeated spaces', 'ab     cd', 3],
+    ['a word that exactly fills the last row', 'ab cdefghijklmnopqrstuv', 5],
+  ]
+  for (const [name, text, rows] of table) {
+    test(name, () => {
+      expect(cardRows(text, 14)).toBe(rows)
+    })
+  }
+})
+
+// M294 AC3: each candidate line carries the rows the pane draws before it,
+// each line one row, plus the summary card's two border rows. With no
+// milestone active, no goal line wraps. Each case counts its rows by hand:
+// the card's top border, its three lines (four with the release line), its
+// bottom border, the card's gap row, `no active milestone`, then each
+// section's gap and heading and its lines, then the Candidates gap and
+// heading. The bare state puts its first candidate on row 9.
+describe('each candidate line carries the rows drawn before it (M294 AC3)', () => {
+  const base: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [
+      { priority: 'high', title: 'Up row', text: 'Up row: x' },
+      { priority: 'normal', title: 'Mid row', text: 'Mid row: y' },
+      { priority: 'low', title: 'Low row', text: 'Low row: z' },
+    ],
+    blocked: [],
+    taken: [],
+  }
+  const blocked = { id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }
+  const rows = (lines: PaneLine[]) =>
+    lines.filter(line => line.key.startsWith('candidate-') && line.key !== 'candidates-head').map(line => [line.key, line.rowsAbove])
+  const expectRows = (lines: PaneLine[], first: number) =>
+    expect(rows(lines)).toEqual([
+      ['candidate-0', first],
+      ['candidate-1', first + 1],
+      ['candidate-2', first + 2],
+    ])
+
+  test('no release line, no Next line, no other section', () => {
+    expectRows(layout(base), 9)
+  })
+
+  test('the Next line adds its gap and itself', () => {
+    expectRows(layout({ ...base, next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null } }), 11)
+  })
+
+  test('the release line adds one card row', () => {
+    const repo = { root: '/r', counts: { prs: 1, issues: 2 }, done: { tag: 'v1.0.0', days: 3, count: 2 }, name: 'r' }
+    expectRows(layout(base, [], false, {}, [], [], repo, '/r'), 10)
+  })
+
+  test('a blocked row with its counts line adds four rows', () => {
+    const read = { 'https://github.com/o/r/pull/9': { word: 'in review' as const, counts: { unresolved: 2 } } }
+    expectRows(layout({ ...base, blocked: [blocked] }, [], false, read), 13)
+  })
+
+  test('a blocked row with no counts line adds three rows', () => {
+    expectRows(layout({ ...base, blocked: [blocked] }), 12)
+  })
+
+  test('a hotfix line adds three rows', () => {
+    expectRows(layout(base, [], false, {}, [{ number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }]), 12)
+  })
+
+  test('a workable row and two waiting rows add seven rows', () => {
+    const state = {
+      ...base,
+      workable: [{ id: 'M8', title: 'Ready' }],
+      waiting: [
+        { id: 'M9', title: 'Later', unmet: ['M8'] },
+        { id: 'M10', title: 'Later two', unmet: ['M8'] },
+      ],
+    }
+    expectRows(layout(state), 16)
+  })
+
+  test('no other line carries a row', () => {
+    expect(layout(base).filter(line => line.rowsAbove !== undefined).every(line => /^candidate-\d+$/.test(line.key))).toBe(true)
+  })
+})
+
+// M294 AC4: each candidate card is placed from the Pane props. One row
+// whose text, `Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh`, wraps to
+// 5 rows at 14 columns (10 for text), so its card needs 7, and to 1 row at
+// 60 columns, a card of 3. In the bare idle state its line is on row 9
+// (M294 AC3), and the tree has 8 lines, so 10 rows. Each value is written
+// out by hand.
+describe('each candidate card is placed from the Pane props (M294 AC4)', () => {
+  const long: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [{ priority: 'high', title: 'Long row', text: 'Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh' }],
+    blocked: [],
+    taken: [],
+  }
+  const table: [string, number, number, number, 'dock' | 'inline', ReturnType<typeof cardPlace>][] = [
+    ['room above at the top of the window', 14, 0, 40, 'dock', { side: 'up', rows: null }],
+    ['scrolled so 4 rows show above: below', 14, 5, 40, 'dock', { side: 'down', rows: null }],
+    ['4 rows each side: cut above on the tie', 14, 5, 9, 'dock', { side: 'up', rows: 4 }],
+    ['2 above and 5 below: cut below', 14, 7, 8, 'dock', { side: 'down', rows: 5 }],
+    ['1 row each side: no card', 14, 8, 3, 'dock', null],
+    ['inline, the frame fits the tree: cut below', 14, 5, 200, 'inline', { side: 'down', rows: 5 }],
+    ['a wider pane makes the card fit above', 60, 5, 40, 'dock', { side: 'up', rows: null }],
+  ]
+  for (const [name, bodyColumns, offset, bodyRows, placement, place] of table) {
+    test(name, () => {
+      expect(cardPlaces(layout(long), { bodyColumns, offset, bodyRows, placement })).toEqual({ 'candidate-0': place })
+    })
+  }
+
+  test('only candidate lines are placed', () => {
+    const state = { ...long, workable: [{ id: 'M8', title: 'Ready' }] }
+    expect(Object.keys(cardPlaces(layout(state), { bodyColumns: 14, offset: 0, bodyRows: 40, placement: 'dock' }))).toEqual(['candidate-0'])
+  })
+})
+
+// M294 AC5: an upward card is drawn in its line at `bottom: 1`; a card that
+// opens below is drawn last in the pane's root Box at its line's row plus
+// 1, hidden until the line's ⓘ group lights; a cut card has its rows as its
+// height and clips the rest; the terminal draws none. The line's row is
+// read off the drawn tree: its place in the pane's lines, plus the summary
+// card's two border rows, each line one row.
+describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
+  const ROADMAP = [
+    '# Roadmap',
+    '',
+    '## Milestones',
+    '',
+    '| ID | Title | Status | Depends on | Priority | File/Archive |',
+    '|---|---|---|---|---|---|',
+    '',
+    '## Candidates',
+    '',
+    '- [high] Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh',
+    '',
+  ].join('\n')
+  const longCopy = () => {
+    const copy = copyOf('candidates')
+    copy.files[Object.keys(copy.files).find(path => path.endsWith('cairn/ROADMAP.md')) as string] = ROADMAP
+    return copy
+  }
+  const mountAt = async ($, surface: (typeof SURFACES)[number], offset: number, bodyRows: number) =>
+    (await $.ui.mount({
+      plugin: 'cairn',
+      surface,
+      ...PANE_VIEW,
+      props: { ...PANE_VIEW.props, bodyColumns: 14, scroll: { offset, bodyRows } },
+    })) as Ui
+  // The candidate line's row and the pane's root.
+  const drawn = async ($, surface: (typeof SURFACES)[number], offset: number, bodyRows: number) => {
+    const ui = await mountAt($, surface, offset, bodyRows)
+    const [root] = await ui.findAll({ key: 'cairn-pane' })
+    // A pane mounts once per surface, so each read unmounts it.
+    await ui.unmount()
+    const lines = flat(root)
+    const line = lines.find(each => keyOf(each) === 'candidate-0') as Element
+    return { root, line, row: lines.indexOf(line) + 2 }
+  }
+  const scope = 'cairn-info-candidate-0'
+  // The test kit keeps `hover` beside `props` (LESSONS M284).
+  const hoverOf = (node: Element) => (node as Element & { hover?: unknown }).hover
+
+  for (const surface of SURFACES) {
+    test(`a card with room above is in its line at bottom 1 (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      const { root, line } = await drawn($, surface, 0, 200)
+      const cards = kids(line).filter(isCard)
+      const overlays = kids(root).filter(isCard)
+      expect(overlays).toEqual([])
+      if (surface === 'terminal') {
+        expect(cards).toEqual([])
+      } else {
+        expect(cards.length).toBe(1)
+        expect(cards[0].props).toEqual(expect.objectContaining({ position: 'absolute', bottom: 1, display: 'none' }))
+        expect(hoverOf(cards[0])).toEqual({ display: 'flex', scope })
+        expect(cards[0].props.height).toBeUndefined()
+      }
+    })
+
+    test(`a card with no room above is drawn last in the pane at its row plus 1 (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      const { row } = await drawn($, surface, 0, 200)
+      const { root, line } = await drawn($, surface, row, 200)
+      expect(kids(line).filter(isCard)).toEqual([])
+      const last = kids(root).at(-1) as Element
+      if (surface === 'terminal') {
+        expect(kids(root).filter(isCard)).toEqual([])
+      } else {
+        expect(isCard(last)).toBe(true)
+        expect(keyOf(last)).toBeUndefined()
+        expect(last.props).toEqual(expect.objectContaining({ position: 'absolute', top: row + 1, display: 'none' }))
+        expect(hoverOf(last)).toEqual({ display: 'flex', scope })
+        expect(last.props.height).toBeUndefined()
+      }
+    })
+
+    test(`a card that fits neither side is cut to the larger one (${surface})`, async ($, on) => {
+      seat(on, longCopy())
+      await $.turn.complete(turn())
+      const { row } = await drawn($, surface, 0, 200)
+      // One row above the line in the window and 5 below: the card needs 7.
+      const { root } = await drawn($, surface, row - 1, 7)
+      const last = kids(root).at(-1) as Element
+      if (surface === 'terminal') {
+        expect(kids(root).filter(isCard)).toEqual([])
+      } else {
+        expect(last.props).toEqual(expect.objectContaining({ position: 'absolute', top: row + 1, height: 5, overflow: 'hidden' }))
+      }
+    })
+  }
 })
