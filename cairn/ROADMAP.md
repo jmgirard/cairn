@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (status audit: validate green; no open issues, PRs, orphans, outside merges, or linked-item news; two finding-absorbing rows, "Gaps only the app or mod API can close" and "Check the pane badges in a real session", routed to DESIGN.md Known issues at the disposition chip)_
+_Last hygiene check: 2026-10-20 (M301 live-look probe, never merged; status audit: validate green; no open issues, PRs, orphans, outside merges, or linked-item news; two finding-absorbing rows, "Gaps only the app or mod API can close" and "Check the pane badges in a real session", routed to DESIGN.md Known issues at the disposition chip)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
