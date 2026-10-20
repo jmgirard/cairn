@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane's headings are what operators read
-- **Branch/PR:** m302-pane-badge-after-label
+- **Branch/PR:** m302-pane-badge-after-label https://github.com/jmgirard/cairn/pull/316
 
 ## Goal
 
