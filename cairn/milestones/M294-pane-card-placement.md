@@ -52,7 +52,7 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 
 - [x] T1: `pane.ts`: write the AC1 and AC2 tables first in `pane.test.tsx`, then `cardPlace` and `cardRows` (the latter on `width` from `band.ts`).
 - [x] T2: `pane.ts`: add `rowsAbove` to `PaneLine` for candidate lines in `paneLines` (~line 800), as each line's index in the returned list plus 2. Write the AC3 table first.
-- [x] T3: `register.tsx` (~527-545): read `bodyColumns`, `scroll`, and `placement` from `e.props`; for a candidate line, keep the `up` card in its line, or draw the `down` card as an absolute Box last in the `cairn-pane` Box, with the cap's `height` and `overflow`. Write the AC4 and AC5 tests first (redraw with new props; `flat(root)` will list the overlay, so line-counting tests allow for it).
+- [x] T3: `register.tsx` (~527-545): read `bodyColumns`, `scroll`, and `placement` from `e.props`; for a candidate line, keep the `up` card in its line, or draw the `down` card as an absolute Box after every line in the `cairn-pane` Box (a cut card's `height` and `overflow`, first planned here, were replaced by T5's cut text and no height). Write the AC4 and AC5 tests first (redraw with new props; `flat(root)` will list the overlay, so line-counting tests allow for it).
 - [x] T4: README, DESIGN, the CHANGELOG ⓘ-card entry (unreleased, so edit it), and the render comments.
 - [x] T5: `pane.ts`: `cardCut`, its AC5 table first; register.tsx's `cardBox` draws a cut card with `cardCut`'s text and no `height`; update the cut-card render test, the DESIGN placement paragraph, and the `cardBox` comment (amendment after the live look).
 - [x] T6: run the five `verify` checks. Ask the operator for the live look in circumplex's docked pane: ⓘ on the first, a middle, and the last candidate row. Check that a down card draws over the rows under it, opens only from ⓘ (the keyed `cairn-pane` Box does not light it), and that its size estimate is about right. Record a miss in the parked rows that Out names.
@@ -192,3 +192,9 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - ripple: no ripple evidence.
 
 After pass 3's fixes (DESIGN wording only): from the repo root, `scripts/tests` 428 OK (21 skipped), `hooks/tests` 193 OK, both `claude plugin validate` runs exit 0, `claude plugin test .` exit 0 with 2389 pass and 0 fail, `cairn_validate.py` all checks passed. This is AC7's fresh evidence at the pre-merge head.
+
+PR-conversation read (PR #307): one Copilot review (COMMENTED, on bb6d0181), two threads, no other review or comment.
+- copilot: cairn/DESIGN.md (the "(below)" after the ⓘ group) — fix now, fixed 0145393f (as pass 2 diff-bug #3 and pass 3 prior-review #2)
+- copilot: cairn/milestones/M294-pane-card-placement.md:55 (T3 still names a cut card's `height` and `overflow`) — fix now, fixed in the next commit (a minor task edit naming T5's replacement)
+- Copilot level: Lite (set by GitHub's settings). Summary reply posted.
+- 2026-10-20 minor task edit: T3's text names that T5 replaced the cut card's `height` and `overflow` (Copilot thread on PR #307).
