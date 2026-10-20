@@ -1161,10 +1161,13 @@ within each type and are never reused.
   candidate row. Routed from candidates 2026-10-20; added 2026-10-02 —
   M198 Out and review; added 2026-10-04 — M209, M219; added 2026-10-19 —
   M290 live look and review (blame-history #1, prior-review #6).
-- The cairn pane's count badges (M289) have two looks unchecked, with no
-  fix planned. Nobody checked the terminal badge's `inverseText` on
-  `inactive` in the light and other themes, since the M302 live look
-  covered the desktop app only. A 16 px badge can make its heading row
+- The cairn pane's count badges (M289) have looks unchecked, with no fix
+  planned. Nobody checked the terminal badge's `inverseText` on
+  `inactive` in the light and other themes. M302 checked the gray pill in
+  a browser preview only, so its place after the label, its row's
+  centering, and any clipping by the lead Box wait for a desktop look
+  after the merge, since no badge heading draws in this repo while a
+  milestone is active. A 16 px badge can make its heading row
   taller than the 14 px icon rows on the desktop, and since M294 a taller
   row, or a row of Buttons, also shifts a candidate card's `rowsAbove` and
   its `top`. If a badge reads poorly or a heading row draws taller in a
