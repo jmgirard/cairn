@@ -24,7 +24,7 @@ describe('the count is the unresolved threads (M236 AC1)', () => {
   ]
   for (const [name, resolved, unresolved] of CASES) {
     test(name, () => {
-      expect(prRead(ok(open(...resolved)))).toEqual({ word: 'in review', counts: { unresolved } })
+      expect(prRead(ok(open(...resolved)))).toEqual({ word: 'in review', counts: { unresolved }, mergeable: null })
       expect(countPr({ threads: resolved.map(isResolved => ({ isResolved })) })).toEqual({ unresolved })
     })
   }
@@ -41,9 +41,9 @@ describe('the count is the unresolved threads (M236 AC1)', () => {
     expect(countsText(counts)).toBe(null)
   })
 
-  test('the query asks for the state, the decision, and the threads only', () => {
-    for (const field of ['reviews', 'comments', 'commits', 'author']) expect(COUNTS_QUERY).not.toContain(field)
-    expect(COUNTS_QUERY).toContain('{ state reviewDecision reviewThreads(last: 100) { nodes { isResolved } } }')
+  test('the query asks for the state, the decision, the merge state, and the threads only', () => {
+    for (const field of ['reviews', 'comments', 'commits', 'author', 'mergeStateStatus']) expect(COUNTS_QUERY).not.toContain(field)
+    expect(COUNTS_QUERY).toContain('{ state reviewDecision mergeable reviewThreads(last: 100) { nodes { isResolved } } }')
   })
 })
 
@@ -80,19 +80,19 @@ describe('prRead gives the word and the count of one graphql reply (M237 AC4)', 
     test(`${name} reads ${word}`, () => {
       const got = prRead(ok(reply({ state, reviewDecision, ...threads(false) })))
       const isOpen = state === 'OPEN'
-      expect(got).toEqual({ word, counts: isOpen ? { unresolved: 1 } : null })
+      expect(got).toEqual({ word, counts: isOpen ? { unresolved: 1 } : null, mergeable: null })
     })
   }
 
   // Replies GitHub gave to the M237 query, so the field names are GitHub's
   // own (M237 review).
   test('the captured PR #246 and #247 replies read merged and in review with one thread', () => {
-    expect(prRead({ exitCode: 0, stdout: `${PR_246_STDOUT}\n` })).toEqual({ word: 'merged', counts: null })
-    expect(prRead({ exitCode: 0, stdout: `${PR_247_STDOUT}\n` })).toEqual({ word: 'in review', counts: { unresolved: 1 } })
+    expect(prRead({ exitCode: 0, stdout: `${PR_246_STDOUT}\n` })).toEqual({ word: 'merged', counts: null, mergeable: null })
+    expect(prRead({ exitCode: 0, stdout: `${PR_247_STDOUT}\n` })).toEqual({ word: 'in review', counts: { unresolved: 1 }, mergeable: null })
   })
 
   test('OPEN with an absent decision reads in review', () => {
-    expect(prRead(ok(reply({ state: 'OPEN', ...threads(false) })))).toEqual({ word: 'in review', counts: { unresolved: 1 } })
+    expect(prRead(ok(reply({ state: 'OPEN', ...threads(false) })))).toEqual({ word: 'in review', counts: { unresolved: 1 }, mergeable: null })
   })
 
   const UNKNOWN: [string, { exitCode: number; stdout: string } | null][] = [
@@ -105,7 +105,7 @@ describe('prRead gives the word and the count of one graphql reply (M237 AC4)', 
   ]
   for (const [name, result] of UNKNOWN) {
     test(`${name} reads unknown with no count`, () => {
-      expect(prRead(result)).toEqual({ word: 'unknown', counts: null })
+      expect(prRead(result)).toEqual({ word: 'unknown', counts: null, mergeable: null })
     })
   }
 
@@ -119,9 +119,52 @@ describe('prRead gives the word and the count of one graphql reply (M237 AC4)', 
       expect(prRead(ok(reply({ state: 'OPEN', reviewDecision: 'APPROVED', ...(part as object) })))).toEqual({
         word: 'approved',
         counts: null,
+        mergeable: null,
       })
     })
   }
+})
+
+// The merge state rides in the same reply (M301 AC1). Each open reply
+// carries one unresolved thread, so the count shows the threads were read.
+describe('prRead gives an open pull request its merge state (M301 AC1)', () => {
+  const INPUTS: [string, Record<string, unknown>, 'mergeable' | 'conflicts' | null][] = [
+    ['MERGEABLE', { mergeable: 'MERGEABLE' }, 'mergeable'],
+    ['CONFLICTING', { mergeable: 'CONFLICTING' }, 'conflicts'],
+    ['UNKNOWN', { mergeable: 'UNKNOWN' }, null],
+    ['another string', { mergeable: 'SOMETHING_NEW' }, null],
+    ['the field absent', {}, null],
+  ]
+  for (const [name, part, mergeable] of INPUTS) {
+    test(`an open reply with ${name} reads ${mergeable}`, () => {
+      expect(prRead(ok(reply({ state: 'OPEN', reviewDecision: null, ...part, ...threads(false) })))).toEqual({
+        word: 'in review',
+        counts: { unresolved: 1 },
+        mergeable,
+      })
+    })
+  }
+
+  for (const [state, word] of [
+    ['MERGED', 'merged'],
+    ['CLOSED', 'closed'],
+  ]) {
+    test(`a ${state} reply with MERGEABLE carries no merge state`, () => {
+      expect(prRead(ok(reply({ state, reviewDecision: null, mergeable: 'MERGEABLE', ...threads(false) })))).toEqual({
+        word,
+        counts: null,
+        mergeable: null,
+      })
+    })
+  }
+
+  test('threads that fail the shape check leave the merge state standing', () => {
+    expect(prRead(ok(reply({ state: 'OPEN', reviewDecision: 'APPROVED', mergeable: 'CONFLICTING', reviewThreads: { nodes: null } })))).toEqual({
+      word: 'approved',
+      counts: null,
+      mergeable: 'conflicts',
+    })
+  })
 })
 
 describe('countsArgv names the owner, repo, and number of the URL (M225 AC1)', () => {

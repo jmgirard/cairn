@@ -29,7 +29,8 @@ import {
   PLAN_CANDIDATE_LABEL,
   PLAN_LABEL,
   PR_BUTTON,
-  prWord,
+  PR_VIEW_FIELDS,
+  prViewRead,
   READING_LABEL,
   REFRESH_LABEL,
   REVISE_LABEL,
@@ -151,8 +152,9 @@ const pane = atom({ plugin: 'cairn', key: 'pane' } as const, NO_PANE as PaneStat
 // read at a pane open or a Refresh press (M224). A URL with no entry has
 // not been read, and its line shows no word. Each entry also holds the
 // open pull request's counts, or null; the tag moved to 2 with them (M225)
-// and to 3 when the second count left them (M236).
-const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-3' })
+// and to 3 when the second count left them (M236), and to 4 with the merge
+// state (M301).
+const prs = atom({ plugin: 'cairn', key: 'prs' } as const, {} as Record<string, PrRead>, { shape: 'prs-4' })
 
 // The hotfix list that the last read wrote, and the repo root it is for
 // (M226, `readHotfixes` says when it is kept or empty). The pane draws
@@ -1101,7 +1103,7 @@ async function readPrs($) {
 // open, as `readPrs` describes. It never rejects. A github.com URL takes one
 // `gh api graphql` call for both (counts.ts `prRead`, M237). A URL of
 // another form, as a hotfix's on another host, takes one `gh pr view` call
-// for its word and gets no counts.
+// for its word and merge state (M301) and gets no counts.
 async function readPr($, url: string): Promise<PrRead> {
   const graph = countsArgv(url)
   if (graph !== null) {
@@ -1112,10 +1114,10 @@ async function readPr($, url: string): Promise<PrRead> {
     }
   }
   try {
-    const argv = ['gh', 'pr', 'view', url, '--json', 'state,reviewDecision']
-    return { word: prWord(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS })), counts: null }
+    const argv = ['gh', 'pr', 'view', url, '--json', PR_VIEW_FIELDS]
+    return prViewRead(await $.process.run(argv, { timeoutMs: GH_TIMEOUT_MS }))
   } catch {
-    return { word: prWord(null), counts: null }
+    return prViewRead(null)
   }
 }
 

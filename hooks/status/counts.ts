@@ -10,7 +10,7 @@
 // from a `gh pr view` call before this one.
 
 import type { CairnPrRead } from '../../types'
-import { OPEN_WORDS, wordOf } from './pane'
+import { mergeOf, OPEN_WORDS, wordOf } from './pane'
 
 // The counts as the state contract holds them.
 export type PrCounts = NonNullable<CairnPrRead['counts']>
@@ -21,7 +21,7 @@ export type PrNodes = { threads: { isResolved: boolean }[] }
 // The query `gh api graphql` runs for one pull request.
 export const COUNTS_QUERY =
   'query($owner: String!, $repo: String!, $number: Int!) { repository(owner: $owner, name: $repo) { pullRequest(number: $number) { ' +
-  'state reviewDecision reviewThreads(last: 100) { nodes { isResolved } } } } }'
+  'state reviewDecision mergeable reviewThreads(last: 100) { nodes { isResolved } } } } }'
 
 // The URL `prUrl` in reader.ts keeps: owner, repo, and number.
 const URL = /^https:\/\/github\.com\/([^/ \t]+)\/([^/ \t]+)\/pull\/([0-9]{1,15})$/
@@ -94,19 +94,23 @@ export function prNodes(reply: unknown): PrNodes | null {
 // reply with no `pullRequest` reads `unknown` with no count. Otherwise the
 // word comes from `state` and `reviewDecision` (pane.ts `wordOf`). An open
 // word carries the count, which is null when the threads fail the shape
-// check, and the word stands. Any other word carries no count.
+// check, and the word stands. Any other word carries no count. The merge
+// state comes from `mergeable` (pane.ts `mergeOf`, M301), and threads that
+// fail the shape check leave it standing.
 export function prRead(result: { exitCode: number; stdout: string } | null): CairnPrRead {
-  if (result === null || result.exitCode !== 0) return { word: 'unknown', counts: null }
+  const none: CairnPrRead = { word: 'unknown', counts: null, mergeable: null }
+  if (result === null || result.exitCode !== 0) return none
   let reply: unknown
   try {
     reply = JSON.parse(result.stdout)
   } catch {
-    return { word: 'unknown', counts: null }
+    return none
   }
   const pr = pullRequestOf(reply)
-  if (pr === null) return { word: 'unknown', counts: null }
+  if (pr === null) return none
   const word = wordOf(pr.state, pr.reviewDecision)
-  if (!OPEN_WORDS.includes(word)) return { word, counts: null }
+  const mergeable = mergeOf(word, pr.mergeable)
+  if (!OPEN_WORDS.includes(word)) return { word, counts: null, mergeable }
   const nodes = prNodes(reply)
-  return { word, counts: nodes === null ? null : countPr(nodes) }
+  return { word, counts: nodes === null ? null : countPr(nodes), mergeable }
 }

@@ -1,4 +1,4 @@
-import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStartedRow } from '../../types'
+import type { CairnHotfixPr, CairnPrMerge, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStartedRow } from '../../types'
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
@@ -108,12 +108,31 @@ export type PaneLine = {
 export type PrWord = CairnPrWord
 
 // One read of a pull request: its word, and its counts while it is open
-// and its threads passed the shape check (M225, M237).
+// and its threads passed the shape check (M225, M237), and its merge state
+// while it is open and GitHub knows it (M301).
 export type PrRead = CairnPrRead
 
+// An open pull request's merge state (M301).
+export type PrMerge = CairnPrMerge
+
 // The words `wordOf` gives an OPEN pull request, the ones that carry
-// counts (M225, M237).
+// counts (M225, M237) and a merge state (M301).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
+
+// The fields a `gh pr view` call reads for a URL that is not a github.com
+// pull URL (M224, `mergeable` since M301).
+export const PR_VIEW_FIELDS = 'state,reviewDecision,mergeable'
+
+// The merge state of a pull request with this word and this `mergeable`
+// value (M301). Only a word in `OPEN_WORDS` carries one. MERGEABLE reads
+// `mergeable` and CONFLICTING reads `conflicts`. UNKNOWN, which GitHub
+// answers while it computes the value, and any other value read null.
+export function mergeOf(word: PrWord, mergeable: unknown): PrMerge | null {
+  if (!OPEN_WORDS.includes(word)) return null
+  if (mergeable === 'MERGEABLE') return 'mergeable'
+  if (mergeable === 'CONFLICTING') return 'conflicts'
+  return null
+}
 
 // The count line's text, or null when the count is zero. One thread reads
 // in the singular (M225, M236).
@@ -129,16 +148,25 @@ export function countsText(counts: PrCounts): string | null {
 // CHANGES_REQUESTED or APPROVED, an empty or absent one included, reads as
 // `in review`.
 export function prWord(result: { exitCode: number; stdout: string } | null): PrWord {
-  if (result === null || result.exitCode !== 0) return 'unknown'
+  return prViewRead(result).word
+}
+
+// The read of one `gh pr view --json` call with `PR_VIEW_FIELDS`, null
+// for a call that rejected: the word as `prWord` gives it, no counts, and
+// the merge state as `mergeOf` gives it (M301).
+export function prViewRead(result: { exitCode: number; stdout: string } | null): PrRead {
+  const none: PrRead = { word: 'unknown', counts: null, mergeable: null }
+  if (result === null || result.exitCode !== 0) return none
   let view: unknown
   try {
     view = JSON.parse(result.stdout)
   } catch {
-    return 'unknown'
+    return none
   }
-  if (view === null || typeof view !== 'object') return 'unknown'
-  const { state, reviewDecision } = view as { state?: unknown; reviewDecision?: unknown }
-  return wordOf(state, reviewDecision)
+  if (view === null || typeof view !== 'object') return none
+  const { state, reviewDecision, mergeable } = view as { state?: unknown; reviewDecision?: unknown; mergeable?: unknown }
+  const word = wordOf(state, reviewDecision)
+  return { word, counts: null, mergeable: mergeOf(word, mergeable) }
 }
 
 // The state word of a pull request's `state` and `reviewDecision`, as

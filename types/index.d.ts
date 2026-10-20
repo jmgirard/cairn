@@ -88,11 +88,17 @@ export type CairnPaneState = {
 // host (M224, M237).
 export type CairnPrWord = 'merged' | 'closed' | 'changes requested' | 'approved' | 'in review' | 'unknown'
 
+// An open pull request's merge state, from GitHub's `mergeable` field
+// (M301): MERGEABLE reads `mergeable` and CONFLICTING reads `conflicts`.
+export type CairnPrMerge = 'mergeable' | 'conflicts'
+
 // One read of a blocked milestone's pull request: its state word (M224),
 // and for an open one, its review threads not marked resolved (M225, M236).
 // `counts` is null for a pull request that is not open, or whose threads
-// failed the shape check (M237).
-export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number } | null }
+// failed the shape check (M237). `mergeable` is null for a pull request
+// that is not open, or whose `mergeable` is UNKNOWN, another value, or
+// absent (M301).
+export type CairnPrRead = { word: CairnPrWord; counts: { unresolved: number } | null; mergeable: CairnPrMerge | null }
 
 // One open pull request that the operator opened from a `hotfix-*` branch,
 // as `gh pr list` gave it (M226).
