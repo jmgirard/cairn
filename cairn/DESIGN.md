@@ -494,7 +494,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   the read's start, and the archived count. `projectName` gives the name:
   the repo part of a github.com URL, else the folder holding a `.git`
   common dir (`git rev-parse --path-format=absolute --git-common-dir`, run
-  only then), else the root's last segment. The `repo` state value (`{
+  only when the base URL is not a github.com one or there is none), else
+  the root's last segment. The `repo` state value (`{
   root, counts, done, name }`, tag `repo-3`) holds them, and the pane draws
   them only while its root is the band's. With none for that root,
   `paneLines` names the root's last segment (M291).
