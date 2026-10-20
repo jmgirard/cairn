@@ -57,7 +57,7 @@ the whole title.
 - [x] T2: Rewrite the `retitle` table row and the "Title → `retitle`" class in `skills/cairn-triage/SKILL.md` (~lines 283 and 325-340) to AC2.
 - [x] T3: Rewrite README.md's passage (~lines 399-410) and the skeleton comment in `skills/cairn-init/SKILL.md` (~lines 188-197) to AC3.
 - [x] T4: Add the CHANGELOG entry under `## Unreleased`, and append a D-entry that annotates D-108, D-163, and D-164 (IP4: no edit to them), naming the user's decision at the M292 question set and the pane-width basis of the cap.
-- [ ] T5: Run both gating suites, `claude plugin validate`, the hand-run `skills/tests`, and `cairn_validate`; grep the repo for the old phrasing ("few words", "60 code points", "60 characters") outside history records and fix any live hit.
+- [x] T5: Run both gating suites, `claude plugin validate`, the hand-run `skills/tests`, and `cairn_validate`; grep the repo for the old phrasing ("few words", "60 code points", "60 characters") outside history records and fix any live hit.
 
 ## Work log
 
@@ -76,3 +76,4 @@ the whole title.
 - 2026-10-19: T2 done: `/cairn-triage`'s Title class flags fewer than 5 words or more than 40 characters, new titles take the sentence bounds and the issue reference, and the `retitle` table row says one sentence; AC2's grep finds nothing; verify green (5/5).
 - 2026-10-19: T3 done: README's passage states the format, the issue reference, and the triage trigger, its two `Pane refresh lag` examples became `Fix the pane's slow refresh`; the `/cairn-init` skeleton comment states the bounds with the skewness example; AC3's grep finds nothing; verify green (5/5).
 - 2026-10-19: T4 done: CHANGELOG `## Unreleased` entry "Candidate short titles are one short sentence"; D-189 appended, annotating D-163 and D-164 and passing D-108's door by the user's decision.
+- 2026-10-19: T5 done: verify green (5/5), hand-run `skills/tests` green (914 tests), `cairn_validate` green; the old-phrasing sweep outside history records hits only CHANGELOG.md:320, the released 2.1.0 entry, left as history.
