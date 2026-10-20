@@ -97,6 +97,7 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: task T9 added for return 2 (a minor amendment), Coverage AC4 → T3, T7, T9.
 - 2026-10-20: T9 done: a redraw at `scroll.offset` 10 and `bodyRows` 3 draws no card on either surface, with a control at 200 rows that draws one on the desktop; the inline test's terminal branch checks both draws' lines and roots; DESIGN's card paragraph names where each card sits and that `cardPlaces` reads `bodyColumns`; the `cardPlaces` comment gains its comma. Verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2389 pass 0 fail.
 - 2026-10-20: implement done after review return 2; status review.
+- 2026-10-20: step-7 approval: m294-pane-card-placement approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
