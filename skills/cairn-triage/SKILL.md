@@ -300,7 +300,7 @@ re-examines a lesson.
    | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list. While the cairn pane lists candidates, it marks the row `↑`. A Known issues entry has no token and takes none. |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
-   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), one sentence that names the work to do, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. |
+   | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), one sentence that names the work to do, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. A double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten. The table lists it as left, with the PR's number, as it lists an ambiguous mention. |
 
    A row carrying a live started token, or missing one, is `keep` before
    anything else is checked, §7's options included. Its reason names the
@@ -356,7 +356,8 @@ re-examines a lesson.
      the other new titles of the pass included. The row's byte length does
      not matter here. The mentions it lists are found by a search for the
      old title in double quotes over `cairn/ROADMAP.md` and DESIGN.md's
-     Known issues. Each new title is one sentence with no ending period.
+     Known issues. A mention found inside a PR-named row's own short title
+     is listed as left, with the PR's number. Each new title is one sentence with no ending period.
      It has at least 5 words and at most 40 characters by that count, and
      it holds no `: `, ` — `, or icon. A row's text, its old title
      included, can name a GitHub issue of `<base-repo>`. The forms are an
@@ -422,7 +423,8 @@ re-examines a lesson.
      A `merge` names its survivor; a `split` names its rows; a `route` names
      its destination; a `promote` names the milestone title it hands on; a
      `retitle` names the new title, each mention it rewrites, and each
-     ambiguous mention it leaves.
+     ambiguous mention it leaves. It also names each mention it leaves
+     inside a PR-named row's short title, with the PR's number.
      A `keep`, `compress`, or `retitle` row may also carry a priority change
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
@@ -468,7 +470,8 @@ re-examines a lesson.
         becomes `keep`. The user can also decline a named token change
         alone, and the row's disposition then stands. A promote's change
         to `high` is not declined alone. To avoid it, the user amends the
-        item to `keep`.
+        item to `keep`. The user can also amend a PR-named row away from
+        `keep`, and the next chip names the PR (the amend loop below).
      3. **Apply nothing** — the stop option: no file changes, no commit, no
         D-entry; the pass ends at the close block with the table as its
         record in chat only.
@@ -483,6 +486,20 @@ re-examines a lesson.
      posed again: only *Accept as proposed* applies anything, and *Apply
      nothing* at any point ends the pass unchanged — the chip never
      auto-proceeds.
+     On a PR-named row, the user can set a disposition that removes the
+     row or changes its short title. Those are `drop`, `merge` as the
+     absorbed row, `split`, `route`, `retitle`, and a `compress` that
+     rewrites the title. The pass takes it, since a user override is
+     logged, never resisted. The chip posed after that *Amend* names the
+     row and each naming PR's number in its question text. It also says
+     that the change breaks that PR's match of the row, so the cairn pane
+     shows the row while the PR is open. A second or later *Amend*, which
+     shows no table, follows the same rule.
+     After a session-start open-PR read that failed or returned 100 PRs, a
+     non-`keep` disposition set at *Amend* is marked as a proposed one is.
+     On the first *Amend*, its table reason carries the same not-checked
+     mark. On every *Amend*, the chip's question text names that row as
+     not checked.
    - Whatever the answer, **every item not accepted for a change is left
      byte-for-byte untouched** — `keep` is a no-op, never a re-wording
      (a merge survivor's lineage clause is the accepted merge's edit), and
@@ -521,7 +538,8 @@ re-examines a lesson.
    removed (the `retitle` row of step 2's table); it then
    rewrites each listed mention in the other ROADMAP rows and Known issues
    entries, in each quoting item's text as its own accepted disposition
-   leaves it, and none in an item being dropped; `keep` changes nothing of
+   leaves it, and none in an item being dropped, nor one inside a
+   PR-named row's own short title; `keep` changes nothing of
    its own, and `promote` changes nothing of its own beyond the priority
    change a candidate row's promote carries, though a `retitle` can rewrite a
    mention inside either; an accepted priority change, a promote's
@@ -533,7 +551,12 @@ re-examines a lesson.
    ` — started <ref>` text as the row spells it and leaves the rest of the
    row as it is. A note right after the removed token stays where it was. A
    merge survivor's lineage clause, and any trigger it takes from the
-   absorbed row, go before the row's first started token. A `compress`
+   absorbed row, go before the row's first started token. Where the
+   survivor's text holds neither `: ` nor ` — ` before that place, the
+   clause opens with ` — `. The lineage clause, and any trigger it takes
+   from the absorbed row, hold no `: `, each one written as `; `. So the
+   survivor's short title stays as it was, for every survivor, a PR-named
+   row and a row with a started token included. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end.
    Candidates stay one item per line,
