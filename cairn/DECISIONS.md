@@ -6895,3 +6895,45 @@ read unless a new decision sets one. D-186's answer to D-016's reason,
 the move-to-Opus arm, was read and did not fire. Whether the lens also
 reads additions is item (3) of the "Copilot arm edges" row, planned from
 that row.
+
+### D-191 (2026-10-20): A candidate title's `(#N)` is part of the title for `/milestone-plan`'s tier check and `/hotfix` step 1, and `/cairn-triage` keeps a row that an open PR names — narrows D-162's issue rule; annotates D-189 and D-166; passes D-108's door on its retained trigger (M295)
+
+**Context:** Since D-189 a candidate row written for an issue ends its
+short title with `(#N)`. A ✎ press and the planning Next line pass the
+title to `/milestone-plan`, and D-162's issue rule skipped the tier check
+for any request that names an issue, so such a row never got the hotfix
+or trivial offer. `/hotfix` step 1 could read the same `(#N)` as a pull
+request. `/cairn-triage` could also retitle a row that an open PR's
+`Candidate row:` line names, which breaks the exact match that hides the
+row in the cairn pane and that `/hotfix` step 7 graduates by. Both are
+defects in shipped behavior that the M292 review found.
+
+**Decision:** In `/milestone-plan`'s tier check, a `(#N)` or `(#N, #M)`
+inside a candidate row's short title that the request contains verbatim
+does not make the request name an issue. The check runs on that row, and
+it judges from the row's text and the code, never from issue #N's body.
+In `/hotfix` step 1, such a number inside a quoted candidate title is part
+of the title, not a PR reference, and it still names the issue for the
+`Fixes #N` line. A `#N`, an issue URL, or a PR reference outside the title
+keeps D-162's rule. `/cairn-triage` reads the open PRs' `Candidate row:`
+lines at session start and makes each row they name `keep`, as it keeps a
+row with a live started token. If that read fails, the pass still runs
+and marks each non-`keep` proposal as not checked against open PRs.
+
+**Rationale:** D-162 gave two reasons for its issue rule: an issue's text
+must not steer a direct edit, and a bare `#N` must not reach `/hotfix` as
+a pull request. A candidate row is text that cairn already wrote at
+intake, and the check judges from it and not from the issue's body, so the
+first reason holds. The `/hotfix` sentence answers the second.
+
+**Rejected:** A sentence in the rulebook's "Candidate short title" section
+in place of the two skill edits: the two skills hold the issue and PR
+rules, and a rulebook edit re-seeds three rulebook-mass pins. Excluding a
+PR-named row from `retitle` alone: `merge`, `drop`, `route`, and `compress`
+also remove or rewrite the title. Holding every row at `keep` on a failed
+PR read: that stops the candidate pass whenever `gh` is down.
+
+**Consequences:** D-189's consequence that such a row is planned with no
+tier check no longer holds. The trivial route's candidate-row match still
+asks for a quoted title, which a ✎ press does not send; the candidate row
+"Match bare titles on the trivial route" holds that.

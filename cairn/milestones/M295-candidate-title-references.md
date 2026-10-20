@@ -114,7 +114,7 @@ CHANGELOG entry states both changes.
       in the proposal table. Say in the skill that this marks rows rather
       than holding them at `keep`, unlike a failed `#<n>` token read, so the
       pass still runs when `gh` is down.
-- [ ] T4: Append the next D-entry to `cairn/DECISIONS.md`: it narrows D-162's
+- [x] T4: Append the next D-entry to `cairn/DECISIONS.md`: it narrows D-162's
       issue rule for a title's `(#N)`, answers D-162's reason (an issue's text
       steering a direct edit; a bare `#N` reaching `/hotfix` as a PR), and
       annotates D-189's consequence that names this row.
@@ -153,6 +153,7 @@ CHANGELOG entry states both changes.
 - 2026-10-20: T1 done: the plan skill's issue rule now reads a candidate title's `(#N)` as part of the title (step 1, after "the door that tiers an issue"); the simple-english PostToolUse hook flagged 194 file-wide STE hits that predate this edit, left as they are (out of scope; the added sentences carry none of the flagged kinds).
 - 2026-10-20: T2 done: `/hotfix` step 1 reads a quoted candidate title's `(#N)` as part of the title and keeps it for `Fixes #N`; the 16 other `grep -n "PR.reference"` hits each say "PR-reference argument" or "the PR reference", the term step 1 defines, and none spots a bare `#N` on its own; same pre-existing hook hits, left.
 - 2026-10-20: T3 done: `/cairn-triage` session start reads open PRs' `Candidate row:` lines with one `gh pr list`, parsed as `startedRows` parses them; step 2 keeps each PR-named row and, on a failed read, marks every non-`keep` proposal as unchecked; the read sits in Session start, not a numbered step, so the plan's "~lines 64-90" placement held and the cross-references say "session start" and "step 3's table".
+- 2026-10-20: T4 done: D-191 appended (narrows D-162's issue rule; annotates D-189 and D-166; passes D-108's door on its retained trigger, the M292 review's shipped-behavior defects).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
