@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M296: The trivial route matches a pressed title, not PR rows
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -66,7 +66,7 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
 - [x] T3: Update `skills/tests/test_plan_tier_check.py`'s `test_trivial_route_graduates_matched_rows` to pin T1's and T2's sentences, each member of a list pinned on its own (LESSONS M171). Show each new assertion red against the pre-change step 1 before trusting its green.
 - [x] T4: Append the D-entry (next free id) per AC3.
 - [x] T5: Edit README's trivial-edit row (about line 734) and add the CHANGELOG Fixes entry; run AC4's grep and fix any line it lists.
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -97,6 +97,7 @@ The trivial route's candidate-row match takes the row whose short title a ✎ pr
 - 2026-10-20: T4: D-193 appended (supersedes D-170's Rejected reason, keeps its rejection; annotates D-191's Consequences; D-108's door passed on the two shipped defects).
 - 2026-10-20: T5: README trivial-edit row and a CHANGELOG Unreleased Fixes entry; lint counts on both files equal main's after two sentences were split. AC4's grep lists CHANGELOG.md:169 (the new entry, stating the old behavior in the past), :402 and :746 (released sections), the widened SKILL.md:102 sentence, and test_plan_tier_check.py:159 (the kept pin of the quote sentence); none states the quote as the only match.
 - 2026-10-20: claim audit: 24 claims read, 2 corrected — CHANGELOG.md (a PR's merge "removes or narrows" the row; the not-checked note also covers a list cut at 100, and only when a row matched); the reader re-read both and found them holding.
+- 2026-10-20: T6: verify at 127dc202 (the later commit changes only CHANGELOG prose and this file): scripts/tests, hooks/tests (193), both plugin validates, plugin test (2389 pass, 0 fail), and hand-run skills/tests (918) all exit 0. Status review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
