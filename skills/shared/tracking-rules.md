@@ -214,7 +214,7 @@ Only the later milestone carries the `feature series:` line.
 
 Work that isn't a milestone: **Trivial** (no runtime surface — typos, tracking, comments) → direct commit to the default
 branch, no tracking beyond the commit. Through `/milestone-plan`'s trivial route, the commit also graduates the rows
-it fixes. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,
+it fixes. In owner mode the route also closes the open issue of a row it deletes, once its option names the close. **Hotfix** (user-visible bug) → `/hotfix`: regression test first, gate-lite, PR,
 user approval; NEWS entry; no milestone file. **Milestone** → more than one sitting, changes exported behavior (beyond
 restoring documented behavior), or requires a design decision.
 
