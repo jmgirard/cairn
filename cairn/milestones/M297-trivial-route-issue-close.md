@@ -102,6 +102,8 @@ In owner mode, when the trivial route deletes a candidate row whose short title 
 - 2026-10-20: T6 done: from the repo root, scripts/tests 0, hooks/tests 0, plugin validate 0, marketplace validate 0, plugin test 0, skills/tests 0; cairn_validate all checks passed.
 - 2026-10-20: claim audit: 37 claims read, 0 corrected — CHANGELOG.md, README.md, skills/milestone-plan/SKILL.md, skills/tests/test_plan_tier_check.py
 - 2026-10-20: implement done; status review. Open concern: the summary's references can include a PR or kept-row number (the second AC1 re-audit's AC2 point, answered, AC2 kept).
+- 2026-10-20: review: four lenses, 25 findings (8 fix now in ba1f2f15, 5 to the row "Keep owed issues open on a trivial edit", 12 rejected); Copilot Lite review, 1 body item fixed in ba1f2f15.
+- 2026-10-20: step-7 approval: m297-trivial-route-issue-close approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
