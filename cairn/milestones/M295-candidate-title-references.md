@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M295: A candidate title's issue number stays part of the title
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -158,6 +158,7 @@ CHANGELOG entry states both changes.
 - 2026-10-20: T6 done: verify clean (scripts and hooks suites OK, both `claude plugin validate` exit 0, `claude plugin test` 2389 pass 0 fail); hand-run `skills/tests` 917 OK with no reds, so no comparison with main was needed.
 - 2026-10-20: claim audit: 30 claims read, 4 corrected — CHANGELOG.md, skills/cairn-triage/SKILL.md (CHANGELOG: the pane counts only your own PRs, `/hotfix` and `/milestone-review` write the lines in owner mode, the failed-read mark covers non-`keep` rows; triage: an unclosed fence runs to the end of the body; also a sentence that triage reads every author's PRs, moved after the PR-named definition at the reader's wording note); the same reader re-read all corrections as true.
 - 2026-10-20: implement complete; status set to review.
+- 2026-10-20: review return 1: AC3 fails — `skills/cairn-triage/SKILL.md` ranks the PR-named keep after §7's options and the Title class, so a PR-named row in a §7 group can be proposed `promote`/`route`/`drop` and one with a bad title `retitle` (diff-bug #1, prior-review #1, ripple #1); rank it with the live-token keep. Fix-now items riding on the return: plan's hotfix-route summary carries no `#N` (diff-bug #2); hotfix "each number names its issue" (#3); a 100-PR list read says it may be cut (#4); step 3's table spec names the failed-read notice (#7).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -171,3 +172,37 @@ CHANGELOG entry states both changes.
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Pass 1 (2026-10-20), branch at 1b0a1d9 over origin/main e4e9701b (main had not moved). Copilot arm: PR #308 opened, header URL pushed, state query `none`, request exit 0, re-query `pending`.
+
+- AC1 evidence: `skills/milestone-plan/SKILL.md:60-67` reads a `(#N)`/`(#N, #M)` inside a candidate short title the request contains verbatim as not naming an issue, says the request names that row and the check runs, judges from the row's text and the code, never issue #N's body, and keeps the issue and guest rules for a `#N`, issue URL, or PR reference outside the title. Met.
+- AC2 evidence: `skills/hotfix/SKILL.md:36-42`, inside the PR-reference sentence of step 1: such a number in a quoted title is part of the title, an argument whose only `#N` sits there is a bug report with the candidate-row match and no `gh pr view`, and the number still names the issue for step 6's `Fixes #N`. Met.
+- AC3 evidence: `skills/cairn-triage/SKILL.md:88-102` holds the one `gh pr list --repo <base-repo> --state open --limit 100 --json number,body` read and the `startedRows` parse (trailing `\r`, exact prefix, trim, blank rest, fence to next fence or end of body; matches `hooks/status/pane.ts:214-240`); `:381-383` makes a PR-named row `keep` with its PR number. NOT met: diff-bug #1 shows `:306-309` sends a finding-absorbing row to §7's options before the `:381` keep, so a PR-named row in a §7 group can be proposed `promote`, `route`, or `drop`. Box left unticked.
+- AC4 evidence: `skills/cairn-triage/SKILL.md:384-387`: on a failed list read the table names the failure and each non-`keep` proposal's reason says it was not checked against open PRs; `:99-102` says the pass still runs. Met.
+- AC5 evidence: `CHANGELOG.md:146-163`, under `## Unreleased` (line 3, before `## 2.1.0` at 173), Fixes: "A candidate title's issue number stays part of the title" (plan and `/hotfix`) and "`/cairn-triage` keeps a row that an open pull request names". Met.
+- AC6 evidence: fresh run 2026-10-20: `scripts/tests` 428 OK (21 skipped) exit 0; `hooks/tests` 193 OK exit 0; `claude plugin validate` plugin.json exit 0, marketplace.json exit 0; `claude plugin test .` 2389 pass 0 fail exit 0. Met.
+- Consistency gate: `cairn_validate.py` exit 0, all checks passed; no DESIGN principle changed, so `cairn_impact` skipped; the claude-plugin consistency-gate slot's checks are the verify commands above.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a PR-named row in a §7 group takes §7's options (`promote`, `route`, `drop`) before the step-2 keep at `cairn-triage/SKILL.md:381` — fix now, floor return (AC3 fails inside its domain); rank the PR-named keep with the live-token keep at `:303`.
+- diff-bug #2: the plan's hotfix route opens with a one-line bug summary that can carry a `#N` outside the title, which `/hotfix` then reads as a PR — fix now (the summary carries no `#N`).
+- diff-bug #3: "That number still names the issue" is singular while the rule covers `(#N, #M)` — fix now (each number names its issue).
+- diff-bug #4: a list read that returns exactly 100 PRs may be cut and marks nothing — fix now (the table says the list may be cut).
+- diff-bug #5: guest mode and third-party PR bodies can hold a row at `keep` — reject, planned change (the plan chose reading every author's PRs; over-keeping is the safe side).
+- diff-bug #6: a non-`keep` disposition set at Amend after a failed read gets no mark, and Amend can retitle a PR-named row (same gap for live-token rows) — follow-up, new row "Guard PR-named rows on other skill paths".
+- diff-bug #7: step 3's table spec lists the guest ref line but not the failed-read notice — fix now.
+- diff-bug #8: a merge survivor's lineage clause could lengthen a PR-named row's short title when the row has no `: ` or ` — ` (pre-existing for live-token rows) — follow-up, "Guard PR-named rows on other skill paths".
+- diff-bug #9: D-191's heading says it annotates D-166 but the body does not say what changes — reject, false (the Decision says triage keeps a PR-named row "as it keeps a row with a live started token", D-166's keep rule extended).
+- diff-bug #10: an unquoted typed `/hotfix … (#100)` still reads `#100` as a PR — reject, planned change (AC2 says "quotes"; the audit chose it).
+- diff-bug #11: lines over 80 columns and ragged wraps — reject, style.
+- blame-history #1: the trivial-route match needs a quoted title, and D-170's Rejected section rests on "a pane press sends the quoted title", which is false — follow-up, absorbed into "Match bare titles on the trivial route" (D-170's premise added to its detail).
+- blame-history #2: the trivial route's row match does not skip a row an open PR names, so a trivial commit can delete a row an open hotfix PR carries — follow-up, "Guard PR-named rows on other skill paths".
+- blame-history #3: the PR-named keep overrides D-164's icon retitle, and D-191 does not annotate D-164 — reject, false (the live-token keep already precedes the icon retitle; D-164's rule for rows that are retitled is unchanged).
+- blame-history #4: triage reads every author's PRs, wider than the pane — reject, planned change (documented in the skill).
+- prior-review #1: a PR-named row with an icon, shared, or out-of-bounds title can still be proposed `retitle`, since the Title class runs before the step-2 keep — fix now, same fix as diff-bug #1 (the keep is ranked before every class).
+- prior-review #2: running the check on a titled `(#N)` reverses M250's user choice — reject, planned change (D-191 narrows D-162 at the user's pick of this row).
+- prior-review #3: a ✎-press `(#N)` request gets no trivial-route graduation — follow-up, already "Match bare titles on the trivial route".
+- ripple #1: the retitle bullet and table row (`cairn-triage/SKILL.md:301`, `:343-347`) still make a PR-named row eligible; tracking-rules:275 and the M292 CHANGELOG entry state retitle with no PR-named exception — fix now for the skill (diff-bug #1's ranking); reject for tracking-rules and the CHANGELOG, false (they state the retitle edit's triggers and form, which still hold for rows that are retitled, as for live-token rows).
+- ripple #2: `/milestone-review` writes `Candidate row:` lines only for rows it "graduates", not for narrowed rows — reject, false (records-hygiene §1: graduation is removing or narrowing).
+- ripple #3: `milestone-plan/SKILL.md:155` "A request that names an issue writes `tier check: not run …`" — reject, false (a request whose only `(#N)` is in a candidate title does not name an issue under the new sentence, so the line stays correct).
+- ripple #4: the trivial-route match still needs a quoted title — follow-up, already "Match bare titles on the trivial route".
+- Pass 1 result: floor return on AC3 (diff-bug #1); fix-now items diff-bug #2, #3, #4, #7 and prior-review #1 ride on the return. Copilot still `pending`; the next pass's PR-conversation read handles it.
