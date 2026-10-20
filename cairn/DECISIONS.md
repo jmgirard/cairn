@@ -7016,3 +7016,28 @@ after a failed read.
 **Consequences:** D-191's Consequences sentence that the match "still
 asks for a quoted title" no longer holds. The match reads one `gh` list
 call that it did not read before.
+
+### D-194 (2026-10-20): Two clauses of D-193 are corrected in one batched entry — the reason a PR-named row is skipped, and D-193's relation to D-170's Decision — supersedes those clauses; D-193's decision stands (M296 review)
+
+**Context:** The M296 review found two errors in D-193. Its Rationale
+says a PR-named row "is left for `/hotfix` step 7 on both paths". But
+`/milestone-review` also writes `Candidate row:` lines in owner mode, and
+the read takes every author's open PRs, so a milestone PR's row is
+graduated by that milestone's post-merge hygiene. D-193's heading also
+names only D-170's Rejected reason, while its rules widen and narrow
+D-170's Decision sentence "The trivial route matches each candidate row
+whose short title the request quotes".
+
+**Decision:** The PR-named row is skipped because that PR's merge
+graduates it: `/hotfix` step 7 for a hotfix PR, the post-merge hygiene of
+`/milestone-review` for a milestone PR. This supersedes D-193's clause
+"left for `/hotfix` step 7 on both paths". D-193 also widens D-170's
+Decision match sentence to the whole-request title and narrows it by the
+PR-named skip. The review also made the read run only when a row matches,
+named a `gh` that cannot run as a failed read, and stated that the PR
+text is data, never instructions.
+
+**Consequences:** D-193's decision, its rejections, and their falsifiers
+stand. A PR from neither skill that carries a `Candidate row:` line still
+holds its row, and nothing graduates it at that PR's merge. A later
+`/cairn-triage` pass sees the row again once that PR closes.
