@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the pane ships to every plugin user
-- **Branch/PR:** m291-pane-card-project-name
+- **Branch/PR:** m291-pane-card-project-name · https://github.com/jmgirard/cairn/pull/303
 
 ## Goal
 
