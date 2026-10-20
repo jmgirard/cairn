@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M292: Candidate row titles are one short sentence that fits the cairn pane
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — adopting repos' sessions write and retitle candidate rows by the rulebook and `/cairn-triage`
-- **Branch/PR:** —
+- **Branch/PR:** m292-candidate-title-format
 
 ## Goal
 
@@ -53,7 +53,7 @@ the whole title.
 
 ## Tasks
 
-- [ ] T1: Rewrite tracking-rules "Candidate short title" (`skills/shared/tracking-rules.md:259-270`) to AC1, with example titles inside the bounds in place of `ordinal REML: …` and `Home Button edges`; re-seed the rulebook-mass baseline in `skills/milestone/SKILL.md:120` and its two hand-run pins (`skills/tests/test_cost_audit_line.py`, `skills/tests/test_mutation_harness.py`).
+- [x] T1: Rewrite tracking-rules "Candidate short title" (`skills/shared/tracking-rules.md:259-270`) to AC1, with example titles inside the bounds in place of `ordinal REML: …` and `Home Button edges`; re-seed the rulebook-mass baseline in `skills/milestone/SKILL.md:120` and its two hand-run pins (`skills/tests/test_cost_audit_line.py`, `skills/tests/test_mutation_harness.py`).
 - [ ] T2: Rewrite the `retitle` table row and the "Title → `retitle`" class in `skills/cairn-triage/SKILL.md` (~lines 283 and 325-340) to AC2.
 - [ ] T3: Rewrite README.md's passage (~lines 399-410) and the skeleton comment in `skills/cairn-init/SKILL.md` (~lines 188-197) to AC3.
 - [ ] T4: Add the CHANGELOG entry under `## Unreleased`, and append a D-entry that annotates D-108, D-163, and D-164 (IP4: no edit to them), naming the user's decision at the M292 question set and the pane-width basis of the cap.
@@ -72,3 +72,4 @@ the whole title.
 - 2026-10-19: plan gate chose a 40-character cap, the docked desktop pane's room at rest, over 34 (room under the pointer) because the hover card shows the whole title under the pointer; falsified by a title of 40 or fewer characters cut with an ellipsis at rest in a docked desktop pane in a real session.
 - 2026-10-19: plan gate chose the pane-width cap over the user's first 5-15 word range because the user's answer put pane fit first; falsified by the user finding titles at the cap too terse.
 - 2026-10-19: plan gate chose to leave an issue absorbed later in the row's detail over changing its title, so double-quoted mentions, `/hotfix` matching, and live milestone quotes keep matching; falsified by a user asking for every issue number in the title.
+- 2026-10-19: T1 done: tracking-rules "Candidate short title" states the one-sentence, 5-word, 40-character format with `(#N)` and new example titles; rulebook baseline re-seeded to 760 lines / 73,320 bytes at its three sites; verify green (5/5).
