@@ -6937,3 +6937,37 @@ PR read: that stops the candidate pass whenever `gh` is down.
 tier check no longer holds. The trivial route's candidate-row match still
 asks for a quoted title, which a ✎ press does not send; the candidate row
 "Match bare titles on the trivial route" holds that.
+
+### D-192 (2026-10-20): The ripple lens keeps reading only what a diff removes or changes, and is not widened to additions — annotates D-185 and D-190; D-108's door is not passed (plan of M296 to M298)
+
+**Context:** D-190 read D-185's falsifier for the ripple lens and found
+one miss of a new kind: on PR #299 a new skill left the skill list and
+count in `skills/tests/test_chapter_marker_mandate.py` stale, and the
+lens did not see it, since it reads only text that a diff removes or
+changes. D-190 left the choice of widening the lens to additions with
+item (3) of the candidate row "Copilot arm edges (M285 review)". The user
+picked that row at the question set of the plan that created M296 to
+M298, and the plan then found the collision below.
+
+**Decision:** The lens stays as D-185 and D-186 describe it, at the
+user's choice in that plan's question set. Item (3) leaves the candidate
+row, and the row keeps items (1) and (2), parked.
+
+**Rationale:** D-108 bars a new milestone whose deliverable is a new
+conduct rule about verification, unless its trigger is a defect in
+shipped behavior. The one miss was a stale list in a hand-run test that
+no user reads, so it is not such a defect. Widening a checker that M285
+shipped is also the shape where the plan rules make simplifying the
+default, and D-190 found fixed findings from the lens as it stands, so
+leaving it unchanged is the option with no new rule.
+
+**Rejected:** Widening the lens to check added steps, skills, and
+profiles against lists and counts elsewhere, with D-108's door set aside
+by name; falsified by an addition that leaves user-facing text stale
+(README, a skill, a template, or the changelog) and reaches a release
+with no review lens finding it. Keeping item (3) parked in the row,
+because the user chose a recorded rejection over a deferral.
+
+**Consequences:** A miss of kind (3) in a hand-run test or other
+internal file does not reopen this. The falsifier above is the entry to
+supersede.
