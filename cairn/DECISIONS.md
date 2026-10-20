@@ -6868,3 +6868,30 @@ without spaces has no word floor. A ✎ press or a planning Next line on a
 row whose title ends with `(#N)` carries `#N`, so `/milestone-plan` plans
 it as a milestone without its tier check; the candidate row "Keep tier
 check for issue-titled rows" holds that.
+
+### D-190 (2026-10-19): D-185's ripple-lens falsifier is read over its five-review window and neither arm fires, so the lens stays on Haiku in both review modes — annotates D-185 and D-186
+
+**Context:** D-185 set a falsifier for the ripple lens over the first
+five reviews that ran it, M285 to M289, and the candidate row "Ripple
+lens yield check" held the check. Each of those reviews lists the lens's
+findings and Copilot's threads, with a disposition for each, in its
+`## Review` section. That section is read at the parent of the commit
+that archived the milestone file.
+
+**Decision:** The removal arm does not fire, because the lens had fixed
+findings in that window. The move-to-Opus arm does not fire, because no
+Copilot thread on those PRs named stale text in the lens's domain that
+the lens missed. On PR #299 (M287) Copilot found two items next to that
+domain, and both are outside it. README text that the diff itself added
+left out the return-floor case. A new skill left the skill list and
+count in `skills/tests/test_chapter_marker_mandate.py` stale. The lens
+reads only what a diff removes or changes, so the second item is a miss
+of kind (3) in the candidate row "Copilot arm edges (M285 review)", and
+that row's `[parked]` token goes. The lens stays as D-185 and D-186
+describe it.
+
+**Consequences:** D-185's falsifier is spent, and no later window is
+read unless a new decision sets one. D-186's answer to D-016's reason,
+the move-to-Opus arm, was read and did not fire. Whether the lens also
+reads additions is item (3) of the "Copilot arm edges" row, planned from
+that row.
