@@ -68,7 +68,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - [x] T3: Add the PR-named exception to the `retitle` row of step 2's table, to the Title class's mention search, and to step 4's rewrite sentence.
 - [x] T4: Add a hand-run guard under `skills/tests/` (beside the M295 triage guard, if one exists) pinning T1 to T3's sentences, each member pinned on its own. Show each new assertion red against the pre-change skill before trusting its green.
 - [x] T5: Append the D-entry (next free id) and the CHANGELOG entry per AC5.
-- [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
+- [x] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -96,6 +96,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: T3: the PR-named exception added to the `retitle` table row, the Title class's search, the step-3 table's `retitle` line, and step 4's rewrite sentence.
 - 2026-10-20: T4: no M295 triage guard exists, so the guard is the new `skills/tests/test_triage_pr_named_rows.py`, 4 tests, one subtest per pinned sentence; against main's skill all 17 subtests fail as "not found", on the branch all pass; verify green (scripts 428 OK, hooks 193 OK, both validates 0, plugin test 2389 pass).
 - 2026-10-20: T5: D-196 appended (annotates D-191; passes D-108's door on M295 review diff-bug #6, #8 and pass 2 diff-bug #7); one CHANGELOG Unreleased Fixes entry for the three paths, written against this branch's skill text; cairn_validate green.
+- 2026-10-20: T6: at d214dd92 verify green (scripts 428 OK, hooks 193 OK, both validates 0, plugin test 2389 pass, each exit 0); skills/tests failed 1 of 923 on the mutation harness's registry check (the new guard unregistered), so the minor amendment adds an EXEMPT line in `test_mutation_harness.py` on the hand-run precedent; skills/tests then 923 OK. No verify check reads `skills/tests`.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
