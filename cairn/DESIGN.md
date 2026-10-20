@@ -79,7 +79,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   companion — `merge_guard_post` (restores the approval marker a failed
   guarded merge consumed, deletes it on success; M60). The three nudges are
   advisory, never blocking.
-- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284, and the summary card, goals wrapped per paragraph, headings with no accent or rule, the Next command with no pill, one layout for blocked and hotfix lines, desktop icons for the marks, hover cards, and no work-log section in M286, and each open PR's merge state mark in M301).
+- `hooks/status/` — the milestone band, a Claude Code mod (M191, D-143, rows restyled in M193, two-group rows and a close button in M194, skill rows and chapters in M195, one line per milestone in M196, one row for the band, shorter forms, and a one-glyph bar in M197, gray text with a muted label in M198, the idle row and the step's end at its turn's end in M199, a close state that a failed ROADMAP read alone does not change and every session end clears in M200, the step's end at a Stop with nothing in flight or an idle typed prompt in M201, the desktop flow track in M204, the cairn pane in M205, the id-and-title row with the track as its one progress form, a shorter desktop track, and a terminal braille track in M206, which removed the labels, chapters, skill rows, and the bar, the pane's candidate rows in M207, the pane's percent, headings, meters, and Next pill in M208, in M210 rows kept only within one repo root, a UNC share root, a step kept by a one-shot wakeup or a dropped prompt, and close-state writes only on a change, and the empty row with its `Plan` button in M213, and the `Clear` button after a cairn skill ends in M216, and the pane's Next button in M218, and the pane's Status and Clear buttons in M219, and the idle row's `Implement` button in place of its command in M220, and `Plan` and `Implement` clearing the conversation first in M221, and the pane open again after a `/clear` in M222, and the pane's blocked rows with their pull request numbers in M223, and each blocked PR's state word and Button in M224, and each open PR's unresolved thread count in M225, and the open hotfix PRs in M226, and opens that do not wait for the PR reads, a refill after an in-process `/clear`, a shared PR drawn once, and no remote credentials in the `gh` call in M230, and one ↻ Refresh on the pane's first line, the thread count alone, and the id in its phase color with no phase word in M236, and a refill after `/resume`, a PR read for a placed pane behind another tab, ⋯ only during this module's read, and one `gh api graphql` call per PR in M237, and a PR read at the first draw of a pane placed late and one PR read per start in M238, and a ⌂ Button that clears and opens the pane in place of the pane's Clear in M241, and a ✎ Button on each candidate line with a short title, while no cairn skill runs, that plans the row in M242, and an archived blocked row's PR and `archived` mark in M246, and the `◐` mark on a candidate row that an open PR's body names in M252, and `○` in place of `·` on a normal candidate row in M253, and a started row hidden in M261, and a `[parked]` row drawn last with a gray `⧗` in M284, and the summary card, goals wrapped per paragraph, headings with no accent or rule, the Next command with no pill, one layout for blocked and hotfix lines, desktop icons for the marks, hover cards, and no work-log section in M286, and each open PR's merge state mark in M301, and the count badges right after their labels in one gray in M302).
   `hooks/hooks.json` names its TypeScript hooks module,
   `hooks/status/register.tsx`, under a `modules` key beside the classic
   `hooks` key; `types/index.d.ts` is its `$.state` contract, named in
@@ -623,9 +623,11 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   label for each section heading, with its tail at the right end, a
   six-cell `━`/`─` meter beside the Tasks and Criteria counts in the
   milestone's phase color, and since M289 a badge for the Blocked,
-  Hotfixes, and Candidates counts (`badge.ts`: an `Svg` pill in a fixed
-  fill with a white number on the desktop, the padded number in
-  `inverseText` on the heading's theme key in the terminal), the head
+  Hotfixes, and Candidates counts (`badge.ts`: an `Svg` pill in one fixed
+  gray fill with a white number on the desktop, the padded number in
+  `inverseText` on `inactive` in the terminal). Since M302 the badge sits
+  in the heading's lead right after the label and a space, and those
+  three headings have no tail. The rest of the look has the head
   line's title in bold, and the Next
   command after a `→`, both bold in the color of the phase the command
   runs. The live looks dropped look B's rule after each heading, which the
@@ -1159,15 +1161,15 @@ within each type and are never reused.
   candidate row. Routed from candidates 2026-10-20; added 2026-10-02 —
   M198 Out and review; added 2026-10-04 — M209, M219; added 2026-10-19 —
   M290 live look and review (blame-history #1, prior-review #6).
-- The cairn pane's count badges (M289) were seen only in a browser preview,
-  so three looks are unchecked, with no fix planned. Nobody checked the
-  terminal badge's `inverseText` on `warning`, `claude`, and `planMode` in
-  the light and other themes. Amber Blocked and orange Hotfixes differ
-  mostly by hue, which red-green colorblind eyes can miss. A 16 px badge
-  can make its heading row taller than the 14 px icon rows on the desktop,
-  and since M294 a taller row, or a row of Buttons, also shifts a candidate
-  card's `rowsAbove` and its `top`. If a badge reads poorly or a heading
-  row draws taller in a real session, it becomes a `/hotfix` or a
-  candidate row. Routed from candidates 2026-10-20; added 2026-10-19 —
-  M289 review (diff-bug #1, #3; prior-review #1; blame-history #2);
-  extended 2026-10-20 — M294 review (diff-bug #1).
+- The cairn pane's count badges (M289) have two looks unchecked, with no
+  fix planned. Nobody checked the terminal badge's `inverseText` on
+  `inactive` in the light and other themes, since the M302 live look
+  covered the desktop app only. A 16 px badge can make its heading row
+  taller than the 14 px icon rows on the desktop, and since M294 a taller
+  row, or a row of Buttons, also shifts a candidate card's `rowsAbove` and
+  its `top`. If a badge reads poorly or a heading row draws taller in a
+  real session, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-20; added 2026-10-19 — M289 review (diff-bug #1, #3;
+  prior-review #1; blame-history #2); extended 2026-10-20 — M294 review
+  (diff-bug #1); narrowed 2026-10-20 by M302, whose one gray removed the
+  amber and orange hue clause.

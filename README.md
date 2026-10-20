@@ -347,10 +347,10 @@ The pointer over the row shows the icon, and on a row with a `✎`, the
 `✎` beside it. The pointer over the icon opens the card. Each
 section starts after a blank row with its name in bold.
 The Blocked, Hotfixes, and Candidates headings show their count as a
-badge at the right end. The badge is a rounded pill with a white number,
-amber for Blocked, orange for Hotfixes, and blue for Candidates. The
-terminal draws the badge as the number with a space on each side, on the
-heading's color. The Tasks and Criteria headings show their count at the
+badge right after the heading name. The badge is a gray rounded pill
+with a white number. The terminal draws the badge as the number with a
+space on each side, on the theme's gray. The Tasks and Criteria headings
+show their count at the
 right end with a six-cell meter, `━` for the checked share and `─` for
 the rest. The next command follows a `→`. When the next step
 is planning, the line shows `/milestone-plan <title>`. The title is the
