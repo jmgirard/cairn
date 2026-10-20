@@ -57,7 +57,14 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    candidate row, a pane press. A request that names a GitHub issue (`#N`
    or an issue URL, or any other form `/milestone`'s argument accepts) is
    not checked and is planned as a milestone, since `/milestone` with the
-   issue is the door that tiers an issue. In guest mode a request that
+   issue is the door that tiers an issue. A `(#N)` or `(#N, #M)` inside a
+   `cairn/ROADMAP.md` candidate row's short title (tracking-rules
+   "Candidate short title") that the request contains verbatim, as a ✎
+   press or the planning Next line passes it, does not make the request
+   name an issue. The request names that row, and the check runs. It
+   judges from the row's text and the code the row names, never from
+   issue #N's body. A `#N`, an issue URL, or a PR reference outside that
+   title still takes the issue rule and the guest rule below. In guest mode a request that
    names a pull request is not checked either. Examples are a PR URL,
    "PR 12", and "adopt PR 12". This guest rule comes before the issue rule
    and the already-tiered list below. A PR URL, or a §3 item that is a PR,
@@ -116,7 +123,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      through the Skill tool with the request as its argument, in
      `/milestone` §4's form. The argument opens with a one-line summary of
      the bug. The request text follows unchanged, with a candidate row's
-     title quoted verbatim. The plan writes no file. `trivial`: the
+     title quoted verbatim. The plan writes no file. The bug summary that
+     opens the argument carries no `#N`, so `/hotfix` reads no issue
+     number in it as a pull request. `trivial`: the
      option's description names the file and the change and says where
      the edit goes. It also names each matched row and whether the edit
      deletes or narrows it. In owner mode it is committed and pushed to the

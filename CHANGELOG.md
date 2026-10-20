@@ -143,6 +143,26 @@
 
 ### Fixes
 
+- **A candidate title's issue number stays part of the title.** A row
+  written for an issue ends its short title with the number, for example
+  `Fix SE of skewness calculation (#100)`. A ✎ press or the pane's plan
+  button passes that title to `/milestone-plan`. The plan read the number
+  as an issue and skipped its check for a hotfix or a small direct edit.
+  It now reads the number as part of the title and runs the check on the
+  row. `/hotfix` also reads such a number in a quoted title as part of the
+  title, not as a pull request. It still uses the number for the PR's
+  `Fixes #N` line. A `#N` outside the title is read as before.
+
+- **`/cairn-triage` keeps a row that an open pull request names.** The
+  pane hides a candidate row that one of your own open PRs names in a
+  `Candidate row:` line. In owner mode, `/hotfix` and `/milestone-review`
+  write those lines for the rows a merge removes or narrows. When
+  `/hotfix` resumes a PR, it checks those lines by title. `/cairn-triage` could retitle
+  such a row, which broke those matches. It now reads the `Candidate row:`
+  lines of every open PR and keeps each row they name as it is. If it
+  cannot read the PRs, it says so. Each row it then proposes to change,
+  other than a keep, is marked as not checked against them.
+
 - **The Copilot report names the review level again.** Copilot now ends
   its review with `<sub>Review effort: Lite</sub>` in place of
   `🧠 **Review effort:** Lite`. The Copilot round's state query read only

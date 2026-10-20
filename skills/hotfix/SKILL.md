@@ -33,7 +33,13 @@ can resolve against the fork instead of the base repo.
 1. **Tier check first.** Reproduce or at least localize the bug. When the
    input is a PR reference instead of a bug report (`#N`, a PR URL, "adopt
    PR 12"), read the contributor's work first — `gh pr view <N>`,
-   `gh pr diff <N>` — and tier-check *that* diff. Either way this stays
+   `gh pr diff <N>` — and tier-check *that* diff. A `(#N)` or `(#N, #M)`
+   inside a candidate row's short title (tracking-rules "Candidate short
+   title") that the argument quotes verbatim is part of that title, not a
+   PR reference. An argument whose only `#N` sits in such a title is a bug
+   report: it takes the candidate-row match below, and no `gh pr view`
+   reads it. Each such number still names its issue for step 6's
+   `Fixes #N` body line. Either way this stays
    a hotfix only if it restores documented behavior and fits one sitting.
    If it needs a design decision, changes exported behavior beyond
    restoring what was documented, or won't fit one sitting — stop: add a

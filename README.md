@@ -423,13 +423,17 @@ words and put no icon, such as an emoji or `⌂`, in a short title, because
 the pane draws its own marks and buttons with such glyphs.
 `/cairn-triage` offers a new short title for a row whose title is empty,
 has fewer than 5 words, is longer than 40 characters, is the same as
-another row's, or holds an icon. While no cairn skill
+another row's, or holds an icon. It keeps a row that an open PR's
+`Candidate row:` line names (below) as it is, so its title still matches
+that line. While no cairn skill
 runs or waits on its background work, each row whose short title is not
 empty carries a `✎` button at its right end. In the desktop app the
 button shows only while the pointer is over its row, beside the info
 icon that opens the row's card. The terminal draws it on each such row.
 A press runs `/clear`, and then `/cairn:milestone-plan` with that short
-title in the cleared conversation. The band has no such button. As with
+title in the cleared conversation. An issue number at the end of the
+title is part of the title. So the plan can still offer a hotfix or a
+small direct edit for the row. The band has no such button. As with
 the next-step button, a press while Claude works outside a cairn skill
 runs when Claude is idle. While another button's command runs or waits
 for its `/clear`, or a `⌂` press waits for its `/clear`, a press does

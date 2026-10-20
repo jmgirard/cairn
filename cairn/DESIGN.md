@@ -1063,7 +1063,8 @@ within each type and are never reused.
   below it WARN while the misspelled row is the fault. D-182's sentence on
   the first `[high]` row holds only when that row has a short title.
   Triage promote (M271): an Amend can set `promote` on a row that step 2
-  holds as `keep` for a live started token, which writes `[high]` and a
+  holds as `keep` for a live started token, or since M295 because an open
+  PR's `Candidate row:` line names it, which writes `[high]` and a
   `/milestone-plan` fence for work already taken. For a records-hygiene §7
   group the skill does not say whether each row takes `[high]` and its own
   fence. If a gap shows in a real session or misleads an operator, it
