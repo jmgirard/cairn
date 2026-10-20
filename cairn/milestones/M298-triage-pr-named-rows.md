@@ -67,7 +67,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - [x] T2: Add the ` — ` opening to the lineage-clause sentence in step 4 (about line 535), and to the `merge` row of step 2's table if it states the clause's place.
 - [x] T3: Add the PR-named exception to the `retitle` row of step 2's table, to the Title class's mention search, and to step 4's rewrite sentence.
 - [x] T4: Add a hand-run guard under `skills/tests/` (beside the M295 triage guard, if one exists) pinning T1 to T3's sentences, each member pinned on its own. Show each new assertion red against the pre-change skill before trusting its green.
-- [ ] T5: Append the D-entry (next free id) and the CHANGELOG entry per AC5.
+- [x] T5: Append the D-entry (next free id) and the CHANGELOG entry per AC5.
 - [ ] T6: Run the `verify` slot and the hand-run `skills/tests` from the repo root, each exit code checked.
 
 ## Work log
@@ -95,6 +95,7 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: T2: step 4's lineage-clause sentence gains the ` — ` opening and the no-`: ` rule; step 2's `merge` row states the clause's shape but not its place, so it is unchanged.
 - 2026-10-20: T3: the PR-named exception added to the `retitle` table row, the Title class's search, the step-3 table's `retitle` line, and step 4's rewrite sentence.
 - 2026-10-20: T4: no M295 triage guard exists, so the guard is the new `skills/tests/test_triage_pr_named_rows.py`, 4 tests, one subtest per pinned sentence; against main's skill all 17 subtests fail as "not found", on the branch all pass; verify green (scripts 428 OK, hooks 193 OK, both validates 0, plugin test 2389 pass).
+- 2026-10-20: T5: D-196 appended (annotates D-191; passes D-108's door on M295 review diff-bug #6, #8 and pass 2 diff-bug #7); one CHANGELOG Unreleased Fixes entry for the three paths, written against this branch's skill text; cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

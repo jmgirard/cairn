@@ -175,6 +175,19 @@
   cannot read the PRs, it says so. Each row it then proposes to change,
   other than a keep, is marked as not checked against them.
 
+- **`/cairn-triage` keeps the title of a row a pull request names on
+  three more paths.** You can still amend such a row to a change that
+  removes it or changes its title. The next question then names the row
+  and each pull request that names it. It also says that the change
+  breaks that pull request's match of the row. When the pass did not read
+  the open pull requests, or the list stopped at 100, it marks a change
+  you set at Amend as not checked. It marks a proposed change the same
+  way. A merge no longer makes the title of the surviving row longer. The
+  added lineage text holds no `: `. Where the row has no `: ` or ` — `,
+  that text opens with ` — `. A retitle of another row no longer rewrites
+  a quoted mention of the old title inside such a row's title. The pass
+  lists the mention as left, with the pull request's number.
+
 - **A direct edit from the pane removes the row you pressed.** When
   `/milestone-plan` finds a trivial edit, it removes or narrows the
   candidate row the edit fixes. It took only a row whose title your

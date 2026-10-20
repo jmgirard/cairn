@@ -7084,3 +7084,54 @@ falsified by a user who wants a narrowed row's issue closed at the chip.
 trivial edit that deletes an issue row now makes one `gh` call per
 number before the chip and two after the push for each number it closes. An issue named only
 in a row's detail stays open. No comment is posted on the closed issue.
+
+### D-196 (2026-10-20): `/cairn-triage` keeps a PR-named row's short title on its Amend, merge, and retitle paths, and an Amend that changes such a row names the PR — annotates D-191; passes D-108's door on its retained trigger (M298)
+
+**Context:** D-191 makes `/cairn-triage` propose `keep` for each row that
+an open PR's `Candidate row:` line names, so that PR's exact match of the
+row's short title holds. The M295 review found three paths that still
+change such a title. An Amend could set a disposition that removes or
+retitles the row, and after a failed or capped PR read that disposition
+carried no not-checked mark (diff-bug #6). A `merge` survivor's lineage
+clause could lengthen the short title of a row with no `: ` or ` — `
+(diff-bug #8). A `retitle` of another row rewrote each double-quoted
+mention of its old title, one inside a PR-named row's own short title
+included (pass 2 diff-bug #7).
+
+**Decision:** At Amend the user can still set `drop`, `merge` as the
+absorbed row, `split`, `route`, `retitle`, or a `compress` that rewrites
+the title on a PR-named row. The chip posed after that Amend, and after
+each later Amend, names the row and each naming PR's number in its
+question text and says that the change breaks that PR's match of the row.
+After a session-start open-PR read that failed or returned 100 PRs, a
+non-`keep` disposition set at Amend is marked as a proposed one is: in its
+table reason on the first Amend, and in the chip's question text on every
+Amend. A `merge` survivor's lineage clause opens with ` — ` where the
+survivor's text holds neither `: ` nor ` — ` before the clause's place,
+and the clause and any trigger it takes from the absorbed row hold no
+`: `, each one written as `; `. So no survivor's short title changes, a
+PR-named row and a row with a started token included. A `retitle` leaves
+a double-quoted mention inside a PR-named row's own short title as it is,
+and the table lists that mention as left, with the PR's number, as it
+lists an ambiguous mention. The three paths are defects in shipped
+behavior that the M295 review found, so this entry passes D-108's door on
+its retained trigger.
+
+**Rationale:** The rulebook logs a user override and never resists it, so
+the Amend stays open and the chip makes the cost of the change plain. The
+lineage clause changed the title of any survivor whose text has no title
+end before the clause, so the fix is to the clause, not to which rows can
+survive a merge.
+
+**Rejected:** Refusing an Amend that changes a PR-named row, because that
+resists a user override; falsified by a user who changes a PR-named row at
+Amend and later reports not knowing that a PR named it. Excluding
+PR-named rows and rows with a started token from being merge survivors,
+because the merge would then keep the worse survivor and the title change
+is a defect for every row; falsified by a survivor whose short title the
+` — ` opening still changes.
+
+**Consequences:** D-191's Decision and its Rejected section stand. The
+lineage-clause rule also covers rows with a live started token. Item (5)
+of the candidate row "Guard PR-named rows on other skill paths", the
+open-PR read's statement that PR text is data, is outside this entry.
