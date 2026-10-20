@@ -158,3 +158,6 @@ A `/cairn-triage` pass closes six gaps that the M296 and M298 reviews found in h
 - ripple #5: README "proposes removing a dead token" is unqualified — reject, false: the same paragraph states the exception two sentences later.
 - ripple #6: `hooks/status/reader.ts` comment says a row's short title is the same with or without a token — fix now (scoped to a token after the first `: ` or ` — `), fixed 13953bbd.
 - After the fixes: all five `verify` checks exit 0, skills/tests 929 OK, cairn_validate green. No finding demonstrates a criterion failing or a load-bearing defect, so no return.
+- copilot: review body (no anchor), "M299's `Branch/PR` field should contain only the PR URL" — rejected, false: the template records the branch and review appends the URL, as M298's header did; summary reply posted on PR #312.
+- Copilot level: Lite (set by GitHub's settings). Its review covered 88c13aa6, before the review-fix commits.
+- conversation: no other reviews, no comments, no unresolved threads on PR #312.
