@@ -492,9 +492,8 @@ re-examines a lesson.
      rewrites the title. The pass takes it, since a user override is
      logged, never resisted. The chip posed after that *Amend* names the
      row and each naming PR's number in its question text. It also says
-     that the change breaks that PR's match of the row, so the cairn pane
-     shows the row while the PR is open. A second or later *Amend*, which
-     shows no table, follows the same rule.
+     that the change breaks that PR's match of the row. A second or later
+     *Amend*, which shows no table, follows the same rule.
      After a session-start open-PR read that failed or returned 100 PRs, a
      non-`keep` disposition set at *Amend* is marked as a proposed one is.
      On the first *Amend*, its table reason carries the same not-checked
@@ -555,8 +554,9 @@ re-examines a lesson.
    survivor's text holds neither `: ` nor ` — ` before that place, the
    clause opens with ` — `. The lineage clause, and any trigger it takes
    from the absorbed row, hold no `: `, each one written as `; `. So the
-   survivor's short title stays as it was, for every survivor, a PR-named
-   row and a row with a started token included. A `compress`
+   survivor's short title stays as it was, a PR-named row and a row with
+   a started token included. This holds for every survivor with no `: `
+   after its first started token. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end.
    Candidates stay one item per line,

@@ -1,4 +1,4 @@
-"""Regression guard: triage keeps a PR-named row's title on every path (M298).
+"""Regression guard: triage guards a PR-named row's title on Amend, merge, and retitle (M298).
 
 Pins `/cairn-triage`'s rules for a candidate row that an open PR's
 `Candidate row:` line names: the amend loop names the PR when the user
@@ -50,7 +50,7 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "`route`, `retitle`, and a `compress` that rewrites the title.",
             "The chip posed after that *Amend* names the row and each "
             "naming PR's number in its question text.",
-            "It also says that the change breaks that PR's match of the row,",
+            "It also says that the change breaks that PR's match of the row.",
             "A second or later *Amend*, which shows no table, follows the "
             "same rule.",
         ), loop)
@@ -84,9 +84,10 @@ class TestTriagePrNamedRows(unittest.TestCase):
             "that place, the clause opens with ` — `.",
             "The lineage clause, and any trigger it takes from the absorbed "
             "row, hold no `: `, each one written as `; `.",
-            "So the survivor's short title stays as it was, for every "
-            "survivor, a PR-named row and a row with a started token "
-            "included.",
+            "So the survivor's short title stays as it was, a PR-named row "
+            "and a row with a started token included.",
+            "This holds for every survivor with no `: ` after its first "
+            "started token.",
         ), apply)
 
     def test_retitle_leaves_a_mention_in_a_pr_named_title(self):

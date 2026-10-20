@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M298: Triage keeps a PR-named row's title on every path
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -97,6 +97,9 @@ No accepted `/cairn-triage` disposition changes the short title of a candidate r
 - 2026-10-20: T4: no M295 triage guard exists, so the guard is the new `skills/tests/test_triage_pr_named_rows.py`, 4 tests, one subtest per pinned sentence; against main's skill all 17 subtests fail as "not found", on the branch all pass; verify green (scripts 428 OK, hooks 193 OK, both validates 0, plugin test 2389 pass).
 - 2026-10-20: T5: D-196 appended (annotates D-191; passes D-108's door on M295 review diff-bug #6, #8 and pass 2 diff-bug #7); one CHANGELOG Unreleased Fixes entry for the three paths, written against this branch's skill text; cairn_validate green.
 - 2026-10-20: T6: at d214dd92 verify green (scripts 428 OK, hooks 193 OK, both validates 0, plugin test 2389 pass, each exit 0); skills/tests failed 1 of 923 on the mutation harness's registry check (the new guard unregistered), so the minor amendment adds an EXEMPT line in `test_mutation_harness.py` on the hand-run precedent; skills/tests then 923 OK. No verify check reads `skills/tests`.
+- 2026-10-20: claim audit: 31 claims read, 5 corrected — skills/cairn-triage/SKILL.md (pane clause dropped from the Amend chip sentence; the lineage rule bounded to survivors with no `: ` after their first started token), CHANGELOG.md (headline "guards"; the ` — ` opening tested before the added text), skills/tests/test_triage_pr_named_rows.py (docstring names the three paths; pins follow the fixes, 18 subtests, all red against main, all green on the branch). The same reader re-read the five corrections: all true.
+- 2026-10-20: open concern for review: D-196's Decision says "So no survivor's short title changes", which misses the claim audit's edge case of an off-format row with a `: ` after its started token; D-196 is history, so it is left as written.
+- 2026-10-20: implement complete; skills/tests 923 OK, cairn_validate green; status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
