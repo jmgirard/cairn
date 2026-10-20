@@ -145,6 +145,15 @@
 
 ### New
 
+- **The cairn pane shows whether each open PR can merge.** A Blocked or
+  Hotfixes line for an open pull request now ends with a mark after its
+  state word. A green merge symbol means GitHub reports that the PR can
+  merge. A red disc with a cross means that it has conflicts with its base
+  branch. The terminal shows a green `✓` or a red `✗`. The pane reads
+  GitHub's `mergeable` field in the query it already runs. Just after a
+  push GitHub can answer that it does not know yet. The line then has no
+  mark. A later read, at a ↻ press or a new pane open, draws it.
+
 - **`/copilot-review` handles Copilot's review on one pull request.** Run
   it with a PR number or URL, or with nothing for the current branch's PR.
   It reads each unresolved Copilot note and each review summary. It fixes,

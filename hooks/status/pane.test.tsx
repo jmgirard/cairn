@@ -21,7 +21,8 @@ import {
   nextLabel,
   nextTitle,
   paneLines as layout,
-  prWord,
+  PR_VIEW_FIELDS,
+  prViewRead,
   startedRows,
 } from './pane'
 import type { PaneLine, PrRead } from './pane'
@@ -2876,6 +2877,9 @@ describe('the merged, changes-requested, and closed lines carry a Button (M224 A
 // value that is not an object, an object with no state, and a state in
 // another case all read as `unknown`.
 describe('prWord reads only the shapes it names', () => {
+  // The word of a `gh pr view` read, which `prWord` gave until M301 and
+  // `prViewRead` gives now.
+  const prWord = (result: { exitCode: number; stdout: string } | null) => prViewRead(result).word
   test('a rejected call, a non-object, and an unknown state read as unknown', () => {
     const ok = (stdout: string) => ({ exitCode: 0, stdout })
     expect(prWord(null)).toBe('unknown')
@@ -2887,6 +2891,40 @@ describe('prWord reads only the shapes it names', () => {
     expect(prWord(ok('{"state":"open"}'))).toBe('unknown')
     expect(prWord(ok('{"state":"MERGED","reviewDecision":"CHANGES_REQUESTED"}'))).toBe('merged')
     expect(prWord(ok('{"state":"OPEN","reviewDecision":"SOMETHING_NEW"}'))).toBe('in review')
+  })
+})
+
+// The `gh pr view` reply form gives the merge state as the graphql form
+// does (M301 AC1).
+describe('prViewRead gives an open pull request its merge state (M301 AC1)', () => {
+  const ok = (value: unknown) => ({ exitCode: 0, stdout: `${JSON.stringify(value)}\n` })
+  const INPUTS: [string, Record<string, unknown>, 'mergeable' | 'conflicts' | null][] = [
+    ['MERGEABLE', { mergeable: 'MERGEABLE' }, 'mergeable'],
+    ['CONFLICTING', { mergeable: 'CONFLICTING' }, 'conflicts'],
+    ['UNKNOWN', { mergeable: 'UNKNOWN' }, null],
+    ['another string', { mergeable: 'SOMETHING_NEW' }, null],
+    ['the field absent', {}, null],
+  ]
+  for (const [name, part, mergeable] of INPUTS) {
+    test(`an open reply with ${name} reads ${mergeable}`, () => {
+      expect(prViewRead(ok({ state: 'OPEN', reviewDecision: 'APPROVED', ...part }))).toEqual({ word: 'approved', counts: null, mergeable })
+    })
+  }
+
+  test('a MERGED or CLOSED reply with MERGEABLE carries no merge state', () => {
+    expect(prViewRead(ok({ state: 'MERGED', reviewDecision: 'APPROVED', mergeable: 'MERGEABLE' }))).toEqual({
+      word: 'merged',
+      counts: null,
+      mergeable: null,
+    })
+    expect(prViewRead(ok({ state: 'CLOSED', reviewDecision: '', mergeable: 'MERGEABLE' }))).toEqual({ word: 'closed', counts: null, mergeable: null })
+  })
+
+  test('a rejected call, a non-zero exit, and text that is not JSON read unknown', () => {
+    const none = { word: 'unknown', counts: null, mergeable: null }
+    expect(prViewRead(null)).toEqual(none)
+    expect(prViewRead({ exitCode: 1, stdout: '{"state":"OPEN","mergeable":"MERGEABLE"}' })).toEqual(none)
+    expect(prViewRead({ exitCode: 0, stdout: 'not json' })).toEqual(none)
   })
 })
 
@@ -3103,10 +3141,11 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
       ['gh api graphql', 'beta', 'two', '90'],
     ])
     expect(calls.calls).toEqual([])
-    // Each query names the state, the decision, and the threads (M237).
+    // Each query names the state, the decision, the merge state (M301), and
+    // the threads (M237).
     for (const argv of calls.graphql) {
       const query = argOf(argv, 'query') ?? ''
-      expect(query.includes('{ state reviewDecision reviewThreads(last: 100) { nodes { isResolved } } }')).toBe(true)
+      expect(query.includes('{ state reviewDecision mergeable reviewThreads(last: 100) { nodes { isResolved } } }')).toBe(true)
     }
     expect((await countsOf($, 'M101'))?.text).toBe('1 unresolved thread')
     expect((await countsOf($, 'M104'))?.text).toBe('2 unresolved threads')
@@ -3135,8 +3174,8 @@ describe('each open pull request is queried once, by its own owner, repo, and nu
     })
   }
 
-  // Each word `prWord` gives an OPEN pull request gets the query (M225
-  // review), so the open words and `prWord` stay in step.
+  // Each word `wordOf` gives an OPEN pull request gets the query (M225
+  // review), so the open words and `wordOf` stay in step.
   const OPEN: { decision: string; word: string }[] = [
     { decision: 'CHANGES_REQUESTED', word: 'changes requested' },
     { decision: 'APPROVED', word: 'approved' },
@@ -3498,7 +3537,10 @@ describe('each hotfix line shows the word and counts a blocked line shows, and n
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
     await calls.settled()
-    expect(calls.calls).toEqual([['gh', 'pr', 'view', OTHER, '--json', 'state,reviewDecision']])
+    // The fields name `mergeable` since M301 (AC1), and the call uses the
+    // exported constant.
+    expect(calls.calls).toEqual([['gh', 'pr', 'view', OTHER, '--json', 'state,reviewDecision,mergeable']])
+    expect(PR_VIEW_FIELDS).toBe('state,reviewDecision,mergeable')
     expect(calls.graphql.map(argv => [argOf(argv, 'owner'), argOf(argv, 'repo'), argOf(argv, 'number')])).toEqual([
       ['upstream', 'repo', '1250'],
     ])
@@ -4742,7 +4784,7 @@ describe('a press whose checks fail leaves the next press free (M243 AC4)', () =
       const read_ = (got as { value?: { version?: number; value?: { shape?: string; value?: Record<string, object> } } } | undefined)?.value
       const words = read_?.value?.value ?? {}
       const closed = Object.fromEntries(Object.entries(words).map(([url, each]) => [url, { ...each, word: 'closed' }]))
-      return { value: { version: read_?.version ?? 0, value: { shape: read_?.value?.shape ?? 'prs-3', value: closed } } }
+      return { value: { version: read_?.version ?? 0, value: { shape: read_?.value?.shape ?? 'prs-4', value: closed } } }
     })
     await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
     await $.command.run({ command: COMMAND })
@@ -6100,7 +6142,7 @@ describe('a blocked line and a hotfix line share one layout (M286 AC5)', () => {
   const WORDS = ['merged', 'closed', 'changes requested', 'approved', 'in review', 'unknown'] as const
   const READS: [string, PrRead | undefined][] = [
     ['no read', undefined],
-    ...WORDS.map(word => [word, { word, counts: ['changes requested', 'approved', 'in review'].includes(word) ? { unresolved: 2 } : null }] as [string, PrRead]),
+    ...WORDS.map(word => [word, { word, counts: ['changes requested', 'approved', 'in review'].includes(word) ? { unresolved: 2 } : null, mergeable: null }] as [string, PrRead]),
   ]
   for (const [name, got] of READS) {
     test(name, () => {
@@ -6135,6 +6177,64 @@ describe('a blocked line and a hotfix line share one layout (M286 AC5)', () => {
     approved: undefined,
     'in review': undefined,
     unknown: undefined,
+  }
+})
+
+describe('an open pull request line ends with its merge state mark (M301 AC2)', () => {
+  const BLOCKED_URL = 'https://github.com/o/r/pull/9'
+  const HOTFIX_URL = 'https://github.com/o/other/pull/4'
+  const state: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [{ id: 'M5', title: 'Handed off', pr: 9, url: BLOCKED_URL, archived: false }],
+    taken: [],
+  }
+  const hotfix = { number: 4, title: 'Fix a crash', url: HOTFIX_URL }
+  const read = (mergeable: 'mergeable' | 'conflicts' | null): PrRead => ({ word: 'in review', counts: null, mergeable })
+  // The icon names and glyphs are written out by hand, apart from the
+  // MERGE_MARK table in pane.ts.
+  const CASES: [string, Record<string, PrRead>, { icon: string; text: string } | null][] = [
+    ['mergeable', { [BLOCKED_URL]: read('mergeable'), [HOTFIX_URL]: read('mergeable') }, { icon: 'mergeable', text: '✓' }],
+    ['conflicts', { [BLOCKED_URL]: read('conflicts'), [HOTFIX_URL]: read('conflicts') }, { icon: 'conflicts', text: '✗' }],
+    ['a null merge state', { [BLOCKED_URL]: read(null), [HOTFIX_URL]: read(null) }, null],
+    ['no read yet', {}, null],
+  ]
+  for (const [name, prs, want] of CASES) {
+    for (const key of ['blocked-M5', 'hotfix-4']) {
+      test(`${name} on ${key}`, () => {
+        const line = layout(state, [], false, prs, [hotfix]).find(each => each.key === key)
+        expect(line).not.toBe(undefined)
+        const tail = line?.tail ?? []
+        const icons = tail.filter(span => span.icon !== undefined)
+        if (want === null) {
+          expect(icons).toEqual([])
+          return
+        }
+        expect(icons.length).toBe(1)
+        const last = tail[tail.length - 1]
+        expect(last.icon).toBe(want.icon)
+        expect(last.text).toBe(want.text)
+        // The mark comes after the state word.
+        const wordAt = tail.findIndex(span => span.text === 'in review')
+        expect(wordAt).toBeGreaterThan(-1)
+        expect(tail.length - 1).toBeGreaterThan(wordAt)
+      })
+    }
+  }
+
+  // A read that is not open draws no mark even when it holds a merge
+  // state, as a stored read rewritten to `closed` can (M301 review).
+  for (const word of ['merged', 'closed', 'unknown'] as const) {
+    test(`a ${word} read holding a merge state draws no mark`, () => {
+      const got: PrRead = { word, counts: null, mergeable: 'conflicts' }
+      const line = layout(state, [], false, { [BLOCKED_URL]: got, [HOTFIX_URL]: got }, [hotfix]).find(each => each.key === 'hotfix-4')
+      expect(line?.tail?.some(span => span.text === word)).toBe(true)
+      expect(line?.tail?.filter(span => span.icon !== undefined)).toEqual([])
+    })
   }
 })
 
@@ -6175,7 +6275,7 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
   const hotfix = { number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }
   // The blocked row's PR reads open with threads, so a counts line draws
   // too, and it has no card.
-  const read: Record<string, PrRead> = { 'https://github.com/o/r/pull/9': { word: 'in review', counts: { unresolved: 2 } } }
+  const read: Record<string, PrRead> = { 'https://github.com/o/r/pull/9': { word: 'in review', counts: { unresolved: 2 }, mergeable: null } }
   const fulls = (state: PaneState) =>
     layout(state, [], true, read, [hotfix])
       .filter(line => line.full !== undefined)
@@ -6552,7 +6652,7 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
   })
 
   test('a blocked row with its counts line adds four rows', () => {
-    const read = { 'https://github.com/o/r/pull/9': { word: 'in review' as const, counts: { unresolved: 2 } } }
+    const read = { 'https://github.com/o/r/pull/9': { word: 'in review' as const, counts: { unresolved: 2 }, mergeable: null } }
     expectRows(layout({ ...base, blocked: [blocked] }, [], false, read), 13)
   })
 

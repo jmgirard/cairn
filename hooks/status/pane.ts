@@ -1,4 +1,4 @@
-import type { CairnHotfixPr, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStartedRow } from '../../types'
+import type { CairnHotfixPr, CairnPrMerge, CairnPrRead, CairnPrWord, CairnRepoRead, CairnStartedRow } from '../../types'
 import type { PrCounts } from './counts'
 import type { Span } from './band'
 import type { FlowPhase } from './band'
@@ -25,7 +25,8 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // an open one with unresolved review threads, a line under it with their
 // number (M225, M236). After a read, the
 // open pull requests that the operator opened from `hotfix-*` branches,
-// each with the same word and counts and no Button (M226). With no
+// each with the same word, counts, and merge mark (M301) and no Button
+// (M226). With no
 // active milestone, the ROADMAP's candidate rows follow, each a priority
 // mark and its short title (M207).
 // A line's `lead` and `tail` keep their width. Its `text` is cut to one
@@ -103,17 +104,37 @@ export type PaneLine = {
 
 // A blocked milestone's pull request state, as `wordOf` maps it from a
 // `gh api graphql` reply (counts.ts `prRead`, M237) or, for a URL on
-// another host, from a `gh pr view <url> --json state,reviewDecision` call
-// (`prWord`, M224). The state contract holds the one list of words.
+// another host, from a `gh pr view <url> --json` call with
+// `PR_VIEW_FIELDS` (`prViewRead`, M224, M301). The state contract holds the
+// one list of words.
 export type PrWord = CairnPrWord
 
 // One read of a pull request: its word, and its counts while it is open
-// and its threads passed the shape check (M225, M237).
+// and its threads passed the shape check (M225, M237), and its merge state
+// while it is open and GitHub knows it (M301).
 export type PrRead = CairnPrRead
 
+// An open pull request's merge state (M301).
+export type PrMerge = CairnPrMerge
+
 // The words `wordOf` gives an OPEN pull request, the ones that carry
-// counts (M225, M237).
+// counts (M225, M237) and a merge state (M301).
 export const OPEN_WORDS: readonly PrWord[] = ['changes requested', 'approved', 'in review']
+
+// The fields a `gh pr view` call reads for a URL that is not a github.com
+// pull URL (M224, `mergeable` since M301).
+export const PR_VIEW_FIELDS = 'state,reviewDecision,mergeable'
+
+// The merge state of a pull request with this word and this `mergeable`
+// value (M301). Only a word in `OPEN_WORDS` carries one. MERGEABLE reads
+// `mergeable` and CONFLICTING reads `conflicts`. UNKNOWN, which GitHub
+// answers while it computes the value, and any other value read null.
+export function mergeOf(word: PrWord, mergeable: unknown): PrMerge | null {
+  if (!OPEN_WORDS.includes(word)) return null
+  if (mergeable === 'MERGEABLE') return 'mergeable'
+  if (mergeable === 'CONFLICTING') return 'conflicts'
+  return null
+}
 
 // The count line's text, or null when the count is zero. One thread reads
 // in the singular (M225, M236).
@@ -122,27 +143,30 @@ export function countsText(counts: PrCounts): string | null {
   return `${counts.unresolved} unresolved ${counts.unresolved === 1 ? 'thread' : 'threads'}`
 }
 
-// The state word of one `gh pr view` result, null for a call that
-// rejected. A non-zero exit, text that is not a JSON object, or a `state`
-// other than MERGED, CLOSED, or OPEN reads as `unknown`. An OPEN pull
-// request reads by its `reviewDecision`, and any decision but
-// CHANGES_REQUESTED or APPROVED, an empty or absent one included, reads as
-// `in review`.
-export function prWord(result: { exitCode: number; stdout: string } | null): PrWord {
-  if (result === null || result.exitCode !== 0) return 'unknown'
+// The read of one `gh pr view --json` call with `PR_VIEW_FIELDS`, null
+// for a call that rejected: its word, no counts, and the merge state as
+// `mergeOf` gives it (M301; the word alone was `prWord`'s until then). A
+// non-zero exit, text that is not a JSON object, or a `state` other than
+// MERGED, CLOSED, or OPEN reads as `unknown`. An OPEN pull request reads
+// by its `reviewDecision`, and any decision but CHANGES_REQUESTED or
+// APPROVED, an empty or absent one included, reads as `in review`.
+export function prViewRead(result: { exitCode: number; stdout: string } | null): PrRead {
+  const none: PrRead = { word: 'unknown', counts: null, mergeable: null }
+  if (result === null || result.exitCode !== 0) return none
   let view: unknown
   try {
     view = JSON.parse(result.stdout)
   } catch {
-    return 'unknown'
+    return none
   }
-  if (view === null || typeof view !== 'object') return 'unknown'
-  const { state, reviewDecision } = view as { state?: unknown; reviewDecision?: unknown }
-  return wordOf(state, reviewDecision)
+  if (view === null || typeof view !== 'object') return none
+  const { state, reviewDecision, mergeable } = view as { state?: unknown; reviewDecision?: unknown; mergeable?: unknown }
+  const word = wordOf(state, reviewDecision)
+  return { word, counts: null, mergeable: mergeOf(word, mergeable) }
 }
 
 // The state word of a pull request's `state` and `reviewDecision`, as
-// `prWord` reads them from `gh pr view` and `prRead` in counts.ts from
+// `prViewRead` reads them from `gh pr view` and `prRead` in counts.ts from
 // `gh api graphql` (M237), which give the same values.
 export function wordOf(state: unknown, reviewDecision: unknown): PrWord {
   if (state === 'MERGED') return 'merged'
@@ -493,6 +517,13 @@ export const PR_MARK: Record<PrWord, { text: string; icon: IconName }> = {
   unknown: { text: '◌', icon: 'open' },
 }
 export const UNREAD_MARK = { text: OPEN_MARK, icon: 'ring' as IconName }
+// An open pull request's merge state mark, last in its line's tail (M301):
+// a green merge symbol when it can merge, a red disc with a cross when it
+// has conflicts, each with the glyph the terminal draws in its place.
+export const MERGE_MARK: Record<PrMerge, Span> = {
+  mergeable: { text: '✓', color: FLOW_COLORS.review, icon: 'mergeable' },
+  conflicts: { text: '✗', color: 'error', icon: 'conflicts' },
+}
 // The card's line keys (M286), and the text a number draws as before a read
 // gives it.
 export const CARD_KEYS = {
@@ -737,10 +768,11 @@ export function cardLines(
 // (M286): the state mark in its word's color, the identifier bold, the
 // title, and a tail that holds the pull request's number in gray, the
 // archived mark for a blocked row whose file was archived (M246), and the
-// state word in its color. Before a read the mark is `○` in gray and the
-// tail holds no word. A blocked row with no pull request has no number. A
-// line with a tail grows, so the tail sits at the right end whether or not
-// the title is cut.
+// state word in its color. An open pull request whose read has a merge
+// state ends the tail with that state's mark (M301). Before a read the mark
+// is `○` in gray and the tail holds no word. A blocked row with no pull
+// request has no number. A line with a tail grows, so the tail sits at the
+// right end whether or not the title is cut.
 function prLine(key: string, id: string, title: string, number: number | null, archived: boolean, got: PrRead | undefined): PaneLine {
   const word = got?.word
   const mark: Span = word === undefined ? { ...UNREAD_MARK, color: GRAY } : { ...PR_MARK[word], color: prColor(word) }
@@ -749,6 +781,9 @@ function prLine(key: string, id: string, title: string, number: number | null, a
   if (number !== null) tail.push({ text: ' ' }, { text: `#${number}`, color: GRAY })
   if (archived) tail.push({ text: ' ' }, { text: 'archived', color: GRAY })
   if (word !== undefined) tail.push({ text: ' ' }, { text: word, color: prColor(word) })
+  // Only an open word draws the mark, whatever the read holds.
+  const merge = word !== undefined && OPEN_WORDS.includes(word) ? (got?.mergeable ?? null) : null
+  if (merge !== null) tail.push({ text: ' ' }, { ...MERGE_MARK[merge] })
   if (tail.length > 0) {
     held.tail = [{ text: ' ' }, ...tail]
     held.grow = true

@@ -483,8 +483,8 @@ The pane also shows each PR's state, which it reads from GitHub with one
 below. It reads the states when the pane opens, by `/cairn-pane`, by the
 band's open button, or by the reopen at a session start. The reopen skips
 the read when that start already read the states. An open does not wait
-for the read. The words and counts appear together when the last GitHub
-call answers or times out.
+for the read. The words, counts, and merge marks appear together when the
+last GitHub call answers or times out.
 The pane also reads the states, and the tracking files, when you press
 the ↻ Button at the right end of the card's first line. The ↻ shows whenever the pane
 has a ROADMAP, and it reads `⋯` while a read runs. A press while an
@@ -511,7 +511,8 @@ the pane. One start reads the states once, also when a reopen and a
 `/resume` both run in it. The pane never reads the states on a timer or
 at a turn's end, so a state can be out of date until the next open or ↻
 press. After a
-read, each line shows one word after its number:
+read, each line shows one word after its number, and an open PR's line
+also ends with a merge mark (see below):
 
 | Word | GitHub state | Button |
 |---|---|---|
@@ -533,11 +534,20 @@ it, so the pane cannot tell whether you answered it. The count covers the
 newest 100 threads. With no unresolved thread there is no line.
 When the query fails, the PR's word is `unknown` and the line is left out.
 When the query answers but its thread list comes back in a shape the pane
-does not read, the count line is left out, and the PR keeps its state word
-and its Button.
-A hotfix PR whose URL is on a host other than github.com gets its word
-from one `gh pr view <url> --json state,reviewDecision` call instead, and
-no count line.
+does not read, the count line is left out, and the PR keeps its state word,
+its merge mark, and its Button.
+
+The same query also reads `mergeable`. For a PR that GitHub reports as
+OPEN, the line ends with a mark after its word. A green merge
+symbol means GitHub reports MERGEABLE: the PR can merge. A red disc with a
+cross means GitHub reports CONFLICTING: the PR has conflicts with its base
+branch. In the terminal these are a green `✓` and a red `✗`. GitHub
+answers UNKNOWN while it computes the value, for example just after a
+push. The line then has no mark until a later read gives an answer.
+A PR that is merged or closed has no mark.
+A hotfix PR whose URL is on a host other than github.com gets no count
+line. It gets its word and its mark from one call:
+`gh pr view <url> --json state,reviewDecision,mergeable`.
 
 A `/hotfix` run has no ROADMAP row, so the pane finds its open PR on
 GitHub. The same read runs one `gh pr list --repo <url> --state open
@@ -548,8 +558,8 @@ or token in it. The pane lists each PR from a `hotfix-` branch under a
 Hotfixes heading with the count, after Blocked and before the
 candidates. Each line has the layout of a blocked line, with `fix` in
 place of the milestone id: the state mark, `fix`, the PR's title, and
-`#<n>`, and after a read the same word and count line that a blocked
-line shows. A hotfix line has no Button. A hotfix PR
+`#<n>`, and after a read the same word, merge mark, and count line that
+a blocked line shows. A hotfix line has no Button. A hotfix PR
 that is also a blocked milestone's PR shows only on the blocked line, and
 the count leaves it out. When the
 list call fails, the pane keeps the last list it read for the same repo.
