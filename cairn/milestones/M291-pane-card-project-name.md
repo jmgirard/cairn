@@ -98,3 +98,7 @@ spawned: diff-bug, blame-history, prior-review, ripple
 - blame-history #5: the M236 test now pins the tail's grow — reject (planned change; ↻ stays at the right end)
 - blame-history #6: the M226 test's `repo` after the move is a mock artifact — reject (false: that name comes from the origin URL; the M291 tests cover a name per root)
 - blame-history #7: comments at pane.ts:654 and pane.test.tsx:3709 drift — reject (false: both still describe what grows)
+- copilot: review body — the release-line test's stored read lacks the required `name` — fix now, fixed 6e87160e (verify green after: mod tests 2332)
+- copilot: review body summary — noted; summary reply posted (issuecomment-6280891829). No threads.
+- Copilot level: Lite (set by GitHub's settings; the state query printed `unknown`, the known `<sub>` form in row "Copilot level line format")
+- conversation: no other reviews or comments on PR #303.
