@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M293: The cairn pane's ⓘ card shows a candidate row's whole text
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the cairn pane is the mod that adopters see   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m293-pane-candidate-card-text   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,10 +48,10 @@ On the desktop, the card that a candidate row's ⓘ opens in the cairn pane show
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive change is amend-via-gate. -->
 
-- [ ] T1: `reader.ts`: add `text` to `CandidateRow` from `candidateTexts`, trimmed with the trim `shortTitle` uses (`String.prototype.trim`, reader.ts:636). Bump the pane atom's shape tag in `register.tsx:145`. Add `text` to `types/index.d.ts:80` and its comment. Update the tests that compare whole `CandidateRow` objects (reader.test.ts M251 table ~264, M258 ~297).
-- [ ] T2: `pane.ts` (~line 813): write the AC1 and AC2 tests first in `pane.test.tsx` (the M286 AC9 block, ~6126), show them red against `full = row.title`, then set `full` to `row.text` and `info` when it is not empty, and show them green. Update the M286 AC9 block's hand-written candidate values.
-- [ ] T3: add `text` to `python_candidates` and to each fixture's expected `candidates`; regenerate `fixtures.gen.ts` with `gen_fixtures.py`; add `text` to `test_python_candidates_cut_and_trim_edges` and its `reader.test.ts` twin.
-- [ ] T4: README, DESIGN (the hover-card entry, and the `pane-7` mentions near lines 390, 556, 799), and the code comments that AC5 names. Edit the unreleased M290 CHANGELOG entry's card sentence rather than adding an entry.
+- [x] T1: `reader.ts`: add `text` to `CandidateRow` from `candidateTexts`, trimmed with the trim `shortTitle` uses (`String.prototype.trim`, reader.ts:636). Bump the pane atom's shape tag in `register.tsx:145`. Add `text` to `types/index.d.ts:80` and its comment. Update the tests that compare whole `CandidateRow` objects (reader.test.ts M251 table ~264, M258 ~297).
+- [x] T2: `pane.ts` (~line 813): write the AC1 and AC2 tests first in `pane.test.tsx` (the M286 AC9 block, ~6126), show them red against `full = row.title`, then set `full` to `row.text` and `info` when it is not empty, and show them green. Update the M286 AC9 block's hand-written candidate values.
+- [x] T3: add `text` to `python_candidates` and to each fixture's expected `candidates`; regenerate `fixtures.gen.ts` with `gen_fixtures.py`; add `text` to `test_python_candidates_cut_and_trim_edges` and its `reader.test.ts` twin.
+- [x] T4: README, DESIGN (the hover-card entry, and the `pane-7` mentions near lines 390, 556, 799), and the code comments that AC5 names. Edit the unreleased M290 CHANGELOG entry's card sentence rather than adding an entry.
 - [ ] T5: run the five `verify` checks. Ask the operator for the live look: the desktop pane in circumplex, the pointer over the ⓘ of a long row and of the first row. Record what they see, and add a cut or closing card to the parked rows that Out names.
 
 ## Work log
@@ -67,6 +67,12 @@ On the desktop, the card that a candidate row's ⓘ opens in the cairn pane show
 - 2026-10-19: question set: live look at implement — granted, in circumplex, pointer over a long row's ⓘ.
 - 2026-10-19: plan chose the whole row text over the row cut before its ` — added` tail because the operator asked for the entire row; falsified by a live look where long cards are cut or unreadable in the docked pane.
 - 2026-10-19: changelog: edit the unreleased M290 entry's card sentence, since no release shipped that card.
+- 2026-10-19: implement started on branch m293-pane-candidate-card-text; untracked `cairn-probe.log` and `tsconfig.json` predate the run and stay unstaged.
+- 2026-10-19: T1 done: `CandidateRow.text` is `text.trim()` after the token; shape tag `pane-8`; `types/index.d.ts` names `text`. The M251 table gained `text` and a leading-BOM row; the M258 started-token test now compares titles, since a token is part of the text.
+- 2026-10-19: T2 done: the M293 tests in `pane.test.tsx` failed against `full = row.title` (full was the title; the empty-title row had no card) and pass with `full = row.text`, `info` when text is not empty. The M286 AC9 idle rows gained `text`. Other test literals without `text` stay as written, since no test reads their card.
+- 2026-10-19: T3 done: 60 expected candidate entries in 8 fixtures gained `text` through a scratch script that read each fixture ROADMAP on its own and checked every title against the one written; a script, not Edit, because of the count (a departure from the rulebook's Write/Edit rule). `python_candidates` gives `text`; its trim-edge test gained the leading-BOM row, built from code points.
+- 2026-10-19: T4 done: README, DESIGN (card entry, `info`, three `pane-7` mentions), the M290 CHANGELOG sentence, and the pane.ts and register.tsx comments say the card holds the whole row. A `git grep` for card-with-title phrasing and `pane-7` over those files finds nothing stale.
+- 2026-10-19: verify green: scripts 428 OK, hooks 193 OK, both validates exit 0, mod tests 2336 pass 0 fail; `gen_fixtures.py --check` clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

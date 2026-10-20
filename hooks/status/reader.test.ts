@@ -236,8 +236,8 @@ describe('the workable list (M199 AC1)', () => {
 
 describe('candidate rows (M207 review)', () => {
   const rows = [
-    { priority: 'high', title: 'High row' },
-    { priority: 'normal', title: 'Normal row' },
+    { priority: 'high', title: 'High row', text: 'High row: x' },
+    { priority: 'normal', title: 'Normal row', text: 'Normal row: y' },
   ]
 
   test('CRLF line breaks read as LF ones', () => {
@@ -259,21 +259,26 @@ describe('candidate rows (M207 review)', () => {
 
 // The short title (M251 AC1): the text after the token up to the first
 // `: `, else up to the first ` — `, else all of it. The first two rows
-// open as glmmTMB's ROADMAP rows do.
+// open as glmmTMB's ROADMAP rows do. Each row's text is all of it after the
+// token, trimmed as the title is (M293). BOM and US are built from code
+// points, as the LESSONS M272 line says.
+const BOM = String.fromCharCode(0xfeff)
+const US = String.fromCharCode(0x1f)
 describe('the short title is cut at the first `: `, else at the first ` — ` (M251 AC1)', () => {
   const table: [string, CandidateRow][] = [
-    ['ordinal: REML. The fit warns — added 2026-10-01', { priority: 'normal', title: 'ordinal' }],
-    ['loglog link for `binomial`. Needs a case — added 2026-10-15', { priority: 'normal', title: 'loglog link for `binomial`. Needs a case' }],
-    ['Title — detail: more — added 2026-01-01', { priority: 'normal', title: 'Title — detail' }],
-    ['[low] Low row — added 2026-01-02', { priority: 'low', title: 'Low row' }],
-    ['A `a — b` dash in backticks — added 2026-01-03', { priority: 'normal', title: 'A `a' }],
-    ['A row with no colon and no dash', { priority: 'normal', title: 'A row with no colon and no dash' }],
-    [': an empty short title — added 2026-01-04', { priority: 'normal', title: '' }],
+    [`${BOM}Leading byte-order mark: x${US}`, { priority: 'normal', title: 'Leading byte-order mark', text: `Leading byte-order mark: x${US}` }],
+    ['ordinal: REML. The fit warns — added 2026-10-01', { priority: 'normal', title: 'ordinal', text: 'ordinal: REML. The fit warns — added 2026-10-01' }],
+    ['loglog link for `binomial`. Needs a case — added 2026-10-15', { priority: 'normal', title: 'loglog link for `binomial`. Needs a case', text: 'loglog link for `binomial`. Needs a case — added 2026-10-15' }],
+    ['Title — detail: more — added 2026-01-01', { priority: 'normal', title: 'Title — detail', text: 'Title — detail: more — added 2026-01-01' }],
+    ['[low] Low row — added 2026-01-02', { priority: 'low', title: 'Low row', text: 'Low row — added 2026-01-02' }],
+    ['A `a — b` dash in backticks — added 2026-01-03', { priority: 'normal', title: 'A `a', text: 'A `a — b` dash in backticks — added 2026-01-03' }],
+    ['A row with no colon and no dash', { priority: 'normal', title: 'A row with no colon and no dash', text: 'A row with no colon and no dash' }],
+    [': an empty short title — added 2026-01-04', { priority: 'normal', title: '', text: ': an empty short title — added 2026-01-04' }],
     // The trim edges where Python's bare strip() differs from trim(), held
     // on the Python side by test_python_candidates_cut_and_trim_edges
     // (M251 review).
-    ['Trailing byte-order mark\uFEFF: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark' }],
-    ['Trailing unit separator\u001F: x — added 2026-01-06', { priority: 'normal', title: 'Trailing unit separator\u001F' }],
+    ['Trailing byte-order mark\uFEFF: x — added 2026-01-05', { priority: 'normal', title: 'Trailing byte-order mark', text: `Trailing byte-order mark${BOM}: x — added 2026-01-05` }],
+    ['Trailing unit separator\u001F: x — added 2026-01-06', { priority: 'normal', text: `Trailing unit separator${US}: x — added 2026-01-06`, title: 'Trailing unit separator\u001F' }],
   ]
   for (const [text, row] of table) {
     test(text, () => {
@@ -294,7 +299,8 @@ describe('a started token leaves the short title unchanged (M258 AC4)', () => {
   for (const row of rows) {
     for (const token of tokens) {
       test(`${row} + ${token}`, () => {
-        expect(candidateRows(`## Candidates\n\n- ${row}${token}\n`)).toEqual(candidateRows(`## Candidates\n\n- ${row}\n`))
+        const titles = (text: string) => candidateRows(text).map(each => each.title)
+        expect(titles(`## Candidates\n\n- ${row}${token}\n`)).toEqual(titles(`## Candidates\n\n- ${row}\n`))
       })
     }
   }

@@ -335,6 +335,8 @@ one line, and a long item ends in `…`. In the desktop app, holding the
 pointer over a milestone's line, a task, a criterion, or a workable,
 waiting, blocked, or hotfix line opens a card above it with the whole
 text. A candidate row opens its card from an info icon (`ⓘ`) instead.
+That card holds the whole row as the ROADMAP writes it after the
+priority token, not only the short title that the row shows.
 The pointer over the row shows the icon, and on a row with a `✎`, the
 `✎` beside it. The pointer over the icon opens the card. Each
 section starts after a blank row with its name in bold.

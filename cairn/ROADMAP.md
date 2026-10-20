@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M293 | The cairn pane's ⓘ card shows a candidate row's whole text | planned | — | normal | milestones/M293-pane-candidate-card-text.md |
+| M293 | The cairn pane's ⓘ card shows a candidate row's whole text | in-progress | — | normal | milestones/M293-pane-candidate-card-text.md |
 | M292 | Candidate row titles are one short sentence that fits the cairn pane | done | — | normal | milestones/archive/M292-candidate-title-format.md |
 | M291 | The cairn pane's summary card names the project at its top left | done | — | normal | milestones/archive/M291-pane-card-project-name.md |
 | M290 | The desktop cairn pane shows a candidate row's ✎ only under the pointer | done | — | normal | milestones/archive/M290-pane-hover-plan-button.md |

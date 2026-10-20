@@ -489,9 +489,10 @@ export type PaneState = {
 }
 
 // One candidate row of the ROADMAP: its priority token's level, `normal`
-// with no token, and its short title.
+// with no token, its short title, and its whole text after the token
+// (M293), which the desktop pane's ⓘ card shows.
 // A `parked` row waits on a promotion condition that has not held (M284).
-export type CandidateRow = { priority: 'high' | 'normal' | 'low' | 'parked'; title: string }
+export type CandidateRow = { priority: 'high' | 'normal' | 'low' | 'parked'; title: string; text: string }
 
 // One ` — started <ref>` token of a candidate row (M258), with the row's
 // short title: `ref` is `M<NNN>` or `#<n>` as the token spells it.
@@ -596,9 +597,10 @@ const PRIORITY_TOKENS: readonly [string, 'high' | 'low' | 'parked'][] = [
 // `[parked] ` (M284), else `normal`. Its
 // short title is the text after that token up to the first `: `, else up
 // to the first ` — `, else all of it (M251; tracking-rules "Candidate short
-// title").
+// title"). Its text is all of it after the token, trimmed as the title is
+// (M293).
 export function candidateRows(roadmap: string): CandidateRow[] {
-  return candidateTexts(roadmap).map(({ priority, text }) => ({ priority, title: shortTitle(text) }))
+  return candidateTexts(roadmap).map(({ priority, text }) => ({ priority, title: shortTitle(text), text: text.trim() }))
 }
 
 // Each candidate row's priority and its text after the priority token.

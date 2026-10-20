@@ -5,7 +5,7 @@
   "rows": [],
   "pane": [],
   "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": null, "waiting":[]},
-  "candidates": [{"priority": "normal", "title": "An idea for later"}],
+  "candidates": [{"priority": "normal", "title": "An idea for later", "text": "An idea for later: the section after Blocked — added 2026-01-11"}],
   "blocked": [
     {"id": "M101", "title": "One pull request URL", "pr": 12, "url": "https://github.com/upstream/repo/pull/12", "archived": false},
     {"id": "M102", "title": "Two pull request URLs", "pr": 34, "url": "https://github.com/upstream/repo/pull/34", "archived": false},

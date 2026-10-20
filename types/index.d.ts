@@ -60,8 +60,9 @@ export type CairnPaneMilestone = {
 // names, every `#` token counted), else null (M272, M273); the pane's Next
 // line and Plan press pick their own row (`nextTitle`). `waiting` is its `waiting`, each row's undone dependencies
 // as written with their status. `candidates` holds the ROADMAP's candidate
-// rows, each its priority and its short title: the text before its first
-// `: `, else before its first ` — `, else all of it (M207, M251).
+// rows, each its priority, its short title (the text before its first
+// `: `, else before its first ` — `, else all of it; M207, M251), and its
+// whole text after the priority token, trimmed (M293).
 // `blocked` holds the `blocked` rows in ROADMAP order, each with the number
 // of the pull request its milestone file's `Branch/PR` header names, or
 // null (M223), and that pull request's URL up to its number, or null (M224).
@@ -77,7 +78,7 @@ export type CairnPaneState = {
   workable: CairnWorkableRow[]
   waiting: { id: string; title: string; unmet: string[] }[]
   // `parked`: a row whose promotion condition has not held (M284).
-  candidates: { priority: 'high' | 'normal' | 'low' | 'parked'; title: string }[]
+  candidates: { priority: 'high' | 'normal' | 'low' | 'parked'; title: string; text: string }[]
   blocked: { id: string; title: string; pr: number | null; url: string | null; archived: boolean }[]
   taken: { title: string; ref: string }[]
 }

@@ -118,7 +118,10 @@
   row's `✎` button at rest. A row shows its `✎` at its right end while the
   pointer is over the row, and a click on it plans the row as before. An
   info icon (`ⓘ`) shows on the hovered row, beside the row's `✎`. The
-  row's full-text card now opens only while the pointer is over that icon. The terminal pane still draws `✎`
+  row's card now opens only while the pointer is over that icon. The card
+  shows the whole candidate row as written in the ROADMAP after its
+  priority token, with its details, dates, and links. The row itself
+  shows only its short title. The terminal pane still draws `✎`
   on each row that has one.
 
 ### New

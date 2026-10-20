@@ -5,11 +5,11 @@
   "pane": [],
   "next": {"action": "plan the next milestone", "command": "/milestone-plan", "id": null, "title": "Late high", "waiting": []},
   "candidates": [
-    {"priority": "low", "title": "First low"},
-    {"priority": "normal", "title": "Normal one"},
-    {"priority": "high", "title": "Late high"},
-    {"priority": "low", "title": "Second low"},
-    {"priority": "normal", "title": "Normal two"},
-    {"priority": "high", "title": "Last high"}
+    {"priority": "low", "title": "First low", "text": "First low: a low row above every other level — added 2026-01-01"},
+    {"priority": "normal", "title": "Normal one", "text": "Normal one: an untagged row below a low row — added 2026-01-02"},
+    {"priority": "high", "title": "Late high", "text": "Late high: a high row below a low row — added 2026-01-03"},
+    {"priority": "low", "title": "Second low", "text": "Second low: a low row split from the first by other levels — added 2026-01-04"},
+    {"priority": "normal", "title": "Normal two", "text": "Normal two: a second untagged row, split from the first — added 2026-01-05"},
+    {"priority": "high", "title": "Last high", "text": "Last high: a second high row, split from the first — added 2026-01-06"}
   ]
 }
