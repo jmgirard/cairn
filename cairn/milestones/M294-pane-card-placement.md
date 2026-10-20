@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M294: A candidate row's ⓘ card opens where the cairn pane has room for it
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -28,13 +28,13 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `cardPlace(need, above, below)` returns `up` when `need <= above`, else `down` when `need <= below`, else the side with more rows (`up` on a tie) with a row cap equal to that side's rows, and no card when that side has fewer than 3 rows. A `pane.test.tsx` table asserts each branch, the tie, the boundaries `need = above` and `need = below`, and the under-3 case, against values written out by hand.
-- [ ] AC2: `cardRows(text, columns)` estimates a card's rows: a greedy wrap of `text` at spaces at `columns - 4` columns counted by `width` in `band.ts` (code points), a word longer than a row split across rows, plus 2 border rows. The desktop's own wrap can differ from it. A `pane.test.tsx` table asserts it for an empty text, one short word, a text that fills a row exactly, a row plus one word, a word longer than a row, repeated spaces, and a word that exactly fills the last row, against values written out by hand.
-- [ ] AC3: Each candidate line carries `rowsAbove`: the count of lines `paneLines` returns before it, plus the summary card's 2 border rows, each line taken as one row. A `pane.test.tsx` table over idle states asserts it against values written out by hand, varying the release line (present or absent), a blocked row with and without its counts line, a hotfix line, waiting rows, and the Next line (present or absent).
+- [x] AC1: `cardPlace(need, above, below)` returns `up` when `need <= above`, else `down` when `need <= below`, else the side with more rows (`up` on a tie) with a row cap equal to that side's rows, and no card when that side has fewer than 3 rows. A `pane.test.tsx` table asserts each branch, the tie, the boundaries `need = above` and `need = below`, and the under-3 case, against values written out by hand.
+- [x] AC2: `cardRows(text, columns)` estimates a card's rows: a greedy wrap of `text` at spaces at `columns - 4` columns counted by `width` in `band.ts` (code points), a word longer than a row split across rows, plus 2 border rows. The desktop's own wrap can differ from it. A `pane.test.tsx` table asserts it for an empty text, one short word, a text that fills a row exactly, a row plus one word, a word longer than a row, repeated spaces, and a word that exactly fills the last row, against values written out by hand.
+- [x] AC3: Each candidate line carries `rowsAbove`: the count of lines `paneLines` returns before it, plus the summary card's 2 border rows, each line taken as one row. A `pane.test.tsx` table over idle states asserts it against values written out by hand, varying the release line (present or absent), a blocked row with and without its counts line, a hotfix line, waiting rows, and the Next line (present or absent).
 - [ ] AC4: The render places each candidate card with `cardPlace(cardRows(full, bodyColumns), rowsAbove - offset, room - (rowsAbove - offset) - 1)`, where `bodyColumns`, `offset` (`scroll.offset`), and `bodyRows` (`scroll.bodyRows`) are the Pane render's props. `room` is `bodyRows` when `placement` is `dock`, and the smaller of `bodyRows` and the pane's line count plus 2 when it is `inline`. A `pane.test.tsx` test redraws with varied `scroll.offset`, `scroll.bodyRows`, `bodyColumns`, and `placement`, and asserts the up, down, capped, and no-card results against values written out by hand.
-- [ ] AC5: On the desktop, an `up` card is drawn as before (an absolute Box at `bottom: 1` in its line). A `down` card is an unkeyed `position: 'absolute'` Box drawn after every line in the pane's root Box, at `top` equal to its line's `rowsAbove` plus 1, hidden until the line's ⓘ scope lights. A cut card (AC1's result with a row cap) sets no `height` and holds `cardCut(full, cap, bodyColumns)`, with `cap` the cap from `cardPlace` and `bodyColumns` the Pane prop. For `rows >= CARD_MIN_ROWS`, the pure `cardCut(full, rows, columns)` in `pane.ts` returns `full` unchanged when `cardRows` fits it in `rows`, else its longest run of words from the start (the non-empty pieces between runs of spaces, joined by one space) that `cardRows` fits in `rows` with ` …` after it, then ` …`, or `…` alone when no word fits. The desktop's own wrap can differ from `cardRows`, so a cut card can take fewer or more rows than its cap. The terminal draws no card. A `pane.test.tsx` table asserts `cardCut`, against values written out by hand, for a cut mid-text, a run whose ` …` would wrap past `rows`, a first word that does not fit alone, a text that fits whole, repeated and leading spaces, and a word longer than a row that fits in `rows` once split; render tests assert the props above on both surfaces and a cut card's text on the desktop.
-- [ ] AC6: README.md's pane paragraph, the `cairn/DESIGN.md` hover-card entry, the CHANGELOG's Unreleased ⓘ-card entry, and the comments at the card's render in `register.tsx` say that a candidate card opens above its row when it fits, else below, else cut to the larger side. None of them says that a candidate card always opens above.
-- [ ] AC7: The profile's five `verify` checks pass on the review head.
+- [x] AC5: On the desktop, an `up` card is drawn as before (an absolute Box at `bottom: 1` in its line). A `down` card is an unkeyed `position: 'absolute'` Box drawn after every line in the pane's root Box, at `top` equal to its line's `rowsAbove` plus 1, hidden until the line's ⓘ scope lights. A cut card (AC1's result with a row cap) sets no `height` and holds `cardCut(full, cap, bodyColumns)`, with `cap` the cap from `cardPlace` and `bodyColumns` the Pane prop. For `rows >= CARD_MIN_ROWS`, the pure `cardCut(full, rows, columns)` in `pane.ts` returns `full` unchanged when `cardRows` fits it in `rows`, else its longest run of words from the start (the non-empty pieces between runs of spaces, joined by one space) that `cardRows` fits in `rows` with ` …` after it, then ` …`, or `…` alone when no word fits. The desktop's own wrap can differ from `cardRows`, so a cut card can take fewer or more rows than its cap. The terminal draws no card. A `pane.test.tsx` table asserts `cardCut`, against values written out by hand, for a cut mid-text, a run whose ` …` would wrap past `rows`, a first word that does not fit alone, a text that fits whole, repeated and leading spaces, and a word longer than a row that fits in `rows` once split; render tests assert the props above on both surfaces and a cut card's text on the desktop.
+- [x] AC6: README.md's pane paragraph, the `cairn/DESIGN.md` hover-card entry, the CHANGELOG's Unreleased ⓘ-card entry, and the comments at the card's render in `register.tsx` say that a candidate card opens above its row when it fits, else below, else cut to the larger side. None of them says that a candidate card always opens above.
+- [x] AC7: The profile's five `verify` checks pass on the review head.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate -->
@@ -84,9 +84,54 @@ On the desktop, a candidate row's ⓘ card opens above its row when it fits ther
 - 2026-10-20: T6 done: verify green (above); the operator's recheck in circumplex found the second row's card ending in "…" with no empty rows.
 - 2026-10-20: claim audit: 75 claims read, 5 corrected — pane.test.tsx (the AC5 comment still said a cut card takes a height), pane.ts (`CardPlace.rows` is the rows the text is fitted to), register.tsx ("only over the rows before it" restated as the type doc's siblings, with the live look as the source), README.md and CHANGELOG.md (the no-card case, "when it fits only below", and the estimate's limit replace "no longer runs past the pane's top").
 - 2026-10-20: implement done; status review.
+- 2026-10-20: review return 1: AC4 fails as written: its test clause names a redraw varying `bodyColumns` and `placement`, and the render tests vary only `scroll.offset` and `scroll.bodyRows` (diff-bug #3). The pass's fix-now findings ride with the return (Review section).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Pass 1, 2026-10-20, head bb6d0181 (the PR-URL commit); main is an ancestor, so no sync was needed. The run: `claude plugin test .` exit 0, 2380 pass, 0 fail.
+
+- AC1: the "cardPlace picks the side a candidate card opens on (M294 AC1)" table passes 9 of 9: fits above, exactly fits above, fits only below, exactly fits below, neither with more above, neither with more below, a tie (up), the larger side under 3 rows (null), and a larger side of exactly 3 (down, cap 3).
+- AC2: the "cardRows estimates the rows a candidate card takes (M294 AC2)" table passes 7 of 7 at 14 columns: an empty text (2), one short word (3), a text that fills a row (3), a row plus a word (4), a word longer than a row (4), repeated spaces (3), and a word that exactly fills the last row (5).
+- AC3: the "each candidate line carries the rows drawn before it (M294 AC3)" table passes 8 of 8: the bare idle state (first candidate on row 9), the Next line (11), the release line (10), a blocked row with its counts line (13) and without (12), a hotfix line (12), a workable row and two waiting rows (16), and no line but a candidate carries a row.
+- AC4: the "each candidate card is placed from the Pane props (M294 AC4)" table passes 8 of 8, varying `bodyColumns` (14, 60), `scroll.offset` (0, 5, 7, 8), `scroll.bodyRows` (3 to 200), and `placement` (`dock`, `inline`), with up, down, cut (above on a tie, below), and no-card results, plus only candidate lines placed. The register.tsx render calls `cardPlaces` with `e.props.bodyColumns`, `e.props.scroll.offset`, `e.props.scroll.bodyRows`, and `e.props.placement`, and the AC5 render tests below vary `scroll` through the mount props.
+- AC5: the "a candidate card is drawn on the side it opens on (M294 AC5)" render tests pass 6 of 6 (3 per surface). On the desktop: an up card in its line at `bottom: 1` with the ⓘ scope and no height; a down card as the last child of `cairn-pane`, unkeyed, `position: 'absolute'`, `top` = its row plus 1, `display: 'none'`, hover `{ display: 'flex', scope: 'cairn-info-candidate-0' }`; a cut card with no `height` or `overflow` and the text `Long row: aaaa bbbb cccc …`. In the terminal, no card. The "cardCut cuts the text of a card by whole words (M294 AC5)" table passes 6 of 6: a cut mid-text, a run whose ` …` would wrap past the rows, a first word that does not fit (`…`), a text that fits whole, repeated and leading spaces, and a word longer than a row that fits once split. Live looks (operator, circumplex): cards open on a side with room, draw over the rows, and open only from ⓘ; the recheck found the cut card with no empty rows.
+- AC6: read at the head: README.md:340-345, CHANGELOG.md:124-129 (the Unreleased ⓘ-card entry), cairn/DESIGN.md:520-537, and register.tsx:438-444 and 411-415 each state the three-way rule: above when it fits, else below, else cut to the larger side. `git grep -n -i -e "always open" -e "always upward"` over those files exits 1, with no match.
+- AC7: from the repo root, each exit checked: `scripts/tests` 428 OK (21 skipped), `hooks/tests` 193 OK, both `claude plugin validate` runs exit 0, `claude plugin test .` exit 0 with 2380 pass and 0 fail.
+
+Consistency gate: `cairn_validate.py` exit 0, all checks passed; no principle changed, so `cairn_impact` is skipped. Profile slot: the verify checks pass on the review head (AC7); the marketplace validate output holds no `version` warning (0 matches); the unreleased ⓘ-card CHANGELOG entry was edited to state the rule, with no milestone id added.
+
+AC4 unticked: diff-bug #3 shows its evidence line overstated. The render tests vary only `scroll.offset` and `scroll.bodyRows`; no redraw varies `bodyColumns` or `placement`, which AC4's test clause names.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+
+- diff-bug #1: rows holding Buttons or a 16 px badge may draw taller than one cell, which would shift `rowsAbove` and a down card's `top` — follow-up, into "Check the pane badges in a real session" item (3), which already asks whether a badge makes its row taller.
+- diff-bug #2: a desktop wheel scroll might not ask for a new render, leaving a stale offset — reject, false by the live look: the operator hovered rows after scrolling down and the cards opened on a side with room.
+- diff-bug #3: AC4's redraw test clause names `bodyColumns` and `placement`, and no redraw varies them — fix now through review return 1 (render tests at a second width and `inline`).
+- diff-bug #4: DESIGN's "opens above its row only when it fits there" contradicts the cut-above case — fix now.
+- diff-bug #5: `cardBox`'s unscoped hover fallback would light a down card from anywhere in the pane, if one ever drew without `info` — fix now (the down list takes only lines with the ⓘ scope).
+- diff-bug #6: a cut card can exceed its cap where the desktop wraps narrower — reject, planned change (amended AC5 states it).
+- diff-bug #7: `cardCut` gives `…` alone for a no-space text that does not fit — reject, planned change (AC5's spec).
+- diff-bug #8: a line outside the window gets a negative `above` — reject, false: its ⓘ cannot be hovered, so nothing draws wrong.
+- diff-bug #9: `cardRows` with under 5 columns or a wide character — reject, planned change (AC2's estimate).
+- diff-bug #10: the AC4 inline case uses offset 5, which an inline frame would not show — reject, style (the expected values are right for the input).
+- diff-bug #11: awaits — reject, false: `e` belongs to one render and `lines` and `places` come from one `paneLines` call.
+- diff-bug #12: the M261 tests strip `rowsAbove` — reject, planned change (blame-history #4 covers the lost check).
+- blame-history #1: the down cards in `below.map` carry no keys — reject, false risk: a key would scope hover (M290), and the parked ✎ Box map is the same precedent.
+- blame-history #2: the window-relative row picks the side while `top` is in tree rows — reject, false by the live look after scrolling, and `top` is in the tree's coordinates on purpose.
+- blame-history #3: register.tsx's comment still says a card is "placed above the row" — fix now.
+- blame-history #4: no test checks `rowsAbove` after a hidden started row — fix now (an AC3-style case).
+- blame-history #5: hover scope kept — reject, no finding.
+- blame-history #6: the M294 block splits the label constants — reject, style.
+- prior-review #1: the `cardPlaces` comment's inline clause lacks a verb (PR #264's grammar point) — fix now.
+- prior-review #2: register.tsx's "from the end of the pane" clause does not parse — fix now.
+- prior-review #3: DESIGN.md:516 "reveals it above the row" — fix now (as ripple #1).
+- ripple #1: DESIGN.md:515-516 says a candidate card reveals above the row — fix now.
+- ripple #2: register.tsx:407-409 "placed above the row out of the flow" — fix now (as blame-history #3).
+- ripple #3: the `isCard` comment says a card is a line's child — fix now.
+- ripple #4: the `flat` comment says the root holds only lines — fix now.
+- ripple #5: the helper name `unplaced` collides with the pane's "unplaced" term — fix now (renamed).
+- ripple #6: DESIGN.md:512-513 "inside such a line's keyed Box" is false for a down card — fix now.
