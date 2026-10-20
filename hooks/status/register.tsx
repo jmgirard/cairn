@@ -8,8 +8,10 @@ import { countsArgv, prRead } from './counts'
 import { BADGE_H, badgeSvg, badgeWidth } from './badge'
 import { ICON_PX, iconSvg } from './icons'
 import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs } from './repo'
-import type { HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
+import type { CardPlace, HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
+  cardCut,
+  cardPlaces,
   CHECK_LABEL,
   CLEAR_LABEL,
   CLEARS_FIRST,
@@ -404,11 +406,16 @@ export const register: Register = on => {
     // The card's lines draw in one Box with a round border in `subtle`,
     // before the rest (M286). On the desktop a line with a `full` holds a
     // hidden Box with its whole text (on a candidate line, its row's text
-    // after the priority token, M293), placed above the row out of the flow,
-    // which the pointer over the line reveals, or on a line with `info` the
-    // pointer over its info glyph, which names the card's hover group (M290);
-    // an absolute Box paints over
-    // the rows before it, so it opens upward (M286). A lead span that names an icon draws it as an
+    // after the priority token, M293), placed out of the flow, which the
+    // pointer over the line reveals, or on a line with `info` the pointer
+    // over its info glyph, which names the card's hover group (M290). An
+    // absolute Box is painted over the siblings before it, so a card drawn
+    // in its line opens upward (M286). A candidate card opens upward when it
+    // fits above its row, else downward when it fits below. When it fits
+    // neither side, it opens on the larger side (above on a tie) with its
+    // text cut, and is not drawn when that side has fewer than 3 rows. A
+    // card that opens downward, whole or cut, is drawn after every line in
+    // the pane's root Box (M294). A lead span that names an icon draws it as an
     // `Svg` on a surface whose table has the element, and its glyph in the
     // terminal, and a line with one centers its row (M286).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
@@ -432,6 +439,42 @@ export const register: Register = on => {
       )
     // A line that draws the info glyph, which then alone opens its card (M290).
     const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && e.surface !== 'terminal'
+    // Where each candidate card opens, from the Pane props (M294): above
+    // its row when it fits there, else below, else cut to the larger side,
+    // or not at all where that side has fewer than 3 rows. A card that
+    // opens below draws after every line in the pane's root Box: an
+    // absolute Box is painted over the siblings before it, so the lines
+    // after its own, painted later, would cover a card drawn in the line.
+    // The M294 live look saw a card drawn last paint over those lines.
+    const places = cardPlaces(lines, {
+      bodyColumns: e.props.bodyColumns,
+      offset: e.props.scroll.offset,
+      bodyRows: e.props.scroll.bodyRows,
+      placement: e.props.placement,
+    })
+    const placeOf = (line: (typeof lines)[number]): CardPlace =>
+      Object.prototype.hasOwnProperty.call(places, line.key) ? places[line.key] : { side: 'up', rows: null }
+    // A card's Box: no key of its own, since a keyed Box would scope its own
+    // hover and a hidden scope is never under the pointer (M290). `at` places
+    // it. A cut card holds its text cut by whole words to its rows, ending in
+    // `…`, and sets no height, since a fixed height left empty rows where the
+    // desktop wraps more per row than `cardRows` counts (M294 live look).
+    const cardBox = (line: (typeof lines)[number], at: { top: number } | { bottom: number }, rows: number | null) => (
+      <Box
+        position="absolute"
+        {...at}
+        left={0}
+        right={0}
+        display="none"
+        hover={infos(line) ? { display: 'flex', scope: infoScope(line.key) } : { display: 'flex' }}
+        borderStyle="round"
+        borderColor={METER_EMPTY_KEY}
+        backgroundColor={HOVER_GROUND}
+        paddingX={1}
+      >
+        <Text wrap="wrap">{rows === null ? line.full : cardCut(line.full ?? '', rows, e.props.bodyColumns)}</Text>
+      </Box>
+    )
     const centers = (line: (typeof lines)[number]) =>
       Svg !== undefined &&
       (line.lead.some(span => span.icon !== undefined) || (line.tail ?? []).some(span => span.badge !== undefined))
@@ -524,28 +567,20 @@ export const register: Register = on => {
                 </Box>
               )
             })}
-            {line.full === undefined || e.surface === 'terminal' ? null : (
-              // No key of its own: a keyed Box would scope its own hover, and a
-              // hidden scope is never under the pointer. The keyed line Box
-              // opens it, or on a line with the info glyph its group (M290).
-              <Box
-                position="absolute"
-                bottom={1}
-                left={0}
-                right={0}
-                display="none"
-                hover={infos(line) ? { display: 'flex', scope: infoScope(line.key) } : { display: 'flex' }}
-                borderStyle="round"
-                borderColor={METER_EMPTY_KEY}
-                backgroundColor={HOVER_GROUND}
-                paddingX={1}
-              >
-                <Text wrap="wrap">{line.full}</Text>
-              </Box>
-            )}
+            {line.full === undefined || e.surface === 'terminal' || placeOf(line)?.side !== 'up'
+              ? null
+              : // An upward card, in its line above the row. The keyed line Box
+                // opens it, or on a line with the info glyph its group (M290).
+                cardBox(line, { bottom: 1 }, placeOf(line)?.rows ?? null)}
           </Box>
     )
     const card = lines.filter(line => line.card)
+    // The cards that open below their rows, each at its line's row plus 1
+    // in the pane's tree, drawn after every line (M294).
+    // Only a line with the info glyph: its card names the glyph's hover
+    // group, where a card at the root with no group would light from
+    // anywhere in the pane.
+    const below = lines.filter(line => infos(line) && placeOf(line)?.side === 'down')
     return (
       <Box key="cairn-pane" flexDirection="column">
         {card.length === 0 ? null : (
@@ -554,6 +589,7 @@ export const register: Register = on => {
           </Box>
         )}
         {lines.filter(line => !line.card).map(drawLine)}
+        {below.map(line => cardBox(line, { top: (line.rowsAbove ?? 0) + 1 }, placeOf(line)?.rows ?? null))}
       </Box>
     )
   })

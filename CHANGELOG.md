@@ -121,7 +121,12 @@
   row's card now opens only while the pointer is over that icon. The card
   shows the row's whole text after its priority token as plain text, with
   any HTML comments left out. The row itself shows only its short title.
-  The terminal pane still draws `✎` on each row that has one.
+  When the card fits above the row, it opens there. When it fits only
+  below the row, it opens below. A card too tall for either side
+  opens on the side with more room and is cut to fit. When that side has
+  fewer than 3 rows, no card opens. The pane only estimates the rows a
+  card takes. A card can still come out a row or two shorter or longer
+  than its room. The terminal pane still draws `✎` on each row that has one.
 
 ### New
 

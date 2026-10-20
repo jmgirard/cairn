@@ -5,7 +5,7 @@ import type { FlowPhase } from './band'
 import type { BadgeName } from './badge'
 import { badgeSpan } from './badge'
 import type { IconName } from './icons'
-import { FLOW_COLORS, flowOf, GRAY } from './band'
+import { FLOW_COLORS, flowOf, GRAY, width } from './band'
 import { lastSegment } from './repo'
 import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneState, TakenRow } from './reader'
 
@@ -92,6 +92,7 @@ export type PaneLine = {
   card?: true
   full?: string
   info?: true
+  rowsAbove?: number
   action?: string
   buttons?: PaneButton[]
   target?: string
@@ -346,6 +347,91 @@ export const HOME_LABEL = '⌂'
 export const PLAN_CANDIDATE_LABEL = '✎'
 // A candidate line's info glyph, which opens its card on the desktop (M290).
 export const INFO_LABEL = 'ⓘ'
+
+// Where a candidate line's card opens (M294): `up` above its row, as every
+// other card does, or `down` below it, with `rows` the rows a cut card's
+// text is fitted to (`cardCut`), else null. A null place draws no card.
+export type CardPlace = { side: 'up' | 'down'; rows: number | null } | null
+
+// The fewest rows a cut card keeps: its two border rows and one of text.
+export const CARD_MIN_ROWS = 3
+
+// A card of `need` rows opens above its row when the `above` rows there
+// hold it, else below when the `below` rows hold it. Otherwise it opens on
+// the side with more rows, above on a tie, cut to that side's rows, and a
+// side of fewer than CARD_MIN_ROWS rows draws no card (M294).
+export function cardPlace(need: number, above: number, below: number): CardPlace {
+  if (need <= above) return { side: 'up', rows: null }
+  if (need <= below) return { side: 'down', rows: null }
+  const side = above >= below ? 'up' : 'down'
+  const rows = side === 'up' ? above : below
+  return rows < CARD_MIN_ROWS ? null : { side, rows }
+}
+
+// What the Pane render's props say about its body (M294): its width, the
+// first row its window shows, the rows the window may show, and where the
+// surface seated it.
+export type PaneView = { bodyColumns: number; offset: number; bodyRows: number; placement: 'dock' | 'inline' }
+
+// Where each candidate line's card opens, by line key (M294). The line's
+// row in the window is its `rowsAbove` less the window's offset. In a dock
+// the room is the body's rows. Inline, the frame fits the tree, so the room
+// is the fewer of the body's rows and the tree's rows (its lines and the
+// summary card's two border rows).
+export function cardPlaces(lines: PaneLine[], view: PaneView): Record<string, CardPlace> {
+  const room = view.placement === 'dock' ? view.bodyRows : Math.min(view.bodyRows, lines.length + 2)
+  const out: Record<string, CardPlace> = {}
+  for (const line of lines) {
+    if (line.info !== true || line.full === undefined || line.rowsAbove === undefined) continue
+    const row = line.rowsAbove - view.offset
+    out[line.key] = cardPlace(cardRows(line.full, view.bodyColumns), row, room - row - 1)
+  }
+  return out
+}
+
+// The card's border and padding take 4 of the pane's columns.
+export const CARD_FRAME_COLUMNS = 4
+
+// An estimate of the rows a card's text takes in a pane `columns` wide
+// (M294): a greedy wrap at runs of spaces, a word longer than a row split
+// across rows, plus the card's two border rows. Columns are code points, as
+// `width` counts them, and the desktop's own wrap can differ.
+export function cardRows(text: string, columns: number): number {
+  const room = Math.max(1, columns - CARD_FRAME_COLUMNS)
+  let rows = 0
+  let used = 0
+  for (const word of text.split(/ +/).filter(each => each !== '')) {
+    const wide = width(word)
+    if (wide > room) {
+      if (used > 0) rows += 1
+      rows += Math.floor(wide / room)
+      used = wide % room
+    } else if (used === 0) {
+      used = wide
+    } else if (used + 1 + wide <= room) {
+      used += 1 + wide
+    } else {
+      rows += 1
+      used = wide
+    }
+  }
+  if (used > 0) rows += 1
+  return rows + 2
+}
+
+// A cut card's text (M294, amended after the live look): `text` as it is
+// when `cardRows` fits it in `rows`, else its longest run of words from the
+// start that fits with ` …` after it, then ` …`, or `…` alone. Adding a
+// word never lowers `cardRows`, so the scan stops at the first word that
+// does not fit. The card sets no height, so the desktop's own wrap, which
+// can differ, leaves no empty rows.
+export function cardCut(text: string, rows: number, columns: number): string {
+  if (cardRows(text, columns) <= rows) return text
+  const words = text.split(/ +/).filter(each => each !== '')
+  let kept = 0
+  while (kept < words.length && cardRows(`${words.slice(0, kept + 1).join(' ')} …`, columns) <= rows) kept += 1
+  return kept === 0 ? '…' : `${words.slice(0, kept).join(' ')} …`
+}
 export const READING_LABEL = '⋯'
 export const FINISH_LABEL = 'Finish'
 export const REVISE_LABEL = 'Revise'
@@ -816,6 +902,10 @@ export function paneLines(
       // the line its short title (M293).
       candidate.full = row.text
       if (row.text !== '') candidate.info = true
+      // The rows the pane draws before this line (M294): one per line before
+      // it, since only goal lines wrap and they draw only while a milestone
+      // is active, plus the summary card's two border rows.
+      candidate.rowsAbove = out.length + 2
       if (acts && row.title !== '') {
         candidate.buttons = ['plan']
         candidate.target = `${i}`
