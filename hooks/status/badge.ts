@@ -5,8 +5,8 @@ import type { Span } from './band'
 // it draws as an `Svg` pill, a rounded rectangle in one gray fill with
 // the number in white. In the terminal it draws as the number with a
 // space on each side, in `inverseText` on `inactive`, the theme's gray:
-// the band terminal pill's text key (track.ts `PILL_TEXT`), not bold as
-// that pill is. Since M302 the three headings share the one gray, where
+// the band terminal pill's text key (track.ts `PILL_TEXT`), but not bold,
+// where that pill is bold. Since M302 the three headings share the one gray, where
 // M289 gave each its own color.
 // An image has no theme signal (ROADMAP "Gaps only the app or mod API can
 // close"), so the fill is a fixed mid gray, dark enough that white reads

@@ -1,6 +1,6 @@
 # M302: Put the pane's count badges after their labels in gray
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,8 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 - 2026-10-20: substantive amendment: AC5 changed from a desktop live look to a browser preview of the pill for counts 1, 12, and 123, with the desktop placement, centering, and clipping named as unchecked in the badge Known issue. Scope Out and T4 follow.
 - 2026-10-20: re-audit: AC5 (full) — 4 findings, all taken: vary the count, not the heading, since `badgeSvg` takes no heading; bind the pill's look, not the page's placement; give the deferred desktop look a durable home in the Known issue. Reachability and proportionality had no findings.
 - 2026-10-20: T4 done. A scratch page built by `node` from the shipped `badgeSvg` drew the gray pill for counts 1, 12, and 123 after bold labels on a dark (#1f1f1e) and a light (#faf9f5) ground in the browser pane. The operator accepted the look. The badge Known issue names the desktop placement, centering, and clipping as unchecked until a look after the merge.
+- 2026-10-20: claim audit: 39 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/badge.ts, band.ts, pane.ts, register.tsx, pane.test.tsx. Two unclear wordings were reworded: the badge.ts "not bold" clause and the AC1 test comment on why no milestone is active.
+- 2026-10-20: implement done. All four tasks are checked, verify is green (mod tests 2417 pass), and the status is review.
 
 ## Decisions
 

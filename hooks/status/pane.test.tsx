@@ -1032,8 +1032,9 @@ describe('section headings, the head line, Next, and the card in the picked look
     expect(at('M7-tasks-head')?.tail?.slice(1, 2)).toEqual([{ text: '1/3 ', color: GRAY }])
   })
 
-  // M302 AC1: with no active milestone all three counted headings draw, and
-  // each puts its badge in the lead after the label and a space.
+  // M302 AC1: with no active milestone, so that Candidates draws beside
+  // Blocked and Hotfixes, each counted heading puts its badge in the lead
+  // after the label and a space.
   test('Blocked, Hotfixes, and Candidates each lead with the label, a space, and the badge (M302 AC1)', () => {
     const idle: PaneState = {
       ...state,
