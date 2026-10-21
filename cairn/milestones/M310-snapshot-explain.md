@@ -113,7 +113,7 @@ D-entry, the CHANGELOG, and the README follow.
       `snapshot:` Review line.
 - [x] T2: Add the snapshot lines to step 8's guest body sentences and to
       the open-PR comment beside the `edge` list.
-- [ ] T3: Add the snapshot list to `/hotfix` step 6's gate in both modes,
+- [x] T3: Add the snapshot list to `/hotfix` step 6's gate in both modes,
       and the snapshot lines to the guest arm's body sentence.
 - [ ] T4: Append a D-entry. It records the rule. Guest mode passes D-108's
       door on its retained trigger (easystats/see#486). Owner mode at both
@@ -138,6 +138,7 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: implement started on m310-snapshot-explain, cut from main at 488fc5a4; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-21: T1 done — step 7 gains a "Changed snapshot files" paragraph before the PR-conversation read; verify green (five commands, each exit 0).
 - 2026-10-21: T2 done — step 8's guest body names the snapshot lines first in the items sentence, the "Beyond those items" sentence gains an exception for them, and the open-PR comment carries them beside the `edge` list; T1's paragraph split into shorter sentences; verify green.
+- 2026-10-21: T3 done — `/hotfix` step 6's gate gains a "Changed snapshot files" paragraph after the head note, and the guest body sentence puts the snapshot lines after the failing-calls list and before `Fixes #N`; implement chose "the recommended option does not approve and instead fixes that change first" for AC3's no-approve clause; verify green.
 
 ## Decisions
 
