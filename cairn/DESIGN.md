@@ -309,9 +309,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   names (M272, M273). The Plan press does not use that
   `title`: `nextTitle` in `pane.ts` picks the first `[high]` row the
   Candidates list draws. Since M305 the pane's Next line draws for a
-  `/milestone-plan` step only while no milestone is active and the list
-  draws no row, so it names no row, and the band's Plan press is the
-  pick's one reader in practice. The pane state also holds the candidate rows (M207):
+  `/milestone-plan` step only while the list draws no row (the list draws
+  none while a milestone is active, and `recommend` plans only with none
+  active), so it names no row, and the band's Plan press is the pick's one
+  reader in practice. The pane state also holds the candidate rows (M207):
   `candidateRows` in `reader.ts` reads each flush-left line that opens
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high`, `low`, or `parked` for

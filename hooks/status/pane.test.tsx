@@ -5895,10 +5895,11 @@ describe('a second listing pending at a session end reads nothing (M260 AC4)', (
   })
 })
 
-// While planning, the Next line names the first `[high]` row that the
-// Candidates list draws and the next-step press plans it; with no such row
-// both name no title (M272 AC4, M273 AC3). The titles are written out by
-// hand from the fixtures' ROADMAPs.
+// While planning, the band's Plan press plans the first `[high]` row that
+// the Candidates list draws, and with no such row names no title (M272 AC4,
+// M273 AC3). Since M305 a drawn row hides the pane's planning line, so a
+// shown line names no title. The titles are written out by hand from the
+// fixtures' ROADMAPs.
 describe("planning's press names the first drawn [high] row, and a drawn row hides the pane's line (M272 AC4, M273 AC3, M305)", () => {
   const PLAN = { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null }
   const ROWS: PaneState['candidates'] = [
@@ -6103,6 +6104,20 @@ describe('a planning Next line draws only while no candidate line draws (M305 AC
     shown(layout(state, [], true, {}, [hotfix(41)], [{ title: 'Plain row', number: 7 }]))
   })
 
+  // Since M305 the card's blank row draws only before the first milestone,
+  // and every later section opens with its own, so no fixture draws two
+  // blank rows in a row (M305 review).
+  for (const name of WITH_ROADMAP) {
+    test(`${name}: no two blank rows in a row`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const keys = (await paneLines($, 'terminal')).map(([key]) => key)
+      const doubled = keys.filter((key, i) => i > 0 && key.endsWith('-gap') && keys[i - 1].endsWith('-gap'))
+      expect(doubled).toEqual([])
+      expect(keys.at(-1)?.endsWith('-gap')).toBe(false)
+    })
+  }
+
   test('an implement next step draws beside drawn rows', () => {
     const state = idle([HIGH], { next: { action: 'implement', command: '/milestone-implement', id: 'M8', title: null }, workable: [{ id: 'M8', title: 'Ready' }] })
     const lines = layout(state, [], true)
@@ -6165,6 +6180,7 @@ describe('the card counts the drawn candidate rows by level and the planned and 
     // With none active, the next section's own blank row follows the card.
     expect(layout(idle, [], true).map(line => line.key).slice(0, 3)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
     expect(layout(idle, [], true)[3].key.endsWith('-gap')).toBe(true)
+    expect(layout(idle, [], true)[4].key.endsWith('-gap')).toBe(false)
     expect(layout(idle, [], true).map(line => line.key)).not.toContain('no-active')
     expect(layout(active, [], true).map(line => line.key).slice(0, 5)).toEqual([
       'card-repo',

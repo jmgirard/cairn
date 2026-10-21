@@ -60,7 +60,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    issue is the door that tiers an issue. A `(#N)` or `(#N, #M)` inside a
    `cairn/ROADMAP.md` candidate row's short title (tracking-rules
    "Candidate short title") that the request contains verbatim, as a ✎
-   press or the planning Next line passes it, does not make the request
+   press or the band's Plan press passes it, does not make the request
    name an issue. The request names that row, and the check runs. It
    judges from the row's text and the code the row names, never from
    issue #N's body. A `#N`, an issue URL, or a PR reference outside that

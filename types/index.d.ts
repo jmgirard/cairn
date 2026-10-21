@@ -57,8 +57,9 @@ export type CairnPaneMilestone = {
 // found. `next` is `recommend` in scripts/cairn_next.py, its `id` null for
 // planning and its `title` the short title `highTitle` names while
 // planning (the first `[high]` candidate row no counted started token
-// names, every `#` token counted), else null (M272, M273); the pane's Next
-// line and Plan press pick their own row (`nextTitle`). `waiting` is its `waiting`, each row's undone dependencies
+// names, every `#` token counted), else null (M272, M273); the band's Plan
+// press picks its own row (`nextTitle`), and since M305 the pane's Next
+// line names none. `waiting` is its `waiting`, each row's undone dependencies
 // as written with their status. `candidates` holds the ROADMAP's candidate
 // rows, each its priority, its short title (the text before its first
 // `: `, else before its first ` — `, else all of it; M207, M251), and its
