@@ -1211,3 +1211,29 @@ within each type and are never reused.
   prior-review #1; blame-history #2); extended 2026-10-20 — M294 review
   (diff-bug #1); narrowed 2026-10-20 by M302, whose one gray removed the
   amber and orange hue clause.
+- `scripts/cairn_versions.py` has small gaps, found at the M303 review with
+  no fix planned. Renaming `_extension.yml` to `_extension.yaml` ends the
+  version's run at the rename, and `--changed-by` on the rename reports the
+  version as set there (M304 reads `--changed-by`). A `v<version>` tag that
+  points at another commit counts as present with no warning. A multi-line
+  quoted scalar with `version:` at column 0 is read as the marker. A tag the
+  walk made locally but nobody pushed counts as present, so a rerun takes
+  the release-time arm. `git fetch --tags` refuses to overwrite a local tag
+  that differs from the remote one, and the walk says nothing about it. If
+  one of these occurs in a real repo, it becomes a `/hotfix` or a candidate
+  row. Routed from candidates 2026-10-21; added 2026-10-20 — M303 review
+  (diff-bug #5, #6, #14; pass-2 diff-bug #6, #7).
+- The merge-time tag handoff (`/milestone-review` step 10, `/hotfix` step 7)
+  has small gaps, found at the M304 review with no fix planned. It fences
+  the tag where the release walk stops (other markers disagree, a declared
+  changelog has no section for the version, or the section makes a false
+  claim), and it asks no confirm. A merge the user approved that lands
+  outside the run (resume route (a), the hotfix merged-PR re-entry) gets no
+  handoff, and the re-entry's follow-up PR rarely carries the version
+  change. The "none" notes list plan and review tracking commits, as the
+  walk's notes do. `gh release create` carries no `--repo`, so an owner
+  checkout with an `upstream` remote can target it. If one of these occurs
+  in a real quarto-extension repo, it becomes a `/hotfix` or a candidate
+  row. Routed from candidates 2026-10-21; added 2026-10-20 — M304 review
+  (diff-bug #2, #4, #8, #12; blame-history #1-#3; ripple #3; prior-review
+  #2).
