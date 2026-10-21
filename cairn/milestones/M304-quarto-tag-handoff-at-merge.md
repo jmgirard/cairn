@@ -40,7 +40,7 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - [x] T1: `/milestone-review` step 10: the quarto-extension arm per AC1 and AC2, placed after the hygiene commit and before the next-action commands, with the notes file built per the profile's changelog slot.
 - [x] T2: The `/hotfix` close after its own merge: the same arm.
 - [x] T3: Write the D-entry (annotates D-050, supersedes D-048's wiring) and show it in chat.
-- [ ] T4: Run the AC4 checks read-only on embedpdf and record them in the work log.
+- [x] T4: Run the AC4 checks read-only on embedpdf and record them in the work log.
 - [ ] T5: README (the quarto-extension profile's part) and a CHANGELOG Unreleased entry. Hand-run `skills/tests`.
 
 ## Work log
@@ -54,6 +54,7 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - 2026-10-20: T1 done: `/milestone-review` step 10 ends with a self-contained "Tag handoff" paragraph that `/hotfix` cites. Choices: the merge sha comes from `gh pr view --json mergeCommit`, since the hygiene commit sits on top; the notes file goes to the system temp directory as `cairn-notes-<owner>-<repo>-v<version>.md`, like `/milestone` §4's reply draft; a declared changelog with no section for the version falls back to the commit subjects and the recap names the gap, so all three commands still come. Verify: 5/5 green.
 - 2026-10-20: T2 done: `/hotfix` step 7 runs review step 10's tag handoff after a merge the run made (authored, adopted, re-landed, or the re-entry's follow-up PR; not the re-entry's already-merged PR), after any ROADMAP commit, with its own `git pull --ff-only` in place of review's step 9. Verify: 5/5 green.
 - 2026-10-20: T3 done: D-202 appended (annotates D-050; supersedes D-048's wiring clause (2) for the `/hotfix` close; D-108's door does not apply). `cairn_validate` green; tracking-only, so the five verify commands run once at T5.
+- 2026-10-20: T4 done (read-only in embedpdf, marker `_extensions/embedpdf/_extension.yml`): `--changed-by a68951d` printed `1.2.9`, exit 0; `--changed-by cf71a53` printed nothing, exit 0 (that commit touches only `cairn/`). `v1.2.9` is tagged there now, so the handoff for a68951d would fence nothing (AC2's tag-exists case). Open concern: the "none" notes command lists plan and review tracking commits too (12 lines since v1.2.8, one of them the fix); M303's release-walk notes do the same, so M304 keeps the shared rule.
 
 ## Decisions
 
