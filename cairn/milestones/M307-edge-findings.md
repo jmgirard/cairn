@@ -1,6 +1,6 @@
 # M307: Reject review findings that only unusual inputs reach
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -66,6 +66,7 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: collision check: D-108 (narrowing carve-out), D-110 (reviewers rank, agent settles) and D-112 stand; the candidate row "Grade findings by the action they need" stays apart.
 - 2026-10-21: inbox sweep: no open issues or PRs in this repo.
 - 2026-10-21: implement: T1 to T3 done (step 5 ground and line format, README Ship-it sentence, D-205); verify five commands green; untracked cairn-probe.log and tsconfig.json left unstaged; the simple-english lint flags about 400 existing hits in SKILL.md and README.md outside the edits, left as is.
+- 2026-10-21: claim audit: 7 claims read, 2 corrected — README.md (the edge sentence now names warnings, slow running, both use bounds, and the criterion exclusion, and is framed as the exception to the fix rule).
 
 ## Decisions
 
