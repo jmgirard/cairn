@@ -7,7 +7,7 @@ import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same
 import { countsArgv, prRead } from './counts'
 import { BADGE_H, badgeSvg, badgeWidth } from './badge'
 import { ICON_PX, iconSvg } from './icons'
-import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs } from './repo'
+import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs, webOf } from './repo'
 import type { CardPlace, HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
   cardCut,
@@ -170,10 +170,10 @@ const hotfixes = atom({ plugin: 'cairn', key: 'hotfixes' } as const, { root: nul
 // they are for (M286), written by the same read as the hotfix list
 // (`readRepo` says when they are kept). The pane draws them only while the
 // band's root is that root, and otherwise names the root's last segment.
-const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null, name: null } as CairnRepoRead, {
+const repo = atom({ plugin: 'cairn', key: 'repo' } as const, { root: null, counts: null, done: null, name: null, web: null } as CairnRepoRead, {
   // `repo-2`: `repo-1`, without the release days, never shipped (M286).
-  // `repo-3` adds the project name (M291).
-  shape: 'repo-3',
+  // `repo-3` adds the project name (M291), and `repo-4` the repo page (M311).
+  shape: 'repo-4',
 })
 
 // True from the start of a read of the pull request states until the newest
@@ -1176,13 +1176,14 @@ async function baseOf($): Promise<Where> {
 // fails. The project name is this read's too (`projectName` in repo.ts,
 // M291): a URL that is not a github.com one, or no URL, takes one more git
 // call for the common git dir. It rejects only when the root and remote
-// lookup rejects.
+// lookup rejects. The repo page the card links to (`webOf`, M311) comes
+// from the URL alone.
 async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
   // The days count to the read's start, taken before the root lookup
   // (M286 review, Copilot).
   const now = Date.now()
   const { root, guest, url } = await where
-  if (root === null) return { root: null, counts: null, done: null, name: null }
+  if (root === null) return { root: null, counts: null, done: null, name: null, web: null }
   const argv = url === null ? null : repoArgv(url)
   const naming = async () => projectName(url, argv === null ? await git($, root, COMMON_DIR_ARGS) : null, root)
   const ask = async () => {
@@ -1202,14 +1203,15 @@ async function readRepo($, where: Promise<Where>): Promise<CairnRepoRead> {
     return doneSince(guest, tag, log, diff, now)
   }
   const [counts, done, name] = await Promise.all([ask(), count(), naming()])
-  if (counts !== null) return { root, counts, done, name }
+  const web = webOf(url)
+  if (counts !== null) return { root, counts, done, name, web }
   let held: CairnRepoRead
   try {
     held = await read($, repo)
   } catch {
-    held = { root: null, counts: null, done: null, name: null }
+    held = { root: null, counts: null, done: null, name: null, web: null }
   }
-  return { root, counts: held.root === root ? held.counts : null, done, name }
+  return { root, counts: held.root === root ? held.counts : null, done, name, web }
 }
 
 // The `gh pr list` call for the operator's open pull requests on a remote

@@ -131,6 +131,24 @@ export function projectName(url: string | null, common: string | null, root: str
   return lastSegment(root)
 }
 
+// The characters a GitHub owner or repo name holds. `.` and `..` match too,
+// and `webOf` refuses them, since `new URL` would resolve them away.
+const WEB_PART = /^[A-Za-z0-9._-]+$/
+
+// The repo page of a github.com base remote URL (M311), which the card's
+// name and counts link to, or null for any other URL, for no URL, and for
+// an owner or repo that `WEB_PART` refuses or that is `.` or `..`. A Link
+// whose `href` is not spelled as `new URL(href).href` refuses the whole
+// pane, so only such a URL comes back.
+export function webOf(url: string | null): string | null {
+  const named = url === null ? null : remoteRepo(url)
+  if (named === null) return null
+  const fits = (part: string) => WEB_PART.test(part) && part !== '.' && part !== '..'
+  if (!fits(named.owner) || !fits(named.repo)) return null
+  const web = `https://github.com/${named.owner}/${named.repo}`
+  return new URL(web).href === web ? web : null
+}
+
 const DAY_MS = 86_400_000
 
 // The release read from the guest flag, the three git calls' stdout, each

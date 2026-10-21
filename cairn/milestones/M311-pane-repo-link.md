@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M311: Link the pane card to the repo on GitHub
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** —   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the cairn pane ships with the plugin   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m311-pane-repo-link   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -100,7 +100,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `hooks/status/repo.ts` and the read in `register.tsx`
+- [x] T1: In `hooks/status/repo.ts` and the read in `register.tsx`
       (`readRepo`, near register.tsx:1180), store the owner and repo of a
       github.com base remote in `CairnRepoRead`, only when both match
       `[A-Za-z0-9._-]+` and neither is `.` or `..`. Bump the stored value's
@@ -142,6 +142,8 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: plan gate chose the platform's `Link` over a pane Button because a Button's press has no way to open a web page; falsified by a platform call that opens a URL from a press.
 - 2026-10-21: plan gate chose the name as the link over a separate ↗ link because it adds no width to the 44-column row; falsified by a live look where the operator cannot tell the name is clickable.
 - 2026-10-21: criteria audit (full, Opus): 7 findings, all fixed. (1) terminal fallback would push ⌂ ↻ off the row: links gated off the terminal, AC2/AC3 say so. (2) a bare `Link` drops bold and the cut: the Link goes inside the span's `Text`. (3) AC1 claimed every remote form: narrowed to one URL per form. (4) `.` and `..` pass the character check and refuse the tree: case 4 includes them. (5) AC4 dropped "in the browser", the recording clause, and gained the no-skill-running condition; T5 says the operator opens the session. (6) AC5 dropped the provenance clause and trimmed the CHANGELOG claim. (7) AC2 cases 2-4 run the read with a set remote.
+- 2026-10-21: implement started on m311-pane-repo-link; the untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, not this milestone's.
+- 2026-10-21: T1 done: `webOf` in repo.ts gives the repo page of a github.com remote, or null for another host, no URL, a name outside `[A-Za-z0-9._-]+`, or `.`/`..`; `readRepo` stores it as `web`, shape `repo-4`. Nine `webOf` cases in repo.test.ts. verify green (scripts 445 OK, hooks 193 OK, both validates, plugin test 2453 pass).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

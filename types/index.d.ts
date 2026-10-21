@@ -124,8 +124,10 @@ export type CairnHotfixRead = { root: string | null; prs: CairnHotfixPr[]; start
 // the last good ones for the same root. `done` is the last read's, null
 // when that read could not count. `name` is the project name the last read
 // for `root` found (M291), null only with no root, and '' for a root with
-// no folder name, such as `/`. The shape moved to
-// `repo-2` with `days`, and to `repo-3` with `name`.
+// no folder name, such as `/`. `web` is the repo page of the last read's
+// github.com base remote (M311), null for any other remote, for none, and
+// for an owner or repo name a link cannot carry. The shape moved to
+// `repo-2` with `days`, to `repo-3` with `name`, and to `repo-4` with `web`.
 export type CairnRepoCounts = { prs: number; issues: number }
 export type CairnRepoDone = { tag: string; days: number; count: number }
 export type CairnRepoRead = {
@@ -133,6 +135,7 @@ export type CairnRepoRead = {
   counts: CairnRepoCounts | null
   done: CairnRepoDone | null
   name: string | null
+  web: string | null
 }
 
 declare module 'claude-code' {

@@ -1187,7 +1187,7 @@ describe('section headings, the head line, Next, and the card in the picked look
   })
 
   test('one day reads `1 day ago`, and with no release read for this root the card has three lines', () => {
-    const one = layout(state, [], false, {}, [], [], { root: '/', counts: null, done: { tag: 'v1.0.0', days: 1, count: 0 }, name: null })
+    const one = layout(state, [], false, {}, [], [], { root: '/', counts: null, done: { tag: 'v1.0.0', days: 1, count: 0 }, name: null, web: null })
     expect(one.find(line => line.key === 'card-release')?.text?.text).toBe('v1.0.0 · 1 day ago · 0 done since')
     const none = layout(state, [], false, {}, [], [], null)
     expect(none.filter(line => line.card).map(line => line.key)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
