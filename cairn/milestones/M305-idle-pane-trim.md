@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is what operators see in the desktop app and the terminal
-- **Branch/PR:** m305-idle-pane-trim
+- **Branch/PR:** m305-idle-pane-trim https://github.com/jmgirard/cairn/pull/319
 
 ## Goal
 
