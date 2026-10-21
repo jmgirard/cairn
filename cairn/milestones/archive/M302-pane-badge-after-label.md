@@ -1,0 +1,11 @@
+# M302: Put the pane's count badges after their labels in gray
+
+**Status:** done (2026-10-20, PR #316 https://github.com/jmgirard/cairn/pull/316)
+
+**Goal:** The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count badge right after the label, with one space, in one gray for all three headings.
+
+**Outcome:** `badge.ts` has one `BADGE_FILL` (`rgb(110,110,110)` with a white number, 5.1:1) and `BADGE_KEY = GRAY` (`inactive`) for the terminal ground. `BadgeName` is gone, so `badgeSvg`, `badgeSpan`, `countHeading`, and `Span.badge` take the count only. `countHeading` in `pane.ts` puts the label, a `' '` span, and the badge in the line's lead, with no tail. `centers` in `register.tsx` centers a row whose lead or tail holds a badge or an icon. The Tasks and Criteria counts and meters stay in the tail at the right end. The unreleased CHANGELOG badge entry, the README pane section, and the DESIGN.md status mod parts describe the new look. The badge Known issue is narrowed: the amber and orange hue clause is gone, and the desktop placement is named unchecked. Mod tests went from 2415 to 2417.
+
+**Decisions:** none promoted. Question set: Tasks and Criteria stay at the right end; a mid gray pill; a live look. At T4 no badge heading drew in this repo while M302 was active, so the user chose a browser preview of the shipped `badgeSvg` now and the desktop look after the merge (AC5 amended, re-audited, 4 findings taken). Plan gate: the badge in the lead over a non-growing text before a tail.
+
+**Review:** Criteria audit at plan (full, 6 findings, all taken). Claim audit 39 claims, 0 corrected, 2 reworded. One pass of four lenses: 21 findings, 9 fixed (`BADGE_KEY` from `GRAY`, stale "count at the right end" text in the CHANGELOG new-look entry and DESIGN, the Known issue's claim about which headings draw, a variable name, test-helper comments, a README wrap), 12 rejected. Copilot (Lite, no threads): 1 body item fixed (a stale Scope sentence), 1 rejected; summary reply posted. Two substantive amendments (AC5, a Scope sentence). The first merge question was interrupted, and a resume pass re-verified the head. Hygiene: M299 row pruned to the 3-row terminal cap. One lesson extended (live looks), nothing retired or unparked, no candidate row graduated.
