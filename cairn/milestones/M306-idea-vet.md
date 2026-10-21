@@ -130,3 +130,39 @@ Pass 1 (2026-10-21), on head a42f1746, branch synced with origin/main (0 commits
 - AC6: `README.md:750` (`/milestone-plan` row: the three questions, "an issue's wording is not proof", the question set "poses each concern with an option not to build the work"); `README.md:754` (hotfix row: same three questions, "A concern leaves a candidate row or a `/milestone-plan` next command that names it, and stops the hotfix unless its PR is already merged"); `README.md:755` (adopted PR: the bar includes the three questions); `CHANGELOG.md:162` under `## Unreleased` → `### New` states all three.
 - AC7: verify slot at the review head, from the repo root, each exit code read: `scripts/tests` 0, `hooks/tests` 0, plugin validate 0, marketplace validate 0, `claude plugin test .` 0.
 - Gate: `cairn_validate` exit 0 (all checks passed); no principle text changed, so `cairn_impact` skipped; marketplace validate has no `plugins[N].version` warning (0 lines); CHANGELOG Unreleased `### New` entry present with no milestone number; hand-run `skills/tests` 947 OK (gates nothing, D-109). Diffstat: 9 files, +284 −14.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: on the merged-PR re-entry a vet concern took the over-the-bar route, which waives the re-entry's regression test, baseline, verify, and changelog checks — fix now: the concern now waives none of them and its candidate row still names it, fixed b8c194d1
+- diff-bug #2: a row a hotfix concern writes could be tiered `hotfix` by a later plan and sent back, a loop — fix now: the row or close names the concern as a design decision, which the tier check reads as a milestone, fixed b8c194d1
+- diff-bug #3: "not building" named no ending when the plan is left with no milestone — fix now: the plan writes nothing and ends with the close block naming each concern, fixed b8c194d1
+- diff-bug #4: a typed request not built leaves the concern unrecorded — reject (planned change): not building is the user's explicit choice at a chip, IP3 bars silent drops only, and the close block now names the concern
+- diff-bug #5: the rulebook's "ask the 3 that matter most" could leave a concern to the agent — fix now: an idea-vet question always counts among them, fixed b8c194d1
+- diff-bug #6: one combined question cannot carry a separate answer per concern — reject (planned change): AC2 specifies the combined form for past-cap concerns
+- diff-bug #7: "build anyway" left no record of the answer — fix now: each concern in the `idea vet:` line carries the set's answer, fixed b8c194d1
+- diff-bug #8: the no-work close is not on the closed stop list, re-asks the set, and can hit an existing planned milestone — fix now in part: the close is named as the goal-wrong stop, fixed b8c194d1; the rest reject (planned change, AC3; a no-work set chooses unplanned work)
+- diff-bug #9: a framing concern about a name the fix leaves as it is stops a valid fix — follow-up: candidate row "Do not stop fixes on old naming flaws"
+- diff-bug #10: the hotfix restated question (2) without "beyond what the request literally asks" — fix now, fixed b8c194d1
+- diff-bug #11: the vet runs before the collision check and can re-raise a concern a D-entry settled — fix now: such a concern is named with its record, fixed b8c194d1
+- diff-bug #12: `/milestone` §4 can give a hotfix verdict that the hotfix vet then stops — reject (planned change): Scope Out
+- diff-bug #13: D-204 annotates neither D-162 nor the gate entry — reject (false): a concern was already a design decision under the hotfix bar, so D-162's tiers are unchanged
+- diff-bug #14: one long line at :362 — reject (style)
+- diff-bug #15: "vetted at step 3" was unpinned — fix now, fixed b8c194d1
+- blame-history #1: the hotfix vet contradicts the rulebook's hotfix bar — reject (false): the bar excludes work that "requires a design decision", and a concern counts as one
+- blame-history #2: same as diff-bug #5 — fix now, fixed b8c194d1
+- blame-history #3: same as diff-bug #2 — fix now, fixed b8c194d1
+- blame-history #4: the no-work arm needs a second set against D-144's one set, and vet questions may be agent-settleable — reject (planned change): the rerun is a new run, and not building asked-for work is the user's call
+- blame-history #5: the hotfix vet is wider than the candidate row's wording — reject (planned change): the user chose "check every hotfix" at the question set
+- blame-history #6: a concern after a merge leaves no durable record — fix now: the over-the-bar route's candidate row still names it, fixed b8c194d1
+- blame-history #7: D-204's door reasoning confines D-108 to the record line — reject (false): the door is read as applying and passed on its trigger either way, and D-204 is not edited in place (IP4)
+- blame-history #8: the winsorize example is specific to one repo — reject (planned change): it states the triggering case, and GP3 is met by the field-neutral questions
+- prior-review #1: concerns as questions conflict with "asks only what the user alone can settle" — reject (planned change): not building or reframing asked-for work is the user's call
+- prior-review #2: the vet has no stakes gate — reject (planned change): the user chose the working session's own answers at no added cost
+- prior-review #3: the vet does not say to read the issue's text — fix now, fixed b8c194d1
+- prior-review #4: the no-work rerun has no loop bound — reject (false): the rerun names the work, so its step-3 set poses the concern and the user answers it
+- ripple #1: tracking-rules' "ask the 3 that matter most" — fix now in the plan skill (diff-bug #5), fixed b8c194d1; the rulebook line stays, since step 3 names its questions
+- ripple #2: README's run section omitted the vet's questions — fix now, fixed b8c194d1
+- ripple #3: the no-work close is not on the stop list — fix now (diff-bug #8), fixed b8c194d1
+- ripple #4: the candidate row's wording differs from the shipped scope — reject (false): step 9 graduates the row
+- ripple #5: same as diff-bug #10 — fix now, fixed b8c194d1
+- copilot: skills/hotfix/SKILL.md:64 — the guest change route's post-edit tier check did not run the vet — fix now: that tier check now runs the idea vet on the changed diff, fixed b8c194d1
+- Copilot level: Lite (set by GitHub's settings)
+- Return floor: none of these demonstrates a criterion failing; diff-bug #1 is a defect on a rare path (a merged-PR re-entry with a concern) fixed in one sentence, judged not load-bearing. Probe: 34 plants red, control green; verify green at b8c194d1.
