@@ -384,8 +384,10 @@ def build_context(root):
             "CLAUDE.md (tracking-rules \"Collaboration mode\"). Text written "
             "for the host repo or its maintainers (docs, comments, changelog "
             "entries, commit messages, PR text, replies) matches the host's "
-            "own length, tone, and level of technical detail where no other "
-            "writing-style instruction in the session settles it."
+            "own length, tone, and level of technical detail, read from text "
+            "the host's maintainers wrote, and that matching wins over any "
+            "other writing-style instruction in the session for that text; "
+            "the other instruction governs only what host matching leaves open."
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

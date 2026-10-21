@@ -7521,3 +7521,33 @@ get plugged.
 **Consequences:** D-205's decision and falsifier stand. The PR-body list
 is falsified by maintainers who ask that such notes be left out of guest
 PRs.
+
+### D-207 (2026-10-21): In guest mode, host style wins over other writing-style instructions for text written for the host, and is read from maintainers' text — supersedes D-161's order clause and its rejection of that order; narrows D-161's matching rule; passes D-108's door on its retained trigger (M308)
+
+**Context:** D-161 let another writing-style instruction in the session
+win over host matching, and rejected the reverse order because the user
+chose at the M247 plan gate to keep those instructions in force. Its
+falsifier was a guest PR whose text the maintainers ask to restyle in a
+way the other instructions caused. That happened on easystats datawizard
+#726 and #730, and on modelbased #698, where a long PR body built from
+review evidence, with host style sampled from the operator's own PRs,
+was called opaque.
+
+**Decision:** In guest mode, for text the session writes for the host
+repo or its maintainers, host matching wins over another writing-style
+instruction in the session, and that instruction governs only what host
+matching leaves open. The host text the session reads to match is text
+the host's maintainers wrote, never the operator's own, which narrows
+D-161's matching rule. The user chose this order at the M308 plan gate.
+Excluding guest checkouts from the simple-english plugin's lint is the
+user's own step, with that plugin's setting, since cairn writes nothing
+outside `cairn/`. M308's other guest rules (host names, one change per
+plan, the maintainer-intent reads and their `maintainer approach:`
+work-log line, the PR body's shape) follow the same maintainer review of
+shipped guest PRs, a defect in shipped behavior, so they and this order
+pass D-108's door on the trigger clause that entry retains.
+
+**Consequences:** D-161's scope and its storage rejection stand, and its
+matching rule stands as narrowed above. Owner mode is unchanged.
+Falsified by a guest PR whose maintainers ask for plainer or longer text
+than the host's own.

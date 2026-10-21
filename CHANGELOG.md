@@ -4,6 +4,28 @@
 
 ### Changes that affect existing repos
 
+- **In guest mode, the host's writing style wins.** Text written for the
+  host repo or its maintainers matches the host's length, tone, and level
+  of detail. This now holds where another writing-style instruction, such
+  as a plugin's or your own CLAUDE.md, says otherwise. That instruction
+  covers only what matching the host leaves open. The host text that the
+  session matches is text the maintainers wrote, never your own. New
+  argument, function, and file names in host code reuse the host's
+  names. A guest plan holds only the change the request or issue asks
+  for, and other finds become candidate rows. The plan reads the issue's
+  comments and the code's git history. It looks for behavior that a
+  maintainer chose on purpose. It takes an approach that a maintainer
+  proposed, or it records why not. A guest milestone's PR body is short:
+  it leads with what changed, at most one usage example, and the points
+  a maintainer must decide. It also says why the PR does not take a
+  maintainer's proposed approach. Some issues that a guest PR closes
+  report several failing calls. For such an issue, the body of a
+  milestone or hotfix PR names each call and says whether the PR fixes
+  it.
+  While a handed-off PR waits for the maintainers' review, `/milestone`
+  quotes each maintainer comment and review on it that you have not
+  answered yet.
+
 - **Review can reject a real finding that only an unusual input
   reaches.** `/milestone-review` step 5 has a fourth reject ground,
   `edge`. It covers a real defect that only input outside both the
