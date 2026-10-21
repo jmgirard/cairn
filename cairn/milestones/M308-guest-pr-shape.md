@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes the text, names, scope, and PR body of guest-mode contributions
-- **Branch/PR:** m308-guest-pr-shape
+- **Branch/PR:** m308-guest-pr-shape — https://github.com/jmgirard/cairn/pull/322
 
 ## Goal
 
