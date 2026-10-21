@@ -7551,3 +7551,43 @@ pass D-108's door on the trigger clause that entry retains.
 matching rule stands as narrowed above. Owner mode is unchanged.
 Falsified by a guest PR whose maintainers ask for plainer or longer text
 than the host's own.
+
+### D-208 (2026-10-21): The review and hotfix gates list each changed snapshot file and whether the work needs the change, and a guest PR names each one and why — guest mode passes D-108's door on its retained trigger; owner mode excepted by name at the user's decision, the door unchanged; annotates D-206 (M310)
+
+**Context:** On easystats/see#486, a guest PR changed a vdiffr snapshot
+so that the gap between dots and the half violin was lost. The PR said
+nothing about the change, a maintainer found it, and it was not
+intended. A note on the change alone would not have caught it. The
+session had to look at the snapshot diff and ask whether the work needed
+it. That is a defect in shipped behavior, so the guest half of the rule
+passes D-108's door on the trigger clause that entry retains. No
+owner-mode defect triggers the owner half. At the M310 question set the
+user chose both modes.
+
+**Decision:** A changed snapshot file is a path with a directory named
+`_snaps` or `__snapshots__` among the paths the gate's diff command
+prints. `/milestone-review` step 7 and `/hotfix` step 6 list each one in
+both modes. Each gets one plain line on what changed and whether the
+Goal, the criteria, or the fix needs the change. At review, a change
+that the work does not need is settled as fix now or follow-up before
+the chip. At a hotfix, the chip names it and does not recommend
+approval while it stands. In guest mode the PR body names each file
+with one line on what changed and why, and on an already-open PR the
+handoff puts the same lines in its one comment beside D-206's `edge`
+list. D-108's door is excepted by name for the owner half at the user's
+decision, as D-189 did, and the door stands for all other work.
+
+**Rejected:** a note in the PR body with no check at the gate, because
+see#486's change was a mistake that a note would only describe. A new
+profile slot naming each toolchain's snapshot directory, because a slot
+change does not reach adopted repos; falsified by a repo whose snapshot
+tool uses another directory name. Listing only the snapshots changed
+since the last push on an already-open PR, because the guest sync's
+lease push makes that diff empty.
+
+**Consequences:** A snapshot directory with another name is outside the
+rule. Snapshot changes after a guest PR opens by another path are the
+candidate row "List snapshots changed after a PR opens". The
+guest-mode lines are falsified by maintainers who ask that such lines be
+left out of guest PRs. The owner-mode list is falsified by an owner who
+finds it noise at the gate.

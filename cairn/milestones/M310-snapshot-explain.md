@@ -115,7 +115,7 @@ D-entry, the CHANGELOG, and the README follow.
       the open-PR comment beside the `edge` list.
 - [x] T3: Add the snapshot list to `/hotfix` step 6's gate in both modes,
       and the snapshot lines to the guest arm's body sentence.
-- [ ] T4: Append a D-entry. It records the rule. Guest mode passes D-108's
+- [x] T4: Append a D-entry. It records the rule. Guest mode passes D-108's
       door on its retained trigger (easystats/see#486). Owner mode at both
       gates is excepted by name at the user's choice, with the door
       unchanged, as D-189 did. Its falsifier mirrors D-206's: maintainers
@@ -139,6 +139,7 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: T1 done — step 7 gains a "Changed snapshot files" paragraph before the PR-conversation read; verify green (five commands, each exit 0).
 - 2026-10-21: T2 done — step 8's guest body names the snapshot lines first in the items sentence, the "Beyond those items" sentence gains an exception for them, and the open-PR comment carries them beside the `edge` list; T1's paragraph split into shorter sentences; verify green.
 - 2026-10-21: T3 done — `/hotfix` step 6's gate gains a "Changed snapshot files" paragraph after the head note, and the guest body sentence puts the snapshot lines after the failing-calls list and before `Fixes #N`; implement chose "the recommended option does not approve and instead fixes that change first" for AC3's no-approve clause; verify green.
+- 2026-10-21: T4 done — D-208 appended: the rule, the guest half through D-108's door on its retained trigger (easystats/see#486), the owner half excepted by name at the user's decision as D-189 did, and falsifiers for each half.
 
 ## Decisions
 
