@@ -175,9 +175,9 @@ The script deliberately does not judge these — do them yourself and report:
   merge, post-hoc verification otherwise (M172).
 - A milestone at `blocked` whose header names a PR — a guest-mode handoff
   (tracking-rules "Collaboration mode") — is routed by the PR's fresh state,
-  read with `gh pr view <N> --repo <base-repo> --json state,reviewDecision`
-  (the rulebook's slug recipe): `MERGED` → post-merge hygiene owed, route to
-  `/milestone-review M<NNN>` (its on-disk pass sets `done`); `CLOSED`
+  read with `gh pr view <N> --repo <base-repo> --json
+  state,reviewDecision,mergeable` (the rulebook's slug recipe): `MERGED`
+  → post-merge hygiene owed, route to `/milestone-review M<NNN>` (its on-disk pass sets `done`); `CLOSED`
   unmerged → a chip: mark the milestone `dropped` with the closure as its
   reason, or set it back to `in-progress` to rework and re-open; `OPEN` with
   `reviewDecision` `CHANGES_REQUESTED` → route to `/milestone-implement
@@ -192,10 +192,20 @@ The script deliberately does not judge these — do them yourself and report:
   retargets the PR if GitHub did not; `OPEN` on a stacked milestone whose
   stack base's PR reads `CLOSED` → report it with no route: what the
   milestone builds on is gone, and the next step is the user's; `OPEN`
+  that no arm above takes, with `mergeable` `CONFLICTING` (the PR
+  cannot merge because of merge conflicts) → the sync is owed: route to
+  `/milestone-implement M<NNN>`, whose step 2 sync (the stacked sync for
+  a stacked milestone) rebases the branch, resolves the conflicts, and
+  re-pushes it, or stops if the remote branch has commits that the local
+  one lacks or if it cannot resolve the conflicts; `OPEN` that no arm above
+  takes, with `mergeable` `UNKNOWN` (GitHub has not finished calculating
+  it) → report the fresh state and say that the merge state is not known
+  yet, with no route; `OPEN`
   otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
-  This arm also reads the conversation comments and review bodies that
+  This arm, and the `CONFLICTING` and `UNKNOWN` arms above it, also read
+  the conversation comments and review bodies that
   `gh pr view <N> --repo <base-repo> --json author,comments,reviews`
   returns. The report names each one whose author is not the PR's author,
   whose `authorAssociation` is `OWNER`, `MEMBER`, or `COLLABORATOR`, and
@@ -213,11 +223,12 @@ The script deliberately does not judge these — do them yourself and report:
 - **Open hotfix PRs**, in owner and guest mode: read the open PRs you
   opened with one call, `gh pr list --repo <base-repo> --state open
   --author @me --limit 100 --json
-  number,title,url,headRefName,headRefOid,reviewDecision` (the rulebook's slug recipe
-  gives `<base-repo>`). Keep each PR whose `headRefName` starts with
-  `hotfix-`, and report its number, title, and review decision. Show an
-  empty `reviewDecision` as `none`. If the call returns 100 PRs, say that
-  the list can be cut at that limit. This bullet carries no disposition to
+  number,title,url,headRefName,headRefOid,reviewDecision,mergeable` (the
+  rulebook's slug recipe gives `<base-repo>`). Keep each PR whose
+  `headRefName` starts with `hotfix-`, and report its number, title, and
+  review decision. Show an empty `reviewDecision` as `none`. Report a PR
+  whose `mergeable` reads `CONFLICTING` as having merge conflicts. If the
+  call returns 100 PRs, say that the list can be cut at that limit. This bullet carries no disposition to
   §3, names no next command, and writes nothing to GitHub. If the read
   fails, name the cause and report no PR. The cause is a missing or
   unauthenticated `gh`, a repo with no remote, or another cause that the

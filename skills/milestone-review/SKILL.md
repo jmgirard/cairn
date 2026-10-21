@@ -787,7 +787,9 @@ re-enters here, at the step the record shows is next:
    `/milestone`, labeled as the command that re-reads the PR's state (its
    §2 routes MERGED to this skill's hygiene, a stacked PR whose stack
    base merged to `/milestone-implement` for the restack, CLOSED to a chip,
-   `CHANGES_REQUESTED` to `/milestone-implement`); and the safety line.
+   `CHANGES_REQUESTED` to `/milestone-implement`, and any other open PR
+   with merge conflicts to `/milestone-implement` unless its stack base's
+   PR closed); and the safety line.
    With the Copilot round off, this close also follows the off-but-present
    rule (`skills/shared/copilot-review.md` §1). A
    merge the maintainers make is reconciled by that route — steps 9–10

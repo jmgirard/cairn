@@ -436,8 +436,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   milestone `blocked`, its
   work-log line naming the maintainers; `/milestone` §2 re-reads the PR's state and routes a merged one to
   `/milestone-review`'s hygiene (`blocked → done`), a closed one to a chip, a `CHANGES_REQUESTED` one to
-  `/milestone-implement`, and an open stacked one whose stack base's PR merged to `/milestone-implement` for the
-  restack (below). `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
+  `/milestone-implement`, and an open stacked one whose stack base's PR merged to `/milestone-implement` for the restack
+  (below). Any other open one with merge conflicts goes to `/milestone-implement` for the sync, unless its stack
+  base's PR closed. `/hotfix`'s merge step takes the same handoff. Post-merge hygiene runs on disk, no commit.
 - **A guest milestone can build on one that waits for the maintainers** (stacking). With `# Push remote: base` in
   `cairn/PROFILE.md`, a **stack base** is a dependency whose ROADMAP row is `blocked` and whose milestone file's
   `Branch/PR` header names a PR URL. An archived dependency is `done`, so it is met as `done`, not as a stack base.

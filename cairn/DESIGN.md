@@ -459,8 +459,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   line's tail. `PR_BUTTON` gives a `merged` line a `Finish` Button that
   runs `/cairn:milestone-review <id>`, a `changes requested` line a
   `Revise` Button that runs `/cairn:milestone-implement <id>`, and a
-  `closed` line a `Check` Button that runs `/cairn:milestone`, the
-  routes `/milestone` gives a handed-off PR. None of these three Buttons
+  `closed` line a `Check` Button that runs `/cairn:milestone`, three of
+  the routes `/milestone` gives a handed-off PR (corrected M309). None of these three Buttons
   clears first. A press reads the word as it is now and runs through
   `run`, as the Status press does. Like the Status press, it does nothing
   while another run is in flight or a cairn skill's step runs (M224

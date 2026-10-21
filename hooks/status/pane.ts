@@ -320,8 +320,8 @@ export function nextTitle(
   return row?.title ?? null
 }
 
-// The Button a blocked line carries for its state word (M224), from the
-// routes that /milestone gives a handed-off PR: a merged one goes to
+// The Button a blocked line carries for its state word (M224), from three
+// of the routes that /milestone gives a handed-off PR: a merged one goes to
 // review's hygiene, one with changes requested back to implement, and a
 // closed one to /milestone. The other words carry none. An archived row
 // keeps only Finish (M246), since its milestone file is gone.
