@@ -72,6 +72,7 @@ The cairn pane's Blocked, Hotfixes, and Candidates headings draw their count bad
 - 2026-10-20: claim audit: 39 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/badge.ts, band.ts, pane.ts, register.tsx, pane.test.tsx. Two unclear wordings were reworded: the badge.ts "not bold" clause and the AC1 test comment on why no milestone is active.
 - 2026-10-20: implement done. All four tasks are checked, verify is green (mod tests 2417 pass), and the status is review.
 - 2026-10-20: substantive amendment: Scope Out's "because the live look covers the desktop app only" became "because no look in this milestone covers the terminal", since the T4 amendment removed the desktop live look (Copilot body item on PR #316). What the user gets is unchanged.
+- 2026-10-20: step-7 approval: m302-pane-badge-after-label approved for merge
 
 ## Decisions
 
