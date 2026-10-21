@@ -144,6 +144,7 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: claim audit: 38 claims read, 1 corrected — CHANGELOG.md (the open-PR comment is review's only; `/hotfix` posts none)
 - 2026-10-21: implement complete; status set to review.
 - 2026-10-21: review step 3: AC2's "the comment has no snapshot line" clause was implied only; the sentence "With no such file, the comment has no snapshot line." added to step 8 before AC2's evidence line, a wording fix inside the planned change with no criterion change.
+- 2026-10-21: step-7 approval: m310-snapshot-explain approved for merge
 
 ## Decisions
 
