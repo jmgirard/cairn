@@ -202,3 +202,11 @@ D-entry, the CHANGELOG, and the README follow.
 - ripple #8: the new candidate row omits the open-PR comment — reject (false): the row is accurate as written
 - AC1 and AC3 re-read after 04e78aaa (2026-10-21): AC1's paragraph is now review step 7 lines 526-553, and it still holds each clause: the definition and `git diff` (527-528), the `OPEN` stack-base diff (529-531), route (b) (533-534), both modes (534), one line with what changed or new/deleted and whether the Goal or criteria call for it (535-539), step 5's fix now or follow-up before the chip (539-540), the `snapshot:` line that stays when the fix removes the path (545-548), and the empty-list line (550-551). AC3's paragraph is now hotfix step 6 lines 412-431 (step 7 at 550), with the same clauses plus the address-first procedure; "the recommended option does not approve" is at 423. Verify and `skills/tests` green on 04e78aaa.
 - Totals: 43 findings, three of them split in two (blame-history #1 and #5, prior-review #8), so 46 dispositions — fix now 24, follow-up 3 (into "List snapshots changed after a PR opens"), reject 19 (false 9, planned change 6, style 4); none `edge`; no return (no criterion fails, and the defects are in verification prose, outside the return floor).
+- copilot: skills/hotfix/SKILL.md:424 (fix-and-rerun path) — fix now, fixed 04e78aa
+- copilot: skills/hotfix/SKILL.md:424 (mutation guards) — reject (false): the profile's test doctrine owes no prose guard or mutation registration for a new skill rule
+- copilot: skills/milestone-review/SKILL.md:541 (prose guards) — reject (false): same reason
+- copilot: review body (milestone-review repository qualification) — reject (false): session start's guest arm puts `--repo <base-repo>` on every `gh pr` read, and the stack-base read names it
+- copilot: review body (README possessive wording) — reject (style); the wording is gone after 04e78aa
+- Copilot level: Lite (set by GitHub's settings); 3 threads replied and resolved, summary reply posted on PR #324; the review covered an earlier head (before 04e78aa).
+- conversation: no other reviews, comments, or unresolved threads on PR #324.
+- snapshot list (2026-10-21, head after 0ffaffba): `git diff --name-only origin/main...HEAD` holds no path under `_snaps` or `__snapshots__`; the list is empty.
