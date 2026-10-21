@@ -4,6 +4,15 @@
 
 ### Changes that affect existing repos
 
+- **Review can reject a real finding that only an unusual input
+  reaches.** `/milestone-review` step 5 has a fourth reject ground,
+  `edge`. It covers a real defect that only input outside both the
+  documented use and the common use reaches, when its effect is an
+  error, a warning, or slow running. Review no longer adds code and help
+  text to handle such inputs. A finding that gives a wrong result with no
+  error or warning is never `edge`. Neither is a finding that shows an
+  acceptance criterion failing.
+
 - **A repo with a Quarto extension marker, no language or plugin marker,
   and no `cairn/PROFILE.md` now reads as the quarto-extension profile.** The profile inference checks
   `_extensions/*/_extension.yml` (or `.yaml`) after the plugin marker and

@@ -53,6 +53,7 @@ candidate row "Grade findings by the action they need".
 - [x] T2: Edit README.md's "Ship it" paragraph (near line 725) for AC3.
 - [x] T3: Append a D-entry: the `edge` ground, its trigger, and its falsifier. It passes D-108's door on the
       narrowing carve-out, because it narrows the fix-now rule. Run the five `verify` commands.
+- [x] T4: Add a CHANGELOG.md entry under "Changes that affect existing repos" for the `edge` ground (review return 1).
 
 ## Work log
 
@@ -67,6 +68,8 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: inbox sweep: no open issues or PRs in this repo.
 - 2026-10-21: implement: T1 to T3 done (step 5 ground and line format, README Ship-it sentence, D-205); verify five commands green; untracked cairn-probe.log and tsconfig.json left unstaged; the simple-english lint flags about 400 existing hits in SKILL.md and README.md outside the edits, left as is.
 - 2026-10-21: claim audit: 7 claims read, 2 corrected — README.md (the edge sentence now names warnings, slow running, both use bounds, and the criterion exclusion, and is framed as the exception to the fix rule).
+- 2026-10-21: review return 1: consistency gate — CHANGELOG.md has no entry for the edge ground (the plan listed no changelog task).
+- 2026-10-21: minor amendment: added T4 for review return 1; CHANGELOG.md entry written.
 
 ## Decisions
 
