@@ -55,8 +55,8 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - [x] T2: In `paneLines` (`pane.ts:844-861`), skip the Next line and its `next-gap` when the command is `/milestone-plan` and the drawn candidate list is not empty. Add the AC2 and AC3 tests.
 - [x] T3: Add a rule line between adjacent drawn levels in the Candidates loop (`pane.ts:931`), keyed outside `candidate-*`, with a `PaneLine` flag that `register.tsx` draws as a thin `Svg` line on the desktop (a text rule drew as two lines there, LESSONS M286) and as a gray truncated `─` run in the terminal. Check the tests near `pane.test.tsx:6684` and 6739, which treat `candidate-` keys and `rowsAbove` lines as rows. Add the AC4 (a) and AC5 tests.
 - [x] T4: Preview the rule `Svg` in the browser pane in dark and light (LESSONS M204). Then open a new desktop session in `~/github/modelbased`, which has no active milestone and rows in all four levels. `~/.claude/skills/cairn` links to this checkout, so that session loads the branch's mod; check that its pane shows no `no active milestone` line before judging. The user looks in dark and light. If the user rejects the rule, remove it, give `[parked]` its own color key (`PRIORITY_MARK.parked` at `pane.ts:487`, the title color at `pane.ts:936`, the icon stroke at `icons.ts:64`) with the AC4 (b) tests, and append a D-entry superseding D-184's gray-mark clause. Log the look's result and which means shipped.
-- [ ] T5: Update README (the pane section near line 345), DESIGN's pane paragraphs, the comments at the top of `pane.ts`, and CHANGELOG Unreleased.
-- [ ] T6: Run the `verify` slot.
+- [x] T5: Update README (the pane section near line 345), DESIGN's pane paragraphs, the comments at the top of `pane.ts`, and CHANGELOG Unreleased.
+- [x] T6: Run the `verify` slot.
 
 ## Work log
 
@@ -76,6 +76,7 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: T4 browser preview: the shipped `ruleSvg()` drawn by a scratch page in dark and light reads as a thin gray line in both, between rows of the shipped icons. The app refused to start the modelbased session from inside the run, so the live-look stop asks the user to open it.
 - 2026-10-20: question set (live-look stop): the user asked for mockups instead of the live session, with outlined-card variants added. A scratch page drew four variants with the shipped icons at pane width in dark and light: A rule, B parked color, C card per level, D one card with rules. The user chose B. AC4 (b) is the means that ships, and AC5's rule clause does not apply.
 - 2026-10-20: T4 fallback: reverted T3's rule code and tests (the T3 record stays). A parked row's mark and title draw in `permission` (`PARKED_KEY`), its icon in `ICON_COLORS.blue` `#7f93c4`; a low row stays `inactive`. `permission` is the theme's documented blue key; a hex Text color was not used because the desktop's handling of one is unverified. D-203 supersedes D-184's gray-mark clause. verify green (mod 2412 pass).
+- 2026-10-20: T5: README (band Plan argument, the Next line, parked color), DESIGN (`nextTitle` reader, parked color), the top comment of `pane.ts`, the `pressNext` comment, and CHANGELOG Unreleased (a new idle-pane entry; the unreleased parked entry now says blue). Each claim read against `pane.ts`, `icons.ts`, and `register.tsx` in this session. T6: verify green (scripts OK, hooks OK, both validates pass, mod 2412 pass).
 
 ## Decisions
 

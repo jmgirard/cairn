@@ -49,7 +49,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
 // draws as a Button (M219). Until M241 it also carried Clear after a cairn
-// skill's end, and the first line's ⌂ took its place.
+// skill's end, and the first line's ⌂ took its place. Since M305 no line
+// says that no milestone is active, a planning Next line draws only while
+// the Candidates list draws no row, and a parked row draws in its own blue.
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it

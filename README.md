@@ -230,9 +230,9 @@ carries two buttons before its `≡` and close buttons. They show while no
 cairn skill runs and Claude is not working, in a band 37 columns wide or
 more. `Plan` runs `/clear` and then `/cairn:milestone-plan` in the
 cleared conversation, as `Implement` does with its command. Its argument
-is the short title that the pane's Next line names (below): the first
-`[high]` candidate row that the pane's Candidates list shows. With no such
-row, `Plan` runs planning with no arguments.
+is the short title of the first `[high]` candidate row that the pane's
+Candidates list (below) shows. With no such row, `Plan` runs planning
+with no arguments.
 `Status` runs `/cairn:milestone`. A press runs the command
 as if you typed it. A second press while the first run is going does
 nothing. So does a press while `Plan` waits for its `/clear` to end the
@@ -351,17 +351,16 @@ badge right after the heading name. The badge is a gray rounded pill
 with a white number. The terminal draws the badge as the number with a
 space on each side, on the theme's gray. The Tasks and Criteria headings
 show their count at the right end with a six-cell meter, `━` for the
-checked share and `─` for the rest. The next command follows a `→`. When the next step
-is planning, the line shows `/milestone-plan <title>`. The title is the
-first `[high]` candidate row that the Candidates list (below) shows. The
-line passes over a row that the list hides. The list also reads the pane's
-last read of your open PRs. So the line can name a row that
-`cairn_next.py` passes over, or pass over a row that it names. With no
-such row, the line shows `/milestone-plan` alone. While no cairn
+checked share and `─` for the rest. The next command follows a `→`, with
+the milestone's id after it. When the next step is planning and the
+Candidates list (below) shows a row, the pane shows no Next line. Each
+candidate line's `✎` plans its row instead. With no row shown, the line shows
+`/milestone-plan` alone. The pane shows no line that says no milestone is
+active. While no cairn
 skill runs or waits on its background work, a button after the command reads `Implement`, `Resume`, `Review`, or
 `Plan`, the label of the band's next-step button, and a press runs the
 command as that button does, so `Plan` and `Implement` run `/clear` first.
-`Plan` plans the row that the Next line names. A press while Claude works outside a cairn
+A press while Claude works outside a cairn
 skill runs the command when Claude is idle. At the same times, the Next
 line carries a `Status` button after that button, which runs
 `/cairn:milestone`. The Next line has no `Clear` button. The pane's `⌂`
@@ -384,10 +383,11 @@ milestones that wait on others, as `scripts/cairn_next.py` gives them.
 When no milestone is `in-progress` or `review`, the pane also lists the
 ROADMAP's candidate rows under a Candidates heading with their count.
 Each row takes one line: `↑` for a `[high]` row, `○` for a normal one,
-`↓` for a `[low]` one, and a gray `⧗` for a `[parked]` one, then the row's
-short title. A `[parked]` row waits on a promotion condition that has not
-held, such as "promote when a second repo needs it". Its title is gray, as
-a `[low]` row's is. The `[high]` rows come first, then the normal rows,
+`↓` for a `[low]` one, and `⧗` for a `[parked]` one, then the row's
+short title. A `[low]` row's mark and title are gray. A `[parked]` row
+waits on a promotion condition that has not held, such as "promote when a
+second repo needs it". Its mark and title are blue, the theme's
+`permission` color, so it differs from a `[low]` row. The `[high]` rows come first, then the normal rows,
 then the `[low]` rows, then the `[parked]` rows. Each group keeps its
 ROADMAP order, whatever order the file holds the groups in.
 The rulebook's "Candidate priority token" rule has whoever adds a row, you
