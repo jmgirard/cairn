@@ -728,8 +728,14 @@ ROADMAP candidate row, and rejects a false one with the reason. One
 exception: a real finding that only input outside both documented and
 common use reaches is rejected as `edge` when its effect is an error, a
 warning, or slow running. A wrong result or a failed acceptance criterion
-is never `edge`. In guest mode, the PR lists those findings in plain
-words and asks the maintainers whether they want them handled. Then it
+is never `edge`. Review also lists each test snapshot file that the
+branch changes, with what changed and whether the work needs it. A
+snapshot file is a stored expected output, such as a file under
+testthat's `_snaps/`. A change that the work does not need is fixed or
+sent to a candidate row before the merge question. In guest mode,
+the PR lists the `edge` findings in plain words and asks the maintainers
+whether they want them handled. It also says what changed in each snapshot file
+and why. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).

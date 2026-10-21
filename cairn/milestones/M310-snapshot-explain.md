@@ -120,7 +120,7 @@ D-entry, the CHANGELOG, and the README follow.
       gates is excepted by name at the user's choice, with the door
       unchanged, as D-189 did. Its falsifier mirrors D-206's: maintainers
       who ask that such lines be left out of guest PRs.
-- [ ] T5: Add the CHANGELOG entry and run AC4's sweep. Hand-run
+- [x] T5: Add the CHANGELOG entry and run AC4's sweep. Hand-run
       `skills/tests` after the skill edits (lesson M148). Run the five
       `verify` commands.
 
@@ -140,6 +140,7 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: T2 done — step 8's guest body names the snapshot lines first in the items sentence, the "Beyond those items" sentence gains an exception for them, and the open-PR comment carries them beside the `edge` list; T1's paragraph split into shorter sentences; verify green.
 - 2026-10-21: T3 done — `/hotfix` step 6's gate gains a "Changed snapshot files" paragraph after the head note, and the guest body sentence puts the snapshot lines after the failing-calls list and before `Fixes #N`; implement chose "the recommended option does not approve and instead fixes that change first" for AC3's no-approve clause; verify green.
 - 2026-10-21: T4 done — D-208 appended: the rule, the guest half through D-108's door on its retained trigger (easystats/see#486), the owner half excepted by name at the user's decision as D-189 did, and falsifiers for each half.
+- 2026-10-21: T5 done — CHANGELOG Unreleased gains the snapshot-list entry first under "Changes that affect existing repos"; AC4 sweep hits README.md:574, 576, 736 and cairn/DESIGN.md:597, 598, 862, 984, 1146, of which only README.md:736 names items a guest body includes, and its paragraph now names the snapshot lines (the others say what a body omits or name no body item); `skills/tests` hand-run 954 tests OK; verify green.
 
 ## Decisions
 

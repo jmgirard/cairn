@@ -4,6 +4,19 @@
 
 ### Changes that affect existing repos
 
+- **The merge and hotfix gates list changed test snapshots.** A snapshot
+  file is a stored expected output under a directory named `_snaps`
+  (testthat) or `__snapshots__` (Jest, syrupy). At `/milestone-review`'s
+  merge question and `/hotfix`'s approval gate, each snapshot file that
+  the branch changes gets one line. The line says what changed and
+  whether the work needs the change. At review, a change that the work
+  does not need is fixed or sent to a candidate row before the merge
+  question. At a hotfix, the gate names such a change and does not
+  recommend approval while it stands. In guest mode, the PR body names
+  each changed snapshot file and says what changed and why. On a PR that
+  is already open, one PR comment carries the same lines. A snapshot
+  directory with another name is not covered.
+
 - **In guest mode, the host's writing style wins.** Text written for the
   host repo or its maintainers matches the host's length, tone, and level
   of detail. This now holds where another writing-style instruction, such
