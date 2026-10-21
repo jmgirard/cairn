@@ -7485,3 +7485,28 @@ finding back as work. Guest mode only, at the user's choice.
 **Consequences:** Falsified by a merged defect on a documented or common
 input that traces to a finding rejected as `edge`. `/hotfix` is
 unchanged, because the user settles each item there.
+
+### D-206 (2026-10-21): Four clauses of D-205 are corrected in one batched entry — the `edge` exclusions, the narrowed rule's record, the hotfix reason, and the door — supersedes those clauses; annotates D-144 (M307 review)
+
+**Context:** M307's review found that D-205 and the first `edge` text
+left four gaps. An `edge` reject never reached the return floor's
+load-bearing arm or the fix-now bullet's rule for outward irreversible
+actions. D-205 did not name D-144, whose Decision lists review's reject
+grounds. D-205 said the user settles every hotfix item, but the agent
+settles a hotfix's Copilot threads.
+
+**Decision:** An `edge` finding is a real defect the diff adds. It is
+never a wrong result with no error or warning, a finding that shows an
+acceptance criterion failing or wrong, a finding that authorizes an
+outward-facing irreversible action, or a human's request in the PR
+conversation. Its reason names the input and the use that the input falls
+outside. Because it reaches no documented or common use, it is not a
+load-bearing defect under the return floor. The merge question shows each
+`edge` reject verbatim. D-144's list of reject grounds gains `edge`. In
+`/hotfix`, `edge` does not apply: the user settles each conversation item,
+and a Copilot thread takes the hotfix's own rule, which has no `edge`
+ground. The door: the change narrows the fix-now rule (D-108's carve-out),
+and its trigger is also a shipped-behavior defect, the review fixes that
+made guest PRs too long to review.
+
+**Consequences:** D-205's decision and falsifier stand.

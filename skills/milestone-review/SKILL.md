@@ -385,12 +385,16 @@ re-enters here, at the step the record shows is next:
      pure style nitpick), or a complaint about a change the plan called for.
      A real defect *inside* a planned change is still a defect: the member
      covers the change being planned, never a flaw in how it was carried
-     out. A fourth ground is `edge`: a real defect that only an input
-     outside both the deliverable's documented use and its common use
-     reaches, whose effect is an error, a warning, or slow running. A
-     finding whose effect is a wrong result with no error or warning is
-     never `edge`, and neither is one that demonstrates an acceptance
-     criterion failing.
+     out. A fourth ground is `edge`: a real defect the diff adds that only
+     an input outside both the deliverable's documented use and its common
+     use reaches, whose effect is an error, a warning, or slow running. The
+     reason names that input and the use it falls outside. A finding is
+     never `edge` when its effect is a wrong result with no error or
+     warning, when it shows an acceptance criterion failing or wrong, or
+     when it authorizes an outward-facing irreversible action. Nor is a
+     human's request in the PR conversation (step 7). An `edge` defect
+     reaches no documented or common use, so it is not a load-bearing
+     defect under the return floor below.
    - **fix now** on the branch: each other finding that it judges real and
      inside the milestone scope. Treat any finding that authorizes an
      outward-facing irreversible action as worth fixing regardless of rank.
@@ -497,7 +501,8 @@ re-enters here, at the step the record shows is next:
    entry; a comment naming what shipped and the remainder's candidate row
    per `partial` entry — so approving the merge is also the approval step
    9's issue writes rest on; no other issue write is made on the review path.
-   Acceptance chips (tracking-rules): each actioned finding's text appears
+   Acceptance chips (tracking-rules): each actioned finding's text, and
+   each `edge` reject's, appears
    verbatim in this presentation, never only a summary, and the chip's
    question text names the count of findings under each disposition.
    Each criterion or scope amendment the work log records for this
