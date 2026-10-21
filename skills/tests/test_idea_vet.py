@@ -33,7 +33,7 @@ class TestPlanIdeaVet(unittest.TestCase):
     def setUp(self):
         plan = flat(SKILLS / "milestone-plan" / "SKILL.md")
         self.vet = section(plan, "**Idea vet.**",
-                           "**Harvest recent lessons (before the gate).**")
+                           "**Collision check (mandatory).**")
         self.step3 = section(plan, "3. **The question set**",
                              "**Issue assignment (one option).**")
         self.step4 = section(plan, "4. **Solidify autonomously**",

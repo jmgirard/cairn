@@ -70,7 +70,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - [x] T3: Add `skills/tests/test_idea_vet.py`. Pin each of the three questions, the not-proof sentence, the cap rule, the do-not-build option and its no-write result, the work-log line, the no-work arm, and the hotfix route, with one assertion per member (LESSONS M171). Delete each pinned sentence and see its assertion fail before you trust the pass.
 - [x] T4: Append D-204 per AC5.
 - [x] T5: Edit README's two rows and add the CHANGELOG entry. Grep both for wording that the change makes stale (LESSONS M112).
-- [ ] T6: Run the `verify` slot from the repo root, and also hand-run `python3 -m unittest discover -s skills/tests`, which gates nothing. Examine each exit code.
+- [x] T6: Run the `verify` slot from the repo root, and also hand-run `python3 -m unittest discover -s skills/tests`, which gates nothing. Examine each exit code.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -100,6 +100,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: T3 done: `skills/tests/test_idea_vet.py`, 17 tests; a scratchpad probe planted 24 removals (16 in the plan skill, 8 in the hotfix skill), each one a failure and none an error, with the unmutated control green and the skill files restored.
 - 2026-10-21: T4 done: D-204 appended; it reads D-108's door as applying to the `idea vet:` records line and passed on its retained trigger, and records the three rejected alternatives with their falsifiers.
 - 2026-10-21: T5 done: README's `/milestone-plan` and "Fix a reported bug quickly" rows and a CHANGELOG Unreleased `### New` entry; the adopt-a-PR row says "holds it to the same bar", which now includes the vet, so it stays. A grep of README for the plan's step list found no other stale description.
+- 2026-10-21: T6 done: the hand-run `skills/tests` first failed twice. The idea-vet paragraph sat inside the slice that `test_stakes_tier`'s checker-regress fixture pins, so it moved before the collision check (LESSONS M148, the new text moves, the pinned text stays), and `test_idea_vet` gained its EXEMPT line in `test_mutation_harness.py`. Then 947 tests OK, the 24-plant probe all red again, verify green (all five exit 0), and `cairn_validate` green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

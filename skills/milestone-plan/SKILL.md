@@ -254,6 +254,24 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    case (tracking-rules "Exploring prospective sources"):
    investigation may triage them for prospective oracles or methods rather than dismissing them as uncited, emitting ROADMAP candidate rows for what it finds and a survey synthesis note only when the triage outlives this planning, never a per-source page.
 
+   **Idea vet.** Before the criteria are drafted, the plan vets the request
+   as framed. It asks three questions of the behavior the request names:
+   (1) Is it correct by its field's standards (for example statistical or
+   technical), and does it do what its name says for every input type it
+   touches? (2) Do the project's users want it, beyond what the request
+   literally asks? (3) Is it framed right, in its name, its function, and
+   its arguments? An issue's wording or a maintainer's agreement answers
+   none of the three, so the plan reads the code, the docs, and the field's
+   sources itself. The vet runs at step 2 on every request that names work,
+   a request that names an issue and a request that a router sent
+   included. A request that names no work is vetted at step 3, once its
+   work is chosen. Each concern the vet finds goes to step 3's set. For
+   example, an option named for winsorizing that lumps rare factor levels
+   into one level does not winsorize, and it misranks ordered factors.
+   Step 4 writes one work-log line `idea vet: <result>` in the first
+   milestone file it writes. The line names each concern in a clause, or
+   says that the vet found none.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
@@ -320,24 +338,6 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    leaves the checker's promise unchanged stays outside the shape
    (D-090's Untouched clause); one that widens the checker's promise is
    the regress shape however it is framed.
-
-   **Idea vet.** Before the criteria are drafted, the plan vets the request
-   as framed. It asks three questions of the behavior the request names:
-   (1) Is it correct by its field's standards (for example statistical or
-   technical), and does it do what its name says for every input type it
-   touches? (2) Do the project's users want it, beyond what the request
-   literally asks? (3) Is it framed right, in its name, its function, and
-   its arguments? An issue's wording or a maintainer's agreement answers
-   none of the three, so the plan reads the code, the docs, and the field's
-   sources itself. The vet runs at step 2 on every request that names work,
-   a request that names an issue and a request that a router sent
-   included. A request that names no work is vetted at step 3, once its
-   work is chosen. Each concern the vet finds goes to step 3's set. For
-   example, an option named for winsorizing that lumps rare factor levels
-   into one level does not winsorize, and it misranks ordered factors.
-   Step 4 writes one work-log line `idea vet: <result>` in the first
-   milestone file it writes. The line names each concern in a clause, or
-   says that the vet found none.
 
    **Harvest recent lessons (before the gate).** Review `cairn/LESSONS.md`
    (read at session start) and surface any lessons bearing on this scope —
