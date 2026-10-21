@@ -58,6 +58,7 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - 2026-10-20: T5 done: README's "Prepare a release" row and a new CHANGELOG Unreleased "New" entry describe the handoff. Verify: 5/5 green; `skills/tests` hand-run green (930 tests).
 - 2026-10-20: claim audit: 28 claims read, 0 corrected — skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md. Reader notes, not defects: README and CHANGELOG leave out the tag-exists and missing-section conditions the skill states; a `/hotfix` follow-up PR rarely changes `version:`, so a version raised by the re-entry's already-merged PR gets no handoff (Out by AC1).
 - 2026-10-20: implement complete; status → review.
+- 2026-10-20: step-7 approval: m304-quarto-tag-handoff-at-merge approved for merge
 
 ## Decisions
 
