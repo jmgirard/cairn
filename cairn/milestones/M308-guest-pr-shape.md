@@ -86,7 +86,7 @@ between open guest PRs go to M309.
 - [x] T4: Edit `skills/milestone-review/SKILL.md` step 8's guest arm for AC6, AC7, and AC8, and the guest
       `gh pr create` site in `skills/hotfix/SKILL.md` for AC6, rewording its "the changelog entry is the branch's only
       prose" note.
-- [ ] T5: Edit the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's blocked-PR route for AC9.
+- [x] T5: Edit the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's blocked-PR route for AC9.
 - [ ] T6: Append a D-entry that supersedes D-161's order clause and its rejection, on the user's choice at this plan's
       question set. Its trigger is D-161's own falsifier, met on datawizard #726. Add the CHANGELOG entry. Run the
       five `verify` commands.
@@ -113,6 +113,7 @@ between open guest PRs go to M309.
 - 2026-10-21: substantive amendment: the user accepted the final AC9/AC10 wording at the stop. Scope In gains the folded row; AC6 names the one guest hotfix create site; new AC8 (short guest PR body) and AC9 (maintainer-comment route and reply rule); the verify criterion is renumbered AC10; T4 widened, new T5 for `/milestone` §2, the D-entry task renumbered T6 and gains the CHANGELOG entry. The re-audit lines above that name AC9 and AC10 refer to what are now AC8 and AC9; both have had their two re-audits.
 - 2026-10-21: T3 done: a "Guest scope" paragraph after step 2's idea vet holds Scope In to the asked change, sends side finds to candidate rows, reads issue comments and git history for deliberate behavior (posed as a vet concern), and takes a maintainer's proposed approach or writes the fixed-shape line `maintainer approach: <approach> — not taken: <reason>`, chosen so review step 8 can read it. Verify: five commands exit 0.
 - 2026-10-21: T4 done: step 8's guest arm gains a body paragraph (maintainer PR bodies read through `gh api .../pulls` filtered on `author_association` and the operator's login, since `gh pr list` has no association field; lead content; failure map from `gh issue view`; the `maintainer approach:` reason; what stays in `cairn/`). Hotfix's guest create gains the failure map, and its "only prose" note is reworded. Verify: five commands exit 0.
+- 2026-10-21: T5 done: `/milestone` §2's OPEN-otherwise arm reads `gh pr view --json author,comments,reviews` and names unanswered comments by OWNER/MEMBER/COLLABORATOR authors other than the PR's author, with the reply rule. Fields `authorAssociation`, `createdAt`, `submittedAt` confirmed on cairn PR #321. Verify: five commands exit 0.
 
 ## Decisions
 

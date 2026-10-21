@@ -195,6 +195,16 @@ The script deliberately does not judge these — do them yourself and report:
   otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
+  This arm also reads the conversation comments and review bodies that
+  `gh pr view <N> --repo <base-repo> --json author,comments,reviews`
+  returns. The report names each one whose author is not the PR's author,
+  whose `authorAssociation` is `OWNER`, `MEMBER`, or `COLLABORATOR`, and
+  that no later comment or review by the PR's author follows in time (a
+  comment's `createdAt`, a review's `submittedAt`). It
+  quotes each one with its link. The operator's reply to such a comment
+  leads with the answer or the question, at about the comment's length,
+  and probe evidence (option names, numbers, test output) stays in
+  `cairn/`.
   The audit writes nothing to GitHub.
 - **Open hotfix PRs**, in owner and guest mode: read the open PRs you
   opened with one call, `gh pr list --repo <base-repo> --state open
