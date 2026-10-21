@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { archivedArgs, DESCRIBE_ARGS, doneSince, lastSegment, projectName, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs } from './repo'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, lastSegment, projectName, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs, webOf } from './repo'
 
 // The summary card's reads (M286 AC3, AC4). The expected values are written
 // out by hand.
@@ -166,4 +166,27 @@ describe('the project name: the github.com repo, else the main tree folder, else
     expect(lastSegment('C:\\a\\b')).toBe('b')
     expect(lastSegment('')).toBe('')
   })
+})
+
+describe('the repo page: a github.com remote whose owner and repo a link can carry, else none (M311 AC1, AC2)', () => {
+  const CASES: [string, string | null, string | null][] = [
+    ['an scp-like URL', 'git@github.com:o/alpha.git', 'https://github.com/o/alpha'],
+    ['an ssh:// URL', 'ssh://git@github.com:22/o/alpha.git', 'https://github.com/o/alpha'],
+    ['an https:// URL', 'https://github.com/Owner-1/re.po_x/', 'https://github.com/Owner-1/re.po_x'],
+    ['a URL on another host', 'https://gitlab.com/o/r.git', null],
+    ['no URL', null, null],
+    ['an owner with a character a name cannot hold', 'https://github.com/o%20x/r.git', null],
+    ['a repo with a non-ASCII letter', 'git@github.com:o/réso.git', null],
+    ['an owner of `..`', 'https://github.com/../r', null],
+    ['a repo of `.`', 'git@github.com:o/..git', null],
+    // GitHub's longest names link, and one character more does not (M311 review).
+    ['an owner of 39 and a repo of 100 characters', `git@github.com:${'o'.repeat(39)}/${'r'.repeat(100)}.git`, `https://github.com/${'o'.repeat(39)}/${'r'.repeat(100)}`],
+    ['an owner of 40 characters', `git@github.com:${'o'.repeat(40)}/r.git`, null],
+    ['a repo of 101 characters', `git@github.com:o/${'r'.repeat(101)}.git`, null],
+  ]
+  for (const [name, url, want] of CASES) {
+    test(name, () => {
+      expect(webOf(url)).toBe(want)
+    })
+  }
 })

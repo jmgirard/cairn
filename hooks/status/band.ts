@@ -22,6 +22,8 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // surface with the `Svg` element (M286, icons.ts); the band draws none.
 // `badge` holds a heading's count badge, which the cairn pane draws as an
 // `Svg` pill in place of the text on such a surface (M289, badge.ts).
+// `href` is a web page the cairn pane links the text to off the terminal
+// (M311); the band links none.
 export type Span = {
   text: string
   color?: string
@@ -29,6 +31,7 @@ export type Span = {
   bold?: boolean
   icon?: IconName
   badge?: { count: number }
+  href?: string
 }
 
 export const GRAY = 'inactive'

@@ -2,7 +2,8 @@
 // of the base remote's repo, from one `gh api graphql` call, and the latest
 // release tag, its age, and the milestones done since it, from three git
 // calls, and the project name (M291), from the URL or from one more git
-// call when the URL is not a github.com one. `readPrs` in register.tsx
+// call when the URL is not a github.com one, and the repo page (M311), from
+// the URL alone. `readPrs` in register.tsx
 // makes them all, through `readRepo`, at the times it reads the pull
 // request states, and at no other time.
 
@@ -129,6 +130,29 @@ export function projectName(url: string | null, common: string | null, root: str
     if (holder !== '') return holder
   }
   return lastSegment(root)
+}
+
+// The characters a GitHub owner or repo name holds. `.` and `..` match too,
+// and `webOf` refuses them, since `new URL` would resolve them away.
+const WEB_PART = /^[A-Za-z0-9._-]+$/
+// GitHub's longest owner and repo names, which keep every page `webOf`
+// gives under the 2048 characters a Link's `href` may hold (M311 review).
+const OWNER_MAX = 39
+const REPO_MAX = 100
+
+// The repo page of a github.com base remote URL (M311), which the card's
+// name and counts link to, or null for any other URL, for no URL, and for
+// an owner or repo that `WEB_PART` refuses, that is `.` or `..`, or that is
+// longer than GitHub allows. A Link
+// whose `href` is not spelled as `new URL(href).href` refuses the whole
+// pane, so only such a URL comes back.
+export function webOf(url: string | null): string | null {
+  const named = url === null ? null : remoteRepo(url)
+  if (named === null) return null
+  const fits = (part: string, max: number) => WEB_PART.test(part) && part !== '.' && part !== '..' && part.length <= max
+  if (!fits(named.owner, OWNER_MAX) || !fits(named.repo, REPO_MAX)) return null
+  const web = `https://github.com/${named.owner}/${named.repo}`
+  return new URL(web).href === web ? web : null
 }
 
 const DAY_MS = 86_400_000

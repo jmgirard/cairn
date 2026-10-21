@@ -213,6 +213,14 @@
 
 ### New
 
+- **The pane's summary card links to the repo on GitHub.** Outside the
+  terminal, for example in the desktop app, the project name on the
+  card's first line opens the repo's GitHub page. The pull request count
+  and its word open its pull requests list, and the issue count and its
+  word open its issues list. Only a github.com base remote gives links. Another host, no
+  remote, or an owner or repo name that a link cannot carry gives none.
+  The terminal pane draws no links.
+
 - **The plan and the hotfix question the request before they build it.**
   `/milestone-plan` now asks three questions of the behavior a request
   names: is it correct by its field's standards (for example statistical
