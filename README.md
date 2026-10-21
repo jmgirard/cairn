@@ -728,7 +728,8 @@ ROADMAP candidate row, and rejects a false one with the reason. One
 exception: a real finding that only input outside both documented and
 common use reaches is rejected as `edge` when its effect is an error, a
 warning, or slow running. A wrong result or a failed acceptance criterion
-is never `edge`. Then it
+is never `edge`. In guest mode, the PR lists those findings in plain
+words and asks the maintainers whether they want them handled. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).

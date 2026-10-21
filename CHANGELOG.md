@@ -11,9 +11,11 @@
   error, a warning, or slow running. Review no longer adds code and help
   text to handle such inputs. A finding that gives a wrong result with no
   error or warning is never `edge`. Neither is a finding that shows an
-  acceptance criterion failing. In guest mode, the PR description lists
-  the `edge` findings in plain words and asks the maintainers whether
-  they want them handled.
+  acceptance criterion failing, or that authorizes an outward-facing
+  irreversible action. A maintainer's request on the PR is never `edge`.
+  In guest mode, the PR description, or a PR comment when the PR is
+  already open, lists the `edge` findings in plain words and asks the
+  maintainers whether they want them handled.
 
 - **A repo with a Quarto extension marker, no language or plugin marker,
   and no `cairn/PROFILE.md` now reads as the quarto-extension profile.** The profile inference checks

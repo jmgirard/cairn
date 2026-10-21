@@ -714,15 +714,16 @@ re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
-   When it opens the PR, the body lists, before the `Closes`/`Refs`
+   When it opens the PR, the body lists, before any `Closes`/`Refs`
    lines, each Review-section reject whose ground is `edge` (the reviewer
    lines, which name their ground), one short line each in plain words
-   with no cairn vocabulary. It then asks the maintainers whether they
-   want those inputs handled in this PR or later. With no `edge` rejects
-   it adds neither. When the PR is already open, no body edit is made,
-   and the close block names the `edge` rejects written after the newest
-   earlier `step-7 approval:` line. The close block also names any `edge`
-   reject that the body leaves out, such as one from the Copilot round.
+   with no cairn vocabulary: no lens name, no rank, and not the word
+   `edge`. It then asks the maintainers whether they want those inputs
+   handled in this PR or later. With no `edge` rejects it adds neither.
+   When the PR is already open, no body edit is made. The handoff instead
+   posts the same list and question as one PR comment, for the `edge`
+   rejects of this review pass (the lines after the newest `spawned:`
+   line), and the close block names them.
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.

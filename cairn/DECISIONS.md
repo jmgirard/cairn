@@ -7486,7 +7486,7 @@ finding back as work. Guest mode only, at the user's choice.
 input that traces to a finding rejected as `edge`. `/hotfix` is
 unchanged, because the user settles each item there.
 
-### D-206 (2026-10-21): Four clauses of D-205 are corrected in one batched entry — the `edge` exclusions, the narrowed rule's record, the hotfix reason, and the door — supersedes those clauses; annotates D-144 (M307 review)
+### D-206 (2026-10-21): Four clauses of D-205 are corrected in one batched entry — the `edge` exclusions, the narrowed rule's record, the hotfix reason, and the door — and a guest PR lists its `edge` rejects for the maintainers; supersedes those clauses; annotates D-144 (M307 review)
 
 **Context:** M307's review found that D-205 and the first `edge` text
 left four gaps. An `edge` reject never reached the return floor's
@@ -7514,7 +7514,10 @@ wrong result without an error or warning", the condition its Decision
 states. At the user's request at review, a guest PR body lists the
 reviewer `edge` rejects in plain words before the `Closes`/`Refs` lines
 and asks the maintainers whether they want those inputs handled; on an
-already-open PR the close block names them instead. The maintainers, not
-the operator, then decide whether those holes get plugged.
+already-open PR one PR comment carries the same list for that review
+pass. The maintainers, not the operator, then decide whether those holes
+get plugged.
 
-**Consequences:** D-205's decision and falsifier stand.
+**Consequences:** D-205's decision and falsifier stand. The PR-body list
+is falsified by maintainers who ask that such notes be left out of guest
+PRs.
