@@ -53,7 +53,7 @@ With no active milestone, the cairn pane shows only lines that add something, an
 
 - [x] T1: Remove the `no-active` line (`pane.ts:839`) and `NO_ACTIVE` (`pane.ts:466`). Update the mod tests that expect the line (`pane.test.tsx` near 6002 and 6359; the assertion near 1695 passes either way, so rewrite it to assert the line is absent) and each `rowsAbove` figure it shifts. The `no-active` fixture name stays.
 - [x] T2: In `paneLines` (`pane.ts:844-861`), skip the Next line and its `next-gap` when the command is `/milestone-plan` and the drawn candidate list is not empty. Add the AC2 and AC3 tests.
-- [x] T3: Add a rule line between adjacent drawn levels in the Candidates loop (`pane.ts:931`), keyed outside `candidate-*`, with a `PaneLine` flag that `register.tsx` draws as a thin `Svg` line on the desktop (a text rule drew as two lines there, LESSONS M286) and as a gray truncated `─` run in the terminal. Check the tests near `pane.test.tsx:6684` and 6739, which treat `candidate-` keys and `rowsAbove` lines as rows. Add the AC4 (a) and AC5 tests.
+- [x] T3: Add a rule line between adjacent drawn levels in the Candidates loop (`pane.ts:931`), keyed outside `candidate-*`, with a `PaneLine` flag that `register.tsx` draws as a thin `Svg` line on the desktop (a text rule drew as two lines there, LESSONS M286) and as a gray truncated `─` run in the terminal. Check the tests near `pane.test.tsx:6684` and 6739, which treat `candidate-` keys and `rowsAbove` lines as rows. Add the AC4 (a) and AC5 tests. Done at 5600630d, then reverted at T4 when the user chose the parked color, so no rule ships (work log).
 - [x] T4: Preview the rule `Svg` in the browser pane in dark and light (LESSONS M204). Then open a new desktop session in `~/github/modelbased`, which has no active milestone and rows in all four levels. `~/.claude/skills/cairn` links to this checkout, so that session loads the branch's mod; check that its pane shows no `no active milestone` line before judging. The user looks in dark and light. If the user rejects the rule, remove it, give `[parked]` its own color key (`PRIORITY_MARK.parked` at `pane.ts:487`, the title color at `pane.ts:936`, the icon stroke at `icons.ts:64`) with the AC4 (b) tests, and append a D-entry superseding D-184's gray-mark clause. Log the look's result and which means shipped.
 - [x] T5: Update README (the pane section near line 345), DESIGN's pane paragraphs, the comments at the top of `pane.ts`, and CHANGELOG Unreleased.
 - [x] T6: Run the `verify` slot.
@@ -80,6 +80,7 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: candidate row "Vet an idea before planning its build" added at the datawizard session's forwarded request (the user's direction there); not M305 scope.
 - 2026-10-20: claim audit: 71 claims read, 3 corrected — pane.test.tsx (the M294 AC4 offset note), README.md (the parked mark's desktop color; the ✎ sentence), CHANGELOG.md (the ✎ sentence), pane.ts (the Next-line comment).
 - 2026-10-20: claim audit re-read: the corrected claims read true. All tasks checked, verify green; status review.
+- 2026-10-21: minor edit at review (Copilot thread): T3's text now says its rule was reverted at T4, so the ticked box does not read as a shipped rule.
 
 ## Decisions
 
@@ -119,4 +120,8 @@ Review head: branch `m305-idle-pane-trim` at the PR #319 commit, synced with `or
 - ripple #3: README, DESIGN, and a `register.tsx` comment say the Next line carries Status "at the same times" without the hidden case — reject, false: they describe the line when it draws, and README and DESIGN state the hidden case beside it
 - ripple #4: a stale test comment above the M272 block — fix now, fixed 6abba6b0
 - ripple #5: "Each candidate line with a short title carries a ✎" lacks the desktop hover qualifier — reject, false: the line carries ✎ on both surfaces, and README and DESIGN describe the desktop hover reveal
+- copilot: cairn/milestones/M305-idle-pane-trim.md:56 — T3 is ticked though its rule was reverted — fix now, T3's text records the revert
+- copilot: review body — "resolve the unrelated roadmap entry" (the "Vet an idea before planning its build" row) — reject: any skill may add a candidate row at any time, and this one came from a forwarded request and rides here as a tracking edit
+- copilot: review body — "update the public pane-state documentation" — fix now, `types/index.d.ts`, fixed 6abba6b0 (ripple #2)
+- Copilot level: Lite (set by GitHub's settings); it reviewed an earlier head.
 - After fixes: verify green (scripts OK, hooks OK, both validates pass, mod 2444 pass), `skills/tests` 930 OK, `cairn_validate` all checks passed.
