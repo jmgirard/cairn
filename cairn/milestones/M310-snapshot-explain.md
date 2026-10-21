@@ -157,3 +157,48 @@ D-entry, the CHANGELOG, and the README follow.
 - AC5 evidence (2026-10-21): from the repo root, each exit code read on its own: `python3 -m unittest discover -s scripts/tests` 0, `python3 -m unittest discover -s hooks/tests` 0 (193 tests OK), `claude plugin validate .claude-plugin/plugin.json` 0, `claude plugin validate .claude-plugin/marketplace.json` 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` 0 (2444 pass, 0 fail).
 - Consistency gate (2026-10-21, head 7fafbb87): `cairn_validate.py` exit 0, all checks passed; no DESIGN.md principle changed, so `cairn_impact` skipped; profile slot: verify green on this head (AC5), marketplace validate printed no `plugins[N].version` warning, CHANGELOG has the entry (AC4).
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: step 7's fix-now remedy "re-recorded or reverted" keeps an unintended output change — fix now: fix now corrects the code, re-recording fixes nothing, fixed 04e78aaa
+- diff-bug #2: follow-up for an unneeded change contradicts step 5 and skips the return floor — fix now: the change is a finding settled by step 5's rule, the return floor included, and follow-up keeps only a change with no wrong result, fixed 04e78aaa
+- diff-bug #3: hotfix "does not approve and instead fixes first" has no procedure — fix now: address-first as under the blocking rule, approve option kept unrecommended, step 4 re-run and the gate posed again on the new head, fixed 04e78aaa
+- diff-bug #4: no route for an adopted PR whose head cannot take a push — fix now: address-first asks the contributor as step 5 does, fixed 04e78aaa
+- diff-bug #5: hotfix guest body list stale after a fix-first path — fix now: the gate is posed again with the list on the new head, fixed 04e78aaa
+- diff-bug #6: step 7 list timing is circular and misses the PR-conversation read's fix-now commits — fix now: computed before fix-now work and again after every fix-now commit, that read's included, fixed 04e78aaa
+- diff-bug #7: the review chip's question text does not carry the list — fix now: it names the file count and each follow-up change in plain words, fixed 04e78aaa
+- diff-bug #8: route (b)'s `gh pr diff` lacks `--repo` in guest mode, and fix-now clauses cannot apply there — reject (false): session start's guest arm puts `--repo <base-repo>` on every `gh pr` read, and route (b) already sends fix-now through `/hotfix`
+- diff-bug #9: the `snapshot:` line does not say it gains `, fixed <sha>` or names its row — fix now, fixed 04e78aaa
+- diff-bug #10: the body's "why" has no guidance for a change that ships as follow-up — fix now: that line says the change is not intended and left for later (hotfix: approved past address-first), fixed 04e78aaa
+- diff-bug #11: an open PR's comment repeats the full list each pass — follow-up: absorbed into "List snapshots changed after a PR opens"; D-209 keeps the full list for its correcting effect
+- diff-bug #12: D-208's reason for rejecting a since-last-push comment is false — fix now: D-209 supersedes that clause, fixed 04e78aaa
+- diff-bug #13: a stack base PR that merged after step 1 makes step 7 list its files — fix now: step 7 reads the stack base's state and says the list can hold its files while step 8 stops, fixed 04e78aaa
+- diff-bug #14: a snapshot a test run writes but no commit carries is in no list — follow-up: pre-existing (uncommitted files), absorbed into "List snapshots changed after a PR opens"
+- diff-bug #15: hotfix `gh pr diff` lists the PR's current head, not the noted one — follow-up: absorbed into "List snapshots changed after a PR opens"
+- diff-bug #16: hotfix's `--repo` clause is unreachable in guest mode — reject (style): harmless where unreached, correct where reached
+- diff-bug #17: README's hotfix row omits the hotfix list — fix now: one sentence added, fixed 04e78aaa
+- diff-bug #18: "the one exception for test files" repeats the items sentence — reject (planned change): AC2 asks for that exception
+- diff-bug #19: D-208's heading does not say it annotates D-108 — fix now: D-209 names it, fixed 04e78aaa
+- diff-bug #20: CHANGELOG line wrap — reject (style); rewrapped in passing with the fix-now edit
+- blame-history #1: unbounded snapshot lines against D-207's short body, and D-207 unnamed — fix now for the naming (D-209 annotates D-207), fixed 04e78aaa; the lines themselves reject (planned change)
+- blame-history #2: re-record allowed — fix now, the same fix as diff-bug #1, fixed 04e78aaa
+- blame-history #3: comment rule unclear with snapshot lines and no `edge` rejects — fix now: no list and no question without rejects, fixed 04e78aaa
+- blame-history #4: step 7 never reads the stack base state — fix now, the same fix as diff-bug #13, fixed 04e78aaa
+- blame-history #5: README names only `_snaps/`, and a long line — fix now: both directory names, fixed 04e78aaa; the wrap rejects (style), rewrapped in passing
+- blame-history #6: owner mode excepted from D-108's door — reject (false): recorded in D-208 as the user's decision
+- blame-history #7: stale list after a guest change-route push or Copilot fix — reject (planned change): Scope Out, row "List snapshots changed after a PR opens"
+- prior-review #1: hotfix guest change route never runs the list — reject (planned change): Scope Out, same row
+- prior-review #2: comment's `edge` question ambiguous, and an empty close-block naming — fix now, the same fix as blame-history #3, the close block also says when none was posted, fixed 04e78aaa
+- prior-review #3: the test-file exception reopens M308's rule — reject (planned change): AC2 asks for it; D-209 names D-207
+- prior-review #4: step 7's diff has no fetch before it — reject (false): step 1 fetches `<base>`, and a three-dot diff reads the merge base the synced branch holds
+- prior-review #5: a CLOSED stack base lists its files — fix now, the same fix as diff-bug #13, fixed 04e78aaa
+- prior-review #6: an 84-column skill line — reject (style); rewrapped in passing
+- prior-review #7: "the line is still written" unclear — fix now: reworded, fixed 04e78aaa
+- prior-review #8: README and CHANGELOG restate the comment rule, and "candidate row" vs follow-up — reject (planned change) for the copies (AC4); reject (false) for the wording, since a follow-up is a candidate row
+- ripple #1: hotfix chip sentence names only the blocking rule as an address-first trigger — fix now: it names the snapshot rule too, fixed 04e78aaa
+- ripple #2: CHANGELOG's guest-mode entry lists body items without snapshot lines — reject (false): it says what the body leads with, which stays true, and the new entry covers the lines
+- ripple #3: hotfix question text naming each change can pass the one-path limit — fix now: it names each change in plain words, paths in the chat above, fixed 04e78aaa
+- ripple #4: CHANGELOG's `edge` entry describes a narrower comment — reject (false): what it says stays true, and the new entry covers the snapshot lines
+- ripple #5: step 5 has no rule for an unneeded change — fix now: step 7 makes it a finding under step 5's rule, fixed 04e78aaa
+- ripple #6: the "why" line does not restate the no-cairn-terms rule — reject (false): step 8 already bars cairn vocabulary in the body
+- ripple #7: "a guest PR body carries none" could read as covering snapshot lines — reject (false): it names `Candidate row:` lines
+- ripple #8: the new candidate row omits the open-PR comment — reject (false): the row is accurate as written
+- AC1 and AC3 re-read after 04e78aaa (2026-10-21): AC1's paragraph is now review step 7 lines 526-553, and it still holds each clause: the definition and `git diff` (527-528), the `OPEN` stack-base diff (529-531), route (b) (533-534), both modes (534), one line with what changed or new/deleted and whether the Goal or criteria call for it (535-539), step 5's fix now or follow-up before the chip (539-540), the `snapshot:` line that stays when the fix removes the path (545-548), and the empty-list line (550-551). AC3's paragraph is now hotfix step 6 lines 412-431 (step 7 at 550), with the same clauses plus the address-first procedure; "the recommended option does not approve" is at 423. Verify and `skills/tests` green on 04e78aaa.
+- Totals: 43 findings, three of them split in two (blame-history #1 and #5, prior-review #8), so 46 dispositions — fix now 24, follow-up 3 (into "List snapshots changed after a PR opens"), reject 19 (false 9, planned change 6, style 4); none `edge`; no return (no criterion fails, and the defects are in verification prose, outside the return floor).
