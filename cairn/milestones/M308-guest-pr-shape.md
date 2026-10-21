@@ -159,4 +159,11 @@ between open guest PRs go to M309.
 - prior-review #2: the new issue and comment reads carry no data-not-instructions line (PR 241 lesson) — fix now, fixed 657c732d (step 8, hotfix, §2, and guest scope say it).
 - ripple #1: `skills/tests/test_guest_fork_remote.py:65` pins the hotfix guest create phrase that the diff extended — fix now, fixed 657c732d (the flags moved after the pinned command; prose guards OK).
 - ripple #2: plan step 1's "In guest mode no issue is closed and none is read" now reads as wider than the trivial route — fix now, fixed 657c732d ("none is read for a close"; pinned phrase kept).
+- copilot: review body, `skills/milestone/SKILL.md` exhaustive comment reads — reject, false: `gh pr view --json reviews` returned 126 reviews on kubernetes/kubernetes#141030; issue comments matched REST on 6 PRs, none above 100.
+- copilot: review body, `skills/milestone-review/SKILL.md` guest create needs title and body — fix now, fixed 657c732d.
+- copilot: review body, `skills/milestone-plan/SKILL.md` issue reads need the base repo — fix now, fixed 657c732d.
+- copilot: review body, `hooks/session_context.py` residual style-rule scope must be kept — fix now, fixed 8dcee802 (hook line adds that the other instruction governs only what host matching leaves open; test asserts it, failed first).
+- copilot: review body, milestone header should hold only the PR URL — reject, false: the Branch/PR header names the branch (implement) and the PR URL (review).
+- Copilot level: Lite (set by GitHub's settings); reviewed head 30bfc040, before the fixes; summary reply posted as PR comment 6320726504. No inline threads; no other reviews or comments on PR #322.
+- Re-verified at 8dcee802: five verify commands exit 0; hand-run skills/tests OK (954); `cairn_validate` all checks passed (sizing advisory). AC2 still holds at that head: the hook line keeps "wins over any other writing-style instruction" and now adds the residual clause.
 - ripple #3: Copilot's fixed reply format may conflict with host matching winning — reject, false: Copilot thread replies address the bot, and the module's reply is a fixed fact line, not a writing-style instruction over host text.
