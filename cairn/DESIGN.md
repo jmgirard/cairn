@@ -9,9 +9,11 @@ verify, consistency-gate, test-doctrine, release-walk, init-detection,
 greenfield-openers, changelog) that supplies the language/toolchain-specific commands the
 operational skills read, instead of the core hardcoding one language (M45
 spine, M46 rewire, M47 release; D-024/D-025 keep the oracle doctrine universal,
-orthogonal to the profile). Five profiles ship — `r-package` (devtools/CRAN),
+orthogonal to the profile). Six profiles ship — `r-package` (devtools/CRAN),
 `python` (pytest/PyPI), `claude-plugin` (`claude plugin validate`/`test`, M192),
-`docker-image` (hadolint+build/container registry), and `generic`. This repo
+`quarto-extension` (a render check, and a release walk that tags a version a
+merge already raised or raises it at release, M303), `docker-image`
+(hadolint+build/container registry), and `generic`. This repo
 runs `claude-plugin` (M215). Logic lives here (skills, rules,
 templates); state lives in each adopting repo under `cairn/`. The founding
 spec is superseded by this file, the shared rulebook, and DECISIONS.md; git
@@ -62,7 +64,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   source note, synthesis note, archive summary, and the LESSONS.md /
   DECISIONS.md file headers (M163).
 - `skills/shared/profiles/` — the shipped reference toolchain profiles
-  (`r-package`, `python`, `claude-plugin`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
+  (`r-package`, `python`, `claude-plugin`, `quarto-extension`, `docker-image`, `generic`); `cairn-init` instantiates one into a repo's
   `cairn/PROFILE.md`, and the operational skills read its slots.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer, all no-op outside cairn repos. Eight hooks: `session_context`
@@ -708,7 +710,11 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   M94), `cairn_ci_paths` (`--report`: per-workflow report of
   push/pull_request triggers and their path filters, read at `/cairn-init`
   §0, M178; `--apply [--dry-run]`: the `cairn/**` `paths-ignore` insertion
-  under §0's chip, M181).
+  under §0's chip, M181), `cairn_versions` (a version marker's `version:`
+  line along the first-parent chain: the tip's version, the first commit of
+  its unbroken run, and its tag state, or with `--changed-by` the version one
+  commit set, for the quarto-extension release walk, M303; it needs a git
+  repository, not a `cairn/` directory).
   Every script reads only, except `cairn_ci_paths --apply`, the layer's one
   writing mode (lines inserted into a workflow file after a PyYAML
   post-edit check; D-135). Every import is stdlib or the shared

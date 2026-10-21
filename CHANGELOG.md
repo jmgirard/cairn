@@ -144,6 +144,20 @@
 
 ### New
 
+- **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
+  a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no
+  language or plugin marker. Its version marker is the `version:` line in
+  that file, and a repo can name more files that must hold the same
+  version. Its release walk first reads the version at the tip of the
+  default branch with the new `scripts/cairn_versions.py`. When that
+  version has no `v<version>` tag, merged work already raised it, so
+  `/cairn-release` asks no version question and makes no prep commit. It
+  tags the first commit of that version's run instead. Otherwise it raises
+  the version at release time, as the generic walk does. With changelog
+  "none", the release notes are the commit subjects since the previous
+  tag. A repo that uses the generic profile keeps it until you switch its
+  `cairn/PROFILE.md`.
+
 - **The cairn pane shows whether each open PR can merge.** A Blocked or
   Hotfixes line for an open pull request now ends with a mark after its
   state word. A green merge symbol means GitHub reports that the PR can

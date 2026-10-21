@@ -50,7 +50,14 @@ The `release-walk` slot is authoritative — read it, never recall a hardcoded
 walk. The steps below are the universal spine; the slot fills in the
 toolchain-specific work at step 3.
 
-1. **Version decision** (question gate, one round): review the declared
+   **Tag-only arm (quarto-extension).** A quarto-extension profile's
+   release-walk reads the version marker first (`cairn_versions.py`, step 3).
+   When it reports the tip's version with no `v<version>` tag, merged work
+   already raised the version. Steps 1 and 2 are then skipped, and step 3
+   tags the start of that version's run with no prep commit.
+
+1. **Version decision** (question gate, one round; skipped in the tag-only
+   arm, where the version is the one the default branch carries): review the declared
    changelog — the file the active profile's `changelog` slot names ("none" →
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
@@ -71,8 +78,8 @@ toolchain-specific work at step 3.
    That milestone's `feature series:` line already lists the series.
    No such series or row → the question says nothing about series.
 
-2. **Changelog consolidation** (the declared file; a "none" declaration skips
-   this step): retitle the development heading to the release version; group
+2. **Changelog consolidation** (the declared file; a "none" declaration or the
+   tag-only arm skips this step): retitle the development heading to the release version; group
    entries (breaking changes first, then new features, fixes); prune noise;
    no milestone numbers or internal jargon. **Claim-read:** before the
    release-prep commit, each behavior claim in the consolidated release
@@ -90,6 +97,11 @@ toolchain-specific work at step 3.
    - A **generic** profile's slot is the minimal walk — bump the version marker,
      commit the release prep to the default branch, and tag the release. The tag
      is the release; there is no registry step.
+   - A **quarto-extension** profile's slot reads the version marker with
+     `cairn_versions.py` and takes one of two arms. The tag-only arm tags the
+     first commit of the tip version's run, with no bump and no prep commit.
+     The release-time arm runs the generic walk. With changelog "none", the
+     release notes are the commit subjects since the previous `v*` tag.
    For any slow checks the slot names (wide/registry checks, reverse-dependency
    runs), follow the tracking-rules wait rule — one watcher per check, a
    foreground call with a timeout below the harness ceiling or a
