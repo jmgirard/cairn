@@ -82,10 +82,6 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // `info`, and there the desktop shows the card only
 // while the pointer is over its info glyph `ⓘ`, which shows on line hover,
 // beside ✎ when the line has one (M290).
-// A line with `rule` is the rule between two candidate levels (M305), which
-// register.tsx draws across the row: as `ruleSvg` on the desktop and as a
-// run of `METER_EMPTY` in `METER_EMPTY_KEY` in the terminal. It has no lead
-// and no text.
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -104,7 +100,6 @@ export type PaneLine = {
   title?: string
   grow?: true
   tailGrows?: true
-  rule?: true
 }
 
 // A blocked milestone's pull request state, as `wordOf` maps it from a
@@ -483,6 +478,10 @@ export const CURRENT_MARK = '⊙'
 // The empty circle a normal candidate row draws (M253), which a blocked or
 // hotfix line also draws before a read (M286).
 export const OPEN_MARK = '○'
+// A parked row's color (M305): the theme's `permission` blue, so a parked
+// row differs from a gray low row. Its desktop icon draws in the icons'
+// fixed blue (icons.ts).
+export const PARKED_KEY = 'permission'
 // A candidate row's mark for each priority (M207). A normal row's mark is
 // the empty circle `OPEN_MARK` (M253). Each names its icon (M286).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
@@ -490,7 +489,9 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: OPEN_MARK, icon: 'ring' },
   low: { text: '↓', color: GRAY, icon: 'low' },
   // A parked row waits on a promotion condition that has not held (M284).
-  parked: { text: '⧗', color: GRAY, icon: 'parked' },
+  // Its mark and title draw in `PARKED_KEY`, where M284 drew them gray like
+  // a low row's (M305).
+  parked: { text: '⧗', color: PARKED_KEY, icon: 'parked' },
 }
 // The order the Candidates list draws each priority in (M280), the parked
 // rows last (M284).
@@ -939,18 +940,12 @@ export function paneLines(
   // row up by that index. `drawn` is set before the Next line, which reads it.
   if (drawn.length > 0) {
     out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
-    // A rule before the first drawn row of each level after the first drawn
-    // one (M305), so a level whose rows are all hidden draws none. A level
-    // draws once, so its name keys its rule.
-    let level: CandidateRow['priority'] | null = null
     for (const { row, i } of drawn) {
-      if (level !== null && row.priority !== level) out.push({ ...line(`rule-${row.priority}`, 2, [], null), rule: true })
-      level = row.priority
       const candidate = line(
         `candidate-${i}`,
         2,
         [PRIORITY_MARK[row.priority], { text: ' ' }],
-        row.priority === 'low' || row.priority === 'parked' ? { text: row.title, color: GRAY } : { text: row.title },
+        row.priority === 'low' ? { text: row.title, color: GRAY } : row.priority === 'parked' ? { text: row.title, color: PARKED_KEY } : { text: row.title },
       )
       candidate.grow = true
       // The card holds the row's whole text after its priority token, and

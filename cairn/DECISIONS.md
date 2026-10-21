@@ -7384,3 +7384,28 @@ repo whose closes show the commands.
 guest hygiene run, and the `/hotfix` merged-PR re-entry fence no tag
 command. D-050's parking rule and D-048's three-case rule text stand
 unchanged.
+
+### D-203 (2026-10-20): The cairn pane draws a parked candidate row in a blue of its own, not gray — supersedes D-184's clause that a parked row draws with a gray `⧗` and a gray title; D-184's level, token, and order stand (M305)
+
+**Context:** D-184 had the pane draw a `[parked]` row with a gray `⧗`
+and a gray title, after the `[low]` rows, whose `↓` and title are gray
+too. The user found the two levels hard to tell apart in the pane. M305
+planned a rule line between levels, with a parked color as the user's
+fallback. At the M305 live-look stop the user compared four mockups (a
+rule, a parked color, a card per level, one card with rules) and chose
+the parked color.
+
+**Decision:** A parked row's mark and title draw in the theme's
+`permission` blue (`PARKED_KEY` in `pane.ts`), and its desktop icon in a
+fixed muted blue (`ICON_COLORS.blue` in `icons.ts`), in the Candidates
+list and in the card's level counts. A low row stays gray. This
+supersedes D-184's gray-mark clause only. The `[parked]` token, its
+place after `[low]`, and D-182's level order stand.
+
+**Rejected:** A rule line between levels, which the branch drew first,
+and outlined cards per level or around the list, at the user's choice
+at the live look. Falsified by an operator who still cannot tell a
+parked row from a low row in the pane.
+
+**Consequences:** The pane no longer separates levels by anything but
+their marks, title colors, and order.

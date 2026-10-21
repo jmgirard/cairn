@@ -4,6 +4,7 @@ import type { On } from 'claude-code'
 import { BADGE_PAD, badgeSvg, badgeWidth } from './badge'
 import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
+import { iconSvg } from './icons'
 import {
   CHECKED_MARK,
   cardCut,
@@ -544,8 +545,9 @@ const MARKS = {
   high: { text: '↑', color: 'claude', bold: true, icon: 'high' },
   normal: { text: '○', icon: 'ring' },
   low: { text: '↓', color: 'inactive', icon: 'low' },
-  // M284: a parked row's hourglass, gray.
-  parked: { text: '⧗', color: 'inactive', icon: 'parked' },
+  // M284: a parked row's hourglass, gray until M305, now the theme's
+  // `permission` blue.
+  parked: { text: '⧗', color: 'permission', icon: 'parked' },
 } as const
 
 // The candidates fixture's lines, written out by hand from its ROADMAP, in
@@ -1161,7 +1163,7 @@ describe('section headings, the head line, Next, and the card in the picked look
           { text: '↓', color: GRAY, icon: 'low' },
           { text: ' 0' },
           { text: '   ' },
-          { text: '⧗', color: GRAY, icon: 'parked' },
+          { text: '⧗', color: 'permission', icon: 'parked' },
           { text: ' 0' },
         ],
         text: null,
@@ -5265,7 +5267,7 @@ const PARKED_LINES: [number, string][] = [
   [7, '⧗ Parked last'],
 ]
 
-describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', () => {
+describe('a parked candidate row draws last, with an hourglass in its own color (M284 AC3, M305 AC4)', () => {
   for (const surface of SURFACES) {
     test(`the candidates-parked fixture draws parked rows after the low row (${surface})`, async ($, on) => {
       seat(on, copyOf('candidates-parked'))
@@ -5277,21 +5279,66 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       expect(rows.map(k => textAt(lines, k))).toEqual(PARKED_LINES.map(([, text]) => text))
     })
 
-    test(`a parked row's mark and title are gray (${surface})`, async ($, on) => {
+    // M305 AC4 (b): a parked row's mark and title draw in `permission`,
+    // and a low row's in `inactive`, where M284 drew both gray.
+    test(`a parked row's mark and title are blue, and a low row's gray (${surface})`, async ($, on) => {
       seat(on, copyOf('candidates-parked'))
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
-      const [lead] = await ui.findAll({ key: 'candidate-0-lead' })
-      expect(textOf(kids(lead)[0])).toBe('⧗')
-      // On the desktop the mark draws as its icon (M286).
-      if (surface === 'terminal') expect(kids(lead)[0].props.color).toBe('inactive')
-      else expect(kids(lead)[0].type).toBe('Svg')
+      const low = FIXTURES['candidates-parked'].candidates.findIndex(row => row.priority === 'low')
+      expect(low).toBeGreaterThan(-1)
+      const leadOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-lead` }))[0])[0]
+      expect(textOf(await leadOf(0))).toBe('⧗')
+      expect(textOf(await leadOf(low))).toBe('↓')
+      // On the desktop each mark draws as its icon (M286), whose stroke
+      // the next test reads.
+      if (surface === 'terminal') {
+        expect((await leadOf(0)).props.color).toBe('permission')
+        expect((await leadOf(low)).props.color).toBe('inactive')
+      } else {
+        expect((await leadOf(0)).type).toBe('Svg')
+        expect(String((await leadOf(0)).props.source)).toContain('#7f93c4')
+        expect(String((await leadOf(low)).props.source)).not.toContain('#7f93c4')
+      }
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
-      expect((await titleOf(0)).props.color).toBe('inactive')
+      expect((await titleOf(0)).props.color).toBe('permission')
+      expect((await titleOf(low)).props.color).toBe('inactive')
       // The control: an untagged row's title has no color.
       expect((await titleOf(1)).props.color).toBe(undefined)
       await ui.unmount()
     })
+  }
+
+  test("the parked icon's stroke is blue and the low icon's gray", () => {
+    const strokes = (svg: string) => [...svg.matchAll(/stroke="([^"]+)"/g)].map(m => m[1])
+    expect(new Set(strokes(iconSvg('parked')))).toEqual(new Set(['#7f93c4']))
+    expect(new Set(strokes(iconSvg('low')))).toEqual(new Set(['#8f8f8f']))
+  })
+
+  test("the card's level counts draw the parked mark in its own color", () => {
+    const state: PaneState = {
+      found: true,
+      milestones: [],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [
+        { priority: 'low', title: 'Low row', text: 'Low row' },
+        { priority: 'parked', title: 'Parked row', text: 'Parked row' },
+      ],
+      blocked: [],
+      taken: [],
+    }
+    const marks = (layout(state, [], true).find(line => line.key === 'card-candidates')?.lead ?? []).filter(span => span.icon !== undefined)
+    expect(marks.map(span => [span.text, span.color])).toEqual([
+      ['↑', IMPLEMENT_KEY],
+      ['○', undefined],
+      ['↓', 'inactive'],
+      ['⧗', 'permission'],
+    ])
+  })
+
+  for (const surface of SURFACES) {
 
     test(`✎ on the first parked row plans it (${surface})`, async ($, on) => {
       const copy = copyOf('candidates-parked')
@@ -5328,7 +5375,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       const lines = draw(acts)
       expect(lines.map(line => line.key)).toEqual(['candidate-2', 'candidate-0', 'candidate-1', 'candidate-3'])
       const waits = lines[1]
-      expect([waits.lead, waits.tail, waits.text]).toEqual([[MARKS.parked, { text: ' ' }], undefined, { text: 'Waits', color: GRAY }])
+      expect([waits.lead, waits.tail, waits.text]).toEqual([[MARKS.parked, { text: ' ' }], undefined, { text: 'Waits', color: 'permission' }])
       expect([waits.buttons, waits.target, waits.title]).toEqual(acts ? [['plan'], '0', 'Waits'] : [undefined, undefined, undefined])
       // A parked row with an empty short title has no ✎, as any such row.
       expect([lines[2].buttons, lines[2].target]).toEqual([undefined, undefined])
@@ -6066,87 +6113,6 @@ describe('a planning Next line draws only while no candidate line draws (M305 AC
   })
 })
 
-// M305 AC4 (a), AC5: a rule line between each two adjacent drawn levels of
-// the Candidates list, drawn on one row on each surface.
-describe('a rule separates each two adjacent drawn candidate levels (M305 AC4, AC5)', () => {
-  const idle = (candidates: PaneState['candidates'], taken: PaneState['taken'] = []): PaneState => ({
-    found: true,
-    milestones: [],
-    next: null,
-    workable: [],
-    waiting: [],
-    candidates,
-    blocked: [],
-    taken,
-  })
-  const row = (priority: PaneState['candidates'][number]['priority'], title: string) => ({ priority, title, text: `${title}: x` })
-  // The Candidates list's lines after its heading, by key.
-  const listKeys = (state: PaneState) => {
-    const lines = layout(state, [], true)
-    return lines.slice(lines.findIndex(line => line.key === 'candidates-head') + 1).map(line => line.key)
-  }
-
-  test('rows in all four levels, two in one: three rules, each at its boundary', () => {
-    // ROADMAP order is not level order, so the lines sort first (M280).
-    const state = idle([row('low', 'Low row'), row('normal', 'Mid one'), row('parked', 'Parked row'), row('high', 'High row'), row('normal', 'Mid two')])
-    expect(listKeys(state)).toEqual([
-      'candidate-3',
-      'rule-normal',
-      'candidate-1',
-      'candidate-4',
-      'rule-low',
-      'candidate-0',
-      'rule-parked',
-      'candidate-2',
-    ])
-  })
-
-  test('rows in one level: no rule', () => {
-    expect(listKeys(idle([row('normal', 'Mid one'), row('normal', 'Mid two')]))).toEqual(['candidate-0', 'candidate-1'])
-  })
-
-  test('rows in high and parked only: one rule', () => {
-    expect(listKeys(idle([row('parked', 'Parked row'), row('high', 'High row')]))).toEqual(['candidate-1', 'rule-parked', 'candidate-0'])
-  })
-
-  test('a level whose rows are all hidden as started draws no rule', () => {
-    const state = idle([row('high', 'High row'), row('normal', 'Mid one'), row('low', 'Low row')], [{ title: 'Mid one', ref: 'M005' }])
-    expect(listKeys(state)).toEqual(['candidate-0', 'rule-low', 'candidate-2'])
-  })
-
-  test('a rule line is no candidate line, carries no row count, and the candidate lines count it', () => {
-    const lines = layout(idle([row('high', 'High row'), row('low', 'Low row')]), [], true)
-    const rule = lines.find(line => line.rule) as PaneLine
-    expect(rule).toEqual({ key: 'rule-low', indent: 2, lead: [], text: null, rule: true })
-    expect(rule.key.startsWith('candidate-')).toBe(false)
-    for (const [i, line] of lines.entries()) if (/^candidate-\d+$/.test(line.key)) expect([line.key, line.rowsAbove]).toEqual([line.key, i + 2])
-  })
-
-  // `candidates-order` draws rows in high, normal, and low, so two rules.
-  for (const surface of SURFACES) {
-    test(`candidates-order: each rule is an Svg on the desktop and a cut run of ─ in the terminal (${surface})`, async ($, on) => {
-      seat(on, copyOf('candidates-order'))
-      await $.turn.complete(turn())
-      const ui = await mountPane($, surface)
-      for (const key of ['rule-normal', 'rule-low']) {
-        const parts = kids((await boxOf(ui, key)) as Element)
-        expect(parts.length).toBe(1)
-        if (surface === 'terminal') {
-          expect(parts[0].type).toBe('Text')
-          expect(parts[0].props.wrap).toBe('truncate-end')
-          expect(textOf(parts[0])).toMatch(/^─+$/)
-        } else {
-          expect(parts[0].type).toBe('Svg')
-          expect(parts[0].props.width).toBeUndefined()
-          expect(String(parts[0].props.source)).toContain('preserveAspectRatio="none"')
-        }
-      }
-      expect(await boxOf(ui, 'rule-high')).toBeUndefined()
-      await ui.unmount()
-    })
-  }
-})
-
 describe('the card counts the drawn candidate rows by level and the planned and blocked milestones (M286 AC2)', () => {
   // Rows at all four levels and one started row, which the list hides and
   // the card leaves out; two planned milestones and one blocked one. The
@@ -6875,13 +6841,11 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
   const blocked = { id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }
   const rows = (lines: PaneLine[]) =>
     lines.filter(line => line.key.startsWith('candidate-') && line.key !== 'candidates-head').map(line => [line.key, line.rowsAbove])
-  // The three rows are in three levels, so a rule line comes before the
-  // second and the third (M305).
   const expectRows = (lines: PaneLine[], first: number) =>
     expect(rows(lines)).toEqual([
       ['candidate-0', first],
-      ['candidate-1', first + 2],
-      ['candidate-2', first + 4],
+      ['candidate-1', first + 1],
+      ['candidate-2', first + 2],
     ])
 
   test('no release line, no Next line, no other section', () => {
@@ -6931,7 +6895,7 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
     const lines = layout(base, [], false, {}, [], [{ title: 'Mid row', number: 5 }])
     expect(rows(lines)).toEqual([
       ['candidate-0', 7],
-      ['candidate-2', 9],
+      ['candidate-2', 8],
     ])
   })
 
