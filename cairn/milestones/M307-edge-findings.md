@@ -71,6 +71,7 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: review return 1: consistency gate — CHANGELOG.md has no entry for the edge ground (the plan listed no changelog task).
 - 2026-10-21: minor amendment: added T4 for review return 1; CHANGELOG.md entry written.
 - 2026-10-21: user request at review: in guest mode, keep edge findings out of the PR's code but note them briefly in the PR body with a question to the maintainers; a new criterion goes to a fresh re-audit before it is written.
+- 2026-10-21: re-audit: AC4 (full) — five findings: the open-PR path, the source of "each", the empty case, placement before the Closes/Refs lines, and a D-entry owed; wording narrowed to the reader's proposal, which re-enters once.
 
 ## Decisions
 
