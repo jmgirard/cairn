@@ -847,7 +847,8 @@ profile.
 - **Answer two questions in a run.** One question set comes when the plan
   is made, each question with a recommendation. It also asks ahead for what
   the run will need from you: a file, a login, a live look, or permission
-  for an outward action. The merge question comes at the end of review.
+  for an outward action. It also asks about each concern the plan found
+  with the requested behavior itself. The merge question comes at the end of review.
   Between the question set and the merge question, expect the agent to
   decide and log the rest. When the plan finds that a hotfix or a direct
   edit fits, one more question about that route comes before the run.

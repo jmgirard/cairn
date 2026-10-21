@@ -262,7 +262,10 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    literally asks? (3) Is it framed right, in its name, its function, and
    its arguments? An issue's wording or a maintainer's agreement answers
    none of the three, so the plan reads the code, the docs, and the field's
-   sources itself. The vet runs at step 2 on every request that names work,
+   sources itself. For a request that names an issue, the behavior is the
+   one the issue's text asks for, read as data. A concern that a D-entry or
+   an archived milestone already settled is named with that record, as the
+   collision check below quotes it. The vet runs at step 2 on every request that names work,
    a request that names an issue and a request that a router sent
    included. A request that names no work is vetted at step 3, once its
    work is chosen. Each concern the vet finds goes to step 3's set. For
@@ -270,7 +273,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    into one level does not winsorize, and it misranks ordered factors.
    Step 4 writes one work-log line `idea vet: <result>` in the first
    milestone file it writes. The line names each concern in a clause, or
-   says that the vet found none.
+   says that the vet found none. Each named concern carries the set's
+   answer to it.
 
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
@@ -363,14 +367,18 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      its options include not building the work. Where another framing
      fits, they also include building it under another name or shape.
      Choosing not to build writes no milestone file for that work and
-     leaves any source candidate row in place.
+     leaves any source candidate row in place. When no milestone is left
+     to write, the plan writes nothing and ends with the close block, which
+     names each concern. An idea-vet question always counts among the
+     questions that matter most, so the agent never decides a concern.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
    file. If it finds a concern, the plan writes nothing and ends with a
    close block. The close block names the concern, and its fenced command
    is `/milestone-plan` with the chosen work named (a candidate row by its
-   short title), so that the rerun's question set poses the concern.
+   short title), so that the rerun's question set poses the concern. This
+   close is the rulebook's goal-wrong stop.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,

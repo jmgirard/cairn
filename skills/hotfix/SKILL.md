@@ -54,14 +54,18 @@ can resolve against the fork instead of the base repo.
    included. It asks `/milestone-plan` step 2's three questions. (1) Is the
    behavior correct by its field's standards (for example statistical or
    technical), and does it do what its name says for every input type it
-   touches? (2) Do the project's users want it? (3) Is it framed right, in
+   touches? (2) Do the project's users want it, beyond what the report or
+   the PR literally asks? (3) Is it framed right, in
    its name, its function, and its arguments? An issue's wording, a
    contributor's PR, or the docs that the fix restores answer none of the
    three. State the result in chat. A concern counts as a design decision,
    so it takes the over-the-bar route above, and the candidate row or the
-   close block that the route writes names the concern. On the merged-PR
+   close block that the route writes names the concern. It names it as a
+   design decision, so that a later plan's tier check finds a milestone and
+   does not send the work back here. On the merged-PR
    re-entry below, the vet runs after the merge, and the concern goes in
-   step 7's close block.
+   step 7's close block. There the concern waives none of the re-entry's
+   checks below, and the over-the-bar route's candidate row still names it.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -218,7 +222,9 @@ can resolve against the fork instead of the base repo.
      `headRefOid`, left by a declined run, show them and go on from them.
      Make a change for each requested item, or
      name the reason for making none, and commit each change on the
-     branch. Run `git fetch <base>`, then tier-check the PR's whole diff
+     branch. The tier check below also runs the idea vet above on the
+     changed diff, and a concern takes the same over-the-bar disposition.
+     Run `git fetch <base>`, then tier-check the PR's whole diff
      against `<base>/<default-branch>`. A diff over the hotfix bar takes
      this step's over-the-bar disposition, and nothing is pushed. That
      close block names the commits left on the branch. Re-run step 3's

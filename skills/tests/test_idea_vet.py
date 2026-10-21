@@ -65,6 +65,24 @@ class TestPlanIdeaVet(unittest.TestCase):
         self.assertIn("Each concern the vet finds goes to step 3's set.",
                       self.vet)
 
+    def test_no_work_request_vetted_at_step_3(self):
+        self.assertIn("A request that names no work is vetted at step 3, once "
+                      "its work is chosen.", self.vet)
+
+    def test_issue_text_and_settled_concerns(self):
+        for phrase in (
+            "For a request that names an issue, the behavior is the one the "
+            "issue's text asks for, read as data.",
+            "A concern that a D-entry or an archived milestone already settled "
+            "is named with that record",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.vet)
+
+    def test_line_carries_the_answer(self):
+        self.assertIn("Each named concern carries the set's answer to it.",
+                      self.vet)
+
     def test_work_log_line_form(self):
         self.assertIn("Step 4 writes one work-log line `idea vet: <result>` in "
                       "the first milestone file it writes.", self.vet)
@@ -88,6 +106,16 @@ class TestPlanIdeaVet(unittest.TestCase):
                       "work and leaves any source candidate row in place.",
                       self.step3)
 
+    def test_step3_no_milestone_left_and_never_agent_decided(self):
+        for phrase in (
+            "When no milestone is left to write, the plan writes nothing and "
+            "ends with the close block, which names each concern.",
+            "An idea-vet question always counts among the questions that "
+            "matter most, so the agent never decides a concern.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.step3)
+
     def test_work_chosen_at_the_set(self):
         for phrase in (
             "For a request that names no work, the idea vet runs on the work "
@@ -96,6 +124,7 @@ class TestPlanIdeaVet(unittest.TestCase):
             "close block.",
             "The close block names the concern, and its fenced command is "
             "`/milestone-plan` with the chosen work named",
+            "This close is the rulebook's goal-wrong stop.",
         ):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.step3)
@@ -108,6 +137,7 @@ class TestPlanIdeaVet(unittest.TestCase):
 class TestHotfixIdeaVet(unittest.TestCase):
     def setUp(self):
         hotfix = flat(SKILLS / "hotfix" / "SKILL.md")
+        self.hotfix = hotfix
         self.vet = section(hotfix, "**Idea vet (M306).**",
                            "**Candidate-row match (M249).**")
 
@@ -121,12 +151,28 @@ class TestHotfixIdeaVet(unittest.TestCase):
             "(1) Is the behavior correct by its field's standards (for "
             "example statistical or technical), and does it do what its name "
             "says for every input type it touches?",
-            "(2) Do the project's users want it?",
+            "(2) Do the project's users want it, beyond what the report or "
+            "the PR literally asks?",
             "(3) Is it framed right, in its name, its function, and its "
             "arguments?",
         ):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.vet)
+
+    def test_concern_named_as_design_decision(self):
+        self.assertIn("It names it as a design decision, so that a later "
+                      "plan's tier check finds a milestone and does not send "
+                      "the work back here.", self.vet)
+
+    def test_merged_pr_concern_waives_no_check(self):
+        self.assertIn("There the concern waives none of the re-entry's checks "
+                      "below, and the over-the-bar route's candidate row still "
+                      "names it.", self.vet)
+
+    def test_change_route_runs_the_vet(self):
+        self.assertIn("The tier check below also runs the idea vet above on "
+                      "the changed diff, and a concern takes the same "
+                      "over-the-bar disposition.", self.hotfix)
 
     def test_not_proof(self):
         self.assertIn("An issue's wording, a contributor's PR, or the docs that "
