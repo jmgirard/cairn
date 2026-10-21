@@ -30,36 +30,36 @@ between open guest PRs go to M309.
 
 ## Acceptance criteria
 
-- [ ] AC1: In `skills/shared/tracking-rules.md`, the guest-mode bullet "Text written for the host matches the host's
+- [x] AC1: In `skills/shared/tracking-rules.md`, the guest-mode bullet "Text written for the host matches the host's
       own" says that host matching wins over another writing-style instruction in the session for host text. It says
       that the other instruction governs only what host matching leaves open.
-- [ ] AC2: `hooks/session_context.py`'s guest-mode text and README.md's guest-mode bullet state the AC1 order. The
+- [x] AC2: `hooks/session_context.py`'s guest-mode text and README.md's guest-mode bullet state the AC1 order. The
       `hooks/tests` assertion on that text checks the new order.
-- [ ] AC3: `skills/shared/tracking-rules.md` gains a guest-mode bullet. It says that a new name in host code (an
+- [x] AC3: `skills/shared/tracking-rules.md` gains a guest-mode bullet. It says that a new name in host code (an
       argument, a function, or a file) reuses the name that the host already uses for the same thing, read from the
       host's code before the name is chosen.
-- [ ] AC4: `skills/milestone-plan/SKILL.md` gains a guest-mode rule. Scope In holds only the change that the request or
+- [x] AC4: `skills/milestone-plan/SKILL.md` gains a guest-mode rule. Scope In holds only the change that the request or
       issue asks for. Each other fix or feature that the investigation finds becomes a candidate row for its own PR.
-- [ ] AC5: The AC4 rule also says two things. When the issue's comments or the code's git history show that a
+- [x] AC5: The AC4 rule also says two things. When the issue's comments or the code's git history show that a
       maintainer chose the changed behavior on purpose, the idea vet poses that as a concern. When a maintainer
       proposed an approach in the issue's comments, the plan takes it or writes a work-log line that says why not.
-- [ ] AC6: In guest mode, `skills/milestone-review/SKILL.md` step 8 and the guest PR-create site of
+- [x] AC6: In guest mode, `skills/milestone-review/SKILL.md` step 8 and the guest PR-create site of
       `skills/hotfix/SKILL.md` say this: when an issue that the PR closes reports more than one failing call or error,
       the PR body names each one and says whether the PR fixes it.
-- [ ] AC7: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body gives the reason when the
+- [x] AC7: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body gives the reason when the
       work log records a maintainer's proposed approach that the plan did not take.
-- [ ] AC8: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body takes its host style from PR
+- [x] AC8: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body takes its host style from PR
       bodies whose author's association is OWNER, MEMBER, or COLLABORATOR, never from the operator's own PRs. The body
       leads with what changed for users, at most one usage example apart from the failing calls that AC6's rule
       names, and the points a maintainer must decide. Beyond the other items step 8 requires, AC6's and AC7's
       included, review evidence, internal function names, and test lists stay in `cairn/`.
-- [ ] AC9: In guest mode, the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's route for a blocked PR also
+- [x] AC9: In guest mode, the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's route for a blocked PR also
       reads the conversation comments and review bodies that `gh pr view <N> --repo <base-repo> --json
       comments,reviews` returns. Its report names each one whose author is not the PR's author, has the association
       OWNER, MEMBER, or COLLABORATOR, and is followed in time by no comment or review by the PR's author. It says that
       the operator's reply to such a comment leads with the answer or the question at about the comment's length,
       with probe evidence left in `cairn/`.
-- [ ] AC10: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
+- [x] AC10: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
       checked.
 
 ## Coverage
@@ -121,3 +121,15 @@ between open guest PRs go to M309.
 ## Decisions
 
 ## Review
+
+- AC1 evidence (2026-10-21, head 30bfc040): `skills/shared/tracking-rules.md:412-414` host-text bullet reads "host matching wins for that text, and the other instruction governs only what host matching leaves open".
+- AC2 evidence: `hooks/session_context.py:386-389` says matching "wins over any other writing-style instruction in the session for that text"; README.md:1053-1056 says matching the host wins and the other instruction covers only what it leaves open; `hooks/tests/test_hooks.py:399-400` asserts the new phrase and the old phrase's absence; that test runs OK (failed before the hook edit, T2).
+- AC3 evidence: `skills/shared/tracking-rules.md:417-419`, a new guest-mode bullet after the host-text bullet: a new name in host code (an argument, a function, or a file) reuses the host's name for the same thing, and the session reads the host's code for that name before it chooses one.
+- AC4 evidence: `skills/milestone-plan/SKILL.md:279-283`, the "Guest scope" paragraph: in guest mode Scope In holds only the change the request or issue asks for, and each other fix or feature the investigation finds becomes a candidate row for its own PR.
+- AC5 evidence: `skills/milestone-plan/SKILL.md:284-291`, same paragraph: it reads the issue's comments and the code's git history; deliberate maintainer behavior goes to the idea vet as a concern; a maintainer's proposed approach is taken or step 4 writes `maintainer approach: <approach> — not taken: <reason>` (step 4 bullet at :615-617).
+- AC6 evidence: `skills/milestone-review/SKILL.md:726-729` (step 8 guest arm) and `skills/hotfix/SKILL.md:488-492` (step 6 guest handoff create, the one guest `gh pr create` there): when an issue the PR closes reports more than one failing call or error, the body names each one and says whether the PR fixes it.
+- AC7 evidence: `skills/milestone-review/SKILL.md:730-732`: when the work log carries a `maintainer approach:` line (written only for an approach not taken), the body says which approach the maintainer proposed and why the PR takes another.
+- AC8 evidence: `skills/milestone-review/SKILL.md:716-735`: host style read from PR bodies whose author association is OWNER, MEMBER, or COLLABORATOR, never the operator's own; the body leads with what changed for users, at most one usage example apart from the named failing calls, and the points a maintainer must decide; beyond the other step 8 items, review evidence, internal function names, and test lists stay in `cairn/`.
+- AC9 evidence: `skills/milestone/SKILL.md:197-208`, in the guest blocked-PR bullet's `OPEN`-otherwise arm: reads `gh pr view <N> --repo <base-repo> --json author,comments,reviews`; names each item whose author is not the PR's author, whose `authorAssociation` is OWNER, MEMBER, or COLLABORATOR, and that no later comment or review by the PR's author follows in time; the operator's reply leads with the answer or question at about the comment's length, probe evidence left in `cairn/`. Fields confirmed live on PR #321.
+- AC10 evidence: at head 30bfc040, the five verify commands exit 0 each: scripts suite 0, hooks suite 0, plugin validate 0, marketplace validate 0, mod test 0.
+- Gate: `cairn_validate` exit 0 (one advisory: 10 criteria over the split tripwire, kept since the user chose the fold); coverage complete; no DESIGN.md principle changed, so `cairn_impact` skipped; verify green at the review head; marketplace validate prints no version warning; CHANGELOG Unreleased carries the guest-mode entry with no milestone ids.
