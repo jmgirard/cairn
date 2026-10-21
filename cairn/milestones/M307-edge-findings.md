@@ -27,21 +27,21 @@ candidate row "Grade findings by the action they need".
 
 ## Acceptance criteria
 
-- [ ] AC1: In `skills/milestone-review/SKILL.md` step 5, the reject bullet names a fourth ground, `edge`. The ground
+- [x] AC1: In `skills/milestone-review/SKILL.md` step 5, the reject bullet names a fourth ground, `edge`. The ground
       covers a finding that the agent judges real, whose defect only an input outside both the deliverable's documented
       use and its common use reaches, and whose effect is an error, a warning, or slow running. The bullet says that a
       finding is never `edge` when its effect is a wrong result with no error or warning. The bullet also says that a
       finding is never `edge` when it demonstrates an acceptance criterion failing.
-- [ ] AC2: In the same step, the Review-section line format names `edge` among a reject's grounds, beside false,
+- [x] AC2: In the same step, the Review-section line format names `edge` among a reject's grounds, beside false,
       style, and planned change.
-- [ ] AC3: README.md's "Ship it" paragraph says that a real finding that only an unusual input reaches, with no wrong
+- [x] AC3: README.md's "Ship it" paragraph says that a real finding that only an unusual input reaches, with no wrong
       result, can be rejected with the reason `edge`.
-- [ ] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm says that when it opens the PR, the body lists,
+- [x] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm says that when it opens the PR, the body lists,
       before the `Closes`/`Refs` lines, each Review-section reject whose ground is `edge`, one short line each in plain
       words with no cairn vocabulary, then asks the maintainers whether they want those inputs handled in this PR or
       later. With no `edge` rejects it adds neither. When the PR is already open, the arm says that no body edit is
       made and the close block names any new `edge` rejects.
-- [ ] AC5: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
+- [x] AC5: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
       checked.
 
 ## Coverage
@@ -85,3 +85,49 @@ candidate row "Grade findings by the action they need".
 ## Decisions
 
 ## Review
+
+Evidence, 2026-10-21, branch head 68d555ae on origin/main cb214128 (not moved since the cut):
+
+- AC1: step 5's reject bullet reads "A fourth ground is `edge`: a real defect the diff adds that only an input outside both the deliverable's documented use and its common use reaches, whose effect is an error, a warning, or slow running", and "A finding is never `edge` when its effect is a wrong result with no error or warning, when it shows an acceptance criterion failing or wrong, or when it authorizes an outward-facing irreversible action."
+- AC2: step 5's line format reads "its ground — false, style, planned change, or edge — included".
+- AC3: README's "Ship it" paragraph reads "One exception: a real finding that only input outside both documented and common use reaches is rejected as `edge` when its effect is an error, a warning, or slow running. A wrong result or a failed acceptance criterion is never `edge`."
+- AC4: step 8's guest arm reads "When it opens the PR, the body lists, before any `Closes`/`Refs` lines, each Review-section reject whose ground is `edge` … with no cairn vocabulary", then asks the maintainers, adds neither with no `edge` rejects, and on an open PR makes no body edit while the close block names them.
+- AC5: at 68d555ae, scripts/tests 445 tests OK, hooks/tests 193 tests OK, plugin validate exit 0, marketplace validate exit 0 with no `plugins[N].version` warning, `claude plugin test .` exit 0.
+
+Consistency gate (68d555ae): `cairn_validate.py` all checks passed (one advisory sizing warning on M308); no principle changed, so no `cairn_impact`; CHANGELOG Unreleased has the `edge` entry with no milestone number; skills/tests prose guards OK.
+
+spawned: diff-bug, blame-history, prior-review, ripple (first pass, head b58349f1)
+- diff-bug #1 / blame-history #1 / ripple #1: an `edge` reject skipped the return floor's load-bearing arm — fix now, fixed a9913e03 (an `edge` defect is not load-bearing).
+- diff-bug #2: `edge` could absorb amendment returns — fix now, fixed a9913e03 (never `edge` when a criterion fails or is wrong).
+- diff-bug #3: the PR-conversation read could reject a human's request as `edge` — fix now, fixed a9913e03.
+- diff-bug #4 / blame-history #2: D-205 did not name D-144 — fix now, fixed a9913e03 (D-206 annotates D-144).
+- diff-bug #5: D-205's hotfix reason was partly false — fix now, fixed a9913e03 (D-206).
+- diff-bug #6: `edge` had no evidence standard — fix now, fixed a9913e03 (the reason names the input and the use).
+- diff-bug #7: `edge` rejects were not shown verbatim at the merge question — fix now, fixed fb71d9dd.
+- diff-bug #8 / blame-history #4 / prior-review #1 / ripple #2: no exception for outward irreversible actions — fix now, fixed a9913e03.
+- diff-bug #9: `edge` could leak onto a guest PR — reject, false: the Copilot module's replies already carry no cairn vocabulary.
+- diff-bug #10: no new failure path in guest, fork, dirty-tree, first-run, or moved-remote cases — noted.
+- blame-history #3 / prior-review #3: the D-108 door claim — reject, false: the change narrows the fix-now rule, the carve-out D-108 names; D-206 adds the shipped-behavior trigger.
+- prior-review #2: D-205 misstates the mechanism — reject, false: "at the user's choice" refers to the mode choice.
+- ripple #3: README's "rejects a false one" names one ground — reject, style: README summarizes.
+spawned: diff-bug, blame-history, ripple (second pass, on b58349f1..7853a975 after the user's AC4 amendment; prior-review not re-run, since the first pass found no prior-review evidence on these files)
+- diff-bug #1, #2, #3: the open-PR baseline could not be computed, and maintainers never saw rejects on an open PR — fix now, fixed 68d555ae (one PR comment for this review pass's `edge` rejects).
+- diff-bug #4: no `Closes`/`Refs` lines on some PRs — fix now, fixed 68d555ae ("before any").
+- diff-bug #5 / ripple #3: Copilot rejects carry no ground — fix now, fixed 68d555ae (the Copilot example was dropped; Copilot rejects get their own GitHub reply).
+- diff-bug #6: an earlier pass's `edge` rejects may be stale at the pushed head — reject, edge: only a floor return followed by a fresh PR reaches it, and the effect is an extra line in the PR body.
+- diff-bug #7, #8: D-206's heading and falsifier — fix now, fixed 68d555ae.
+- diff-bug #9, #10 / ripple #1, #2: CHANGELOG and README wording — fix now, fixed 68d555ae.
+- diff-bug #11 / ripple #2: README lacks the new exclusions — reject, style: README summarizes; the guest note was added.
+- diff-bug #12: "one short line" versus host style — reject, false: the host-text rule governs all host text.
+- diff-bug #13: lens name and rank could leak — fix now, fixed 68d555ae.
+- diff-bug #14: no new failure path in the five cases — noted.
+- blame-history #1: D-144 has no superseded line — reject, false: DECISIONS is append-only, and D-206's annotation is how a later entry changes it.
+- blame-history: M308 will shorten the same PR body — noted for M308.
+- ripple #4: "nothing cairn writes reaches the repo's maintainers" — reject, false: it means the `cairn/` records.
+- ripple #5: the close block's listed contents — fix now, fixed 68d555ae (the arm names them).
+- claim audit (implement): 7 claims read, 2 corrected (README).
+- copilot: README.md:729 — fix now, fixed b58349f1.
+- copilot: cairn/milestones/M307-edge-findings.md:69 — fix now, fixed b58349f1.
+- copilot: cairn/DECISIONS.md:7457 — fix now, fixed 1ec7f046.
+- copilot: review body — noted (summary reply posted).
+- Copilot level: Lite (set by GitHub's settings).
