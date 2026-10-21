@@ -8,6 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M305 | Trim the idle pane and separate the candidate levels | planned | — | normal | milestones/M305-idle-pane-trim.md |
 | M304 | Hand over the tag commands when a merge raises the version | done | M303 | normal | milestones/archive/M304-quarto-tag-handoff-at-merge.md |
 | M303 | Add a quarto-extension toolchain profile | done | — | normal | milestones/archive/M303-quarto-extension-profile.md |
 | M302 | Put the pane's count badges after their labels in gray | done | — | normal | milestones/archive/M302-pane-badge-after-label.md |
