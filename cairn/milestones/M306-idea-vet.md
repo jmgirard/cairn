@@ -106,6 +106,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: re-audit: AC6 (full) — one finding: "stops the hotfix" is false on the merged-PR re-entry; fixed with "unless its PR is already merged" in AC6, README, and CHANGELOG. Checkpoint: the fixed wording's own fresh reader is still running.
 - 2026-10-21: re-audit: AC6 (full) — met as written; two wording points: the hotfix row names the questions by reference to the plan row, and "the `/hotfix` rows" could be read to include "Take in an outside pull request". AC6 is left unchanged (a further change is the stop); that README row now says the bar includes the three questions, so either reading holds.
 - 2026-10-21: all tasks done; verify green; status set to review.
+- 2026-10-21: step-7 approval: m306-idea-vet approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
