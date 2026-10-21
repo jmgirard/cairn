@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-21 (review M308: done; folded row "Write short guest PR bodies and replies" graduated; M305 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
+_Last hygiene check: 2026-10-21 (review M309: done; parked row "Close the guest conflict sync edges" added; M306 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
@@ -10,8 +10,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 |---|---|---|---|---|---|
 | M307 | Reject review findings that only unusual inputs reach | done | — | normal | milestones/archive/M307-edge-findings.md |
 | M308 | Fit guest PRs to the host and to one change | done | — | normal | milestones/archive/M308-guest-pr-shape.md |
-| M309 | Route a handed-off PR with merge conflicts to a sync | review | — | normal | milestones/M309-guest-conflict-route.md |
-| M306 | Vet an idea before planning its build | done | — | normal | milestones/archive/M306-idea-vet.md |
+| M309 | Route a handed-off PR with merge conflicts to a sync | done | — | normal | milestones/archive/M309-guest-conflict-route.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Explain changed snapshots in guest PRs: easystats maintainers found test problems the PR did not explain: see #486 changed a snapshot's spacing with no word on it, performance #974 added a test that crashes R on Windows, and parameters #1275 had two failing tests. A guest PR could name each changed snapshot and why. Found in the M307–M309 plan sweep — added 2026-10-21
