@@ -147,6 +147,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: T2 and T3 done in one commit, since the AC2 read-flow cases can only fail once Links draw: `Span.href` (band.ts); `cardLines` links the name, each count, and its word from `repo.web`; register.tsx draws a linked span's text as a `Link` inside its `Text` off the terminal, on both the span and line-text paths. 10 tests in pane.test.tsx (M311 block). plugin test 2463 pass.
 - 2026-10-21: T4 done: README summary-card paragraph, DESIGN.md card paragraph (`webOf`, `repo-4`, the Link inside the Text, no terminal link), CHANGELOG Unreleased/New entry. The simple-english lint hook's README and CHANGELOG counts are older text; the README count did not move with the added lines.
 - 2026-10-21: claim audit: 44 claims read, 3 corrected — README.md (ASCII letters; "outside the terminal"), CHANGELOG.md (no-link cases; "outside the terminal"); the reader's re-read found all three hold.
+- 2026-10-21: planted defects, each restored after: Link on the terminal reds the AC3 terminal test; dropping the owner check in `webOf` reds the AC2 bad-owner read test and its repo.test case; drawing the line text without `spanText` reds the AC3 desktop test. Tree restored clean.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
