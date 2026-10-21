@@ -527,8 +527,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   for that root, `paneLines` names the root's last segment (M291).
   With a `web`, `cardLines` gives the name span that page as its `href`,
   and each count and its word the page's `/pulls` or `/issues` (M311).
-  Off the terminal the render draws such a span's text as a `Link` inside
-  the span's own `Text`, so its bold, color, and cut stay. The terminal
+  Off the terminal the render draws the name, and each run of spans with
+  one `href` (a count and its word), as one `Link` in a `Text` that keeps
+  the cut, so a count and its word light as one link. Inside the `Link`
+  each span is a `Text` in its own style, the theme's `text` color where
+  it names none, with `underline: false`: at the M311 live look the
+  desktop drew a bare `Link` in a link's blue, underlined, and the
+  operator asked for the card's look. The terminal
   draws no `Link`: one without OSC 8 draws the URL after the text, which
   would push ⌂ and ↻ off the row. No read for the root, a remote on
   another host, no remote, and a name `webOf` refuses draw no link.
