@@ -179,6 +179,10 @@ describe('the repo page: a github.com remote whose owner and repo a link can car
     ['a repo with a non-ASCII letter', 'git@github.com:o/réso.git', null],
     ['an owner of `..`', 'https://github.com/../r', null],
     ['a repo of `.`', 'git@github.com:o/..git', null],
+    // GitHub's longest names link, and one character more does not (M311 review).
+    ['an owner of 39 and a repo of 100 characters', `git@github.com:${'o'.repeat(39)}/${'r'.repeat(100)}.git`, `https://github.com/${'o'.repeat(39)}/${'r'.repeat(100)}`],
+    ['an owner of 40 characters', `git@github.com:${'o'.repeat(40)}/r.git`, null],
+    ['a repo of 101 characters', `git@github.com:o/${'r'.repeat(101)}.git`, null],
   ]
   for (const [name, url, want] of CASES) {
     test(name, () => {

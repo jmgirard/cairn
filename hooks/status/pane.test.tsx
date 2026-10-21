@@ -6863,6 +6863,7 @@ describe("the card's name and counts link to the repo's GitHub pages off the ter
       const link = kids(text).find(child => child.type === 'Link') as Element
       const parts = kids(link).map(part => ({
         type: part.type,
+        wrap: part.props.wrap,
         text: textOf(part),
         bold: part.props.bold,
         color: part.props.color,
@@ -6880,7 +6881,7 @@ describe("the card's name and counts link to the repo's GitHub pages off the ter
   // Link in a Text that keeps the cut. Inside it each span is a Text in its
   // own style, the theme's text color where it names none, with no
   // underline (M311 live look). The terminal draws no Link.
-  const part = (text: string, color: string, bold?: boolean) => ({ type: 'Text', text, bold, color, underline: false })
+  const part = (text: string, color: string, bold?: boolean) => ({ type: 'Text', wrap: 'truncate-end', text, bold, color, underline: false })
   for (const surface of SURFACES) {
     test(`a github.com remote draws three Links of styled Texts on the desktop and none in the terminal (AC3, ${surface})`, async ($, on) => {
       const { links, first, total } = await drawnLinks($, on, { origin: 'https://github.com/o/alpha.git' }, surface)
@@ -7007,7 +7008,7 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
   })
 
   test('the release line adds one card row', () => {
-    const repo = { root: '/r', counts: { prs: 1, issues: 2 }, done: { tag: 'v1.0.0', days: 3, count: 2 }, name: 'r' }
+    const repo = { root: '/r', counts: { prs: 1, issues: 2 }, done: { tag: 'v1.0.0', days: 3, count: 2 }, name: 'r', web: null }
     expectRows(layout(base, [], false, {}, [], [], repo, '/r'), 8)
   })
 

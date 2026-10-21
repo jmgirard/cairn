@@ -305,13 +305,14 @@ that folder's own name. If the git dir is not a `.git` folder, as in a
 submodule or a bare repo, the same holds. A name too long
 for the pane is cut with `…`. Outside the terminal, for example in the
 desktop app, on a github.com base remote, the name is a link to the
-repo's GitHub page. The pull request
-count opens the repo's pull requests list, and the issue count opens
-its issues list. Before the first read, these items are not links. A
-remote on another host, or no remote, also gives no links. So does an
-owner or repo name with a character other than an ASCII letter, a digit,
-`.`, `_`, or `-`, and a name that is `.` or `..`. The terminal pane draws no
-links, so its row keeps room for its buttons. Its second line shows the candidate rows at each
+repo's GitHub page. The pull request count and its word open the repo's
+pull requests list, and the issue count and its word open its issues
+list. Before the first read, these items are not links. A remote on
+another host, or no remote, also gives no links. So does an owner or
+repo name with a character other than an ASCII letter, a digit, `.`,
+`_`, or `-`, a name that is `.` or `..`, and a name longer than GitHub
+allows. The terminal pane draws no links, so its row keeps room for its
+buttons. The card's second line shows the candidate rows at each
 level, with the level's mark: `[high]`, normal, `[low]`, and `[parked]`.
 It counts the rows that the Candidates list (below) would show, also
 while a milestone is active. Its third line shows the planned and blocked

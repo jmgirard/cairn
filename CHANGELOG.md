@@ -216,8 +216,8 @@
 - **The pane's summary card links to the repo on GitHub.** Outside the
   terminal, for example in the desktop app, the project name on the
   card's first line opens the repo's GitHub page. The pull request count
-  opens its pull requests list, and the issue count opens its issues
-  list. Only a github.com base remote gives links. Another host, no
+  and its word open its pull requests list, and the issue count and its
+  word open its issues list. Only a github.com base remote gives links. Another host, no
   remote, or an owner or repo name that a link cannot carry gives none.
   The terminal pane draws no links.
 

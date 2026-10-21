@@ -432,14 +432,17 @@ export const register: Register = on => {
     // as one. Inside it each span is a `Text` in its own style, the theme's
     // text color where it names none, with no underline, so the link takes
     // the card's look rather than a link's blue and underline (M311 live
-    // look). The Link sits in a `Text` that keeps the cut.
+    // look). The Link sits in a `Text` that cuts with an ellipsis, as every
+    // span's `Text` does, and so does each `Text` inside it (M311 review).
     const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
     const linkStyle = (span: Span) => ({ color: LINK_TEXT_KEY, ...style(span), underline: false })
     const linked = (group: Span[]) =>
       Link === undefined ? null : (
         <Link href={group[0].href as string}>
           {group.map(span => (
-            <Text {...linkStyle(span)}>{span.text}</Text>
+            <Text wrap="truncate-end" {...linkStyle(span)}>
+              {span.text}
+            </Text>
           ))}
         </Link>
       )

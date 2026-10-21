@@ -519,7 +519,8 @@ transitions, human-gated merges, and a domain verification doctrine.
   only when the base URL is not a github.com one or there is none), else
   the root's last segment. `webOf` gives the repo page,
   `https://github.com/<owner>/<repo>`, of a github.com URL whose owner and
-  repo both match `[A-Za-z0-9._-]+` and are not `.` or `..`, and null
+  repo both match `[A-Za-z0-9._-]+`, are not `.` or `..`, and are at most
+  GitHub's 39 and 100 characters, and null
   otherwise, since a `Link` whose `href` is not spelled as
   `new URL(href).href` refuses the whole pane (M311). The `repo` state
   value (`{ root, counts, done, name, web }`, tag `repo-4`) holds them,
@@ -528,10 +529,11 @@ transitions, human-gated merges, and a domain verification doctrine.
   With a `web`, `cardLines` gives the name span that page as its `href`,
   and each count and its word the page's `/pulls` or `/issues` (M311).
   Off the terminal the render draws the name, and each run of spans with
-  one `href` (a count and its word), as one `Link` in a `Text` that keeps
-  the cut, so a count and its word light as one link. Inside the `Link`
-  each span is a `Text` in its own style, the theme's `text` color where
-  it names none, with `underline: false`: at the M311 live look the
+  one `href` (a count and its word), as one `Link` in a `Text` with
+  `wrap: 'truncate-end'`, so a count and its word light as one link.
+  Inside the `Link` each span is a `Text` with the same wrap, in its own
+  style, the theme's `text` color where it names none, with
+  `underline: false`: at the M311 live look the
   desktop drew a bare `Link` in a link's blue, underlined, and the
   operator asked for the card's look. The terminal
   draws no `Link`: one without OSC 8 draws the URL after the text, which
