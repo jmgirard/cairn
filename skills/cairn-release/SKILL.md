@@ -56,16 +56,17 @@ toolchain-specific work at step 3.
    command).
    When it reports the tip's version with no `v<version>` tag, that version
    is unreleased: merged work raised it, or it was never tagged. The slot's
-   marker check and changelog-section lookup run next. Step 1 then confirms
-   that version and the commit that started it, step 2 makes no edit but
-   runs its claim-read on that section, and step 3 tags that commit with no
-   prep commit and without repeating the read. A stop the slot names ends
+   marker check and, with a declared changelog, the section lookup run next.
+   Step 1 then confirms that version and the commit that started it, step 2
+   makes no edit but runs its claim-read on that section, and step 3 tags
+   that commit with no prep commit. Step 3 does not repeat the version read,
+   the marker check, or the section lookup. A stop the slot names ends
    the run with its reason and no tag.
 
 1. **Version decision** (question gate, one round; in the tag-only arm the
    one question confirms the version the default branch carries and the
-   commit to tag, in place of a bump choice, and the rest of this step's
-   recommendation does not apply): review the declared
+   commit to tag, in place of a bump choice, and the bump recommendation
+   does not apply, while the half-merged series list below still does): review the declared
    changelog — the file the active profile's `changelog` slot names ("none" →
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
@@ -100,7 +101,8 @@ toolchain-specific work at step 3.
    clause with the rest of the step (D-136).
 
 3. **Follow the active profile's `release-walk` slot.** Run each step the slot
-   names, in order, recording results as you go:
+   names, in order, recording results as you go (a step the slot ran before
+   step 1 is not run again):
    - An **r-package** profile's slot is the CRAN walk — full local
      verification, wide checks, `cran-comments.md`, the version bump, and a
      human submission checklist. It is CRAN-flavored end to end and never

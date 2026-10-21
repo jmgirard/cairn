@@ -61,8 +61,8 @@ commits (`start`), and whether a `v<version>` tag exists.
   merged work raised it, or it was never tagged. Raise nothing and make no
   prep commit. First check that every other named marker holds the version
   at `start` (`git show <start>:<file>`). With a declared changelog, find the
-  section whose heading names the version as a whole token in the file at
-  the remote tip. Then step 1 asks the user to confirm the version and
+  section whose heading names the version (`## 1.2.9`, `## v1.2.9`, or
+  `## [1.2.9]`, not `## 1.2.90`) in the file at the remote tip. Then step 1 asks the user to confirm the version and
   `start` (its subject) instead of choosing a bump. Step 2 makes no edit, but
   its claim-read runs on that section against the code at `start`. Tag the
   run's start: `git tag -a v<version> <start> -m "v<version>"`, pushed at the
@@ -70,8 +70,9 @@ commits (`start`), and whether a `v<version>` tag exists.
 - **Stops.** A marker mismatch, a declared changelog with no section for the
   version, a false claim, or a declined confirmation ends the run with the
   reason and no tag. A missing section or a false claim clears with a merged
-  changelog edit, such as retitling the development heading to the version
-  or rewording the claim. Then run `/cairn-release` again. A marker mismatch
+  changelog edit: retitle the development heading to the version, reword the
+  claim, or move a later entry back under the development heading. Then run
+  `/cairn-release` again. A marker mismatch
   at `start` cannot be fixed for this version: only a merge that raises the
   version again clears it, and this version then stays untagged.
 - **Release-time arm.** When the tag exists, run the generic walk. Decide the
@@ -106,10 +107,9 @@ universal openers (distribution ambition and numeric-work oracles):
 - **When does the version rise?** At release (reversible default), or at each
   merge that changes a shipped asset, when browsers cache that asset by a path
   that holds the version.
-  - Consequence: at merge, the release walk's tag-only arm tags the commit
-    that raised the tip's version. Run it after each raising merge, or
-    earlier versions stay
-    untagged. At release, the release-time arm raises the version.
+  - Consequence: at merge, the tag-only arm tags the commit that raised the
+    tip's version, so run it after each raising merge or earlier versions
+    stay untagged (a stop can too). At release, the release-time arm raises it.
   - Lands in: CLAUDE.md conventions and the `release-walk` marker list.
 
 ## changelog

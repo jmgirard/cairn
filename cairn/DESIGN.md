@@ -714,7 +714,7 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   line along the first-parent chain: the tip's version, the first commit of
   its unbroken run, and its tag state, or with `--changed-by` the version one
   commit set, for the quarto-extension release walk, M303; it needs a git
-  repository, not a `cairn/` directory).
+  repository with full history, not a `cairn/` directory).
   Every script reads only, except `cairn_ci_paths --apply`, the layer's one
   writing mode (lines inserted into a workflow file after a PyYAML
   post-edit check; D-135). Every import is stdlib or the shared

@@ -114,8 +114,8 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(self.tip(), {"version": "3.0.0", "start": bom, "tag": "absent"})
 
     def test_a_version_that_is_not_a_plain_version_is_an_error(self):
-        # The value reaches `git tag` in the release walk, so anything but
-        # letters, digits, and `.+_-` is refused rather than printed.
+        # The value reaches `git tag` in the release walk, so a value outside
+        # the plain-version shape is refused rather than printed.
         sha = self.commit("odd", line="version: 1.0;touch_x")
         proc = self.run_script()
         self.assertEqual(proc.returncode, 2)
