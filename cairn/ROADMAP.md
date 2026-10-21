@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M307 | Reject review findings that only unusual inputs reach | in-progress | — | normal | milestones/M307-edge-findings.md |
+| M307 | Reject review findings that only unusual inputs reach | review | — | normal | milestones/M307-edge-findings.md |
 | M308 | Fit guest PRs to the host and to one change | planned | — | normal | milestones/M308-guest-pr-shape.md |
 | M309 | Route a handed-off PR with merge conflicts to a sync | planned | — | normal | milestones/M309-guest-conflict-route.md |
 | M306 | Vet an idea before planning its build | done | — | normal | milestones/archive/M306-idea-vet.md |

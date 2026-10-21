@@ -7511,6 +7511,10 @@ made guest PRs too long to review.
 
 D-205's heading phrase "it gives no wrong result" reads as "it gives no
 wrong result without an error or warning", the condition its Decision
-states.
+states. At the user's request at review, a guest PR body lists the
+reviewer `edge` rejects in plain words before the `Closes`/`Refs` lines
+and asks the maintainers whether they want those inputs handled; on an
+already-open PR the close block names them instead. The maintainers, not
+the operator, then decide whether those holes get plugged.
 
 **Consequences:** D-205's decision and falsifier stand.

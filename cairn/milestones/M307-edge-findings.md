@@ -1,6 +1,6 @@
 # M307: Reject review findings that only unusual inputs reach
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -36,7 +36,12 @@ candidate row "Grade findings by the action they need".
       style, and planned change.
 - [ ] AC3: README.md's "Ship it" paragraph says that a real finding that only an unusual input reaches, with no wrong
       result, can be rejected with the reason `edge`.
-- [ ] AC4: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
+- [ ] AC4: `skills/milestone-review/SKILL.md` step 8's guest arm says that when it opens the PR, the body lists,
+      before the `Closes`/`Refs` lines, each Review-section reject whose ground is `edge`, one short line each in plain
+      words with no cairn vocabulary, then asks the maintainers whether they want those inputs handled in this PR or
+      later. With no `edge` rejects it adds neither. When the PR is already open, the arm says that no body edit is
+      made and the close block names any new `edge` rejects.
+- [ ] AC5: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
       checked.
 
 ## Coverage
@@ -44,7 +49,8 @@ candidate row "Grade findings by the action they need".
 - AC1 → T1
 - AC2 → T1
 - AC3 → T2
-- AC4 → T3
+- AC4 → T5
+- AC5 → T3, T5
 
 ## Tasks
 
@@ -54,6 +60,7 @@ candidate row "Grade findings by the action they need".
 - [x] T3: Append a D-entry: the `edge` ground, its trigger, and its falsifier. It passes D-108's door on the
       narrowing carve-out, because it narrows the fix-now rule. Run the five `verify` commands.
 - [x] T4: Add a CHANGELOG.md entry under "Changes that affect existing repos" for the `edge` ground (review return 1).
+- [x] T5: Add the guest PR-body list of `edge` rejects to step 8's guest arm, a CHANGELOG sentence, and a D-206 clause; rerun the five `verify` commands.
 
 ## Work log
 
@@ -72,6 +79,8 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: minor amendment: added T4 for review return 1; CHANGELOG.md entry written.
 - 2026-10-21: user request at review: in guest mode, keep edge findings out of the PR's code but note them briefly in the PR body with a question to the maintainers; a new criterion goes to a fresh re-audit before it is written.
 - 2026-10-21: re-audit: AC4 (full) — five findings: the open-PR path, the source of "each", the empty case, placement before the Closes/Refs lines, and a D-entry owed; wording narrowed to the reader's proposal, which re-enters once.
+- 2026-10-21: re-audit: AC4 (full) — three findings (Copilot-round edge rejects after the body, ground-less copilot and conversation lines, the baseline for "new"); the criterion stays as audited, and the skill text answers all three: reviewer lines only, the close block names any edge reject the body leaves out, "new" means after the newest earlier step-7 approval line.
+- 2026-10-21: substantive amendment: AC4 added at the user's request (guest PR body notes edge rejects and asks the maintainers); verify criterion renumbered AC5; T5 added and done.
 
 ## Decisions
 
