@@ -728,8 +728,15 @@ ROADMAP candidate row, and rejects a false one with the reason. One
 exception: a real finding that only input outside both documented and
 common use reaches is rejected as `edge` when its effect is an error, a
 warning, or slow running. A wrong result or a failed acceptance criterion
-is never `edge`. In guest mode, the PR lists those findings in plain
-words and asks the maintainers whether they want them handled. Then it
+is never `edge`. Review also lists each test snapshot file that the
+branch changes, with what changed and whether the work needs it. A
+snapshot file is a stored expected output under a directory named
+`_snaps` (testthat) or `__snapshots__` (Jest, syrupy). A change that the
+work does not need is fixed in the code or sent to a candidate row
+before the merge question. In guest mode,
+the PR lists the `edge` findings in plain words and asks the maintainers
+whether they want them handled. It also says what changed in each
+snapshot file and why. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).
@@ -756,7 +763,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Resume a run at implement | `/milestone-implement M<NNN>`: branch, tests-first tasks, checkpoint commits, then review; resumable across sessions |
 | Resume a run at review | `/milestone-review M<NNN>`: fresh evidence for every criterion, independent code review sized to what the diff touches, each finding settled by the agent, merge on your approval |
 | Get a stronger model's judgment on a hard question | `/milestone-brief M<NNN> <topic>`: writes a self-contained brief; you approve (or run) the Fable review. Its report advises by default — it only binds the milestone if you asked it to |
-| Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. It asks the same three questions of the behavior the fix produces, documented behavior included. A concern leaves a candidate row or a `/milestone-plan` next command that names it, and stops the hotfix unless its PR is already merged. After the merge it removes the candidate row it fixed, or narrows it to the part left. Escalates to a milestone if it's bigger than it looked |
+| Fix a reported bug quickly | `/hotfix`, or just describe the bug: regression test, fix, PR, your approval. It asks the same three questions of the behavior the fix produces, documented behavior included. A concern leaves a candidate row or a `/milestone-plan` next command that names it, and stops the hotfix unless its PR is already merged. After the merge it removes the candidate row it fixed, or narrows it to the part left. Its approval gate lists each test snapshot file the fix changes, and a change the fix does not need moves the recommendation to fixing it first. Escalates to a milestone if it's bigger than it looked |
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, the three questions included, and merges on your approval |
 | Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note, and replies on and resolves each note's thread. Last, it answers the summary, which also covers notes in the review body. It never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes, such as a row you pressed in the cairn pane. It leaves a row that an open pull request names for that PR. If the check of the PRs fails, its option says so. A row it removes can end with an issue number, such as `(#12)`. In owner mode the edit then closes that open issue after the push, once its option names the close. It leaves a pull request's number alone. It also leaves alone an issue that a row it keeps names anywhere in its text, and an issue that an open milestone's `Resolves:` slot names. If its read of the open pull requests fails or stops at 100 PRs, it closes no issue |
