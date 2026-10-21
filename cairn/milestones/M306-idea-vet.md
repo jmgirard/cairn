@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M306: Vet an idea before planning its build
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** IP3, GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — it changes what `/milestone-plan` and `/hotfix` ask before they build work in an adopter's repo   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m306-idea-vet   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -65,7 +65,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: In `skills/milestone-plan/SKILL.md`, add the vet paragraph to step 2 after the collision check and the inbox sweep. Add vet concerns to step 3's list of questions, with the cap rule. Add the `idea vet:` line to step 4's work-log lines beside the tier-check line. Add the arm for work chosen at the question set. Trace the no-work arm's close to its rerun (LESSONS M172).
+- [x] T1: In `skills/milestone-plan/SKILL.md`, add the vet paragraph to step 2 after the collision check and the inbox sweep. Add vet concerns to step 3's list of questions, with the cap rule. Add the `idea vet:` line to step 4's work-log lines beside the tier-check line. Add the arm for work chosen at the question set. Trace the no-work arm's close to its rerun (LESSONS M172).
 - [ ] T2: In `skills/hotfix/SKILL.md` step 1, add the vet beside the tier check, for every entry that tier-checks a fix or a PR diff, the merged-PR re-entry included. Send a concern through the existing over-the-bar route.
 - [ ] T3: Add `skills/tests/test_idea_vet.py`. Pin each of the three questions, the not-proof sentence, the cap rule, the do-not-build option and its no-write result, the work-log line, the no-work arm, and the hotfix route, with one assertion per member (LESSONS M171). Delete each pinned sentence and see its assertion fail before you trust the pass.
 - [ ] T4: Append D-204 per AC5.
@@ -95,6 +95,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: plan gate chose to vet work chosen at the question set and end with a rerun on a concern over logging the vet as not run because the candidate row asks for the check on each plan; falsified by reruns that surface no concern a later review would have caught.
 - 2026-10-21: plan gate chose to vet every hotfix over vetting only behavior a report, issue, or PR asks for because the hotfix bar already sends that behavior to a plan, so the narrow check changed no outcome; falsified by a hotfix vet concern that the plan's vet would have raised anyway.
 - 2026-10-21: criteria audit (full mode, one fresh Opus reader): 8 findings, then 2 on a re-audit of the criteria the answers changed, all fixed. The Goal no longer says the request is never built as written. AC1 asks about correctness by the field's standards and covers requests that name work. AC2 keeps concerns within the cap, says a do-not-build choice writes nothing and keeps the row, and names the file for the line. AC4 covers every tier-check entry and the merged-PR re-entry. AC5 asks whether the door applies. AC7 drops the hand-run suite, which gates nothing; T6 runs it. AC3 and AC6 passed.
+- 2026-10-21: T1 done: `/milestone-plan` step 2 gains the idea vet after the checker-regress paragraph, step 3 gains the concerns bullet and the "Work chosen at the set" arm, step 4 the idea-vet line; the no-work arm's close reruns `/milestone-plan` with the work named, whose step-2 vet and step-3 set pose the concern. Untracked `cairn-probe.log` and `tsconfig.json` left unstaged. verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M306 | Vet an idea before planning its build | planned | — | normal | milestones/M306-idea-vet.md |
+| M306 | Vet an idea before planning its build | in-progress | — | normal | milestones/M306-idea-vet.md |
 | M305 | Trim the idle pane and separate the candidate levels | done | — | normal | milestones/archive/M305-idle-pane-trim.md |
 | M304 | Hand over the tag commands when a merge raises the version | done | M303 | normal | milestones/archive/M304-quarto-tag-handoff-at-merge.md |
 | M303 | Add a quarto-extension toolchain profile | done | — | normal | milestones/archive/M303-quarto-extension-profile.md |
