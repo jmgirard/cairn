@@ -1,13 +1,13 @@
 # M304: Hand over the tag commands when a merge raises the version
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M303
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — operators of quarto-extension repos read the close after each merge
-- **Branch/PR:** —
+- **Branch/PR:** m304-quarto-tag-handoff-at-merge
 
 ## Goal
 
@@ -37,7 +37,7 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 
 ## Tasks
 
-- [ ] T1: `/milestone-review` step 10: the quarto-extension arm per AC1 and AC2, placed after the hygiene commit and before the next-action commands, with the notes file built per the profile's changelog slot.
+- [x] T1: `/milestone-review` step 10: the quarto-extension arm per AC1 and AC2, placed after the hygiene commit and before the next-action commands, with the notes file built per the profile's changelog slot.
 - [ ] T2: The `/hotfix` close after its own merge: the same arm.
 - [ ] T3: Write the D-entry (annotates D-050, supersedes D-048's wiring) and show it in chat.
 - [ ] T4: Run the AC4 checks read-only on embedpdf and record them in the work log.
@@ -50,6 +50,8 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - 2026-10-20: criteria audit (full mode, Opus reader, shared with M303): for M304, the handoff runs only in owner mode after a merge the run made, after fast-forwarding the default branch; the notes file's content is named; D-048 limits copy-run wiring to three skills, so the entry also supersedes it for `/hotfix`; AC4's commits were checked in embedpdf (a68951d raised 1.2.9, cf71a53 touched only `cairn/`); the new prose owes no new guard (D-109).
 - 2026-10-20: question set: what happens when a merge raises a Quarto extension's version — the close hands over the tag, push, and release commands, and cairn never runs them.
 - 2026-10-20: plan gate chose handing over the commands over tagging at merge approval and over leaving it to `/cairn-release`, because the user picked it and cairn never self-publishes; falsified by versions still going untagged in a repo whose closes show the commands.
+- 2026-10-20: implement start: branch m304-quarto-tag-handoff-at-merge cut from main at a831d529; the untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
+- 2026-10-20: T1 done: `/milestone-review` step 10 ends with a self-contained "Tag handoff" paragraph that `/hotfix` cites. Choices: the merge sha comes from `gh pr view --json mergeCommit`, since the hygiene commit sits on top; the notes file goes to the system temp directory as `cairn-notes-<owner>-<repo>-v<version>.md`, like `/milestone` §4's reply draft; a declared changelog with no section for the version falls back to the commit subjects and the recap names the gap, so all three commands still come. Verify: 5/5 green.
 
 ## Decisions
 

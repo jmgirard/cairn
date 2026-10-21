@@ -903,3 +903,46 @@ re-enters here, at the step the record shows is next:
     (a) or by the guest hygiene run through `/milestone` does not. Do
     **not** end review with an AskUserQuestion: the step-7 merge question
     was the last chip this phase emits.
+
+    **Tag handoff** (owner mode, quarto-extension, D-202). This arm runs
+    where the active profile is quarto-extension (`cairn/PROFILE.md`, or
+    inferred when the file is absent). In such a repo a merge can raise the
+    extension's version. That merge is the release the user approved at
+    step 7. In the close after a merge this run made, after the step-9
+    hygiene commit lands, hand over the commands that tag it. Step 9
+    already fast-forwarded the default branch. Read the merge commit,
+    `<merge sha>`, with `gh pr view <N> --json mergeCommit -q
+    .mergeCommit.oid`. Run `git fetch --tags origin`. Then run
+    `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" <marker file>
+    --changed-by <merge sha>`. `<marker file>` is the `_extension.yml` or
+    `_extension.yaml` that the profile's `release-walk` slot names. The
+    merge raised a version with no tag when the script prints a version and
+    `git rev-parse -q --verify refs/tags/v<version>` prints nothing. Then
+    write the release notes to `cairn-notes-<owner>-<repo>-v<version>.md`
+    in the system temp directory (Python's `tempfile.gettempdir()`), with
+    the Write tool. `<owner>` and `<repo>` are `<base-repo>`'s. If that
+    file already exists, Read it first, so that the Write tool replaces it.
+    The notes are the section of the declared changelog (`## changelog`
+    slot) whose heading names the version, read at `<merge sha>`. The
+    heading is `## 1.2.9`, `## v1.2.9`, or `## [1.2.9]`, not `## 1.2.90`.
+    With changelog "none", the notes are the output of
+    `git log --first-parent --format='- %s' <previous tag>..<merge sha>`.
+    A declared changelog with no such section takes the same notes, and
+    the recap names the missing section. `<previous tag>` is
+    `git describe --first-parent --tags --abbrev=0 --match 'v*' <merge sha>^`.
+    A first release, with no previous `v*` tag, drops `<previous tag>..`.
+    The close says that the merge raised the version to `<version>` with
+    no tag. Before the next-action commands, it fences each of these
+    commands in its own block, with the notes file's absolute path in
+    place of `<file>`:
+    - `git tag -a v<version> <merge sha> -m "v<version>"`
+    - `git push origin v<version>`
+    - `gh release create v<version> --title "v<version>" --notes-file <file> --verify-tag`,
+      only where `origin`'s URL names `github.com` and `gh` is available.
+
+    The skill provides these commands and never runs them, because tagging
+    the release is the user's act (D-050). No tag command is fenced when
+    the script prints nothing, the tag exists, the profile is another one,
+    the run is in guest mode, or the close follows no merge this run made
+    (resume route (a), the guest hygiene run). A script error (exit 2)
+    fences none either, and the close names the error.
