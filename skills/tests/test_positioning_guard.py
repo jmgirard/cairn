@@ -120,6 +120,7 @@ class TestShippedProfilesAreAdvertised(unittest.TestCase):
         "python": "Python",
         "claude-plugin": "Claude Code plugin",
         "docker-image": "Docker image",
+        "quarto-extension": "Quarto extension",
         "generic": "generic",
     }
 

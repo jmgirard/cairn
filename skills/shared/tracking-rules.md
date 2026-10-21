@@ -689,10 +689,11 @@ toolchain test expectations layered on "What gets a test"; **release-walk** — 
 new/empty repo; **changelog** — the repo's changelog file (or "none" — legal), read by `/hotfix`, the release-walk, and
 the consistency-gate.
 
-Five profiles ship: `r-package`, `python`, `claude-plugin`, `docker-image`, and `generic` (no toolchain gates).
-**Absent `PROFILE.md` → infer** in order: `DESCRIPTION` at the repo root → `r-package`, else `pyproject.toml` (or legacy
-`setup.py`/`setup.cfg`) → `python`, else `.claude-plugin/plugin.json` or `.claude-plugin/marketplace.json` →
-`claude-plugin`, else a `Dockerfile` as the sole toolchain marker → `docker-image`, else `generic`. A hybrid repo keeps
+Six profiles ship: `r-package`, `python`, `claude-plugin`, `quarto-extension`, `docker-image`, and `generic` (no
+toolchain gates). **Absent `PROFILE.md` → infer** in order: `DESCRIPTION` at the repo root → `r-package`, else
+`pyproject.toml` (or legacy `setup.py`/`setup.cfg`) → `python`, else `.claude-plugin/plugin.json` or
+`.claude-plugin/marketplace.json` → `claude-plugin`, else `_extensions/*/_extension.yml` (or `.yaml`) →
+`quarto-extension`, else a `Dockerfile` as the sole toolchain marker → `docker-image`, else `generic`. A hybrid repo keeps
 the marker that comes first in that order (`cairn-init`'s disambiguation gate is the only place the primary-deliverable
 choice is asked).
 `cairn_validate` no-ops when `PROFILE.md` is absent and FAILs on a missing, empty, or unrecognized slot. The one line

@@ -780,11 +780,18 @@ REGISTRY = [
         target="skills/cairn-init/SKILL.md",
         block="asking which is the primary deliverable",
     ),
+    # M303: the quarto-extension selection branch in cairn-init.
     Mutation(
         guard="test_toolchain_profiles",
-        test="TestRulebookNamesFiveProfiles.test_rulebook_names_five_profiles",
+        test="TestInitSelection.test_init_selects_quarto_extension",
+        target="skills/cairn-init/SKILL.md",
+        block="`_extensions/*/_extension.yaml`) → **quarto-extension**",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestRulebookNamesSixProfiles.test_rulebook_names_six_profiles",
         target=RULES,
-        block="Five profiles ship",
+        block="Six profiles ship",
     ),
     # M58 (RR01 rec 4): universal change-governance stated once in core; one
     # Mutation entry per positive core assert (M53 discipline).

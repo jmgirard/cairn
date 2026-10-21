@@ -121,7 +121,7 @@ DOCKER_TOKENS_ABSENT_FROM_GENERIC = ("hadolint", "docker build", "buildx", "dock
 
 class TestShippedProfiles(unittest.TestCase):
     def test_all_profiles_define_all_seven_slots(self):
-        for name in ("r-package", "python", "generic", "docker-image", "claude-plugin"):
+        for name in ("r-package", "python", "generic", "docker-image", "claude-plugin", "quarto-extension"):
             text = read("shared", "profiles", f"{name}.md").lower()
             for slot in SLOTS:
                 self.assertIn(f"## {slot}", text, f"{name} missing slot {slot}")
@@ -429,6 +429,18 @@ class TestInitSelection(unittest.TestCase):
         self.assertIn("outranks a `pyproject.toml`", text,
                       "cairn-init should give DESCRIPTION precedence over pyproject in a hybrid")
 
+    def test_init_selects_quarto_extension(self):
+        """M303: cairn-init selects `quarto-extension` from an extension marker
+        (`_extension.yml` or `_extension.yaml`), the greenfield marker list
+        names both spellings, and the greenfield chip's follow-up offers it."""
+        text = read("cairn-init", "SKILL.md")
+        self.assertIn("`_extensions/*/_extension.yaml`) → **quarto-extension**", text,
+                      "cairn-init should select quarto-extension from an extension marker")
+        self.assertIn("`_extensions/*/_extension.yml` / `_extensions/*/_extension.yaml` /", text,
+                      "the greenfield no-marker list should name both extension spellings")
+        self.assertIn("claude-plugin, quarto-extension, or docker-image", text,
+                      "the greenfield chip's follow-up should offer quarto-extension")
+
     def test_init_selects_docker_and_runs_the_disambiguation_gate(self):
         """M70: cairn-init selects `docker-image` when a `Dockerfile` is the only
         toolchain marker, and a `Dockerfile`+language-marker hybrid runs a
@@ -502,27 +514,30 @@ class TestTemplateProfileAware(unittest.TestCase):
         self.assertIn("verify", text)
 
 
-class TestRulebookNamesFiveProfiles(unittest.TestCase):
-    """AC4/AC6: tracking-rules "Toolchain profiles" states five profiles ship
-    (r-package, python, claude-plugin, docker-image, generic) and its
-    absent-PROFILE inference names the order DESCRIPTION → r-package,
-    pyproject.toml → python, a plugin marker → claude-plugin (M192), a
-    Dockerfile-sole-marker → docker-image, else generic — with the language
-    markers ranking first so a hybrid keeps its language marker at inference."""
+class TestRulebookNamesSixProfiles(unittest.TestCase):
+    """AC4/AC6: tracking-rules "Toolchain profiles" states six profiles ship
+    (r-package, python, claude-plugin, quarto-extension (M303), docker-image,
+    generic) and its absent-PROFILE inference names the order DESCRIPTION →
+    r-package, pyproject.toml → python, a plugin marker → claude-plugin (M192),
+    an extension marker → quarto-extension (M303), a Dockerfile-sole-marker →
+    docker-image, else generic — with the language markers ranking first so a
+    hybrid keeps its language marker at inference."""
 
     def _body(self):
         body = section_body(read("shared", "tracking-rules.md"), "Toolchain profiles")
         self.assertTrue(body, "could not locate the 'Toolchain profiles' section")
         return body
 
-    def test_rulebook_names_five_profiles(self):
+    def test_rulebook_names_six_profiles(self):
         body = self._body()
-        self.assertIn("Five profiles ship", body,
-                      "rulebook should state five profiles ship")
+        self.assertIn("Six profiles ship", body,
+                      "rulebook should state six profiles ship")
         self.assertIn("docker-image", body,
                       "rulebook should name the docker-image profile")
         self.assertIn("claude-plugin", body,
                       "rulebook should name the claude-plugin profile")
+        self.assertIn("quarto-extension", body,
+                      "rulebook should name the quarto-extension profile")
 
 
 class TestReleaseSkillReadsProfile(unittest.TestCase):
