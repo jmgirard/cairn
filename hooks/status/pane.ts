@@ -724,7 +724,9 @@ export function drawnCandidates(
 // after its level's mark. The third holds the planned and blocked
 // milestones. A fourth, the release line, holds the latest release tag, the
 // days since its commit, and the milestones done since it, when the last
-// read could read them.
+// read could read them. When the read holds the repo page of a github.com
+// base remote, the name links to it, and each count and its word to the
+// page's pull requests or issues list (M311).
 export function cardLines(
   state: PaneState,
   drawn: { row: CandidateRow }[],
@@ -732,20 +734,23 @@ export function cardLines(
   name: string | null = null,
 ): PaneLine[] {
   const counts = repo?.counts ?? null
-  const number = (n: number | undefined) => ({ text: n === undefined ? UNKNOWN_NUMBER : `${n}`, bold: true })
+  const web = repo?.web ?? null
+  const linked = (span: Span, path: string): Span => (web === null ? span : { ...span, href: `${web}${path}` })
+  const number = (n: number | undefined, path: string) =>
+    linked({ text: n === undefined ? UNKNOWN_NUMBER : `${n}`, bold: true }, path)
   // The project name, bold, in the text, which is cut first when the line
   // is too narrow, and the counts in the tail after it (M291). The tail
   // takes the free room, so the Buttons sit at the right end.
   const named = name !== null && name !== ''
   const first: PaneLine = {
-    ...line(CARD_KEYS.repo, 0, [], named ? { text: name, bold: true } : null),
+    ...line(CARD_KEYS.repo, 0, [], named ? linked({ text: name, bold: true }, '') : null),
     tail: [
       ...(named ? [{ text: '  ' }] : []),
-      number(counts?.prs),
-      { text: ' PRs', color: GRAY },
+      number(counts?.prs, '/pulls'),
+      linked({ text: ' PRs', color: GRAY }, '/pulls'),
       { text: '   ' },
-      number(counts?.issues),
-      { text: ' issues', color: GRAY },
+      number(counts?.issues, '/issues'),
+      linked({ text: ' issues', color: GRAY }, '/issues'),
     ],
     tailGrows: true,
   }

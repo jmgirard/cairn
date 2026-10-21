@@ -105,11 +105,11 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
       github.com base remote in `CairnRepoRead`, only when both match
       `[A-Za-z0-9._-]+` and neither is `.` or `..`. Bump the stored value's
       `shape` tag (LESSONS mod facts) and update `types/index.d.ts`.
-- [ ] T2: Give `Span` (band.ts) an optional link target. In `cardLines`
+- [x] T2: Give `Span` (band.ts) an optional link target. In `cardLines`
       (pane.ts:728) set it on the name span and the count spans from the
       read. Write the AC1 and AC2 tests, using the harness's `remotes` for
       cases 2 to 4 (pane.test.tsx:3771).
-- [ ] T3: In `register.tsx`, gate `Link` off the terminal as `Svg` is
+- [x] T3: In `register.tsx`, gate `Link` off the terminal as `Svg` is
       (register.tsx:424), and draw a linked span's text as a `Link` child
       inside its `Text`, on both paths: `drawSpan` (register.tsx:429) and the
       line's `text` (register.tsx:498). Pass the text as the Link's children,
@@ -144,6 +144,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: criteria audit (full, Opus): 7 findings, all fixed. (1) terminal fallback would push ⌂ ↻ off the row: links gated off the terminal, AC2/AC3 say so. (2) a bare `Link` drops bold and the cut: the Link goes inside the span's `Text`. (3) AC1 claimed every remote form: narrowed to one URL per form. (4) `.` and `..` pass the character check and refuse the tree: case 4 includes them. (5) AC4 dropped "in the browser", the recording clause, and gained the no-skill-running condition; T5 says the operator opens the session. (6) AC5 dropped the provenance clause and trimmed the CHANGELOG claim. (7) AC2 cases 2-4 run the read with a set remote.
 - 2026-10-21: implement started on m311-pane-repo-link; the untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, not this milestone's.
 - 2026-10-21: T1 done: `webOf` in repo.ts gives the repo page of a github.com remote, or null for another host, no URL, a name outside `[A-Za-z0-9._-]+`, or `.`/`..`; `readRepo` stores it as `web`, shape `repo-4`. Nine `webOf` cases in repo.test.ts. verify green (scripts 445 OK, hooks 193 OK, both validates, plugin test 2453 pass).
+- 2026-10-21: T2 and T3 done in one commit, since the AC2 read-flow cases can only fail once Links draw: `Span.href` (band.ts); `cardLines` links the name, each count, and its word from `repo.web`; register.tsx draws a linked span's text as a `Link` inside its `Text` off the terminal, on both the span and line-text paths. 10 tests in pane.test.tsx (M311 block). plugin test 2463 pass.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

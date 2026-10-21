@@ -28,7 +28,8 @@ import {
 } from './pane'
 import type { PaneLine, PrRead } from './pane'
 import type { PaneState } from './reader'
-import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs } from './repo'
+import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, REPO_QUERY, tagTimeArgs, webOf } from './repo'
+import type { Span } from './band'
 import { candidateRows, listNames, parseRoadmapRows, takenRows } from './reader'
 
 // The cairn pane (M205). Each case answers the shipped mod's file calls from
@@ -986,7 +987,7 @@ describe('section headings, the head line, Next, and the card in the picked look
     taken: [],
   }
   const lines = () =>
-    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 }, name: 'cairn' })
+    layout(state, [], false, {}, [], [], { root: '/', counts: { prs: 3, issues: 12 }, done: { tag: 'v2.1.0', days: 12, count: 4 }, name: 'cairn', web: null })
   const at = (key: string) => lines().find(line => line.key === key)
 
   test('a plain heading: the bold label and an empty text that grows', () => {
@@ -6784,6 +6785,126 @@ describe('the card names the project at the left of its first line (M291)', () =
     await $.turn.complete(turn())
     expect(await firstText($)).toBe('two  ? PRs   ? issues')
   })
+})
+
+describe("the card's name and counts link to the repo's GitHub pages off the terminal (M311)", () => {
+  const PAGE = 'https://github.com/o/alpha'
+  const idle: PaneState = {
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates: [],
+    blocked: [],
+    taken: [],
+  }
+  const readOf = (web: string | null) => ({ root: '/', counts: { prs: 3, issues: 12 }, done: null, name: 'alpha', web })
+  // The card's first line with no link anywhere, as main draws it.
+  const PLAIN = {
+    key: 'card-repo',
+    indent: 0,
+    lead: [],
+    text: { text: 'alpha', bold: true },
+    tail: [
+      { text: '  ' },
+      { text: '3', bold: true },
+      { text: ' PRs', color: GRAY },
+      { text: '   ' },
+      { text: '12', bold: true },
+      { text: ' issues', color: GRAY },
+    ],
+    tailGrows: true,
+    card: true,
+  }
+
+  // AC1: one URL of each form `remoteRepo` takes gives the three targets.
+  for (const url of ['git@github.com:o/alpha.git', 'ssh://git@github.com/o/alpha.git', 'https://github.com/o/alpha.git']) {
+    test(`the name, the PR count and word, and the issue count and word link to their pages (AC1, ${url})`, () => {
+      const [first] = layout(idle, [], false, {}, [], [], readOf(webOf(url)))
+      expect(first.text?.href).toBe(PAGE)
+      expect(first.tail?.map(span => span.href)).toEqual([undefined, `${PAGE}/pulls`, `${PAGE}/pulls`, undefined, `${PAGE}/issues`, `${PAGE}/issues`])
+      // The links leave every other part of the spans as main draws them.
+      const strip = (span: Span) => {
+        const { href: _href, ...rest } = span
+        return rest
+      }
+      expect({ ...first, text: strip(first.text as Span), tail: first.tail?.map(strip), buttons: undefined }).toEqual({ ...PLAIN, buttons: undefined })
+    })
+  }
+
+  // AC2 case 1: no read stored for the root draws the folder name and `?`
+  // counts with no link; a stored read with no repo page draws main's spans.
+  test('no read for the root, and a read with no repo page, carry no link (AC2)', () => {
+    const [none] = layout(idle, [], false, {}, [], [], null, '/work/alpha')
+    expect([none.text, ...(none.tail ?? [])].some(span => span?.href !== undefined)).toBe(false)
+    const [plain] = layout(idle, [], false, {}, [], [], readOf(null))
+    expect({ ...plain, buttons: undefined }).toEqual({ ...PLAIN, buttons: undefined })
+  })
+
+  // The `Link`s the drawn pane holds, each with the props of the `Text`
+  // that holds it, after a read with these remotes on this surface.
+  const drawnLinks = async ($, on, remotes: Record<string, string>, surface: (typeof SURFACES)[number]) => {
+    const common: GhAnswer = { exitCode: 0, stdout: '/work/alpha/.git\n' }
+    const calls = gh(on, () => prView('MERGED'), undefined, { remotes, counts: () => repoReply(3, 12), common })
+    const copy = copyOf('blocked-prs')
+    const files: Record<string, string> = {}
+    for (const [path, text] of Object.entries(copy.files)) files[`/work/alpha${path}`] = text
+    copy.files = files
+    copy.unreadable = copy.unreadable.map(path => `/work/alpha${path}`)
+    copy.cwd = '/work/alpha'
+    seat(on, copy)
+    await $.session.start({ cwd: '/work/alpha', surface, isInteractive: true })
+    await $.command.run({ command: COMMAND })
+    await calls.settled()
+    const ui = await mountPane($, surface, 44)
+    const holders = (await ui.findAll({ type: 'Text' })).filter(text => kids(text).some(child => child.type === 'Link'))
+    const links = holders.map(text => {
+      const link = kids(text).find(child => child.type === 'Link') as Element
+      return { href: link.props.href, text: textOf(link), bold: text.props.bold, color: text.props.color, wrap: text.props.wrap }
+    })
+    const first = textOf((await boxOf(ui, 'card-repo')) as Element)
+    const total = (await ui.findAll({ type: 'Link' })).length
+    await ui.unmount()
+    return { links, first, total }
+  }
+
+  // AC3: the desktop draws each linked span's text as a Link inside its
+  // styled Text; the terminal draws no Link.
+  for (const surface of SURFACES) {
+    test(`a github.com remote draws five Links in styled Texts on the desktop and none in the terminal (AC3, ${surface})`, async ($, on) => {
+      const { links, first, total } = await drawnLinks($, on, { origin: 'https://github.com/o/alpha.git' }, surface)
+      expect(first).toBe('alpha  3 PRs   12 issues')
+      if (surface === 'terminal') {
+        expect(total).toBe(0)
+        return
+      }
+      expect(total).toBe(5)
+      expect(links).toEqual([
+        { href: PAGE, text: 'alpha', bold: true, color: undefined, wrap: 'truncate-end' },
+        { href: `${PAGE}/pulls`, text: '3', bold: true, color: undefined, wrap: 'truncate-end' },
+        { href: `${PAGE}/pulls`, text: ' PRs', bold: undefined, color: GRAY, wrap: 'truncate-end' },
+        { href: `${PAGE}/issues`, text: '12', bold: true, color: undefined, wrap: 'truncate-end' },
+        { href: `${PAGE}/issues`, text: ' issues', bold: undefined, color: GRAY, wrap: 'truncate-end' },
+      ])
+    })
+  }
+
+  // AC2 cases 2 to 4: the read runs with the base remote set, and the
+  // desktop draws no Link and the same text.
+  const NO_LINK: { name: string; remotes: Record<string, string>; first: string }[] = [
+    { name: 'a remote on another host', remotes: { origin: 'https://gitlab.com/o/alpha.git' }, first: 'alpha  ? PRs   ? issues' },
+    { name: 'no remote', remotes: {}, first: 'alpha  ? PRs   ? issues' },
+    { name: 'an owner with a character a name cannot hold', remotes: { origin: 'https://github.com/o%20x/alpha.git' }, first: 'alpha  3 PRs   12 issues' },
+    { name: 'an owner of `..`', remotes: { origin: 'https://github.com/../alpha.git' }, first: 'alpha  3 PRs   12 issues' },
+  ]
+  for (const each of NO_LINK) {
+    test(`${each.name} draws no Link (AC2)`, async ($, on) => {
+      const { first, total } = await drawnLinks($, on, each.remotes, 'desktop')
+      expect(total).toBe(0)
+      expect(first).toBe(each.first)
+    })
+  }
 })
 
 // M294 AC1: a card opens above its row when it fits there, else below,

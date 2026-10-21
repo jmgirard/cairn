@@ -422,6 +422,12 @@ export const register: Register = on => {
     // terminal, and a line with one centers its row (M286). A tail span
     // that names an icon, the merge mark, draws the same way (M301).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
+    // A span with an `href` holds its text in a `Link` to that page inside
+    // its `Text`, so it keeps its style and its cut, but in the terminal
+    // (M311): a terminal without OSC 8 draws the URL after the text, which
+    // would push the first line's Buttons off the row.
+    const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
+    const spanText = (span: Span) => (span.href !== undefined && Link !== undefined ? <Link href={span.href}>{span.text}</Link> : span.text)
     // A span that holds a badge draws as its `Svg` pill on such a surface,
     // and as its padded text on the theme's gray in the terminal (M289); a
     // heading with one centers its row too. Since M302 the badge is in the
@@ -438,7 +444,7 @@ export const register: Register = on => {
         <Svg source={iconSvg(span.icon)} alt={span.text} width={ICON_PX} height={ICON_PX} />
       ) : (
         <Text wrap="truncate-end" {...style(span)}>
-          {span.text}
+          {spanText(span)}
         </Text>
       )
     // A line that draws the info glyph, which then alone opens its card (M290).
@@ -496,7 +502,7 @@ export const register: Register = on => {
             {line.text === null ? null : (
               <Box key={`${line.key}-text`} flexShrink={1} minWidth={0} {...(line.grow ? { flexGrow: 1 } : {})}>
                 <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
-                  {line.text.text}
+                  {spanText(line.text)}
                 </Text>
               </Box>
             )}
