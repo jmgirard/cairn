@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — operators of quarto-extension repos read the close after each merge
-- **Branch/PR:** m304-quarto-tag-handoff-at-merge
+- **Branch/PR:** m304-quarto-tag-handoff-at-merge — https://github.com/jmgirard/cairn/pull/318
 
 ## Goal
 
