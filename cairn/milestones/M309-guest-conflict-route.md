@@ -25,14 +25,14 @@ hotfix PR, which is reported only; `/hotfix` with the PR reference already resum
 
 ## Acceptance criteria
 
-- [ ] AC1: In `skills/milestone/SKILL.md` §2, the read for a guest-mode `blocked` milestone whose header names a PR
+- [x] AC1: In `skills/milestone/SKILL.md` §2, the read for a guest-mode `blocked` milestone whose header names a PR
       adds `mergeable` to its `--json` fields. An `OPEN` PR that no earlier arm routes takes two new arms:
       `CONFLICTING` routes to `/milestone-implement M<NNN>`, and `UNKNOWN` is reported with no route.
-- [ ] AC2: The "Open hotfix PRs" bullet adds `mergeable` to its read and reports a `CONFLICTING` PR as having merge
+- [x] AC2: The "Open hotfix PRs" bullet adds `mergeable` to its read and reports a `CONFLICTING` PR as having merge
       conflicts.
-- [ ] AC3: `skills/milestone-implement/SKILL.md` step 1 names a `CONFLICTING` route from `/milestone` as a reason that a
+- [x] AC3: `skills/milestone-implement/SKILL.md` step 1 names a `CONFLICTING` route from `/milestone` as a reason that a
       `blocked` guest milestone resumes for step 2's guest sync.
-- [ ] AC4: `skills/milestone-implement/SKILL.md` step 2's guest sync says what happens when the rebase stops on
+- [x] AC4: `skills/milestone-implement/SKILL.md` step 2's guest sync says what happens when the rebase stops on
       conflicts. The session resolves them and runs the `verify` slot before the re-push. If it cannot resolve them,
       it stops with a close block that names the conflicted files.
 - [ ] AC5: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
@@ -74,3 +74,8 @@ hotfix PR, which is reported only; `/hotfix` with the PR reference already resum
 ## Decisions
 
 ## Review
+
+- AC1 evidence (2026-10-21, grep at 6bfd1a2b): skills/milestone/SKILL.md:178-179 reads `--json state,reviewDecision,mergeable`; the `CONFLICTING` arm (195-200) routes to `/milestone-implement M<NNN>` and the `UNKNOWN` arm (200-203) reports with no route. Both sit after the stack-base `CLOSED` arm and before `OPEN` otherwise, and open with "that no arm above takes". PASS.
+- AC2 evidence (2026-10-21, grep at 6bfd1a2b): the "Open hotfix PRs" read at skills/milestone/SKILL.md:225 ends its `--json` list with `mergeable`, and 228-229 say "Report a PR whose `mergeable` reads `CONFLICTING` as having merge conflicts." PASS.
+- AC3 evidence (2026-10-21, grep at 6bfd1a2b): skills/milestone-implement/SKILL.md:38-40, in step 1, say a `blocked` guest milestone that `/milestone` routed because its PR's `mergeable` reads `CONFLICTING` "resumes for step 2's guest sync". PASS.
+- AC4 evidence (2026-10-21, grep at 6bfd1a2b): skills/milestone-implement/SKILL.md:112-120, in step 2's guest sync: a rebase there or in the stacked sync "can stop on conflicts"; the session resolves each file, stages it, runs `git rebase --continue`, and runs `verify` green "before any push"; if it cannot resolve them it lists them with `git diff --name-only --diff-filter=U`, runs `git rebase --abort`, pushes nothing, and stops with a close block naming those files. PASS.
