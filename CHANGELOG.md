@@ -27,8 +27,9 @@
   answered yet. When GitHub reports that such a PR has merge conflicts,
   `/milestone` sends the milestone back to `/milestone-implement`. It
   rebases the branch, resolves the conflicts, runs the checks, and pushes
-  the branch. If it cannot resolve them, it stops and names the files
-  with conflicts. `/milestone` also reports each of your open hotfix PRs
+  the branch. If someone else pushed to the branch, it stops and names
+  those commits instead. If it cannot resolve the conflicts, it stops and
+  names the files with conflicts. `/milestone` also reports each of your open hotfix PRs
   that has merge conflicts.
 
 - **Review can reject a real finding that only an unusual input

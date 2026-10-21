@@ -194,8 +194,10 @@ The script deliberately does not judge these — do them yourself and report:
   milestone builds on is gone, and the next step is the user's; `OPEN`
   that no arm above takes, with `mergeable` `CONFLICTING` (the PR
   cannot merge because of merge conflicts) → the sync is owed: route to
-  `/milestone-implement M<NNN>`, whose guest sync rebases the branch,
-  resolves the conflicts, and re-pushes it; `OPEN` that no arm above
+  `/milestone-implement M<NNN>`, whose step 2 sync (the stacked sync for
+  a stacked milestone) rebases the branch, resolves the conflicts, and
+  re-pushes it, or stops if the remote branch has commits that the local
+  one lacks; `OPEN` that no arm above
   takes, with `mergeable` `UNKNOWN` (GitHub has not finished calculating
   it) → report the fresh state and say that the merge state is not known
   yet, with no route; `OPEN`

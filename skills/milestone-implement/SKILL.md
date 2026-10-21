@@ -113,7 +113,8 @@ run ingestion first (see `/milestone-brief`).
    stacked sync below can stop on conflicts. Then the session resolves
    each conflicted file, stages it, and runs `git rebase --continue` until
    the rebase ends. It runs the active profile's `verify` slot, green,
-   before the push. If it cannot resolve them, it lists the conflicted
+   before any push, and before it continues when the branch was never
+   pushed. If it cannot resolve them, it lists the conflicted
    files with `git diff --name-only --diff-filter=U`. It then runs
    `git rebase --abort`, pushes nothing, and stops with a close block that
    names those files.

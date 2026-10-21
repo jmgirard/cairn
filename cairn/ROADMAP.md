@@ -10,7 +10,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 |---|---|---|---|---|---|
 | M307 | Reject review findings that only unusual inputs reach | done | — | normal | milestones/archive/M307-edge-findings.md |
 | M308 | Fit guest PRs to the host and to one change | done | — | normal | milestones/archive/M308-guest-pr-shape.md |
-| M309 | Route a handed-off PR with merge conflicts to a sync | in-progress | — | normal | milestones/M309-guest-conflict-route.md |
+| M309 | Route a handed-off PR with merge conflicts to a sync | review | — | normal | milestones/M309-guest-conflict-route.md |
 | M306 | Vet an idea before planning its build | done | — | normal | milestones/archive/M306-idea-vet.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._

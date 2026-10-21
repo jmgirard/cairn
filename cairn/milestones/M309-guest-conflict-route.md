@@ -1,6 +1,6 @@
 # M309: Route a handed-off PR with merge conflicts to a sync
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,6 +68,8 @@ hotfix PR, which is reported only; `/hotfix` with the PR reference already resum
 - 2026-10-21: T2 done: step 1 names the `CONFLICTING` route as a resume reason; step 2's guest sync resolves a conflicted rebase (here or in the stacked sync), runs verify before the push, and otherwise lists the files with `git diff --name-only --diff-filter=U`, aborts the rebase, and stops. Decided: abort before the stop so the stop leaves no half-done rebase behind. Verify 5/5 green.
 - 2026-10-21: minor amendment: T3 adds the rulebook and the CHANGELOG entry (the consistency gate wants one), found while checking restatements.
 - 2026-10-21: T3 done: README restates no §2 guest route (its pane table and merge mark already cover `CONFLICTING`, and the pane's lack of a conflict Button is new behavior, not stale text); tracking-rules "Collaboration mode" route list gains the conflict route; CHANGELOG guest entry extended. Verify 5/5 green; cairn_validate all checks passed.
+- 2026-10-21: claim audit: 15 claims read, 4 corrected — CHANGELOG.md, skills/milestone/SKILL.md, skills/milestone-implement/SKILL.md, skills/shared/tracking-rules.md; the reader also flagged the stale §2 route list in skills/milestone-review/SKILL.md's guest close label, fixed; all 5 re-read once and hold. Verify 5/5 green.
+- 2026-10-21: status → review; handing off to /milestone-review.
 
 ## Decisions
 
