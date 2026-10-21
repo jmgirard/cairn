@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes how `/milestone-review` settles findings in every repo that uses cairn
-- **Branch/PR:** m307-edge-findings
+- **Branch/PR:** m307-edge-findings · https://github.com/jmgirard/cairn/pull/321
 
 ## Goal
 
