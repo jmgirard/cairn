@@ -1,6 +1,6 @@
 # M305: Trim the idle pane and separate the candidate levels
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -79,6 +79,7 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: T5: README (band Plan argument, the Next line, parked color), DESIGN (`nextTitle` reader, parked color), the top comment of `pane.ts`, the `pressNext` comment, and CHANGELOG Unreleased (a new idle-pane entry; the unreleased parked entry now says blue). Each claim read against `pane.ts`, `icons.ts`, and `register.tsx` in this session. T6: verify green (scripts OK, hooks OK, both validates pass, mod 2412 pass).
 - 2026-10-20: candidate row "Vet an idea before planning its build" added at the datawizard session's forwarded request (the user's direction there); not M305 scope.
 - 2026-10-20: claim audit: 71 claims read, 3 corrected — pane.test.tsx (the M294 AC4 offset note), README.md (the parked mark's desktop color; the ✎ sentence), CHANGELOG.md (the ✎ sentence), pane.ts (the Next-line comment).
+- 2026-10-20: claim audit re-read: the corrected claims read true. All tasks checked, verify green; status review.
 
 ## Decisions
 
