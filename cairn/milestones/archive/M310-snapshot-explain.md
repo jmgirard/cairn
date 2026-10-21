@@ -1,0 +1,11 @@
+# M310: Check and explain changed snapshots before a PR leaves
+
+**Status:** done (2026-10-21, PR #324 https://github.com/jmgirard/cairn/pull/324)
+
+**Goal:** The review and hotfix gates list each snapshot file that the branch changes, and a guest PR says what changed in each one and why.
+
+**Outcome:** A changed snapshot file is a path under a `_snaps` or `__snapshots__` directory in the gate's diff. `/milestone-review` step 7 lists each one in both modes, with what changed and whether the Goal or criteria call for it. The list is computed before the chip's fix-now work and again after every fix-now commit. An unneeded change is a step-5 finding, the return floor included. Fix now corrects the code, and re-recording the snapshot is not a fix. Follow-up keeps only a change with no wrong result. The finding's Review line is `snapshot: <path> — <disposition>`, and the chip's question text names the file count. A stacked guest milestone diffs against its stack base while that base's PR is `OPEN`. Step 8's guest body names each file with what changed and why, and an already-open PR gets the lines in the one comment beside the `edge` list. `/hotfix` step 6 lists the files of the head the gate shows, in both modes. An unneeded change makes address-first the recommendation, with approve kept, and a fix re-runs step 4 and poses the gate again. The guest hotfix body carries the lines before `Fixes #N`. CHANGELOG and README follow. Trigger: easystats/see#486.
+
+**Decisions:** D-208 records the rule: guest mode passes D-108's door on its retained trigger, and owner mode is excepted by name at the user's decision. D-209 corrects D-208's reason for rejecting a since-last-push comment and names its relations to D-108 and D-207.
+
+**Review:** Criteria audit at plan (full, two passes: 14 and 11 findings). Claim audit 38 claims, 1 corrected. Four fresh reviewers: 43 findings, three split in two, so 46 dispositions. Of those, 24 were fixed, 3 went to the candidate row "List snapshots changed after a PR opens", and 19 were rejected, none as `edge`. Copilot (Lite): 1 fixed, 4 rejected. Hygiene: the row "Explain changed snapshots in guest PRs" graduated. The M307 row was pruned to the terminal cap. No lesson was added (LESSONS at its cap), and no row was unparked.

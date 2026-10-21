@@ -1,20 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-21 (review M309: done; parked row "Close the guest conflict sync edges" added; M306 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
+_Last hygiene check: 2026-10-21 (review M310: done; row "Explain changed snapshots in guest PRs" graduated; M307 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M307 | Reject review findings that only unusual inputs reach | done | — | normal | milestones/archive/M307-edge-findings.md |
 | M308 | Fit guest PRs to the host and to one change | done | — | normal | milestones/archive/M308-guest-pr-shape.md |
 | M309 | Route a handed-off PR with merge conflicts to a sync | done | — | normal | milestones/archive/M309-guest-conflict-route.md |
-| M310 | Check and explain changed snapshots before a PR leaves | review | — | normal | milestones/M310-snapshot-explain.md |
+| M310 | Check and explain changed snapshots before a PR leaves | done | — | normal | milestones/archive/M310-snapshot-explain.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
-- Explain changed snapshots in guest PRs: easystats maintainers found test problems the PR did not explain: see #486 changed a snapshot's spacing with no word on it, performance #974 added a test that crashes R on Windows, and parameters #1275 had two failing tests. A guest PR could name each changed snapshot and why. Found in the M307–M309 plan sweep — added 2026-10-21 — started M310
 - Read guest PR checks while they wait: a handed-off guest PR's checks fail on the maintainers' CI and cairn reads no checks after the handoff: performance #974 added a test that crashes R on Windows, and parameters #1275 had two failing tests that a maintainer reported. `/milestone` §2's guest `blocked` read could read `gh pr checks` and route failing checks to `/milestone-implement`. Split from "Explain changed snapshots in guest PRs" at the M310 plan — added 2026-10-21
 - List snapshots changed after a PR opens: M310 lists changed snapshot files at the review and hotfix gates and in guest PR bodies, but three paths change or merge a PR with no list: the guest hotfix change route (M266) pushes new commits to an open PR, a guest Copilot round's fix commits land after the body is written, and `/hotfix`'s merged-PR re-entry lists none. M310 review adds: an open guest PR's handoff comment repeats the full list on every pass, where a diff from the PR's head before the push would list only new changes (diff-bug #11, D-209); a snapshot file that a test run writes but no commit carries (Jest without `--ci`) is in no list (diff-bug #14); `/hotfix`'s `gh pr diff` lists the PR's current head, not the head the gate noted (diff-bug #15). Found in the M310 plan criteria audit — added 2026-10-21
 - [parked] Do not stop fixes on old naming flaws: M306 review (diff-bug #9): `/hotfix` step 1's idea vet sends a fix over the hotfix bar on any concern, so a framing concern about a function name or argument that the fix leaves as it is stops a fix that restores documented behavior, and the bug stays unfixed. Promote when a hotfix is stopped by a concern about something the fix does not change — added 2026-10-21 — M306 review
