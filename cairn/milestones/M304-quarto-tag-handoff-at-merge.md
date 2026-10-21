@@ -69,3 +69,51 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - AC4 evidence (2026-10-20, run read-only in `/Users/jmgirard/github/embedpdf`): `cairn_versions.py _extensions/embedpdf/_extension.yml --changed-by a68951d` printed `1.2.9`, exit 0; `--changed-by cf71a53` printed nothing, exit 0; `git diff --name-only cf71a53^ cf71a53` lists no file outside `cairn/`; embedpdf's `git status --short` is empty after the runs. Pass.
 - AC5 evidence (2026-10-20, head c75d64bb): README.md's "Prepare a release" row says that after a merge that raised the version, the `/milestone-review` or `/hotfix` close gives the tag, push, and `gh release create` commands and cairn does not run them; CHANGELOG.md's Unreleased "New" section carries "A merge that raises a Quarto extension's version ends with the tag commands". The five `verify` commands exit 0: scripts/tests, hooks/tests, plugin validate, marketplace validate (no version warning), `claude plugin test .`. Pass.
 - Consistency gate (2026-10-20): `cairn_validate` exit 0, all checks PASS; no DESIGN principle changed, so `cairn_impact` skipped; profile gate: verify 5/5 green on c75d64bb, marketplace validate shows no `plugins[N].version` warning, CHANGELOG Unreleased has this milestone's entry. Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: `<marker file>` read from the slot can be the template placeholder or the wrong extension, and `--changed-by` then prints nothing with exit 0, so the handoff is silently skipped — fix now: the marker is the one `_extensions/<name>/_extension.y*ml` in `git ls-tree` at `<merge sha>`, and none or several fences nothing and names it, fixed d952ef19
+- diff-bug #2: merges approved but finished outside the run (resume route (a), the hotfix merged-PR re-entry) get no handoff — follow-up: row "Apply the walk's stops at merge handoff" item (2) (Out by the plan's scope, kept as a row since it meets D-202's falsifier)
+- diff-bug #3: the tag check read local refs, so an unpushed local tag hid a missing remote tag, and `git fetch --tags` can refuse a differing local tag — fix now: `git ls-remote --tags origin` is the authority, the fetch is gone, and a local-only tag leaves out only the `git tag` command, fixed d952ef19
+- diff-bug #4: no check that the other named markers agree before fencing the tag — follow-up: row "Apply the walk's stops at merge handoff" item (1)
+- diff-bug #5: the hotfix arm's step-2 status check asks a question in a close that poses none, and a failed checkout or pull has no outcome — fix now: fetch first, a dirty tree skips checkout and pull with no question, failures are named, and the arm still runs on `<merge sha>`, fixed d952ef19
+- diff-bug #6: D-202 justifies merge-raised repos but the arm runs in at-release repos too — reject (false): an untagged version at the tip is treated the same way by the profile's tag-only arm in any quarto-extension repo, and a merge that raised the version is such a merge whatever the repo's default
+- diff-bug #7: tag fences come before `/clear` and the primary command, and carry no labels — fix now in part: each command gets a one-line label, fixed d952ef19; the order is reject (planned change: T1 places them before the next-action commands)
+- diff-bug #8: the notes go to a public release unseen, and "none" notes list tracking commits — fix now: the close shows the notes file's text, fixed d952ef19; the tracking subjects follow-up: row "Apply the walk's stops at merge handoff" item (3)
+- diff-bug #9: the temp notes file may not outlive the session, and `<file>` was unquoted — fix now: `"<file>"` is quoted and the label says the file is temporary, fixed d952ef19
+- diff-bug #10: an empty `mergeCommit` reaches the script as an unclear error — fix now: an empty result fences nothing and the close says GitHub returned no merge commit, fixed d952ef19
+- diff-bug #11: companion merges are not addressed — fix now: the arm says a companion merge gets no handoff, fixed d952ef19
+- diff-bug #12: `gh pr view` and `gh release create` carry no `--repo` — fix now for `gh pr view` (`--repo <base-repo>`), fixed d952ef19; the fenced release command follow-up: row "Apply the walk's stops at merge handoff" item (4), since AC1 names its exact text
+- diff-bug #13: a changelog file absent at `<merge sha>` is not mapped — fix now: it takes the commit-subject notes and the recap names the gap, fixed d952ef19
+- diff-bug #14: `git describe` failure vs. first release, and tags off the first-parent chain — reject (false): "with no previous `v*` tag" already covers describe finding none, and the first-parent range is the walk's own notes rule
+- diff-bug #15: D-202 calls `/hotfix` a fourth handoff site though its close already fenced commands — reject (false): D-048's wiring list named three skills, and `/hotfix` was not one of them
+- diff-bug #16: rebase merges would hide an earlier bump — reject (false): both skills merge with `--squash`; no defect
+- blame-history #1: the handoff skips the walk's claim-read of the changelog section — follow-up: row "Apply the walk's stops at merge handoff" item (1)
+- blame-history #2: a declared changelog with no section still gets tag commands, against the walk's stop — follow-up: same row, item (1)
+- blame-history #3: no confirm of version and commit before the tag — follow-up: same row, item (1)
+- blame-history #4: tension with D-050 — reject (planned change: D-202 annotates D-050 at the user's question-set choice)
+- blame-history #5: tag fences precede the primary next command — reject (planned change: T1)
+- blame-history #6: the hotfix checkout is an unneeded state change — reject (planned change: AC1 asks for the fast-forward); its failure path is fixed under diff-bug #5
+- blame-history #7: placement inside step 7 and a guest sentence in an owner paragraph — reject (style)
+- blame-history #8: README row omits the GitHub condition — fix now: the row says `gh release create` is for a GitHub repo and that the version has no tag, fixed d952ef19
+- prior-review #1: release commands run against D-050 — reject (planned change: D-202)
+- prior-review #2: "none" notes include tracking commits — follow-up: row "Apply the walk's stops at merge handoff" item (3)
+- prior-review #3: fixed temp file name — reject (false): no regression; D-155 accepts the temp directory
+- ripple #1: README "does NOT do" says cairn stays quiet about releases — fix now: names the Quarto merge exception, fixed d952ef19
+- ripple #2: the rulebook's D-050 rule has no carve-out — fix now: the rule names D-202's annotation, fixed d952ef19
+- ripple #3: the walk's Stops are bypassed on the merge path — follow-up: row "Apply the walk's stops at merge handoff" item (1)
+- ripple #4: the profile's "When does the version rise?" consequence says to run the tag-only arm after each raising merge — fix now: it names the merge close's handoff, fixed d952ef19
+- ripple #5: primary-first close order — reject (planned change: T1)
+- ripple #6: step 10 names one D-050 displacement only — reject (style: the tag handoff is its own paragraph, not a displacement of the next action)
+- ripple #7: `/cairn-release` does not mention the merge close — reject (style: the profile's consequence line now names it, and the walk still tags a version left untagged)
+- ripple #8: the parked version-reader row does not mention the handoff — reject (false: the row already says M304 reads `--changed-by`)
+- ripple #9: the profile's release-notes clause names only the walk's handoff — reject (style: the clause describes the walk's own handoff, which is unchanged)
+- ripple #10: DESIGN's `cairn_versions` line names only the walk — fix now: it names the merge-time handoff too, fixed d952ef19
+- ripple #11: `cairn_versions.py` docstring names one `git tag` consumer — fix now: it names the handoff too, fixed d952ef19
+- ripple #12: test comments say D-048 wires three skills — reject (style: comments in the hand-run guard suite)
+- copilot: skills/hotfix/SKILL.md:543 — the follow-up PR's merge commit was not the one read — fix now: `<N>` is the PR this run merged, the follow-up PR on the re-entry, fixed 86c6eae6
+- copilot: CHANGELOG.md:179 — "three commands" overstated the conditional release command — fix now, fixed 86c6eae6
+- copilot: README.md — qualify `gh release create` — fix now, fixed d952ef19
+- copilot: review body — noted (index of the three threads); summary reply posted
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: PR #318 — no other reviews or comments; empty read
+- Fix-now re-verify (2026-10-20, 86c6eae6): five verify commands exit 0, `skills/tests` green, `cairn_validate` green.
+- Fix-now re-verify (2026-10-20, d952ef19): five verify commands exit 0 (the scripts suite first caught the profile at 121 lines over its 120 cap, then passed at 119); `skills/tests` green; `cairn_validate` green.
