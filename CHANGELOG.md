@@ -32,7 +32,7 @@
   on a github.com remote, at the same times as the PR states, and show `?`
   until a read gives them. A milestone's goal now wraps at the pane's
   width instead of at the file's line breaks. Headings are a bold label,
-  with any count at the right end, the Tasks and Criteria meter has six
+  with the Tasks and Criteria counts at the right end, the meter has six
   cells, the head line's title is bold, and the Next command follows a
   `→` with no pill. Blocked lines and hotfix lines share one layout, with
   a state mark and `fix` in place of a hotfix's milestone id. A checked
@@ -106,12 +106,11 @@
   plain conversation too, where no cairn rule text loads. It is not
   injected again after `/clear` or compaction.
 - **The cairn pane's section counts are badges.** The Blocked, Hotfixes,
-  and Candidates headings show their count as a badge in place of a gray
-  number. On the desktop the badge is a rounded pill with a white number,
-  amber for Blocked, orange for Hotfixes, and blue for Candidates. In the
-  terminal it is the number with a space on each side, on the heading's
-  theme color. The Tasks and Criteria counts and the summary card do not
-  change.
+  and Candidates headings show their count as a badge right after the
+  heading name. On the desktop the badge is a gray rounded pill with a
+  white number. In the terminal it is the number with a space on each
+  side, on the theme's gray. The Tasks and Criteria counts stay at the
+  right end, and the summary card does not change.
 
 - **The desktop pane shows a candidate row's `✎` only under the
   pointer.** In the desktop app, the Candidates list no longer draws each

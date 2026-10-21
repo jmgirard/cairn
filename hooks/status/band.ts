@@ -1,5 +1,4 @@
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
-import type { BadgeName } from './badge'
 import type { IconName } from './icons'
 import type { BandRow, BandState, WorkableRow } from './reader'
 
@@ -21,7 +20,7 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // gray, but for the warning labels and the terminal track's cells.
 // `icon` names an SVG icon the cairn pane draws in place of the text on a
 // surface with the `Svg` element (M286, icons.ts); the band draws none.
-// `badge` names a heading's count badge, which the cairn pane draws as an
+// `badge` holds a heading's count badge, which the cairn pane draws as an
 // `Svg` pill in place of the text on such a surface (M289, badge.ts).
 export type Span = {
   text: string
@@ -29,7 +28,7 @@ export type Span = {
   backgroundColor?: string
   bold?: boolean
   icon?: IconName
-  badge?: { name: BadgeName; count: number }
+  badge?: { count: number }
 }
 
 export const GRAY = 'inactive'
