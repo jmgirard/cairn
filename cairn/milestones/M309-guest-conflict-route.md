@@ -1,13 +1,13 @@
 # M309: Route a handed-off PR with merge conflicts to a sync
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/milestone` reports and routes for open PRs
-- **Branch/PR:** —
+- **Branch/PR:** m309-guest-conflict-route
 
 ## Goal
 
@@ -63,6 +63,7 @@ hotfix PR, which is reported only; `/hotfix` with the PR reference already resum
 - 2026-10-21: question set: merge conflicts — route conflicts, no warning on PR volume.
 - 2026-10-21: criteria audit (full, fresh Opus reader): for M309, ordered the new arms after the existing ones (AC1); moved the resume rule to step 1 and dropped a false premise (AC3); added the conflicted-rebase criterion (AC4); dropped the prose-guard criterion per D-109; cited the verify slot in full.
 - 2026-10-21: collision check: no D-entry or archived milestone covers merge state; D-137 and D-173 stand.
+- 2026-10-21: implement start: branch m309-guest-conflict-route cut from origin/main at b3573dc0; untracked cairn-probe.log and tsconfig.json are unrelated and stay unstaged.
 
 ## Decisions
 
