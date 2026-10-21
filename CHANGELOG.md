@@ -173,10 +173,10 @@
   commands.** This applies to a repo with the quarto-extension profile.
   After `/milestone-review` or `/hotfix` merges, its close reads the
   version that the merge set, with `scripts/cairn_versions.py --changed-by`.
-  When that version has no `v<version>` tag, the close gives you three
-  commands to run. They are `git tag -a` on the merge commit,
-  `git push origin v<version>`, and, for a GitHub repo,
-  `gh release create` with a notes file. The notes are
+  When that version has no `v<version>` tag, the close gives you
+  `git tag -a` on the merge commit and `git push origin v<version>` to
+  run. A GitHub repo with `gh` also gets `gh release create` with a notes
+  file. The notes are
   the changelog section for the version, or with changelog "none" the
   commit subjects since the previous tag. cairn writes the notes file to
   the system temp directory and never runs the commands. Guest mode and
