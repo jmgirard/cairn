@@ -6861,7 +6861,14 @@ describe("the card's name and counts link to the repo's GitHub pages off the ter
     const holders = (await ui.findAll({ type: 'Text' })).filter(text => kids(text).some(child => child.type === 'Link'))
     const links = holders.map(text => {
       const link = kids(text).find(child => child.type === 'Link') as Element
-      return { href: link.props.href, text: textOf(link), bold: text.props.bold, color: text.props.color, wrap: text.props.wrap }
+      const parts = kids(link).map(part => ({
+        type: part.type,
+        text: textOf(part),
+        bold: part.props.bold,
+        color: part.props.color,
+        underline: part.props.underline,
+      }))
+      return { href: link.props.href, wrap: text.props.wrap, parts }
     })
     const first = textOf((await boxOf(ui, 'card-repo')) as Element)
     const total = (await ui.findAll({ type: 'Link' })).length
@@ -6869,23 +6876,24 @@ describe("the card's name and counts link to the repo's GitHub pages off the ter
     return { links, first, total }
   }
 
-  // AC3: the desktop draws each linked span's text as a Link inside its
-  // styled Text; the terminal draws no Link.
+  // AC3: the desktop draws the name, and each count with its word, as one
+  // Link in a Text that keeps the cut. Inside it each span is a Text in its
+  // own style, the theme's text color where it names none, with no
+  // underline (M311 live look). The terminal draws no Link.
+  const part = (text: string, color: string, bold?: boolean) => ({ type: 'Text', text, bold, color, underline: false })
   for (const surface of SURFACES) {
-    test(`a github.com remote draws five Links in styled Texts on the desktop and none in the terminal (AC3, ${surface})`, async ($, on) => {
+    test(`a github.com remote draws three Links of styled Texts on the desktop and none in the terminal (AC3, ${surface})`, async ($, on) => {
       const { links, first, total } = await drawnLinks($, on, { origin: 'https://github.com/o/alpha.git' }, surface)
       expect(first).toBe('alpha  3 PRs   12 issues')
       if (surface === 'terminal') {
         expect(total).toBe(0)
         return
       }
-      expect(total).toBe(5)
+      expect(total).toBe(3)
       expect(links).toEqual([
-        { href: PAGE, text: 'alpha', bold: true, color: undefined, wrap: 'truncate-end' },
-        { href: `${PAGE}/pulls`, text: '3', bold: true, color: undefined, wrap: 'truncate-end' },
-        { href: `${PAGE}/pulls`, text: ' PRs', bold: undefined, color: GRAY, wrap: 'truncate-end' },
-        { href: `${PAGE}/issues`, text: '12', bold: true, color: undefined, wrap: 'truncate-end' },
-        { href: `${PAGE}/issues`, text: ' issues', bold: undefined, color: GRAY, wrap: 'truncate-end' },
+        { href: PAGE, wrap: 'truncate-end', parts: [part('alpha', 'text', true)] },
+        { href: `${PAGE}/pulls`, wrap: 'truncate-end', parts: [part('3', 'text', true), part(' PRs', GRAY)] },
+        { href: `${PAGE}/issues`, wrap: 'truncate-end', parts: [part('12', 'text', true), part(' issues', GRAY)] },
       ])
     })
   }

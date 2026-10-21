@@ -198,6 +198,9 @@ const PANE_NEXT = 'cairn-pane-next'
 // `other` also brings the pane back at the next session in that folder. The
 // API does not say which ends those are, and none was checked live.
 const REOPEN_KEY = 'reopen'
+// The theme's text color, which a linked span without a color of its own
+// takes in place of the link's (M311 live look).
+const LINK_TEXT_KEY = 'text'
 
 // The close button's label. The desktop app draws a dismiss Button in the
 // band as its label text, so a long label reads as text there. On the
@@ -422,12 +425,24 @@ export const register: Register = on => {
     // terminal, and a line with one centers its row (M286). A tail span
     // that names an icon, the merge mark, draws the same way (M301).
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
-    // A span with an `href` holds its text in a `Link` to that page inside
-    // its `Text`, so it keeps its style and its cut, but in the terminal
-    // (M311): a terminal without OSC 8 draws the URL after the text, which
-    // would push the first line's Buttons off the row.
+    // Spans with an `href` draw in a `Link` to that page, but in the
+    // terminal (M311): a terminal without OSC 8 draws the URL after the
+    // text, which would push the first line's Buttons off the row. A run of
+    // spans with one `href`, a count and its word, is one Link, so it lights
+    // as one. Inside it each span is a `Text` in its own style, the theme's
+    // text color where it names none, with no underline, so the link takes
+    // the card's look rather than a link's blue and underline (M311 live
+    // look). The Link sits in a `Text` that keeps the cut.
     const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
-    const spanText = (span: Span) => (span.href !== undefined && Link !== undefined ? <Link href={span.href}>{span.text}</Link> : span.text)
+    const linkStyle = (span: Span) => ({ color: LINK_TEXT_KEY, ...style(span), underline: false })
+    const linked = (group: Span[]) =>
+      Link === undefined ? null : (
+        <Link href={group[0].href as string}>
+          {group.map(span => (
+            <Text {...linkStyle(span)}>{span.text}</Text>
+          ))}
+        </Link>
+      )
     // A span that holds a badge draws as its `Svg` pill on such a surface,
     // and as its padded text on the theme's gray in the terminal (M289); a
     // heading with one centers its row too. Since M302 the badge is in the
@@ -444,9 +459,23 @@ export const register: Register = on => {
         <Svg source={iconSvg(span.icon)} alt={span.text} width={ICON_PX} height={ICON_PX} />
       ) : (
         <Text wrap="truncate-end" {...style(span)}>
-          {spanText(span)}
+          {span.text}
         </Text>
       )
+    // A part's spans, each run with one `href` drawn as one Link where the
+    // surface draws Links, and every other span as `drawSpan` draws it.
+    const drawSpans = (spans: Span[]) => {
+      if (Link === undefined) return spans.map(drawSpan)
+      const out: unknown[] = []
+      for (let i = 0; i < spans.length; ) {
+        const href = spans[i].href
+        let end = i + 1
+        if (href !== undefined) while (end < spans.length && spans[end].href === href) end += 1
+        out.push(href === undefined ? drawSpan(spans[i]) : <Text wrap="truncate-end">{linked(spans.slice(i, end))}</Text>)
+        i = end
+      }
+      return out
+    }
     // A line that draws the info glyph, which then alone opens its card (M290).
     const infos = (line: (typeof lines)[number]) => line.info === true && line.full !== undefined && e.surface !== 'terminal'
     // Where each candidate card opens, from the Pane props (M294): above
@@ -502,7 +531,7 @@ export const register: Register = on => {
             {line.text === null ? null : (
               <Box key={`${line.key}-text`} flexShrink={1} minWidth={0} {...(line.grow ? { flexGrow: 1 } : {})}>
                 <Text wrap={line.wraps ? 'wrap' : 'truncate-end'} {...style(line.text)}>
-                  {spanText(line.text)}
+                  {line.text.href !== undefined && Link !== undefined ? linked([line.text]) : line.text.text}
                 </Text>
               </Box>
             )}
@@ -510,7 +539,7 @@ export const register: Register = on => {
               // A tail that grows takes the free room, so the Buttons after
               // it sit at the right end (the card's first line, M291).
               <Box key={`${line.key}-tail`} flexShrink={0} {...(line.tailGrows ? { flexGrow: 1 } : {})} {...centers(line)}>
-                {line.tail.map(drawSpan)}
+                {drawSpans(line.tail)}
               </Box>
             )}
             {line.action === undefined ? null : (

@@ -148,6 +148,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: T4 done: README summary-card paragraph, DESIGN.md card paragraph (`webOf`, `repo-4`, the Link inside the Text, no terminal link), CHANGELOG Unreleased/New entry. The simple-english lint hook's README and CHANGELOG counts are older text; the README count did not move with the added lines.
 - 2026-10-21: claim audit: 44 claims read, 3 corrected — README.md (ASCII letters; "outside the terminal"), CHANGELOG.md (no-link cases; "outside the terminal"); the reader's re-read found all three hold.
 - 2026-10-21: planted defects, each restored after: Link on the terminal reds the AC3 terminal test; dropping the owner check in `webOf` reds the AC2 bad-owner read test and its repo.test case; drawing the line text without `spanText` reds the AC3 desktop test. Tree restored clean.
+- 2026-10-21: T5 live look 1 (operator, verbatim): "the links work but i dont like the blue and underlined formatting and i dont like how 0 and PRs seem to be separate links and 0 and issues seem to be separate links". Fix: a count and its word draw as one Link; inside each Link every span is a `Text` in its own style, the theme's `text` color where it names none, `underline: false`. AC3 test updated (3 Links). plugin test 2463 pass. Look 2 next; AC3/AC4 wording waits on it.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
