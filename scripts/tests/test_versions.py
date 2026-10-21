@@ -126,7 +126,8 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(proc.stdout, "")
 
     def test_the_shape_check_takes_real_versions_and_refuses_bad_tags(self):
-        # Each refused value would make a bad tag name or a `vv` prefix.
+        # Each refused value would make a tag git refuses, a `vv` prefix, or
+        # a part that does not start and end with a letter or digit.
         for bad in ("1.0.", "1..0", "1.0.lock", "v1.0.0", ".1.0", "1.0-"):
             with self.subTest(value=bad):
                 self.commit(f"bad {bad}", line=f"version: '{bad}'")

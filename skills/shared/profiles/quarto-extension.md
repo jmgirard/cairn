@@ -69,8 +69,11 @@ commits (`start`), and whether a `v<version>` tag exists.
   user's approval.
 - **Stops.** A marker mismatch, a declared changelog with no section for the
   version, a false claim, or a declined confirmation ends the run with the
-  reason and no tag. Fix it in a merged change, such as retitling the
-  development heading to the version, then run `/cairn-release` again.
+  reason and no tag. A missing section or a false claim clears with a merged
+  changelog edit, such as retitling the development heading to the version
+  or rewording the claim. Then run `/cairn-release` again. A marker mismatch
+  at `start` cannot be fixed for this version: only a merge that raises the
+  version again clears it, and this version then stays untagged.
 - **Release-time arm.** When the tag exists, run the generic walk. Decide the
   bump (patch/minor/major) from the declared changelog. With changelog "none",
   decide it from git history and skip the consolidation. Raise every named
@@ -81,13 +84,11 @@ commits (`start`), and whether a `v<version>` tag exists.
   the previous `v*` tag:
   `git log --first-parent --format='- %s' <previous tag>..<tagged commit>`.
   The previous tag is
-  `git describe --first-parent --tags --abbrev=0 --match 'v*' <tagged commit>^`. For a first
-  release, with no previous `v*` tag, drop `<previous tag>..` to list every
-  subject up to the tagged commit. Where the `origin` remote is GitHub and
-  `gh` is available, the handoff provides a `gh release create` command with
-  these notes. cairn provides it
-  and never runs it (the universal step 4). No registry step: the tag is the
-  release.
+  `git describe --first-parent --tags --abbrev=0 --match 'v*' <tagged commit>^`.
+  For a first release, with no previous `v*` tag, drop `<previous tag>..`.
+  Where the `origin` remote is GitHub and `gh` is available, the handoff
+  provides a `gh release create` command with these notes. cairn never runs
+  it (the universal step 4). No registry step: the tag is the release.
 
 ## init-detection
 Recognized by `cairn-init` from `_extensions/*/_extension.yml` or

@@ -88,9 +88,9 @@ toolchain-specific work at step 3.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
    this step. The tag-only arm makes no edit and no prep commit. It runs the
-   claim-read below on the file's section for the version at the commit it
-   tags, when the file has one, and a false claim stops the walk, since no
-   commit can correct it before the tag): retitle the development heading to the release version; group
+   claim-read below on the section the slot found for the version, against
+   the code at the commit it tags, and a false claim stops the walk with no
+   tag): retitle the development heading to the release version; group
    entries (breaking changes first, then new features, fixes); prune noise;
    no milestone numbers or internal jargon. **Claim-read:** before the
    release-prep commit, each behavior claim in the consolidated release
