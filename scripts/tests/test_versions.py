@@ -11,6 +11,7 @@ the file, and a tip file with no `version:` line.
 Run: python3 -m unittest discover -s scripts/tests
 """
 
+import os
 import pathlib
 import shutil
 import subprocess
@@ -28,24 +29,33 @@ WHO = ["-c", "user.email=t@t", "-c", "user.name=t", "-c", "commit.gpgsign=false"
 class VersionsTest(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
-        self.root = pathlib.Path(self.tmp.name)
+        self.root = pathlib.Path(self.tmp.name) / "repo"
+        self.root.mkdir()
+        self.clock = 0
         self.git("init", "-q", "-b", "main")
 
     def tearDown(self):
         self.tmp.cleanup()
 
     def git(self, *args):
-        out = subprocess.run(["git", "-C", str(self.root), *WHO, *args], check=True, capture_output=True, text=True)
+        # Each call moves a fixed clock one minute on, so commit dates follow
+        # creation order and a date-ordered walk is predictable.
+        self.clock += 1
+        stamp = f"{1700000000 + 60 * self.clock} +0000"
+        env = {**os.environ, "GIT_AUTHOR_DATE": stamp, "GIT_COMMITTER_DATE": stamp}
+        out = subprocess.run(["git", "-C", str(self.root), *WHO, *args], check=True, capture_output=True, text=True, env=env)
         return out.stdout.strip()
 
-    def commit(self, message, version=None, other=None, line=None):
-        """Commit a change: a marker `version:` value (or a whole `line`), or
-        a change to an unrelated file. Returns the new commit's sha."""
-        if version is not None or line is not None:
+    def commit(self, message, version=None, other=None, line=None, raw=None):
+        """Commit a change: a marker `version:` value (or a whole `line`, or
+        the file's `raw` text), or a change to an unrelated file. Returns the
+        new commit's sha."""
+        if version is not None or line is not None or raw is not None:
             path = self.root / MARKER
             path.parent.mkdir(parents=True, exist_ok=True)
             body = line if line is not None else f"version: {version}"
-            path.write_text(f"title: X\nauthor: T\n{body}\ncontributes:\n  filters:\n    - x.lua\n")
+            text = raw if raw is not None else f"title: X\nauthor: T\n{body}\ncontributes:\n  filters:\n    - x.lua\n"
+            path.write_text(text, encoding="utf-8")
         if other is not None:
             (self.root / "README.md").write_text(other)
         self.git("add", "-A")
@@ -92,13 +102,46 @@ class VersionsTest(unittest.TestCase):
 
     def test_quoted_values(self):
         double = self.commit("double", line='version: "1.2.3"')
-        self.assertEqual(self.tip()["version"], "1.2.3")
+        self.assertEqual(self.tip(), {"version": "1.2.3", "start": double, "tag": "absent"})
         single = self.commit("single", line="version: '1.2.4' # bump")
         self.assertEqual(self.tip()["version"], "1.2.4")
         # A quoting change alone leaves the version the same.
         self.commit("unquote", line="version: 1.2.4")
         self.assertEqual(self.tip()["start"], single)
-        self.assertNotEqual(double, single)
+
+    def test_a_byte_order_mark_before_the_first_line_is_ignored(self):
+        bom = self.commit("bom", raw="﻿version: 3.0.0\ntitle: X\n")
+        self.assertEqual(self.tip(), {"version": "3.0.0", "start": bom, "tag": "absent"})
+
+    def test_a_version_that_is_not_a_plain_version_is_an_error(self):
+        # The value reaches `git tag` in the release walk, so anything but
+        # letters, digits, and `.+_-` is refused rather than printed.
+        sha = self.commit("odd", line="version: 1.0;touch_x")
+        proc = self.run_script()
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("1.0;touch_x", proc.stderr)
+        self.assertEqual(proc.stdout, "")
+        proc = self.run_script("--changed-by", sha)
+        self.assertEqual(proc.returncode, 2)
+        self.assertEqual(proc.stdout, "")
+
+    def test_a_shallow_clone_is_an_error(self):
+        for v in ("0.1.0", "0.2.0", "0.3.0"):
+            self.commit(v, version=v)
+        shallow = pathlib.Path(self.tmp.name) / "shallow"
+        subprocess.run(
+            ["git", "clone", "-q", "--depth", "1", f"file://{self.root}", str(shallow)],
+            check=True,
+            capture_output=True,
+        )
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), MARKER, "--root", str(shallow)],
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("shallow", proc.stderr)
+        self.assertEqual(proc.stdout, "")
 
     def test_annotated_and_lightweight_tags_both_count(self):
         light = self.commit("light", version="2.0.0")
@@ -132,16 +175,20 @@ class VersionsTest(unittest.TestCase):
 
     def test_first_parent_history_ignores_a_merged_side_branch(self):
         base = self.commit("base", version="1.0.0")
-        self.git("checkout", "-q", "-b", "side")
-        self.commit("side raise", version="1.1.0")
-        self.git("checkout", "-q", "main")
         self.commit("main docs", other="x\n")
+        self.git("checkout", "-q", "-b", "side", base)
+        side_raise = self.commit("side raise", version="1.1.0")
+        (self.root / "NOTES.md").write_text("y\n")
+        self.commit("side docs")
+        self.git("checkout", "-q", "main")
         self.git("merge", "-q", "--no-ff", "-m", "merge side", "side")
         merge = self.git("rev-parse", "HEAD")
-        # On first-parent history the merge commit is where 1.1.0 starts.
+        # By date the side commits come right after the merge, so a walk
+        # without --first-parent would start 1.1.0 at the side raise. On
+        # first-parent history the merge is where 1.1.0 enters main.
         self.assertEqual(self.tip(), {"version": "1.1.0", "start": merge, "tag": "absent"})
+        self.assertNotEqual(self.tip()["start"], side_raise)
         self.assertEqual(self.run_script("--changed-by", merge).stdout, "1.1.0\n")
-        self.assertNotEqual(base, merge)
 
     def test_tip_without_the_file_is_an_error_naming_it(self):
         self.commit("readme only", other="x\n")

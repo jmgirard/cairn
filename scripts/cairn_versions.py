@@ -24,11 +24,14 @@ The default mode prints three lines for REV:
 parent, and prints nothing when the version did not change. A commit where
 the file or its `version:` line is absent has no version: it ends a run, and
 a commit that adds the line after it sets that version. The value may be
-quoted; an unquoted value ends at the first space or `#`. In the default
-mode a missing file or `version:` line at REV is an error (exit 2, naming
-FILE). So are a ROOT that is not a git repository (exit 2, naming it), a
-revision git cannot resolve (exit 2, naming it), and a usage error (exit 2,
-for example `--at` with `--changed-by`). Stdlib only.
+quoted; an unquoted value ends at the first space or `#`, and a leading
+byte-order mark is ignored. The release walk passes the version to
+`git tag`, so a printed version holds only letters, digits, and `.+_-`; any
+other value is an error (exit 2, naming it). In the default mode a missing
+file or `version:` line at REV is an error (exit 2, naming FILE). So are a
+ROOT that is not a git repository or is a shallow clone (exit 2, naming
+it), a revision git cannot resolve (exit 2, naming it), and a usage error
+(exit 2, for example `--at` with `--changed-by`). Stdlib only.
 """
 
 import re
@@ -36,6 +39,8 @@ import subprocess
 import sys
 
 VERSION_LINE = re.compile(r"^version:[ \t]*(?:\"([^\"]*)\"|'([^']*)'|([^\s#]+))", re.M)
+# A version the release walk may pass to `git tag`: letters, digits, `.+_-`.
+PLAIN_VERSION = re.compile(r"^[0-9A-Za-z][0-9A-Za-z.+_-]*$")
 
 
 class GitError(Exception):
@@ -51,9 +56,18 @@ def git(root, *args):
 
 def check_root(root):
     try:
-        git(root, "rev-parse", "--git-dir")
+        shallow = git(root, "rev-parse", "--is-shallow-repository").strip()
     except (GitError, OSError):
         raise GitError(f"not a git repository: {root}") from None
+    if shallow == "true":
+        raise GitError(f"{root} is a shallow clone, so its history is cut short; run `git fetch --unshallow` first")
+
+
+def plain(version, path):
+    """The version, refused unless it is safe to pass to `git tag`."""
+    if version is not None and not PLAIN_VERSION.match(version):
+        raise GitError(f"the version: value in {path} is not a plain version: {version!r}")
+    return version
 
 
 def resolve(root, rev):
@@ -65,7 +79,7 @@ def resolve(root, rev):
 
 def parse_version(text):
     """The top-level `version:` value in a YAML text, or None."""
-    m = VERSION_LINE.search(text)
+    m = VERSION_LINE.search(text.lstrip("﻿"))
     if m is None:
         return None
     value = next(g for g in m.groups() if g is not None).strip()
@@ -115,7 +129,7 @@ def tag_present(root, version):
 def tip_report(root, path, rev):
     chain = first_parent_chain(root, rev)
     found = versions_at(root, path, chain)
-    version = found[chain[0]]
+    version = plain(found[chain[0]], path)
     if version is None:
         raise GitError(f"no version: line in {path} at {rev} (the file or the line is missing)")
     start = chain[0]
@@ -131,7 +145,7 @@ def changed_by(root, path, sha):
     parents = git(root, "rev-list", "--parents", "-n", "1", sha).split()[1:]
     commits = [sha] + parents[:1]
     found = versions_at(root, path, commits)
-    after = found[sha]
+    after = plain(found[sha], path)
     before = found[parents[0]] if parents else None
     if after is not None and after != before:
         return f"{after}\n"

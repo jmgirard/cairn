@@ -32,12 +32,12 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 ## Coverage
 
 - AC1 → T1
-- AC2 → T1
-- AC3 → T2
+- AC2 → T1, T6
+- AC3 → T2, T6
 - AC4 → T3
-- AC5 → T4
-- AC6 → T5
-- AC7 → T1, T2, T4, T5
+- AC5 → T4, T6
+- AC6 → T5, T6
+- AC7 → T1, T2, T4, T5, T6
 
 ## Tasks
 
@@ -46,6 +46,7 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - [x] T3: Run the script read-only on embedpdf and compare with each `v1.*` tag (AC4). Record the result in the work log.
 - [x] T4: Detection: the rulebook's "Toolchain profiles" order and count, `/cairn-init` selection order, hybrid gate, greenfield marker list and chip follow-up, instantiation list, and repair backfill. Update the `skills/tests` guards that pin five profiles (`test_toolchain_profiles.py`, `test_mutation_harness.py`, and the test in `test_scripts.py`), and hand-run `skills/tests`.
 - [x] T5: `/cairn-release` steps 1 to 3 name the tag-only arm. README, DESIGN (profile count and list, layout list), and a CHANGELOG Unreleased entry.
+- [ ] T6: Review return 1: fix the Review section's fix-now list. Script: refuse a shallow clone, check the version's shape, strip a BOM, make the first-parent test discriminate. Walk: fetch tags and read the default branch, confirm the version and `start` with the user in step 1, check the other markers at `start`, take notes and the claim-read from the version's changelog section, name the previous-tag command and the unset `${CLAUDE_PLUGIN_ROOT}` rule, add the feature-series clause. Detection text, CHANGELOG, DESIGN, comments, and guards per the list.
 
 ## Work log
 
