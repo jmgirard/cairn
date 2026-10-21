@@ -166,12 +166,14 @@
   touches, do the project's users want it beyond what the request
   literally asks, and is it framed right in its name, function, and
   arguments. An issue's wording or a maintainer's agreement does not
-  answer them. Each concern becomes a question in the plan's question set,
-  with an option not to build the work and, where it fits, an option to
-  build it under another name or shape. The milestone's work log records
+  answer them. The plan's question set poses each concern, with an option
+  not to build the work and, where it fits, an option to build it under
+  another name or shape. The milestone's work log records
   what the check found. `/hotfix` asks the same questions of the behavior
-  a fix or an adopted pull request produces, documented behavior included,
-  and a concern sends the work to a milestone plan.
+  a fix or an adopted pull request produces, documented behavior included.
+  Like any design decision, a concern leaves a candidate row or a
+  `/milestone-plan` next command that names it, and stops the hotfix
+  unless its pull request is already merged.
 
 - **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
   a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no
