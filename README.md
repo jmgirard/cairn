@@ -1049,10 +1049,14 @@ recommend one) and writes `# Collaboration mode: guest` into
 - **What you write reads like the host's own.** This covers docs, code
   comments, changelog entries, commit messages, PR text, and replies on the
   host's issues and PRs. That text matches the host's existing text of the
-  same kind in length, tone, and level of technical detail. If another
-  writing-style instruction also covers that text, such as a plugin's or
-  your own CLAUDE.md, that instruction wins. Matching the host then covers
-  only what it leaves open.
+  same kind in length, tone, and level of technical detail, read from text
+  that the host's maintainers wrote. If another writing-style instruction
+  also covers that text, such as a plugin's or your own CLAUDE.md, matching
+  the host wins for that text. The other instruction then covers only what
+  matching the host leaves open.
+- **New names reuse the host's names.** A new argument, function, or file
+  name in the host's code reuses the name that the host already uses for
+  the same thing.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
 - **Branches go to your fork unless you ask for the upstream repo.** By

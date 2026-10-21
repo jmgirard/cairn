@@ -63,7 +63,7 @@ between open guest PRs go to M309.
 
 - [x] T1: Edit the "Collaboration mode" section of `skills/shared/tracking-rules.md` (the host-text bullet near line
       405) for AC1, and add the names bullet after it for AC3.
-- [ ] T2: Edit the guest-mode text in `hooks/session_context.py` (near line 380) and README.md's guest bullet (near
+- [x] T2: Edit the guest-mode text in `hooks/session_context.py` (near line 380) and README.md's guest bullet (near
       line 1044). Change the assertion in `hooks/tests/test_hooks.py` (near line 398) to the new order.
 - [ ] T3: Add the guest scope rule to `skills/milestone-plan/SKILL.md`, beside the idea vet and the step 4 Scope
       bullets, for AC4 and AC5.
@@ -85,6 +85,12 @@ between open guest PRs go to M309.
 - 2026-10-21: in-progress; branch m308-guest-pr-shape cut from main at ec99e5a4. Untracked cairn-probe.log and tsconfig.json left unstaged.
 - 2026-10-21: the user chose at a chip to fold the candidate row "Write short guest PR bodies and replies" into M308, as the row asked; amendment held for its re-audit.
 - 2026-10-21: T1 done: host-text bullet now says host matching wins and samples maintainers' text, never the operator's; new names bullet after it. The new D-entry is D-207 (cited ahead of T6). The simple-english lint hook reports 522 hits over the whole rulebook, nearly all older than this edit; left as is.
+- 2026-10-21: re-audit: AC6 (full) — no wording finding; hotfix's "the changelog entry is the branch's only prose" note conflicts with a failure map in the guest body, so T4 rewords it. "Closes" kept over "Refs" as the narrower promise.
+- 2026-10-21: re-audit: AC9 (full) — read as a full content list it contradicts D-206's edge list and AC6/AC7; "one example" read as exactly one. Reworded: "leads with", "at most one example", "beyond the items step 8 already requires".
+- 2026-10-21: re-audit: AC10 (full) — "reports" ambiguous, no read named, "maintainer" undefined, arm unclear. Reworded to the OPEN-otherwise arm, a named read, OWNER/MEMBER/COLLABORATOR, and an unanswered-comment test.
+- 2026-10-21: re-audit: AC9 (full) — "one example" clashes with AC6's named failing calls; "already" reads two ways; maintainers undefined; "what changed for users" has no answer for a CI-only PR (answered: guest PRs here change user-facing behavior; the body says what changed where users see nothing).
+- 2026-10-21: re-audit: AC10 (full) — inline review comments fall outside `gh pr view --json comments,reviews`; the PR's author can be a MEMBER; "later" reads two ways. Second re-audit on AC9 and AC10: stop for the user on the final wording.
+- 2026-10-21: T2 done: hook guest line and README guest bullet state that host matching wins and samples maintainers' text; README gains the names bullet; hook test asserts the new order and the old phrase's absence (failed before the hook edit, passes after). Verify: five commands exit 0.
 
 ## Decisions
 
