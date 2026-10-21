@@ -754,7 +754,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note, and replies on and resolves each note's thread. Last, it answers the summary, which also covers notes in the review body. It never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes, such as a row you pressed in the cairn pane. It leaves a row that an open pull request names for that PR. If the check of the PRs fails, its option says so. A row it removes can end with an issue number, such as `(#12)`. In owner mode the edit then closes that open issue after the push, once its option names the close. It leaves a pull request's number alone. It also leaves alone an issue that a row it keeps names anywhere in its text, and an issue that an open milestone's `Resolves:` slot names. If its read of the open pull requests fails or stops at 100 PRs, it closes no issue |
 | Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one |
-| Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself. In a quarto-extension repo it reads the `version:` line in `_extension.yml` first. A version at the tip of the default branch with no `v<version>` tag gets tagged on the commit that started it, with no bump. You confirm it first. With a changelog file, the file needs a section headed with that version. Otherwise it raises the version at release time |
+| Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself. In a quarto-extension repo it reads the `version:` line in `_extension.yml` first. A version at the tip of the default branch with no `v<version>` tag gets tagged on the commit that started it, with no bump. You confirm it first. With a changelog file, the file needs a section headed with that version. Otherwise it raises the version at release time. A merge can raise the version to one with no tag. Then the `/milestone-review` or `/hotfix` close gives you the tag and push commands for the merge commit. A GitHub repo also gets `gh release create`. cairn does not run them |
 | Articulate a repo's design & principles | `/design-interview`: a two-phase interview (facts, then principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init`: idempotent; safe to re-run |
 
@@ -1098,7 +1098,9 @@ mode.
   no release work queued into the roadmap unprompted. A release is ready
   when you say it is, not when a dependency list is finished, so
   release timing is yours to declare
-  and cairn stays quiet about it until you do.
+  and cairn stays quiet about it until you do. One exception applies to
+  a Quarto extension repo. There a merge you approved that raised the
+  version already reached users, so the close gives you the tag commands.
 - Track status in CLAUDE.md, chat memory, or GitHub issues: `cairn/`
   files are the single source of truth; issues are an inbox.
 - Run Fable, or any escalation, without a per-instance yes.

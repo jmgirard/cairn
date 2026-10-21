@@ -147,7 +147,9 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   ("Question gates and phase closes") and is recorded as a D-entry. **Breaking changes to public behavior follow a deprecation cycle** unless the project is pre-1.0 and the user
   explicitly waives it; the active profile names the language's mechanics.
 - **Release timing is user-declared, never agent-proposed** (D-050): cairn never proposes, plans unprompted, or
-  nominates a release; an unopened window parks it as `blocked`. `/cairn-release` never self-submits.
+  nominates a release; an unopened window parks it as `blocked`. `/cairn-release` never self-submits. One annotation
+  (D-202) covers a quarto-extension repo. There a merge that raised the version is the release the user approved. The
+  close after it hands over the tag commands, and cairn never runs them (`/milestone-review` step 10).
 - **Prefer script-measurable acceptance criteria**; where judgment is unavoidable, commit the classification ledger.
 - **Tracking files outrank memory.** Persistent memory never holds project state; `cairn/` files win any conflict.
   **Memory intake gate (GP4):** durable project knowledge → `cairn/`; a generalizable conduct or plugin defect → the

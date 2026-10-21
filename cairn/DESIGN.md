@@ -713,7 +713,8 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   under §0's chip, M181), `cairn_versions` (a version marker's `version:`
   line along the first-parent chain: the tip's version, the first commit of
   its unbroken run, and its tag state, or with `--changed-by` the version one
-  commit set, for the quarto-extension release walk, M303; it needs a git
+  commit set, for the quarto-extension release walk, M303, and the
+  merge-time tag handoff in `/milestone-review` step 10, M304; it needs a git
   repository with full history, not a `cairn/` directory).
   Every script reads only, except `cairn_ci_paths --apply`, the layer's one
   writing mode (lines inserted into a workflow file after a PyYAML

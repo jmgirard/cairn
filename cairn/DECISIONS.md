@@ -7344,3 +7344,43 @@ own yield test and removal falsifier
 checker-regress recommendation stand unchanged. The row re-opens by
 superseding this entry, on D-108's trigger: a shipped-behavior defect that
 these clauses would have prevented.
+
+### D-202 (2026-10-20): A merge that raises a Quarto extension's version is the release the user approved, and the close hands over the tag commands — annotates D-050; supersedes D-048's wiring clause to add the `/hotfix` close (M304)
+
+**Context:** In a quarto-extension repo whose versions rise at merge,
+such as embedpdf, `quarto add` installs from `main`, so the merge already
+ships the version to users. Only the `v<version>` tag and the GitHub
+release are left to do after the merge. M303's walk tags such a version
+when the user runs `/cairn-release`; M304 hands over the commands at the
+merge itself. D-050 says cairn never proposes a
+release, and D-048 limits copy-run wiring to three skills, which leaves
+out `/hotfix`.
+
+**Decision:** In owner mode, in a repo whose profile is quarto-extension,
+the close after a merge that the run made (`/milestone-review` step 10
+and the `/hotfix` close) reads the version that the merge raised with
+`cairn_versions.py --changed-by`. When the version has no `v<version>`
+tag, the close fences the tag, push, and release commands. cairn provides
+these commands and never runs them. This annotates D-050: in a repo that
+raises its version at merge, the merge is the release the user approved
+at the merge question, and the close records it with commands it
+provides and never runs, so cairn proposes no release. It supersedes
+D-048's wiring clause (2) to add the `/hotfix` close as a fourth handoff
+site. D-108's door does not apply: the change adds a handoff to shipped
+closes, not a conduct rule about verification or records.
+
+**Rationale:** The user chose the handoff at the M304 question set. The
+release already reached users at the merge, so the commands record a
+release the user approved and do not open a new one. Running them would
+publish a tag and a release page without a separate yes.
+
+**Rejected:** Tagging at merge approval, because a tag push is an
+outward act the merge question did not name. Leaving it to
+`/cairn-release`, because the version stays untagged until the user
+remembers to run it. Falsified by versions still going untagged in a
+repo whose closes show the commands.
+
+**Consequences:** Guest mode, other profiles, resume route (a), the
+guest hygiene run, and the `/hotfix` merged-PR re-entry fence no tag
+command. D-050's parking rule and D-048's three-case rule text stand
+unchanged.

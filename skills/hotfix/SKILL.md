@@ -536,7 +536,23 @@ can resolve against the fork instead of the base repo.
    off-but-present rule (`skills/shared/copilot-review.md` §1); an adopted
    PR, or the re-entry's already-merged PR, does not, and a follow-up PR
    the re-entry opens and merges does. Step 1's own open PR is outside
-   that adopted-PR exemption, so the rule applies to it. End with the
+   that adopted-PR exemption, so the rule applies to it.
+   **Tag handoff** (owner mode, quarto-extension, D-202). After a merge
+   this run made, run `/milestone-review` step 10's tag handoff on the
+   merge commit of the PR this run merged, as `<N>`. This covers an
+   authored fix, an adopted or re-landed PR, and a follow-up PR that the
+   re-entry opens and merges. For that last case, `<N>` is the follow-up
+   PR. It does not
+   cover the merged-PR re-entry's already-merged PR. Run it after any
+   ROADMAP commit above. In place of review's step 9, first fast-forward
+   the default branch here: run `git fetch origin`, check the default
+   branch out, and run `git pull --ff-only origin <default-branch>`. A
+   dirty tree skips the checkout and the pull, with no question. A dirty
+   tree, a failed checkout, or a failed pull is named in the close. The
+   handoff still runs, because each of its reads names `<merge sha>`. Its fenced commands come
+   before any other next command. The guest arm makes no merge, so it
+   fences none.
+   End with the
    close block (tracking-rules "Question gates and phase closes"),
    composed from the hotfix's end state — recap of what was fixed and
    merged, status line,
