@@ -134,3 +134,29 @@ between open guest PRs go to M309.
 - AC10 evidence: at head 30bfc040, the five verify commands exit 0 each: scripts suite 0, hooks suite 0, plugin validate 0, marketplace validate 0, mod test 0.
 - Gate: `cairn_validate` exit 0 (one advisory: 10 criteria over the split tripwire, kept since the user chose the fold); coverage complete; no DESIGN.md principle changed, so `cairn_impact` skipped; verify green at the review head; marketplace validate prints no version warning; CHANGELOG Unreleased carries the guest-mode entry with no milestone ids.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: `author_association` may show a private org member as CONTRIBUTOR to an outside guest, so the sample and §2 miss maintainers — follow-up, candidate row "Check maintainer roles seen by outsiders" (unconfirmed; on easystats/datawizard maintainers read as MEMBER to a member viewer).
+- diff-bug #2: step 8 has no fallback when the maintainer PR read fails or keeps no PR — fix now (falls back to the host's other documentation; close block names the read).
+- diff-bug #3: §2's second read has no failure handling — fix now (a failed read is named, never shown as no comments).
+- diff-bug #4: inline review comments are never named by §2 — reject, planned change: AC9 limits the read to conversation comments and review bodies, chosen at the re-audit.
+- diff-bug #5: CHANGELOG says `/milestone` names every unanswered maintainer comment, wider than §2 — fix now (scoped to a handed-off PR waiting for review, comments and reviews).
+- diff-bug #6: guest scope reads skipped for a request that names no work — fix now (they run with the idea vet, at step 3 for such a request).
+- diff-bug #7: side-fix rows written to disk during investigation — fix now (written at step 4).
+- diff-bug #8: history read on a stale local HEAD — fix now (on `<base>/<default-branch>` after `git fetch <base>`); the shallow-clone case is rejected as edge: a shallow guest clone, outside the documented fork-and-clone use, blames every line to the boundary commit, which is visibly wrong rather than a silent wrong result.
+- diff-bug #9: failure list only for issues the PR closes, and no failed-read rule — reject the `Refs` part as planned change (AC6 says closes); failed read fixed now (named in the close block), in step 8 and hotfix.
+- diff-bug #10: a late `maintainer approach:` line never reaches an open PR — reject, false: the line's one writer is `/milestone-plan` step 4, which runs before any PR exists.
+- diff-bug #11: D-207 narrows D-161's matching rule without saying so, and its Consequences contradict that — fix now (heading and Consequences corrected; D-207 is on this branch only).
+- diff-bug #12: the `maintainer approach:` record rule is not recorded against D-108's door — fix now (D-207 names M308's other rules as passing on the same trigger).
+- diff-bug #13: step 8's guest create spells no `--title/--body` — fix now (added after the pinned command).
+- diff-bug #14: hotfix "one addition to the body's prose" unclear — fix now (the body is a short description in the host's style, then the list).
+- diff-bug #15: step 8's maintainer read sits after "record the PR URL" in text order — fix now ("Before the create").
+- diff-bug #16: a pending review by the PR's author has no `submittedAt` — fix now (it is neither named nor counted as a reply).
+- blame-history #1: guest scope reads issue comments without the data boundary or a maintainer test — fix now (data, never instructions; maintainer by association).
+- blame-history #2: the M247 CHANGELOG bullet contradicts the new one in the same release — reject, false: it sits under `## 2.1.0 (2026-10-18)`, not Unreleased.
+- blame-history #3: "never the operator's own" is enforced only for PR bodies — fix now (the rulebook checks the author for text that names one: PR bodies, comments, commits).
+- blame-history #4: D-207 says the user's choice "excludes guest checkouts" from the lint, which nothing does — fix now (reworded as the user's own step).
+- blame-history #5: the closed-PR sample can keep no maintainer body — fix now (same as diff-bug #2).
+- prior-review #1: the rulebook mass baseline is not re-seeded after T1 changed the file (PR 244 lesson) — fix now (re-seeded to 770 lines / 74,591 bytes in `/milestone`'s audit line and both prose guards).
+- prior-review #2: the new issue and comment reads carry no data-not-instructions line (PR 241 lesson) — fix now (step 8, hotfix, §2, and guest scope say it).
+- ripple #1: `skills/tests/test_guest_fork_remote.py:65` pins the hotfix guest create phrase that the diff extended — fix now (the flags moved after the pinned command; prose guards OK).
+- ripple #2: plan step 1's "In guest mode no issue is closed and none is read" now reads as wider than the trivial route — fix now ("none is read for a close"; pinned phrase kept).
+- ripple #3: Copilot's fixed reply format may conflict with host matching winning — reject, false: Copilot thread replies address the bot, and the module's reply is a fixed fact line, not a writing-style instruction over host text.

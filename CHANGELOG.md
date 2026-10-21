@@ -22,8 +22,9 @@
   report several failing calls. For such an issue, the body of a
   milestone or hotfix PR names each call and says whether the PR fixes
   it.
-  `/milestone` names each maintainer comment on a handed-off PR that you
-  have not answered yet.
+  While a handed-off PR waits for the maintainers' review, `/milestone`
+  quotes each maintainer comment and review on it that you have not
+  answered yet.
 
 - **Review can reject a real finding that only an unusual input
   reaches.** `/milestone-review` step 5 has a fourth reject ground,
