@@ -82,27 +82,30 @@ hotfix PR, which is reported only; `/hotfix` with the PR reference already resum
 - AC5 evidence (2026-10-21, at 6bfd1a2b): `scripts/tests` 445 OK (21 skipped) exit 0; `hooks/tests` 193 OK exit 0; plugin validate exit 0; marketplace validate exit 0, no version warning; `claude plugin test .` 2444 tests, 0 fail, exit 0. Re-run after the fix-now edits, same counts, all five exit 0. PASS.
 - Gate (2026-10-21): cairn_validate all checks passed, exit 0; no principle changed, so no cairn_impact; profile gate: verify green (AC5), no marketplace version warning, CHANGELOG Unreleased carries the entry. PASS.
 - spawned: diff-bug, blame-history, prior-review, ripple
-- diff-bug #1: the step 1 resume rests on a remembered route, not a fresh read — fix now (step 1 reads `mergeable` fresh)
-- diff-bug #2: a red verify, or a session end, between the resolved rebase and the push — fix now for red verify (fixed before the push); the session-end window went to the candidate row "Close the guest conflict sync edges"
-- diff-bug #3: the unanswered-maintainer-comment read belongs only to `OPEN` otherwise — fix now (the `CONFLICTING` and `UNKNOWN` arms read it too)
+- diff-bug #1: the step 1 resume rests on a remembered route, not a fresh read — fix now (step 1 reads `mergeable` fresh), fixed b96a7e10
+- diff-bug #2: a red verify, or a session end, between the resolved rebase and the push — fix now for red verify (fixed before the push); the session-end window went to the candidate row "Close the guest conflict sync edges", fixed b96a7e10
+- diff-bug #3: the unanswered-maintainer-comment read belongs only to `OPEN` otherwise — fix now (the `CONFLICTING` and `UNKNOWN` arms read it too), fixed b96a7e10
 - diff-bug #4: a sync-only resume runs a full second review pass — follow-up ("Close the guest conflict sync edges")
-- diff-bug #5: the stacked sync pushes before its verify — fix now (verify before any push, the stacked lease push included)
+- diff-bug #5: the stacked sync pushes before its verify — fix now (verify before any push, the stacked lease push included), fixed b96a7e10
 - diff-bug #6: a dirty tree makes the rebase refuse with no conflicted files — follow-up, pre-existing ("Close the guest conflict sync edges")
 - diff-bug #7: `UNKNOWN` gets no retry — reject, planned change (AC1 reports `UNKNOWN` with no route)
 - diff-bug #8: the abort stop leaves the milestone `in-progress` while its PR waits — follow-up ("Close the guest conflict sync edges")
 - diff-bug #9: `--diff-filter=U` leaves out files already resolved — reject, false: the stop names the files the user must still act on, and resolved files need nothing
 - diff-bug #10: nothing in `/hotfix` rebases a conflicted hotfix PR — follow-up ("Close the guest conflict sync edges")
-- diff-bug #11: the pane's `PR_BUTTON` comment reads as the full route list — fix now (pane.ts comment and DESIGN.md say "three of the routes")
-- diff-bug #12: the §2 arm leaves out the cannot-resolve stop, and the rulebook and review close overstate the route for a closed stack base — fix now
+- diff-bug #11: the pane's `PR_BUTTON` comment reads as the full route list — fix now (pane.ts comment and DESIGN.md say "three of the routes"), fixed b96a7e10
+- diff-bug #12: the §2 arm leaves out the cannot-resolve stop, and the rulebook and review close overstate the route for a closed stack base — fix now, fixed b96a7e10
 - diff-bug #13: a conflict resolved in review's step 1 sync gets no claim re-check — reject, false: review step 1 runs before step 3's evidence and step 5's lenses, which read the resolved tree
 - diff-bug #14: lines past the wrap width — reject, style
 - blame-history #1: resolved conflicts are pushed with no user chip (tension with D-171) — reject, planned change (AC4 names the re-push after resolution; D-171 binds the `/hotfix` requested-changes route)
-- blame-history #2: the new arms skip the unanswered-comment quotes — fix now (same fix as diff-bug #3)
+- blame-history #2: the new arms skip the unanswered-comment quotes — fix now (same fix as diff-bug #3), fixed b96a7e10
 - blame-history #3: verify placement is ambiguous, and the generic guest sync lets the requested-changes route resolve conflicts too — reject, false for the order (the text runs verify after the rebase ends) and planned change for the placement (AC4 puts it in the guest sync)
-- blame-history #4: the review close overstates §2 for a closed stack base — fix now (same fix as diff-bug #12)
+- blame-history #4: the review close overstates §2 for a closed stack base — fix now (same fix as diff-bug #12), fixed b96a7e10
 - blame-history #5: the CHANGELOG adds the conflict route to the M308 bullet, and lines run long — reject, style
-- prior-review #1: the review close label routes a closed-stack-base PR — fix now (same fix as diff-bug #12)
-- prior-review #2: step 1's "guest sync" reads as the plain rebase for a stacked milestone — fix now (step 1 names the stacked sync)
+- prior-review #1: the review close label routes a closed-stack-base PR — fix now (same fix as diff-bug #12), fixed b96a7e10
+- prior-review #2: step 1's "guest sync" reads as the plain rebase for a stacked milestone — fix now (step 1 names the stacked sync), fixed b96a7e10
 - prior-review #3: long lines — reject, style
-- ripple #1: skills/tests/test_guest_stacked_milestones.py:42 pins "and an open stacked one …" that the diff rewrote — fix now (wording restored; the guard passes by hand)
-- ripple #2: cairn/DESIGN.md:462-463 reads the three Buttons as all the routes — fix now (same fix as diff-bug #11)
+- ripple #1: skills/tests/test_guest_stacked_milestones.py:42 pins "and an open stacked one …" that the diff rewrote — fix now (wording restored; the guard passes by hand), fixed b96a7e10
+- ripple #2: cairn/DESIGN.md:462-463 reads the three Buttons as all the routes — fix now (same fix as diff-bug #11), fixed b96a7e10
+- copilot: review body — "The conflict-stop path still falls through to an incorrect generic close block and retry guidance." — follow-up ("Close the guest conflict sync edges", item 3); summary reply posted
+- Copilot level: Lite (set by GitHub's settings); its review covered an earlier head than b96a7e10, and it opened no threads
+- conversation: PR #323 — no human reviews, comments, or unresolved threads; the operator's summary comment logged as noted
