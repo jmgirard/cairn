@@ -11,7 +11,7 @@
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — skill conduct that adopting repos run at the merge, handoff, and hotfix gates
-- **Branch/PR:** m310-snapshot-explain
+- **Branch/PR:** m310-snapshot-explain, https://github.com/jmgirard/cairn/pull/324
 
 ## Goal
 
