@@ -296,8 +296,10 @@ export function startedRefs(
 // (M272, M273): the first `[high]` row with a short title that the
 // Candidates list draws, under the list's own test (`startedRefs` over the
 // counted tokens, the open hotfix list, and the PR bodies that name a row),
-// so the Next line, the pane's Plan press, and the band's Plan press never
-// name a hidden row or pass over a drawn one. Null outside planning, or
+// so the Plan press never names a hidden row or passes over a drawn one.
+// Since M305 the pane's Next line, and with it its Plan press, draws only
+// while the list draws no row, so the pick reaches the band's Plan press
+// alone. Null outside planning, or
 // when the list draws no such row. The reader's `next.title` counts every
 // `#` token and reads no PR body, as scripts/cairn_next.py does.
 export function nextTitle(
@@ -463,7 +465,6 @@ export const CHECK_LABEL = 'Check'
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
-export const NO_ACTIVE = 'no active milestone'
 // A task or criterion's marks (M286), as the desktop app's own task list
 // draws them, at the operator's direction after the pick: a checked box is
 // a filled circle with a check, an open one a dashed circle, and the first
@@ -834,17 +835,23 @@ export function paneLines(
   // the card since M286), and ⌂ before it while no cairn skill's step is
   // set (M241).
   out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
-  // A blank row under the card, for the operator's ask for more space.
-  out.push(gap('card-gap'))
-  if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
+  // A blank row under the card, for the operator's ask for more space,
+  // before the first milestone. Every later section opens with its own
+  // blank row, so with no milestone active the card needs none (M305).
   state.milestones.forEach((row, i) => {
-    if (i > 0) out.push(gap(`${row.id}-gap`))
+    out.push(gap(i === 0 ? 'card-gap' : `${row.id}-gap`))
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
-  if (state.next !== null) {
-    // Planning names its `[high]` row's short title after the command (M272).
-    const named = state.next.id ?? nextTitle(state.next, state.candidates, state.taken, hotfixes, started)
-    const target = named === null ? state.next.command : `${state.next.command} ${named}`
+  // With no milestone active, a planning Next line beside a drawn
+  // Candidates list says what each candidate line's ✎ already does, so it
+  // draws only while the list draws no row (M305).
+  const drawn = state.milestones.length === 0 ? drawable : []
+  const repeats = state.next?.command === '/milestone-plan' && drawn.length > 0
+  if (state.next !== null && !repeats) {
+    // Until M305 planning named its `[high]` row's short title after the
+    // command (M272). A drawn `[high]` row now hides the line, so a shown
+    // planning line names none. The band's Plan press still names it.
+    const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
     // The arrow and the command, bold in the color of the phase the command
     // runs, with no pill (M286, look B).
@@ -924,8 +931,7 @@ export function paneLines(
   // holds them in (M280).
   // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
   // index there as its key and its ✎ target, and `pressCandidate` looks the
-  // row up by that index.
-  const drawn = state.milestones.length === 0 ? drawable : []
+  // row up by that index. `drawn` is set before the Next line, which reads it.
   if (drawn.length > 0) {
     out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
     for (const { row, i } of drawn) {

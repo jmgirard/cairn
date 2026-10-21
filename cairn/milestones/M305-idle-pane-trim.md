@@ -1,13 +1,13 @@
 # M305: Trim the idle pane and separate the candidate levels
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the cairn pane is what operators see in the desktop app and the terminal
-- **Branch/PR:** —
+- **Branch/PR:** m305-idle-pane-trim
 
 ## Goal
 
@@ -51,8 +51,8 @@ With no active milestone, the cairn pane shows only lines that add something, an
 
 ## Tasks
 
-- [ ] T1: Remove the `no-active` line (`pane.ts:839`) and `NO_ACTIVE` (`pane.ts:466`). Update the mod tests that expect the line (`pane.test.tsx` near 6002 and 6359; the assertion near 1695 passes either way, so rewrite it to assert the line is absent) and each `rowsAbove` figure it shifts. The `no-active` fixture name stays.
-- [ ] T2: In `paneLines` (`pane.ts:844-861`), skip the Next line and its `next-gap` when the command is `/milestone-plan` and the drawn candidate list is not empty. Add the AC2 and AC3 tests.
+- [x] T1: Remove the `no-active` line (`pane.ts:839`) and `NO_ACTIVE` (`pane.ts:466`). Update the mod tests that expect the line (`pane.test.tsx` near 6002 and 6359; the assertion near 1695 passes either way, so rewrite it to assert the line is absent) and each `rowsAbove` figure it shifts. The `no-active` fixture name stays.
+- [x] T2: In `paneLines` (`pane.ts:844-861`), skip the Next line and its `next-gap` when the command is `/milestone-plan` and the drawn candidate list is not empty. Add the AC2 and AC3 tests.
 - [ ] T3: Add a rule line between adjacent drawn levels in the Candidates loop (`pane.ts:931`), keyed outside `candidate-*`, with a `PaneLine` flag that `register.tsx` draws as a thin `Svg` line on the desktop (a text rule drew as two lines there, LESSONS M286) and as a gray truncated `─` run in the terminal. Check the tests near `pane.test.tsx:6684` and 6739, which treat `candidate-` keys and `rowsAbove` lines as rows. Add the AC4 (a) and AC5 tests.
 - [ ] T4: Preview the rule `Svg` in the browser pane in dark and light (LESSONS M204). Then open a new desktop session in `~/github/modelbased`, which has no active milestone and rows in all four levels. `~/.claude/skills/cairn` links to this checkout, so that session loads the branch's mod; check that its pane shows no `no active milestone` line before judging. The user looks in dark and light. If the user rejects the rule, remove it, give `[parked]` its own color key (`PRIORITY_MARK.parked` at `pane.ts:487`, the title color at `pane.ts:936`, the icon stroke at `icons.ts:64`) with the AC4 (b) tests, and append a D-entry superseding D-184's gray-mark clause. Log the look's result and which means shipped.
 - [ ] T5: Update README (the pane section near line 345), DESIGN's pane paragraphs, the comments at the top of `pane.ts`, and CHANGELOG Unreleased.
@@ -70,6 +70,8 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: criteria audit (full mode, fresh Opus reader) returned 9 findings, all fixed: AC2 also hides `next-gap` and tests a parked-only list; AC3's implement case now has candidates drawing and its review case was cut (no candidates draw with an active milestone); AC3 adds a row hidden by an open hotfix PR; AC4 says exactly one means ships and drops the work-log promise; AC4 (a) adds a two-row level, an all-hidden level, and the key and `rowsAbove` rules; AC4 (b) adds the icon stroke; T4 names how the branch's mod loads in modelbased; T1's 1695 assertion passes either way; the Next block is `pane.ts:844-861`.
 - 2026-10-20: plan gate chose an `Svg` rule on the desktop over a text rule of `─` because M286 saw a one-row text rule draw as two lines there; falsified by a desktop text rule that draws on one row at the 44-column dock.
 - 2026-10-20: plan gate chose to try the rule first and the parked color second, in the user's order; falsified by the live look.
+- 2026-10-20: implement started on m305-idle-pane-trim; untracked cairn-probe.log and tsconfig.json predate the branch and stay unstaged.
+- 2026-10-20: T1+T2 in one checkpoint, since both shift the same row figures in the M294 tests. The card's blank row now draws only before the first milestone, because every later section opens with its own and removing `no active milestone` left two blank rows in a row. The pane's Next line no longer calls `nextTitle`: a drawn `[high]` row hides the line, so a shown planning line names nothing; the band's Plan press still does. Tests that read the planning line in fixtures with drawn rows now loop over `WITH_NEXT`, and the M272/M273 press tests press the band. A drawn row whose short title is empty has no ✎ and still hides the line, as AC2 is written; the band's Plan remains. verify green (mod 2410 pass).
 
 ## Decisions
 
