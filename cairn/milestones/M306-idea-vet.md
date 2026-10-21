@@ -166,3 +166,7 @@ Pass 1 (2026-10-21), on head a42f1746, branch synced with origin/main (0 commits
 - copilot: skills/hotfix/SKILL.md:64 — the guest change route's post-edit tier check did not run the vet — fix now: that tier check now runs the idea vet on the changed diff, fixed b8c194d1
 - Copilot level: Lite (set by GitHub's settings)
 - Return floor: none of these demonstrates a criterion failing; diff-bug #1 is a defect on a rare path (a merged-PR re-entry with a concern) fixed in one sentence, judged not load-bearing. Probe: 34 plants red, control green; verify green at b8c194d1.
+- conversation: copilot-pull-request-reviewer PR review (COMMENTED, body indexes the one thread above) — noted
+- conversation: jmgirard PR review (COMMENTED, empty body, made by the thread reply) — noted
+- conversation: jmgirard PR comment (the Copilot summary reply) — noted
+- conversation: no unresolved threads remain after the resolve.
