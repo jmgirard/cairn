@@ -1,6 +1,6 @@
 # M304: Hand over the tag commands when a merge raises the version
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M303
 - **Driving RR:** —
@@ -56,6 +56,8 @@ In a quarto-extension repo, the close after a merge that raised the version hand
 - 2026-10-20: T3 done: D-202 appended (annotates D-050; supersedes D-048's wiring clause (2) for the `/hotfix` close; D-108's door does not apply). `cairn_validate` green; tracking-only, so the five verify commands run once at T5.
 - 2026-10-20: T4 done (read-only in embedpdf, marker `_extensions/embedpdf/_extension.yml`): `--changed-by a68951d` printed `1.2.9`, exit 0; `--changed-by cf71a53` printed nothing, exit 0 (that commit touches only `cairn/`). `v1.2.9` is tagged there now, so the handoff for a68951d would fence nothing (AC2's tag-exists case). Open concern: the "none" notes command lists plan and review tracking commits too (12 lines since v1.2.8, one of them the fix); M303's release-walk notes do the same, so M304 keeps the shared rule.
 - 2026-10-20: T5 done: README's "Prepare a release" row and a new CHANGELOG Unreleased "New" entry describe the handoff. Verify: 5/5 green; `skills/tests` hand-run green (930 tests).
+- 2026-10-20: claim audit: 28 claims read, 0 corrected — skills/milestone-review/SKILL.md, skills/hotfix/SKILL.md, README.md, CHANGELOG.md. Reader notes, not defects: README and CHANGELOG leave out the tag-exists and missing-section conditions the skill states; a `/hotfix` follow-up PR rarely changes `version:`, so a version raised by the re-entry's already-merged PR gets no handoff (Out by AC1).
+- 2026-10-20: implement complete; status → review.
 
 ## Decisions
 
