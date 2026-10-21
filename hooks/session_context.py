@@ -386,7 +386,8 @@ def build_context(root):
             "entries, commit messages, PR text, replies) matches the host's "
             "own length, tone, and level of technical detail, read from text "
             "the host's maintainers wrote, and that matching wins over any "
-            "other writing-style instruction in the session for that text."
+            "other writing-style instruction in the session for that text; "
+            "the other instruction governs only what host matching leaves open."
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:
