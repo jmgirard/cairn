@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M310: Check and explain changed snapshots before a PR leaves
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — skill conduct that adopting repos run at the merge, handoff, and hotfix gates
-- **Branch/PR:** —
+- **Branch/PR:** m310-snapshot-explain
 
 ## Goal
 
@@ -107,7 +107,7 @@ D-entry, the CHANGELOG, and the README follow.
 
 ## Tasks
 
-- [ ] T1: Add the snapshot list to `/milestone-review` step 7 (near the
+- [x] T1: Add the snapshot list to `/milestone-review` step 7 (near the
       presentation items before the PR-conversation read): the definition,
       the diff bases, the per-file line, the step-5 settling, and the
       `snapshot:` Review line.
@@ -135,6 +135,8 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: criteria audit (full, two passes): pass 1 returned 14 findings on the first draft, and pass 2 returned 11 on the wording revised after the question set; all are taken toward the narrower wording, except the open-PR comment's delta diff, which was not taken because the guest sync's push makes it empty, so the comment lists the full recomputed list.
 - 2026-10-21: plan gate chose a fixed directory-name rule (`_snaps`, `__snapshots__`) in the skills over a new profile slot because a slot change does not reach adopted repos (lesson M274); falsified by a repo whose snapshot tool stores files under another directory name.
 - 2026-10-21: plan gate chose the review gate (step 7) over the handoff (step 8) for the check, because an unneeded change must be fixable before approval; falsified by a run where the gate's list is stale at the push.
+- 2026-10-21: implement started on m310-snapshot-explain, cut from main at 488fc5a4; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-21: T1 done — step 7 gains a "Changed snapshot files" paragraph before the PR-conversation read; verify green (five commands, each exit 0).
 
 ## Decisions
 

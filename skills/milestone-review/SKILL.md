@@ -523,6 +523,23 @@ re-enters here, at the step the record shows is next:
    appear in this presentation, and the chip's
    question text names how many Copilot items took each disposition.
 
+   **Changed snapshot files.** A changed snapshot file is a path with a
+   directory named `_snaps` (testthat) or `__snapshots__` (Jest, syrupy)
+   among the paths that `git diff --name-only
+   <base>/<default-branch>...HEAD` prints. A stacked guest milestone whose
+   stack base's PR is `OPEN` diffs against `<base>/<stack-base-branch>`.
+   Resume route (b) uses the paths that `gh pr diff <N> --name-only`
+   prints. In both modes, this presentation lists each such file on the
+   head the chip is posed on, after any fix-now commits, with one plain
+   line. The line says what changed in its stored output, or that the
+   file is new or deleted, and whether the Goal or acceptance criteria
+   call for that change. Before the chip, step 5's rule settles a change
+   that they do not call for as fix now (the snapshot re-recorded or the
+   change reverted) or follow-up. Its Review-section line is `snapshot:
+   <path> — <disposition>`, written also when a fix-now revert removes the
+   path from the list. An empty list is stated in one line. Step 8's guest
+   arm uses the same definition.
+
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
    the chip, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
