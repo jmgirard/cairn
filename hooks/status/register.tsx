@@ -1368,7 +1368,7 @@ async function pressNext($, drawn: string | undefined) {
     if (next === null) return undefined
     if (next.id === null && drawn !== PLAN_LABEL) return undefined
     const clears = CLEARS_FIRST.includes(next.action) && drawn === labelOf(next.action)
-    // The title the Next line names, under the Candidates list's own hide
+    // The title of the first drawn `[high]` row, under the Candidates list's own hide
     // rule (M272, M273).
     const held = await read($, hotfixes)
     const ours = held.root !== null && held.root === (await read($, band)).root

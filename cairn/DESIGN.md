@@ -306,9 +306,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   and `next` keys. The next step's `title` is null except while planning,
   when `high_title` (`highTitle`) gives the short title of the first
   `[high]` candidate row whose short title no token `takenRows` counts
-  names (M272, M273). The pane's Next line and Plan press do not use that
+  names (M272, M273). The Plan press does not use that
   `title`: `nextTitle` in `pane.ts` picks the first `[high]` row the
-  Candidates list draws. The pane state also holds the candidate rows (M207):
+  Candidates list draws. Since M305 the pane's Next line draws for a
+  `/milestone-plan` step only while the list draws no row (the list draws
+  none while a milestone is active, and `recommend` plans only with none
+  active), so it names no row, and the band's Plan press is the pick's one
+  reader in practice. The pane state also holds the candidate rows (M207):
   `candidateRows` in `reader.ts` reads each flush-left line that opens
   with `- ` under a `## Candidates` heading, after HTML comments are
   removed from that section, as a priority (`high`, `low`, or `parked` for
@@ -335,9 +339,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   an offset does (M290's probe). The terminal draws ✎ as before and has no
   info glyph. `paneLines` draws the lines by level (`LEVEL_RANK`: high,
   normal, low, parked), each level in ROADMAP order, and `state.candidates` stays
-  in ROADMAP order (M280). A parked row's mark is a gray `⧗`
-  (`PRIORITY_MARK.parked`) and its title is gray, as a low row's is (M284,
-  D-184). `high_title` and `nextTitle` pick only `[high]` rows, so they never
+  in ROADMAP order (M280). A parked row's mark `⧗`
+  (`PRIORITY_MARK.parked`) and its title draw in `PARKED_KEY`, the theme's
+  `permission` blue, and its desktop icon in `ICON_COLORS.blue`, while a
+  low row's stay gray (M284, M305, D-184, D-203). `high_title` and `nextTitle` pick only `[high]` rows, so they never
   name a parked row. `cairn_validate`'s `candidate order` advisory
   WARNs on each row the file holds below a row of a lower level, `parked`
   ranking lowest. The line's `target` is its index and its `title` the short

@@ -4,6 +4,7 @@ import type { On } from 'claude-code'
 import { BADGE_PAD, badgeSvg, badgeWidth } from './badge'
 import { FIXTURES } from './fixtures.gen'
 import { GRAY, flowOf, width } from './band'
+import { iconSvg } from './icons'
 import {
   CHECKED_MARK,
   cardCut,
@@ -73,6 +74,13 @@ function drawnCandidates(name: string) {
     .filter(({ row }) => !(HIDDEN[name] ?? []).includes(row.title))
     .sort((a, b) => LEVEL[a.row.priority] - LEVEL[b.row.priority] || a.i - b.i)
 }
+// The fixtures whose pane hides the Next line (M305): each plans next with
+// no milestone active while its Candidates list draws a row. The rest draw
+// it.
+const HIDES_NEXT = WITH_ROADMAP.filter(
+  name => FIXTURES[name].next?.command === '/milestone-plan' && FIXTURES[name].pane.length === 0 && drawnCandidates(name).length > 0,
+)
+const WITH_NEXT = WITH_ROADMAP.filter(name => !HIDES_NEXT.includes(name))
 
 type Element = { type: string; key?: string; props: Record<string, unknown>; children: unknown[] }
 type Ui = {
@@ -511,11 +519,14 @@ describe("the pane shows the queue that cairn_next.py prints (M205 AC3)", () => 
         const lines = await paneLines($, surface)
         const next = FIXTURES[name].next
         if (next === null) throw new Error('a fixture with a ROADMAP has a next step')
-        // The command follows `→ ` with no pill and no padding (M286).
-        // Planning names the fixture's `[high]` row title, when it has one
-        // (M272).
-        const named = next.id ?? next.title
-        expect(textAt(lines, 'next')).toBe(`→ ${named === null ? next.command : `${next.command} ${named}`}`)
+        // The command follows `→ ` with no pill and no padding (M286), and
+        // a milestone's id after it. A planning line beside a drawn
+        // Candidates list is not drawn, and a drawn one names no row (M305).
+        if (HIDES_NEXT.includes(name)) {
+          expect(lines.some(([key]) => key === 'next' || key === 'next-gap')).toBe(false)
+        } else {
+          expect(textAt(lines, 'next')).toBe(`→ ${next.id === null ? next.command : `${next.command} ${next.id}`}`)
+        }
         // Every id opens with `M`, and the heading lines' keys end in `head`.
         expect(keysLike(lines, /^workable-M/)).toEqual(FIXTURES[name].workable.map(id => `workable-${id}`))
         expect(keysLike(lines, /^waiting-M/)).toEqual(next.waiting.map(row => `waiting-${row.id}`))
@@ -534,8 +545,9 @@ const MARKS = {
   high: { text: '↑', color: 'claude', bold: true, icon: 'high' },
   normal: { text: '○', icon: 'ring' },
   low: { text: '↓', color: 'inactive', icon: 'low' },
-  // M284: a parked row's hourglass, gray.
-  parked: { text: '⧗', color: 'inactive', icon: 'parked' },
+  // M284: a parked row's hourglass, gray until M305, now the theme's
+  // `permission` blue.
+  parked: { text: '⧗', color: 'permission', icon: 'parked' },
 } as const
 
 // The candidates fixture's lines, written out by hand from its ROADMAP, in
@@ -1151,7 +1163,7 @@ describe('section headings, the head line, Next, and the card in the picked look
           { text: '↓', color: GRAY, icon: 'low' },
           { text: ' 0' },
           { text: '   ' },
-          { text: '⧗', color: GRAY, icon: 'parked' },
+          { text: '⧗', color: 'permission', icon: 'parked' },
           { text: ' 0' },
         ],
         text: null,
@@ -1316,8 +1328,8 @@ async function untilRuns(copy: Copy, n: number, tries = 200) {
 }
 
 describe("the Next line carries the next step's Button (M218 AC1)", () => {
-  test('the fixtures reach every action', () => {
-    expect([...new Set(WITH_ROADMAP.map(name => FIXTURES[name].next?.action))].sort()).toEqual(Object.keys(ACTION_LABELS).sort())
+  test('the fixtures that draw the line reach every action', () => {
+    expect([...new Set(WITH_NEXT.map(name => FIXTURES[name].next?.action))].sort()).toEqual(Object.keys(ACTION_LABELS).sort())
     expect(BY_ACTION.map(([name]) => FIXTURES[name].next?.action)).toEqual(BY_ACTION.map(([, action]) => action))
   })
 
@@ -1345,7 +1357,7 @@ describe("the Next line carries the next step's Button (M218 AC1)", () => {
     }
   })
 
-  for (const name of WITH_ROADMAP) {
+  for (const name of WITH_NEXT) {
     for (const surface of SURFACES) {
       test(`${name} (${surface})`, async ($, on) => {
         seat(on, copyOf(name))
@@ -1483,7 +1495,7 @@ async function endSkill($) {
 }
 
 describe('the Next line carries the Status Button after Next (M219 AC1)', () => {
-  for (const name of WITH_ROADMAP) {
+  for (const name of WITH_NEXT) {
     for (const surface of SURFACES) {
       test(`${name} (${surface})`, async ($, on) => {
         seat(on, copyOf(name))
@@ -1503,6 +1515,27 @@ describe('the Next line carries the Status Button after Next (M219 AC1)', () => 
         // The Buttons come after the command, each in its own Box.
         const line = (await boxOf(ui, 'next')) as Element
         expect(kids(line).map(keyOf)).toEqual(['next-lead', 'next-text', 'next-action', 'next-status'])
+        await ui.unmount()
+      })
+    }
+  }
+
+  // M305 AC2: where the Next line is hidden, its Plan and Status go with
+  // it, and the pane's Buttons are ⌂, ↻, and each candidate line's ✎.
+  test('the fixtures that hide the line include a planning one with drawn rows', () => {
+    expect(HIDES_NEXT.length).toBeGreaterThan(0)
+    expect(HIDES_NEXT).toContain('high-candidate')
+  })
+
+  for (const name of HIDES_NEXT) {
+    for (const surface of SURFACES) {
+      test(`${name}: no Next line, no Next or Status Button (${surface})`, async ($, on) => {
+        seat(on, copyOf(name))
+        await $.turn.complete(turn())
+        const ui = await mountPane($, surface)
+        expect(await nextKeys(ui)).toBe(null)
+        const plans = drawnCandidates(name).flatMap(({ row, i }) => (row.title === '' ? [] : [`cairn-pane-plan-${i}`]))
+        expect((await ui.findAll({ type: 'Button' })).map(keyOf)).toEqual([PANE_HOME, PANE_REFRESH, ...plans])
         await ui.unmount()
       })
     }
@@ -1585,7 +1618,7 @@ describe('a press of Status runs its command (M219 AC3)', () => {
 
 // The pane fixtures whose next action is planning or implement (M221 AC1,
 // AC2).
-const PANE_CLEAR_FIRST = WITH_ROADMAP.filter(name => CLEARS_FIRST.includes(FIXTURES[name].next?.action as string))
+const PANE_CLEAR_FIRST = WITH_NEXT.filter(name => CLEARS_FIRST.includes(FIXTURES[name].next?.action as string))
 
 describe("the pane's Plan and Implement run /clear and then their command (M221 AC1, AC2)", () => {
   test('the cases reach both actions', () => {
@@ -1692,13 +1725,15 @@ describe('the first line carries ⌂ before ↻ while no cairn skill runs (M241 
     }
     expect(layout(state, [], true)[0]).toMatchObject({ key: 'card-repo', buttons: ['home', 'refresh'] })
     expect(layout(state, [], false)[0]).toMatchObject({ key: 'card-repo', buttons: ['refresh'] })
-    // The no-active line follows the card and carries no Button (M286).
-    expect(layout(state, [], true).find(line => line.key === 'no-active')?.buttons).toBe(undefined)
+    // No line says that no milestone is active, and with nothing after the
+    // card it has no blank row under it (M305).
+    expect(layout(state, [], true).map(line => line.key)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+    expect(layout(state, [], true).some(line => line.text?.text === 'no active milestone')).toBe(false)
   })
 })
 
 describe('a press of ⌂ runs /clear once, and a guarded press runs nothing (M241 AC2)', () => {
-  // On a milestone's head line and on the `no active milestone` line.
+  // With a milestone active and with none.
   for (const name of ['single-in-progress', 'no-active']) {
     test(`${name}: a free press runs clear with empty args`, async ($, on) => {
       const copy = copyOf(name)
@@ -2024,11 +2059,14 @@ describe('a guarded ✎ press runs nothing (M242 AC3)', () => {
     const copy = candidatesPlanNext()
     seat(on, copy)
     await $.turn.complete(turn())
+    // The pane draws no Next line beside the drawn rows (M305), so the
+    // held Plan is the band's, which shares the press.
     const ui = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...PANE_VIEW })) as Ui
-    const [next] = await ui.findAll({ key: PANE_NEXT })
-    expect(next.props.label).toBe('Plan')
+    expect(await ui.findAll({ key: PANE_NEXT })).toEqual([])
     await ui.unmount()
-    await pressKey($, PANE_NEXT)
+    const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await band.press({ key: 'cairn-next' })
+    await band.unmount()
     expect(copy.commands).toEqual([CLEAR_RUN])
     await pressKey($, `${PANE_PLAN}-0`)
     await untilRuns(copy, 2, 10)
@@ -3796,7 +3834,7 @@ const grows = (lines: Element[]) =>
 
 describe('the pane has one ↻ Refresh Button, at the right end of its first line (M236 AC2)', () => {
   // The checks AC2 makes in every state with a ROADMAP. `firstKey` is the
-  // first line's key, the head line of the first milestone or `no-active`.
+  // first line's key, the card's first line since M286.
   const one = async ($, firstKey: string) => {
     const got = await refreshOf($)
     expect(got.keys.filter(key => key === PANE_REFRESH)).toEqual([PANE_REFRESH])
@@ -5229,7 +5267,7 @@ const PARKED_LINES: [number, string][] = [
   [7, '⧗ Parked last'],
 ]
 
-describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', () => {
+describe('a parked candidate row draws last, with an hourglass in its own color (M284 AC3, M305 AC4)', () => {
   for (const surface of SURFACES) {
     test(`the candidates-parked fixture draws parked rows after the low row (${surface})`, async ($, on) => {
       seat(on, copyOf('candidates-parked'))
@@ -5241,21 +5279,66 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       expect(rows.map(k => textAt(lines, k))).toEqual(PARKED_LINES.map(([, text]) => text))
     })
 
-    test(`a parked row's mark and title are gray (${surface})`, async ($, on) => {
+    // M305 AC4 (b): a parked row's mark and title draw in `permission`,
+    // and a low row's in `inactive`, where M284 drew both gray.
+    test(`a parked row's mark and title are blue, and a low row's gray (${surface})`, async ($, on) => {
       seat(on, copyOf('candidates-parked'))
       await $.turn.complete(turn())
       const ui = (await $.ui.mount({ plugin: 'cairn', surface, ...PANE_VIEW })) as Ui
-      const [lead] = await ui.findAll({ key: 'candidate-0-lead' })
-      expect(textOf(kids(lead)[0])).toBe('⧗')
-      // On the desktop the mark draws as its icon (M286).
-      if (surface === 'terminal') expect(kids(lead)[0].props.color).toBe('inactive')
-      else expect(kids(lead)[0].type).toBe('Svg')
+      const low = FIXTURES['candidates-parked'].candidates.findIndex(row => row.priority === 'low')
+      expect(low).toBeGreaterThan(-1)
+      const leadOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-lead` }))[0])[0]
+      expect(textOf(await leadOf(0))).toBe('⧗')
+      expect(textOf(await leadOf(low))).toBe('↓')
+      // On the desktop each mark draws as its icon (M286), whose stroke
+      // the next test reads.
+      if (surface === 'terminal') {
+        expect((await leadOf(0)).props.color).toBe('permission')
+        expect((await leadOf(low)).props.color).toBe('inactive')
+      } else {
+        expect((await leadOf(0)).type).toBe('Svg')
+        expect(String((await leadOf(0)).props.source)).toContain('#7f93c4')
+        expect(String((await leadOf(low)).props.source)).not.toContain('#7f93c4')
+      }
       const titleOf = async (i: number) => kids((await ui.findAll({ key: `candidate-${i}-text` }))[0])[0]
-      expect((await titleOf(0)).props.color).toBe('inactive')
+      expect((await titleOf(0)).props.color).toBe('permission')
+      expect((await titleOf(low)).props.color).toBe('inactive')
       // The control: an untagged row's title has no color.
       expect((await titleOf(1)).props.color).toBe(undefined)
       await ui.unmount()
     })
+  }
+
+  test("the parked icon's stroke is blue and the low icon's gray", () => {
+    const strokes = (svg: string) => [...svg.matchAll(/stroke="([^"]+)"/g)].map(m => m[1])
+    expect(new Set(strokes(iconSvg('parked')))).toEqual(new Set(['#7f93c4']))
+    expect(new Set(strokes(iconSvg('low')))).toEqual(new Set(['#8f8f8f']))
+  })
+
+  test("the card's level counts draw the parked mark in its own color", () => {
+    const state: PaneState = {
+      found: true,
+      milestones: [],
+      next: null,
+      workable: [],
+      waiting: [],
+      candidates: [
+        { priority: 'low', title: 'Low row', text: 'Low row' },
+        { priority: 'parked', title: 'Parked row', text: 'Parked row' },
+      ],
+      blocked: [],
+      taken: [],
+    }
+    const marks = (layout(state, [], true).find(line => line.key === 'card-candidates')?.lead ?? []).filter(span => span.icon !== undefined)
+    expect(marks.map(span => [span.text, span.color])).toEqual([
+      ['↑', IMPLEMENT_KEY],
+      ['○', undefined],
+      ['↓', 'inactive'],
+      ['⧗', 'permission'],
+    ])
+  })
+
+  for (const surface of SURFACES) {
 
     test(`✎ on the first parked row plans it (${surface})`, async ($, on) => {
       const copy = copyOf('candidates-parked')
@@ -5292,7 +5375,7 @@ describe('a parked candidate row draws last, with a gray hourglass (M284 AC3)', 
       const lines = draw(acts)
       expect(lines.map(line => line.key)).toEqual(['candidate-2', 'candidate-0', 'candidate-1', 'candidate-3'])
       const waits = lines[1]
-      expect([waits.lead, waits.tail, waits.text]).toEqual([[MARKS.parked, { text: ' ' }], undefined, { text: 'Waits', color: GRAY }])
+      expect([waits.lead, waits.tail, waits.text]).toEqual([[MARKS.parked, { text: ' ' }], undefined, { text: 'Waits', color: 'permission' }])
       expect([waits.buttons, waits.target, waits.title]).toEqual(acts ? [['plan'], '0', 'Waits'] : [undefined, undefined, undefined])
       // A parked row with an empty short title has no ✎, as any such row.
       expect([lines[2].buttons, lines[2].target]).toEqual([undefined, undefined])
@@ -5812,11 +5895,12 @@ describe('a second listing pending at a session end reads nothing (M260 AC4)', (
   })
 })
 
-// While planning, the Next line names the first `[high]` row that the
-// Candidates list draws and the next-step press plans it; with no such row
-// both name no title (M272 AC4, M273 AC3). The titles are written out by
-// hand from the fixtures' ROADMAPs.
-describe("planning's Next line and press name the first drawn [high] row (M272 AC4, M273 AC3)", () => {
+// While planning, the band's Plan press plans the first `[high]` row that
+// the Candidates list draws, and with no such row names no title (M272 AC4,
+// M273 AC3). Since M305 a drawn row hides the pane's planning line, so a
+// shown line names no title. The titles are written out by hand from the
+// fixtures' ROADMAPs.
+describe("planning's press names the first drawn [high] row, and a drawn row hides the pane's line (M272 AC4, M273 AC3, M305)", () => {
   const PLAN = { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null }
   const ROWS: PaneState['candidates'] = [
     { priority: 'normal', title: 'Plain row', text: 'Plain row' },
@@ -5860,35 +5944,46 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
     expect(nextTitle({ ...PLAN, action: 'implement', command: '/milestone-implement', id: 'M003' }, ROWS, [], [], [])).toBe(null)
   })
 
-  test('the line names the pick, and with no drawn [high] row shows the command alone', () => {
-    expect(nextText(plan())).toBe('/milestone-plan First high')
-    expect(nextText(plan(), [{ title: 'First high', number: 5 }])).toBe('/milestone-plan Second high')
-    expect(nextText(plan([ROWS[0]]))).toBe('/milestone-plan')
+  // M305 replaces M272's line: a drawn row hides the planning line, and a
+  // shown one names no row. The band's Plan press still names the pick.
+  test('a drawn row hides the line, and with no drawn row it shows the command alone', () => {
+    expect(nextText(plan())).toBe(undefined)
+    expect(nextText(plan(), [{ title: 'First high', number: 5 }])).toBe(undefined)
+    expect(nextText(plan([ROWS[0]]))).toBe(undefined)
+    expect(nextText(plan([]))).toBe('/milestone-plan')
   })
 
-  const CASES = [
-    { name: 'high-candidate', args: 'Chosen row' },
-    { name: 'candidates-skeleton', args: '' },
-  ]
-  for (const { name, args } of CASES) {
-    test(`${name}: the press runs /clear, then planning with ${args === '' ? 'no arguments' : 'the title'}`, async ($, on) => {
-      const copy = copyOf(name)
-      seat(on, copy)
-      await $.turn.complete(turn())
-      expect(textAt(await paneLines($, 'desktop'), 'next')).toBe(`→ /milestone-plan${args === '' ? '' : ` ${args}`}`)
-      await pressKey($, PANE_NEXT)
-      expect(copy.commands).toEqual([CLEAR_RUN])
-      await $.session.end(CLEAR_END)
-      await untilRuns(copy, 2)
-      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
-    })
-  }
+  test('candidates-skeleton: the press runs /clear, then planning with no arguments', async ($, on) => {
+    const copy = copyOf('candidates-skeleton')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    expect(textAt(await paneLines($, 'desktop'), 'next')).toBe('→ /milestone-plan')
+    await pressKey($, PANE_NEXT)
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: '' }])
+  })
+
+  test('high-candidate: no pane line, and the band press runs /clear, then planning with the title', async ($, on) => {
+    const copy = copyOf('high-candidate')
+    seat(on, copy)
+    await $.turn.complete(turn())
+    expect(textAt(await paneLines($, 'desktop'), 'next')).toBe(undefined)
+    const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
+    await band.press({ key: 'cairn-next' })
+    await band.unmount()
+    expect(copy.commands).toEqual([CLEAR_RUN])
+    await $.session.end(CLEAR_END)
+    await untilRuns(copy, 2)
+    expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args: 'Chosen row' }])
+  })
 
   for (const [body, args] of [
     ['Candidate row: Chosen row\n', 'Later high'],
     ['Candidate row: Later high\n', 'Chosen row'],
   ] as const) {
-    test(`a body naming ${args === 'Later high' ? 'the row moves planning to the next drawn row' : 'another row keeps the title'} on the line and the press`, async ($, on) => {
+    test(`a body naming ${args === 'Later high' ? 'the row moves planning to the next drawn row' : 'another row keeps the title'} on the band's press`, async ($, on) => {
       const calls = gh(on, () => prView('MERGED'), undefined, {
         remotes: { origin: ORIGIN },
         list: () => listReply([bodied(1265, 'm272-x', body)]),
@@ -5899,31 +5994,27 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       await $.command.run({ command: COMMAND })
       await calls.settled()
       expect(calls.lists).toEqual([listCall(ORIGIN)])
-      const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
-      expect(next).toBe(`→ /milestone-plan ${args}`)
-      await pressKey($, PANE_NEXT)
-      await $.session.end(CLEAR_END)
-      await untilRuns(copy, 2)
-      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
-      // The band's Plan shares the press, and reads the same stored list.
+      // The pane draws no planning line beside the drawn rows (M305), and
+      // the band's Plan reads the same stored list.
+      expect((await linesAt($)).some(line => line.key === 'next')).toBe(false)
       const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
       await band.press({ key: 'cairn-next' })
       await band.unmount()
       await $.session.end(CLEAR_END)
-      await untilRuns(copy, 4)
-      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
     })
   }
 
   // The callers pass the open hotfix list to the pick (M273 review): a
   // `#41` token on "Chosen row" hides it while hotfix PR 41 is open, and
-  // the line and both presses then plan "Later high"; with another hotfix
-  // PR open, the token hides nothing.
+  // the band's press then plans "Later high"; with another hotfix PR open,
+  // the token hides nothing.
   for (const [open, args] of [
     [41, 'Later high'],
     [42, 'Chosen row'],
   ] as const) {
-    test(`a #41 token with hotfix PR ${open} open names ${args} on the line and the press`, async ($, on) => {
+    test(`a #41 token with hotfix PR ${open} open names ${args} on the band's press`, async ($, on) => {
       const calls = gh(on, () => prView('MERGED'), undefined, {
         remotes: { origin: ORIGIN },
         list: () => listReply([pr(open, 'hotfix-x')]),
@@ -5935,20 +6026,106 @@ describe("planning's Next line and press name the first drawn [high] row (M272 A
       await $.session.start({ cwd: '/', surface: 'desktop', isInteractive: true })
       await $.command.run({ command: COMMAND })
       await calls.settled()
-      const next = (await linesAt($)).find(line => line.key === 'next')?.text ?? ''
-      expect(next).toBe(`→ /milestone-plan ${args}`)
-      await pressKey($, PANE_NEXT)
-      await $.session.end(CLEAR_END)
-      await untilRuns(copy, 2)
-      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
+      expect((await linesAt($)).some(line => line.key === 'next')).toBe(false)
       const band = (await $.ui.mount({ plugin: 'cairn', surface: 'desktop', ...BAND })) as Ui
       await band.press({ key: 'cairn-next' })
       await band.unmount()
       await $.session.end(CLEAR_END)
-      await untilRuns(copy, 4)
-      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }, CLEAR_RUN, { command: PLAN_COMMAND, args }])
+      await untilRuns(copy, 2)
+      expect(copy.commands).toEqual([CLEAR_RUN, { command: PLAN_COMMAND, args }])
     })
   }
+})
+
+// M305 AC2, AC3: with no milestone active, a planning Next line draws only
+// while the Candidates list draws no row. Other next steps draw as before.
+describe('a planning Next line draws only while no candidate line draws (M305 AC2, AC3)', () => {
+  const PLAN = { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null }
+  const idle = (candidates: PaneState['candidates'], extra: Partial<PaneState> = {}): PaneState => ({
+    found: true,
+    milestones: [],
+    next: PLAN,
+    workable: [],
+    waiting: [],
+    candidates,
+    blocked: [],
+    taken: [],
+    ...extra,
+  })
+  const HIGH = { priority: 'high' as const, title: 'High row', text: 'High row: x' }
+  const NORMAL = { priority: 'normal' as const, title: 'Plain row', text: 'Plain row: y' }
+  const PARKED = { priority: 'parked' as const, title: 'Parked row', text: 'Parked row: z' }
+  const hotfix = (number: number) => ({ number, title: 'Fix', url: `https://github.com/o/r/pull/${number}` })
+  const keys = (lines: PaneLine[]) => lines.map(line => line.key)
+  const candidateLines = (lines: PaneLine[]) => lines.filter(line => /^candidate-\d+$/.test(line.key))
+
+  for (const acts of [true, false]) {
+    test(`the bare command and the command beside a [high] row are hidden (acts ${acts})`, () => {
+      // Bare: no drawn row is `[high]`, so nothing would be named.
+      const bare = layout(idle([NORMAL]), [], acts)
+      expect(candidateLines(bare).length).toBe(1)
+      expect(keys(bare)).not.toContain('next')
+      expect(keys(bare)).not.toContain('next-gap')
+      // Named: until M305 the line read `/milestone-plan High row`.
+      const named = layout(idle([HIGH, NORMAL]), [], acts)
+      expect(candidateLines(named).length).toBe(2)
+      expect(keys(named)).not.toContain('next')
+      expect(keys(named)).not.toContain('next-gap')
+    })
+  }
+
+  test('a list of parked rows alone hides the line too', () => {
+    const lines = layout(idle([PARKED]), [], true)
+    expect(candidateLines(lines).map(line => line.title)).toEqual(['Parked row'])
+    expect(keys(lines)).not.toContain('next')
+  })
+
+  // The line as it drew before M305: the command, Plan, and Status.
+  const shown = (lines: PaneLine[]) => {
+    expect(candidateLines(lines)).toEqual([])
+    const next = lines.find(line => line.key === 'next')
+    expect(next?.text?.text).toBe('/milestone-plan')
+    expect([next?.action, next?.buttons]).toEqual(['Plan', ['status']])
+    expect(keys(lines).indexOf('next-gap')).toBe(keys(lines).indexOf('next') - 1)
+  }
+
+  test('with no candidate rows the line draws', () => {
+    shown(layout(idle([]), [], true))
+  })
+
+  test('with every row hidden by a started token the line draws', () => {
+    shown(layout(idle([HIGH, NORMAL], { taken: [{ title: 'High row', ref: 'M005' }, { title: 'Plain row', ref: 'M006' }] }), [], true))
+  })
+
+  test('with every row hidden by an open hotfix PR the line draws', () => {
+    // A `#41` token with hotfix PR 41 open (M258), and a PR body naming the
+    // other row (M252).
+    const state = idle([HIGH, NORMAL], { taken: [{ title: 'High row', ref: '#41' }] })
+    shown(layout(state, [], true, {}, [hotfix(41)], [{ title: 'Plain row', number: 7 }]))
+  })
+
+  // Since M305 the card's blank row draws only before the first milestone,
+  // and every later section opens with its own, so no fixture draws two
+  // blank rows in a row (M305 review).
+  for (const name of WITH_ROADMAP) {
+    test(`${name}: no two blank rows in a row`, async ($, on) => {
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      const keys = (await paneLines($, 'terminal')).map(([key]) => key)
+      const doubled = keys.filter((key, i) => i > 0 && key.endsWith('-gap') && keys[i - 1].endsWith('-gap'))
+      expect(doubled).toEqual([])
+      expect(keys.at(-1)?.endsWith('-gap')).toBe(false)
+    })
+  }
+
+  test('an implement next step draws beside drawn rows', () => {
+    const state = idle([HIGH], { next: { action: 'implement', command: '/milestone-implement', id: 'M8', title: null }, workable: [{ id: 'M8', title: 'Ready' }] })
+    const lines = layout(state, [], true)
+    expect(candidateLines(lines).length).toBe(1)
+    const next = lines.find(line => line.key === 'next')
+    expect(next?.text?.text).toBe('/milestone-implement M8')
+    expect([next?.action, next?.buttons]).toEqual(['Implement', ['status']])
+  })
 })
 
 describe('the card counts the drawn candidate rows by level and the planned and blocked milestones (M286 AC2)', () => {
@@ -5999,14 +6176,12 @@ describe('the card counts the drawn candidate rows by level and the planned and 
     expect(layout(active, [], true).filter(line => /^candidate-\d+$/.test(line.key))).toEqual([])
   })
 
-  test('the card leads the pane, and the no-active line and the milestones follow it', () => {
-    expect(layout(idle, [], true).map(line => line.key).slice(0, 5)).toEqual([
-      'card-repo',
-      'card-candidates',
-      'card-milestones',
-      'card-gap',
-      'no-active',
-    ])
+  test('the card leads the pane, and the milestones follow it, with no line for none active (M305)', () => {
+    // With none active, the next section's own blank row follows the card.
+    expect(layout(idle, [], true).map(line => line.key).slice(0, 3)).toEqual(['card-repo', 'card-candidates', 'card-milestones'])
+    expect(layout(idle, [], true)[3].key.endsWith('-gap')).toBe(true)
+    expect(layout(idle, [], true)[4].key.endsWith('-gap')).toBe(false)
+    expect(layout(idle, [], true).map(line => line.key)).not.toContain('no-active')
     expect(layout(active, [], true).map(line => line.key).slice(0, 5)).toEqual([
       'card-repo',
       'card-candidates',
@@ -6348,7 +6523,7 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
     expect(layout(active, [], true, read, [hotfix]).some(line => line.key === 'blocked-M5-counts')).toBe(true)
   })
 
-  test('with no active milestone: each candidate line with its whole text (M293), but none for an empty text, and no card on the no-active line', () => {
+  test('with no active milestone: each candidate line with its whole text (M293), but none for an empty text', () => {
     expect(fulls(idle)).toEqual([
       ['workable-M8', 'Ready next'],
       ['waiting-M9', 'Later · on M8'],
@@ -6356,7 +6531,6 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
       ['hotfix-4', 'Fix a crash'],
       ['candidate-0', 'First row: its detail — added 2026-10-19'],
     ])
-    expect(layout(idle, [], true).some(line => line.key === 'no-active')).toBe(true)
   })
 
   for (const surface of SURFACES) {
@@ -6661,9 +6835,10 @@ describe('cardRows estimates the rows a candidate card takes (M294 AC2)', () => 
 // each line one row, plus the summary card's two border rows. With no
 // milestone active, no goal line wraps. Each case counts its rows by hand:
 // the card's top border, its three lines (four with the release line), its
-// bottom border, the card's gap row, `no active milestone`, then each
-// section's gap and heading and its lines, then the Candidates gap and
-// heading. The bare state puts its first candidate on row 9.
+// bottom border, then each section's gap and heading and its lines, then
+// the Candidates gap and heading. The bare state puts its first candidate
+// on row 7. Until M305 the card's gap row and `no active milestone` came
+// after the card, and each figure was 2 more.
 describe('each candidate line carries the rows drawn before it (M294 AC3)', () => {
   const base: PaneState = {
     found: true,
@@ -6690,29 +6865,34 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
     ])
 
   test('no release line, no Next line, no other section', () => {
-    expectRows(layout(base), 9)
+    expectRows(layout(base), 7)
   })
 
-  test('the Next line adds its gap and itself', () => {
-    expectRows(layout({ ...base, next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null } }), 11)
+  test('an implement Next line adds its gap and itself', () => {
+    expectRows(layout({ ...base, next: { action: 'implement', command: '/milestone-implement', id: 'M8', title: null } }), 9)
+  })
+
+  // M305: beside drawn rows a planning Next line is not drawn.
+  test('a planning Next line adds nothing', () => {
+    expectRows(layout({ ...base, next: { action: 'plan the next milestone', command: '/milestone-plan', id: null, title: null } }), 7)
   })
 
   test('the release line adds one card row', () => {
     const repo = { root: '/r', counts: { prs: 1, issues: 2 }, done: { tag: 'v1.0.0', days: 3, count: 2 }, name: 'r' }
-    expectRows(layout(base, [], false, {}, [], [], repo, '/r'), 10)
+    expectRows(layout(base, [], false, {}, [], [], repo, '/r'), 8)
   })
 
   test('a blocked row with its counts line adds four rows', () => {
     const read = { 'https://github.com/o/r/pull/9': { word: 'in review' as const, counts: { unresolved: 2 }, mergeable: null } }
-    expectRows(layout({ ...base, blocked: [blocked] }, [], false, read), 13)
+    expectRows(layout({ ...base, blocked: [blocked] }, [], false, read), 11)
   })
 
   test('a blocked row with no counts line adds three rows', () => {
-    expectRows(layout({ ...base, blocked: [blocked] }), 12)
+    expectRows(layout({ ...base, blocked: [blocked] }), 10)
   })
 
   test('a hotfix line adds three rows', () => {
-    expectRows(layout(base, [], false, {}, [{ number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }]), 12)
+    expectRows(layout(base, [], false, {}, [{ number: 4, title: 'Fix a crash', url: 'https://github.com/o/r/pull/4' }]), 10)
   })
 
   test('a workable row and two waiting rows add seven rows', () => {
@@ -6724,14 +6904,14 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
         { id: 'M10', title: 'Later two', unmet: ['M8'] },
       ],
     }
-    expectRows(layout(state), 16)
+    expectRows(layout(state), 14)
   })
 
   test('a row an open pull request names is hidden, and the row after it moves up (review pass 1)', () => {
     const lines = layout(base, [], false, {}, [], [{ title: 'Mid row', number: 5 }])
     expect(rows(lines)).toEqual([
-      ['candidate-0', 9],
-      ['candidate-2', 10],
+      ['candidate-0', 7],
+      ['candidate-2', 8],
     ])
   })
 
@@ -6743,9 +6923,11 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
 // M294 AC4: each candidate card is placed from the Pane props. One row
 // whose text, `Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh`, wraps to
 // 5 rows at 14 columns (10 for text), so its card needs 7, and to 1 row at
-// 60 columns, a card of 3. In the bare idle state its line is on row 9
-// (M294 AC3), and the tree has 8 lines, so 10 rows. Each value is written
-// out by hand.
+// 60 columns, a card of 3. In the bare idle state its line is on row 7
+// (M294 AC3), and the tree has 6 lines, so 8 rows. Each value is written
+// out by hand. Until M305 the line was on row 9, and each dock offset after
+// the first was 2 more. The inline case's offset stays, since its frame
+// shrank with the tree.
 describe('each candidate card is placed from the Pane props (M294 AC4)', () => {
   const long: PaneState = {
     found: true,
@@ -6759,12 +6941,12 @@ describe('each candidate card is placed from the Pane props (M294 AC4)', () => {
   }
   const table: [string, number, number, number, 'dock' | 'inline', ReturnType<typeof cardPlace>][] = [
     ['room above at the top of the window', 14, 0, 40, 'dock', { side: 'up', rows: null }],
-    ['scrolled so 4 rows show above: below', 14, 5, 40, 'dock', { side: 'down', rows: null }],
-    ['4 rows each side: cut above on the tie', 14, 5, 9, 'dock', { side: 'up', rows: 4 }],
-    ['2 above and 5 below: cut below', 14, 7, 8, 'dock', { side: 'down', rows: 5 }],
-    ['1 row each side: no card', 14, 8, 3, 'dock', null],
+    ['scrolled so 4 rows show above: below', 14, 3, 40, 'dock', { side: 'down', rows: null }],
+    ['4 rows each side: cut above on the tie', 14, 3, 9, 'dock', { side: 'up', rows: 4 }],
+    ['2 above and 5 below: cut below', 14, 5, 8, 'dock', { side: 'down', rows: 5 }],
+    ['1 row each side: no card', 14, 6, 3, 'dock', null],
     ['inline, the frame fits the tree: cut below', 14, 5, 200, 'inline', { side: 'down', rows: 5 }],
-    ['a wider pane makes the card fit above', 60, 5, 40, 'dock', { side: 'up', rows: null }],
+    ['a wider pane makes the card fit above', 60, 3, 40, 'dock', { side: 'up', rows: null }],
   ]
   for (const [name, bodyColumns, offset, bodyRows, placement, place] of table) {
     test(name, () => {
@@ -6895,22 +7077,22 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
     })
 
     // M294 AC4 (review return 1): redraws that vary `bodyColumns` and
-    // `placement`. The line is on row 11, counted by hand: the card's top
-    // border, its three lines, its bottom border, the card's gap row,
-    // `no active milestone`, the Next line's gap and the Next line, and the
-    // Candidates gap and heading.
-    test(`the line sits on row 11 (${surface})`, async ($, on) => {
+    // `placement`. The line is on row 7, counted by hand: the card's top
+    // border, its three lines, its bottom border, and the Candidates gap and
+    // heading. Until M305 the card's gap row, `no active milestone`, and the
+    // planning Next line's gap and line came before the Candidates gap.
+    test(`the line sits on row 7 (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
-      expect((await drawn($, surface, 0, 200)).row).toBe(11)
+      expect((await drawn($, surface, 0, 200)).row).toBe(7)
     })
 
     test(`with 4 rows showing above, a 60-column pane opens the card above and a 14-column one below, none in the terminal (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
       // At 60 columns the card needs 3 rows; at 14 it needs 7.
-      const wide = await drawn($, surface, 7, 200, 60)
-      const narrow = await drawn($, surface, 7, 200, 14)
+      const wide = await drawn($, surface, 3, 200, 60)
+      const narrow = await drawn($, surface, 3, 200, 14)
       if (surface === 'terminal') {
         expect([...kids(wide.root), ...kids(wide.line)].filter(isCard)).toEqual([])
         expect([...kids(narrow.root), ...kids(narrow.line)].filter(isCard)).toEqual([])
@@ -6918,15 +7100,15 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
         expect(kids(wide.line).filter(isCard).map(card => card.props.bottom)).toEqual([1])
         expect(kids(wide.root).filter(isCard)).toEqual([])
         expect(kids(narrow.line).filter(isCard)).toEqual([])
-        expect(kids(narrow.root).filter(isCard).map(card => card.props.top)).toEqual([12])
+        expect(kids(narrow.root).filter(isCard).map(card => card.props.top)).toEqual([8])
       }
     })
 
     test(`inline, the frame fits the tree, so the card is cut where a dock opens it whole, none in the terminal (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
-      // With the window at offset 6 the line shows on its row 5. Inline the
-      // room is the tree's 12 rows, so 6 rows lie below: the card's 7 fit
+      // With the window at offset 6 the line shows on its row 1. Inline the
+      // room is the tree's 8 rows, so 6 rows lie below: the card's 7 fit
       // neither side, and it is cut to the 6 below. In a dock of 200 rows it
       // opens below whole.
       const inline = await drawn($, surface, 6, 200, 14, 'inline')
@@ -6936,9 +7118,9 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
       } else {
         const [cut] = kids(inline.root).filter(isCard)
         const [whole] = kids(dock.root).filter(isCard)
-        expect(cut.props.top).toBe(12)
+        expect(cut.props.top).toBe(8)
         expect(textOf(kids(cut)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee …')
-        expect(whole.props.top).toBe(12)
+        expect(whole.props.top).toBe(8)
         expect(textOf(kids(whole)[0])).toBe('Long row: aaaa bbbb cccc dddd eeee ffff gggg hhhh')
       }
     })
@@ -6946,14 +7128,14 @@ describe('a candidate card is drawn on the side it opens on (M294 AC5)', () => {
     test(`a window too short on both sides draws no card (${surface})`, async ($, on) => {
       seat(on, longCopy())
       await $.turn.complete(turn())
-      // At offset 10 the line shows on its row 1 of a 3-row window: 1 row
+      // At offset 6 the line shows on its row 1 of a 3-row window: 1 row
       // above and 1 below, under the 3 a card needs at the least.
-      const short = await drawn($, surface, 10, 3)
+      const short = await drawn($, surface, 6, 3)
       expect([...kids(short.root), ...kids(short.line)].filter(isCard)).toEqual([])
       // The same line with room draws its card, so the empty result above
       // is the placement's and not a missing line.
       if (surface !== 'terminal') {
-        const roomy = await drawn($, surface, 10, 200)
+        const roomy = await drawn($, surface, 6, 200)
         expect([...kids(roomy.root), ...kids(roomy.line)].filter(isCard).length).toBe(1)
       }
     })

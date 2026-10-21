@@ -76,8 +76,8 @@
   shows it last with an hourglass.** A candidate row can now open with
   `[parked]` in place of `[high]` or `[low]`. The token marks a row whose
   promotion condition has not held yet. The cairn pane draws a parked row
-  with a gray `⧗` and a gray title, after the `[low]` rows, each group in
-  ROADMAP order. The rulebook's "Candidate priority token" rule has
+  with a blue `⧗` and a blue title, after the gray `[low]` rows, each group
+  in ROADMAP order. The rulebook's "Candidate priority token" rule has
   whoever adds a row, you or a skill, write `[parked]` when the row's
   condition does not hold. `/cairn-triage` adds or removes the token as a
   priority change, and a promote replaces it with `[high]`. After a merge,
@@ -119,6 +119,13 @@
   white number. In the terminal it is the number with a space on each
   side, on the theme's gray. The Tasks and Criteria counts stay at the
   right end, and the summary card does not change.
+- **The idle cairn pane drops two lines.** The pane no longer shows a `no
+  active milestone` line. When the next step is planning and the
+  Candidates list shows a row, the pane shows no `→ /milestone-plan` line.
+  Each candidate line with a short title carries a `✎` that plans its
+  row. With no candidate row
+  shown, the line and its `Plan` and `Status` buttons stay. The band's
+  `Plan` and `Status` buttons do not change.
 
 - **The desktop pane shows a candidate row's `✎` only under the
   pointer.** In the desktop app, the Candidates list no longer draws each

@@ -49,7 +49,9 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // next-step label after the command, which register.tsx draws as a Button
 // (M218). After that Button the line carries Status, which register.tsx
 // draws as a Button (M219). Until M241 it also carried Clear after a cairn
-// skill's end, and the first line's ⌂ took its place.
+// skill's end, and the first line's ⌂ took its place. Since M305 no line
+// says that no milestone is active, a planning Next line draws only while
+// the Candidates list draws no row, and a parked row draws in its own blue.
 
 // The Next line's `action`, when set, is the label of the next-step Button
 // drawn after its tail. No other line carries one: register.tsx draws it
@@ -296,8 +298,10 @@ export function startedRefs(
 // (M272, M273): the first `[high]` row with a short title that the
 // Candidates list draws, under the list's own test (`startedRefs` over the
 // counted tokens, the open hotfix list, and the PR bodies that name a row),
-// so the Next line, the pane's Plan press, and the band's Plan press never
-// name a hidden row or pass over a drawn one. Null outside planning, or
+// so the Plan press never names a hidden row or passes over a drawn one.
+// Since M305 the pane's Next line, and with it its Plan press, draws only
+// while the list draws no row, so the pick reaches the band's Plan press
+// alone. Null outside planning, or
 // when the list draws no such row. The reader's `next.title` counts every
 // `#` token and reads no PR body, as scripts/cairn_next.py does.
 export function nextTitle(
@@ -463,7 +467,6 @@ export const CHECK_LABEL = 'Check'
 
 export const NO_ROADMAP = 'no cairn ROADMAP found'
 export const NO_FILE = 'no milestone file'
-export const NO_ACTIVE = 'no active milestone'
 // A task or criterion's marks (M286), as the desktop app's own task list
 // draws them, at the operator's direction after the pick: a checked box is
 // a filled circle with a check, an open one a dashed circle, and the first
@@ -477,6 +480,10 @@ export const CURRENT_MARK = '⊙'
 // The empty circle a normal candidate row draws (M253), which a blocked or
 // hotfix line also draws before a read (M286).
 export const OPEN_MARK = '○'
+// A parked row's color (M305): the theme's `permission` blue, so a parked
+// row differs from a gray low row. Its desktop icon draws in the icons'
+// fixed blue (icons.ts).
+export const PARKED_KEY = 'permission'
 // A candidate row's mark for each priority (M207). A normal row's mark is
 // the empty circle `OPEN_MARK` (M253). Each names its icon (M286).
 export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
@@ -484,7 +491,9 @@ export const PRIORITY_MARK: Record<CandidateRow['priority'], Span> = {
   normal: { text: OPEN_MARK, icon: 'ring' },
   low: { text: '↓', color: GRAY, icon: 'low' },
   // A parked row waits on a promotion condition that has not held (M284).
-  parked: { text: '⧗', color: GRAY, icon: 'parked' },
+  // Its mark and title draw in `PARKED_KEY`, where M284 drew them gray like
+  // a low row's (M305).
+  parked: { text: '⧗', color: PARKED_KEY, icon: 'parked' },
 }
 // The order the Candidates list draws each priority in (M280), the parked
 // rows last (M284).
@@ -834,17 +843,25 @@ export function paneLines(
   // the card since M286), and ⌂ before it while no cairn skill's step is
   // set (M241).
   out[0].buttons = acts ? ['home', 'refresh'] : ['refresh']
-  // A blank row under the card, for the operator's ask for more space.
-  out.push(gap('card-gap'))
-  if (state.milestones.length === 0) out.push(line('no-active', 0, [], { text: NO_ACTIVE, color: GRAY }))
+  // A blank row under the card, for the operator's ask for more space,
+  // before the first milestone. Every later section opens with its own
+  // blank row, so with no milestone active the card needs none (M305).
   state.milestones.forEach((row, i) => {
-    if (i > 0) out.push(gap(`${row.id}-gap`))
+    out.push(gap(i === 0 ? 'card-gap' : `${row.id}-gap`))
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
-  if (state.next !== null) {
-    // Planning names its `[high]` row's short title after the command (M272).
-    const named = state.next.id ?? nextTitle(state.next, state.candidates, state.taken, hotfixes, started)
-    const target = named === null ? state.next.command : `${state.next.command} ${named}`
+  // With no milestone active, a planning Next line beside a drawn
+  // Candidates list repeats the ✎ that each candidate line with a short
+  // title carries, so it draws only while the list draws no row (M305). A
+  // list whose drawn rows all have empty titles has no ✎, and the band's
+  // Plan is then the way to plan.
+  const drawn = state.milestones.length === 0 ? drawable : []
+  const repeats = state.next?.command === '/milestone-plan' && drawn.length > 0
+  if (state.next !== null && !repeats) {
+    // Until M305 planning named its `[high]` row's short title after the
+    // command (M272). A drawn `[high]` row now hides the line, so a shown
+    // planning line names none. The band's Plan press still names it.
+    const target = state.next.id === null ? state.next.command : `${state.next.command} ${state.next.id}`
     out.push(gap('next-gap'))
     // The arrow and the command, bold in the color of the phase the command
     // runs, with no pill (M286, look B).
@@ -924,8 +941,7 @@ export function paneLines(
   // holds them in (M280).
   // `state.candidates` stays in ROADMAP order. A drawn line keeps its row's
   // index there as its key and its ✎ target, and `pressCandidate` looks the
-  // row up by that index.
-  const drawn = state.milestones.length === 0 ? drawable : []
+  // row up by that index. `drawn` is set before the Next line, which reads it.
   if (drawn.length > 0) {
     out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
     for (const { row, i } of drawn) {
@@ -933,7 +949,7 @@ export function paneLines(
         `candidate-${i}`,
         2,
         [PRIORITY_MARK[row.priority], { text: ' ' }],
-        row.priority === 'low' || row.priority === 'parked' ? { text: row.title, color: GRAY } : { text: row.title },
+        row.priority === 'low' ? { text: row.title, color: GRAY } : row.priority === 'parked' ? { text: row.title, color: PARKED_KEY } : { text: row.title },
       )
       candidate.grow = true
       // The card holds the row's whole text after its priority token, and
