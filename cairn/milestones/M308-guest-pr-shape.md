@@ -1,6 +1,6 @@
 # M308: Fit guest PRs to the host and to one change
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -115,6 +115,8 @@ between open guest PRs go to M309.
 - 2026-10-21: T4 done: step 8's guest arm gains a body paragraph (maintainer PR bodies read through `gh api .../pulls` filtered on `author_association` and the operator's login, since `gh pr list` has no association field; lead content; failure map from `gh issue view`; the `maintainer approach:` reason; what stays in `cairn/`). Hotfix's guest create gains the failure map, and its "only prose" note is reworded. Verify: five commands exit 0.
 - 2026-10-21: T5 done: `/milestone` §2's OPEN-otherwise arm reads `gh pr view --json author,comments,reviews` and names unanswered comments by OWNER/MEMBER/COLLABORATOR authors other than the PR's author, with the reply rule. Fields `authorAssociation`, `createdAt`, `submittedAt` confirmed on cairn PR #321. Verify: five commands exit 0.
 - 2026-10-21: T6 done: D-207 supersedes D-161's order clause and its rejection, passing D-108's door on its retained trigger; CHANGELOG Unreleased gains the guest-mode entry. Verify: five commands exit 0; cairn_validate green with the 10-criteria sizing advisory, kept since the user chose the fold.
+- 2026-10-21: claim audit: 24 claims read, 4 corrected — skills/milestone-plan/SKILL.md (step 4 gains the maintainer-approach line bullet), skills/hotfix/SKILL.md (guest create spells title, body, and `Fixes #N`), CHANGELOG.md (short body scoped to guest milestones; failing-calls rule for issues a guest PR closes). Also: §2 of skills/milestone/SKILL.md skips reviews with an empty body. Re-read once: all hold. Verify: five commands exit 0.
+- 2026-10-21: status review; handed to /milestone-review.
 
 ## Decisions
 

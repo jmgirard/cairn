@@ -482,7 +482,8 @@ can resolve against the fork instead of the base repo.
    `true`, or a failed read, push nothing, open no PR, and stop with a
    close block that names the read and its result. Otherwise the push is
    followed by the PR opened against the base repo — `gh pr create --repo
-   <base-repo> --head <push-owner>:hotfix-<slug>`, opened ready for their
+   <base-repo> --head <push-owner>:hotfix-<slug> --title <title> --body
+   <body>`, `Fixes #N` in the body when a GitHub issue exists, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
    vocabulary in its title or body, so no `Candidate row:` line. When the
    issue that the body's `Fixes #N` line closes reports more than one

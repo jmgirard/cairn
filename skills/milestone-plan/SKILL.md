@@ -612,6 +612,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      step 1's tier check names.
    - **Idea-vet line.** Write the `idea vet:` work-log line that step 2's
      idea vet names.
+   - **Maintainer-approach line.** In guest mode, write the
+     `maintainer approach:` work-log line that step 2's guest scope names,
+     one for each maintainer approach the plan does not take.
    - **Draft against the cap, not against the gate.** The plan-owned body
      must land under `cairn_validate`'s 150-line cap; count while writing
      rather than discovering the overrun at gate time, when the only remedy

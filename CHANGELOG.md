@@ -15,11 +15,13 @@
   for, and other finds become candidate rows. The plan reads the issue's
   comments and the code's git history. It looks for behavior that a
   maintainer chose on purpose. It takes an approach that a maintainer
-  proposed, or it records why not. The guest PR body is short: it leads
-  with what changed, at most one usage example, and the points a
-  maintainer must decide. When a closed issue reports several failing
-  calls, the body names each one and says whether the PR fixes it. It
-  also says why the PR does not take a maintainer's proposed approach.
+  proposed, or it records why not. A guest milestone's PR body is short:
+  it leads with what changed, at most one usage example, and the points
+  a maintainer must decide. It also says why the PR does not take a
+  maintainer's proposed approach. Some issues that a guest PR closes
+  report several failing calls. For such an issue, the body of a
+  milestone or hotfix PR names each call and says whether the PR fixes
+  it.
   `/milestone` names each maintainer comment on a handed-off PR that you
   have not answered yet.
 

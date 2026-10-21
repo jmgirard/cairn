@@ -200,7 +200,8 @@ The script deliberately does not judge these — do them yourself and report:
   returns. The report names each one whose author is not the PR's author,
   whose `authorAssociation` is `OWNER`, `MEMBER`, or `COLLABORATOR`, and
   that no later comment or review by the PR's author follows in time (a
-  comment's `createdAt`, a review's `submittedAt`). It
+  comment's `createdAt`, a review's `submittedAt`). A review with an
+  empty body is not named. It
   quotes each one with its link. The operator's reply to such a comment
   leads with the answer or the question, at about the comment's length,
   and probe evidence (option names, numbers, test output) stays in
