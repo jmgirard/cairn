@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/milestone` reports and routes for open PRs
-- **Branch/PR:** m309-guest-conflict-route
+- **Branch/PR:** m309-guest-conflict-route, https://github.com/jmgirard/cairn/pull/323
 
 ## Goal
 
