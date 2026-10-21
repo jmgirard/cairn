@@ -81,6 +81,7 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: claim audit: 71 claims read, 3 corrected — pane.test.tsx (the M294 AC4 offset note), README.md (the parked mark's desktop color; the ✎ sentence), CHANGELOG.md (the ✎ sentence), pane.ts (the Next-line comment).
 - 2026-10-20: claim audit re-read: the corrected claims read true. All tasks checked, verify green; status review.
 - 2026-10-21: minor edit at review (Copilot thread): T3's text now says its rule was reverted at T4, so the ticked box does not read as a shipped rule.
+- 2026-10-21: step-7 approval: m305-idle-pane-trim approved for merge
 
 ## Decisions
 
