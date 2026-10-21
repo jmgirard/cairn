@@ -11,7 +11,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 | M308 | Fit guest PRs to the host and to one change | done | — | normal | milestones/archive/M308-guest-pr-shape.md |
 | M309 | Route a handed-off PR with merge conflicts to a sync | done | — | normal | milestones/archive/M309-guest-conflict-route.md |
 | M310 | Check and explain changed snapshots before a PR leaves | done | — | normal | milestones/archive/M310-snapshot-explain.md |
-| M311 | Link the pane card to the repo on GitHub | in-progress | — | normal | milestones/M311-pane-repo-link.md |
+| M311 | Link the pane card to the repo on GitHub | review | — | normal | milestones/M311-pane-repo-link.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Read guest PR checks while they wait: a handed-off guest PR's checks fail on the maintainers' CI and cairn reads no checks after the handoff: performance #974 added a test that crashes R on Windows, and parameters #1275 had two failing tests that a maintainer reported. `/milestone` §2's guest `blocked` read could read `gh pr checks` and route failing checks to `/milestone-implement`. Split from "Explain changed snapshots in guest PRs" at the M310 plan — added 2026-10-21

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M311: Link the pane card to the repo on GitHub
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -60,18 +60,20 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
       repo holds a character outside `A-Z a-z 0-9 . _ -`, or is `.` or `..`.
       Each case is a fixture in `hooks/status/pane.test.tsx`. Cases 2 to 4
       set the base remote URL and run the read.
-- [ ] AC3: On a surface other than the terminal, `register.tsx` draws a
-      span that carries a link target as a `Link` with that `href` inside
-      the span's `Text`, and the `Text` keeps its style props. On the
-      terminal, and for a span with no link target, it draws as on main. A
-      test renders the pane for an AC1 fixture on both surfaces: on the
-      desktop it finds a `Link` with each of the three targets, each inside
-      a `Text` with the span's style, and on the terminal it finds no `Link`.
+- [ ] AC3: When the stored read holds an AC1 repo page and a project
+      name, on the desktop `register.tsx` draws the card's first line with
+      three `Link`s, one for the name span and one for each count with its
+      word, each with its `href` and inside a `Text` with
+      `wrap: 'truncate-end'`. Inside each `Link` every span is a `Text` with
+      the span's style, the theme's `text` color where the span names none,
+      and `underline: false`. On the terminal the card's first line draws
+      main's text and no `Link`. A test renders the pane for an AC1 fixture
+      on both surfaces and checks these.
 - [ ] AC4: In the desktop app's docked pane, in a Code session started
-      after the change is installed, a press on the project name opens
-      `https://github.com/jmgirard/cairn`. With no cairn skill running, the
-      card's first line fits one row at 44 columns with ⌂ and ↻ at its right
-      end.
+      after the change is installed, a press on the project name opens the
+      repo's GitHub page. The name and counts draw in the card's colors with
+      no link blue or underline, and each count with its word lights as one
+      link.
 - [ ] AC5: The README's summary-card paragraph and the pane section of
       `cairn/DESIGN.md` state what the name and counts open, that the links
       draw only off the terminal, and the four AC2 cases with no link.
@@ -116,7 +118,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
       so `textOf` (pane.test.tsx:241) keeps reading it. Write the AC3 test.
 - [x] T4: Update the README summary-card paragraph (README.md:295), the
       pane section of `cairn/DESIGN.md`, and `CHANGELOG.md` under Unreleased.
-- [ ] T5: Live look (AC4). The app refuses to start a session inside a
+- [x] T5: Live look (AC4). The app refuses to start a session inside a
       run, so stop and ask the operator to open a new Code session in this
       repo, press the name, and report what opened and how the row fits.
 
@@ -152,6 +154,11 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: T5 live look 2: the operator opened a new Code session in the repo and picked "Looks right now", whose description read "Card colors with no blue or underline, "3 PRs" and "12 issues" each light as one link, and clicks open the pages."
 - 2026-10-21: re-audit: AC3 (full) — 3 findings: "each run of spans" over all parts though only the tail groups (narrowed to the card's first line); "a surface other than the terminal" untested beyond the desktop (narrowed to the desktop); "draws as on main" beyond the test (narrowed to main's text and no Link). The test satisfies the wording.
 - 2026-10-21: re-audit: AC4 (full) — 2 findings: look 2 unrecorded (recorded above); the 44-column row-fit clause unevidenced and not checkable by eye (dropped; the M291 test "a long name is the part that is cut" still checks the tail and Buttons keep their width at 44 columns), and the named URL narrowed to "the repo's GitHub page".
+- 2026-10-21: re-audit: AC3 (full) — 1 finding: no precondition, so AC2's no-link cases and a missing name falsified it; fixed with "When the stored read holds an AC1 repo page and a project name". A second line for AC3, so no further reader runs.
+- 2026-10-21: re-audit: AC4 (full) — nothing; the two looks satisfy it as written.
+- 2026-10-21: substantive amendment: AC3 and AC4 rewritten to the drawing the operator asked for at live look 1 and approved at look 2 (one Link per count with its word, the card's colors, no underline); the 44-column row-fit clause dropped as unevidenced. User direction, logged.
+- 2026-10-21: T5 done; all tasks checked. verify ran green at 012d3653 (plugin test 2463 pass); the commits after it touch only DESIGN.md and the milestone file.
+- 2026-10-21: implement complete, status review: scripts 445 OK, hooks 193 OK, both manifest validates, cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
