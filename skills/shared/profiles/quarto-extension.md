@@ -52,9 +52,9 @@ keeps the same version in more files names each file here. One example is an
 `add_html_dependency{ version = ... }` call in the extension's Lua filter.
 Every named marker holds the same version. Before step 1 of `/cairn-release`,
 run `git fetch --tags <base>` and read the remote default branch's tip:
-`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" _extensions/<name>/_extension.yml --at <base>/<default-branch>`.
-When `CLAUDE_PLUGIN_ROOT` is unset, use the cairn plugin's install directory,
-as the skills do. The script refuses a shallow clone. It prints the tip's
+`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" <marker file> --at <base>/<default-branch>`,
+where `<marker file>` is the repo's `_extension.yml` or `_extension.yaml`. When
+`CLAUDE_PLUGIN_ROOT` is unset, use the cairn plugin's install directory. The script refuses a shallow clone. It prints the tip's
 version, the first commit of that version's unbroken run of first-parent
 commits (`start`), and whether a `v<version>` tag exists.
 - **Tag-only arm.** When the tag is absent, the tip's version is unreleased:
