@@ -82,6 +82,10 @@ import type { BandRow, CandidateRow, NextStep, PaneItem, PaneMilestone, PaneStat
 // `info`, and there the desktop shows the card only
 // while the pointer is over its info glyph `ⓘ`, which shows on line hover,
 // beside ✎ when the line has one (M290).
+// A line with `rule` is the rule between two candidate levels (M305), which
+// register.tsx draws across the row: as `ruleSvg` on the desktop and as a
+// run of `METER_EMPTY` in `METER_EMPTY_KEY` in the terminal. It has no lead
+// and no text.
 export type PaneButton = 'home' | 'status' | 'refresh' | 'finish' | 'revise' | 'check' | 'plan'
 export type PaneLine = {
   key: string
@@ -100,6 +104,7 @@ export type PaneLine = {
   title?: string
   grow?: true
   tailGrows?: true
+  rule?: true
 }
 
 // A blocked milestone's pull request state, as `wordOf` maps it from a
@@ -934,7 +939,13 @@ export function paneLines(
   // row up by that index. `drawn` is set before the Next line, which reads it.
   if (drawn.length > 0) {
     out.push(...countHeading('candidates-head', 'Candidates', drawn.length))
+    // A rule before the first drawn row of each level after the first drawn
+    // one (M305), so a level whose rows are all hidden draws none. A level
+    // draws once, so its name keys its rule.
+    let level: CandidateRow['priority'] | null = null
     for (const { row, i } of drawn) {
+      if (level !== null && row.priority !== level) out.push({ ...line(`rule-${row.priority}`, 2, [], null), rule: true })
+      level = row.priority
       const candidate = line(
         `candidate-${i}`,
         2,

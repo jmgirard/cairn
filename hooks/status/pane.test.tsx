@@ -6066,6 +6066,87 @@ describe('a planning Next line draws only while no candidate line draws (M305 AC
   })
 })
 
+// M305 AC4 (a), AC5: a rule line between each two adjacent drawn levels of
+// the Candidates list, drawn on one row on each surface.
+describe('a rule separates each two adjacent drawn candidate levels (M305 AC4, AC5)', () => {
+  const idle = (candidates: PaneState['candidates'], taken: PaneState['taken'] = []): PaneState => ({
+    found: true,
+    milestones: [],
+    next: null,
+    workable: [],
+    waiting: [],
+    candidates,
+    blocked: [],
+    taken,
+  })
+  const row = (priority: PaneState['candidates'][number]['priority'], title: string) => ({ priority, title, text: `${title}: x` })
+  // The Candidates list's lines after its heading, by key.
+  const listKeys = (state: PaneState) => {
+    const lines = layout(state, [], true)
+    return lines.slice(lines.findIndex(line => line.key === 'candidates-head') + 1).map(line => line.key)
+  }
+
+  test('rows in all four levels, two in one: three rules, each at its boundary', () => {
+    // ROADMAP order is not level order, so the lines sort first (M280).
+    const state = idle([row('low', 'Low row'), row('normal', 'Mid one'), row('parked', 'Parked row'), row('high', 'High row'), row('normal', 'Mid two')])
+    expect(listKeys(state)).toEqual([
+      'candidate-3',
+      'rule-normal',
+      'candidate-1',
+      'candidate-4',
+      'rule-low',
+      'candidate-0',
+      'rule-parked',
+      'candidate-2',
+    ])
+  })
+
+  test('rows in one level: no rule', () => {
+    expect(listKeys(idle([row('normal', 'Mid one'), row('normal', 'Mid two')]))).toEqual(['candidate-0', 'candidate-1'])
+  })
+
+  test('rows in high and parked only: one rule', () => {
+    expect(listKeys(idle([row('parked', 'Parked row'), row('high', 'High row')]))).toEqual(['candidate-1', 'rule-parked', 'candidate-0'])
+  })
+
+  test('a level whose rows are all hidden as started draws no rule', () => {
+    const state = idle([row('high', 'High row'), row('normal', 'Mid one'), row('low', 'Low row')], [{ title: 'Mid one', ref: 'M005' }])
+    expect(listKeys(state)).toEqual(['candidate-0', 'rule-low', 'candidate-2'])
+  })
+
+  test('a rule line is no candidate line, carries no row count, and the candidate lines count it', () => {
+    const lines = layout(idle([row('high', 'High row'), row('low', 'Low row')]), [], true)
+    const rule = lines.find(line => line.rule) as PaneLine
+    expect(rule).toEqual({ key: 'rule-low', indent: 2, lead: [], text: null, rule: true })
+    expect(rule.key.startsWith('candidate-')).toBe(false)
+    for (const [i, line] of lines.entries()) if (/^candidate-\d+$/.test(line.key)) expect([line.key, line.rowsAbove]).toEqual([line.key, i + 2])
+  })
+
+  // `candidates-order` draws rows in high, normal, and low, so two rules.
+  for (const surface of SURFACES) {
+    test(`candidates-order: each rule is an Svg on the desktop and a cut run of ─ in the terminal (${surface})`, async ($, on) => {
+      seat(on, copyOf('candidates-order'))
+      await $.turn.complete(turn())
+      const ui = await mountPane($, surface)
+      for (const key of ['rule-normal', 'rule-low']) {
+        const parts = kids((await boxOf(ui, key)) as Element)
+        expect(parts.length).toBe(1)
+        if (surface === 'terminal') {
+          expect(parts[0].type).toBe('Text')
+          expect(parts[0].props.wrap).toBe('truncate-end')
+          expect(textOf(parts[0])).toMatch(/^─+$/)
+        } else {
+          expect(parts[0].type).toBe('Svg')
+          expect(parts[0].props.width).toBeUndefined()
+          expect(String(parts[0].props.source)).toContain('preserveAspectRatio="none"')
+        }
+      }
+      expect(await boxOf(ui, 'rule-high')).toBeUndefined()
+      await ui.unmount()
+    })
+  }
+})
+
 describe('the card counts the drawn candidate rows by level and the planned and blocked milestones (M286 AC2)', () => {
   // Rows at all four levels and one started row, which the list hides and
   // the card leaves out; two planned milestones and one blocked one. The
@@ -6794,11 +6875,13 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
   const blocked = { id: 'M5', title: 'Handed off', pr: 9, url: 'https://github.com/o/r/pull/9', archived: false }
   const rows = (lines: PaneLine[]) =>
     lines.filter(line => line.key.startsWith('candidate-') && line.key !== 'candidates-head').map(line => [line.key, line.rowsAbove])
+  // The three rows are in three levels, so a rule line comes before the
+  // second and the third (M305).
   const expectRows = (lines: PaneLine[], first: number) =>
     expect(rows(lines)).toEqual([
       ['candidate-0', first],
-      ['candidate-1', first + 1],
-      ['candidate-2', first + 2],
+      ['candidate-1', first + 2],
+      ['candidate-2', first + 4],
     ])
 
   test('no release line, no Next line, no other section', () => {
@@ -6848,7 +6931,7 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
     const lines = layout(base, [], false, {}, [], [{ title: 'Mid row', number: 5 }])
     expect(rows(lines)).toEqual([
       ['candidate-0', 7],
-      ['candidate-2', 8],
+      ['candidate-2', 9],
     ])
   })
 

@@ -70,3 +70,16 @@ const BODIES: Record<IconName, string> = {
 export function iconSvg(name: IconName): string {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${ICON_PX}" height="${ICON_PX}" viewBox="0 0 16 16">${BODIES[name]}</svg>`
 }
+
+// The rule between two candidate levels (M305): a one-pixel line across the
+// middle of a row as tall as an icon, in the icons' gray, half opaque. The
+// markup is wider than any pane, so the Svg, given no width, takes the
+// row's width, and `preserveAspectRatio="none"` stretches the line to it.
+export const RULE_WIDTH = 4000
+export function ruleSvg(): string {
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${RULE_WIDTH}" height="${ICON_PX}" viewBox="0 0 ${RULE_WIDTH} ${ICON_PX}" preserveAspectRatio="none">` +
+    `<line x1="0" y1="${ICON_PX / 2}" x2="${RULE_WIDTH}" y2="${ICON_PX / 2}" stroke="${ICON_COLORS.gray}" stroke-opacity="0.5" stroke-width="1" vector-effect="non-scaling-stroke"/>` +
+    `</svg>`
+  )
+}

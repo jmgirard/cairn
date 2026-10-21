@@ -6,7 +6,7 @@ import type { BandLine, Span } from './band'
 import { actionsFit, cairnSkill, GAP, GRAY, knownStep, mark, PX_PER_COLUMN, same, stepLines, width } from './band'
 import { countsArgv, prRead } from './counts'
 import { BADGE_H, badgeSvg, badgeWidth } from './badge'
-import { ICON_PX, iconSvg } from './icons'
+import { ICON_PX, iconSvg, ruleSvg } from './icons'
 import { archivedArgs, COMMON_DIR_ARGS, DESCRIBE_ARGS, doneSince, projectName, repoArgv, repoCounts, tagTimeArgs } from './repo'
 import type { CardPlace, HotfixPr, PaneButton, PrRead, StartedRow } from './pane'
 import {
@@ -19,6 +19,7 @@ import {
   HOME_LABEL,
   hotfixPrs,
   INFO_LABEL,
+  METER_EMPTY,
   METER_EMPTY_KEY,
   nextTitle,
   startedRefs,
@@ -486,7 +487,23 @@ export const register: Register = on => {
       Svg !== undefined && (line.lead.some(drawsSvg) || (line.tail ?? []).some(drawsSvg))
         ? { alignItems: 'center' as const }
         : {}
-    const drawLine = (line: (typeof lines)[number]) => (
+    // The rule between two candidate levels (M305) takes one row. On the
+    // desktop it is an `Svg` with no width, which takes the row's width,
+    // because a text rule drew there as two lines (M286 live look). In the
+    // terminal it is a run of `─` as wide as the row, cut at the edge.
+    const drawRule = (line: (typeof lines)[number]) => (
+      <Box key={line.key} paddingLeft={line.indent} minWidth={0} alignItems="center">
+        {Svg !== undefined ? (
+          <Svg source={ruleSvg()} alt="separator" height={ICON_PX} />
+        ) : (
+          <Text wrap="truncate-end" color={METER_EMPTY_KEY}>
+            {METER_EMPTY.repeat(Math.max(1, e.props.bodyColumns - line.indent))}
+          </Text>
+        )}
+      </Box>
+    )
+    const drawLine = (line: (typeof lines)[number]) =>
+      line.rule ? drawRule(line) : (
           <Box key={line.key} paddingLeft={line.indent} minWidth={0} {...centers(line)}>
             {line.lead.length === 0 ? null : (
               <Box key={`${line.key}-lead`} flexShrink={0} {...centers(line)}>
