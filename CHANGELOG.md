@@ -169,6 +169,19 @@
   generic profile keeps it until you switch that file. A repo with no
   `cairn/PROFILE.md` and an extension marker now infers this profile.
 
+- **A merge that raises a Quarto extension's version ends with the tag
+  commands.** This applies to a repo with the quarto-extension profile.
+  After `/milestone-review` or `/hotfix` merges, its close reads the
+  version that the merge set, with `scripts/cairn_versions.py --changed-by`.
+  When that version has no `v<version>` tag, the close gives you three
+  commands to run. They are `git tag -a` on the merge commit,
+  `git push origin v<version>`, and, for a GitHub repo,
+  `gh release create` with a notes file. The notes are
+  the changelog section for the version, or with changelog "none" the
+  commit subjects since the previous tag. cairn writes the notes file to
+  the system temp directory and never runs the commands. Guest mode and
+  other profiles are unchanged.
+
 - **The cairn pane shows whether each open PR can merge.** A Blocked or
   Hotfixes line for an open pull request now ends with a mark after its
   state word. A green merge symbol means GitHub reports that the PR can
