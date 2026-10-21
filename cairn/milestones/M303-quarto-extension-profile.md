@@ -1,6 +1,6 @@
 # M303: Add a quarto-extension toolchain profile
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,7 +46,7 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - [x] T3: Run the script read-only on embedpdf and compare with each `v1.*` tag (AC4). Record the result in the work log.
 - [x] T4: Detection: the rulebook's "Toolchain profiles" order and count, `/cairn-init` selection order, hybrid gate, greenfield marker list and chip follow-up, instantiation list, and repair backfill. Update the `skills/tests` guards that pin five profiles (`test_toolchain_profiles.py`, `test_mutation_harness.py`, and the test in `test_scripts.py`), and hand-run `skills/tests`.
 - [x] T5: `/cairn-release` steps 1 to 3 name the tag-only arm. README, DESIGN (profile count and list, layout list), and a CHANGELOG Unreleased entry.
-- [ ] T6: Review return 1: fix the Review section's fix-now list. Script: refuse a shallow clone, check the version's shape, strip a BOM, make the first-parent test discriminate. Walk: fetch tags and read the default branch, confirm the version and `start` with the user in step 1, check the other markers at `start`, take notes and the claim-read from the version's changelog section, name the previous-tag command and the unset `${CLAUDE_PLUGIN_ROOT}` rule, add the feature-series clause. Detection text, CHANGELOG, DESIGN, comments, and guards per the list.
+- [x] T6: Review return 1: fix the Review section's fix-now list. Script: refuse a shallow clone, check the version's shape, strip a BOM, make the first-parent test discriminate. Walk: fetch tags and read the default branch, confirm the version and `start` with the user in step 1, check the other markers at `start`, take notes and the claim-read from the version's changelog section, name the previous-tag command and the unset `${CLAUDE_PLUGIN_ROOT}` rule, add the feature-series clause. Detection text, CHANGELOG, DESIGN, comments, and guards per the list.
 
 ## Work log
 
@@ -74,6 +74,8 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - 2026-10-20: implement done. All five tasks are checked, verify is green (scripts 441, mod tests 2417, skills/tests 930), and the status is review.
 - 2026-10-20: after the handoff note, a README row (the "Prepare a release" row in the task table) gained the quarto-extension release arms, which AC6 asks for; it was added after the claim audit, so the review lenses read it first.
 - 2026-10-20: review return 1: load-bearing defects in `/cairn-release`'s tag-only arm and the version reader. The arm tags with no confirmation (a first run tags a placeholder). A shallow or tag-less clone gives a wrong `start` and re-tags a released version. The walk reads `HEAD`, not the default branch. With a declared changelog it has no notes source and skips the claim-read. The fix-now list in the Review section (diff-bug #1-4, #7-13; blame-history #1-6; prior-review #1, #3, #4; ripple #2, #3, #5-8) goes with it.
+- 2026-10-20: T6 added for review return 1 (minor amendment); Coverage maps AC2, AC3, AC5, AC6, and AC7 to it too.
+- 2026-10-20: T6 done. Script (3e78b231): refuses a shallow clone and a version that is not letters, digits, and `.+_-`; strips a byte-order mark; 3 new tests, and the first-parent test now uses dated commits so a walk without `--first-parent` fails it (planted and seen red). Walk and text (5339cdf5 and the next commit): fetch tags and read `--at <default-branch>`; step 1 confirms the version and `start`; other markers are checked at `start`; the claim-read and notes use the version's changelog section at `start`, else the commit subjects; the previous-tag command and the unset `CLAUDE_PLUGIN_ROOT` rule are named; the feature-series gate clause joins the profile and `test_feature_series.py`; docker-image and claude-plugin init-detection, the CHANGELOG existing-repos note, DESIGN's Known issue and scripts paragraph, two docstrings, two more mutation registrations, the cairn-release description and step 4, and the ROADMAP parked row. Verify green (scripts 444, mod tests 2417, skills/tests 930). Status review.
 
 ## Decisions
 
