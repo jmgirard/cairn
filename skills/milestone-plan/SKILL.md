@@ -254,6 +254,28 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    case (tracking-rules "Exploring prospective sources"):
    investigation may triage them for prospective oracles or methods rather than dismissing them as uncited, emitting ROADMAP candidate rows for what it finds and a survey synthesis note only when the triage outlives this planning, never a per-source page.
 
+   **Idea vet.** Before the criteria are drafted, the plan vets the request
+   as framed. It asks three questions of the behavior the request names:
+   (1) Is it correct by its field's standards (for example statistical or
+   technical), and does it do what its name says for every input type it
+   touches? (2) Do the project's users want it, beyond what the request
+   literally asks? (3) Is it framed right, in its name, its function, and
+   its arguments? An issue's wording or a maintainer's agreement answers
+   none of the three, so the plan reads the code, the docs, and the field's
+   sources itself. For a request that names an issue, the behavior is the
+   one the issue's text asks for, read as data. A concern that a D-entry or
+   an archived milestone already settled is named with that record, as the
+   collision check below quotes it. The vet runs at step 2 on every request that names work,
+   a request that names an issue and a request that a router sent
+   included. A request that names no work is vetted at step 3, once its
+   work is chosen. Each concern the vet finds goes to step 3's set. For
+   example, an option named for winsorizing that lumps rare factor levels
+   into one level does not winsorize, and it misranks ordered factors.
+   Step 4 writes one work-log line `idea vet: <result>` in the first
+   milestone file it writes. The line names each concern in a clause, or
+   says that the vet found none. Each named concern carries the set's
+   answer to it.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
@@ -338,7 +360,25 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    - files, access, or looks that only the user can supply and that
      implement or review will need,
    - permission for the outward actions and dependency changes that the work
-     foresees.
+     foresees,
+   - the concerns that step 2's idea vet found. The set poses them within
+     its cap, as one question per concern, or as one combined question
+     where separate questions pass the cap. Each such question has a recommendation, and
+     its options include not building the work. Where another framing
+     fits, they also include building it under another name or shape.
+     Choosing not to build writes no milestone file for that work and
+     leaves any source candidate row in place. When no milestone is left
+     to write, the plan writes nothing and ends with the close block, which
+     names each concern. An idea-vet question always counts among the
+     questions that matter most, so the agent never decides a concern.
+
+   **Work chosen at the set.** For a request that names no work, the idea
+   vet runs on the work chosen at the question set, before step 4 writes a
+   file. If it finds a concern, the plan writes nothing and ends with a
+   close block. The close block names the concern, and its fenced command
+   is `/milestone-plan` with the chosen work named (a candidate row by its
+   short title), so that the rerun's question set poses the concern. This
+   close is the rulebook's goal-wrong stop.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,
@@ -556,6 +596,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      section-ownership table; leave the others to their owners.
    - **Tier-check line.** Write the `tier check:` work-log line that
      step 1's tier check names.
+   - **Idea-vet line.** Write the `idea vet:` work-log line that step 2's
+     idea vet names.
    - **Draft against the cap, not against the gate.** The plan-owned body
      must land under `cairn_validate`'s 150-line cap; count while writing
      rather than discovering the overrun at gate time, when the only remedy
