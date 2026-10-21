@@ -1,6 +1,6 @@
 # M303: Add a quarto-extension toolchain profile
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -77,6 +77,8 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - 2026-10-20: T6 added for review return 1 (minor amendment); Coverage maps AC2, AC3, AC5, AC6, and AC7 to it too.
 - 2026-10-20: T6 done. Script (3e78b231): refuses a shallow clone and a version that is not letters, digits, and `.+_-`; strips a byte-order mark; 3 new tests, and the first-parent test now uses dated commits so a walk without `--first-parent` fails it (planted and seen red). Walk and text (5339cdf5 and the next commit): fetch tags and read `--at <default-branch>`; step 1 confirms the version and `start`; other markers are checked at `start`; the claim-read and notes use the version's changelog section at `start`, else the commit subjects; the previous-tag command and the unset `CLAUDE_PLUGIN_ROOT` rule are named; the feature-series gate clause joins the profile and `test_feature_series.py`; docker-image and claude-plugin init-detection, the CHANGELOG existing-repos note, DESIGN's Known issue and scripts paragraph, two docstrings, two more mutation registrations, the cairn-release description and step 4, and the ROADMAP parked row. Verify green (scripts 444, mod tests 2417, skills/tests 930). Status review.
 - 2026-10-20: claim audit: 58 claims read, 3 corrected — skills/shared/profiles/quarto-extension.md, skills/cairn-release/SKILL.md, CHANGELOG.md. The read is `--at <base>/<default-branch>` after the tag fetch (a local branch can lag the fetch). The previous-tag command takes `--first-parent`. The CHANGELOG headline excludes repos with a language or plugin marker. Also fixed: `/cairn-release` step 3's quarto bullet names the tag-only notes fallback. On embedpdf, `git describe --first-parent --tags --abbrev=0 --match 'v*' a68951d^` gives v1.2.8.
+- 2026-10-20: review return 2: pass 2 found pass-1 diff-bug #1 still open. A version a merge raised keeps its changelog entries under the development heading, so the tag-only arm finds no section, skips the claim-read, and the entries roll into a later version. The fix narrows the arm: with a declared changelog it needs a section headed with the version at `start`, read there, and stops otherwise. The other pass-2 fix-now items in the Review section go with it.
+- 2026-10-20: amendment routed: AC2 — `/cairn-release` no longer skips its version decision outright (step 1 confirms the version and `start`), and with a declared changelog the arm needs the version's section at `start`.
 
 ## Decisions
 
@@ -129,3 +131,27 @@ Review head `c9880c1f`, synced with `origin/main` (0 behind). PR #317 opened at 
 - ripple #6: `/cairn-release` step 4's per-profile handoff list has no quarto entry — fix now
 - ripple #7: `/cairn-release`'s description names no quarto arm — fix now
 - ripple #8: `cairn_validate.py:823` and `hooks/session_context.py:114` say the skills infer the profile from DESCRIPTION — fix now
+- Pass-1 fix-now items: fixed in 3e78b231, 5339cdf5, 6e2f8536, and 11448e85 (T6 work-log lines), except diff-bug #1 and blame-history #2, which pass 2 found still open (pass-2 diff-bug #1).
+
+Pass 2, head `11448e85`, main unmoved.
+
+- AC1-AC7 fresh: `test_shipped_reference_profiles_are_valid` OK; `scripts/tests` OK (444, 21 skipped), `test_versions` 16 OK; embedpdf `v1.*` tags 16, mismatches 0; `skills/tests` 930 OK; `hooks/tests` OK (193); both validates exit 0 with no `plugins[N].version` warning; mod test 2417 pass; `cairn_validate` all checks passed.
+- spawned: diff-bug, ripple (on `1078134e..HEAD`, the return's changes; the history lenses covered these files in pass 1)
+- diff-bug #1 (pass 2): a version a merge raised keeps its changelog entries under the development heading, so the arm finds no section, skips the claim-read, and the entries roll into a later version — fix now (floor return), by narrowing: with a declared changelog the arm needs the section headed with the version at `start` and stops otherwise
+- diff-bug #2 (pass 2): the claim-read does not say how the section is found or at which revision — fix now, with #1 (a heading naming the version, read at `start`)
+- diff-bug #3 (pass 2): nothing says what happens after a stop — fix now (the stop ends the run and names the fix)
+- diff-bug #4 (pass 2): step 4's `gh release create` body still names the consolidated section only — fix now
+- diff-bug #5 (pass 2): the marker check comes after the step 1 confirmation — fix now (check first)
+- diff-bug #6 (pass 2): a local unpushed tag counts as present, so a rerun takes the release-time arm — follow-up, row "Handle version reader edge cases"
+- diff-bug #7 (pass 2): `git fetch --tags` refuses to clobber a differing local tag and the walk says nothing — follow-up, row "Handle version reader edge cases"
+- diff-bug #8 (pass 2): the up-to-date precondition is checked before the tag fetch — reject (false): the precondition follows the git model's sync, which fetches
+- diff-bug #9 (pass 2): step 3 would rerun the read the slot ran before step 1 — fix now
+- diff-bug #10 (pass 2): the shape check accepts `1.0.`, `1..0`, `1.0.lock`, and `v1.0.0` — fix now
+- diff-bug #11 (pass 2): the shallow test's stderr assert also matches the temp directory's name — fix now
+- ripple #1 (pass 2): the CHANGELOG New entry says the arm asks "no version question" — fix now
+- ripple #2 (pass 2): AC2 says `/cairn-release` "skips its version decision", but step 1 now confirms the version — amendment return (AC2's wording), with the narrowing of diff-bug #1
+- ripple #3 (pass 2): `docker-image.md`'s overview names only a language marker as a hybrid — fix now
+- ripple #4 (pass 2): `/cairn-release` step 1's body has no tag-only condition — fix now
+- ripple #5 (pass 2): the profile's greenfield opener says the arm tags "the tip's raised version" — fix now (it tags the run's start)
+- ripple #6 (pass 2): DESIGN's scripts paragraph omits the shallow-clone exit — fix now
+- ripple #7 (pass 2): this repo's own `cairn/PROFILE.md` copy of the claude-plugin init-detection lacks the new ranking — reject (false as a defect): an instantiated profile is the repo's copy, and this repo has no extension marker
