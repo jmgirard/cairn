@@ -517,10 +517,21 @@ transitions, human-gated merges, and a domain verification doctrine.
   the repo part of a github.com URL, else the folder holding a `.git`
   common dir (`git rev-parse --path-format=absolute --git-common-dir`, run
   only when the base URL is not a github.com one or there is none), else
-  the root's last segment. The `repo` state value (`{
-  root, counts, done, name }`, tag `repo-3`) holds them, and the pane draws
-  them only while its root is the band's. With none for that root,
-  `paneLines` names the root's last segment (M291).
+  the root's last segment. `webOf` gives the repo page,
+  `https://github.com/<owner>/<repo>`, of a github.com URL whose owner and
+  repo both match `[A-Za-z0-9._-]+` and are not `.` or `..`, and null
+  otherwise, since a `Link` whose `href` is not spelled as
+  `new URL(href).href` refuses the whole pane (M311). The `repo` state
+  value (`{ root, counts, done, name, web }`, tag `repo-4`) holds them,
+  and the pane draws them only while its root is the band's. With none
+  for that root, `paneLines` names the root's last segment (M291).
+  With a `web`, `cardLines` gives the name span that page as its `href`,
+  and each count and its word the page's `/pulls` or `/issues` (M311).
+  Off the terminal the render draws such a span's text as a `Link` inside
+  the span's own `Text`, so its bold, color, and cut stay. The terminal
+  draws no `Link`: one without OSC 8 draws the URL after the text, which
+  would push ⌂ and ↻ off the row. No read for the root, a remote on
+  another host, no remote, and a name `webOf` refuses draw no link.
   A mark span may name an icon (`icons.ts`, M286). On a surface other than
   the terminal the render draws it as a 14-pixel `Svg` in a fixed color,
   since an image has no theme signal, and centers the row. The terminal

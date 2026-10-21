@@ -114,7 +114,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
       inside its `Text`, on both paths: `drawSpan` (register.tsx:429) and the
       line's `text` (register.tsx:498). Pass the text as the Link's children,
       so `textOf` (pane.test.tsx:241) keeps reading it. Write the AC3 test.
-- [ ] T4: Update the README summary-card paragraph (README.md:295), the
+- [x] T4: Update the README summary-card paragraph (README.md:295), the
       pane section of `cairn/DESIGN.md`, and `CHANGELOG.md` under Unreleased.
 - [ ] T5: Live look (AC4). The app refuses to start a session inside a
       run, so stop and ask the operator to open a new Code session in this
@@ -145,6 +145,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: implement started on m311-pane-repo-link; the untracked `cairn-probe.log` and `tsconfig.json` stay unstaged, not this milestone's.
 - 2026-10-21: T1 done: `webOf` in repo.ts gives the repo page of a github.com remote, or null for another host, no URL, a name outside `[A-Za-z0-9._-]+`, or `.`/`..`; `readRepo` stores it as `web`, shape `repo-4`. Nine `webOf` cases in repo.test.ts. verify green (scripts 445 OK, hooks 193 OK, both validates, plugin test 2453 pass).
 - 2026-10-21: T2 and T3 done in one commit, since the AC2 read-flow cases can only fail once Links draw: `Span.href` (band.ts); `cardLines` links the name, each count, and its word from `repo.web`; register.tsx draws a linked span's text as a `Link` inside its `Text` off the terminal, on both the span and line-text paths. 10 tests in pane.test.tsx (M311 block). plugin test 2463 pass.
+- 2026-10-21: T4 done: README summary-card paragraph, DESIGN.md card paragraph (`webOf`, `repo-4`, the Link inside the Text, no terminal link), CHANGELOG Unreleased/New entry. The simple-english lint hook's README and CHANGELOG counts are older text; the README count did not move with the added lines.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
