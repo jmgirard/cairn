@@ -1,19 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-21 (review M306: done, its candidate row graduated, M303 row pruned to the terminal cap; caps and module budgets within; skills/tests prose guards green; validate green)_
+_Last hygiene check: 2026-10-21 (review M307: done; M304 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M307 | Reject review findings that only unusual inputs reach | review | — | normal | milestones/M307-edge-findings.md |
+| M307 | Reject review findings that only unusual inputs reach | done | — | normal | milestones/archive/M307-edge-findings.md |
 | M308 | Fit guest PRs to the host and to one change | planned | — | normal | milestones/M308-guest-pr-shape.md |
 | M309 | Route a handed-off PR with merge conflicts to a sync | planned | — | normal | milestones/M309-guest-conflict-route.md |
 | M306 | Vet an idea before planning its build | done | — | normal | milestones/archive/M306-idea-vet.md |
 | M305 | Trim the idle pane and separate the candidate levels | done | — | normal | milestones/archive/M305-idle-pane-trim.md |
-| M304 | Hand over the tag commands when a merge raises the version | done | M303 | normal | milestones/archive/M304-quarto-tag-handoff-at-merge.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Write short guest PR bodies and replies: reported 2026-10-21 by the modelbased session (easystats/modelbased #698). Main defect: the guest PR body that `/milestone-review` step 8 wrote ran to about 45 lines, with a before/after table of numbers, internal function names, a test inventory, and a not-fixed list; the user called it opaque. The host's maintainers write one or two sentences and a code example (#663, #661). Likely cause: the body is built from the Review evidence, and host style was sampled from the operator's own PRs. Fix: the body samples PR bodies by the host's maintainers, never the operator's, and gives what changed for users, one example, and the design points a maintainer must decide; evidence, internal names, and tests stay in `cairn/`. Smaller defect: a maintainer's one-line comment on a blocked guest PR has no route in `/milestone` §2 and no reply rule, so the reply carried probe detail; a reply leads with the answer or question at about the maintainer's length. Fold into "Fit guest PRs to the host and to one change" (M308) at its implement — added 2026-10-21
