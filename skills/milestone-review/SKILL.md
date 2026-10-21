@@ -501,10 +501,10 @@ re-enters here, at the step the record shows is next:
    entry; a comment naming what shipped and the remainder's candidate row
    per `partial` entry — so approving the merge is also the approval step
    9's issue writes rest on; no other issue write is made on the review path.
-   Acceptance chips (tracking-rules): each actioned finding's text, and
-   each `edge` reject's, appears
+   Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary, and the chip's
    question text names the count of findings under each disposition.
+   Each `edge` reject's text appears verbatim too.
    Each criterion or scope amendment the work log records for this
    milestone appears verbatim in this presentation, and the chip's question
    text names how many there were, counted from this milestone's work-log
