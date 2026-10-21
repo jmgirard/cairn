@@ -82,6 +82,7 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: re-audit: AC4 (full) — three findings (Copilot-round edge rejects after the body, ground-less copilot and conversation lines, the baseline for "new"); the criterion stays as audited, and the skill text answers all three: reviewer lines only, the close block names any edge reject the body leaves out, "new" means after the newest earlier step-7 approval line.
 - 2026-10-21: substantive amendment: AC4 added at the user's request (guest PR body notes edge rejects and asks the maintainers); verify criterion renumbered AC5; T5 added and done.
 
+- 2026-10-21: step-7 approval: m307-edge-findings approved for merge
 ## Decisions
 
 ## Review
