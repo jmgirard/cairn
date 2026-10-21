@@ -7509,4 +7509,8 @@ ground. The door: the change narrows the fix-now rule (D-108's carve-out),
 and its trigger is also a shipped-behavior defect, the review fixes that
 made guest PRs too long to review.
 
+D-205's heading phrase "it gives no wrong result" reads as "it gives no
+wrong result without an error or warning", the condition its Decision
+states.
+
 **Consequences:** D-205's decision and falsifier stand.
