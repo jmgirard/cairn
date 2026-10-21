@@ -45,7 +45,7 @@ D-entry, the CHANGELOG, and the README follow.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/milestone-review/SKILL.md` step 7 says that, in both
+- [x] AC1: `skills/milestone-review/SKILL.md` step 7 says that, in both
       modes, the presentation lists each changed snapshot file. The step
       defines one as a path with a directory named `_snaps` or
       `__snapshots__`, among the paths that
@@ -61,7 +61,7 @@ D-entry, the CHANGELOG, and the README follow.
       `snapshot: <path> — <disposition>` records it, also when a fix-now
       revert removes the path from the list. An empty list is stated in
       one line.
-- [ ] AC2: Step 8's guest arm says that the body of a PR it opens names
+- [x] AC2: Step 8's guest arm says that the body of a PR it opens names
       each changed snapshot file, with one plain line on what changed and
       why. The list is recomputed with AC1's command and base on the head
       that step 8 pushes. The sentence "The `edge` list and the series
@@ -72,7 +72,7 @@ D-entry, the CHANGELOG, and the README follow.
       lines in one PR comment. That comment is the `edge` list's comment
       when both have lines. When there is no such file, the comment has no
       snapshot line.
-- [ ] AC3: `skills/hotfix/SKILL.md` step 6 says that, in both modes, the
+- [x] AC3: `skills/hotfix/SKILL.md` step 6 says that, in both modes, the
       approval gate lists each changed snapshot file of the head the gate
       shows. Where the gate shows a PR's `headRefOid`, the paths are the
       ones that `gh pr diff <N> --name-only` prints. Otherwise they are
@@ -86,7 +86,7 @@ D-entry, the CHANGELOG, and the README follow.
       where one is owed, else after the prose, and before the `Fixes #N`
       line. The sentence "The body's prose is a short description" names
       them. When there is no such file, the body has no snapshot line.
-- [ ] AC4: The Unreleased section of `CHANGELOG.md` has an entry on the
+- [x] AC4: The Unreleased section of `CHANGELOG.md` has an entry on the
       snapshot list. The entry covers the review and hotfix gates and guest
       PR bodies and comments. The sweep is
       `grep -n -E 'PR body|the PR lists|guest PR' README.md cairn/DESIGN.md`
@@ -94,7 +94,7 @@ D-entry, the CHANGELOG, and the README follow.
       that a guest PR body or comment includes also names the snapshot
       lines. Hits that only say what a guest body leaves out are out of
       the sweep's scope.
-- [ ] AC5: Run from the repo root, each of the five commands in the
+- [x] AC5: Run from the repo root, each of the five commands in the
       `verify` slot of `cairn/PROFILE.md` exits 0.
 
 ## Coverage
@@ -143,7 +143,15 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: T5 done — CHANGELOG Unreleased gains the snapshot-list entry first under "Changes that affect existing repos"; AC4 sweep hits README.md:574, 576, 736 and cairn/DESIGN.md:597, 598, 862, 984, 1146, of which only README.md:736 names items a guest body includes, and its paragraph now names the snapshot lines (the others say what a body omits or name no body item); `skills/tests` hand-run 954 tests OK; verify green.
 - 2026-10-21: claim audit: 38 claims read, 1 corrected — CHANGELOG.md (the open-PR comment is review's only; `/hotfix` posts none)
 - 2026-10-21: implement complete; status set to review.
+- 2026-10-21: review step 3: AC2's "the comment has no snapshot line" clause was implied only; the sentence "With no such file, the comment has no snapshot line." added to step 8 before AC2's evidence line, a wording fix inside the planned change with no criterion change.
 
 ## Decisions
 
 ## Review
+
+- 2026-10-21: copilot arm: PR #324 opened at review start; state query read `none`, request exit 0, re-query read `pending`.
+- AC1 evidence (2026-10-21, head after ef316491): `skills/milestone-review/SKILL.md` lines 526-540, inside step 7 (step 7 at line 490, step 8 at 628), hold the "Changed snapshot files" paragraph: the `_snaps`/`__snapshots__` definition over `git diff --name-only <base>/<default-branch>...HEAD` (528), the `OPEN` stack-base diff (529), route (b)'s `gh pr diff <N> --name-only` (530), "In both modes" on the head after fix-now commits (531-532), one line with what changed or new/deleted and whether the Goal or criteria call for it (533-535), step 5's fix now or follow-up before the chip (535-538), the `snapshot: <path> — <disposition>` line also after a revert (539-540), and the one-line empty list (540). Read by grep for each clause.
+- AC2 evidence (2026-10-21): step 8's guest arm, lines 756-778. The items sentence now reads "The snapshot lines, the `edge` list, and the series sentence below follow" (756-757), the "Beyond those items" sentence is followed by "The snapshot lines are the one exception for test files." (759), the lines are computed again with step 7's command and base on the pushed head, one plain line each on what changed and why, none when no file changed (760-764). On an already-open PR, no body edit, and one comment carries the `edge` list and the snapshot lines (771-777). The clause "With no such file, the comment has no snapshot line." was implied only and was added at review before this line (see the work log).
+- AC3 evidence (2026-10-21): `skills/hotfix/SKILL.md` step 6 (line 344, step 7 at 541), lines 412-424: "In both modes, the gate lists each changed snapshot file of the head it shows", `gh pr diff <N> --name-only` where the gate shows a PR's `headRefOid` (with `--repo` in guest mode), else `git diff --name-only <base>/<default-branch>...HEAD` after `git fetch <base>`, one line with what changed or new/deleted and whether the fix needs it, the chip's question text names each unneeded change, and the recommended option does not approve while one stands. Guest arm lines 505-510: "The body's prose is a short description … then that list where one is owed, then the snapshot lines", before the `Fixes #N` line, one line each on what changed and why, none when no file changed.
+- AC4 evidence (2026-10-21): `CHANGELOG.md` lines 7-19, first under Unreleased "Changes that affect existing repos", describe the list at the review and hotfix gates, the guest PR body, and review's open-PR comment. The sweep `grep -n -E 'PR body|the PR lists|guest PR' README.md cairn/DESIGN.md` hits README.md:574, 576, 736 and cairn/DESIGN.md:597, 598, 862, 984, 1146. Read in context, only README.md:736 names items a guest PR includes, and its paragraph (lines 731-738) names the snapshot lines ("It also says what changed in each snapshot file and why"). The other hits are about `Candidate row:` lines a guest body omits, the pane's PR read, or the triage token.
+- AC5 evidence (2026-10-21): from the repo root, each exit code read on its own: `python3 -m unittest discover -s scripts/tests` 0, `python3 -m unittest discover -s hooks/tests` 0 (193 tests OK), `claude plugin validate .claude-plugin/plugin.json` 0, `claude plugin validate .claude-plugin/marketplace.json` 0, `CLAUDE_CODE_ENABLE_FUNCTION_HOOKS=1 claude plugin test .` 0 (2444 pass, 0 fail).

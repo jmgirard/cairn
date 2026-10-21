@@ -772,8 +772,9 @@ re-enters here, at the step the record shows is next:
    posts one PR comment. It carries the same `edge` list and question for
    the `edge` rejects of this review pass, the lines after the newest
    `spawned:` line. It also carries the snapshot lines for the head that
-   this step pushes. A comment with neither is not posted, and the close block names
-   what the comment carried.
+   this step pushes. With no such file, the comment has no snapshot line.
+   A comment with neither is not posted, and the close block names what
+   the comment carried.
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
