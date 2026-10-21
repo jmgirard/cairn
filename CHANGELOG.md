@@ -24,7 +24,12 @@
   it.
   While a handed-off PR waits for the maintainers' review, `/milestone`
   quotes each maintainer comment and review on it that you have not
-  answered yet.
+  answered yet. When GitHub reports that such a PR has merge conflicts,
+  `/milestone` sends the milestone back to `/milestone-implement`. It
+  rebases the branch, resolves the conflicts, runs the checks, and pushes
+  the branch. If it cannot resolve them, it stops and names the files
+  with conflicts. `/milestone` also reports each of your open hotfix PRs
+  that has merge conflicts.
 
 - **Review can reject a real finding that only an unusual input
   reaches.** `/milestone-review` step 5 has a fourth reject ground,
