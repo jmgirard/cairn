@@ -13,8 +13,9 @@
   does not need is fixed or sent to a candidate row before the merge
   question. At a hotfix, the gate names such a change and does not
   recommend approval while it stands. In guest mode, the PR body names
-  each changed snapshot file and says what changed and why. On a PR that
-  is already open, one PR comment carries the same lines. A snapshot
+  each changed snapshot file and says what changed and why. At review,
+  when the PR is already open, one PR comment carries the same lines
+  instead. A snapshot
   directory with another name is not covered.
 
 - **In guest mode, the host's writing style wins.** Text written for the

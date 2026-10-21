@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M310: Check and explain changed snapshots before a PR leaves
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -141,6 +141,8 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: T3 done — `/hotfix` step 6's gate gains a "Changed snapshot files" paragraph after the head note, and the guest body sentence puts the snapshot lines after the failing-calls list and before `Fixes #N`; implement chose "the recommended option does not approve and instead fixes that change first" for AC3's no-approve clause; verify green.
 - 2026-10-21: T4 done — D-208 appended: the rule, the guest half through D-108's door on its retained trigger (easystats/see#486), the owner half excepted by name at the user's decision as D-189 did, and falsifiers for each half.
 - 2026-10-21: T5 done — CHANGELOG Unreleased gains the snapshot-list entry first under "Changes that affect existing repos"; AC4 sweep hits README.md:574, 576, 736 and cairn/DESIGN.md:597, 598, 862, 984, 1146, of which only README.md:736 names items a guest body includes, and its paragraph now names the snapshot lines (the others say what a body omits or name no body item); `skills/tests` hand-run 954 tests OK; verify green.
+- 2026-10-21: claim audit: 38 claims read, 1 corrected — CHANGELOG.md (the open-PR comment is review's only; `/hotfix` posts none)
+- 2026-10-21: implement complete; status set to review.
 
 ## Decisions
 
