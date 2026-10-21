@@ -1,18 +1,17 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-20 (review M302: done, M299 row pruned to the terminal cap; caps and module budgets within; skills/tests prose guards green; validate green)_
+_Last hygiene check: 2026-10-20 (review M303: done, M300 row pruned to the terminal cap; caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M303 | Add a quarto-extension toolchain profile | review | — | normal | milestones/M303-quarto-extension-profile.md |
 | M304 | Hand over the tag commands when a merge raises the version | planned | M303 | normal | milestones/M304-quarto-tag-handoff-at-merge.md |
+| M303 | Add a quarto-extension toolchain profile | done | — | normal | milestones/archive/M303-quarto-extension-profile.md |
 | M302 | Put the pane's count badges after their labels in gray | done | — | normal | milestones/archive/M302-pane-badge-after-label.md |
 | M301 | Show each open PR's merge state in the pane | done | — | normal | milestones/archive/M301-pane-pr-merge-state.md |
-| M300 | A trivial edit keeps owed issues open | done | — | normal | milestones/archive/M300-trivial-route-owed-issues.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Switch Quarto repos to the new profile: once M303 ships, rewrite `cairn/PROFILE.md` in embedpdf and quarto-index from the quarto-extension profile, each in its own session, keeping its own notes (embedpdf's changelog "none" and its second version marker in `embedpdf.lua`; quarto-index's `CHANGELOG.md`). Both use the generic profile now — added 2026-10-20 — M303 plan (the user's choice at the question set)
