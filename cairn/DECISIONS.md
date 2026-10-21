@@ -7453,3 +7453,71 @@ caught.
 
 **Consequences:** `/milestone` §4's issue look-in gets no vet of its
 own, because its verdicts hand the issue to the two skills that vet it.
+
+### D-205 (2026-10-21): `/milestone-review` can reject a real finding as `edge` when only an unusual input reaches it and it gives no wrong result — narrows step 5's fix-now rule; passes D-108's door on its narrowing carve-out (M307)
+
+**Context:** Step 5 settled every real, in-scope finding as fix now. In
+datawizard M011 (easystats/datawizard #730), two review passes fixed
+about 20 findings on inputs no caller uses, such as POSIXlt cluster ids,
+classed lists, and duplicate or missing list names. Each fix added code,
+helpers, or help text. A maintainer said that the code had too many small
+helpers to review and that the argument's help was too long. Similar
+comments came on datawizard #726 and bayestestR #794.
+
+**Decision:** A fourth reject ground, `edge`, covers a real defect that
+only an input outside both the deliverable's documented use and its
+common use reaches, whose effect is an error, a warning, or slow running.
+A finding whose effect is a wrong result with no error or warning is
+never `edge`. A finding that demonstrates an acceptance criterion failing
+is never `edge`, so the return floor still sees it. The ground applies in
+owner and guest mode, at the user's choice at the plan gate. An `edge`
+reject is logged with its reason like any reject, so IP3 holds.
+
+**Door:** D-108 bars a new conduct rule about verification unless a
+shipped-behavior defect triggers it, and it exempts work that removes or
+narrows such a rule. This entry narrows the fix-now rule, so it is
+outside the door.
+
+**Rejected:** A new disposition beside reject, because a reject already
+logs the finding and its reason, and a follow-up row would bring the
+finding back as work. Guest mode only, at the user's choice.
+
+**Consequences:** Falsified by a merged defect on a documented or common
+input that traces to a finding rejected as `edge`. `/hotfix` is
+unchanged, because the user settles each item there.
+
+### D-206 (2026-10-21): Four clauses of D-205 are corrected in one batched entry — the `edge` exclusions, the narrowed rule's record, the hotfix reason, and the door — and a guest PR lists its `edge` rejects for the maintainers; supersedes those clauses; annotates D-144 (M307 review)
+
+**Context:** M307's review found that D-205 and the first `edge` text
+left four gaps. An `edge` reject never reached the return floor's
+load-bearing arm or the fix-now bullet's rule for outward irreversible
+actions. D-205 did not name D-144, whose Decision lists review's reject
+grounds. D-205 said the user settles every hotfix item, but the agent
+settles a hotfix's Copilot threads.
+
+**Decision:** An `edge` finding is a real defect the diff adds. It is
+never a wrong result with no error or warning, a finding that shows an
+acceptance criterion failing or wrong, a finding that authorizes an
+outward-facing irreversible action, or a human's request in the PR
+conversation. Its reason names the input and the use that the input falls
+outside. Because it reaches no documented or common use, it is not a
+load-bearing defect under the return floor. The merge question shows each
+`edge` reject verbatim. D-144's list of reject grounds gains `edge`. In
+`/hotfix`, `edge` does not apply: the user settles each conversation item,
+and a Copilot thread takes the hotfix's own rule, which has no `edge`
+ground. The door: the change narrows the fix-now rule (D-108's carve-out),
+and its trigger is also a shipped-behavior defect, the review fixes that
+made guest PRs too long to review.
+
+D-205's heading phrase "it gives no wrong result" reads as "it gives no
+wrong result without an error or warning", the condition its Decision
+states. At the user's request at review, a guest PR body lists the
+reviewer `edge` rejects in plain words before the `Closes`/`Refs` lines
+and asks the maintainers whether they want those inputs handled; on an
+already-open PR one PR comment carries the same list for that review
+pass. The maintainers, not the operator, then decide whether those holes
+get plugged.
+
+**Consequences:** D-205's decision and falsifier stand. The PR-body list
+is falsified by maintainers who ask that such notes be left out of guest
+PRs.

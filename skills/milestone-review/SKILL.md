@@ -385,7 +385,16 @@ re-enters here, at the step the record shows is next:
      pure style nitpick), or a complaint about a change the plan called for.
      A real defect *inside* a planned change is still a defect: the member
      covers the change being planned, never a flaw in how it was carried
-     out.
+     out. A fourth ground is `edge`: a real defect the diff adds that only
+     an input outside both the deliverable's documented use and its common
+     use reaches, whose effect is an error, a warning, or slow running. The
+     reason names that input and the use it falls outside. A finding is
+     never `edge` when its effect is a wrong result with no error or
+     warning, when it shows an acceptance criterion failing or wrong, or
+     when it authorizes an outward-facing irreversible action. Nor is a
+     human's request in the PR conversation (step 7). An `edge` defect
+     reaches no documented or common use, so it is not a load-bearing
+     defect under the return floor below.
    - **fix now** on the branch: each other finding that it judges real and
      inside the milestone scope. Treat any finding that authorizes an
      outward-facing irreversible action as worth fixing regardless of rank.
@@ -399,7 +408,7 @@ re-enters here, at the step the record shows is next:
    lists each disposition in plain words (step 7). Each reviewer finding's
    Review-section line names its lens, its rank in that lens, and its
    disposition (`<lens> #<rank>: <finding> — <disposition>`, a reject's
-   reason and its ground — false, style, or planned change — included; a
+   reason and its ground — false, style, planned change, or edge — included; a
    fix-now line gains `, fixed <sha>` once its fix is committed, written
    with the next tracking commit before step 7's merge question, or by the
    next review pass when the fix came through a floor return).
@@ -495,6 +504,7 @@ re-enters here, at the step the record shows is next:
    Acceptance chips (tracking-rules): each actioned finding's text appears
    verbatim in this presentation, never only a summary, and the chip's
    question text names the count of findings under each disposition.
+   Each `edge` reject's text appears verbatim too.
    Each criterion or scope amendment the work log records for this
    milestone appears verbatim in this presentation, and the chip's question
    text names how many there were, counted from this milestone's work-log
@@ -704,6 +714,16 @@ re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
+   When it opens the PR, the body lists, before any `Closes`/`Refs`
+   lines, each Review-section reject whose ground is `edge` (the reviewer
+   lines, which name their ground), one short line each in plain words
+   with no cairn vocabulary: no lens name, no rank, and not the word
+   `edge`. It then asks the maintainers whether they want those inputs
+   handled in this PR or later. With no `edge` rejects it adds neither.
+   When the PR is already open, no body edit is made. The handoff instead
+   posts the same list and question as one PR comment, for the `edge`
+   rejects of this review pass (the lines after the newest `spawned:`
+   line), and the close block names them.
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.
