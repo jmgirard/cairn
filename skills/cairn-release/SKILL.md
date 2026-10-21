@@ -52,7 +52,8 @@ toolchain-specific work at step 3.
 
    **Tag-only arm (quarto-extension).** Before step 1, a quarto-extension
    profile's release-walk fetches the tags and reads the version marker on
-   the default branch with `cairn_versions.py` (the slot names the command).
+   the remote default branch with `cairn_versions.py` (the slot names the
+   command).
    When it reports the tip's version with no `v<version>` tag, that version
    is unreleased: merged work raised it, or it was never tagged. Step 1 then
    confirms that version and the commit that started it, step 2 makes no
@@ -107,7 +108,8 @@ toolchain-specific work at step 3.
    - A **quarto-extension** profile's slot reads the version marker with
      `cairn_versions.py` and takes one of two arms. The tag-only arm tags the
      first commit of the tip version's run, with no bump and no prep commit.
-     The release-time arm runs the generic walk. With changelog "none", the
+     The release-time arm runs the generic walk. With changelog "none", or in
+     the tag-only arm when the changelog has no section for the version, the
      release notes are the commit subjects since the previous `v*` tag.
    For any slow checks the slot names (wide/registry checks, reverse-dependency
    runs), follow the tracking-rules wait rule — one watcher per check, a

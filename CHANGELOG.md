@@ -4,8 +4,8 @@
 
 ### Changes that affect existing repos
 
-- **A repo with a Quarto extension marker and no `cairn/PROFILE.md` now
-  reads as the quarto-extension profile.** The profile inference checks
+- **A repo with a Quarto extension marker, no language or plugin marker,
+  and no `cairn/PROFILE.md` now reads as the quarto-extension profile.** The profile inference checks
   `_extensions/*/_extension.yml` (or `.yaml`) after the plugin marker and
   before a `Dockerfile`. A repo with an extension marker and a `Dockerfile`,
   and no `cairn/PROFILE.md`, read as docker-image before and reads as
