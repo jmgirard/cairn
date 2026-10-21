@@ -524,21 +524,21 @@ re-enters here, at the step the record shows is next:
    question text names how many Copilot items took each disposition.
 
    **Changed snapshot files.** A changed snapshot file is a path with a
-   directory named `_snaps` (testthat) or `__snapshots__` (Jest, syrupy)
-   among the paths that `git diff --name-only
-   <base>/<default-branch>...HEAD` prints. A stacked guest milestone whose
-   stack base's PR is `OPEN` diffs against `<base>/<stack-base-branch>`.
-   Resume route (b) uses the paths that `gh pr diff <N> --name-only`
-   prints. In both modes, this presentation lists each such file on the
-   head the chip is posed on, after any fix-now commits, with one plain
-   line. The line says what changed in its stored output, or that the
-   file is new or deleted, and whether the Goal or acceptance criteria
-   call for that change. Before the chip, step 5's rule settles a change
-   that they do not call for as fix now (the snapshot re-recorded or the
-   change reverted) or follow-up. Its Review-section line is `snapshot:
-   <path> — <disposition>`, written also when a fix-now revert removes the
-   path from the list. An empty list is stated in one line. Step 8's guest
-   arm uses the same definition.
+   directory named `_snaps` (testthat) or `__snapshots__` (Jest, syrupy).
+   The paths come from `git diff --name-only <base>/<default-branch>...HEAD`.
+   A stacked guest milestone whose stack base's PR is `OPEN` diffs against
+   `<base>/<stack-base-branch>`. Resume route (b) uses the paths that
+   `gh pr diff <N> --name-only` prints. In both modes, this presentation
+   lists each such file on the head the chip is posed on, after any fix-now
+   commits. Each file gets one plain line. The line says what changed in
+   its stored output, or that the file is new or deleted. It also says
+   whether the Goal or acceptance criteria call for that change. Step 5's
+   rule settles a change that they do not call for before the chip. The
+   disposition is fix now (the snapshot re-recorded or the change
+   reverted) or follow-up. Its Review-section line is
+   `snapshot: <path> — <disposition>`. A fix-now revert can remove the
+   path from the list, and the line is still written. An empty list is
+   stated in one line. Step 8's guest arm uses the same definition.
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
@@ -753,9 +753,15 @@ re-enters here, at the step the record shows is next:
    carries a `maintainer approach:` line
    (`/milestone-plan` step 2's guest scope), the body says in plain words
    which approach the maintainer proposed and why the PR takes another.
-   The `edge` list and the series sentence below follow, then the
-   `Closes`/`Refs` lines. Beyond those items, review evidence, internal
-   function names, and test lists stay in `cairn/`.
+   The snapshot lines, the `edge` list, and the series sentence below
+   follow, then the `Closes`/`Refs` lines. Beyond those items, review
+   evidence, internal function names, and test lists stay in `cairn/`.
+   The snapshot lines are the one exception for test files.
+   The snapshot lines name each changed snapshot file by step 7's
+   definition. This step computes the list again, with step 7's command
+   and base, on the head that it pushes. Each file gets one plain line in the host's
+   style on what changed in it and why. With no such file, the body has no
+   snapshot line.
    When it opens the PR, the body lists, before any `Closes`/`Refs`
    lines, each Review-section reject whose ground is `edge` (the reviewer
    lines, which name their ground), one short line each in plain words
@@ -763,9 +769,11 @@ re-enters here, at the step the record shows is next:
    `edge`. It then asks the maintainers whether they want those inputs
    handled in this PR or later. With no `edge` rejects it adds neither.
    When the PR is already open, no body edit is made. The handoff instead
-   posts the same list and question as one PR comment, for the `edge`
-   rejects of this review pass (the lines after the newest `spawned:`
-   line), and the close block names them.
+   posts one PR comment. It carries the same `edge` list and question for
+   the `edge` rejects of this review pass, the lines after the newest
+   `spawned:` line. It also carries the snapshot lines for the head that
+   this step pushes. A comment with neither is not posted, and the close block names
+   what the comment carried.
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.

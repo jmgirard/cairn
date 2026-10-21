@@ -111,7 +111,7 @@ D-entry, the CHANGELOG, and the README follow.
       presentation items before the PR-conversation read): the definition,
       the diff bases, the per-file line, the step-5 settling, and the
       `snapshot:` Review line.
-- [ ] T2: Add the snapshot lines to step 8's guest body sentences and to
+- [x] T2: Add the snapshot lines to step 8's guest body sentences and to
       the open-PR comment beside the `edge` list.
 - [ ] T3: Add the snapshot list to `/hotfix` step 6's gate in both modes,
       and the snapshot lines to the guest arm's body sentence.
@@ -137,6 +137,7 @@ D-entry, the CHANGELOG, and the README follow.
 - 2026-10-21: plan gate chose the review gate (step 7) over the handoff (step 8) for the check, because an unneeded change must be fixable before approval; falsified by a run where the gate's list is stale at the push.
 - 2026-10-21: implement started on m310-snapshot-explain, cut from main at 488fc5a4; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-21: T1 done — step 7 gains a "Changed snapshot files" paragraph before the PR-conversation read; verify green (five commands, each exit 0).
+- 2026-10-21: T2 done — step 8's guest body names the snapshot lines first in the items sentence, the "Beyond those items" sentence gains an exception for them, and the open-PR comment carries them beside the `edge` list; T1's paragraph split into shorter sentences; verify green.
 
 ## Decisions
 
