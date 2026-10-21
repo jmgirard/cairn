@@ -911,14 +911,19 @@ re-enters here, at the step the record shows is next:
     step 7. In the close after a merge this run made, after the step-9
     hygiene commit lands, hand over the commands that tag it. Step 9
     already fast-forwarded the default branch. Read the merge commit,
-    `<merge sha>`, with `gh pr view <N> --json mergeCommit -q
-    .mergeCommit.oid`. Run `git fetch --tags origin`. Then run
+    `<merge sha>`, with `gh pr view <N> --repo <base-repo> --json
+    mergeCommit -q .mergeCommit.oid`. An empty result fences nothing, and
+    the close says that GitHub returned no merge commit. `<marker file>` is
+    the one path that `git ls-tree -r --name-only <merge sha> -- _extensions`
+    lists as `_extensions/<name>/_extension.yml` or `.yaml`. No such path,
+    or more than one, fences nothing, and the close names what it found.
+    Then run
     `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" <marker file>
-    --changed-by <merge sha>`. `<marker file>` is the `_extension.yml` or
-    `_extension.yaml` that the profile's `release-walk` slot names. The
-    merge raised a version with no tag when the script prints a version and
-    `git rev-parse -q --verify refs/tags/v<version>` prints nothing. Then
-    write the release notes to `cairn-notes-<owner>-<repo>-v<version>.md`
+    --changed-by <merge sha>`. The tag's authority is `origin`: the
+    version has no tag when `git ls-remote --tags origin
+    refs/tags/v<version>` prints nothing. The merge raised a version with
+    no tag when the script prints a version and that read prints nothing.
+    Then write the release notes to `cairn-notes-<owner>-<repo>-v<version>.md`
     in the system temp directory (Python's `tempfile.gettempdir()`), with
     the Write tool. `<owner>` and `<repo>` are `<base-repo>`'s. If that
     file already exists, Read it first, so that the Write tool replaces it.
@@ -927,22 +932,28 @@ re-enters here, at the step the record shows is next:
     heading is `## 1.2.9`, `## v1.2.9`, or `## [1.2.9]`, not `## 1.2.90`.
     With changelog "none", the notes are the output of
     `git log --first-parent --format='- %s' <previous tag>..<merge sha>`.
-    A declared changelog with no such section takes the same notes, and
-    the recap names the missing section. `<previous tag>` is
+    A declared changelog with no such section, or no such file at
+    `<merge sha>`, takes the same notes, and the recap names the gap.
+    `<previous tag>` is
     `git describe --first-parent --tags --abbrev=0 --match 'v*' <merge sha>^`.
     A first release, with no previous `v*` tag, drops `<previous tag>..`.
     The close says that the merge raised the version to `<version>` with
-    no tag. Before the next-action commands, it fences each of these
-    commands in its own block, with the notes file's absolute path in
-    place of `<file>`:
-    - `git tag -a v<version> <merge sha> -m "v<version>"`
+    no tag, and shows the notes file's text. Before the next-action
+    commands, it fences each of these commands in its own block, each with
+    a one-line label, with the notes file's absolute path in place of
+    `<file>`:
+    - `git tag -a v<version> <merge sha> -m "v<version>"`, left out when
+      `git rev-parse -q --verify refs/tags/v<version>` finds a local tag
+      that was never pushed
     - `git push origin v<version>`
-    - `gh release create v<version> --title "v<version>" --notes-file <file> --verify-tag`,
+    - `gh release create v<version> --title "v<version>" --notes-file "<file>" --verify-tag`,
       only where `origin`'s URL names `github.com` and `gh` is available.
+      Its label says the notes file is temporary.
 
     The skill provides these commands and never runs them, because tagging
     the release is the user's act (D-050). No tag command is fenced when
-    the script prints nothing, the tag exists, the profile is another one,
-    the run is in guest mode, or the close follows no merge this run made
-    (resume route (a), the guest hygiene run). A script error (exit 2)
-    fences none either, and the close names the error.
+    the script prints nothing, the tag exists on `origin`, the profile is
+    another one, the run is in guest mode, or the close follows no merge
+    this run made (resume route (a), the guest hygiene run). A merge in a
+    companion checkout gets no handoff. A script error (exit 2) fences
+    none either, and the close names the error.

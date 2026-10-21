@@ -107,9 +107,9 @@ universal openers (distribution ambition and numeric-work oracles):
 - **When does the version rise?** At release (reversible default), or at each
   merge that changes a shipped asset, when browsers cache that asset by a path
   that holds the version.
-  - Consequence: at merge, the tag-only arm tags the commit that raised the
-    tip's version, so run it after each raising merge or earlier versions
-    stay untagged (a stop can too). At release, the release-time arm raises it.
+  - Consequence: at merge, the close hands over the tag commands (owner mode,
+    `/milestone-review` step 10); the tag-only arm tags only the tip's version,
+    so earlier untagged ones stay so. At release, the release-time arm raises it.
   - Lands in: CLAUDE.md conventions and the `release-walk` marker list.
 
 ## changelog

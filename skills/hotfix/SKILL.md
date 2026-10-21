@@ -543,9 +543,11 @@ can resolve against the fork instead of the base repo.
    PR, and a follow-up PR that the re-entry opens and merges. It does not
    cover the merged-PR re-entry's already-merged PR. Run it after any
    ROADMAP commit above. In place of review's step 9, first fast-forward
-   the default branch here: run step
-   2's `git status` check, check the default branch out, and run
-   `git pull --ff-only origin <default-branch>`. Its fenced commands come
+   the default branch here: run `git fetch origin`, check the default
+   branch out, and run `git pull --ff-only origin <default-branch>`. A
+   dirty tree skips the checkout and the pull, with no question. A dirty
+   tree, a failed checkout, or a failed pull is named in the close. The
+   handoff still runs, because each of its reads names `<merge sha>`. Its fenced commands come
    before any other next command. The guest arm makes no merge, so it
    fences none.
    End with the

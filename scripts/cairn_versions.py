@@ -26,7 +26,8 @@ the file or its `version:` line is absent has no version: it ends a run, and
 a commit that adds the line after it sets that version. The value may be
 quoted; an unquoted value ends at the first space or `#`, and a leading
 byte-order mark is ignored. The release walk passes the version to
-`git tag`, so a printed version is dot-separated parts of letters, digits,
+`git tag`, and the merge-time handoff puts it in the `git tag` command it
+hands over, so a printed version is dot-separated parts of letters, digits,
 and `+_-`, each part starting and ending with a letter or digit, the first
 starting with a digit, and not ending in `.lock`; any other value is an
 error (exit 2, naming it). In the default mode a missing
