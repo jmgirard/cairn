@@ -87,7 +87,7 @@ between open guest PRs go to M309.
       `gh pr create` site in `skills/hotfix/SKILL.md` for AC6, rewording its "the changelog entry is the branch's only
       prose" note.
 - [x] T5: Edit the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's blocked-PR route for AC9.
-- [ ] T6: Append a D-entry that supersedes D-161's order clause and its rejection, on the user's choice at this plan's
+- [x] T6: Append a D-entry that supersedes D-161's order clause and its rejection, on the user's choice at this plan's
       question set. Its trigger is D-161's own falsifier, met on datawizard #726. Add the CHANGELOG entry. Run the
       five `verify` commands.
 
@@ -114,6 +114,7 @@ between open guest PRs go to M309.
 - 2026-10-21: T3 done: a "Guest scope" paragraph after step 2's idea vet holds Scope In to the asked change, sends side finds to candidate rows, reads issue comments and git history for deliberate behavior (posed as a vet concern), and takes a maintainer's proposed approach or writes the fixed-shape line `maintainer approach: <approach> — not taken: <reason>`, chosen so review step 8 can read it. Verify: five commands exit 0.
 - 2026-10-21: T4 done: step 8's guest arm gains a body paragraph (maintainer PR bodies read through `gh api .../pulls` filtered on `author_association` and the operator's login, since `gh pr list` has no association field; lead content; failure map from `gh issue view`; the `maintainer approach:` reason; what stays in `cairn/`). Hotfix's guest create gains the failure map, and its "only prose" note is reworded. Verify: five commands exit 0.
 - 2026-10-21: T5 done: `/milestone` §2's OPEN-otherwise arm reads `gh pr view --json author,comments,reviews` and names unanswered comments by OWNER/MEMBER/COLLABORATOR authors other than the PR's author, with the reply rule. Fields `authorAssociation`, `createdAt`, `submittedAt` confirmed on cairn PR #321. Verify: five commands exit 0.
+- 2026-10-21: T6 done: D-207 supersedes D-161's order clause and its rejection, passing D-108's door on its retained trigger; CHANGELOG Unreleased gains the guest-mode entry. Verify: five commands exit 0; cairn_validate green with the 10-criteria sizing advisory, kept since the user chose the fold.
 
 ## Decisions
 
