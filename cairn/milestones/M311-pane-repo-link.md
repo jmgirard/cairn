@@ -159,6 +159,7 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
 - 2026-10-21: substantive amendment: AC3 and AC4 rewritten to the drawing the operator asked for at live look 1 and approved at look 2 (one Link per count with its word, the card's colors, no underline); the 44-column row-fit clause dropped as unevidenced. User direction, logged.
 - 2026-10-21: T5 done; all tasks checked. verify ran green at 012d3653 (plugin test 2463 pass); the commits after it touch only DESIGN.md and the milestone file.
 - 2026-10-21: implement complete, status review: scripts 445 OK, hooks 193 OK, both manifest validates, cairn_validate green.
+- 2026-10-21: step-7 approval: m311-pane-repo-link approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
