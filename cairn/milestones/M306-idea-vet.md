@@ -68,8 +68,8 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - [x] T1: In `skills/milestone-plan/SKILL.md`, add the vet paragraph to step 2 after the collision check and the inbox sweep. Add vet concerns to step 3's list of questions, with the cap rule. Add the `idea vet:` line to step 4's work-log lines beside the tier-check line. Add the arm for work chosen at the question set. Trace the no-work arm's close to its rerun (LESSONS M172).
 - [x] T2: In `skills/hotfix/SKILL.md` step 1, add the vet beside the tier check, for every entry that tier-checks a fix or a PR diff, the merged-PR re-entry included. Send a concern through the existing over-the-bar route.
 - [x] T3: Add `skills/tests/test_idea_vet.py`. Pin each of the three questions, the not-proof sentence, the cap rule, the do-not-build option and its no-write result, the work-log line, the no-work arm, and the hotfix route, with one assertion per member (LESSONS M171). Delete each pinned sentence and see its assertion fail before you trust the pass.
-- [ ] T4: Append D-204 per AC5.
-- [ ] T5: Edit README's two rows and add the CHANGELOG entry. Grep both for wording that the change makes stale (LESSONS M112).
+- [x] T4: Append D-204 per AC5.
+- [x] T5: Edit README's two rows and add the CHANGELOG entry. Grep both for wording that the change makes stale (LESSONS M112).
 - [ ] T6: Run the `verify` slot from the repo root, and also hand-run `python3 -m unittest discover -s skills/tests`, which gates nothing. Examine each exit code.
 
 ## Work log
@@ -98,6 +98,8 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: T1 done: `/milestone-plan` step 2 gains the idea vet after the checker-regress paragraph, step 3 gains the concerns bullet and the "Work chosen at the set" arm, step 4 the idea-vet line; the no-work arm's close reruns `/milestone-plan` with the work named, whose step-2 vet and step-3 set pose the concern. Untracked `cairn-probe.log` and `tsconfig.json` left unstaged. verify green.
 - 2026-10-21: T2 done: `/hotfix` step 1 gains the idea vet after the over-the-bar paragraph; it runs on every entry that runs the tier check, and the merged-PR re-entry's "Tier check the merged diff as above" reaches it, its concern riding in step 7's close block. verify green.
 - 2026-10-21: T3 done: `skills/tests/test_idea_vet.py`, 17 tests; a scratchpad probe planted 24 removals (16 in the plan skill, 8 in the hotfix skill), each one a failure and none an error, with the unmutated control green and the skill files restored.
+- 2026-10-21: T4 done: D-204 appended; it reads D-108's door as applying to the `idea vet:` records line and passed on its retained trigger, and records the three rejected alternatives with their falsifiers.
+- 2026-10-21: T5 done: README's `/milestone-plan` and "Fix a reported bug quickly" rows and a CHANGELOG Unreleased `### New` entry; the adopt-a-PR row says "holds it to the same bar", which now includes the vet, so it stays. A grep of README for the plan's step list found no other stale description.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

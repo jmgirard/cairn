@@ -7409,3 +7409,47 @@ parked row from a low row in the pane.
 
 **Consequences:** The pane no longer separates levels by anything but
 their marks, title colors, and order.
+
+### D-204 (2026-10-21): `/milestone-plan` and `/hotfix` vet the requested behavior as framed before they build it, and a concern goes to the user — passes D-108's door on its retained trigger (M306)
+
+**Context:** In datawizard M012, `/milestone-plan` planned issue #48 as
+written: `winsorize(include_factors = TRUE)` lumps rare factor levels into
+one level, which is not winsorizing and misranks ordered factors. The
+defect was found only after its PR opened. Neither skill asked whether the
+requested behavior was right, so an issue's wording stood in for that
+judgment. The user asked for a check in the datawizard session.
+
+**Decision:** `/milestone-plan` step 2 asks three questions of the
+behavior that a request names: is it correct by its field's standards and
+does it do what its name says for every input type it touches, do the
+project's users want it beyond what the request literally asks, and is it
+framed right in its name, function, and arguments. An issue's wording or a
+maintainer's agreement answers none of them. Each concern is a question of
+the step-3 set, with a do-not-build option and, where it fits, an
+other-name option. The first milestone file gets an `idea vet:` work-log
+line. Work chosen at the question set is vetted then, and a concern ends
+the plan with a rerun command. `/hotfix` step 1 asks the same questions of
+the behavior that every tier-checked fix or PR diff produces, documented
+behavior included, and a concern sends the work over the hotfix bar. The
+working session answers the questions itself.
+
+**Door:** D-108 bars a new conduct rule about verification or records
+unless a defect in shipped behavior triggers it. The `idea vet:` line is a
+records rule, so the door applies. It is passed on its retained trigger:
+the shipped `/milestone-plan` built a wrong feature for its user in
+datawizard M012. D-201's row differed, since it named no such defect.
+
+**Rejected:** A fresh reader for each vet, at the user's choice at the
+plan gate, since the questions are written into the skills at no added
+cost. Falsified by a request built after M306 whose concern the session's
+vet missed and a fresh reader on the same request finds. Vetting in
+`/hotfix` only the behavior that a report, issue, or PR asks for, since
+the hotfix bar already sends that behavior to a plan, so the check
+changed no outcome. Falsified by a hotfix concern that the plan's vet
+would have raised anyway. Logging the vet as not run for work chosen at
+the question set, since the request asks for the check on each plan.
+Falsified by reruns that surface no concern a later review would have
+caught.
+
+**Consequences:** `/milestone` §4's issue look-in gets no vet of its
+own, because its verdicts hand the issue to the two skills that vet it.

@@ -159,6 +159,20 @@
 
 ### New
 
+- **The plan and the hotfix question the request before they build it.**
+  `/milestone-plan` now asks three questions of the behavior a request
+  names: is it correct by its field's standards (for example statistical
+  or technical) and does it do what its name says for every input type it
+  touches, do the project's users want it beyond what the request
+  literally asks, and is it framed right in its name, function, and
+  arguments. An issue's wording or a maintainer's agreement does not
+  answer them. Each concern becomes a question in the plan's question set,
+  with an option not to build the work and, where it fits, an option to
+  build it under another name or shape. The milestone's work log records
+  what the check found. `/hotfix` asks the same questions of the behavior
+  a fix or an adopted pull request produces, documented behavior included,
+  and a concern sends the work to a milestone plan.
+
 - **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
   a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no
   language or plugin marker. With a `Dockerfile` too, it asks which one to
