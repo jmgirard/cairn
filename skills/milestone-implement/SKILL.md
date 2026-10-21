@@ -35,9 +35,12 @@ run ingestion first (see `/milestone-brief`).
 1. Verify status is `planned` (fresh start) or `in-progress` / `blocked`
    with a resolved blocker (resume). A `blocked` stacked milestone whose
    stack base's PR is `MERGED` resumes for the restack (step 2's stacked
-   sync). A `blocked` guest milestone that `/milestone` routed here because
-   its PR's `mergeable` reads `CONFLICTING` resumes for step 2's guest
-   sync, which resolves the conflicts. Verify all `Depends on:` milestones are
+   sync). A `blocked` guest milestone whose PR `/milestone` routes here
+   for its merge conflicts resumes for step 2's guest sync, which resolves
+   them. A stacked milestone runs that step's stacked sync.
+   Read the header PR fresh with `gh pr view <N> --repo <base-repo> --json
+   mergeable`. A `CONFLICTING` read is that route, never a remembered one.
+   Verify all `Depends on:` milestones are
    `done`, except that in guest mode one of them may be a stack base
    (tracking-rules "Collaboration mode"), and that no OTHER milestone is
    `in-progress` (at most one, ever —
@@ -113,8 +116,9 @@ run ingestion first (see `/milestone-brief`).
    stacked sync below can stop on conflicts. Then the session resolves
    each conflicted file, stages it, and runs `git rebase --continue` until
    the rebase ends. It runs the active profile's `verify` slot, green,
-   before any push, and before it continues when the branch was never
-   pushed. If it cannot resolve them, it lists the conflicted
+   before any push (the stacked sync's lease push included), and before it
+   continues when the branch was never pushed. A red `verify` is fixed on
+   the branch before that push. If it cannot resolve them, it lists the conflicted
    files with `git diff --name-only --diff-filter=U`. It then runs
    `git rebase --abort`, pushes nothing, and stops with a close block that
    names those files.

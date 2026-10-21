@@ -197,14 +197,15 @@ The script deliberately does not judge these — do them yourself and report:
   `/milestone-implement M<NNN>`, whose step 2 sync (the stacked sync for
   a stacked milestone) rebases the branch, resolves the conflicts, and
   re-pushes it, or stops if the remote branch has commits that the local
-  one lacks; `OPEN` that no arm above
+  one lacks or if it cannot resolve the conflicts; `OPEN` that no arm above
   takes, with `mergeable` `UNKNOWN` (GitHub has not finished calculating
   it) → report the fresh state and say that the merge state is not known
   yet, with no route; `OPEN`
   otherwise → report the fresh
   state, the review decision, and the unresolved-thread count, and leave the
   milestone `blocked` — waiting on the maintainers is what the status says.
-  This arm also reads the conversation comments and review bodies that
+  This arm, and the `CONFLICTING` and `UNKNOWN` arms above it, also read
+  the conversation comments and review bodies that
   `gh pr view <N> --repo <base-repo> --json author,comments,reviews`
   returns. The report names each one whose author is not the PR's author,
   whose `authorAssociation` is `OWNER`, `MEMBER`, or `COLLABORATOR`, and
