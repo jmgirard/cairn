@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — repos that adopt cairn read the profile and its release walk
-- **Branch/PR:** m303-quarto-extension-profile
+- **Branch/PR:** m303-quarto-extension-profile https://github.com/jmgirard/cairn/pull/317
 
 ## Goal
 
@@ -71,6 +71,7 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - 2026-10-20: T5 done. `/cairn-release` gains a "Tag-only arm (quarto-extension)" paragraph before step 1, and steps 1 and 2 say the arm skips them; step 3 gains a quarto-extension bullet. DESIGN names six profiles with the new one, lists it in the profiles directory, and adds `cairn_versions` to the scripts layer. CHANGELOG Unreleased "New" gains the profile entry. All five verify checks, skills/tests (930), and `cairn_validate` green.
 - 2026-10-20: claim audit: 90 claims read, 7 corrected — skills/shared/profiles/quarto-extension.md, skills/cairn-release/SKILL.md, CHANGELOG.md, scripts/cairn_versions.py. Quarto 1.10 installs from the branch named `main`, not the default branch. An untagged tip version is "unreleased" (a first release is one too), and first-release notes drop `<previous tag>..`. The tag-only arm tags only the tip's version. A repo with no PROFILE.md now infers the profile. A `Dockerfile` sends the repo to the disambiguation gate. The script names a missing file and a bad `--root` (two new tests, 13 in all), and an unquoted value ends at a space or `#`. The same reader re-read all seven: each holds.
 - 2026-10-20: implement done. All five tasks are checked, verify is green (scripts 441, mod tests 2417, skills/tests 930), and the status is review.
+- 2026-10-20: after the handoff note, a README row (the "Prepare a release" row in the task table) gained the quarto-extension release arms, which AC6 asks for; it was added after the claim audit, so the review lenses read it first.
 
 ## Decisions
 
