@@ -1,13 +1,13 @@
 # M303: Add a quarto-extension toolchain profile
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — repos that adopt cairn read the profile and its release walk
-- **Branch/PR:** —
+- **Branch/PR:** m303-quarto-extension-profile
 
 ## Goal
 
@@ -41,7 +41,7 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 
 ## Tasks
 
-- [ ] T1: Write `skills/shared/profiles/quarto-extension.md` from `generic.md` and `docker-image.md`: verify (the repo's render of its example document, declared by the repo), consistency-gate (each named marker holds the same version), test-doctrine, release-walk (both arms, notes from git history), init-detection, greenfield-openers, changelog. Add it to the tuple in `test_shipped_reference_profiles_are_valid`.
+- [x] T1: Write `skills/shared/profiles/quarto-extension.md` from `generic.md` and `docker-image.md`: verify (the repo's render of its example document, declared by the repo), consistency-gate (each named marker holds the same version), test-doctrine, release-walk (both arms, notes from git history), init-detection, greenfield-openers, changelog. Add it to the tuple in `test_shipped_reference_profiles_are_valid`.
 - [ ] T2: Write `scripts/cairn_versions.py` (stdlib, `git` subprocess, first-parent history) and its tests in `scripts/tests/` per AC3, tests first.
 - [ ] T3: Run the script read-only on embedpdf and compare with each `v1.*` tag (AC4). Record the result in the work log.
 - [ ] T4: Detection: the rulebook's "Toolchain profiles" order and count, `/cairn-init` selection order, hybrid gate, greenfield marker list and chip follow-up, instantiation list, and repair backfill. Update the `skills/tests` guards that pin five profiles (`test_toolchain_profiles.py`, `test_mutation_harness.py`, and the test in `test_scripts.py`), and hand-run `skills/tests`.
@@ -62,6 +62,9 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - 2026-10-20: plan chose a script for the version history over prose `git log` commands in the walk, because the run start and the tip check are easy to get wrong by hand and a script can be tested; falsified by the script disagreeing with a hand-placed tag in a real repo.
 - 2026-10-20: plan chose the start of the tip's unbroken run over the first commit ever carrying the version, because a reverted and re-raised version is released from its last raise; falsified by a repo whose maintainers tag the first raise.
 - 2026-10-20: changelog: T5 adds one Unreleased entry for the profile; M304 adds its own entry for the handoff.
+- 2026-10-20: implement started on branch m303-quarto-extension-profile. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-20: T1 done. `skills/shared/profiles/quarto-extension.md` (94 lines) has the seven slots. The release walk calls `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" <marker file>`, which prints the tip's version, its run `start`, and the tag state (the interface T2 builds). `quarto-extension` joined the tuple in `test_shipped_reference_profiles_are_valid`, which failed with FileNotFoundError before the file and passes after. Verify green (mod tests 2417). The simple-english lint flags the shared header comment and bold-label "When" lines in the new file; the body sentences were rewritten to its limits.
+- 2026-10-20: implement chose `quarto render <example document>` as the verify example and left the command to each repo, since extensions keep their fixtures in different places.
 
 ## Decisions
 
