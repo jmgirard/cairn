@@ -159,8 +159,10 @@
   can name more files that must hold the same version. Its release walk
   first reads the version at the tip of the default branch with the new
   `scripts/cairn_versions.py`. When that version has no `v<version>` tag,
-  it is unreleased, so `/cairn-release` asks no version question and makes
-  no prep commit. It tags the first commit of that version's run instead.
+  it is unreleased, so `/cairn-release` asks you to confirm that version in
+  place of choosing a bump, and makes no prep commit. It tags the first
+  commit of that version's run instead. With a declared changelog, it needs
+  a section headed with the version and stops when there is none.
   Otherwise it raises the version at release time, as the generic walk
   does. With changelog "none", the release notes are the commit subjects
   since the previous tag. A repo whose `cairn/PROFILE.md` declares the

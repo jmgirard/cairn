@@ -12,8 +12,8 @@ The container-image toolchain: a repo whose sole deliverable is a Docker image
 (a base image, tool/CI image, or appliance image — no language package shipped
 to a language registry). Build with `docker build`/`buildx`, lint with hadolint,
 publish to a container registry (GHCR / Docker Hub). Selected by `cairn-init`
-when a `Dockerfile` is the repo's only toolchain marker; a repo that also
-carries a language marker goes through the disambiguation gate.
+when a `Dockerfile` is the repo's only toolchain marker; a repo with a language,
+plugin, or Quarto extension marker too goes through the disambiguation gate.
 
 ## verify
 Run by `/milestone-implement` (per task) and `/hotfix` (gate-lite). The hard

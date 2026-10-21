@@ -59,22 +59,26 @@ version, the first commit of that version's unbroken run of first-parent
 commits (`start`), and whether a `v<version>` tag exists.
 - **Tag-only arm.** When the tag is absent, the tip's version is unreleased:
   merged work raised it, or it was never tagged. Raise nothing and make no
-  prep commit. Step 1 asks the user to confirm the version and `start` (its
-  subject) instead of choosing a bump. Check that every other named marker
-  holds the version at `start` (`git show <start>:<file>`). A mismatch stops
-  the walk. Step 2 makes no edit, but its claim-read runs on the changelog's
-  section for the version at `start`, when the file has one, and a false
-  claim stops the walk. Tag the run's start:
-  `git tag -a v<version> <start> -m "v<version>"`, pushed at the user's approval.
+  prep commit. First check that every other named marker holds the version
+  at `start` (`git show <start>:<file>`). With a declared changelog, find the
+  section whose heading names the version as a whole token in the file at
+  the remote tip. Then step 1 asks the user to confirm the version and
+  `start` (its subject) instead of choosing a bump. Step 2 makes no edit, but
+  its claim-read runs on that section against the code at `start`. Tag the
+  run's start: `git tag -a v<version> <start> -m "v<version>"`, pushed at the
+  user's approval.
+- **Stops.** A marker mismatch, a declared changelog with no section for the
+  version, a false claim, or a declined confirmation ends the run with the
+  reason and no tag. Fix it in a merged change, such as retitling the
+  development heading to the version, then run `/cairn-release` again.
 - **Release-time arm.** When the tag exists, run the generic walk. Decide the
   bump (patch/minor/major) from the declared changelog. With changelog "none",
   decide it from git history and skip the consolidation. Raise every named
   marker and commit the release prep to the default branch. Tag that commit
   `v<version>`, pushed at the user's approval.
 - **Release notes.** The notes are the changelog section for the version. With
-  changelog "none", or in the tag-only arm when the file has no section for
-  the version, they are the commit subjects on the default branch since the
-  previous `v*` tag:
+  changelog "none", they are the commit subjects on the default branch since
+  the previous `v*` tag:
   `git log --first-parent --format='- %s' <previous tag>..<tagged commit>`.
   The previous tag is
   `git describe --first-parent --tags --abbrev=0 --match 'v*' <tagged commit>^`. For a first
@@ -101,8 +105,9 @@ universal openers (distribution ambition and numeric-work oracles):
 - **When does the version rise?** At release (reversible default), or at each
   merge that changes a shipped asset, when browsers cache that asset by a path
   that holds the version.
-  - Consequence: at merge, the release walk's tag-only arm tags the tip's
-    raised version. Run it after each raising merge, or earlier versions stay
+  - Consequence: at merge, the release walk's tag-only arm tags the commit
+    that raised the tip's version. Run it after each raising merge, or
+    earlier versions stay
     untagged. At release, the release-time arm raises the version.
   - Lands in: CLAUDE.md conventions and the `release-walk` marker list.
 

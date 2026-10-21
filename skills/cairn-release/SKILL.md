@@ -55,14 +55,17 @@ toolchain-specific work at step 3.
    the remote default branch with `cairn_versions.py` (the slot names the
    command).
    When it reports the tip's version with no `v<version>` tag, that version
-   is unreleased: merged work raised it, or it was never tagged. Step 1 then
-   confirms that version and the commit that started it, step 2 makes no
-   edit but runs its claim-read, and step 3 tags that commit with no prep
-   commit.
+   is unreleased: merged work raised it, or it was never tagged. The slot's
+   marker check and changelog-section lookup run next. Step 1 then confirms
+   that version and the commit that started it, step 2 makes no edit but
+   runs its claim-read on that section, and step 3 tags that commit with no
+   prep commit and without repeating the read. A stop the slot names ends
+   the run with its reason and no tag.
 
 1. **Version decision** (question gate, one round; in the tag-only arm the
    one question confirms the version the default branch carries and the
-   commit to tag, in place of a bump choice): review the declared
+   commit to tag, in place of a bump choice, and the rest of this step's
+   recommendation does not apply): review the declared
    changelog — the file the active profile's `changelog` slot names ("none" →
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
@@ -108,9 +111,10 @@ toolchain-specific work at step 3.
    - A **quarto-extension** profile's slot reads the version marker with
      `cairn_versions.py` and takes one of two arms. The tag-only arm tags the
      first commit of the tip version's run, with no bump and no prep commit.
-     The release-time arm runs the generic walk. With changelog "none", or in
-     the tag-only arm when the changelog has no section for the version, the
-     release notes are the commit subjects since the previous `v*` tag.
+     The release-time arm runs the generic walk. With changelog "none", the
+     release notes are the commit subjects since the previous `v*` tag. With
+     a declared changelog, the tag-only arm takes the notes from the section
+     the slot found for the version.
    For any slow checks the slot names (wide/registry checks, reverse-dependency
    runs), follow the tracking-rules wait rule — one watcher per check, a
    foreground call with a timeout below the harness ceiling or a
@@ -148,7 +152,10 @@ toolchain-specific work at step 3.
    create` for the new tag whose body is the changelog section you just
    consolidated for this version. Extract that section to a notes file and pass
    it with `--notes-file`, so the published release reads identically to the
-   changelog. cairn **provides this command; it never runs it** — publishing
+   changelog. Where the profile's release-walk names other notes, such as
+   the quarto-extension tag-only arm's found section or the commit subjects
+   with changelog "none", the notes file holds those instead.
+   cairn **provides this command; it never runs it** — publishing
    the release is the user's action at the approval gate, exactly like pushing
    the tag (never-self-submits). Where the remote is not GitHub or `gh` is
    absent, omit this command with no failure — the tag alone is the release.
