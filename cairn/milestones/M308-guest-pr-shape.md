@@ -20,6 +20,9 @@ win over other writing-style instructions for host text (datawizard #726 and #73
 host's names (performance #973, bayestestR #793). Third, the plan holds one change and checks for deliberate
 maintainer behavior and proposed approaches (bayestestR #797 and #794, datawizard #730). Fourth, the PR body maps
 each failure an issue reports (datawizard #725). A D-entry supersedes D-161's order clause and its rejection.
+Folded at implement from the row "Write short guest PR bodies and replies" (modelbased #698): the guest PR body is
+short, styled on maintainers' PR bodies, and `/milestone` §2 names unanswered maintainer comments on a blocked
+guest PR, with a reply rule.
 
 **Out:** Owner-mode text and PR bodies stay as they are. The simple-english plugin's lint is the user's to exclude
 for guest checkouts with `SIMPLE_ENGLISH_LINT_EXCLUDE`, because cairn writes nothing outside `cairn/`. Merge conflicts
@@ -40,12 +43,23 @@ between open guest PRs go to M309.
 - [ ] AC5: The AC4 rule also says two things. When the issue's comments or the code's git history show that a
       maintainer chose the changed behavior on purpose, the idea vet poses that as a concern. When a maintainer
       proposed an approach in the issue's comments, the plan takes it or writes a work-log line that says why not.
-- [ ] AC6: In guest mode, `skills/milestone-review/SKILL.md` step 8 and both PR-create sites of
+- [ ] AC6: In guest mode, `skills/milestone-review/SKILL.md` step 8 and the guest PR-create site of
       `skills/hotfix/SKILL.md` say this: when an issue that the PR closes reports more than one failing call or error,
       the PR body names each one and says whether the PR fixes it.
 - [ ] AC7: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body gives the reason when the
       work log records a maintainer's proposed approach that the plan did not take.
-- [ ] AC8: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
+- [ ] AC8: In guest mode, `skills/milestone-review/SKILL.md` step 8 says that the PR body takes its host style from PR
+      bodies whose author's association is OWNER, MEMBER, or COLLABORATOR, never from the operator's own PRs. The body
+      leads with what changed for users, at most one usage example apart from the failing calls that AC6's rule
+      names, and the points a maintainer must decide. Beyond the other items step 8 requires, AC6's and AC7's
+      included, review evidence, internal function names, and test lists stay in `cairn/`.
+- [ ] AC9: In guest mode, the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's route for a blocked PR also
+      reads the conversation comments and review bodies that `gh pr view <N> --repo <base-repo> --json
+      comments,reviews` returns. Its report names each one whose author is not the PR's author, has the association
+      OWNER, MEMBER, or COLLABORATOR, and is followed in time by no comment or review by the PR's author. It says that
+      the operator's reply to such a comment leads with the answer or the question at about the comment's length,
+      with probe evidence left in `cairn/`.
+- [ ] AC10: The `verify` slot of `cairn/PROFILE.md` is green at the branch head: its five commands, each exit code
       checked.
 
 ## Coverage
@@ -57,7 +71,9 @@ between open guest PRs go to M309.
 - AC5 → T3
 - AC6 → T4
 - AC7 → T4
-- AC8 → T5
+- AC8 → T4
+- AC9 → T5
+- AC10 → T6
 
 ## Tasks
 
@@ -67,10 +83,13 @@ between open guest PRs go to M309.
       line 1044). Change the assertion in `hooks/tests/test_hooks.py` (near line 398) to the new order.
 - [ ] T3: Add the guest scope rule to `skills/milestone-plan/SKILL.md`, beside the idea vet and the step 4 Scope
       bullets, for AC4 and AC5.
-- [ ] T4: Edit `skills/milestone-review/SKILL.md` step 8's guest arm and both `gh pr create` sites in
-      `skills/hotfix/SKILL.md` for AC6 and AC7.
-- [ ] T5: Append a D-entry that supersedes D-161's order clause and its rejection, on the user's choice at this plan's
-      question set. Its trigger is D-161's own falsifier, met on datawizard #726. Run the five `verify` commands.
+- [ ] T4: Edit `skills/milestone-review/SKILL.md` step 8's guest arm for AC6, AC7, and AC8, and the guest
+      `gh pr create` site in `skills/hotfix/SKILL.md` for AC6, rewording its "the changelog entry is the branch's only
+      prose" note.
+- [ ] T5: Edit the `OPEN`-otherwise arm of `skills/milestone/SKILL.md` §2's blocked-PR route for AC9.
+- [ ] T6: Append a D-entry that supersedes D-161's order clause and its rejection, on the user's choice at this plan's
+      question set. Its trigger is D-161's own falsifier, met on datawizard #726. Add the CHANGELOG entry. Run the
+      five `verify` commands.
 
 ## Work log
 
@@ -91,6 +110,7 @@ between open guest PRs go to M309.
 - 2026-10-21: re-audit: AC9 (full) — "one example" clashes with AC6's named failing calls; "already" reads two ways; maintainers undefined; "what changed for users" has no answer for a CI-only PR (answered: guest PRs here change user-facing behavior; the body says what changed where users see nothing).
 - 2026-10-21: re-audit: AC10 (full) — inline review comments fall outside `gh pr view --json comments,reviews`; the PR's author can be a MEMBER; "later" reads two ways. Second re-audit on AC9 and AC10: stop for the user on the final wording.
 - 2026-10-21: T2 done: hook guest line and README guest bullet state that host matching wins and samples maintainers' text; README gains the names bullet; hook test asserts the new order and the old phrase's absence (failed before the hook edit, passes after). Verify: five commands exit 0.
+- 2026-10-21: substantive amendment: the user accepted the final AC9/AC10 wording at the stop. Scope In gains the folded row; AC6 names the one guest hotfix create site; new AC8 (short guest PR body) and AC9 (maintainer-comment route and reply rule); the verify criterion is renumbered AC10; T4 widened, new T5 for `/milestone` §2, the D-entry task renumbered T6 and gains the CHANGELOG entry. The re-audit lines above that name AC9 and AC10 refer to what are now AC8 and AC9; both have had their two re-audits.
 
 ## Decisions
 
