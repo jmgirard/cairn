@@ -7453,3 +7453,35 @@ caught.
 
 **Consequences:** `/milestone` §4's issue look-in gets no vet of its
 own, because its verdicts hand the issue to the two skills that vet it.
+
+### D-205 (2026-10-21): `/milestone-review` can reject a real finding as `edge` when only an unusual input reaches it and it gives no wrong result — narrows step 5's fix-now rule; passes D-108's door on its narrowing carve-out (M307)
+
+**Context:** Step 5 settled every real, in-scope finding as fix now. In
+datawizard M011 (easystats/datawizard #730), two review passes fixed
+about 20 findings on inputs no caller uses, such as POSIXlt cluster ids,
+classed lists, and duplicate or missing list names. Each fix added code,
+helpers, or help text. A maintainer said that the code had too many small
+helpers to review and that the argument's help was too long. Similar
+comments came on datawizard #726 and bayestestR #794.
+
+**Decision:** A fourth reject ground, `edge`, covers a real defect that
+only an input outside both the deliverable's documented use and its
+common use reaches, whose effect is an error, a warning, or slow running.
+A finding whose effect is a wrong result with no error or warning is
+never `edge`. A finding that demonstrates an acceptance criterion failing
+is never `edge`, so the return floor still sees it. The ground applies in
+owner and guest mode, at the user's choice at the plan gate. An `edge`
+reject is logged with its reason like any reject, so IP3 holds.
+
+**Door:** D-108 bars a new conduct rule about verification unless a
+shipped-behavior defect triggers it, and it exempts work that removes or
+narrows such a rule. This entry narrows the fix-now rule, so it is
+outside the door.
+
+**Rejected:** A new disposition beside reject, because a reject already
+logs the finding and its reason, and a follow-up row would bring the
+finding back as work. Guest mode only, at the user's choice.
+
+**Consequences:** Falsified by a merged defect on a documented or common
+input that traces to a finding rejected as `edge`. `/hotfix` is
+unchanged, because the user settles each item there.

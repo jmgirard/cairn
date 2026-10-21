@@ -1,13 +1,13 @@
 # M307: Reject review findings that only unusual inputs reach
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes how `/milestone-review` settles findings in every repo that uses cairn
-- **Branch/PR:** —
+- **Branch/PR:** m307-edge-findings
 
 ## Goal
 
@@ -48,10 +48,10 @@ candidate row "Grade findings by the action they need".
 
 ## Tasks
 
-- [ ] T1: Edit `skills/milestone-review/SKILL.md` step 5 (the reject bullet near line 381 and the line format near
+- [x] T1: Edit `skills/milestone-review/SKILL.md` step 5 (the reject bullet near line 381 and the line format near
       line 402) for AC1 and AC2. Keep the text short.
-- [ ] T2: Edit README.md's "Ship it" paragraph (near line 725) for AC3.
-- [ ] T3: Append a D-entry: the `edge` ground, its trigger, and its falsifier. It passes D-108's door on the
+- [x] T2: Edit README.md's "Ship it" paragraph (near line 725) for AC3.
+- [x] T3: Append a D-entry: the `edge` ground, its trigger, and its falsifier. It passes D-108's door on the
       narrowing carve-out, because it narrows the fix-now rule. Run the five `verify` commands.
 
 ## Work log
@@ -65,6 +65,7 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: criteria audit (full, fresh Opus reader): 12 findings over M307–M309. For M307: added the failed-criterion exclusion and "outside both" (AC1); replaced the grep criterion with the README site (AC3); dropped the prose-guard criterion per D-109; cited the verify slot in full (AC4); the D-108 door goes to the D-entry task.
 - 2026-10-21: collision check: D-108 (narrowing carve-out), D-110 (reviewers rank, agent settles) and D-112 stand; the candidate row "Grade findings by the action they need" stays apart.
 - 2026-10-21: inbox sweep: no open issues or PRs in this repo.
+- 2026-10-21: implement: T1 to T3 done (step 5 ground and line format, README Ship-it sentence, D-205); verify five commands green; untracked cairn-probe.log and tsconfig.json left unstaged; the simple-english lint flags about 400 existing hits in SKILL.md and README.md outside the edits, left as is.
 
 ## Decisions
 

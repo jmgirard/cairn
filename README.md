@@ -724,7 +724,9 @@ anything touching executable or user-facing surface, two reviewers for
 an internal docs-only diff. One lens reads the rest of the repo for text
 the change left stale. Claude settles each finding itself: it fixes a
 real one inside the milestone's scope, sends a real one outside it to a
-ROADMAP candidate row, and rejects a false one with the reason. Then it
+ROADMAP candidate row, and rejects a false one with the reason. It also
+rejects, with the reason `edge`, a real one that only an unusual input
+reaches when the result is an error rather than a wrong answer. Then it
 asks *you* to merge, with the evidence and each finding's outcome in front
 of you, and opens the PR after your yes (at the start of review, in owner
 mode with the opt-in Copilot round described below).

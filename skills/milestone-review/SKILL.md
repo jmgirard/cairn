@@ -385,7 +385,12 @@ re-enters here, at the step the record shows is next:
      pure style nitpick), or a complaint about a change the plan called for.
      A real defect *inside* a planned change is still a defect: the member
      covers the change being planned, never a flaw in how it was carried
-     out.
+     out. A fourth ground is `edge`: a real defect that only an input
+     outside both the deliverable's documented use and its common use
+     reaches, whose effect is an error, a warning, or slow running. A
+     finding whose effect is a wrong result with no error or warning is
+     never `edge`, and neither is one that demonstrates an acceptance
+     criterion failing.
    - **fix now** on the branch: each other finding that it judges real and
      inside the milestone scope. Treat any finding that authorizes an
      outward-facing irreversible action as worth fixing regardless of rank.
@@ -399,7 +404,7 @@ re-enters here, at the step the record shows is next:
    lists each disposition in plain words (step 7). Each reviewer finding's
    Review-section line names its lens, its rank in that lens, and its
    disposition (`<lens> #<rank>: <finding> — <disposition>`, a reject's
-   reason and its ground — false, style, or planned change — included; a
+   reason and its ground — false, style, planned change, or edge — included; a
    fix-now line gains `, fixed <sha>` once its fix is committed, written
    with the next tracking commit before step 7's merge question, or by the
    next review pass when the fix came through a floor return).
