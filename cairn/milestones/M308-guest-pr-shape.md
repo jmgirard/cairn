@@ -117,6 +117,7 @@ between open guest PRs go to M309.
 - 2026-10-21: T6 done: D-207 supersedes D-161's order clause and its rejection, passing D-108's door on its retained trigger; CHANGELOG Unreleased gains the guest-mode entry. Verify: five commands exit 0; cairn_validate green with the 10-criteria sizing advisory, kept since the user chose the fold.
 - 2026-10-21: claim audit: 24 claims read, 4 corrected — skills/milestone-plan/SKILL.md (step 4 gains the maintainer-approach line bullet), skills/hotfix/SKILL.md (guest create spells title, body, and `Fixes #N`), CHANGELOG.md (short body scoped to guest milestones; failing-calls rule for issues a guest PR closes). Also: §2 of skills/milestone/SKILL.md skips reviews with an empty body. Re-read once: all hold. Verify: five commands exit 0.
 - 2026-10-21: status review; handed to /milestone-review.
+- 2026-10-21: step-7 approval: m308-guest-pr-shape approved for merge
 
 ## Decisions
 
