@@ -484,8 +484,13 @@ can resolve against the fork instead of the base repo.
    followed by the PR opened against the base repo — `gh pr create --repo
    <base-repo> --head <push-owner>:hotfix-<slug>`, opened ready for their
    review (never a draft, so no later ready-marking step), no cairn
-   vocabulary in its title or body, so no `Candidate row:` line (the changelog entry is the branch's
-   only prose) — then no marker, no CI wait, no merge. After the create,
+   vocabulary in its title or body, so no `Candidate row:` line. When the
+   issue that the body's `Fixes #N` line closes reports more than one
+   failing call or error (read with `gh issue view <N> --repo <base-repo>
+   --json body,comments`), the body names each one and says whether the
+   PR fixes it. That list is the one addition to the body's prose, and
+   the changelog entry stays the branch's other prose — then no marker,
+   no CI wait, no merge. After the create,
    append ` — started #<n>` on disk, `<n>` the new PR's number, to the end
    of each candidate row step 1 matched (tracking-rules "Candidate started
    token"), so the cairn pane in a checkout with no active milestone hides the row while the PR is open. With the Copilot

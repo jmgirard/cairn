@@ -714,6 +714,25 @@ re-enters here, at the step the record shows is next:
    — its title and body carrying no cairn
    vocabulary (the `Closes`/`Refs` lines above are GitHub's, not cairn's,
    and stay, but the `Candidate row:` lines are cairn's and are left out); record the PR URL in the header on disk, never committed.
+   The guest body is short and reads like the maintainers' own. Before
+   writing it, read recent PR bodies that the host's maintainers wrote:
+   those whose author's association is OWNER, MEMBER, or COLLABORATOR,
+   never the operator's own PRs (`gh api
+   "repos/<base-repo>/pulls?state=closed&per_page=30"`, keeping each PR
+   whose `author_association` is one of the three and whose `user.login`
+   is not the one `gh api user --jq .login` returns). The body leads with
+   what changed for users (where users see no change, what changed), at
+   most one usage example apart from the failing calls named below, and
+   the points a maintainer must decide. When an issue that the PR closes
+   (a `closes` entry of the `Resolves:` slot, read with `gh issue view <N>
+   --repo <base-repo> --json body,comments`) reports more than one failing
+   call or error, the body names each one and says whether the PR fixes
+   it. When the work log carries a `maintainer approach:` line
+   (`/milestone-plan` step 2's guest scope), the body says in plain words
+   which approach the maintainer proposed and why the PR takes another.
+   The `edge` list and the series sentence below follow, then the
+   `Closes`/`Refs` lines. Beyond those items, review evidence, internal
+   function names, and test lists stay in `cairn/`.
    When it opens the PR, the body lists, before any `Closes`/`Refs`
    lines, each Review-section reject whose ground is `edge` (the reviewer
    lines, which name their ground), one short line each in plain words
