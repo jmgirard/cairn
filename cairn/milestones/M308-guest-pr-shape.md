@@ -1,13 +1,13 @@
 # M308: Fit guest PRs to the host and to one change
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes the text, names, scope, and PR body of guest-mode contributions
-- **Branch/PR:** —
+- **Branch/PR:** m308-guest-pr-shape
 
 ## Goal
 
@@ -61,7 +61,7 @@ between open guest PRs go to M309.
 
 ## Tasks
 
-- [ ] T1: Edit the "Collaboration mode" section of `skills/shared/tracking-rules.md` (the host-text bullet near line
+- [x] T1: Edit the "Collaboration mode" section of `skills/shared/tracking-rules.md` (the host-text bullet near line
       405) for AC1, and add the names bullet after it for AC3.
 - [ ] T2: Edit the guest-mode text in `hooks/session_context.py` (near line 380) and README.md's guest bullet (near
       line 1044). Change the assertion in `hooks/tests/test_hooks.py` (near line 398) to the new order.
@@ -82,6 +82,9 @@ between open guest PRs go to M309.
 - 2026-10-21: plan gate chose host style winning over keeping D-161's order, at the user's choice; falsified by a guest PR whose maintainers ask for plainer or longer text than the host's own.
 - 2026-10-21: criteria audit (full, fresh Opus reader): for M308, added the superseding D-entry (T5) and the hook test change (AC2); moved the names rule to its own bullet (AC3); made AC6 and AC7 skill rules in guest mode, named both hotfix sites, and kept the why-not rule to review; dropped the prose-guard criterion per D-109; cited the verify slot in full.
 - 2026-10-21: collision check: D-161 superseded in part (T5); D-137 and D-139 stand; D-204's idea vet gains the deliberate-behavior concern.
+- 2026-10-21: in-progress; branch m308-guest-pr-shape cut from main at ec99e5a4. Untracked cairn-probe.log and tsconfig.json left unstaged.
+- 2026-10-21: the user chose at a chip to fold the candidate row "Write short guest PR bodies and replies" into M308, as the row asked; amendment held for its re-audit.
+- 2026-10-21: T1 done: host-text bullet now says host matching wins and samples maintainers' text, never the operator's; new names bullet after it. The new D-entry is D-207 (cited ahead of T6). The simple-english lint hook reports 522 hits over the whole rulebook, nearly all older than this edit; left as is.
 
 ## Decisions
 
