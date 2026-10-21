@@ -95,3 +95,28 @@ Review head: branch `m305-idle-pane-trim` at the PR #319 commit, synced with `or
 - AC6: `git diff main...HEAD -- README.md CHANGELOG.md cairn/DESIGN.md` shows README (the band `Plan` argument; the Next line hidden beside drawn rows, shown alone otherwise; no no-active line; the parked color by surface), DESIGN (`nextTitle`'s reader since M305; `PARKED_KEY`, `ICON_COLORS.blue`, D-203), and CHANGELOG Unreleased (the idle-pane entry; the parked entry now blue). The claim audit read 71 claims against the code in the same session and corrected 3, and its re-read found the corrections true (work log).
 - AC7: on the review head, `scripts/tests` ran 445 tests OK (21 skipped), `hooks/tests` ran 193 OK, `claude plugin validate .claude-plugin/plugin.json` passed with its one standing warning, the marketplace validate passed with no warning, and `claude plugin test .` gave 2412 pass, 0 fail.
 - Consistency gate: `cairn_validate.py` exit 0, all checks passed (coverage complete among them). No principle changed (Principles touched `—`), so `cairn_impact` is skipped. Profile gate: verify green (AC7); the marketplace validate prints no `plugins[N].version` warning; CHANGELOG Unreleased has the idle-pane entry and the edited parked entry, with no milestone numbers.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the parked title (`permission`) and desktop icon (`#7f93c4`) are two blues that can differ by theme, chosen from mockups — follow-up, "Match the parked icon blue to its title"
+- diff-bug #2: the pane's Plan press reads state at press time and could name a row added after the draw — reject, false as a defect: read-at-press is the M212/M213 design (plan the next step as it is now), and the diff changes only a comment there
+- diff-bug #3: DESIGN said the line draws "only while no milestone is active and the list draws no row", while code keys on the drawn list alone — fix now, DESIGN reworded (the unreachable active case named), fixed 6abba6b0
+- diff-bug #4: no fixture-wide guard that no state draws two blank rows in a row — fix now, a per-fixture test over every fixture with a ROADMAP, shown red on a planted always-drawn card gap and green restored, fixed 6abba6b0
+- diff-bug #5: the "card leads the pane" test's gap assertion passes on a doubled gap — fix now, it asserts index 4 is not a gap, fixed 6abba6b0
+- diff-bug #6: the M272/M273 PR-body and hotfix tests no longer press the pane — reject, planned change: the pane line cannot draw there, and the band press carries the naming
+- diff-bug #7: one 150-character line in `pane.ts` — reject, style
+- diff-bug #8: ragged prose wrapping in README and CHANGELOG — reject, style
+- blame-history #1: hiding the planning line removes M218/M219's buttons and M272/M273's pane naming there, with no D-entry — reject, planned change: the user asked for it at the question set, and those were milestone-local choices with no D-entry to supersede; the empty-title edge goes to "Keep a plan button when titles are empty"
+- blame-history #2: the M205 `no-active` line is removed — reject, planned change (AC1)
+- blame-history #3: the M286 card gap no longer draws with no milestone active — reject, false: every following section opens with its own blank row, and with nothing following none is needed (the new guard tests both)
+- blame-history #4: D-189/D-191 text says the planning line passes a title, and D-189 asks for a title-cap re-check when candidate marks or Buttons change — reject, false: the decisions stand through the ✎ and band paths, and M305 changed no candidate-line Button or mark width (only the parked mark's color)
+- blame-history #5: with a milestone active a planning line would lose its title — reject, false in practice: `recommend` plans only with none active (reader.ts), and DESIGN now says so
+- blame-history #6, #7: D-203 supersedes D-184's gray clause by name; the "reach every action" test covers the same ground — noted
+- prior-review #1: a list whose drawn rows all have empty titles leaves the pane no plan button (the M242 ✎ edge) — follow-up, "Keep a plan button when titles are empty"
+- prior-review #2: the desktop pane loses its always-visible Plan and Status while candidates draw — reject, planned change at the user's request; the band keeps both
+- prior-review #3: the shipped colors were not seen in the docked desktop pane (LESSONS M193) — follow-up, "Match the parked icon blue to its title"; the merge question names it
+- prior-review #4: the parked blue sits near the planning blue — follow-up, same row
+- ripple #1: `skills/milestone-plan/SKILL.md` said the planning Next line passes a row title — fix now, now the band's Plan press, fixed 6abba6b0
+- ripple #2: `types/index.d.ts` said the pane's Next line and Plan press pick their own row — fix now, fixed 6abba6b0
+- ripple #3: README, DESIGN, and a `register.tsx` comment say the Next line carries Status "at the same times" without the hidden case — reject, false: they describe the line when it draws, and README and DESIGN state the hidden case beside it
+- ripple #4: a stale test comment above the M272 block — fix now, fixed 6abba6b0
+- ripple #5: "Each candidate line with a short title carries a ✎" lacks the desktop hover qualifier — reject, false: the line carries ✎ on both surfaces, and README and DESIGN describe the desktop hover reveal
+- After fixes: verify green (scripts OK, hooks OK, both validates pass, mod 2444 pass), `skills/tests` 930 OK, `cairn_validate` all checks passed.
