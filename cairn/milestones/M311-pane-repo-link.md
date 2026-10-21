@@ -46,21 +46,21 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: When the stored read for the root holds the owner and repo of a
+- [x] AC1: When the stored read for the root holds the owner and repo of a
       github.com base remote, the card's first line gives three link
       targets. The project name links to `https://github.com/<owner>/<repo>`.
       The PR count and its ` PRs` word link to `…/pulls`. The issue count and
       its ` issues` word link to `…/issues`. A test in
       `hooks/status/pane.test.tsx` asserts the three targets for one
       scp-like, one `ssh://`, and one `https://` remote URL.
-- [ ] AC2: In each of these cases the card's first line carries no link
+- [x] AC2: In each of these cases the card's first line carries no link
       target and draws the same spans as on main. Case 1: no read is stored
       for the root yet. Case 2: the base remote is on another host. Case 3:
       there is no base remote. Case 4: a github.com remote whose owner or
       repo holds a character outside `A-Z a-z 0-9 . _ -`, or is `.` or `..`.
       Each case is a fixture in `hooks/status/pane.test.tsx`. Cases 2 to 4
       set the base remote URL and run the read.
-- [ ] AC3: When the stored read holds an AC1 repo page and a project
+- [x] AC3: When the stored read holds an AC1 repo page and a project
       name, on the desktop `register.tsx` draws the card's first line with
       three `Link`s, one for the name span and one for each count with its
       word, each with its `href` and inside a `Text` with
@@ -69,17 +69,17 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
       and `underline: false`. On the terminal the card's first line draws
       main's text and no `Link`. A test renders the pane for an AC1 fixture
       on both surfaces and checks these.
-- [ ] AC4: In the desktop app's docked pane, in a Code session started
+- [x] AC4: In the desktop app's docked pane, in a Code session started
       after the change is installed, a press on the project name opens the
       repo's GitHub page. The name and counts draw in the card's colors with
       no link blue or underline, and each count with its word lights as one
       link.
-- [ ] AC5: The README's summary-card paragraph and the pane section of
+- [x] AC5: The README's summary-card paragraph and the pane section of
       `cairn/DESIGN.md` state what the name and counts open, that the links
       draw only off the terminal, and the four AC2 cases with no link.
       `CHANGELOG.md` states what the name and counts open in the desktop app
       and that a remote not on github.com draws no link.
-- [ ] AC6: The `verify` slot is green: `python3 -m unittest` in
+- [x] AC6: The `verify` slot is green: `python3 -m unittest` in
       `scripts/tests` and `hooks/tests`, `claude plugin validate` on the
       plugin and marketplace manifests, and `claude plugin test`.
 
@@ -172,3 +172,13 @@ card names stay with the parked row "Fix cut and odd names on the pane card".
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+Evidence at e7321e99 (2026-10-21), fresh runs:
+- AC1: plugin test 2463 pass, 0 fail; the M311 block's three AC1 tests (scp-like, `ssh://`, `https://`) pass, each asserting the name's target `https://github.com/o/alpha` and the tail targets `…/pulls` ×2 and `…/issues` ×2, with the spans otherwise equal to main's.
+- AC2: case 1 by the layout test "no read for the root, and a read with no repo page, carry no link" (pass; the stored read with no page equals main's spans exactly); cases 2 to 4 by four read-flow tests that set the base remote and run the read (another host, no remote, owner `o%20x`, owner `..`), each 0 Links and main's text, all pass. Planted defect: dropping the owner check reds the `o%20x` case (work log).
+- AC3: the AC3 test passes on both surfaces: desktop finds exactly 3 Links (name, `3 PRs`, `12 issues`) with their hrefs, each in a `Text` with `wrap: 'truncate-end'`, parts `Text` with bold, color `text` or `inactive`, `underline: false`; terminal finds 0 Links and the line `alpha  3 PRs   12 issues`. Planted defects (Link on the terminal; line text without the Link) red it (work log, against the pre-look drawing).
+- AC4: operator live looks in new Code sessions on this branch (work log): look 1 "the links work" (the press opens the pages); look 2, on the drawing at 012d3653, picked "Looks right now": card colors with no blue or underline, "3 PRs" and "12 issues" each light as one link, clicks open the pages. The commits after 012d3653 change no code under `hooks/`.
+- AC5: read at HEAD: README.md:306-314 says the name opens the repo page and the counts open the PR and issue lists, links only outside the terminal, and lists the four no-link cases (before the first read, another host, no remote, a name outside ASCII letters, digits, `.`, `_`, `-` or `.`/`..`); `cairn/DESIGN.md`'s card paragraph gives `webOf`, the `/pulls` and `/issues` targets, the Link-off-the-terminal rule, and the four cases; CHANGELOG.md Unreleased/New says what the name and counts open in the desktop app and that only a github.com base remote gives links. Claim audit: 44 read, 3 corrected, re-read holds.
+- AC6: `python3 -m unittest` scripts/tests 445 OK (21 skipped), hooks/tests 193 OK; `claude plugin validate` plugin.json and marketplace.json both pass; `claude plugin test` 2463 pass, 0 fail.
+
+Consistency gate: `cairn_validate` all checks passed; no principle changed, so no `cairn_impact`; marketplace validate has no `plugins[N].version` warning; CHANGELOG has the entry, with no milestone number in its text.
