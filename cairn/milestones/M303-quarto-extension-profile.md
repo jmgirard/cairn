@@ -178,3 +178,6 @@ Pass 3, head `c79cf5d0`, then `000a88f4` after the fixes below; main unmoved.
 - ripple #2 (pass 3): the greenfield consequence does not say a stop can leave a version untagged — fix now, fixed 000a88f4
 - ripple #3 (pass 3): DESIGN's scripts paragraph says only "a git repository" — fix now (full history), fixed 000a88f4
 - ripple #4 (pass 3): README's release row omits the changelog-section requirement — fix now, fixed 000a88f4
+- copilot: skills/shared/profiles/quarto-extension.md:34 (consistency gate lacks the feature-series exception) — fix now, fixed 5339cdf5 (the thread was already resolved; answered in the summary reply)
+- copilot: skills/shared/profiles/quarto-extension.md:52 (the release-walk command hard-codes `_extension.yml`, so a `.yaml` repo gets a missing-marker error) — fix now, fixed 97623be8; replied and resolved
+- Copilot level: Lite (set by GitHub's settings), one review on `c9880c1f`; summary reply posted. PR conversation otherwise empty.
