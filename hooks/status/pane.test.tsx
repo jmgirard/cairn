@@ -6909,7 +6909,9 @@ describe('each candidate line carries the rows drawn before it (M294 AC3)', () =
 // 5 rows at 14 columns (10 for text), so its card needs 7, and to 1 row at
 // 60 columns, a card of 3. In the bare idle state its line is on row 7
 // (M294 AC3), and the tree has 6 lines, so 8 rows. Each value is written
-// out by hand. Until M305 the line was on row 9, and each offset was 2 more.
+// out by hand. Until M305 the line was on row 9, and each dock offset after
+// the first was 2 more. The inline case's offset stays, since its frame
+// shrank with the tree.
 describe('each candidate card is placed from the Pane props (M294 AC4)', () => {
   const long: PaneState = {
     found: true,

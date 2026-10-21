@@ -354,7 +354,8 @@ show their count at the right end with a six-cell meter, `━` for the
 checked share and `─` for the rest. The next command follows a `→`, with
 the milestone's id after it. When the next step is planning and the
 Candidates list (below) shows a row, the pane shows no Next line. Each
-candidate line's `✎` plans its row instead. With no row shown, the line shows
+candidate line with a short title carries a `✎` that plans its row. With
+no row shown, the line shows
 `/milestone-plan` alone. The pane shows no line that says no milestone is
 active. While no cairn
 skill runs or waits on its background work, a button after the command reads `Implement`, `Resume`, `Review`, or
@@ -386,8 +387,9 @@ Each row takes one line: `↑` for a `[high]` row, `○` for a normal one,
 `↓` for a `[low]` one, and `⧗` for a `[parked]` one, then the row's
 short title. A `[low]` row's mark and title are gray. A `[parked]` row
 waits on a promotion condition that has not held, such as "promote when a
-second repo needs it". Its mark and title are blue, the theme's
-`permission` color, so it differs from a `[low]` row. The `[high]` rows come first, then the normal rows,
+second repo needs it". Its title, and its mark in the terminal, draw in
+the theme's `permission` color, and the desktop draws its mark as a blue
+icon. So it differs from a `[low]` row. The `[high]` rows come first, then the normal rows,
 then the `[low]` rows, then the `[parked]` rows. Each group keeps its
 ROADMAP order, whatever order the file holds the groups in.
 The rulebook's "Candidate priority token" rule has whoever adds a row, you

@@ -851,8 +851,10 @@ export function paneLines(
     out.push(...milestoneLines(row, band.find(b => b.id === row.id && b.status === row.status)))
   })
   // With no milestone active, a planning Next line beside a drawn
-  // Candidates list says what each candidate line's ✎ already does, so it
-  // draws only while the list draws no row (M305).
+  // Candidates list repeats the ✎ that each candidate line with a short
+  // title carries, so it draws only while the list draws no row (M305). A
+  // list whose drawn rows all have empty titles has no ✎, and the band's
+  // Plan is then the way to plan.
   const drawn = state.milestones.length === 0 ? drawable : []
   const repeats = state.next?.command === '/milestone-plan' && drawn.length > 0
   if (state.next !== null && !repeats) {

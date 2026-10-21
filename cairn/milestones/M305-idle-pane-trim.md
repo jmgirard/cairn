@@ -77,6 +77,8 @@ With no active milestone, the cairn pane shows only lines that add something, an
 - 2026-10-20: question set (live-look stop): the user asked for mockups instead of the live session, with outlined-card variants added. A scratch page drew four variants with the shipped icons at pane width in dark and light: A rule, B parked color, C card per level, D one card with rules. The user chose B. AC4 (b) is the means that ships, and AC5's rule clause does not apply.
 - 2026-10-20: T4 fallback: reverted T3's rule code and tests (the T3 record stays). A parked row's mark and title draw in `permission` (`PARKED_KEY`), its icon in `ICON_COLORS.blue` `#7f93c4`; a low row stays `inactive`. `permission` is the theme's documented blue key; a hex Text color was not used because the desktop's handling of one is unverified. D-203 supersedes D-184's gray-mark clause. verify green (mod 2412 pass).
 - 2026-10-20: T5: README (band Plan argument, the Next line, parked color), DESIGN (`nextTitle` reader, parked color), the top comment of `pane.ts`, the `pressNext` comment, and CHANGELOG Unreleased (a new idle-pane entry; the unreleased parked entry now says blue). Each claim read against `pane.ts`, `icons.ts`, and `register.tsx` in this session. T6: verify green (scripts OK, hooks OK, both validates pass, mod 2412 pass).
+- 2026-10-20: candidate row "Vet an idea before planning its build" added at the datawizard session's forwarded request (the user's direction there); not M305 scope.
+- 2026-10-20: claim audit: 71 claims read, 3 corrected — pane.test.tsx (the M294 AC4 offset note), README.md (the parked mark's desktop color; the ✎ sentence), CHANGELOG.md (the ✎ sentence), pane.ts (the Next-line comment).
 
 ## Decisions
 

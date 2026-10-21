@@ -122,7 +122,8 @@
 - **The idle cairn pane drops two lines.** The pane no longer shows a `no
   active milestone` line. When the next step is planning and the
   Candidates list shows a row, the pane shows no `→ /milestone-plan` line.
-  Each candidate line's `✎` plans its row instead. With no candidate row
+  Each candidate line with a short title carries a `✎` that plans its
+  row. With no candidate row
   shown, the line and its `Plan` and `Status` buttons stay. The band's
   `Plan` and `Status` buttons do not change.
 
