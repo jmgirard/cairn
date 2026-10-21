@@ -276,6 +276,20 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    says that the vet found none. Each named concern carries the set's
    answer to it.
 
+   **Guest scope** (tracking-rules "Collaboration mode"). In guest mode,
+   Scope In holds only the change that the request or the issue asks for,
+   so the maintainers review one change in each PR. Each other fix or
+   feature that the investigation finds becomes a candidate row for its
+   own PR, written on disk (search-first applies). The plan also reads the
+   issue's comments and the git history of the code it will change, for
+   example `git log -L` or `git blame` on the lines the change touches.
+   When they show that a maintainer chose the changed behavior on
+   purpose, the idea vet poses that as a concern and cites the comment or
+   commit that shows it. When a maintainer proposed an approach in the
+   issue's comments, the plan takes that approach, or step 4 writes the
+   work-log line `maintainer approach: <approach> — not taken: <reason>`.
+   `/milestone-review` step 8 reads that line for the PR body.
+
    **Collision check (mandatory).** Sweep the ROADMAP (all statuses), the
    archive, and DECISIONS.md for overlap with what the user described.
    Sweep DECISIONS.md per the tracking-rules **bounded `DECISIONS.md` read**:
