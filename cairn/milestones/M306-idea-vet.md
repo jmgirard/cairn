@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M306: Vet an idea before planning its build
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -104,6 +104,8 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: claim audit: 16 claims read, 2 corrected — README.md, CHANGELOG.md (a hotfix concern leaves a candidate row or a `/milestone-plan` command rather than "sends the work to a milestone plan"; the question set "poses each concern", since the cap rule can combine them). The agent also dropped "first" from the README hotfix row, since the merged-PR re-entry vets after the merge.
 - 2026-10-21: substantive amendment: AC6's last two sentences now match the corrected docs, wording only, the deliverable unchanged: "They state that the plan's question set poses each concern with a do-not-build option. They state that a hotfix concern leaves a candidate row or a `/milestone-plan` next command that names the concern, and stops the hotfix unless its PR is already merged."
 - 2026-10-21: re-audit: AC6 (full) — one finding: "stops the hotfix" is false on the merged-PR re-entry; fixed with "unless its PR is already merged" in AC6, README, and CHANGELOG. Checkpoint: the fixed wording's own fresh reader is still running.
+- 2026-10-21: re-audit: AC6 (full) — met as written; two wording points: the hotfix row names the questions by reference to the plan row, and "the `/hotfix` rows" could be read to include "Take in an outside pull request". AC6 is left unchanged (a further change is the stop); that README row now says the bar includes the three questions, so either reading holds.
+- 2026-10-21: all tasks done; verify green; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
