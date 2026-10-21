@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-21 (review M310: done; row "Explain changed snapshots in guest PRs" graduated; M307 row pruned to the terminal cap; no lesson added (LESSONS at its cap); caps and module budgets within; skills/tests prose guards green; validate green)_
+_Last hygiene check: 2026-10-21 (review M311: done; M308 row pruned to the terminal cap; one mod fact added to the LESSONS mod-facts line; caps and module budgets within; skills/tests prose guards green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M308 | Fit guest PRs to the host and to one change | done | — | normal | milestones/archive/M308-guest-pr-shape.md |
 | M309 | Route a handed-off PR with merge conflicts to a sync | done | — | normal | milestones/archive/M309-guest-conflict-route.md |
 | M310 | Check and explain changed snapshots before a PR leaves | done | — | normal | milestones/archive/M310-snapshot-explain.md |
-| M311 | Link the pane card to the repo on GitHub | review | — | normal | milestones/M311-pane-repo-link.md |
+| M311 | Link the pane card to the repo on GitHub | done | — | normal | milestones/archive/M311-pane-repo-link.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Read guest PR checks while they wait: a handed-off guest PR's checks fail on the maintainers' CI and cairn reads no checks after the handoff: performance #974 added a test that crashes R on Windows, and parameters #1275 had two failing tests that a maintainer reported. `/milestone` §2's guest `blocked` read could read `gh pr checks` and route failing checks to `/milestone-implement`. Split from "Explain changed snapshots in guest PRs" at the M310 plan — added 2026-10-21
