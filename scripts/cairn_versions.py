@@ -24,9 +24,10 @@ The default mode prints three lines for REV:
 parent, and prints nothing when the version did not change. A commit where
 the file or its `version:` line is absent has no version: it ends a run, and
 a commit that adds the line after it sets that version. The value may be
-quoted, and a trailing `#` comment is ignored. Only a missing `version:`
-line at REV in the default mode is an error (exit 2, naming FILE), as is a
-revision git cannot resolve (exit 2, naming it) and a usage error (exit 2,
+quoted; an unquoted value ends at the first space or `#`. In the default
+mode a missing file or `version:` line at REV is an error (exit 2, naming
+FILE). So are a ROOT that is not a git repository (exit 2, naming it), a
+revision git cannot resolve (exit 2, naming it), and a usage error (exit 2,
 for example `--at` with `--changed-by`). Stdlib only.
 """
 
@@ -46,6 +47,13 @@ def git(root, *args):
     if proc.returncode != 0:
         raise GitError(proc.stderr.strip() or f"git {' '.join(args)} failed")
     return proc.stdout
+
+
+def check_root(root):
+    try:
+        git(root, "rev-parse", "--git-dir")
+    except (GitError, OSError):
+        raise GitError(f"not a git repository: {root}") from None
 
 
 def resolve(root, rev):
@@ -109,7 +117,7 @@ def tip_report(root, path, rev):
     found = versions_at(root, path, chain)
     version = found[chain[0]]
     if version is None:
-        raise GitError(f"no version: line in {path} at {rev}")
+        raise GitError(f"no version: line in {path} at {rev} (the file or the line is missing)")
     start = chain[0]
     for c in chain[1:]:
         if found[c] != version:
@@ -158,6 +166,7 @@ def main(argv=None):
         return 2
     path, root, at, sha = parsed
     try:
+        check_root(root)
         if sha is not None:
             sys.stdout.write(changed_by(root, path, resolve(root, sha)))
         else:

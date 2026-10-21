@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M303 | Add a quarto-extension toolchain profile | in-progress | — | normal | milestones/M303-quarto-extension-profile.md |
+| M303 | Add a quarto-extension toolchain profile | review | — | normal | milestones/M303-quarto-extension-profile.md |
 | M304 | Hand over the tag commands when a merge raises the version | planned | M303 | normal | milestones/M304-quarto-tag-handoff-at-merge.md |
 | M302 | Put the pane's count badges after their labels in gray | done | — | normal | milestones/archive/M302-pane-badge-after-label.md |
 | M301 | Show each open PR's merge state in the pane | done | — | normal | milestones/archive/M301-pane-pr-merge-state.md |

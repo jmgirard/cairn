@@ -1,6 +1,6 @@
 # M303: Add a quarto-extension toolchain profile
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,8 @@ cairn ships a quarto-extension toolchain profile whose release walk tags a versi
 - 2026-10-20: T3 done. Read-only in embedpdf (main level with origin): for each of the 16 tags `git tag -l 'v1.*'` lists (v1.0.0 to v1.2.9), `cairn_versions.py _extensions/embedpdf/_extension.yml --at <tag>` printed a `start` equal to `git rev-parse <tag>^{commit}` and a `version` equal to the tag's, 0 mismatches. The tip reads 1.2.9, start a68951d, tag present. (The plan's audit counted 18 such tags; the listing has 16.)
 - 2026-10-20: T4 done. The rulebook says six profiles ship and infers quarto-extension after claude-plugin and before docker-image. `/cairn-init` selects it from `_extension.yml` or `_extension.yaml`, names it as a hybrid deliverable, lists both spellings as greenfield markers, offers it in the chip's follow-up, and names it in the tree comment, the instantiation list, the release-intent opener, and the repair backfill. Guards: the five-profile class became `TestRulebookNamesSixProfiles`, both profile tuples gained `quarto-extension`, a new `test_init_selects_quarto_extension` is registered in the mutation harness, and the positioning guard's `LABELS` gained "Quarto extension". That guard requires the label in README ¶1 and both manifest descriptions, so those three lists name it (one scripted replace, an exception to the Edit-tool rule). skills/tests 930 OK; verify green.
 - 2026-10-20: T5 done. `/cairn-release` gains a "Tag-only arm (quarto-extension)" paragraph before step 1, and steps 1 and 2 say the arm skips them; step 3 gains a quarto-extension bullet. DESIGN names six profiles with the new one, lists it in the profiles directory, and adds `cairn_versions` to the scripts layer. CHANGELOG Unreleased "New" gains the profile entry. All five verify checks, skills/tests (930), and `cairn_validate` green.
+- 2026-10-20: claim audit: 90 claims read, 7 corrected — skills/shared/profiles/quarto-extension.md, skills/cairn-release/SKILL.md, CHANGELOG.md, scripts/cairn_versions.py. Quarto 1.10 installs from the branch named `main`, not the default branch. An untagged tip version is "unreleased" (a first release is one too), and first-release notes drop `<previous tag>..`. The tag-only arm tags only the tip's version. A repo with no PROFILE.md now infers the profile. A `Dockerfile` sends the repo to the disambiguation gate. The script names a missing file and a bad `--root` (two new tests, 13 in all), and an unquoted value ends at a space or `#`. The same reader re-read all seven: each holds.
+- 2026-10-20: implement done. All five tasks are checked, verify is green (scripts 441, mod tests 2417, skills/tests 930), and the status is review.
 
 ## Decisions
 

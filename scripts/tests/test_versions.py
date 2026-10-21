@@ -143,6 +143,24 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(self.run_script("--changed-by", merge).stdout, "1.1.0\n")
         self.assertNotEqual(base, merge)
 
+    def test_tip_without_the_file_is_an_error_naming_it(self):
+        self.commit("readme only", other="x\n")
+        proc = self.run_script()
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn(MARKER, proc.stderr)
+        self.assertIn("missing", proc.stderr)
+
+    def test_root_that_is_not_a_repository_is_an_error_naming_it(self):
+        with tempfile.TemporaryDirectory() as other:
+            proc = subprocess.run(
+                [sys.executable, str(SCRIPT), MARKER, "--root", other],
+                capture_output=True,
+                text=True,
+            )
+        self.assertEqual(proc.returncode, 2)
+        self.assertIn("not a git repository", proc.stderr)
+        self.assertIn(other, proc.stderr)
+
     def test_at_with_changed_by_is_a_usage_error(self):
         sha = self.commit("one", version="0.1.0")
         proc = self.run_script("--at", sha, "--changed-by", sha)

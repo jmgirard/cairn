@@ -10,11 +10,13 @@
 
 The Quarto extension toolchain: a repo whose deliverable is a Quarto extension
 under `_extensions/<name>/` (a filter, shortcode, format, or project type),
-installed with `quarto add <owner>/<repo>`. That command installs from the
-default branch, so a merge reaches users at once. A `v<version>` tag and a
-GitHub release mark the version for `quarto add <owner>/<repo>@v<version>` and
-the releases page. Selected by `cairn-init` when `_extensions/*/_extension.yml`
-(or `.yaml`) is present and no language or plugin marker is.
+installed with `quarto add <owner>/<repo>`. Quarto 1.10 installs from the
+branch named `main`, so in a repo whose default branch is `main` a merge
+reaches users at once. A `v<version>` tag and a GitHub release mark the
+version for `quarto add <owner>/<repo>@v<version>` and the releases page.
+Selected by `cairn-init` when `_extensions/*/_extension.yml` (or `.yaml`) is
+present and no language, plugin, or `Dockerfile` marker is. With a
+`Dockerfile`, the disambiguation gate asks.
 
 ## verify
 Run by `/milestone-implement` (per task) and `/hotfix` (gate-lite). Declare the
@@ -50,8 +52,8 @@ on an up-to-date checkout:
 `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" _extensions/<name>/_extension.yml`.
 It prints the tip's version, the first commit of that version's unbroken run
 of first-parent commits (`start`), and whether a `v<version>` tag exists.
-- **Tag-only arm.** When the tag is absent, merged work already raised the
-  version. Skip the version decision and the changelog consolidation, raise
+- **Tag-only arm.** When the tag is absent, the tip's version is unreleased:
+  merged work raised it, or it was never tagged. Skip the version decision and the changelog consolidation, raise
   nothing, and make no prep commit. Tag the run's start:
   `git tag -a v<version> <start> -m "v<version>"`, pushed at the user's approval.
 - **Release-time arm.** When the tag exists, run the generic walk. Decide the
@@ -63,7 +65,8 @@ of first-parent commits (`start`), and whether a `v<version>` tag exists.
   changelog "none", they are the commit subjects on the default branch since
   the previous `v*` tag:
   `git log --first-parent --format='- %s' <previous tag>..<tagged commit>`.
-  Where the `origin` remote is GitHub and `gh` is available, the handoff
+  For a first release, with no previous `v*` tag, drop `<previous tag>..` to
+  list every subject up to the tagged commit. Where the `origin` remote is GitHub and `gh` is available, the handoff
   provides a `gh release create` command with these notes. cairn provides it
   and never runs it (the universal step 4). No registry step: the tag is the
   release.
@@ -84,8 +87,9 @@ universal openers (distribution ambition and numeric-work oracles):
 - **When does the version rise?** At release (reversible default), or at each
   merge that changes a shipped asset, when browsers cache that asset by a path
   that holds the version.
-  - Consequence: at merge, the release walk's tag-only arm tags each raised
-    version. At release, the release-time arm raises it.
+  - Consequence: at merge, the release walk's tag-only arm tags the tip's
+    raised version. Run it after each raising merge, or earlier versions stay
+    untagged. At release, the release-time arm raises the version.
   - Lands in: CLAUDE.md conventions and the `release-walk` marker list.
 
 ## changelog

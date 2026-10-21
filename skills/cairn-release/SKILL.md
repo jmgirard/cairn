@@ -52,8 +52,9 @@ toolchain-specific work at step 3.
 
    **Tag-only arm (quarto-extension).** A quarto-extension profile's
    release-walk reads the version marker first (`cairn_versions.py`, step 3).
-   When it reports the tip's version with no `v<version>` tag, merged work
-   already raised the version. Steps 1 and 2 are then skipped, and step 3
+   When it reports the tip's version with no `v<version>` tag, that version
+   is unreleased: merged work raised it, or it was never tagged. Steps 1 and
+   2 are then skipped, and step 3
    tags the start of that version's run with no prep commit.
 
 1. **Version decision** (question gate, one round; skipped in the tag-only
