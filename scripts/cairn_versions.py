@@ -26,8 +26,10 @@ the file or its `version:` line is absent has no version: it ends a run, and
 a commit that adds the line after it sets that version. The value may be
 quoted; an unquoted value ends at the first space or `#`, and a leading
 byte-order mark is ignored. The release walk passes the version to
-`git tag`, so a printed version holds only letters, digits, and `.+_-`; any
-other value is an error (exit 2, naming it). In the default mode a missing
+`git tag`, so a printed version is dot-separated parts of letters, digits,
+and `+_-`, each part starting and ending with a letter or digit, the first
+starting with a digit, and not ending in `.lock`; any other value is an
+error (exit 2, naming it). In the default mode a missing
 file or `version:` line at REV is an error (exit 2, naming FILE). So are a
 ROOT that is not a git repository or is a shallow clone (exit 2, naming
 it), a revision git cannot resolve (exit 2, naming it), and a usage error
@@ -39,8 +41,12 @@ import subprocess
 import sys
 
 VERSION_LINE = re.compile(r"^version:[ \t]*(?:\"([^\"]*)\"|'([^']*)'|([^\s#]+))", re.M)
-# A version the release walk may pass to `git tag`: letters, digits, `.+_-`.
-PLAIN_VERSION = re.compile(r"^[0-9A-Za-z][0-9A-Za-z.+_-]*$")
+# A version the release walk may pass to `git tag`: dot-separated parts of
+# letters, digits, and `+_-`, each part starting and ending with a letter or
+# digit, the first starting with a digit (so `v1.0` cannot become `vv1.0`),
+# and no `.lock` ending, which git refuses in a ref name.
+PART = r"[0-9A-Za-z](?:[0-9A-Za-z+_-]*[0-9A-Za-z])?"
+PLAIN_VERSION = re.compile(rf"^[0-9](?:[0-9A-Za-z+_-]*[0-9A-Za-z])?(?:\.{PART})*$")
 
 
 class GitError(Exception):
@@ -65,7 +71,7 @@ def check_root(root):
 
 def plain(version, path):
     """The version, refused unless it is safe to pass to `git tag`."""
-    if version is not None and not PLAIN_VERSION.match(version):
+    if version is not None and (not PLAIN_VERSION.match(version) or version.endswith(".lock")):
         raise GitError(f"the version: value in {path} is not a plain version: {version!r}")
     return version
 

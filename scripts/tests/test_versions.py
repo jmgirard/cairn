@@ -125,10 +125,23 @@ class VersionsTest(unittest.TestCase):
         self.assertEqual(proc.returncode, 2)
         self.assertEqual(proc.stdout, "")
 
+    def test_the_shape_check_takes_real_versions_and_refuses_bad_tags(self):
+        # Each refused value would make a bad tag name or a `vv` prefix.
+        for bad in ("1.0.", "1..0", "1.0.lock", "v1.0.0", ".1.0", "1.0-"):
+            with self.subTest(value=bad):
+                self.commit(f"bad {bad}", line=f"version: '{bad}'")
+                proc = self.run_script()
+                self.assertEqual(proc.returncode, 2)
+                self.assertIn(bad, proc.stderr)
+        for good in ("1.0.0-rc.1", "2024.10.1", "1.0.0+build.5", "0.1.0.9000"):
+            with self.subTest(value=good):
+                self.commit(f"good {good}", line=f"version: {good}")
+                self.assertEqual(self.tip()["version"], good)
+
     def test_a_shallow_clone_is_an_error(self):
         for v in ("0.1.0", "0.2.0", "0.3.0"):
             self.commit(v, version=v)
-        shallow = pathlib.Path(self.tmp.name) / "shallow"
+        shallow = pathlib.Path(self.tmp.name) / "copy"
         subprocess.run(
             ["git", "clone", "-q", "--depth", "1", f"file://{self.root}", str(shallow)],
             check=True,
@@ -140,7 +153,8 @@ class VersionsTest(unittest.TestCase):
             text=True,
         )
         self.assertEqual(proc.returncode, 2)
-        self.assertIn("shallow", proc.stderr)
+        self.assertIn("is a shallow clone", proc.stderr)
+        self.assertNotIn("not a git repository", proc.stderr)
         self.assertEqual(proc.stdout, "")
 
     def test_annotated_and_lightweight_tags_both_count(self):
