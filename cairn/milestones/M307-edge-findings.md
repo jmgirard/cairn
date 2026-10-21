@@ -1,6 +1,6 @@
 # M307: Reject review findings that only unusual inputs reach
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -70,6 +70,7 @@ candidate row "Grade findings by the action they need".
 - 2026-10-21: claim audit: 7 claims read, 2 corrected — README.md (the edge sentence now names warnings, slow running, both use bounds, and the criterion exclusion, and is framed as the exception to the fix rule).
 - 2026-10-21: review return 1: consistency gate — CHANGELOG.md has no entry for the edge ground (the plan listed no changelog task).
 - 2026-10-21: minor amendment: added T4 for review return 1; CHANGELOG.md entry written.
+- 2026-10-21: user request at review: in guest mode, keep edge findings out of the PR's code but note them briefly in the PR body with a question to the maintainers; a new criterion goes to a fresh re-audit before it is written.
 
 ## Decisions
 
