@@ -820,8 +820,8 @@ def _profile_slots(text):
 def check_profile(root):
     """cairn/PROFILE.md, when present, defines exactly the seven known toolchain
     slots, each non-empty. No-op when absent — a repo that adopted cairn before
-    profiles keeps working, and the skills infer the profile from DESCRIPTION at
-    point of use (tracking-rules "Toolchain profiles"). Validate-if-present,
+    profiles keeps working, and the skills infer the profile from the repo's
+    toolchain markers at point of use (tracking-rules "Toolchain profiles"). Validate-if-present,
     mirroring the coverage/principles checks: a missing, empty, or misspelled
     slot is caught at the declaration point rather than misfiring a skill."""
     path = os.path.join(root, "cairn", "PROFILE.md")

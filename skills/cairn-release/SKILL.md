@@ -1,6 +1,6 @@
 ---
 name: cairn-release
-description: Prepare a release following the active toolchain profile's release-walk - an r-package profile runs the CRAN walk (version bump, NEWS, checks, cran-comments, human submission checklist); a generic profile does a version bump + changelog + tag. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
+description: Prepare a release following the active toolchain profile's release-walk - an r-package profile runs the CRAN walk (version bump, NEWS, checks, cran-comments, human submission checklist); a generic profile does a version bump + changelog + tag; a quarto-extension profile also tags a version a merge already raised. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
 argument-hint: "[patch | minor | major]"
 ---
 
@@ -50,7 +50,23 @@ The `release-walk` slot is authoritative — read it, never recall a hardcoded
 walk. The steps below are the universal spine; the slot fills in the
 toolchain-specific work at step 3.
 
-1. **Version decision** (question gate, one round): review the declared
+   **Tag-only arm (quarto-extension).** Before step 1, a quarto-extension
+   profile's release-walk fetches the tags and reads the version marker on
+   the remote default branch with `cairn_versions.py` (the slot names the
+   command).
+   When it reports the tip's version with no `v<version>` tag, that version
+   is unreleased: merged work raised it, or it was never tagged. The slot's
+   marker check and, with a declared changelog, the section lookup run next.
+   Step 1 then confirms that version and the commit that started it, step 2
+   makes no edit but runs its claim-read on that section, and step 3 tags
+   that commit with no prep commit. Step 3 does not repeat the version read,
+   the marker check, or the section lookup. A stop the slot names ends
+   the run with its reason and no tag.
+
+1. **Version decision** (question gate, one round; in the tag-only arm the
+   one question confirms the version the default branch carries and the
+   commit to tag, in place of a bump choice, and the bump recommendation
+   does not apply, while the half-merged series list below still does): review the declared
    changelog — the file the active profile's `changelog` slot names ("none" →
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
@@ -72,7 +88,10 @@ toolchain-specific work at step 3.
    No such series or row → the question says nothing about series.
 
 2. **Changelog consolidation** (the declared file; a "none" declaration skips
-   this step): retitle the development heading to the release version; group
+   this step. The tag-only arm makes no edit and no prep commit. It runs the
+   claim-read below on the section the slot found for the version, against
+   the code at the commit it tags, and a false claim stops the walk with no
+   tag): retitle the development heading to the release version; group
    entries (breaking changes first, then new features, fixes); prune noise;
    no milestone numbers or internal jargon. **Claim-read:** before the
    release-prep commit, each behavior claim in the consolidated release
@@ -82,7 +101,8 @@ toolchain-specific work at step 3.
    clause with the rest of the step (D-136).
 
 3. **Follow the active profile's `release-walk` slot.** Run each step the slot
-   names, in order, recording results as you go:
+   names, in order, recording results as you go (a step the slot ran before
+   step 1 is not run again):
    - An **r-package** profile's slot is the CRAN walk — full local
      verification, wide checks, `cran-comments.md`, the version bump, and a
      human submission checklist. It is CRAN-flavored end to end and never
@@ -90,6 +110,13 @@ toolchain-specific work at step 3.
    - A **generic** profile's slot is the minimal walk — bump the version marker,
      commit the release prep to the default branch, and tag the release. The tag
      is the release; there is no registry step.
+   - A **quarto-extension** profile's slot reads the version marker with
+     `cairn_versions.py` and takes one of two arms. The tag-only arm tags the
+     first commit of the tip version's run, with no bump and no prep commit.
+     The release-time arm runs the generic walk. With changelog "none", the
+     release notes are the commit subjects since the previous `v*` tag. With
+     a declared changelog, the tag-only arm takes the notes from the section
+     the slot found for the version.
    For any slow checks the slot names (wide/registry checks, reverse-dependency
    runs), follow the tracking-rules wait rule — one watcher per check, a
    foreground call with a timeout below the harness ceiling or a
@@ -107,11 +134,12 @@ toolchain-specific work at step 3.
    not push.
 
 4. **Handoff / final actions.** Lead outcome-first: what this release contains
-   and why the version was chosen, in plain words, before the mechanics. Then
+   and why the version was chosen (in the tag-only arm, which merge raised
+   it), in plain words, before the mechanics. Then
    present the slot's terminal actions as a checklist for the user to run
    (r-package: the CRAN submission checklist — submit, confirm the email, then
-   tag the GitHub release and bump to the next dev version; generic: the
-   tag/push commands), never performed on their behalf. Every command in that
+   tag the GitHub release and bump to the next dev version; generic and
+   quarto-extension: the tag/push commands), never performed on their behalf. Every command in that
    checklist is a **handoff** — the whole step exists to hand the user work to
    run — so each goes in a fenced block, never inline backticks
    (tracking-rules "Copy-run commands"). The rationale and this checklist are
@@ -126,7 +154,10 @@ toolchain-specific work at step 3.
    create` for the new tag whose body is the changelog section you just
    consolidated for this version. Extract that section to a notes file and pass
    it with `--notes-file`, so the published release reads identically to the
-   changelog. cairn **provides this command; it never runs it** — publishing
+   changelog. Where the profile's release-walk names other notes, such as
+   the quarto-extension tag-only arm's found section or the commit subjects
+   with changelog "none", the notes file holds those instead.
+   cairn **provides this command; it never runs it** — publishing
    the release is the user's action at the approval gate, exactly like pushing
    the tag (never-self-submits). Where the remote is not GitHub or `gh` is
    absent, omit this command with no failure — the tag alone is the release.

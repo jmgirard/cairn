@@ -4,6 +4,14 @@
 
 ### Changes that affect existing repos
 
+- **A repo with a Quarto extension marker, no language or plugin marker,
+  and no `cairn/PROFILE.md` now reads as the quarto-extension profile.** The profile inference checks
+  `_extensions/*/_extension.yml` (or `.yaml`) after the plugin marker and
+  before a `Dockerfile`. A repo with an extension marker and a `Dockerfile`,
+  and no `cairn/PROFILE.md`, read as docker-image before and reads as
+  quarto-extension now. A repo whose `cairn/PROFILE.md` names a profile
+  keeps that profile.
+
 - **Candidate short titles are one short sentence.** The rulebook now
   tells whoever writes a candidate row to open it with one sentence that
   says what the work does, with no ending period, of at least 5 words and
@@ -143,6 +151,23 @@
   no issue is closed.
 
 ### New
+
+- **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
+  a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no
+  language or plugin marker. With a `Dockerfile` too, it asks which one to
+  use. Its version marker is the `version:` line in that file, and a repo
+  can name more files that must hold the same version. Its release walk
+  first reads the version at the tip of the default branch with the new
+  `scripts/cairn_versions.py`. When that version has no `v<version>` tag,
+  it is unreleased, so `/cairn-release` asks you to confirm that version in
+  place of choosing a bump, and makes no prep commit. It tags the first
+  commit of that version's run instead. With a declared changelog, it needs
+  a section headed with the version and stops when there is none.
+  Otherwise it raises the version at release time, as the generic walk
+  does. With changelog "none", the release notes are the commit subjects
+  since the previous tag. A repo whose `cairn/PROFILE.md` declares the
+  generic profile keeps it until you switch that file. A repo with no
+  `cairn/PROFILE.md` and an extension marker now infers this profile.
 
 - **The cairn pane shows whether each open PR can merge.** A Blocked or
   Hotfixes line for an open pull request now ends with a mark after its
