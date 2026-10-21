@@ -396,8 +396,8 @@ can resolve against the fork instead of the base repo.
    `AskUserQuestion` chip (recommended = merge, e.g. `Merge PR #N to
    <default-branch>` for an existing PR, `Merge hotfix-<slug> into
    <default-branch>` for an authored fix not yet opened — address-first
-   instead, when the blocking rule
-   above fires — with a decline option) — never a prose yes/no, the same gate discipline
+   instead, when the blocking rule above or the snapshot rule below
+   fires — with a decline option) — never a prose yes/no, the same gate discipline
    as `/milestone-review`. A `Fixes #N` line, in the PR body or owed to the
    one about to be opened, adds to the
    chip's question text the post-merge close-if-open of that issue it
@@ -418,10 +418,17 @@ can resolve against the fork instead of the base repo.
    `git diff --name-only <base>/<default-branch>...HEAD`, run after
    `git fetch <base>`. Each file gets one plain line. The line says what
    changed in it, or that the file is new or deleted. It also says whether
-   the fix needs that change. The chip's question text names each change
-   that the fix does not need. While one stands, the recommended option
-   does not approve and instead fixes that change first. An empty list is
-   stated in one line.
+   the fix needs that change. The chip's question text names, in plain
+   words, each change that the fix does not need, with the paths in the
+   chat above. While one stands, the recommended option does not approve.
+   It is address-first, as under the blocking rule. The approve option
+   (merge, or the guest handoff) stays present and not recommended, and
+   its description names each such change. Address-first corrects the
+   code that produced the change, on the branch. For an adopted PR whose
+   head branch cannot take a push, it asks the contributor, as step 5
+   does. After a fix, the session runs step 4 again and poses this gate
+   again, with the list computed on the new head. An empty list is stated
+   in one line.
    On approval of an authored fix, push and
    open the PR before the marker write below — `git push -u origin
    hotfix-<slug>`, then `gh pr create --title <title> --body <body>`
@@ -506,8 +513,10 @@ can resolve against the fork instead of the base repo.
    short description of the fix in the host's style, then that list where
    one is owed, then the snapshot lines. The snapshot lines name each file
    of the gate's snapshot list, before the `Fixes #N` line. Each gets one
-   plain line on what changed in it and why. With no such file, the body
-   has no snapshot line. A failed issue read is named in the close block. The
+   plain line on what changed in it and why. The line for a change that
+   the fix does not need, approved past address-first, says that the
+   change is not intended. With no such file, the body has no snapshot
+   line. A failed issue read is named in the close block. The
    changelog entry stays the branch's other prose — then no marker, no CI
    wait, no merge. After the create,
    append ` — started #<n>` on disk, `<n>` the new PR's number, to the end

@@ -526,19 +526,31 @@ re-enters here, at the step the record shows is next:
    **Changed snapshot files.** A changed snapshot file is a path with a
    directory named `_snaps` (testthat) or `__snapshots__` (Jest, syrupy).
    The paths come from `git diff --name-only <base>/<default-branch>...HEAD`.
-   A stacked guest milestone whose stack base's PR is `OPEN` diffs against
-   `<base>/<stack-base-branch>`. Resume route (b) uses the paths that
-   `gh pr diff <N> --name-only` prints. In both modes, this presentation
-   lists each such file on the head the chip is posed on, after any fix-now
-   commits. Each file gets one plain line. The line says what changed in
-   its stored output, or that the file is new or deleted. It also says
-   whether the Goal or acceptance criteria call for that change. Step 5's
-   rule settles a change that they do not call for before the chip. The
-   disposition is fix now (the snapshot re-recorded or the change
-   reverted) or follow-up. Its Review-section line is
-   `snapshot: <path> — <disposition>`. A fix-now revert can remove the
-   path from the list, and the line is still written. An empty list is
-   stated in one line. Step 8's guest arm uses the same definition.
+   A stacked guest milestone diffs against `<base>/<stack-base-branch>`
+   while its stack base's PR reads `OPEN`
+   (`gh pr view <base-pr> --repo <base-repo> --json state`). Otherwise
+   the list can hold the stack base's own files, and step 8 stops before
+   any push. Resume route (b) uses the paths that
+   `gh pr diff <N> --name-only` prints. In both modes, the session
+   computes the list before the chip's fix-now work. Each file gets one
+   plain line. The line says what changed in its stored output, or that
+   the file is new or deleted. It also says whether the Goal or
+   acceptance criteria call for that change. A change that they do not
+   call for is a finding, and step 5's rule settles it as fix now or
+   follow-up, the return floor included. Fix now corrects the code that
+   produced the change, so the stored output matches its old content
+   again. Re-recording the snapshot keeps the change and fixes nothing.
+   Follow-up keeps a change that gives no wrong result and sends it to a
+   candidate row. Each such change gets one Review-section line,
+   `snapshot: <path> — <disposition>`. A fix-now line gains
+   `, fixed <sha>`, and a follow-up line names its candidate row. The
+   line stays when the fix removes the path from the list. After every
+   fix-now commit, the PR-conversation read's included, the session
+   computes the list again on the head the chip is posed on and settles
+   each new change the same way. This presentation shows that last list,
+   or states in one line that it is empty. The chip's question text names
+   how many snapshot files the list holds and, in plain words, each change
+   settled as follow-up. Step 8's guest arm uses the same definition.
 
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
@@ -759,9 +771,10 @@ re-enters here, at the step the record shows is next:
    The snapshot lines are the one exception for test files.
    The snapshot lines name each changed snapshot file by step 7's
    definition. This step computes the list again, with step 7's command
-   and base, on the head that it pushes. Each file gets one plain line in the host's
-   style on what changed in it and why. With no such file, the body has no
-   snapshot line.
+   and base, on the head that it pushes. Each file gets one plain line in
+   the host's style on what changed in it and why. The line for a change
+   settled as follow-up says that the change is not intended and is left
+   for later. With no such file, the body has no snapshot line.
    When it opens the PR, the body lists, before any `Closes`/`Refs`
    lines, each Review-section reject whose ground is `edge` (the reviewer
    lines, which name their ground), one short line each in plain words
@@ -771,10 +784,11 @@ re-enters here, at the step the record shows is next:
    When the PR is already open, no body edit is made. The handoff instead
    posts one PR comment. It carries the same `edge` list and question for
    the `edge` rejects of this review pass, the lines after the newest
-   `spawned:` line. It also carries the snapshot lines for the head that
+   `spawned:` line. With no such rejects, it carries neither the list nor
+   the question. It also carries the snapshot lines for the head that
    this step pushes. With no such file, the comment has no snapshot line.
-   A comment with neither is not posted, and the close block names what
-   the comment carried.
+   A comment with neither is not posted. The close block names what the
+   comment carried, or says that no comment was posted.
    When the milestone's work log carries a `feature series:` line
    (tracking-rules "Feature series"), the body adds one plain sentence with no cairn vocabulary.
    For a milestone before the series' last, the sentence says the change is one part of a series whose user-facing part comes in a later pull request.

@@ -10,13 +10,12 @@
   merge question and `/hotfix`'s approval gate, each snapshot file that
   the branch changes gets one line. The line says what changed and
   whether the work needs the change. At review, a change that the work
-  does not need is fixed or sent to a candidate row before the merge
-  question. At a hotfix, the gate names such a change and does not
-  recommend approval while it stands. In guest mode, the PR body names
-  each changed snapshot file and says what changed and why. At review,
-  when the PR is already open, one PR comment carries the same lines
-  instead. A snapshot
-  directory with another name is not covered.
+  does not need is fixed in the code or sent to a candidate row before
+  the merge question. At a hotfix, the gate names such a change and
+  recommends fixing it first. In guest mode, the PR body names each
+  changed snapshot file and says what changed and why. When the PR is
+  already open at review, one PR comment carries the same lines instead.
+  A snapshot directory with another name is not covered.
 
 - **In guest mode, the host's writing style wins.** Text written for the
   host repo or its maintainers matches the host's length, tone, and level

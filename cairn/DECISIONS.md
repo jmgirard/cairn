@@ -7591,3 +7591,33 @@ candidate row "List snapshots changed after a PR opens". The
 guest-mode lines are falsified by maintainers who ask that such lines be
 left out of guest PRs. The owner-mode list is falsified by an owner who
 finds it noise at the gate.
+
+### D-209 (2026-10-21): D-208's reason for rejecting a since-last-push snapshot comment is corrected, its relations to D-108 and D-207 are named, and a fix for an unneeded snapshot change corrects the code — supersedes D-208's third Rejected clause; D-208's decision stands; annotates D-108 and D-207 (M310 review)
+
+**Context:** The M310 review found three faults in D-208. Its third
+Rejected clause says the guest sync's lease push makes a
+since-last-push diff empty. That push runs only after a rebase and
+before the new work, so the diff from the PR's head before step 8's push
+holds the new commits. D-208's heading names D-108's door but not
+D-108 as an entry it annotates, as D-189's heading does. Its guest body
+lines change the body shape that D-207 records, and D-208 does not name
+D-207. The review also found that the step text let a fix re-record the
+snapshot, which keeps the change that D-208 exists to catch.
+
+**Decision:** An open guest PR's handoff comment keeps the full
+snapshot list for the pushed head, for a different reason than D-208
+gave. The full list restates the PR's whole current set, so it also
+corrects a body line that a later fix made stale. D-208 annotates
+D-108, and its owner half is excepted by name from D-108's door, the
+door unchanged. D-208 annotates D-207: the guest body that D-207 shapes
+gains one line per changed snapshot file, and D-207's other clauses
+stand. A fix for a snapshot change that the work does not need corrects
+the code that produced it, and re-recording the snapshot is not a fix.
+
+**Rejected:** a since-last-push comment, because a body line made stale
+by a later fix would stay uncorrected; falsified by maintainers who find
+the repeated list noise on a PR with several review passes. That case is
+the candidate row "List snapshots changed after a PR opens".
+
+**Consequences:** D-208's Decision, its first two Rejected clauses, and
+its falsifiers stand.
