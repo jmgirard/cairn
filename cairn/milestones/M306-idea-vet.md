@@ -66,7 +66,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
      Coverage lines together. -->
 
 - [x] T1: In `skills/milestone-plan/SKILL.md`, add the vet paragraph to step 2 after the collision check and the inbox sweep. Add vet concerns to step 3's list of questions, with the cap rule. Add the `idea vet:` line to step 4's work-log lines beside the tier-check line. Add the arm for work chosen at the question set. Trace the no-work arm's close to its rerun (LESSONS M172).
-- [ ] T2: In `skills/hotfix/SKILL.md` step 1, add the vet beside the tier check, for every entry that tier-checks a fix or a PR diff, the merged-PR re-entry included. Send a concern through the existing over-the-bar route.
+- [x] T2: In `skills/hotfix/SKILL.md` step 1, add the vet beside the tier check, for every entry that tier-checks a fix or a PR diff, the merged-PR re-entry included. Send a concern through the existing over-the-bar route.
 - [ ] T3: Add `skills/tests/test_idea_vet.py`. Pin each of the three questions, the not-proof sentence, the cap rule, the do-not-build option and its no-write result, the work-log line, the no-work arm, and the hotfix route, with one assertion per member (LESSONS M171). Delete each pinned sentence and see its assertion fail before you trust the pass.
 - [ ] T4: Append D-204 per AC5.
 - [ ] T5: Edit README's two rows and add the CHANGELOG entry. Grep both for wording that the change makes stale (LESSONS M112).
@@ -96,6 +96,7 @@ Before it plans a milestone or makes a hotfix, cairn asks if the requested behav
 - 2026-10-21: plan gate chose to vet every hotfix over vetting only behavior a report, issue, or PR asks for because the hotfix bar already sends that behavior to a plan, so the narrow check changed no outcome; falsified by a hotfix vet concern that the plan's vet would have raised anyway.
 - 2026-10-21: criteria audit (full mode, one fresh Opus reader): 8 findings, then 2 on a re-audit of the criteria the answers changed, all fixed. The Goal no longer says the request is never built as written. AC1 asks about correctness by the field's standards and covers requests that name work. AC2 keeps concerns within the cap, says a do-not-build choice writes nothing and keeps the row, and names the file for the line. AC4 covers every tier-check entry and the merged-PR re-entry. AC5 asks whether the door applies. AC7 drops the hand-run suite, which gates nothing; T6 runs it. AC3 and AC6 passed.
 - 2026-10-21: T1 done: `/milestone-plan` step 2 gains the idea vet after the checker-regress paragraph, step 3 gains the concerns bullet and the "Work chosen at the set" arm, step 4 the idea-vet line; the no-work arm's close reruns `/milestone-plan` with the work named, whose step-2 vet and step-3 set pose the concern. Untracked `cairn-probe.log` and `tsconfig.json` left unstaged. verify green.
+- 2026-10-21: T2 done: `/hotfix` step 1 gains the idea vet after the over-the-bar paragraph; it runs on every entry that runs the tier check, and the merged-PR re-entry's "Tier check the merged diff as above" reaches it, its concern riding in step 7's close block. verify green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

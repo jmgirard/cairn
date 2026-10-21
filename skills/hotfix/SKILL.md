@@ -49,6 +49,19 @@ can resolve against the fork instead of the base repo.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
+   **Idea vet (M306).** Every entry that runs this tier check also vets the
+   behavior that the fix or the PR diff produces, documented behavior
+   included. It asks `/milestone-plan` step 2's three questions. (1) Is the
+   behavior correct by its field's standards (for example statistical or
+   technical), and does it do what its name says for every input type it
+   touches? (2) Do the project's users want it? (3) Is it framed right, in
+   its name, its function, and its arguments? An issue's wording, a
+   contributor's PR, or the docs that the fix restores answer none of the
+   three. State the result in chat. A concern counts as a design decision,
+   so it takes the over-the-bar route above, and the candidate row or the
+   close block that the route writes names the concern. On the merged-PR
+   re-entry below, the vet runs after the merge, and the concern goes in
+   step 7's close block.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
