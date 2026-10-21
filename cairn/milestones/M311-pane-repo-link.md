@@ -182,3 +182,28 @@ Evidence at e7321e99 (2026-10-21), fresh runs:
 - AC6: `python3 -m unittest` scripts/tests 445 OK (21 skipped), hooks/tests 193 OK; `claude plugin validate` plugin.json and marketplace.json both pass; `claude plugin test` 2463 pass, 0 fail.
 
 Consistency gate: `cairn_validate` all checks passed; no principle changed, so no `cairn_impact`; marketplace validate has no `plugins[N].version` warning; CHANGELOG has the entry, with no milestone number in its text.
+
+spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: `webOf` puts no bound on href length, and a Link over 2048 characters refuses the whole pane — fix now, owner capped at 39 and repo at 100 (GitHub's limits), three repo.test cases, fixed d2ff0407
+- diff-bug #2: the cut of a long name inside a Link was never seen on screen — fix now, each Text inside a Link also takes `wrap: 'truncate-end'` (asserted in the AC3 test) and DESIGN states the props rather than "keeps the cut", fixed d2ff0407
+- diff-bug #3: mobile and other non-terminal surfaces draw Links with no test — reject, planned change: Scope In names "surfaces other than the terminal", and the gate mirrors the `Svg` gate beside it
+- diff-bug #4: a read whose counts failed still links `? PRs` and `? issues` — reject, false: the links open the current repo's lists, which is right whatever the count reads, and no doc claims otherwise
+- diff-bug #5: README and CHANGELOG say the count opens the list, but the word links too — fix now, both now say the count and its word, fixed d2ff0407
+- diff-bug #6: a lead span with an href, or one with an icon or badge, would draw no link — reject, false: `cardLines` (pane.ts) is the only producer of `href` and sets it only on the name and tail text spans
+- diff-bug #7: the `new URL(web).href === web` check is redundant after the name check — reject, style: a guard against a refused pane, kept on purpose
+- blame-history #1: the Texts inside a Link lack `wrap: 'truncate-end'`, so a long name could wrap — fix now (same fix as diff-bug #2), fixed d2ff0407
+- blame-history #2: "Its second line" after the new terminal sentence reads as the terminal pane's — fix now, "The card's second line", fixed d2ff0407
+- blame-history #3: `drawSpans` and the Link's children carry no JSX keys — reject, false: the mod's spans are unkeyed by convention ("A Text drops its `key`") and the old `tail.map(drawSpan)` was too
+- blame-history #4: a span with both `href` and an icon or badge would lose its `Svg` — reject, false (as diff-bug #6)
+- blame-history #5: the release-line fixture at pane.test.tsx lacks `web` — fix now, `web: null` added, fixed d2ff0407
+- prior-review #1: after an origin switch with a failing gh, the new repo's links sit beside the held counts — reject, planned change: M286 keeps a root's last good counts; the link targets come from the current URL and open the right pages
+- prior-review #2: the release-line fixture lacks `web` — fix now (same as blame-history #5), fixed d2ff0407
+- prior-review #3: repo.ts's header does not name the repo page — fix now, header names it, fixed d2ff0407
+- prior-review #4: a short hard-wrapped README line — fix now, rewrapped, fixed d2ff0407
+- prior-review #5: the `repo-4` bump drops stored counts until the next read — reject, planned change (LESSONS mod facts: a value layout change takes a new shape tag)
+- ripple: no ripple evidence
+- copilot: review body (the `web` fixture item, no anchor) — fixed d2ff0407
+- Copilot level: Lite (set by GitHub's settings); no threads.
+- snapshot files: none in the diff.
+- PR conversation (PR #325): Copilot's review only; no human review or comment.
+- After the fixes: plugin test 2466 pass, scripts 445 OK, hooks 193 OK, `cairn_validate` green, at d2ff0407.
