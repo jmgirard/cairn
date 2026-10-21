@@ -724,7 +724,8 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   The tracking-file readers reuse the hooks' `cairn_common`
   parser (no duplication; `cairn_ci_paths` reads workflow files only and
   walks up to `.git` itself); exit 2 outside a cairn repo (`cairn_ci_paths`:
-  outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists).
+  outside a git repo, since `/cairn-init` §0 runs before `cairn/` exists;
+  `cairn_versions`: outside a git repo, since it reads only git history).
   `/milestone` invokes them instead of re-deriving status by LLM;
   `/milestone-review` runs `cairn_impact --changed` when a milestone touches
   a principle; semantic checks stay LLM-owned.
@@ -1021,7 +1022,8 @@ within each type and are never reused.
   lacks (M182's first run went to a second fresh reader, logged). A
   milestone whose `Surface tier:` slot is still `—` fits neither not-owed
   reason, so its mandated line is unwritable. `/cairn-release` step 2's
-  "release-prep commit" anchor is named only by the generic release-walk.
+  "release-prep commit" anchor is named only by the generic release-walk
+  and the quarto-extension walk's release-time arm (corrected M303).
   Amendment returns (M211): an amendment return whose amendment never runs
   does not count toward the second-occurrence stop (D-150's falsifier).
   Implement step 1 does not read the `amendment routed:` line on a cold

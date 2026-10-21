@@ -93,7 +93,8 @@ Followed by `/cairn-release`. The tag is the release:
 Recognized by `cairn-init` when **`.claude-plugin/plugin.json`** or
 **`.claude-plugin/marketplace.json`** is present at the repo root. A language
 marker (`DESCRIPTION`, `pyproject.toml`, `setup.py`, `setup.cfg`) outranks
-it, and it outranks a `Dockerfile`. A repo with a plugin marker and another
+it, and it outranks a Quarto extension marker (`_extensions/*/_extension.yml`)
+and a `Dockerfile`. A repo with a plugin marker and another
 marker is a hybrid. cairn-init asks which deliverable is primary and
 recommends the profile that the inference order picks.
 

@@ -4,6 +4,14 @@
 
 ### Changes that affect existing repos
 
+- **A repo with a Quarto extension marker and no `cairn/PROFILE.md` now
+  reads as the quarto-extension profile.** The profile inference checks
+  `_extensions/*/_extension.yml` (or `.yaml`) after the plugin marker and
+  before a `Dockerfile`. A repo with an extension marker and a `Dockerfile`,
+  and no `cairn/PROFILE.md`, read as docker-image before and reads as
+  quarto-extension now. A repo whose `cairn/PROFILE.md` names a profile
+  keeps that profile.
+
 - **Candidate short titles are one short sentence.** The rulebook now
   tells whoever writes a candidate row to open it with one sentence that
   says what the work does, with no ending period, of at least 5 words and

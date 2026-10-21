@@ -32,6 +32,9 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 - The verify render succeeds on the review head.
 - The declared changelog (`## changelog` slot) has an entry for this
   milestone's user-visible changes, or the slot says "none".
+  A milestone of a feature series (tracking-rules "Feature series") meets this with an edit to the series' existing entry.
+  This holds where the series already has an entry. A milestone is in a series when its work log carries a `feature series:` line.
+  A milestone before the series' last with no user-visible change needs no entry.
 
 ## test-doctrine
 Test expectations layered on the universal "What gets a test" rules in
@@ -47,14 +50,21 @@ The release procedure `/cairn-release` follows. The version marker is
 `version:` in `_extensions/<name>/_extension.yml` (or `.yaml`). A repo that
 keeps the same version in more files names each file here. One example is an
 `add_html_dependency{ version = ... }` call in the extension's Lua filter.
-Every named marker holds the same version. First read the default branch's tip
-on an up-to-date checkout:
-`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" _extensions/<name>/_extension.yml`.
-It prints the tip's version, the first commit of that version's unbroken run
-of first-parent commits (`start`), and whether a `v<version>` tag exists.
+Every named marker holds the same version. Before step 1 of `/cairn-release`,
+run `git fetch --tags <base>` and read the default branch's tip:
+`python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_versions.py" _extensions/<name>/_extension.yml --at <default-branch>`.
+When `CLAUDE_PLUGIN_ROOT` is unset, use the cairn plugin's install directory,
+as the skills do. The script refuses a shallow clone. It prints the tip's
+version, the first commit of that version's unbroken run of first-parent
+commits (`start`), and whether a `v<version>` tag exists.
 - **Tag-only arm.** When the tag is absent, the tip's version is unreleased:
-  merged work raised it, or it was never tagged. Skip the version decision and the changelog consolidation, raise
-  nothing, and make no prep commit. Tag the run's start:
+  merged work raised it, or it was never tagged. Raise nothing and make no
+  prep commit. Step 1 asks the user to confirm the version and `start` (its
+  subject) instead of choosing a bump. Check that every other named marker
+  holds the version at `start` (`git show <start>:<file>`). A mismatch stops
+  the walk. Step 2 makes no edit, but its claim-read runs on the changelog's
+  section for the version at `start`, when the file has one, and a false
+  claim stops the walk. Tag the run's start:
   `git tag -a v<version> <start> -m "v<version>"`, pushed at the user's approval.
 - **Release-time arm.** When the tag exists, run the generic walk. Decide the
   bump (patch/minor/major) from the declared changelog. With changelog "none",
@@ -62,12 +72,16 @@ of first-parent commits (`start`), and whether a `v<version>` tag exists.
   marker and commit the release prep to the default branch. Tag that commit
   `v<version>`, pushed at the user's approval.
 - **Release notes.** The notes are the changelog section for the version. With
-  changelog "none", they are the commit subjects on the default branch since
-  the previous `v*` tag:
+  changelog "none", or in the tag-only arm when the file has no section for
+  the version, they are the commit subjects on the default branch since the
+  previous `v*` tag:
   `git log --first-parent --format='- %s' <previous tag>..<tagged commit>`.
-  For a first release, with no previous `v*` tag, drop `<previous tag>..` to
-  list every subject up to the tagged commit. Where the `origin` remote is GitHub and `gh` is available, the handoff
-  provides a `gh release create` command with these notes. cairn provides it
+  The previous tag is
+  `git describe --tags --abbrev=0 --match 'v*' <tagged commit>^`. For a first
+  release, with no previous `v*` tag, drop `<previous tag>..` to list every
+  subject up to the tagged commit. Where the `origin` remote is GitHub and
+  `gh` is available, the handoff provides a `gh release create` command with
+  these notes. cairn provides it
   and never runs it (the universal step 4). No registry step: the tag is the
   release.
 

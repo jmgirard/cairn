@@ -1,6 +1,6 @@
 ---
 name: cairn-release
-description: Prepare a release following the active toolchain profile's release-walk - an r-package profile runs the CRAN walk (version bump, NEWS, checks, cran-comments, human submission checklist); a generic profile does a version bump + changelog + tag. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
+description: Prepare a release following the active toolchain profile's release-walk - an r-package profile runs the CRAN walk (version bump, NEWS, checks, cran-comments, human submission checklist); a generic profile does a version bump + changelog + tag; a quarto-extension profile also tags a version a merge already raised. Use when the user wants to release, submit to CRAN, cut a version, or prepare a release. Never self-submits.
 argument-hint: "[patch | minor | major]"
 ---
 
@@ -50,15 +50,18 @@ The `release-walk` slot is authoritative — read it, never recall a hardcoded
 walk. The steps below are the universal spine; the slot fills in the
 toolchain-specific work at step 3.
 
-   **Tag-only arm (quarto-extension).** A quarto-extension profile's
-   release-walk reads the version marker first (`cairn_versions.py`, step 3).
+   **Tag-only arm (quarto-extension).** Before step 1, a quarto-extension
+   profile's release-walk fetches the tags and reads the version marker on
+   the default branch with `cairn_versions.py` (the slot names the command).
    When it reports the tip's version with no `v<version>` tag, that version
-   is unreleased: merged work raised it, or it was never tagged. Steps 1 and
-   2 are then skipped, and step 3
-   tags the start of that version's run with no prep commit.
+   is unreleased: merged work raised it, or it was never tagged. Step 1 then
+   confirms that version and the commit that started it, step 2 makes no
+   edit but runs its claim-read, and step 3 tags that commit with no prep
+   commit.
 
-1. **Version decision** (question gate, one round; skipped in the tag-only
-   arm, where the version is the one the default branch carries): review the declared
+1. **Version decision** (question gate, one round; in the tag-only arm the
+   one question confirms the version the default branch carries and the
+   commit to tag, in place of a bump choice): review the declared
    changelog — the file the active profile's `changelog` slot names ("none" →
    review git history since the last tag instead) — and recommend patch /
    minor / major with rationale (breaking changes force minor/major; pre-1.0
@@ -79,8 +82,11 @@ toolchain-specific work at step 3.
    That milestone's `feature series:` line already lists the series.
    No such series or row → the question says nothing about series.
 
-2. **Changelog consolidation** (the declared file; a "none" declaration or the
-   tag-only arm skips this step): retitle the development heading to the release version; group
+2. **Changelog consolidation** (the declared file; a "none" declaration skips
+   this step. The tag-only arm makes no edit and no prep commit. It runs the
+   claim-read below on the file's section for the version at the commit it
+   tags, when the file has one, and a false claim stops the walk, since no
+   commit can correct it before the tag): retitle the development heading to the release version; group
    entries (breaking changes first, then new features, fixes); prune noise;
    no milestone numbers or internal jargon. **Claim-read:** before the
    release-prep commit, each behavior claim in the consolidated release
@@ -120,11 +126,12 @@ toolchain-specific work at step 3.
    not push.
 
 4. **Handoff / final actions.** Lead outcome-first: what this release contains
-   and why the version was chosen, in plain words, before the mechanics. Then
+   and why the version was chosen (in the tag-only arm, which merge raised
+   it), in plain words, before the mechanics. Then
    present the slot's terminal actions as a checklist for the user to run
    (r-package: the CRAN submission checklist — submit, confirm the email, then
-   tag the GitHub release and bump to the next dev version; generic: the
-   tag/push commands), never performed on their behalf. Every command in that
+   tag the GitHub release and bump to the next dev version; generic and
+   quarto-extension: the tag/push commands), never performed on their behalf. Every command in that
    checklist is a **handoff** — the whole step exists to hand the user work to
    run — so each goes in a fenced block, never inline backticks
    (tracking-rules "Copy-run commands"). The rationale and this checklist are

@@ -789,6 +789,18 @@ REGISTRY = [
     ),
     Mutation(
         guard="test_toolchain_profiles",
+        test="TestInitSelection.test_init_selects_quarto_extension",
+        target="skills/cairn-init/SKILL.md",
+        block="`_extensions/*/_extension.yml` / `_extensions/*/_extension.yaml` /",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
+        test="TestInitSelection.test_init_selects_quarto_extension",
+        target="skills/cairn-init/SKILL.md",
+        block="claude-plugin, quarto-extension, or docker-image;",
+    ),
+    Mutation(
+        guard="test_toolchain_profiles",
         test="TestRulebookNamesSixProfiles.test_rulebook_names_six_profiles",
         target=RULES,
         block="Six profiles ship",

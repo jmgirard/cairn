@@ -1,7 +1,8 @@
 """Regression guard: the M274 feature series rule.
 
 Locks the rulebook paragraph in `tracking-rules.md` (AC1), the plan's step 4
-bullet (AC2), the four profiles' changelog gate lines (AC3), review's guest
+bullet (AC2), the profiles' changelog gate lines (AC3; the four profiles of
+M274, and quarto-extension since M303), review's guest
 PR sentence (AC4), and the release walk's half-merged series list (AC5).
 M275 adds the release walk's archive-summary status fallback, the hotfix rule
 that keeps a series' one entry, the last-part sentence's dropped-part rule,
@@ -101,7 +102,7 @@ class TestPlanBullet(unittest.TestCase):
 
 
 class TestProfileGates(unittest.TestCase):
-    PROFILES = ("python", "r-package", "claude-plugin", "docker-image")
+    PROFILES = ("python", "r-package", "claude-plugin", "docker-image", "quarto-extension")
 
     def test_membership_and_no_entry_yet(self):
         for name in self.PROFILES:

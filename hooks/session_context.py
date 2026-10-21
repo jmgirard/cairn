@@ -111,7 +111,7 @@ def profile_name(root):
     """Active toolchain profile name from cairn/PROFILE.md's
     `# Toolchain profile: <name>` header, or None when the file is absent or
     headerless. A repo that predates profiles has no PROFILE.md — the skills
-    infer from DESCRIPTION at point of use, so the hook stays silent (no-op)
+    infer from the repo's toolchain markers at point of use, so the hook stays silent (no-op)
     rather than guessing here."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     try:
