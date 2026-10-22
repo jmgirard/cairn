@@ -117,9 +117,9 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-820 lines / 80,287 bytes (M315, 2026-10-22, the whole file after M315
-added the open-PR caps and the guest rules on the host repo; the
-prior seed was M313's 792 lines / 76,924 bytes; bytes, because a
+821 lines / 80,381 bytes (M317, 2026-10-22, the whole file after M317
+named `/milestone` among the open-PR cap lines' readers; the
+prior seed was M315's 820 lines / 80,287 bytes; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
@@ -233,6 +233,26 @@ The script deliberately does not judge these — do them yourself and report:
   fails, name the cause and report no PR. The cause is a missing or
   unauthenticated `gh`, a repo with no remote, or another cause that the
   error names. A failed read is a reported gap, never an audit `FAIL`.
+- **Open-PR caps**, in owner and guest mode: from the list that the "Open
+  hotfix PRs" bullet read, with no second `gh` call, count the PRs whose
+  `headRefName` starts with `hotfix-` and the other PRs. Report the first
+  number beside the bug-fix cap and the second beside the feature cap, for
+  example `bug-fix PRs: 1 of 3` and `feature PRs: 1 of 1 (at the cap)`.
+  Take each cap from its `# Bug-fix PR cap:` or `# Feature PR cap:` header
+  line in `cairn/PROFILE.md`, else 3 and 1. Read those lines as the
+  open-PR caps bullet of tracking-rules "Git and approval model" states.
+  Name each such line whose value is not taken. A failed list read does
+  not skip this. Report a number equal to its cap as at the cap, and a number
+  above its cap as over the cap. If the list returned 100 PRs, report no
+  number. Say instead that the list reached 100, so both caps count as
+  reached, as that rulebook bullet counts it. If the list read failed,
+  report no number and name the gap that the "Open hotfix PRs" bullet
+  named. A stacked milestone's base PR counts here like any other PR. In
+  guest mode with `# Push remote: base` in the header, add one line. It
+  says that a stacked milestone's own review leaves its stack base's PR
+  out of the feature count. So a count at or over the cap can still let
+  that review open its PR. This bullet carries no disposition to §3, names no next
+  command, and writes nothing to GitHub.
 - **Bot threads on your open PRs**, in owner and guest mode: for every PR
   in the list that the "Open hotfix PRs" bullet read, whatever its head
   branch, read its review threads with one command, in `bash` or `zsh`.

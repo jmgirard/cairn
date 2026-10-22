@@ -413,8 +413,9 @@ COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 PUSH_REMOTE_LINE = re.compile(r"#\s*Push remote:\s*(\S+)", re.IGNORECASE)
 # `# Bug-fix PR cap: N` and `# Feature PR cap: N`, the caps on your open PRs
 # in the repo, in both modes (M315). No validator reads them; session_context
-# states them, and `/milestone-review` and `/hotfix` apply the same rule in
-# prose. Each entry: (key as written in the line, its regex, its default).
+# states them, `/milestone-review` and `/hotfix` apply the same rule in
+# prose, and `/milestone` reports each count beside its cap (M317). Each
+# entry: (key as written in the line, its regex, its default).
 PR_CAP_LINES = (
     ("Bug-fix PR cap", re.compile(r"#\s*Bug-fix PR cap:\s*(\S+)", re.IGNORECASE), 3),
     ("Feature PR cap", re.compile(r"#\s*Feature PR cap:\s*(\S+)", re.IGNORECASE), 1),

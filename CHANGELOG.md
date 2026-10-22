@@ -279,6 +279,13 @@
 
 ### New
 
+- **`/milestone` reports your open PRs against the two caps.** Its health
+  audit uses the PR list it already reads. It shows how many of your open
+  PRs have a branch that starts with `hotfix-`, beside the bug-fix cap.
+  It shows the number of your other open PRs beside the feature cap. A
+  count equal to its cap is reported as at the cap, and a larger count as
+  over the cap. The report writes nothing to GitHub and stops nothing.
+
 - **The pane's summary card links to the repo on GitHub.** Outside the
   terminal, for example in the desktop app, the project name on the
   card's first line opens the repo's GitHub page. The pull request count
