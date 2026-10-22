@@ -411,12 +411,15 @@ COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 # `# Push remote: base`, the guest-mode push remote line (M267). No validator
 # reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).
 PUSH_REMOTE_LINE = re.compile(r"#\s*Push remote:\s*(\S+)", re.IGNORECASE)
-# `# Open PR cap: N`, the guest-mode cap on your open PRs in the host repo
-# (M315). No validator reads it; session_context states it, and
-# `/milestone-review` and `/hotfix` apply the same rule in prose.
-OPEN_PR_CAP_LINE = re.compile(r"#\s*Open PR cap:\s*(\S+)", re.IGNORECASE)
-OPEN_PR_CAP_VALUE = re.compile(r"[1-9][0-9]?")
-OPEN_PR_CAP_DEFAULT = 2
+# `# Bug-fix PR cap: N` and `# Feature PR cap: N`, the caps on your open PRs
+# in the repo, in both modes (M315). No validator reads them; session_context
+# states them, and `/milestone-review` and `/hotfix` apply the same rule in
+# prose. Each entry: (key as written in the line, its regex, its default).
+PR_CAP_LINES = (
+    ("Bug-fix PR cap", re.compile(r"#\s*Bug-fix PR cap:\s*(\S+)", re.IGNORECASE), 3),
+    ("Feature PR cap", re.compile(r"#\s*Feature PR cap:\s*(\S+)", re.IGNORECASE), 1),
+)
+PR_CAP_VALUE = re.compile(r"[1-9][0-9]?")
 
 
 def collaboration_mode(root):
@@ -440,18 +443,23 @@ def push_remote(root):
     return _profile_header(root, PUSH_REMOTE_LINE)
 
 
-def open_pr_cap(root):
-    """`(cap, untaken)` from the `# Open PR cap:` header line of
-    cairn/PROFILE.md, read as `collaboration_mode` reads its line (M315).
-    The cap is the line's value when it matches `[1-9][0-9]?`, else 2;
-    `untaken` is the value of a line that did not match, None when the line
-    or the file is absent or the value was taken. Never raises."""
-    value = _profile_header(root, OPEN_PR_CAP_LINE)
-    if value is None:
-        return OPEN_PR_CAP_DEFAULT, None
-    if OPEN_PR_CAP_VALUE.fullmatch(value):
-        return int(value), None
-    return OPEN_PR_CAP_DEFAULT, value
+def open_pr_caps(root):
+    """`(bug_fix, feature, untaken)` from the `# Bug-fix PR cap:` and
+    `# Feature PR cap:` header lines of cairn/PROFILE.md, each read as
+    `collaboration_mode` reads its line (M315). A cap is its line's value
+    when it matches `[1-9][0-9]?`, else 3 for bug fixes and 1 for features;
+    `untaken` lists `(key, value)` for each line whose value did not match.
+    Never raises."""
+    caps, untaken = [], []
+    for key, pattern, default in PR_CAP_LINES:
+        value = _profile_header(root, pattern)
+        if value is not None and PR_CAP_VALUE.fullmatch(value):
+            caps.append(int(value))
+        else:
+            caps.append(default)
+            if value is not None:
+                untaken.append((key, value))
+    return caps[0], caps[1], untaken
 
 
 def _profile_header(root, pattern):

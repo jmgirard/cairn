@@ -144,7 +144,12 @@ re-enters here, at the step the record shows is next:
    of review, and unlike the paragraph above, push the branch and open the PR the way step 8 states — `git
    push -u origin <branch>`, then `gh pr create --title <title> --body
    <body>` ready for review with the `Closes`/`Refs` and `Candidate row:`
-   lines. The push always
+   lines. When the header names no open PR, first read the feature cap
+   as tracking-rules "Git and approval model" states in its open-PR caps
+   bullet (M315). At the cap, or on a failed read, push nothing and stop
+   the review with that bullet's close block, its fenced next command
+   `/milestone-review M<NNN>`, labeled as rerunning the review. Past that
+   read the push always
    runs; only the create is skipped when the header already names an open
    PR. If the push or the create fails, report the failure in one line and
    request nothing. For a new PR, add its URL to the header in a docs-only
@@ -556,6 +561,15 @@ re-enters here, at the step the record shows is next:
    how many snapshot files the list holds and, in plain words, each change
    settled as follow-up. Step 8's guest arm uses the same definition.
 
+   **Open-PR cap (owner mode, M315).** Before the merge chip is posed,
+   when the header names no open PR and the review is not on resume route
+   (b), read the feature cap as tracking-rules "Git and approval model"
+   states in its open-PR caps bullet. Step 8 opens the PR on approval, so
+   a review at the cap never asks for a merge it cannot open. At the cap,
+   or on a failed read, pose no chip and stop with that bullet's close
+   block. Its fenced next command is `/milestone-review M<NNN>`, labeled
+   as rerunning the review.
+
    **PR-conversation read (M177).** Only when the milestone header already
    names an open PR (a return from a prior review, a resume route re-posing
    the chip, step 2's Copilot arm) — a fresh PR is opened at step 8 after this chip and is merged
@@ -740,18 +754,13 @@ re-enters here, at the step the record shows is next:
    is gone, and the next step is the user's. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
    and its body names the stack base's PR (`#<base-pr>`) as the change it
    builds on. **Open-PR cap (M315):** last before the push, and only when
-   the header names no open PR, read your open PRs on the base repo with
-   `gh pr list --repo <base-repo> --author @me --state open --limit 100
-   --json number,url`. The cap is the one tracking-rules "Collaboration
-   mode" states, from the `# Open PR cap: N` header line of
-   `cairn/PROFILE.md`. When the list holds as many PRs as the cap or more,
-   push nothing, open no PR, and leave the milestone status as it is. Stop
-   with a close block that names the cap and each open PR's number and
-   URL. It also names a `# Open PR cap:` line the read did not take. Its fenced next
-   command is `/milestone-review M<NNN>`, labeled as rerunning the review
-   up to the handoff once one of those PRs closes or merges. A failed read
-   stops the same way, naming the read and its error in place of the open
-   PRs. A push to an already-open PR reads no cap. Then, unless the
+   the header names no open PR, read the feature cap as tracking-rules
+   "Git and approval model" states in its open-PR caps bullet; a stacked
+   milestone's `<base-pr>` is not counted. At the cap, or on a failed
+   read, push nothing, open no PR, leave the milestone status as it is,
+   and stop with that bullet's close block. Its fenced next command is
+   `/milestone-review M<NNN>`, labeled as rerunning the review. A push to
+   an already-open PR reads no cap. Then, unless the
    header already names an open PR, open the PR against the base repo from
    the pushed branch —
    `gh pr create --repo <base-repo> --head <push-owner>:<slug>` with
