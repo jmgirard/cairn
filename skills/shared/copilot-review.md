@@ -107,8 +107,8 @@ read acts on it:
    head, found by the rulebook's open-PR head rule).
 
 The read posts no reply on a thread. A return-floor item
-(`/milestone-review` step 5) holds back its own review's comment and
-resolves, so the next pass finds those threads open. Copilot's
+(`/milestone-review` step 5) puts its review's comment and resolves on
+hold, so the next pass finds those threads open. Copilot's
 review body is an index of its threads: each finding links to a thread by
 a `#discussion_r<id>` anchor matching a comment's `fullDatabaseId`. A body
 finding with an anchor is that thread's item and is skipped. A finding

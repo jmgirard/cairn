@@ -218,7 +218,7 @@ class TestOneComment(unittest.TestCase):
                       "are resolved", self.comment)
 
     def test_a_return_floor_item_holds_back_its_review(self):
-        self.assertIn("holds back its own review's comment and resolves",
+        self.assertIn("puts its review's comment and resolves on hold",
                       self.read)
 
     def test_no_reply_command_in_the_module(self):

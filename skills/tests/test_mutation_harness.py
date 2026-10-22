@@ -4253,7 +4253,7 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestOneComment.test_a_return_floor_item_holds_back_its_review",
         target=COPILOT_MODULE,
-        block="holds back its own review's comment and",
+        block="puts its review's comment and resolves on",
     ),
     Mutation(
         guard="test_copilot_review_round",
