@@ -571,7 +571,8 @@ re-enters here, at the step the record shows is next:
    until `hasNextPage` is false (`isResolved` is a field on each thread
    node, so the filter is applied to the returned nodes; the query selects
    each thread's `path` and `line` and its comments' author login and
-   body). Every unresolved thread, every review in
+   body, plus the fields `skills/shared/copilot-review.md` §4 names where
+   the Copilot round is on). Every unresolved thread, every review in
    state `COMMENTED` or `CHANGES_REQUESTED`, and every conversation comment
    — whatever its author, human or bot — gets a disposition from the agent
    by step 5's rule (reject with reason, fix now, or follow-up), and an
@@ -582,9 +583,9 @@ re-enters here, at the step the record shows is next:
    first runs the module's state query, and a still-pending Copilot request
    takes the module's bounded wait (§4), the one exception to the read's
    no-added-wait rule. Each
-   unresolved Copilot thread then takes its disposition and the module's
-   reply, resolve, and summary reply (§5), body findings are matched to
-   their threads, and
+   unresolved Copilot thread then takes its disposition, body findings are
+   matched to their threads, each Copilot review that has a note gets the
+   module's one comment, the resolves follow (§5), and
    the `copilot:` lines and the level, pending, or reason line follow §6.
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —

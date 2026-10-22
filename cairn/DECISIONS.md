@@ -7691,3 +7691,38 @@ with these clauses.
 
 **Consequences:** D-210's other clauses, its rejections, and its
 falsifiers stand.
+
+### D-212 (2026-10-21): The Copilot round answers each Copilot review with one PR comment and replies on no thread, in every mode — supersedes D-153's reply on each thread, D-187's order (comment after the resolves), and D-187's "before that thread gets a reply"; D-187's link and its no-second-comment rule stand; passes D-108's door on its retained trigger (M314)
+
+**Context:** A second audit of the easystats org found that cairn sessions
+posted 175 inline replies on Copilot threads and about 30 summary replies
+in two weeks, 22 from one template and three opening with thanks. Each
+reply notifies everyone who watches the repo, and the maintainers answered
+Copilot about twice. Copilot reports many false positives, and the user
+wants one public record of which notes were real.
+
+**Decision:** At the user's decision, the Copilot round (`/hotfix`,
+`/milestone-review`) and `/copilot-review` post no reply on a Copilot
+thread, in owner and guest mode alike, with no profile switch. For each
+Copilot review that has a note, once every note has a disposition and
+each fix is pushed, they post one PR comment: the review's URL, then one
+line per note with the fix's commit, the reason the note is not a
+problem, or that it is left for a later change. The comment never thanks
+Copilot. The threads it names are resolved after it. A review whose URL an
+operator comment already carries gets no second comment, its notes get no
+disposition, and its open Copilot threads are resolved, so a run that
+stopped between the comment and the resolves finishes them. Threads are
+tied to their review by their first comment's review URL, and a thread
+with none joins the newest Copilot review. A return-floor note holds back
+only its own review's comment and resolves, and a held review is reported
+as held. The trigger is shipped behavior, the replies
+the round posted, so D-108's door does not bar this rule. Rejected: a
+profile switch for hosts that want thread replies (the one comment works
+in the user's own repos too), and grouping threads by the review body's
+`#discussion_r` anchors (never shown complete).
+
+**Consequences:** A Copilot thread is resolved with no reply on it, and
+its outcome lives in the review's comment. A note held by a review return
+keeps its whole review's comment and resolves for a later pass.
+Falsified by a Copilot review answered by more than one comment, or a
+thread reply posted by the round or `/copilot-review`.

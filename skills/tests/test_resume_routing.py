@@ -662,9 +662,9 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
             self.step1,
         )
         self.assertIn(
-            "The reads only read: the Copilot round's replies, resolves, and "
-            "summary replies (`skills/shared/copilot-review.md` §5) do not "
-            "run on this route.",
+            "The reads only read: the Copilot round's comments and resolves "
+            "(`skills/shared/copilot-review.md` §5) do not run on this "
+            "route.",
             self.step1,
         )
         self.assertIn(
