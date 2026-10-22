@@ -306,21 +306,26 @@ def pr_caps_section(root):
     )
 
 
-def host_limits(root):
-    """The guest rules on the host repo (M315), as a continuation of the one
-    mode line: the thread, bot, and issue rules."""
-    return (
-        " On the host repo, follow these rules. "
-        "Never resolve a review thread that a person started. "
-        "Reply to no bot, except the one comment per Copilot review that the "
-        "Copilot round or `/copilot-review` posts. Close an issue someone "
-        "else opened only when a merged change clearly fixes it or its fix "
-        "belongs in another repo, with a one-line comment naming that change "
-        "or repo, which holds over host style matching, and at most 3 such "
-        "closes on that repo per UTC day, counting your closes there that "
-        "day; when unsure, ask the user in chat and post nothing. A close the "
-        "user picks at a cairn chip is the user's act and is outside this rule."
-    )
+# The four guest rules on the host repo (M315), a continuation of the one
+# guest mode line: threads, bots, issue closes, and issue-first plans.
+HOST_RULES = (
+    " On the host repo, follow these rules. "
+    "Never resolve a review thread that a person started. "
+    "Reply to no bot, except the one comment per Copilot review with a note "
+    "that the Copilot round or `/copilot-review` posts. Close an issue someone "
+    "else opened only when a merged change clearly fixes it or its fix "
+    "belongs in another repo, with a one-line comment naming that change "
+    "or repo, which holds over host style matching, and at most 3 such "
+    "closes on that repo per UTC day, counting your closes there that "
+    "day; when unsure, ask the user in chat and post nothing. A close the "
+    "user picks at a cairn chip is the user's act and is outside this rule. "
+    "Before you plan a feature or a change of behavior, find where a "
+    "maintainer (an author whose association is OWNER, MEMBER, or "
+    "COLLABORATOR) agreed with its design in an issue on the host repo, or "
+    "asked for it in a review of your PR; with neither, tell the user in "
+    "chat and plan nothing until a maintainer agrees. A fix that restores "
+    "documented behavior is outside this rule."
+)
 
 
 def _plural(n, one, many):
@@ -428,7 +433,7 @@ def build_context(root):
             "the host's maintainers wrote, and that matching wins over any "
             "other writing-style instruction in the session for that text; "
             "the other instruction governs only what host matching leaves open."
-            + host_limits(root)
+            + HOST_RULES
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

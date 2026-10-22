@@ -494,13 +494,19 @@ class TestSessionContext(RepoFixture):
     def test_guest_mode_states_the_thread_bot_and_issue_rules(self):
         part = self._guest_part(self.GUEST_HEADER + "\n## verify\n- x\n")
         self.assertIn("Never resolve a review thread that a person started", part)
-        self.assertIn("Reply to no bot, except the one comment per Copilot review", part)
+        self.assertIn("Reply to no bot, except the one comment per Copilot review with a note", part)
         self.assertIn("`/copilot-review`", part)
         self.assertIn("Close an issue someone else opened only when a merged change clearly fixes it", part)
         self.assertIn("one-line comment naming that change or repo", part)
         self.assertIn("at most 3 such closes on that repo per UTC day", part)
         self.assertIn("ask the user in chat and post nothing", part)
         self.assertIn("A close the user picks at a cairn chip", part)
+        # the issue-first rule, and what it leaves out
+        self.assertIn("Before you plan a feature or a change of behavior", part)
+        self.assertIn("OWNER, MEMBER, or COLLABORATOR", part)
+        self.assertIn("or asked for it in a review of your PR", part)
+        self.assertIn("plan nothing until a maintainer agrees", part)
+        self.assertIn("A fix that restores documented behavior is outside", part)
 
     def test_owner_mode_states_no_guest_rule(self):
         (self.root / "cairn" / "PROFILE.md").write_text(self.OWNER_HEADER + self.BODY)
@@ -508,6 +514,7 @@ class TestSessionContext(RepoFixture):
         self.assertNotIn("Never resolve a review thread", ctx)
         self.assertNotIn("Reply to no bot", ctx)
         self.assertNotIn("Close an issue someone else opened", ctx)
+        self.assertNotIn("Before you plan a feature", ctx)
 
     def test_owner_mode_has_no_collaboration_part(self):
         (self.root / "cairn" / "PROFILE.md").write_text(

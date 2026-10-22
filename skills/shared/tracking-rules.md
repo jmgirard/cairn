@@ -442,7 +442,11 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   Close an issue someone else opened only when a merged change clearly fixes it or its fix belongs in another repo.
   The close carries a one-line comment naming that change or repo, which holds over host style matching. Make at most
   3 such closes on that repo per UTC day, counting your closes there that day. When unsure, ask the user in chat and
-  post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3).
+  post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3). (4) Before you plan
+  a feature or a change of behavior, find where a maintainer (an author whose association is OWNER, MEMBER, or
+  COLLABORATOR) agreed with its design in an issue on the host repo, or asked for it in a review of your PR. With
+  neither, tell the user in chat and plan nothing until a maintainer agrees. A fix that restores documented behavior is
+  outside rule (4). `/milestone-plan` runs no check of its own for rule (4).
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
