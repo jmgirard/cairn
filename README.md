@@ -1053,7 +1053,9 @@ actually reach.
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the
   merge the review reads the state of each issue slotted `closes` and closes
-  one still open with a comment naming the merged PR; `/milestone`'s audit
+  one still open with a comment naming the merged PR. In guest mode the
+  maintainers' merge closes it through the `Closes` line, and the review
+  closes none. `/milestone`'s audit
   reports an issue still open after its milestone is done (among the
   roadmap's retained done rows) and offers to close it at the triage chip.
   Without `gh`, the post-merge check and the audit name the gap and carry on.
