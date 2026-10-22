@@ -29,8 +29,9 @@ only on top, never as the sole oracle for a number.
 
 **Scope (D-210).** The bar below binds a numeric result that the change adds or
 alters by design. A fix to an existing result needs one regression test whose
-expected value comes from one oracle. Tests use at most one fitted model per
-code path, shared by the tests that use it. In guest mode the host's practice
+expected value comes from one oracle. Deterministic checks use at most one
+fitted model per code path, shared by the tests that use it. A
+simulation-coverage oracle's replications are exempt. In guest mode the host's practice
 sets the number of oracles above one, and the hard stops below still bind.
 
 **Oracle types & the ≥2-types bar.** Name each oracle's *type* in its oracle
@@ -98,7 +99,8 @@ Summary → `cairn/references/<citekey>.md` (committed), authored from
 `skills/shared/templates/source-note.md`: full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
-`INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
+`INDEX.md`. Tests and milestones cite `citekey (p. N)` (in guest mode tests
+cite the publication, per tracking-rules "Test comments"), never restate.
 (The `references/` page *types*, the page⇒INDEX-line rule, and **when a page is
 owed at all** belong to the universal file family, stated in the core rulebook
 under "References pages"; this workflow is the numeric/scoring-source instance
