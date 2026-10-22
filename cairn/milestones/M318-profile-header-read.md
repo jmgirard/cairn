@@ -67,7 +67,7 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 
 - [x] T1: Write the AC1 paragraph near the header-line sentence of tracking-rules "Toolchain profiles" (about line 741). Point the AC2 passages at it (tracking-rules lines 15, 343, and 401, and copilot-review.md section 1). Write the AC4 sentence in copilot-review.md section 1.
 - [x] T2: In `hooks/tests/test_hooks.py`, beside `TestPushRemote`, add cases for the four AC5 inputs, through `collaboration_mode` or `push_remote`.
-- [ ] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
+- [x] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
 - [ ] T4: Open PROFILE.md with `utf-8-sig` in the profile check of `scripts/cairn_validate.py` (about line 831). Add a `scripts/tests` case where a BOM-led unknown mode line FAILs.
 - [ ] T5: Write one CHANGELOG entry under Unreleased for the toolchain line read (T3) and the validator fix (T4), each claim backed by its test.
 - [ ] T6: Run the verify slot.
@@ -96,6 +96,7 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - 2026-10-22: implement started on m318-profile-header-read. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's work and stay unstaged.
 - 2026-10-22: T1 done. The "Header lines" paragraph follows the validator sentence in "Toolchain profiles", and the four AC2 passages cite it. copilot-review.md was 5 bytes under its 9,600-byte budget, so one sentence in section 2 and the off clause in section 1 were tightened, with the same meaning. It is now 9,580 bytes. The simple-english lint hook flags many sentences that predate this change in both files. Only the sentences this change wrote were fixed.
 - 2026-10-22: T2 done. `test_line_shape_and_first_line_rules` in `TestPushRemote` covers the four AC5 inputs and claim (d), first line wins. Three planted defects in `_profile_header` turned it red (search in place of match, no first-match return, a space allowed before the colon with the rest of the line as value), and the file was restored.
+- 2026-10-22: T3 done. `TOOLCHAIN_PROFILE_LINE` sits in `hooks/cairn_common.py`, and `profile_name` returns `_profile_header` on it, so session_context's own regex is gone. `test_profile_name_is_read_as_a_header_line` failed on the old reader with all three AC3 inputs, each for its own reason, and passes now. Hooks suite: 204 tests OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

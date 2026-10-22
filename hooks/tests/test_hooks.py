@@ -356,6 +356,17 @@ class TestSessionContext(RepoFixture):
         self.assertIn("Active toolchain profile", out["additionalContext"])
         self.assertIn("`r-package`", out["additionalContext"])
 
+    def test_profile_name_is_read_as_a_header_line(self):
+        # M318: the toolchain line takes the shared header-line read.
+        for text, want in (
+            ("# Collaboration mode: owner\n\n## verify\n# Toolchain profile: python\n", None),
+            ("# toolchain PROFILE: R-Package\n\n## verify\n- x\n", "r-package"),
+            ("﻿# Toolchain profile: python\n\n## verify\n- x\n", "python"),
+        ):
+            with self.subTest(text=text):
+                (self.root / "cairn" / "PROFILE.md").write_text(text, encoding="utf-8")
+                self.assertEqual(session_context.profile_name(str(self.root)), want)
+
     # --- M184 AC2: guest mode injects the CLAUDE.md routing section itself ---
 
     def _session(self):
