@@ -213,6 +213,19 @@ class TestOneComment(unittest.TestCase):
     def test_a_linked_review_gets_no_second_comment(self):
         self.assertIn("already carries gets no second comment", self.comment)
 
+    def test_a_linked_review_is_finished_not_redisposed(self):
+        self.assertIn("Its notes get no disposition, its open Copilot threads "
+                      "are resolved", self.comment)
+
+    def test_a_return_floor_item_holds_back_its_review(self):
+        self.assertIn("holds back its own review's comment and resolves",
+                      self.read)
+
+    def test_no_reply_command_in_the_module(self):
+        module = read("shared", "copilot-review.md")
+        self.assertNotRegex(
+            module, r"/replies|addPullRequestReviewThreadReply|in_reply_to")
+
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):
     """M287 AC5: in `/hotfix` and `/milestone-review`, a note the agent

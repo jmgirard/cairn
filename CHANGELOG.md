@@ -173,14 +173,14 @@
 
 - **The Copilot round answers each review in one comment.** In every mode,
   the round in `/hotfix` and `/milestone-review` and `/copilot-review` no
-  longer reply on each Copilot thread. For each Copilot review they post
-  one PR comment, in place of a reply on each note. It starts with the
+  longer reply on each Copilot thread. For each Copilot review with an
+  open note they post one PR comment, in place of a reply on each note. It starts with the
   review's link, then gives one line for each note: the fix's commit, the
   reason the note is not a problem, or that it is left for later. It goes
   once every note has an outcome and each fix is pushed. It never thanks
   Copilot. After it, Claude resolves the threads the comment names. A
-  later read posts no second comment for a review that one of your
-  comments already links. In `/hotfix` and `/milestone-review`, a thread
+  review that one of your comments already links gets no second comment,
+  and its open threads are resolved. In `/hotfix` and `/milestone-review`, a thread
   that Claude cannot settle without you becomes a follow-up row, named at
   the merge question or the approval chip. `/copilot-review` asks you in
   chat. No question goes to GitHub. A thread that `/milestone-review`
@@ -311,8 +311,8 @@
   it with a PR number or URL, or with nothing for the current branch's PR.
   It reads each unresolved Copilot note and each review summary. It fixes,
   rejects, or defers each note, and pushes the fixes to the PR's branch.
-  Then it posts one comment for each Copilot review, one line per note,
-  notes in the review body included, and resolves the notes' threads. It
+  Then it posts one comment for each Copilot review with an open note, one
+  line per note, body notes included, and resolves the notes' threads. It
   asks you in chat about a note it cannot settle alone, and it never posts
   a question to GitHub or thanks Copilot. It does not request a review: on
   a PR with no Copilot review, it gives you the request command. It works

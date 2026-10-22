@@ -4241,7 +4241,19 @@ REGISTRY += [
         guard="test_copilot_review_round",
         test="TestOneComment.test_a_linked_review_gets_no_second_comment",
         target=COPILOT_MODULE,
-        block="gets no second comment.",
+        block="already carries gets no second comment",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestOneComment.test_a_linked_review_is_finished_not_redisposed",
+        target=COPILOT_MODULE,
+        block="Its notes get no disposition, its open",
+    ),
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestOneComment.test_a_return_floor_item_holds_back_its_review",
+        target=COPILOT_MODULE,
+        block="holds back its own review's comment and",
     ),
     Mutation(
         guard="test_copilot_review_round",
