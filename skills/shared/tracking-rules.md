@@ -418,6 +418,11 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **New names in host code reuse the host's names.** A new name the session adds to host code (an argument, a
   function, or a file) reuses the name that the host already uses for the same thing. The session reads the host's code
   for that name before it chooses one, and it coins a name only where the host has none for that thing.
+- **Tests added to host code match the host's tests** (D-210). Before it adds tests, the session reads the tests that
+  the host's maintainers wrote for the code it changes, or for nearby code where none exist, and never tests from the
+  operator's own PRs (it checks each file's authors with `git log`). It matches their number of tests per change,
+  model fits, helper use, and comment rate. Where host practice is lighter than the "What gets a test" floor, host
+  practice sets the test volume, and each fixed defect keeps its one regression test.
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
@@ -753,15 +758,27 @@ saying so.
 
 ## What gets a test
 
-No coverage-percentage target — test scope is set per milestone via acceptance criteria. Always: every exported/public
-function (happy path, every error branch fired with its condition asserted — the test names which failure, never bare
-failure — and the language's edge cases); every numeric result via an oracle; every bug fix via a regression test that
-fails before the fix; every documented claim. A changelog entry asserting a behavior requires a test that fails without
-that behavior, or the entry narrows to what a named test enforces. Indirect by default: internal helpers (direct tests
-only for independent logic). Never: cosmetic output beyond meaningful snapshots, trivial pass-throughs, dependency
-behavior. Test the contract, not the implementation — a test that breaks under a behavior-preserving refactor is a
-defect in the test. Language-mechanical specifics — edge cases, error mechanism, coverage-tool status, plot/snapshot
-conventions — live in the active profile's `test-doctrine` slot; the rules here are the universal floor.
+No coverage-percentage target — test scope is set per milestone via acceptance criteria, and the floor covers the
+change, not the code around it. Always: every new exported/public function (happy path, every error branch fired with
+its condition asserted — the test names which failure, never bare failure — and the language's edge cases that fit its
+inputs' types). Otherwise tests cover the behavior the change adds or alters: every numeric result it adds or alters
+via an oracle; every bug fix via one regression test per fixed defect that fails on the default branch and passes with
+the fix; every documented claim it adds or alters. A changelog entry asserting a behavior requires a test that fails
+without that behavior, or the entry narrows to what a named test enforces. A test that passes on the default branch is
+added only where it pins behavior the change could break, or where the criteria name it. Examples are a
+characterization test before a refactor and a case of a shape the change leaves untouched. Such a test is never a
+guard on code the change does not touch. Indirect by default: internal helpers (direct tests only for independent
+logic). Never: cosmetic output beyond meaningful snapshots, trivial pass-throughs, or dependency behavior. Also never:
+a check repeated across inputs or classes that run the same code path, a weaker expectation after an exact one that
+already covers it, or a helper that does what the test framework or a snapshot already does. Test the contract, not the implementation — a test that breaks under a behavior-preserving
+refactor is a defect in the test. Language-mechanical specifics — edge cases, error mechanism, coverage-tool status,
+plot/snapshot conventions — live in the active profile's `test-doctrine` slot; the rules here are the universal floor.
+In guest mode, where the host's own tests do otherwise, the "Collaboration mode" bullet on host tests governs.
+
+**Test comments.** A test file's comments state only what the code cannot show: no narrative bug history, worked
+arithmetic, or oracle-type labels. A one-line citation of the published source (in guest mode the publication, not a
+citekey) or an issue number is allowed. A fixture's provenance lives in its committed generator or provenance fields,
+and its source values in its source note. In guest mode the host's comment practice governs.
 
 **Check discrimination.** A check earns trust by what it can distinguish, not by passing. Prove a new check able to
 fail: plant the defect class it claims to catch and see it red before trusting its green. A check whose domain,

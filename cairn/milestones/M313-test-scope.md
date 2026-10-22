@@ -1,13 +1,13 @@
 # M313: Scope the tests cairn sessions add
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the rulebook, validation doctrine, skills, and profiles govern the tests every adopting repo receives
-- **Branch/PR:** —
+- **Branch/PR:** m313-test-scope
 
 ## Goal
 
@@ -41,7 +41,7 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 
 ## Tasks
 
-- [ ] T1: In `skills/shared/tracking-rules.md`, rewrite "What gets a test" (near line 754) for AC1 and the test-comment rule of AC2, keeping the check-discrimination paragraph consistent with the default-branch rule. Extend the guest "Text written for the host" bullet, or add a sibling bullet beside it, for AC4. Diff every removed sentence against main before committing (LESSONS M152).
+- [x] T1: In `skills/shared/tracking-rules.md`, rewrite "What gets a test" (near line 754) for AC1 and the test-comment rule of AC2, keeping the check-discrimination paragraph consistent with the default-branch rule. Extend the guest "Text written for the host" bullet, or add a sibling bullet beside it, for AC4. Diff every removed sentence against main before committing (LESSONS M152).
 - [ ] T2: In `skills/shared/validation-doctrine.md`, make the AC2 and AC3 edits within its budget, and keep the pinned phrases "≥2 *independent* oracle types" and "a CI method's oracle is coverage". Update the Conventions line at `skills/cairn-init/SKILL.md:234`. Hand-run `python3 -m unittest discover -s skills/tests` and fix any pin this changes on purpose (`test_oracle_doctrine.py` among them).
 - [ ] T3: Point the test steps of `skills/milestone-implement/SKILL.md` step 4, `skills/hotfix/SKILL.md` step 3, and `skills/milestone-plan/SKILL.md` step 4 to the rulebook rule. Narrow the r-package and python test-doctrine edge-case lines and count each profile's lines (LESSONS M274, M303). Add the diff-bug reviewer's question in `skills/milestone-review/SKILL.md` for AC6.
 - [ ] T4: Append the decision entry: it narrows D-024's two-type bar and D-025's simulation clause, passes D-108's door on its retained trigger (the 60-PR easystats audit, a defect in shipped behavior), and annotates D-126 and D-207. Write the AC7 CHANGELOG entry. Grep README.md and `cairn/DESIGN.md` for stale test or oracle wording (LESSONS M112). Re-seed the `/milestone` rulebook-mass baseline in its three places (LESSONS M149), and run both gating suites and the hand-run `skills/tests`.
@@ -58,3 +58,5 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - 2026-10-21: plan gate chose scoping the two-oracle bar to results the change adds over dropping it everywhere, because the operator's own numeric packages rely on the bar for new methods; falsified by a new-method milestone in an owner repo whose second oracle catches nothing the first did not.
 - 2026-10-21: plan gate chose one diff-bug reviewer question over a numeric ratio and comment-rate gate, because a gate is new checker machinery and a ratio is a proxy that a needed test can trip; falsified by a cairn PR that passes review with tests these rules exclude.
 - 2026-10-21: question set: the oracle bar — new results only, with one oracle for a fix and host practice above one in guest mode; review — one reviewer question, no ratio gate.
+- 2026-10-21: implement started on `m313-test-scope`; the untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
+- 2026-10-21: T1 done: "What gets a test" scoped to the change (new exports get the full floor; otherwise added or altered behavior, one regression test per fixed defect, claims the change adds or alters), the default-branch rule, three new "Never" kinds, a guest pointer, and a "Test comments" paragraph. A sibling guest bullet "Tests added to host code match the host's tests" (D-210, written at T4) follows the names bullet. The check-discrimination paragraph is unchanged and agrees with the default-branch rule. The hand-run `skills/tests` stays green (954). Only my new sentences were cleaned for the simple-english lint; the rulebook's other hits predate the branch.
