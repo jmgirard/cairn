@@ -37,13 +37,13 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: The "Toolchain profiles" section of `skills/shared/tracking-rules.md` holds one paragraph that states how a `cairn/PROFILE.md` header line is read. It makes five claims. (a) Only the lines before the first line that starts with `## ` are read. (b) A header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace characters after the colon. A line with no value is not a header line. (c) A byte-order mark at the start of the file is skipped. (d) When two header lines carry the same key, the first one is read. (e) Letter case in the value does not count, so `Guest` reads as `guest`.
-- [ ] AC2: Four passages cite the AC1 paragraph for how their lines are read. They are the PROFILE.md row of the tracking-rules file map, the open-PR caps bullet of its "Git and approval model" section, the first sentence of its "Collaboration mode" section, and section 1 of `skills/shared/copilot-review.md`.
-- [ ] AC3: `profile_name` in `hooks/session_context.py` reads the `# Toolchain profile:` line by the AC1 read. It returns None for a PROFILE.md text whose only `# Toolchain profile:` line comes after the first `## ` line. It returns `r-package` for the line `# toolchain PROFILE: R-Package`. It returns the name for a text that opens with a byte-order mark.
-- [ ] AC4: Section 1 of `skills/shared/copilot-review.md` says that the value `on` in any letter case turns the round on. Any other value, or no line, leaves the round off.
-- [ ] AC5: `_profile_header` in `hooks/cairn_common.py` reads as each AC1 claim states. A line with a space before `#`, or with a space before the colon, is not read. A line with no value is passed over for a later line with a value. A value followed by more text reads as its first word.
-- [ ] AC6: The `profile valid` check of `scripts/cairn_validate.py` skips a byte-order mark at the start of PROFILE.md. So it FAILs an unknown mode on a first line that follows the mark.
-- [ ] AC7: The verify slot of `cairn/PROFILE.md` runs clean.
+- [x] AC1: The "Toolchain profiles" section of `skills/shared/tracking-rules.md` holds one paragraph that states how a `cairn/PROFILE.md` header line is read. It makes five claims. (a) Only the lines before the first line that starts with `## ` are read. (b) A header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace characters after the colon. A line with no value is not a header line. (c) A byte-order mark at the start of the file is skipped. (d) When two header lines carry the same key, the first one is read. (e) Letter case in the value does not count, so `Guest` reads as `guest`.
+- [x] AC2: Four passages cite the AC1 paragraph for how their lines are read. They are the PROFILE.md row of the tracking-rules file map, the open-PR caps bullet of its "Git and approval model" section, the first sentence of its "Collaboration mode" section, and section 1 of `skills/shared/copilot-review.md`.
+- [x] AC3: `profile_name` in `hooks/session_context.py` reads the `# Toolchain profile:` line by the AC1 read. It returns None for a PROFILE.md text whose only `# Toolchain profile:` line comes after the first `## ` line. It returns `r-package` for the line `# toolchain PROFILE: R-Package`. It returns the name for a text that opens with a byte-order mark.
+- [x] AC4: Section 1 of `skills/shared/copilot-review.md` says that the value `on` in any letter case turns the round on. Any other value, or no line, leaves the round off.
+- [x] AC5: `_profile_header` in `hooks/cairn_common.py` reads as each AC1 claim states. A line with a space before `#`, or with a space before the colon, is not read. A line with no value is passed over for a later line with a value. A value followed by more text reads as its first word.
+- [x] AC6: The `profile valid` check of `scripts/cairn_validate.py` skips a byte-order mark at the start of PROFILE.md. So it FAILs an unknown mode on a first line that follows the mark.
+- [x] AC7: The verify slot of `cairn/PROFILE.md` runs clean.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -114,3 +114,13 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- copilot: requested on PR #331 (exit 0). The re-query read `none`: Copilot request on PR #331 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
+- AC1: `skills/shared/tracking-rules.md` "Toolchain profiles" holds the "Header lines" paragraph (read 2026-10-22). It states (a) the stop at the first `## ` line, (b) `#` first, the key in any case, `:` right after it, the value as the first non-whitespace run, no value means no header line, (c) the byte-order mark skipped, (d) the first of two same-key lines read, (e) value case not counting.
+- AC2: grep found all four citations: the file-map row (line 15, "Every header line is read as "Toolchain profiles" states"), the open-PR caps bullet (line 343), the "Collaboration mode" first sentence (lines 401-402), and copilot-review.md section 1 (line 17).
+- AC3: `test_profile_name_is_read_as_a_header_line` ok (2026-10-22). Its three inputs return None, `r-package`, and `python`. At implement it failed on the old reader with each input.
+- AC4: copilot-review.md lines 16-18 say `on` in any letter case runs the round, and no line or any other value means off.
+- AC5: `test_line_shape_and_first_line_rules` ok, covering leading space, space before colon, valueless-then-valued line, first line wins, and first word. `TestCollaborationMode` (7 tests) ok, covering slot body, key case, byte-order mark, and value case. At implement, three planted defects turned the new test red.
+- AC6: `test_mode_other_after_a_byte_order_mark_fails` ok. At implement it exited 0 on the old validator.
+- AC7: verify slot on the review head: scripts suite 0, hooks suite 0, both `claude plugin validate` runs 0, `claude plugin test .` 0 (2466 pass, 0 fail).
+- gate: `cairn_validate.py` all checks passed. The marketplace validate output has no `version` warning. CHANGELOG.md Unreleased has the entry for this change. No DESIGN.md principle changed, so `cairn_impact` is skipped.
