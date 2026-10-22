@@ -243,6 +243,20 @@ class TestPushRemote(RepoFixture):
         self.assertFalse(worker.is_alive(), "the PROFILE.md read blocked on a FIFO")
         self.assertEqual(out, {"push": None, "mode": "owner"})
 
+    def test_line_shape_and_first_line_rules(self):
+        # M318: the header-line read that tracking-rules "Toolchain
+        # profiles" states, through the shared `_profile_header`.
+        for text, want in (
+            (" # Push remote: base\n", None),
+            ("# Push remote : base\n", None),
+            ("# Push remote:\n# Push remote: base\n", "base"),
+            ("# Push remote: base\n# Push remote: fork\n", "base"),
+            ("# Push remote: base # a note\n", "base"),
+        ):
+            with self.subTest(text=text):
+                self._profile(text)
+                self.assertEqual(session_context.cc.push_remote(str(self.root)), want)
+
 
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
