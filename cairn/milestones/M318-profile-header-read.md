@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M318: State how PROFILE header lines are read
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the rulebook and hooks ship to every cairn repo and decide how its PROFILE.md is read   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m318-profile-header-read   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -65,7 +65,7 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the AC1 paragraph near the header-line sentence of tracking-rules "Toolchain profiles" (about line 741). Point the AC2 passages at it (tracking-rules lines 15, 343, and 401, and copilot-review.md section 1). Write the AC4 sentence in copilot-review.md section 1.
+- [x] T1: Write the AC1 paragraph near the header-line sentence of tracking-rules "Toolchain profiles" (about line 741). Point the AC2 passages at it (tracking-rules lines 15, 343, and 401, and copilot-review.md section 1). Write the AC4 sentence in copilot-review.md section 1.
 - [ ] T2: In `hooks/tests/test_hooks.py`, beside `TestPushRemote`, add cases for the four AC5 inputs, through `collaboration_mode` or `push_remote`.
 - [ ] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
 - [ ] T4: Open PROFILE.md with `utf-8-sig` in the profile check of `scripts/cairn_validate.py` (about line 831). Add a `scripts/tests` case where a BOM-led unknown mode line FAILs.
@@ -93,6 +93,8 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - 2026-10-22: plan gate chose moving the toolchain line onto the shared reader over naming it as an exception, because one read is simpler to state and follow; falsified by a PROFILE.md that needs its toolchain line after a `## ` heading or in a case-sensitive key.
 - 2026-10-22: plan gate chose the shared read for the Copilot line (any case of `on`) over keeping `on` exact, because one read covers every header line; falsified by a repo that writes `On` and expects the round off.
 - 2026-10-22: changelog: one entry for the toolchain read and the validator fix. The Copilot case change is not in it, because only prose reads that line and no test can back the claim.
+- 2026-10-22: implement started on m318-profile-header-read. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's work and stay unstaged.
+- 2026-10-22: T1 done. The "Header lines" paragraph follows the validator sentence in "Toolchain profiles", and the four AC2 passages cite it. copilot-review.md was 5 bytes under its 9,600-byte budget, so one sentence in section 2 and the off clause in section 1 were tightened, with the same meaning. It is now 9,580 bytes. The simple-english lint hook flags many sentences that predate this change in both files. Only the sentences this change wrote were fixed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

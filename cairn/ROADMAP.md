@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M318 | State how PROFILE header lines are read | planned | — | normal | milestones/M318-profile-header-read.md |
+| M318 | State how PROFILE header lines are read | in-progress | — | normal | milestones/M318-profile-header-read.md |
 | M312 | Link the band's milestone id to its PR | dropped | — | normal | milestones/archive/M312-band-pr-link.md |
 | M316 | Fix the flaky refused-clear band tests | dropped | — | normal | milestones/archive/M316-band-clear-flake.md |
 | M317 | Report the open-PR caps in /milestone | done | — | normal | milestones/archive/M317-milestone-pr-caps.md |
