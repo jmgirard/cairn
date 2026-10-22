@@ -12,7 +12,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 | M311 | Link the pane card to the repo on GitHub | done | — | normal | milestones/archive/M311-pane-repo-link.md |
 | M312 | Link the band's milestone id to its PR | blocked | — | normal | milestones/M312-band-pr-link.md |
 | M313 | Scope the tests cairn sessions add | done | — | high | milestones/archive/M313-test-scope.md |
-| M314 | Answer each Copilot review in one PR comment | in-progress | — | high | milestones/M314-copilot-one-comment.md |
+| M314 | Answer each Copilot review in one PR comment | review | — | high | milestones/M314-copilot-one-comment.md |
 | M315 | Keep guest sessions within the host's limits | planned | M314 | high | milestones/M315-guest-host-limits.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._

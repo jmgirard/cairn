@@ -1,6 +1,6 @@
 # M314: Answer each Copilot review in one PR comment
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,3 +55,4 @@ In every mode, the Copilot round and `/copilot-review` answer a Copilot review w
 - 2026-10-21: T1 done: §5's thread reply and its `/replies` command are gone; §4's thread read selects each first comment's `pullRequestReview{url}`; the summary reply became **The comment** (one per review that has a note, after every disposition and push, the review's URL then one line per note, no thanks, guest vocabulary rule, no second comment for a linked review, then the resolves); §1's write list names the comment. Every removed sentence was diffed against main (LESSONS M152/M287). Module 158 lines, 9,535 bytes. The remaining simple-english lint hits in the module predate the branch.
 - 2026-10-21: T2 done: `/copilot-review`'s description and steps 4, 6 (Comment), and 7 (Resolve), `/hotfix` (two sites), `/milestone-review` step 7, and README's row and Copilot bullet name the one comment. Hand-run guards: `test_copilot_review_round` (TestOneComment replaces TestSummaryReply, no-thanks tests retargeted), its mutation-harness entries, and `test_resume_routing` updated; `skills/tests` all OK, the harness included. Verify green: scripts/tests, hooks/tests, both validates, `claude plugin test` 2466 pass, 0 fail.
 - 2026-10-21: T3 done: the two Unreleased CHANGELOG entries ("The Copilot round answers each review in one comment", retitled, and `/copilot-review`'s New entry) now give the one-comment form; no Unreleased line says the round replies on each thread. D-212 records the decision, superseding D-153's thread reply and D-187's order.
+- 2026-10-21: claim audit: 24 claims read, 2 corrected — CHANGELOG.md (the unsettled-thread sentence now says `/copilot-review` asks in chat), skills/copilot-review/SKILL.md (description names defer); also a TestOneComment docstring and a blank line before the module's no-reply paragraph. Verify green: scripts/tests, hooks/tests, both validates, `claude plugin test` 2466 pass, 0 fail; `skills/tests` OK. Status review.

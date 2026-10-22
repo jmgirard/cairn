@@ -180,9 +180,10 @@
   once every note has an outcome and each fix is pushed. It never thanks
   Copilot. After it, Claude resolves the threads the comment names. A
   later read posts no second comment for a review that one of your
-  comments already links. A thread that Claude cannot settle without you
-  becomes a follow-up row, named at the merge question or the approval
-  chip, and no question goes to GitHub. A thread that `/milestone-review`
+  comments already links. In `/hotfix` and `/milestone-review`, a thread
+  that Claude cannot settle without you becomes a follow-up row, named at
+  the merge question or the approval chip. `/copilot-review` asks you in
+  chat. No question goes to GitHub. A thread that `/milestone-review`
   returns to implement holds back its review's comment, and its threads
   stay open for a later pass.
 

@@ -1,6 +1,6 @@
 ---
 name: copilot-review
-description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix or reject each note. Post one PR comment for each review, one line per note, then resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
+description: Handle a GitHub Copilot review on one pull request. Read each Copilot note and the review summary, and fix, reject, or defer each note. Post one PR comment for each review, one line per note, then resolve the notes' threads. Never reply on a thread, and never thank Copilot. Ask the user in chat, never on GitHub, about a note the agent cannot decide alone. Use when the user wants to address, answer, handle, or work through Copilot's review comments or notes on a PR.
 argument-hint: "[PR number or URL]"
 ---
 

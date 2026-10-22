@@ -187,7 +187,7 @@ class TestOneComment(unittest.TestCase):
     and no thread reply, after every note has a disposition and each fix
     is pushed, links the review, lists each note, resolves after it, and
     posts no second comment for a review an operator comment links. One
-    test per clause."""
+    test per clause, except the link and the note lines, which share one."""
 
     def setUp(self):
         module = read("shared", "copilot-review.md")

@@ -106,6 +106,7 @@ read acts on it:
 2. A fix-now item is committed on the branch with the profile's `verify`
    slot green, then pushed (guest mode: to the remote that holds the PR's
    head, found by the rulebook's open-PR head rule).
+
 The read posts no reply on a thread. An item that takes
 `/milestone-review` step 5's return floor holds back its review's comment
 and resolves, so the next pass's read finds its threads open. Copilot's
