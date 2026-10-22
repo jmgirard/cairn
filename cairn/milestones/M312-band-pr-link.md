@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -38,7 +38,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 ## Tasks
 
 - [x] T1: In `hooks/status/reader.ts`, add `url` to `BandRow` and `NO_FILE` (null) and set it from `prUrl(text)` in `loadAt`. Add `url` to `CairnBandRow` in `types/index.d.ts`, and in `scripts/tests/test_status_fixtures.py` `python_rows` from `cairn_next.pr_url`. Add `url` to every fixture's `expected.json` rows, regenerate `hooks/status/fixtures.gen.ts` with `python3 hooks/status/gen_fixtures.py`, and add the four reader cases to `hooks/status/reader.test.ts`.
-- [ ] T2: In `hooks/status/band.ts`, give `BandLine` an optional `href` and set it in `bandLines` from `row.url`, and update the `Span.href` comment, which says the band links none. In `hooks/status/register.tsx`, move `BAND_SHAPE` to `band-5`. Off the terminal, draw the id of a line with an `href` as a `Link` around a `Text` with `color={GRAY}`, `bold`, and `underline: false`, as the pane card does (`register.tsx` near line 427). Add the AC2 and AC3 cases to `hooks/status/band.test.tsx`.
+- [x] T2: In `hooks/status/band.ts`, give `BandLine` an optional `href` and set it in `bandLines` from `row.url`, and update the `Span.href` comment, which says the band links none. In `hooks/status/register.tsx`, move `BAND_SHAPE` to `band-5`. Off the terminal, draw the id of a line with an `href` as a `Link` around a `Text` with `color={GRAY}`, `bold`, and `underline: false`, as the pane card does (`register.tsx` near line 427). Add the AC2 and AC3 cases to `hooks/status/band.test.tsx`.
 - [x] T3: Update README's "The milestone band" section, the `hooks/status/` entry in `cairn/DESIGN.md`, and `CHANGELOG.md`. Grep README and DESIGN.md for "links none" and other band wording that the change makes stale (LESSONS M112).
 - [ ] T4: At review, once the PR is open and its URL is in this file's `Branch/PR` header, stop for the user's live look. The user opens a new Code session in this repo, checks that the band's id is gray, bold, and not underlined, and clicks it to see that the PR opens.
 
@@ -54,3 +54,5 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: implement started on `m312-band-pr-link`; the untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
 - 2026-10-21: T1 done: `BandRow.url` from `prUrl` (null in `NO_FILE`), `CairnBandRow.url`, `python_rows` from `cn.pr_url`, `url` on all 34 fixture rows (only `stack-in-progress` M301 non-null), fixtures regenerated, one reader test over a URL, a branch-only header (`blocked-active` M110, since `single-in-progress` has no `Branch/PR` line), a missing file, and an unreadable file. Verify: both unittest suites, both validates, and `claude plugin test` (2467 pass) green.
 - 2026-10-21: checkpoint, T2 not yet checked off: `BandLine.href` from `row.url`, `BAND_SHAPE` `band-5`, and the desktop id drawn as `Link` > `Text` (gray, bold, `underline={false}`) directly in the head Box, with no wrapping `Text` so the existing `idAndTitle` sweep passes unchanged (the live look checks the drawing). Six new band tests pass. The first full run had 2 unrelated fails in the M221 AC4 refused-clear tests (a doubled `/clear` fill), and a rerun is checking whether they are flaky. T3 done: README band section, DESIGN `hooks/status/` entry, CHANGELOG New entry. My added sentences pass the simple-english lint; the rest of its README and CHANGELOG hits predate this branch.
+- 2026-10-21: T2 done: the full `claude plugin test` rerun is green (2472 pass, 0 fail), so the two M221 AC4 fails of the first run were flaky.
+- 2026-10-21: blocked: paused at the user's request so that the test-guidance milestone the easystats audit asked for can be planned and implemented first, at high priority. T1 to T3 are done. Resume with `/milestone-implement M312`, which runs the claim audit (step 7) and then hands off to review, where T4's live look waits.
