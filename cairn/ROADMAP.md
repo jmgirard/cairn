@@ -1,16 +1,15 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-22 (M318 review: done and archived; its row graduated; M312 row pruned to the terminal cap; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-22 (M319 review: done and archived; new row "State the close count in guest text"; M316 row pruned to the terminal cap; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M319 | Let PROFILE.md set the guest close limit | review | — | normal | milestones/M319-issue-close-cap.md |
+| M319 | Let PROFILE.md set the guest close limit | done | — | normal | milestones/archive/M319-issue-close-cap.md |
 | M318 | State how PROFILE header lines are read | done | — | normal | milestones/archive/M318-profile-header-read.md |
-| M316 | Fix the flaky refused-clear band tests | dropped | — | normal | milestones/archive/M316-band-clear-flake.md |
 | M317 | Report the open-PR caps in /milestone | done | — | normal | milestones/archive/M317-milestone-pr-caps.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
