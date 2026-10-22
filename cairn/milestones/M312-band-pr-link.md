@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** review
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -71,6 +71,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: review return 2: AC5 failed at the second live look on 5e72fd35. The operator's screenshot shows the M312 id still above the title's line and close to it, so the wrapping `Text` (T5) did not fix it. The next try centers the left group's and the head's children off the terminal, as the row and its right group already are, on the reading that the linked id's box is shorter than the title's and both start at the top.
 - 2026-10-21: resumed from review return 2; added T6 for it (minor amendment). T6 done: the left group and head Boxes take `alignItems: 'center'` off the terminal, and the M301 desktop test asserts both and the holder's wrap. Pass 2's fix-now items landed with it: `idAndTitle` admits only the head's first child as the Link holder, `pullOf` caps the number at 15 digits and its tests check each passed page with `new URL` (a constant check dropped, a same-path case dropped, the 39/100 and 16-digit cases added), README and CHANGELOG say a refused URL draws no link, and five comments follow the code. Verify green: `claude plugin test` 2482 pass, 0 fail, scripts/tests and hooks/tests OK, both validates passed, `cairn_validate` passed. The claim audit was not re-run: the added prose is the two doc sentences and the comments, each read against `pullOf` and the code beside it by the author. This is the second defect return; a third would be the thrash rule's descope-or-park stop.
 - 2026-10-21: review return 3: AC5 failed at the third live look on 46a2a407. The screenshot matches the second look's pixel for pixel, as the second matched the first but for the count, across a bare Link, a Link in a Text, and centered parts. Either the desktop styles a `Link` so that no container change moves its text, or the new sessions ran the mod from the first look. The thrash rule's third-return stop applies: descope or park, no blind retry.
+- 2026-10-21: blocked: the operator chose park at the thrash stop. Blocker: the desktop draws the band's linked id above the title's line, and the cause is unknown. The next session first checks that a new Code session runs the changed mod (a `$.fs.write` debug line to a file in `.git/info/exclude`, LESSONS M201), then tries two or three link forms in one live look, one per row (LESSONS M290). Branch and PR #327 stay open. AC1, AC3, and AC4 hold evidence; AC2 (amended) and AC5 await it. Resume with `/milestone-implement M312`.
 
 ## Review
 
