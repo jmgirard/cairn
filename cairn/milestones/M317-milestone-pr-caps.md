@@ -71,4 +71,24 @@
 - AC2: two fresh Opus agents each ran `/milestone` §1 and §2 read-only on this branch, after the edit was on disk (§3's chips not run). Run 1 reported "bug-fix PRs: 0 of 3; feature PRs: 1 of 1 (at the cap)" from the hotfix bullet's one `gh pr list` call, the open PR being #330; my `gh pr list --repo jmgirard/cairn --author @me --state open --limit 100 --json headRefName` counted 1 PR, 0 on `hotfix-` heads. Run 2, with a temporary `# Feature PR cap: 0` header line, reported the same numbers, named that line as not taken, and kept the feature cap at 1; the line put PROFILE.md at 120 lines, so its validate run read a `weight caps` FAIL, gone once the line was removed. The line was never committed.
 - gate: `cairn_validate` all passed (exit 0); coverage complete; no principle changed, so `cairn_impact` skipped. Profile gate: verify green on the review head (code unchanged since 49766320), marketplace validate has no `plugins[N].version` warning, CHANGELOG Unreleased has the entry with no milestone ids. No CI on this repo.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: a scope change (tracking-rules row, two test pins) was logged as a minor amendment, with stale Scope In and T1 text — fix now, fixed 906c121a (substantive amendment line; Scope In and T1 updated)
+- diff-bug #2: a stacked guest milestone's base PR makes the report read at or over the cap while that review can still open its PR — fix now, fixed 906c121a (one added line in guest mode with `# Push remote: base`)
+- diff-bug #3: "report both caps as reached" at 100 PRs did not say how it combines with the numbers — fix now, fixed 906c121a (no number; says the list reached 100)
+- diff-bug #4: unclear whether untaken cap lines are named after a failed list read — fix now, fixed 906c121a
+- diff-bug #5: no set wording for an empty list — reject (false): the `0 of 3` / `0 of 1` form covers it, as the T3 runs showed
+- diff-bug #6: the bullet dropped "header", and the rulebook never states how a header line is read — fix now for the word, fixed 906c121a; the parse rule, M315 wording outside this scope, is follow-up: candidate row "State how PROFILE header lines are read"
+- diff-bug #7: `hooks/cairn_common.py:414-416` comment named only `/milestone-review` and `/hotfix` — fix now, fixed 906c121a
+- diff-bug #8: the CHANGELOG entry asserts a behavior no test enforces — reject (planned change): the profile's test-doctrine slot says a new skill rule owes no prose guard (D-109)
+- diff-bug #9: one bullet line runs past the wrap width — reject (style)
+- blame-history #1: the audit counts a stacked base PR that D-214 and README leave out — fix now, fixed 906c121a (same fix as diff-bug #2; the rulebook limits the exclusion to the stacked milestone's own read)
+- blame-history #2: the re-seed resets 14 bytes of reported growth and drops the M313 seed note — reject (false): the seed text allows a re-seed when a pass changes the file deliberately, and it names the prior seed, M315's
+- prior-review #1: the report and the review gate count a stacked base PR differently — fix now, fixed 906c121a (same fix as diff-bug #2)
+- prior-review #2: the rulebook's open-PR caps bullet did not name `/milestone` — fix now, fixed 906c121a; rulebook re-seeded to 821 lines / 80,381 bytes in its three pins
+- prior-review #3: the new bullet has no prose guard, as Copilot asked on PR 326 — reject (planned change): D-108 and D-109 stand, as decided on PR 326
+- ripple #1: tracking-rules:347-348 reader list omits `/milestone` — fix now, fixed 906c121a (same as prior-review #2)
+- ripple #2: `hooks/session_context.py:308-309` names only the two gates — reject (false): that text says where the caps stop work, which stays true, and `/milestone` stops nothing
+- ripple #3: `hooks/cairn_common.py:416` comment — fix now, fixed 906c121a (same as diff-bug #7)
+- ripple #4: README and CHANGELOG cap entries list only the gates — reject (false): they describe the gates, which is still accurate
+- AC1 re-check after 906c121a: the fixed bullet at `skills/milestone/SKILL.md:236` holds all 15 clauses by the same `grep -F` check (a planted absent phrase read MISSING, so the check can fail). The 100-PR clause now reads "the list reached 100, so both caps count as reached". AC2's runs predate the fix, which changed only the 100-PR, failed-read, and stacked-base wording, none of them on the runs' paths (0 or 1 open PRs, one untaken line).
+- ripple #5: ROADMAP row "Report the open-PR caps in /milestone" says `/milestone` reports nothing — reject (false): post-merge hygiene removes the graduated row
 - AC4: verify slot at 69ef6cb4 (code as of 49766320), each exit code read: scripts 445 OK (21 skipped), hooks 202 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2466 pass, 0 fail.
