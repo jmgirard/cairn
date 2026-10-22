@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M317: Report the open-PR caps in /milestone
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -57,6 +57,8 @@
 - 2026-10-22: T1 done: an "Open-PR caps" bullet after "Open hotfix PRs" in §2 of `skills/milestone/SKILL.md`, reusing its list; tracking-rules unchanged. T2 done: one sentence in README's audit paragraph and a CHANGELOG Unreleased New entry. The added lines pass the simple-english lint (checked on the added lines alone, with a control file that it flags).
 - 2026-10-22: T3 live runs: two fresh Opus agents each followed the §2 "Open hotfix PRs" and "Open-PR caps" bullets as written, read-only, so the full `/milestone` skill and its chips did not start inside this run. Run 1 reported `bug-fix PRs: 0 of 3` and `feature PRs: 0 of 1` from one `gh pr list` call; my own `gh pr list --repo jmgirard/cairn --author @me --state open --limit 100 --json headRefName` gave 0 PRs, 0 `hotfix-`. Run 2, with a temporary `# Feature PR cap: 0` header line, reported the same numbers, named that line as not taken, and kept the feature cap at 1. The line was removed after run 2 and never committed. Both agents noted that the rulebook does not spell out how the `# Collaboration mode:` line is read (M315 wording, outside this scope) and that an empty list has no set wording.
 - 2026-10-22: verify slot green: scripts 445 OK (21 skipped), hooks 202 OK, both validates exit 0, `claude plugin test` 2466 pass, 0 fail.
+- 2026-10-22: claim audit: 20 claims read, 0 corrected — CHANGELOG.md, README.md, skills/milestone/SKILL.md
+- 2026-10-22: minor amendment: the claim auditor found tracking-rules' `cairn/PROFILE.md` row listing the cap lines' readers without `/milestone`. Added it, so T1's "leave tracking-rules unchanged" no longer holds. The rulebook-mass seed moved to 820 lines / 80,301 bytes in its three pins (skills/milestone/SKILL.md, test_cost_audit_line.py, test_mutation_harness.py, per LESSONS M149). Scripts 445 OK, hooks 202 OK, skills/tests 958 OK after the change.
 
 ## Decisions
 

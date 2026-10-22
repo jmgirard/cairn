@@ -11,7 +11,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 | M312 | Link the band's milestone id to its PR | dropped | — | normal | milestones/archive/M312-band-pr-link.md |
 | M315 | Keep guest sessions within the host's limits | done | M314 | high | milestones/archive/M315-guest-host-limits.md |
 | M316 | Fix the flaky refused-clear band tests | dropped | — | normal | milestones/archive/M316-band-clear-flake.md |
-| M317 | Report the open-PR caps in /milestone | in-progress | — | normal | milestones/M317-milestone-pr-caps.md |
+| M317 | Report the open-PR caps in /milestone | review | — | normal | milestones/M317-milestone-pr-caps.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
