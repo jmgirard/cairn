@@ -56,6 +56,7 @@ In every mode, the Copilot round and `/copilot-review` answer a Copilot review w
 - 2026-10-21: T2 done: `/copilot-review`'s description and steps 4, 6 (Comment), and 7 (Resolve), `/hotfix` (two sites), `/milestone-review` step 7, and README's row and Copilot bullet name the one comment. Hand-run guards: `test_copilot_review_round` (TestOneComment replaces TestSummaryReply, no-thanks tests retargeted), its mutation-harness entries, and `test_resume_routing` updated; `skills/tests` all OK, the harness included. Verify green: scripts/tests, hooks/tests, both validates, `claude plugin test` 2466 pass, 0 fail.
 - 2026-10-21: T3 done: the two Unreleased CHANGELOG entries ("The Copilot round answers each review in one comment", retitled, and `/copilot-review`'s New entry) now give the one-comment form; no Unreleased line says the round replies on each thread. D-212 records the decision, superseding D-153's thread reply and D-187's order.
 - 2026-10-21: claim audit: 24 claims read, 2 corrected — CHANGELOG.md (the unsettled-thread sentence now says `/copilot-review` asks in chat), skills/copilot-review/SKILL.md (description names defer); also a TestOneComment docstring and a blank line before the module's no-reply paragraph. Verify green: scripts/tests, hooks/tests, both validates, `claude plugin test` 2466 pass, 0 fail; `skills/tests` OK. Status review.
+- 2026-10-21: step-7 approval: m314-copilot-one-comment approved for merge
 
 ## Review
 
