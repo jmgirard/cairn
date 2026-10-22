@@ -41,7 +41,7 @@
 
 - [x] T1: Add the cap report to §2 of `skills/milestone/SKILL.md` after the "Open hotfix PRs" bullet (:223), reusing its list and citing tracking-rules' open-PR caps bullet for the cap values. Leave tracking-rules unchanged, so the rulebook-mass baseline needs no re-seed.
 - [x] T2: Update README's audit paragraph (near :941) and CHANGELOG Unreleased.
-- [ ] T3: Run `/milestone` in this repo twice as AC2 states, remove the temporary PROFILE line, compare with the `gh pr list` count, and run the verify slot.
+- [x] T3: Run `/milestone` in this repo twice as AC2 states, remove the temporary PROFILE line, compare with the `gh pr list` count, and run the verify slot.
 
 ## Work log
 
@@ -55,6 +55,8 @@
 - 2026-10-22: plan gate chose a prose report in the skill over a script that runs `gh`, because the neighbor bullets are prose reads of the same list and a script would add a second read; falsified by a `/milestone` run whose reported numbers differ from the `gh pr list` count.
 - 2026-10-22: implement started on branch m317-milestone-pr-caps, cut from main at fef549f2. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-22: T1 done: an "Open-PR caps" bullet after "Open hotfix PRs" in §2 of `skills/milestone/SKILL.md`, reusing its list; tracking-rules unchanged. T2 done: one sentence in README's audit paragraph and a CHANGELOG Unreleased New entry. The added lines pass the simple-english lint (checked on the added lines alone, with a control file that it flags).
+- 2026-10-22: T3 live runs: two fresh Opus agents each followed the §2 "Open hotfix PRs" and "Open-PR caps" bullets as written, read-only, so the full `/milestone` skill and its chips did not start inside this run. Run 1 reported `bug-fix PRs: 0 of 3` and `feature PRs: 0 of 1` from one `gh pr list` call; my own `gh pr list --repo jmgirard/cairn --author @me --state open --limit 100 --json headRefName` gave 0 PRs, 0 `hotfix-`. Run 2, with a temporary `# Feature PR cap: 0` header line, reported the same numbers, named that line as not taken, and kept the feature cap at 1. The line was removed after run 2 and never committed. Both agents noted that the rulebook does not spell out how the `# Collaboration mode:` line is read (M315 wording, outside this scope) and that an empty list has no set wording.
+- 2026-10-22: verify slot green: scripts 445 OK (21 skipped), hooks 202 OK, both validates exit 0, `claude plugin test` 2466 pass, 0 fail.
 
 ## Decisions
 
