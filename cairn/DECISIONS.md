@@ -7862,3 +7862,16 @@ settles the common case and the user can set `off`.
 allows no further clear-grounds closes that day unless its PROFILE.md
 sets `off`. Falsified by a guest session that blocked a close on a page
 whose oldest event fell on an earlier day.
+
+### D-217 (2026-10-22): D-216's Consequences hold at 100 or more issue events in a UTC day, not more than 100 — corrects D-216 (M319)
+
+**Context:** M319's claim audit found that D-216's Consequences said "more
+than 100 issue events in one UTC day". With exactly 100 events that day,
+the page's oldest event also falls on the current day, so the limit is
+reached then too.
+
+**Decision:** D-216's Consequences read: a repo with 100 or more issue
+events in one UTC day allows no further clear-grounds closes that day
+unless its PROFILE.md sets `off`. The rest of D-216 stands.
+
+**Consequences:** None beyond D-216's.

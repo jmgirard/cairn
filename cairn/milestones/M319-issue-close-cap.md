@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M319: Let PROFILE.md set the guest close limit
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -102,6 +102,8 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: re-audit: AC1 (full) — one finding: "that UTC day" had no referent in the criterion; fixed to "the current UTC day". The reader confirmed the rule is sound for a newest-first read (a full page whose oldest event is today may miss same-day events on page 2; an older oldest event means the page holds the whole day) and named the superseding D-entry's content. No IP conflict, bounded, deliverable-bound.
 - 2026-10-22: follow-up row "State the close count in guest text" filed for review diff-bug #3 (search-first: no candidate row or archive entry covers the guest text's count recipe).
 - 2026-10-22: re-audit: AC1 (full) — two findings. A: `off` in another letter case would leave 3 under rule (3) — answered, false: the "Header lines" paragraph says value case does not count, so `OFF` reads as `off`. B: a new D-entry must supersede D-215's full-page sentence — taken as a record: D-216, cited by rule (3); AC1's wording unchanged.
+- 2026-10-22: claim audit: 13 claims read, 1 corrected — cairn/DECISIONS.md (D-216's Consequences said "more than 100" events; D-217 corrects it to "100 or more", since the entry is history). The other 12, in CHANGELOG.md, README.md, hooks/session_context.py, tracking-rules.md, and DESIGN.md, read true.
+- 2026-10-22: status set to review after the return.
 - 2026-10-22: amendment return: AC1 — "When the count's read returns a full page of 100 events whose oldest event falls on the current UTC day, the count counts as reaching the limit."
 
 ## Decisions
