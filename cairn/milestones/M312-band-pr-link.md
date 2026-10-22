@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the status band is part of the plugin's UI
-- **Branch/PR:** m312-band-pr-link
+- **Branch/PR:** m312-band-pr-link, https://github.com/jmgirard/cairn/pull/327
 
 ## Goal
 
