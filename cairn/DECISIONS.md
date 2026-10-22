@@ -7668,3 +7668,26 @@ test-doctrine lines and DESIGN.md Conventions oracle line until they copy
 the new text, as the CHANGELOG entry says. The rulebook and the validation
 doctrine are read live from the plugin, so their rules reach every repo at
 once. Tests already merged stay as they are.
+
+### D-211 (2026-10-21): Three clauses of D-210 are corrected in one batched entry — the bar's scope in its heading, the simulation ban's scope, and the guest override's reach — supersedes those clauses; D-210's decision stands (M313 review)
+
+**Context:** The M313 review found three faults in D-210. Its heading says
+the bar "binds only a result the change adds", while its Decision and the
+validation doctrine scope it to a result the change adds or alters by
+design. Its Decision bans simulation-coverage "to confirm a textbook
+property of a method the change does not add", which also bans a coverage
+check on an interval method the change alters by design, against D-025's
+"a CI method's oracle is coverage". And it does not say that the rulebook's
+guest pointer, where host tests do otherwise, reaches the test floor that
+D-126 (check discrimination) and M136 (failure identity) built.
+
+**Decision:** The two-type bar binds a numeric result that the change adds
+or alters by design. Simulation-coverage is never used to confirm a
+textbook property of a method the change does not add or alter. In guest
+mode, host practice governs test volume, fits, helpers, and comments, and
+the failure-identity rule and check discrimination still bind. The review
+also aligned the rulebook, the doctrine, the profiles, and the CHANGELOG
+with these clauses.
+
+**Consequences:** D-210's other clauses, its rejections, and its
+falsifiers stand.

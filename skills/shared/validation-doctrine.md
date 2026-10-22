@@ -14,8 +14,8 @@ size (99 lines / 6,480 bytes) plus roughly one section of headroom, hand-read
 with `wc -l -c` at the repo's hygiene passes and covered by no validator.
 Over either figure, compress or retire content here — never "let it grow".
 
-Tests verify against ground truth, not against the code. Every
-numeric-results suite includes, in priority order: (1) hand-computed
+Tests verify against ground truth, not against the code. A numeric-results
+suite draws its oracles, in priority order, from: (1) hand-computed
 fixtures from published formulas, worked in the fixture's generator or source
 note, never in test comments; (2) published
 reference values, cited; (3) independent recomputation with deliberately
@@ -31,7 +31,7 @@ only on top, never as the sole oracle for a number.
 alters by design. A fix to an existing result needs one regression test whose
 expected value comes from one oracle. Deterministic checks use at most one
 fitted model per code path, shared by the tests that use it. A
-simulation-coverage oracle's replications are exempt. In guest mode the host's practice
+simulation-coverage oracle's replications are exempt from it. In guest mode the host's practice
 sets the number of oracles above one, and the hard stops below still bind.
 
 **Oracle types & the ≥2-types bar.** Name each oracle's *type* in its oracle
@@ -56,7 +56,7 @@ sampling-distribution check, not deterministic pointwise agreement — and the
 primary oracle for interval methods (**a CI method's oracle is coverage**) and
 for any estimator with no closed form or reference implementation; it counts
 toward the ≥2-types bar like any other type. It is never used to confirm a
-textbook property of a method the change does not add. Freeze a simulation-coverage
+textbook property of a method the change does not add or alter. Freeze a simulation-coverage
 oracle (commit its summary as a fixture) only when the run is expensive — a live
 refit or a many-replication sweep — else recompute it live.
 

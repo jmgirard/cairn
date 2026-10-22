@@ -18,16 +18,17 @@
   deterministic checks share one fitted model per code path. Simulation
   replications are exempt, and simulation checks are kept for an
   interval method's coverage. They are not used to re-derive a textbook
-  result of a method the change does not add. In guest mode, a session
+  result of a method the change does not add or alter. In guest mode, a session
   reads the tests that the host's maintainers wrote and matches their
   volume, fits, helpers, and comments. At review, the code reviewer reports
   added tests that these rules exclude. An existing repo keeps its own
   profile copy. Copy the changed function bullet and its new edge-case
   line into your `cairn/PROFILE.md`. In the r-package slot the bullet
   starts "Every new exported function", and in the python slot "Every new
-  public function". If your DESIGN.md
-  Conventions commit numeric results to the two-oracle bar, narrow that
-  line to the results a change adds.
+  public function". A generic repo copies the profile's new test-doctrine
+  sentence. If your DESIGN.md Conventions commit numeric results to the
+  two-oracle bar, narrow that line to the results a change adds or alters
+  by design.
 
 - **The merge and hotfix gates list changed test snapshots.** A snapshot
   file is a stored expected output under a directory named `_snaps`

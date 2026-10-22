@@ -62,11 +62,8 @@ class TestCostAuditLine(unittest.TestCase):
         self.assertIn("`wc -l -c`", self.text)
 
     def test_the_rulebook_line_carries_its_seeded_baseline(self):
-        # Growth is reported against a recorded figure, not a remembered one;
-        # the seed is the M313 re-measurement in bytes (M313 scoped the test
-        # floor and added the test-comment and host-test rules; the prior
-        # seed was M308's 770 lines / 74,591 bytes).
-        self.assertIn("788 lines / 76,580 bytes", self.text)
+        # Growth is reported against a recorded figure, not a remembered one.
+        self.assertIn("792 lines / 76,924 bytes", self.text)
 
     def test_the_rulebook_line_is_reporting_only_with_no_machinery(self):
         # The fold's whole point (D-057): visibility without pass machinery.
