@@ -72,6 +72,7 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - 2026-10-21: user chose at the AC3 stop: write the proposed text with no further reader.
 - 2026-10-21: amendment return: AC3 — "`skills/shared/validation-doctrine.md` keeps "≥2 *independent* oracle types" for a numeric result that the change adds or alters by design, and states that a fix to an existing result needs one regression test whose expected value comes from one oracle. The doctrine also states that simulation-coverage stays the primary oracle for an interval method's coverage and for an estimator with no closed form or reference implementation, and is never used to confirm a textbook property of a method the change does not add; that deterministic checks use at most one fitted model per code path, shared by the tests that use it, with a simulation-coverage oracle's replications exempt; and that in guest mode the host's practice sets the number of oracles above one, while the hard stops still bind."
 - 2026-10-21: amendment done; status set to review.
+- 2026-10-21: audit figures (from the easystats session's report, cited by D-210): 60 PRs, 7 packages, about 10,500 added test lines against about 3,570 net R lines (3 to 1), against the maintainers' 31 to 79 test lines per PR (about 1 to 1) and a cairn average of about 175. Reviewers judged about 40% superfluous (33% to 45% per repo). Comments were 7.4% of added test lines, against 1% to 4% in the maintainers' files. `test-check_collinearity.R` grew from 302 to 2,008 lines.
 
 ## Review
 
@@ -83,3 +84,38 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - AC7: `CHANGELOG.md` Unreleased › "Changes that affect existing repos" opens with "Sessions add fewer and plainer tests". It states the scope, comment, oracle, and guest test-matching rules, the profile copy step (the changed function bullet and its edge-case line), and the Conventions narrowing. Pass.
 - AC3: not ticked; amendment routed (work log).
 - AC3 (second pass, amended wording): `validation-doctrine.md:30-35` holds the Scope (D-210) paragraph: the bar for a result the change adds or alters by design, one oracle for a fix, deterministic checks at most one shared fit per code path with simulation replications exempt, and the guest clause with the hard stops kept. Line 50 keeps "≥2 *independent* oracle types" for results "in scope". Lines 55-59 keep simulation-coverage as the primary oracle for interval methods and for estimators with no closed form or reference implementation, and add the textbook-property ban. `cairn-init/SKILL.md:232-235` states the scoped bar ("adds or alters by design", a fix to one regression test). `wc -l -c` gives 114 lines and 7,507 bytes, and `skills/tests -k oracle` passes. Pass.
+- gate: `cairn_validate` passed, and coverage is complete. The verify run on e2684111 gave scripts, hooks, both validates (no `plugins[N].version` warning), and `claude plugin test` 2465 pass with 1 fail (M221 AC4 refused-clear, terminal, a doubled `/clear` fill, on a branch that touches no mod code; flaky as on M312, and it went to the follow-up row). The CHANGELOG has the entry. No principle changed, so `cairn_impact` was skipped. After the fixes, scripts, hooks, both validates, `cairn_validate`, and `skills/tests` (954) are green.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the simulation ban hit methods the change alters — fix now (doctrine, CHANGELOG, D-211), fixed edbd69c4
+- diff-bug #2: the plan bullet's "and no more" forbade characterization tests — fix now, fixed edbd69c4
+- diff-bug #3: the generic profile kept the old floor — fix now (profile and CHANGELOG copy step), fixed edbd69c4
+- diff-bug #4: CHANGELOG and D-210 dropped "or alters by design" — fix now (CHANGELOG, D-211), fixed edbd69c4
+- diff-bug #5: a documented-claim test for existing behavior was barred by the default-branch rule — fix now (the rule allows a documented claim the change adds), fixed edbd69c4
+- diff-bug #6: "new" dropped the error idiom for a branch added to an existing function — fix now (rulebook floor: "the same for each branch a change adds to an existing one"), fixed edbd69c4
+- diff-bug #7: the one-fit rule forbids a convergence or silent case — reject (false): such a case runs another code path, which the rule allows its own fit
+- diff-bug #8: guest authorship was per file — fix now (`git blame` per test), fixed edbd69c4
+- diff-bug #9: guest paths (dirty tree, shallow clone, no host tests, stale default branch) — reject (false): the bullet reads before the session adds tests; with no host tests there is no host practice, so the floor governs; and the git model fetches `<base>` before any default-branch comparison
+- diff-bug #10: an adopted PR's extra contributor tests had no rule — fix now (the hotfix gate names each excluded test), fixed edbd69c4
+- diff-bug #11: D-210 cites figures the milestone file lacked — fix now (work-log line with the audit's figures)
+- diff-bug #12: the audit's date range ends after D-210's date — reject (false): the range is the easystats session's report, quoted as it gave it
+- diff-bug #13: "criteria name it" against "never a guard" — reject (false): "Such a test is never a guard" binds every such test, criteria-named included
+- diff-bug #14: the doctrine's opening read as all five rungs — fix now ("draws its oracles, in priority order, from"), fixed edbd69c4
+- diff-bug #15: D-210 says "narrows" rather than "supersedes" — reject (style): "narrows" is a heading form the file uses (D-184, D-200)
+- diff-bug #16: D-210 says "inputs" and not "inputs or classes" — reject (style): the entry paraphrases, and the rulebook text governs
+- diff-bug #17: the re-seeded test comment narrated history — fix now (comment trimmed), fixed edbd69c4
+- diff-bug #18: a long rulebook line — reject (style); the fix rewrap removed it
+- blame-history #1: the guest pointer let host practice displace failure identity and check discrimination — fix now (pointer limited to volume, fits, helpers, and comments; D-211), fixed edbd69c4
+- blame-history #2: D-028's header-comment provenance shape conflicted with "Test comments" — fix now (header shape allowed), fixed edbd69c4
+- blame-history #3: the untouched-shape example clashed with "never a guard" — fix now (the example is now a shape a check the change adds must leave alone), fixed edbd69c4
+- blame-history #4: same as diff-bug #14 — fixed edbd69c4
+- blame-history #5: "never in a test comment" against D-029's distributed headers — reject (false): generator headers are not test comments
+- blame-history #6: same as diff-bug #3 — fixed edbd69c4
+- blame-history #7: the documented-claim narrowing against D-136 — reject (false): D-136 governs the claim audit of prose, not tests
+- prior-review #1: same as blame-history #3 — fixed edbd69c4
+- prior-review #2: the fix bar lifts M033 and M042's two-oracle bar — reject (planned change): chosen at the question set, D-210
+- prior-review #3: the failure-identity floor is narrowed for untouched branches — reject (planned change); a branch a change adds keeps it (diff-bug #6 fix)
+- prior-review #4: the simulation exemption was ambiguous — fix now ("exempt from it"), fixed edbd69c4
+- prior-review #5: old tests carry milestone-history comments — reject (false): the rule governs comments a change writes
+- ripple #1: an earlier CHANGELOG entry says the diff reviewer asks "two new questions" — reject (false): that entry describes its own change, and this entry describes the third
+- ripple #2: same as diff-bug #3 — fixed edbd69c4
+- follow-up: the flaky M221 AC4 band tests became the candidate row "Fix the flaky refused-clear band tests"
