@@ -128,26 +128,26 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - gate: `cairn_validate.py` all checks passed. The marketplace validate output has no `version` warning. CHANGELOG has the entry (AC4). No DESIGN.md principle changed, so `cairn_impact` is skipped.
 - spawned: diff-bug, blame-history, prior-review, ripple
 - diff-bug #1: `issues/events?per_page=100` returns the newest 100 events of every kind and date, so "a full page of 100 events counts as reaching the limit" blocks every close on a busy repo at any number — amendment return (AC1 and D-215 mandate the clause; the repair is "a full page whose oldest event falls on that UTC day")
-- diff-bug #2: DESIGN.md lines 17-20 still list five header lines — fix now
+- diff-bug #2: DESIGN.md lines 17-20 still list five header lines — fix now, fixed 1ecb9ad0
 - diff-bug #3: the session-start text never states how to count a day's closes — follow-up: the gap predates this milestone, and AC3 keeps the no-line text equal to main
-- diff-bug #4: the untaken note calls `off` a limit — fix now; its place after rule (4) — reject (style)
+- diff-bug #4: the untaken note calls `off` a limit — fix now, fixed 1ecb9ad0; its place after rule (4) — reject (style)
 - diff-bug #5: the `off` text's "which holds over host style matching, and such closes" can blur what "which" refers to — reject (style): the clause reads as before, and each case was read in full
 - diff-bug #6: `off please` reads as `off`, and an empty value is silent — reject (false): both follow the "Header lines" paragraph
 - diff-bug #7: `Many` and the 5 case repeat a code path, and a test comment cites a milestone id — reject (false): `Many` checks the value kept as written and 5 checks a number other than the default, and milestone-id comments are the file's pattern
 - diff-bug #8: the rulebook does not say `off` skips the count — reject (false): with no limit there is nothing to count, and the fix-now rewording of rule (3) puts the limit first
-- blame-history #1: rule (3) still opens "Make at most 3" before the `off` clause — fix now (the same fix as ripple #2)
+- blame-history #1: rule (3) still opens "Make at most 3" before the `off` clause — fix now (the same fix as ripple #2), fixed ee608970
 - blame-history #2: the full-page clause blocks a guest whose page holds no close of its own — the same defect as diff-bug #1, taken by its amendment return
 - blame-history #3: a guest session can write `off` into its own PROFILE.md — reject (planned change): the user asked for this line, and D-213 and D-215 keep the limit an instruction, not a guard
-- blame-history #4: DESIGN.md's header-line list — fix now (the same fix as diff-bug #2)
-- blame-history #5: README keeps "at most 3" unconditional — fix now (the same fix as ripple #3)
+- blame-history #4: DESIGN.md's header-line list — fix now (the same fix as diff-bug #2), fixed 1ecb9ad0
+- blame-history #5: README keeps "at most 3" unconditional — fix now (the same fix as ripple #3), fixed 1ecb9ad0
 - blame-history #6: the rulebook-mass baseline in `skills/milestone/SKILL.md` is not re-seeded — reject (false): the audit reports growth against the M317 figure on purpose, as at M318
 - prior-review #1: the baseline growth is not logged — reject (false): the archive summary will name it, as at M318
 - prior-review #2: the full-page clause might reverse M315's close-count fix — reject (false): it adds a stopping rule to the same read and removes nothing
 - prior-review #3: `issue_close_cap` reads the value as written — reject (false): it compares `off` lowercased, as the rule says
-- ripple #1: DESIGN.md's "five optional lines" — fix now (with diff-bug #2)
-- ripple #2: tracking-rules rule (3) opens with a fixed "at most 3" — fix now
-- ripple #3: README's "at most 3" is unconditional — fix now
-- ripple #4: the older Unreleased CHANGELOG entry says "at most 3" — fix now ("by default")
+- ripple #1: DESIGN.md's "five optional lines" — fix now (with diff-bug #2), fixed 1ecb9ad0
+- ripple #2: tracking-rules rule (3) opens with a fixed "at most 3" — fix now, fixed ee608970
+- ripple #3: README's "at most 3" is unconditional — fix now, fixed 1ecb9ad0
+- ripple #4: the older Unreleased CHANGELOG entry says "at most 3" — fix now ("by default"), fixed 1ecb9ad0
 - ripple #5: DESIGN.md lines 77-80 describe the four guest rules without the line — reject (false): the description stays true
 - pass 2 (after the AC1 amendment return, head 10682e5c):
 - copilot: no review. A second request on PR #332 exited 0, and the state query still reads `none`.
@@ -156,3 +156,23 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - AC3: the session-text tests ok on this head, and `host_rules` with no line still equals main's `HOST_RULES`. The untaken note now reads "`off` removes the limit. The limit stays at 3."
 - AC4: README lines 1113-1119 state "By default", the line, and `off`. The CHANGELOG entry is unchanged and the older Unreleased entry says "By default".
 - AC5: verify slot on this head: scripts 0, hooks 0, both plugin validates 0, plugin test 2466 pass 0 fail. cairn_validate all checks passed, and no marketplace `version` warning.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- ripple: no ripple evidence
+- prior-review #1: the full-page clause still blocks a guest whose page holds none of its closes — reject (false): a block now needs 100 events on the current UTC day, where page 2 can hold more of the day, which is D-216's chosen conservative reading
+- prior-review #2: the session text omits the count method — follow-up, already the row "State the close count in guest text"
+- diff-bug #1: the events read also counts closed PRs and the session's own issues — follow-up, absorbed into "State the close count in guest text" (it predates M319)
+- diff-bug #2: nothing sources the newest-first order — reject (false): the prior-review lens confirmed the order with a read-only API call, and pass-1 auditors read it the same way
+- diff-bug #3: the rule says neither when to recount nor how to add closes since the read — follow-up, absorbed into "State the close count in guest text"
+- diff-bug #4: "Count your closes" read as unconditional after the `off` sentence — fix now, fixed 5ba0ab1e
+- diff-bug #5: "there" could refer to PROFILE.md — fix now (with #4: "With a limit, count your closes on that repo that day"), fixed 5ba0ab1e
+- diff-bug #6: a 101-character CHANGELOG line — fix now, fixed 5ba0ab1e
+- diff-bug #7: an 18-character DESIGN.md line — fix now, fixed 5ba0ab1e
+- diff-bug #8: D-216's falsifier would also catch a correct block — reject (style): the falsifier reads within D-216's subject, the full-page clause
+- diff-bug #9: README says "session start" where the rulebook says "session-start text" — reject (style)
+- blame-history #1: the count and full-page clause follow the `off` sentence with no condition — fix now, the same fix as diff-bug #4, fixed 5ba0ab1e
+- blame-history #2: a full page from today blocks even with none of the session's own closes — reject (planned change): D-216 chose the conservative reading, and its "no further closes" counts from the moment the page fills
+- blame-history #3: "When unsure" now reads as part of the count — reject (false): it follows the count recipe in the same place as on main
+- blame-history #4: the session text gives no count method — follow-up, already the row "State the close count in guest text"
+- conversation: PR #332 — no reviews, no comments, no open threads (read 2026-10-22)
+- snapshot: the diff changes no `_snaps` or `__snapshots__` file
+- verify after the fix-now commit (5ba0ab1e): scripts 0, hooks 0, both plugin validates 0, plugin test 2466 pass 0 fail, cairn_validate all checks passed
