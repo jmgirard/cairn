@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -22,7 +22,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 ## Acceptance criteria
 
 - [x] AC1: In `hooks/status/reader.ts`, each `BandRow` gains `url`. It holds the first pull request URL that the milestone file's `Branch/PR` header names before any `companion:` entry, which is what `prUrl` returns. It is `null` when the file is missing, is not a regular file, or fails to read, or when its header names no pull request. `CairnBandRow` in `types/index.d.ts` gains `url: string | null`, and the band atom's shape tag in `hooks/status/register.tsx` moves from `band-4` to `band-5`. `hooks/status/reader.test.ts` asserts a header that names a URL, a header that names none, a missing file, and an unreadable file. Every fixture's expected `rows` give each row's `url`, among them the M301 URL in `stack-in-progress`. `claude plugin test` and `scripts/tests/test_status_fixtures.py` both check those rows, and its `python_rows` computes `url` with `cairn_next.pr_url`.
-- [x] AC2: On the desktop surface, the band draws a milestone row's id as a `Link` whose `href` is the row's `url`, with the id's text in the band's gray (`inactive`), bold, and not underlined. The title, track, tail, and Buttons draw as before, and the existing `hooks/status/band.test.tsx` suites pass unchanged. `hooks/status/band.test.tsx` asserts the `Link`, its `href`, and the id's style for a desktop row with a `url`.
+- [ ] AC2: On the desktop surface, the band draws the id of a milestone row whose `url` passes `pullOf` as a `Link` whose `href` is that `url`, with the id's text in the band's gray (`inactive`), bold, and not underlined. The title, track, tail, and Buttons draw as before, which the existing `hooks/status/band.test.tsx` suites show. `hooks/status/band.test.tsx` asserts the `Link`, its `href`, and the id's style for a desktop row with a `url` that `pullOf` passes.
 - [x] AC3: The band draws no `Link` for a milestone row with a null `url`, both for a row with no readable file and for a row whose header names no pull request. It also draws none for the idle row, for the empty row, or on the terminal surface for a row whose `url` is set. `hooks/status/band.test.tsx` asserts each of the five cases.
 - [x] AC4: README's "The milestone band" section, the `hooks/status/` entry in `cairn/DESIGN.md`, and `CHANGELOG.md` say two things. In the desktop app, and on any other surface that draws links, the band's id opens the first pull request that the milestone file's `Branch/PR` header names. A milestone whose header names none draws its id as before.
 - [ ] AC5: In the desktop app, a band row for a milestone whose `Branch/PR` header names a pull request draws its id in the band's gray, bold, with no underline, and a click on the id opens that pull request.
@@ -30,7 +30,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 ## Coverage
 
 - AC1 → T1
-- AC2 → T2
+- AC2 → T2, T5
 - AC3 → T2
 - AC4 → T3
 - AC5 → T4
@@ -41,6 +41,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - [x] T2: In `hooks/status/band.ts`, give `BandLine` an optional `href` and set it in `bandLines` from `row.url`, and update the `Span.href` comment, which says the band links none. In `hooks/status/register.tsx`, move `BAND_SHAPE` to `band-5`. Off the terminal, draw the id of a line with an `href` as a `Link` around a `Text` with `color={GRAY}`, `bold`, and `underline: false`, as the pane card does (`register.tsx` near line 427). Add the AC2 and AC3 cases to `hooks/status/band.test.tsx`.
 - [x] T3: Update README's "The milestone band" section, the `hooks/status/` entry in `cairn/DESIGN.md`, and `CHANGELOG.md`. Grep README and DESIGN.md for "links none" and other band wording that the change makes stale (LESSONS M112).
 - [ ] T4: At review, once the PR is open and its URL is in this file's `Branch/PR` header, stop for the user's live look. The user opens a new Code session in this repo, checks that the band's id is gray, bold, and not underlined, and clicks it to see that the PR opens.
+- [x] T5: Draw the id's `Link` inside a `Text` with `wrap: 'truncate-end'`, as the pane card does, and change `idAndTitle` only so that it admits that `Text` and checks the id's own `Text` as before (review return 1).
 
 ## Work log
 
@@ -60,6 +61,12 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: claim audit: 23 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/band.ts, reader.ts, register.tsx, band.test.tsx, reader.test.ts, types/index.d.ts, scripts/tests/test_status_fixtures.py, cairn/DESIGN.md. The reader also found one stale line outside the diff, DESIGN.md's `band` value root sentence still naming shape `band-4`; fixed to `band-5` since M312.
 - 2026-10-21: review checkpoint (verify on this head still running): review fix-now work from the four lenses and Copilot. `pullOf` in repo.ts passes a header's PR URL to the band's `Link` only when its owner and repo pass `webOf`'s checks (a planted `href = row.url` failed the new band test alone, 2481 pass, 1 fail); M082's unreadable fixture names a PR so its reader case can fail; `built()` gains `url: null`; two restating test comments, a repeated `idAndTitle` check, and a terminal `underline` check dropped; the register comment reworded; DESIGN names `pullOf`.
 - 2026-10-21: review return 1: AC5 failed at the live look. In the desktop app the band's M312 id sits higher than the title and too close to it, because the bare `Link` in the head Box (the form chosen to keep `idAndTitle` unchanged) does not line up with the title's `Text`. The fix is the pane card's form, the `Link` inside a `Text` with `wrap: 'truncate-end'`, which needs a narrowing amendment to AC2's "existing suites pass unchanged" clause, since `idAndTitle` counts the left group's Texts.
+- 2026-10-21: resumed from review return 1; added T5 for it (minor amendment). Main has not moved (84203eb5).
+- 2026-10-21: substantive amendment: AC2 now binds rows whose `url` passes `pullOf` (the review fix), and "the existing suites pass unchanged" becomes "which the existing suites show", the helper detail moving to T5. Both narrow; AC2 unticked for re-review.
+- 2026-10-21: re-audit: AC2 (full) — the first reader found the drafted helper clause ("with `idAndTitle` changed only so that it reads a linked id through the `Text` that holds its `Link`") bound a test harness and was ambiguous, proposed the wording now in the file with the clause moved to T5, and noted that alignment and spacing are bound by no criterion (AC5's live look judged them, and widening AC5 would be the user's call, so AC5 stays)
+- 2026-10-21: re-audit: AC2 (full) — nothing; its one optional clause (naming the `idAndTitle` change in AC2) was not taken, since the first reader moved that clause out as an instrument binding
+- 2026-10-21: T5 done: `register.tsx` wraps the linked id's `Link` in `Text wrap="truncate-end"`; `idAndTitle` drops only a Text whose one child is a `Link`; the M301 desktop test asserts the head's first child is that Text holding the Link. `claude plugin test` 2482 pass, 0 fail.
+- 2026-10-21: verify on the T5 tree green: scripts/tests and hooks/tests OK, both validates passed, `cairn_validate` passed. The claim audit was not re-run for return 1: the pass adds two comments, one stating the live look's screenshot and one the helper's filter, each read against the code it sits on (register.tsx, band.test.tsx `idAndTitle`) by the author only. Status review.
 
 ## Review
 

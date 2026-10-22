@@ -581,10 +581,12 @@ function shrinks(row: Element) {
 }
 
 // The left group is the bold gray id, one space, and the gray title, and
-// no other Text (M206 AC1).
+// no other Text (M206 AC1), but for the Text that holds a linked id's Link
+// alone (M312).
 function idAndTitle(row: Element, id: string, title: string) {
   const { left } = layout(row)
-  const texts = below(left, 'Text')
+  const holdsLink = (t: Element) => kids(t).length === 1 && kids(t)[0].type === 'Link' && t.children.length === 1
+  const texts = below(left, 'Text').filter(t => !holdsLink(t))
   expect(texts.map(t => textOf(t))).toEqual([id, ' ', title])
   expect(leavesOf(left).length).toBe(3)
   expect([texts[0].props.bold, texts[0].props.color]).toEqual([true, GRAY])
@@ -3985,7 +3987,8 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
         const links = below(await bandBox(ui), 'Link')
         if (surface === 'desktop') {
           expect(links.length).toBe(1)
-          expect(below(layout(row).head, 'Link')).toEqual(links)
+          const [holder] = kids(layout(row).head as Element)
+          expect([holder.type, kids(holder)]).toEqual(['Text', links])
           expect(links[0].props.href).toBe(PR)
           const [id] = kids(links[0])
           expect([id.type, textOf(id)]).toEqual(['Text', 'M301'])

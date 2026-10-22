@@ -830,6 +830,9 @@ export const register: Register = on => {
     // A row's id links to its pull request in a `Link`, except in the
     // terminal, as with the pane's links (M311): a terminal without OSC 8
     // prints the URL. The id keeps its gray and bold with no underline (M312).
+    // The Link sits in a `Text`, as the pane card's do: a bare Link in the
+    // head Box drew the id above the title's line and too close to it (M312
+    // live look).
     const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     // The next-step and status Buttons (M212) show while no cairn skill's
@@ -890,11 +893,13 @@ export const register: Register = on => {
           {line.id === '' ? null : (
             <Box key={`${line.key}-head`} flexShrink={0}>
               {line.href !== undefined && Link !== undefined ? (
-                <Link href={line.href}>
-                  <Text wrap="truncate-end" color={GRAY} bold underline={false}>
-                    {line.id}
-                  </Text>
-                </Link>
+                <Text wrap="truncate-end">
+                  <Link href={line.href}>
+                    <Text wrap="truncate-end" color={GRAY} bold underline={false}>
+                      {line.id}
+                    </Text>
+                  </Link>
+                </Text>
               ) : (
                 <Text wrap="truncate-end" color={GRAY} bold>
                   {line.id}
