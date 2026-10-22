@@ -1,0 +1,11 @@
+# M318: State how PROFILE header lines are read
+
+**Status:** done (2026-10-22, PR #331 https://github.com/jmgirard/cairn/pull/331)
+
+**Goal:** The rulebook states once how a `cairn/PROFILE.md` header line is read, and every header-line reader in cairn reads that way.
+
+**Outcome:** A "Header lines" paragraph in tracking-rules "Toolchain profiles" states the read. Only lines above the first `## ` line count. A header line is `#` first, the key in any case with `:` right after it, and the value's first word. A line with no value is not a header line, a byte-order mark is skipped, the first same-key line wins, and value case does not count. The paragraph names the readers (`_profile_header`, the pane's `profileHeader`, the skills), notes that line splitting can differ at rare characters, and says the validator checks every mode line. The file-map PROFILE.md row, the open-PR caps bullet, the "Collaboration mode" opening, and copilot-review.md §1 cite it. The Copilot opt-in now reads `on` in any case, and §3 says `none` means neither. `profile_name` in `hooks/session_context.py` reads `TOOLCHAIN_PROFILE_LINE` (new in `hooks/cairn_common.py`) through `_profile_header`, so the name shows lowercased. The validator's profile check opens PROFILE.md as `utf-8-sig`. New tests: `test_line_shape_and_first_line_rules`, `test_profile_name_is_read_as_a_header_line`, `test_mode_other_after_a_byte_order_mark_fails`. A CHANGELOG Unreleased entry covers the toolchain read, the validator fix, and the Copilot guide.
+
+**Decisions:** none promoted. The plan gate chose moving the toolchain line onto the shared reader over naming it as an exception, and the shared read for the Copilot line over an exact `on`.
+
+**Review:** Criteria audit at plan (full, 6 findings, all taken). Claim audit: 19 claims, 4 corrected. No criterion amended. Four reviewers gave 19 findings: 8 fixed, 11 rejected (none as `edge`), 0 follow-up. Copilot: no review recorded on PR #331. Hygiene: the "State how PROFILE header lines are read" row graduated, and the M312 row was pruned to the terminal cap. The rulebook-mass baseline in `skills/milestone/SKILL.md` stays at M317's 821 lines / 80,381 bytes, so the audit reports this change's growth (834 lines / 81,695 bytes). No lesson added (LESSONS at its byte cap), and no row unparked.
