@@ -101,6 +101,7 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - 2026-10-22: T5 done. One entry heads "Changes that affect existing repos" in CHANGELOG.md Unreleased. Its claims rest on `test_profile_name_is_read_as_a_header_line` and `test_mode_other_after_a_byte_order_mark_fails`.
 - 2026-10-22: claim audit: 19 claims read, 4 corrected — skills/shared/tracking-rules.md, hooks/cairn_common.py. The "Header lines" paragraph and the comment above `TOOLCHAIN_PROFILE_LINE` said one function does every read. They now name the hook reader, the pane's `profileHeader`, and the skills, and say the validator checks every mode line. The two passages that cite the paragraph became true with it. The re-read found 0 false.
 - 2026-10-22: T6 done. Verify slot green: scripts suite, hooks suite, both `claude plugin validate` runs, and `claude plugin test .` (2466 pass, 0 fail). cairn_validate passes. Status set to review.
+- 2026-10-22: step-7 approval: m318-profile-header-read approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
