@@ -23,7 +23,7 @@ import type { BandRow, BandState, WorkableRow } from './reader'
 // `badge` holds a heading's count badge, which the cairn pane draws as an
 // `Svg` pill in place of the text on such a surface (M289, badge.ts).
 // `href` is a web page the cairn pane links the text to off the terminal
-// (M311); the band links none.
+// (M311); the band links no span, only a row's id (`BandLine.href`, M312).
 export type Span = {
   text: string
   color?: string
@@ -41,8 +41,9 @@ export const GRAY = 'inactive'
 // terminal.
 export type TrackPart = { flow: Flow; columns: number }
 
-// `track`, when set, draws before the tail.
-export type BandLine = { key: string; id: string; title: string; tail: Span[]; track?: TrackPart }
+// `track`, when set, draws before the tail. `href`, when set, is the pull
+// request the id links to off the terminal: a milestone row's `url` (M312).
+export type BandLine = { key: string; id: string; title: string; tail: Span[]; track?: TrackPart; href?: string }
 
 type Phase = { noun: string }
 
@@ -306,9 +307,10 @@ export function stepLines(
 
 // One milestone's row: the track and its percent, or a warning label when
 // its counts cannot be read. The track keeps its least width even where
-// that leaves the title less than its room.
+// that leaves the title less than its room. A row whose file names a pull
+// request links its id to it (M312).
 export function bandLines(row: BandRow, columns: number, close = 0): BandLine[] {
-  const line = { key: `${row.id}-row`, id: row.id, title: row.title }
+  const line = { key: `${row.id}-row`, id: row.id, title: row.title, ...(row.url === null ? {} : { href: row.url }) }
   const flow = flowOf(row)
   if (flow === null) {
     const long: Span[] = [{ text: LONG_WARNING, color: 'warning' }]

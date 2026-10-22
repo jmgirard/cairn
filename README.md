@@ -99,6 +99,14 @@ its only active milestone, shown here with the track as `[track]`:
 M010 Nested tasks and a capital X  [track] 88%
 ```
 
+In the desktop app, and on any other surface that draws links, the id is
+a link to the milestone's pull request. The link takes the first pull
+request URL on the milestone file's `Branch/PR` header line, before any
+`companion:` entry. The id keeps its gray and bold, with no underline. If
+the header names no pull request, the id draws as before. This is the
+case for a milestone in progress before review opens its PR. The idle
+row and the terminal draw no link.
+
 The track is one rounded bar of three equal parts: plan, implement, then
 review. On a milestone row, plan is full. Implement fills by the checked
 boxes of `## Tasks`, and it is full on a `review` row. Review fills by the

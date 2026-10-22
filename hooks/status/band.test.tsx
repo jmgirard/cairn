@@ -3967,3 +3967,63 @@ describe("a session end whose step write is refused still frees the Buttons (M27
     })
   }
 })
+
+describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)", () => {
+  const PR = 'https://github.com/upstream/repo/pull/721'
+
+  test('stack-in-progress: the desktop draws M301 in a Link to its pull request, gray, bold, with no underline', async ($, on) => {
+    // The fixture's file names the pull request, so the reader gives its URL.
+    expect(FIXTURES['stack-in-progress'].files['/cairn/milestones/M301-reworked.md']).toContain(PR)
+    seat(on, copyOf('stack-in-progress'))
+    await $.turn.complete(turn())
+    await mountEach(
+      'stack-in-progress',
+      at(200),
+      async (ui, surface) => {
+        expect(await rowKeys(ui)).toEqual(['M301-row'])
+        const row = await firstRow(ui)
+        idAndTitle(row, 'M301', 'Back in work after review')
+        const links = below(await bandBox(ui), 'Link')
+        if (surface === 'desktop') {
+          // One Link in the band, in the head Box, around the id alone.
+          expect(links.length).toBe(1)
+          expect(below(layout(row).head, 'Link')).toEqual(links)
+          expect(links[0].props.href).toBe(PR)
+          const [id] = kids(links[0])
+          expect([id.type, textOf(id)]).toEqual(['Text', 'M301'])
+          expect([id.props.color, id.props.bold, id.props.underline]).toEqual([GRAY, true, false])
+        } else {
+          // The terminal draws the id as a plain Text.
+          expect(links).toEqual([])
+          expect(kids(layout(row).head as Element)[0].props.underline).toBe(undefined)
+        }
+      },
+      $,
+    )
+  })
+
+  // A milestone row with no readable file, one whose header names no pull
+  // request, the idle row, and the empty row draw no Link on either surface.
+  const NONE: { name: string; key: string }[] = [
+    { name: 'missing-file', key: 'M004-row' },
+    { name: 'single-in-progress', key: 'M002-row' },
+    { name: 'no-active', key: 'idle-row' },
+    { name: EMPTY_FIXTURES[0], key: 'plan-row' },
+  ]
+  for (const { name, key } of NONE) {
+    test(`${name}: the ${key} draws no Link`, async ($, on) => {
+      expect(FIXTURES[name].rows.every(row => row.url === null)).toBe(true)
+      seat(on, copyOf(name))
+      await $.turn.complete(turn())
+      await mountEach(
+        name,
+        at(200),
+        async ui => {
+          expect(await rowKeys(ui)).toEqual([key])
+          expect(below(await bandBox(ui), 'Link')).toEqual([])
+        },
+        $,
+      )
+    })
+  }
+})

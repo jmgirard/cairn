@@ -92,7 +92,13 @@ transitions, human-gated merges, and a domain verification doctrine.
   draw, and the band blocks nothing. A row has a left group (the bold id,
   one space, and the title) and a right group: the flow track and its
   percent, the idle row's track alone, or a `warning` label for a
-  row whose counts cannot be read (M206). The empty row (M213) has no id,
+  row whose counts cannot be read (M206). In the desktop app, and on any
+  other surface that draws links, a milestone row's id is a `Link` to the
+  first pull request URL that the milestone file's `Branch/PR` header
+  names before any `companion:` entry (`BandRow.url`, read by `prUrl`,
+  shape `band-5`). The id keeps its gray and bold with no underline. A
+  header with no pull request, the idle row, and the terminal draw no
+  link (M312). The empty row (M213) has no id,
   so its left group is the title alone, and its right group only the
   buttons. The phase or skill label, the
   chapter, the next open box, the skill row, and the ten-cell bar went in

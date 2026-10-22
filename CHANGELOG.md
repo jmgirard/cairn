@@ -213,6 +213,14 @@
 
 ### New
 
+- **The band's milestone id links to its pull request.** In the desktop
+  app, and on any other surface that draws links, the id on the status
+  band's row opens the milestone's pull request. The link takes the first
+  pull request URL on the milestone file's `Branch/PR` header line, before
+  any `companion:` entry. The id keeps its gray and bold look. If the
+  header names no pull request, the id draws as before. The terminal
+  draws no link.
+
 - **The pane's summary card links to the repo on GitHub.** Outside the
   terminal, for example in the desktop app, the project name on the
   card's first line opens the repo's GitHub page. The pull request count

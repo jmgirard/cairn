@@ -104,10 +104,10 @@ import { brailleSpans, TRACK_H, TRACK_PX, trackSvg } from './track'
 // under another tag reads it as absent. Bump a tag when its type changes.
 // The band's value keeps the repo root of the last read, null when no
 // ROADMAP was found or the working directory could not be read; the tag
-// moved to 4 with the root (M210).
+// moved to 4 with the root (M210), and to 5 with each row's `url` (M312).
 type StoredBand = BandState & { root: string | null }
 const BAND_REF = { plugin: 'cairn', key: 'band' } as const
-const BAND_SHAPE = 'band-4'
+const BAND_SHAPE = 'band-5'
 const band = atom(BAND_REF, { rows: [], workable: [], root: null } as StoredBand, { shape: BAND_SHAPE })
 
 // The active ids and statuses, in ROADMAP order, `milestone-review` while
@@ -827,6 +827,10 @@ export const register: Register = on => {
     // track is taller than text.
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
+    // A row's id links to its pull request in a `Link`, but in the terminal,
+    // as the pane's links do (M311): a terminal without OSC 8 prints the
+    // URL. The id keeps its gray and bold with no underline (M312).
+    const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     // The next-step and status Buttons (M212) show while no cairn skill's
     // step is set and no turn is working, on a row that has room for them
@@ -885,9 +889,17 @@ export const register: Register = on => {
         <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
           {line.id === '' ? null : (
             <Box key={`${line.key}-head`} flexShrink={0}>
-              <Text wrap="truncate-end" color={GRAY} bold>
-                {line.id}
-              </Text>
+              {line.href !== undefined && Link !== undefined ? (
+                <Link href={line.href}>
+                  <Text wrap="truncate-end" color={GRAY} bold underline={false}>
+                    {line.id}
+                  </Text>
+                </Link>
+              ) : (
+                <Text wrap="truncate-end" color={GRAY} bold>
+                  {line.id}
+                </Text>
+              )}
               <Text wrap="truncate-end">{' '}</Text>
             </Box>
           )}
