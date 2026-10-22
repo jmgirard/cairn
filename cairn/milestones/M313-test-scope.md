@@ -1,0 +1,60 @@
+# M313: Scope the tests cairn sessions add
+
+- **Status:** planned
+- **Priority:** high
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — the rulebook, validation doctrine, skills, and profiles govern the tests every adopting repo receives
+- **Branch/PR:** —
+
+## Goal
+
+Cairn sessions add the tests the change needs, written in the host's style, and stop adding superfluous tests, test comments, model fits, and oracles.
+
+## Scope
+
+**In:** The rulebook's "What gets a test" floor is scoped to the change and gains exclusions. Test comments get a rule. The validation doctrine's two-oracle bar, its simulation use, and its fits are scoped to new results, and `/cairn-init`'s Conventions line follows. Guest mode matches the host maintainers' tests. The tests-first steps of implement, hotfix, and plan point to the scope rule, and the r-package and python profiles narrow their edge-case lists. The review's diff-bug reviewer gets one question about excluded tests. A decision entry and a CHANGELOG entry with copy steps record the change.
+
+**Out:** trimming the easystats PRs, which the easystats session does, with the merged ones left as they are. A numeric review gate on test-to-code ratio or comment rate, declined at the question set. The other profiles' test-doctrine slots, which list no per-export edge cases.
+
+## Acceptance criteria
+
+- [ ] AC1: The "What gets a test" section of `skills/shared/tracking-rules.md` scopes the test floor to the change. A new export or public function gets the full floor. Otherwise tests cover the behavior the change adds or alters. A fix gets one regression test per fixed defect, which fails on the default branch and passes with the fix. Documented and changelog claims are tested where the change adds or alters them. The section's "Never" list adds three kinds: a check repeated across inputs or classes that run the same code path, a weaker expectation after an exact one that already covers it, and a helper that does what the test framework or a snapshot already does. A test that passes on the default branch is added only to pin behavior the change could break, such as a characterization test before a refactor or a case of a shape the change leaves untouched, or where the criteria name it. It is never a guard on code the change does not touch. In guest mode, where the host's own tests do otherwise, the guest test bullet of AC4 governs.
+- [ ] AC2: `skills/shared/tracking-rules.md` says that a test file's comments state only what the code cannot show. They hold no narrative bug history, worked arithmetic, or oracle-type labels. A one-line citation of the published source (in guest mode the publication, not a citekey) or an issue number is allowed. A fixture's provenance lives in its committed generator or provenance fields, and its source values in its source note. In guest mode the host's comment practice governs. `skills/shared/validation-doctrine.md` no longer asks for arithmetic in comments, and it names an oracle's type in the oracle record, not in a test comment. `git grep -n "arithmetic in comments" -- skills README.md cairn/DESIGN.md` prints nothing.
+- [ ] AC3: `skills/shared/validation-doctrine.md` keeps "≥2 *independent* oracle types" for a numeric result that the change adds or alters by design. A fix to an existing result needs one regression test whose expected value comes from one oracle. A simulation-coverage oracle is used for an interval method's coverage or for an estimator with no closed form or reference value, never to confirm a textbook property of a method the change does not add. Tests use at most one fitted model per code path, shared by the tests that use it. In guest mode the host's practice governs the number of oracles above one, and the hard stops still bind. The Conventions line that `skills/cairn-init/SKILL.md` writes states the scoped bar. The doctrine stays under its budget of 115 lines and 8,000 bytes (`wc -l -c`).
+- [ ] AC4: The guest-mode bullet in tracking-rules "Collaboration mode" that matches host text to the host's own covers test files. Before it adds tests, the session reads the tests that the host's maintainers wrote, never tests from the operator's own PRs, for the code it changes, or for nearby code where none exist. It matches their number of tests per change, model fits, helper use, and comment rate. Where host practice is lighter than the floor, host practice sets the test volume, and each fixed defect keeps its one regression test.
+- [ ] AC5: The test steps of `skills/milestone-implement/SKILL.md` (step 4), `skills/hotfix/SKILL.md` (step 3), and `skills/milestone-plan/SKILL.md` (step 4's test-scope bullet) point to the rulebook's test-scope rule. The test-doctrine slots of `skills/shared/profiles/r-package.md` and `skills/shared/profiles/python.md` apply, to a new export and to the inputs a change touches, the edge cases that fit those inputs' types, not every listed case to every export. Each profile stays under 120 lines (`test_shipped_reference_profiles_are_valid` in `scripts/tests`).
+- [ ] AC6: In `skills/milestone-review/SKILL.md`, the diff-bug reviewer also reports added tests that the rulebook's test-scope, test-comment, or guest test-matching rules exclude, and step 5 settles each such finding by its ordinary rule. No numeric gate on test-to-code ratio or comment rate is added.
+- [ ] AC7: `CHANGELOG.md`'s Unreleased section has an entry under "Changes that affect existing repos" that states the new test-scope, test-comment, oracle, and guest test-matching rules. It tells an r-package or python repo to copy its profile's new test-doctrine lines into its own `cairn/PROFILE.md`, and a repo with numeric work to narrow the oracle line in its DESIGN.md Conventions.
+
+## Coverage
+
+- AC1 → T1
+- AC2 → T1, T2
+- AC3 → T2
+- AC4 → T1
+- AC5 → T3
+- AC6 → T3
+- AC7 → T4
+
+## Tasks
+
+- [ ] T1: In `skills/shared/tracking-rules.md`, rewrite "What gets a test" (near line 754) for AC1 and the test-comment rule of AC2, keeping the check-discrimination paragraph consistent with the default-branch rule. Extend the guest "Text written for the host" bullet, or add a sibling bullet beside it, for AC4. Diff every removed sentence against main before committing (LESSONS M152).
+- [ ] T2: In `skills/shared/validation-doctrine.md`, make the AC2 and AC3 edits within its budget, and keep the pinned phrases "≥2 *independent* oracle types" and "a CI method's oracle is coverage". Update the Conventions line at `skills/cairn-init/SKILL.md:234`. Hand-run `python3 -m unittest discover -s skills/tests` and fix any pin this changes on purpose (`test_oracle_doctrine.py` among them).
+- [ ] T3: Point the test steps of `skills/milestone-implement/SKILL.md` step 4, `skills/hotfix/SKILL.md` step 3, and `skills/milestone-plan/SKILL.md` step 4 to the rulebook rule. Narrow the r-package and python test-doctrine edge-case lines and count each profile's lines (LESSONS M274, M303). Add the diff-bug reviewer's question in `skills/milestone-review/SKILL.md` for AC6.
+- [ ] T4: Append the decision entry: it narrows D-024's two-type bar and D-025's simulation clause, passes D-108's door on its retained trigger (the 60-PR easystats audit, a defect in shipped behavior), and annotates D-126 and D-207. Write the AC7 CHANGELOG entry. Grep README.md and `cairn/DESIGN.md` for stale test or oracle wording (LESSONS M112). Re-seed the `/milestone` rulebook-mass baseline in its three places (LESSONS M149), and run both gating suites and the hand-run `skills/tests`.
+
+## Work log
+
+- 2026-10-21: created by /milestone-plan.
+- 2026-10-21: tier check: milestone — a change to the rulebook, doctrine, skills, and profiles that every adopting repo reads, with design decisions.
+- 2026-10-21: idea vet: no concern left for the user. The audit's reworded rules keep needed tests: tests for new behavior, characterization tests before a refactor, untouched shapes for new checks, and interval coverage. The request is framed as the easystats session reported it.
+- 2026-10-21: collision check: D-024 invites a superseding entry if "the ≥2-types bar proves too strong a blanket", and D-025 owns simulation-coverage; both are narrowed, not dropped. D-126 (check discrimination) and D-207 (host style) are annotated. D-108's door is passed on its retained trigger, the 60-PR easystats audit. No ROADMAP row or archived milestone overlaps, and the inbox holds 0 issues and 0 PRs.
+- 2026-10-21: request source: the easystats orchestrator session (local_95d534cd), auditing 60 cairn PRs in 7 easystats packages from 2026-10-16 to 2026-10-22; the user chose to plan and implement it here at high priority and paused M312.
+- 2026-10-21: lessons harvested: M274 and M303 (profile edits do not reach adopted repos, and the 120-line cap), M149 (rulebook-mass baseline re-seed), M148 and M165 (prose-guard pins near edited text), M152 (diff removed sentences), M112 (stale wording in README and DESIGN).
+- 2026-10-21: criteria audit (full mode, fresh Opus reader): 12 findings, all taken. The default-branch rule now allows pinning behavior the change could break. Documented and changelog claims are scoped. "Branch" became "behavior" and "defect". The exclusions join the "Never" list. Guest host practice governs the conflicts. Simulation-coverage is kept for interval coverage, preserving D-025. A fix's expected value comes from one oracle, with one shared fit per code path. The guest oracle count is set above one, with the hard stops kept and the pinned phrase kept. The cairn-init Conventions line was added. Guest matching reads maintainers' tests only, with a nearby-code fallback. Citations and issue numbers are allowed in comments, with provenance in generators. Edge cases fit the input types. The review rule became one diff-bug question under step 5's ordinary rule. The CHANGELOG entry moved to "Changes that affect existing repos" with the Conventions step.
+- 2026-10-21: plan gate chose scoping the two-oracle bar to results the change adds over dropping it everywhere, because the operator's own numeric packages rely on the bar for new methods; falsified by a new-method milestone in an owner repo whose second oracle catches nothing the first did not.
+- 2026-10-21: plan gate chose one diff-bug reviewer question over a numeric ratio and comment-rate gate, because a gate is new checker machinery and a ratio is a proxy that a needed test can trip; falsified by a cairn PR that passes review with tests these rules exclude.
+- 2026-10-21: question set: the oracle bar — new results only, with one oracle for a fix and host practice above one in guest mode; review — one reviewer question, no ratio gate.
