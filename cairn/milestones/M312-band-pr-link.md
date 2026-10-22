@@ -87,3 +87,6 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - prior-review #4: the new register comment reads as if the terminal links — fix now (reworded "except in the terminal"), fixed 42e5360a
 - ripple #1: DESIGN.md's M311 rule on canonical hrefs disagrees with the unchecked band href — fix now (diff-bug #1; DESIGN names `pullOf`), fixed 42e5360a
 - ripple #2: the `BandRow` comment at reader.ts:44-45 does not name `url` — reject (false): the field's own comment at :58-60 says when it is null
+- copilot: hooks/status/reader.ts:61 — fix now (`built()` gains `url: null`), fixed 42e5360a
+- copilot: review body (the terminal-rendering comment) — fix now (reworded), fixed 42e5360a
+- Copilot level: Lite (set by GitHub's settings)
