@@ -430,10 +430,10 @@ class TestSessionContext(RepoFixture):
     def _caps_part(self, profile):
         (self.root / "cairn" / "PROFILE.md").write_text(profile)
         ctx = self._session()
-        self.assertIn("## Open PR caps", ctx)
+        self.assertIn("## Open-PR caps", ctx)
         # ahead of the ROADMAP part, so the length cut never reaches it
-        self.assertLess(ctx.index("## Open PR caps"), ctx.index("## cairn/ROADMAP.md"))
-        return ctx.split("## Open PR caps", 1)[1].split("\n## ", 1)[0]
+        self.assertLess(ctx.index("## Open-PR caps"), ctx.index("## cairn/ROADMAP.md"))
+        return ctx.split("## Open-PR caps", 1)[1].split("\n## ", 1)[0]
 
     def _assert_caps(self, part, fixes, features):
         self.assertIn(f"at most {fixes} of your open PRs from `hotfix-` branches", part)

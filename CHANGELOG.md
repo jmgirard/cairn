@@ -4,23 +4,37 @@
 
 ### Changes that affect existing repos
 
-- **Guest sessions keep within limits on the host repo.** In guest mode,
-  you keep at most 2 open PRs on the upstream repo by default. A
-  `# Open PR cap: N` line near the top of `cairn/PROFILE.md` changes the
-  cap to N, a whole number from 1 to 99. Before a handoff opens a new PR,
-  `/milestone-review` and `/hotfix` list your open PRs there. At or over
-  the cap they push nothing, open no PR, and stop with the list. A failed read
-  stops the same way, and a push to an already-open PR is never stopped.
-  A cap line that cairn cannot read is named, and the cap stays 2. Each
-  guest session is also given three rules as instructions at its start.
-  It never resolves a review thread that a person started. It replies to
-  no bot, except the one comment per Copilot review that the Copilot round
-  or `/copilot-review` posts. It closes an issue someone else opened only
-  when a merged change clearly fixes it or its fix belongs in another
-  repo. Such a close carries a one-line comment naming that change or
-  repo, with at most 3 such closes on one repo per UTC day. When unsure,
-  the session asks you in chat and posts nothing. A close you pick at a
-  cairn choice is outside these rules.
+- **Your open PRs on a repo stay under two caps.** In owner and guest
+  mode, you keep at most 3 open bug-fix PRs and at most 1 open feature PR
+  on a repo. A PR counts as a bug fix only when its branch starts with
+  `hotfix-`. Every open PR you authored there counts, opened through cairn
+  or not, and a PR stacked on another of yours counts as one with it. The
+  `# Bug-fix PR cap: N` and `# Feature PR cap: N` lines near the top of
+  `cairn/PROFILE.md` change the caps, each to a whole number from 1 to 99.
+  Before a new PR opens, `/hotfix` checks the bug-fix cap and
+  `/milestone-review` the feature cap. At the cap they push nothing, open
+  no PR, and stop with the list of those PRs. A failed read stops the same
+  way, and a push to an already-open PR is never stopped. A cap line near
+  the top whose value is not a whole number from 1 to 99 is named, and
+  that cap keeps its default. Each session is told the caps at its start.
+  If you keep more feature PRs open in a repo, add a
+  `# Feature PR cap: N` line there.
+
+- **Guest sessions follow rules on threads, bots, issues, and new
+  features.** Each guest session is given four rules as instructions at
+  its start. It never resolves a review thread that a person started. It
+  replies to no bot, except the one comment per Copilot review with a note
+  that the Copilot round or `/copilot-review` posts. It closes an issue
+  someone else opened only when a merged change clearly fixes it or its
+  fix belongs in another repo. Such a close carries a one-line comment
+  naming that change or repo, with at most 3 such closes on one repo per
+  UTC day. When unsure, the session asks you in chat and posts nothing. A
+  close you pick at a cairn choice is outside these rules. Before it plans
+  a feature or a change of behavior, it looks for a maintainer's agreement
+  with the design in an issue, or a maintainer's request for it in a
+  review of your PR. Without either, it tells you in chat and plans nothing
+  until a maintainer agrees. A fix that restores documented behavior needs
+  no such agreement.
 
 - **Sessions add fewer and plainer tests.** Tests now cover the behavior a
   change adds or alters. A new export gets the full test floor, and a bug

@@ -972,6 +972,21 @@ actually reach.
   fix. In guest mode, when the maintainers request changes on your
   `hotfix-` PR after its newest commit, a rerun makes the changes, runs
   the checks again, and asks you once before it pushes to the PR's branch.
+- **Your open PRs stay under two caps.** In owner and guest mode, you keep
+  at most 3 open bug-fix PRs and at most 1 open feature PR on a repo. A PR
+  counts as a bug fix only when its branch starts with `hotfix-`, and any
+  other open PR counts as a feature. Every open PR you authored on the repo
+  counts, opened through cairn or not, so a PR you opened by hand fills the
+  feature cap. A PR stacked on another of yours counts as one with it. To
+  change a cap, add `# Bug-fix PR cap: N` or `# Feature PR cap: N` near the
+  top of `cairn/PROFILE.md`, with a whole number from 1 to 99. Before a new
+  PR opens, `/hotfix` checks the bug-fix cap and `/milestone-review` the
+  feature cap. At the cap they push nothing, open no PR, and stop with a
+  list of those PRs. They also stop when the list cannot be read. In owner
+  mode the review stops before the merge question, so you are never asked
+  to approve a merge it cannot open. A push to a PR that is already open
+  is never stopped. A cap line near the top whose value is not a whole
+  number from 1 to 99 is named, and that cap keeps its default.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with
@@ -1079,25 +1094,22 @@ recommend one) and writes `# Collaboration mode: guest` into
   the same thing.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
-- **Your open PRs stay under a cap.** By default you keep at most 2 open
-  PRs on the upstream repo. To change it, add a line such as
-  `# Open PR cap: 4` near the top of `cairn/PROFILE.md`, with a whole
-  number from 1 to 99. Before a handoff opens a new PR, `/milestone-review`
-  and `/hotfix` list your open PRs there. At or over the cap they push nothing,
-  open no PR, and stop with a list of your open PRs. They also stop when
-  the list cannot be read. A push to a PR that is already open is never
-  stopped. A cap line cairn cannot read is named, and the cap stays 2.
-- **Threads, bots, and other people's issues have set rules.** Each guest
-  session is given these instructions at its start. They are instructions
-  to Claude, not a block on any command. Claude never resolves a review
-  thread that a person started. It replies to no bot, except the one
-  comment per Copilot review that the Copilot round or `/copilot-review`
-  posts. It closes an issue someone else opened only when a merged change
-  clearly fixes it or its fix belongs in another repo. The close carries a
-  one-line comment naming that change or repo, and Claude makes at most 3
-  such closes on one repo per UTC day. When it is unsure, it asks you in
-  chat and posts nothing. A close you pick at a cairn choice is yours, and
-  these limits do not cover it.
+- **Threads, bots, issues, and new features have set rules.** Each guest
+  session is given these instructions at its start, beside the open-PR
+  caps above. They are instructions to Claude, not a block on any command.
+  Claude never resolves a review thread that a person started. It replies
+  to no bot, except the one comment per Copilot review with a note that
+  the Copilot round or `/copilot-review` posts. It closes an issue someone
+  else opened only when a merged change clearly fixes it or its fix
+  belongs in another repo. The close carries a one-line comment naming
+  that change or repo, and Claude makes at most 3 such closes on one repo
+  per UTC day. When it is unsure, it asks you in chat and posts nothing. A
+  close you pick at a cairn choice is yours, and these limits do not cover
+  it. Before Claude plans a feature or a change of behavior, it looks for
+  a maintainer's agreement with the design in an issue, or a maintainer's
+  request for it in a review of your PR. Without either, it tells you in
+  chat and plans nothing until a maintainer agrees. A fix that restores
+  documented behavior needs no such agreement.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want

@@ -295,7 +295,7 @@ def pr_caps_section(root):
         for key, value in untaken
     )
     return (
-        "## Open PR caps\n\n"
+        "## Open-PR caps\n\n"
         f"Keep at most {fixes} of your open PRs from `hotfix-` branches and at "
         f"most {features} of your other open PRs on this repo (cairn/PROFILE.md's "
         "`# Bug-fix PR cap:` and `# Feature PR cap:` lines, else 3 and 1). "

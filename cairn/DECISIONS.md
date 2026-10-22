@@ -7767,3 +7767,45 @@ local, and the rerun waits for the operator to close or land a PR. Rules
 (2) to (4) are instructions, not guards, so a session can still break
 them. Falsified by a guest repo where the operator's open PRs pass the
 cap, or a day's closes on one repo pass 3, after this ships.
+
+### D-214 (2026-10-22): The open-PR cap becomes two caps, 3 bug-fix and 1 feature PR per repo, in owner and guest mode, and guest sessions gain an issue-first rule for features — supersedes D-213's cap clause; annotates D-137, D-152, D-153, and D-173; D-108's door does not apply (M315)
+
+**Context:** While M315 was in implement, the user asked, through the
+easystats session, for the cap to apply in every mode and to separate bug
+fixes from features, and for guest sessions to discuss a feature with the
+maintainers before building it. D-213's single guest-only cap of 2 had not
+shipped.
+
+**Decision:** At the user's decision, D-213's rule (1) is replaced by two
+caps in owner and guest mode: at most 3 of your open PRs on a repo from
+`hotfix-` branches and at most 1 other, changed by the `# Bug-fix PR cap: N`
+and `# Feature PR cap: N` header lines of `cairn/PROFILE.md` (D-213's parse
+rule, defaults 3 and 1). A PR counts by its head branch, not its content,
+and every open PR you authored counts. A stacked milestone's base PR is not
+counted, so stacking (D-173) works at a feature cap of 1. `/hotfix` step 1
+checks the bug-fix cap. `/milestone-review` checks the feature cap at step
+2's Copilot arm, before step 7's merge chip in owner mode, and before step
+8's push in guest mode, each only when that step will open a PR. In owner
+mode the read comes before the merge question, so a capped review never
+asks for an approval it cannot use. At step 2's Copilot arm a cap hit stops
+the review, so an opted-in repo (D-152) never reaches a merge whose PR
+skipped the round; the arm (D-153) can now end the review before it opens
+the PR. Guest mode (D-137) gains a fourth rule: before planning a feature
+or a change of behavior, find a maintainer's agreement with its design in
+an issue, or a maintainer's request for it in a review of your PR, and with
+neither, tell the user and plan nothing until a maintainer agrees. A fix
+that restores documented behavior is outside it. That rule is an
+instruction, and `/milestone-plan` runs no check of its own. The caps are
+conduct on the repo, not a rule about verification or records, so D-108's
+door does not apply. Rejected: classifying a PR by its content (no reader
+can tell a bug fix from its diff reliably); a plan-step check for the
+issue-first rule (the user chose an instruction); a guest repo where the
+operator merges, sent to a candidate row instead.
+
+**Consequences:** An open milestone PR fills the feature cap in an owner
+repo, so a second milestone's review stops until the first PR merges or
+closes, unless the repo sets a higher `# Feature PR cap:`. A PR opened by
+hand on any branch not starting with `hotfix-` fills the feature cap too.
+Falsified by a repo where your open PRs pass a cap after this ships, or a
+guest plan of a feature with no maintainer's agreement that the session
+did not report to the user.
