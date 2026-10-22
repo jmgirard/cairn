@@ -149,3 +149,10 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - ripple #3: README's "at most 3" is unconditional — fix now
 - ripple #4: the older Unreleased CHANGELOG entry says "at most 3" — fix now ("by default")
 - ripple #5: DESIGN.md lines 77-80 describe the four guest rules without the line — reject (false): the description stays true
+- pass 2 (after the AC1 amendment return, head 10682e5c):
+- copilot: no review. A second request on PR #332 exited 0, and the state query still reads `none`.
+- AC1: tracking-rules lines 446-453 (read 2026-10-22). Rule (3) keeps its close conditions, comment, and ask-when-unsure clause, opens "By default, make at most 3", states the `# Issue close cap:` line (a `[1-9][0-9]?` value sets it, `off` removes it, any other value leaves 3 with the line named, D-215), and says a full page of 100 events whose oldest event falls on the current UTC day counts as reaching the limit (D-216). The file-map row is unchanged from pass 1.
+- AC2: `TestIssueCloseCap` ok on this head.
+- AC3: the session-text tests ok on this head, and `host_rules` with no line still equals main's `HOST_RULES`. The untaken note now reads "`off` removes the limit. The limit stays at 3."
+- AC4: README lines 1113-1119 state "By default", the line, and `off`. The CHANGELOG entry is unchanged and the older Unreleased entry says "By default".
+- AC5: verify slot on this head: scripts 0, hooks 0, both plugin validates 0, plugin test 2466 pass 0 fail. cairn_validate all checks passed, and no marketplace `version` warning.
