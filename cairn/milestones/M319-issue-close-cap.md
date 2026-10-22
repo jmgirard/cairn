@@ -98,6 +98,8 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: status set to review.
 - 2026-10-22: amendment routed: AC1 — the full-page clause counts any 100 events of any date, so it blocks every close on a busy repo; the intended clause is a full page whose oldest event falls on that UTC day. The return also carries the fix-now items in the Review section (DESIGN.md header list, "by default" in rule (3), README, and the older CHANGELOG entry, the untaken note wording) and a follow-up row for diff-bug #3.
 - 2026-10-22: checkpoint (half-done): fix-now edits made to DESIGN.md (six header lines, D-215), README and the older CHANGELOG entry ("By default"), and the untaken note ("`off` removes the limit. The limit stays at 3."). The AC1 re-audit is running; the rule (3) rewrite, the superseding D-entry, and the follow-up row wait on it. Hooks suite OK.
+- 2026-10-22: re-audit: AC1 (full) — one finding: "that UTC day" had no referent in the criterion; fixed to "the current UTC day". The reader confirmed the rule is sound for a newest-first read (a full page whose oldest event is today may miss same-day events on page 2; an older oldest event means the page holds the whole day) and named the superseding D-entry's content. No IP conflict, bounded, deliverable-bound.
+- 2026-10-22: follow-up row "State the close count in guest text" filed for review diff-bug #3 (search-first: no candidate row or archive entry covers the guest text's count recipe).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
