@@ -411,6 +411,12 @@ COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 # `# Push remote: base`, the guest-mode push remote line (M267). No validator
 # reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).
 PUSH_REMOTE_LINE = re.compile(r"#\s*Push remote:\s*(\S+)", re.IGNORECASE)
+# `# Open PR cap: N`, the guest-mode cap on your open PRs in the host repo
+# (M315). No validator reads it; session_context states it, and
+# `/milestone-review` and `/hotfix` apply the same rule in prose.
+OPEN_PR_CAP_LINE = re.compile(r"#\s*Open PR cap:\s*(\S+)", re.IGNORECASE)
+OPEN_PR_CAP_VALUE = re.compile(r"[1-9][0-9]?")
+OPEN_PR_CAP_DEFAULT = 2
 
 
 def collaboration_mode(root):
@@ -432,6 +438,20 @@ def push_remote(root):
     when the line asks for the base repo, None when the line or the file is
     absent. Never raises."""
     return _profile_header(root, PUSH_REMOTE_LINE)
+
+
+def open_pr_cap(root):
+    """`(cap, untaken)` from the `# Open PR cap:` header line of
+    cairn/PROFILE.md, read as `collaboration_mode` reads its line (M315).
+    The cap is the line's value when it matches `[1-9][0-9]?`, else 2;
+    `untaken` is the value of a line that did not match, None when the line
+    or the file is absent or the value was taken. Never raises."""
+    value = _profile_header(root, OPEN_PR_CAP_LINE)
+    if value is None:
+        return OPEN_PR_CAP_DEFAULT, None
+    if OPEN_PR_CAP_VALUE.fullmatch(value):
+        return int(value), None
+    return OPEN_PR_CAP_DEFAULT, value
 
 
 def _profile_header(root, pattern):

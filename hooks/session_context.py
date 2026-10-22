@@ -285,6 +285,32 @@ def routing_section():
     return "\n".join(lines).strip()
 
 
+def host_limits(root):
+    """The four guest rules on the host repo (M315), as a continuation of
+    the one mode line: the open-PR cap from `cc.open_pr_cap`, naming a
+    `# Open PR cap:` line it did not take, then the thread, bot, and issue
+    rules."""
+    cap, untaken = cc.open_pr_cap(root)
+    note = (
+        f" (the `# Open PR cap: {untaken}` line in cairn/PROFILE.md was not "
+        "taken: the cap is a whole number from 1 to 99)"
+        if untaken is not None else ""
+    )
+    return (
+        f" On the host repo: keep at most {cap} of your open PRs{note}; "
+        "`/milestone-review` and `/hotfix` check this before a handoff opens "
+        "a new PR. Never resolve a review thread that a person started. "
+        "Reply to no bot, except the one comment per Copilot review that the "
+        "Copilot round or `/copilot-review` posts. Close an issue someone "
+        "else opened only when a merged change clearly fixes it or its fix "
+        "belongs in another repo, with a one-line comment naming that change "
+        "or repo, which holds over host style matching, and at most 3 such "
+        "closes on that repo per UTC day, counting your closes there that "
+        "day; when unsure, ask the user in chat and post nothing. A close the "
+        "user picks at a cairn chip is the user's act and is outside this rule."
+    )
+
+
 def _plural(n, one, many):
     return f"{n} {one if n == 1 else many}"
 
@@ -388,6 +414,7 @@ def build_context(root):
             "the host's maintainers wrote, and that matching wins over any "
             "other writing-style instruction in the session for that text; "
             "the other instruction governs only what host matching leaves open."
+            + host_limits(root)
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

@@ -417,6 +417,58 @@ class TestSessionContext(RepoFixture):
         self.assertIn("routing section unreadable", part)
         self.assertIn("no-such-template.md", part)
 
+    # --- M315 AC2: the guest part states the host-limit rules ---
+
+    GUEST_HEADER = "# Toolchain profile: generic\n# Collaboration mode: guest\n"
+
+    def _guest_part(self, profile):
+        (self.root / "cairn" / "PROFILE.md").write_text(profile)
+        return self._session().split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+
+    def test_guest_mode_states_the_cap_from_the_header_line(self):
+        part = self._guest_part(self.GUEST_HEADER + "# Open PR cap: 4\n\n## verify\n- x\n")
+        self.assertIn("at most 4 of your open PRs", part)
+        self.assertNotIn("at most 2 of your open PRs", part)
+        self.assertNotIn("not taken", part)
+
+    def test_guest_mode_cap_defaults_to_2_and_names_an_untaken_line(self):
+        cases = {
+            "no line": (self.GUEST_HEADER + "\n## verify\n- x\n", None),
+            "many": (self.GUEST_HEADER + "# Open PR cap: many\n\n## verify\n- x\n", "many"),
+            "0": (self.GUEST_HEADER + "# Open PR cap: 0\n\n## verify\n- x\n", "0"),
+            "100": (self.GUEST_HEADER + "# Open PR cap: 100\n\n## verify\n- x\n", "100"),
+            # below the first `## `, the line is slot body, not the header
+            "below ##": (self.GUEST_HEADER + "\n## verify\n# Open PR cap: 4\n", None),
+        }
+        for name, (profile, untaken) in cases.items():
+            with self.subTest(name):
+                part = self._guest_part(profile)
+                self.assertIn("at most 2 of your open PRs", part)
+                if untaken is None:
+                    self.assertNotIn("not taken", part)
+                else:
+                    self.assertIn(f"`# Open PR cap: {untaken}` line", part)
+                    self.assertIn("not taken", part)
+
+    def test_guest_mode_states_the_thread_bot_and_issue_rules(self):
+        part = self._guest_part(self.GUEST_HEADER + "\n## verify\n- x\n")
+        self.assertIn("Never resolve a review thread that a person started", part)
+        self.assertIn("Reply to no bot, except the one comment per Copilot review", part)
+        self.assertIn("`/copilot-review`", part)
+        self.assertIn("Close an issue someone else opened only when a merged change clearly fixes it", part)
+        self.assertIn("one-line comment naming that change or repo", part)
+        self.assertIn("at most 3 such closes on that repo per UTC day", part)
+        self.assertIn("ask the user in chat and post nothing", part)
+        self.assertIn("A close the user picks at a cairn chip", part)
+
+    def test_owner_mode_states_no_cap_with_the_line_present(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            "# Toolchain profile: generic\n# Open PR cap: 4\n\n## verify\n- x\n"
+        )
+        ctx = self._session()
+        self.assertNotIn("of your open PRs", ctx)
+        self.assertNotIn("Never resolve a review thread", ctx)
+
     def test_owner_mode_has_no_collaboration_part(self):
         (self.root / "cairn" / "PROFILE.md").write_text(
             "# Toolchain profile: generic\n\n## verify\n- x\n"
