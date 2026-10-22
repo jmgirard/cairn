@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the Copilot round and `/copilot-review` post on the user's pull requests
-- **Branch/PR:** m314-copilot-one-comment
+- **Branch/PR:** m314-copilot-one-comment, https://github.com/jmgirard/cairn/pull/328
 
 ## Goal
 
