@@ -1,18 +1,17 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-22 (M314 review: done and archived; M310 row pruned to the terminal cap; no new candidate row; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-22 (M315 review: done and archived; M311 row pruned to the terminal cap; new rows "Let guest maintainers merge their PRs" and "Report the open-PR caps in /milestone"; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M311 | Link the pane card to the repo on GitHub | done | — | normal | milestones/archive/M311-pane-repo-link.md |
 | M312 | Link the band's milestone id to its PR | blocked | — | normal | milestones/M312-band-pr-link.md |
 | M313 | Scope the tests cairn sessions add | done | — | high | milestones/archive/M313-test-scope.md |
 | M314 | Answer each Copilot review in one PR comment | done | — | high | milestones/archive/M314-copilot-one-comment.md |
-| M315 | Keep guest sessions within the host's limits | review | M314 | high | milestones/M315-guest-host-limits.md |
+| M315 | Keep guest sessions within the host's limits | done | M314 | high | milestones/archive/M315-guest-host-limits.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Fix the flaky refused-clear band tests: the M221 AC4 tests in `hooks/status/band.test.tsx` ("a refused clear or another session end drops the held command") failed on runs that touched no mod code, with a doubled `/clear` fill: two fails in M312's first full run, and one in M313's review verify run, each green on rerun. A held command or fill seems to survive into the next case. Found at M313 review (verify) — added 2026-10-21
