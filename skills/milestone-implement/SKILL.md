@@ -174,7 +174,9 @@ run ingestion first (see `/milestone-brief`).
 4. **Work tasks in order, autonomously.** For each task:
    - Tests first where feasible; numeric results per the oracle doctrine;
      language-specific test and error-condition idioms per the active
-     profile's `test-doctrine` slot.
+     profile's `test-doctrine` slot. Tests cover only what tracking-rules
+     "What gets a test" scopes to the change, with comments per its "Test
+     comments" paragraph, and in guest mode they match the host's tests.
    - Run the active profile's `verify` slot (`cairn/PROFILE.md`; absent →
      infer per tracking-rules "Toolchain profiles") — its checks must be clean
      before the task is checked off.

@@ -312,7 +312,7 @@ re-enters here, at the step the record shows is next:
    - **Diff-bug reviewer (Opus).** Reviews the full diff
      (`git diff <default-branch>..HEAD`) against the acceptance criteria, DESIGN.md
      conventions, and DECISIONS.md — correctness, contract, convention.
-     It also asks two questions and reports what they find as ranked
+     It also asks three questions and reports what they find as ranked
      findings. (a) Where the diff adds or changes code that awaits (an
      `await`, a promise callback, or a timer): for each value that the code
      reads or sets before an await and relies on after it, can another
@@ -322,6 +322,10 @@ re-enters here, at the step the record shows is next:
      They are a first run with no remote branch, PR, or file yet, guest
      mode (`--repo <base-repo>`, a fork or base remote), a PR whose head is
      on a fork, a dirty working tree, and a remote that moved ahead.
+     (c) Where the diff adds tests: does tracking-rules "What gets a test",
+     its "Test comments" paragraph, or the guest bullet on host tests
+     exclude any of them? Step 5 settles each such finding by its ordinary
+     rule.
    - **Blame-history reviewer (Haiku).** Runs `git log` / `git blame` on
      the modified lines and judges the change *against the intent of the code
      it touches*: does it silently undo something a past milestone added

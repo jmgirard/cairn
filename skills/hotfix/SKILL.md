@@ -271,7 +271,9 @@ can resolve against the fork instead of the base repo.
    number is the identifier that matters.
 
 3. **Regression test first.** The bug gets a test either way; only the
-   sequence differs.
+   sequence differs. The bug gets one regression test per fixed defect,
+   and no other test unless tracking-rules "What gets a test" calls for it.
+   In guest mode it matches the host's tests.
    *Authoring a fix:* write the test that fails because of the bug; confirm
    it fails; then fix; confirm it passes.
    *Adopting a PR:* the fix already exists, so the author-side

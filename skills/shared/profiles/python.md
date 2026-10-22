@@ -41,9 +41,11 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 Python-mechanical test expectations layered on the universal "What gets a test"
 rules in tracking-rules:
 - Tests are written for `pytest` (fixtures, parametrize), discovered under `tests/`.
-- Every public function: happy path, every raised-exception branch fired via
+- Every new public function: happy path, every raised-exception branch fired via
   `pytest.raises(...)`, Python edge cases — empty inputs, `None`, single element,
-  wrong type / `TypeError`, zero-length and unicode strings.
+  wrong type / `TypeError`, zero-length and unicode strings. Apply to a new
+  function, and to the inputs a change touches, only the edge cases that fit
+  those inputs' types.
 - New user-facing errors raise a specific built-in or a package exception with a
   clear message, never a bare `assert` or generic `Exception`.
 - Indirect by default: private helpers (direct tests only for independent logic).

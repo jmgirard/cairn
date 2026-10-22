@@ -552,7 +552,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      took three returns beaten by a ref spelling, an argument-order bug, and
      then `awk`, which is no git command at all.
    - Acceptance criteria set the test scope for the milestone (see "What
-     gets a test" in tracking-rules): name the behavior that must be tested.
+     gets a test" in tracking-rules): name the behavior that must be tested,
+     which is the behavior the change adds or alters, and no more.
    - `Out:` items name where the excluded work lives instead.
    - Tasks ≤ one working session each, ordered by dependency.
    - **Positional labels** (owner: plan): every criterion and task bullet
