@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M319: Let PROFILE.md set the guest close limit
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -96,6 +96,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: T5 done. Verify slot green: scripts 0, hooks 0, both `claude plugin validate` runs 0, `claude plugin test .` 2466 pass 0 fail. cairn_validate passes, skills/tests OK.
 - 2026-10-22: claim audit: 23 claims read, 1 corrected — CHANGELOG.md, README.md. The CHANGELOG entry said guest sessions close at most 3 issues a day. It now says issues that someone else opened. Both texts now say "with no leading zero". The re-read found both true.
 - 2026-10-22: status set to review.
+- 2026-10-22: amendment routed: AC1 — the full-page clause counts any 100 events of any date, so it blocks every close on a busy repo; the intended clause is a full page whose oldest event falls on that UTC day. The return also carries the fix-now items in the Review section (DESIGN.md header list, "by default" in rule (3), README, and the older CHANGELOG entry, the untaken note wording) and a follow-up row for diff-bug #3.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -117,3 +118,26 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - AC4: README lines 1114-1118 state the default of 3, the `# Issue close cap: N` line, and `off`. CHANGELOG.md Unreleased opens with the entry that names the line.
 - AC5: verify slot: scripts 0, hooks 0, both plugin validates 0, `claude plugin test .` 2466 pass 0 fail.
 - gate: `cairn_validate.py` all checks passed. The marketplace validate output has no `version` warning. CHANGELOG has the entry (AC4). No DESIGN.md principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: `issues/events?per_page=100` returns the newest 100 events of every kind and date, so "a full page of 100 events counts as reaching the limit" blocks every close on a busy repo at any number — amendment return (AC1 and D-215 mandate the clause; the repair is "a full page whose oldest event falls on that UTC day")
+- diff-bug #2: DESIGN.md lines 17-20 still list five header lines — fix now
+- diff-bug #3: the session-start text never states how to count a day's closes — follow-up: the gap predates this milestone, and AC3 keeps the no-line text equal to main
+- diff-bug #4: the untaken note calls `off` a limit — fix now; its place after rule (4) — reject (style)
+- diff-bug #5: the `off` text's "which holds over host style matching, and such closes" can blur what "which" refers to — reject (style): the clause reads as before, and each case was read in full
+- diff-bug #6: `off please` reads as `off`, and an empty value is silent — reject (false): both follow the "Header lines" paragraph
+- diff-bug #7: `Many` and the 5 case repeat a code path, and a test comment cites a milestone id — reject (false): `Many` checks the value kept as written and 5 checks a number other than the default, and milestone-id comments are the file's pattern
+- diff-bug #8: the rulebook does not say `off` skips the count — reject (false): with no limit there is nothing to count, and the fix-now rewording of rule (3) puts the limit first
+- blame-history #1: rule (3) still opens "Make at most 3" before the `off` clause — fix now (the same fix as ripple #2)
+- blame-history #2: the full-page clause blocks a guest whose page holds no close of its own — the same defect as diff-bug #1, taken by its amendment return
+- blame-history #3: a guest session can write `off` into its own PROFILE.md — reject (planned change): the user asked for this line, and D-213 and D-215 keep the limit an instruction, not a guard
+- blame-history #4: DESIGN.md's header-line list — fix now (the same fix as diff-bug #2)
+- blame-history #5: README keeps "at most 3" unconditional — fix now (the same fix as ripple #3)
+- blame-history #6: the rulebook-mass baseline in `skills/milestone/SKILL.md` is not re-seeded — reject (false): the audit reports growth against the M317 figure on purpose, as at M318
+- prior-review #1: the baseline growth is not logged — reject (false): the archive summary will name it, as at M318
+- prior-review #2: the full-page clause might reverse M315's close-count fix — reject (false): it adds a stopping rule to the same read and removes nothing
+- prior-review #3: `issue_close_cap` reads the value as written — reject (false): it compares `off` lowercased, as the rule says
+- ripple #1: DESIGN.md's "five optional lines" — fix now (with diff-bug #2)
+- ripple #2: tracking-rules rule (3) opens with a fixed "at most 3" — fix now
+- ripple #3: README's "at most 3" is unconditional — fix now
+- ripple #4: the older Unreleased CHANGELOG entry says "at most 3" — fix now ("by default")
+- ripple #5: DESIGN.md lines 77-80 describe the four guest rules without the line — reject (false): the description stays true
