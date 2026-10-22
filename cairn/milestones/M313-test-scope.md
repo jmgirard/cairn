@@ -119,3 +119,10 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - ripple #1: an earlier CHANGELOG entry says the diff reviewer asks "two new questions" — reject (false): that entry describes its own change, and this entry describes the third
 - ripple #2: same as diff-bug #3 — fixed edbd69c4
 - follow-up: the flaky M221 AC4 band tests became the candidate row "Fix the flaky refused-clear band tests"
+- copilot: skills/shared/tracking-rules.md:765 (add prose guards and mutation entries for the new floor) — reject: `skills/tests` is hand-run and gates nothing (D-109), and new guard apparatus for verification rules needs D-108's shipped-behavior trigger
+- copilot: skills/shared/validation-doctrine.md:34 (guards for the doctrine's scope exceptions) — reject: same reasons
+- copilot: skills/tests/test_cost_audit_line.py:68 (narrative history in a test comment) — fix now, fixed edbd69c4
+- copilot: review body — noted (an index of the three threads, with no unanchored items); summary reply posted (issuecomment-6331509801)
+- Copilot level: Lite (set by GitHub's settings)
+- conversation: PR #326 — no human reviews or comments; Copilot's three threads are above
+- snapshot: none (no changed `_snaps` or `__snapshots__` path in the diff)
