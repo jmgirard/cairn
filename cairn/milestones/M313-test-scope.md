@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the rulebook, validation doctrine, skills, and profiles govern the tests every adopting repo receives
-- **Branch/PR:** m313-test-scope
+- **Branch/PR:** m313-test-scope, https://github.com/jmgirard/cairn/pull/326
 
 ## Goal
 
