@@ -828,7 +828,9 @@ def check_profile(root):
     if not os.path.isfile(path):
         return []
     try:
-        with open(path, encoding="utf-8") as f:
+        # `utf-8-sig` skips a byte-order mark, as the hooks' reader does
+        # (M318), so a mode line that follows one is checked.
+        with open(path, encoding="utf-8-sig") as f:
             text = f.read()
     except Exception:
         return []

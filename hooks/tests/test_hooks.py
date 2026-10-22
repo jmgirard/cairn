@@ -243,6 +243,20 @@ class TestPushRemote(RepoFixture):
         self.assertFalse(worker.is_alive(), "the PROFILE.md read blocked on a FIFO")
         self.assertEqual(out, {"push": None, "mode": "owner"})
 
+    def test_line_shape_and_first_line_rules(self):
+        # M318: the header-line read that tracking-rules "Toolchain
+        # profiles" states, through the shared `_profile_header`.
+        for text, want in (
+            (" # Push remote: base\n", None),
+            ("# Push remote : base\n", None),
+            ("# Push remote:\n# Push remote: base\n", "base"),
+            ("# Push remote: base\n# Push remote: fork\n", "base"),
+            ("# Push remote: base # a note\n", "base"),
+        ):
+            with self.subTest(text=text):
+                self._profile(text)
+                self.assertEqual(session_context.cc.push_remote(str(self.root)), want)
+
 
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
@@ -341,6 +355,17 @@ class TestSessionContext(RepoFixture):
         out = hook_json(proc)
         self.assertIn("Active toolchain profile", out["additionalContext"])
         self.assertIn("`r-package`", out["additionalContext"])
+
+    def test_profile_name_is_read_as_a_header_line(self):
+        # M318: the toolchain line takes the shared header-line read.
+        for text, want in (
+            ("# Collaboration mode: owner\n\n## verify\n# Toolchain profile: python\n", None),
+            ("# toolchain PROFILE: R-Package\n\n## verify\n- x\n", "r-package"),
+            ("﻿# Toolchain profile: python\n\n## verify\n- x\n", "python"),
+        ):
+            with self.subTest(text=text):
+                (self.root / "cairn" / "PROFILE.md").write_text(text, encoding="utf-8")
+                self.assertEqual(session_context.profile_name(str(self.root)), want)
 
     # --- M184 AC2: guest mode injects the CLAUDE.md routing section itself ---
 

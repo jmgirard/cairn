@@ -13,10 +13,11 @@ it grow".
 
 ## 1. Opt-in
 
-If `cairn/PROFILE.md` carries the header line `# Copilot review: on`, the
-round runs. No line, or any other value, means off: the PR opens
-after the merge approval (D-138), and the skill requests, comments, and
-resolves nothing, but it can add the note below. The opt-in line also
+If the `# Copilot review:` header line of `cairn/PROFILE.md` reads `on`
+(any letter case, tracking-rules "Toolchain profiles"), the round runs.
+No line, or any other value, means off: the PR opens
+after the merge approval (D-138), and the skill writes nothing to the PR,
+but its recap can carry the note below. The opt-in line also
 permits the round's outward writes (the request, fix pushes, the comment
 on each review, resolves) and its thread dispositions, with no question
 (M231). The round keeps no record that it ran. The PR's signals (§2)
@@ -40,9 +41,8 @@ First run the state query (§3). Only on `none`, request the review with
 <base-repo>`). On `pending` or `reviewed`, never request, whoever made the
 earlier request: a second request starts a second review and spends
 credits. A later run of this step on the same PR (a later review pass, a
-`/hotfix` resume) that reads `none` requests again: `none` means the query
-found no Copilot request or review, and a request GitHub never recorded
-leaves none (PR #291 to #293). `/hotfix` asks for Lite and
+`/hotfix` resume) that reads `none` requests again. A request GitHub
+never recorded also reads `none` (PR #291 to #293). `/hotfix` asks for Lite and
 `/milestone-review` for Balanced, but GitHub's settings choose the level:
 its API took none per request on 2026-10-10. A non-zero exit is a failed
 request (a refusal, Copilot unavailable): report the error in one line and
@@ -64,7 +64,7 @@ Read the exit code first. A non-zero exit means the query failed: state the
 error in one line, request nothing, wait for nothing, and let the skill's
 read run as usual. Otherwise the output is `pending` (a Copilot request is
 open), `reviewed head <level>` or `reviewed earlier-head <level>` (a Copilot
-review exists; `head` means it covered the current head), or `none`.
+review exists; `head` means it covered the current head), or `none` (neither).
 
 ## 4. Wait and read
 

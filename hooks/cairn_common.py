@@ -401,12 +401,15 @@ def on_default_branch(cwd):
     return cur in ("main", "master")  # no remote: canonical fallback
 
 
+# `# Toolchain profile: <name>`, the header line that names the repo's
+# profile. session_context's `profile_name` reads it through
+# `_profile_header`, as the other hook readers do (M318).
+TOOLCHAIN_PROFILE_LINE = re.compile(r"#\s*Toolchain profile:\s*(\S+)", re.IGNORECASE)
 # The collaboration-mode header line of cairn/PROFILE.md (M184, D-137) —
-# `# Collaboration mode: guest` — shaped like session_context's
-# `_PROFILE_HEADER` (`# Toolchain profile: <name>`). The only line outside
+# `# Collaboration mode: guest`. The only line outside
 # the seven `##` slots the validator reads; scripts/cairn_validate.py reaches
-# this same regex and reader through cairn_scripts' import of cairn_common,
-# so there is one parser, not two.
+# this same regex through cairn_scripts' import of cairn_common, so there is
+# one pattern, not two (its own loop checks every mode line).
 COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 # `# Push remote: base`, the guest-mode push remote line (M267). No validator
 # reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).

@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M318: State how PROFILE header lines are read
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the rulebook and hooks ship to every cairn repo and decide how its PROFILE.md is read   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m318-profile-header-read https://github.com/jmgirard/cairn/pull/331   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -37,13 +37,13 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [ ] AC1: The "Toolchain profiles" section of `skills/shared/tracking-rules.md` holds one paragraph that states how a `cairn/PROFILE.md` header line is read. It makes five claims. (a) Only the lines before the first line that starts with `## ` are read. (b) A header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace characters after the colon. A line with no value is not a header line. (c) A byte-order mark at the start of the file is skipped. (d) When two header lines carry the same key, the first one is read. (e) Letter case in the value does not count, so `Guest` reads as `guest`.
-- [ ] AC2: Four passages cite the AC1 paragraph for how their lines are read. They are the PROFILE.md row of the tracking-rules file map, the open-PR caps bullet of its "Git and approval model" section, the first sentence of its "Collaboration mode" section, and section 1 of `skills/shared/copilot-review.md`.
-- [ ] AC3: `profile_name` in `hooks/session_context.py` reads the `# Toolchain profile:` line by the AC1 read. It returns None for a PROFILE.md text whose only `# Toolchain profile:` line comes after the first `## ` line. It returns `r-package` for the line `# toolchain PROFILE: R-Package`. It returns the name for a text that opens with a byte-order mark.
-- [ ] AC4: Section 1 of `skills/shared/copilot-review.md` says that the value `on` in any letter case turns the round on. Any other value, or no line, leaves the round off.
-- [ ] AC5: `_profile_header` in `hooks/cairn_common.py` reads as each AC1 claim states. A line with a space before `#`, or with a space before the colon, is not read. A line with no value is passed over for a later line with a value. A value followed by more text reads as its first word.
-- [ ] AC6: The `profile valid` check of `scripts/cairn_validate.py` skips a byte-order mark at the start of PROFILE.md. So it FAILs an unknown mode on a first line that follows the mark.
-- [ ] AC7: The verify slot of `cairn/PROFILE.md` runs clean.
+- [x] AC1: The "Toolchain profiles" section of `skills/shared/tracking-rules.md` holds one paragraph that states how a `cairn/PROFILE.md` header line is read. It makes five claims. (a) Only the lines before the first line that starts with `## ` are read. (b) A header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace characters after the colon. A line with no value is not a header line. (c) A byte-order mark at the start of the file is skipped. (d) When two header lines carry the same key, the first one is read. (e) Letter case in the value does not count, so `Guest` reads as `guest`.
+- [x] AC2: Four passages cite the AC1 paragraph for how their lines are read. They are the PROFILE.md row of the tracking-rules file map, the open-PR caps bullet of its "Git and approval model" section, the first sentence of its "Collaboration mode" section, and section 1 of `skills/shared/copilot-review.md`.
+- [x] AC3: `profile_name` in `hooks/session_context.py` reads the `# Toolchain profile:` line by the AC1 read. It returns None for a PROFILE.md text whose only `# Toolchain profile:` line comes after the first `## ` line. It returns `r-package` for the line `# toolchain PROFILE: R-Package`. It returns the name for a text that opens with a byte-order mark.
+- [x] AC4: Section 1 of `skills/shared/copilot-review.md` says that the value `on` in any letter case turns the round on. Any other value, or no line, leaves the round off.
+- [x] AC5: `_profile_header` in `hooks/cairn_common.py` reads as each AC1 claim states. A line with a space before `#`, or with a space before the colon, is not read. A line with no value is passed over for a later line with a value. A value followed by more text reads as its first word.
+- [x] AC6: The `profile valid` check of `scripts/cairn_validate.py` skips a byte-order mark at the start of PROFILE.md. So it FAILs an unknown mode on a first line that follows the mark.
+- [x] AC7: The verify slot of `cairn/PROFILE.md` runs clean.
 
 ## Coverage
 <!-- owner: plan · create/amend-via-gate; each acceptance criterion → the
@@ -65,12 +65,12 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Write the AC1 paragraph near the header-line sentence of tracking-rules "Toolchain profiles" (about line 741). Point the AC2 passages at it (tracking-rules lines 15, 343, and 401, and copilot-review.md section 1). Write the AC4 sentence in copilot-review.md section 1.
-- [ ] T2: In `hooks/tests/test_hooks.py`, beside `TestPushRemote`, add cases for the four AC5 inputs, through `collaboration_mode` or `push_remote`.
-- [ ] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
-- [ ] T4: Open PROFILE.md with `utf-8-sig` in the profile check of `scripts/cairn_validate.py` (about line 831). Add a `scripts/tests` case where a BOM-led unknown mode line FAILs.
-- [ ] T5: Write one CHANGELOG entry under Unreleased for the toolchain line read (T3) and the validator fix (T4), each claim backed by its test.
-- [ ] T6: Run the verify slot.
+- [x] T1: Write the AC1 paragraph near the header-line sentence of tracking-rules "Toolchain profiles" (about line 741). Point the AC2 passages at it (tracking-rules lines 15, 343, and 401, and copilot-review.md section 1). Write the AC4 sentence in copilot-review.md section 1.
+- [x] T2: In `hooks/tests/test_hooks.py`, beside `TestPushRemote`, add cases for the four AC5 inputs, through `collaboration_mode` or `push_remote`.
+- [x] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
+- [x] T4: Open PROFILE.md with `utf-8-sig` in the profile check of `scripts/cairn_validate.py` (about line 831). Add a `scripts/tests` case where a BOM-led unknown mode line FAILs.
+- [x] T5: Write one CHANGELOG entry under Unreleased for the toolchain line read (T3) and the validator fix (T4), each claim backed by its test.
+- [x] T6: Run the verify slot.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -93,6 +93,15 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - 2026-10-22: plan gate chose moving the toolchain line onto the shared reader over naming it as an exception, because one read is simpler to state and follow; falsified by a PROFILE.md that needs its toolchain line after a `## ` heading or in a case-sensitive key.
 - 2026-10-22: plan gate chose the shared read for the Copilot line (any case of `on`) over keeping `on` exact, because one read covers every header line; falsified by a repo that writes `On` and expects the round off.
 - 2026-10-22: changelog: one entry for the toolchain read and the validator fix. The Copilot case change is not in it, because only prose reads that line and no test can back the claim.
+- 2026-10-22: implement started on m318-profile-header-read. The untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's work and stay unstaged.
+- 2026-10-22: T1 done. The "Header lines" paragraph follows the validator sentence in "Toolchain profiles", and the four AC2 passages cite it. copilot-review.md was 5 bytes under its 9,600-byte budget, so one sentence in section 2 and the off clause in section 1 were tightened, with the same meaning. It is now 9,580 bytes. The simple-english lint hook flags many sentences that predate this change in both files. Only the sentences this change wrote were fixed.
+- 2026-10-22: T2 done. `test_line_shape_and_first_line_rules` in `TestPushRemote` covers the four AC5 inputs and claim (d), first line wins. Three planted defects in `_profile_header` turned it red (search in place of match, no first-match return, a space allowed before the colon with the rest of the line as value), and the file was restored.
+- 2026-10-22: T3 done. `TOOLCHAIN_PROFILE_LINE` sits in `hooks/cairn_common.py`, and `profile_name` returns `_profile_header` on it, so session_context's own regex is gone. `test_profile_name_is_read_as_a_header_line` failed on the old reader with all three AC3 inputs, each for its own reason, and passes now. Hooks suite: 204 tests OK.
+- 2026-10-22: T4 done. The profile check opens PROFILE.md with `utf-8-sig`. `test_mode_other_after_a_byte_order_mark_fails` exited 0 on the old validator and FAILs the run now, naming the line. Scripts suite: 446 tests OK, 21 skipped.
+- 2026-10-22: T5 done. One entry heads "Changes that affect existing repos" in CHANGELOG.md Unreleased. Its claims rest on `test_profile_name_is_read_as_a_header_line` and `test_mode_other_after_a_byte_order_mark_fails`.
+- 2026-10-22: claim audit: 19 claims read, 4 corrected — skills/shared/tracking-rules.md, hooks/cairn_common.py. The "Header lines" paragraph and the comment above `TOOLCHAIN_PROFILE_LINE` said one function does every read. They now name the hook reader, the pane's `profileHeader`, and the skills, and say the validator checks every mode line. The two passages that cite the paragraph became true with it. The re-read found 0 false.
+- 2026-10-22: T6 done. Verify slot green: scripts suite, hooks suite, both `claude plugin validate` runs, and `claude plugin test .` (2466 pass, 0 fail). cairn_validate passes. Status set to review.
+- 2026-10-22: step-7 approval: m318-profile-header-read approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -106,3 +115,37 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
      results, review findings + triage. EXEMPT from the 150-line cap (M55),
      as are the work log (D-046) and the decisions section (D-074); evidence
      never scrambles plan-owned content. -->
+
+- copilot: requested on PR #331 (exit 0). The re-query read `none`: Copilot request on PR #331 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
+- AC1: `skills/shared/tracking-rules.md` "Toolchain profiles" holds the "Header lines" paragraph (read 2026-10-22). It states (a) the stop at the first `## ` line, (b) `#` first, the key in any case, `:` right after it, the value as the first non-whitespace run, no value means no header line, (c) the byte-order mark skipped, (d) the first of two same-key lines read, (e) value case not counting.
+- AC2: grep found all four citations: the file-map row (line 15, "Every header line is read as "Toolchain profiles" states"), the open-PR caps bullet (line 343), the "Collaboration mode" first sentence (lines 401-402), and copilot-review.md section 1 (line 17).
+- AC3: `test_profile_name_is_read_as_a_header_line` ok (2026-10-22). Its three inputs return None, `r-package`, and `python`. At implement it failed on the old reader with each input.
+- AC4: copilot-review.md lines 16-18 say `on` in any letter case runs the round, and no line or any other value means off.
+- AC5: `test_line_shape_and_first_line_rules` ok, covering leading space, space before colon, valueless-then-valued line, first line wins, and first word. `TestCollaborationMode` (7 tests) ok, covering slot body, key case, byte-order mark, and value case. At implement, three planted defects turned the new test red.
+- AC6: `test_mode_other_after_a_byte_order_mark_fails` ok. At implement it exited 0 on the old validator.
+- AC7: verify slot on the review head: scripts suite 0, hooks suite 0, both `claude plugin validate` runs 0, `claude plugin test .` 0 (2466 pass, 0 fail).
+- gate: `cairn_validate.py` all checks passed. The marketplace validate output has no `version` warning. CHANGELOG.md Unreleased has the entry for this change. No DESIGN.md principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the Copilot case change had no changelog line — fix now, fixed c8ee19e7 (worded as what the guide says in 1fd22897)
+- diff-bug #2: "in one way" overstated, since the readers split lines differently at rare characters — fix now, fixed c8ee19e7
+- diff-bug #3: the validator sentence read as checking every header line — fix now, fixed c8ee19e7
+- diff-bug #4: `skills/cairn-release/SKILL.md:28` names the mode line without citing the paragraph — reject (false): the paragraph governs every skill's read of a header line, and that line names the line without stating another read
+- diff-bug #5: "it can add the note below" made the chat note sound like a PR write — fix now, fixed c8ee19e7
+- diff-bug #6: one paragraph line was 172 characters — fix now, fixed c8ee19e7
+- diff-bug #7: `test_line_shape_and_first_line_rules` passes on main — reject (false): it tests documented claims this change adds, which "What gets a test" allows
+- blame-history #1: the DESIGN.md Known issues pointer was dangling — reject (false): Known issues runs from DESIGN.md line 811 to the end and holds the line, and 1fd22897 dropped the pointer anyway
+- blame-history #2: the copilot-review.md rewrite dropped what `none` means — fix now, fixed 1fd22897 (section 3 says `none` (neither))
+- blame-history #3: "writes nothing to the PR" could be read as covering the PR open — reject (style): the same sentence says the PR opens after the merge approval
+- blame-history #4: the `cairn_common.py` "one parser" comment and the paragraph overstated what the validator and the pane share — fix now, fixed 1fd22897
+- blame-history #5: `profile_name` no longer reads a toolchain line after a `## ` heading — reject (planned change): the plan gate chose it and the changelog states it
+- blame-history #6: the changelog claimed Copilot behavior that no test backs — fix now, fixed 1fd22897 (now states what the guide says)
+- prior-review #1: the Copilot opt-in, which permits outward writes, now accepts any case of `on` — reject (planned change): the user chose it at the plan gate
+- prior-review #2: "letter case does not count" differs from `open_pr_caps`'s `lower=False` — reject (false): a taken cap value is digits, and quoting an untaken value as written names it without deciding it
+- prior-review #3: "a request GitHub never recorded also reads `none`" states as fact what M281 kept as "may" — reject (false): that direction follows from the query, and M281's case was the reverse claim
+- ripple #1: the M318 candidate row's premise is now false — reject (planned change): post-merge hygiene removes the row
+- ripple #2: DESIGN.md:1145 "no fixture holds a BOM PROFILE.md" — reject (false): the line is about the pane's fixture set, which this diff does not touch
+- ripple #3: DESIGN.md:892 says JS and Python differ on a BOM — reject (false): that line is about ROADMAP row parsing, which still differs
+- conversation: PR #331 — no reviews, no comments, no open threads (read 2026-10-22)
+- copilot: no review. The request on PR #331 exited 0, but the state query still reads `none`, so GitHub may not have recorded it.
+- snapshot: the diff changes no `_snaps` or `__snapshots__` file
+- verify after the fix-now commits (1fd22897): scripts 0, hooks 0, both plugin validates 0, plugin test 2466 pass 0 fail, cairn_validate all checks passed

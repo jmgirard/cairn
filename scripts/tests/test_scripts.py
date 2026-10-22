@@ -2266,6 +2266,14 @@ class TestValidateProfile(ScriptCase):
         self.assertIn("# Collaboration mode: other", proc.stdout)
         self.assertIn("owner|guest", proc.stdout)
 
+    def test_mode_other_after_a_byte_order_mark_fails(self):
+        # M318: the mark is skipped, as the hooks skip it.
+        text = "﻿# Collaboration mode: other\n" + VALID_PROFILE
+        proc = run("cairn_validate.py", self._profile(text))
+        self.assertEqual(proc.returncode, 1, proc.stdout)
+        self.assertIn("FAIL  profile valid", proc.stdout)
+        self.assertIn("# Collaboration mode: other", proc.stdout)
+
     def test_fenced_command_block_body_not_a_slot(self):
         # Review finding (scored 91): a `## ` comment inside a fenced command
         # block in a slot body must be body content, not a new slot.

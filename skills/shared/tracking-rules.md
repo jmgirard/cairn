@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo, `scripts/cairn_next.py` and the cairn pane read for the stack-base rule ("Collaboration mode"), and no validator reads (the git model's push remote); also the optional `# Bug-fix PR cap: N` and `# Feature PR cap: N` header lines, which `/milestone-review`, `/hotfix`, `/milestone`, and `hooks/session_context.py` read for the open-PR caps and no validator reads (the git model's open-PR caps) | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo, `scripts/cairn_next.py` and the cairn pane read for the stack-base rule ("Collaboration mode"), and no validator reads (the git model's push remote); also the optional `# Bug-fix PR cap: N` and `# Feature PR cap: N` header lines, which `/milestone-review`, `/hotfix`, `/milestone`, and `hooks/session_context.py` read for the open-PR caps and no validator reads (the git model's open-PR caps). Every header line is read as "Toolchain profiles" states | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -340,7 +340,7 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   (`--apply`), else shows the item to add by hand.
 - **Open-PR caps** (owner and guest mode, D-214). Keep at most 3 of your open PRs on a repo from `hotfix-` branches
   (the bug-fix cap) and at most 1 other (the feature cap). The header lines `# Bug-fix PR cap: N` and
-  `# Feature PR cap: N` of `cairn/PROFILE.md` change them, each read as the `# Collaboration mode:` line is read, when
+  `# Feature PR cap: N` of `cairn/PROFILE.md` change them, each read as "Toolchain profiles" states for a header line, when
   N matches `[1-9][0-9]?`. A PR counts by its head branch, not its content, and every open PR you authored counts,
   opened through cairn or not. At a stacked milestone's own read (guest mode only), its `<base-pr>` is not counted.
   The read is `gh pr list --repo <base-repo> --author @me --state open --limit 100 --json
@@ -398,7 +398,8 @@ CI wait. **Resume is stateless**: re-derive the check state from `gh pr checks` 
 
 ## Collaboration mode
 
-A second axis beside the toolchain profile (D-137), declared as a header line of `cairn/PROFILE.md` —
+A second axis beside the toolchain profile (D-137), declared as a header line of `cairn/PROFILE.md` (read as
+"Toolchain profiles" states) —
 `# Collaboration mode: guest` — absent meaning **owner**. Owner mode is every rule in this file as written. **Guest
 mode** is the operator contributing to a repo they do not own: cairn's plan/implement/review loop runs as local
 reasoning over local files, and nothing cairn writes reaches the repo's maintainers. In guest mode:
@@ -741,6 +742,18 @@ choice is asked).
 `cairn_validate` no-ops when `PROFILE.md` is absent and FAILs on a missing, empty, or unrecognized slot. The one line
 outside the seven `##` slots that `scripts/cairn_validate.py` reads is the `# Collaboration mode:` header line
 ("Collaboration mode" above); it FAILs a value outside `owner|guest`.
+
+**Header lines.** cairn reads each header line of `cairn/PROFILE.md` as this paragraph states. The hooks and
+`scripts/cairn_next.py` read it through `_profile_header` in `hooks/cairn_common.py`. The cairn pane reads its two
+lines through `profileHeader` in `hooks/status/reader.ts`, and the skills read by this paragraph. The code readers,
+the validator included, can split lines differently at rare line-break characters such as a form feed. Only the
+lines before the first line that starts with `## ` are read, so a look-alike line in a slot body is body text. A
+header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter
+case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace
+characters after the colon. A line with no value is not a header line. A byte-order mark at the start of the file is
+skipped. When two header lines carry the same key, the first one is read. Letter case in the value does not count,
+so `Guest` reads as `guest`. The `profile valid` check of `scripts/cairn_validate.py` takes no first line: it checks
+the value of every `# Collaboration mode:` line in the header region.
 
 ## Validation doctrine (statistical/numeric work)
 

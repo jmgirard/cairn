@@ -4,6 +4,16 @@
 
 ### Changes that affect existing repos
 
+- **The toolchain line is read like the other header lines.** The
+  session-start text now takes `# Toolchain profile:` only from the lines
+  above the first `## ` heading of `cairn/PROFILE.md`. It matches the key
+  in any letter case and shows the name in lowercase. A byte-order mark at
+  the start of the file no longer hides the line. `cairn_validate` now
+  skips that mark too, so it fails an unknown collaboration mode on a
+  first line that follows one. The rulebook now states this read once, in
+  "Toolchain profiles", for every header line. The Copilot review guide now
+  says that `# Copilot review: On` or `ON` also turns the Copilot round on.
+
 - **Your open PRs on a repo stay under two caps.** In owner and guest
   mode, you keep at most 3 open bug-fix PRs and at most 1 open feature PR
   on a repo. A PR counts as a bug fix only when its branch starts with

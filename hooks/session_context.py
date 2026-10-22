@@ -34,8 +34,6 @@ import sys
 
 import cairn_common as cc
 
-_PROFILE_HEADER = re.compile(r"#\s*Toolchain profile:\s*(\S+)")
-
 MAX_CHARS = 30000
 
 # Per cap-exempt section, per milestone. Re-derived at M118 over all THREE
@@ -114,17 +112,9 @@ def profile_name(root):
     `# Toolchain profile: <name>` header, or None when the file is absent or
     headerless. A repo that predates profiles has no PROFILE.md — the skills
     infer from the repo's toolchain markers at point of use, so the hook stays silent (no-op)
-    rather than guessing here."""
-    path = os.path.join(root, "cairn", "PROFILE.md")
-    try:
-        with open(path, encoding="utf-8") as f:
-            for line in f:
-                m = _PROFILE_HEADER.match(line)
-                if m:
-                    return m.group(1)
-    except Exception:
-        return None
-    return None
+    rather than guessing here. Read as every header line is read (M318):
+    header region only, key in any case, the name lowercased."""
+    return cc._profile_header(root, cc.TOOLCHAIN_PROFILE_LINE)
 
 
 def heading_name(line):
