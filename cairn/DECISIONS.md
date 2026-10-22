@@ -7621,3 +7621,73 @@ the candidate row "List snapshots changed after a PR opens".
 
 **Consequences:** D-208's Decision, its first two Rejected clauses, and
 its falsifiers stand.
+
+### D-210 (2026-10-21): The test floor covers the change, guest tests match the host's, and the two-oracle bar binds only a result the change adds — narrows D-024's bar and D-025's simulation clause; annotates D-126 and D-207; passes D-108's door on its retained trigger (M313)
+
+**Context:** The easystats orchestrator session audited 60 PRs that cairn
+sessions opened in 7 easystats packages from 2026-10-16 to 2026-10-22.
+Reviewers judged a large share of the added test lines superfluous, and the
+test comments carried bug history, worked arithmetic, and oracle-type
+labels (the figures are in the M313 milestone file). The causes were in
+the plugin's own text: "What gets a test" applied its floor to every
+export and every documented claim, the validation doctrine asked for
+arithmetic in comments, for two oracle types on every numeric result, and
+for simulation checks, and the R and Python profiles listed every edge case
+for every export. No rule told a guest session to match the host's tests.
+That is a defect in shipped behavior, so the new rules pass D-108's door on
+the trigger clause that entry retains.
+
+**Decision:** The test floor covers the behavior a change adds or alters.
+A new export gets the full floor, and a fix gets one regression test per
+fixed defect. A test that passes on the default branch is added only where
+it pins behavior the change could break, or where the criteria name it.
+Three kinds of test are never added: a check repeated across inputs that
+run one code path, a weaker expectation after an exact one, and a helper
+that duplicates the test framework or a snapshot. Test comments state only
+what the code cannot show. In guest mode the session matches the tests the
+host's maintainers wrote, and host practice sets the test volume. D-024's
+two-type bar now binds a numeric result the change adds or alters by
+design, and a fix needs one oracle; D-024 named this exit for a bar that
+"proves too strong a blanket". D-025's simulation-coverage stays the oracle
+for an interval method's coverage, and it is never used to confirm a
+textbook property of a method the change does not add. The review's
+diff-bug reviewer asks about excluded tests, and step 5 settles them by its
+ordinary rule. This annotates D-126: its untouched-shape fixtures remain
+allowed. It annotates D-207: host matching now reaches test files too.
+
+**Rejected:** dropping the two-type bar everywhere, because the operator's
+own numeric packages rely on it for new methods; falsified by a
+new-method milestone whose second oracle catches nothing the first did
+not. A numeric review gate on the test-to-code line ratio and comment
+rate, because a ratio is a proxy that a needed test can trip, and a gate
+is new checker machinery; falsified by a cairn PR that passes review with
+tests these rules exclude.
+
+**Consequences:** Repos adopted earlier keep their own `cairn/PROFILE.md`
+test-doctrine lines and DESIGN.md Conventions oracle line until they copy
+the new text, as the CHANGELOG entry says. The rulebook and the validation
+doctrine are read live from the plugin, so their rules reach every repo at
+once. Tests already merged stay as they are.
+
+### D-211 (2026-10-21): Three clauses of D-210 are corrected in one batched entry — the bar's scope in its heading, the simulation ban's scope, and the guest override's reach — supersedes those clauses; D-210's decision stands (M313 review)
+
+**Context:** The M313 review found three faults in D-210. Its heading says
+the bar "binds only a result the change adds", while its Decision and the
+validation doctrine scope it to a result the change adds or alters by
+design. Its Decision bans simulation-coverage "to confirm a textbook
+property of a method the change does not add", which also bans a coverage
+check on an interval method the change alters by design, against D-025's
+"a CI method's oracle is coverage". And it does not say that the rulebook's
+guest pointer, where host tests do otherwise, reaches the test floor that
+D-126 (check discrimination) and M136 (failure identity) built.
+
+**Decision:** The two-type bar binds a numeric result that the change adds
+or alters by design. Simulation-coverage is never used to confirm a
+textbook property of a method the change does not add or alter. In guest
+mode, host practice governs test volume, fits, helpers, and comments, and
+the failure-identity rule and check discrimination still bind. The review
+also aligned the rulebook, the doctrine, the profiles, and the CHANGELOG
+with these clauses.
+
+**Consequences:** D-210's other clauses, its rejections, and its
+falsifiers stand.
