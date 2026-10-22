@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -104,3 +104,24 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - AC5: not ticked. At the live look (T4) on 96d14bbf, the operator's screenshot showed the M312 id drawn higher than the title, with too little space before it. Review return 1 (work log).
 - spawned: diff-bug, blame-history, prior-review, ripple
 - AC5: not ticked. At the second live look on 5e72fd35 the id still sat above the title's line. Review return 2 (work log).
+- diff-bug #1: `idAndTitle` dropped any Text whose one child is a Link, anywhere in the left group — fix now (only the head's first child), fixed d4cc9780
+- diff-bug #2: the M301 test did not check the holder Text's props — fix now (its wrap is asserted), fixed d4cc9780
+- diff-bug #3: the `new URL` test ran on a constant, not on `pullOf`'s output — fix now (each passed page is checked), fixed d4cc9780
+- diff-bug #4: the `<` and non-ASCII cases ran one path, and the passing 39/100 bounds had no case — fix now (non-ASCII dropped, 39/100 added), fixed d4cc9780
+- diff-bug #5: README and CHANGELOG did not say a URL `pullOf` refuses draws no link — fix now, fixed d4cc9780
+- diff-bug #6: the `BandLine.href` comment left out `pullOf` — fix now, fixed d4cc9780
+- diff-bug #7: `PULL_PAGE`'s comment claimed `prUrl`'s cut while allowing any number of digits — fix now (15-digit cap, a 16-digit case), fixed d4cc9780
+- diff-bug #8: the refused-URL band test repeats M301's href check — reject (false): that line is the test's passing control
+- blame-history #1: the Link-holder filter relaxed M206 AC1's "no other Text" — fix now (diff-bug #1), fixed d4cc9780
+- blame-history #2: `PULL_PAGE` did not bound the number's length — fix now (diff-bug #7), fixed d4cc9780
+- blame-history #3: the terminal `underline` check is gone — reject (planned change): pass 1 dropped it as diff-bug #7, and the terminal branch asserts no Link
+- blame-history #4: band.ts imports `pullOf` from repo.ts, which also holds `readRepo` — reject (false): repo.ts imports only types, so nothing runs at import, and DESIGN names the dependency
+- prior-review #1: README and CHANGELOG omit the refused-URL case — fix now (diff-bug #5), fixed d4cc9780
+- prior-review #2: the `new URL` test never calls `pullOf` — fix now (diff-bug #3), fixed d4cc9780
+- prior-review #3: the terminal `underline` check is gone — reject (planned change), as blame-history #3
+- ripple #1, #2: README and CHANGELOG state the link with no `pullOf` exception — fix now (diff-bug #5), fixed d4cc9780
+- ripple #3: band.ts:45-46 `href` comment — fix now (diff-bug #6), fixed d4cc9780
+- ripple #4: reader.test.ts's comment filed M082 under no-PR headers — fix now, fixed d4cc9780
+- ripple #5: reader.ts's `url` comment said the band links any `url` — fix now, fixed d4cc9780
+- ripple #6: repo.ts's limit comments named `webOf` alone — fix now, fixed d4cc9780
+- ripple #7: DESIGN.md:96-97 states the link with no exception — reject (false): the same paragraph gives the `pullOf` exception two sentences later
