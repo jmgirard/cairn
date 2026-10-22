@@ -743,13 +743,15 @@ choice is asked).
 outside the seven `##` slots that `scripts/cairn_validate.py` reads is the `# Collaboration mode:` header line
 ("Collaboration mode" above); it FAILs a value outside `owner|guest`.
 
-**Header lines.** cairn reads each header line of `cairn/PROFILE.md` in one way (`_profile_header` in
-`hooks/cairn_common.py`). Only the lines before the first line that starts with `## ` are read, so a look-alike line in
+**Header lines.** cairn reads each header line of `cairn/PROFILE.md` in one way. The hooks and
+`scripts/cairn_next.py` read it through `_profile_header` in `hooks/cairn_common.py`, the cairn pane through
+`profileHeader` in `hooks/status/reader.ts`, and the skills by this paragraph. Only the lines before the first line that starts with `## ` are read, so a look-alike line in
 a slot body is body text. A header line starts with `#` as its first character. Then come optional whitespace, the key
 as written in any letter case, `:` right after the key, optional whitespace, and the value. The value is the first
 run of non-whitespace characters after the colon. A line with no value is not a header line. A byte-order mark at the
 start of the file is skipped. When two header lines carry the same key, the first one is read. Letter case in the
-value does not count, so `Guest` reads as `guest`.
+value does not count, so `Guest` reads as `guest`. `scripts/cairn_validate.py` checks every value rather than taking one,
+so it checks every `# Collaboration mode:` line in the header region.
 
 ## Validation doctrine (statistical/numeric work)
 

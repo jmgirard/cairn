@@ -403,7 +403,7 @@ def on_default_branch(cwd):
 
 # `# Toolchain profile: <name>`, the header line that names the repo's
 # profile. session_context's `profile_name` reads it through
-# `_profile_header`, as every other header line is read (M318).
+# `_profile_header`, as the other hook readers do (M318).
 TOOLCHAIN_PROFILE_LINE = re.compile(r"#\s*Toolchain profile:\s*(\S+)", re.IGNORECASE)
 # The collaboration-mode header line of cairn/PROFILE.md (M184, D-137) —
 # `# Collaboration mode: guest`. The only line outside

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M318: State how PROFILE header lines are read
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -70,7 +70,7 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - [x] T3: Put a case-insensitive `# Toolchain profile:` regex in `hooks/cairn_common.py` and make `profile_name` read it through `_profile_header`. Update the comment at `hooks/cairn_common.py:404` that names `_PROFILE_HEADER`. Add tests for the three AC3 inputs.
 - [x] T4: Open PROFILE.md with `utf-8-sig` in the profile check of `scripts/cairn_validate.py` (about line 831). Add a `scripts/tests` case where a BOM-led unknown mode line FAILs.
 - [x] T5: Write one CHANGELOG entry under Unreleased for the toolchain line read (T3) and the validator fix (T4), each claim backed by its test.
-- [ ] T6: Run the verify slot.
+- [x] T6: Run the verify slot.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -99,6 +99,8 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - 2026-10-22: T3 done. `TOOLCHAIN_PROFILE_LINE` sits in `hooks/cairn_common.py`, and `profile_name` returns `_profile_header` on it, so session_context's own regex is gone. `test_profile_name_is_read_as_a_header_line` failed on the old reader with all three AC3 inputs, each for its own reason, and passes now. Hooks suite: 204 tests OK.
 - 2026-10-22: T4 done. The profile check opens PROFILE.md with `utf-8-sig`. `test_mode_other_after_a_byte_order_mark_fails` exited 0 on the old validator and FAILs the run now, naming the line. Scripts suite: 446 tests OK, 21 skipped.
 - 2026-10-22: T5 done. One entry heads "Changes that affect existing repos" in CHANGELOG.md Unreleased. Its claims rest on `test_profile_name_is_read_as_a_header_line` and `test_mode_other_after_a_byte_order_mark_fails`.
+- 2026-10-22: claim audit: 19 claims read, 4 corrected — skills/shared/tracking-rules.md, hooks/cairn_common.py. The "Header lines" paragraph and the comment above `TOOLCHAIN_PROFILE_LINE` said one function does every read. They now name the hook reader, the pane's `profileHeader`, and the skills, and say the validator checks every mode line. The two passages that cite the paragraph became true with it. The re-read found 0 false.
+- 2026-10-22: T6 done. Verify slot green: scripts suite, hooks suite, both `claude plugin validate` runs, and `claude plugin test .` (2466 pass, 0 fail). cairn_validate passes. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
