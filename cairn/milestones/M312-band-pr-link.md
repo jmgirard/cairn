@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -57,3 +57,4 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: T2 done: the full `claude plugin test` rerun is green (2472 pass, 0 fail), so the two M221 AC4 fails of the first run were flaky.
 - 2026-10-21: blocked: paused at the user's request so that the test-guidance milestone the easystats audit asked for can be planned and implemented first, at high priority. T1 to T3 are done. Resume with `/milestone-implement M312`, which runs the claim audit (step 7) and then hands off to review, where T4's live look waits.
 - 2026-10-21: resumed (M313 done, the blocker gone): merged main (M313) into the branch, the only conflict the ROADMAP's M313 row, resolved to main's file with M312 `in-progress`. Verify green: scripts/tests 445 OK, hooks/tests 193 OK, both validates, `claude plugin test` 2472 pass, 0 fail. The untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
+- 2026-10-21: claim audit: 23 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/band.ts, reader.ts, register.tsx, band.test.tsx, reader.test.ts, types/index.d.ts, scripts/tests/test_status_fixtures.py, cairn/DESIGN.md. The reader also found one stale line outside the diff, DESIGN.md's `band` value root sentence still naming shape `band-4`; fixed to `band-5` since M312.

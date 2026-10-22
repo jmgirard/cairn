@@ -141,7 +141,7 @@ transitions, human-gated merges, and a domain verification doctrine.
   fails, or its text is empty or only whitespace, `loadCairn` returns null
   (M210). `readCairn` returns the same state with the root it found, and a
   null state when a throw ends the read of a found ROADMAP. The
-  `band` value stores that root (shape `band-4`, M210), and a failed read
+  `band` value stores that root (M210; shape `band-5` since M312), and a failed read
   keeps the rows only when the stored root equals the found one. A failed
   read in another root, a throw from `$.session.cwd()`, and stored rows with
   no root empty the band and the pane. A throw while parsing a found
