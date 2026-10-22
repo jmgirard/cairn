@@ -13,6 +13,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 | M312 | Link the band's milestone id to its PR | blocked | — | normal | milestones/M312-band-pr-link.md |
 | M313 | Scope the tests cairn sessions add | done | — | high | milestones/archive/M313-test-scope.md |
 | M314 | Answer each Copilot review in one PR comment | planned | — | high | milestones/M314-copilot-one-comment.md |
+| M315 | Keep guest sessions within the host's limits | planned | M314 | high | milestones/M315-guest-host-limits.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Fix the flaky refused-clear band tests: the M221 AC4 tests in `hooks/status/band.test.tsx` ("a refused clear or another session end drops the held command") failed on runs that touched no mod code, with a doubled `/clear` fill: two fails in M312's first full run, and one in M313's review verify run, each green on rerun. A held command or fill seems to survive into the next case. Found at M313 review (verify) — added 2026-10-21
