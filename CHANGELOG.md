@@ -5,9 +5,10 @@
 ### Changes that affect existing repos
 
 - **A guest repo can raise or remove the daily limit on issue closes.**
-  Guest sessions close at most 3 issues on a repo per UTC day. A
-  `# Issue close cap: N` line near the top of `cairn/PROFILE.md` sets that
-  limit to N, from 1 to 99. `# Issue close cap: off` removes the limit.
+  Guest sessions close at most 3 issues that someone else opened on a
+  repo per UTC day. A `# Issue close cap: N` line near the top of
+  `cairn/PROFILE.md` sets that limit to N, from 1 to 99 with no leading
+  zero. `# Issue close cap: off` removes the limit.
   Any other value, `0` included, keeps 3, and the session-start text names
   the line. The rule on which issues a guest session can close does not
   change.

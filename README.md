@@ -1113,9 +1113,9 @@ recommend one) and writes `# Collaboration mode: guest` into
   belongs in another repo. The close carries a one-line comment naming
   that change or repo, and Claude makes at most 3 such closes on one repo
   per UTC day. A `# Issue close cap: N` line near the top of
-  `cairn/PROFILE.md` sets that limit to a value from 1 to 99, and
-  `# Issue close cap: off` removes it. Any other value keeps 3, and the
-  session start names the line. When Claude is unsure, it asks you in chat
+  `cairn/PROFILE.md` sets that limit to a value from 1 to 99 with no
+  leading zero. `# Issue close cap: off` removes the limit. Any other
+  value keeps 3, and the session start names the line. When Claude is unsure, it asks you in chat
   and posts nothing. A close you pick at a cairn choice is yours, and
   these limits do not cover it. Before Claude plans a feature or a change
   of behavior, it looks for a maintainer's agreement with the design in

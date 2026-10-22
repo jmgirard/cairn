@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M319 | Let PROFILE.md set the guest close limit | in-progress | — | normal | milestones/M319-issue-close-cap.md |
+| M319 | Let PROFILE.md set the guest close limit | review | — | normal | milestones/M319-issue-close-cap.md |
 | M318 | State how PROFILE header lines are read | done | — | normal | milestones/archive/M318-profile-header-read.md |
 | M316 | Fix the flaky refused-clear band tests | dropped | — | normal | milestones/archive/M316-band-clear-flake.md |
 | M317 | Report the open-PR caps in /milestone | done | — | normal | milestones/archive/M317-milestone-pr-caps.md |
