@@ -977,16 +977,19 @@ actually reach.
   counts as a bug fix only when its branch starts with `hotfix-`, and any
   other open PR counts as a feature. Every open PR you authored on the repo
   counts, opened through cairn or not, so a PR you opened by hand fills the
-  feature cap. A PR stacked on another of yours counts as one with it. To
-  change a cap, add `# Bug-fix PR cap: N` or `# Feature PR cap: N` near the
-  top of `cairn/PROFILE.md`, with a whole number from 1 to 99. Before a new
-  PR opens, `/hotfix` checks the bug-fix cap and `/milestone-review` the
-  feature cap. At the cap they push nothing, open no PR, and stop with a
+  feature cap. In guest mode with `# Push remote: base`, when a stacked
+  milestone opens its PR, its stack base's PR is not counted. To change a
+  cap, add `# Bug-fix PR cap: N` or `# Feature PR cap: N` near the top of
+  `cairn/PROFILE.md`, with a value from 1 to 99 and no leading zero. Before
+  an authored fix cuts its branch, `/hotfix` checks the bug-fix cap; a
+  re-land or a follow-up to a merged PR is not checked. Before a review
+  opens a new PR, `/milestone-review` checks the feature cap. At the cap
+  they push nothing, open no PR, and stop with a
   list of those PRs. They also stop when the list cannot be read. In owner
   mode the review stops before the merge question, so you are never asked
   to approve a merge it cannot open. A push to a PR that is already open
-  is never stopped. A cap line near the top whose value is not a whole
-  number from 1 to 99 is named, and that cap keeps its default.
+  is never stopped. A cap line near the top whose value is not 1 to 99
+  with no leading zero is named, and that cap keeps its default.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with

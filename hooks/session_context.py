@@ -291,7 +291,7 @@ def pr_caps_section(root):
     fixes, features, untaken = cc.open_pr_caps(root)
     notes = "".join(
         f" The `# {key}: {value}` line in cairn/PROFILE.md was not taken: a "
-        "cap is a whole number from 1 to 99."
+        "cap is a value from 1 to 99 with no leading zero."
         for key, value in untaken
     )
     return (
@@ -301,8 +301,9 @@ def pr_caps_section(root):
         "`# Bug-fix PR cap:` and `# Feature PR cap:` lines, else 3 and 1). "
         "Every open PR you authored on this repo counts, opened through cairn "
         "or not, and a PR stacked on another of yours counts as one with it. "
-        "`/milestone-review` and `/hotfix` check these before they open a new "
-        "PR (tracking-rules \"Git and approval model\")." + notes
+        "`/hotfix` checks the bug-fix cap before an authored fix cuts its "
+        "branch, and `/milestone-review` the feature cap before a review opens "
+        "a new PR (tracking-rules \"Git and approval model\")." + notes
     )
 
 

@@ -342,12 +342,13 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   (the bug-fix cap) and at most 1 other (the feature cap). The header lines `# Bug-fix PR cap: N` and
   `# Feature PR cap: N` of `cairn/PROFILE.md` change them, each read as the `# Collaboration mode:` line is read, when
   N matches `[1-9][0-9]?`. A PR counts by its head branch, not its content, and every open PR you authored counts,
-  opened through cairn or not. A stacked milestone's `<base-pr>` is not counted, so a PR stacked on another of yours
-  counts as one with it. The read is `gh pr list --repo <base-repo> --author @me --state open --limit 100 --json
+  opened through cairn or not. At a stacked milestone's own read (guest mode only), its `<base-pr>` is not counted.
+  The read is `gh pr list --repo <base-repo> --author @me --state open --limit 100 --json
   number,url,headRefName`, and a list of 100 PRs counts as reaching both caps. `/hotfix` step 1 reads the bug-fix cap
   for an authored fix before it cuts a branch. `/milestone-review` reads the feature cap at step 2's Copilot arm,
-  before step 7's merge chip in owner mode, and before step 8's push in guest mode, each only when that step will open
-  a PR. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
+  before step 7's merge chip in owner mode, and before step 8's push in guest mode, each only when the review will open
+  a new PR (the header names no open PR, and the review is not on resume route (b)). The merged-PR re-entry's
+  follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
   names the cap and each open PR of that kind, or says the list reached 100. A failed read stops the same way, naming
   the read and its error. The close block also names each cap line in the header whose value was not taken. A push to
   an already-open PR reads no cap. The session-start text states both caps.

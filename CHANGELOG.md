@@ -8,15 +8,18 @@
   mode, you keep at most 3 open bug-fix PRs and at most 1 open feature PR
   on a repo. A PR counts as a bug fix only when its branch starts with
   `hotfix-`. Every open PR you authored there counts, opened through cairn
-  or not, and a PR stacked on another of yours counts as one with it. The
+  or not. In guest mode with `# Push remote: base`, when a stacked
+  milestone opens its PR, its stack base's PR is not counted. The
   `# Bug-fix PR cap: N` and `# Feature PR cap: N` lines near the top of
-  `cairn/PROFILE.md` change the caps, each to a whole number from 1 to 99.
-  Before a new PR opens, `/hotfix` checks the bug-fix cap and
-  `/milestone-review` the feature cap. At the cap they push nothing, open
-  no PR, and stop with the list of those PRs. A failed read stops the same
-  way, and a push to an already-open PR is never stopped. A cap line near
-  the top whose value is not a whole number from 1 to 99 is named, and
-  that cap keeps its default. Each session is told the caps at its start.
+  `cairn/PROFILE.md` change the caps, each to a value from 1 to 99 with no
+  leading zero. Before an authored fix cuts its branch, `/hotfix` checks
+  the bug-fix cap; a re-land or a follow-up to a merged PR is not checked.
+  Before a review opens a new PR, `/milestone-review` checks the feature
+  cap. At the cap they push nothing, open no PR, and stop with the list of
+  those PRs. A failed read stops the same way, and a push to an
+  already-open PR is never stopped. A cap line near the top whose value is
+  not 1 to 99 with no leading zero is named, and that cap keeps its
+  default. Each session is told the caps when it starts or resumes.
   If you keep more feature PRs open in a repo, add a
   `# Feature PR cap: N` line there.
 
