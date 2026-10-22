@@ -300,7 +300,8 @@ def pr_caps_section(root):
         f"most {features} of your other open PRs on this repo (cairn/PROFILE.md's "
         "`# Bug-fix PR cap:` and `# Feature PR cap:` lines, else 3 and 1). "
         "Every open PR you authored on this repo counts, opened through cairn "
-        "or not, and a PR stacked on another of yours counts as one with it. "
+        "or not. When a stacked milestone opens its PR in guest mode with "
+        "`# Push remote: base`, its base PR is not counted. "
         "`/hotfix` checks the bug-fix cap before an authored fix cuts its "
         "branch, and `/milestone-review` the feature cap before a review opens "
         "a new PR (tracking-rules \"Git and approval model\")." + notes

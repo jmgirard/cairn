@@ -486,10 +486,13 @@ class TestSessionContext(RepoFixture):
         self._assert_caps(part, 3, 1)
         self.assertIn("`# Feature PR cap: 100` line", part)
 
-    def test_caps_count_every_authored_pr_and_a_stack_as_one(self):
+    def test_caps_count_every_authored_pr_but_a_stack_base(self):
         part = self._caps_part(self.OWNER_HEADER + self.BODY)
         self.assertIn("Every open PR you authored on this repo counts", part)
-        self.assertIn("a PR stacked on another of yours counts as one with it", part)
+        self.assertIn(
+            "When a stacked milestone opens its PR in guest mode with "
+            "`# Push remote: base`, its base PR is not counted", part
+        )
 
     def test_guest_mode_states_the_thread_bot_and_issue_rules(self):
         part = self._guest_part(self.GUEST_HEADER + "\n## verify\n- x\n")
