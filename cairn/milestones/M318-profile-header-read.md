@@ -124,3 +124,27 @@ The rulebook states once how a `cairn/PROFILE.md` header line is read, and every
 - AC6: `test_mode_other_after_a_byte_order_mark_fails` ok. At implement it exited 0 on the old validator.
 - AC7: verify slot on the review head: scripts suite 0, hooks suite 0, both `claude plugin validate` runs 0, `claude plugin test .` 0 (2466 pass, 0 fail).
 - gate: `cairn_validate.py` all checks passed. The marketplace validate output has no `version` warning. CHANGELOG.md Unreleased has the entry for this change. No DESIGN.md principle changed, so `cairn_impact` is skipped.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the Copilot case change had no changelog line — fix now, fixed c8ee19e7 (worded as what the guide says in 1fd22897)
+- diff-bug #2: "in one way" overstated, since the readers split lines differently at rare characters — fix now, fixed c8ee19e7
+- diff-bug #3: the validator sentence read as checking every header line — fix now, fixed c8ee19e7
+- diff-bug #4: `skills/cairn-release/SKILL.md:28` names the mode line without citing the paragraph — reject (false): the paragraph governs every skill's read of a header line, and that line names the line without stating another read
+- diff-bug #5: "it can add the note below" made the chat note sound like a PR write — fix now, fixed c8ee19e7
+- diff-bug #6: one paragraph line was 172 characters — fix now, fixed c8ee19e7
+- diff-bug #7: `test_line_shape_and_first_line_rules` passes on main — reject (false): it tests documented claims this change adds, which "What gets a test" allows
+- blame-history #1: the DESIGN.md Known issues pointer was dangling — reject (false): Known issues runs from DESIGN.md line 811 to the end and holds the line, and 1fd22897 dropped the pointer anyway
+- blame-history #2: the copilot-review.md rewrite dropped what `none` means — fix now, fixed 1fd22897 (section 3 says `none` (neither))
+- blame-history #3: "writes nothing to the PR" could be read as covering the PR open — reject (style): the same sentence says the PR opens after the merge approval
+- blame-history #4: the `cairn_common.py` "one parser" comment and the paragraph overstated what the validator and the pane share — fix now, fixed 1fd22897
+- blame-history #5: `profile_name` no longer reads a toolchain line after a `## ` heading — reject (planned change): the plan gate chose it and the changelog states it
+- blame-history #6: the changelog claimed Copilot behavior that no test backs — fix now, fixed 1fd22897 (now states what the guide says)
+- prior-review #1: the Copilot opt-in, which permits outward writes, now accepts any case of `on` — reject (planned change): the user chose it at the plan gate
+- prior-review #2: "letter case does not count" differs from `open_pr_caps`'s `lower=False` — reject (false): a taken cap value is digits, and quoting an untaken value as written names it without deciding it
+- prior-review #3: "a request GitHub never recorded also reads `none`" states as fact what M281 kept as "may" — reject (false): that direction follows from the query, and M281's case was the reverse claim
+- ripple #1: the M318 candidate row's premise is now false — reject (planned change): post-merge hygiene removes the row
+- ripple #2: DESIGN.md:1145 "no fixture holds a BOM PROFILE.md" — reject (false): the line is about the pane's fixture set, which this diff does not touch
+- ripple #3: DESIGN.md:892 says JS and Python differ on a BOM — reject (false): that line is about ROADMAP row parsing, which still differs
+- conversation: PR #331 — no reviews, no comments, no open threads (read 2026-10-22)
+- copilot: no review. The request on PR #331 exited 0, but the state query still reads `none`, so GitHub may not have recorded it.
+- snapshot: the diff changes no `_snaps` or `__snapshots__` file
+- verify after the fix-now commits (1fd22897): scripts 0, hooks 0, both plugin validates 0, plugin test 2466 pass 0 fail, cairn_validate all checks passed
