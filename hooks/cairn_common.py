@@ -408,8 +408,8 @@ TOOLCHAIN_PROFILE_LINE = re.compile(r"#\s*Toolchain profile:\s*(\S+)", re.IGNORE
 # The collaboration-mode header line of cairn/PROFILE.md (M184, D-137) —
 # `# Collaboration mode: guest`. The only line outside
 # the seven `##` slots the validator reads; scripts/cairn_validate.py reaches
-# this same regex and reader through cairn_scripts' import of cairn_common,
-# so there is one parser, not two.
+# this same regex through cairn_scripts' import of cairn_common, so there is
+# one pattern, not two (its own loop checks every mode line).
 COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 # `# Push remote: base`, the guest-mode push remote line (M267). No validator
 # reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).

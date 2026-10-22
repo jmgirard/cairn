@@ -744,16 +744,16 @@ outside the seven `##` slots that `scripts/cairn_validate.py` reads is the `# Co
 ("Collaboration mode" above); it FAILs a value outside `owner|guest`.
 
 **Header lines.** cairn reads each header line of `cairn/PROFILE.md` as this paragraph states. The hooks and
-`scripts/cairn_next.py` read it through `_profile_header` in `hooks/cairn_common.py`, the cairn pane through
-`profileHeader` in `hooks/status/reader.ts`, and the skills by this paragraph. The two code readers can split lines
-differently at rare line-break characters (`cairn/DESIGN.md` Known issues). Only the lines before the first line that
-starts with `## ` are read, so a look-alike line in a slot body is body text. A header line starts with `#` as its
-first character. Then come optional whitespace, the key as written in any letter case, `:` right after the key,
-optional whitespace, and the value. The value is the first run of non-whitespace characters after the colon. A line
-with no value is not a header line. A byte-order mark at the start of the file is skipped. When two header lines carry
-the same key, the first one is read. Letter case in the value does not count, so `Guest` reads as `guest`. The
-`profile valid` check of `scripts/cairn_validate.py` takes no first line: it checks the value of every
-`# Collaboration mode:` line in the header region.
+`scripts/cairn_next.py` read it through `_profile_header` in `hooks/cairn_common.py`. The cairn pane reads its two
+lines through `profileHeader` in `hooks/status/reader.ts`, and the skills read by this paragraph. The code readers,
+the validator included, can split lines differently at rare line-break characters such as a form feed. Only the
+lines before the first line that starts with `## ` are read, so a look-alike line in a slot body is body text. A
+header line starts with `#` as its first character. Then come optional whitespace, the key as written in any letter
+case, `:` right after the key, optional whitespace, and the value. The value is the first run of non-whitespace
+characters after the colon. A line with no value is not a header line. A byte-order mark at the start of the file is
+skipped. When two header lines carry the same key, the first one is read. Letter case in the value does not count,
+so `Guest` reads as `guest`. The `profile valid` check of `scripts/cairn_validate.py` takes no first line: it checks
+the value of every `# Collaboration mode:` line in the header region.
 
 ## Validation doctrine (statistical/numeric work)
 

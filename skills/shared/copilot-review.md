@@ -64,7 +64,7 @@ Read the exit code first. A non-zero exit means the query failed: state the
 error in one line, request nothing, wait for nothing, and let the skill's
 read run as usual. Otherwise the output is `pending` (a Copilot request is
 open), `reviewed head <level>` or `reviewed earlier-head <level>` (a Copilot
-review exists; `head` means it covered the current head), or `none`.
+review exists; `head` means it covered the current head), or `none` (neither).
 
 ## 4. Wait and read
 
