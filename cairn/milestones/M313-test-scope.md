@@ -67,6 +67,8 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - 2026-10-21: implement complete; status set to review.
 - 2026-10-21: review: Copilot arm opened PR #326 and requested Copilot (state `pending`).
 - 2026-10-21: amendment routed: AC3 — the claim-audit fix exempts a simulation-coverage oracle's replications from the one-fit rule (validation-doctrine lines 32-34, "Deterministic checks use at most one fitted model per code path … A simulation-coverage oracle's replications are exempt"), so AC3's "Tests use at most one fitted model per code path" fails as written; the criterion is wrong, not the work.
+- 2026-10-21: re-audit: AC3 (full) — the amended fit sentence passes and narrows the promise. Two findings: sentence 3 read as a closed list against D-025 and said "reference value" where the doctrine says "reference implementation" (reworded to "stays the primary oracle for … and for an estimator with no closed form or reference implementation"), and the cairn-init Conventions line said "adds" without "or alters by design" (work fix: `skills/cairn-init/SKILL.md` now says "adds or alters by design").
+- 2026-10-21: re-audit: AC3 (full) — the working tree meets every clause (doctrine at 114 lines and 7,507 bytes, `test_oracle_doctrine` 11 tests pass). One finding: sentences 3 and 4 can be read as claims about every test rather than about the doctrine's text. The proposed fix is to frame sentences 3 to 5 as "The doctrine also states that …". This second line on AC3 is the stop, so the disposition goes to the user.
 
 ## Review
 

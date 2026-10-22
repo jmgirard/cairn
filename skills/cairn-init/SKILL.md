@@ -231,8 +231,8 @@ Then:
     is not asked twice there), landing in
     DESIGN Purpose & Scope; and **numeric-work-needs-oracle-verification**
     (universal — D-024/D-025, scoped by D-210), landing in DESIGN Conventions
-    (a line committing the numeric results a change adds to the oracle
-    doctrine's ≥2-types bar, and a fix to one regression test).
+    (a line committing the numeric results a change adds or alters by design
+    to the oracle doctrine's ≥2-types bar, and a fix to one regression test).
   - **Profile layer:** the selected profile's `greenfield-openers` slot
     questions, each landing in the durable home the slot names (a PROFILE slot,
     DESIGN Conventions). The generic profile adds none.
