@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the PRs sessions open in every repo, and guest sessions' thread resolves, bot replies, issue closes, and plans on the host's GitHub
-- **Branch/PR:** m315-guest-host-limits
+- **Branch/PR:** m315-guest-host-limits — https://github.com/jmgirard/cairn/pull/329
 
 ## Goal
 
