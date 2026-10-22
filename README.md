@@ -1115,14 +1115,14 @@ recommend one) and writes `# Collaboration mode: guest` into
   per UTC day. A `# Issue close cap: N` line near the top of
   `cairn/PROFILE.md` sets that limit to a value from 1 to 99 with no
   leading zero. `# Issue close cap: off` removes the limit. Any other
-  value keeps 3, and the session start names the line. When Claude is unsure, it asks you in chat
-  and posts nothing. A close you pick at a cairn choice is yours, and
-  these limits do not cover it. Before Claude plans a feature or a change
-  of behavior, it looks for a maintainer's agreement with the design in
-  an issue, or a maintainer's request for it in a review of your PR.
-  Without either, it tells you in chat and plans nothing until a
-  maintainer agrees. A fix that restores documented behavior needs no
-  such agreement.
+  value keeps 3, and the session start names the line. When Claude is
+  unsure, it asks you in chat and posts nothing. A close you pick at a
+  cairn choice is yours, and these limits do not cover it. Before Claude
+  plans a feature or a change of behavior, it looks for a maintainer's
+  agreement with the design in an issue, or a maintainer's request for it
+  in a review of your PR. Without either, it tells you in chat and plans
+  nothing until a maintainer agrees. A fix that restores documented
+  behavior needs no such agreement.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want
