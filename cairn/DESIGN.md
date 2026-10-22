@@ -14,11 +14,11 @@ orthogonal to the profile). Six profiles ship — `r-package` (devtools/CRAN),
 `quarto-extension` (a render check, and a release walk that tags a version a
 merge already raised or raises it at release, M303), `docker-image`
 (hadolint+build/container registry), and `generic`. Above the slots,
-`PROFILE.md`'s header holds five optional lines: `# Collaboration mode:`
+`PROFILE.md`'s header holds six optional lines: `# Collaboration mode:`
 (D-137, the one line the validator reads), `# Copilot review: on` (D-152),
-`# Push remote: base` (D-172), and `# Bug-fix PR cap: N` and
-`# Feature PR cap: N` (D-214). This repo
-runs `claude-plugin` (M215). Logic lives here (skills, rules,
+`# Push remote: base` (D-172), `# Bug-fix PR cap: N` and
+`# Feature PR cap: N` (D-214), and `# Issue close cap: N` or `off`
+(D-215). This repo runs `claude-plugin` (M215). Logic lives here (skills, rules,
 templates); state lives in each adopting repo under `cairn/`. The founding
 spec is superseded by this file, the shared rulebook, and DECISIONS.md; git
 history preserves it (removed at v1.0, M62).

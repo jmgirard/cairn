@@ -7839,3 +7839,39 @@ bounded only by the clear-grounds rule. The limit stays an instruction,
 not a guard. D-213's falsifier now reads: a day's closes on one repo pass
 the limit in force. Falsified also by a repo with `off` where the
 maintainers object to closes the clear-grounds rule allowed.
+
+### D-216 (2026-10-22): A full page of issue events reaches the close limit only when its oldest event falls on the current UTC day — supersedes D-215's full-page sentence; the rest of D-215 stands (M319)
+
+**Context:** D-215 said that the count reads one page of 100 issue events,
+so a full page counts as reaching the limit. The read,
+`issues/events?per_page=100`, returns the newest 100 events of every kind
+and every date. On any repo with 100 or more events in its history the
+page is always full, so D-215's sentence blocked every close at any limit.
+M319's review found this before the merge.
+
+**Decision:** A full page counts as reaching the limit only when its
+oldest event falls on the current UTC day, read from its `created_at`
+date. Then events from earlier that day can sit on the next page, so the
+count can be short, and blocking is the safe reading. When the oldest
+event falls on an earlier day, the page holds the whole day and the count
+is exact. With `off` there is no limit and no count. Rejected: reading
+further pages until an event falls before the day, because one page
+settles the common case and the user can set `off`.
+
+**Consequences:** A repo with more than 100 issue events in one UTC day
+allows no further clear-grounds closes that day unless its PROFILE.md
+sets `off`. Falsified by a guest session that blocked a close on a page
+whose oldest event fell on an earlier day.
+
+### D-217 (2026-10-22): D-216's Consequences hold at 100 or more issue events in a UTC day, not more than 100 — corrects D-216 (M319)
+
+**Context:** M319's claim audit found that D-216's Consequences said "more
+than 100 issue events in one UTC day". With exactly 100 events that day,
+the page's oldest event also falls on the current day, so the limit is
+reached then too.
+
+**Decision:** D-216's Consequences read: a repo with 100 or more issue
+events in one UTC day allows no further clear-grounds closes that day
+unless its PROFILE.md sets `off`. The rest of D-216 stands.
+
+**Consequences:** None beyond D-216's.

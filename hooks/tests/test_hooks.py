@@ -258,6 +258,33 @@ class TestPushRemote(RepoFixture):
                 self.assertEqual(session_context.cc.push_remote(str(self.root)), want)
 
 
+class TestIssueCloseCap(RepoFixture):
+    """M319: `cairn_common.issue_close_cap` reads the `# Issue close cap:`
+    header line: a number from 1 to 99, `off` for no daily limit, else 3
+    with the value named as untaken."""
+
+    def _cap(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+        return session_context.cc.issue_close_cap(str(self.root))
+
+    def test_a_taken_value_sets_or_removes_the_limit(self):
+        for value, want in (("1", 1), ("99", 99), ("off", None), ("OFF", None)):
+            with self.subTest(value=value):
+                self.assertEqual(self._cap(f"# Issue close cap: {value}\n"), (want, []))
+
+    def test_no_line_reads_three(self):
+        self.assertEqual(session_context.cc.issue_close_cap(str(self.root)), (3, []))
+        self.assertEqual(self._cap("# Toolchain profile: generic\n"), (3, []))
+
+    def test_an_untaken_value_reads_three_and_is_named_as_written(self):
+        for value in ("0", "100", "03", "Many"):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    self._cap(f"# Issue close cap: {value}\n"),
+                    (3, [("Issue close cap", value)]),
+                )
+
+
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
     and only when that remote exists, else `origin`; `default_branch`
@@ -539,6 +566,33 @@ class TestSessionContext(RepoFixture):
         self.assertIn("or asked for it in a review of your PR", part)
         self.assertIn("plan nothing until a maintainer agrees", part)
         self.assertIn("A fix that restores documented behavior is outside", part)
+
+    def test_the_close_limit_follows_the_issue_close_cap_line(self):
+        # M319: the limit in force, from `# Issue close cap:`.
+        tail = "; when unsure, ask the user in chat"
+        for line, clause in (
+            ("", "at most 3 such closes on that repo per UTC day, counting your closes there that day"),
+            ("# Issue close cap: 1\n", "at most 1 such close on that repo per UTC day, counting your closes there that day"),
+            ("# Issue close cap: 5\n", "at most 5 such closes on that repo per UTC day, counting your closes there that day"),
+            ("# Issue close cap: off\n", "such closes on that repo have no daily limit"),
+        ):
+            with self.subTest(line=line):
+                part = self._guest_part(self.GUEST_HEADER + line + self.BODY)
+                self.assertIn("which holds over host style matching, and " + clause + tail, part)
+                self.assertNotIn("was not taken: a limit", part)
+
+    def test_an_untaken_close_cap_keeps_three_and_is_named(self):
+        part = self._guest_part(self.GUEST_HEADER + "# Issue close cap: Many\n" + self.BODY)
+        self.assertIn("at most 3 such closes on that repo per UTC day", part)
+        self.assertIn("The `# Issue close cap: Many` line in cairn/PROFILE.md was not taken", part)
+
+    def test_owner_mode_states_no_close_limit(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(
+            self.OWNER_HEADER + "# Issue close cap: Many\n" + self.BODY
+        )
+        ctx = self._session()
+        self.assertNotIn("such close", ctx)
+        self.assertNotIn("Issue close cap", ctx)
 
     def test_owner_mode_states_no_guest_rule(self):
         (self.root / "cairn" / "PROFILE.md").write_text(self.OWNER_HEADER + self.BODY)

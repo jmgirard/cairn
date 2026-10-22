@@ -302,17 +302,19 @@ def pr_caps_section(root):
 
 
 # The four guest rules on the host repo (M315), a continuation of the one
-# guest mode line: threads, bots, issue closes, and issue-first plans.
-HOST_RULES = (
+# guest mode line: threads, bots, issue closes, and issue-first plans. The
+# close limit between the two halves comes from `# Issue close cap:` (M319).
+HOST_RULES_BEFORE_LIMIT = (
     " On the host repo, follow these rules. "
     "Never resolve a review thread that a person started. "
     "Reply to no bot, except the one comment per Copilot review with a note "
     "that the Copilot round or `/copilot-review` posts. Close an issue someone "
     "else opened only when a merged change clearly fixes it or its fix "
     "belongs in another repo, with a one-line comment naming that change "
-    "or repo, which holds over host style matching, and at most 3 such "
-    "closes on that repo per UTC day, counting your closes there that "
-    "day; when unsure, ask the user in chat and post nothing. A close the "
+    "or repo, which holds over host style matching, and "
+)
+HOST_RULES_AFTER_LIMIT = (
+    "; when unsure, ask the user in chat and post nothing. A close the "
     "user picks at a cairn chip is the user's act and is outside this rule. "
     "Before you plan a feature or a change of behavior, find where a "
     "maintainer (an author whose association is OWNER, MEMBER, or "
@@ -321,6 +323,27 @@ HOST_RULES = (
     "chat and plan nothing until a maintainer agrees. A fix that restores "
     "documented behavior is outside this rule."
 )
+
+
+def host_rules(root):
+    """The four guest rules, with the issue-close limit in force: N closes
+    a day from a taken `# Issue close cap:` value, none with `off`, else 3,
+    and a note naming a line whose value was not taken (M319)."""
+    limit, untaken = cc.issue_close_cap(root)
+    if limit is None:
+        closes = "such closes on that repo have no daily limit"
+    else:
+        closes = (
+            f"at most {_plural(limit, 'such close', 'such closes')} on that "
+            "repo per UTC day, counting your closes there that day"
+        )
+    notes = "".join(
+        f" The `# {key}: {value}` line in cairn/PROFILE.md was not taken: a "
+        "limit is a value from 1 to 99 with no leading zero, and `off` "
+        "removes the limit. The limit stays at 3."
+        for key, value in untaken
+    )
+    return HOST_RULES_BEFORE_LIMIT + closes + HOST_RULES_AFTER_LIMIT + notes
 
 
 def _plural(n, one, many):
@@ -428,7 +451,7 @@ def build_context(root):
             "the host's maintainers wrote, and that matching wins over any "
             "other writing-style instruction in the session for that text; "
             "the other instruction governs only what host matching leaves open."
-            + HOST_RULES
+            + host_rules(root)
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:
