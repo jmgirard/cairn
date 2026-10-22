@@ -7809,3 +7809,33 @@ hand on any branch not starting with `hotfix-` fills the feature cap too.
 Falsified by a repo where your open PRs pass a cap after this ships, or a
 guest plan of a feature with no maintainer's agreement that the session
 did not report to the user.
+
+### D-215 (2026-10-22): A `# Issue close cap:` header line sets or removes the guest daily limit on issue closes — supersedes the daily-limit clause of D-213's rule (4); the rest of that rule stands (M319)
+
+**Context:** The easystats session asked, for the user, for a way to raise
+or remove the guest limit of 3 issue closes per host repo per UTC day.
+The easystats hub decision H6 dropped that limit. An audit of the user's
+closes found no case the limit prevented, because the user closes old
+issues in batches after fixes merge, each close naming the fix and the
+version.
+
+**Decision:** At the user's decision, the daily limit in D-213's rule (4)
+(the rulebook's guest rule (3)) is 3 unless `cairn/PROFILE.md` carries a
+`# Issue close cap:` header line. A value that matches `[1-9][0-9]?` sets
+the limit. The value `off` removes the limit. Any other value, `0`
+included, leaves 3, and the guest session-start text names the line. The
+rest of the rule stands: a close needs a merged change that clearly fixes
+the issue or a fix that belongs in another repo, it carries a one-line
+comment naming that change or repo, and the session asks the user in chat
+when unsure. The count reads one page of 100 issue events, so a full page
+counts as reaching the limit. Rejected: `0` as a second spelling of off,
+because in the open-PR cap lines `0` is an untaken value; dropping the
+limit in every guest repo, because the line keeps 3 as the default where
+no repo has asked otherwise.
+
+**Consequences:** A guest repo with `# Issue close cap: off` gets no
+daily limit on clear-grounds closes, so bulk closes after a release are
+bounded only by the clear-grounds rule. The limit stays an instruction,
+not a guard. D-213's falsifier now reads: a day's closes on one repo pass
+the limit in force. Falsified also by a repo with `off` where the
+maintainers object to closes the clear-grounds rule allowed.
