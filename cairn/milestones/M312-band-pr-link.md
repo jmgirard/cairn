@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -67,6 +67,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: re-audit: AC2 (full) — nothing; its one optional clause (naming the `idAndTitle` change in AC2) was not taken, since the first reader moved that clause out as an instrument binding
 - 2026-10-21: T5 done: `register.tsx` wraps the linked id's `Link` in `Text wrap="truncate-end"`; `idAndTitle` drops only a Text whose one child is a `Link`; the M301 desktop test asserts the head's first child is that Text holding the Link. `claude plugin test` 2482 pass, 0 fail.
 - 2026-10-21: verify on the T5 tree green: scripts/tests and hooks/tests OK, both validates passed, `cairn_validate` passed. The claim audit was not re-run for return 1: the pass adds two comments, one stating the live look's screenshot and one the helper's filter, each read against the code it sits on (register.tsx, band.test.tsx `idAndTitle`) by the author only. Status review.
+- 2026-10-21: review return 2: AC5 failed at the second live look on 5e72fd35. The operator's screenshot shows the M312 id still above the title's line and close to it, so the wrapping `Text` (T5) did not fix it. The next try centers the left group's and the head's children off the terminal, as the row and its right group already are, on the reading that the linked id's box is shorter than the title's and both start at the top.
 
 ## Review
 
@@ -99,3 +100,5 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - copilot: review body (the terminal-rendering comment) — fix now (reworded), fixed 42e5360a
 - Copilot level: Lite (set by GitHub's settings)
 - AC5: not ticked. At the live look (T4) on 96d14bbf, the operator's screenshot showed the M312 id drawn higher than the title, with too little space before it. Review return 1 (work log).
+- spawned: diff-bug, blame-history, prior-review, ripple
+- AC5: not ticked. At the second live look on 5e72fd35 the id still sat above the title's line. Review return 2 (work log).
