@@ -37,7 +37,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
      coverage-complete counts AC checkboxes positionally (M107); departures:
      a "Deviations from RR<NN>" table ends this section. -->
 
-- [x] AC1: Guest rule (3) in tracking-rules "Collaboration mode" keeps its conditions for a close, its one-line comment, and its ask-when-unsure clause. It says that the daily limit is 3 unless `cairn/PROFILE.md` carries a `# Issue close cap:` header line, read as "Toolchain profiles" states. A value that matches `[1-9][0-9]?` sets the limit. The value `off` removes the daily limit. Any other value leaves the limit at 3. A full page of 100 events in the count's read counts as reaching the limit. The PROFILE.md row of the tracking-rules file map names the line, says that the guest session and `hooks/session_context.py` read it, and says that no validator does.
+- [x] AC1: Guest rule (3) in tracking-rules "Collaboration mode" keeps its conditions for a close, its one-line comment, and its ask-when-unsure clause. It says that the daily limit is 3 unless `cairn/PROFILE.md` carries a `# Issue close cap:` header line, read as "Toolchain profiles" states. A value that matches `[1-9][0-9]?` sets the limit. The value `off` removes the daily limit. Any other value leaves the limit at 3. When the count's read returns a full page of 100 events whose oldest event falls on the current UTC day, the count counts as reaching the limit. The PROFILE.md row of the tracking-rules file map names the line, says that the guest session and `hooks/session_context.py` read it, and says that no validator does.
 - [x] AC2: `issue_close_cap(root)` in `hooks/cairn_common.py` returns `(limit, untaken)`, as `open_pr_caps` returns its untaken list. When the value matches `[1-9][0-9]?`, the limit is that number. When the value is `off` in any letter case, the limit is None. When the line is absent, the limit is 3. In these three cases `untaken` is empty. For any other value the limit is 3, and `untaken` is `[("Issue close cap", value)]` with the value as written.
 - [x] AC3: The session-start text from `hooks/session_context.py` states the limit in force. With no `# Issue close cap:` line, the guest text is the same as before this milestone. With a number N, the clause from "at most 3" through "that day" says N, and it says "close" for N = 1. With `off`, that clause becomes a statement that such closes have no daily limit. With an untaken value, the text names the line and says the limit stays at 3. In owner mode, the text states no close limit and names no close-cap line, even when the line is present.
 - [x] AC4: README's guest-rules passage states the default of 3, the `# Issue close cap:` line, and `off`. CHANGELOG.md Unreleased has an entry that names the line.
@@ -48,7 +48,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
      task(s) satisfying it, by positional number (AC/Task counted
      top-to-bottom). Review reads to fence evidence — tracking-rules "AC fencing". -->
 
-- AC1 → T3
+- AC1 → T3, T6
 - AC2 → T1
 - AC3 → T2
 - AC4 → T4
@@ -66,6 +66,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - [x] T3: Edit guest rule (3) in tracking-rules (about line 447) and the PROFILE.md file-map row (line 15) as AC1 states.
 - [x] T4: Edit README's guest-rules passage (about line 1114) and add a CHANGELOG Unreleased entry backed by the T1 and T2 tests.
 - [x] T5: Run the verify slot.
+- [x] T6: Carry the review return: amend rule (3)'s full-page clause per AC1 with D-216 superseding D-215's sentence, apply the fix-now items (DESIGN.md header list, "By default" in rule (3), README, and the older CHANGELOG entry, the untaken note wording), file the follow-up row, and rerun the verify slot.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -100,6 +101,8 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: checkpoint (half-done): fix-now edits made to DESIGN.md (six header lines, D-215), README and the older CHANGELOG entry ("By default"), and the untaken note ("`off` removes the limit. The limit stays at 3."). The AC1 re-audit is running; the rule (3) rewrite, the superseding D-entry, and the follow-up row wait on it. Hooks suite OK.
 - 2026-10-22: re-audit: AC1 (full) — one finding: "that UTC day" had no referent in the criterion; fixed to "the current UTC day". The reader confirmed the rule is sound for a newest-first read (a full page whose oldest event is today may miss same-day events on page 2; an older oldest event means the page holds the whole day) and named the superseding D-entry's content. No IP conflict, bounded, deliverable-bound.
 - 2026-10-22: follow-up row "State the close count in guest text" filed for review diff-bug #3 (search-first: no candidate row or archive entry covers the guest text's count recipe).
+- 2026-10-22: re-audit: AC1 (full) — two findings. A: `off` in another letter case would leave 3 under rule (3) — answered, false: the "Header lines" paragraph says value case does not count, so `OFF` reads as `off`. B: a new D-entry must supersede D-215's full-page sentence — taken as a record: D-216, cited by rule (3); AC1's wording unchanged.
+- 2026-10-22: amendment return: AC1 — "When the count's read returns a full page of 100 events whose oldest event falls on the current UTC day, the count counts as reaching the limit."
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

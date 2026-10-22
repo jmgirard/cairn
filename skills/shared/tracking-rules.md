@@ -444,12 +444,13 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   The session-start text states them too. (1) Never resolve a review thread that a person started. (2) Reply to no
   bot, except the one comment per Copilot review with a note that the Copilot round or `/copilot-review` posts. (3)
   Close an issue someone else opened only when a merged change clearly fixes it or its fix belongs in another repo.
-  The close carries a one-line comment naming that change or repo, which holds over host style matching. Make at most
-  3 such closes on that repo per UTC day, counting your closes there that day: the `closed` events whose `actor.login`
-  is yours and whose `created_at` falls on that UTC day, from `gh api "repos/<base-repo>/issues/events?per_page=100"`.
-  A full page of 100 events counts as reaching the limit. A `# Issue close cap:` header line of `cairn/PROFILE.md`,
-  read as "Toolchain profiles" states, changes the limit. A value that matches `[1-9][0-9]?` sets it, and `off`
-  removes the daily limit. Any other value leaves 3, and the session-start text names the line (D-215).
+  The close carries a one-line comment naming that change or repo, which holds over host style matching. By default,
+  make at most 3 such closes on that repo per UTC day. A `# Issue close cap:` header line of `cairn/PROFILE.md`, read
+  as "Toolchain profiles" states, changes the limit. A value that matches `[1-9][0-9]?` sets it, and `off` removes the
+  daily limit. Any other value leaves 3, and the session-start text names the line (D-215). Count your closes there
+  that day: the `closed` events whose `actor.login` is yours and whose `created_at` falls on that UTC day, from
+  `gh api "repos/<base-repo>/issues/events?per_page=100"`. A full page of 100 events whose oldest event falls on
+  the current UTC day counts as reaching the limit (D-216).
   When unsure, ask the user in chat and
   post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3). (4) Before you plan
   a feature or a change of behavior, find where a maintainer (an author whose association is OWNER, MEMBER, or
