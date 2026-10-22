@@ -98,7 +98,10 @@ transitions, human-gated merges, and a domain verification doctrine.
   names before any `companion:` entry (`BandRow.url`, read by `prUrl`,
   shape `band-5`). The id keeps its gray and bold with no underline. A
   header with no pull request, the idle row, and the terminal draw no
-  link (M312). The empty row (M213) has no id,
+  link (M312). Nor does a URL that `pullOf` (repo.ts) refuses, one whose
+  owner or repo `webOf` would refuse, since a `Link` whose `href` is not
+  spelled as `new URL(href).href` refuses the whole band (M312 review).
+  The empty row (M213) has no id,
   so its left group is the title alone, and its right group only the
   buttons. The phase or skill label, the
   chapter, the next open box, the skill row, and the ten-cell bar went in

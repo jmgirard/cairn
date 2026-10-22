@@ -1,6 +1,7 @@
 import type { CairnBandHidden, CairnBandMark, CairnStep } from '../../types'
 import type { IconName } from './icons'
 import type { BandRow, BandState, WorkableRow } from './reader'
+import { pullOf } from './repo'
 
 // The band's one row, as a plain description that register.tsx draws
 // (M206). It shows one active milestone: the first `review` row while
@@ -308,9 +309,10 @@ export function stepLines(
 // One milestone's row: the track and its percent, or a warning label when
 // its counts cannot be read. The track keeps its least width even where
 // that leaves the title less than its room. A row whose file names a pull
-// request links its id to it (M312).
+// request links its id to it, when `pullOf` passes the URL (M312).
 export function bandLines(row: BandRow, columns: number, close = 0): BandLine[] {
-  const line = { key: `${row.id}-row`, id: row.id, title: row.title, ...(row.url === null ? {} : { href: row.url }) }
+  const href = pullOf(row.url)
+  const line = { key: `${row.id}-row`, id: row.id, title: row.title, ...(href === null ? {} : { href }) }
   const flow = flowOf(row)
   if (flow === null) {
     const long: Span[] = [{ text: LONG_WARNING, color: 'warning' }]

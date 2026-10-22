@@ -148,6 +148,7 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
     expect(FIXTURES['blocked-active'].files['/cairn/milestones/M110-active.md']).toContain('**Branch/PR:** work-in-hand\n')
     expect(await urlOf('blocked-active', 'M110')).toBe(null)
     expect(await urlOf('missing-file', 'M004')).toBe(null)
+    expect(FIXTURES['pane-full'].files['/cairn/milestones/M082-unreadable.md']).toContain('/pull/82')
     expect(await urlOf('pane-full', 'M082')).toBe(null)
   })
 

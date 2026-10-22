@@ -827,9 +827,9 @@ export const register: Register = on => {
     // track is taller than text.
     const Svg = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Svg
     const center = Svg === undefined ? {} : { alignItems: 'center' as const }
-    // A row's id links to its pull request in a `Link`, but in the terminal,
-    // as the pane's links do (M311): a terminal without OSC 8 prints the
-    // URL. The id keeps its gray and bold with no underline (M312).
+    // A row's id links to its pull request in a `Link`, except in the
+    // terminal, as with the pane's links (M311): a terminal without OSC 8
+    // prints the URL. The id keeps its gray and bold with no underline (M312).
     const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     // The next-step and status Buttons (M212) show while no cairn skill's

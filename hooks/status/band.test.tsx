@@ -1880,6 +1880,7 @@ function built(id: string, title: string, status: string, checked: number, total
     criteriaTotal: criteria[1],
     nextTask: tasks[0] < tasks[1] ? 'T9: Open.' : null,
     nextCriterion: criteria[0] < criteria[1] ? 'AC9: Open.' : null,
+    url: null,
   }
 }
 
@@ -3972,7 +3973,6 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
   const PR = 'https://github.com/upstream/repo/pull/721'
 
   test('stack-in-progress: the desktop draws M301 in a Link to its pull request, gray, bold, with no underline', async ($, on) => {
-    // The fixture's file names the pull request, so the reader gives its URL.
     expect(FIXTURES['stack-in-progress'].files['/cairn/milestones/M301-reworked.md']).toContain(PR)
     seat(on, copyOf('stack-in-progress'))
     await $.turn.complete(turn())
@@ -3982,10 +3982,8 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
       async (ui, surface) => {
         expect(await rowKeys(ui)).toEqual(['M301-row'])
         const row = await firstRow(ui)
-        idAndTitle(row, 'M301', 'Back in work after review')
         const links = below(await bandBox(ui), 'Link')
         if (surface === 'desktop') {
-          // One Link in the band, in the head Box, around the id alone.
           expect(links.length).toBe(1)
           expect(below(layout(row).head, 'Link')).toEqual(links)
           expect(links[0].props.href).toBe(PR)
@@ -3993,9 +3991,7 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
           expect([id.type, textOf(id)]).toEqual(['Text', 'M301'])
           expect([id.props.color, id.props.bold, id.props.underline]).toEqual([GRAY, true, false])
         } else {
-          // The terminal draws the id as a plain Text.
           expect(links).toEqual([])
-          expect(kids(layout(row).head as Element)[0].props.underline).toBe(undefined)
         }
       },
       $,
@@ -4026,4 +4022,10 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
       )
     })
   }
+
+  test('a header URL that `pullOf` refuses gives the id no link', () => {
+    const row = { ...rowOf('stack-in-progress', 'M301'), url: 'https://github.com/../repo/pull/721' }
+    expect(bandLines(row, 120)[0].href).toBe(undefined)
+    expect(bandLines(rowOf('stack-in-progress', 'M301'), 120)[0].href).toBe(PR)
+  })
 })

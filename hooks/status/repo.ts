@@ -139,6 +139,7 @@ const WEB_PART = /^[A-Za-z0-9._-]+$/
 // gives under the 2048 characters a Link's `href` may hold (M311 review).
 const OWNER_MAX = 39
 const REPO_MAX = 100
+const fits = (part: string, max: number) => WEB_PART.test(part) && part !== '.' && part !== '..' && part.length <= max
 
 // The repo page of a github.com base remote URL (M311), which the card's
 // name and counts link to, or null for any other URL, for no URL, and for
@@ -149,10 +150,23 @@ const REPO_MAX = 100
 export function webOf(url: string | null): string | null {
   const named = url === null ? null : remoteRepo(url)
   if (named === null) return null
-  const fits = (part: string, max: number) => WEB_PART.test(part) && part !== '.' && part !== '..' && part.length <= max
   if (!fits(named.owner, OWNER_MAX) || !fits(named.repo, REPO_MAX)) return null
   const web = `https://github.com/${named.owner}/${named.repo}`
   return new URL(web).href === web ? web : null
+}
+
+// A pull request page, as `prUrl` in reader.ts cuts it.
+const PULL_PAGE = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/pull\/[0-9]+$/
+
+// The pull request page that the band links a row's id to (M312): the URL
+// as given when its owner and repo pass the checks `webOf` makes, and null
+// otherwise, since a header can name any URL that `prUrl` matches and a
+// Link whose `href` is not spelled as `new URL(href).href` refuses the
+// whole band.
+export function pullOf(url: string | null): string | null {
+  const match = url === null ? null : PULL_PAGE.exec(url)
+  if (match === null || !fits(match[1], OWNER_MAX) || !fits(match[2], REPO_MAX)) return null
+  return url
 }
 
 const DAY_MS = 86_400_000

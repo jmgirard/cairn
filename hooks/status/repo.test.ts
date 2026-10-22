@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { archivedArgs, DESCRIBE_ARGS, doneSince, lastSegment, projectName, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs, webOf } from './repo'
+import { archivedArgs, DESCRIBE_ARGS, doneSince, lastSegment, projectName, pullOf, REPO_QUERY, repoArgv, repoCounts, tagTimeArgs, webOf } from './repo'
 
 // The summary card's reads (M286 AC3, AC4). The expected values are written
 // out by hand.
@@ -189,4 +189,27 @@ describe('the repo page: a github.com remote whose owner and repo a link can car
       expect(webOf(url)).toBe(want)
     })
   }
+})
+
+describe('the pull request page the band links an id to, else none (M312)', () => {
+  const PULL = 'https://github.com/Owner-1/re.po_x/pull/721'
+  const CASES: [string, string | null, string | null][] = [
+    ['a pull request page', PULL, PULL],
+    ['no URL', null, null],
+    ['a URL that is not a pull request page', 'https://github.com/o/r/issues/7', null],
+    ['an owner with a character a name cannot hold', 'https://github.com/a<b/r/pull/7', null],
+    ['a repo with a non-ASCII letter', 'https://github.com/o/réso/pull/7', null],
+    ['an owner of `..`', 'https://github.com/../r/pull/7', null],
+    ['an owner of 40 characters', `https://github.com/${'o'.repeat(40)}/r/pull/7`, null],
+    ['a repo of 101 characters', `https://github.com/o/${'r'.repeat(101)}/pull/7`, null],
+  ]
+  for (const [name, url, want] of CASES) {
+    test(name, () => {
+      expect(pullOf(url)).toBe(want)
+    })
+  }
+
+  test('a page it passes is spelled as `new URL` spells it', () => {
+    expect(new URL(PULL).href).toBe(PULL)
+  })
 })
