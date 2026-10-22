@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,6 +59,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: resumed (M313 done, the blocker gone): merged main (M313) into the branch, the only conflict the ROADMAP's M313 row, resolved to main's file with M312 `in-progress`. Verify green: scripts/tests 445 OK, hooks/tests 193 OK, both validates, `claude plugin test` 2472 pass, 0 fail. The untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
 - 2026-10-21: claim audit: 23 claims read, 0 corrected — CHANGELOG.md, README.md, hooks/status/band.ts, reader.ts, register.tsx, band.test.tsx, reader.test.ts, types/index.d.ts, scripts/tests/test_status_fixtures.py, cairn/DESIGN.md. The reader also found one stale line outside the diff, DESIGN.md's `band` value root sentence still naming shape `band-4`; fixed to `band-5` since M312.
 - 2026-10-21: review checkpoint (verify on this head still running): review fix-now work from the four lenses and Copilot. `pullOf` in repo.ts passes a header's PR URL to the band's `Link` only when its owner and repo pass `webOf`'s checks (a planted `href = row.url` failed the new band test alone, 2481 pass, 1 fail); M082's unreadable fixture names a PR so its reader case can fail; `built()` gains `url: null`; two restating test comments, a repeated `idAndTitle` check, and a terminal `underline` check dropped; the register comment reworded; DESIGN names `pullOf`.
+- 2026-10-21: review return 1: AC5 failed at the live look. In the desktop app the band's M312 id sits higher than the title and too close to it, because the bare `Link` in the head Box (the form chosen to keep `idAndTitle` unchanged) does not line up with the title's `Text`. The fix is the pane card's form, the `Link` inside a `Text` with `wrap: 'truncate-end'`, which needs a narrowing amendment to AC2's "existing suites pass unchanged" clause, since `idAndTitle` counts the left group's Texts.
 
 ## Review
 
@@ -90,3 +91,4 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - copilot: hooks/status/reader.ts:61 — fix now (`built()` gains `url: null`), fixed 42e5360a
 - copilot: review body (the terminal-rendering comment) — fix now (reworded), fixed 42e5360a
 - Copilot level: Lite (set by GitHub's settings)
+- AC5: not ticked. At the live look (T4) on 96d14bbf, the operator's screenshot showed the M312 id drawn higher than the title, with too little space before it. Review return 1 (work log).
