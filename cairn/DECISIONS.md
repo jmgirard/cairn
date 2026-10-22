@@ -7726,3 +7726,44 @@ its outcome lives in the review's comment. A note held by a review return
 keeps its whole review's comment and resolves for a later pass.
 Falsified by a Copilot review answered by more than one comment, or a
 thread reply posted by the round or `/copilot-review`.
+
+### D-213 (2026-10-22): In guest mode the session keeps within four limits on the host repo — an open-PR cap checked at the two handoffs, no resolve of a person's thread, no reply to a bot, and bounded issue closes — annotates D-137, D-152, and D-172; passes D-108's door on its retained trigger (M315)
+
+**Context:** The second easystats audit (M315's work log holds its counts)
+found guest sessions holding many open PRs at once on one host, a
+maintainer's review thread resolved by a session, "Fixed in <sha>" replies
+to a lint bot, and many issues that other people opened closed in bulk
+with long comments. Each of these reaches the maintainers' notifications
+and their authority over their own repo.
+
+**Decision:** At the user's decision, guest mode (D-137) gains four
+limits, stated in tracking-rules "Collaboration mode" and in the guest
+session-start text. (1) An open-PR cap: at most N of your open PRs on the
+host repo, N from a `# Open PR cap: N` header line of `cairn/PROFILE.md`
+when it matches `[1-9][0-9]?`, else 2. `/milestone-review` step 8 and
+`/hotfix` step 1 read your open PRs before a handoff that opens a new
+PR, and at the cap stop with a close block naming the cap and each open
+PR; a push to an open PR is never capped. In `/milestone-review` the read
+comes after D-172's push-access read and the stack-base read. (2) Never
+resolve a review thread that a person started. (3) Reply to no bot, except
+the one comment per Copilot review (D-212). (4) Close an issue someone else
+opened only when a merged change clearly fixes it or its fix belongs in
+another repo, with a one-line comment naming that change or repo, which
+holds over host style matching (D-207), at most 3 such closes on that repo
+per UTC day, and a chat question to the user when unsure. A close the user
+picks at a cairn chip is the user's act and outside rule (4). D-152's
+opt-in stands: in guest mode the Copilot round still runs only with
+`# Copilot review: on`, and its request goes out from the operator's
+account. The trigger is shipped behavior, what guest sessions did on the
+host, so D-108's door does not bar these rules. Rejected: a hook that
+blocks `gh pr create` or `gh issue close` by count, since it would need a
+network read on each matching call, and the audited PRs and closes came
+through sessions that the injected text reaches; a cap check at
+`/milestone-implement`'s branch cut, since the handoff is where a PR
+opens.
+
+**Consequences:** A guest handoff can stop at the cap with its branch
+local, and the rerun waits for the operator to close or land a PR. Rules
+(2) to (4) are instructions, not guards, so a session can still break
+them. Falsified by a guest repo where the operator's open PRs pass the
+cap, or a day's closes on one repo pass 3, after this ships.

@@ -996,7 +996,9 @@ actually reach.
   without the line. It never requests a review. A `pull_request`-triggered CI suite also runs on the early
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the
-  round runs after the handoff opens the PR. If Copilot's review is still
+  round runs after the handoff opens the PR. With the round on, the
+  session requests the review from your account, with your `gh` login,
+  when the PR has none yet. If Copilot's review is still
   pending at the read, Claude waits up to 25 minutes, then goes on and
   says the review is pending. If the request command exits 0 but the PR
   shows no Copilot request or review just after it, Claude says so in one
@@ -1077,6 +1079,25 @@ recommend one) and writes `# Collaboration mode: guest` into
   the same thing.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
+- **Your open PRs stay under a cap.** By default you keep at most 2 open
+  PRs on the upstream repo. To change it, add a line such as
+  `# Open PR cap: 4` near the top of `cairn/PROFILE.md`, with a whole
+  number from 1 to 99. Before a handoff opens a new PR, `/milestone-review`
+  and `/hotfix` list your open PRs there. At or over the cap they push nothing,
+  open no PR, and stop with a list of your open PRs. They also stop when
+  the list cannot be read. A push to a PR that is already open is never
+  stopped. A cap line cairn cannot read is named, and the cap stays 2.
+- **Threads, bots, and other people's issues have set rules.** Each guest
+  session is given these instructions at its start. They are instructions
+  to Claude, not a block on any command. Claude never resolves a review
+  thread that a person started. It replies to no bot, except the one
+  comment per Copilot review that the Copilot round or `/copilot-review`
+  posts. It closes an issue someone else opened only when a merged change
+  clearly fixes it or its fix belongs in another repo. The close carries a
+  one-line comment naming that change or repo, and Claude makes at most 3
+  such closes on one repo per UTC day. When it is unsure, it asks you in
+  chat and posts nothing. A close you pick at a cairn choice is yours, and
+  these limits do not cover it.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want

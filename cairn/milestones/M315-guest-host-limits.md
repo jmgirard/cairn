@@ -37,7 +37,7 @@ In a repo the operator does not own, cairn sessions keep the operator's open PRs
 
 - [x] T1: Add the cap read to `/milestone-review` step 8's guest arm (after the push-access and stack-base reads, before the push, only with no open PR in the header) and to `/hotfix` step 1's guest arm for an authored fix, with the close blocks of AC1.
 - [x] T2: Add `open_pr_cap(root)` to `hooks/cairn_common.py` beside `push_remote` (one parser, `[1-9][0-9]?`, else 2, reporting a line it did not take), and the four rules to the guest part of `hooks/session_context.py`. Tests first in `hooks/tests`: the cases AC2 names, each asserting the rule's phrase.
-- [ ] T3: State the four rules in tracking-rules "Collaboration mode" and the header line in its file-map row; add the line to DESIGN's header-line list and the session hook's entry; update README's guest section and Copilot bullet and CHANGELOG Unreleased; write the D-entry (annotates D-137, D-152 for the guest request wording, and D-172). Its trigger is shipped behavior, the easystats audit, so D-108's door does not bar it.
+- [x] T3: State the four rules in tracking-rules "Collaboration mode" and the header line in its file-map row; add the line to DESIGN's header-line list and the session hook's entry; update README's guest section and Copilot bullet and CHANGELOG Unreleased; write the D-entry (annotates D-137, D-152 for the guest request wording, and D-172). Its trigger is shipped behavior, the easystats audit, so D-108's door does not bar it.
 
 ## Work log
 
@@ -56,3 +56,5 @@ In a repo the operator does not own, cairn sessions keep the operator's open PRs
 - 2026-10-22: T1 done: `/milestone-review` step 8's guest arm reads the cap after the stack-base read, before the push, only with no open PR in the header; `/hotfix` step 1 reads it for an authored fix before step 2 cuts a branch; verify green.
 - 2026-10-22: choice: `open_pr_cap(root)` returns `(cap, untaken)`; `session_context.host_limits` appends the four rules to the one guest mode line, so M184's and M247's one-line tests stand unchanged.
 - 2026-10-22: T2 done: 4 new tests in `hooks/tests` (the AC2 cases, each asserting the rule's phrase) failed first, pass now; a planted `[0-9]+` parser turned the `0` and `100` cases red; verify green (hooks 197 OK).
+- 2026-10-22: minor amendment: DESIGN had no list of `PROFILE.md` header lines, so T3 wrote one sentence that lists all four, beside the `session_context` entry's guest note.
+- 2026-10-22: T3 done: tracking-rules "Collaboration mode" gains the four-limits bullet and the file-map row the header line; README guest bullets, Copilot bullet, CHANGELOG Unreleased entry, D-213 written; cairn_validate and skills/tests green; verify green.

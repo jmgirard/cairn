@@ -4,6 +4,24 @@
 
 ### Changes that affect existing repos
 
+- **Guest sessions keep within limits on the host repo.** In guest mode,
+  you keep at most 2 open PRs on the upstream repo by default. A
+  `# Open PR cap: N` line near the top of `cairn/PROFILE.md` changes the
+  cap to N, a whole number from 1 to 99. Before a handoff opens a new PR,
+  `/milestone-review` and `/hotfix` list your open PRs there. At or over
+  the cap they push nothing, open no PR, and stop with the list. A failed read
+  stops the same way, and a push to an already-open PR is never stopped.
+  A cap line that cairn cannot read is named, and the cap stays 2. Each
+  guest session is also given three rules as instructions at its start.
+  It never resolves a review thread that a person started. It replies to
+  no bot, except the one comment per Copilot review that the Copilot round
+  or `/copilot-review` posts. It closes an issue someone else opened only
+  when a merged change clearly fixes it or its fix belongs in another
+  repo. Such a close carries a one-line comment naming that change or
+  repo, with at most 3 such closes on one repo per UTC day. When unsure,
+  the session asks you in chat and posts nothing. A close you pick at a
+  cairn choice is outside these rules.
+
 - **Sessions add fewer and plainer tests.** Tests now cover the behavior a
   change adds or alters. A new export gets the full test floor, and a bug
   fix gets one regression test per fixed defect. A test that already passes

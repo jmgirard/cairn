@@ -13,7 +13,10 @@ orthogonal to the profile). Six profiles ship — `r-package` (devtools/CRAN),
 `python` (pytest/PyPI), `claude-plugin` (`claude plugin validate`/`test`, M192),
 `quarto-extension` (a render check, and a release walk that tags a version a
 merge already raised or raises it at release, M303), `docker-image`
-(hadolint+build/container registry), and `generic`. This repo
+(hadolint+build/container registry), and `generic`. Above the slots,
+`PROFILE.md`'s header holds four optional lines: `# Collaboration mode:`
+(D-137, the one line the validator reads), `# Copilot review: on` (D-152),
+`# Push remote: base` (D-172), and `# Open PR cap: N` (D-213). This repo
 runs `claude-plugin` (M215). Logic lives here (skills, rules,
 templates); state lives in each adopting repo under `cairn/`. The founding
 spec is superseded by this file, the shared rulebook, and DECISIONS.md; git
@@ -69,7 +72,10 @@ transitions, human-gated merges, and a domain verification doctrine.
 - `hooks/hooks.json` + python3 (stdlib) scripts (M07) — the enforcement
   layer, all no-op outside cairn repos. Eight hooks: `session_context`
   (SessionStart context injection; an active milestone's cap-exempt sections
-  are read-bounded to their newest content, D-063); `stop_guard` (Stop-guard on uncommitted
+  are read-bounded to their newest content, D-063; in guest mode it adds
+  the routing section, the host-style rule, and the four host limits, its
+  open-PR cap read from the `# Open PR cap: N` header line by
+  `cairn_common.open_pr_cap`, D-213); `stop_guard` (Stop-guard on uncommitted
   `cairn/` tracking); five PreToolUse guards — `merge_guard` (single-use
   `cairn/.merge-approved` marker, bound to the PR it approves since M72,
   technically backing IP1),

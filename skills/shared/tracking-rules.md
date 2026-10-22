@@ -12,7 +12,7 @@ All project state lives in markdown under `cairn/`: substance in the owner, othe
 |---|---|---|
 | `CLAUDE.md` | Dev commands, repo-specific hard rules, pointers to `cairn/` | Status, TODOs, architecture rationale, history |
 | `cairn/DESIGN.md` | Purpose & scope, function families, conventions, numbered principles (GP/IP), architecture as it **is**, known issues | Future work, task lists, status |
-| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo, `scripts/cairn_next.py` and the cairn pane read for the stack-base rule ("Collaboration mode"), and no validator reads (the git model's push remote) | Domain doctrine, status, tasks, decisions |
+| `cairn/PROFILE.md` | The repo's toolchain profile — the seven slots the operational skills read (see "Toolchain profiles") — and the `# Collaboration mode:` header line, the only line outside the seven `##` slots that `scripts/cairn_validate.py` reads (see "Collaboration mode"); also the optional `# Copilot review: on` header line, which `/hotfix` and `/milestone-review` read and no validator does (`skills/shared/copilot-review.md`); also the optional `# Push remote: base` header line, which the guest-mode skills read to push to the base repo, `scripts/cairn_next.py` and the cairn pane read for the stack-base rule ("Collaboration mode"), and no validator reads (the git model's push remote); also the optional `# Open PR cap: N` header line, which `/milestone-review`, `/hotfix`, and `hooks/session_context.py` read for the guest open-PR cap and no validator reads ("Collaboration mode") | Domain doctrine, status, tasks, decisions |
 | `cairn/ROADMAP.md` | The milestone index — **the only authority on status** | Task details, acceptance criteria, narrative |
 | `cairn/milestones/M<NNN>-<slug>.md` | One milestone's goal, scope (In/Out), acceptance criteria, tasks, work-log, review evidence | Status authority (header is a mirror; ROADMAP wins any conflict — fix the mirror immediately) |
 | `cairn/milestones/archive/` | Compressed ≤25-line summaries of done/dropped milestones | Active work |
@@ -423,6 +423,19 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   operator's own PRs (it checks each test's authors with `git blame`). It matches their number of tests per change,
   model fits, helper use, and comment rate. Where host practice is lighter than the "What gets a test" floor, host
   practice sets the test volume, and each fixed defect keeps its one regression test.
+- **The session keeps within four limits on the host repo** (D-213). The session-start text states them too.
+  (1) Keep at most N of your open PRs on the host repo. N comes from a `# Open PR cap: N` line in the header of
+  `cairn/PROFILE.md`, read as the `# Collaboration mode:` line is read, when N matches `[1-9][0-9]?`, and is 2
+  otherwise. Before a handoff that would open a new PR, `/milestone-review` step 8 and `/hotfix` step 1 read your open
+  PRs with `gh pr list --repo <base-repo> --author @me --state open --limit 100 --json number,url`. At the cap or
+  past it they push nothing and open no PR. They stop with a close block that names the cap, each open PR, and a
+  `# Open PR cap:` line the read did not take. A failed read stops the same way, naming the read and its error. A push
+  to an already-open PR reads no cap. (2) Never resolve a review thread that a person started. (3) Reply to no bot,
+  except the one comment per Copilot review that the Copilot round or `/copilot-review` posts. (4) Close an issue
+  someone else opened only when a merged change clearly fixes it or its fix belongs in another repo. The close carries
+  a one-line comment naming that change or repo, which holds over host style matching. Make at most 3 such closes on
+  that repo per UTC day, counting your closes there that day. When unsure, ask the user in chat and post nothing. A
+  close the user picks at a cairn chip is the user's act and is outside rule (4).
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
