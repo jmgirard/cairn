@@ -4,6 +4,28 @@
 
 ### Changes that affect existing repos
 
+- **Sessions add fewer and plainer tests.** Tests now cover the behavior a
+  change adds or alters. A new export gets the full test floor, and a bug
+  fix gets one regression test per fixed defect. A test that already passes
+  on the default branch now needs a reason. It pins behavior the change can
+  break, or the milestone's criteria name it. Sessions no longer
+  repeat a check across inputs that run one code path. They no longer add a
+  weaker expectation after an exact one, or a helper that duplicates the
+  test framework. Test comments hold no bug history, worked arithmetic, or
+  oracle labels. A one-line source citation or issue number is still
+  allowed. The rule of two kinds of oracle now applies to a numeric result
+  the change adds or alters by design. A fix needs one oracle, and tests
+  share one fitted model per code path. Simulation checks are kept for an
+  interval method's coverage. They are not used to re-derive a textbook
+  result of a method the change does not add. In guest mode, a session
+  reads the tests that the host's maintainers wrote and matches their
+  volume, fits, helpers, and comments. At review, the code reviewer reports
+  added tests that these rules exclude. An existing repo keeps its own
+  profile copy. Copy the new edge-case lines of the r-package or python
+  test-doctrine slot into your `cairn/PROFILE.md`. If your DESIGN.md
+  Conventions commit numeric results to the two-oracle bar, narrow that
+  line to the results a change adds.
+
 - **The merge and hotfix gates list changed test snapshots.** A snapshot
   file is a stored expected output under a directory named `_snaps`
   (testthat) or `__snapshots__` (Jest, syrupy). At `/milestone-review`'s
