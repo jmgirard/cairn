@@ -955,6 +955,10 @@ actually reach.
   and whether the claim holds in the PR's code at its head commit. When
   the code does not settle the claim, the line says so. This read also writes nothing
   to GitHub.
+  The audit also reports how many of your open PRs in the repo count
+  against each open-PR cap: the PRs whose branch starts with `hotfix-`
+  beside the bug-fix cap, and the others beside the feature cap. It says
+  when a count is at or over its cap.
   `/milestone-plan`'s collision check also reads both open inboxes and settles a disposition only for an item overlapping
   the scope being planned.
   The pull request itself is opened only after you approve at the merge

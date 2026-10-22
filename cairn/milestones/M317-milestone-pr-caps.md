@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M317: Report the open-PR caps in /milestone
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the operator reads `/milestone`'s status report
-- **Branch/PR:** —
+- **Branch/PR:** m317-milestone-pr-caps
 
 ## Goal
 
@@ -39,8 +39,8 @@
 
 ## Tasks
 
-- [ ] T1: Add the cap report to §2 of `skills/milestone/SKILL.md` after the "Open hotfix PRs" bullet (:223), reusing its list and citing tracking-rules' open-PR caps bullet for the cap values. Leave tracking-rules unchanged, so the rulebook-mass baseline needs no re-seed.
-- [ ] T2: Update README's audit paragraph (near :941) and CHANGELOG Unreleased.
+- [x] T1: Add the cap report to §2 of `skills/milestone/SKILL.md` after the "Open hotfix PRs" bullet (:223), reusing its list and citing tracking-rules' open-PR caps bullet for the cap values. Leave tracking-rules unchanged, so the rulebook-mass baseline needs no re-seed.
+- [x] T2: Update README's audit paragraph (near :941) and CHANGELOG Unreleased.
 - [ ] T3: Run `/milestone` in this repo twice as AC2 states, remove the temporary PROFILE line, compare with the `gh pr list` count, and run the verify slot.
 
 ## Work log
@@ -53,6 +53,8 @@
 - 2026-10-22: lessons harvest: LESSONS M112 (grep README and docs for restatements; a user-visible change owes a CHANGELOG task) and M149 (rulebook-mass pins, avoided by leaving tracking-rules unchanged).
 - 2026-10-22: criteria audit (full mode, fresh Opus reader): 2 findings on this milestone, both fixed. AC1 now reports an over-cap number as over the cap, not as at it. AC2 narrowed to what a run with 0 open PRs can show, plus one untaken cap line. AC3 and AC4 had no finding.
 - 2026-10-22: plan gate chose a prose report in the skill over a script that runs `gh`, because the neighbor bullets are prose reads of the same list and a script would add a second read; falsified by a `/milestone` run whose reported numbers differ from the `gh pr list` count.
+- 2026-10-22: implement started on branch m317-milestone-pr-caps, cut from main at fef549f2. Untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-22: T1 done: an "Open-PR caps" bullet after "Open hotfix PRs" in §2 of `skills/milestone/SKILL.md`, reusing its list; tracking-rules unchanged. T2 done: one sentence in README's audit paragraph and a CHANGELOG Unreleased New entry. The added lines pass the simple-english lint (checked on the added lines alone, with a control file that it flags).
 
 ## Decisions
 

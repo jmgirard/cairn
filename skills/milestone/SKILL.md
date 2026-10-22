@@ -233,6 +233,22 @@ The script deliberately does not judge these — do them yourself and report:
   fails, name the cause and report no PR. The cause is a missing or
   unauthenticated `gh`, a repo with no remote, or another cause that the
   error names. A failed read is a reported gap, never an audit `FAIL`.
+- **Open-PR caps**, in owner and guest mode: from the list that the "Open
+  hotfix PRs" bullet read, with no second `gh` call, count the PRs whose
+  `headRefName` starts with `hotfix-` and the other PRs. Report the first
+  number beside the bug-fix cap and the second beside the feature cap, for
+  example `bug-fix PRs: 1 of 3` and `feature PRs: 1 of 1 (at the cap)`.
+  Take each cap from its `# Bug-fix PR cap:` or `# Feature PR cap:` line
+  in `cairn/PROFILE.md`, else 3 and 1. Read those lines as the open-PR
+  caps bullet of tracking-rules "Git and approval model" states. Name each
+  such line whose value is not taken. Report a number equal to its cap as at the cap,
+  and a number above its cap as over the cap. If the list returned 100
+  PRs, report both caps as reached, as that rulebook bullet counts it. If
+  the list read failed, report no number and name the gap that the "Open
+  hotfix PRs" bullet named. A stacked milestone's base PR counts here like
+  any other PR, because only that milestone's own review leaves it out.
+  This bullet carries no disposition to §3, names no next command, and
+  writes nothing to GitHub.
 - **Bot threads on your open PRs**, in owner and guest mode: for every PR
   in the list that the "Open hotfix PRs" bullet read, whatever its head
   branch, read its review threads with one command, in `bash` or `zsh`.
