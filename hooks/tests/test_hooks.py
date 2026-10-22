@@ -258,6 +258,33 @@ class TestPushRemote(RepoFixture):
                 self.assertEqual(session_context.cc.push_remote(str(self.root)), want)
 
 
+class TestIssueCloseCap(RepoFixture):
+    """M319: `cairn_common.issue_close_cap` reads the `# Issue close cap:`
+    header line: a number from 1 to 99, `off` for no daily limit, else 3
+    with the value named as untaken."""
+
+    def _cap(self, text):
+        (self.root / "cairn" / "PROFILE.md").write_text(text)
+        return session_context.cc.issue_close_cap(str(self.root))
+
+    def test_a_taken_value_sets_or_removes_the_limit(self):
+        for value, want in (("1", 1), ("99", 99), ("off", None), ("OFF", None)):
+            with self.subTest(value=value):
+                self.assertEqual(self._cap(f"# Issue close cap: {value}\n"), (want, []))
+
+    def test_no_line_reads_three(self):
+        self.assertEqual(session_context.cc.issue_close_cap(str(self.root)), (3, []))
+        self.assertEqual(self._cap("# Toolchain profile: generic\n"), (3, []))
+
+    def test_an_untaken_value_reads_three_and_is_named_as_written(self):
+        for value in ("0", "100", "03", "Many"):
+            with self.subTest(value=value):
+                self.assertEqual(
+                    self._cap(f"# Issue close cap: {value}\n"),
+                    (3, [("Issue close cap", value)]),
+                )
+
+
 class TestBaseRemote(RepoFixture):
     """M185 AC1: `cairn_common.base_remote` is `upstream` only in guest mode
     and only when that remote exists, else `origin`; `default_branch`

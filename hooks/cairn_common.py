@@ -424,6 +424,10 @@ PR_CAP_LINES = (
     ("Feature PR cap", re.compile(r"#\s*Feature PR cap:\s*(\S+)", re.IGNORECASE), 1),
 )
 PR_CAP_VALUE = re.compile(r"[1-9][0-9]?")
+# `# Issue close cap: N` or `off`, the guest limit on issue closes per host
+# repo per UTC day (M319, D-215). No validator reads it; session_context
+# states the limit in force in the guest rules.
+ISSUE_CLOSE_CAP_LINE = re.compile(r"#\s*Issue close cap:\s*(\S+)", re.IGNORECASE)
 
 
 def collaboration_mode(root):
@@ -464,6 +468,23 @@ def open_pr_caps(root):
             if value is not None:
                 untaken.append((key, value))
     return caps[0], caps[1], untaken
+
+
+def issue_close_cap(root):
+    """`(limit, untaken)` from the `# Issue close cap:` header line of
+    cairn/PROFILE.md, read as `collaboration_mode` reads its line (M319).
+    The limit is the line's value when it matches `[1-9][0-9]?`, None for
+    `off` in any case, and 3 with no line or any other value; `untaken` is
+    `[("Issue close cap", value)]`, the value as written, for a line whose
+    value was not taken, else `[]`. Never raises."""
+    value = _profile_header(root, ISSUE_CLOSE_CAP_LINE, lower=False)
+    if value is None:
+        return 3, []
+    if PR_CAP_VALUE.fullmatch(value):
+        return int(value), []
+    if value.lower() == "off":
+        return None, []
+    return 3, [("Issue close cap", value)]
 
 
 def _profile_header(root, pattern, lower=True):

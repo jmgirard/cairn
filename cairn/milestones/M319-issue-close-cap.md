@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M319: Let PROFILE.md set the guest close limit
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the rulebook and the session-start hook ship to every cairn repo, and guest sessions act on host repos by them   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
+- **Branch/PR:** m319-issue-close-cap   <!-- owner: implement (branch) / review (PR URL) · create; a companion checkout the milestone also works in is one further entry per checkout, `companion: <abs-path> <branch>` (implement), its PR URL appended by review — /milestone-review merges companions first, in listed order -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -61,7 +61,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Add `ISSUE_CLOSE_CAP_LINE` and `issue_close_cap` to `hooks/cairn_common.py` beside `PR_CAP_LINES` (about line 420). Test 1, 99, `off`, `OFF`, an absent line, and the untaken values `0`, `100`, `03`, and `Many`.
+- [x] T1: Add `ISSUE_CLOSE_CAP_LINE` and `issue_close_cap` to `hooks/cairn_common.py` beside `PR_CAP_LINES` (about line 420). Test 1, 99, `off`, `OFF`, an absent line, and the untaken values `0`, `100`, `03`, and `Many`.
 - [ ] T2: Turn `HOST_RULES` in `hooks/session_context.py` (about line 305, used at about line 431) into text built from `issue_close_cap`. Test no line (text equal to today's), 1, 5, `off`, an untaken value, and owner mode with the line present. Keep the existing guest-rules test passing.
 - [ ] T3: Edit guest rule (3) in tracking-rules (about line 447) and the PROFILE.md file-map row (line 15) as AC1 states.
 - [ ] T4: Edit README's guest-rules passage (about line 1114) and add a CHANGELOG Unreleased entry backed by the T1 and T2 tests.
@@ -88,6 +88,8 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: plan gate chose a per-repo line with default 3 over dropping the limit in every guest repo, because only easystats asked; falsified by a second guest repo setting `off` for the same reason.
 - 2026-10-22: plan gate chose `off` alone over `off` or `0`, because `0` is untaken in the PR cap lines; falsified by a user writing `0` and expecting no limit.
 - 2026-10-22: plan gate chose the full-page clause over narrowing the value to 1 to 9, because a batch after a release can pass 9 and `off` reads no page; falsified by a repo whose own closes on one day pass 100 events.
+- 2026-10-22: implement started on m319-issue-close-cap. The untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
+- 2026-10-22: T1 done. `ISSUE_CLOSE_CAP_LINE` and `issue_close_cap` sit beside `PR_CAP_LINES` in `hooks/cairn_common.py`, reusing `PR_CAP_VALUE` for the 1-to-99 match. `TestIssueCloseCap` errored before the function existed and passes now (1, 99, `off`, `OFF`, no line, and the untaken `0`, `100`, `03`, `Many`).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
