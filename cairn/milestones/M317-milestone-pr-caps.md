@@ -90,5 +90,9 @@
 - ripple #3: `hooks/cairn_common.py:416` comment — fix now, fixed 906c121a (same as diff-bug #7)
 - ripple #4: README and CHANGELOG cap entries list only the gates — reject (false): they describe the gates, which is still accurate
 - AC1 re-check after 906c121a: the fixed bullet at `skills/milestone/SKILL.md:236` holds all 15 clauses by the same `grep -F` check (a planted absent phrase read MISSING, so the check can fail). The 100-PR clause now reads "the list reached 100, so both caps count as reached". AC2's runs predate the fix, which changed only the 100-PR, failed-read, and stacked-base wording, none of them on the runs' paths (0 or 1 open PRs, one untaken line).
+- verify re-run on the fixed head: scripts 445 OK, hooks 202 OK, skills/tests 958 OK, both validates exit 0, `cairn_validate` passed, `claude plugin test` 2466 pass, 0 fail at dd31d961.
+- conversation: PR #330 — empty read (no reviews, no conversation comments, no unresolved threads).
+- copilot: Copilot review not present; the request on PR #330 may not be recorded by GitHub (used-up Copilot credits are one cause), and the state query before the merge question still read `none`.
+- snapshot: none (no `_snaps` or `__snapshots__` path in the diff).
 - ripple #5: ROADMAP row "Report the open-PR caps in /milestone" says `/milestone` reports nothing — reject (false): post-merge hygiene removes the graduated row
 - AC4: verify slot at 69ef6cb4 (code as of 49766320), each exit code read: scripts 445 OK (21 skipped), hooks 202 OK, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0, `claude plugin test .` 2466 pass, 0 fail.
