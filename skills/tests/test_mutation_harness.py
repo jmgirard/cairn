@@ -4189,9 +4189,9 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestCopilotReviewSkill.test_that_thread_waits_for_the_answer",
+        test="TestCopilotReviewSkill.test_that_review_waits_for_the_answer",
         target=COPILOT_SKILL,
-        block="That thread gets no reply until the user answers.",
+        block="That note's review gets no comment until the user answers.",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4201,40 +4201,47 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestNoThanks.test_skill_thread_reply_forbids_thanks",
+        test="TestNoThanks.test_skill_comment_forbids_thanks",
         target=COPILOT_SKILL,
         block="never thanks Copilot",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestNoThanks.test_module_thread_reply_forbids_thanks",
+        test="TestNoThanks.test_module_comment_forbids_thanks",
         target=COPILOT_MODULE,
-        block="Never thank",
+        block="The comment never thanks Copilot",
+    ),
+    # M314: the one comment in place of the thread replies.
+    Mutation(
+        guard="test_copilot_review_round",
+        test="TestOneComment.test_no_reply_on_a_thread",
+        target=COPILOT_MODULE,
+        block="The read posts no reply on a thread.",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestNoThanks.test_module_summary_reply_forbids_thanks",
+        test="TestOneComment.test_comment_waits_for_dispositions_and_pushes",
         target=COPILOT_MODULE,
-        block="It never thanks Copilot",
+        block="disposition and each fix is pushed.",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestSummaryReply."
-             "test_reply_comes_after_the_threads_are_resolved",
+        test="TestOneComment."
+             "test_comment_links_the_review_and_lists_each_note",
         target=COPILOT_MODULE,
-        block="once all its threads (the ones its body anchors) are resolved",
+        block="Its first line is the review's `url`, then one line per",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestSummaryReply.test_reply_links_the_review",
+        test="TestOneComment.test_resolves_follow_the_comment",
         target=COPILOT_MODULE,
-        block="the review's `url`, then one line per thread and body item",
+        block="resolve each Copilot thread the comment names.",
     ),
     Mutation(
         guard="test_copilot_review_round",
-        test="TestSummaryReply.test_a_linked_review_is_skipped",
+        test="TestOneComment.test_a_linked_review_gets_no_second_comment",
         target=COPILOT_MODULE,
-        block="Skip a review whose `url` an operator comment already carries",
+        block="gets no second comment.",
     ),
     Mutation(
         guard="test_copilot_review_round",
@@ -4647,7 +4654,7 @@ REGISTRY += [
         test="TestHotfixGuestChangeRoute."
              "test_route_reads_the_conversation_and_makes_changes",
         target=HOTFIX,
-        block="The reads only read: the Copilot round's replies, resolves, and",
+        block="The reads only read: the Copilot round's comments and resolves",
     ),
 ]
 

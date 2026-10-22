@@ -1,13 +1,13 @@
 # M314: Answer each Copilot review in one PR comment
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the Copilot round and `/copilot-review` post on the user's pull requests
-- **Branch/PR:** —
+- **Branch/PR:** m314-copilot-one-comment
 
 ## Goal
 
@@ -37,8 +37,8 @@ In every mode, the Copilot round and `/copilot-review` answer a Copilot review w
 
 ## Tasks
 
-- [ ] T1: Rewrite `skills/shared/copilot-review.md` §4 to §6. §4's thread read selects each thread's first comment's review URL (`pullRequestReview{url}`), so threads group by review. §5 drops step 3's reply and its command, and its summary reply becomes AC1's one comment, then the resolves. A note fixed on an earlier pass takes its line from the Review section's `copilot:` line. Drop the "one for each reply" empty-body clause. §6's report lines stay. Diff every removed sentence against main (LESSONS M152/M287), and keep the module within its budget.
-- [ ] T2: Update `skills/copilot-review/SKILL.md` (description, steps 6 and 7, close), `/milestone-review` (step 7's read, ~line 586) and `/hotfix` (~lines 217 and 361) where they name replies, and README's `/copilot-review` row and Copilot bullet (~lines 777 and 975-1010). Update or retire the hand-run guards in `skills/tests` that cite the removed reply text (`test_copilot_review_round.py`, `test_mutation_harness.py`, `test_resume_routing.py`), and run them.
+- [x] T1: Rewrite `skills/shared/copilot-review.md` §4 to §6. §4's thread read selects each thread's first comment's review URL (`pullRequestReview{url}`), so threads group by review. §5 drops step 3's reply and its command, and its summary reply becomes AC1's one comment, then the resolves. A note fixed on an earlier pass takes its line from the Review section's `copilot:` line. Drop the "one for each reply" empty-body clause. §6's report lines stay. Diff every removed sentence against main (LESSONS M152/M287), and keep the module within its budget.
+- [x] T2: Update `skills/copilot-review/SKILL.md` (description, steps 6 and 7, close), `/milestone-review` (step 7's read, ~line 586) and `/hotfix` (~lines 217 and 361) where they name replies, and README's `/copilot-review` row and Copilot bullet (~lines 777 and 975-1010). Update or retire the hand-run guards in `skills/tests` that cite the removed reply text (`test_copilot_review_round.py`, `test_mutation_harness.py`, `test_resume_routing.py`), and run them.
 - [ ] T3: Edit the two Unreleased CHANGELOG entries that name the summary reply and `/copilot-review`'s replies (~lines 174-183 and 305-314) to the one-comment form, or add one entry and correct them. Write the D-entry that supersedes the per-thread reply of D-153 and D-187's order (D-187's one-comment-per-review link and skip rule stand). Its trigger is shipped behavior, the replies `copilot-review` posted, so D-108's door does not bar it.
 
 ## Work log
@@ -51,3 +51,6 @@ In every mode, the Copilot round and `/copilot-review` answer a Copilot review w
 - 2026-10-21: criteria audit (full mode, fresh Opus reader): AC1 gained the crash-safe skip (a linked review's threads are resolved with no second comment), the "has a note" definition, the outdated thread's original line, the guest vocabulary rule, and the GraphQL and REST reply forms in its grep; AC2 cites AC1's qualifiers; AC3's grep leaves out the hand-run `skills/tests` (T2 updates them); AC4 bars a stale Unreleased entry. The thread-to-review grouping and the earlier-pass line moved to T1, and the D-entry to T3. Proportionality: nothing.
 - 2026-10-21: plan gate chose to group threads by their first comment's review URL over the body's `#discussion_r` anchors, because the anchors were never shown complete; falsified by a Copilot thread whose first comment names no review.
 - 2026-10-21: question set: guest repos keep the Copilot opt-in line (the round runs, and requests Copilot, only with `# Copilot review: on`), so this milestone leaves §1 and §2 as they are.
+- 2026-10-21: implement started on `m314-copilot-one-comment`; the untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-21: T1 done: §5's thread reply and its `/replies` command are gone; §4's thread read selects each first comment's `pullRequestReview{url}`; the summary reply became **The comment** (one per review that has a note, after every disposition and push, the review's URL then one line per note, no thanks, guest vocabulary rule, no second comment for a linked review, then the resolves); §1's write list names the comment. Every removed sentence was diffed against main (LESSONS M152/M287). Module 158 lines, 9,535 bytes. The remaining simple-english lint hits in the module predate the branch.
+- 2026-10-21: T2 done: `/copilot-review`'s description and steps 4, 6 (Comment), and 7 (Resolve), `/hotfix` (two sites), `/milestone-review` step 7, and README's row and Copilot bullet name the one comment. Hand-run guards: `test_copilot_review_round` (TestOneComment replaces TestSummaryReply, no-thanks tests retargeted), its mutation-harness entries, and `test_resume_routing` updated; `skills/tests` all OK, the harness included. Verify green: scripts/tests, hooks/tests, both validates, `claude plugin test` 2466 pass, 0 fail.

@@ -134,7 +134,7 @@ class TestWaitBound(unittest.TestCase):
 
 class TestCopilotReviewSkill(unittest.TestCase):
     """M287 AC2: `/copilot-review` asks in chat about a note the agent
-    cannot settle, before that thread gets a reply, and posts no question
+    cannot settle, before that review's comment goes (M314), and posts no question
     to GitHub. Each clause has its own test, so a removal of any one fails
     (the M287 criteria audit)."""
 
@@ -147,9 +147,9 @@ class TestCopilotReviewSkill(unittest.TestCase):
                       "ask the user in chat.", self.decide)
         self.assertIn("Use one `AskUserQuestion` chip", self.decide)
 
-    def test_that_thread_waits_for_the_answer(self):
-        self.assertIn("That thread gets no reply until the user answers.",
-                      self.decide)
+    def test_that_review_waits_for_the_answer(self):
+        self.assertIn("That note's review gets no comment until the user "
+                      "answers.", self.decide)
 
     def test_no_question_goes_to_github(self):
         self.assertIn("Never post a question for the user to GitHub.",
@@ -162,22 +162,15 @@ class TestNoThanks(unittest.TestCase):
 
     FILES = (("copilot-review", "SKILL.md"), ("shared", "copilot-review.md"))
 
-    def test_skill_thread_reply_forbids_thanks(self):
+    def test_skill_comment_forbids_thanks(self):
         step = flat(section(read("copilot-review", "SKILL.md"),
-                            "6. **Reply and resolve.**",
-                            "7. **Answer the summary.**"))
+                            "6. **Comment.**", "7. **Resolve.**"))
         self.assertIn("never thanks Copilot", step)
 
-    def test_module_thread_reply_forbids_thanks(self):
-        step = flat(section(read("shared", "copilot-review.md"),
-                            "3. Reply on the thread's first comment",
-                            "4. Resolve the thread."))
-        self.assertIn("Never thank Copilot.", step)
-
-    def test_module_summary_reply_forbids_thanks(self):
-        reply = flat(section(read("shared", "copilot-review.md"),
-                             "**Summary reply.**", "## 6."))
-        self.assertIn("It never thanks Copilot", reply)
+    def test_module_comment_forbids_thanks(self):
+        comment = flat(section(read("shared", "copilot-review.md"),
+                               "**The comment.**", "## 6."))
+        self.assertIn("The comment never thanks Copilot", comment)
 
     def test_every_thanks_line_forbids_it(self):
         for parts in self.FILES:
@@ -189,26 +182,36 @@ class TestNoThanks(unittest.TestCase):
                     self.assertRegex(line.lower(), r"never thank")
 
 
-class TestSummaryReply(unittest.TestCase):
-    """M287 AC4: the module answers each Copilot review's summary after
-    its threads are resolved, links the review, and skips a review an
-    operator comment already links. One test per clause."""
+class TestOneComment(unittest.TestCase):
+    """M314 AC1: the module answers each Copilot review with one comment
+    and no thread reply, after every note has a disposition and each fix
+    is pushed, links the review, lists each note, resolves after it, and
+    posts no second comment for a review an operator comment links. One
+    test per clause."""
 
     def setUp(self):
-        self.reply = flat(section(read("shared", "copilot-review.md"),
-                                  "**Summary reply.**", "## 6."))
+        module = read("shared", "copilot-review.md")
+        self.read = flat(section(module, "2. A fix-now item",
+                                 "**The comment.**"))
+        self.comment = flat(section(module, "**The comment.**", "## 6."))
 
-    def test_reply_comes_after_the_threads_are_resolved(self):
-        self.assertIn("once all its threads (the ones its body anchors) are "
-                      "resolved", self.reply)
+    def test_no_reply_on_a_thread(self):
+        self.assertIn("The read posts no reply on a thread.", self.read)
 
-    def test_reply_links_the_review(self):
-        self.assertIn("the review's `url`, then one line per thread and "
-                      "body item", self.reply)
+    def test_comment_waits_for_dispositions_and_pushes(self):
+        self.assertIn("once every note of the review has a disposition and "
+                      "each fix is pushed", self.comment)
 
-    def test_a_linked_review_is_skipped(self):
-        self.assertIn("Skip a review whose `url` an operator comment "
-                      "already carries", self.reply)
+    def test_comment_links_the_review_and_lists_each_note(self):
+        self.assertIn("Its first line is the review's `url`, then one line "
+                      "per note", self.comment)
+
+    def test_resolves_follow_the_comment(self):
+        self.assertIn("Then resolve each Copilot thread the comment names.",
+                      self.comment)
+
+    def test_a_linked_review_gets_no_second_comment(self):
+        self.assertIn("already carries gets no second comment", self.comment)
 
 
 class TestUnsettledNoteInTheRound(unittest.TestCase):

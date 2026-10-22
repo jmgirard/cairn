@@ -582,9 +582,9 @@ re-enters here, at the step the record shows is next:
    first runs the module's state query, and a still-pending Copilot request
    takes the module's bounded wait (§4), the one exception to the read's
    no-added-wait rule. Each
-   unresolved Copilot thread then takes its disposition and the module's
-   reply, resolve, and summary reply (§5), body findings are matched to
-   their threads, and
+   unresolved Copilot thread then takes its disposition, the module's one
+   comment for each review, and the resolves (§5), body findings are
+   matched to their threads, and
    the `copilot:` lines and the level, pending, or reason line follow §6.
    An empty read is stated in one line. Each disposition is logged in the
    Review section as one line (`conversation: <author> <path:line or PR> —
