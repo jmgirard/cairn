@@ -97,6 +97,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: claim audit: 23 claims read, 1 corrected — CHANGELOG.md, README.md. The CHANGELOG entry said guest sessions close at most 3 issues a day. It now says issues that someone else opened. Both texts now say "with no leading zero". The re-read found both true.
 - 2026-10-22: status set to review.
 - 2026-10-22: amendment routed: AC1 — the full-page clause counts any 100 events of any date, so it blocks every close on a busy repo; the intended clause is a full page whose oldest event falls on that UTC day. The return also carries the fix-now items in the Review section (DESIGN.md header list, "by default" in rule (3), README, and the older CHANGELOG entry, the untaken note wording) and a follow-up row for diff-bug #3.
+- 2026-10-22: checkpoint (half-done): fix-now edits made to DESIGN.md (six header lines, D-215), README and the older CHANGELOG entry ("By default"), and the untaken note ("`off` removes the limit. The limit stays at 3."). The AC1 re-audit is running; the rule (3) rewrite, the superseding D-entry, and the follow-up row wait on it. Hooks suite OK.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

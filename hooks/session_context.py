@@ -339,8 +339,8 @@ def host_rules(root):
         )
     notes = "".join(
         f" The `# {key}: {value}` line in cairn/PROFILE.md was not taken: a "
-        "limit is a value from 1 to 99 with no leading zero, or `off`, so "
-        "the limit stays at 3."
+        "limit is a value from 1 to 99 with no leading zero, and `off` "
+        "removes the limit. The limit stays at 3."
         for key, value in untaken
     )
     return HOST_RULES_BEFORE_LIMIT + closes + HOST_RULES_AFTER_LIMIT + notes

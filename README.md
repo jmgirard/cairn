@@ -1111,8 +1111,8 @@ recommend one) and writes `# Collaboration mode: guest` into
   the Copilot round or `/copilot-review` posts. It closes an issue someone
   else opened only when a merged change clearly fixes it or its fix
   belongs in another repo. The close carries a one-line comment naming
-  that change or repo, and Claude makes at most 3 such closes on one repo
-  per UTC day. A `# Issue close cap: N` line near the top of
+  that change or repo. By default, Claude makes at most 3 such closes on
+  one repo per UTC day. A `# Issue close cap: N` line near the top of
   `cairn/PROFILE.md` sets that limit to a value from 1 to 99 with no
   leading zero. `# Issue close cap: off` removes the limit. Any other
   value keeps 3, and the session start names the line. When Claude is
