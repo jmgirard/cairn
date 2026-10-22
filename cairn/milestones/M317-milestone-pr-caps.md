@@ -11,7 +11,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the operator reads `/milestone`'s status report
-- **Branch/PR:** m317-milestone-pr-caps
+- **Branch/PR:** m317-milestone-pr-caps https://github.com/jmgirard/cairn/pull/330
 
 ## Goal
 
