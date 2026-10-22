@@ -97,3 +97,9 @@ In every mode, the Copilot round and `/copilot-review` answer a Copilot review w
 - prior-review #3: README and CHANGELOG said a comment goes to every Copilot review — fix now (diff-bug #13), fixed 8740e094
 - ripple #1: DESIGN.md:35-36 — fix now (diff-bug #10), fixed 8740e094
 - ripple #2: the comment's `fixed in <short-sha>` differs from §6's `, fixed <short-sha>` — reject (style): the two are different texts, a public line and a record line, as on main
+- copilot: skills/shared/copilot-review.md:112 (outdated) — fix now (a return-floor item "puts its review's comment and resolves on hold"), fixed a99507c0
+- copilot: skills/shared/copilot-review.md:125 (outdated) — fix now (a thread with no review joins the newest Copilot review), fixed 8740e094
+- Copilot level: Lite (set by GitHub's settings). Both threads answered in one PR comment (issuecomment-6333005920), then resolved: the round's first run in the M314 form.
+- conversation: copilot-pull-request-reviewer[bot] PR review 5609356222 — noted (its two threads above)
+- conversation: jmgirard PR comment (the one Copilot comment) — noted
+- snapshot: no changed snapshot files (`git diff --name-only origin/main...HEAD` names none under `_snaps` or `__snapshots__`)
