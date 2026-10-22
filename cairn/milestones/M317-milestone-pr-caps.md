@@ -60,6 +60,7 @@
 - 2026-10-22: claim audit: 20 claims read, 0 corrected — CHANGELOG.md, README.md, skills/milestone/SKILL.md
 - 2026-10-22: minor amendment: the claim auditor found tracking-rules' `cairn/PROFILE.md` row listing the cap lines' readers without `/milestone`. Added it, so T1's "leave tracking-rules unchanged" no longer holds. The rulebook-mass seed moved to 820 lines / 80,301 bytes in its three pins (skills/milestone/SKILL.md, test_cost_audit_line.py, test_mutation_harness.py, per LESSONS M149). Scripts 445 OK, hooks 202 OK, skills/tests 958 OK after the change.
 - 2026-10-22: substantive amendment: the line above was a scope change, not a minor one (diff-bug #1). Scope In now reads: "A cap report in §2 of `skills/milestone/SKILL.md`, built from the list that the "Open hotfix PRs" bullet already reads. README's paragraph on `/milestone`'s audit. CHANGELOG Unreleased. Naming `/milestone` among the cap lines' readers in tracking-rules (its `cairn/PROFILE.md` row and its open-PR caps bullet) and in `hooks/cairn_common.py`'s comment, with the rulebook-mass seed re-seeded in its three pins." T1's "Leave tracking-rules unchanged" clause is replaced to match. What the user sees is unchanged, so no stop.
+- 2026-10-22: step-7 approval: m317-milestone-pr-caps approved for merge (PR #330)
 
 ## Decisions
 
