@@ -41,8 +41,9 @@ cairn-file checks (`cairn_validate`, coverage completeness, `cairn_impact`):
 R-mechanical test expectations layered on the universal "What gets a test"
 rules in tracking-rules:
 - Tests are written for `testthat` edition 3 (3e).
-- Every exported function: happy path, every `cli_abort()` branch fired and identified — `expect_error(class =)` or a message matcher, never bare `expect_error()` — and R
+- Every new exported function: happy path, every `cli_abort()` branch fired and identified — `expect_error(class =)` or a message matcher, never bare `expect_error()` — and R
   edge cases — zero rows, `NA`, length-one, factor vs. character, empty strings.
+  Apply to a new export, and to the inputs a change touches, only the edge cases that fit those inputs' types. Skip a case that runs the same code path as another.
 - New user-facing conditions use `cli::cli_abort()` / rlang, not assertthat.
 - Indirect by default: internal helpers (direct tests only for independent logic).
 - Never test print cosmetics beyond meaningful snapshots, trivial pass-throughs,

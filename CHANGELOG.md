@@ -4,6 +4,32 @@
 
 ### Changes that affect existing repos
 
+- **Sessions add fewer and plainer tests.** Tests now cover the behavior a
+  change adds or alters. A new export gets the full test floor, and a bug
+  fix gets one regression test per fixed defect. A test that already passes
+  on the default branch now needs a reason. It pins behavior the change can
+  break, or the milestone's criteria name it. Sessions no longer
+  repeat a check across inputs that run one code path. They no longer add a
+  weaker expectation after an exact one, or a helper that duplicates the
+  test framework. Test comments hold no bug history, worked arithmetic, or
+  oracle labels. A one-line source citation or issue number is still
+  allowed. The rule of two kinds of oracle now applies to a numeric result
+  the change adds or alters by design. A fix needs one oracle, and
+  deterministic checks share one fitted model per code path. Simulation
+  replications are exempt, and simulation checks are kept for an
+  interval method's coverage. They are not used to re-derive a textbook
+  result of a method the change does not add or alter. In guest mode, a session
+  reads the tests that the host's maintainers wrote and matches their
+  volume, fits, helpers, and comments. At review, the code reviewer reports
+  added tests that these rules exclude. An existing repo keeps its own
+  profile copy. Copy the changed function bullet and its new edge-case
+  line into your `cairn/PROFILE.md`. In the r-package slot the bullet
+  starts "Every new exported function", and in the python slot "Every new
+  public function". A generic repo copies the profile's new test-doctrine
+  sentence. If your DESIGN.md Conventions commit numeric results to the
+  two-oracle bar, narrow that line to the results a change adds or alters
+  by design.
+
 - **The merge and hotfix gates list changed test snapshots.** A snapshot
   file is a stored expected output under a directory named `_snaps`
   (testthat) or `__snapshots__` (Jest, syrupy). At `/milestone-review`'s

@@ -117,9 +117,9 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-770 lines / 74,591 bytes (M308, 2026-10-21, the whole file after M308
-added the guest host-text order and the names bullet; the prior seed was
-M292's 761 lines / 73,442 bytes; bytes, because a
+792 lines / 76,924 bytes (M313, 2026-10-21, the whole file after M313
+scoped the test floor and added the test-comment and host-test rules; the
+prior seed was M308's 770 lines / 74,591 bytes; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is

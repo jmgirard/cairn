@@ -30,8 +30,9 @@ consistency gate.
 ## test-doctrine
 Toolchain-specific test expectations layered on the universal "What gets a
 test" rules in tracking-rules. Generic default: **none beyond the universal
-rules** — every bug fix gets a regression test, every documented claim a test,
-contract-not-implementation, and the oracle doctrine for any numeric result.
+rules** — one regression test per fixed defect, a test for each documented claim
+the change adds or alters, contract-not-implementation, and the oracle doctrine
+for a numeric result the change adds or alters.
 
 ## release-walk
 The release procedure `/cairn-release` follows. Generic default: a minimal

@@ -14,9 +14,10 @@ size (99 lines / 6,480 bytes) plus roughly one section of headroom, hand-read
 with `wc -l -c` at the repo's hygiene passes and covered by no validator.
 Over either figure, compress or retire content here — never "let it grow".
 
-Tests verify against ground truth, not against the code. Every
-numeric-results suite includes, in priority order: (1) hand-computed
-fixtures from published formulas, arithmetic in comments; (2) published
+Tests verify against ground truth, not against the code. A numeric-results
+suite draws its oracles, in priority order, from: (1) hand-computed
+fixtures from published formulas, worked in the fixture's generator or source
+note, never in test comments; (2) published
 reference values, cited; (3) independent recomputation with deliberately
 dumb explicit code; (4) invariant tests; (5) simulation from known population
 parameters — the estimator must recover the known value and/or its interval
@@ -26,7 +27,15 @@ primary oracle where no closed form or reference implementation exists and for
 interval methods — it is a rung on this list, not a lesser choice. Snapshots
 only on top, never as the sole oracle for a number.
 
-**Oracle types & the ≥2-types bar.** Name each oracle by *type*: **frozen** (an
+**Scope (D-210).** The bar below binds a numeric result that the change adds or
+alters by design. A fix to an existing result needs one regression test whose
+expected value comes from one oracle. Deterministic checks use at most one
+fitted model per code path, shared by the tests that use it. A
+simulation-coverage oracle's replications are exempt from it. In guest mode the host's practice
+sets the number of oracles above one, and the hard stops below still bind.
+
+**Oracle types & the ≥2-types bar.** Name each oracle's *type* in its oracle
+record (below), never in a test comment: **frozen** (an
 external/expensive reference value computed once and committed as a fixture
 *with* a reproducible generator), **live** (an independent implementation
 recomputed at test time), **invariant** (two independent internal routes that
@@ -37,7 +46,7 @@ population parameters; the estimator must recover the known value (point) and/or
 its interval must cover it at the nominal rate — the injected ground truth is
 the oracle). The five types refine the priority list, they don't replace it —
 (1)/(2) are frozen or closed-form, (3) is live, (4) is invariant, (5) is
-simulation-coverage. Every numeric result is backed by
+simulation-coverage. Every numeric result in scope is backed by
 **≥2 *independent* oracle types**, never two instances of one type. A **live**
 independent implementation is the *stronger* form; a frozen copy of it is a
 regression pin, not a cross-check — prefer live, and freeze it only when it
@@ -46,7 +55,8 @@ becomes expensive or network-bound. **simulation-coverage** is the one
 sampling-distribution check, not deterministic pointwise agreement — and the
 primary oracle for interval methods (**a CI method's oracle is coverage**) and
 for any estimator with no closed form or reference implementation; it counts
-toward the ≥2-types bar like any other type. Freeze a simulation-coverage
+toward the ≥2-types bar like any other type. It is never used to confirm a
+textbook property of a method the change does not add or alter. Freeze a simulation-coverage
 oracle (commit its summary as a fixture) only when the run is expensive — a live
 refit or a many-replication sweep — else recompute it live.
 
@@ -89,7 +99,8 @@ Summary → `cairn/references/<citekey>.md` (committed), authored from
 `skills/shared/templates/source-note.md`: full citation,
 extracted values with page/table anchors, verbatim-critical values quoted
 exactly, which tests/oracles trace to it, open questions. One line in
-`INDEX.md`. Tests and milestones cite `citekey (p. N)`, never restate.
+`INDEX.md`. Tests and milestones cite `citekey (p. N)` (in guest mode tests
+cite the publication, per tracking-rules "Test comments"), never restate.
 (The `references/` page *types*, the page⇒INDEX-line rule, and **when a page is
 owed at all** belong to the universal file family, stated in the core rulebook
 under "References pages"; this workflow is the numeric/scoring-source instance

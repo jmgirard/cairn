@@ -1,6 +1,6 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,3 +56,4 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: checkpoint, T2 not yet checked off: `BandLine.href` from `row.url`, `BAND_SHAPE` `band-5`, and the desktop id drawn as `Link` > `Text` (gray, bold, `underline={false}`) directly in the head Box, with no wrapping `Text` so the existing `idAndTitle` sweep passes unchanged (the live look checks the drawing). Six new band tests pass. The first full run had 2 unrelated fails in the M221 AC4 refused-clear tests (a doubled `/clear` fill), and a rerun is checking whether they are flaky. T3 done: README band section, DESIGN `hooks/status/` entry, CHANGELOG New entry. My added sentences pass the simple-english lint; the rest of its README and CHANGELOG hits predate this branch.
 - 2026-10-21: T2 done: the full `claude plugin test` rerun is green (2472 pass, 0 fail), so the two M221 AC4 fails of the first run were flaky.
 - 2026-10-21: blocked: paused at the user's request so that the test-guidance milestone the easystats audit asked for can be planned and implemented first, at high priority. T1 to T3 are done. Resume with `/milestone-implement M312`, which runs the claim audit (step 7) and then hands off to review, where T4's live look waits.
+- 2026-10-21: resumed (M313 done, the blocker gone): merged main (M313) into the branch, the only conflict the ROADMAP's M313 row, resolved to main's file with M312 `in-progress`. Verify green: scripts/tests 445 OK, hooks/tests 193 OK, both validates, `claude plugin test` 2472 pass, 0 fail. The untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
