@@ -82,6 +82,7 @@
 - 2026-10-22: implement done: T1–T6 checked; verify, cairn_validate, and skills/tests green; status review. Open concern: M312's open PR #327 fills this repo's feature cap of 1, so review's step-2 Copilot arm will stop until #327 merges or closes, or the repo sets `# Feature PR cap: 2`.
 - 2026-10-22: review stop at step 2's Copilot arm: feature cap 1 (no cap line in cairn/PROFILE.md), open feature PRs 1 (#327, m312-band-pr-link); nothing pushed, no PR opened, status stays review.
 - 2026-10-22: override: the user left #327 (M312, blocked/parked) out of the feature count for this review; open feature PRs counted 0, under the cap. One-off, not a rule: in guest mode every handed-off PR's milestone is blocked.
+- 2026-10-22: step-7 approval: m315-guest-host-limits approved for merge
 - 2026-10-22: copilot: requested on PR #329 (state `none` before and once after the request); the request may not be recorded, no wait at step 2.
 
 ## Review
