@@ -972,6 +972,24 @@ actually reach.
   fix. In guest mode, when the maintainers request changes on your
   `hotfix-` PR after its newest commit, a rerun makes the changes, runs
   the checks again, and asks you once before it pushes to the PR's branch.
+- **Your open PRs stay under two caps.** In owner and guest mode, you keep
+  at most 3 open bug-fix PRs and at most 1 open feature PR on a repo. A PR
+  counts as a bug fix only when its branch starts with `hotfix-`, and any
+  other open PR counts as a feature. Every open PR you authored on the repo
+  counts, opened through cairn or not, so a PR you opened by hand fills the
+  feature cap. In guest mode with `# Push remote: base`, when a stacked
+  milestone opens its PR, its stack base's PR is not counted. To change a
+  cap, add `# Bug-fix PR cap: N` or `# Feature PR cap: N` near the top of
+  `cairn/PROFILE.md`, with a value from 1 to 99 and no leading zero. Before
+  an authored fix cuts its branch, `/hotfix` checks the bug-fix cap; a
+  re-land or a follow-up to a merged PR is not checked. Before a review
+  opens a new PR, `/milestone-review` checks the feature cap. At the cap
+  they push nothing, open no PR, and stop with a
+  list of those PRs. They also stop when the list cannot be read. In owner
+  mode the review stops before the merge question, so you are never asked
+  to approve a merge it cannot open. A push to a PR that is already open
+  is never stopped. A cap line near the top whose value is not 1 to 99
+  with no leading zero is named, and that cap keeps its default.
 - **Copilot can review each PR first (opt-in).** Add the line
   `# Copilot review: on` near the top of `cairn/PROFILE.md`. Then `/hotfix`
   and `/milestone-review` request a GitHub Copilot review on the PR with
@@ -996,7 +1014,9 @@ actually reach.
   without the line. It never requests a review. A `pull_request`-triggered CI suite also runs on the early
   push and the fix pushes. A hotfix opens its PR before its approval chip;
   a decline there closes the PR and keeps the branch. In guest mode the
-  round runs after the handoff opens the PR. If Copilot's review is still
+  round runs after the handoff opens the PR. With the round on, the
+  session requests the review from your account, with your `gh` login,
+  when the PR has none yet. If Copilot's review is still
   pending at the read, Claude waits up to 25 minutes, then goes on and
   says the review is pending. If the request command exits 0 but the PR
   shows no Copilot request or review just after it, Claude says so in one
@@ -1033,7 +1053,9 @@ actually reach.
   `Closes #N` (or `Refs #N` for an issue only partly resolved), so GitHub
   closes the issue at merge. After the
   merge the review reads the state of each issue slotted `closes` and closes
-  one still open with a comment naming the merged PR; `/milestone`'s audit
+  one still open with a comment naming the merged PR. In guest mode the
+  maintainers' merge closes it through the `Closes` line, and the review
+  closes none. `/milestone`'s audit
   reports an issue still open after its milestone is done (among the
   roadmap's retained done rows) and offers to close it at the triage chip.
   Without `gh`, the post-merge check and the audit name the gap and carry on.
@@ -1077,6 +1099,22 @@ recommend one) and writes `# Collaboration mode: guest` into
   the same thing.
 - **No merge by cairn.** Review ends by handing the PR to the maintainers;
   you never merge, and the approval marker is never written.
+- **Threads, bots, issues, and new features have set rules.** Each guest
+  session is given these instructions at its start, beside the open-PR
+  caps above. They are instructions to Claude, not a block on any command.
+  Claude never resolves a review thread that a person started. It replies
+  to no bot, except the one comment per Copilot review with a note that
+  the Copilot round or `/copilot-review` posts. It closes an issue someone
+  else opened only when a merged change clearly fixes it or its fix
+  belongs in another repo. The close carries a one-line comment naming
+  that change or repo, and Claude makes at most 3 such closes on one repo
+  per UTC day. When it is unsure, it asks you in chat and posts nothing. A
+  close you pick at a cairn choice is yours, and these limits do not cover
+  it. Before Claude plans a feature or a change of behavior, it looks for
+  a maintainer's agreement with the design in an issue, or a maintainer's
+  request for it in a review of your PR. Without either, it tells you in
+  chat and plans nothing until a maintainer agrees. A fix that restores
+  documented behavior needs no such agreement.
 - **Branches go to your fork unless you ask for the upstream repo.** By
   default, `/milestone-review` and `/hotfix` push the branch to your fork
   and open the PR from it. If you can push to the upstream repo and want

@@ -411,6 +411,15 @@ COLLAB_MODE_LINE = re.compile(r"#\s*Collaboration mode:\s*(\S+)", re.IGNORECASE)
 # `# Push remote: base`, the guest-mode push remote line (M267). No validator
 # reads it; scripts/cairn_next.py reads it for the stack-base rule (M268).
 PUSH_REMOTE_LINE = re.compile(r"#\s*Push remote:\s*(\S+)", re.IGNORECASE)
+# `# Bug-fix PR cap: N` and `# Feature PR cap: N`, the caps on your open PRs
+# in the repo, in both modes (M315). No validator reads them; session_context
+# states them, and `/milestone-review` and `/hotfix` apply the same rule in
+# prose. Each entry: (key as written in the line, its regex, its default).
+PR_CAP_LINES = (
+    ("Bug-fix PR cap", re.compile(r"#\s*Bug-fix PR cap:\s*(\S+)", re.IGNORECASE), 3),
+    ("Feature PR cap", re.compile(r"#\s*Feature PR cap:\s*(\S+)", re.IGNORECASE), 1),
+)
+PR_CAP_VALUE = re.compile(r"[1-9][0-9]?")
 
 
 def collaboration_mode(root):
@@ -434,11 +443,31 @@ def push_remote(root):
     return _profile_header(root, PUSH_REMOTE_LINE)
 
 
-def _profile_header(root, pattern):
+def open_pr_caps(root):
+    """`(bug_fix, feature, untaken)` from the `# Bug-fix PR cap:` and
+    `# Feature PR cap:` header lines of cairn/PROFILE.md, each read as
+    `collaboration_mode` reads its line (M315). A cap is its line's value
+    when it matches `[1-9][0-9]?`, else 3 for bug fixes and 1 for features;
+    `untaken` lists `(key, value)` for each line whose value did not match.
+    Never raises."""
+    caps, untaken = [], []
+    for key, pattern, default in PR_CAP_LINES:
+        value = _profile_header(root, pattern, lower=False)
+        if value is not None and PR_CAP_VALUE.fullmatch(value):
+            caps.append(int(value))
+        else:
+            caps.append(default)
+            if value is not None:
+                untaken.append((key, value))
+    return caps[0], caps[1], untaken
+
+
+def _profile_header(root, pattern, lower=True):
     """The first match of `pattern` in cairn/PROFILE.md's header region (the
-    lines before the first `## ` slot heading), its value lowercased, or
-    None. A path that is not a regular file reads as None, so a FIFO there
-    cannot stall `cairn_next` (M268 review)."""
+    lines before the first `## ` slot heading), its value lowercased (as
+    written with `lower=False`, so a note can quote it), or None. A path
+    that is not a regular file reads as None, so a FIFO there cannot stall
+    `cairn_next` (M268 review)."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     if not os.path.isfile(path):
         return None
@@ -449,7 +478,7 @@ def _profile_header(root, pattern):
                     break
                 m = pattern.match(line)
                 if m:
-                    return m.group(1).lower()
+                    return m.group(1).lower() if lower else m.group(1)
     except Exception:
         return None
     return None

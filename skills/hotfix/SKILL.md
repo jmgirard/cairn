@@ -254,6 +254,17 @@ can resolve against the fork instead of the base repo.
    Step 6's Copilot round arm runs for it, with a push to the PR's
    head branch and no `gh pr create`. Step 7's off-but-present rule
    applies to it as to an authored fix this run merged.
+   **Open-PR cap (M315).** In owner and guest mode, an authored fix from a
+   bug report reads the bug-fix cap last in this step, after the tier
+   check and the candidate-row match and before step 2 cuts its branch,
+   since its PR is new. Read it as tracking-rules "Git and approval model"
+   states in its open-PR caps bullet. The merged-PR re-entry's follow-up,
+   a re-land, and a PR reference read no cap. At the cap, or on a failed
+   read, cut no branch, push nothing, open no PR, and stop with that
+   bullet's close block. Unless step 1 matched a candidate row, first add
+   one for the bug (search-first), so the report outlives the chat. The
+   close block names the row. Its fenced next command is `/hotfix` with
+   the bug's description, to run once one of those PRs closes or merges.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).

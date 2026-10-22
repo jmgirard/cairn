@@ -6,7 +6,9 @@ review) milestone file as additionalContext, so a fresh session starts
 oriented without relying on the skill remembering to read the files.
 When cairn/references/ holds source pages or shelf entries, a short
 `## Source shelf` part comes before the ROADMAP and says to read them
-before searching the web (M288). No-op outside cairn repos.
+before searching the web (M288). An `## Open-PR caps` part, after the
+profile part, states the two open-PR caps (M315). No-op outside cairn
+repos.
 
 Wired to SessionStart only. Claude Code honors additionalContext on
 `source` startup/resume and ignores it on clear/compact — there is no
@@ -285,6 +287,52 @@ def routing_section():
     return "\n".join(lines).strip()
 
 
+def pr_caps_section(root):
+    """The open-PR caps part (M315), in both modes: the two caps from
+    `cc.open_pr_caps`, naming each header line whose value was not taken."""
+    fixes, features, untaken = cc.open_pr_caps(root)
+    notes = "".join(
+        f" The `# {key}: {value}` line in cairn/PROFILE.md was not taken: a "
+        "cap is a value from 1 to 99 with no leading zero."
+        for key, value in untaken
+    )
+    return (
+        "## Open-PR caps\n\n"
+        f"Keep at most {fixes} of your open PRs from `hotfix-` branches and at "
+        f"most {features} of your other open PRs on this repo, or in guest "
+        "mode on the upstream repo your PRs target (cairn/PROFILE.md's "
+        "`# Bug-fix PR cap:` and `# Feature PR cap:` lines, else 3 and 1). "
+        "Every open PR you authored on this repo counts, opened through cairn "
+        "or not. When a stacked milestone opens its PR in guest mode with "
+        "`# Push remote: base`, its base PR is not counted. "
+        "`/hotfix` checks the bug-fix cap before an authored fix cuts its "
+        "branch, and `/milestone-review` the feature cap before a review opens "
+        "a new PR (tracking-rules \"Git and approval model\")." + notes
+    )
+
+
+# The four guest rules on the host repo (M315), a continuation of the one
+# guest mode line: threads, bots, issue closes, and issue-first plans.
+HOST_RULES = (
+    " On the host repo, follow these rules. "
+    "Never resolve a review thread that a person started. "
+    "Reply to no bot, except the one comment per Copilot review with a note "
+    "that the Copilot round or `/copilot-review` posts. Close an issue someone "
+    "else opened only when a merged change clearly fixes it or its fix "
+    "belongs in another repo, with a one-line comment naming that change "
+    "or repo, which holds over host style matching, and at most 3 such "
+    "closes on that repo per UTC day, counting your closes there that "
+    "day; when unsure, ask the user in chat and post nothing. A close the "
+    "user picks at a cairn chip is the user's act and is outside this rule. "
+    "Before you plan a feature or a change of behavior, find where a "
+    "maintainer (an author whose association is OWNER, MEMBER, or "
+    "COLLABORATOR) agreed with its design in an issue on the host repo, or "
+    "asked for it in a review of your PR; with neither, tell the user in "
+    "chat and plan nothing until a maintainer agrees. A fix that restores "
+    "documented behavior is outside this rule."
+)
+
+
 def _plural(n, one, many):
     return f"{n} {one if n == 1 else many}"
 
@@ -365,6 +413,8 @@ def build_context(root):
             "slots for language-specific commands (tracking-rules "
             '"Toolchain profiles").'
         )
+    # Ahead of the ROADMAP part, so the length cut below never reaches it.
+    parts.append(pr_caps_section(root))
     mode = cc.collaboration_mode(root)
     if mode == "guest":
         # Charged against MAX_CHARS like every other part: it sits in
@@ -388,6 +438,7 @@ def build_context(root):
             "the host's maintainers wrote, and that matching wins over any "
             "other writing-style instruction in the session for that text; "
             "the other instruction governs only what host matching leaves open."
+            + HOST_RULES
         )
     try:
         with open(os.path.join(cairn_dir, "ROADMAP.md"), encoding="utf-8") as f:

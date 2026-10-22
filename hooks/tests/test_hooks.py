@@ -417,6 +417,112 @@ class TestSessionContext(RepoFixture):
         self.assertIn("routing section unreadable", part)
         self.assertIn("no-such-template.md", part)
 
+    # --- M315 AC2: the open-PR caps in both modes, the guest rules ---
+
+    GUEST_HEADER = "# Toolchain profile: generic\n# Collaboration mode: guest\n"
+    OWNER_HEADER = "# Toolchain profile: generic\n"
+    BODY = "\n## verify\n- x\n"
+
+    def _guest_part(self, profile):
+        (self.root / "cairn" / "PROFILE.md").write_text(profile)
+        return self._session().split("## Collaboration mode", 1)[1].split("\n## ", 1)[0]
+
+    def _caps_part(self, profile):
+        (self.root / "cairn" / "PROFILE.md").write_text(profile)
+        ctx = self._session()
+        self.assertIn("## Open-PR caps", ctx)
+        # ahead of the ROADMAP part, so the length cut never reaches it
+        self.assertLess(ctx.index("## Open-PR caps"), ctx.index("## cairn/ROADMAP.md"))
+        return ctx.split("## Open-PR caps", 1)[1].split("\n## ", 1)[0]
+
+    def _assert_caps(self, part, fixes, features):
+        self.assertIn(f"at most {fixes} of your open PRs from `hotfix-` branches", part)
+        self.assertIn(f"at most {features} of your other open PRs", part)
+
+    def test_caps_come_from_both_header_lines_in_both_modes(self):
+        lines = "# Bug-fix PR cap: 5\n# Feature PR cap: 2\n"
+        for mode, header in (("guest", self.GUEST_HEADER), ("owner", self.OWNER_HEADER)):
+            with self.subTest(mode):
+                part = self._caps_part(header + lines + self.BODY)
+                self._assert_caps(part, 5, 2)
+                self.assertNotIn("not taken", part)
+
+    def test_caps_take_a_two_digit_value_and_one_line_alone(self):
+        part = self._caps_part(self.GUEST_HEADER + "# Bug-fix PR cap: 99\n" + self.BODY)
+        self._assert_caps(part, 99, 1)
+        part = self._caps_part(self.GUEST_HEADER + "# Feature PR cap: 2\n" + self.BODY)
+        self._assert_caps(part, 3, 2)
+        self.assertNotIn("not taken", part)
+
+    def test_caps_default_with_no_line_named_for_absent_or_slot_lines(self):
+        cases = {
+            "no lines": self.GUEST_HEADER + self.BODY,
+            # below the first `## `, the lines are slot body, not the header
+            "below ##": self.GUEST_HEADER + self.BODY + "# Bug-fix PR cap: 5\n# Feature PR cap: 2\n",
+        }
+        for name, profile in cases.items():
+            with self.subTest(name):
+                part = self._caps_part(profile)
+                self._assert_caps(part, 3, 1)
+                self.assertNotIn("not taken", part)
+
+    def test_caps_name_each_bad_value_and_keep_its_default(self):
+        for key in ("Bug-fix PR cap", "Feature PR cap"):
+            for value in ("many", "0", "100"):
+                with self.subTest(key=key, value=value):
+                    part = self._caps_part(self.GUEST_HEADER + f"# {key}: {value}\n" + self.BODY)
+                    self._assert_caps(part, 3, 1)
+                    self.assertIn(f"`# {key}: {value}` line", part)
+                    self.assertIn("not taken", part)
+
+    def test_caps_name_both_bad_lines_and_a_bad_line_in_owner_mode(self):
+        part = self._caps_part(
+            self.GUEST_HEADER + "# Bug-fix PR cap: many\n# Feature PR cap: 0\n" + self.BODY
+        )
+        self._assert_caps(part, 3, 1)
+        self.assertIn("`# Bug-fix PR cap: many` line", part)
+        self.assertIn("`# Feature PR cap: 0` line", part)
+        part = self._caps_part(self.OWNER_HEADER + "# Feature PR cap: 100\n" + self.BODY)
+        self._assert_caps(part, 3, 1)
+        self.assertIn("`# Feature PR cap: 100` line", part)
+
+    def test_caps_quote_an_untaken_value_as_written(self):
+        part = self._caps_part(self.GUEST_HEADER + "# Feature PR cap: Many\n" + self.BODY)
+        self.assertIn("`# Feature PR cap: Many` line", part)
+
+    def test_caps_count_every_authored_pr_but_a_stack_base(self):
+        part = self._caps_part(self.OWNER_HEADER + self.BODY)
+        self.assertIn("Every open PR you authored on this repo counts", part)
+        self.assertIn(
+            "When a stacked milestone opens its PR in guest mode with "
+            "`# Push remote: base`, its base PR is not counted", part
+        )
+
+    def test_guest_mode_states_the_thread_bot_and_issue_rules(self):
+        part = self._guest_part(self.GUEST_HEADER + "\n## verify\n- x\n")
+        self.assertIn("Never resolve a review thread that a person started", part)
+        self.assertIn("Reply to no bot, except the one comment per Copilot review with a note", part)
+        self.assertIn("`/copilot-review`", part)
+        self.assertIn("Close an issue someone else opened only when a merged change clearly fixes it", part)
+        self.assertIn("one-line comment naming that change or repo", part)
+        self.assertIn("at most 3 such closes on that repo per UTC day", part)
+        self.assertIn("ask the user in chat and post nothing", part)
+        self.assertIn("A close the user picks at a cairn chip", part)
+        # the issue-first rule, and what it leaves out
+        self.assertIn("Before you plan a feature or a change of behavior", part)
+        self.assertIn("OWNER, MEMBER, or COLLABORATOR", part)
+        self.assertIn("or asked for it in a review of your PR", part)
+        self.assertIn("plan nothing until a maintainer agrees", part)
+        self.assertIn("A fix that restores documented behavior is outside", part)
+
+    def test_owner_mode_states_no_guest_rule(self):
+        (self.root / "cairn" / "PROFILE.md").write_text(self.OWNER_HEADER + self.BODY)
+        ctx = self._session()
+        self.assertNotIn("Never resolve a review thread", ctx)
+        self.assertNotIn("Reply to no bot", ctx)
+        self.assertNotIn("Close an issue someone else opened", ctx)
+        self.assertNotIn("Before you plan a feature", ctx)
+
     def test_owner_mode_has_no_collaboration_part(self):
         (self.root / "cairn" / "PROFILE.md").write_text(
             "# Toolchain profile: generic\n\n## verify\n- x\n"
