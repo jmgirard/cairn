@@ -1,18 +1,17 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-21 (triage of 36 candidates and 24 Known issues: "Handle version reader edge cases" and "Apply the walk's stops at merge handoff" routed to Known issues as a records-hygiene §7 group (M303, M304 findings); "Grade findings by the action they need" compressed (stale clause on a dropped row); no drops, no decision entry; validate green)_
+_Last hygiene check: 2026-10-22 (M313 review: done and archived; M309 row pruned to the terminal cap; one follow-up row, "Fix the flaky refused-clear band tests"; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M309 | Route a handed-off PR with merge conflicts to a sync | done | — | normal | milestones/archive/M309-guest-conflict-route.md |
 | M310 | Check and explain changed snapshots before a PR leaves | done | — | normal | milestones/archive/M310-snapshot-explain.md |
 | M311 | Link the pane card to the repo on GitHub | done | — | normal | milestones/archive/M311-pane-repo-link.md |
 | M312 | Link the band's milestone id to its PR | blocked | — | normal | milestones/M312-band-pr-link.md |
-| M313 | Scope the tests cairn sessions add | review | — | high | milestones/M313-test-scope.md |
+| M313 | Scope the tests cairn sessions add | done | — | high | milestones/archive/M313-test-scope.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Fix the flaky refused-clear band tests: the M221 AC4 tests in `hooks/status/band.test.tsx` ("a refused clear or another session end drops the held command") failed on runs that touched no mod code, with a doubled `/clear` fill: two fails in M312's first full run, and one in M313's review verify run, each green on rerun. A held command or fill seems to survive into the next case. Found at M313 review (verify) — added 2026-10-21
