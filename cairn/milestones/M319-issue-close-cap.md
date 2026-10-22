@@ -64,7 +64,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - [x] T1: Add `ISSUE_CLOSE_CAP_LINE` and `issue_close_cap` to `hooks/cairn_common.py` beside `PR_CAP_LINES` (about line 420). Test 1, 99, `off`, `OFF`, an absent line, and the untaken values `0`, `100`, `03`, and `Many`.
 - [x] T2: Turn `HOST_RULES` in `hooks/session_context.py` (about line 305, used at about line 431) into text built from `issue_close_cap`. Test no line (text equal to today's), 1, 5, `off`, an untaken value, and owner mode with the line present. Keep the existing guest-rules test passing.
 - [x] T3: Edit guest rule (3) in tracking-rules (about line 447) and the PROFILE.md file-map row (line 15) as AC1 states.
-- [ ] T4: Edit README's guest-rules passage (about line 1114) and add a CHANGELOG Unreleased entry backed by the T1 and T2 tests.
+- [x] T4: Edit README's guest-rules passage (about line 1114) and add a CHANGELOG Unreleased entry backed by the T1 and T2 tests.
 - [ ] T5: Run the verify slot.
 
 ## Work log
@@ -92,6 +92,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: T1 done. `ISSUE_CLOSE_CAP_LINE` and `issue_close_cap` sit beside `PR_CAP_LINES` in `hooks/cairn_common.py`, reusing `PR_CAP_VALUE` for the 1-to-99 match. `TestIssueCloseCap` errored before the function existed and passes now (1, 99, `off`, `OFF`, no line, and the untaken `0`, `100`, `03`, `Many`).
 - 2026-10-22: T2 done. `HOST_RULES` became two halves around the close clause, joined by `host_rules(root)`, which takes the limit from `issue_close_cap` and uses `_plural` for N = 1. With no line the text equals main's `HOST_RULES` (compared against `git show main:hooks/session_context.py`). Three new tests: the 1, 5, and `off` cases failed before the change and the no-line case passed; an untaken value names the line; owner mode states no limit. Hooks suite OK.
 - 2026-10-22: T3 done. Guest rule (3) in tracking-rules gains the full-page clause and the `# Issue close cap:` line (a 1-to-99 value, `off`, else 3 with the line named, citing D-215). The file-map PROFILE.md row names the line, its two readers, and no validator. skills/tests OK.
+- 2026-10-22: T4 done. README's guest-rules passage states the default of 3, the `# Issue close cap: N` line (1 to 99), and `off`. A CHANGELOG Unreleased entry heads "Changes that affect existing repos", backed by `TestIssueCloseCap` and the three session-text tests. The file-map row sentence from T3 was split to stay under the lint's sentence length.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
