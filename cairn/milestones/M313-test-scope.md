@@ -73,6 +73,7 @@ Cairn sessions add the tests the change needs, written in the host's style, and 
 - 2026-10-21: amendment return: AC3 — "`skills/shared/validation-doctrine.md` keeps "≥2 *independent* oracle types" for a numeric result that the change adds or alters by design, and states that a fix to an existing result needs one regression test whose expected value comes from one oracle. The doctrine also states that simulation-coverage stays the primary oracle for an interval method's coverage and for an estimator with no closed form or reference implementation, and is never used to confirm a textbook property of a method the change does not add; that deterministic checks use at most one fitted model per code path, shared by the tests that use it, with a simulation-coverage oracle's replications exempt; and that in guest mode the host's practice sets the number of oracles above one, while the hard stops still bind."
 - 2026-10-21: amendment done; status set to review.
 - 2026-10-21: audit figures (from the easystats session's report, cited by D-210): 60 PRs, 7 packages, about 10,500 added test lines against about 3,570 net R lines (3 to 1), against the maintainers' 31 to 79 test lines per PR (about 1 to 1) and a cairn average of about 175. Reviewers judged about 40% superfluous (33% to 45% per repo). Comments were 7.4% of added test lines, against 1% to 4% in the maintainers' files. `test-check_collinearity.R` grew from 302 to 2,008 lines.
+- 2026-10-21: step-7 approval: m313-test-scope approved for merge
 
 ## Review
 
