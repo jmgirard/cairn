@@ -352,7 +352,8 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   merged-PR re-entry's follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
   names the cap and each open PR of that kind, or says the list reached 100. A failed read stops the same way, naming
   the read and its error. The close block also names each cap line in the header whose value was not taken. A push to
-  an already-open PR reads no cap. The session-start text states both caps.
+  an already-open PR reads no cap. The session-start text states both caps, and `/milestone`'s audit reports each
+  count beside its cap and stops nothing.
 - Approval is recorded on disk: the approving skill writes the single-use, gitignored marker `cairn/.merge-approved` at
   the gate — never except at an explicit user approval; the merge-guard hook denies `gh pr merge`/`git merge` to the
   default branch without it and consumes it per attempt (a failed attempt's marker is restored). The marker names the PR
