@@ -1,9 +1,10 @@
 // The cairn plugin's `$.state` contract: the values its hooks module keeps
 // for the session. `claude plugin validate` holds the module to it.
 
-// One active milestone. The counts and next items are null when its
-// milestone path is not a readable regular file; a next item is also null
-// when its section holds no open box.
+// One active milestone. The counts, next items, and pull request URL are
+// null when its milestone path is not a readable regular file; a next item
+// is also null when its section holds no open box, and the URL when the
+// file's `Branch/PR` header names no pull request.
 export type CairnBandRow = {
   id: string
   title: string
@@ -14,6 +15,7 @@ export type CairnBandRow = {
   criteriaTotal: number | null
   nextTask: string | null
   nextCriterion: string | null
+  url: string | null
 }
 
 // A planned milestone whose dependencies are all done.

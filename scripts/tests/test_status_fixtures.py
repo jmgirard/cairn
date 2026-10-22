@@ -54,6 +54,7 @@ NO_FILE = {
     "criteriaTotal": None,
     "nextTask": None,
     "nextCriterion": None,
+    "url": None,
 }
 
 
@@ -217,6 +218,7 @@ def python_rows(start, unreadable=()):
                 "criteriaTotal": c_total,
                 "nextTask": t_first,
                 "nextCriterion": c_first,
+                "url": cn.pr_url(text),
             }
         out.append({"id": row["id"], "title": row["title"], "status": row["status"], **fields})
     return out

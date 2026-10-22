@@ -1,7 +1,7 @@
 {
   "cwd": "",
   "rows": [
-    {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made."}
+    {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made.", "url": "https://github.com/upstream/repo/pull/721"}
   ],
   "workable": ["M304"],
   "pane": [

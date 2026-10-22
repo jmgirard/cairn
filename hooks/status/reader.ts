@@ -55,6 +55,10 @@ export type BandRow = {
   // The first open task or criterion line, less its `- [ ]` prefix.
   nextTask: string | null
   nextCriterion: string | null
+  // The pull request URL that the file's `Branch/PR` header names, as
+  // `prUrl` reads it, which the band links the id to (M312); null when the
+  // file is not read or names none.
+  url: string | null
 }
 
 export type Fixture = {
@@ -268,6 +272,7 @@ const NO_FILE = {
   criteriaTotal: null,
   nextTask: null,
   nextCriterion: null,
+  url: null,
 }
 
 function fileFields(text: string) {
@@ -280,6 +285,7 @@ function fileFields(text: string) {
     criteriaTotal: criteria.total,
     nextTask: tasks.next,
     nextCriterion: criteria.next,
+    url: prUrl(text),
   }
 }
 

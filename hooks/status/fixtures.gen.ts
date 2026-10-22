@@ -44,7 +44,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M111-handed.md": "# M111: Handed to the maintainers\n\n- **Status:** blocked\n- **Branch/PR:** handed-off, https://github.com/upstream/repo/pull/1250\n\n## Goal\n\nA fix that waits on the maintainers' review.\n",
     },
     rows: [
-      {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."},
+      {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works.", "url": null},
     ],
     workable: ["M112"],
     pane: [
@@ -291,7 +291,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M060-long.md": "# M060: A long title\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The band cuts the title.\n\n## Tasks\n\n- [x] T1: Write the title.\n- [ ] T2: Draw the band.\n",
     },
     rows: [
-      {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Draw the band.", "nextCriterion": "AC1: The band cuts the title."},
+      {"id": "M060", "title": "A milestone title written long enough to run past the right edge of any band, so that the engine has to cut it before the bar and the counts", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Draw the band.", "nextCriterion": "AC1: The band cuts the title.", "url": null},
     ],
     workable: [],
     pane: [
@@ -310,7 +310,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/ROADMAP.md": "# Roadmap\n\n## Milestones\n\n| ID | Title | Status | Depends on | Priority | File/Archive |\n|---|---|---|---|---|---|\n| M004 | Its file was never written | review | — | normal | milestones/M004-missing.md |\n",
     },
     rows: [
-      {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+      {"id": "M004", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
     ],
     workable: [],
     pane: [
@@ -333,10 +333,10 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M014-none.md": "# M014: No Tasks section at all\n\n- **Status:** in-progress\n\n## Goal\n\n- [x] A box under Goal, which does not count.\n",
     },
     rows: [
-      {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "tasksChecked": 3, "tasksTotal": 5, "criteriaChecked": 2, "criteriaTotal": 3, "nextTask": "T1b: Nested task, open.", "nextCriterion": "AC3: Third criterion."},
-      {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
-      {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
-      {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+      {"id": "M010", "title": "Nested tasks and a capital X", "status": "review", "tasksChecked": 3, "tasksTotal": 5, "criteriaChecked": 2, "criteriaTotal": 3, "nextTask": "T1b: Nested task, open.", "nextCriterion": "AC3: Third criterion.", "url": null},
+      {"id": "M012", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M013", "title": "Capitalized status, file gone", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M014", "title": "No Tasks section at all", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null, "url": null},
     ],
     workable: [],
     pane: [
@@ -360,7 +360,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M030-nested.md": "# M030: The next task is nested\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The band names the nested task.\n\n## Tasks\n\n- [x] T1: Top-level task, done.\n    - [ ]   T1a: Nested task, open, with extra spaces after the box.\n- [ ] T2: Second top-level task.\n",
     },
     rows: [
-      {"id": "M030", "title": "The next task is nested", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1a: Nested task, open, with extra spaces after the box.", "nextCriterion": "AC1: The band names the nested task."},
+      {"id": "M030", "title": "The next task is nested", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1a: Nested task, open, with extra spaces after the box.", "nextCriterion": "AC1: The band names the nested task.", "url": null},
     ],
     workable: [],
     pane: [
@@ -418,9 +418,9 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M082-unreadable.md": "# M082: A file whose read fails\n\n- **Status:** review\n\n## Goal\n\nThe tests mark this file unreadable, so the pane never shows this goal.\n\n## Tasks\n\n- [ ] T1: A task the pane never shows.\n",
     },
     rows: [
-      {"id": "M080", "title": "A long work log and wrapped tasks", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 1, "criteriaTotal": 3, "nextTask": "T2: The second task.", "nextCriterion": "AC9: A box inside a comment, which the pane leaves out. -->"},
-      {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
-      {"id": "M082", "title": "A file whose read fails", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
+      {"id": "M080", "title": "A long work log and wrapped tasks", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 1, "criteriaTotal": 3, "nextTask": "T2: The second task.", "nextCriterion": "AC9: A box inside a comment, which the pane leaves out. -->", "url": null},
+      {"id": "M081", "title": "A goal of several paragraphs", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M082", "title": "A file whose read fails", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
     ],
     workable: ["M085"],
     pane: [
@@ -483,7 +483,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M002-export.md": "# M002: Add the export command\n\n- **Status:** in-progress\n\n## Goal\n\nExport things.\n\n## Acceptance criteria\n\n- [ ] AC1: The export command writes one file per table.\n\n## Tasks\n\n- [x] T1: Write the parser.\n- [ ] T2: Write the command.\n- [ ] T3: Write the docs.\n\n## Work log\n\n- 2026-01-02: started.\n",
     },
     rows: [
-      {"id": "M002", "title": "Add the export command", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the command.", "nextCriterion": "AC1: The export command writes one file per table."},
+      {"id": "M002", "title": "Add the export command", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the command.", "nextCriterion": "AC1: The export command writes one file per table.", "url": null},
     ],
     workable: [],
     pane: [
@@ -509,12 +509,12 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M076-g.md": "# M076: Sixth active row\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [ ] AC1: Open.\n- [ ] AC2: Open.\n\n## Tasks\n\n- [x] T1: Done.\n",
     },
     rows: [
-      {"id": "M070", "title": "First active row", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Open.", "nextCriterion": "AC1: Open."},
-      {"id": "M071", "title": "Second active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: Open."},
-      {"id": "M072", "title": "Third active row", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Open.", "nextCriterion": "AC1: Open."},
-      {"id": "M074", "title": "Fourth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null},
-      {"id": "M075", "title": "Fifth active row", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T3: Open.", "nextCriterion": "AC1: Open."},
-      {"id": "M076", "title": "Sixth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC1: Open."},
+      {"id": "M070", "title": "First active row", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Open.", "nextCriterion": "AC1: Open.", "url": null},
+      {"id": "M071", "title": "Second active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: Open.", "url": null},
+      {"id": "M072", "title": "Third active row", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Open.", "nextCriterion": "AC1: Open.", "url": null},
+      {"id": "M074", "title": "Fourth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 1, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M075", "title": "Fifth active row", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T3: Open.", "nextCriterion": "AC1: Open.", "url": null},
+      {"id": "M076", "title": "Sixth active row", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC1: Open.", "url": null},
     ],
     workable: ["M073"],
     pane: [
@@ -560,7 +560,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M301-reworked.md": "# M301: Back in work after review\n\n- **Status:** in-progress\n- **Branch/PR:** reworked, https://github.com/upstream/repo/pull/721\n\n## Goal\n\nAnswer the maintainers' requested changes on an open pull request.\n\n## Acceptance criteria\n\n- [ ] AC1: The requested change is made.\n\n## Tasks\n\n- [ ] T1: Make the requested change.\n\n## Work log\n\n- 2026-01-12: changes requested.\n",
     },
     rows: [
-      {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made."},
+      {"id": "M301", "title": "Back in work after review", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T1: Make the requested change.", "nextCriterion": "AC1: The requested change is made.", "url": "https://github.com/upstream/repo/pull/721"},
     ],
     workable: ["M304"],
     pane: [
@@ -664,10 +664,10 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M043-all.md": "# M043: Every task checked\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: Open.\n\n## Tasks\n\n- [x] T1: Done.\n  - [X] T1a: Done, nested.\n- [x] T2: Done.\n",
     },
     rows: [
-      {"id": "M040", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
-      {"id": "M041", "title": "No Tasks section", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: An open criterion, which the implement phase does not show."},
-      {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
-      {"id": "M043", "title": "Every task checked", "status": "in-progress", "tasksChecked": 3, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: Open."},
+      {"id": "M040", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M041", "title": "No Tasks section", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: An open criterion, which the implement phase does not show.", "url": null},
+      {"id": "M042", "title": "A Tasks section with no boxes", "status": "in-progress", "tasksChecked": 0, "tasksTotal": 0, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M043", "title": "Every task checked", "status": "in-progress", "tasksChecked": 3, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": null, "nextCriterion": "AC1: Open.", "url": null},
     ],
     workable: [],
     pane: [
@@ -692,10 +692,10 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M053-all.md": "# M053: Every criterion checked\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [x] AC1: Done.\n- [X] AC2: Done, capital X.\n\n## Tasks\n\n- [ ] T1: Open.\n",
     },
     rows: [
-      {"id": "M050", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
-      {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null},
-      {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
-      {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null},
+      {"id": "M050", "title": "Its file was never written", "status": "review", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M051", "title": "No criteria section", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": "T1: An open task, which the review phase does not show.", "nextCriterion": null, "url": null},
+      {"id": "M052", "title": "A criteria section with no boxes", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M053", "title": "Every criterion checked", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 2, "criteriaTotal": 2, "nextTask": "T1: Open.", "nextCriterion": null, "url": null},
     ],
     workable: [],
     pane: [
@@ -719,7 +719,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/pkg/src/main.txt": "The session starts in this directory, two levels below the root.\n",
     },
     rows: [
-      {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null},
+      {"id": "M007", "title": "Started from a subdirectory", "status": "in-progress", "tasksChecked": 2, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 0, "nextTask": null, "nextCriterion": null, "url": null},
     ],
     workable: [],
     pane: [
@@ -739,7 +739,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M062-unlabeled.md": "# M062: The next task has no label\n\n- **Status:** in-progress\n\n## Acceptance criteria\n\n- [ ] AC1: The item row stays dim.\n\n## Tasks\n\n- [x] T1: A labeled task, done.\n- [ ] Write the docs, with no label.\n- [ ] T3: A labeled task after it.\n",
     },
     rows: [
-      {"id": "M062", "title": "The next task has no label", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "Write the docs, with no label.", "nextCriterion": "AC1: The item row stays dim."},
+      {"id": "M062", "title": "The next task has no label", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 3, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "Write the docs, with no label.", "nextCriterion": "AC1: The item row stays dim.", "url": null},
     ],
     workable: [],
     pane: [
@@ -759,7 +759,7 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M061-wide.md": "# M061: A wide title\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [x] AC1: The title reads.\n- [ ] AC2: The emoji stays whole.\n\n## Tasks\n\n- [x] T1: Write the title.\n",
     },
     rows: [
-      {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole."},
+      {"id": "M061", "title": "宽字符的标题 and an emoji 🚀 outside the BMP", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 1, "criteriaTotal": 2, "nextTask": null, "nextCriterion": "AC2: The emoji stays whole.", "url": null},
     ],
     workable: [],
     pane: [
@@ -781,10 +781,10 @@ export const FIXTURES: Record<string, Fixture> = {
       "/cairn/milestones/M1003-all.md": "# M1003: Every criterion checked at the widest counts\n\n- **Status:** review\n\n## Acceptance criteria\n\n- [x] AC1: Done.\n- [x] AC2: Done.\n- [x] AC3: Done.\n- [x] AC4: Done.\n- [x] AC5: Done.\n- [x] AC6: Done.\n- [x] AC7: Done.\n- [x] AC8: Done.\n- [x] AC9: Done.\n- [x] AC10: Done.\n- [x] AC11: Done.\n- [x] AC12: Done.\n- [x] AC13: Done.\n- [x] AC14: Done.\n- [x] AC15: Done.\n- [x] AC16: Done.\n- [x] AC17: Done.\n- [x] AC18: Done.\n- [x] AC19: Done.\n- [x] AC20: Done.\n- [x] AC21: Done.\n- [x] AC22: Done.\n- [x] AC23: Done.\n- [x] AC24: Done.\n- [x] AC25: Done.\n- [x] AC26: Done.\n- [x] AC27: Done.\n- [x] AC28: Done.\n- [x] AC29: Done.\n- [x] AC30: Done.\n- [x] AC31: Done.\n- [x] AC32: Done.\n- [x] AC33: Done.\n- [x] AC34: Done.\n- [x] AC35: Done.\n- [x] AC36: Done.\n- [x] AC37: Done.\n- [x] AC38: Done.\n- [x] AC39: Done.\n- [x] AC40: Done.\n- [x] AC41: Done.\n- [x] AC42: Done.\n- [x] AC43: Done.\n- [x] AC44: Done.\n- [x] AC45: Done.\n- [x] AC46: Done.\n- [x] AC47: Done.\n- [x] AC48: Done.\n- [x] AC49: Done.\n- [x] AC50: Done.\n- [x] AC51: Done.\n- [x] AC52: Done.\n- [x] AC53: Done.\n- [x] AC54: Done.\n- [x] AC55: Done.\n- [x] AC56: Done.\n- [x] AC57: Done.\n- [x] AC58: Done.\n- [x] AC59: Done.\n- [x] AC60: Done.\n- [x] AC61: Done.\n- [x] AC62: Done.\n- [x] AC63: Done.\n- [x] AC64: Done.\n- [x] AC65: Done.\n- [x] AC66: Done.\n- [x] AC67: Done.\n- [x] AC68: Done.\n- [x] AC69: Done.\n- [x] AC70: Done.\n- [x] AC71: Done.\n- [x] AC72: Done.\n- [x] AC73: Done.\n- [x] AC74: Done.\n- [x] AC75: Done.\n- [x] AC76: Done.\n- [x] AC77: Done.\n- [x] AC78: Done.\n- [x] AC79: Done.\n- [x] AC80: Done.\n- [x] AC81: Done.\n- [x] AC82: Done.\n- [x] AC83: Done.\n- [x] AC84: Done.\n- [x] AC85: Done.\n- [x] AC86: Done.\n- [x] AC87: Done.\n- [x] AC88: Done.\n- [x] AC89: Done.\n- [x] AC90: Done.\n- [x] AC91: Done.\n- [x] AC92: Done.\n- [x] AC93: Done.\n- [x] AC94: Done.\n- [x] AC95: Done.\n- [x] AC96: Done.\n- [x] AC97: Done.\n- [x] AC98: Done.\n- [x] AC99: Done.\n- [x] AC100: Done.\n\n## Tasks\n\n- [ ] T1: Open.\n",
     },
     rows: [
-      {"id": "M1000", "title": "An open task at the widest counts", "status": "in-progress", "tasksChecked": 99, "tasksTotal": 100, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T10a: Open at the widest counts.", "nextCriterion": "AC1: Open."},
-      {"id": "M1001", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null},
-      {"id": "M1002", "title": "An open criterion at the widest counts", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 99, "criteriaTotal": 100, "nextTask": null, "nextCriterion": "AC10a: Open at the widest counts."},
-      {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 100, "criteriaTotal": 100, "nextTask": "T1: Open.", "nextCriterion": null},
+      {"id": "M1000", "title": "An open task at the widest counts", "status": "in-progress", "tasksChecked": 99, "tasksTotal": 100, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T10a: Open at the widest counts.", "nextCriterion": "AC1: Open.", "url": null},
+      {"id": "M1001", "title": "Its file was never written", "status": "in-progress", "tasksChecked": null, "tasksTotal": null, "criteriaChecked": null, "criteriaTotal": null, "nextTask": null, "nextCriterion": null, "url": null},
+      {"id": "M1002", "title": "An open criterion at the widest counts", "status": "review", "tasksChecked": 1, "tasksTotal": 1, "criteriaChecked": 99, "criteriaTotal": 100, "nextTask": null, "nextCriterion": "AC10a: Open at the widest counts.", "url": null},
+      {"id": "M1003", "title": "Every criterion checked at the widest counts", "status": "review", "tasksChecked": 0, "tasksTotal": 1, "criteriaChecked": 100, "criteriaTotal": 100, "nextTask": "T1: Open.", "nextCriterion": null, "url": null},
     ],
     workable: [],
     pane: [

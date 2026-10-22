@@ -135,6 +135,22 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
     expect([row.nextTask, row.nextCriterion]).toEqual([null, null])
   })
 
+  test('a band row carries the pull request URL its header names, else null (M312)', async () => {
+    const urlOf = async (name: string, id: string) => {
+      const fixture = FIXTURES[name]
+      const { rows } = await loaded(memorySource(fixture.files, fixture.cwd, fixture.unreadable))
+      return rows.find(row => row.id === id)?.url
+    }
+    // A header that names a pull request.
+    expect(await urlOf('stack-in-progress', 'M301')).toBe('https://github.com/upstream/repo/pull/721')
+    // A header whose `Branch/PR` line names a branch alone, a missing file,
+    // and a file whose read fails.
+    expect(FIXTURES['blocked-active'].files['/cairn/milestones/M110-active.md']).toContain('**Branch/PR:** work-in-hand\n')
+    expect(await urlOf('blocked-active', 'M110')).toBe(null)
+    expect(await urlOf('missing-file', 'M004')).toBe(null)
+    expect(await urlOf('pane-full', 'M082')).toBe(null)
+  })
+
   test('nested-first names the nested task, less its box and spaces', async () => {
     const fixture = FIXTURES['nested-first']
     const [row] = (await loaded(memorySource(fixture.files, fixture.cwd))).rows

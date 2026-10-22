@@ -2,7 +2,7 @@
   "cwd": "",
   "workable": ["M112"],
   "rows": [
-    {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works."}
+    {"id": "M110", "title": "Work in hand", "status": "in-progress", "tasksChecked": 1, "tasksTotal": 2, "criteriaChecked": 0, "criteriaTotal": 1, "nextTask": "T2: Write the fix.", "nextCriterion": "AC1: The fix works.", "url": null}
   ],
   "pane": [
     {"id": "M110", "title": "Work in hand", "status": "in-progress", "file": {"goal": "Implement one fix while another waits on review.", "tasks": [{"text": "T1: Write the test.", "checked": true}, {"text": "T2: Write the fix.", "checked": false}], "criteria": [{"text": "AC1: The fix works.", "checked": false}], "log": ["2026-01-10: created."]}}

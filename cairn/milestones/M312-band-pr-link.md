@@ -1,13 +1,13 @@
 # M312: Link the band's milestone id to its PR
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the status band is part of the plugin's UI
-- **Branch/PR:** —
+- **Branch/PR:** m312-band-pr-link
 
 ## Goal
 
@@ -37,7 +37,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 
 ## Tasks
 
-- [ ] T1: In `hooks/status/reader.ts`, add `url` to `BandRow` and `NO_FILE` (null) and set it from `prUrl(text)` in `loadAt`. Add `url` to `CairnBandRow` in `types/index.d.ts`, and in `scripts/tests/test_status_fixtures.py` `python_rows` from `cairn_next.pr_url`. Add `url` to every fixture's `expected.json` rows, regenerate `hooks/status/fixtures.gen.ts` with `python3 hooks/status/gen_fixtures.py`, and add the four reader cases to `hooks/status/reader.test.ts`.
+- [x] T1: In `hooks/status/reader.ts`, add `url` to `BandRow` and `NO_FILE` (null) and set it from `prUrl(text)` in `loadAt`. Add `url` to `CairnBandRow` in `types/index.d.ts`, and in `scripts/tests/test_status_fixtures.py` `python_rows` from `cairn_next.pr_url`. Add `url` to every fixture's `expected.json` rows, regenerate `hooks/status/fixtures.gen.ts` with `python3 hooks/status/gen_fixtures.py`, and add the four reader cases to `hooks/status/reader.test.ts`.
 - [ ] T2: In `hooks/status/band.ts`, give `BandLine` an optional `href` and set it in `bandLines` from `row.url`, and update the `Span.href` comment, which says the band links none. In `hooks/status/register.tsx`, move `BAND_SHAPE` to `band-5`. Off the terminal, draw the id of a line with an `href` as a `Link` around a `Text` with `color={GRAY}`, `bold`, and `underline: false`, as the pane card does (`register.tsx` near line 427). Add the AC2 and AC3 cases to `hooks/status/band.test.tsx`.
 - [ ] T3: Update README's "The milestone band" section, the `hooks/status/` entry in `cairn/DESIGN.md`, and `CHANGELOG.md`. Grep README and DESIGN.md for "links none" and other band wording that the change makes stale (LESSONS M112).
 - [ ] T4: At review, once the PR is open and its URL is in this file's `Branch/PR` header, stop for the user's live look. The user opens a new Code session in this repo, checks that the band's id is gray, bold, and not underlined, and clicks it to see that the PR opens.
@@ -51,3 +51,5 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: criteria audit (full mode, fresh Opus reader): 10 findings. Taken: the shape tag and public type added to AC1, the Python helper and all fixtures named and no new fixture needed (`stack-in-progress` holds a PR URL), the unread-file cases named, AC2 narrowed to the desktop surface, "as before" bound to the existing suites, AC3's null case split into its two drawing branches with a terminal row that has a URL, AC4 matched to README's "any other surface that draws links" wording and to the first URL before `companion:`, and AC5's recording clause dropped. Noted with no change: the idle and empty cases are guards, since neither row can carry a URL. Proportionality: no finding.
 - 2026-10-21: plan gate chose a `url` field on `BandRow`, read by the same `prUrl` that the pane's blocked rows use, over looking the URL up from the pane state at draw time, because the band and the pane load separately and the band's own row is where its id is drawn; falsified by a band row whose URL differs from the one `prUrl` reads for the same file.
 - 2026-10-21: question set: stop at review for the user's live look at the band's link in the desktop app — yes, at review, once the PR is open (T4).
+- 2026-10-21: implement started on `m312-band-pr-link`; the untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-21: T1 done: `BandRow.url` from `prUrl` (null in `NO_FILE`), `CairnBandRow.url`, `python_rows` from `cn.pr_url`, `url` on all 34 fixture rows (only `stack-in-progress` M301 non-null), fixtures regenerated, one reader test over a URL, a branch-only header (`blocked-active` M110, since `single-in-progress` has no `Branch/PR` line), a missing file, and an unreadable file. Verify: both unittest suites, both validates, and `claude plugin test` (2467 pass) green.
