@@ -447,11 +447,10 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   The close carries a one-line comment naming that change or repo, which holds over host style matching. By default,
   make at most 3 such closes on that repo per UTC day. A `# Issue close cap:` header line of `cairn/PROFILE.md`, read
   as "Toolchain profiles" states, changes the limit. A value that matches `[1-9][0-9]?` sets it, and `off` removes the
-  daily limit. Any other value leaves 3, and the session-start text names the line (D-215). Count your closes there
-  that day: the `closed` events whose `actor.login` is yours and whose `created_at` falls on that UTC day, from
-  `gh api "repos/<base-repo>/issues/events?per_page=100"`. A full page of 100 events whose oldest event falls on
-  the current UTC day counts as reaching the limit (D-216).
-  When unsure, ask the user in chat and
+  daily limit. Any other value leaves 3, and the session-start text names the line (D-215). With a limit, count your
+  closes on that repo that day: the `closed` events whose `actor.login` is yours and whose `created_at` falls on that
+  UTC day, from `gh api "repos/<base-repo>/issues/events?per_page=100"`. A full page of 100 events whose oldest event
+  falls on the current UTC day counts as reaching the limit (D-216). When unsure, ask the user in chat and
   post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3). (4) Before you plan
   a feature or a change of behavior, find where a maintainer (an author whose association is OWNER, MEMBER, or
   COLLABORATOR) agreed with its design in an issue on the host repo, or asked for it in a review of your PR. With

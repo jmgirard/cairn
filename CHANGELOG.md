@@ -50,8 +50,9 @@
   someone else opened only when a merged change clearly fixes it or its
   fix belongs in another repo. Such a close carries a one-line comment
   naming that change or repo. By default, the session makes at most 3
-  such closes on one repo per UTC day. When unsure, the session asks you in chat and posts nothing. A
-  close you pick at a cairn choice is outside these rules. Before it plans
+  such closes on one repo per UTC day. When unsure, the session asks you
+  in chat and posts nothing. A close you pick at a cairn choice is
+  outside these rules. Before it plans
   a feature or a change of behavior, it looks for a maintainer's agreement
   with the design in an issue, or a maintainer's request for it in a
   review of your PR. Without either, it tells you in chat and plans nothing
