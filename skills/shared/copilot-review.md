@@ -17,7 +17,7 @@ If the `# Copilot review:` header line of `cairn/PROFILE.md` reads `on`
 (any letter case, tracking-rules "Toolchain profiles"), the round runs.
 No line, or any other value, means off: the PR opens
 after the merge approval (D-138), and the skill writes nothing to the PR,
-but it can add the note below. The opt-in line also
+but its recap can carry the note below. The opt-in line also
 permits the round's outward writes (the request, fix pushes, the comment
 on each review, resolves) and its thread dispositions, with no question
 (M231). The round keeps no record that it ran. The PR's signals (§2)

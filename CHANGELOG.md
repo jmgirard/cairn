@@ -11,7 +11,9 @@
   the start of the file no longer hides the line. `cairn_validate` now
   skips that mark too, so it fails an unknown collaboration mode on a
   first line that follows one. The rulebook now states this read once, in
-  "Toolchain profiles", for every header line.
+  "Toolchain profiles", for every header line. Under it, the Copilot review
+  guide counts `# Copilot review: On` or `ON` as on, so a repo that wrote
+  either now gets the Copilot round.
 
 - **Your open PRs on a repo stay under two caps.** In owner and guest
   mode, you keep at most 3 open bug-fix PRs and at most 1 open feature PR
