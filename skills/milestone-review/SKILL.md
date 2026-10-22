@@ -739,7 +739,19 @@ re-enters here, at the step the record shows is next:
    with a close block naming the closed PR: what the milestone builds on
    is gone, and the next step is the user's. If it is `OPEN`, the create below adds `--base <stack-base-branch>`,
    and its body names the stack base's PR (`#<base-pr>`) as the change it
-   builds on. Then, unless the
+   builds on. **Open-PR cap (M315):** last before the push, and only when
+   the header names no open PR, read your open PRs on the base repo with
+   `gh pr list --repo <base-repo> --author @me --state open --limit 100
+   --json number,url`. The cap is the one tracking-rules "Collaboration
+   mode" states, from the `# Open PR cap: N` header line of
+   `cairn/PROFILE.md`. When the list holds as many PRs as the cap or more,
+   push nothing, open no PR, and leave the milestone status as it is. Stop
+   with a close block that names the cap and each open PR's number and
+   URL. It also names a `# Open PR cap:` line the read did not take. Its fenced next
+   command is `/milestone-review M<NNN>`, labeled as rerunning the review
+   up to the handoff once one of those PRs closes or merges. A failed read
+   stops the same way, naming the read and its error in place of the open
+   PRs. A push to an already-open PR reads no cap. Then, unless the
    header already names an open PR, open the PR against the base repo from
    the pushed branch —
    `gh pr create --repo <base-repo> --head <push-owner>:<slug>` with

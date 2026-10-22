@@ -1,13 +1,13 @@
 # M315: Keep guest sessions within the host's limits
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M314
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — guest sessions' PRs, thread resolves, bot replies, and issue closes on the host's GitHub
-- **Branch/PR:** —
+- **Branch/PR:** m315-guest-host-limits
 
 ## Goal
 
@@ -35,7 +35,7 @@ In a repo the operator does not own, cairn sessions keep the operator's open PRs
 
 ## Tasks
 
-- [ ] T1: Add the cap read to `/milestone-review` step 8's guest arm (after the push-access and stack-base reads, before the push, only with no open PR in the header) and to `/hotfix` step 1's guest arm for an authored fix, with the close blocks of AC1.
+- [x] T1: Add the cap read to `/milestone-review` step 8's guest arm (after the push-access and stack-base reads, before the push, only with no open PR in the header) and to `/hotfix` step 1's guest arm for an authored fix, with the close blocks of AC1.
 - [ ] T2: Add `open_pr_cap(root)` to `hooks/cairn_common.py` beside `push_remote` (one parser, `[1-9][0-9]?`, else 2, reporting a line it did not take), and the four rules to the guest part of `hooks/session_context.py`. Tests first in `hooks/tests`: the cases AC2 names, each asserting the rule's phrase.
 - [ ] T3: State the four rules in tracking-rules "Collaboration mode" and the header line in its file-map row; add the line to DESIGN's header-line list and the session hook's entry; update README's guest section and Copilot bullet and CHANGELOG Unreleased; write the D-entry (annotates D-137, D-152 for the guest request wording, and D-172). Its trigger is shipped behavior, the easystats audit, so D-108's door does not bar it.
 
@@ -51,3 +51,6 @@ In a repo the operator does not own, cairn sessions keep the operator's open PRs
 - 2026-10-21: criteria audit (full mode, fresh Opus reader, first draft): the guest Copilot default, its permission gap and budget AC went with the user's answer; the cap read became new-PR-only with a named stop and rerun; a 1-99 value rule; the bot exception names `/copilot-review`; the issue rule asks the user in chat, not on GitHub; docs call the rules instructions; DESIGN's header list and the file map join T3.
 - 2026-10-21: re-audit (full mode, fresh Opus reader, after the answers): taken — the read sits after the push-access and stack-base reads; `/hotfix` reads at step 1 so a capped fix leaves no branch; a failed read names its error; the parse matches `[1-9][0-9]?` read as the collaboration-mode line, and an untaken line is named; a chip-picked close is outside rule (4); the one-line comment holds over host style; the day is UTC, counted from the session's own closes; the test cases vary the value, the line's place, and the mode, and assert the rule's phrase; Depends on M314, so the bot rule never contradicts the per-thread replies; the README billing claim is dropped for want of a source.
 - 2026-10-21: plan gate chose instructions in the session-start text, with the cap checked only at the two handoffs, over a hook that blocks `gh pr create` or `gh issue close` by count, because a hook would need a network read on each matching call and the audit's PRs and closes came through sessions the injected text reaches; falsified by a guest repo where the operator's open PRs pass the cap, or a day's closes pass 3, after this ships.
+- 2026-10-22: implement start: branch m315-guest-host-limits cut from main at 60cb84e3; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-22: choice: both skills cite the cap as tracking-rules "Collaboration mode" states it (T3 writes it there) rather than restating the parse rule; `/hotfix`'s stop fences `/hotfix` with the bug's description.
+- 2026-10-22: T1 done: `/milestone-review` step 8's guest arm reads the cap after the stack-base read, before the push, only with no open PR in the header; `/hotfix` step 1 reads it for an authored fix before step 2 cuts a branch; verify green.

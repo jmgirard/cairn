@@ -254,6 +254,21 @@ can resolve against the fork instead of the base repo.
    Step 6's Copilot round arm runs for it, with a push to the PR's
    head branch and no `gh pr create`. Step 7's off-but-present rule
    applies to it as to an authored fix this run merged.
+   **Open-PR cap (M315).** In guest mode, an authored fix reads the cap
+   last in this step, after the tier check and the candidate-row match and
+   before step 2 cuts its branch, since its handoff opens a new PR. Read
+   your open PRs on the base repo with `gh pr list --repo <base-repo>
+   --author @me --state open --limit 100 --json number,url`. The cap is
+   the one tracking-rules "Collaboration mode" states, from the
+   `# Open PR cap: N` header line of `cairn/PROFILE.md`. When the list
+   holds as many PRs as the cap or more, cut no branch, push nothing, and
+   open no PR. Stop with a close block that names the cap and each open
+   PR's number and URL. It also names a `# Open PR cap:` line the read did
+   not take. Its
+   fenced next command is `/hotfix` with the bug's description, to run
+   once one of those PRs closes or merges. A failed read stops the same
+   way, naming the read and its error in place of the open PRs. A push to
+   an already-open PR reads no cap.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).
