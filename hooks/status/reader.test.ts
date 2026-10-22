@@ -144,7 +144,7 @@ describe('reader over every fixture (M193 AC5, M199 AC2)', () => {
     // A header that names a pull request.
     expect(await urlOf('stack-in-progress', 'M301')).toBe('https://github.com/upstream/repo/pull/721')
     // A header whose `Branch/PR` line names a branch alone, a missing file,
-    // and a file whose read fails.
+    // and a file whose read fails, though its header names a pull request.
     expect(FIXTURES['blocked-active'].files['/cairn/milestones/M110-active.md']).toContain('**Branch/PR:** work-in-hand\n')
     expect(await urlOf('blocked-active', 'M110')).toBe(null)
     expect(await urlOf('missing-file', 'M004')).toBe(null)

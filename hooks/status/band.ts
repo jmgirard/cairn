@@ -43,7 +43,8 @@ export const GRAY = 'inactive'
 export type TrackPart = { flow: Flow; columns: number }
 
 // `track`, when set, draws before the tail. `href`, when set, is the pull
-// request the id links to off the terminal: a milestone row's `url` (M312).
+// request the id links to off the terminal: a milestone row's `url` when
+// `pullOf` passes it (M312).
 export type BandLine = { key: string; id: string; title: string; tail: Span[]; track?: TrackPart; href?: string }
 
 type Phase = { noun: string }

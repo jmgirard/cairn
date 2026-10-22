@@ -105,7 +105,8 @@ request URL on the milestone file's `Branch/PR` header line, before any
 `companion:` entry. The id keeps its gray and bold, with no underline. If
 the header names no pull request, the id draws as before. This is the
 case for a milestone in progress before review opens its PR. The idle
-row and the terminal draw no link.
+row and the terminal draw no link. A URL whose owner or repo holds a
+character a GitHub name cannot hold draws no link either.
 
 The track is one rounded bar of three equal parts: plan, implement, then
 review. On a milestone row, plan is full. Implement fills by the checked

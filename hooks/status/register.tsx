@@ -830,9 +830,10 @@ export const register: Register = on => {
     // A row's id links to its pull request in a `Link`, except in the
     // terminal, as with the pane's links (M311): a terminal without OSC 8
     // prints the URL. The id keeps its gray and bold with no underline (M312).
-    // The Link sits in a `Text`, as the pane card's do: a bare Link in the
-    // head Box drew the id above the title's line and too close to it (M312
-    // live look).
+    // The Link sits in a `Text`, as the pane card's do, and off the terminal
+    // the left group and the head center their parts, as the row does: with
+    // the parts at the top, the desktop drew a linked id above the title's
+    // line (M312 live looks).
     const Link = e.surface === 'terminal' ? undefined : $.ui.resolve(e).Link
     const close = CLOSE_COLUMNS + (canOpen ? OPEN_COLUMNS : 0)
     // The next-step and status Buttons (M212) show while no cairn skill's
@@ -889,9 +890,9 @@ export const register: Register = on => {
     // shrank to nothing (M194). The empty row has no id, so no head (M213).
     const row = (line: BandLine, isFirst: boolean) => (
       <Box key={line.key} justifyContent="space-between" {...center}>
-        <Box key={`${line.key}-left`} flexShrink={1} minWidth={0}>
+        <Box key={`${line.key}-left`} flexShrink={1} minWidth={0} {...center}>
           {line.id === '' ? null : (
-            <Box key={`${line.key}-head`} flexShrink={0}>
+            <Box key={`${line.key}-head`} flexShrink={0} {...center}>
               {line.href !== undefined && Link !== undefined ? (
                 <Text wrap="truncate-end">
                   <Link href={line.href}>

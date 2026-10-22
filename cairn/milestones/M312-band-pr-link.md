@@ -30,7 +30,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 ## Coverage
 
 - AC1 → T1
-- AC2 → T2, T5
+- AC2 → T2, T5, T6
 - AC3 → T2
 - AC4 → T3
 - AC5 → T4
@@ -42,6 +42,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - [x] T3: Update README's "The milestone band" section, the `hooks/status/` entry in `cairn/DESIGN.md`, and `CHANGELOG.md`. Grep README and DESIGN.md for "links none" and other band wording that the change makes stale (LESSONS M112).
 - [ ] T4: At review, once the PR is open and its URL is in this file's `Branch/PR` header, stop for the user's live look. The user opens a new Code session in this repo, checks that the band's id is gray, bold, and not underlined, and clicks it to see that the PR opens.
 - [x] T5: Draw the id's `Link` inside a `Text` with `wrap: 'truncate-end'`, as the pane card does, and change `idAndTitle` only so that it admits that `Text` and checks the id's own `Text` as before (review return 1).
+- [x] T6: Off the terminal, center the parts of the row's left group and head, as the row and its right group are, and fix pass 2's test and comment findings (review return 2).
 
 ## Work log
 
@@ -68,6 +69,7 @@ In the desktop app, the milestone id on the status band's row opens the mileston
 - 2026-10-21: T5 done: `register.tsx` wraps the linked id's `Link` in `Text wrap="truncate-end"`; `idAndTitle` drops only a Text whose one child is a `Link`; the M301 desktop test asserts the head's first child is that Text holding the Link. `claude plugin test` 2482 pass, 0 fail.
 - 2026-10-21: verify on the T5 tree green: scripts/tests and hooks/tests OK, both validates passed, `cairn_validate` passed. The claim audit was not re-run for return 1: the pass adds two comments, one stating the live look's screenshot and one the helper's filter, each read against the code it sits on (register.tsx, band.test.tsx `idAndTitle`) by the author only. Status review.
 - 2026-10-21: review return 2: AC5 failed at the second live look on 5e72fd35. The operator's screenshot shows the M312 id still above the title's line and close to it, so the wrapping `Text` (T5) did not fix it. The next try centers the left group's and the head's children off the terminal, as the row and its right group already are, on the reading that the linked id's box is shorter than the title's and both start at the top.
+- 2026-10-21: resumed from review return 2; added T6 for it (minor amendment). T6 done: the left group and head Boxes take `alignItems: 'center'` off the terminal, and the M301 desktop test asserts both and the holder's wrap. Pass 2's fix-now items landed with it: `idAndTitle` admits only the head's first child as the Link holder, `pullOf` caps the number at 15 digits and its tests check each passed page with `new URL` (a constant check dropped, a same-path case dropped, the 39/100 and 16-digit cases added), README and CHANGELOG say a refused URL draws no link, and five comments follow the code. Verify green: `claude plugin test` 2482 pass, 0 fail, scripts/tests and hooks/tests OK, both validates passed, `cairn_validate` passed. The claim audit was not re-run: the added prose is the two doc sentences and the comments, each read against `pullOf` and the code beside it by the author. This is the second defect return; a third would be the thrash rule's descope-or-park stop.
 
 ## Review
 

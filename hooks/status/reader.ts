@@ -56,8 +56,8 @@ export type BandRow = {
   nextTask: string | null
   nextCriterion: string | null
   // The pull request URL that the file's `Branch/PR` header names, as
-  // `prUrl` reads it, which the band links the id to (M312); null when the
-  // file is not read or names none.
+  // `prUrl` reads it, which the band links the id to when `pullOf` passes
+  // it (M312); null when the file is not read or names none.
   url: string | null
 }
 

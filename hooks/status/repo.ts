@@ -133,10 +133,11 @@ export function projectName(url: string | null, common: string | null, root: str
 }
 
 // The characters a GitHub owner or repo name holds. `.` and `..` match too,
-// and `webOf` refuses them, since `new URL` would resolve them away.
+// and `fits` refuses them, since `new URL` would resolve them away.
 const WEB_PART = /^[A-Za-z0-9._-]+$/
-// GitHub's longest owner and repo names, which keep every page `webOf`
-// gives under the 2048 characters a Link's `href` may hold (M311 review).
+// GitHub's longest owner and repo names, which keep every page `webOf` or
+// `pullOf` gives under the 2048 characters a Link's `href` may hold (M311
+// review, M312).
 const OWNER_MAX = 39
 const REPO_MAX = 100
 const fits = (part: string, max: number) => WEB_PART.test(part) && part !== '.' && part !== '..' && part.length <= max
@@ -155,8 +156,9 @@ export function webOf(url: string | null): string | null {
   return new URL(web).href === web ? web : null
 }
 
-// A pull request page, as `prUrl` in reader.ts cuts it.
-const PULL_PAGE = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/pull\/[0-9]+$/
+// A pull request page with a number of at most 15 digits, as `prUrl` in
+// reader.ts allows.
+const PULL_PAGE = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/pull\/[0-9]{1,15}$/
 
 // The pull request page that the band links a row's id to (M312): the URL
 // as given when its owner and repo pass the checks `webOf` makes, and null

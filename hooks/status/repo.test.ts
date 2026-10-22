@@ -198,18 +198,16 @@ describe('the pull request page the band links an id to, else none (M312)', () =
     ['no URL', null, null],
     ['a URL that is not a pull request page', 'https://github.com/o/r/issues/7', null],
     ['an owner with a character a name cannot hold', 'https://github.com/a<b/r/pull/7', null],
-    ['a repo with a non-ASCII letter', 'https://github.com/o/réso/pull/7', null],
     ['an owner of `..`', 'https://github.com/../r/pull/7', null],
+    ['an owner of 39 and a repo of 100 characters', `https://github.com/${'o'.repeat(39)}/${'r'.repeat(100)}/pull/7`, `https://github.com/${'o'.repeat(39)}/${'r'.repeat(100)}/pull/7`],
     ['an owner of 40 characters', `https://github.com/${'o'.repeat(40)}/r/pull/7`, null],
     ['a repo of 101 characters', `https://github.com/o/${'r'.repeat(101)}/pull/7`, null],
+    ['a number of 16 digits', `https://github.com/o/r/pull/${'1'.repeat(16)}`, null],
   ]
   for (const [name, url, want] of CASES) {
     test(name, () => {
       expect(pullOf(url)).toBe(want)
+      if (want !== null) expect(new URL(want).href).toBe(want)
     })
   }
-
-  test('a page it passes is spelled as `new URL` spells it', () => {
-    expect(new URL(PULL).href).toBe(PULL)
-  })
 })

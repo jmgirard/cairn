@@ -584,9 +584,10 @@ function shrinks(row: Element) {
 // no other Text (M206 AC1), but for the Text that holds a linked id's Link
 // alone (M312).
 function idAndTitle(row: Element, id: string, title: string) {
-  const { left } = layout(row)
-  const holdsLink = (t: Element) => kids(t).length === 1 && kids(t)[0].type === 'Link' && t.children.length === 1
-  const texts = below(left, 'Text').filter(t => !holdsLink(t))
+  const { left, head } = layout(row)
+  const first = head === undefined ? undefined : kids(head)[0]
+  const holder = first !== undefined && first.children.length === 1 && kids(first)[0]?.type === 'Link' ? first : undefined
+  const texts = below(left, 'Text').filter(t => t !== holder)
   expect(texts.map(t => textOf(t))).toEqual([id, ' ', title])
   expect(leavesOf(left).length).toBe(3)
   expect([texts[0].props.bold, texts[0].props.color]).toEqual([true, GRAY])
@@ -3987,8 +3988,10 @@ describe("a row's id links to its pull request off the terminal (M312 AC2, AC3)"
         const links = below(await bandBox(ui), 'Link')
         if (surface === 'desktop') {
           expect(links.length).toBe(1)
-          const [holder] = kids(layout(row).head as Element)
-          expect([holder.type, kids(holder)]).toEqual(['Text', links])
+          const { left, head } = layout(row)
+          const [holder] = kids(head as Element)
+          expect([holder.type, holder.props.wrap, kids(holder)]).toEqual(['Text', 'truncate-end', links])
+          expect([left.props.alignItems, (head as Element).props.alignItems]).toEqual(['center', 'center'])
           expect(links[0].props.href).toBe(PR)
           const [id] = kids(links[0])
           expect([id.type, textOf(id)]).toEqual(['Text', 'M301'])
