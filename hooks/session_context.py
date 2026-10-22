@@ -6,7 +6,9 @@ review) milestone file as additionalContext, so a fresh session starts
 oriented without relying on the skill remembering to read the files.
 When cairn/references/ holds source pages or shelf entries, a short
 `## Source shelf` part comes before the ROADMAP and says to read them
-before searching the web (M288). No-op outside cairn repos.
+before searching the web (M288). An `## Open-PR caps` part, after the
+profile part, states the two open-PR caps (M315). No-op outside cairn
+repos.
 
 Wired to SessionStart only. Claude Code honors additionalContext on
 `source` startup/resume and ignores it on clear/compact — there is no
@@ -297,7 +299,8 @@ def pr_caps_section(root):
     return (
         "## Open-PR caps\n\n"
         f"Keep at most {fixes} of your open PRs from `hotfix-` branches and at "
-        f"most {features} of your other open PRs on this repo (cairn/PROFILE.md's "
+        f"most {features} of your other open PRs on this repo, or in guest "
+        "mode on the upstream repo your PRs target (cairn/PROFILE.md's "
         "`# Bug-fix PR cap:` and `# Feature PR cap:` lines, else 3 and 1). "
         "Every open PR you authored on this repo counts, opened through cairn "
         "or not. When a stacked milestone opens its PR in guest mode with "

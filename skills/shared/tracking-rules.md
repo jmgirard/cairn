@@ -347,8 +347,9 @@ is quoted verbatim from the full entry, never the heading. Prior state is surfac
   number,url,headRefName`, and a list of 100 PRs counts as reaching both caps. `/hotfix` step 1 reads the bug-fix cap
   for an authored fix before it cuts a branch. `/milestone-review` reads the feature cap at step 2's Copilot arm,
   before step 7's merge chip in owner mode, and before step 8's push in guest mode, each only when the review will open
-  a new PR (the header names no open PR, and the review is not on resume route (b)). The merged-PR re-entry's
-  follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
+  a new PR (the header names no open PR, and the review is not on resume route (b)). A listed PR whose `headRefName`
+  is the branch under review is its own PR: no new PR opens, so no cap applies. A `/hotfix` PR reference, its
+  merged-PR re-entry's follow-up, a re-land, and companion PRs read no cap. At the cap the skill pushes nothing, opens no PR, and leaves any milestone status as it is. Its close block
   names the cap and each open PR of that kind, or says the list reached 100. A failed read stops the same way, naming
   the read and its error. The close block also names each cap line in the header whose value was not taken. A push to
   an already-open PR reads no cap. The session-start text states both caps.
@@ -442,7 +443,9 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
   bot, except the one comment per Copilot review with a note that the Copilot round or `/copilot-review` posts. (3)
   Close an issue someone else opened only when a merged change clearly fixes it or its fix belongs in another repo.
   The close carries a one-line comment naming that change or repo, which holds over host style matching. Make at most
-  3 such closes on that repo per UTC day, counting your closes there that day. When unsure, ask the user in chat and
+  3 such closes on that repo per UTC day, counting your closes there that day: the `closed` events whose `actor.login`
+  is yours and whose `created_at` falls on that UTC day, from `gh api "repos/<base-repo>/issues/events?per_page=100"`.
+  When unsure, ask the user in chat and
   post nothing. A close the user picks at a cairn chip is the user's act and is outside rule (3). (4) Before you plan
   a feature or a change of behavior, find where a maintainer (an author whose association is OWNER, MEMBER, or
   COLLABORATOR) agreed with its design in an issue on the host repo, or asked for it in a review of your PR. With

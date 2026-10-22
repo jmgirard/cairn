@@ -486,6 +486,10 @@ class TestSessionContext(RepoFixture):
         self._assert_caps(part, 3, 1)
         self.assertIn("`# Feature PR cap: 100` line", part)
 
+    def test_caps_quote_an_untaken_value_as_written(self):
+        part = self._caps_part(self.GUEST_HEADER + "# Feature PR cap: Many\n" + self.BODY)
+        self.assertIn("`# Feature PR cap: Many` line", part)
+
     def test_caps_count_every_authored_pr_but_a_stack_base(self):
         part = self._caps_part(self.OWNER_HEADER + self.BODY)
         self.assertIn("Every open PR you authored on this repo counts", part)

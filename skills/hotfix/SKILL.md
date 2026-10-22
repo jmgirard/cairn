@@ -261,8 +261,10 @@ can resolve against the fork instead of the base repo.
    states in its open-PR caps bullet. The merged-PR re-entry's follow-up,
    a re-land, and a PR reference read no cap. At the cap, or on a failed
    read, cut no branch, push nothing, open no PR, and stop with that
-   bullet's close block. Its fenced next command is `/hotfix` with the
-   bug's description, to run once one of those PRs closes or merges.
+   bullet's close block. Unless step 1 matched a candidate row, first add
+   one for the bug (search-first), so the report outlives the chat. The
+   close block names the row. Its fenced next command is `/hotfix` with
+   the bug's description, to run once one of those PRs closes or merges.
 
 2. **Branch — cut one, or adopt the PR's.** Check `git status` (dirty tree
    with unrelated changes → ask).

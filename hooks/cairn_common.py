@@ -452,7 +452,7 @@ def open_pr_caps(root):
     Never raises."""
     caps, untaken = [], []
     for key, pattern, default in PR_CAP_LINES:
-        value = _profile_header(root, pattern)
+        value = _profile_header(root, pattern, lower=False)
         if value is not None and PR_CAP_VALUE.fullmatch(value):
             caps.append(int(value))
         else:
@@ -462,11 +462,12 @@ def open_pr_caps(root):
     return caps[0], caps[1], untaken
 
 
-def _profile_header(root, pattern):
+def _profile_header(root, pattern, lower=True):
     """The first match of `pattern` in cairn/PROFILE.md's header region (the
-    lines before the first `## ` slot heading), its value lowercased, or
-    None. A path that is not a regular file reads as None, so a FIFO there
-    cannot stall `cairn_next` (M268 review)."""
+    lines before the first `## ` slot heading), its value lowercased (as
+    written with `lower=False`, so a note can quote it), or None. A path
+    that is not a regular file reads as None, so a FIFO there cannot stall
+    `cairn_next` (M268 review)."""
     path = os.path.join(root, "cairn", "PROFILE.md")
     if not os.path.isfile(path):
         return None
@@ -477,7 +478,7 @@ def _profile_header(root, pattern):
                     break
                 m = pattern.match(line)
                 if m:
-                    return m.group(1).lower()
+                    return m.group(1).lower() if lower else m.group(1)
     except Exception:
         return None
     return None

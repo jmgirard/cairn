@@ -99,3 +99,24 @@
 - ripple #1: `/milestone-plan` proceeds with no agreement gate, and its idea vet says an agreement answers none of the vet's questions — reject (planned change for the gate; the vet's line is about correctness, a different question from rule (4)'s precondition).
 - ripple #2: `/hotfix` step 7 closes a `Fixes #N` issue without rule (3)'s limits — reject (false: each step-7 close is asked at a chip, which rule (3) excludes, and in guest mode the maintainers' merge closes it).
 - ripple #3: README's issue-close bullet does not say guest mode closes none — fix now (one clause added beside the guest close rules).
+- diff-bug #1: a cap read counts the review's own PR when the header lacks its URL (fresh clone, a hand-opened PR), so the review stops on itself — fix now (rulebook: a listed PR whose `headRefName` is the branch under review is its own PR, so no cap applies; a stop, not a wrong result, so no floor return). Same as blame-history #1.
+- diff-bug #2: a cap stop's rerun repeats the whole review, and the guest stop comes after the handoff approval — reject (planned change: AC1 names step 8's placement and the rerun fence).
+- diff-bug #3: this repo's next reviews stop on #327 until it closes or the repo sets a feature cap — reject (planned change, D-214's Consequences); named at the merge question.
+- diff-bug #4: the untaken note lowercases the value — fix now (`_profile_header(..., lower=False)` for the cap lines; test `test_caps_quote_an_untaken_value_as_written` failed first, passes now). Backticks in a value: reject (edge: a cap value holding backticks, outside documented use; the note's code span breaks, nothing else).
+- diff-bug #5: a `/hotfix` cap stop keeps no record of the bug — fix now (it adds a candidate row unless step 1 matched one, and the close block names it).
+- diff-bug #6: `/hotfix` now needs `gh` at step 1 — reject (planned change: AC1 places the read before the branch cut).
+- diff-bug #7: "this repo" in the caps text reads as the fork in a guest clone — fix now ("or in guest mode on the upstream repo your PRs target").
+- diff-bug #8: rules restated at the skill sites; the exclusion lists differ — fix now for the lists (the rulebook names a `/hotfix` PR reference too); the restatements reject (style).
+- diff-bug #9: the Copilot arm states the cap read after the push it precedes — fix now (the read now comes first in the text). Same as blame-history #4.
+- diff-bug #10: two tests repeat a code path ("Also never") — reject (planned change: AC2 names those cases).
+- diff-bug #11: `session_context.py`'s module docstring omits the new part — fix now.
+- diff-bug #12: D-213 records a cap that never shipped, and D-213/D-214 give different D-108 grounds — reject (false: DECISIONS is append-only, D-214 supersedes the cap clause, and the grounds differ because D-213's rules are guest conduct and D-214's caps are not about verification or records).
+- diff-bug #13: DESIGN's "five optional lines" omits the toolchain line — reject (false: the sentence lists optional lines, and the toolchain line is not optional).
+- diff-bug #14: `/milestone`'s audit reports no cap counts — follow-up, new row "Report the open-PR caps in /milestone". The rule (4) note: reject (planned change).
+- blame-history #2: the guest mode line grows by about 1,000 characters against M247's short form — reject (planned change: AC2 puts the four rules in the session-start text).
+- blame-history #3: no read is named for counting a day's closes — fix now (rulebook rule (3) names the `issues/events` read, run against this repo: it returned the operator's `closed` counts by day).
+- blame-history #5: an empty cap value is not named — reject (edge: a `# Feature PR cap:` line with no value, outside documented use; the default applies, as for an absent line).
+- blame-history #6: a PR another session opens between the read and the open can pass a cap — follow-up, absorbed into the parked row "Support two cairn operators in one repo".
+- blame-history #7: the guest step-8 cap sentence sits inside the stacking paragraph — fix now (own paragraph, "for every guest handoff, stacked or not").
+- blame-history #8: the rulebook baseline is stale in `/milestone`, `test_cost_audit_line.py`, and `test_mutation_harness.py` — fix now, re-seeded to 820 lines / 80,287 bytes (also prior-review #1).
+- blame-history #9: the caps part adds about 580 characters to each owner session — reject (planned change: AC2 states the caps in both modes).
