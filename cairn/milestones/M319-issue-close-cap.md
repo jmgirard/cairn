@@ -104,6 +104,7 @@ A guest repo's `cairn/PROFILE.md` can set or remove the daily limit on issue clo
 - 2026-10-22: re-audit: AC1 (full) — two findings. A: `off` in another letter case would leave 3 under rule (3) — answered, false: the "Header lines" paragraph says value case does not count, so `OFF` reads as `off`. B: a new D-entry must supersede D-215's full-page sentence — taken as a record: D-216, cited by rule (3); AC1's wording unchanged.
 - 2026-10-22: claim audit: 13 claims read, 1 corrected — cairn/DECISIONS.md (D-216's Consequences said "more than 100" events; D-217 corrects it to "100 or more", since the entry is history). The other 12, in CHANGELOG.md, README.md, hooks/session_context.py, tracking-rules.md, and DESIGN.md, read true.
 - 2026-10-22: status set to review after the return.
+- 2026-10-22: step-7 approval: m319-issue-close-cap approved for merge
 - 2026-10-22: amendment return: AC1 — "When the count's read returns a full page of 100 events whose oldest event falls on the current UTC day, the count counts as reaching the limit."
 
 ## Decisions
