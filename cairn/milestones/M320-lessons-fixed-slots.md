@@ -113,7 +113,7 @@ triage run.
       bytes becomes its own lesson, one-in-one-out at 25 with the
       none-removable stop, and remove the "pruning the stalest lines"
       sentence. Also the `/milestone` audit's by-hand budget check.
-- [ ] T3: `skills/cairn-triage/SKILL.md` lessons pass (lines 108-253):
+- [x] T3: `skills/cairn-triage/SKILL.md` lessons pass (lines 108-253):
       `split` disposition and its gate display; compress-or-split for every
       lesson over 450 bytes, pins kept by surviving string; the `rank` drop
       exit down to 20; replace the 45-line and 18,000-byte near-cap figures
@@ -163,6 +163,7 @@ triage run.
 - 2026-10-24: T1 done — rulebook Weight caps state the 25-lesson and 450-byte limits and the rank, the remedy bullet and "Retiring a lesson" name rank eviction, use marks, and the `rank` exit (cites D-218, written at T5); rulebook-mass baseline re-seeded to 844 lines / 83,145 bytes in its three places; verify green (5/5).
 - 2026-10-24: simple-english lint hook flags 535 pre-existing hits in tracking-rules.md and 199 in skills/milestone/SKILL.md; only this milestone's added lines were made free of semicolons and em-dashes, the rest left to the files' existing style.
 - 2026-10-24: T2 done — plan harvest names the `lessons used:` line and step 4 writes it; review hygiene adds `used M<NNN>` marks (newest replaces older), sends an over-450-byte extension to its own lesson, and evicts by rank to 25 with the none-removable stop, replacing the stalest-prune sentence; minor amendment: T2 also updates the `/milestone` audit's by-hand LESSONS check (`skills/milestone/SKILL.md:83`), found by grep.
+- 2026-10-24: T3 done — the lessons pass gains `split` (seven dispositions), the length rule (every lesson over 450 bytes is `compress` or `split`, a pinned string or quoted text kept whole in one line, no keep-as-is), the rank rule with the `rank` drop exit down to 20, a lesson-count chip sentence in place of the 45-line and 18,000-byte figures, and split/rank naming in apply and record; "never proposes pruning the oldest lesson" removed. Agent chose: a merge whose survivor would pass 450 bytes is not proposed, and a live milestone's quoted text is kept whole the way a pin's string is. README row and the skill description updated.
 
 ## Decisions
 
