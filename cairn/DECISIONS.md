@@ -7875,3 +7875,54 @@ events in one UTC day allows no further clear-grounds closes that day
 unless its PROFILE.md sets `off`. The rest of D-216 stands.
 
 **Consequences:** None beyond D-216's.
+
+### D-218 (2026-10-24): `LESSONS.md` holds at most 25 lessons of at most 450 bytes, ranked by newest use, and a full file evicts the lowest-ranked lesson — supersedes D-051's rejection (3) and its prune-when-full last resort, D-119's `LESSONS.md` byte budget, D-169's rejection of pruning in the pass, and D-177's near-cap rule; narrows D-115's kept clause that item lines are never length-policed, for `LESSONS.md`; passes D-108's door on its retained trigger (M320)
+
+**Context:** The user ran `/cairn-triage lessons` several times, and each
+run removed one or two lessons. The file stayed at its byte budget, so
+review hygiene still had no room to capture a lesson. The pass judged each
+lesson alone and asked what a planner loses without it, and nearly every
+lesson passed that test. A long lesson could stay as it was with a reason
+for each clause. Nothing made lessons compete for room. Lessons also grew:
+review hygiene extended an old line with each related gotcha, so a few
+lines held a large share of the file. M320's Goal and work log hold the
+figures.
+
+**Decision:** `LESSONS.md` holds at most 25 lessons, each one line of at
+most 450 bytes. These limits replace its byte budget, and its line cap
+stays as the validator's backstop. A lesson's rank is the highest
+milestone number among the ids in its provenance, except an id marked
+`trimmed` or `corrected`. A tie goes to the later date, then to the later
+line. A lesson earns rank by use: a plan names the lessons that shaped it
+in a `lessons used:` work-log line, and review hygiene marks each of
+those, and each lesson whose trap the milestone met, `used M<NNN>`. The
+newest `used` mark replaces the older one. At 25 lessons, review capture
+is one-in-one-out: it evicts the lowest-ranked lesson that no pin file
+holds and no live milestone quotes, or it captures nothing when none can
+go. Text that would take a lesson past 450 bytes becomes a lesson of its
+own. `/cairn-triage lessons` gains `split`, gives every lesson over 450
+bytes `compress` or `split` with no keep-as-is option, and proposes `drop`
+with a `rank` exit down to 20 lessons. A pinned string or a quoted text
+survives whole in one resulting line. The user chose rank by newest use
+and the per-lesson limit at M320's question set.
+
+**Rejected:** Ranking by repeats alone, because a lesson that prevents its
+trap never repeats and would leave first. Agent judgment with no rank,
+because that is the pass that freed one or two lessons per run. A count
+limit with a byte budget and no per-lesson limit, because extended lines
+then keep growing inside the budget. A validator check on the count or
+the length, because D-119 kept these budgets judgment-checked and D-057
+closed new size machinery. An archive file for evicted lessons, because
+D-051's rejection of a second record of lessons stands and git holds them.
+
+**Door:** This is a rule about how records are audited, so it passes
+D-108's door on its retained trigger. The shipped pass left a file at its
+budget with no room for review capture, a defect in what the plugin's
+skills do for their users. D-051's rejection (3) objected to automated
+eviction by age. Rank here is the newest use, not the age, and the user
+decides each triage drop at its gate.
+
+**Consequences:** An adopting repo over the limits is cut at its next
+review capture or triage run. Falsified by a lesson evicted by rank whose
+trap then recurs within 20 milestones, or by a split lesson whose pieces
+stop making sense apart.

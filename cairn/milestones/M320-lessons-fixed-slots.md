@@ -125,7 +125,7 @@ triage run.
       `test_lesson_graduation.py` pins), the `skills/cairn-init/SKILL.md:171`
       tree comment, and one `CHANGELOG.md` Unreleased entry under "Changes
       that affect existing repos".
-- [ ] T5: D-entry: supersede D-051's rejection (3) and its prune-when-full
+- [x] T5: D-entry: supersede D-051's rejection (3) and its prune-when-full
       last-resort clause, D-115's kept reasoning that item lines are never
       length-policed (for `LESSONS.md` only), D-119's `LESSONS.md` byte
       budget, D-169's rejection of pruning the oldest in the pass, and
@@ -165,6 +165,7 @@ triage run.
 - 2026-10-24: T2 done — plan harvest names the `lessons used:` line and step 4 writes it; review hygiene adds `used M<NNN>` marks (newest replaces older), sends an over-450-byte extension to its own lesson, and evicts by rank to 25 with the none-removable stop, replacing the stalest-prune sentence; minor amendment: T2 also updates the `/milestone` audit's by-hand LESSONS check (`skills/milestone/SKILL.md:83`), found by grep.
 - 2026-10-24: T3 done — the lessons pass gains `split` (seven dispositions), the length rule (every lesson over 450 bytes is `compress` or `split`, a pinned string or quoted text kept whole in one line, no keep-as-is), the rank rule with the `rank` drop exit down to 20, a lesson-count chip sentence in place of the 45-line and 18,000-byte figures, and split/rank naming in apply and record; "never proposes pruning the oldest lesson" removed. Agent chose: a merge whose survivor would pass 450 bytes is not proposed, and a live milestone's quoted text is kept whole the way a pin's string is. README row and the skill description updated.
 - 2026-10-24: T4 done — `cairn/LESSONS.md` header (pinned "or when a matured family / graduates whole" phrase kept), the lessons template, and the `/cairn-init` tree comment state the 25-lesson and 450-byte limits; one CHANGELOG Unreleased entry under "Changes that affect existing repos".
+- 2026-10-24: T5 done — D-218 written: supersedes D-051 rejection (3) and its prune-when-full last resort, D-119's LESSONS byte budget, D-169's rejection of pruning in the pass, D-177's near-cap rule; narrows D-115's kept no-length-policing clause for LESSONS; passes D-108's door on its retained trigger.
 
 ## Decisions
 
