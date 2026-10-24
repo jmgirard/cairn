@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -182,6 +182,7 @@ triage run.
 - 2026-10-24: claim audit: 52 claims read, 3 corrected — cairn/DECISIONS.md, CHANGELOG.md (return-2 diff): D-219's item (1) wrongly said D-051's Decision is narrowed and its heading misnamed the narrowed keep clauses, corrected by D-220; the CHANGELOG entry now states the too-few-removable case and the guest quote.
 - 2026-10-24: correction to the T7 compression line (pass-3 blame-history #3, #7): the compressions also dropped these clauses, unnamed there — from 2026-08-04 (M133) the `&&`-not-`;` join of a record-writing script and its commit (its point stays in the first lesson's `;`-chaining sentence); from 2026-08-17 (M148) the renumbering sweep of heading text across `skills/tests`; from 2026-10-18 (M277) the example of the set-aside run; from 2026-10-18 (M274) the name `test_shipped_reference_profiles_are_valid`.
 - 2026-10-24: review return 3: pass-3 load-bearing findings — review hygiene's use-mark step reads the `lessons used:` line from the milestone file the same pass already deleted (diff-bug #1); shortening a lesson a `used` mark pushes past 450 bytes can break a pinned string or quoted text (diff-bug #2); a lesson skipped when too few can be removed is kept only in chat (diff-bug #11). This is the third defect return, so the thrash rule (a) stops the run: no retry is queued, and the disposition goes to the user at a chip (descope recommended). Follow-up rows "Close the small gaps in lesson ranking" and "Cut code cites to evicted lessons" added.
+- 2026-10-24: thrash disposition: descope, at the user's choice at the thrash-stop chip ("Descope and merge"). All seven criteria are verified, so no criterion changes; the three return-3 defects exit to candidate row "Fix the gaps in lesson use marks" (merged with "Close the small gaps in lesson ranking" to stay under the ROADMAP byte budget). Status back to review for the merge question.
 
 ## Decisions
 
@@ -288,4 +289,8 @@ Pass 3 (2026-10-24), branch head bd621095, after return 2. Copilot state query r
 - ripple #4: the archived-file arm skips use marks without naming the skip — follow-up, row "Close the small gaps in lesson ranking"
 - ripple #5: milestone-plan/SKILL.md:547 cites "the M118 lesson" (already off on main) — follow-up, row "Cut code cites to evicted lessons"
 - ripple #6: line-number lesson cites (`LESSONS :24`) point at other lessons (already off on main) — follow-up, same row
+- conversation: PR #333 has no reviews, no conversation comments, and no unresolved threads.
+- copilot: no Copilot review on PR #333; three requests each exited 0 and the state query still read `none`, so GitHub may not have recorded them (used-up Copilot credits are one cause).
+- snapshot: no changed snapshot files.
+- Thrash stop disposition: the user chose descope. diff-bug #1, #2, and #11 become follow-up, row "Fix the gaps in lesson use marks", which also absorbs the pass-3 small-gap findings first filed as "Close the small gaps in lesson ranking".
 - Consistency gate: `cairn_validate.py` all checks passed; no DESIGN.md principle changed, so no `cairn_impact` run; profile gate: verify green on the review head, marketplace validate prints no `version` warning, the CHANGELOG entry names no milestone number.
