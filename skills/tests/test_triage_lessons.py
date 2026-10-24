@@ -7,13 +7,14 @@ pinned on its own (M165 lesson):
   1. The argument: no argument means no lesson, any other argument stops.
   2. The item shape and the empty case.
   3. The pin check before any proposal, both directions.
-  4. The six lesson dispositions, the five drop exits, the maturation bar,
-     the false-lesson `correct`, the planner test, and the near-cap rule
-     (M270).
-  5. Apply and record: no line left behind, the two-file cap check, the
-     gate warning, the stamp and commit naming, the guest arm, no decision
+  4. The seven lesson dispositions, the six drop exits, the maturation bar,
+     the false-lesson `correct`, the planner test (M270), and the `split`
+     disposition, the length rule, and the rank rule (M320).
+  5. Apply and record: no line left behind, the two-file limit check, the
+     gate count, the stamp and commit naming, the guest arm, no decision
      entry.
-  6. The rulebook and README name the pass.
+  6. The rulebook and README name the pass, and the rulebook states the
+     lesson limits and the rank (M320).
 
 The pinned phrases wrap across source lines, so this guard collapses
 whitespace on read, as `test_guest_triage` does. Each target is read per
@@ -106,7 +107,8 @@ class TestPinCheck(unittest.TestCase):
     def test_a_pinned_lesson_is_keep(self):
         self.assertIn(
             "A lesson that holds a string a pin file asserts is present is "
-            "`keep`, its reason naming that file.",
+            "`keep`, its reason naming that file, unless the length rule "
+            "below applies to it.",
             section(),
         )
 
@@ -119,16 +121,24 @@ class TestPinCheck(unittest.TestCase):
 
 
 class TestLessonDispositions(unittest.TestCase):
-    def test_six_dispositions_only(self):
+    def test_seven_dispositions_only(self):
         self.assertIn(
-            "A lesson takes one of six dispositions, and never `split`, "
-            "`route`, or `retitle`",
+            "A lesson takes one of seven dispositions, and never `route` or "
+            "`retitle`",
             section(),
         )
 
-    def test_drop_names_one_of_five_exits(self):
+    def test_split_disposition(self):
+        self.assertIn(
+            "| `split` | Broken into two or more lessons, each one line of at "
+            "most 450 bytes and each on one subject. Each new line keeps the "
+            "original date and only the provenance ids its text came from.",
+            section(),
+        )
+
+    def test_drop_names_one_of_six_exits(self):
         text = section()
-        self.assertIn("The reason names one of five exits.", text)
+        self.assertIn("The reason names one of six exits.", text)
         self.assertIn(
             "Enforcement: a test, by file and test name, with the assertion "
             "quoted that fails on the mistake the lesson warns about.",
@@ -157,7 +167,12 @@ class TestLessonDispositions(unittest.TestCase):
             "without the line",
             text,
         )
-        self.assertIn("A lesson leaves only by the five exits above", text)
+        self.assertIn(
+            "`rank`: the reason names the lesson's rank, the milestone id "
+            "that sets it (the rank rule, below).",
+            text,
+        )
+        self.assertIn("lesson leaves only by the six exits above", text)
 
     def test_evidence_exits_need_evidence(self):
         text = section()
@@ -183,9 +198,9 @@ class TestLessonDispositions(unittest.TestCase):
     def test_a_kept_false_lesson_reaches_the_stamp(self):
         self.assertIn(
             "A pin or a live milestone makes a lesson `keep` before any other "
-            "rule. If such a lesson is false or obsolete, steps 4 to 6 still "
-            "run for the stamp, even when every proposal is `keep`. The stamp "
-            "names the lesson and the evidence.",
+            "rule but the length rule. If such a lesson is false or obsolete, "
+            "steps 4 to 6 still run for the stamp, even when every proposal "
+            "is `keep`. The stamp names the lesson and the evidence.",
             section(),
         )
 
@@ -255,32 +270,47 @@ class TestLessonDispositions(unittest.TestCase):
             text,
         )
 
-    def test_near_cap_rule(self):
+    def test_length_rule(self):
         text = section()
         self.assertIn(
-            "A file at 45 lines or more, or 18,000 bytes or more, is near its "
-            "caps",
+            "Last, count the lessons and measure each lesson's bytes against "
+            "the limits of tracking-rules \"Weight caps\": at most 25 "
+            "lessons, each at most 450 bytes.",
             text,
         )
         self.assertIn(
-            "A lesson compresses only where it restates what another record "
-            "says, or by the near-cap rule.",
+            "The length rule: each lesson whose step-1 byte length is over "
+            "450 gets `compress` or `split`, with its new line or lines shown "
+            "verbatim in the table. A long lesson is never kept as it is.",
             text,
         )
         self.assertIn(
-            "Below the near-cap figures, length alone never fires a "
-            "`compress`.",
+            "For such a lesson, the string the pin file asserts present, or "
+            "the text the milestone quotes, stays whole in one resulting "
+            "line.",
             text,
         )
         self.assertIn(
-            "Each lesson whose step-1 byte length is over 400 gets one of two "
-            "proposals. One is `compress`, with its shortened line shown "
-            "verbatim in the table. The other is `keep`, with a reason that "
-            "names why each clause stays. The rule skips a lesson proposed "
-            "`drop`, `merge`, `correct`, or `promote`. It also skips a merge "
-            "survivor and a lesson kept for a pin or a live milestone.",
+            "A merge whose survivor would pass 450 bytes is not proposed.",
             text,
         )
+        self.assertNotIn("The other is `keep`, with a reason that", text)
+
+    def test_rank_rule(self):
+        text = section()
+        self.assertIn(
+            "The rank rule: after the other proposals, count the lessons that "
+            "would remain, each line of a split counting as one. If more than "
+            "20 would remain, propose `drop` with the `rank` exit for the "
+            "lowest-ranked of them",
+            text,
+        )
+        self.assertIn(
+            "until 20 remain or every remaining lesson is kept for a pin, a "
+            "live milestone, or as a merge survivor.",
+            text,
+        )
+        self.assertNotIn("never proposes pruning the oldest lesson", text)
 
 
 class TestLessonsApplyAndRecord(unittest.TestCase):
@@ -293,37 +323,42 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
 
     def test_cap_check_covers_both_files(self):
         self.assertIn(
-            "`wc -l -c cairn/LESSONS.md cairn/ROADMAP.md` stays under both "
-            "files' line caps and byte budgets",
+            "After the edits, `cairn/ROADMAP.md` stays under its line cap and "
+            "byte budget, the stamp included, and `cairn/LESSONS.md` stays "
+            "within its limits",
             section(),
         )
 
     def test_gate_warning(self):
         self.assertIn(
             "Each time the chip is posed, Amend rounds included, count the "
-            "lines and bytes that `cairn/LESSONS.md` has with the proposals "
-            "then standing all applied. If the count is 45 lines or more, or "
-            "18,000 bytes or more, the chip's question text says so. One "
-            "sentence names both counts.",
+            "lessons that `cairn/LESSONS.md` would hold with the proposals "
+            "then standing all applied, and find any lesson that would be "
+            "over 450 bytes. The chip's question text gives the count in one "
+            "sentence. It also says when the count is over 20 or a lesson is "
+            "over 450 bytes.",
             section(),
         )
 
     def test_correct_applies_the_gate_text(self):
         text = section()
         self.assertIn(
-            "A `correct`, and a near-cap `compress`, show the new line "
-            "verbatim.",
+            "A `correct`, a `compress`, and a `split` show the new line or "
+            "lines verbatim.",
             text,
         )
         self.assertIn(
-            "An Amend that makes a lesson `correct` or `compress` names its "
-            "new line. In every Amend round, the pass shows that line again "
-            "before it poses the chip. A lesson the user moves to `keep` at "
-            "an Amend takes the reason `kept at the gate`.",
+            "An Amend that makes a lesson `correct`, `compress`, or `split` "
+            "names its new line or lines. In every Amend round, the pass "
+            "shows that line again before it poses the chip. A lesson the "
+            "user moves to `keep` at an Amend takes the reason `kept at the "
+            "gate`.",
             text,
         )
         self.assertIn(
-            "A `correct` replaces the line with the text the gate showed.",
+            "A `correct` replaces the line with the text the gate showed, and "
+            "a `split` replaces it with the lines the gate showed, in its "
+            "place.",
             text,
         )
 
@@ -336,8 +371,9 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
         self.assertIn(
             "The stamp and the commit message name each dropped lesson by its "
             "date and provenance with its exit. They name each merged-away "
-            "lesson with its survivor, and each corrected lesson by its date "
-            "and provenance. The commit message also gives the evidence for "
+            "lesson with its survivor, each corrected or split lesson by its "
+            "date and provenance, and each `rank` drop with its rank. The "
+            "commit message also gives the evidence for "
             "each `refuted` or `obsolete` drop and each `correct`. In guest "
             "mode the stamp alone names them, with their evidence.",
             text,
@@ -361,12 +397,46 @@ class TestSurfacesNameThePass(unittest.TestCase):
         )
         self.assertIn("At review hygiene, three exits:", text)
         self.assertIn(
-            "That pass adds three drop exits, each decided at its gate: "
-            "`refuted` and `obsolete`, each with evidence read in the pass, "
-            "and `planner test`",
+            "The whole-file pass adds four drop exits, each decided at its "
+            "gate: `refuted` and `obsolete`, each with evidence read in the "
+            "pass, `planner test`, for a line a planner does not need, and "
+            "`rank`, which evicts the lowest-ranked lessons down to 20.",
             text,
         )
         self.assertIn("It also corrects a false lesson in place", text)
+
+    def test_rulebook_states_the_limits_and_the_rank(self):
+        text = read("shared/tracking-rules.md")
+        self.assertIn(
+            "`LESSONS.md` holds at most 25 lessons, each one line of at most "
+            "450 bytes, newline excluded.",
+            text,
+        )
+        self.assertIn(
+            "A lesson's **rank** is the highest milestone number among the "
+            "ids in its parenthesized provenance, except an id that follows "
+            "`trimmed` or `corrected` in the same comma-separated part. A tie "
+            "goes to the later date, then to the line later in the file.",
+            text,
+        )
+        self.assertNotIn("`LESSONS.md` < 20,000 bytes", text)
+        self.assertNotIn("stalest", text)
+
+    def test_rulebook_states_use_marks_and_one_in_one_out(self):
+        text = read("shared/tracking-rules.md")
+        self.assertIn(
+            "`/milestone-plan` names the lessons that shaped its plan in a "
+            "`lessons used:` work-log line, and review hygiene marks each of "
+            "those, and each lesson whose trap the milestone met, `used "
+            "M<NNN>`.",
+            text,
+        )
+        self.assertIn(
+            "At the 25-lesson limit review capture is one-in-one-out: it "
+            "evicts the lowest-ranked lesson that no pin file holds and no "
+            "live milestone quotes.",
+            text,
+        )
 
     def test_readme_names_the_pass(self):
         text = norm((ROOT / "README.md").read_text(encoding="utf-8"))

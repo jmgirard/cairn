@@ -132,7 +132,7 @@ triage run.
       D-177/D-178's near-cap keep-with-reasons and last-resort clauses.
       State how it passes D-108's door (retained trigger: the shipped pass
       leaves the file at its budget, so capture has no room).
-- [ ] T6: Prose guards: update the guards whose pinned text changes
+- [x] T6: Prose guards: update the guards whose pinned text changes
       (`skills/tests/test_triage_lessons.py`, `test_mutation_harness.py`,
       `test_lessons_loop.py`, `test_lesson_graduation.py`, and any other
       `git grep` finds), add guards for the rank, `split`, `rank` exit,
@@ -166,6 +166,7 @@ triage run.
 - 2026-10-24: T3 done — the lessons pass gains `split` (seven dispositions), the length rule (every lesson over 450 bytes is `compress` or `split`, a pinned string or quoted text kept whole in one line, no keep-as-is), the rank rule with the `rank` drop exit down to 20, a lesson-count chip sentence in place of the 45-line and 18,000-byte figures, and split/rank naming in apply and record; "never proposes pruning the oldest lesson" removed. Agent chose: a merge whose survivor would pass 450 bytes is not proposed, and a live milestone's quoted text is kept whole the way a pin's string is. README row and the skill description updated.
 - 2026-10-24: T4 done — `cairn/LESSONS.md` header (pinned "or when a matured family / graduates whole" phrase kept), the lessons template, and the `/cairn-init` tree comment state the 25-lesson and 450-byte limits; one CHANGELOG Unreleased entry under "Changes that affect existing repos".
 - 2026-10-24: T5 done — D-218 written: supersedes D-051 rejection (3) and its prune-when-full last resort, D-119's LESSONS byte budget, D-169's rejection of pruning in the pass, D-177's near-cap rule; narrows D-115's kept no-length-policing clause for LESSONS; passes D-108's door on its retained trigger.
+- 2026-10-24: T6 done — `test_triage_lessons.py` re-pinned to the new pass text (seven dispositions, six exits with `rank`, `split`, length rule, rank rule, gate count, limit check, record naming) plus two rulebook tests (limits and rank; use marks and one-in-one-out); `test_lessons_loop.py` gains `TestUseMarksAndCapture` (plan line, review mark, long extension, one-in-one-out); mutation registry updated and extended, every new block red when blanked. Gating suites green; `skills/tests` green but for `test_lessons_file_is_back_under_its_cap` (LESSONS.md at 50 lines after T4's header line), which T7 clears.
 
 ## Decisions
 

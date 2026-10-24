@@ -67,6 +67,64 @@ class TestLessonsLoop(unittest.TestCase):
         self.assertIn("LESSONS.md", plan)
 
 
+def norm(text):
+    return " ".join(text.split())
+
+
+class TestUseMarksAndCapture(unittest.TestCase):
+    """M320 (D-218): plans record the lessons they used, review marks them,
+    and a full file evicts by rank. The pinned sentences wrap, so this class
+    collapses whitespace on read."""
+
+    def test_plan_writes_the_lessons_used_line(self):
+        plan = norm(read(SKILLS / "milestone-plan" / "SKILL.md"))
+        self.assertIn(
+            "Step 4 writes one work-log line `lessons used: <lessons>` in the "
+            "first milestone file it writes. It names each lesson that shaped "
+            "the plan by its date and provenance, or it reads `lessons used: "
+            "none`.",
+            plan,
+        )
+
+    def test_review_marks_each_used_lesson(self):
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        self.assertIn(
+            "First mark use: add `used M<NNN>` to the parenthesized "
+            "provenance of each lesson that the milestone's `lessons used:` "
+            "work-log line names, and of each lesson whose trap the "
+            "milestone met. The mark replaces that lesson's earlier `used` "
+            "mark, if it has one, and the use adds no other text to the "
+            "lesson.",
+            review,
+        )
+
+    def test_a_long_extension_becomes_its_own_lesson(self):
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        self.assertIn(
+            "An extension that would take a lesson past 450 bytes is not "
+            "written into it. The new content becomes a lesson of its own "
+            "instead.",
+            review,
+        )
+
+    def test_review_capture_is_one_in_one_out(self):
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        self.assertIn(
+            "when a captured lesson would leave more than 25 lessons, remove "
+            "the lowest-ranked lessons (tracking-rules \"Weight caps\") until "
+            "25 remain, in this same commit, and name each in the archive "
+            "summary. Remove no lesson that a pin file holds or a live "
+            "milestone quotes.",
+            review,
+        )
+        self.assertIn(
+            "When no lesson can be removed, capture nothing, and name the "
+            "skipped lesson in the close block.",
+            review,
+        )
+        self.assertNotIn("stalest", review)
+
+
 class TestRecordCorrectionRule(unittest.TestCase):
     """M76 (D-045): the rulebook states how a record proven false is fixed.
 
