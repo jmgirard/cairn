@@ -47,7 +47,7 @@ triage run.
       25 lessons, each one line of at most 450 bytes; and
       `git grep -nE '20,000|18,000|50-line|45 lines' -- skills cairn/LESSONS.md`
       returns no hit that sets a cap on `LESSONS.md`.
-- [ ] AC2: `skills/shared/tracking-rules.md` defines a lesson's rank as the
+- [x] AC2: `skills/shared/tracking-rules.md` defines a lesson's rank as the
       highest milestone number among the ids in its parenthesized provenance,
       ids marked `trimmed` or `corrected` excepted, a tie going to the later
       date and then to the line later in the file; and
@@ -67,7 +67,7 @@ triage run.
       its close block with `/cairn-triage lessons` fenced; and an extension
       that would take a lesson past 450 bytes is not written into it, its
       content becoming a lesson of its own.
-- [ ] AC5: `/cairn-triage lessons` (a) has a `split` disposition that breaks
+- [x] AC5: `/cairn-triage lessons` (a) has a `split` disposition that breaks
       a lesson into lessons of at most 450 bytes each, each keeping the
       original date and the provenance ids its text came from; (b) proposes
       `compress` or `split` for every lesson over 450 bytes, pinned lessons
@@ -81,7 +81,7 @@ triage run.
       (the lines `grep -E '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'` lists), each at
       most 450 bytes, and one of them contains
       `"green" is only as wide as what you ran`.
-- [ ] AC7: `CHANGELOG.md`'s Unreleased section carries one entry stating the
+- [x] AC7: `CHANGELOG.md`'s Unreleased section carries one entry stating the
       25-lesson and 450-byte limits, the rank, one-in-one-out capture, and
       the triage `split` and `rank` proposals; and the repo's `verify` (both
       gating suites, `claude plugin validate` on the plugin and marketplace
@@ -189,3 +189,11 @@ Pass 1 (2026-10-24), branch head b0f4c65e; PR #333 opened at review start (Copil
 - AC5 evidence: (a) `split` row at cairn-triage/SKILL.md:163 with date and own provenance ids; (b) length rule at :201-212 covers pinned and live lessons, the pinned string kept whole, no keep-as-is; (c) rank rule at :213-219 drops by `rank` to 20, stopping when every remaining lesson is kept. (d) `git grep -n "oldest lesson" -- skills` returns `test_triage_lessons.py:313`, an `assertNotIn` guard. (d) fails as written. Fail.
 - AC6 evidence: `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}' cairn/LESSONS.md` → 20; longest lesson 437 bytes (`LC_ALL=C awk`); `"green" is only as wide as what you ran` found once. Pass.
 - AC7: CHANGELOG.md:7-22 carries the one entry naming the limits, rank, one-in-one-out capture, and the triage `split` and `rank` proposals; verify to be re-run on the head that review approves.
+
+Pass 2 (2026-10-24), branch head fdd66913, after return 1 (T8). Copilot state query read `none`; one request made (exit 0), still `none` after it, so it may not be recorded by GitHub; no second request.
+
+- AC2 evidence: rank definition at tracking-rules.md:68-70 unchanged; `git grep -n "stalest" -- skills cairn/LESSONS.md` exits 1 with no hit. Pass.
+- AC5 evidence: `split` row, length rule ("A long lesson is never kept as it is"), and rank rule ("propose `drop` with the `rank` exit") each found once in cairn-triage/SKILL.md; `git grep -n "oldest lesson" -- skills` exits 1 with no hit. Pass.
+- AC1, AC3, AC4, AC6 recheck on fdd66913: the diff since b0f4c65e touches only the milestone file, two test guards, and one paragraph break in cairn-triage/SKILL.md; the AC1 grep hits are unchanged (backstop docstring, an `assertNotIn` guard); LESSONS.md holds 20 lessons, longest 437 bytes.
+- AC7 evidence: CHANGELOG.md:7-22 entry as above; on fdd66913 `scripts/tests` OK (966), `hooks/tests` OK (210), both `claude plugin validate` exit 0, `claude plugin test` exit 0 (2466 pass), hand-run `skills/tests` OK (446, 21 skipped). Pass.
+- Consistency gate: `cairn_validate.py` all checks passed; no DESIGN.md principle changed, so no `cairn_impact` run; profile gate: verify green on the review head, marketplace validate prints no `version` warning, the CHANGELOG entry names no milestone number.
