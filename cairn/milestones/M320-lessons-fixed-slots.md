@@ -11,7 +11,7 @@
 - **Principles touched:** GP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopting repo's review hygiene and `/cairn-triage lessons` follow the changed rules
-- **Branch/PR:** m320-lessons-fixed-slots
+- **Branch/PR:** m320-lessons-fixed-slots, https://github.com/jmgirard/cairn/pull/333
 
 ## Goal
 
