@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -180,6 +180,8 @@ triage run.
 - 2026-10-24: review return 2: load-bearing defects from pass 2's fan-out (Review section): guest-mode rank eviction loses lessons with no copy (diff-bug #1, #18); review eviction's partial-removal case undefined (#4) and its archive-summary naming can pass 25 lines (#2); a `used` mark can push a lesson past 450 bytes (#5); `lessons used:` reaches only the first milestone file (#15). Same return also carries the pass's other fix-now items: one batched D-219 correcting D-218 (diff-bug #8, #9, #14; blame-history #1, #2, #7), rulebook sentence that rank eviction is not a retirement exit (ripple #1, #2), rank exception in template, LESSONS.md header, README, CHANGELOG (diff-bug #17, ripple #3), split-line rank-drop display (#10), LESSONS.md provenance fixes (#13), stale harness comment (#19), "(M320 review)" test comments removed (#20), DESIGN.md:1023 wording (ripple #6). Follow-up row "Match lesson citations after use marks" added.
 - 2026-10-24: T9 done (minor amendment for return 2: task added, Coverage AC3 and AC4 cite T9) — review hygiene: the `used` mark counts toward 450 bytes and a lesson it pushes over is shortened; eviction names removed lessons in one archive-summary line, removes none when too few can go, and in guest mode quotes each removed lesson in the close block. Plan writes `lessons used:` in each milestone file. Triage shows a rank-dropped split line under its split. Rulebook: rank eviction is not a retirement exit. Rank exception added to template, LESSONS.md header, README, CHANGELOG; DESIGN.md:1023 says limit check; LESSONS.md mod-lesson provenance corrected (M191 to its `{ value }` lesson, M195 to the mod-checks lesson; the M195 session clause stays in the 2026-10-03 lesson as a merge, not a split); harness comment and test-comment citations fixed; D-219 written. Guards updated and extended; rulebook-mass baseline re-seeded to 845 lines / 83,349 bytes. Verify 5/5 green, `skills/tests` green.
 - 2026-10-24: claim audit: 52 claims read, 3 corrected — cairn/DECISIONS.md, CHANGELOG.md (return-2 diff): D-219's item (1) wrongly said D-051's Decision is narrowed and its heading misnamed the narrowed keep clauses, corrected by D-220; the CHANGELOG entry now states the too-few-removable case and the guest quote.
+- 2026-10-24: correction to the T7 compression line (pass-3 blame-history #3, #7): the compressions also dropped these clauses, unnamed there — from 2026-08-04 (M133) the `&&`-not-`;` join of a record-writing script and its commit (its point stays in the first lesson's `;`-chaining sentence); from 2026-08-17 (M148) the renumbering sweep of heading text across `skills/tests`; from 2026-10-18 (M277) the example of the set-aside run; from 2026-10-18 (M274) the name `test_shipped_reference_profiles_are_valid`.
+- 2026-10-24: review return 3: pass-3 load-bearing findings — review hygiene's use-mark step reads the `lessons used:` line from the milestone file the same pass already deleted (diff-bug #1); shortening a lesson a `used` mark pushes past 450 bytes can break a pinned string or quoted text (diff-bug #2); a lesson skipped when too few can be removed is kept only in chat (diff-bug #11). This is the third defect return, so the thrash rule (a) stops the run: no retry is queued, and the disposition goes to the user at a chip (descope recommended). Follow-up rows "Close the small gaps in lesson ranking" and "Cut code cites to evicted lessons" added.
 
 ## Decisions
 
@@ -253,4 +255,37 @@ Pass 3 (2026-10-24), branch head bd621095, after return 2. Copilot state query r
 - AC5 recheck: `split` row, length rule (pinned and live lessons covered), rank rule each present; `git grep -n "oldest lesson" -- skills` exits 1. Pass.
 - AC6 recheck: 20 lessons, longest 437 bytes, pinned string present once. Pass.
 - AC7 recheck: CHANGELOG entry as corrected at bd621095; `scripts/tests` OK (966), `hooks/tests` OK (210), both validates exit 0 with no `version` warning, `claude plugin test` exit 0 (2466), `skills/tests` OK (446, 21 skipped), `cairn_validate` all checks passed. Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the use-mark step reads the `lessons used:` line from the milestone file the same pass already deleted (archive replaces it; untracked in guest mode) — load-bearing; return 3 (thrash stop, disposition to the user)
+- diff-bug #2: shortening a lesson a `used` mark pushes past 450 bytes has no rule keeping a pinned string or quoted text whole — load-bearing; return 3 (as #1)
+- diff-bug #11: in the too-few-removable case the skipped lesson's text is kept only in chat — load-bearing; return 3 (as #1)
+- diff-bug #3: DESIGN.md:649, register.tsx:404, pane.test.tsx:7151 cite lesson text T7 dropped — follow-up, row "Cut code cites to evicted lessons"
+- diff-bug #4: split and merge do not say where a `used` mark goes — follow-up, row "Close the small gaps in lesson ranking"
+- diff-bug #5: guest `/cairn-triage lessons` keeps no copy of a `rank` drop — follow-up, same row (widens the DESIGN.md:1022 known issue)
+- diff-bug #6: an adopter's first capture can evict many lessons with no gate — reject, planned change (Scope Out names it; D-219 (4))
+- diff-bug #7: triage lines 117-119 still say review checks only the lessons the milestone covered — follow-up, row "Close the small gaps in lesson ranking"
+- diff-bug #8: the rulebook's one-in-one-out sentence omits the too-few stop and the citation test — reject, false (the rulebook states the rule, the skill its steps)
+- diff-bug #9: "shorten or split first" does not help a count overrun — follow-up, row "Close the small gaps in lesson ranking"
+- diff-bug #10: the M210 mod line lacks M191 for its `register` sentence — reject, false in effect (rank stays M311; T7 log names the provenance as judged)
+- diff-bug #12: the hygiene preview does not name marked, shortened, or evicted lines — follow-up, row "Close the small gaps in lesson ranking"
+- diff-bug #13: docstrings cite "M320 (D-218)"; a guard runs over the whole review skill — reject, style (matches each file's docstring convention) and false (the change removed that word from the review skill)
+- diff-bug #14: new claims in README, template, and LESSONS header have no prose guard — follow-up, row "Close the small gaps in lesson ranking"
+- diff-bug #15: "never split an item across lines" clashes with `split` — reject, false (a split makes separate one-line items)
+- diff-bug #16: CHANGELOG.md:23 is 106 characters — reject, style
+- blame-history #1: D-220 reverses D-219 on D-051 — reject, false (D-051's Decision gives two retirement criteria and no "only"; D-218 supersedes the prune that rank eviction replaces)
+- blame-history #2: six exits contradict D-177's "one of five exits", unnamed by D-218 — follow-up, row "Close the small gaps in lesson ranking"
+- blame-history #3: T7 compressions dropped clauses (M133 `&&`, M148 renumbering sweep, M277 set-aside example) without a log — fixed in the work log (2026-10-24 line below); the M133 clause's point stays in the first lesson's `;`-chaining sentence
+- blame-history #4: guest triage rank drops keep no copy — follow-up (same as diff-bug #5)
+- blame-history #5: the M170 merge-marker recovery steps were rank-dropped — reject, planned change (as pass-2 blame-history #3)
+- blame-history #6: the M163 checkout gotcha was rank-dropped — reject, planned change (as #5)
+- blame-history #7: the M274 lesson lost its test-name pointer in compression — fixed in the work log (with #3)
+- prior-review #1: a `used` mark can break a live milestone's citation — follow-up, existing row "Match lesson citations after use marks"
+- prior-review #2: test docstrings cite milestones — reject, style (as diff-bug #13)
+- prior-review #3: no guard on DESIGN.md or CHANGELOG lessons-pass text — reject, planned change (D-109's hand-run scope; M263's disposition stands)
+- ripple #1: ten test files cite "the M171 lesson", now dropped — follow-up, row "Cut code cites to evicted lessons"
+- ripple #2: pane.test.tsx:7151 cites LESSONS M284 for text dropped — follow-up, same row
+- ripple #3: DESIGN.md:648, register.tsx:404 cite LESSONS M194 — follow-up, same row
+- ripple #4: the archived-file arm skips use marks without naming the skip — follow-up, row "Close the small gaps in lesson ranking"
+- ripple #5: milestone-plan/SKILL.md:547 cites "the M118 lesson" (already off on main) — follow-up, row "Cut code cites to evicted lessons"
+- ripple #6: line-number lesson cites (`LESSONS :24`) point at other lessons (already off on main) — follow-up, same row
 - Consistency gate: `cairn_validate.py` all checks passed; no DESIGN.md principle changed, so no `cairn_impact` run; profile gate: verify green on the review head, marketplace validate prints no `version` warning, the CHANGELOG entry names no milestone number.
