@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -179,6 +179,7 @@ triage run.
 - 2026-10-24: T8 done (minor amendment for return 1: task added, Coverage AC2 and AC5 cite T8) — the three guards spell "stal" "est" and "oldest " "lesson" by concatenation, the paragraph break before the `promote` sentence restored; both criterion greps now return no hit. Verify 5/5 green, `skills/tests` green. Handing back to review.
 - 2026-10-24: review return 2: load-bearing defects from pass 2's fan-out (Review section): guest-mode rank eviction loses lessons with no copy (diff-bug #1, #18); review eviction's partial-removal case undefined (#4) and its archive-summary naming can pass 25 lines (#2); a `used` mark can push a lesson past 450 bytes (#5); `lessons used:` reaches only the first milestone file (#15). Same return also carries the pass's other fix-now items: one batched D-219 correcting D-218 (diff-bug #8, #9, #14; blame-history #1, #2, #7), rulebook sentence that rank eviction is not a retirement exit (ripple #1, #2), rank exception in template, LESSONS.md header, README, CHANGELOG (diff-bug #17, ripple #3), split-line rank-drop display (#10), LESSONS.md provenance fixes (#13), stale harness comment (#19), "(M320 review)" test comments removed (#20), DESIGN.md:1023 wording (ripple #6). Follow-up row "Match lesson citations after use marks" added.
 - 2026-10-24: T9 done (minor amendment for return 2: task added, Coverage AC3 and AC4 cite T9) — review hygiene: the `used` mark counts toward 450 bytes and a lesson it pushes over is shortened; eviction names removed lessons in one archive-summary line, removes none when too few can go, and in guest mode quotes each removed lesson in the close block. Plan writes `lessons used:` in each milestone file. Triage shows a rank-dropped split line under its split. Rulebook: rank eviction is not a retirement exit. Rank exception added to template, LESSONS.md header, README, CHANGELOG; DESIGN.md:1023 says limit check; LESSONS.md mod-lesson provenance corrected (M191 to its `{ value }` lesson, M195 to the mod-checks lesson; the M195 session clause stays in the 2026-10-03 lesson as a merge, not a split); harness comment and test-comment citations fixed; D-219 written. Guards updated and extended; rulebook-mass baseline re-seeded to 845 lines / 83,349 bytes. Verify 5/5 green, `skills/tests` green.
+- 2026-10-24: claim audit: 52 claims read, 3 corrected — cairn/DECISIONS.md, CHANGELOG.md (return-2 diff): D-219's item (1) wrongly said D-051's Decision is narrowed and its heading misnamed the narrowed keep clauses, corrected by D-220; the CHANGELOG entry now states the too-few-removable case and the guest quote.
 
 ## Decisions
 

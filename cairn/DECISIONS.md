@@ -7957,3 +7957,20 @@ log" for its figures. The work log holds them, and the Goal does not.
 **Consequences:** D-218's decision stands as corrected here. The
 rulebook says rank eviction is not a retirement exit, and review hygiene
 quotes evicted lessons in guest mode.
+
+### D-220 (2026-10-24): D-219's item (1) and its heading's narrowing list are corrected — D-051's Decision is not narrowed; D-169's pin keep and pruning last resort and D-178 (5)'s keep are — supersedes those clauses of D-219; D-219's other items stand (M320 claim audit)
+
+**Context:** M320's claim audit of its second review return found two
+clauses of D-219 wrong. D-219 is history, so they are corrected here.
+
+**Decision:** (1) D-051's Decision says a lesson leaves on either of two
+criteria, and it does not say "only". D-051 kept D-015's prune as the last
+resort, and D-218 already supersedes that prune. So D-218 does not narrow
+D-051's Decision. D-051's criteria, with D-055's maturation, stay the
+retirement exits, and rank eviction is not one of them. (2) D-219's
+heading lists "D-169's and D-178's pin and live-milestone keep". D-169 has
+a pin keep and no live-milestone keep. The narrowed clauses are D-169's
+pin keep, D-169's pruning last resort, and D-178 (5)'s pin and
+live-milestone keep, as D-219's item (2) states.
+
+**Consequences:** None beyond D-219's.
