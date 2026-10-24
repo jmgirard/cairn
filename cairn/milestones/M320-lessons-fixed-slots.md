@@ -242,4 +242,15 @@ Pass 2 (2026-10-24), branch head fdd66913, after return 1 (T8). Copilot state qu
 - ripple #5: stale mutation-harness comment — fix now (same as diff-bug #19)
 - ripple #6: DESIGN.md:1023 names the "two-file cap check" — fix now (limit check)
 - ripple #7: README.md:793 "capped and pruned" — reject, false (rank eviction is pruning; the line stays accurate)
+- Pass-2 fix-now items above are fixed in cf9442a2 and bd621095 (return 2, T9).
+
+Pass 3 (2026-10-24), branch head bd621095, after return 2. Copilot state query read `none`; one request (exit 0), still `none`, may not be recorded by GitHub; no second request.
+
+- AC1 recheck: the 25-lesson, 450-byte limit at all four sites; the cap grep hits only `150-line` text, the rulebook-mass figure "845 lines" (matched by `45 lines`), the backstop docstring, and an `assertNotIn` guard; none sets a cap on `LESSONS.md`. Pass.
+- AC2 recheck: rank definition present once; `git grep -n stalest -- skills cairn/LESSONS.md` exits 1. Pass.
+- AC3 recheck: milestone-plan/SKILL.md:370-372 writes `lessons used:` (or `lessons used: none`) in each milestone file; milestone-review/SKILL.md:909-913 marks `used M<NNN>`, replacing the earlier mark and adding no other text. Pass.
+- AC4 recheck: milestone-review/SKILL.md:962-973 removes lowest-ranked unpinned, unquoted lessons until 25 remain in the hygiene pass (its one docs-only commit), names them in one archive-summary line, removes none and captures nothing with the skipped lesson named when too few can go, fences `/cairn-triage lessons`; :916-918 sends an over-450-byte extension to its own lesson. Pass.
+- AC5 recheck: `split` row, length rule (pinned and live lessons covered), rank rule each present; `git grep -n "oldest lesson" -- skills` exits 1. Pass.
+- AC6 recheck: 20 lessons, longest 437 bytes, pinned string present once. Pass.
+- AC7 recheck: CHANGELOG entry as corrected at bd621095; `scripts/tests` OK (966), `hooks/tests` OK (210), both validates exit 0 with no `version` warning, `claude plugin test` exit 0 (2466), `skills/tests` OK (446, 21 skipped), `cairn_validate` all checks passed. Pass.
 - Consistency gate: `cairn_validate.py` all checks passed; no DESIGN.md principle changed, so no `cairn_impact` run; profile gate: verify green on the review head, marketplace validate prints no `version` warning, the CHANGELOG entry names no milestone number.
