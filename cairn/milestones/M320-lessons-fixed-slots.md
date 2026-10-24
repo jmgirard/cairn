@@ -107,12 +107,12 @@ triage run.
       126-141), drop "prune-the-stalest is the last resort" and name rank
       eviction at capture and in the triage pass. Re-seed the rulebook-mass
       baseline in its three places (LESSONS M149).
-- [ ] T2: `skills/milestone-plan/SKILL.md` harvest step: the
+- [x] T2: `skills/milestone-plan/SKILL.md` harvest step: the
       `lessons used:` work-log line. `skills/milestone-review/SKILL.md`
       post-merge hygiene (lines 903-953): `used` marks, extension past 450
       bytes becomes its own lesson, one-in-one-out at 25 with the
       none-removable stop, and remove the "pruning the stalest lines"
-      sentence.
+      sentence. Also the `/milestone` audit's by-hand budget check.
 - [ ] T3: `skills/cairn-triage/SKILL.md` lessons pass (lines 108-253):
       `split` disposition and its gate display; compress-or-split for every
       lesson over 450 bytes, pins kept by surviving string; the `rank` drop
@@ -162,6 +162,7 @@ triage run.
 - 2026-10-24: implement started on branch m320-lessons-fixed-slots; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
 - 2026-10-24: T1 done — rulebook Weight caps state the 25-lesson and 450-byte limits and the rank, the remedy bullet and "Retiring a lesson" name rank eviction, use marks, and the `rank` exit (cites D-218, written at T5); rulebook-mass baseline re-seeded to 844 lines / 83,145 bytes in its three places; verify green (5/5).
 - 2026-10-24: simple-english lint hook flags 535 pre-existing hits in tracking-rules.md and 199 in skills/milestone/SKILL.md; only this milestone's added lines were made free of semicolons and em-dashes, the rest left to the files' existing style.
+- 2026-10-24: T2 done — plan harvest names the `lessons used:` line and step 4 writes it; review hygiene adds `used M<NNN>` marks (newest replaces older), sends an over-450-byte extension to its own lesson, and evicts by rank to 25 with the none-removable stop, replacing the stalest-prune sentence; minor amendment: T2 also updates the `/milestone` audit's by-hand LESSONS check (`skills/milestone/SKILL.md:83`), found by grep.
 
 ## Decisions
 

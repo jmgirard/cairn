@@ -894,8 +894,9 @@ re-enters here, at the step the record shows is next:
 
    Then: ROADMAP row → `done` + archive path;
    archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
-   weight caps, the byte budgets by hand (`wc -c cairn/ROADMAP.md
-   cairn/LESSONS.md` — `cairn_validate` does not measure them), and each of
+   weight caps, the ROADMAP byte budget and the LESSONS limits by hand
+   (`wc -c cairn/ROADMAP.md`, the lesson count, and each lesson's bytes —
+   `cairn_validate` does not measure them), and each of
    the repo's doctrine modules by hand against the budget its own header
    states (`wc -l -c`; the maturation exit's rule).
    Where the repo ships hand-run prose-guard suites (this plugin's
@@ -905,6 +906,14 @@ re-enters here, at the step the record shows is next:
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip.
+   First mark use: add `used M<NNN>` to the parenthesized provenance of each
+   lesson that the milestone's `lessons used:` work-log line names, and of
+   each lesson whose trap the milestone met. The mark replaces that
+   lesson's earlier `used` mark, if it has one, and the use adds no other
+   text to the lesson. A lesson is at most 450 bytes, newline excluded
+   (tracking-rules "Weight caps"). An extension that would take a lesson
+   past 450 bytes is not written into it. The new content becomes a lesson
+   of its own instead.
    **Never extend a finding-absorbing candidate row:** when this pass would
    extend a candidate row that belongs to a finding-absorbing group
    (`skills/shared/records-hygiene.md` §7: a row and the rows that name its
@@ -947,10 +956,17 @@ re-enters here, at the step the record shows is next:
    **Scope this to what the milestone shipped — never re-sweep every lesson.**
    Delete the retired line and name what was graduated in the archive summary;
    nothing else records it.
-   Retirement runs before the cap bites, and only if it cannot free the budget
-   is the 50-line / 20,000-byte cap met by pruning the stalest lines in this same commit.
-   When the cap bites, the close block also fences `/cairn-triage lessons`, the
-   user's whole-file pass (D-169).
+   Retirement runs before the limit bites. Then, when a captured lesson
+   would leave more than 25 lessons, remove the lowest-ranked lessons
+   (tracking-rules "Weight caps") until 25 remain, in this same commit, and
+   name each in the archive summary. Remove no lesson that a pin file holds
+   or a live milestone quotes. A pin file is a test file that asserts a
+   string present in the live `cairn/LESSONS.md`. A live milestone is a
+   `planned`, `in-progress`, `blocked`, or `review` milestone whose file
+   quotes the lesson or names it by its date and provenance. When no lesson
+   can be removed, capture nothing, and name the skipped lesson in the close
+   block. When the limit bites, the close block also fences
+   `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, any Known issues entry, and any
    candidate graduation or unparked row verbatim

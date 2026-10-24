@@ -80,8 +80,9 @@ FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
 tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
-Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md cairn/LESSONS.md`
-against the tracking-rules Weight caps budgets, and `wc -l -c` on each of
+Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md` against its
+tracking-rules Weight caps budget, the lesson count and each lesson's bytes
+in `cairn/LESSONS.md` against its limits there, and `wc -l -c` on each of
 the repo's doctrine modules against the budget its own header states (the
 maturation exit's rule) — since `cairn_validate` does not measure them; an
 overrun takes the same remedies as the line caps, surfaced as a finding for
