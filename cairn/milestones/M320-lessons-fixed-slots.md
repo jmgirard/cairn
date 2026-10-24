@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -175,6 +175,7 @@ triage run.
 - 2026-10-24: review opened PR #333 at review start (Copilot round on); `gh pr edit --add-reviewer @copilot` exited 0 but the state query still read `none`, so the request may not be recorded by GitHub; no second request.
 - 2026-10-24: review return 1: AC2 and AC5(d) fail as written — `git grep -n "stalest" -- skills cairn/LESSONS.md` hits `skills/tests/test_lessons_loop.py:125` and `skills/tests/test_triage_lessons.py:423`, and `git grep -n "oldest lesson" -- skills` hits `skills/tests/test_triage_lessons.py:313`, all `assertNotIn` literals; spell each retired token in its guard by concatenation. Also restore the paragraph break between the rank rule and the `promote` sentence in `skills/cairn-triage/SKILL.md` (~line 220).
 - 2026-10-24: T8 done (minor amendment for return 1: task added, Coverage AC2 and AC5 cite T8) — the three guards spell "stal" "est" and "oldest " "lesson" by concatenation, the paragraph break before the `promote` sentence restored; both criterion greps now return no hit. Verify 5/5 green, `skills/tests` green. Handing back to review.
+- 2026-10-24: review return 2: load-bearing defects from pass 2's fan-out (Review section): guest-mode rank eviction loses lessons with no copy (diff-bug #1, #18); review eviction's partial-removal case undefined (#4) and its archive-summary naming can pass 25 lines (#2); a `used` mark can push a lesson past 450 bytes (#5); `lessons used:` reaches only the first milestone file (#15). Same return also carries the pass's other fix-now items: one batched D-219 correcting D-218 (diff-bug #8, #9, #14; blame-history #1, #2, #7), rulebook sentence that rank eviction is not a retirement exit (ripple #1, #2), rank exception in template, LESSONS.md header, README, CHANGELOG (diff-bug #17, ripple #3), split-line rank-drop display (#10), LESSONS.md provenance fixes (#13), stale harness comment (#19), "(M320 review)" test comments removed (#20), DESIGN.md:1023 wording (ripple #6). Follow-up row "Match lesson citations after use marks" added.
 
 ## Decisions
 
@@ -196,4 +197,45 @@ Pass 2 (2026-10-24), branch head fdd66913, after return 1 (T8). Copilot state qu
 - AC5 evidence: `split` row, length rule ("A long lesson is never kept as it is"), and rank rule ("propose `drop` with the `rank` exit") each found once in cairn-triage/SKILL.md; `git grep -n "oldest lesson" -- skills` exits 1 with no hit. Pass.
 - AC1, AC3, AC4, AC6 recheck on fdd66913: the diff since b0f4c65e touches only the milestone file, two test guards, and one paragraph break in cairn-triage/SKILL.md; the AC1 grep hits are unchanged (backstop docstring, an `assertNotIn` guard); LESSONS.md holds 20 lessons, longest 437 bytes.
 - AC7 evidence: CHANGELOG.md:7-22 entry as above; on fdd66913 `scripts/tests` OK (966), `hooks/tests` OK (210), both `claude plugin validate` exit 0, `claude plugin test` exit 0 (2466 pass), hand-run `skills/tests` OK (446, 21 skipped). Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: guest mode loses rank-evicted lessons for good (untracked LESSONS.md, no git copy; D-218's "git holds them") — fix now (review names each evicted lesson's full text in the close block in guest mode; D-219 records the guest exception)
+- diff-bug #2: naming each evicted lesson can blow the 25-line archive summary when an adopter evicts many — fix now (one line names them all)
+- diff-bug #3: review gives no step for pre-existing long lessons or a file over 25 with no capture — reject, planned change (triage owns both; CHANGELOG states it)
+- diff-bug #4: review eviction leaves undefined the case where some lessons can go but more than 25 remain — fix now
+- diff-bug #5: a `used` mark can take a 440-450-byte lesson past 450 — fix now (the mark counts toward the limit, and the pass shortens such a lesson)
+- diff-bug #6: rank rule counts ids after a comma in "corrected M159, M211" — reject, false (provenance lists a mark's ids with `/`; that list sits outside the provenance)
+- diff-bug #7: marking "each lesson whose trap the milestone met" re-sweeps every lesson, against D-051 rejection (4) — reject, false (it records what the milestone hit, scoped to its own work; it judges no lesson for retirement)
+- diff-bug #8: D-218's Door says the user decides each drop at its gate, but review eviction has no gate, and rank is age for an unused lesson — fix now (D-219)
+- diff-bug #9: D-218 leaves D-169's pin-keep and last-resort clauses and D-178 (5) unnamed — fix now (D-219)
+- diff-bug #10: gate display undefined for a split line the rank rule drops — fix now (one sentence)
+- diff-bug #11: an over-long merge survivor must be `keep` yet the length rule demands compress or split — reject, false (a merge whose survivor would pass 450 bytes is not proposed, so no such survivor arises)
+- diff-bug #12: triage step 4 loops when more than 25 lessons remain and all are kept for pins or live milestones — reject, edge (input: over 25 lessons pinned or quoted by live milestones, outside documented and common use; effect: the pass cannot apply and returns to its chip)
+- diff-bug #13: split provenance errors: M191 on the wrong mod line, `tool.call` lacks M195, M195's clause moved across lessons — fix now (provenance corrected; the M195 clause recorded as a merge into the live-look lesson)
+- diff-bug #14: D-218 Context says the Goal holds figures — fix now (D-219)
+- diff-bug #15: `lessons used:` goes only in the first milestone file, so later milestones of a plan mark no use — fix now (each milestone file the plan writes)
+- diff-bug #16: a live milestone's date-and-provenance citation can stop matching after later `used` marks or splits — follow-up, candidate row "Match lesson citations after use marks"
+- diff-bug #17: template, LESSONS.md header, README state rank without the `trimmed`/`corrected` exception — fix now
+- diff-bug #18: review eviction says "in this same commit", but guest mode makes none — fix now (with #1)
+- diff-bug #19: stale mutation-harness comment names "five drop exits" and "the near-cap rule" — fix now
+- diff-bug #20: test comments cite "(M320 review)", which the test-comments rule does not allow — fix now (citation removed)
+- blame-history #1: review eviction contradicts D-051's Decision (two exits), unnamed by D-218; tracking-rules says "three exits" at review — fix now (D-219 names it; rulebook says rank eviction is not a retirement exit)
+- blame-history #2: pin protection narrowed (D-169, D-178 (5)) without being named — fix now (D-219; same as diff-bug #9)
+- blame-history #3: the M157 repo-wide-count lesson, whose trap recurred, was rank-evicted — reject, planned change (T7 applies the rank rule; D-218's falsifier watches recurrence; the merge question lists it)
+- blame-history #4: the M180 stale-bytecode piece was rank-evicted with no other home — reject, planned change (as #3)
+- blame-history #5: the M170 failed-merge-marker lesson was rank-evicted — reject, planned change (as #3)
+- blame-history #6: the M163 merge_guard quoted-text lesson was rank-evicted — reject, planned change (as #3)
+- blame-history #7: D-218 calls rank "newest use, not the age", but for an unused lesson it is age — fix now (D-219)
+- blame-history #8: D-108's door is claimed on a trigger that is the cap working as designed — reject, false (D-169 and D-177 passed the door on the same trigger: the shipped capture step could not add a lesson)
+- blame-history #9: M171, M172, M178, M153, M158, M156, and M133's `&&` clause dropped with no owner — reject, planned change (as #3)
+- blame-history #10: the T7 work-log line says "15 by rank" but lists 20 drops — reject, false (15 kept by rank plus 5 for this milestone; 20 dropped; the diff-bug lens confirmed it)
+- prior-review #1: pinned and live lessons can now be compressed or split — reject, planned change (AC5(b) names pinned lessons; the pinned string stays whole)
+- prior-review #2: M320's work log names the lessons it drops by date and provenance, which the live-milestone rule would keep — reject, false (the drops are applied; the rule governs proposals for lessons still in the file)
+- prior-review #3: rank eviction removed lessons earlier reviews captured (M185, M178, M172, M153) — reject, planned change (as blame-history #3)
+- ripple #1: tracking-rules "At review hygiene, three exits" no longer lists every way a lesson leaves at review — fix now (with blame-history #1)
+- ripple #2: "retirement removes the redundant, never the merely disputed" disagrees with rank eviction — fix now (with blame-history #1)
+- ripple #3: rank wording "newest milestone" in LESSONS.md, the template, and CHANGELOG lacks the exception — fix now (with diff-bug #17)
+- ripple #4: tracking-rules keeps `LESSONS.md` < 50 lines beside the 25-lesson limit — reject, planned change (the validator backstop the Scope Out keeps)
+- ripple #5: stale mutation-harness comment — fix now (same as diff-bug #19)
+- ripple #6: DESIGN.md:1023 names the "two-file cap check" — fix now (limit check)
+- ripple #7: README.md:793 "capped and pruned" — reject, false (rank eviction is pruning; the line stays accurate)
 - Consistency gate: `cairn_validate.py` all checks passed; no DESIGN.md principle changed, so no `cairn_impact` run; profile gate: verify green on the review head, marketplace validate prints no `version` warning, the CHANGELOG entry names no milestone number.
