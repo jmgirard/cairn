@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopting repo's review hygiene and `/cairn-triage lessons` follow the changed rules
-- **Branch/PR:** —
+- **Branch/PR:** m320-lessons-fixed-slots
 
 ## Goal
 
@@ -100,7 +100,7 @@ triage run.
 
 ## Tasks
 
-- [ ] T1: `skills/shared/tracking-rules.md`: in Weight caps (lines 63-67),
+- [x] T1: `skills/shared/tracking-rules.md`: in Weight caps (lines 63-67),
       state the 25-lesson and 450-byte limits in place of the `LESSONS.md`
       20,000-byte budget, keep `LESSONS.md < 50 lines` as the validator
       backstop, and define the rank (AC2). In "Retiring a lesson" (lines
@@ -159,6 +159,9 @@ triage run.
 - 2026-10-24: agent chose to keep the validator's 50-line cap unchanged as a backstop and add no count check, matching D-119's judgment-checked budgets and avoiding new machinery (D-057).
 - 2026-10-24: criteria audit (full mode, Opus): 9 findings, all fixed — AC1 grep widened to every old cap figure in `skills` and `cairn/LESSONS.md`; AC2 rank stated over all provenance ids with `trimmed`/`corrected` excepted and a file-order last tie-break, count tie-break dropped; AC2 grep adds `cairn/LESSONS.md`; superseding D-entry added as T5 rather than a criterion; AC3 `used` mark replaces the earlier one so marks cannot grow a lesson past 450 bytes; AC4 handles a file over 25 and the none-removable case; AC5(b) includes pinned lessons with the pin kept by surviving string; AC6 restated as the file's state at branch head with the pinned string; AC7 names the full `verify`. Noted: a planned milestone's `lessons used:` line keeps those lessons in triage under the live-milestone rule.
 - 2026-10-24: lessons used: 2026-07-16 (M56+M65, …) on running each gating suite and the hand-run `skills/tests` after skill edits; 2026-08-17 (M149) on re-seeding the rulebook-mass baseline in three places; 2026-07-24 (M112) on sweeping README, templates, and CHANGELOG for old wording; 2026-08-17 (M148) on prose-guard start markers; 2026-08-30 (M165) on checking pin tests before a LESSONS prune.
+- 2026-10-24: implement started on branch m320-lessons-fixed-slots; untracked `cairn-probe.log` and `tsconfig.json` left unstaged (not this milestone's).
+- 2026-10-24: T1 done — rulebook Weight caps state the 25-lesson and 450-byte limits and the rank, the remedy bullet and "Retiring a lesson" name rank eviction, use marks, and the `rank` exit (cites D-218, written at T5); rulebook-mass baseline re-seeded to 844 lines / 83,145 bytes in its three places; verify green (5/5).
+- 2026-10-24: simple-english lint hook flags 535 pre-existing hits in tracking-rules.md and 199 in skills/milestone/SKILL.md; only this milestone's added lines were made free of semicolons and em-dashes, the rest left to the files' existing style.
 
 ## Decisions
 
