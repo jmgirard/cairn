@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,7 +41,7 @@ triage run.
 
 ## Acceptance criteria
 
-- [ ] AC1: `skills/shared/tracking-rules.md`'s Weight caps, `skills/shared/templates/lessons.md`,
+- [x] AC1: `skills/shared/tracking-rules.md`'s Weight caps, `skills/shared/templates/lessons.md`,
       the `cairn/LESSONS.md` header, and the `/cairn-init` tree comment in
       `skills/cairn-init/SKILL.md` each state that `LESSONS.md` holds at most
       25 lessons, each one line of at most 450 bytes; and
@@ -52,14 +52,14 @@ triage run.
       ids marked `trimmed` or `corrected` excepted, a tie going to the later
       date and then to the line later in the file; and
       `git grep -n "stalest" -- skills cairn/LESSONS.md` returns no hit.
-- [ ] AC3: `/milestone-plan`'s lesson harvest writes one work-log line
+- [x] AC3: `/milestone-plan`'s lesson harvest writes one work-log line
       `lessons used: <lessons>` naming by date and provenance each lesson
       that shaped the plan, or `lessons used: none`; and `/milestone-review`
       post-merge hygiene adds `used M<NNN>` to the provenance of each lesson
       that line names and of each lesson whose trap the milestone met,
       replacing that lesson's earlier `used` mark and adding no other text
       for the use.
-- [ ] AC4: `/milestone-review` post-merge hygiene, when a captured lesson
+- [x] AC4: `/milestone-review` post-merge hygiene, when a captured lesson
       would leave more than 25 lessons, removes in the same commit the
       lowest-ranked lessons that no pin file holds and no live milestone
       quotes until 25 remain and names each in the archive summary, or, when
@@ -77,7 +77,7 @@ triage run.
       lowest-ranked lessons not kept for a pin, a live milestone, or a merge
       survivor, until 20 remain or every remaining lesson is so kept; and (d)
       `git grep -n "oldest lesson" -- skills` returns no hit.
-- [ ] AC6: At the branch head, `cairn/LESSONS.md` holds at most 20 lessons
+- [x] AC6: At the branch head, `cairn/LESSONS.md` holds at most 20 lessons
       (the lines `grep -E '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'` lists), each at
       most 450 bytes, and one of them contains
       `"green" is only as wide as what you ran`.
@@ -171,7 +171,19 @@ triage run.
 - 2026-10-24: T7 compressed to ≤450 bytes — 2026-08-04 (M133, now extended M173/M283), 2026-08-17 (M149), 2026-08-17 (M148), 2026-08-22 (M152), 2026-10-17 (M272, now extended M293/M294), 2026-10-18 (M274, now extended M303), 2026-10-18 (M277). Unchanged — 2026-07-24 (M112), 2026-08-30 (M165), 2026-09-02 (M169), 2026-10-18 (M275), 2026-10-18 (M278).
 - 2026-10-24: T7 `rank` drops (lowest rank first, 40 lessons after splits, 5 kept for this milestone, 15 by rank down to the M202 cut) — 2026-07-20 (M100) rank M100; 2026-07-25 (M113) bounding pass and 2026-07-25 (M113, trimmed M122) hook normalization, M113; 2026-07-26 (M115, corrected M135) dangling ids and 2026-07-26 (M115) unmerged-branch citation, M115; 2026-07-20 (M99 …) fixed-point figure, M118; 2026-07-31 (M127) whole-file deletion; split piece sweep-probe, M140; 2026-08-22 (M153) Review findings; 2026-08-22 (M156) wrapped token; 2026-08-23 (M158) record-type preview; 2026-08-29 (M163 …) merge_guard quoted text; split piece copied-tree probe, M164; 2026-09-02 (M170) failed merge marker; 2026-09-02 (M171) list pins; 2026-09-02 (M172) re-entry routes; split piece stale bytecode, M180; 2026-09-05 (M178, extended M181) hand-rolled reader; 2026-09-10 (M185) second-mode sweep; 2026-08-23 (M157, extended M192) repo-wide count. Result: 20 lessons, longest 437 bytes, 8,151 bytes total; the pinned "green" string is in the first lesson; `skills/tests` and validate green.
 - 2026-10-24: claim audit: 57 claims read, 5 corrected — skills/shared/templates/lessons.md, cairn/LESSONS.md header, README.md, CHANGELOG.md, skills/shared/tracking-rules.md (also milestone-review ordering): "last use is oldest" and "least recently used" restated as the lowest rank, the CHANGELOG cut sentence split into review-capture and triage halves, the rulebook names a per-line byte command and points the remedy at "Retiring a lesson", and review says to mark use even when no lesson is learned; rulebook-mass baseline re-seeded to 844 lines / 83,211 bytes in its three places. Verify 5/5 green, `skills/tests` green, validate green.
+- 2026-10-24: review opened PR #333 at review start (Copilot round on); `gh pr edit --add-reviewer @copilot` exited 0 but the state query still read `none`, so the request may not be recorded by GitHub; no second request.
+- 2026-10-24: review return 1: AC2 and AC5(d) fail as written — `git grep -n "stalest" -- skills cairn/LESSONS.md` hits `skills/tests/test_lessons_loop.py:125` and `skills/tests/test_triage_lessons.py:423`, and `git grep -n "oldest lesson" -- skills` hits `skills/tests/test_triage_lessons.py:313`, all `assertNotIn` literals; spell each retired token in its guard by concatenation. Also restore the paragraph break between the rank rule and the `promote` sentence in `skills/cairn-triage/SKILL.md` (~line 220).
 
 ## Decisions
 
 ## Review
+
+Pass 1 (2026-10-24), branch head b0f4c65e; PR #333 opened at review start (Copilot round on; request returned 0 but the state query still read `none`, reported, no second request).
+
+- AC1 evidence: `grep -n 'at most 25'` finds the 25-lesson, 450-byte limit at tracking-rules.md:65-66, templates/lessons.md:12-13, cairn/LESSONS.md:9, cairn-init/SKILL.md:171. `git grep -nE '20,000|18,000|50-line|45 lines' -- skills cairn/LESSONS.md` hits only `150-line` milestone-cap text, a `20,000` inside an `assertNotIn` guard, and `test_lessons_loop.py:5`'s docstring naming the retained `< 50 lines` validator backstop; none sets a cap on `LESSONS.md`. Pass.
+- AC2 evidence: rank defined at tracking-rules.md:68-70 as written. `git grep -n "stalest" -- skills cairn/LESSONS.md` returns two hits, `test_lessons_loop.py:125` and `test_triage_lessons.py:423`, both `assertNotIn("stalest", …)` guards. The criterion as written fails. Fail.
+- AC3 evidence: plan harvest at milestone-plan/SKILL.md:370-374 writes `lessons used: <lessons>` or `lessons used: none`; review hygiene at milestone-review/SKILL.md:909-913 adds `used M<NNN>` for each named lesson and each met trap, replacing the earlier `used` mark and adding no other text. Pass.
+- AC4 evidence: milestone-review/SKILL.md:959-968 removes lowest-ranked unpinned, unquoted lessons until 25 remain, names each in the archive summary, and captures nothing with the skipped lesson named when none can go (`/cairn-triage lessons` fenced at :968-969); :914-916 sends an over-450-byte extension to its own lesson. Pass.
+- AC5 evidence: (a) `split` row at cairn-triage/SKILL.md:163 with date and own provenance ids; (b) length rule at :201-212 covers pinned and live lessons, the pinned string kept whole, no keep-as-is; (c) rank rule at :213-219 drops by `rank` to 20, stopping when every remaining lesson is kept. (d) `git grep -n "oldest lesson" -- skills` returns `test_triage_lessons.py:313`, an `assertNotIn` guard. (d) fails as written. Fail.
+- AC6 evidence: `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}' cairn/LESSONS.md` → 20; longest lesson 437 bytes (`LC_ALL=C awk`); `"green" is only as wide as what you ran` found once. Pass.
+- AC7: CHANGELOG.md:7-22 carries the one entry naming the limits, rank, one-in-one-out capture, and the triage `split` and `rank` proposals; verify to be re-run on the head that review approves.
