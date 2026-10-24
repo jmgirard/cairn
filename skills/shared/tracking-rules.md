@@ -62,9 +62,13 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
 
 - The cairn `## Project tracking` section of `CLAUDE.md` < 30 lines (the repo's dev doctrine outside it is not cairn's
   to cap) · `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines · archived summary ≤ 25 lines.
-  `ROADMAP.md` and `LESSONS.md` also keep byte budgets — `ROADMAP.md` < 24,000 bytes, `LESSONS.md` < 20,000 bytes
-  (line cap × 400) — judgment-checked at hygiene passes (`wc -c`), not covered by `cairn_validate`.
-  `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
+  `ROADMAP.md` also keeps a byte budget, < 24,000 bytes (line cap × 400). `LESSONS.md` holds at most 25 lessons,
+  each one line of at most 450 bytes, newline excluded. Its line cap is the validator's backstop. Both are
+  judgment-checked at hygiene passes (`wc -c`, and for lessons `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'` and each
+  line's bytes from `LC_ALL=C awk '{print length($0)}'`), not covered by `cairn_validate`. A lesson's **rank** is the highest milestone number among the ids in its parenthesized
+  provenance, except an id that follows `trimmed` or `corrected` in the same comma-separated part. A tie goes to the
+  later date, then to the line later in the file. At the limit the lowest-ranked lesson leaves first ("Retiring a
+  lesson"). `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
 - Doctrine modules keep the line and byte budgets their own headers state (the maturation exit's rule, "Retiring a
   lesson" below), judgment-checked at hygiene passes (`wc -l -c`, not covered by `cairn_validate`); over either figure
   the remedy is compressing or retiring the module's content — never "let it grow".
@@ -80,8 +84,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   heaviest plan-owned section (named by the `cairn_validate` breakdown, which lists only trimmable sections, so the
   remedy can never aim at history) in one rewrite — never a nibble-and-recount loop — cross-referencing durable records
   rather than restating them, splitting or moving material to `references/` only when no one section can carry the cut;
-  over-budget `ROADMAP.md` (bytes) → compress the widest rows first, then the same graduate-or-prune remedy; over-cap or over-budget `LESSONS.md` → retire
-  or prune entries (the remedy its own header states); over-cap cairn CLAUDE.md section → trim back to the template.
+  over-budget `ROADMAP.md` (bytes) → compress the widest rows first, then the same graduate-or-prune remedy; over-limit `LESSONS.md` → retire, compress,
+  or split lessons, then evict by rank ("Retiring a lesson"); over-cap cairn CLAUDE.md section → trim back to the template.
 - Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 3 most recent terminal (`done`/`dropped`)
   rows combined; prune older ones as they accumulate.
 - The `Last hygiene check` stamp is one short line naming what changed since the last check, **replaced each pass, never
@@ -133,11 +137,15 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   remainder; a retired lesson leaves no line behind — the archive summary names what it graduated (the stamp and
   commit message, for `/cairn-triage lessons`). At review hygiene, retirement removes the redundant, never the merely
   disputed (a disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to
-  what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`;
-  prune-the-stalest is the last resort. That pass adds three drop exits, each decided at its gate: `refuted`
-  and `obsolete`, each with evidence read in the pass, and `planner test`, for a line a planner does not need. It also
-  corrects a false lesson in place, and near the caps it proposes shortening each long lesson or keeping it with a
-  stated reason (D-177). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`
+  what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`. A lesson
+  earns rank by use: `/milestone-plan` names the lessons that shaped its plan in a `lessons used:` work-log line, and
+  review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. At the 25-lesson
+  limit review capture is one-in-one-out: it evicts the lowest-ranked lesson that no pin file holds and no live
+  milestone quotes. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson
+  by rank, not because it is redundant. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
+  with evidence read in the pass, `planner test`, for a line a planner does not need, and `rank`, which evicts the
+  lowest-ranked lessons down to 20. It also corrects a false lesson in place and shortens or splits each lesson over
+  450 bytes (D-177, D-218). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`
   (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).

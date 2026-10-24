@@ -7875,3 +7875,102 @@ events in one UTC day allows no further clear-grounds closes that day
 unless its PROFILE.md sets `off`. The rest of D-216 stands.
 
 **Consequences:** None beyond D-216's.
+
+### D-218 (2026-10-24): `LESSONS.md` holds at most 25 lessons of at most 450 bytes, ranked by newest use, and a full file evicts the lowest-ranked lesson — supersedes D-051's rejection (3) and its prune-when-full last resort, D-119's `LESSONS.md` byte budget, D-169's rejection of pruning in the pass, and D-177's near-cap rule; narrows D-115's kept clause that item lines are never length-policed, for `LESSONS.md`; passes D-108's door on its retained trigger (M320)
+
+**Context:** The user ran `/cairn-triage lessons` several times, and each
+run removed one or two lessons. The file stayed at its byte budget, so
+review hygiene still had no room to capture a lesson. The pass judged each
+lesson alone and asked what a planner loses without it, and nearly every
+lesson passed that test. A long lesson could stay as it was with a reason
+for each clause. Nothing made lessons compete for room. Lessons also grew:
+review hygiene extended an old line with each related gotcha, so a few
+lines held a large share of the file. M320's Goal and work log hold the
+figures.
+
+**Decision:** `LESSONS.md` holds at most 25 lessons, each one line of at
+most 450 bytes. These limits replace its byte budget, and its line cap
+stays as the validator's backstop. A lesson's rank is the highest
+milestone number among the ids in its provenance, except an id marked
+`trimmed` or `corrected`. A tie goes to the later date, then to the later
+line. A lesson earns rank by use: a plan names the lessons that shaped it
+in a `lessons used:` work-log line, and review hygiene marks each of
+those, and each lesson whose trap the milestone met, `used M<NNN>`. The
+newest `used` mark replaces the older one. At 25 lessons, review capture
+is one-in-one-out: it evicts the lowest-ranked lesson that no pin file
+holds and no live milestone quotes, or it captures nothing when none can
+go. Text that would take a lesson past 450 bytes becomes a lesson of its
+own. `/cairn-triage lessons` gains `split`, gives every lesson over 450
+bytes `compress` or `split` with no keep-as-is option, and proposes `drop`
+with a `rank` exit down to 20 lessons. A pinned string or a quoted text
+survives whole in one resulting line. The user chose rank by newest use
+and the per-lesson limit at M320's question set.
+
+**Rejected:** Ranking by repeats alone, because a lesson that prevents its
+trap never repeats and would leave first. Agent judgment with no rank,
+because that is the pass that freed one or two lessons per run. A count
+limit with a byte budget and no per-lesson limit, because extended lines
+then keep growing inside the budget. A validator check on the count or
+the length, because D-119 kept these budgets judgment-checked and D-057
+closed new size machinery. An archive file for evicted lessons, because
+D-051's rejection of a second record of lessons stands and git holds them.
+
+**Door:** This is a rule about how records are audited, so it passes
+D-108's door on its retained trigger. The shipped pass left a file at its
+budget with no room for review capture, a defect in what the plugin's
+skills do for their users. D-051's rejection (3) objected to automated
+eviction by age. Rank here is the newest use, not the age, and the user
+decides each triage drop at its gate.
+
+**Consequences:** An adopting repo over the limits is cut at its next
+review capture or triage run. Falsified by a lesson evicted by rank whose
+trap then recurs within 20 milestones, or by a split lesson whose pieces
+stop making sense apart.
+
+### D-219 (2026-10-24): Five clauses of D-218 are corrected in one batched entry — what it narrows, its rank rationale, its Door, its git-history claim, and its Context cite — supersedes those clauses; narrows D-051's Decision and D-169's and D-178's pin and live-milestone keep; D-218's decision stands (M320 review)
+
+**Context:** M320's review found D-218's wording wrong or short in five
+places. D-218 is history, so it is corrected here, not edited (D-180
+precedent for an unmerged entry).
+
+**Decision:** (1) D-218 also narrows D-051's Decision that a lesson
+leaves only on enforcement or ownership. At review capture, a lesson also
+leaves by rank eviction when the file is full. Rank eviction is not a
+retirement exit: it replaces D-015's prune-when-full, and it removes a
+lesson by rank, not because the lesson is redundant. (2) D-218 also
+narrows D-169's "a lesson that a test file pins stays `keep`", D-169's
+"pruning the oldest lesson stays the last resort at review hygiene", and
+D-178 (5)'s keep for a pinned or live-milestone lesson. In the triage
+pass the length rule now applies to such a lesson, which keeps only its
+pinned string or quoted text whole in one line. (3) D-218's Door says
+rank is "the newest use, not the age". For a lesson no milestone has used,
+rank is its capture or last-extension milestone, which is age. The `used`
+marks make a used lesson rank high, and that is what the user chose over
+ranking by repeats at M320's question set. (4) D-218's Door says the user
+decides each triage drop at its gate. That holds for the triage pass.
+Review capture evicts with no gate, as D-015's prune did. (5) D-218's
+Rejected section says git holds evicted lessons. In guest mode
+`cairn/LESSONS.md` is untracked, so review's close block quotes each
+lesson it removes in full. D-218's Context cites "M320's Goal and work
+log" for its figures. The work log holds them, and the Goal does not.
+
+**Consequences:** D-218's decision stands as corrected here. The
+rulebook says rank eviction is not a retirement exit, and review hygiene
+quotes evicted lessons in guest mode.
+
+### D-220 (2026-10-24): D-219's item (1) and its heading's narrowing list are corrected — D-051's Decision is not narrowed; D-169's pin keep and pruning last resort and D-178 (5)'s keep are — supersedes those clauses of D-219; D-219's other items stand (M320 claim audit)
+
+**Context:** M320's claim audit of its second review return found two
+clauses of D-219 wrong. D-219 is history, so they are corrected here.
+
+**Decision:** (1) D-051's Decision says a lesson leaves on either of two
+criteria, and it does not say "only". D-051 kept D-015's prune as the last
+resort, and D-218 already supersedes that prune. So D-218 does not narrow
+D-051's Decision. D-051's criteria, with D-055's maturation, stay the
+retirement exits, and rank eviction is not one of them. (2) D-219's
+heading lists "D-169's and D-178's pin and live-milestone keep". D-169 has
+a pin keep and no live-milestone keep. The narrowed clauses are D-169's
+pin keep, D-169's pruning last resort, and D-178 (5)'s pin and
+live-milestone keep, as D-219's item (2) states.
+
+**Consequences:** None beyond D-219's.

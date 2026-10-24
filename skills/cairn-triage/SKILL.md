@@ -1,6 +1,6 @@
 ---
 name: cairn-triage
-description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record the default pass's principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, merge, or correct lessons.
+description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record the default pass's principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, merge, split, or correct lessons.
 argument-hint: "[lessons]"
 ---
 
@@ -137,9 +137,9 @@ reads behind a `refuted`, `obsolete`, or `correct` proposal run at that
 ref too. There a code path is checked with `git cat-file -e` at that ref
 in place of `ls`. A `cairn/` path is
 checked on disk, since `cairn/` is untracked at that ref. A commit that an
-`obsolete` drop names is reachable from that ref. Last,
-run `wc -l -c cairn/LESSONS.md`. A file at 45 lines or more, or 18,000
-bytes or more, is near its caps, and step 2's near-cap rule applies.
+`obsolete` drop names is reachable from that ref. Last, count the lessons
+and measure each lesson's bytes against the limits of tracking-rules
+"Weight caps": at most 25 lessons, each at most 450 bytes.
 
 **Step 1, enumerate.** A lesson item is one line of `cairn/LESSONS.md` that
 opens with `- ` and a `YYYY-MM-DD` date. List its source, `lesson`. List its
@@ -152,20 +152,23 @@ gate with an empty table, as step 1 states for empty lists.
 
 **Step 2, assess.** Before it proposes a disposition for a lesson, the pass
 checks the pins. A lesson that holds a string a pin file asserts is present
-is `keep`, its reason naming that file. A lesson takes one of six
-dispositions, and never `split`, `route`, or `retitle`:
+is `keep`, its reason naming that file, unless the length rule below
+applies to it. A lesson takes one of seven dispositions, and never `route`
+or `retitle`:
 
 | Disposition | Lesson meaning |
 |---|---|
 | `keep` | Unchanged. Its reason names a pin file, a live milestone, or a merge survivor, or else what a planner loses without the line (the planner test, below). |
 | `compress` | Shortened, or trimmed to the part no other record covers. |
+| `split` | Broken into two or more lessons, each one line of at most 450 bytes and each on one subject. Each new line keeps the original date and only the provenance ids its text came from. The table shows each new line verbatim. |
 | `merge` | Folded into a named surviving lesson on the same subject. The survivor's own proposal is `keep`, its reason `survivor of <subject>`. |
 | `correct` | Rewritten in place because the lesson is false and still holds a part a planner needs. The table shows the corrected line verbatim. Its reason quotes the evidence for the false part, as a `refuted` drop does. |
-| `drop` | Retired. The reason names one of five exits. Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about. A test that only sits nearby is not enforcement. Ownership: a `cairn/` tracking file and the section that already holds the lesson's content. The pass moves nothing into it. `refuted`: the reason quotes a file and line, or a command and its output, read in this pass, that shows the lesson's premise false. `obsolete`: the reason names the path, tool, or command the lesson is about. It quotes an `ls`, `git grep`, or `git log` result, read in this pass, that shows the repo no longer has it. Or it names the commit that removed it. `planner test`: the reason says why a planner loses nothing without the line, for example a one-off incident or general practice. |
+| `drop` | Retired. The reason names one of six exits. Enforcement: a test, by file and test name, with the assertion quoted that fails on the mistake the lesson warns about. A test that only sits nearby is not enforcement. Ownership: a `cairn/` tracking file and the section that already holds the lesson's content. The pass moves nothing into it. `refuted`: the reason quotes a file and line, or a command and its output, read in this pass, that shows the lesson's premise false. `obsolete`: the reason names the path, tool, or command the lesson is about. It quotes an `ls`, `git grep`, or `git log` result, read in this pass, that shows the repo no longer has it. Or it names the commit that removed it. `planner test`: the reason says why a planner loses nothing without the line, for example a one-off incident or general practice. `rank`: the reason names the lesson's rank, the milestone id that sets it (the rank rule, below). |
 | `promote` | A family of lessons ready to graduate into a doctrine module under `skills/shared/`. Each lesson of the family gets this proposal, naming the family. The reason states each maturation condition. The family teaches transferable craft about authoring or verifying, not a fact about this repo's tools or runtime. It was extended or consolidated at least twice. No other exit applies (D-055). A repo with no `skills/shared/` directory gets no `promote`. |
 
 A compressed, merged, or corrected lesson keeps its `- YYYY-MM-DD (M…)`
-prefix and any `corrected` or `trimmed` mark. A lesson the pass finds
+prefix and any `corrected` or `trimmed` mark. Each line of a split keeps
+the date and the marks that apply to its own text. A lesson the pass finds
 false is `correct` when a part of it that a planner needs stays true. The
 corrected line fixes the false part in place (D-045) and adds `corrected
 YYYY-MM-DD`, the pass date, to the line's parenthesized provenance. A line
@@ -179,11 +182,11 @@ is not dropped as `refuted` or `obsolete`, so a lesson merely disputed
 stays. A lesson that a `planned`, `in-progress`, `blocked`,
 or `review` milestone's file quotes, or names by its date and provenance,
 is `keep`, its reason naming the milestone. A pin or a live milestone
-makes a lesson `keep` before any other rule. If such a lesson is false or
-obsolete, steps 4 to 6 still run for the stamp, even when every proposal
-is `keep`. The stamp names the lesson and the evidence. A pinned lesson is
-neither a merge survivor nor merged away. A lesson leaves only by the five
-exits above. They replace the default pass's three drop reason classes,
+makes a lesson `keep` before any other rule but the length rule. If such a
+lesson is false or obsolete, steps 4 to 6 still run for the stamp, even
+when every proposal is `keep`. The stamp names the lesson and the
+evidence. A pinned lesson is neither a merge survivor nor merged away. A
+lesson leaves only by the six exits above. They replace the default pass's three drop reason classes,
 and its readiness class does not apply.
 
 The planner test asks one thing of each lesson: what does a planner lose
@@ -194,54 +197,68 @@ no loss, and no tracking file holds the lesson, so ownership does not
 apply. Then the pass proposes `drop` with the `planner test` exit. Its
 reason says why nothing is lost.
 
-A lesson compresses only where it restates what another record says, or
-by the near-cap rule. Below
-the near-cap figures, length alone never fires a `compress`. At or over
-them, the near-cap rule applies. Each lesson whose step-1 byte length is
-over 400 gets one of two proposals. One is `compress`, with its shortened
-line shown verbatim in the table. The other is `keep`, with a reason that
-names why each clause stays. The rule skips a lesson proposed `drop`,
-`merge`, `correct`, or `promote`. It also skips a merge survivor and a
-lesson kept for a pin or a live milestone. A merge's survivor takes the
-absorbed lesson's milestone into its parenthesized provenance and any
-content of the absorbed lesson it lacks. That is the merge's edit, not a
-re-wording. For a `promote`, the "at least twice" counts over the whole
+A lesson compresses where it restates what another record says, or by
+the length rule. The length rule: each lesson whose step-1 byte length is
+over 450 gets `compress` or `split`, with its new line or lines shown
+verbatim in the table. A long lesson is never kept as it is. The rule also
+covers a lesson kept for a pin or a live milestone. For such a lesson, the
+string the pin file asserts present, or the text the milestone quotes,
+stays whole in one resulting line. The rule skips a lesson proposed `drop`,
+`merge`, or `promote`, and it applies to a `correct` line as corrected. A
+merge's survivor takes the absorbed lesson's milestone into its
+parenthesized provenance and any content of the absorbed lesson it lacks.
+That is the merge's edit, not a re-wording. A merge whose survivor would
+pass 450 bytes is not proposed.
+
+The rank rule: after the other proposals, count the lessons that would
+remain, each line of a split counting as one. If more than 20 would
+remain, propose `drop` with the `rank` exit for the lowest-ranked of them
+(tracking-rules "Weight caps"), until 20 remain or every remaining lesson
+is kept for a pin, a live milestone, or as a merge survivor. A lesson's
+rank is read from its line as its proposal leaves it, so each line of a
+split has its own rank. A lesson already proposed `drop`, `merge`, or
+`promote` is not counted. A line of a split that the rank rule drops
+shows in the table under its split, marked `drop` with its rank.
+
+For a `promote`, the "at least twice" counts over the whole
 family's provenance. A family whose earlier module a decision retired is
 not proposed: first search the decision bodies for the module's file name
 with `git grep -n "<module>.md" cairn/DECISIONS.md`, and read each hit,
 since an entry that created the module did not retire it. The
 started-token, title, priority, and records-hygiene §7 rules do
-not apply to lessons. The pass never proposes pruning the oldest lesson,
-which stays the last resort at review hygiene.
+not apply to lessons.
 
 **Step 3, gate.** The table and the chip are step 3's. A `drop` names its
 exit and its evidence, a `merge` names its survivor, and a `promote` names
-its family and the three conditions. A `correct`, and a near-cap
-`compress`, show the new line verbatim. A lesson merge names no trigger
-class, since a lesson has no trigger. The chip names a lesson by its date
-and provenance, since a lesson has no short title. Each time the chip is
-posed, Amend rounds included, count the lines and bytes that
-`cairn/LESSONS.md` has with the proposals then standing all applied. If
-the count is 45 lines or more, or 18,000 bytes or more, the chip's
-question text says so. One sentence names both counts. An Amend that
-makes a lesson `correct` or `compress` names its new line. In every Amend
+its family and the three conditions. A `correct`, a `compress`, and a
+`split` show the new line or lines verbatim. A lesson merge names no
+trigger class, since a lesson has no trigger. The chip names a lesson by
+its date and provenance, since a lesson has no short title. Each time the
+chip is posed, Amend rounds included, count the lessons that
+`cairn/LESSONS.md` would hold with the proposals then standing all
+applied, and find any lesson that would be over 450 bytes. The chip's
+question text gives the count in one sentence. It also says when the
+count is over 20 or a lesson is over 450 bytes. An Amend that makes a
+lesson `correct`, `compress`, or `split` names its new line or lines. In every Amend
 round, the pass shows that line again before it poses the chip. A
 lesson the user moves to `keep` at an Amend takes the reason `kept at the
 gate`.
 
 **Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A
 dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no
-breadcrumb. A `correct` replaces the line with the text the gate showed.
+breadcrumb. A `correct` replaces the line with the text the gate showed,
+and a `split` replaces it with the lines the gate showed, in its place.
 No accepted edit writes a string that a pin file asserts is
-absent. After the edits, `wc -l -c cairn/LESSONS.md cairn/ROADMAP.md`
-stays under both files' line caps and byte budgets (tracking-rules "Weight
-caps"), the stamp included. Otherwise the pass returns to the step-3 chip
+absent. After the edits, `cairn/ROADMAP.md` stays under its line cap and
+byte budget, the stamp included, and `cairn/LESSONS.md` stays within its
+limits (tracking-rules "Weight caps"). Otherwise the pass returns to the step-3 chip
 with the overflow named.
 
 **Step 5, record.** A lesson drop, merge, or correction writes no decision
 entry. The stamp and the commit message name each dropped lesson by its
 date and provenance with its exit. They name each merged-away lesson with
-its survivor, and each corrected lesson by its date and provenance. The
+its survivor, each corrected or split lesson by its date and provenance,
+and each `rank` drop with its rank. The
 commit message also gives the evidence for each `refuted` or `obsolete`
 drop and each `correct`. In
 guest mode the stamp alone names them, with their evidence.

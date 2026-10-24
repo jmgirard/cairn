@@ -168,7 +168,7 @@ cairn/
 │                      # reused / Architecture / Known issues
 ├── ROADMAP.md         # empty index (below)
 ├── DECISIONS.md       # header from templates/decisions.md (entry shape: decision.md)
-├── LESSONS.md         # header from templates/lessons.md; repo lessons, capped 50 lines / 20,000 bytes (D-015; byte budget D-119)
+├── LESSONS.md         # header from templates/lessons.md; repo lessons, at most 25 lessons of at most 450 bytes each (D-015; limits D-218)
 ├── PROFILE.md         # toolchain profile (r-package | python | claude-plugin | quarto-extension | docker-image | generic), instantiated
 │                      # from skills/shared/profiles/<name>.md; capped 120 lines
 ├── milestones/archive/

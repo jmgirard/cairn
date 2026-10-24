@@ -80,8 +80,9 @@ FAIL** means the repo's §1 scaffold has drifted behind the spec (a missing
 tracking file or ignore entry, typically because the repo adopted cairn
 before a later scaffold addition); fix it by running `/cairn-init` (repair
 mode), which is the sole scaffolder — never hand-create the pieces here.
-Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md cairn/LESSONS.md`
-against the tracking-rules Weight caps budgets, and `wc -l -c` on each of
+Then check the byte budgets by hand — `wc -c cairn/ROADMAP.md` against its
+tracking-rules Weight caps budget, the lesson count and each lesson's bytes
+in `cairn/LESSONS.md` against its limits there, and `wc -l -c` on each of
 the repo's doctrine modules against the budget its own header states (the
 maturation exit's rule) — since `cairn_validate` does not measure them; an
 overrun takes the same remedies as the line caps, surfaced as a finding for
@@ -117,9 +118,9 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-821 lines / 80,381 bytes (M317, 2026-10-22, the whole file after M317
-named `/milestone` among the open-PR cap lines' readers; the
-prior seed was M315's 820 lines / 80,287 bytes; bytes, because a
+845 lines / 83,349 bytes (M320, 2026-10-24, the whole file after M320
+replaced the `LESSONS.md` byte budget with a lesson count, a per-lesson
+limit, and a rank; the prior seed was M317's 821 lines / 80,381 bytes; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is

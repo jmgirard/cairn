@@ -4,6 +4,25 @@
 
 ### Changes that affect existing repos
 
+- **`cairn/LESSONS.md` keeps a fixed number of short lessons.** The file
+  now holds at most 25 lessons, each one line of at most 450 bytes. These
+  limits replace the 20,000-byte budget. A lesson's rank is the newest
+  milestone in its provenance, not counting `trimmed` or `corrected`
+  marks. A plan records the lessons it used, and the
+  review marks each of them `used M<NNN>`. So a lesson that prevents its
+  trap keeps a high rank. At 25 lessons, review
+  capture is one in, one out: it removes the lowest-ranked lesson that no
+  test pins and no open milestone quotes. If it cannot remove enough
+  lessons to leave 25, it removes none, captures nothing, and names the
+  lesson it skipped. In guest mode the review quotes each lesson it
+  removes, since `cairn/LESSONS.md` has no git copy there. If added text makes
+  a lesson longer than 450 bytes, that text becomes a lesson of its own.
+  `/cairn-triage lessons` now shortens or splits every lesson over 450
+  bytes, and it proposes dropping the lowest-ranked lessons until 20 are
+  left. If enough of its lessons can be removed, a file over 25 lessons is
+  cut back at the next review that captures a lesson. Lessons over 450 bytes are shortened or split at the
+  next `/cairn-triage lessons` run.
+
 - **A guest repo can raise or remove the daily limit on issue closes.**
   Guest sessions close at most 3 issues that someone else opened on a
   repo per UTC day. A `# Issue close cap: N` line near the top of
