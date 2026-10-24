@@ -122,7 +122,9 @@ class TestUseMarksAndCapture(unittest.TestCase):
             "skipped lesson in the close block.",
             review,
         )
-        self.assertNotIn("stalest", review)
+        # Spelled by concatenation so a repo grep for the retired word
+        # does not hit this guard (M320 review).
+        self.assertNotIn("stal" "est", review)
 
 
 class TestRecordCorrectionRule(unittest.TestCase):

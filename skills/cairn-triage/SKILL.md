@@ -217,7 +217,9 @@ remain, propose `drop` with the `rank` exit for the lowest-ranked of them
 is kept for a pin, a live milestone, or as a merge survivor. A lesson's
 rank is read from its line as its proposal leaves it, so each line of a
 split has its own rank. A lesson already proposed `drop`, `merge`, or
-`promote` is not counted. For a `promote`, the "at least twice" counts over the whole
+`promote` is not counted.
+
+For a `promote`, the "at least twice" counts over the whole
 family's provenance. A family whose earlier module a decision retired is
 not proposed: first search the decision bodies for the module's file name
 with `git grep -n "<module>.md" cairn/DECISIONS.md`, and read each hit,

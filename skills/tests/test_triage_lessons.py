@@ -310,7 +310,9 @@ class TestLessonDispositions(unittest.TestCase):
             "live milestone, or as a merge survivor.",
             text,
         )
-        self.assertNotIn("never proposes pruning the oldest lesson", text)
+        # Retired phrases are spelled by concatenation so a repo grep for
+        # them does not hit these guards (M320 review).
+        self.assertNotIn("never proposes pruning the oldest " "lesson", text)
 
 
 class TestLessonsApplyAndRecord(unittest.TestCase):
@@ -420,7 +422,7 @@ class TestSurfacesNameThePass(unittest.TestCase):
             text,
         )
         self.assertNotIn("`LESSONS.md` < 20,000 bytes", text)
-        self.assertNotIn("stalest", text)
+        self.assertNotIn("stal" "est", text)
 
     def test_rulebook_states_use_marks_and_one_in_one_out(self):
         text = read("shared/tracking-rules.md")

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -91,10 +91,10 @@ triage run.
 ## Coverage
 
 - AC1 → T1, T4
-- AC2 → T1, T4
+- AC2 → T1, T4, T8
 - AC3 → T2
 - AC4 → T2
-- AC5 → T3
+- AC5 → T3, T8
 - AC6 → T7
 - AC7 → T4, T6
 
@@ -143,6 +143,11 @@ triage run.
       bytes, then drop by rank to at most 20 lessons, keeping the pinned
       string. Log the per-lesson dispositions in the work log so the merge
       question can list them.
+- [x] T8: Review return 1: spell "stalest" and "oldest lesson" by
+      concatenation in their `assertNotIn` guards
+      (`test_lessons_loop.py`, `test_triage_lessons.py`), and restore the
+      paragraph break before the `promote` sentence in
+      `skills/cairn-triage/SKILL.md`.
 
 ## Work log
 
@@ -173,6 +178,7 @@ triage run.
 - 2026-10-24: claim audit: 57 claims read, 5 corrected — skills/shared/templates/lessons.md, cairn/LESSONS.md header, README.md, CHANGELOG.md, skills/shared/tracking-rules.md (also milestone-review ordering): "last use is oldest" and "least recently used" restated as the lowest rank, the CHANGELOG cut sentence split into review-capture and triage halves, the rulebook names a per-line byte command and points the remedy at "Retiring a lesson", and review says to mark use even when no lesson is learned; rulebook-mass baseline re-seeded to 844 lines / 83,211 bytes in its three places. Verify 5/5 green, `skills/tests` green, validate green.
 - 2026-10-24: review opened PR #333 at review start (Copilot round on); `gh pr edit --add-reviewer @copilot` exited 0 but the state query still read `none`, so the request may not be recorded by GitHub; no second request.
 - 2026-10-24: review return 1: AC2 and AC5(d) fail as written — `git grep -n "stalest" -- skills cairn/LESSONS.md` hits `skills/tests/test_lessons_loop.py:125` and `skills/tests/test_triage_lessons.py:423`, and `git grep -n "oldest lesson" -- skills` hits `skills/tests/test_triage_lessons.py:313`, all `assertNotIn` literals; spell each retired token in its guard by concatenation. Also restore the paragraph break between the rank rule and the `promote` sentence in `skills/cairn-triage/SKILL.md` (~line 220).
+- 2026-10-24: T8 done (minor amendment for return 1: task added, Coverage AC2 and AC5 cite T8) — the three guards spell "stal" "est" and "oldest " "lesson" by concatenation, the paragraph break before the `promote` sentence restored; both criterion greps now return no hit. Verify 5/5 green, `skills/tests` green. Handing back to review.
 
 ## Decisions
 
