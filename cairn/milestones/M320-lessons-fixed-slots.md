@@ -125,13 +125,9 @@ triage run.
       `test_lesson_graduation.py` pins), the `skills/cairn-init/SKILL.md:171`
       tree comment, and one `CHANGELOG.md` Unreleased entry under "Changes
       that affect existing repos".
-- [x] T5: D-entry: supersede D-051's rejection (3) and its prune-when-full
-      last-resort clause, D-115's kept reasoning that item lines are never
-      length-policed (for `LESSONS.md` only), D-119's `LESSONS.md` byte
-      budget, D-169's rejection of pruning the oldest in the pass, and
-      D-177/D-178's near-cap keep-with-reasons and last-resort clauses.
-      State how it passes D-108's door (retained trigger: the shipped pass
-      leaves the file at its budget, so capture has no room).
+- [x] T5: D-entry superseding the clauses these changes contradict and
+      passing D-108's door on its retained trigger (written as D-218; its
+      heading lists each clause).
 - [x] T6: Prose guards: update the guards whose pinned text changes
       (`skills/tests/test_triage_lessons.py`, `test_mutation_harness.py`,
       `test_lessons_loop.py`, `test_lesson_graduation.py`, and any other
