@@ -10,9 +10,10 @@ One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Limits
 Current knowledge: a lesson proven false is corrected in place (D-045).
 Lessons also *leave*: one retires when a test fails on the mistake it warns
 about, when another file's slot owns its content, or when a matured family
-graduates whole into a doctrine module. At the limit, the lesson whose last
-use is oldest leaves first. Reviews mark `used M<NNN>` on the lessons a
-milestone used (D-051, D-055, D-218).
+graduates whole into a doctrine module. Over the limits, shorten or split
+lessons first. Then the lowest-ranked lesson leaves first. Rank is the newest
+milestone in a lesson's provenance, and reviews mark `used M<NNN>` on the
+lessons a milestone used (D-051, D-055, D-218).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 

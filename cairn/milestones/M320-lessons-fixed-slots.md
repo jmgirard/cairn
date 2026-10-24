@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M320: Keep lessons in fixed ranked slots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -170,6 +170,7 @@ triage run.
 - 2026-10-24: T7 split — 2026-07-16 (M56+M65, …) "green" (1,985 bytes) into five: the suites-and-exit-codes core (kept, pinned and named by this milestone's `lessons used:` line), sweep-probe (M111/M137/M140), copied-tree probe (M164), stale bytecode (M180), references Provenance (M279); 2026-10-01 (M193, M191 …) mod facts (3,072 bytes) into four: mod checks (M284), test-hook answers (M278), state and loading (M311), desktop drawing (M294/M311), dropping the U+2028 detail (held by the M272 lesson), the dismiss-label, `minWidth`, and fixture-roster details; 2026-10-03 (M201) live looks (1,730 bytes) into two (M213; M305), dropping the M302/M305 Candidates-heading and session-start details. Inline `(Mxxx)` marks moved into each line's provenance.
 - 2026-10-24: T7 compressed to ≤450 bytes — 2026-08-04 (M133, now extended M173/M283), 2026-08-17 (M149), 2026-08-17 (M148), 2026-08-22 (M152), 2026-10-17 (M272, now extended M293/M294), 2026-10-18 (M274, now extended M303), 2026-10-18 (M277). Unchanged — 2026-07-24 (M112), 2026-08-30 (M165), 2026-09-02 (M169), 2026-10-18 (M275), 2026-10-18 (M278).
 - 2026-10-24: T7 `rank` drops (lowest rank first, 40 lessons after splits, 5 kept for this milestone, 15 by rank down to the M202 cut) — 2026-07-20 (M100) rank M100; 2026-07-25 (M113) bounding pass and 2026-07-25 (M113, trimmed M122) hook normalization, M113; 2026-07-26 (M115, corrected M135) dangling ids and 2026-07-26 (M115) unmerged-branch citation, M115; 2026-07-20 (M99 …) fixed-point figure, M118; 2026-07-31 (M127) whole-file deletion; split piece sweep-probe, M140; 2026-08-22 (M153) Review findings; 2026-08-22 (M156) wrapped token; 2026-08-23 (M158) record-type preview; 2026-08-29 (M163 …) merge_guard quoted text; split piece copied-tree probe, M164; 2026-09-02 (M170) failed merge marker; 2026-09-02 (M171) list pins; 2026-09-02 (M172) re-entry routes; split piece stale bytecode, M180; 2026-09-05 (M178, extended M181) hand-rolled reader; 2026-09-10 (M185) second-mode sweep; 2026-08-23 (M157, extended M192) repo-wide count. Result: 20 lessons, longest 437 bytes, 8,151 bytes total; the pinned "green" string is in the first lesson; `skills/tests` and validate green.
+- 2026-10-24: claim audit: 57 claims read, 5 corrected — skills/shared/templates/lessons.md, cairn/LESSONS.md header, README.md, CHANGELOG.md, skills/shared/tracking-rules.md (also milestone-review ordering): "last use is oldest" and "least recently used" restated as the lowest rank, the CHANGELOG cut sentence split into review-capture and triage halves, the rulebook names a per-line byte command and points the remedy at "Retiring a lesson", and review says to mark use even when no lesson is learned; rulebook-mass baseline re-seeded to 844 lines / 83,211 bytes in its three places. Verify 5/5 green, `skills/tests` green, validate green.
 
 ## Decisions
 

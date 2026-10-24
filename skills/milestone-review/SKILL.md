@@ -905,8 +905,8 @@ re-enters here, at the step the record shows is next:
    milestone taught — build quirks, testing tricks, gotchas worth
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
-   *choice* (a choice is a D-entry). None learned → skip.
-   First mark use: add `used M<NNN>` to the parenthesized provenance of each
+   *choice* (a choice is a D-entry). None learned → skip the capture, but
+   still mark use. First mark use: add `used M<NNN>` to the parenthesized provenance of each
    lesson that the milestone's `lessons used:` work-log line names, and of
    each lesson whose trap the milestone met. The mark replaces that
    lesson's earlier `used` mark, if it has one, and the use adds no other

@@ -16,8 +16,9 @@
   a lesson longer than 450 bytes, that text becomes a lesson of its own.
   `/cairn-triage lessons` now shortens or splits every lesson over 450
   bytes, and it proposes dropping the lowest-ranked lessons until 20 are
-  left. A file over the new limits is cut at its next review capture or
-  triage run.
+  left. A file over 25 lessons is cut back at the next review that
+  captures a lesson. Lessons over 450 bytes are shortened or split at the
+  next `/cairn-triage lessons` run.
 
 - **A guest repo can raise or remove the daily limit on issue closes.**
   Guest sessions close at most 3 issues that someone else opened on a

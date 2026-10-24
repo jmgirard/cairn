@@ -64,8 +64,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   to cap) · `ROADMAP.md` < 60 lines · `LESSONS.md` < 50 lines · `PROFILE.md` < 120 lines · archived summary ≤ 25 lines.
   `ROADMAP.md` also keeps a byte budget, < 24,000 bytes (line cap × 400). `LESSONS.md` holds at most 25 lessons,
   each one line of at most 450 bytes, newline excluded. Its line cap is the validator's backstop. Both are
-  judgment-checked at hygiene passes (`wc -c`, `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'`), not covered by
-  `cairn_validate`. A lesson's **rank** is the highest milestone number among the ids in its parenthesized
+  judgment-checked at hygiene passes (`wc -c`, and for lessons `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'` and each
+  line's bytes from `LC_ALL=C awk '{print length($0)}'`), not covered by `cairn_validate`. A lesson's **rank** is the highest milestone number among the ids in its parenthesized
   provenance, except an id that follows `trimmed` or `corrected` in the same comma-separated part. A tie goes to the
   later date, then to the line later in the file. At the limit the lowest-ranked lesson leaves first ("Retiring a
   lesson"). `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
@@ -85,7 +85,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   remedy can never aim at history) in one rewrite — never a nibble-and-recount loop — cross-referencing durable records
   rather than restating them, splitting or moving material to `references/` only when no one section can carry the cut;
   over-budget `ROADMAP.md` (bytes) → compress the widest rows first, then the same graduate-or-prune remedy; over-limit `LESSONS.md` → retire, compress,
-  or split lessons, then evict by rank (the remedy its own header states); over-cap cairn CLAUDE.md section → trim back to the template.
+  or split lessons, then evict by rank ("Retiring a lesson"); over-cap cairn CLAUDE.md section → trim back to the template.
 - Terminal-row retention (standing hygiene): the ROADMAP table keeps only the 3 most recent terminal (`done`/`dropped`)
   rows combined; prune older ones as they accumulate.
 - The `Last hygiene check` stamp is one short line naming what changed since the last check, **replaced each pass, never

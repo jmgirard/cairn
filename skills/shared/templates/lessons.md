@@ -10,6 +10,8 @@ Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
 One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Limits: at most 25
-lessons, each at most 450 bytes. At the limit, the lesson whose last use is
-oldest leaves first. Reviews mark `used M<NNN>` on the lessons a milestone
-used. Corrected in place when proven false (never append a correction).
+lessons, each at most 450 bytes. Over the limits, retire, shorten, or split
+lessons first. Then the lowest-ranked lesson leaves first. Rank is the newest
+milestone in a lesson's provenance, and reviews mark `used M<NNN>` on the
+lessons a milestone used. Corrected in place when proven false (never append a
+correction).
