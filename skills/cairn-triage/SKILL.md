@@ -217,7 +217,8 @@ remain, propose `drop` with the `rank` exit for the lowest-ranked of them
 is kept for a pin, a live milestone, or as a merge survivor. A lesson's
 rank is read from its line as its proposal leaves it, so each line of a
 split has its own rank. A lesson already proposed `drop`, `merge`, or
-`promote` is not counted.
+`promote` is not counted. A line of a split that the rank rule drops
+shows in the table under its split, marked `drop` with its rank.
 
 For a `promote`, the "at least twice" counts over the whole
 family's provenance. A family whose earlier module a decision retired is

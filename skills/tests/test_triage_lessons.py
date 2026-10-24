@@ -310,8 +310,13 @@ class TestLessonDispositions(unittest.TestCase):
             "live milestone, or as a merge survivor.",
             text,
         )
+        self.assertIn(
+            "A line of a split that the rank rule drops shows in the table "
+            "under its split, marked `drop` with its rank.",
+            text,
+        )
         # Retired phrases are spelled by concatenation so a repo grep for
-        # them does not hit these guards (M320 review).
+        # them does not hit these guards.
         self.assertNotIn("never proposes pruning the oldest " "lesson", text)
 
 
@@ -436,7 +441,9 @@ class TestSurfacesNameThePass(unittest.TestCase):
         self.assertIn(
             "At the 25-lesson limit review capture is one-in-one-out: it "
             "evicts the lowest-ranked lesson that no pin file holds and no "
-            "live milestone quotes.",
+            "live milestone quotes. Rank eviction is not a retirement exit: "
+            "it replaces pruning at the limit, and it removes a lesson by "
+            "rank, not because it is redundant.",
             text,
         )
 

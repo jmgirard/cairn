@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="844 lines / 83,211 bytes",
+        block="845 lines / 83,349 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4751,8 +4751,8 @@ REGISTRY += [
         target=TRIAGE,
         block="applies to it. A lesson takes one of seven dispositions, and never `route`",
     ),
-    # M270 (D-177): the five drop exits, the correction, the planner test,
-    # the near-cap rule, and the gate warning.
+    # M270 (D-177), M320 (D-218): the six drop exits, the correction, the
+    # planner test, the length and rank rules, and the gate count.
     Mutation(
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_drop_names_one_of_six_exits",
@@ -4925,7 +4925,7 @@ REGISTRY += [
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_plan_writes_the_lessons_used_line",
         target=PLAN,
-        block="Step 4 writes one work-log line `lessons used: <lessons>` in the first",
+        block="Step 4 writes one work-log line `lessons used: <lessons>` in each",
     ),
     Mutation(
         guard="test_lessons_loop",
@@ -4949,7 +4949,31 @@ REGISTRY += [
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_capture_is_one_in_one_out",
         target=REVIEW,
-        block="can be removed, capture nothing, and name the skipped lesson in the close",
+        block="none, capture nothing, and name the skipped lesson in the close block.",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_review_capture_is_one_in_one_out",
+        target=REVIEW,
+        block="In guest mode `cairn/LESSONS.md` has no git copy, so the close block",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_review_marks_each_used_lesson",
+        target=REVIEW,
+        block="(tracking-rules \"Weight caps\"). The mark counts toward that limit, and a",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_rank_rule",
+        target=TRIAGE,
+        block="shows in the table under its split, marked `drop` with its rank.",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestSurfacesNameThePass.test_rulebook_states_use_marks_and_one_in_one_out",
+        target=RULES,
+        block="milestone quotes. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson",
     ),
     Mutation(
         guard="test_triage_lessons",

@@ -79,10 +79,10 @@ class TestUseMarksAndCapture(unittest.TestCase):
     def test_plan_writes_the_lessons_used_line(self):
         plan = norm(read(SKILLS / "milestone-plan" / "SKILL.md"))
         self.assertIn(
-            "Step 4 writes one work-log line `lessons used: <lessons>` in the "
-            "first milestone file it writes. It names each lesson that shaped "
-            "the plan by its date and provenance, or it reads `lessons used: "
-            "none`.",
+            "Step 4 writes one work-log line `lessons used: <lessons>` in "
+            "each milestone file it writes. It names each lesson that shaped "
+            "that milestone's plan by its date and provenance, or it reads "
+            "`lessons used: none`.",
             plan,
         )
 
@@ -95,6 +95,11 @@ class TestUseMarksAndCapture(unittest.TestCase):
             "milestone met. The mark replaces that lesson's earlier `used` "
             "mark, if it has one, and the use adds no other text to the "
             "lesson.",
+            review,
+        )
+        self.assertIn(
+            "The mark counts toward that limit, and a lesson that the mark "
+            "takes past 450 bytes is shortened in this same pass.",
             review,
         )
 
@@ -112,18 +117,23 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "when a captured lesson would leave more than 25 lessons, remove "
             "the lowest-ranked lessons (tracking-rules \"Weight caps\") until "
-            "25 remain, in this same commit, and name each in the archive "
-            "summary. Remove no lesson that a pin file holds or a live "
-            "milestone quotes.",
+            "25 remain, in this same pass, and name them all in one line of "
+            "the archive summary. Remove no lesson that a pin file holds or a "
+            "live milestone quotes.",
             review,
         )
         self.assertIn(
-            "When no lesson can be removed, capture nothing, and name the "
-            "skipped lesson in the close block.",
+            "When too few lessons can be removed to leave 25, remove none, "
+            "capture nothing, and name the skipped lesson in the close block.",
+            review,
+        )
+        self.assertIn(
+            "In guest mode `cairn/LESSONS.md` has no git copy, so the close "
+            "block also quotes each removed lesson in full.",
             review,
         )
         # Spelled by concatenation so a repo grep for the retired word
-        # does not hit this guard (M320 review).
+        # does not hit this guard.
         self.assertNotIn("stal" "est", review)
 
 

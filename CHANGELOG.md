@@ -7,7 +7,8 @@
 - **`cairn/LESSONS.md` keeps a fixed number of short lessons.** The file
   now holds at most 25 lessons, each one line of at most 450 bytes. These
   limits replace the 20,000-byte budget. A lesson's rank is the newest
-  milestone in its provenance. A plan records the lessons it used, and the
+  milestone in its provenance, not counting `trimmed` or `corrected`
+  marks. A plan records the lessons it used, and the
   review marks each of them `used M<NNN>`. So a lesson that prevents its
   trap keeps a high rank. At 25 lessons, review
   capture is one in, one out: it removes the lowest-ranked lesson that no

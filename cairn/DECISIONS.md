@@ -7926,3 +7926,34 @@ decides each triage drop at its gate.
 review capture or triage run. Falsified by a lesson evicted by rank whose
 trap then recurs within 20 milestones, or by a split lesson whose pieces
 stop making sense apart.
+
+### D-219 (2026-10-24): Five clauses of D-218 are corrected in one batched entry — what it narrows, its rank rationale, its Door, its git-history claim, and its Context cite — supersedes those clauses; narrows D-051's Decision and D-169's and D-178's pin and live-milestone keep; D-218's decision stands (M320 review)
+
+**Context:** M320's review found D-218's wording wrong or short in five
+places. D-218 is history, so it is corrected here, not edited (D-180
+precedent for an unmerged entry).
+
+**Decision:** (1) D-218 also narrows D-051's Decision that a lesson
+leaves only on enforcement or ownership. At review capture, a lesson also
+leaves by rank eviction when the file is full. Rank eviction is not a
+retirement exit: it replaces D-015's prune-when-full, and it removes a
+lesson by rank, not because the lesson is redundant. (2) D-218 also
+narrows D-169's "a lesson that a test file pins stays `keep`", D-169's
+"pruning the oldest lesson stays the last resort at review hygiene", and
+D-178 (5)'s keep for a pinned or live-milestone lesson. In the triage
+pass the length rule now applies to such a lesson, which keeps only its
+pinned string or quoted text whole in one line. (3) D-218's Door says
+rank is "the newest use, not the age". For a lesson no milestone has used,
+rank is its capture or last-extension milestone, which is age. The `used`
+marks make a used lesson rank high, and that is what the user chose over
+ranking by repeats at M320's question set. (4) D-218's Door says the user
+decides each triage drop at its gate. That holds for the triage pass.
+Review capture evicts with no gate, as D-015's prune did. (5) D-218's
+Rejected section says git holds evicted lessons. In guest mode
+`cairn/LESSONS.md` is untracked, so review's close block quotes each
+lesson it removes in full. D-218's Context cites "M320's Goal and work
+log" for its figures. The work log holds them, and the Goal does not.
+
+**Consequences:** D-218's decision stands as corrected here. The
+rulebook says rank eviction is not a retirement exit, and review hygiene
+quotes evicted lessons in guest mode.

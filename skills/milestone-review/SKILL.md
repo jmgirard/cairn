@@ -911,7 +911,9 @@ re-enters here, at the step the record shows is next:
    each lesson whose trap the milestone met. The mark replaces that
    lesson's earlier `used` mark, if it has one, and the use adds no other
    text to the lesson. A lesson is at most 450 bytes, newline excluded
-   (tracking-rules "Weight caps"). An extension that would take a lesson
+   (tracking-rules "Weight caps"). The mark counts toward that limit, and a
+   lesson that the mark takes past 450 bytes is shortened in this same
+   pass. An extension that would take a lesson
    past 450 bytes is not written into it. The new content becomes a lesson
    of its own instead.
    **Never extend a finding-absorbing candidate row:** when this pass would
@@ -958,14 +960,16 @@ re-enters here, at the step the record shows is next:
    nothing else records it.
    Retirement runs before the limit bites. Then, when a captured lesson
    would leave more than 25 lessons, remove the lowest-ranked lessons
-   (tracking-rules "Weight caps") until 25 remain, in this same commit, and
-   name each in the archive summary. Remove no lesson that a pin file holds
-   or a live milestone quotes. A pin file is a test file that asserts a
-   string present in the live `cairn/LESSONS.md`. A live milestone is a
-   `planned`, `in-progress`, `blocked`, or `review` milestone whose file
-   quotes the lesson or names it by its date and provenance. When no lesson
-   can be removed, capture nothing, and name the skipped lesson in the close
-   block. When the limit bites, the close block also fences
+   (tracking-rules "Weight caps") until 25 remain, in this same pass, and
+   name them all in one line of the archive summary. Remove no lesson that
+   a pin file holds or a live milestone quotes. A pin file is a test file
+   that asserts a string present in the live `cairn/LESSONS.md`. A live
+   milestone is a `planned`, `in-progress`, `blocked`, or `review`
+   milestone whose file quotes the lesson or names it by its date and
+   provenance. When too few lessons can be removed to leave 25, remove
+   none, capture nothing, and name the skipped lesson in the close block.
+   In guest mode `cairn/LESSONS.md` has no git copy, so the close block
+   also quotes each removed lesson in full. When the limit bites, the close block also fences
    `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line, any D-entry, any Known issues entry, and any

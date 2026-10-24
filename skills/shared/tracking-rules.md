@@ -141,7 +141,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   earns rank by use: `/milestone-plan` names the lessons that shaped its plan in a `lessons used:` work-log line, and
   review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. At the 25-lesson
   limit review capture is one-in-one-out: it evicts the lowest-ranked lesson that no pin file holds and no live
-  milestone quotes. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
+  milestone quotes. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson
+  by rank, not because it is redundant. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
   with evidence read in the pass, `planner test`, for a line a planner does not need, and `rank`, which evicts the
   lowest-ranked lessons down to 20. It also corrects a false lesson in place and shortens or splits each lesson over
   450 bytes (D-177, D-218). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`

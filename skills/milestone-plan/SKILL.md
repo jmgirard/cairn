@@ -367,9 +367,9 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    build quirks, testing tricks, gotchas that should shape the tasks,
    acceptance bar, or a gate question. Empty file → nothing to surface. This
    is intake, not obedience: a lesson informs the plan, it doesn't dictate it.
-   Step 4 writes one work-log line `lessons used: <lessons>` in the first
-   milestone file it writes. It names each lesson that shaped the plan by
-   its date and provenance, or it reads `lessons used: none`. Review hygiene
+   Step 4 writes one work-log line `lessons used: <lessons>` in each
+   milestone file it writes. It names each lesson that shaped that
+   milestone's plan by its date and provenance, or it reads `lessons used: none`. Review hygiene
    marks each named lesson `used`, which keeps it ranked high
    (tracking-rules "Retiring a lesson").
 
