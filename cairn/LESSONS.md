@@ -5,13 +5,14 @@ remembering next time — captured at milestone end and surfaced at plan time.
 Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
-One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Two caps
-(tracking-rules weight-caps): 50 lines and 20,000 bytes, met by retiring or pruning entries.
+One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Limits
+(tracking-rules weight-caps): at most 25 lessons, each at most 450 bytes.
 Current knowledge: a lesson proven false is corrected in place (D-045).
 Lessons also *leave*: one retires when a test fails on the mistake it warns
 about, when another file's slot owns its content, or when a matured family
-graduates whole into a doctrine module; pruning the stalest is the last resort
-rather than the first (D-051, D-055).
+graduates whole into a doctrine module. At the limit, the lesson whose last
+use is oldest leaves first. Reviews mark `used M<NNN>` on the lessons a
+milestone used (D-051, D-055, D-218).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 
