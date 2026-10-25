@@ -179,6 +179,7 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: correction to the T8 line: only the LESSONS.md header had a room guard then; the template's guard came with the pass-3 fixes.
 - 2026-10-25: collision (late, found at review pass 3): D-108's door covers new conduct rules about records. M321's trigger is a defect in shipped skill behavior (review hygiene and triage losing use marks, pinned text, and skipped lessons), so it passes on D-108's retained trigger, as D-177 and D-218 did. The plan's collision check did not surface D-108.
 - 2026-10-25: review pass-3 fix-now work — rulebook partial-case and limit-order wording, triage's waiting-line proposal sentence and Amend reason, review's whole-provenance shortening, header-room guard excludes waiting lines and covers the template, follow-up row extended; rulebook baseline 848 lines / 83,903 bytes. `skills/tests` 977 OK; verify 5/5 green.
+- 2026-10-25: step-7 approval: m321-lesson-use-mark-gaps approved for merge (PR #334)
 
 ## Decisions
 
