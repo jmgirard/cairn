@@ -132,7 +132,7 @@ row) → dropped at the user's choice at the question set.
 - [x] T5: Edit M320's Unreleased CHANGELOG entry for the waiting line and
       guest quoting; sweep README for the old remedy and "captures nothing"
       wording (the M112 lesson).
-- [ ] T6: Prose guards in `skills/tests` for each sentence T1-T3 add or
+- [x] T6: Prose guards in `skills/tests` for each sentence T1-T3 add or
       change, with mutation-registry entries where neighbours have them,
       each shown red when its sentence is blanked; re-pin guards whose text
       changed; run `verify` and the hand-run `skills/tests`.
@@ -160,3 +160,4 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: correction to the T4 line: the T4 commit f22a5944 went in past a red `claude plugin test` (1 of 2466 failed), because the verify call piped through `tail` and lost the exit code (the M56 lesson's trap, met). A rerun failed 2 other mod tests; the branch changes no `hooks/` code, so a run on main is checking for flakiness before T5's commit.
 - 2026-10-25: flake check: the run on a main worktree is no comparison (two test files did not load there, untracked dependencies absent); `git diff main --stat -- hooks scripts` is empty, and a solo rerun on the branch passed 2466/2466 in 120 s against about 400 s for the two failing runs, so the mod-test failures are load-timing flakes, not this branch.
 - 2026-10-25: T5 done — CHANGELOG's Unreleased lessons entry now says review writes a skipped lesson as a `- waiting` line that `/cairn-triage lessons` admits or drops, and that guest triage quotes each lesson it drops or merges away; README sweep found no "captures nothing" or "shorten or split" wording (README's lessons row stays as it is). Verify 5/5 green, exit codes read from a log, not a pipe.
+- 2026-10-25: T6 done — guards re-pinned in `test_lessons_loop.py`, `test_triage_lessons.py`, and `test_resume_routing.py` for the changed text; new guards for the read-before-deletion order (an index comparison), pin-safe shortening and the pin-file procedure, the waiting line and its 49-line stop, the preview, the remedy and waiting line at template, LESSONS header, and both rulebook sites, the eight dispositions with `admit`, waiting-line handling, the opening paragraph, split and merge marks, the rank count, and guest quoting; 28 new or updated mutation entries, each red when blanked. `skills/tests` 974 OK; verify 5/5 green; validate green.

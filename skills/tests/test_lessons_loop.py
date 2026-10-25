@@ -90,8 +90,8 @@ class TestUseMarksAndCapture(unittest.TestCase):
         review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
         self.assertIn(
             "First mark use: add `used M<NNN>` to the parenthesized "
-            "provenance of each lesson that the milestone's `lessons used:` "
-            "work-log line names, and of each lesson whose trap the "
+            "provenance of each lesson that the `lessons used:` lines read "
+            "before the deletion name, and of each lesson whose trap the "
             "milestone met. The mark replaces that lesson's earlier `used` "
             "mark, if it has one, and the use adds no other text to the "
             "lesson.",
@@ -100,6 +100,47 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "The mark counts toward that limit, and a lesson that the mark "
             "takes past 450 bytes is shortened in this same pass.",
+            review,
+        )
+
+    def test_review_reads_the_used_lines_before_the_deletion(self):
+        # M321: the live file is gone once the archive summary replaces it,
+        # so the read must come first in the step.
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        read_at = review.index(
+            "Before the live file is deleted below, read its `lessons used:` "
+            "work-log lines. Also read its work log and Review section for "
+            "each lesson whose trap the milestone met."
+        )
+        delete_at = review.index("**deleting the live")
+        self.assertLess(read_at, delete_at)
+
+    def test_mark_shortening_keeps_pinned_text_whole(self):
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        self.assertIn(
+            "The shortening keeps whole each string a pin file asserts "
+            "present and each text a live milestone quotes (both defined "
+            "below). A lesson that cannot then fit in 450 bytes takes no "
+            "`used` mark, and the close block names it beside a fenced "
+            "`/cairn-triage lessons`.",
+            review,
+        )
+        self.assertIn(
+            "Find the pin files as each file that `git grep -l \"LESSONS.md\"` "
+            "lists whose path contains `test`, and read each one for the "
+            "strings it asserts present.",
+            review,
+        )
+
+    def test_hygiene_preview_shows_each_changed_lesson(self):
+        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
+        self.assertIn(
+            "show the archive summary, each LESSONS line the pass captures, "
+            "marks, shortens, or writes as waiting,",
+            review,
+        )
+        self.assertIn(
+            "Name each lesson the pass removes by its date and provenance.",
             review,
         )
 
@@ -123,10 +164,22 @@ class TestUseMarksAndCapture(unittest.TestCase):
             review,
         )
         self.assertIn(
-            "When too few lessons can be removed to leave 25, remove none, "
-            "capture nothing, and name the skipped lesson in the close block.",
+            "When too few lessons can be removed to leave 25, remove none and "
+            "capture no lesson. Write each skipped lesson at the end of "
+            "`cairn/LESSONS.md` as a waiting line, "
+            "`- waiting YYYY-MM-DD (M<NNN>): <lesson>`. A waiting line is not "
+            "a lesson. It counts toward the file's line cap and not toward "
+            "its 25 lessons. It takes no `used` mark, and it waits for "
+            "`/cairn-triage lessons` to admit or drop it.",
             review,
         )
+        self.assertIn(
+            "If `cairn/LESSONS.md` already holds 49 lines or more, do not "
+            "write the line, since it brings the file to 50 lines or more. "
+            "Quote that lesson in full in the close block instead.",
+            review,
+        )
+        self.assertNotIn("capture " "nothing", review)
         self.assertIn(
             "In guest mode `cairn/LESSONS.md` has no git copy, so the close "
             "block also quotes each removed lesson in full.",
@@ -225,6 +278,55 @@ class TestLessonRetirement(unittest.TestCase):
             "**Scope this to what the milestone shipped — never re-sweep "
             "every lesson.**",
             self.review,
+        )
+
+
+class TestOverLimitRemedy(unittest.TestCase):
+    """M321 (D-221): each limit has its own remedy, and a waiting line is
+    no lesson. The pinned sentences wrap, so this class collapses whitespace
+    on read."""
+
+    REMEDY = (
+        "A lesson over 450 bytes is shortened or split. Over 25 lessons, "
+        "lessons retire first, and then the lowest-ranked lesson leaves."
+    )
+    WAITING = (
+        "A `- waiting` line at the end is not a lesson. When no lesson can "
+        "leave a full file, review writes it. It takes no `used` mark and "
+        "waits for `/cairn-triage lessons` to admit or drop it."
+    )
+
+    def test_template_states_each_remedy_and_the_waiting_line(self):
+        template = norm(read(SKILLS / "shared" / "templates" / "lessons.md"))
+        self.assertIn(self.REMEDY, template)
+        self.assertIn(self.WAITING, template)
+
+    def test_lessons_header_states_each_remedy_and_the_waiting_line(self):
+        lessons = norm(read(ROOT / "cairn" / "LESSONS.md"))
+        self.assertIn(self.REMEDY, lessons)
+        self.assertIn(self.WAITING, lessons)
+
+    def test_rulebook_states_each_remedy_and_the_waiting_line(self):
+        rules = norm(read(SKILLS / "shared" / "tracking-rules.md"))
+        self.assertIn(
+            "a lesson over 450 bytes → compress or split it; over 25 lessons "
+            "→ retire lessons, then evict by rank (\"Retiring a lesson\");",
+            rules,
+        )
+        self.assertIn(
+            "A `- waiting YYYY-MM-DD (M<NNN>):` line is not a lesson. It "
+            "takes no `used` mark and waits for `/cairn-triage lessons` to "
+            "admit or drop it.",
+            rules,
+        )
+        self.assertIn(
+            "When none can go, the new lesson goes at the file's end as a "
+            "`- waiting` line, which is not a lesson, takes no `used` mark, "
+            "and waits for `/cairn-triage lessons`.",
+            rules,
+        )
+        self.assertIn(
+            "its `admit` disposition makes a waiting line a lesson", rules
         )
 
 
