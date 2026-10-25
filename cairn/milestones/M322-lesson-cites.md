@@ -105,7 +105,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - [x] T3: Rewrite the cites in `skills/tests/*.py`. Before each edit near a
       pinned slice, read the mutation harness's `block=` strings so no pin
       loses its unique start marker.
-- [ ] T4: Rewrite the skill-prose cites (`skills/milestone-plan/SKILL.md:548`,
+- [x] T4: Rewrite the skill-prose cites (`skills/milestone-plan/SKILL.md:548`,
       `skills/milestone-review/SKILL.md:435`) and `cairn/DESIGN.md:649`.
       Delete the Known issues sentence at `cairn/DESIGN.md:1025-1026` and
       add the entry's `narrowed` mark.
@@ -131,6 +131,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: T1 done: D-222 appended after D-221; LESSONS.md header gains a two-line rule sentence (header 22 lines, test limit 23); lessons_loop and lesson_graduation tests and validate green.
 - 2026-10-25: T2 done: 15 cites in 6 files under scripts/ and hooks/ rewritten to state their point, the wrapped M81 cite at cairn_validate.py:1344 included; no milestone cite added; both gating suites green.
 - 2026-10-25: T3 done: 38 cites in 21 skills/tests files rewritten (cites only in comments and docstrings, no `block=` string touched); test_source_note_template.py:7 kept, since it recounts M63-M65 history and cites no lesson; skills/tests green (977 tests).
+- 2026-10-25: T4 done: the two skill-prose parentheticals dropped (no pin holds either line); DESIGN.md:649 cite dropped; the Known issues sentence on line-number cites deleted and the entry's tail marked `narrowed 2026-10-25 — M322`; skills/tests and validate green.
 
 ## Decisions
 

@@ -545,7 +545,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      stated procedure can enumerate the domain, the criterion instead
      claims what a procedure it names actually swept. A hand-list of sites is
      not a procedure — the list becomes the sweep and every site it omits
-     ships stale (the M118 lesson).
+     ships stale.
      **The procedure must enumerate the domain the criterion's own universal
      quantifies over, not a proxy for it.** Naming a procedure is not passing
      this test: an enumeration whose membership is fixed by what the author

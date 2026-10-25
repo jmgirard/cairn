@@ -645,8 +645,8 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with
   `flexShrink: 0`, and its text Box shrinks with `minWidth: 0`, so a long
-  text is cut before the tail; the line Box also carries `minWidth: 0`
-  (LESSONS M194), and the live look is what shows the cut (M208).
+  text is cut before the tail; the line Box also carries `minWidth: 0`,
+  and the live look is what shows the cut (M208).
   A head line's lead is the milestone's id, bold, in its phase's color,
   with no phase word, which the operator dropped at the M236 live look.
   Each head line's tail is the band's percent for the row, from `flowOf`
@@ -1022,8 +1022,7 @@ within each type and are never reused.
   it. A guest lesson drop widens this, since an untracked LESSONS.md keeps
   no git copy. The close block quotes each dropped or merged-away lesson in
   full, which leaves it only in chat. Lessons pass: the limit check sends back a pass that trims a
-  file already over its limits without getting under them. Test comments
-  cite lessons by line number ("LESSONS :49"). `git grep -l "LESSONS.md"`
+  file already over its limits without getting under them. `git grep -l "LESSONS.md"`
   misses a test that builds the path, and review hygiene's pin search for
   shortening and eviction uses the same command. Retitle: rows sharing a title get
   identical triage subjects. An empty title not from a leading `: ` has no
@@ -1039,7 +1038,8 @@ within each type and are never reused.
   candidates 2026-10-16; added 2026-10-10 — M235 review (diff-bug #1,
   blame-history #3); added 2026-10-15 — M251 review (pass 2 diff-bug #3,
   #5, #7) and M254 review; added 2026-10-16 — M263 review (diff-bug #10,
-  #16; blame-history #1, #10); narrowed and extended 2026-10-25 — M321.
+  #16; blame-history #1, #10); narrowed and extended 2026-10-25 — M321;
+  narrowed 2026-10-25 — M322.
 - `scripts/cairn_ci_paths.py`'s `--report` and `--apply` can disagree on a
   workflow file, found at the M181 review with no fix planned. `--report`'s
   stdlib reader and `--apply`'s PyYAML read some legal forms differently (a
