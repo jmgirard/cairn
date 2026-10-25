@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M321: Fix the gaps in lesson use marks
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, IP4
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes the review-hygiene and `/cairn-triage lessons` steps that adopting repos run
-- **Branch/PR:** —
+- **Branch/PR:** m321-lesson-use-mark-gaps
 
 ## Goal
 
@@ -113,7 +113,7 @@ row) → dropped at the user's choice at the question set.
 
 ## Tasks
 
-- [ ] T1: Review hygiene (`skills/milestone-review/SKILL.md` step 9, about
+- [x] T1: Review hygiene (`skills/milestone-review/SKILL.md` step 9, about
       lines 867-1000, and the archived-file arm near line 41): move the
       `lessons used:` read before the deletion, add the pin-file procedure
       and the pin-safe shortening rule with its no-mark outcome, the waiting
@@ -152,3 +152,5 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: plan chose no `used` mark for a lesson that cannot fit 450 bytes with its pinned or quoted text whole, over keeping the mark past the limit, because it keeps the per-lesson limit intact; falsified by such a lesson being rank-evicted for the missing mark.
 - 2026-10-25: sizing: 8 criteria, one past the ~7 tripwire; kept as one milestone because all eight edit the same two passes, and a split would ship the waiting line without its `admit` reader.
 - 2026-10-25: changelog: M320's Unreleased lessons entry is edited, not joined by a new entry, since both change the same unreleased behavior.
+- 2026-10-25: branch m321-lesson-use-mark-gaps cut from main at 7eaeb0a2; untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
+- 2026-10-25: T1 done — review step 9 reads the `lessons used:` lines and trap-met lessons before the deletion; pin files found by `git grep -l "LESSONS.md"` (path contains `test`); the mark's shortening keeps pinned and quoted text whole, else no mark and the close block names it; the too-few case writes `- waiting` lines (none at 49 or more lines, quoted instead); the preview shows captured, marked, shortened, and waiting lines and names removed ones; the archived-file arm says "capture, mark, or retire no lesson". Agent chose: the 50-line stop reads as "already holds 49 lines or more". Verify 5/5 green; `skills/tests` red on four guards of the changed text, re-pinned at T6.
