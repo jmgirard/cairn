@@ -245,17 +245,17 @@ Pass 3 (2026-10-25), branch head 30d663ad, after return 2. Copilot state query t
 - AC1–AC8 recheck on 30d663ad: the diff since c0c53ff1 adds to review step 9 ("It keeps the lesson's date and every mark in its provenance.", "None listed means no pins and no failure."), triage (an admitted line is never a `rank` drop; a waiting line moved to `keep` stays waiting), the plan harvest, and rewrites the template and LESSONS header waiting sentence to "A `- waiting` line is not a lesson: it takes no `used` mark and waits for `/cairn-triage lessons`."; every quoted pass-1 and pass-2 evidence string still reads as recorded, the four AC6 sites still state both remedies and the waiting line (none names splitting or shortening for the count, now asserted by `assertNotIn`), and LESSONS.md is 41 lines (45 at 25 lessons). Verify 5/5 green, `skills/tests` 976 OK. Pass.
 - Consistency gate on 30d663ad: `cairn_validate` exit 0 (the sizing advisory only); marketplace validate prints no `version` warning; CHANGELOG entry present. Pass.
 - spawned: diff-bug, blame-history, prior-review, ripple
-- diff-bug #1: the rulebook's "When none can go" disagrees with step 9's too-few rule in the partial case — fix now (rulebook says "When too few can go to leave 25, none goes"); D-221's Rejected clause is false in that case — follow-up, row "Close the leftover lesson hygiene gaps"
-- diff-bug #2: the header-room guard counts `- waiting` lines as header and goes red on a legal file — fix now (waiting lines excluded)
-- diff-bug #3: "A waiting line takes only `admit` or `drop`" contradicts the Amend `keep`, whose reason is undefined — fix now ("Step 2 proposes only `admit` or `drop` for a waiting line"; the Amend `keep` takes the same reason)
+- diff-bug #1: the rulebook's "When none can go" disagrees with step 9's too-few rule in the partial case — fix now, fixed 2bb47883 (rulebook says "When too few can go to leave 25, none goes"); D-221's Rejected clause is false in that case — follow-up, row "Close the leftover lesson hygiene gaps"
+- diff-bug #2: the header-room guard counts `- waiting` lines as header and goes red on a legal file — fix now, fixed 2bb47883 (waiting lines excluded)
+- diff-bug #3: "A waiting line takes only `admit` or `drop`" contradicts the Amend `keep`, whose reason is undefined — fix now, fixed 2bb47883 ("Step 2 proposes only `admit` or `drop` for a waiting line"; the Amend `keep` takes the same reason)
 - diff-bug #4: the rank rule's stop does not list admitted lines — reject, false ("the rule counts it as kept" places it under the stop's kept lessons)
-- diff-bug #5: "every mark in its provenance" leaves plain provenance ids unprotected — fix now ("its whole parenthesized provenance")
+- diff-bug #5: "every mark in its provenance" leaves plain provenance ids unprotected — fix now, fixed 2bb47883 ("its whole parenthesized provenance")
 - diff-bug #6: the hand byte check measures waiting lines too — reject, false (the check is of each lesson's bytes; the command measures every line, header lines included)
-- diff-bug #7: the template's length is unguarded though T8's line says guarded — fix now (template room guard added; the T8 line is corrected in the work log)
+- diff-bug #7: the template's length is unguarded though T8's line says guarded — fix now, fixed 2bb47883 (template room guard added; the T8 line is corrected in the work log)
 - diff-bug #8: ROADMAP near its byte budget — noted (23,910 bytes; hygiene removes the started row)
 - diff-bug #9: milestone tags in test docstrings — reject, style (repeat of prior-review #1)
 - diff-bug #10: DESIGN.md's close-block sentence reads as all modes — reject, false (repeat)
-- blame-history #1: tracking-rules "At the limit the lowest-ranked lesson leaves first" gives the old order — fix now ("At the limit, after retirement, …")
+- blame-history #1: tracking-rules "At the limit the lowest-ranked lesson leaves first" gives the old order — fix now, fixed 2bb47883 ("At the limit, after retirement, …")
 - blame-history #2: "Over 25 lessons" reads as no retirement at 25 — reject, false (over 25 is the over-limit case; at 25 the one-in-one-out capture rule applies)
 - blame-history #3, #4, #8, #9, #11: repeats of pass-2 blame-history #5, #2, prior-review #2, diff-bug #2, blame-history #7 — dispositions as recorded there
 - blame-history #5: an unfittable lesson loses its `used` mark — reject, planned change (AC2)
@@ -263,7 +263,7 @@ Pass 3 (2026-10-25), branch head 30d663ad, after return 2. Copilot state query t
 - blame-history #7: an unadmitted waiting line can read 458 bytes and the length rule cannot apply — reject, false (the length rule covers lessons, and a waiting line is not one)
 - blame-history #10: the plan harvest's no-waiting-line choice is not in D-221 — reject, planned change (a skill detail; D-221 records the waiting line's rules)
 - blame-history #12: triage's opening dropped the D-169 and D-177 cites — reject, style
-- blame-history #13: D-221 has no Door line for D-108 — fix now as a work-log record (the plan's collision check missed D-108; the trigger passes it, below)
+- blame-history #13: D-221 has no Door line for D-108 — fix now as a work-log record (the plan's collision check missed D-108; the trigger passes it), fixed 2bb47883
 - blame-history #14: the header compression dropped the weight-caps pointer and the "Current knowledge" label — reject, false (no rule is lost; each rule stays in the header)
 - blame-history #15: a waiting line kept at Amend changes nothing — reject, false (that is the user's choice to leave it waiting)
 - prior-review #1, #2, #8: repeats of the parked row "Match lesson citations after use marks", pass-2 blame-history #7, pass-2 blame-history #5 — dispositions as recorded
@@ -271,7 +271,7 @@ Pass 3 (2026-10-25), branch head 30d663ad, after return 2. Copilot state query t
 - prior-review #5, #6: "at the end" and DESIGN/CHANGELOG guards — reject, false and planned change (repeats)
 - prior-review #7: `test_plan_names_no_waiting_line` asserts one sentence — reject, style (the sentence is the rule the name states)
 - prior-review #9: context only (the user's PR replies say skill rules owe no guard) — noted
-- ripple #1: same as blame-history #1 — fix now
+- ripple #1: same as blame-history #1 — fix now, fixed 2bb47883
 - ripple #2: "replaces pruning at the limit" — reject, false (pruning means D-015's prune, which rank eviction replaces)
 - ripple #3, #4: repeats of pass-2 ripple #4 and diff-bug #9 — dispositions as recorded
 - conversation and copilot: read at the merge chip below
