@@ -79,3 +79,5 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - gate (profile): scripts/tests exit 0, hooks/tests exit 0, plugin validate exit 0, marketplace validate exit 0 with no `plugins[N].version` warning; `claude plugin test` running on the review head (pass-1 result line follows); CHANGELOG Unreleased carries the lessons-entry edit and a Fixes entry, no milestone numbers in that text.
 - gate (profile, pass 1): `claude plugin test` on c9e7ce7a exit 0, 2466 pass, 0 fail.
 - spawned: diff-bug, blame-history, prior-review, ripple
+- blame-history #1: a stop between capture and the deletion reruns step 9 and could capture lessons twice — fix now (not load-bearing: a duplicate line after a mid-pass stop), fixed 648bb61a: a rerun captures no lesson and writes no waiting line the file already holds.
+- blame-history #2: the ROADMAP byte re-measure after the row edit names no remedy — fix now, fixed 648bb61a: over budget, apply the tracking-rules remedy before the commit.
