@@ -274,4 +274,6 @@ Pass 3 (2026-10-25), branch head 30d663ad, after return 2. Copilot state query t
 - ripple #1: same as blame-history #1 — fix now, fixed 2bb47883
 - ripple #2: "replaces pruning at the limit" — reject, false (pruning means D-015's prune, which rank eviction replaces)
 - ripple #3, #4: repeats of pass-2 ripple #4 and diff-bug #9 — dispositions as recorded
-- conversation and copilot: read at the merge chip below
+- conversation: PR #334 has no reviews, no conversation comments, and no unresolved threads (read on head 6669c101).
+- copilot: no Copilot review on PR #334; two requests each exited 0 and the state query still read `none`, so GitHub may not have recorded them (used-up Copilot credits are one cause).
+- snapshot: no changed snapshot files.
