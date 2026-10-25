@@ -5399,6 +5399,19 @@ REGISTRY += [
         target=TRIAGE,
         block="`cairn/LESSONS.md` has no git copy. So the close block also quotes in full",
     ),
+    # M323 (D-223): guest passes also quote each lesson's pre-edit line.
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonsApplyAndRecord.test_record_names_drops_merges_and_corrections",
+        target=TRIAGE,
+        block="quotes in full each lesson's line as it stood before the pass compressed,",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_review_capture_is_one_in_one_out",
+        target=REVIEW,
+        block="forced its shortening or a partial retirement trimmed it. When the limit bites,",
+    ),
     Mutation(
         guard="test_resume_routing",
         test="TestReviewArchivedFileArm.test_writes_nothing_to_the_archive_and_no_issue",

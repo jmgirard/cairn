@@ -286,7 +286,10 @@ commit message also gives the evidence for each `refuted` or `obsolete`
 drop and each `correct`. In
 guest mode the stamp alone names them, with their evidence. In guest mode
 `cairn/LESSONS.md` has no git copy. So the close block also quotes in full
-each lesson or waiting line that the pass drops or merges away.
+each lesson or waiting line that the pass drops or merges away. It also
+quotes in full each lesson's line as it stood before the pass compressed,
+split, or corrected it, and each merge survivor's line as it stood before
+the merge changed it.
 
 **Steps 6 and 7.** The stamp says it is a lessons pass, and it names each
 drop's exit in place of the default pass's drop reason classes. The close block

@@ -985,7 +985,9 @@ re-enters here, at the step the record shows is next:
    block instead. The close block names
    each waiting line it wrote.
    In guest mode `cairn/LESSONS.md` has no git copy, so the close block
-   also quotes each removed lesson in full. When the limit bites, the close block also fences
+   also quotes each removed lesson in full, retired and evicted alike. It
+   also quotes in full each lesson's line as it stood before a `used` mark
+   forced its shortening or a partial retirement trimmed it. When the limit bites, the close block also fences
    `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
    Last of the edits, **delete the live
    `cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →

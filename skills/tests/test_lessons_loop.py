@@ -224,7 +224,10 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertNotIn("capture " "nothing", review)
         self.assertIn(
             "In guest mode `cairn/LESSONS.md` has no git copy, so the close "
-            "block also quotes each removed lesson in full.",
+            "block also quotes each removed lesson in full, retired and "
+            "evicted alike. It also quotes in full each lesson's line as it "
+            "stood before a `used` mark forced its shortening or a partial "
+            "retirement trimmed it.",
             review,
         )
         # Spelled by concatenation so a repo grep for the retired word
