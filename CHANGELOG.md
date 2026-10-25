@@ -14,8 +14,10 @@
   capture is one in, one out: it removes the lowest-ranked lesson that no
   test pins and no open milestone quotes. If it cannot remove enough
   lessons to leave 25, it removes none. It writes each new lesson at the
-  end of the file as a `- waiting` line, which is not a lesson. The next
-  `/cairn-triage lessons` run proposes to admit or drop it. In guest mode
+  end of the file as a `- waiting` line, which is not a lesson. If the
+  file already holds 49 lines, the close block quotes the lesson instead.
+  The next `/cairn-triage lessons` run proposes to admit or drop a waiting
+  line. In guest mode
   `cairn/LESSONS.md` has no git copy. So the review quotes each lesson it
   removes, and `/cairn-triage lessons` quotes each lesson it drops or
   merges away. If added text makes

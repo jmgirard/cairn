@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M321: Fix the gaps in lesson use marks
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -161,3 +161,5 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: flake check: the run on a main worktree is no comparison (two test files did not load there, untracked dependencies absent); `git diff main --stat -- hooks scripts` is empty, and a solo rerun on the branch passed 2466/2466 in 120 s against about 400 s for the two failing runs, so the mod-test failures are load-timing flakes, not this branch.
 - 2026-10-25: T5 done — CHANGELOG's Unreleased lessons entry now says review writes a skipped lesson as a `- waiting` line that `/cairn-triage lessons` admits or drops, and that guest triage quotes each lesson it drops or merges away; README sweep found no "captures nothing" or "shorten or split" wording (README's lessons row stays as it is). Verify 5/5 green, exit codes read from a log, not a pipe.
 - 2026-10-25: T6 done — guards re-pinned in `test_lessons_loop.py`, `test_triage_lessons.py`, and `test_resume_routing.py` for the changed text; new guards for the read-before-deletion order (an index comparison), pin-safe shortening and the pin-file procedure, the waiting line and its 49-line stop, the preview, the remedy and waiting line at template, LESSONS header, and both rulebook sites, the eight dispositions with `admit`, waiting-line handling, the opening paragraph, split and merge marks, the rank count, and guest quoting; 28 new or updated mutation entries, each red when blanked. `skills/tests` 974 OK; verify 5/5 green; validate green.
+- 2026-10-25: correction to the T6 line: it changed 31 mutation entries, 27 new and 4 updated, not 28.
+- 2026-10-25: claim audit: 49 claims read, 2 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/shared/templates/lessons.md, cairn/LESSONS.md header (the 49-line exception was missing, so "writes it" read as unconditional), skills/cairn-triage/SKILL.md (step 1's empty-file sentence ignored waiting lines). Same reader re-read all corrected claims: true. Guards added for the new sentences (3 new mutation entries, 1 updated); rulebook-mass baseline re-seeded to 847 lines / 83,799 bytes. `skills/tests` 974 OK; verify 5/5 green.

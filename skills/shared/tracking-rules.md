@@ -143,7 +143,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. At the 25-lesson
   limit review capture is one-in-one-out: it evicts the lowest-ranked lesson that no pin file holds and no live
   milestone quotes. When none can go, the new lesson goes at the file's end as a `- waiting` line, which is not a
-  lesson, takes no `used` mark, and waits for `/cairn-triage lessons`. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson
+  lesson, takes no `used` mark, and waits for `/cairn-triage lessons`. At 49 or more lines the close block quotes it instead. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson
   by rank, not because it is redundant. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
   with evidence read in the pass, `planner test`, for a line a planner does not need, and `rank`, which evicts the
   lowest-ranked lessons down to 20. It also corrects a false lesson in place and shortens or splits each lesson over

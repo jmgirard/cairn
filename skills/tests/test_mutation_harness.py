@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="847 lines / 83,744 bytes",
+        block="847 lines / 83,799 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -4725,7 +4725,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestLessonItems.test_missing_file_yields_no_items",
         target=TRIAGE,
-        block="such line, yields zero items with no failure.",
+        block="lesson line and no waiting line, yields zero items with no failure.",
     ),
     Mutation(
         guard="test_triage_lessons",
@@ -5240,6 +5240,24 @@ REGISTRY += [
         test="TestOverLimitRemedy.test_rulebook_states_each_remedy_and_the_waiting_line",
         target=RULES,
         block="450 bytes, and its `admit` disposition makes a waiting line a lesson",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_rulebook_states_each_remedy_and_the_waiting_line",
+        target=RULES,
+        block="At 49 or more lines the close block quotes it instead.",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_template_states_each_remedy_and_the_waiting_line",
+        target="skills/shared/templates/lessons.md",
+        block="already holds 49 lines, review quotes the lesson in its close block instead.",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_lessons_header_states_each_remedy_and_the_waiting_line",
+        target="cairn/LESSONS.md",
+        block="drop it. If the file already holds 49 lines, review quotes the lesson in its",
     ),
     Mutation(
         guard="test_triage_lessons",

@@ -293,7 +293,9 @@ class TestOverLimitRemedy(unittest.TestCase):
     WAITING = (
         "A `- waiting` line at the end is not a lesson. When no lesson can "
         "leave a full file, review writes it. It takes no `used` mark and "
-        "waits for `/cairn-triage lessons` to admit or drop it."
+        "waits for `/cairn-triage lessons` to admit or drop it. If the file "
+        "already holds 49 lines, review quotes the lesson in its close block "
+        "instead."
     )
 
     def test_template_states_each_remedy_and_the_waiting_line(self):
@@ -322,7 +324,8 @@ class TestOverLimitRemedy(unittest.TestCase):
         self.assertIn(
             "When none can go, the new lesson goes at the file's end as a "
             "`- waiting` line, which is not a lesson, takes no `used` mark, "
-            "and waits for `/cairn-triage lessons`.",
+            "and waits for `/cairn-triage lessons`. At 49 or more lines the "
+            "close block quotes it instead.",
             rules,
         )
         self.assertIn(

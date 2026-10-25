@@ -91,7 +91,8 @@ class TestLessonItems(unittest.TestCase):
 
     def test_missing_file_yields_no_items(self):
         self.assertIn(
-            "A missing `cairn/LESSONS.md`, or one with no such line, yields "
+            "A missing `cairn/LESSONS.md`, or one with no lesson line and no "
+            "waiting line, yields "
             "zero items with no failure.",
             section(),
         )

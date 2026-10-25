@@ -18,7 +18,8 @@ marks, and reviews mark `used M<NNN>` on the
 lessons a milestone used (D-051, D-055, D-218). A `- waiting` line at the
 end is not a lesson. When no lesson can leave a full file, review writes it.
 It takes no `used` mark and waits for `/cairn-triage lessons` to admit or
-drop it.
+drop it. If the file already holds 49 lines, review quotes the lesson in its
+close block instead.
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 

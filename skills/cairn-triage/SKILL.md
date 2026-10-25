@@ -148,7 +148,7 @@ subject: the text after the first `): `, or after the date when the line
 has none, trimmed to about 80 characters. List its provenance (the
 parenthesized milestone list after the date), its byte length (the whole
 line, without its newline), and its date. Its priority is `—`. A missing `cairn/LESSONS.md`, or one with no
-such line, yields zero items with no failure. The pass then reaches the
+lesson line and no waiting line, yields zero items with no failure. The pass then reaches the
 gate with an empty table, as step 1 states for empty lists.
 
 A waiting line is one line of `cairn/LESSONS.md` that opens with
