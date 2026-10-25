@@ -147,7 +147,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   by rank, not because it is redundant. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
   with evidence read in the pass, `planner test`, for a line a planner does not need, and `rank`, which evicts the
   lowest-ranked lessons down to 20. It also corrects a false lesson in place and shortens or splits each lesson over
-  450 bytes, and its `admit` disposition makes a waiting line a lesson (D-177, D-218). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`
+  450 bytes, and its `admit` disposition makes a waiting line a lesson (D-177, D-218, D-221). The graduated records-hygiene family lives in `skills/shared/records-hygiene.md`
   (candidate-row lifecycle; superseding a decision), read at hygiene or plan gates.
 - **Stop points are commit points.** Never end a session or turn with uncommitted work — checkpoint-commit code and
   tracking together (even half-done, marked as such).

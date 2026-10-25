@@ -987,7 +987,7 @@ re-enters here, at the step the record shows is next:
    each waiting line it wrote.
    In guest mode `cairn/LESSONS.md` has no git copy, so the close block
    also quotes each removed lesson in full. When the limit bites, the close block also fences
-   `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218).
+   `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line the pass captures, marks, shortens, or writes as
    waiting, any D-entry, any Known issues entry, and any
