@@ -119,7 +119,7 @@ row) → dropped at the user's choice at the question set.
       and the pin-safe shortening rule with its no-mark outcome, the waiting
       line with its 50-line stop, the preview wording, and "mark" in the
       arm's skipped list.
-- [ ] T2: Triage lessons pass (`skills/cairn-triage/SKILL.md` about lines
+- [x] T2: Triage lessons pass (`skills/cairn-triage/SKILL.md` about lines
       107-260): `used` mark placement on split, merge, compress, and
       correct; waiting-line enumeration and the `admit` row (eight
       dispositions); guest quoting in the close block; the opening
@@ -154,3 +154,4 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: changelog: M320's Unreleased lessons entry is edited, not joined by a new entry, since both change the same unreleased behavior.
 - 2026-10-25: branch m321-lesson-use-mark-gaps cut from main at 7eaeb0a2; untracked `cairn-probe.log` and `tsconfig.json` are unrelated and stay unstaged.
 - 2026-10-25: T1 done — review step 9 reads the `lessons used:` lines and trap-met lessons before the deletion; pin files found by `git grep -l "LESSONS.md"` (path contains `test`); the mark's shortening keeps pinned and quoted text whole, else no mark and the close block names it; the too-few case writes `- waiting` lines (none at 49 or more lines, quoted instead); the preview shows captured, marked, shortened, and waiting lines and names removed ones; the archived-file arm says "capture, mark, or retire no lesson". Agent chose: the 50-line stop reads as "already holds 49 lines or more". Verify 5/5 green; `skills/tests` red on four guards of the changed text, re-pinned at T6.
+- 2026-10-25: T2 done — triage lessons pass: opening says review retires covered lessons and also marks use and evicts by rank (D-218); step 1 lists `- waiting` lines as items of their own, not counted or ranked until admitted; eight dispositions with the `admit` row (waiting line only); a waiting line's `drop` takes any exit but `rank`, and a pinned or quoted one is `admit`; split lines keep the `used` mark, a merge survivor keeps the higher mark, compress and correct keep it; apply and record name admits; guest close block quotes each dropped or merged-away lesson or waiting line. DESIGN.md Known issues narrowed. Agent chose: an unpinned waiting line takes the planner test, and an admitted line counts in the rank rule. Verify 5/5 green.

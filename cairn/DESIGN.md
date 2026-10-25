@@ -1020,7 +1020,8 @@ within each type and are never reused.
   each already-shipped or refuted-premise drop's evidence in the ROADMAP
   stamp, and the next hygiene pass replaces it with no git history behind
   it. A guest lesson drop widens this, since an untracked LESSONS.md keeps
-  no git copy. Lessons pass: the limit check sends back a pass that trims a
+  no git copy. The close block quotes each dropped or merged-away lesson in
+  full, which leaves it only in chat (narrowed by M321). Lessons pass: the limit check sends back a pass that trims a
   file already over its limits without getting under them. Test comments
   cite lessons by line number ("LESSONS :49"). `git grep -l "LESSONS.md"`
   misses a test that builds the path. Retitle: rows sharing a title get
