@@ -55,7 +55,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 
 ## Acceptance criteria
 
-- [ ] AC1: On the branch head, sweep S lists no line that cites a lesson.
+- [x] AC1: On the branch head, sweep S lists no line that cites a lesson.
       A cite sends the reader to a `cairn/LESSONS.md` line for a point.
       It names the lesson by milestone id, line number, date, or quoted
       text, as in "the M171 lesson", "LESSONS M194", "LESSONS :49", or
@@ -63,17 +63,17 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
       the lessons mechanism, a milestone's work on lessons, or fixture
       data. The wrapped M81 cite at `scripts/cairn_validate.py:1344-1345`
       on main is rewritten as AC2 says.
-- [ ] AC2: Take each line that S lists on main, that cites a lesson as
+- [x] AC2: Take each line that S lists on main, that cites a lesson as
       AC1 defines it, and that the branch rewrites rather than deletes.
       Its new text states in words the point that the cite stood for. Or
       it cites a milestone or D-entry, and that milestone's file, its
       archive summary, or that entry records the point.
-- [ ] AC3: `cairn/DECISIONS.md` gains a new D-entry, appended after D-221.
+- [x] AC3: `cairn/DECISIONS.md` gains a new D-entry, appended after D-221.
       The entry decides that code, tests, skill prose, and
       `cairn/DESIGN.md` do not cite a lesson. The header of
       `cairn/LESSONS.md`, which is the text before its first lesson line,
       states that rule in one sentence.
-- [ ] AC4: `cairn/DESIGN.md`'s Known issues no longer says that test
+- [x] AC4: `cairn/DESIGN.md`'s Known issues no longer says that test
       comments cite lessons by line number. The entry's other sentences
       are kept word for word, and its provenance tail gains a
       `narrowed 2026-10-25 — M322` mark (the date of the edit).
@@ -140,3 +140,9 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 ## Decisions
 
 ## Review
+
+- Copilot: PR #335 opened at review start; request exit 0, state query then read `none`: Copilot request on PR #335 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
+- AC1 evidence (2026-10-25, head ba1ffeb3): sweep S lists 16 lines — fixtures.gen.ts:441, fixtures/repo-at-cut ROADMAP:4, test_scripts.py:2476/3439, test_lesson_graduation.py:1, test_lessons_loop.py:1/75/256, test_mutation_harness.py:2400/2941/4677, test_source_note_template.py:7, test_triage_lessons.py:1/11/18, DESIGN.md:38; each names fixture data, the lessons mechanism, a milestone's lesson work, or M63-M65 history, none a cite. cairn_validate.py:1340-1346 now reads "which varies the wrap where the value under test lives", no M81 lesson cite.
+- AC2 evidence: `git diff main...HEAD -- . ':!cairn'` (29 files, +65 -63) read line by line; every rewritten cite states its point in words; the only milestone or D ids on added lines (M208, M88 review F6, M144/D-109, M75/D-044, M28) were on those lines on main, so no lesson cite became a milestone cite; the claim audit confirmed each added reason clause against its code.
+- AC3 evidence: `grep -n '^### D-' cairn/DECISIONS.md` shows D-222 (line 8016) as the last heading, after D-221 (line 7978); it decides that code, tests, skill prose, and `cairn/DESIGN.md` do not cite a lesson. `cairn/LESSONS.md` header lines 18-19 hold the one-sentence rule, before the first lesson line.
+- AC4 evidence: `git diff main...HEAD -- cairn/DESIGN.md` removes only the sentence "Test comments cite lessons by line number ("LESSONS :49")." from the `/cairn-triage` Known issues entry; the entry's other sentences are unchanged (one line rejoined), and its tail gains `narrowed 2026-10-25 — M322`. The same diff drops "(LESSONS M194)" at line 649.
