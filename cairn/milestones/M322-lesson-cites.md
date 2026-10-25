@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M322: Stop citing lessons from code and docs
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — two edited files are shipped skill prose (`skills/milestone-plan/SKILL.md`, `skills/milestone-review/SKILL.md`), and the rest are tests, code comments, and tracking
-- **Branch/PR:** —
+- **Branch/PR:** m322-lesson-cites
 
 ## Goal
 
@@ -92,7 +92,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 
 ## Tasks
 
-- [ ] T1: Append the D-entry to `cairn/DECISIONS.md` and add the header
+- [x] T1: Append the D-entry to `cairn/DECISIONS.md` and add the header
       sentence to `cairn/LESSONS.md`. Keep whole each string that
       `skills/tests/test_lesson_graduation.py` and `test_lessons_loop.py`
       assert in that file, and keep the header within the 23 lines that
@@ -127,6 +127,8 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: plan gate chose a LESSONS.md header sentence over a test that fails on a new cite, because a pattern finds only the spellings it lists and S already needed three; falsified by a new lesson cite in code after the header sentence lands.
 - 2026-10-25: plan gate chose to leave the shipped lessons template alone over adding the rule there, because cairn sets no rule for an adopter's code comments; falsified by an adopter asking for it.
 - 2026-10-25: changelog: no entry, because no behavior or rule an adopter sees changes; the two skill-prose edits drop a parenthetical cite.
+- 2026-10-25: implement started on m322-lesson-cites from main at 67187333; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-25: T1 done: D-222 appended after D-221; LESSONS.md header gains a two-line rule sentence (header 22 lines, test limit 23); lessons_loop and lesson_graduation tests and validate green.
 
 ## Decisions
 

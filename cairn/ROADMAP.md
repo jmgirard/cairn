@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M322 | Stop citing lessons from code and docs | planned | — | normal | milestones/M322-lesson-cites.md |
+| M322 | Stop citing lessons from code and docs | in-progress | — | normal | milestones/M322-lesson-cites.md |
 | M321 | Fix the gaps in lesson use marks | done | — | normal | milestones/archive/M321-lesson-use-mark-gaps.md |
 | M320 | Keep lessons in fixed ranked slots | done | — | normal | milestones/archive/M320-lessons-fixed-slots.md |
 | M319 | Let PROFILE.md set the guest close limit | done | — | normal | milestones/archive/M319-issue-close-cap.md |

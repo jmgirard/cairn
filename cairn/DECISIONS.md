@@ -8012,3 +8012,34 @@ Capturing a 26th lesson: it breaks the limit that D-218 sets.
 **Consequences:** D-051's rejection (2), of a second file of lessons,
 holds: the waiting line sits in `cairn/LESSONS.md`. Falsified by waiting
 lines that stay unadmitted across two or more triage runs.
+
+### D-222 (2026-10-25): Code, tests, skill prose, and `cairn/DESIGN.md` do not cite a lesson — annotates D-015 and D-218 (M322)
+
+**Context:** A lesson in `cairn/LESSONS.md` can leave the file by rank
+(D-218) or change in place when proven false (D-045). A review's `used`
+mark also changes its provenance. Test comments, code comments, two skill
+files, and `cairn/DESIGN.md` cited lessons by milestone id ("the M171
+lesson"), by line number ("LESSONS :49"), or by quoted text. Many of those
+lessons had already left, so the cites pointed at nothing. M322's work log
+holds the sweep and its count.
+
+**Decision:** Code, tests, skill prose, and `cairn/DESIGN.md` do not cite
+a `cairn/LESSONS.md` line. A comment states the point in its own words.
+Where a source helps, it cites a milestone or D-entry whose file records
+the point, since those ids are never reused or removed. The header of
+this repo's `cairn/LESSONS.md` states the rule, because a writer who
+learned a point from a lesson reads that file. A test that asserts text
+present in `cairn/LESSONS.md` (a pin file) cites nothing and is outside
+the rule.
+
+**Rejected:** (1) Replacing each cite with its lesson's milestone id. A
+milestone's file or archive summary often does not record the point the
+lesson made, so the new cite would point at nothing. (2) A test that fails
+on a new cite. A pattern finds only the spellings it lists, and M322's
+sweep already needed three patterns and still missed a cite wrapped across
+two lines. (3) Adding the rule to the shipped lessons template. The
+template governs an adopter's lessons file, and cairn sets no rule for an
+adopter's code comments.
+
+**Consequences:** Pin files stay as they are. Falsified by a new lesson
+cite in this repo's code or docs after the header sentence lands.

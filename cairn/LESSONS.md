@@ -15,6 +15,8 @@ lowest-ranked lesson leaves. Rank is the newest milestone in its provenance,
 not counting `trimmed` or `corrected` marks, and reviews mark `used M<NNN>`
 on the lessons a milestone used (D-051, D-055, D-218). A `- waiting` line is
 not a lesson: it takes no `used` mark and waits for `/cairn-triage lessons`.
+Code, tests, skill prose, and `DESIGN.md` never cite a lesson, which can
+leave or change, but state its point or cite a milestone or D-entry (D-222).
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 
