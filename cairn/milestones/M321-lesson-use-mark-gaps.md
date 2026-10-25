@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M321: Fix the gaps in lesson use marks
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -105,9 +105,9 @@ row) → dropped at the user's choice at the question set.
 - AC1 → T1, T6
 - AC2 → T1, T6
 - AC3 → T1, T6
-- AC4 → T2, T6
+- AC4 → T2, T6, T7
 - AC5 → T2, T6
-- AC6 → T3, T6
+- AC6 → T3, T6, T7
 - AC7 → T4
 - AC8 → T5, T6
 
@@ -136,6 +136,10 @@ row) → dropped at the user's choice at the question set.
       change, with mutation-registry entries where neighbours have them,
       each shown red when its sentence is blanked; re-pin guards whose text
       changed; run `verify` and the hand-run `skills/tests`.
+- [x] T7: Review return 1: name the `used` mark in the `split` row's
+      provenance sentence, and say in the "Retiring a lesson" bullet that
+      retirement runs before rank eviction; re-pin guards and the
+      rulebook-mass baseline.
 
 ## Work log
 
@@ -165,6 +169,7 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: claim audit: 49 claims read, 2 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/shared/templates/lessons.md, cairn/LESSONS.md header (the 49-line exception was missing, so "writes it" read as unconditional), skills/cairn-triage/SKILL.md (step 1's empty-file sentence ignored waiting lines). Same reader re-read all corrected claims: true. Guards added for the new sentences (3 new mutation entries, 1 updated); rulebook-mass baseline re-seeded to 847 lines / 83,799 bytes. `skills/tests` 974 OK; verify 5/5 green.
 - 2026-10-25: PR #334 opened at review start (Copilot round on); Copilot request may not be recorded (state still `none`).
 - 2026-10-25: review return 1: AC4 fails as written — the `split` row's provenance sentence ("Each new line keeps the original date and only the provenance ids its text came from") does not name the `used` mark, which sits in the next sentence; AC6 fails as written — the tracking-rules "Retiring a lesson" bullet does not say retirement runs before rank eviction for a count over 25.
+- 2026-10-25: T7 done (minor amendment for return 1: task added, Coverage AC4 and AC6 cite T7) — the `split` row now reads "Each new line keeps the original date, only the provenance ids its text came from, and the split lesson's `used` mark"; "Retiring a lesson" adds "Over 25 lessons, retirement runs first and rank eviction second."; guards re-pinned and one added (red when blanked); rulebook-mass baseline re-seeded to 848 lines / 83,866 bytes. `skills/tests` 974 OK; verify 5/5 green. Handing back to review.
 
 ## Decisions
 

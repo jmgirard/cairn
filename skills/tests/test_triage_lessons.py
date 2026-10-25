@@ -180,8 +180,8 @@ class TestLessonDispositions(unittest.TestCase):
         self.assertIn(
             "| `split` | Broken into two or more lessons, each one line of at "
             "most 450 bytes and each on one subject. Each new line keeps the "
-            "original date and only the provenance ids its text came from. "
-            "Every new line also keeps the split lesson's `used` mark.",
+            "original date, only the provenance ids its text came from, and "
+            "the split lesson's `used` mark.",
             section(),
         )
 

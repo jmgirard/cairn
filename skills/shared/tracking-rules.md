@@ -140,7 +140,8 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   disputed (a disputed lesson is corrected, not deleted). Checked at `/milestone-review` post-merge hygiene, scoped to
   what the milestone shipped, and over the whole file only when the user runs `/cairn-triage lessons`. A lesson
   earns rank by use: `/milestone-plan` names the lessons that shaped its plan in a `lessons used:` work-log line, and
-  review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. At the 25-lesson
+  review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. Over 25 lessons,
+  retirement runs first and rank eviction second. At the 25-lesson
   limit review capture is one-in-one-out: it evicts the lowest-ranked lesson that no pin file holds and no live
   milestone quotes. When none can go, the new lesson goes at the file's end as a `- waiting` line, which is not a
   lesson, takes no `used` mark, and waits for `/cairn-triage lessons`. At 49 or more lines the close block quotes it instead. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson

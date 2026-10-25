@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="847 lines / 83,799 bytes",
+        block="848 lines / 83,866 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -5249,6 +5249,12 @@ REGISTRY += [
     ),
     Mutation(
         guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_rulebook_states_each_remedy_and_the_waiting_line",
+        target=RULES,
+        block="retirement runs first and rank eviction second.",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
         test="TestOverLimitRemedy.test_template_states_each_remedy_and_the_waiting_line",
         target="skills/shared/templates/lessons.md",
         block="already holds 49 lines, review quotes the lesson in its close block instead.",
@@ -5299,7 +5305,7 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_split_disposition",
         target=TRIAGE,
-        block="Every new line also keeps the split lesson's `used` mark.",
+        block="only the provenance ids its text came from, and the split lesson's `used` mark.",
     ),
     Mutation(
         guard="test_triage_lessons",

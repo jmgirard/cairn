@@ -331,6 +331,10 @@ class TestOverLimitRemedy(unittest.TestCase):
         self.assertIn(
             "its `admit` disposition makes a waiting line a lesson", rules
         )
+        self.assertIn(
+            "Over 25 lessons, retirement runs first and rank eviction second.",
+            rules,
+        )
 
 
 if __name__ == "__main__":
