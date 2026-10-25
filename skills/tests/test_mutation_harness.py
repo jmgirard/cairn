@@ -300,7 +300,8 @@ REGISTRY = [
     ),
     # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
     # one Mutation entry per new positive assert (M53 discipline); the paired
-    # assertNotIn("show-current") rides on these positives (M54 lesson).
+    # assertNotIn("show-current") rides on these positives, since removing
+    # text cannot make an absence assert fail.
     Mutation(
         guard="test_default_branch_parameterized",
         test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
@@ -561,7 +562,7 @@ REGISTRY = [
         block="Source notes (`<citekey>.md`), synthesis notes",
     ),
     # M80: the authoring trigger — WHEN a page is owed — lives in core, not in
-    # the numeric-gated module (LESSONS :49). One entry per positive assertIn;
+    # the numeric-gated module. One entry per positive assertIn;
     # the absence-assert on the module has no entry, since blanking cannot
     # restore an absence (M54) — its positive twin below is what locks it.
     Mutation(
@@ -720,8 +721,8 @@ REGISTRY = [
         target="skills/shared/profiles/python.md",
         block="self-submits nothing",
     ),
-    # Second entry for test_toolchain_profiles — the exact M47-lesson scenario
-    # (the generic release-walk `commit` step): a file may carry >1 entry.
+    # Second entry for test_toolchain_profiles, for the generic release-walk
+    # `commit` step: a file may carry >1 entry.
     Mutation(
         guard="test_toolchain_profiles",
         test="TestReleaseSkillReadsProfile.test_generic_release_walk_defines_a_tag_path",
@@ -3810,7 +3811,7 @@ REGISTRY += [
 
 REGISTRY += [
     # M172: the resume route's trigger and its four branches in the review
-    # skill's Session start (the list pinned whole, M171 lesson), step 7's
+    # skill's Session start (the list pinned whole), step 7's
     # approval line, the audit's merged-but-review bullet, and the hotfix
     # merged-PR re-entry. Blocks embed the physical wrap; the guard reads
     # with whitespace collapsed.

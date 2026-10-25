@@ -52,7 +52,7 @@ class TestPlainStyleRule(unittest.TestCase):
 
 class TestRecordProseRule(unittest.TestCase):
     """M152: the record-prose rule. Three asserts: the rule exists under its
-    name, the no-characterizations clause (the M114 lesson's standard), and
+    name, the no-characterizations clause, and
     the cross-referenced length standard."""
 
     def test_rule_present_under_its_name(self):

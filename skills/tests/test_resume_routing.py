@@ -10,7 +10,7 @@ the Review section, `/milestone`'s audit a merged-but-`review` bullet, and
 in the mutation harness.
 
 The route list is pinned whole — every branch (a)–(d), never its head
-(M171 lesson) — and the list runs across many wrapped lines, so it is read
+— and the list runs across many wrapped lines, so it is read
 with whitespace collapsed (`re.sub(r"\\s+", " ", …)`): the deliberate
 exception to the one-physical-line anchor convention. Targets are read with
 `Path.read_text` because the mutation engine patches only that call (M100).
@@ -224,7 +224,7 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
     """M172 AC4, rewritten at M174: `/hotfix` step 1's merged-PR re-entry
     runs a post-hoc verification of the merged diff before step 7 — never
     step 7 alone. Each move is pinned as a whole passage, whitespace
-    collapsed (M171 lesson)."""
+    collapsed."""
 
     def setUp(self):
         self.step1 = flat(section(read("hotfix", "SKILL.md"),
@@ -331,8 +331,8 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     guest arm reports and stops. Step 6 notes the head the gate shows,
     writes the marker with the head oid before the wait, merges with
     `--match-head-commit`, and its timeout close names both re-entries.
-    Each trigger part and each outcome is pinned on its own (M165 lesson),
-    whitespace collapsed (M171 lesson)."""
+    Each trigger part and each outcome is pinned on its own,
+    whitespace collapsed."""
 
     def setUp(self):
         text = read("hotfix", "SKILL.md")
@@ -489,8 +489,8 @@ class TestHotfixClosedPrStop(unittest.TestCase):
     is not a milestone branch stops in both modes after the candidate-row
     match, removes only a `hotfix ` marker naming it, edits no row, and
     ends with a close block whose next command starts over. Trigger and
-    each outcome are pinned on their own (M165 lesson), whitespace
-    collapsed (M171 lesson)."""
+    each outcome are pinned on their own, whitespace
+    collapsed."""
 
     def setUp(self):
         text = read("hotfix", "SKILL.md")
@@ -545,8 +545,7 @@ class TestHotfixOwnOpenPr(unittest.TestCase):
     """M266 AC2: the operator's own open `hotfix-` PR that the owner arm
     does not resume takes the walk as an authored fix whose PR exists. The
     trigger, the adopting variants, and the step 6 and step 7 exemption
-    sentences are pinned on their own (M165 lesson), whitespace collapsed
-    (M171 lesson)."""
+    sentences are pinned on their own, whitespace collapsed."""
 
     def setUp(self):
         text = read("hotfix", "SKILL.md")
@@ -616,8 +615,7 @@ class TestHotfixGuestChangeRoute(unittest.TestCase):
     """M266 AC3 and AC4: the guest arm's change route for the operator's own
     `hotfix-` PR with a change request newer than its head. The trigger, the
     stale-request fallback, the reads, the checks, the chip, the push, and
-    both closes are pinned on their own (M165 lesson), whitespace collapsed
-    (M171 lesson)."""
+    both closes are pinned on their own, whitespace collapsed."""
 
     def setUp(self):
         text = read("hotfix", "SKILL.md")

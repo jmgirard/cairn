@@ -2,7 +2,7 @@
 
 `/cairn-triage lessons` reads every `cairn/LESSONS.md` lesson and proposes
 one disposition each at the triage gate. Each rule the pass rests on is
-pinned on its own (M165 lesson):
+pinned on its own:
 
   1. The argument: no argument means no lesson, any other argument stops.
   2. The item shape and the empty case.

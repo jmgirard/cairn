@@ -13,7 +13,7 @@ things have to survive:
   2. The push remote. `<push>` is `<base>` under `# Push remote: base`, else
      `<fork>`. A branch with an open PR is pushed to that PR's head remote.
   3. Every guest push site names `<push>` or the PR's head remote. The list
-     is the whole list (M171 lesson): a test fails when any one site goes
+     is the whole list: a test fails when any one site goes
      back to `<fork>` or `origin`.
   4. The push-access read before a handoff push to the base repo, in
      `/milestone-review` and `/hotfix`; implement's stop before it rebases

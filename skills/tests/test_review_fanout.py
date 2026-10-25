@@ -217,7 +217,8 @@ class TestSharedCheckoutGuard(unittest.TestCase):
     This is locked in two places: the general subagent-conduct rule in the
     shared rulebook, and the pointed reminder at the /milestone-review step.
     Phrases are asserted case-insensitively and each lives on one physical
-    line (M23 newline, M26 bold-split lessons)."""
+    line with no bold marker inside it, since a line break or a bold marker
+    splits the phrase."""
 
 
     def test_review_fanout_reminds_reviewers_ref_based_only(self):

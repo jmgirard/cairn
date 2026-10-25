@@ -10,7 +10,7 @@ same by cross-reference; `/milestone`'s audit reports the counts. Each
 clause is pinned here (AC1–AC4) and registered in the mutation harness.
 
 Clauses run across wrapped lines, so targets are read with whitespace
-collapsed (`re.sub(r"\\s+", " ", …)`, the M171 lesson) via
+collapsed (`re.sub(r"\\s+", " ", …)`) via
 `Path.read_text`, which the mutation engine patches (M100). Hand-run only
 (M144, D-109):
 
