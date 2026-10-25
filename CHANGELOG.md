@@ -13,9 +13,12 @@
   trap keeps a high rank. At 25 lessons, review
   capture is one in, one out: it removes the lowest-ranked lesson that no
   test pins and no open milestone quotes. If it cannot remove enough
-  lessons to leave 25, it removes none, captures nothing, and names the
-  lesson it skipped. In guest mode the review quotes each lesson it
-  removes, since `cairn/LESSONS.md` has no git copy there. If added text makes
+  lessons to leave 25, it removes none. It writes each new lesson at the
+  end of the file as a `- waiting` line, which is not a lesson. The next
+  `/cairn-triage lessons` run proposes to admit or drop it. In guest mode
+  `cairn/LESSONS.md` has no git copy. So the review quotes each lesson it
+  removes, and `/cairn-triage lessons` quotes each lesson it drops or
+  merges away. If added text makes
   a lesson longer than 450 bytes, that text becomes a lesson of its own.
   `/cairn-triage lessons` now shortens or splits every lesson over 450
   bytes, and it proposes dropping the lowest-ranked lessons until 20 are
