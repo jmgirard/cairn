@@ -60,7 +60,7 @@ row) → dropped at the user's choice at the question set.
       written and the close block quotes it in full. Its durable-record
       preview shows verbatim each LESSONS line the pass captures, marks,
       shortens, or writes as waiting, and names each lesson it removes.
-- [ ] AC4: In `skills/cairn-triage/SKILL.md`'s lessons pass: each line of a
+- [x] AC4: In `skills/cairn-triage/SKILL.md`'s lessons pass: each line of a
       `split` keeps the split lesson's `used` mark, and the `split` row's
       provenance sentence names that mark as kept on every line; a `merge`
       survivor carries the `used` mark with the higher milestone number of
@@ -78,7 +78,7 @@ row) → dropped at the user's choice at the question set.
       `admit`, never `drop`; until admitted, a waiting line is not counted
       among the lessons or ranked; and step 2's disposition count and table
       include `admit`, its row stating it applies only to a waiting line.
-- [ ] AC6: In `skills/shared/templates/lessons.md`, `cairn/LESSONS.md`'s
+- [x] AC6: In `skills/shared/templates/lessons.md`, `cairn/LESSONS.md`'s
       header, tracking-rules "Weight caps", and tracking-rules "Retiring a
       lesson", the over-limit remedy sends a lesson over 450 bytes to
       shortening or splitting and a file over 25 lessons to retirement and
@@ -92,7 +92,7 @@ row) → dropped at the user's choice at the question set.
       "captures nothing when none can go" clause as superseded by the waiting
       line, and records the waiting line, triage's `admit` disposition, and
       guest triage's quoting of each dropped or merged-away lesson.
-- [ ] AC8: The CHANGELOG's Unreleased lessons entry states that review
+- [x] AC8: The CHANGELOG's Unreleased lessons entry states that review
       stores a skipped lesson as a waiting line that `/cairn-triage lessons`
       admits or drops, and that guest `/cairn-triage lessons` quotes each
       lesson it drops or merges away; the repo's `verify` (both gating
@@ -185,3 +185,12 @@ Pass 1 (2026-10-25), branch head b5011c05, PR #334. Copilot: state query `none`;
 - AC6 evidence: the template (`skills/shared/templates/lessons.md:13-15`), the `cairn/LESSONS.md` header (`:13-15`), and Weight caps (`tracking-rules.md:88-89`) each send a lesson over 450 bytes to shortening or splitting and a count over 25 to retirement then rank eviction; none ties splitting or shortening to the count. All four sites say a `- waiting` line is not a lesson, takes no `used` mark, and waits for `/cairn-triage lessons` (template `:18-20`, header `:19-21`, Weight caps `:71-72`, Retiring `:145-146`), and "Retiring a lesson" names the waiting line in the none-can-go case and `admit` (`:150`). But the "Retiring a lesson" bullet states the 450-byte remedy ("shortens or splits each lesson over 450 bytes") and rank eviction at the limit, and nowhere says retirement runs first, so it does not send a count overrun to "retirement and then rank eviction". Fail as written.
 - AC7 evidence: `cairn/DECISIONS.md` gains one entry, D-221 (`grep -c "^### D-221"` 1; the diff against main removes no line). It supersedes D-177's "one of five exits" (`:8001`) and D-218's "captures nothing when none can go" (`:7994`), and records the waiting line (`:7990`), the `admit` disposition (`:7995-7998`), and guest triage's quoting of each dropped or merged-away lesson (`:8002`). Pass.
 - AC8 partial: `CHANGELOG.md:16-23` says review writes each new lesson it cannot fit as a `- waiting` line that the next `/cairn-triage lessons` run proposes to admit or drop, and that guest `/cairn-triage lessons` quotes each lesson it drops or merges away. Verify on the review head waits for the return below. Not ticked.
+
+Pass 2 (2026-10-25), branch head 603cd3c5, after return 1. Copilot: state query `none`; one request (exit 0), state still `none` — Copilot request on PR #334 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
+
+- AC4 recheck: the `split` row (`skills/cairn-triage/SKILL.md:172`) now reads "Each new line keeps the original date, only the provenance ids its text came from, and the split lesson's `used` mark", so its provenance sentence names the mark kept on every line; the merge, compress, correct, guest-quoting, and opening evidence of pass 1 is unchanged (the diff since b5011c05 touches only that row in the skill). Pass.
+- AC6 recheck: `tracking-rules.md:143-144` "Retiring a lesson" now says "Over 25 lessons, retirement runs first and rank eviction second.", beside its 450-byte "shortens or splits each lesson over 450 bytes"; the other three sites and the waiting-line statements of pass 1 are unchanged. Pass.
+- AC8 evidence: CHANGELOG as in pass 1; on 603cd3c5 `scripts/tests`, `hooks/tests`, both `claude plugin validate` runs, and `claude plugin test` exit 0, and hand-run `skills/tests` OK (974). Pass.
+- AC1, AC2, AC3, AC5, AC7 recheck on 603cd3c5: the diff since b5011c05 leaves review step 9, the waiting-line triage text, and D-221 untouched. Pass.
+- Consistency gate: `cairn_validate` exit 0 (one advisory, the 8-criteria sizing tripwire the plan logged); coverage complete passes; no DESIGN principle changed, so `cairn_impact` is skipped; profile checks: verify green on 603cd3c5, the marketplace validate prints no `version` warning, CHANGELOG's Unreleased lessons entry covers the user-visible changes with no milestone numbers. Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
