@@ -87,6 +87,11 @@ the repo's doctrine modules against the budget its own header states (the
 maturation exit's rule) — since `cairn_validate` does not measure them; an
 overrun takes the same remedies as the line caps, surfaced as a finding for
 the user, never an auto-trim.
+For each waiting line in `cairn/LESSONS.md` (tracking-rules "Weight
+caps"), name it by its date and provenance as a
+finding for the user, and give one fenced `/cairn-triage lessons` for all
+of them, the pass that admits or drops a waiting line. A file with no
+waiting line gets no such finding.
 
 The script also emits non-failing **advisories** (`WARN` lines, exit-code
 neutral) — e.g. a milestone over the split tripwires (>7 criteria / >10

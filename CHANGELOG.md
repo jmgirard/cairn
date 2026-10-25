@@ -21,7 +21,10 @@
   line. In guest mode
   `cairn/LESSONS.md` has no git copy. So the review quotes each lesson it
   removes, and `/cairn-triage lessons` quotes each lesson it drops or
-  merges away. If added text makes
+  merges away. When triage compresses, splits, corrects, or merges a
+  lesson, it also quotes the lesson's old line. When review shortens or
+  trims a lesson, it does the same. The `/milestone` audit names each
+  waiting line and gives the `/cairn-triage lessons` command. If added text makes
   a lesson longer than 450 bytes, that text becomes a lesson of its own.
   `/cairn-triage lessons` now shortens or splits every lesson over 450
   bytes, and it proposes dropping the lowest-ranked lessons until 20 are
@@ -406,6 +409,16 @@
   without the `# Copilot review: on` line and in repos without `cairn/`.
 
 ### Fixes
+
+- **Review hygiene deletes the milestone file last.** The post-merge
+  hygiene pass deleted the live milestone file near its start. In guest
+  mode its check for parked rows that the merge readied then read nothing,
+  because `cairn/` has no git copy there. A pass that stopped after the
+  deletion also lost the lessons the milestone used. The pass now reads
+  the live file for each step. Its last edits write the archive summary,
+  delete the live file, and mark the ROADMAP row `done`, in that order.
+  A pass that stops earlier leaves the live file in place, and a rerun
+  does not capture a lesson twice.
 
 - **A candidate title's issue number stays part of the title.** A row
   written for an issue ends its short title with the number, for example

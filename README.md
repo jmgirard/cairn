@@ -483,8 +483,8 @@ paragraph has no URL. `cairn_next.py`
 prints `(PR #<n>, archived)`, or `(archived)` with no number. A merged PR
 then gets the Finish button, and an archived line gets no other button.
 In guest mode, `/milestone-review` then sets the row to `done`, runs the
-checks, and names the archive, lesson, and review-brief work it skipped
-and the issue comments still owed. It changes nothing in the archive
+checks, and names the archive, lesson, and review-brief work it did not
+rerun and the issue comments still owed. It changes nothing in the archive
 file. In owner mode it says what it found and stops, and leaves the row
 as it is.
 

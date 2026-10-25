@@ -52,11 +52,11 @@ archive's `done` Status as the record of the merge. Resume routing below
 does not run. Skip steps 1 to 8. Of step 9, run only these parts: the
 default branch's fetch, checkout, and fast-forward (its guest arm), the
 ROADMAP row update to `done` with the archive path, the hygiene stamp,
-the cap and budget checks, the hand-run prose guards where the repo ships
+the cap and budget checks, run after the row update, the hand-run prose guards where the repo ships
 them, and `cairn_validate.py`. Name a cap breach or a `cairn_validate.py`
 FAIL in the recap, with no prune, and go on to step 10. Write nothing to
 the archive file, capture, mark, or retire no lesson, and archive no RB/RR pair,
-and name these as skipped in the recap. Make no issue write: the archive
+and name these in the recap as not rerun by this arm. Make no issue write: the archive
 replaces the work log, so no step-7 approval is recorded. The recap names
 each `partial` entry of the archive's `resolves` clause as an owed
 comment, and each `closes` entry as left to the maintainers' merge, whose
@@ -877,26 +877,14 @@ re-enters here, at the step the record shows is next:
    and URL the summary's status line needs come from the local header
    record where the branch survived, else from `gh pr list --head <branch>
    --state merged --json number,url` (the record never reached the
-   default branch; step 8). Before the live file is deleted below, read
-   its `lessons used:` work-log lines. Also read its work log and Review
-   section for each lesson whose trap the milestone met. Note those
-   lessons for the use marks below. Then write the
-   milestone's archive summary **from**
-   `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
-   comment-free skeleton, so nothing scaffolding-shaped can leak into a
-   25-line artifact — writing it to
-   `cairn/milestones/archive/M<NNN>-<slug>.md` and **deleting the live
-   `cairn/milestones/M<NNN>-<slug>.md`**: the summary REPLACES the milestone
-   file rather than joining it, and git holds the full text. (Authoring from a
-   template makes this an explicit step; when the summary was made by
-   compressing the file in place, the move did it implicitly. Skip it and
-   the explicit `cairn_validate.py` run below fails on `roadmap<->disk
-   orphans`.)
-   Draft the summary to the ≤25-line cap, counting as you go, never trimming
-   afterward.
+   default branch; step 8). The live milestone file stays on disk until
+   the end of this step, so each read of it below reads it there, in both
+   modes. Read its `lessons used:` work-log lines. Also read its work log
+   and Review section for each lesson whose trap the milestone met. Note
+   those lessons for the use marks below. Note too what the edits below
+   name for the archive summary, which the end of this step writes.
 
-   Then: ROADMAP row → `done` + archive path;
-   archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
+   Then: archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
    weight caps, the ROADMAP byte budget and the LESSONS limits by hand
    (`wc -c cairn/ROADMAP.md`, the lesson count, and each lesson's bytes —
    `cairn_validate` does not measure them), and each of
@@ -909,8 +897,10 @@ re-enters here, at the step the record shows is next:
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip the capture, but
-   still mark use. First mark use: add `used M<NNN>` to the parenthesized provenance of each
-   lesson that the `lessons used:` lines read before the deletion name, and of
+   still mark use. On a rerun of this step after a stop before the
+   deletion, capture no lesson and write no waiting line that
+   `cairn/LESSONS.md` already holds. First mark use: add `used M<NNN>` to the parenthesized provenance of each
+   lesson that the `lessons used:` lines read above name, and of
    each lesson whose trap the milestone met. The mark replaces that
    lesson's earlier `used` mark, if it has one, and the use adds no other
    text to the lesson. A lesson is at most 450 bytes, newline excluded
@@ -939,9 +929,8 @@ re-enters here, at the step the record shows is next:
    pass.
    **Unpark the rows this merge readied:** check each `[parked]` candidate
    row whose short title the milestone file quotes, or whose text names
-   this milestone's id (tracking-rules "Candidate priority token"). The
-   pass has already deleted the live file, so read it as the merge left
-   it: `git show HEAD:cairn/milestones/M<NNN>-<slug>.md`. A row that
+   this milestone's id (tracking-rules "Candidate priority token"). Read
+   the live file on disk for the quotes. A row that
    records-hygiene §1 removes in this pass needs nothing here, and a row it
    narrows is judged on what is left. Where
    the merge made that row's promotion condition hold, remove its
@@ -976,7 +965,9 @@ re-enters here, at the step the record shows is next:
    None listed means no pins and no failure. A live
    milestone is a `planned`, `in-progress`, `blocked`, or `review`
    milestone whose file quotes the lesson or names it by its date and
-   provenance. When too few lessons can be removed to leave 25, remove
+   provenance. The milestone under review is not a live milestone in its
+   own pass, though its live file still reads `review` or `blocked` until
+   the deletion below. When too few lessons can be removed to leave 25, remove
    none and capture no lesson. Write each skipped lesson at the end of
    `cairn/LESSONS.md` as a waiting line,
    `- waiting YYYY-MM-DD (M<NNN>): <lesson>`. A waiting line is not a
@@ -988,8 +979,26 @@ re-enters here, at the step the record shows is next:
    block instead. The close block names
    each waiting line it wrote.
    In guest mode `cairn/LESSONS.md` has no git copy, so the close block
-   also quotes each removed lesson in full. When the limit bites, the close block also fences
+   also quotes each removed lesson in full, retired and evicted alike. It
+   also quotes in full each lesson's line as it stood before a `used` mark
+   forced its shortening or a partial retirement trimmed it. When the limit bites, the close block also fences
    `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
+   Last of the edits, write the milestone's archive summary **from**
+   `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
+   comment-free skeleton, so nothing scaffolding-shaped can leak into a
+   25-line artifact — writing it to
+   `cairn/milestones/archive/M<NNN>-<slug>.md`: the summary REPLACES the
+   milestone file rather than joining it, and git holds the full text.
+   Draft the summary to the ≤25-line cap, counting as you go, never trimming
+   afterward. Then **delete the live
+   `cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →
+   `done` + archive path. Then measure `wc -c cairn/ROADMAP.md` against
+   its byte budget again, since the row edit comes after the cap checks
+   above. If it is over budget, apply the tracking-rules remedy before the
+   commit. (Authoring the summary from a template makes the
+   deletion an explicit step; when the summary was made by compressing the
+   file in place, the move did it implicitly. Skip it and the explicit
+   `cairn_validate.py` run below fails on `roadmap<->disk orphans`.)
    Durable-record preview (tracking-rules): show the archive summary,
    each LESSONS line the pass captures, marks, shortens, or writes as
    waiting, any D-entry, any Known issues entry, and any

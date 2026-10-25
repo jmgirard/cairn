@@ -1022,7 +1022,8 @@ within each type and are never reused.
   stamp, and the next hygiene pass replaces it with no git history behind
   it. A guest lesson drop widens this, since an untracked LESSONS.md keeps
   no git copy. The close block quotes each dropped or merged-away lesson in
-  full, which leaves it only in chat. Lessons pass: the limit check sends back a pass that trims a
+  full, and each lesson's line before a compress, split, correct, or
+  merge changed it, which leaves it only in chat. Lessons pass: the limit check sends back a pass that trims a
   file already over its limits without getting under them. `git grep -l "LESSONS.md"`
   misses a test that builds the path, and review hygiene's pin search for
   shortening and eviction uses the same command. Retitle: rows sharing a title get

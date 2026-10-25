@@ -5150,13 +5150,13 @@ REGISTRY += [
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_reads_the_used_lines_before_the_deletion",
         target=REVIEW,
-        block="default branch; step 8). Before the live file is deleted below, read",
+        block="default branch; step 8). The live milestone file stays on disk until",
     ),
     Mutation(
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_marks_each_used_lesson",
         target=REVIEW,
-        block="lesson that the `lessons used:` lines read before the deletion name, and of",
+        block="lesson that the `lessons used:` lines read above name, and of",
     ),
     Mutation(
         guard="test_lessons_loop",

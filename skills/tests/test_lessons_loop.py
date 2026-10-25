@@ -91,7 +91,7 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "First mark use: add `used M<NNN>` to the parenthesized "
             "provenance of each lesson that the `lessons used:` lines read "
-            "before the deletion name, and of each lesson whose trap the "
+            "above name, and of each lesson whose trap the "
             "milestone met. The mark replaces that lesson's earlier `used` "
             "mark, if it has one, and the use adds no other text to the "
             "lesson.",
@@ -104,15 +104,16 @@ class TestUseMarksAndCapture(unittest.TestCase):
         )
 
     def test_review_reads_the_used_lines_before_the_deletion(self):
-        # The live file is gone once the archive summary replaces it, so
-        # the read must come first in the step.
+        # The live file is deleted last, after every step-9 read of it,
+        # so a pass stopped midway still has the file to read.
         review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
         read_at = review.index(
-            "Before the live file is deleted below, read its `lessons used:` "
-            "work-log lines. Also read its work log and Review section for "
-            "each lesson whose trap the milestone met."
+            "The live milestone file stays on disk until the end of this "
+            "step, so each read of it below reads it there, in both modes. "
+            "Read its `lessons used:` work-log lines. Also read its work log "
+            "and Review section for each lesson whose trap the milestone met."
         )
-        delete_at = review.index("**deleting the live")
+        delete_at = review.index("**delete the live")
         self.assertLess(read_at, delete_at)
 
     def test_mark_shortening_keeps_pinned_text_whole(self):
@@ -191,7 +192,7 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertNotIn("capture " "nothing", review)
         self.assertIn(
             "In guest mode `cairn/LESSONS.md` has no git copy, so the close "
-            "block also quotes each removed lesson in full.",
+            "block also quotes each removed lesson in full",
             review,
         )
         # Spelled by concatenation so a repo grep for the retired word
