@@ -173,3 +173,6 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - AC3 re-check after the fix: the rule is now one line, LESSONS.md:18, still one sentence before the first lesson line.
 - Verify after the fix-now edits (code as at 0a7cd2b3): scripts/tests 0, hooks/tests 0, both plugin validates 0, `claude plugin test .` 2466 pass 0 fail, skills/tests OK.
 - Consistency gate: `cairn_validate.py` exit 0, no FAIL or WARN; no DESIGN.md principle changed, so `cairn_impact` skipped; profile gate: verify green, marketplace validate shows no version warning, no CHANGELOG entry because no user-visible behavior changed (the skill edits drop a cite and add "into the squash merge" to an existing reason). ROADMAP is 24,248 bytes until hygiene removes the absorbed row.
+- conversation: PR #335 — empty read (0 reviews, 0 comments, 0 unresolved threads).
+- Copilot level: no review; the request on PR #335 may not be recorded by GitHub (used-up Copilot credits are one cause), and the read's state query still prints `none`.
+- Snapshot files: none changed.
