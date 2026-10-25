@@ -109,3 +109,4 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - gate (head 651af2d7): `cairn_validate` exit 0; scripts/tests and hooks/tests exit 0; both plugin validates exit 0, no version warning; no `hooks/` or `scripts/` change on the branch, so the pass-1 `claude plugin test` green stands; skills/tests OK.
 - conversation: PR #336 — read empty (0 reviews, 0 comments, 0 unresolved threads).
 - copilot: state query on PR #336 still reads `none`; no Copilot review exists, because GitHub did not record the request (the pass-1 not-recorded line); no comment, no resolves.
+- 2026-10-25: step-7 approval: m323-lesson-hygiene-gaps approved for merge
