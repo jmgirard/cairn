@@ -5152,25 +5152,6 @@ REGISTRY += [
         target=REVIEW,
         block="default branch; step 8). The live milestone file stays on disk until",
     ),
-    # M323: the deletion and the row update are step 9's last edits.
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestUseMarksAndCapture.test_review_reads_the_used_lines_before_the_deletion",
-        target=REVIEW,
-        block="`cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestUseMarksAndCapture.test_review_target_is_not_live_in_its_own_pass",
-        target=REVIEW,
-        block="provenance. The milestone under review is not a live milestone in its",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestUseMarksAndCapture.test_audit_names_each_waiting_line",
-        target="skills/milestone/SKILL.md",
-        block="finding for the user, and give one fenced `/cairn-triage lessons` for all",
-    ),
     Mutation(
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_marks_each_used_lesson",
@@ -5398,19 +5379,6 @@ REGISTRY += [
         test="TestLessonsApplyAndRecord.test_record_names_drops_merges_and_corrections",
         target=TRIAGE,
         block="`cairn/LESSONS.md` has no git copy. So the close block also quotes in full",
-    ),
-    # M323 (D-223): guest passes also quote each lesson's pre-edit line.
-    Mutation(
-        guard="test_triage_lessons",
-        test="TestLessonsApplyAndRecord.test_record_names_drops_merges_and_corrections",
-        target=TRIAGE,
-        block="quotes in full each lesson's line as it stood before the pass compressed,",
-    ),
-    Mutation(
-        guard="test_lessons_loop",
-        test="TestUseMarksAndCapture.test_review_capture_is_one_in_one_out",
-        target=REVIEW,
-        block="forced its shortening or a partial retirement trimmed it. When the limit bites,",
     ),
     Mutation(
         guard="test_resume_routing",

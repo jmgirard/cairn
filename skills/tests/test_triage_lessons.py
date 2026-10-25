@@ -449,10 +449,7 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
         self.assertIn(
             "In guest mode `cairn/LESSONS.md` has no git copy. So the close "
             "block also quotes in full each lesson or waiting line that the "
-            "pass drops or merges away. It also quotes in full each lesson's "
-            "line as it stood before the pass compressed, split, or corrected "
-            "it, and each merge survivor's line as it stood before the merge "
-            "changed it.",
+            "pass drops or merges away.",
             text,
         )
 

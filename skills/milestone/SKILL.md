@@ -87,8 +87,8 @@ the repo's doctrine modules against the budget its own header states (the
 maturation exit's rule) — since `cairn_validate` does not measure them; an
 overrun takes the same remedies as the line caps, surfaced as a finding for
 the user, never an auto-trim.
-A waiting line is a line of `cairn/LESSONS.md` that opens with `- waiting `
-and a `YYYY-MM-DD` date. Name each one by its date and provenance as a
+For each waiting line in `cairn/LESSONS.md` (tracking-rules "Weight
+caps"), name it by its date and provenance as a
 finding for the user, and give one fenced `/cairn-triage lessons` for all
 of them, the pass that admits or drops a waiting line. A file with no
 waiting line gets no such finding.

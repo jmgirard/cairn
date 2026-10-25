@@ -52,11 +52,11 @@ archive's `done` Status as the record of the merge. Resume routing below
 does not run. Skip steps 1 to 8. Of step 9, run only these parts: the
 default branch's fetch, checkout, and fast-forward (its guest arm), the
 ROADMAP row update to `done` with the archive path, the hygiene stamp,
-the cap and budget checks, the hand-run prose guards where the repo ships
+the cap and budget checks, run after the row update, the hand-run prose guards where the repo ships
 them, and `cairn_validate.py`. Name a cap breach or a `cairn_validate.py`
 FAIL in the recap, with no prune, and go on to step 10. Write nothing to
 the archive file, capture, mark, or retire no lesson, and archive no RB/RR pair,
-and name these as skipped in the recap. Make no issue write: the archive
+and name these in the recap as not rerun by this arm. Make no issue write: the archive
 replaces the work log, so no step-7 approval is recorded. The recap names
 each `partial` entry of the archive's `resolves` clause as an owed
 comment, and each `closes` entry as left to the maintainers' merge, whose
@@ -881,16 +881,8 @@ re-enters here, at the step the record shows is next:
    the end of this step, so each read of it below reads it there, in both
    modes. Read its `lessons used:` work-log lines. Also read its work log
    and Review section for each lesson whose trap the milestone met. Note
-   those lessons for the use marks below. Then write the
-   milestone's archive summary **from**
-   `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
-   comment-free skeleton, so nothing scaffolding-shaped can leak into a
-   25-line artifact — writing it to
-   `cairn/milestones/archive/M<NNN>-<slug>.md`: the summary REPLACES the
-   milestone file rather than joining it, and git holds the full text. The
-   end of this step deletes the live file.
-   Draft the summary to the ≤25-line cap, counting as you go, never trimming
-   afterward.
+   those lessons for the use marks below. Note too what the edits below
+   name for the archive summary, which the end of this step writes.
 
    Then: archive any resolved RB/RR pairs; **replace** "Last hygiene check" with one short line — overwrite the previous text, never append to it or demote it to a `Prior:` clause; verify
    weight caps, the ROADMAP byte budget and the LESSONS limits by hand
@@ -991,7 +983,14 @@ re-enters here, at the step the record shows is next:
    also quotes in full each lesson's line as it stood before a `used` mark
    forced its shortening or a partial retirement trimmed it. When the limit bites, the close block also fences
    `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
-   Last of the edits, **delete the live
+   Last of the edits, write the milestone's archive summary **from**
+   `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
+   comment-free skeleton, so nothing scaffolding-shaped can leak into a
+   25-line artifact — writing it to
+   `cairn/milestones/archive/M<NNN>-<slug>.md`: the summary REPLACES the
+   milestone file rather than joining it, and git holds the full text.
+   Draft the summary to the ≤25-line cap, counting as you go, never trimming
+   afterward. Then **delete the live
    `cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →
    `done` + archive path. Then measure `wc -c cairn/ROADMAP.md` against
    its byte budget again, since the row edit comes after the cap checks

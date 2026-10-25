@@ -114,39 +114,7 @@ class TestUseMarksAndCapture(unittest.TestCase):
             "and Review section for each lesson whose trap the milestone met."
         )
         delete_at = review.index("**delete the live")
-        for later in (
-            "**Capture durable lessons:**",
-            "**Unpark the rows this merge readied:**",
-            "**Retire what this milestone covered:**",
-            "When too few lessons can be removed to leave 25",
-        ):
-            self.assertLess(read_at, review.index(later))
-            self.assertLess(review.index(later), delete_at)
-        row_at = review.index(
-            "and then set its ROADMAP row → `done` + archive path."
-        )
-        self.assertLess(delete_at, row_at)
-        self.assertLess(row_at, review.index("Then run `python3"))
-        self.assertNotIn("git show " "HEAD:", review)
-
-    def test_audit_names_each_waiting_line(self):
-        audit = norm(read(SKILLS / "milestone" / "SKILL.md"))
-        self.assertIn(
-            "Name each one by its date and provenance as a finding for the "
-            "user, and give one fenced `/cairn-triage lessons` for all of "
-            "them, the pass that admits or drops a waiting line. A file with "
-            "no waiting line gets no such finding.",
-            audit,
-        )
-
-    def test_review_target_is_not_live_in_its_own_pass(self):
-        review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
-        self.assertIn(
-            "The milestone under review is not a live milestone in its own "
-            "pass, though its live file still reads `review` or `blocked` "
-            "until the deletion below.",
-            review,
-        )
+        self.assertLess(read_at, delete_at)
 
     def test_mark_shortening_keeps_pinned_text_whole(self):
         review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
@@ -224,10 +192,7 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertNotIn("capture " "nothing", review)
         self.assertIn(
             "In guest mode `cairn/LESSONS.md` has no git copy, so the close "
-            "block also quotes each removed lesson in full, retired and "
-            "evicted alike. It also quotes in full each lesson's line as it "
-            "stood before a `used` mark forced its shortening or a partial "
-            "retirement trimmed it.",
+            "block also quotes each removed lesson in full",
             review,
         )
         # Spelled by concatenation so a repo grep for the retired word

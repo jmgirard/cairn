@@ -170,7 +170,8 @@ class TestReviewArchivedFileArm(unittest.TestCase):
             "Of step 9, run only these parts: the default branch's fetch, "
             "checkout, and fast-forward (its guest arm), the ROADMAP row "
             "update to `done` with the archive path, the hygiene stamp, the "
-            "cap and budget checks, the hand-run prose guards where the repo "
+            "cap and budget checks, run after the row update, the hand-run "
+            "prose guards where the repo "
             "ships them, and `cairn_validate.py`.",
             self.arm,
         )
