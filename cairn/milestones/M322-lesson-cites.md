@@ -138,6 +138,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: after the claim-audit fixes (comments only) scripts/tests and skills/tests rerun green; hooks/ unchanged since the full verify run. Implement complete, status review.
 - 2026-10-25: sweep record (D-222 cites this log): sweep S, `{ git grep -niE 'lesson' -- . ':!cairn' ':!CHANGELOG.md'; git grep -niE 'lesson' -- cairn/DESIGN.md; } | grep -E 'M[0-9]{2,3}|LESSONS ?:|LESSONS [0-9]'`, listed 73 lines in 35 files on main at 67187333 and 16 lines on the branch.
 - 2026-10-25: review pass 1 fix-now edits (comments, one skill phrase, DESIGN.md, a references page, the LESSONS.md header cut to one line); new parked row "Check bare milestone ids in tests" for diff-bug #1.
+- 2026-10-25: step-7 approval: m322-lesson-cites approved for merge
 
 ## Decisions
 
