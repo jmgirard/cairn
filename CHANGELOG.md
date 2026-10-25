@@ -13,9 +13,10 @@
   trap keeps a high rank. At 25 lessons, review
   capture is one in, one out: it removes the lowest-ranked lesson that no
   test pins and no open milestone quotes. If it cannot remove enough
-  lessons to leave 25, it removes none. It writes each new lesson at the
-  end of the file as a `- waiting` line, which is not a lesson. If the
-  file already holds 49 lines, the close block quotes the lesson instead.
+  lessons to leave 25, it removes none. Instead, it writes each new lesson
+  at the end of the file as a `- waiting` line, which is not a lesson. If
+  the file already holds 49 lines or more, the close block quotes the
+  lesson instead.
   The next `/cairn-triage lessons` run proposes to admit or drop a waiting
   line. In guest mode
   `cairn/LESSONS.md` has no git copy. So the review quotes each lesson it

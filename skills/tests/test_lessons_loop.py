@@ -104,8 +104,8 @@ class TestUseMarksAndCapture(unittest.TestCase):
         )
 
     def test_review_reads_the_used_lines_before_the_deletion(self):
-        # M321: the live file is gone once the archive summary replaces it,
-        # so the read must come first in the step.
+        # The live file is gone once the archive summary replaces it, so
+        # the read must come first in the step.
         review = norm(read(SKILLS / "milestone-review" / "SKILL.md"))
         read_at = review.index(
             "Before the live file is deleted below, read its `lessons used:` "
@@ -120,7 +120,8 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "The shortening keeps whole each string a pin file asserts "
             "present and each text a live milestone quotes (both defined "
-            "below). A lesson that cannot then fit in 450 bytes takes no "
+            "below). It keeps the lesson's date and every mark in its "
+            "provenance. A lesson that cannot then fit in 450 bytes takes no "
             "`used` mark, and the close block names it beside a fenced "
             "`/cairn-triage lessons`.",
             review,
@@ -128,8 +129,15 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "Find the pin files as each file that `git grep -l \"LESSONS.md\"` "
             "lists whose path contains `test`, and read each one for the "
-            "strings it asserts present.",
+            "strings it asserts present. None listed means no pins and no "
+            "failure.",
             review,
+        )
+
+    def test_plan_names_no_waiting_line(self):
+        plan = norm(read(SKILLS / "milestone-plan" / "SKILL.md"))
+        self.assertIn(
+            "A `- waiting` line is not a lesson, so the plan names none.", plan
         )
 
     def test_hygiene_preview_shows_each_changed_lesson(self):
@@ -176,7 +184,8 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "If `cairn/LESSONS.md` already holds 49 lines or more, do not "
             "write the line, since it brings the file to 50 lines or more. "
-            "Quote that lesson in full in the close block instead.",
+            "Quote that lesson in full in the close block instead. The close "
+            "block names each waiting line it wrote.",
             review,
         )
         self.assertNotIn("capture " "nothing", review)
@@ -291,22 +300,37 @@ class TestOverLimitRemedy(unittest.TestCase):
         "lessons retire first, and then the lowest-ranked lesson leaves."
     )
     WAITING = (
-        "A `- waiting` line at the end is not a lesson. When no lesson can "
-        "leave a full file, review writes it. It takes no `used` mark and "
-        "waits for `/cairn-triage lessons` to admit or drop it. If the file "
-        "already holds 49 lines, review quotes the lesson in its close block "
-        "instead."
+        "A `- waiting` line is not a lesson: it takes no `used` mark and "
+        "waits for `/cairn-triage lessons`."
+    )
+    # Retired remedy wording, spelled by concatenation so a repo grep for
+    # it does not hit this guard.
+    RETIRED = (
+        "shorten or split " "lessons first",
+        "retire, shorten, " "or split",
+        "retire, compress, " "or split",
     )
 
     def test_template_states_each_remedy_and_the_waiting_line(self):
         template = norm(read(SKILLS / "shared" / "templates" / "lessons.md"))
         self.assertIn(self.REMEDY, template)
         self.assertIn(self.WAITING, template)
+        for phrase in self.RETIRED:
+            self.assertNotIn(phrase, template)
 
     def test_lessons_header_states_each_remedy_and_the_waiting_line(self):
         lessons = norm(read(ROOT / "cairn" / "LESSONS.md"))
         self.assertIn(self.REMEDY, lessons)
         self.assertIn(self.WAITING, lessons)
+        for phrase in self.RETIRED:
+            self.assertNotIn(phrase, lessons)
+
+    def test_lessons_header_leaves_room_for_25_lessons(self):
+        # The validator fails the file at 50 lines, so the non-lesson lines
+        # must leave room for 25 lessons and at least one waiting line.
+        lines = read(ROOT / "cairn" / "LESSONS.md").splitlines()
+        other = [l for l in lines if not re.match(r"- \d{4}-\d{2}-\d{2}", l)]
+        self.assertLessEqual(len(other) + 25, 48)
 
     def test_rulebook_states_each_remedy_and_the_waiting_line(self):
         rules = norm(read(SKILLS / "shared" / "tracking-rules.md"))
@@ -322,12 +346,14 @@ class TestOverLimitRemedy(unittest.TestCase):
             rules,
         )
         self.assertIn(
-            "When none can go, the new lesson goes at the file's end as a "
+            "When none can go, the new lesson is written as a "
             "`- waiting` line, which is not a lesson, takes no `used` mark, "
             "and waits for `/cairn-triage lessons`. At 49 or more lines the "
             "close block quotes it instead.",
             rules,
         )
+        for phrase in self.RETIRED:
+            self.assertNotIn(phrase, rules)
         self.assertIn(
             "its `admit` disposition makes a waiting line a lesson", rules
         )

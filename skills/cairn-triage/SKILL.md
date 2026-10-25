@@ -231,7 +231,8 @@ pass 450 bytes is not proposed.
 
 The rank rule: after the other proposals, count the lessons that would
 remain, each line of a split and each admitted waiting line counting as
-one. If more than 20 would
+one. An admitted waiting line is never a `rank` drop, and the rule counts
+it as kept. If more than 20 would
 remain, propose `drop` with the `rank` exit for the lowest-ranked of them
 (tracking-rules "Weight caps"), until 20 remain or every remaining lesson
 is kept for a pin, a live milestone, or as a merge survivor. A lesson's
@@ -262,7 +263,7 @@ count is over 20 or a lesson is over 450 bytes. An Amend that makes a
 lesson `correct`, `compress`, or `split` names its new line or lines. In every Amend
 round, the pass shows that line again before it poses the chip. A
 lesson the user moves to `keep` at an Amend takes the reason `kept at the
-gate`.
+gate`. A waiting line the user moves to `keep` stays waiting.
 
 **Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A
 dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no

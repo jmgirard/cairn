@@ -1021,10 +1021,11 @@ within each type and are never reused.
   stamp, and the next hygiene pass replaces it with no git history behind
   it. A guest lesson drop widens this, since an untracked LESSONS.md keeps
   no git copy. The close block quotes each dropped or merged-away lesson in
-  full, which leaves it only in chat (narrowed by M321). Lessons pass: the limit check sends back a pass that trims a
+  full, which leaves it only in chat. Lessons pass: the limit check sends back a pass that trims a
   file already over its limits without getting under them. Test comments
   cite lessons by line number ("LESSONS :49"). `git grep -l "LESSONS.md"`
-  misses a test that builds the path. Retitle: rows sharing a title get
+  misses a test that builds the path, and review hygiene's pin search for
+  shortening and eviction uses the same command. Retitle: rows sharing a title get
   identical triage subjects. An empty title not from a leading `: ` has no
   anchor. The Amend loop does not re-check a new title's uniqueness or
   icons, and a title the user types at Amend is not checked against the
@@ -1038,7 +1039,7 @@ within each type and are never reused.
   candidates 2026-10-16; added 2026-10-10 — M235 review (diff-bug #1,
   blame-history #3); added 2026-10-15 — M251 review (pass 2 diff-bug #3,
   #5, #7) and M254 review; added 2026-10-16 — M263 review (diff-bug #10,
-  #16; blame-history #1, #10).
+  #16; blame-history #1, #10); narrowed and extended 2026-10-25 — M321.
 - `scripts/cairn_ci_paths.py`'s `--report` and `--apply` can disagree on a
   workflow file, found at the M181 review with no fix planned. `--report`'s
   stdlib reader and `--apply`'s PyYAML read some legal forms differently (a

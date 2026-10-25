@@ -365,7 +365,8 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    **Harvest recent lessons (before the gate).** Review `cairn/LESSONS.md`
    (read at session start) and surface any lessons bearing on this scope —
    build quirks, testing tricks, gotchas that should shape the tasks,
-   acceptance bar, or a gate question. Empty file → nothing to surface. This
+   acceptance bar, or a gate question. Empty file → nothing to surface. A
+   `- waiting` line is not a lesson, so the plan names none. This
    is intake, not obedience: a lesson informs the plan, it doesn't dictate it.
    Step 4 writes one work-log line `lessons used: <lessons>` in each
    milestone file it writes. It names each lesson that shaped that

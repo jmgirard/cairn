@@ -917,7 +917,8 @@ re-enters here, at the step the record shows is next:
    (tracking-rules "Weight caps"). The mark counts toward that limit, and a
    lesson that the mark takes past 450 bytes is shortened in this same
    pass. The shortening keeps whole each string a pin file asserts present
-   and each text a live milestone quotes (both defined below). A lesson
+   and each text a live milestone quotes (both defined below). It keeps the
+   lesson's date and every mark in its provenance. A lesson
    that cannot then fit in 450 bytes takes no `used` mark, and the close
    block names it beside a fenced `/cairn-triage lessons`. An extension that would take a lesson
    past 450 bytes is not written into it. The new content becomes a lesson
@@ -971,7 +972,8 @@ re-enters here, at the step the record shows is next:
    a pin file holds or a live milestone quotes. A pin file is a test file
    that asserts a string present in the live `cairn/LESSONS.md`. Find the
    pin files as each file that `git grep -l "LESSONS.md"` lists whose path
-   contains `test`, and read each one for the strings it asserts present. A live
+   contains `test`, and read each one for the strings it asserts present.
+   None listed means no pins and no failure. A live
    milestone is a `planned`, `in-progress`, `blocked`, or `review`
    milestone whose file quotes the lesson or names it by its date and
    provenance. When too few lessons can be removed to leave 25, remove

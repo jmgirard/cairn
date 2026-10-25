@@ -5,21 +5,16 @@ remembering next time — captured at milestone end and surfaced at plan time.
 Not status, not decisions: a lesson is a reusable "how this repo actually
 behaves" note. Cross-cutting *choices* still go to `DECISIONS.md`.
 
-One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Limits
-(tracking-rules weight-caps): at most 25 lessons, each at most 450 bytes.
-Current knowledge: a lesson proven false is corrected in place (D-045).
-Lessons also *leave*: one retires when a test fails on the mistake it warns
-about, when another file's slot owns its content, or when a matured family
+One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`, at most 25 lessons of
+at most 450 bytes each. A lesson proven false is corrected in place (D-045).
+A lesson retires when a test fails on the mistake it warns about, when
+another file's slot owns its content, or when a matured family
 graduates whole into a doctrine module. A lesson over 450 bytes is
 shortened or split. Over 25 lessons, lessons retire first, and then the
-lowest-ranked lesson leaves. Rank is the newest
-milestone in a lesson's provenance, not counting `trimmed` or `corrected`
-marks, and reviews mark `used M<NNN>` on the
-lessons a milestone used (D-051, D-055, D-218). A `- waiting` line at the
-end is not a lesson. When no lesson can leave a full file, review writes it.
-It takes no `used` mark and waits for `/cairn-triage lessons` to admit or
-drop it. If the file already holds 49 lines, review quotes the lesson in its
-close block instead.
+lowest-ranked lesson leaves. Rank is the newest milestone in its provenance,
+not counting `trimmed` or `corrected` marks, and reviews mark `used M<NNN>`
+on the lessons a milestone used (D-051, D-055, D-218). A `- waiting` line is
+not a lesson: it takes no `used` mark and waits for `/cairn-triage lessons`.
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 

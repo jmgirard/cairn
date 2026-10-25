@@ -7,7 +7,7 @@ pinned on its own (M165 lesson):
   1. The argument: no argument means no lesson, any other argument stops.
   2. The item shape and the empty case.
   3. The pin check before any proposal, both directions.
-  4. The seven lesson dispositions, the six drop exits, the maturation bar,
+  4. The eight dispositions, the six drop exits, the maturation bar,
      the false-lesson `correct`, the planner test (M270), and the `split`
      disposition, the length rule, and the rank rule (M320); the waiting
      line, its `admit` disposition, and where a `used` mark goes (M321).
@@ -139,7 +139,6 @@ class TestLessonDispositions(unittest.TestCase):
         )
 
     def test_waiting_lines(self):
-        # M321 (D-221): review's skipped lessons wait here for the pass.
         text = section()
         self.assertIn(
             "A waiting line is one line of `cairn/LESSONS.md` that opens with "
@@ -156,13 +155,18 @@ class TestLessonDispositions(unittest.TestCase):
         self.assertIn(
             "A waiting line's `drop` names one of those exits other than "
             "`rank`. A waiting line that a pin file holds or a live milestone "
-            "quotes is proposed `admit`, never `drop`.",
+            "quotes is proposed `admit`, never `drop`. For any other waiting "
+            "line, the planner test decides: an `admit` reason names what a "
+            "planner gains from the line, and a `drop` names its exit.",
             text,
         )
         self.assertIn(
             "An `admit` removes the line's `waiting ` word and leaves the line "
             "where it is.",
             text,
+        )
+        self.assertIn(
+            "A waiting line the user moves to `keep` stays waiting.", text
         )
 
     def test_opening_names_use_marks_and_rank_eviction(self):
@@ -354,7 +358,8 @@ class TestLessonDispositions(unittest.TestCase):
         self.assertIn(
             "The rank rule: after the other proposals, count the lessons that "
             "would remain, each line of a split and each admitted waiting "
-            "line counting as one. If more than "
+            "line counting as one. An admitted waiting line is never a "
+            "`rank` drop, and the rule counts it as kept. If more than "
             "20 would remain, propose `drop` with the `rank` exit for the "
             "lowest-ranked of them",
             text,

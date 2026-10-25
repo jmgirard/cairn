@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M321: Fix the gaps in lesson use marks
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -103,11 +103,11 @@ row) → dropped at the user's choice at the question set.
 ## Coverage
 
 - AC1 → T1, T6
-- AC2 → T1, T6
+- AC2 → T1, T6, T8
 - AC3 → T1, T6
 - AC4 → T2, T6, T7
-- AC5 → T2, T6
-- AC6 → T3, T6, T7
+- AC5 → T2, T6, T8
+- AC6 → T3, T6, T7, T8
 - AC7 → T4
 - AC8 → T5, T6
 
@@ -140,6 +140,9 @@ row) → dropped at the user's choice at the question set.
       provenance sentence, and say in the "Retiring a lesson" bullet that
       retirement runs before rank eviction; re-pin guards and the
       rulebook-mass baseline.
+- [x] T8: Review return 2: shrink the LESSONS.md header and the template
+      back under main's line count, guarded; fix the pass-2 fix-now items
+      (Review section); file the follow-up row.
 
 ## Work log
 
@@ -172,6 +175,7 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: T7 done (minor amendment for return 1: task added, Coverage AC4 and AC6 cite T7) — the `split` row now reads "Each new line keeps the original date, only the provenance ids its text came from, and the split lesson's `used` mark"; "Retiring a lesson" adds "Over 25 lessons, retirement runs first and rank eviction second."; guards re-pinned and one added (red when blanked); rulebook-mass baseline re-seeded to 848 lines / 83,866 bytes. `skills/tests` 974 OK; verify 5/5 green. Handing back to review.
 
 - 2026-10-25: review return 2: load-bearing defect (diff-bug #1, blame-history #1) — the LESSONS.md header grew from 20 to 25 non-lesson lines and the template from 18 to 22, so 25 lessons reach the 50-line cap that `cairn_validate` fails; this pass's fix-now items ride with the fix (Review section, pass 2).
+- 2026-10-25: T8 done (minor amendment for return 2: task added, Coverage AC2, AC5, AC6 cite T8) — LESSONS.md header back to 20 non-lesson lines (41 lines with 21 lessons, 45 at 25) and the template to 19 lines, the waiting sentence now "A `- waiting` line is not a lesson: it takes no `used` mark and waits for `/cairn-triage lessons`." with no "at the end" and no 49-line clause; a new guard fails when the header leaves no room for 25 lessons and a waiting line (red on the 25-line header at c3c096a6); rulebook says "is written as a `- waiting` line"; CHANGELOG says "Instead" and "49 lines or more"; review: "It keeps the lesson's date and every mark in its provenance." and "None listed means no pins and no failure."; triage: an admitted line is never a `rank` drop and counts as kept, and a waiting line moved to `keep` stays waiting; plan harvest names no waiting line; DESIGN.md Known issues names review's pin search and moves its provenance to the entry's end; test comments lose the milestone tags, the docstring says eight; `assertNotIn` for the retired remedy wording; guards for every new sentence, each red when blanked. Follow-up row "Close the leftover lesson hygiene gaps" added; the M321 candidate row shortened for the byte budget; the parked band-flake row notes the 2026-10-25 recurrence. Rulebook baseline re-seeded to 848 lines / 83,854 bytes. `skills/tests` 976 OK; verify 5/5 green. Handing back to review.
 
 ## Decisions
 
