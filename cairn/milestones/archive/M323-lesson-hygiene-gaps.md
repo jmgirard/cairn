@@ -1,0 +1,11 @@
+# M323: Close the leftover lesson hygiene gaps
+
+**Status:** done (2026-10-25, PR #336 https://github.com/jmgirard/cairn/pull/336)
+
+**Goal:** Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing lesson text, use marks, and waiting lines in either mode, and D-221's false rejection reason is corrected.
+
+**Outcome:** `/milestone-review` step 9 reads the live milestone file for every step. Its last edits write the archive summary, delete the live file, set the ROADMAP row `done`, and re-measure the ROADMAP byte budget with the remedy named. The unpark check reads the file on disk (no `git show HEAD:`). The milestone under review is not a live milestone in its own pass. A rerun after a stop before the deletion captures no lesson or waiting line the file already holds. The archived-file arm runs its cap checks after its row update and names the lesson and RB/RR work as not rerun (README matches). In guest mode, `/cairn-triage lessons` also quotes each lesson's line before a compress, split, correct, or merge. Review also quotes each line before a `used` mark shortening or a partial retirement trim. The `/milestone` audit names each waiting line (pointing at tracking-rules "Weight caps") with one fenced `/cairn-triage lessons`. CHANGELOG Unreleased (lessons entry and a Fixes entry) and DESIGN.md's triage Known issues entry follow.
+
+**Decisions:** D-223 (the step-9 order, guest pre-edit quotes, the corrected D-221 rejection reason; extends D-221 (4) and D-219 (5); annotates D-159).
+
+**Review:** Criteria audit at plan (full; 6 findings, all taken). Claim audit: 28 claims, 2 corrected. No defect returns. Four lenses gave 24 findings: 11 fixed (the archive write moved last, so a stopped pass leaves only the live file; the rerun capture guard; the byte remedy; the arm's order and "not rerun" wording; CHANGELOG wording; new prose guards and mutation entries removed, since the profile says new skill rules owe none; the audit's definition made a pointer), 12 rejected, 1 absorbed into the parked row "Check bare milestone ids in tests". Copilot: GitHub did not record the request, so no review. Hygiene: `used M323` on five lessons; one lesson captured (stop points after a reorder).
