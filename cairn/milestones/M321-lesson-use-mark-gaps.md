@@ -11,7 +11,7 @@
 - **Principles touched:** IP3, IP4
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes the review-hygiene and `/cairn-triage lessons` steps that adopting repos run
-- **Branch/PR:** m321-lesson-use-mark-gaps
+- **Branch/PR:** m321-lesson-use-mark-gaps, https://github.com/jmgirard/cairn/pull/334
 
 ## Goal
 
