@@ -5150,13 +5150,32 @@ REGISTRY += [
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_reads_the_used_lines_before_the_deletion",
         target=REVIEW,
-        block="default branch; step 8). Before the live file is deleted below, read",
+        block="default branch; step 8). The live milestone file stays on disk until",
+    ),
+    # M323: the deletion and the row update come last in step 9.
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_review_reads_the_used_lines_before_the_deletion",
+        target=REVIEW,
+        block="`cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_review_target_is_not_live_in_its_own_pass",
+        target=REVIEW,
+        block="provenance. The milestone under review is not a live milestone in its",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestUseMarksAndCapture.test_audit_names_each_waiting_line",
+        target="skills/milestone/SKILL.md",
+        block="finding for the user, and give one fenced `/cairn-triage lessons` for all",
     ),
     Mutation(
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_marks_each_used_lesson",
         target=REVIEW,
-        block="lesson that the `lessons used:` lines read before the deletion name, and of",
+        block="lesson that the `lessons used:` lines read above name, and of",
     ),
     Mutation(
         guard="test_lessons_loop",

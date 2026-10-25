@@ -8043,3 +8043,47 @@ adopter's code comments.
 
 **Consequences:** Pin files stay as they are. Falsified by a new lesson
 cite in this repo's code or docs after the header sentence lands.
+
+### D-223 (2026-10-25): Review hygiene deletes the live milestone file at the end of step 9, and guest lesson passes quote each lesson's pre-edit text — supersedes D-221's Rejected clause on running `/cairn-triage lessons` right after review; extends D-221 (4) and D-219 (5); annotates D-159 (M323)
+
+**Context:** `/milestone-review` step 9 deleted the live milestone file
+near its start. Its unpark check then read the file with `git show
+HEAD:`, which finds nothing in guest mode, where `cairn/` is untracked. A
+pass that stopped after the deletion lost its use marks, because the
+`lessons used:` lines left with the file. D-221 (4) and D-219 (5) have
+guest mode quote each lesson a pass removes. A compress, split, correct,
+or merge in triage, and a use-mark shortening or partial retirement trim
+in review, also replace a line's text and keep no copy. D-221's Rejected
+clause says a lesson waits only when every lesson left is pinned or
+quoted by a live milestone. Review writes a waiting line whenever too few
+lessons can go to leave 25, so some lessons can still go.
+
+**Decision:** (1) Step 9 deletes the live file, and then sets the ROADMAP
+row to `done`, as the last of its edits before `cairn_validate.py`. Each
+earlier read of the file reads it on disk, in both modes. The milestone
+under review is not a live milestone in its own pass. (2) In guest mode,
+the `/cairn-triage lessons` close block quotes in full each lesson's line
+as it stood before the pass compressed, split, or corrected it, and each
+merge survivor's line before the merge changed it. Review's guest close
+block quotes in full each lesson's line as it stood before a `used` mark
+forced its shortening or a partial retirement trimmed it. This extends
+D-221 (4) and D-219 (5) from removed lines to edited ones. (3) D-221's
+Rejected premise is false, and its clause on running `/cairn-triage
+lessons` right after review is superseded by this reason: triage is the
+user's whole-file pass with its own gate, review hygiene poses no
+question, and the waiting line keeps the lesson in the file until the
+user runs triage.
+
+**Rejected:** Noting the unpark inputs before the deletion and keeping
+the old order: it fixes the failed read but not the lost use marks.
+Writing pre-edit text to a file under `cairn/`: a chat quote matches what
+D-219 (5) and D-221 (4) already do, and a second file of lessons is
+D-051's rejection (2).
+
+**Consequences:** D-159's archived-file arm stays. Its state, an archive
+with no live file and a row not yet `done`, still arises from a stop
+between the deletion and the row update, and from a pass run under the
+old order. Under the new order, a pass that reached the deletion already
+ran the use marks and the unpark check, so the skipped work the arm names
+is work its rerun skips. Falsified by a step-9 edit that needs the live
+file gone before it runs.

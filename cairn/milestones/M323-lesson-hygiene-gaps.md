@@ -1,13 +1,13 @@
 # M323: Close the leftover lesson hygiene gaps
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — review hygiene, `/cairn-triage lessons`, and the `/milestone` audit run in adopters' repos, guest repos included
-- **Branch/PR:** —
+- **Branch/PR:** m323-lesson-hygiene-gaps
 
 ## Goal
 
@@ -37,7 +37,7 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 
 ## Tasks
 
-- [ ] T1: Reorder `skills/milestone-review/SKILL.md` step 9 (~866-1000): move the live-file deletion, then the ROADMAP row update, to just before the `cairn_validate.py` run; rewrite the read-before-deletion sentence (~880) and the unpark read (~943) to read the live file; add the not-live sentence by the live-milestone definition (~980). Check that the archived-file arm (~41-62) stays true of the new order. Update the guards that pin the moved text: `skills/tests/test_lessons_loop.py` (~106-116), `skills/tests/test_mutation_harness.py` (~5153), `skills/tests/test_budget_first_drafting.py` (~86).
+- [x] T1: Reorder `skills/milestone-review/SKILL.md` step 9 (~866-1000): move the live-file deletion, then the ROADMAP row update, to just before the `cairn_validate.py` run; rewrite the read-before-deletion sentence (~880) and the unpark read (~943) to read the live file; add the not-live sentence by the live-milestone definition (~980). Check that the archived-file arm (~41-62) stays true of the new order. Update the guards that pin the moved text: `skills/tests/test_lessons_loop.py` (~106-116), `skills/tests/test_mutation_harness.py` (~5153), `skills/tests/test_budget_first_drafting.py` (~86).
 - [ ] T2: Add the guest pre-edit quotes to `skills/cairn-triage/SKILL.md` step 5 (~286-289) and to review step 9's guest sentence (~990); update the pins in `skills/tests/test_triage_lessons.py` (~452) and `skills/tests/test_lessons_loop.py` (~194).
 - [ ] T3: Add the waiting-line report to the weight-cap hand check in `skills/milestone/SKILL.md` §2 (~83-89).
 - [ ] T4: Append the D-entry of AC4 to `cairn/DECISIONS.md`.
@@ -56,6 +56,9 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - 2026-10-25: criteria audit (full, Opus): 6 findings, all taken — ROADMAP row update moves to the end with the deletion (else a new stop state commits half a pass and the archived-file arm cannot fire); AC2 adds the partial-retirement trim and names retired and evicted lessons; AC1 names its run-in anchors and bars a stale "already deleted" sentence; AC1 states the target is not live in its own pass; AC4 reworded and uses a three-dot diff; AC5 names the CHANGELOG sentence and greps `merges away`. AC3's fence made one for all lines.
 - 2026-10-25: plan gate chose moving the deletion and row update to the end of step 9 over noting the unpark inputs before the deletion because the move also closes the lost-marks gap with no new state to carry; falsified by a hygiene pass that needs the live file gone before a later step 9 instruction.
 - 2026-10-25: plan gate chose updating the existing prose guards over adding new guards because the changed sentences are already pinned and D-109 keeps `skills/tests` hand-run; falsified by a changed rule here that a later edit drops with every guard green.
+- 2026-10-25: implement started on branch m323-lesson-hygiene-gaps; untracked `cairn-probe.log` and `tsconfig.json` predate the branch and stay unstaged.
+- 2026-10-25: T1 done: step 9 writes the archive first and deletes the live file, then sets the row `done`, last before validate; unpark reads the live file; not-live sentence added; guards in test_lessons_loop, test_budget_first_drafting, and the mutation registry updated, and new guards added for the order and the not-live sentence (a minor departure from the plan's no-new-guards choice, since both sit in the guarded lessons region).
+- 2026-10-25: checkpoint: T3 (audit waiting-line report, with a guard) and T4 (D-223) written but not yet checked off; verify run 4 of 5 green (both suites, both plugin validates), `claude plugin test` still running at this commit.
 
 ## Decisions
 
