@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-25 (M323 review: done and archived; row "Close the leftover lesson hygiene gaps" graduated; `used M323` on five lessons, one captured, LESSONS at 23 lessons; M320 row pruned to the terminal cap; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-25 (lessons pass: dropped 2026-10-03 (M201, M195, extended M205/M213) by rank 213, 2026-10-18 (M277) by rank 277, 2026-10-18 (M278) by planner test; compressed 2026-08-30 (M165, used M322); LESSONS at 20 lessons; no decision entry; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
