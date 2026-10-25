@@ -905,7 +905,9 @@ re-enters here, at the step the record shows is next:
    remembering — to `cairn/LESSONS.md`, one per line
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip the capture, but
-   still mark use. First mark use: add `used M<NNN>` to the parenthesized provenance of each
+   still mark use. On a rerun of this step after a stop before the
+   deletion, capture no lesson and write no waiting line that
+   `cairn/LESSONS.md` already holds. First mark use: add `used M<NNN>` to the parenthesized provenance of each
    lesson that the `lessons used:` lines read above name, and of
    each lesson whose trap the milestone met. The mark replaces that
    lesson's earlier `used` mark, if it has one, and the use adds no other
@@ -993,7 +995,8 @@ re-enters here, at the step the record shows is next:
    `cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →
    `done` + archive path. Then measure `wc -c cairn/ROADMAP.md` against
    its byte budget again, since the row edit comes after the cap checks
-   above. (Authoring the summary from a template makes the
+   above. If it is over budget, apply the tracking-rules remedy before the
+   commit. (Authoring the summary from a template makes the
    deletion an explicit step; when the summary was made by compressing the
    file in place, the move did it implicitly. Skip it and the explicit
    `cairn_validate.py` run below fails on `roadmap<->disk orphans`.)
