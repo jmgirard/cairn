@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — review hygiene, `/cairn-triage lessons`, and the `/milestone` audit run in adopters' repos, guest repos included
-- **Branch/PR:** m323-lesson-hygiene-gaps
+- **Branch/PR:** m323-lesson-hygiene-gaps https://github.com/jmgirard/cairn/pull/336
 
 ## Goal
 
