@@ -11,7 +11,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — two edited files are shipped skill prose (`skills/milestone-plan/SKILL.md`, `skills/milestone-review/SKILL.md`), and the rest are tests, code comments, and tracking
-- **Branch/PR:** m322-lesson-cites
+- **Branch/PR:** m322-lesson-cites, https://github.com/jmgirard/cairn/pull/335
 
 ## Goal
 
