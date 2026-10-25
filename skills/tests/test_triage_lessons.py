@@ -7,9 +7,10 @@ pinned on its own (M165 lesson):
   1. The argument: no argument means no lesson, any other argument stops.
   2. The item shape and the empty case.
   3. The pin check before any proposal, both directions.
-  4. The seven lesson dispositions, the six drop exits, the maturation bar,
+  4. The eight dispositions, the six drop exits, the maturation bar,
      the false-lesson `correct`, the planner test (M270), and the `split`
-     disposition, the length rule, and the rank rule (M320).
+     disposition, the length rule, and the rank rule (M320); the waiting
+     line, its `admit` disposition, and where a `used` mark goes (M321).
   5. Apply and record: no line left behind, the two-file limit check, the
      gate count, the stamp and commit naming, the guest arm, no decision
      entry.
@@ -90,7 +91,8 @@ class TestLessonItems(unittest.TestCase):
 
     def test_missing_file_yields_no_items(self):
         self.assertIn(
-            "A missing `cairn/LESSONS.md`, or one with no such line, yields "
+            "A missing `cairn/LESSONS.md`, or one with no lesson line and no "
+            "waiting line, yields "
             "zero items with no failure.",
             section(),
         )
@@ -121,18 +123,71 @@ class TestPinCheck(unittest.TestCase):
 
 
 class TestLessonDispositions(unittest.TestCase):
-    def test_seven_dispositions_only(self):
+    def test_eight_dispositions_with_admit(self):
+        text = section()
         self.assertIn(
-            "A lesson takes one of seven dispositions, and never `route` or "
-            "`retitle`",
-            section(),
+            "An item takes one of eight dispositions, and never `route` or "
+            "`retitle`. Step 2 proposes only `admit` or `drop` for a waiting "
+            "line, and any of the other seven for a lesson:",
+            text,
         )
+        self.assertIn(
+            "| `admit` | A waiting line only. Its `waiting ` word is removed, "
+            "so the line becomes a lesson that keeps its date and provenance, "
+            "and the rank rule then counts it. |",
+            text,
+        )
+
+    def test_waiting_lines(self):
+        text = section()
+        self.assertIn(
+            "A waiting line is one line of `cairn/LESSONS.md` that opens with "
+            "`- waiting ` and a `YYYY-MM-DD` date.",
+            text,
+        )
+        self.assertIn(
+            "List each waiting line as an item of its own, with source "
+            "`waiting` and the fields a lesson lists. A waiting line is not a "
+            "lesson. Until it is admitted, the pass does not count it among "
+            "the lessons or rank it.",
+            text,
+        )
+        self.assertIn(
+            "A waiting line's `drop` names one of those exits other than "
+            "`rank`. A waiting line that a pin file holds or a live milestone "
+            "quotes is proposed `admit`, never `drop`. For any other waiting "
+            "line, the planner test decides: an `admit` reason names what a "
+            "planner gains from the line, and a `drop` names its exit.",
+            text,
+        )
+        self.assertIn(
+            "An `admit` removes the line's `waiting ` word and leaves the line "
+            "where it is.",
+            text,
+        )
+        self.assertIn(
+            "A waiting line the user moves to `keep` takes the same reason "
+            "and stays waiting.",
+            text,
+        )
+
+    def test_opening_names_use_marks_and_rank_eviction(self):
+        text = section()
+        self.assertIn(
+            "A milestone's review hygiene retires only the lessons that "
+            "milestone's work covers (D-051). It also marks the lessons the "
+            "milestone used, and at the 25-lesson limit it removes the "
+            "lowest-ranked ones (D-218).",
+            text,
+        )
+        self.assertNotIn("still checks " "only", text)
 
     def test_split_disposition(self):
         self.assertIn(
             "| `split` | Broken into two or more lessons, each one line of at "
             "most 450 bytes and each on one subject. Each new line keeps the "
-            "original date and only the provenance ids its text came from.",
+            "original date, only the provenance ids its text came from, and "
+            "the split lesson's `used` mark.",
             section(),
         )
 
@@ -215,8 +270,12 @@ class TestLessonDispositions(unittest.TestCase):
     def test_prefix_and_marks_survive(self):
         self.assertIn(
             "A compressed, merged, or corrected lesson keeps its "
-            "`- YYYY-MM-DD (M…)` prefix and any `corrected` or `trimmed` "
-            "mark.",
+            "`- YYYY-MM-DD (M…)` prefix and any `corrected`, `trimmed`, or "
+            "`used` mark. A merge's survivor carries the `used` mark with the "
+            "higher milestone number of the two lessons, or the one mark "
+            "either has. Each line of a split keeps the date, the split "
+            "lesson's `used` mark, and the other marks that apply to its own "
+            "text.",
             section(),
         )
 
@@ -300,7 +359,9 @@ class TestLessonDispositions(unittest.TestCase):
         text = section()
         self.assertIn(
             "The rank rule: after the other proposals, count the lessons that "
-            "would remain, each line of a split counting as one. If more than "
+            "would remain, each line of a split and each admitted waiting "
+            "line counting as one. An admitted waiting line is never a "
+            "`rank` drop, and the rule counts it as kept. If more than "
             "20 would remain, propose `drop` with the `rank` exit for the "
             "lowest-ranked of them",
             text,
@@ -378,11 +439,17 @@ class TestLessonsApplyAndRecord(unittest.TestCase):
         self.assertIn(
             "The stamp and the commit message name each dropped lesson by its "
             "date and provenance with its exit. They name each merged-away "
-            "lesson with its survivor, each corrected or split lesson by its "
-            "date and provenance, and each `rank` drop with its rank. The "
-            "commit message also gives the evidence for "
+            "lesson with its survivor, each corrected, split, or admitted line "
+            "by its date and provenance, and each `rank` drop with its rank. "
+            "The commit message also gives the evidence for "
             "each `refuted` or `obsolete` drop and each `correct`. In guest "
             "mode the stamp alone names them, with their evidence.",
+            text,
+        )
+        self.assertIn(
+            "In guest mode `cairn/LESSONS.md` has no git copy. So the close "
+            "block also quotes in full each lesson or waiting line that the "
+            "pass drops or merges away.",
             text,
         )
 
@@ -441,7 +508,11 @@ class TestSurfacesNameThePass(unittest.TestCase):
         self.assertIn(
             "At the 25-lesson limit review capture is one-in-one-out: it "
             "evicts the lowest-ranked lesson that no pin file holds and no "
-            "live milestone quotes. Rank eviction is not a retirement exit: "
+            "live milestone quotes.",
+            text,
+        )
+        self.assertIn(
+            "Rank eviction is not a retirement exit: "
             "it replaces pruning at the limit, and it removes a lesson by "
             "rank, not because it is redundant.",
             text,

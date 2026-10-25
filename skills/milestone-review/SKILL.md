@@ -55,7 +55,7 @@ ROADMAP row update to `done` with the archive path, the hygiene stamp,
 the cap and budget checks, the hand-run prose guards where the repo ships
 them, and `cairn_validate.py`. Name a cap breach or a `cairn_validate.py`
 FAIL in the recap, with no prune, and go on to step 10. Write nothing to
-the archive file, capture or retire no lesson, and archive no RB/RR pair,
+the archive file, capture, mark, or retire no lesson, and archive no RB/RR pair,
 and name these as skipped in the recap. Make no issue write: the archive
 replaces the work log, so no step-7 approval is recorded. The recap names
 each `partial` entry of the archive's `resolves` clause as an owed
@@ -877,7 +877,10 @@ re-enters here, at the step the record shows is next:
    and URL the summary's status line needs come from the local header
    record where the branch survived, else from `gh pr list --head <branch>
    --state merged --json number,url` (the record never reached the
-   default branch; step 8). Then write the
+   default branch; step 8). Before the live file is deleted below, read
+   its `lessons used:` work-log lines. Also read its work log and Review
+   section for each lesson whose trap the milestone met. Note those
+   lessons for the use marks below. Then write the
    milestone's archive summary **from**
    `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/archive-summary.md` — a
    comment-free skeleton, so nothing scaffolding-shaped can leak into a
@@ -907,13 +910,17 @@ re-enters here, at the step the record shows is next:
    (`- YYYY-MM-DD (M<NNN>): <lesson>`, one line each); lessons, not status or a
    *choice* (a choice is a D-entry). None learned → skip the capture, but
    still mark use. First mark use: add `used M<NNN>` to the parenthesized provenance of each
-   lesson that the milestone's `lessons used:` work-log line names, and of
+   lesson that the `lessons used:` lines read before the deletion name, and of
    each lesson whose trap the milestone met. The mark replaces that
    lesson's earlier `used` mark, if it has one, and the use adds no other
    text to the lesson. A lesson is at most 450 bytes, newline excluded
    (tracking-rules "Weight caps"). The mark counts toward that limit, and a
    lesson that the mark takes past 450 bytes is shortened in this same
-   pass. An extension that would take a lesson
+   pass. The shortening keeps whole each string a pin file asserts present
+   and each text a live milestone quotes (both defined below). It keeps the
+   lesson's date and its whole parenthesized provenance. A lesson
+   that cannot then fit in 450 bytes takes no `used` mark, and the close
+   block names it beside a fenced `/cairn-triage lessons`. An extension that would take a lesson
    past 450 bytes is not written into it. The new content becomes a lesson
    of its own instead.
    **Never extend a finding-absorbing candidate row:** when this pass would
@@ -963,18 +970,32 @@ re-enters here, at the step the record shows is next:
    (tracking-rules "Weight caps") until 25 remain, in this same pass, and
    name them all in one line of the archive summary. Remove no lesson that
    a pin file holds or a live milestone quotes. A pin file is a test file
-   that asserts a string present in the live `cairn/LESSONS.md`. A live
+   that asserts a string present in the live `cairn/LESSONS.md`. Find the
+   pin files as each file that `git grep -l "LESSONS.md"` lists whose path
+   contains `test`, and read each one for the strings it asserts present.
+   None listed means no pins and no failure. A live
    milestone is a `planned`, `in-progress`, `blocked`, or `review`
    milestone whose file quotes the lesson or names it by its date and
    provenance. When too few lessons can be removed to leave 25, remove
-   none, capture nothing, and name the skipped lesson in the close block.
+   none and capture no lesson. Write each skipped lesson at the end of
+   `cairn/LESSONS.md` as a waiting line,
+   `- waiting YYYY-MM-DD (M<NNN>): <lesson>`. A waiting line is not a
+   lesson. It counts toward the file's line cap and not toward its 25
+   lessons. It takes no `used` mark, and it waits for
+   `/cairn-triage lessons` to admit or drop it. If `cairn/LESSONS.md`
+   already holds 49 lines or more, do not write the line, since it brings
+   the file to 50 lines or more. Quote that lesson in full in the close
+   block instead. The close block names
+   each waiting line it wrote.
    In guest mode `cairn/LESSONS.md` has no git copy, so the close block
    also quotes each removed lesson in full. When the limit bites, the close block also fences
-   `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218).
+   `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
    Durable-record preview (tracking-rules): show the archive summary,
-   each LESSONS line, any D-entry, any Known issues entry, and any
+   each LESSONS line the pass captures, marks, shortens, or writes as
+   waiting, any D-entry, any Known issues entry, and any
    candidate graduation or unparked row verbatim
-   in a guaranteed-rendered position (Mandated-substance rule).
+   in a guaranteed-rendered position (Mandated-substance rule). Name each
+   lesson the pass removes by its date and provenance.
    Then run `python3 "${CLAUDE_PLUGIN_ROOT}/scripts/cairn_validate.py"` over
    the completed hygiene edits, before the docs-only commit — it must pass,
    and whether its `release window` advisory fired, and for which ids, is

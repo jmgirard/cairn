@@ -7974,3 +7974,41 @@ pin keep, D-169's pruning last resort, and D-178 (5)'s pin and
 live-milestone keep, as D-219's item (2) states.
 
 **Consequences:** None beyond D-219's.
+
+### D-221 (2026-10-25): A lesson that review cannot fit waits as a `- waiting` line that `/cairn-triage lessons` admits or drops, and guest triage quotes each lesson it removes — supersedes D-218's "captures nothing when none can go" clause and D-177's "one of five exits" clause; extends D-219 (5) to the triage pass (M321)
+
+**Context:** M320's review found that a lesson review hygiene could not
+fit in a full `LESSONS.md` was named only in the close block, so it was
+lost after the session. D-177 says a triage `drop` names "one of five
+exits". D-218 added a sixth, `rank`, and named no supersession of that
+clause. In guest mode, `cairn/LESSONS.md` is untracked, so a lesson that
+the triage pass drops or merges away keeps no copy. D-219 (5) fixed this
+for review's evictions only.
+
+**Decision:** (1) At the 25-lesson limit, when no lesson can be removed,
+review hygiene writes each new lesson at the end of `cairn/LESSONS.md` as
+a `- waiting YYYY-MM-DD (M<NNN>):` line. A waiting line is not a lesson:
+it does not count toward the 25 lessons, takes no rank and no `used`
+mark, and counts toward the file's line cap. Where the line would bring
+the file to 50 lines or more, review quotes the lesson in full in the
+close block. This supersedes D-218's "captures nothing when none can go".
+(2) `/cairn-triage lessons` gains an `admit` disposition for a waiting
+line, which makes it a lesson that the rank rule then counts. A waiting
+line takes `admit` or a `drop` with any exit but `rank`. A waiting line
+that a pin file holds or a live milestone quotes is `admit`. The user
+chose a waiting line that triage reconsiders at M321's question set, over
+a record in the archive summary. (3) A triage `drop` names one of six
+exits, `rank` among them. This supersedes D-177's "one of five exits".
+(4) In guest mode, the triage pass's close block quotes in full each
+lesson or waiting line it drops or merges away, as D-219 (5) has review
+do for its evictions.
+
+**Rejected:** Running `/cairn-triage lessons` right after review: a lesson
+is skipped only when every lesson left is pinned or quoted by a live
+milestone, and triage keeps those too. A record in the archive summary:
+triage does not read it, so the lesson would stay out of the file.
+Capturing a 26th lesson: it breaks the limit that D-218 sets.
+
+**Consequences:** D-051's rejection (2), of a second file of lessons,
+holds: the waiting line sits in `cairn/LESSONS.md`. Falsified by waiting
+lines that stay unadmitted across two or more triage runs.

@@ -177,7 +177,7 @@ class TestReviewArchivedFileArm(unittest.TestCase):
 
     def test_writes_nothing_to_the_archive_and_no_issue(self):
         self.assertIn(
-            "Write nothing to the archive file, capture or retire no lesson, "
+            "Write nothing to the archive file, capture, mark, or retire no lesson, "
             "and archive no RB/RR pair",
             self.arm,
         )
