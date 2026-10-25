@@ -200,39 +200,45 @@ Pass 2 (2026-10-25), branch head 603cd3c5, after return 1. Copilot: state query 
 - AC1, AC2, AC3, AC5, AC7 recheck on 603cd3c5: the diff since b5011c05 leaves review step 9, the waiting-line triage text, and D-221 untouched. Pass.
 - Consistency gate: `cairn_validate` exit 0 (one advisory, the 8-criteria sizing tripwire the plan logged); coverage complete passes; no DESIGN principle changed, so `cairn_impact` is skipped; profile checks: verify green on 603cd3c5, the marketplace validate prints no `version` warning, CHANGELOG's Unreleased lessons entry covers the user-visible changes with no milestone numbers. Pass.
 - spawned: diff-bug, blame-history, prior-review, ripple
-- diff-bug #1: the LESSONS.md header grew from 20 to 25 non-lesson lines, so 25 lessons make 50 lines and `cairn_validate` fails at 50; the template grew from 18 to 22 lines — load-bearing; return 2 (fix now)
+- diff-bug #1: the LESSONS.md header grew from 20 to 25 non-lesson lines, so 25 lessons make 50 lines and `cairn_validate` fails at 50; the template grew from 18 to 22 lines — load-bearing; return 2 (fix now), fixed 30d663ad
 - diff-bug #2: a pinned or quoted waiting line forced to `admit` can leave 26 lessons when every other lesson is protected, sending step 4 back to the chip — reject, edge (a full file of 25 protected lessons plus a quoted waiting line; the effect is a return to the chip, where Amend settles it)
 - diff-bug #3: an admitted waiting line over 450 bytes has no remedy — reject, false (review captures within the 450-byte limit, and `admit` removes the `waiting ` word)
-- diff-bug #4: later captures land after a waiting line, so "at the end" stops being true — fix now (drop "at the end" from template, header, and rulebook)
-- diff-bug #5: "already holds 49 lines" in template, header, and CHANGELOG vs "49 lines or more" in step 9 and the rulebook — fix now
+- diff-bug #4: later captures land after a waiting line, so "at the end" stops being true — fix now, fixed 30d663ad (drop "at the end" from template, header, and rulebook)
+- diff-bug #5: "already holds 49 lines" in template, header, and CHANGELOG vs "49 lines or more" in step 9 and the rulebook — fix now, fixed 30d663ad
 - diff-bug #6: guest mode loses the pre-edit text of a triage `compress`, `split`, or `correct` and of review's mark shortening — follow-up, row "Close the leftover lesson hygiene gaps"
-- diff-bug #7: Amend to `keep` is undefined for a waiting line — fix now (it stays waiting)
-- diff-bug #8: the rank rule can propose a `rank` drop for an admitted line — fix now (an admitted line is never a `rank` drop)
-- diff-bug #9: the plan harvest can name a waiting line in `lessons used:`; the `/milestone` audit does not surface waiting lines — fix now for the plan (one sentence); the audit half is follow-up, row "Close the leftover lesson hygiene gaps"
+- diff-bug #7: Amend to `keep` is undefined for a waiting line — fix now, fixed 30d663ad (it stays waiting)
+- diff-bug #8: the rank rule can propose a `rank` drop for an admitted line — fix now, fixed 30d663ad (an admitted line is never a `rank` drop)
+- diff-bug #9: the plan harvest can name a waiting line in `lessons used:`; the `/milestone` audit does not surface waiting lines — fix now, fixed 30d663ad for the plan (one sentence); the audit half is follow-up, row "Close the leftover lesson hygiene gaps"
 - diff-bug #10: unpark reads the deleted file with `git show HEAD:`, which fails in guest mode (pre-existing) — follow-up, row "Close the leftover lesson hygiene gaps"
-- diff-bug #11: review's pin search does not say that none listed means no pins; untracked test files are missed — fix now for the first; reject the second, edge (an untracked test that pins live LESSONS.md text; the effect is that test failing)
-- diff-bug #12: "The close block names each waiting line it wrote." and the waiting line's planner-test sentence have no guard — fix now
-- diff-bug #13: AC6's negative half has no `assertNotIn` for the old remedy wording — fix now
-- diff-bug #14: `test_triage_lessons.py` docstring still says seven dispositions — fix now
-- diff-bug #15: milestone-tagged rationale comments in `test_lessons_loop.py` and `test_triage_lessons.py` — fix now (tags removed)
+- diff-bug #11: review's pin search does not say that none listed means no pins; untracked test files are missed — fix now, fixed 30d663ad for the first; reject the second, edge (an untracked test that pins live LESSONS.md text; the effect is that test failing)
+- diff-bug #12: "The close block names each waiting line it wrote." and the waiting line's planner-test sentence have no guard — fix now, fixed 30d663ad
+- diff-bug #13: AC6's negative half has no `assertNotIn` for the old remedy wording — fix now, fixed 30d663ad
+- diff-bug #14: `test_triage_lessons.py` docstring still says seven dispositions — fix now, fixed 30d663ad
+- diff-bug #15: milestone-tagged rationale comments in `test_lessons_loop.py` and `test_triage_lessons.py` — fix now, fixed 30d663ad (tags removed)
 - diff-bug #16: triage's opening leaves out the pin exclusion and the waiting line — reject, false (the sentence is a summary that cites D-218; nothing in it is wrong)
-- diff-bug #17: DESIGN.md's "(narrowed by M321)" sits mid-entry, not in the entry's closing provenance — fix now
-- diff-bug #18: step 9 does not say which marks survive the mark's shortening — fix now
-- blame-history #1: same as diff-bug #1 — return 2 (fix now)
+- diff-bug #17: DESIGN.md's "(narrowed by M321)" sits mid-entry, not in the entry's closing provenance — fix now, fixed 30d663ad
+- diff-bug #18: step 9 does not say which marks survive the mark's shortening — fix now, fixed 30d663ad
+- blame-history #1: same as diff-bug #1 — return 2 (fix now), fixed 30d663ad
 - blame-history #2: at 49 or more lines the skipped lesson is quoted only in chat — reject, planned change (AC3 names this outcome; with the header fixed, a 25-lesson file has room for waiting lines)
-- blame-history #3: same as diff-bug #9 (plan half) — fix now
+- blame-history #3: same as diff-bug #9 (plan half) — fix now, fixed 30d663ad
 - blame-history #4: "takes no `used` mark" and "becomes a lesson of its own" give one case two outcomes — reject, false (the first is a mark that cannot fit, the second is extension text; they are different cases)
 - blame-history #5: the split copies the `used` mark to every line, against M320's "only the provenance ids" — reject, planned change (AC4)
 - blame-history #6: same as diff-bug #3 — reject, false
 - blame-history #7: a hygiene pass stopped after the deletion loses the use marks, since the archived-file arm marks nothing — follow-up, row "Close the leftover lesson hygiene gaps"
-- blame-history #8: same as diff-bug #17 — fix now
+- blame-history #8: same as diff-bug #17 — fix now, fixed 30d663ad
 - blame-history #9: the suite pins the 49-line fallback and the header wording — reject, planned change
-- prior-review #1: same as diff-bug #15 for the test comments — fix now; the mutation-registry comment and docstring tags — reject, style (the files' own convention, as at M320 diff-bug #13)
-- prior-review #2: review's pin discovery relies on the `git grep -l` that DESIGN.md's Known issues calls incomplete — fix now (the Known issues sentence names review's use)
-- prior-review #3: same as diff-bug #17 — fix now
-- ripple #1: same as diff-bug #9 (plan half) — fix now
-- ripple #2: same as prior-review #2 — fix now
+- prior-review #1: same as diff-bug #15 for the test comments — fix now, fixed 30d663ad; the mutation-registry comment and docstring tags — reject, style (the files' own convention, as at M320 diff-bug #13)
+- prior-review #2: review's pin discovery relies on the `git grep -l` that DESIGN.md's Known issues calls incomplete — fix now, fixed 30d663ad (the Known issues sentence names review's use)
+- prior-review #3: same as diff-bug #17 — fix now, fixed 30d663ad
+- ripple #1: same as diff-bug #9 (plan half) — fix now, fixed 30d663ad
+- ripple #2: same as prior-review #2 — fix now, fixed 30d663ad
 - ripple #3: the "Fix the gaps in lesson use marks" row still lists the closed gaps — reject, planned change (post-merge hygiene removes the row)
 - ripple #4: README's `/cairn-triage lessons` row omits `admit` and guest quoting — reject, false (nothing it says is wrong; the user chose no README guard work)
 - ripple #5: CHANGELOG's "a file over 25 lessons is cut back at the next review that captures a lesson" — reject, false (still true for an adopting repo over 25)
-- ripple (inside diff): CHANGELOG's waiting-line sentence reads as covering every captured lesson — fix now; DESIGN.md's quoting sentence reads as all modes — reject, false (it follows "A guest lesson drop")
+- ripple (inside diff): CHANGELOG's waiting-line sentence reads as covering every captured lesson — fix now, fixed 30d663ad; DESIGN.md's quoting sentence reads as all modes — reject, false (it follows "A guest lesson drop")
+
+Pass 3 (2026-10-25), branch head 30d663ad, after return 2. Copilot state query to run before the merge chip (PR-conversation read).
+
+- AC1–AC8 recheck on 30d663ad: the diff since c0c53ff1 adds to review step 9 ("It keeps the lesson's date and every mark in its provenance.", "None listed means no pins and no failure."), triage (an admitted line is never a `rank` drop; a waiting line moved to `keep` stays waiting), the plan harvest, and rewrites the template and LESSONS header waiting sentence to "A `- waiting` line is not a lesson: it takes no `used` mark and waits for `/cairn-triage lessons`."; every quoted pass-1 and pass-2 evidence string still reads as recorded, the four AC6 sites still state both remedies and the waiting line (none names splitting or shortening for the count, now asserted by `assertNotIn`), and LESSONS.md is 41 lines (45 at 25 lessons). Verify 5/5 green, `skills/tests` 976 OK. Pass.
+- Consistency gate on 30d663ad: `cairn_validate` exit 0 (the sizing advisory only); marketplace validate prints no `version` warning; CHANGELOG entry present. Pass.
+- spawned: diff-bug, blame-history, prior-review, ripple
