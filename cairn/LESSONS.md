@@ -10,11 +10,15 @@ One line per lesson: `- YYYY-MM-DD (M<NNN>): <lesson>`. Limits
 Current knowledge: a lesson proven false is corrected in place (D-045).
 Lessons also *leave*: one retires when a test fails on the mistake it warns
 about, when another file's slot owns its content, or when a matured family
-graduates whole into a doctrine module. Over the limits, shorten or split
-lessons first. Then the lowest-ranked lesson leaves first. Rank is the newest
+graduates whole into a doctrine module. A lesson over 450 bytes is
+shortened or split. Over 25 lessons, lessons retire first, and then the
+lowest-ranked lesson leaves. Rank is the newest
 milestone in a lesson's provenance, not counting `trimmed` or `corrected`
 marks, and reviews mark `used M<NNN>` on the
-lessons a milestone used (D-051, D-055, D-218).
+lessons a milestone used (D-051, D-055, D-218). A `- waiting` line at the
+end is not a lesson. When no lesson can leave a full file, review writes it.
+It takes no `used` mark and waits for `/cairn-triage lessons` to admit or
+drop it.
 
 <!-- lessons appended below by /milestone-review post-merge hygiene -->
 
