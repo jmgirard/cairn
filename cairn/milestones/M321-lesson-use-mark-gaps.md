@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M321: Fix the gaps in lesson use marks
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -40,19 +40,19 @@ row) → dropped at the user's choice at the question set.
 
 ## Acceptance criteria
 
-- [ ] AC1: In `skills/milestone-review/SKILL.md` step 9, the pass reads the
+- [x] AC1: In `skills/milestone-review/SKILL.md` step 9, the pass reads the
       live milestone file's `lessons used:` work-log lines before the
       sentence that deletes that file, and the use-mark sentence marks the
       lessons those lines name; the archived-file arm's list of work it
       skips names lesson use marks.
-- [ ] AC2: Step 9 says how the pass finds pin files (each file that
+- [x] AC2: Step 9 says how the pass finds pin files (each file that
       `git grep -l "LESSONS.md"` lists whose path contains `test`), and says
       that shortening a lesson that a `used` mark takes past 450 bytes keeps
       whole each string those files assert present and each text a live
       milestone quotes, and that a lesson that cannot then fit in 450 bytes
       takes no `used` mark and is named in the close block beside a fenced
       `/cairn-triage lessons`.
-- [ ] AC3: In its too-few-removable case, step 9 writes each skipped lesson
+- [x] AC3: In its too-few-removable case, step 9 writes each skipped lesson
       at the end of `cairn/LESSONS.md` as a waiting line,
       `- waiting YYYY-MM-DD (M<NNN>): <lesson>`, which counts toward the
       file's line cap and not toward its 25 lessons; where writing the line
@@ -70,7 +70,7 @@ row) → dropped at the user's choice at the question set.
       paragraph states that review hygiene marks use and removes the
       lowest-ranked lessons at the limit, and no longer says it checks only
       the lessons the milestone covers.
-- [ ] AC5: In the same pass, step 1 lists each waiting line as an item of
+- [x] AC5: In the same pass, step 1 lists each waiting line as an item of
       its own, and step 2 proposes for it either `admit`, which removes its
       `waiting ` word so it becomes a lesson that the rank rule then counts,
       or `drop` with one of the pass's exits other than `rank`; a waiting
@@ -87,7 +87,7 @@ row) → dropped at the user's choice at the question set.
       takes no `used` mark, and waits for `/cairn-triage lessons`; and the
       "Retiring a lesson" bullet names the waiting line in review's
       full-file case and `admit` among the whole-file pass's dispositions.
-- [ ] AC7: `cairn/DECISIONS.md` gains one entry that names D-177's "one of
+- [x] AC7: `cairn/DECISIONS.md` gains one entry that names D-177's "one of
       five exits" clause as superseded by D-218's `rank` exit and D-218's
       "captures nothing when none can go" clause as superseded by the waiting
       line, and records the waiting line, triage's `admit` disposition, and
@@ -163,3 +163,20 @@ row) → dropped at the user's choice at the question set.
 - 2026-10-25: T6 done — guards re-pinned in `test_lessons_loop.py`, `test_triage_lessons.py`, and `test_resume_routing.py` for the changed text; new guards for the read-before-deletion order (an index comparison), pin-safe shortening and the pin-file procedure, the waiting line and its 49-line stop, the preview, the remedy and waiting line at template, LESSONS header, and both rulebook sites, the eight dispositions with `admit`, waiting-line handling, the opening paragraph, split and merge marks, the rank count, and guest quoting; 28 new or updated mutation entries, each red when blanked. `skills/tests` 974 OK; verify 5/5 green; validate green.
 - 2026-10-25: correction to the T6 line: it changed 31 mutation entries, 27 new and 4 updated, not 28.
 - 2026-10-25: claim audit: 49 claims read, 2 corrected — CHANGELOG.md, skills/shared/tracking-rules.md, skills/shared/templates/lessons.md, cairn/LESSONS.md header (the 49-line exception was missing, so "writes it" read as unconditional), skills/cairn-triage/SKILL.md (step 1's empty-file sentence ignored waiting lines). Same reader re-read all corrected claims: true. Guards added for the new sentences (3 new mutation entries, 1 updated); rulebook-mass baseline re-seeded to 847 lines / 83,799 bytes. `skills/tests` 974 OK; verify 5/5 green.
+- 2026-10-25: PR #334 opened at review start (Copilot round on); Copilot request may not be recorded (state still `none`).
+- 2026-10-25: review return 1: AC4 fails as written — the `split` row's provenance sentence ("Each new line keeps the original date and only the provenance ids its text came from") does not name the `used` mark, which sits in the next sentence; AC6 fails as written — the tracking-rules "Retiring a lesson" bullet does not say retirement runs before rank eviction for a count over 25.
+
+## Decisions
+
+## Review
+
+Pass 1 (2026-10-25), branch head b5011c05, PR #334. Copilot: state query `none`; one request (exit 0), state still `none` — Copilot request on PR #334 may not be recorded by GitHub (used-up Copilot credits are one cause); no second request.
+
+- AC1 evidence: `skills/milestone-review/SKILL.md:880` reads the `lessons used:` lines ("Before the live file is deleted below, read its `lessons used:` work-log lines") before `:888` "**deleting the live"; `:913` marks "each lesson that the `lessons used:` lines read before the deletion name"; the archived-file arm at `:58` says "capture, mark, or retire no lesson". `test_review_reads_the_used_lines_before_the_deletion` asserts the order by index. Pass.
+- AC2 evidence: step 9 finds pin files at `:972-974` ("each file that `git grep -l "LESSONS.md"` lists whose path contains `test`", read for the strings asserted present); `:919-922` says the mark's shortening "keeps whole each string a pin file asserts present and each text a live milestone quotes (both defined below)", and a lesson that "cannot then fit in 450 bytes takes no `used` mark, and the close block names it beside a fenced `/cairn-triage lessons`". Pass.
+- AC3 evidence: step 9 `:977-987` writes each skipped lesson at the end of `cairn/LESSONS.md` as `- waiting YYYY-MM-DD (M<NNN>): <lesson>`, "counts toward the file's line cap and not toward its 25 lessons", and when the file "already holds 49 lines or more" (one more line brings it to 50 or more, `LINE_CAPS` 50 at `scripts/cairn_scripts.py:44`) writes no line and quotes the lesson in full in the close block; `:991-996` previews verbatim each LESSONS line "the pass captures, marks, shortens, or writes as waiting" and names each removed lesson by date and provenance. Pass.
+- AC4 evidence: `skills/cairn-triage/SKILL.md:180-183` — compress and correct keep "any `corrected`, `trimmed`, or `used` mark", a merge survivor "carries the `used` mark with the higher milestone number of the two lessons, or the one mark either has", each split line keeps "the split lesson's `used` mark"; `:285-287` guest close block quotes each dropped or merged-away lesson or waiting line in full; `:118-120` opening says review "retires only the lessons that milestone's work covers (D-051). It also marks the lessons the milestone used, and at the 25-lesson limit it removes the lowest-ranked ones (D-218)"; `grep -c "still checks only"` 0. But the `split` row (`:172`) names the mark in a sentence after its provenance sentence ("Each new line keeps the original date and only the provenance ids its text came from. Every new line also keeps the split lesson's `used` mark."), so the provenance sentence itself does not name it, and its "only" still reads as excluding the mark. Fail as written.
+- AC5 evidence: `skills/cairn-triage/SKILL.md:154-159` lists each `- waiting` line as an item of its own and says that until admitted "the pass does not count it among the lessons or rank it"; `:164-166` "An item takes one of eight dispositions … A waiting line takes only `admit` or `drop`"; `:176` the `admit` row ("A waiting line only. Its `waiting ` word is removed, so the line becomes a lesson … and the rank rule then counts it"); `:205-207` a waiting line's `drop` names an exit "other than `rank`", and one a pin file holds or a live milestone quotes "is proposed `admit`, never `drop`". Pass.
+- AC6 evidence: the template (`skills/shared/templates/lessons.md:13-15`), the `cairn/LESSONS.md` header (`:13-15`), and Weight caps (`tracking-rules.md:88-89`) each send a lesson over 450 bytes to shortening or splitting and a count over 25 to retirement then rank eviction; none ties splitting or shortening to the count. All four sites say a `- waiting` line is not a lesson, takes no `used` mark, and waits for `/cairn-triage lessons` (template `:18-20`, header `:19-21`, Weight caps `:71-72`, Retiring `:145-146`), and "Retiring a lesson" names the waiting line in the none-can-go case and `admit` (`:150`). But the "Retiring a lesson" bullet states the 450-byte remedy ("shortens or splits each lesson over 450 bytes") and rank eviction at the limit, and nowhere says retirement runs first, so it does not send a count overrun to "retirement and then rank eviction". Fail as written.
+- AC7 evidence: `cairn/DECISIONS.md` gains one entry, D-221 (`grep -c "^### D-221"` 1; the diff against main removes no line). It supersedes D-177's "one of five exits" (`:8001`) and D-218's "captures nothing when none can go" (`:7994`), and records the waiting line (`:7990`), the `admit` disposition (`:7995-7998`), and guest triage's quoting of each dropped or merged-away lesson (`:8002`). Pass.
+- AC8 partial: `CHANGELOG.md:16-23` says review writes each new lesson it cannot fit as a `- waiting` line that the next `/cairn-triage lessons` run proposes to admit or drop, and that guest `/cairn-triage lessons` quotes each lesson it drops or merges away. Verify on the review head waits for the return below. Not ticked.
