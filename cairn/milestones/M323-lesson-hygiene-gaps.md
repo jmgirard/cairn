@@ -81,3 +81,26 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - spawned: diff-bug, blame-history, prior-review, ripple
 - blame-history #1: a stop between capture and the deletion reruns step 9 and could capture lessons twice — fix now (not load-bearing: a duplicate line after a mid-pass stop), fixed 648bb61a: a rerun captures no lesson and writes no waiting line the file already holds.
 - blame-history #2: the ROADMAP byte re-measure after the row edit names no remedy — fix now, fixed 648bb61a: over budget, apply the tracking-rules remedy before the commit.
+- diff-bug #1: a stop between the archive write (start) and the deletion (end) leaves both files, the arm does not fire, and a rerun rewrites the archive and repeats capture — fix now (not load-bearing: only a pass stopped mid-hygiene, recovered on rerun), fixed ad0cbf85: the archive summary is now written last of the edits, just before the deletion, so a stopped pass leaves only the live file; with blame-history #1's guard a rerun repeats no capture.
+- diff-bug #2: the audit's mechanical fix of the live-plus-archived FAIL could delete a file mid-pass — fix now, fixed ad0cbf85 by #1's change (that state again lasts only between two adjacent edits).
+- diff-bug #3: the byte re-measure names no remedy — fix now, fixed 648bb61a (same as blame-history #2).
+- diff-bug #4: the arm's recap calls lesson, mark, and RB/RR work "skipped" though under the new order the earlier pass ran it — fix now, fixed ad0cbf85: the arm and README.md now say "not rerun".
+- diff-bug #5: the arm's step-9 parts list runs the cap checks before its row update — fix now, fixed ad0cbf85: "the cap and budget checks, run after the row update".
+- diff-bug #6: the CHANGELOG said "both" passes shorten, split, correct, trim, and merge — fix now, fixed ad0cbf85: triage's and review's edits named apart.
+- diff-bug #7: DESIGN.md's triage Known issues entry does not name review's pre-edit quotes — reject (planned change: AC5 named that entry, which covers triage gaps).
+- diff-bug #8: triage `promote` is not in the guest quote rule — reject (false: a promote graduates the family into a doctrine module, so its text survives on disk).
+- diff-bug #9: the extended read-before-deletion test checks several orders with bare assertLess — reject (moot: the added order checks were removed under prior-review #1).
+- diff-bug #10: the audit guard sits in a review class — reject (moot: the guard was removed under prior-review #1).
+- diff-bug #11: two new mutation comments cite M323 — reject (moot: both entries were removed under prior-review #1).
+- diff-bug #12: test_budget_first_drafting's docstring is narrative bug history — follow-up (pre-existing, unmodified line): absorbed into the parked row "Check bare milestone ids in tests" at hygiene.
+- blame-history (pass 1): 2 findings, settled above as blame-history #1 and #2.
+- prior-review #1: the diff added prose guards and mutation entries for new rules, which cairn/PROFILE.md's test-doctrine says a new skill rule does not owe (M144, D-109) — fix now, fixed ad0cbf85: removed the new tests (order loop, not-live, audit) and five new mutation entries; kept the edits that existing pins needed.
+- prior-review #2: the guest quote of every pre-edit line has no count bound — reject (false: it is a chat close block with no line cap, the shape D-219 (5) and D-221 (4) already use).
+- prior-review #3: the audit restated the waiting-line definition, a fifth site — fix now, fixed ad0cbf85: it now points at tracking-rules "Weight caps".
+- prior-review #4: DESIGN.md restates the close-block quote rule — reject (planned change: AC5 asked for it).
+- prior-review #5: long prose lines in DESIGN.md and the review skill — reject (style).
+- ripple #1: the arm and README describe only the deleted-file stop state — fix now, fixed ad0cbf85 by diff-bug #1's change and the README "not rerun" edit.
+- ripple #2: DESIGN.md omits review's guest quotes — reject (planned change, as diff-bug #7).
+- ripple #3: triage's guest quote rule skips `admit` — reject (false: admit only removes the `waiting ` word, so the text stays on disk).
+- ripple #4: ROADMAP's candidate row still lists the gaps — reject (planned change: step 9 hygiene graduates the row).
+- ripple #5: /milestone's close-block examples do not name `/cairn-triage lessons` — reject (false: those are examples, and the audit text fences the command itself).
