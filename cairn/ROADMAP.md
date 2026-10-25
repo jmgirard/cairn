@@ -1,22 +1,20 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-25 (M321 review: done and archived; `used M321` on eight lessons, one lesson captured, LESSONS at 22 lessons; M318 row pruned to the terminal cap; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-25 (M322 review: done and archived; row "Cut code cites to evicted lessons" graduated; `used M322` on seven lessons, none captured, LESSONS at 22 lessons; M319 row pruned to the terminal cap; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M322 | Stop citing lessons from code and docs | review | — | normal | milestones/M322-lesson-cites.md |
+| M322 | Stop citing lessons from code and docs | done | — | normal | milestones/archive/M322-lesson-cites.md |
 | M321 | Fix the gaps in lesson use marks | done | — | normal | milestones/archive/M321-lesson-use-mark-gaps.md |
 | M320 | Keep lessons in fixed ranked slots | done | — | normal | milestones/archive/M320-lessons-fixed-slots.md |
-| M319 | Let PROFILE.md set the guest close limit | done | — | normal | milestones/archive/M319-issue-close-cap.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
 - State the close count in guest text: the guest session-start text (`host_rules` in `hooks/session_context.py`) says "counting your closes there that day" but not how to count them, the `issues/events?per_page=100` read and its full-page rule in tracking-rules guest rule (3), so a guest session that never reads the rulebook cannot apply the limit. The gap predates M319, whose AC3 kept the no-line text equal to main. The read also counts closed PRs and the session's own issues (an over-count), and the rule says neither when to recount nor how to add closes made since the read. Found at M319 review (pass 1 diff-bug #3, pass 2 diff-bug #1 and #3) — added 2026-10-22
-- Cut code cites to evicted lessons: ten test files cite "the M171 lesson", DESIGN.md:648 and register.tsx:404 cite LESSONS M194, pane.test.tsx:7151 cites LESSONS M284, all text M320's rank drops removed; older cites ("the M118 lesson", `LESSONS :24`) were already wrong. Decide whether code cites a lesson at all — added 2026-10-24 — M320 review (ripple #1-3, #5, #6) — started M322
 - Close the leftover lesson hygiene gaps: guest mode keeps no copy of a lesson's pre-edit text (triage `compress`, `split`, `correct`; review's mark shortening); unpark's `git show HEAD:` fails in guest mode; a hygiene pass stopped after the deletion loses its use marks; the `/milestone` audit ignores `- waiting` lines; D-221's Rejected says a lesson waits only when every lesson left is protected, false when some can go — added 2026-10-25 — M321 review
 - [parked] Match lesson citations after use marks: a live milestone keeps a lesson that it names by date and provenance (`/cairn-triage lessons`, review capture), but a later `used` mark, compress, or split changes that provenance, so the citation can stop matching and the lesson loses its protection. Promote when a lesson that a planned milestone named is evicted or proposed for drop because its citation no longer matched — added 2026-10-24 — M320 review (diff-bug #16)
 - [parked] Check bare milestone ids in tests: many test comments cite a bare milestone id for a point, such as "(M23)" for the newline trap or "(M53 discipline)", and the M023, M026, M053, and M054 archives do not record those points; D-222 lets a comment cite a milestone only where its file records the point, but these predate it. Promote when a reader cannot follow such a comment from its own words — added 2026-10-25 — M322 review (diff-bug #1)
