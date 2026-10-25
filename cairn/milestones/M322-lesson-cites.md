@@ -77,7 +77,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
       comments cite lessons by line number. The entry's other sentences
       are kept word for word, and its provenance tail gains a
       `narrowed 2026-10-25 — M322` mark (the date of the edit).
-- [ ] AC5: The verify slot of `cairn/PROFILE.md` is green on the branch
+- [x] AC5: The verify slot of `cairn/PROFILE.md` is green on the branch
       head (both gating suites, both `claude plugin validate` runs, and
       `claude plugin test`), and `python3 -m unittest discover -s
       skills/tests` passes.
@@ -146,3 +146,4 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - AC2 evidence: `git diff main...HEAD -- . ':!cairn'` (29 files, +65 -63) read line by line; every rewritten cite states its point in words; the only milestone or D ids on added lines (M208, M88 review F6, M144/D-109, M75/D-044, M28) were on those lines on main, so no lesson cite became a milestone cite; the claim audit confirmed each added reason clause against its code.
 - AC3 evidence: `grep -n '^### D-' cairn/DECISIONS.md` shows D-222 (line 8016) as the last heading, after D-221 (line 7978); it decides that code, tests, skill prose, and `cairn/DESIGN.md` do not cite a lesson. `cairn/LESSONS.md` header lines 18-19 hold the one-sentence rule, before the first lesson line.
 - AC4 evidence: `git diff main...HEAD -- cairn/DESIGN.md` removes only the sentence "Test comments cite lessons by line number ("LESSONS :49")." from the `/cairn-triage` Known issues entry; the entry's other sentences are unchanged (one line rejoined), and its tail gains `narrowed 2026-10-25 — M322`. The same diff drops "(LESSONS M194)" at line 649.
+- AC5 evidence (2026-10-25, code as at ba1ffeb3; only tracking commits after): scripts/tests exit 0, hooks/tests exit 0, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0 with no version warning, `claude plugin test .` 2466 pass 0 fail (129 s), `python3 -m unittest discover -s skills/tests` OK.
