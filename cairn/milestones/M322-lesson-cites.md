@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M322: Stop citing lessons from code and docs
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -134,6 +134,8 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: T4 done: the two skill-prose parentheticals dropped (no pin holds either line); DESIGN.md:649 cite dropped; the Known issues sentence on line-number cites deleted and the entry's tail marked `narrowed 2026-10-25 — M322`; skills/tests and validate green.
 - 2026-10-25: T5 sweep S on the branch lists 16 lines, none a cite: fixture data (hooks/status/fixtures.gen.ts:441, fixtures/repo-at-cut ROADMAP:4, test_scripts.py:2476 milestone filename, :3439 fixture LESSONS text); the lessons mechanism or a milestone's lesson work (test_lesson_graduation.py:1, test_lessons_loop.py:1/75/256, test_triage_lessons.py:1/11/18, test_mutation_harness.py:2400/2941/4677, DESIGN.md:38); history narrative (test_source_note_template.py:7).
 - 2026-10-25: T5 verify slot green: scripts/tests and hooks/tests OK, both plugin validates exit 0 (no version warning), plugin test 2466 pass 0 fail; skills/tests 977 OK.
+- 2026-10-25: claim audit: 46 claims read, 5 corrected — skills/tests/test_wait_rule.py, test_review_fanout.py, test_design_interview.py, test_mutation_harness.py, scripts/tests/test_scripts.py; the reader re-read all five as right; its sixth item (test_references_pages.py:146 "blanks by line") is older wording the branch did not write and stays.
+- 2026-10-25: after the claim-audit fixes (comments only) scripts/tests and skills/tests rerun green; hooks/ unchanged since the full verify run. Implement complete, status review.
 
 ## Decisions
 

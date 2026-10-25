@@ -964,8 +964,8 @@ def prov_page(status, ingested=None, deco="{}", layout="inline", decoy=False):
     elif layout == "wrapped-at-boundary":
         # M83: wrap exactly where the leading clause ends. The midpoint split
         # above never lands here, so it cannot exercise a classifier that
-        # reads the lead separately from the remainder, and an axis can be
-        # varied everywhere and still be vacuous where it counts.
+        # reads the lead separately from the remainder. An axis varied
+        # everywhere can still be vacuous where it counts.
         cut = status.find(" — ")
         if cut == -1:
             raise AssertionError("boundary layout needs an em-dash status")

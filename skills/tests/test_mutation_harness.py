@@ -300,8 +300,8 @@ REGISTRY = [
     ),
     # M59 (RR01 rec 7): cairn-init §0's fallback follows the canonical recipe —
     # one Mutation entry per new positive assert (M53 discipline); the paired
-    # assertNotIn("show-current") rides on these positives, since blanking a
-    # line cannot fail it.
+    # assertNotIn("show-current") rides on these positives, since removing
+    # text cannot make an absence assert fail.
     Mutation(
         guard="test_default_branch_parameterized",
         test="TestDefaultBranchParameterized.test_cairn_init_fallback_matches_canonical_recipe",
