@@ -97,7 +97,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
       `skills/tests/test_lesson_graduation.py` and `test_lessons_loop.py`
       assert in that file, and keep the header within the 23 lines that
       `test_lessons_header_leaves_room_for_25_lessons` allows.
-- [ ] T2: Rewrite the cites under `scripts/` and `hooks/`
+- [x] T2: Rewrite the cites under `scripts/` and `hooks/`
       (`scripts/tests/test_scripts.py`, `scripts/tests/test_status_fixtures.py`,
       `scripts/cairn_validate.py:1097` and `:1109` and the wrapped cite at
       `:1344-1345`, `hooks/status/pane.test.tsx`,
@@ -129,6 +129,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: changelog: no entry, because no behavior or rule an adopter sees changes; the two skill-prose edits drop a parenthetical cite.
 - 2026-10-25: implement started on m322-lesson-cites from main at 67187333; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-25: T1 done: D-222 appended after D-221; LESSONS.md header gains a two-line rule sentence (header 22 lines, test limit 23); lessons_loop and lesson_graduation tests and validate green.
+- 2026-10-25: T2 done: 15 cites in 6 files under scripts/ and hooks/ rewritten to state their point, the wrapped M81 cite at cairn_validate.py:1344 included; no milestone cite added; both gating suites green.
 
 ## Decisions
 

@@ -401,7 +401,7 @@ export const register: Register = on => {
     // left between them: cut to one line with an ellipsis, or wrapped for
     // the goal's lines. The line Box may shrink below its content's width,
     // so a long text is cut rather than pushing the tail past the edge
-    // (M208, LESSONS M194). The action Button sits after them in a Box that
+    // (M208). The action Button sits after them in a Box that
     // does not shrink, so the Next command is cut first (M218), and so does Status
     // after it, and the first line's ⌂ and ↻, each in its own such Box
     // (M219, M236, M241). Off the terminal, a candidate line's ✎ Box has no

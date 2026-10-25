@@ -936,7 +936,7 @@ def days_ago(n):
     return (datetime.date.today() - datetime.timedelta(days=n)).isoformat()
 
 
-# The three axes AC2 varies INDEPENDENTLY (LESSONS :24 — varying one axis at a
+# The three axes AC2 varies INDEPENDENTLY (varying one axis at a
 # time passes vacuously on the others, so these are crossed, not walked).
 DECORATIONS = ("{}", "**{}**", "_{}_", "`{}`")
 LAYOUTS = ("inline", "label-alone", "wrapped")
@@ -964,8 +964,8 @@ def prov_page(status, ingested=None, deco="{}", layout="inline", decoy=False):
     elif layout == "wrapped-at-boundary":
         # M83: wrap exactly where the leading clause ends. The midpoint split
         # above never lands here, so it cannot exercise a classifier that
-        # reads the lead separately from the remainder — M81's lesson that an
-        # axis can be varied everywhere and still be vacuous where it counts.
+        # reads the lead separately from the remainder, and an axis can be
+        # varied everywhere and still be vacuous where it counts.
         cut = status.find(" — ")
         if cut == -1:
             raise AssertionError("boundary layout needs an em-dash status")
@@ -1355,7 +1355,7 @@ class TestReferencesStaleness(ScriptCase):
         self.assertFlagged(proc, f"dated {ahead}, in the future")
 
     def test_contradiction_is_caught_wherever_it_sits_and_however_wrapped(self):
-        # M81's lesson: vary the axis where the value under test lives. What
+        # Vary the axis where the value under test lives. What
         # decides this classification is the CLAUSE BOUNDARY, so the wrap is
         # forced onto the boundary itself — a wrap elsewhere (the M81 fixture's
         # midpoint split) cannot exercise it. Decoration and the contradicting
@@ -1446,7 +1446,7 @@ class TestReferencesStaleness(ScriptCase):
     # --- AC2: the three axes, varied independently ---------------------------
 
     def test_decoration_layout_and_phrasing_vary_independently(self):
-        # Crossed, not walked: M79's lesson is that holding two axes at their
+        # Crossed, not walked: holding two axes at their
         # default while moving the third passes vacuously on the pair.
         # M102: runs in-process (via `install` → `run`), so the cross-product
         # costs no spawns — keep it crossed rather than reducing to a walk.
@@ -1566,7 +1566,7 @@ class TestShippedPageStateLedger(unittest.TestCase):
     """M83 AC4: the classification every committed page ACTUALLY gets, pinned.
 
     This is a characterization test over the real `cairn/references/` tree,
-    not a fixture: M77's lesson is that the fixture copy is not the artifact,
+    not a fixture: the fixture copy is not the artifact,
     and a parser change is exactly the kind of edit whose blast radius shows
     up only against the shipped corpus.
 
@@ -4305,7 +4305,7 @@ class TestReleaseWindowAdvisory(ScriptCase):
         # `review`, not `in-progress`: the base fixture already carries an
         # in-progress milestone, and a second one FAILs the single-in-progress
         # CHECK — an exit code of 1 for a reason that has nothing to do with
-        # this advisory (LESSONS M84).
+        # this advisory.
         root = self._tree(RELEASE_TITLES[1], "review", worklog=())
         proc = run("cairn_validate.py", root)
         self.assertEqual(proc.returncode, 0, proc.stderr)
@@ -4321,8 +4321,8 @@ class TestReleaseWindowAdvisory(ScriptCase):
         section reference, a threshold. The permissive `v?\\d+\\.\\d+` this
         started with matched all three, so the fixtures passed only because the
         helper handed them a stub goal and the version axis was never actually
-        exercised where the detector reads it (M88 review F6; the vacuous-axis
-        trap of LESSONS M57)."""
+        exercised where the detector reads it (M88 review F6, a vacuous
+        axis)."""
         goals = [
             "Generalize cairn-release. See D-050 and section 2.1 of the spec.",
             "Reposition the README. Coverage threshold 0.8 vs 0.5.",

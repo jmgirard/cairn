@@ -1094,7 +1094,7 @@ _UNVERIFIED = re.compile(r"(?<![A-Za-z0-9])unverified(?![A-Za-z0-9])", re.I)
 # Clause-scoping is what keeps this narrow: three shipped `partly verified at
 # ingestion` pages carry `not re-read since` in a LATER clause, and a status-wide
 # negation search would sweep all three up — the M79-F5 trap the M81 row warned
-# about (LESSONS: widening a capture class admits non-targets too).
+# about: widening a capture class admits non-targets too.
 _NEGATOR = re.compile(
     r"(?<![A-Za-z0-9])(?:never|not|nothing|none|no)(?![A-Za-z0-9])", re.I
 )
@@ -1106,7 +1106,7 @@ _NEGATOR = re.compile(
 #
 # The set is deliberately literal. Scope-limiting hedges — `some`, `key
 # claims`, `a few` — read as partiality to a human but each one widens the
-# capture class, and the M79-F5 lesson is that widening admits non-targets.
+# capture class, and widening a capture class admits non-targets.
 # These four cover every partial form the shipped corpus actually writes; a
 # fifth is added when a page needing it appears, not in anticipation.
 #
@@ -1341,8 +1341,9 @@ def _last_verified(block, today=None):
     # hard-wrapped at its em-dash comes back from `_extraction_status` with the
     # lines joined by a space and the separator gone, so a lead-only read sees
     # both claims at once and answers with whichever is tested first — the F3
-    # bug in wrapped form. Caught by the boundary-wrap fixture, which is the M81
-    # lesson paying off: the midpoint-wrap axis could not reach it.
+    # bug in wrapped form. Caught by the boundary-wrap fixture, which varies the
+    # wrap where the value under test lives: the midpoint-wrap axis could not
+    # reach it.
     claims = _status_claims(status)
     state = _resolve_claims(claims)
     if state == "ambiguous":
