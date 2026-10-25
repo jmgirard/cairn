@@ -12,7 +12,7 @@ first). Each is registered in the mutation harness. The timeout stop's
 fenced next command (M172) is a third load-bearing clause, unpinned — a new
 rule owes no prose guard here (test-doctrine slot). The negative check that
 the superseded spelling is gone from the shipped prose spells the retired
-token by concatenation (M169 lesson) and is unregistered — there is no block
+token by concatenation, so the guard does not match itself, and is unregistered — there is no block
 to mutate.
 
 Anchors are copied from the shipped bytes; phrases crossing a hard wrap are

@@ -8,7 +8,7 @@ pins the two skills' citations of the module (M231 AC1) and both arms in
 each skill (M231 AC3).
 
 Clauses run across wrapped lines, so targets are read with whitespace
-collapsed (the M171 lesson). Hand-run only (M144, D-109):
+collapsed. Hand-run only (M144, D-109):
 
     python3 -m unittest discover -s skills/tests
 """
@@ -35,7 +35,7 @@ def flat(text):
 def section(text, start, end):
     """The slice of `text` between the first `start` and the next `end`.
     Both anchors must be present, so a renamed heading fails loudly rather
-    than slicing to the end of the file (the M182 lesson)."""
+    than slicing to the end of the file."""
     head, sep, rest = text.partition(start)
     if not sep:
         raise AssertionError(f"start anchor missing: {start!r}")

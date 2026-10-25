@@ -10,7 +10,7 @@ maintainer never queued:
   * `/milestone` — reporting the advisory and offering the park disposition.
 
 Each assert pins a LABEL together with the RULE it maps to, on one physical
-source line (LESSONS M74): pinning the label alone survives someone swapping
+source line: pinning the label alone survives someone swapping
 the rule out from under it, and pinning the mechanism alone survives the label
 being relabelled. Skill-prose guards read the file as one string, so every
 asserted phrase lives on a single source line (M23) and steers clear of

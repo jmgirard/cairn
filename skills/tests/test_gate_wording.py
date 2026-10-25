@@ -17,7 +17,7 @@ Skills are prose, so this locks two invariants:
    question.
 
 Guard tests read each SKILL as one string, so `assertIn` fails across a
-newline (M23 lesson) — asserted phrases live on single lines in the source.
+newline, so asserted phrases live on single lines in the source.
 
     python3 -m unittest discover -s skills/tests -v
 """

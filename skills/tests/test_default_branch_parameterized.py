@@ -38,7 +38,7 @@ def read(*parts):
 
 def normalized(*parts):
     # Collapse whitespace so asserted phrases match across line wraps
-    # (M23 lesson: assertIn on raw text fails across a newline).
+    # (assertIn on raw text fails across a newline).
     return re.sub(r"\s+", " ", read(*parts))
 
 

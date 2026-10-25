@@ -315,7 +315,7 @@ class TestCutSeries(unittest.TestCase):
     """M276: a series formed by a scope cut at implement or review.
 
     Departs from the one-physical-line convention above: wrapped skill prose
-    is whitespace-collapsed on read (the M171 lesson), so a sentence is
+    is whitespace-collapsed on read, so a sentence is
     matched whole however its lines wrap.
     """
 

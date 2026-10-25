@@ -16,7 +16,7 @@ here by name.
 
 This guard reads each file with runs of whitespace collapsed to one space, so
 a pinned phrase may span a line wrap — an exception to the one-physical-line
-convention (M23 lesson) the other guards keep, taken because the stretch
+convention the other guards keep, taken because the stretch
 lists are longer than one wrapped line and the M171 review found that a
 head-of-list token left most of the list unpinned.
 

@@ -107,7 +107,7 @@ class TestAdvisoryNudges(unittest.TestCase):
         # Named, never counted. DESIGN.md already owns the nudge COUNT
         # ("The three nudges are advisory"); restating a number here would
         # make README a second encoding of it — the stale-number trap M90-D1
-        # exists to avoid, and the M87 lesson that prose restating a number
+        # exists to avoid, since prose restating a number
         # IS an encoding. Review caught this shipping as a wrong count that a
         # mutation-registered guard would then have pinned in place.
         text = readme()

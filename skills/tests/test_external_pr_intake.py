@@ -127,8 +127,8 @@ class TestIntakeRouting(unittest.TestCase):
 
 
     def test_intake_paragraph_names_leave_with_its_narrowing(self):
-        # M75/D-044. The assert carries the LABEL, not just the clause: per
-        # the M74 F3 lesson a clause-only assert stays green after the label
+        # M75/D-044. The assert carries the LABEL, not just the clause: a
+        # clause-only assert stays green after the label
         # is swapped to something else entirely, so the guard would survive
         # an inversion of the very rule it names.
         #

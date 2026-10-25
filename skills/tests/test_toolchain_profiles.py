@@ -288,7 +288,7 @@ class TestUniversalChangeGovernance(unittest.TestCase):
                       "the deprecation-cycle policy must carry the pre-1.0 waiver")
 
     def test_profiles_do_not_restate_the_gate(self):
-        # Negative regression guard (not mutation-registrable — M54 lesson);
+        # Negative regression guard (not mutation-registrable: blanking cannot fail it);
         # its positive pair is the two core asserts above.
         for name in ("r-package.md", "python.md"):
             body = section_body(read("shared", "profiles", name), "test-doctrine")

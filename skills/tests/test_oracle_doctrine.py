@@ -19,7 +19,7 @@ its oracle records live. This guard reads the module; the rulebook must still
 point at it.
 
 Guard tests read the file as one string, so an asserted phrase must live on one
-physical line (M23 lesson); phrases are lowercased before matching.
+physical line; phrases are lowercased before matching.
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -101,7 +101,7 @@ class TestModuleExtraction(unittest.TestCase):
 
 
     def test_rulebook_no_longer_carries_the_doctrine_body(self):
-        # Negative regression guard (not mutation-registrable — M54 lesson);
+        # Negative regression guard (not mutation-registrable: blanking cannot fail it);
         # positive pairs are the module-content asserts above and the two
         # rulebook-reference asserts in this class.
         self.assertNotIn("≥2 *independent* oracle types", rulebook())

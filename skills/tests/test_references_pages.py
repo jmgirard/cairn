@@ -11,7 +11,7 @@ the page-type rules are universal file-family rules, not numeric-conditional
 doctrine, so they stay in core.
 
 Guard tests read the file as one string, so an asserted phrase must live on one
-physical line (M23 lesson); phrases are lowercased before matching.
+physical line; phrases are lowercased before matching.
 
     python3 -m unittest discover -s skills/tests -v
 """
@@ -66,7 +66,7 @@ class TestReferencesPages(unittest.TestCase):
 class TestAuthoringTrigger(unittest.TestCase):
     """M80: when a page is owed lives in CORE, not the numeric-gated module.
 
-    LESSONS :49 — a new rule's home is decided by "would a repo with NO
+    A new rule's home is decided by "would a repo with NO
     numeric work need this?". The trigger fires for any repo that relies on
     any source, so a repo with no numeric work needs it; putting it in
     `validation-doctrine.md` would hide it from exactly the non-numeric
@@ -142,7 +142,7 @@ class TestExploratorySources(unittest.TestCase):
     survey type and adding no machinery (the M56 rejection).
 
     rulebook() lowercases, so each anchor here is lowercased; each is one
-    physical line (the mutation harness blanks by line — LESSONS :37).
+    physical line (the mutation harness blanks by line).
     """
 
 
@@ -502,8 +502,8 @@ class StatusClassificationMixin:
             block = validate._provenance_block(str(path), for_extraction=True)
         self.assertIsNotNone(block, "no provenance block was read from the page")
         state, _ = validate._last_verified(block, datetime.date(2026, 7, 18))
-        # Positive signal that the classifier path actually ran (M84 lesson:
-        # an absence-assert alone is satisfied by a crash producing nothing).
+        # Positive signal that the classifier path actually ran (an
+        # absence-assert alone is satisfied by a crash producing nothing).
         self.assertIn(state, self.STATES, f"classifier returned {state!r}")
         return state
 
@@ -710,7 +710,7 @@ class TestReVerification(unittest.TestCase):
 
 
     def test_advisory_is_named_by_its_emitted_label(self):
-        # M28/LESSONS :27: prose naming a validate finding uses the emitted
+        # M28: prose naming a validate finding uses the emitted
         # label verbatim, so a reader can grep the output for it.
         self.assertIn("`references staleness` advisory", rulebook())
         self.assertIn(

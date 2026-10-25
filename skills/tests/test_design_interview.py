@@ -111,7 +111,7 @@ class TestNoteAndLeaveIngestion(unittest.TestCase):
     M43's note-and-leave keeps a numbered-principles file intact and defers
     its formalization to /design-interview; these lock the ingestion path so
     the deferral always lands somewhere real. Reads per-test (setUp, never a
-    class-level cache — M61 mutation-harness lesson).
+    class-level cache, since the mutation engine patches each read).
     """
 
     def setUp(self):

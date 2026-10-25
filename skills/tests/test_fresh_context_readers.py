@@ -180,7 +180,7 @@ class TestPlanGateCriteriaAudit(unittest.TestCase):
         )
 
     def test_a_hand_list_of_sites_is_not_a_procedure(self):
-        # M118's lesson carried into the rule: a criterion that lists its
+        # The rule's point: a criterion that lists its
         # sites becomes the sweep, and every omitted site ships stale.
         self.assertRegex(
             plan(),
