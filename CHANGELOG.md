@@ -415,8 +415,8 @@
   because `cairn/` has no git copy there. A pass that stopped after the
   deletion also lost the lessons the milestone used. The pass now writes
   the archive summary first, reads the live file for every later step,
-  and deletes it, then marks the ROADMAP row `done`, just before its
-  final validate run.
+  and deletes it as its last edit but one. The last edit marks the
+  ROADMAP row `done`.
 
 - **A candidate title's issue number stays part of the title.** A row
   written for an issue ends its short title with the number, for example

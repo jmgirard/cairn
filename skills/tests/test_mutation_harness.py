@@ -5152,7 +5152,7 @@ REGISTRY += [
         target=REVIEW,
         block="default branch; step 8). The live milestone file stays on disk until",
     ),
-    # M323: the deletion and the row update come last in step 9.
+    # M323: the deletion and the row update are step 9's last edits.
     Mutation(
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_review_reads_the_used_lines_before_the_deletion",

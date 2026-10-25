@@ -1,6 +1,6 @@
 # M323: Close the leftover lesson hygiene gaps
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -42,7 +42,7 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - [x] T3: Add the waiting-line report to the weight-cap hand check in `skills/milestone/SKILL.md` §2 (~83-89).
 - [x] T4: Append the D-entry of AC4 to `cairn/DECISIONS.md`.
 - [x] T5: Update the CHANGELOG Unreleased lessons entry (~7-27) and the DESIGN.md Known issues entry (~1019-1025); run AC5's grep and fix each stale hit.
-- [ ] T6: Run the `verify` slot (both gating suites, `claude plugin validate`, `claude plugin test`), hand-run `skills/tests`, and run `cairn_validate.py`.
+- [x] T6: Run the `verify` slot (both gating suites, `claude plugin validate`, `claude plugin test`), hand-run `skills/tests`, and run `cairn_validate.py`.
 
 ## Work log
 
@@ -61,6 +61,9 @@ Review hygiene, `/cairn-triage lessons`, and the `/milestone` audit stop losing 
 - 2026-10-25: checkpoint: T3 (audit waiting-line report, with a guard) and T4 (D-223) written but not yet checked off; verify run 4 of 5 green (both suites, both plugin validates), `claude plugin test` still running at this commit.
 - 2026-10-25: T2 done: guest pre-edit quotes added to triage step 5 and review step 9 (review names retired and evicted lessons); pins updated in test_triage_lessons and test_lessons_loop, two mutation entries added; mutation harness green.
 - 2026-10-25: T5 done: CHANGELOG Unreleased lessons entry names the pre-edit quotes and the audit's waiting-line report, and a new Fixes entry names the step-9 order; DESIGN.md Known issues entry names the pre-edit quotes; AC5's grep returns 3 hits, each stating the new rule.
+- 2026-10-25: T6 done: verify 5 of 5 green (`claude plugin test` green at 2d7a9377, no `hooks/` or `scripts/` change since; the other four rerun green at b2665df1); `skills/tests` 979 tests OK after the last edit; `cairn_validate` green.
+- 2026-10-25: claim audit: 28 claims read, 2 corrected — skills/milestone-review/SKILL.md (ROADMAP byte check re-measured after the row edit), CHANGELOG.md (Fixes entry order), skills/tests/test_mutation_harness.py (comment); the corrected claims re-read true.
+- 2026-10-25: open concern for review: a pass stopped after the archive write and before the deletion leaves both files and a row not yet `done`; the archived-file arm does not fire and a rerun of step 9 could capture lessons twice. Not filed as a row here: ROADMAP is at 23,923 of 24,000 bytes.
 
 ## Decisions
 

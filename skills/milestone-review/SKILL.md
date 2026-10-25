@@ -991,7 +991,9 @@ re-enters here, at the step the record shows is next:
    `/cairn-triage lessons`, the user's whole-file pass (D-169, D-218, D-221).
    Last of the edits, **delete the live
    `cairn/milestones/M<NNN>-<slug>.md`**, and then set its ROADMAP row →
-   `done` + archive path. (Authoring the summary from a template makes the
+   `done` + archive path. Then measure `wc -c cairn/ROADMAP.md` against
+   its byte budget again, since the row edit comes after the cap checks
+   above. (Authoring the summary from a template makes the
    deletion an explicit step; when the summary was made by compressing the
    file in place, the move did it implicitly. Skip it and the explicit
    `cairn_validate.py` run below fails on `roadmap<->disk orphans`.)
