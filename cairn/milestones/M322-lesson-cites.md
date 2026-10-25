@@ -136,6 +136,8 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: T5 verify slot green: scripts/tests and hooks/tests OK, both plugin validates exit 0 (no version warning), plugin test 2466 pass 0 fail; skills/tests 977 OK.
 - 2026-10-25: claim audit: 46 claims read, 5 corrected — skills/tests/test_wait_rule.py, test_review_fanout.py, test_design_interview.py, test_mutation_harness.py, scripts/tests/test_scripts.py; the reader re-read all five as right; its sixth item (test_references_pages.py:146 "blanks by line") is older wording the branch did not write and stays.
 - 2026-10-25: after the claim-audit fixes (comments only) scripts/tests and skills/tests rerun green; hooks/ unchanged since the full verify run. Implement complete, status review.
+- 2026-10-25: sweep record (D-222 cites this log): sweep S, `{ git grep -niE 'lesson' -- . ':!cairn' ':!CHANGELOG.md'; git grep -niE 'lesson' -- cairn/DESIGN.md; } | grep -E 'M[0-9]{2,3}|LESSONS ?:|LESSONS [0-9]'`, listed 73 lines in 35 files on main at 67187333 and 16 lines on the branch.
+- 2026-10-25: review pass 1 fix-now edits (comments, one skill phrase, DESIGN.md, a references page, the LESSONS.md header cut to one line); new parked row "Check bare milestone ids in tests" for diff-bug #1.
 
 ## Decisions
 
@@ -147,3 +149,25 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - AC3 evidence: `grep -n '^### D-' cairn/DECISIONS.md` shows D-222 (line 8016) as the last heading, after D-221 (line 7978); it decides that code, tests, skill prose, and `cairn/DESIGN.md` do not cite a lesson. `cairn/LESSONS.md` header lines 18-19 hold the one-sentence rule, before the first lesson line.
 - AC4 evidence: `git diff main...HEAD -- cairn/DESIGN.md` removes only the sentence "Test comments cite lessons by line number ("LESSONS :49")." from the `/cairn-triage` Known issues entry; the entry's other sentences are unchanged (one line rejoined), and its tail gains `narrowed 2026-10-25 — M322`. The same diff drops "(LESSONS M194)" at line 649.
 - AC5 evidence (2026-10-25, code as at ba1ffeb3; only tracking commits after): scripts/tests exit 0, hooks/tests exit 0, `claude plugin validate` plugin.json exit 0 and marketplace.json exit 0 with no version warning, `claude plugin test .` 2466 pass 0 fail (129 s), `python3 -m unittest discover -s skills/tests` OK.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: bare milestone-id cites ("(M23)", "(M26)", "(M53 discipline)", "(M54/M84)") remain in about 30 test comments, and their archives do not record the points — follow-up, pre-existing lines the diff did not touch; new parked row "Check bare milestone ids in tests".
+- diff-bug #2: test_references_pages.py:713 kept "M28:" from "M28/LESSONS :27", and the M028 archive does not record the point — fix now (id dropped; the comment states the point).
+- diff-bug #3: D-222's Context says the work log holds the sweep and its count, but they were in Scope — fix now (a work-log line now records the command and both counts; D-222 is not edited).
+- diff-bug #4: DESIGN.md:648 dropped "(LESSONS M194)" without saying why the line Box carries `minWidth: 0` — fix now (the sentence now says it lets the Box shrink below its content's width).
+- diff-bug #5: milestone-review SKILL.md:435 dropped the M105 cite and no longer says the fix must reach the squash merge — fix now ("carries it into the squash merge").
+- diff-bug #6: "so no editor writes them bare" at pane.test.tsx:6585, reader.test.ts:264, test_status_fixtures.py:275 is vague; M272's point is that an edit tool turns a `\uXXXX` escape into the literal character — fix now (all three say that).
+- diff-bug #7: test_review_fanout.py:220 "either one" has one named antecedent — fix now ("a line break or a bold marker").
+- diff-bug #8: test_gate_wording.py:19-20 chains "so … so" — fix now (two sentences).
+- diff-bug #9: test_design_interview.py:114-116 omits that the engine's single-method run skips `setUpClass` (mutation_engine.py:69) — fix now (the comment names both effects).
+- diff-bug #10: LESSONS.md header at 22 lines against the test limit of 23 — fix now (rule sentence cut to one line, header 21 lines).
+- blame-history #1: test_design_interview.py rationale changed from the M61 setUpClass skip to the patch scope — fix now, with diff-bug #9.
+- blame-history #2: milestone-review SKILL.md:435 lost the squash reason — fix now, with diff-bug #5.
+- blame-history #3: test_mutation_harness.py:723 no longer says the entry reproduces the recorded M47 failure — reject, planned change: D-222 drops lesson cites, and the comment still names the step the entry covers.
+- blame-history #4: test_scripts.py:4322 "a vacuous axis" loses the link to LESSONS M57 — reject, planned change: the failure mode is named in words.
+- blame-history #5: test_fresh_context_readers.py:183 dropped the source milestone M118 — reject, planned change: D-222 keeps a milestone cite only where its record holds the point, and the comment states the point.
+- blame-history #6: "so no editor writes them bare" generalizes M272 — fix now, with diff-bug #6.
+- blame-history #7: deleting the DESIGN.md sentence on line-number cites loses an example of the grep blind spot — reject, false: the blind spot stays recorded in the next sentence ("`git grep -l "LESSONS.md"` misses a test that builds the path"), and the deleted sentence recorded the cites this milestone removed.
+- prior-review #1: LESSONS.md header grows from 20 to 22 lines, against M321's header-room work — fix now, with diff-bug #10 (21 lines).
+- ripple #1: ROADMAP.md:19 candidate row still describes the cites as live — reject, planned change: post-merge hygiene graduates the absorbed row.
+- ripple #2: cairn/references/prompting-opus-5.md:131 cites "the M114 lesson's standard" — fix now (now "cairn's own standard"); a references page is current knowledge like DESIGN.md, and the cite is the defect the goal removes.
+- AC3 re-check after the fix: the rule is now one line, LESSONS.md:18, still one sentence before the first lesson line.

@@ -710,7 +710,7 @@ class TestReVerification(unittest.TestCase):
 
 
     def test_advisory_is_named_by_its_emitted_label(self):
-        # M28: prose naming a validate finding uses the emitted
+        # Prose naming a validate finding uses the emitted
         # label verbatim, so a reader can grep the output for it.
         self.assertIn("`references staleness` advisory", rulebook())
         self.assertIn(

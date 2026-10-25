@@ -272,7 +272,8 @@ class StatusFixtureAgreement(unittest.TestCase):
         # M251 AC1 empty title, and the two M251 review trim edges where
         # Python's bare strip() differs from JavaScript's trim(), plus the
         # M293 row whose text opens with a byte-order mark and ends with a
-        # unit separator, built from code points so no editor writes them bare.
+        # unit separator, built from code points, since an edit tool can turn
+        # a `\uXXXX` escape into the literal character.
         bom, us = chr(0xFEFF), chr(0x1F)
         rows = [
             ": an empty short title — added 2026-01-04",

@@ -432,7 +432,7 @@ re-enters here, at the step the record shows is next:
    **The actioned list is
    the findings settled fix-now or follow-up.** Fix-now work is committed
    on the branch after step 6's checkpoint and before step 7's merge
-   question is posed, so step 8's push carries it, with the
+   question is posed, so step 8's push carries it into the squash merge, with the
    verify slot re-run; a floor-qualifying finding returns status itself,
    as the return floor below states.
 

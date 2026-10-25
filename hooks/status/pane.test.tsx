@@ -6582,7 +6582,8 @@ describe('hovering a line on the desktop shows a card with its full text (M286 A
 // the priority token, trimmed as the short title is, and the line still
 // draws the short title. The rows go through `candidateRows`, so the text
 // is read as `candidateTexts` reads it. Each value is written out by hand.
-// BOM and US are built from code points, so no editor writes them bare.
+// BOM and US are built from code points, since an edit tool can turn a
+// `\uXXXX` escape into the literal character.
 describe("a candidate line's card holds the row's whole text (M293)", () => {
   const BOM = String.fromCharCode(0xfeff)
   const US = String.fromCharCode(0x1f)

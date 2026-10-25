@@ -645,8 +645,9 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   cut to one line with an ellipsis, but for the goal, which wraps (the
   M205 live look). A line's lead and tail Boxes keep their width with
   `flexShrink: 0`, and its text Box shrinks with `minWidth: 0`, so a long
-  text is cut before the tail; the line Box also carries `minWidth: 0`,
-  and the live look is what shows the cut (M208).
+  text is cut before the tail; the line Box also carries `minWidth: 0`, so
+  it can shrink below its content's width, and the live look is what shows
+  the cut (M208).
   A head line's lead is the milestone's id, bold, in its phase's color,
   with no phase word, which the operator dropped at the M236 live look.
   Each head line's tail is the band's percent for the row, from `flowOf`

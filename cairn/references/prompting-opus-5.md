@@ -127,8 +127,8 @@ maintained (the M152 re-verification found both line anchors stale).
 - `skills/shared/tracking-rules.md` — the "Records are written plain" bullet,
   in Universal tracking rules (M152). Takes the § Written deliverable length
   remedy (length matched to what the task needs, no filler or boilerplate),
-  applied to cairn's durable records; the no-characterizations clause is the
-  M114 lesson's standard, not the guide's. Guarded by
+  applied to cairn's durable records; the no-characterizations clause is
+  cairn's own standard, not the guide's. Guarded by
   `skills/tests/test_plain_style.py` (`TestRecordProseRule`), three asserts,
   three mutation entries, hand-run.
 - `skills/milestone-review/SKILL.md:178` — step 5's reviewer instruction, now
