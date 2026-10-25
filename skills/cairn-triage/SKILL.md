@@ -162,8 +162,8 @@ count it among the lessons or rank it.
 checks the pins. A lesson that holds a string a pin file asserts is present
 is `keep`, its reason naming that file, unless the length rule below
 applies to it. An item takes one of eight dispositions, and never `route`
-or `retitle`. A waiting line takes only `admit` or `drop`, and a lesson
-takes any of the other seven:
+or `retitle`. Step 2 proposes only `admit` or `drop` for a waiting line,
+and any of the other seven for a lesson:
 
 | Disposition | Lesson meaning |
 |---|---|
@@ -263,7 +263,8 @@ count is over 20 or a lesson is over 450 bytes. An Amend that makes a
 lesson `correct`, `compress`, or `split` names its new line or lines. In every Amend
 round, the pass shows that line again before it poses the chip. A
 lesson the user moves to `keep` at an Amend takes the reason `kept at the
-gate`. A waiting line the user moves to `keep` stays waiting.
+gate`. A waiting line the user moves to `keep` takes the same reason and
+stays waiting.
 
 **Step 4, apply.** Edit only `cairn/LESSONS.md` and the ROADMAP stamp. A
 dropped or merged-away lesson leaves no line in `cairn/LESSONS.md`, and no

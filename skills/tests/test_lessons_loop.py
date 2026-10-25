@@ -120,7 +120,7 @@ class TestUseMarksAndCapture(unittest.TestCase):
         self.assertIn(
             "The shortening keeps whole each string a pin file asserts "
             "present and each text a live milestone quotes (both defined "
-            "below). It keeps the lesson's date and every mark in its "
+            "below). It keeps the lesson's date and its whole parenthesized "
             "provenance. A lesson that cannot then fit in 450 bytes takes no "
             "`used` mark, and the close block names it beside a fenced "
             "`/cairn-triage lessons`.",
@@ -325,12 +325,23 @@ class TestOverLimitRemedy(unittest.TestCase):
         for phrase in self.RETIRED:
             self.assertNotIn(phrase, lessons)
 
+    def header_lines(self, path):
+        # Lesson lines and waiting lines are content, not header.
+        lines = read(path).splitlines()
+        return [
+            l for l in lines
+            if not re.match(r"- (waiting )?\d{4}-\d{2}-\d{2}", l)
+        ]
+
     def test_lessons_header_leaves_room_for_25_lessons(self):
-        # The validator fails the file at 50 lines, so the non-lesson lines
-        # must leave room for 25 lessons and at least one waiting line.
-        lines = read(ROOT / "cairn" / "LESSONS.md").splitlines()
-        other = [l for l in lines if not re.match(r"- \d{4}-\d{2}-\d{2}", l)]
-        self.assertLessEqual(len(other) + 25, 48)
+        # The validator fails the file at 50 lines, so the header must leave
+        # room for 25 lessons and at least one waiting line.
+        header = self.header_lines(ROOT / "cairn" / "LESSONS.md")
+        self.assertLessEqual(len(header) + 25, 48)
+
+    def test_template_leaves_room_for_25_lessons(self):
+        header = self.header_lines(SKILLS / "shared" / "templates" / "lessons.md")
+        self.assertLessEqual(len(header) + 25, 48)
 
     def test_rulebook_states_each_remedy_and_the_waiting_line(self):
         rules = norm(read(SKILLS / "shared" / "tracking-rules.md"))
@@ -346,7 +357,8 @@ class TestOverLimitRemedy(unittest.TestCase):
             rules,
         )
         self.assertIn(
-            "When none can go, the new lesson is written as a "
+            "When too few can go to leave 25, none goes and each new lesson "
+            "is written as a "
             "`- waiting` line, which is not a lesson, takes no `used` mark, "
             "and waits for `/cairn-triage lessons`. At 49 or more lines the "
             "close block quotes it instead.",
@@ -359,6 +371,11 @@ class TestOverLimitRemedy(unittest.TestCase):
         )
         self.assertIn(
             "Over 25 lessons, retirement runs first and rank eviction second.",
+            rules,
+        )
+        self.assertIn(
+            "At the limit, after retirement, the lowest-ranked lesson leaves "
+            "first",
             rules,
         )
 

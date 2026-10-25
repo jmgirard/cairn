@@ -67,7 +67,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   judgment-checked at hygiene passes (`wc -c`, and for lessons `grep -cE '^- [0-9]{4}-[0-9]{2}-[0-9]{2}'` and each
   line's bytes from `LC_ALL=C awk '{print length($0)}'`), not covered by `cairn_validate`. A lesson's **rank** is the highest milestone number among the ids in its parenthesized
   provenance, except an id that follows `trimmed` or `corrected` in the same comma-separated part. A tie goes to the
-  later date, then to the line later in the file. At the limit the lowest-ranked lesson leaves first ("Retiring a
+  later date, then to the line later in the file. At the limit, after retirement, the lowest-ranked lesson leaves first ("Retiring a
   lesson"). A `- waiting YYYY-MM-DD (M<NNN>):` line is not a lesson. It takes no `used` mark and waits for
   `/cairn-triage lessons` to admit or drop it. `ROADMAP.md` and `LESSONS.md` are parsed one item per line; never split an item across lines.
 - Doctrine modules keep the line and byte budgets their own headers state (the maturation exit's rule, "Retiring a
@@ -143,7 +143,7 @@ feedback — the "Collaboration mode" bullet on DESIGN.md governs.
   review hygiene marks each of those, and each lesson whose trap the milestone met, `used M<NNN>`. Over 25 lessons,
   retirement runs first and rank eviction second. At the 25-lesson
   limit review capture is one-in-one-out: it evicts the lowest-ranked lesson that no pin file holds and no live
-  milestone quotes. When none can go, the new lesson is written as a `- waiting` line, which is not a
+  milestone quotes. When too few can go to leave 25, none goes and each new lesson is written as a `- waiting` line, which is not a
   lesson, takes no `used` mark, and waits for `/cairn-triage lessons`. At 49 or more lines the close block quotes it instead. Rank eviction is not a retirement exit: it replaces pruning at the limit, and it removes a lesson
   by rank, not because it is redundant. The whole-file pass adds four drop exits, each decided at its gate: `refuted` and `obsolete`, each
   with evidence read in the pass, `planner test`, for a line a planner does not need, and `rank`, which evicts the

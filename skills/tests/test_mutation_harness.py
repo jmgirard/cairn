@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="848 lines / 83,854 bytes",
+        block="848 lines / 83,903 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -5263,7 +5263,7 @@ REGISTRY += [
         guard="test_lessons_loop",
         test="TestUseMarksAndCapture.test_mark_shortening_keeps_pinned_text_whole",
         target=REVIEW,
-        block="lesson's date and every mark in its provenance. A lesson",
+        block="lesson's date and its whole parenthesized provenance. A lesson",
     ),
     Mutation(
         guard="test_lessons_loop",
@@ -5293,13 +5293,31 @@ REGISTRY += [
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_waiting_lines",
         target=TRIAGE,
-        block="gate`. A waiting line the user moves to `keep` stays waiting.",
+        block="gate`. A waiting line the user moves to `keep` takes the same reason and",
     ),
     Mutation(
         guard="test_triage_lessons",
         test="TestLessonDispositions.test_rank_rule",
         target=TRIAGE,
         block="one. An admitted waiting line is never a `rank` drop, and the rule counts",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_rulebook_states_each_remedy_and_the_waiting_line",
+        target=RULES,
+        block="When too few can go to leave 25, none goes and each new lesson is written as a",
+    ),
+    Mutation(
+        guard="test_lessons_loop",
+        test="TestOverLimitRemedy.test_rulebook_states_each_remedy_and_the_waiting_line",
+        target=RULES,
+        block="At the limit, after retirement, the lowest-ranked lesson leaves first",
+    ),
+    Mutation(
+        guard="test_triage_lessons",
+        test="TestLessonDispositions.test_eight_dispositions_with_admit",
+        target=TRIAGE,
+        block="Step 2 proposes only `admit` or `drop` for a waiting line,",
     ),
     Mutation(
         guard="test_triage_lessons",

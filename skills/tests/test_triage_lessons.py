@@ -127,8 +127,8 @@ class TestLessonDispositions(unittest.TestCase):
         text = section()
         self.assertIn(
             "An item takes one of eight dispositions, and never `route` or "
-            "`retitle`. A waiting line takes only `admit` or `drop`, and a "
-            "lesson takes any of the other seven:",
+            "`retitle`. Step 2 proposes only `admit` or `drop` for a waiting "
+            "line, and any of the other seven for a lesson:",
             text,
         )
         self.assertIn(
@@ -166,7 +166,9 @@ class TestLessonDispositions(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "A waiting line the user moves to `keep` stays waiting.", text
+            "A waiting line the user moves to `keep` takes the same reason "
+            "and stays waiting.",
+            text,
         )
 
     def test_opening_names_use_marks_and_rank_eviction(self):

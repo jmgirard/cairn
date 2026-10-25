@@ -918,7 +918,7 @@ re-enters here, at the step the record shows is next:
    lesson that the mark takes past 450 bytes is shortened in this same
    pass. The shortening keeps whole each string a pin file asserts present
    and each text a live milestone quotes (both defined below). It keeps the
-   lesson's date and every mark in its provenance. A lesson
+   lesson's date and its whole parenthesized provenance. A lesson
    that cannot then fit in 450 bytes takes no `used` mark, and the close
    block names it beside a fenced `/cairn-triage lessons`. An extension that would take a lesson
    past 450 bytes is not written into it. The new content becomes a lesson
