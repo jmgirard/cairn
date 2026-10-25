@@ -109,7 +109,7 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
       `skills/milestone-review/SKILL.md:435`) and `cairn/DESIGN.md:649`.
       Delete the Known issues sentence at `cairn/DESIGN.md:1025-1026` and
       add the entry's `narrowed` mark.
-- [ ] T5: Run sweep S and record in one work-log line why each line it
+- [x] T5: Run sweep S and record in one work-log line why each line it
       still lists is not a cite. Run the verify slot and the hand-run
       `skills/tests`, and check each exit code.
 
@@ -132,6 +132,8 @@ across a line break, such as `scripts/cairn_validate.py:1344-1345`.
 - 2026-10-25: T2 done: 15 cites in 6 files under scripts/ and hooks/ rewritten to state their point, the wrapped M81 cite at cairn_validate.py:1344 included; no milestone cite added; both gating suites green.
 - 2026-10-25: T3 done: 38 cites in 21 skills/tests files rewritten (cites only in comments and docstrings, no `block=` string touched); test_source_note_template.py:7 kept, since it recounts M63-M65 history and cites no lesson; skills/tests green (977 tests).
 - 2026-10-25: T4 done: the two skill-prose parentheticals dropped (no pin holds either line); DESIGN.md:649 cite dropped; the Known issues sentence on line-number cites deleted and the entry's tail marked `narrowed 2026-10-25 — M322`; skills/tests and validate green.
+- 2026-10-25: T5 sweep S on the branch lists 16 lines, none a cite: fixture data (hooks/status/fixtures.gen.ts:441, fixtures/repo-at-cut ROADMAP:4, test_scripts.py:2476 milestone filename, :3439 fixture LESSONS text); the lessons mechanism or a milestone's lesson work (test_lesson_graduation.py:1, test_lessons_loop.py:1/75/256, test_triage_lessons.py:1/11/18, test_mutation_harness.py:2400/2941/4677, DESIGN.md:38); history narrative (test_source_note_template.py:7).
+- 2026-10-25: T5 verify slot green: scripts/tests and hooks/tests OK, both plugin validates exit 0 (no version warning), plugin test 2466 pass 0 fail; skills/tests 977 OK.
 
 ## Decisions
 
