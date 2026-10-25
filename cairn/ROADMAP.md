@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M321 | Fix the gaps in lesson use marks | review | — | normal | milestones/M321-lesson-use-mark-gaps.md |
+| M321 | Fix the gaps in lesson use marks | in-progress | — | normal | milestones/M321-lesson-use-mark-gaps.md |
 | M320 | Keep lessons in fixed ranked slots | done | — | normal | milestones/archive/M320-lessons-fixed-slots.md |
 | M319 | Let PROFILE.md set the guest close limit | done | — | normal | milestones/archive/M319-issue-close-cap.md |
 | M318 | State how PROFILE header lines are read | done | — | normal | milestones/archive/M318-profile-header-read.md |
