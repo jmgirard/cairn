@@ -377,9 +377,10 @@ line carries a `Status` button after that button, which runs
 button, described below, clears the conversation. Each press runs the
 command of the band's button of the same name. As with the
 next-step button, a press while Claude works outside a cairn skill runs
-when Claude is idle. In a narrow pane, the command is cut first. In the
-desktop app, a click on the pane while it does not have keyboard focus only
-gives it focus. Then press the button again. The id and the meter of a
+when Claude is idle. In a narrow pane, the command is cut first. In
+desktop app versions before 3.6556.2, a click on the pane while it does
+not have keyboard focus only gives it focus. Then press the button again.
+The id and the meter of a
 milestone draw in its phase's color, the theme's `claude` orange for
 implement and `success` green for review. The Next line draws in the
 color of the phase that its command runs, `planMode` for planning. A

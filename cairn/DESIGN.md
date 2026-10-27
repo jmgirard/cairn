@@ -684,9 +684,10 @@ dead token whose removal changes the row's short title (M299). The pane draws th
   `status`, which the pane's `ui.render` draws after `next-action`
   as a `secondary` Button, key `cairn-pane-status`,
   in a Box keyed `next-status` with `flexShrink: 0` and
-  `marginLeft: 1`. In the desktop app, a click
-  on a pane without keyboard focus only gives it focus, and no `ui.press`
-  reaches the mod (M219 probe). A pane Button then takes a second click.
+  `marginLeft: 1`. In the desktop app before 3.6556.2, a click
+  on a pane without keyboard focus only gave it focus, and no `ui.press`
+  reached the mod (M219 probe), so a pane Button took a second click. The
+  operator saw one click suffice on 3.6556.2 (2026-10-27).
   The labels `STATUS_LABEL` and `CLEAR_LABEL` moved to `pane.ts`, so the
   band and the pane read one place (since M241 the pane reads only
   `STATUS_LABEL`). A press is the band's `pressStatus`.
@@ -1191,9 +1192,8 @@ within each type and are never reused.
   Routed from candidates 2026-10-18; added 2026-10-15 — M260 review
   (diff-bug #6, #7, #8; blame-history #1; prior-review #2), narrowed
   2026-10-18 by M278 (prior-review #2).
-- The cairn pane has five gaps that only the desktop app or the mod API can
-  close, accepted with no fix planned. A click on an unfocused pane only
-  focuses it, so a Button takes two clicks. The bar uses a monospace font
+- The cairn pane has four gaps that only the desktop app or the mod API can
+  close, accepted with no fix planned. The bar uses a monospace font
   and the band the text font, and `Text` has no font prop. The desktop
   track's fixed-palette image has no theme signal, and its implement orange
   and review green look alike to red-green colorblind eyes. Nobody checked
@@ -1205,7 +1205,9 @@ within each type and are never reused.
   prop, or a gap shows in a real session, it becomes a `/hotfix` or a
   candidate row. Routed from candidates 2026-10-20; added 2026-10-02 —
   M198 Out and review; added 2026-10-04 — M209, M219; added 2026-10-19 —
-  M290 live look and review (blame-history #1, prior-review #6).
+  M290 live look and review (blame-history #1, prior-review #6); narrowed
+  2026-10-27, when desktop app 3.6556.2 took a pane Button press on one
+  click.
 - The cairn pane's count badges (M289) have looks unchecked, with no fix
   planned. Nobody checked the terminal badge's `inverseText` on
   `inactive` in the light and other themes. M302 checked the gray pill in
