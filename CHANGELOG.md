@@ -370,6 +370,10 @@
   name, argument, or behavior that the fix leaves as it was does not stop
   the hotfix. The fix goes on, and the flaw becomes a candidate row after
   the merge, or is named in the close block when the hotfix stops first.
+  A rerun that resumes a merge you already approved vets the fix again
+  before it waits on CI, so such a flaw still gets its row. A concern
+  that would stop a hotfix stops the resumed merge, withdraws the
+  approval, and leaves the pull request open.
 
 - **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
   a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no
