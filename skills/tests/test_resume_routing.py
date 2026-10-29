@@ -374,8 +374,9 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
 
     def test_resume_skips_to_the_wait_and_pins_the_head(self):
         self.assertIn(
-            "When all three hold, say that the run resumes the approved "
-            "merge. Skip the tier check, steps 2 to 5, and step 6's Copilot "
+            "With no such concern, say that the run resumes the approved "
+            "merge. Skip the rest of the tier check, steps 2 to 5, and step "
+            "6's Copilot "
             "round arm, PR-conversation read, approval chip, and marker "
             "write. Go on at step 6's CI wait, then the merge with "
             "`--match-head-commit <oid>`, then step 7 as it runs after an "

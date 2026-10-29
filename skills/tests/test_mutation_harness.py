@@ -4390,7 +4390,7 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry."
              "test_resume_skips_to_the_wait_and_pins_the_head",
         target=HOTFIX,
-        block="the tier check, steps 2 to 5, and step 6's Copilot round arm,",
+        block="the rest of the tier check, steps 2 to 5, and step 6's",
     ),
     Mutation(
         guard="test_resume_routing",

@@ -42,7 +42,7 @@ A `/hotfix` rerun that resumes an approved merge vets the PR's diff again, so a 
 - [x] T1: Edit step 1's owner arm (`skills/hotfix/SKILL.md:195-216`): the vet before the resume sentence, the left-flaw path, and the over-the-bar stop with its marker removal and close block. Edit the first sentence of the Idea vet paragraph (`:52`). Add nothing to step 6's timeout close or the refused-merge close, since the Idea vet paragraph's close-block rule reaches both. (AC1 to AC4)
 - [x] T2: Write the D-entry. (AC5)
 - [x] T3: Edit README `:976-978` and the CHANGELOG Unreleased vet entry (`:363-372`). Run AC6's grep, and fix each stale sentence it finds in its domain. (AC6)
-- [ ] T4: Re-pin the hand-run guards `skills/tests/test_resume_routing.py` and `skills/tests/test_idea_vet.py`, and the `test_mutation_harness.py` registrations keyed to owner-arm text, then run `python3 -m unittest discover -s skills/tests`. Run both gating suites, `claude plugin validate` on both manifests, and `claude plugin test`, and check each exit code.
+- [x] T4: Re-pin the hand-run guards `skills/tests/test_resume_routing.py` and `skills/tests/test_idea_vet.py`, and the `test_mutation_harness.py` registrations keyed to owner-arm text, then run `python3 -m unittest discover -s skills/tests`. Run both gating suites, `claude plugin validate` on both manifests, and `claude plugin test`, and check each exit code.
 
 ## Work log
 
@@ -60,6 +60,7 @@ A `/hotfix` rerun that resumes an approved merge vets the PR's diff again, so a 
 - 2026-10-29: T1 done: the owner arm runs the vet on `gh pr diff <N>` before its resume sentence, an over-the-bar concern removes the marker, leaves the PR open, and withdraws the approval in its close block; the Idea vet paragraph's first sentence names the resumed merge. Gating suites green; three hand-run pins go stale, re-pinned at T4.
 - 2026-10-29: T2 done: D-226 supersedes D-168's skip-the-tier-check clause for the idea vet, annotates D-225, names the not-found-again residual (D-042) and the over-the-bar row's commit gap, and passes D-108's door on its retained trigger.
 - 2026-10-29: T3 done: README's resume sentence and the CHANGELOG Unreleased vet entry say that a resumed merge vets again and that an over-the-bar concern withdraws the approval. AC6's grep (released CHANGELOG sections from line 511 and `skills/tests` left out) found no other sentence on which checks a resumed `/hotfix` merge runs; CHANGELOG:450 and `skills/shared/copilot-review.md:44` name one check each and agree.
+- 2026-10-29: T4 done: re-pinned `test_idea_vet.py`, `test_resume_routing.py`, and one `test_mutation_harness.py` block; hand-run `skills/tests` 977 OK. Verify: scripts and hooks suites OK, both `claude plugin validate` runs exit 0, `claude plugin test` 2466 pass, 0 fail.
 
 ## Decisions
 

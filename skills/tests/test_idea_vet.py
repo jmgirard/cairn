@@ -143,7 +143,8 @@ class TestHotfixIdeaVet(unittest.TestCase):
                            "**Candidate-row match (M249).**")
 
     def test_scope_every_tier_check_entry(self):
-        self.assertIn("Every entry that runs this tier check also vets the "
+        self.assertIn("Every entry that runs this tier check, and the owner "
+                      "arm's resumed merge below, also vets the "
                       "behavior that the fix or the PR diff produces, "
                       "documented behavior included.", self.vet)
 
