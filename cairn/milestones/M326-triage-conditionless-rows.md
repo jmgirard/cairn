@@ -54,7 +54,7 @@
 
 - [x] T1: Write the D-entry. Add the condition rule to tracking-rules "Candidate priority token". Then edit `skills/milestone-review/SKILL.md` step 5's follow-up and the other passages AC1's grep lists, and `skills/copilot-review/SKILL.md:88`.
 - [x] T2: In `skills/cairn-triage/SKILL.md` step 2, add the "No condition" class and the fourth drop class. Add the class's place in the evidence order.
-- [ ] T3: Wire the condition change and the new drop through steps 3 to 7: table, chip, Amend, untouched rule, skip test, size count, placement rule, decision entry, stamp, status line.
+- [x] T3: Wire the condition change and the new drop through steps 3 to 7: table, chip, Amend, untouched rule, skip test, size count, placement rule, decision entry, stamp, status line.
 - [ ] T4: Update README's candidate and triage text and add a CHANGELOG entry. Add prose guards in `skills/tests` for the class, the drop class, the placement rule, and the review rule.
 - [ ] T5: Run AC6's dry run in a fresh subagent and record its table. Run `verify`, `skills/tests`, and `cairn_validate`.
 
@@ -74,6 +74,7 @@
 - 2026-10-29: branch m326-triage-conditionless-rows cut from main at 4d201653; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
 - 2026-10-29: T1 done: D-227; the rule sits in tracking-rules "Candidate priority token". In `/milestone-review`, step 5's follow-up states it, and the snapshot and PR-conversation follow-ups point to it. `/copilot-review` step 5 points to the rulebook. The descope remainder at review line 261 is wanted work, not a finding, so it is unchanged.
 - 2026-10-29: T2 done: step 2 gains the No condition class after Readiness and before Title. The `drop` row names *not worth keeping* as its fourth class, with the row-only test. A merge survivor and a `[high]` row are outside the class.
+- 2026-10-29: T3 done: the condition change is wired through the table, chip, Accept, Amend (decline drops parked too, or reword), the fifth untouched carve-out, the skip test, the placement rule, the size count, step 5's no-entry list, the stamp, and the status line. A not-worth-keeping drop writes the pass's decision entry and is named in the commit body and stamp. Placement: before ` — added ` with `; ` when the first `: ` comes first, else at the lineage clause's place with ` — `, chosen because a row whose first `: ` sits after ` — added` would otherwise take the condition into its short title.
 
 ## Decisions
 
