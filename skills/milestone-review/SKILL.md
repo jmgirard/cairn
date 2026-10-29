@@ -410,7 +410,12 @@ re-enters here, at the step the record shows is next:
    - **follow-up**: the rest go to candidate rows (search-first, per the
      candidate-creation rule, `tracking-rules.md` Intake; absorbing into an
      existing row counts). A pre-existing issue the diff did not introduce,
-     or a complaint about an unmodified line, lands here.
+     or a complaint about an unmodified line, lands here. Each row filed
+     for a finding states `promote when <condition>`. If no documented or
+     common use reaches the finding, the condition is `promote when a user
+     reports it`, and the row opens with `[parked]` (tracking-rules
+     "Candidate priority token"). Every other row this skill files for a
+     finding follows the same rule.
 
    Every reported finding and its disposition is logged in the Review
    section, surfaced, never silently dropped (IP3), and the merge question
@@ -550,7 +555,7 @@ re-enters here, at the step the record shows is next:
    produced the change, so the stored output matches its old content
    again. Re-recording the snapshot keeps the change and fixes nothing.
    Follow-up keeps a change that gives no wrong result and sends it to a
-   candidate row. Each such change gets one Review-section line,
+   candidate row with step 5's promotion condition. Each such change gets one Review-section line,
    `snapshot: <path> — <disposition>`. A fix-now line gains
    `, fixed <sha>`, and a follow-up line names its candidate row. The
    line stays when the fix removes the path from the list. After every
@@ -605,7 +610,8 @@ re-enters here, at the step the record shows is next:
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`; a Copilot thread takes the module's `copilot:` line
    instead); fix-now work lands per step 6 before the chip is posed,
-   a follow-up becomes a candidate row (search-first). **Blocking rule.** A `CHANGES_REQUESTED`
+   a follow-up becomes a candidate row (search-first) with step 5's
+   promotion condition. **Blocking rule.** A `CHANGES_REQUESTED`
    review whose author `type` is `User` and which has any unresolved thread
    removes merge from the chip's recommended option — the recommended
    option becomes address-first — while merge stays present as a

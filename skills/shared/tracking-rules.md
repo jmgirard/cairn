@@ -257,7 +257,10 @@ condition that does not hold at that time, in place of `[high]` or `[low]`. The 
 merge made hold. The Candidates section orders its rows high → normal → low → parked, advisory
 order within a level; the token is the fact the order derives from, never a second encoding of it. A new row is
 inserted at its level by whoever adds it, never appended below the `[parked]` rows. The token is not a status, a file, or
-an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184).
+an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184). A row that
+`/milestone-review` or `/copilot-review` files for a review finding states its promotion condition as `promote when
+<condition>`. If no documented or common use reaches the finding, the condition is `promote when a user reports it`,
+so the row opens with `[parked]` (D-227).
 
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
@@ -470,7 +473,7 @@ reasoning over local files, and nothing cairn writes reaches the repo's maintain
 - **`/cairn-release` stops** at session start with a close block whose status line names the mode as the reason: a
   release is the maintainers' act. **`/cairn-triage` runs** with its accepted edits written to `cairn/` on disk, never
   committed or pushed, and skips its git preconditions. Its stamp is longer than "one short line", since it names
-  each refuted-premise or already-shipped drop's evidence, and it lasts only until the next stamp replaces it.
+  each refuted-premise, already-shipped, or not-worth-keeping drop's evidence, and it lasts only until the next stamp replaces it.
 - **Adopting a third party's PR via `/hotfix` is unsupported** in guest mode — the guest has no merge authority to hold
   it to; route such a PR to the maintainers.
 - **The base remote is `upstream` when it exists, else `origin`** (the git model's recipe above): the milestone branch

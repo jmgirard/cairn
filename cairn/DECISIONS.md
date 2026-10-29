@@ -8192,3 +8192,51 @@ residual of D-042's rule that what a session surfaces gets a candidate
 row. A row that the resumed over-the-bar stop writes has no owner-mode
 commit, as on every path of that stop. The candidate row "Commit the
 hotfix over-the-bar row" holds that gap.
+
+### D-227 (2026-10-29): `/cairn-triage` proposes a condition or a drop for a candidate row with no promotion condition, and review files each finding's row with a condition — annotates D-027's drop reasons, D-134's optional token, D-184's writer rule, and D-205's `edge` test; passes D-108's door (M326)
+
+**Context:** `/milestone-review` filed each follow-up finding as a
+candidate row with provenance and no promotion condition. `/cairn-triage`
+keeps a row when no evidence class fires. Its drop classes need a refuted
+premise, a shipped change, or a stated principle, and its park rule needs
+a stated condition. So a row with no condition was kept on every pass.
+In jmgirard/wrapped most candidate rows were review findings with no
+condition, and several passes there dropped and parked nothing.
+
+**Decision:** Triage gets a "No condition" class, checked after
+Readiness and before Title, that never fires on a `[high]` row. For a
+row that states no promotion condition, it proposes either a drop as
+*not worth keeping* or a condition change that writes `promote when
+<condition>` into the row and parks it. *Not worth keeping* is a fourth
+drop class. Its test reads the row alone: the row cites no issue and no
+user report, and its effect is an error, a warning, a cosmetic flaw, or
+slow running that only an input outside the documented and common use
+reaches, as for D-205's `edge` reject, or that changes no output, such
+as a code comment. The pass's decision entry lists each such
+drop, as D-027 recorded its own YAGNI drop, so search-first finds it.
+Review and `/copilot-review` write `promote when <condition>` on each
+row they file for a finding. If no documented or common use reaches the
+finding, the condition is `promote when a user reports it`, so the
+row opens with `[parked]` under D-184's writer rule. The user chose the
+drop class and the review rule at M326's question set.
+
+**Door:** D-108's retained trigger, a defect in shipped behavior: triage
+could not drop, park, or route the review-filed rows it was run to prune.
+The review rule is part of the same fix, since those rows were filed
+with no condition. It writes condition text, not a token, so D-134's
+rejection of a mandatory token stands, and no check reads the text.
+
+**Rejected:** A ninth disposition for the condition change, since D-027
+fixes the vocabulary and a token change already rides beside a
+disposition. Falsified by an Amend flow that cannot express a condition
+change. Recording a *not worth keeping* drop in the stamp alone, like a
+refuted premise, since search-first reads decisions and not stamps.
+Falsified by a dropped row filed again because the sweep missed it. A
+separate backfill mode, since the default pass already proposes a
+condition or a drop for each such row.
+
+**Consequences:** Rows that implement, plan, or `/hotfix` file for
+deferred work keep their shape, and triage's new class still reaches
+them. A pass that accepts a *not worth keeping* drop writes a decision
+entry. A row that a dropped finding's later review files again surfaces
+that entry at the collision sweep.

@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="848 lines / 83,903 bytes",
+        block="851 lines / 84,209 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2330,7 +2330,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_skip_needs_no_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="every item\n   `keep` or `promote` with no priority change and no token change",
+        block="`keep` or `promote` with no priority change, no token change, and no\n   condition change",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -2366,7 +2366,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_nothing_applied_needs_no_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="an accept of only `keep` and `promote`\n   items with no priority or token change",
+        block="an accept of only `keep` and `promote`\n   items with no priority, token, or condition change",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -4303,7 +4303,7 @@ REGISTRY += [
         guard="test_guest_triage",
         test="TestGuestTriageCommitsNothing.test_stamp_carries_the_drop_evidence",
         target="skills/cairn-triage/SKILL.md",
-        block="already-shipped drop, the record or path",
+        block="already-shipped, or not-worth-keeping drop, the record or path",
     ),
     Mutation(
         guard="test_guest_triage",

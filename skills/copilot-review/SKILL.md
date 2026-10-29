@@ -86,7 +86,8 @@ numbered step below (session start implicit).
    local changes stay unstaged. If a live milestone file's `Branch/PR`
    header names the head branch, the commit also adds one work-log line to
    that file. A follow-up becomes a candidate row in
-   `cairn/ROADMAP.md`, committed with the fixes. With no `cairn/`, the close
+   `cairn/ROADMAP.md`, committed with the fixes. The row states its
+   promotion condition (tracking-rules "Candidate priority token"). With no `cairn/`, the close
    block lists the follow-up instead. In guest mode, commits carry no cairn
    words, and `cairn/` edits stay on disk with no commit.
 
