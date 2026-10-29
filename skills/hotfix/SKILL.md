@@ -50,8 +50,8 @@ can resolve against the fork instead of the base repo.
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
    **Idea vet (M306).** Every entry that runs this tier check, and the
-   owner arm's resumed merge below, also vets the behavior that the fix or the PR diff produces, documented behavior
-   included. It asks `/milestone-plan` step 2's three questions. (1) Is the
+   owner arm's resumed merge below, also vets the behavior that the fix
+   or the PR diff produces, documented behavior included. It asks `/milestone-plan` step 2's three questions. (1) Is the
    behavior correct by its field's standards (for example statistical or
    technical), and does it do what its name says for every input type it
    touches? (2) Do the project's users want it, beyond what the report or
