@@ -79,6 +79,7 @@
 - 2026-10-30: T5 dry run (fresh Opus, wrapped at 796d6fa with a planted `[high]` row, open-PR read empty): 31 candidates, 29 with no condition. It proposed 5 *not worth keeping* drops and 19 condition changes, plus a route, a compress, and a split. The planted `[high]` row stayed `keep`. Gaps found: a §7 group `keep` (Cut the Ubuntu mirror) and an Overgrowth `compress` (Test small wrap-lines stops) skipped the class; fixed so both take a condition change. The reader was unsure whether "on a rare input" covered all four effects; the test now says "either only a rare input reaches it or it changes no output". Pre-existing notes, not this milestone's: Overgrowth splits a row with two "or" triggers for one piece of work, and §7's "filed finding" wording differs between the skill and records-hygiene. Review's AC6 run reads the fixed skill.
 - 2026-10-30: claim audit: 40 claims read, 5 corrected — CHANGELOG.md, README.md, skills/tests/test_triage_conditionless_rows.py (the held-row exceptions in the two docs; the test docstring and two tests' assertions).
 - 2026-10-30: minor amendment at review: T4's new prose-guard file removed per M323's practice (prior-review #2); the three edited older guards and the re-seeded rulebook-mass pins stay.
+- 2026-10-30: step-7 approval: m326-triage-conditionless-rows approved for merge
 - 2026-10-30: verify green on the T4 head: scripts/tests, hooks/tests, both plugin validates, and plugin test (2466 pass); skills/tests and cairn_validate green after the T5 fixes.
 
 ## Decisions
