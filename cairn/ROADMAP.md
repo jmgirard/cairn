@@ -1,17 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-29 (M325 review: graduated "Vet a hotfix on a resumed merge"; M322 row pruned; 6 lessons `used M325`, 1 captured, LESSONS at 22; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-30 (M326 review: no candidate graduated; M323 row pruned; 5 lessons `used M326`, 1 captured, LESSONS at 23; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M326 | Let triage settle rows with no condition | review | — | normal | milestones/M326-triage-conditionless-rows.md |
+| M326 | Let triage settle rows with no condition | done | — | normal | milestones/archive/M326-triage-conditionless-rows.md |
 | M325 | Vet a hotfix on a resumed merge | done | — | normal | milestones/archive/M325-resumed-hotfix-vet.md |
 | M324 | Settle vague ideas and ask about flawed ones | done | — | normal | milestones/archive/M324-idea-vet-gaps.md |
-| M323 | Close the leftover lesson hygiene gaps | done | — | normal | milestones/archive/M323-lesson-hygiene-gaps.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
