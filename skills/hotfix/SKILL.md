@@ -504,7 +504,8 @@ can resolve against the fork instead of the base repo.
    whose fenced next command is `/hotfix` with the PR reference — step 1
    re-derives the PR's state: while the PR is still open and the marker
    names it, step 1's open-PR re-entry resumes at this wait (or takes the
-   walk again when one of its conditions fails), and for a PR
+   walk again when one of its conditions fails, or stops before the wait
+   when its idea vet finds a concern over the hotfix bar), and for a PR
    merged since, step 1's merged-PR re-entry verifies the merged diff
    post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,

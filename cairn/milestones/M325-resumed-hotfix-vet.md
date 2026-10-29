@@ -1,6 +1,6 @@
 # M325: Vet a hotfix on a resumed merge
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,6 +61,8 @@ A `/hotfix` rerun that resumes an approved merge vets the PR's diff again, so a 
 - 2026-10-29: T2 done: D-226 supersedes D-168's skip-the-tier-check clause for the idea vet, annotates D-225, names the not-found-again residual (D-042) and the over-the-bar row's commit gap, and passes D-108's door on its retained trigger.
 - 2026-10-29: T3 done: README's resume sentence and the CHANGELOG Unreleased vet entry say that a resumed merge vets again and that an over-the-bar concern withdraws the approval. AC6's grep (released CHANGELOG sections from line 511 and `skills/tests` left out) found no other sentence on which checks a resumed `/hotfix` merge runs; CHANGELOG:450 and `skills/shared/copilot-review.md:44` name one check each and agree.
 - 2026-10-29: T4 done: re-pinned `test_idea_vet.py`, `test_resume_routing.py`, and one `test_mutation_harness.py` block; hand-run `skills/tests` 977 OK. Verify: scripts and hooks suites OK, both `claude plugin validate` runs exit 0, `claude plugin test` 2466 pass, 0 fail.
+- 2026-10-29: claim audit: 27 claims read, 2 corrected — CHANGELOG.md (the row lands after the merge, or the close block names the flaw), skills/hotfix/SKILL.md step 6 (the CI-wait sentence names the resumed vet's stop before the wait); both re-read and hold. Guards, both suites, and both validates rerun green; the mod test not rerun, since only markdown changed after it.
+- 2026-10-29: implement done; status review.
 
 ## Decisions
 

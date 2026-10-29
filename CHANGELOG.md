@@ -371,7 +371,9 @@
   the hotfix. The fix goes on, and the flaw becomes a candidate row after
   the merge, or is named in the close block when the hotfix stops first.
   A rerun that resumes a merge you already approved vets the fix again
-  before it waits on CI, so such a flaw still gets its row. A concern
+  before it waits on CI. So such a flaw still becomes a candidate row
+  after the merge. If the rerun stops first, its close block names the
+  flaw. A concern
   that would stop a hotfix stops the resumed merge, withdraws the
   approval, and leaves the pull request open.
 
