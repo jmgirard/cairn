@@ -342,7 +342,7 @@ re-examines a lesson.
    | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. A PR-named row keeps its short title unless the user's *Amend* says to rewrite it (step 3). |
    | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
-   | `drop` | Removed. Its reason is one of three classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), or *rejected on principle* (the idea cuts against a stated stance). |
+   | `drop` | Removed. Its reason is one of four classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), *rejected on principle* (the idea cuts against a stated stance), or *not worth keeping* (only the No condition class below proposes it, and its test reads the row alone: the row cites no issue and no user report, and the effect it names is an error, a warning, a cosmetic flaw, or slow running on a rare input; a wrong result with no error or warning never passes). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list. While the cairn pane lists candidates, it marks the row `↑`. A Known issues entry has no token and takes none. |
    | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), one sentence that names the work to do, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. A double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten. The table lists it as left, with each naming PR's number, as it lists an ambiguous mention. That short title is the one session start read, whatever the row's own disposition. |
@@ -407,6 +407,23 @@ re-examines a lesson.
    - **Readiness → `promote`.** The trigger has fired and the work is
      wanted now; the close block hands it on. A promoted candidate row that
      does not open with `[high]` takes the priority change to `high`.
+   - **No condition → `drop` or a condition change.** It applies to a
+     candidate row that the classes above leave `keep`, that does not
+     open with `[high]`, and that states no promotion condition. A merge
+     survivor counts as decided, so the class skips it. A row states a
+     promotion condition when its text names an event or state that would
+     make the work worth planning, such as `promote when …`. If the row
+     passes the *not worth keeping* test (the `drop` row above), the class
+     proposes that `drop`. Otherwise it proposes a condition change: the
+     pass drafts one condition, `promote when <condition>`, and the row
+     takes `priority: <level> → parked`. For a review finding that no
+     documented or common use reaches, the drafted condition is `promote
+     when a user reports it`. The class never leaves such a row `keep`
+     with no change, but the user can still amend it to `keep` at the
+     gate. A condition change is a row fact beside the disposition, as a
+     priority change is, never a ninth disposition. It rides on `keep`,
+     and on a `compress` or `retitle` that a later class or the user's
+     *Amend* sets.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, has
      fewer than 5 words or more than 40 characters as tracking-rules
