@@ -1,0 +1,11 @@
+# M325: Vet a hotfix on a resumed merge
+
+**Status:** done (2026-10-29, PR #338 https://github.com/jmgirard/cairn/pull/338)
+
+**Goal:** A `/hotfix` rerun that resumes an approved merge vets the PR's diff again, so a flaw that the fix leaves as it was still gets its candidate row.
+
+**Outcome:** `/hotfix` step 1's owner arm (Open-PR re-entry), when its three resume conditions hold, runs the idea vet on `gh pr diff <N>` before it says it resumes and before step 6's CI wait, with no other part of the tier check. It checks nothing out and reads cited records from the current checkout. A flaw only in what the diff leaves as it was does not stop the resume: step 7 adds its candidate row, or a close block before step 7 names it. A concern over the hotfix bar (a flaw in what the diff changes, a gap whose reading the diff does not take, or a question-set gap) stops the resume: the marker is removed, nothing merges, the PR stays open, the over-the-bar route runs, and the close block says the approval is withdrawn. The Idea vet paragraph's first sentence names the resumed merge. The "Own open PR" walk runs only when the owner arm neither resumes nor stops. Step 6's CI-wait sentence names the stop. README and the CHANGELOG Unreleased vet entry follow; the hand-run guards are re-pinned.
+
+**Decisions:** D-226 supersedes D-168's clause that a resumed merge skips the tier check, for the idea vet only, annotates D-225, names the not-found-again flaw as a residual of D-042, and passes D-108's door on its retained trigger. Question set: an over-the-bar concern on resume stops the merge (recommended, chosen).
+
+**Review:** Criteria audit at plan (full, 9 findings, all taken). Claim audit 27 claims, 2 corrected. One pass of four lenses: 23 findings; 8 fixed (the Own open PR walk after a stop, the left-flaw route named outright, reflows, a reverted Copilot-module wording change), 5 follow-up (new parked row "Tidy the resumed hotfix vet's stop"; one absorbed by "Commit the hotfix over-the-bar row"), 10 rejected (1 edge: an unpinned `gh pr diff` during a push). Copilot: GitHub did not record the request, so no review. Hygiene: graduated "Vet a hotfix on a resumed merge"; M322 row pruned; `used M325` on six lessons; one lesson captured (an Edit `old_string` that stops mid-line re-joins lines).

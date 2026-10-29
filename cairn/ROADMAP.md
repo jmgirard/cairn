@@ -1,22 +1,20 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-10-29 (M324 review: graduated "Do not stop fixes on old naming flaws"; M321 row pruned; 4 lessons `used M324`, 1 captured, LESSONS at 21; skills/tests green; validate green)_
+_Last hygiene check: 2026-10-29 (M325 review: graduated "Vet a hotfix on a resumed merge"; M322 row pruned; 6 lessons `used M325`, 1 captured, LESSONS at 22; skills/tests green; validate green)_
 
 ## Milestones
 _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.5.0 was cut retroactively at edb6942._
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M325 | Vet a hotfix on a resumed merge | review | — | normal | milestones/M325-resumed-hotfix-vet.md |
+| M325 | Vet a hotfix on a resumed merge | done | — | normal | milestones/archive/M325-resumed-hotfix-vet.md |
 | M324 | Settle vague ideas and ask about flawed ones | done | — | normal | milestones/archive/M324-idea-vet-gaps.md |
 | M323 | Close the leftover lesson hygiene gaps | done | — | normal | milestones/archive/M323-lesson-hygiene-gaps.md |
-| M322 | Stop citing lessons from code and docs | done | — | normal | milestones/archive/M322-lesson-cites.md |
 ## Candidates
 _Ordered high → normal → low → parked by each row's opening `[high]`/`[low]`/`[parked]` token, untagged = `normal`; `[parked]` = a promotion condition that has not held (tracking-rules "Candidate priority token", D-134, D-184); advisory within a level. Triage: D-027._
 - Let guest maintainers merge their PRs: in easystats/datawizard the operator is a maintainer who merges approved PRs, their own included, but the repo runs guest tracking (cairn/ untracked), and guest mode never merges (D-137). There a minor bug fix needs no review, and a larger change needs another maintainer's approving review first. Plan a guest repo where the operator merges on those terms; superseding D-137's never-merge clause is the decision. Raised by the easystats session at M315 implement — added 2026-10-22
 - State the close count in guest text: the guest session-start text (`host_rules` in `hooks/session_context.py`) says "counting your closes there that day" but not how to count them, the `issues/events?per_page=100` read and its full-page rule in tracking-rules guest rule (3), so a guest session that never reads the rulebook cannot apply the limit. The gap predates M319, whose AC3 kept the no-line text equal to main. The read also counts closed PRs and the session's own issues (an over-count), and the rule says neither when to recount nor how to add closes made since the read. Found at M319 review (pass 1 diff-bug #3, pass 2 diff-bug #1 and #3) — added 2026-10-22
-- Vet a hotfix on a resumed merge: `/hotfix`'s owner arm resumes an open PR with no tier check, so no vet runs, and a flaw named only in an earlier close block gets no row. M324 AC5 re-audit (D-118) — added 2026-10-29 — started M325
 - Commit the hotfix over-the-bar row: in owner mode the over-the-bar stop adds a row with no commit, and step 7's commit has no no-remote rule. M324 review pass 2 (diff-bug #7) — added 2026-10-29
 - [parked] Tidy the resumed hotfix vet's stop: M325's owner-arm vet reads code and records from the current checkout, which can be dirty or stale (diff-bug #2, blame-history #6), and after its stop the open PR keeps hiding its matched rows, with no word on closing it (diff-bug #6, blame-history #7). Promote when either misleads a real resume — added 2026-10-29 — M325 review
 - [parked] Match lesson citations after use marks: a live milestone keeps a lesson that it names by date and provenance (`/cairn-triage lessons`, review capture), but a later `used` mark, compress, or split changes that provenance, so the citation can stop matching and the lesson loses its protection. Promote when a lesson that a planned milestone named is evicted or proposed for drop because its citation no longer matched — added 2026-10-24 — M320 review (diff-bug #16)
