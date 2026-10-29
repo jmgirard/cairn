@@ -39,9 +39,9 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - AC2 → T1
 - AC3 → T2
 - AC4 → T1
-- AC5 → T3
+- AC5 → T3, T7, T8
 - AC6 → T4, T6
-- AC7 → T5
+- AC7 → T5, T8
 
 ## Tasks
 
@@ -51,6 +51,8 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - [x] T4: Update `skills/tests/test_idea_vet.py`. Re-pin each changed phrase, and add one assertion per new clause. Show each new pin red by deleting its clause, and log the hand-run `skills/tests` result. The mutation-harness EXEMPT entry stays.
 - [x] T5: Edit the three README vet sites and the CHANGELOG Unreleased vet entry (AC7). Append D-224, which narrows D-204 and names its D-108 door.
 - [x] T6: Run the `verify` slot on the branch head (AC6).
+- [x] T7: Review return 1: have step 7 write the hotfix's left-as-it-was flaw row in its docs-only commit, so it is never left uncommitted in owner mode (AC5).
+- [ ] T8: Carry out the AC5 amendment: an exception gap takes the hotfix's over-the-bar route, the chip naming and its stand-in list go, and README, CHANGELOG, and D-224's chip sentence follow (AC5, AC7).
 
 ## Work log
 
@@ -77,6 +79,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: review pass 1: four lenses, 28 findings; 16 fix now on the branch, 8 rejected, 2 noted, 4 to the AC5 amendment. Hand-run `skills/tests` 977 OK after the trim.
 - 2026-10-29: review return 1: diff-bug #1, the hotfix's left-as-it-was flaw row was never committed in owner mode; fixed on the branch in review pass 1 (step 7 writes it).
 - 2026-10-29: amendment routed: AC5 — an exception gap named at the hotfix approval chip conflicts with the hotfix bar and cannot act on the other reading (blame-history #2, diff-bug #3, #4, #10); AC5 also says step 1 adds the left-flaw row, which step 7 now writes (diff-bug #1).
+- 2026-10-29: minor amendment: T7 (review return 1, done in review pass 1) and T8 (the AC5 amendment, pending its re-audit) added; Coverage AC5 → T3, T7, T8 and AC7 → T5, T8.
 
 ## Decisions
 
