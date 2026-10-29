@@ -7,7 +7,7 @@
 - **Principles touched:** IP3, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/cairn-triage` proposes and how `/milestone-review` writes rows in every adopting repo
-- **Branch/PR:** m326-triage-conditionless-rows
+- **Branch/PR:** m326-triage-conditionless-rows, https://github.com/jmgirard/cairn/pull/339
 
 ## Goal
 
