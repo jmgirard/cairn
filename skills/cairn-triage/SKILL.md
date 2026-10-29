@@ -586,7 +586,11 @@ re-examines a lesson.
         decline a condition change alone, which declines its move to
         parked too, or give the condition new words, each `: ` in them
         written as `; `. A named item with no replacement keeps no
-        condition change. A promote's change
+        condition change. When the user sets `keep` on a candidate row
+        that the pass proposed to move (a priority change, `route`,
+        `drop`, or `promote`), the row takes a kept mark,
+        ` — kept <today>`, written when the answer is *Accept as
+        proposed*. A promote's change
         to `high` is not declined alone. To avoid it, the user amends the
         item to `keep`. The user can also amend a PR-named row to remove
         it or change its short title. Each chip after that names the row
@@ -658,11 +662,12 @@ re-examines a lesson.
      alone. A promoted row's change to `high` is a fourth. It touches the
      row's opening token and the row's place in the order alone. An
      accepted condition change is a fifth. It adds the condition text
-     alone, with its move to parked as a priority change.
+     alone, with its move to parked as a priority change. A kept mark set
+     at *Amend* is a sixth. It adds or replaces the mark text alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
-   `keep` or `promote` with no priority change, no token change, and no
-   condition change, or nothing enumerated —
+   `keep` or `promote` with no priority change, no token change, no
+   condition change, and no kept mark, or nothing enumerated —
    steps 4–6 are skipped
    entirely: no edit, no stamp, no commit, and the close block's status
    line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
@@ -717,20 +722,23 @@ re-examines a lesson.
    opens with `; ` when a `: ` comes before it, and with ` — ` when the
    row holds no `: `. Otherwise it goes where a merge survivor's lineage
    clause goes (above), opened with ` — `. Either way the row's short
-   title stays the same. A `compress`
+   title stays the same. A kept mark goes where a merge survivor's lineage
+   clause goes, so the short title stays the same, and it replaces any
+   older kept mark in the row. `compress`, `merge` (on the survivor), and
+   `split` (on each new row) keep the newest kept mark. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end. A dead token that step 2 leaves in place is the exception. It stays where it sits, and the `compress` keeps the short
    title it sits in.
    Candidates stay one item per line,
    ordered by token — high → normal → low → parked — then advisory within a level.
-   After the edits, token and condition changes included, `wc -l -c
+   After the edits, token and condition changes and kept marks included, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
    is longer when it names each `retitle`'s old and new titles, each
-   token change, each condition change, each re-rated row, a promoted one
+   token change, each condition change, each kept mark, each re-rated row, a promoted one
    included, and each PR-named row it names with its PRs, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
@@ -780,7 +788,8 @@ re-examines a lesson.
    changed: each dropped, merged, split, routed, compressed, retitled
    (old title → new title), and re-rated item by subject (a promoted row
    that took `high` included), each started token
-   added or removed with its row's subject, each condition change with its
+   added or removed with its row's subject, each kept mark with its row's
+   subject, each condition change with its
    row's subject, each PR-named row that an
    accepted change removed, made a merge survivor, or gave a new short
    title, with each naming PR's number, each row with a live `#<n>` token
@@ -806,9 +815,9 @@ re-examines a lesson.
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. It names each PR-named row and each
    live `#<n>` row that the stamp names, with its PRs. Then a status line — items enumerated,
-   dispositions, priority changes, token changes, and condition changes applied by kind and the commit hash, or `nothing applied`
+   dispositions, priority changes, token changes, condition changes, and kept marks applied by kind and the commit hash, or `nothing applied`
    (an apply-nothing answer and an accept of only `keep` and `promote`
-   items with no priority, token, or condition change alike). In guest mode
+   items with no priority, token, or condition change and no kept mark alike). In guest mode
    `written to disk, not committed (guest mode)` stands in place of the
    commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.
