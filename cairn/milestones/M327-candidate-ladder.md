@@ -52,7 +52,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 ## Tasks
 
 - [x] T1: Write the D-entry. Rewrite the rulebook paragraph. Edit review steps 5, 7, and 9 and the two follow-up sentences, `skills/copilot-review/SKILL.md:88-90`, and records-hygiene §7.
-- [ ] T2: In triage step 2, state the ladder, remove the seven gate sentences, open every move, widen *not worth keeping*, and let the finding-absorbing options take a rung change.
+- [x] T2: In triage step 2, state the ladder, remove the seven gate sentences, open every move, widen *not worth keeping*, and let the finding-absorbing options take a rung change.
 - [ ] T3: Wire the kept mark through steps 2 to 7.
 - [ ] T4: Update README and CHANGELOG. Re-pin the guards on the removed sentences, and re-seed the `/milestone` rulebook mass at its three sites.
 - [ ] T5: Run AC3's grep and AC6's two dry runs, then `verify`, `skills/tests`, and `cairn_validate`.
@@ -72,6 +72,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: remainder ledger: the ladder and moves in either direction → M327; ready rows → M327, as the normal rung with no condition; kept rows not re-proposed → M327, the kept mark; drop or promote of conditioned rows on new context → M327; record sources for context → M327, reading taken in the idea vet.
 - 2026-10-30: branch m327-candidate-ladder cut from main at a455c2d6; untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
 - 2026-10-30: T1 done: D-228. The rulebook paragraph states the ladder and narrows the writer sentence to the parked rung. Review step 5 places rows on a rung and can propose a Known issues entry, the snapshot and PR-conversation follow-ups say "on step 5's rung", step 7 lists rung and Known issues proposals, and step 9 takes merge approval as the acceptance. Copilot's follow-up points to the ladder, and records-hygiene §7 adds a rung move.
+- 2026-10-30: T2 done: step 2's No condition class becomes the Rung class (any rung, either way, any distance; parked carries a drafted condition; off parked needs no held condition). Readiness promotes on a judged reason it names, Misfiling routes either way on judgment, *not worth keeping* is a judged reason for any item not held, and §7's options add a rung change. The seven gate sentences read 0 in the whitespace-joined file. A Kept mark bullet sits in step 2; its writing is T3.
 
 ## Decisions
 
