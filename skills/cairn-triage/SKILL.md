@@ -365,7 +365,8 @@ re-examines a lesson.
      retired), or a cited path that no longer exists (`ls` it from the
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
-     is `compress`, not `drop`. In guest mode a code path is checked with
+     is `compress`, not `drop`. A fired trigger whose work is still undone
+     goes to Readiness, not to a drop. In guest mode a code path is checked with
      `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
      git model's base remote and default branch) in place of `ls`, a fired
      trigger or an *already shipped* drop is judged at that ref too, and an
@@ -430,7 +431,9 @@ re-examines a lesson.
      gets no move from any class above or below (no priority change, no
      `route`, `drop`, or `promote`) unless its reason names a record, a
      change, or a report dated after the mark. Its `keep` reason names the
-     mark's date. The newest mark counts.
+     mark's date. The newest mark counts. A record dated the same day as
+     the mark is not after it. `compress` and `retitle` are not moves, so
+     a kept row can still take them.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, has
      fewer than 5 words or more than 40 characters as tracking-rules
