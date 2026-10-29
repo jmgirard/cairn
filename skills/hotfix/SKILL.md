@@ -49,10 +49,11 @@ can resolve against the fork instead of the base repo.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
-   **Idea vet (M306).** Every entry that runs this tier check also vets the
-   behavior that the fix or the PR diff produces, documented behavior
-   included. It asks `/milestone-plan` step 2's three questions. (1) Is the
-   behavior correct by its field's standards (for example statistical or
+   **Idea vet (M306).** Every entry that runs this tier check, and the
+   owner arm's resumed merge below, also vets the behavior that the fix
+   or the PR diff produces, documented behavior included. It asks
+   `/milestone-plan` step 2's three questions. (1) Is the behavior
+   correct by its field's standards (for example statistical or
    technical), and does it do what its name says for every input type it
    touches? (2) Do the project's users want it, beyond what the report or
    the PR literally asks? (3) Is it framed right, in
@@ -197,12 +198,26 @@ can resolve against the fork instead of the base repo.
      no entry of `latestReviews` has the state `CHANGES_REQUESTED`, even
      one the user overrode at the earlier chip. Third, the match names
      exactly the rows that the PR body's `Candidate row:` lines name.
-     When all three hold, say that the run resumes the approved merge. Skip
-     the tier check, steps 2 to 5, and step 6's Copilot round arm,
-     PR-conversation read, approval chip, and marker write. Go on at step
-     6's CI wait, then the merge with `--match-head-commit <oid>`, then step
-     7 as it runs after an approval at step 6's chip. Before the merge,
-     read `gh pr view <N> --json isCrossRepository`, and drop
+     When all three hold, first run the idea vet above on the PR's diff
+     (`gh pr diff <N>`), with no other part of the tier check. The vet
+     checks nothing out, and it reads the records that a matched row cites
+     from the current checkout. A flaw only in what the diff leaves as it
+     was does not stop the resume. Step 7 adds its candidate row, or a
+     close block that ends the run before step 7 names it. A concern that
+     the vet sends over the hotfix bar stops the resume here, before the
+     CI wait. Such a concern is a flaw in what the
+     diff changes, a gap whose reading the diff does not take included, or
+     a gap that `/milestone-plan` step 2 sends to its question set. Remove
+     the marker, merge nothing, leave the PR open, and take this step's
+     over-the-bar route. Its close block says that the approval the marker
+     recorded is withdrawn, names the concern, and says that the PR stays
+     open. With no such concern, say that the run resumes the approved
+     merge. Skip the rest of the tier check, steps 2 to 5, and step 6's
+     Copilot round arm, PR-conversation read, approval chip, and marker
+     write. Go on at step 6's CI wait, then the merge with
+     `--match-head-commit <oid>`, then step 7 as it runs after an
+     approval at step 6's chip. Before the merge, read
+     `gh pr view <N> --json isCrossRepository`, and drop
      `--delete-branch` when it is `true` (a fork PR). Step 7's
      off-but-present Copilot rule applies to a resumed authored fix as it
      does to one this run merged.
@@ -266,9 +281,10 @@ can resolve against the fork instead of the base repo.
    **Own open PR (M266).** This paragraph covers an `OPEN` PR in owner
    mode whose `headRefName` starts with `hotfix-` and whose `author.login`
    equals `gh api user --jq .login`. Such a PR is the operator's own
-   authored fix. When the owner arm above does not resume it, the run
-   takes the tier-check walk with it as an authored fix whose PR exists,
-   not as an adopted PR. Steps 2, 3, and 5 take their adopting variants.
+   authored fix. When the owner arm above neither resumes it nor stops
+   it, the run takes the tier-check walk with it as an authored fix
+   whose PR exists, not as an adopted PR. Steps 2, 3, and 5 take their
+   adopting variants.
    Step 2 runs `gh pr checkout <N>`, step 3 runs the two-way check of the
    regression test, and step 5 runs the changelog check. Pushes go to the
    PR's head branch, and step 5's contributor fallback does not apply.
@@ -491,7 +507,8 @@ can resolve against the fork instead of the base repo.
    whose fenced next command is `/hotfix` with the PR reference — step 1
    re-derives the PR's state: while the PR is still open and the marker
    names it, step 1's open-PR re-entry resumes at this wait (or takes the
-   walk again when one of its conditions fails), and for a PR
+   walk again when one of its conditions fails, or stops before the wait
+   when its idea vet finds a concern over the hotfix bar), and for a PR
    merged since, step 1's merged-PR re-entry verifies the merged diff
    post-hoc — and whose CI line (tracking-rules close-block
    shape) states the current check state as read from fresh `gh pr checks`,

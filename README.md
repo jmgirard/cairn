@@ -974,11 +974,15 @@ actually reach.
   adopted hotfix PR — both approval gates read its conversation — review
   threads and comments, human or bot — before the merge chip, so nothing
   is merged past unread. A `/hotfix` rerun that resumes a merge you
-  already approved skips that read and checks only that no review
-  requests changes. A rerun on a PR that closed without a merge stops and
-  points you at a fresh `/hotfix`. A rerun on your own open `hotfix-` PR
-  that no approval resumes runs the full hotfix checks on it as your own
-  fix. In guest mode, when the maintainers request changes on your
+  already approved skips that read and checks that no review requests
+  changes. It also vets the fix again, so a flaw in what the fix leaves as
+  it was still becomes a candidate row after the merge. A design problem
+  that would stop a hotfix stops the resumed merge instead: the rerun
+  withdraws your approval and leaves the PR open. A rerun on a PR that
+  closed without a merge stops and points you at a fresh `/hotfix`. A
+  rerun on your own open `hotfix-` PR that no approval resumes runs the
+  full hotfix checks on it as your own fix. In guest mode, when the
+  maintainers request changes on your
   `hotfix-` PR after its newest commit, a rerun makes the changes, runs
   the checks again, and asks you once before it pushes to the PR's branch.
 - **Your open PRs stay under two caps.** In owner and guest mode, you keep

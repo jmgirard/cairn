@@ -4337,7 +4337,7 @@ REGISTRY += [
     # exclusion, marker prefix, PR named), per resume condition (head oid,
     # changes requested, row match), and per outcome (skip to the wait, the
     # head pin, the refused merge, the walk on a failed condition, the guest
-    # stop and its close), plus step 6's order, marker line, presented head,
+    # stop and its close; M325's vet stop before the wait has no entry), plus step 6's order, marker line, presented head,
     # decline, merge pin, and both halves of the timeout close. Blocks embed
     # the physical wrap; the guard reads with whitespace collapsed.
     Mutation(
@@ -4390,14 +4390,14 @@ REGISTRY += [
         test="TestHotfixOpenPrReentry."
              "test_resume_skips_to_the_wait_and_pins_the_head",
         target=HOTFIX,
-        block="the tier check, steps 2 to 5, and step 6's Copilot round arm,",
+        block="the rest of the tier check, steps 2 to 5, and step 6's",
     ),
     Mutation(
         guard="test_resume_routing",
         test="TestHotfixOpenPrReentry."
              "test_resume_skips_to_the_wait_and_pins_the_head",
         target=HOTFIX,
-        block="6's CI wait, then the merge with `--match-head-commit <oid>`, then step",
+        block="`--match-head-commit <oid>`, then step 7 as it runs after an",
     ),
     Mutation(
         guard="test_resume_routing",
@@ -4540,7 +4540,7 @@ REGISTRY += [
         guard="test_resume_routing",
         test="TestHotfixOwnOpenPr.test_walk_treats_it_as_an_authored_fix",
         target=HOTFIX,
-        block="takes the tier-check walk with it as an authored fix whose PR exists,",
+        block="it, the run takes the tier-check walk with it as an authored fix",
     ),
     Mutation(
         guard="test_resume_routing",

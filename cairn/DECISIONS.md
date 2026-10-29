@@ -8156,3 +8156,39 @@ the flaw's only record. That is a residual of D-042's rule that what a
 session surfaces gets a candidate row, and a rerun's vet finds the flaw
 again. A resumed merge on an open PR skips the vet, so the candidate row
 "Vet a hotfix on a resumed merge" holds that gap.
+
+### D-226 (2026-10-29): A resumed `/hotfix` merge runs the idea vet again, and an over-the-bar concern withdraws the approval — supersedes D-168's clause that a resumed merge skips the tier check, for the idea vet only; annotates D-225 (M325)
+
+**Context:** D-168 let a `/hotfix` rerun resume a merge approved at
+step 6 and skip the tier check, which runs the idea vet. Step 7 adds a
+row only for a flaw that this run's vet found. So a flaw in what the fix
+left as it was, named only in the earlier run's close block, got no row
+when the rerun resumed. D-225's Consequences named this gap.
+
+**Decision:** When the owner arm's three resume conditions hold, the
+rerun runs the idea vet on the PR's diff before it says that it resumes
+and before the CI wait, with no other part of the tier check. A flaw only
+in what the diff leaves as it was does not stop the resume, and step 7
+adds its row. A concern that the vet sends over the hotfix bar stops the
+resume: the run removes the marker, merges nothing, leaves the PR open,
+and takes the over-the-bar route. Its close block says that the recorded
+approval is withdrawn and names the concern. The user chose the stop at
+M325's question set. The rest of D-168's skips stand.
+
+**Door:** D-108's retained trigger, a defect in shipped behavior: a flaw
+that the vet found lost its record when the merge resumed.
+
+**Rejected:** Recording the earlier run's flaw before the CI wait, in
+the marker or in an early row, since the marker is the merge guard's
+one-line approval record and an early row lands before any merge.
+Falsified by a resumed vet that misses a flaw that the earlier run named.
+Merging on the earlier approval and recording an over-the-bar concern as
+a row, at the user's choice, since a design decision would then ship as
+a hotfix.
+
+**Consequences:** A flaw that the earlier run named and the resumed vet
+does not find again has no record but the earlier close block. That is a
+residual of D-042's rule that what a session surfaces gets a candidate
+row. A row that the resumed over-the-bar stop writes has no owner-mode
+commit, as on every path of that stop. The candidate row "Commit the
+hotfix over-the-bar row" holds that gap.
