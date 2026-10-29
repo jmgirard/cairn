@@ -107,3 +107,18 @@
 - prior-review #4: the No condition class does not restate the PR-named exemption (D-191) — reject, false: step 2 holds a PR-named row at `keep` "before §7 and every class below"
 - prior-review #5: the class order does not say Title still runs on a row with a condition change — reject, false: such a row stays `keep`, which is Title's input
 - prior-review #6: a row citing an issue can be parked — reject, planned change: the drop test spares issue rows from a drop, and a condition plus parked is the class's other branch for any row with no condition
+- diff-bug #1: the No condition class could write a condition and parked on a row a live milestone absorbs — fix now, the class skips such a row
+- diff-bug #2: tracking-rules' guest triage stamp named only refuted-premise and already-shipped evidence — fix now
+- diff-bug #3: `skills/shared/copilot-review.md` files Copilot follow-ups for `/hotfix` with no condition — reject, planned change: Scope Out leaves `/hotfix`'s rows as they are, and triage's class reaches them
+- diff-bug #4: placement put the condition after ` — added ` for a row with no `: `, against Scope and compress's shape — fix now, it goes before ` — added ` with ` — ` there; the lineage place is kept only when a `: ` follows ` — added `
+- diff-bug #5: class order unclear for Title after a condition change — reject, false: the row stays `keep`, Title's input
+- diff-bug #6: a parked row with no condition got `parked → parked` — fix now, no priority change for a row already parked
+- diff-bug #7: hygiene's unpark check reads each new parked review row — reject, false: it judges each condition, and "a user reports it" does not hold at a merge
+- diff-bug #8: step 5's "two kinds of removal" header and "named there too" were loose — fix now
+- diff-bug #9: the review rule states parked only for the default condition — reject, false: the rulebook's writer rule parks any condition not held
+- diff-bug #10: D-227's heading said "drop classes" and did not name D-134; the door covered only triage — fix now, heading and door corrected before merge
+- diff-bug #11: Amend did not say what a bare named item does to a condition change, or how a typed `: ` is written — fix now
+- diff-bug #12: a drafted condition quoting another row's title would form a §7 group — fix now, the condition quotes no other row's title
+- diff-bug #13: more triage D-entries raise the id-collision risk when the remote moved ahead — follow-up, absorbed by the existing row "Support two cairn operators in one repo", which already names duplicate D-numbers; no edit
+- diff-bug #14: Overlap's survivor draft and the PR-named sentence list only priority and token changes — reject, false: the class skips both kinds of row
+- diff-bug (c): the new guard file's docstring and one weaker assertion — reject, moot: the file was removed (prior-review #2)

@@ -8193,7 +8193,7 @@ row. A row that the resumed over-the-bar stop writes has no owner-mode
 commit, as on every path of that stop. The candidate row "Commit the
 hotfix over-the-bar row" holds that gap.
 
-### D-227 (2026-10-29): `/cairn-triage` proposes a condition or a drop for a candidate row with no promotion condition, and review files each finding's row with a condition — annotates D-027's drop classes and D-184's writer rule; passes D-108's door (M326)
+### D-227 (2026-10-29): `/cairn-triage` proposes a condition or a drop for a candidate row with no promotion condition, and review files each finding's row with a condition — annotates D-027's drop reasons, D-134's optional token, and D-184's writer rule; passes D-108's door (M326)
 
 **Context:** `/milestone-review` filed each follow-up finding as a
 candidate row with provenance and no promotion condition. `/cairn-triage`
@@ -8220,6 +8220,9 @@ drop class and the review rule at M326's question set.
 
 **Door:** D-108's retained trigger, a defect in shipped behavior: triage
 could not drop, park, or route the review-filed rows it was run to prune.
+The review rule is part of the same fix, since those rows were filed
+with no condition. It writes condition text, not a token, so D-134's
+rejection of a mandatory token stands, and no check reads the text.
 
 **Rejected:** A ninth disposition for the condition change, since D-027
 fixes the vocabulary and a token change already rides beside a

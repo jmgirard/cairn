@@ -410,13 +410,15 @@ re-examines a lesson.
    - **No condition → `drop` or a condition change.** It applies to a
      candidate row that the classes above leave `keep`, that does not
      open with `[high]`, and that states no promotion condition. A merge
-     survivor counts as decided, so the class skips it. A row states a
+     survivor counts as decided, so the class skips it, and so does a row
+     that a live milestone absorbs. A row states a
      promotion condition when its text names an event or state that would
      make the work worth planning, such as `promote when …`. If the row
      passes the *not worth keeping* test (the `drop` row above), the class
      proposes that `drop`. Otherwise it proposes a condition change: the
      pass drafts one condition, `promote when <condition>`, and the row
-     takes `priority: <level> → parked`. For a review finding that no
+     takes `priority: <level> → parked`, unless it already opens with
+     `[parked]`. For a review finding that no
      documented or common use reaches, the drafted condition is `promote
      when a user reports it`. The class never leaves such a row `keep`
      with no change, but the user can still amend it to `keep` at the
@@ -582,7 +584,9 @@ re-examines a lesson.
         becomes `keep`. The user can also decline a named token change
         alone, and the row's disposition then stands. The user can also
         decline a condition change alone, which declines its move to
-        parked too, or give the condition new words. A promote's change
+        parked too, or give the condition new words, each `: ` in them
+        written as `; `. A named item with no replacement keeps no
+        condition change. A promote's change
         to `high` is not declined alone. To avoid it, the user amends the
         item to `keep`. The user can also amend a PR-named row to remove
         it or change its short title. Each chip after that names the row
@@ -706,10 +710,12 @@ re-examines a lesson.
    ` — `. The lineage clause, and any trigger it takes from the absorbed
    row, hold no `: `, each one written as `; `. The absorbed row's subject
    in the lineage clause leaves out any started-token text. An accepted
-   condition change writes `promote when <condition>` into the row, and
-   the condition holds no `: `. If the row's first `: ` comes before its
-   first ` — added ` text, the condition goes right before that text,
-   opened with `; `. Otherwise it goes where a merge survivor's lineage
+   condition change writes `promote when <condition>` into the row. The
+   condition holds no `: ` and quotes no other row's short title in
+   double quotes. If the row holds a ` — added ` text and no `: ` comes
+   after that text's start, the condition goes right before it. It
+   opens with `; ` when a `: ` comes before it, and with ` — ` when the
+   row holds no `: `. Otherwise it goes where a merge survivor's lineage
    clause goes (above), opened with ` — `. Either way the row's short
    title stays the same. A `compress`
    keeps each started token that is not accepted for removal, at the row's
@@ -730,7 +736,8 @@ re-examines a lesson.
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
    verbatim in the close block (durable-record preview, tracking-rules).
 
-5. **Record.** Two kinds of removal leave two kinds of record:
+5. **Record.** Removals leave two kinds of record, and a *not worth
+   keeping* drop leaves both:
    - **A decision entry** — one per pass, appended to `cairn/DECISIONS.md`
      in the shape of `${CLAUDE_PLUGIN_ROOT}/skills/shared/templates/decision.md`
      (id: the highest existing `D-` number plus one; heading names any
@@ -757,7 +764,8 @@ re-examines a lesson.
      else: deferrals and refuted premises are ROADMAP facts, not decisions.
      In guest mode there is no commit message, and the stamp alone names
      it, with its evidence (step 6's guest arm). A *not worth keeping* drop
-     is named there too, beside its decision entry.
+     is named in the commit message and the stamp too, beside its
+     decision entry.
    `keep`, `compress`, `split`, `route`, `retitle`, `promote`, a
    trigger-preserving `merge`, a priority change, a token change, and a
    condition change write no decision entry;
