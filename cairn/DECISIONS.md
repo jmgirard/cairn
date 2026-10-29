@@ -8087,3 +8087,45 @@ old order. Under the new order, a pass that reached the deletion already
 ran the use marks and the unpark check, so the skipped work the arm names
 is work its rerun skips. Falsified by a step-9 edit that needs the live
 file gone before it runs.
+
+### D-224 (2026-10-29): The idea vet settles a gap by the one fitting reading and asks the user about a flaw, and a hotfix flaw the fix's diff leaves as it was no longer stops the fix — narrows D-204's every-concern-to-the-user and every-hotfix-concern-over-the-bar clauses; passes D-108's door (M324)
+
+**Context:** D-204's vet sent every concern to the user with a
+do-not-build option. A concern can come from a vague request, often a
+terse candidate row that cairn wrote, as well as from a wrong one. The
+user reported the shipped vet asking about vague rows that the agent
+could settle from the code and the records the row cites. In `/hotfix`,
+a framing concern about a name the fix left as it was stopped a fix that
+restores documented behavior (M306 review, diff-bug #9).
+
+**Decision:** The vet sorts each concern. A concern is a gap when one
+reading of the request avoids it. That reading fits the request's words
+and cited records, its user-visible behavior is behavior the words name
+or leave open, and it leaves out nothing asked for. Every other concern
+is a flaw. The plan drafts the criteria to that reading and asks nothing
+about a gap, unless another fitting reading gives different user-visible
+behavior. Then the gap is a choice of the question set, with the reading
+recommended and no do-not-build option. Each flaw keeps D-204's question,
+and the agent never decides one. Before it sorts a concern on a
+candidate row, the vet reads each record the row cites. The `idea vet:`
+line tags each concern `gap` or `flaw`. `/hotfix` sorts by the same
+test, names an exception gap at its approval chip, and sends a flaw in
+what the fix's diff changes over the bar, as before. A flaw only in what
+the diff leaves as it was becomes a candidate row, and the fix goes on.
+
+**Door:** Narrowing what the vet asks is D-108's carve-out. The tag and
+the hotfix row rest on D-108's retained trigger, a defect in shipped
+behavior: the vet asked the user questions the agent could settle.
+
+**Rejected:** Skipping the vet question only for candidate rows that
+cairn wrote, since a user's vague request has the same gaps and a
+cairn-written row can hold a real flaw. Falsified by a gap the agent
+settled that the user would have read differently. Deciding every gap
+and logging it, at the user's choice in the question set, since a
+reading that changes what the user gets is the user's call. Falsified by
+a run of exception-gap questions that the user always answers with the
+recommended reading.
+
+**Consequences:** The parked candidate row "Do not stop fixes on old
+naming flaws" is absorbed by M324, before its promotion condition held,
+at the user's choice.

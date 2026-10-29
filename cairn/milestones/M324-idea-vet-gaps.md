@@ -49,7 +49,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - [x] T2: Edit step 3's choices-left-open bullet, its idea-vet bullet (`:389`), and the "Work chosen at the set" arm (`:401`) (AC3).
 - [x] T3: Edit `/hotfix` step 1's Idea vet paragraph (`skills/hotfix/SKILL.md:52`), the guest change route's vet sentence (`:224`), and step 6's approval chip text (AC5).
 - [x] T4: Update `skills/tests/test_idea_vet.py`. Re-pin each changed phrase, and add one assertion per new clause. Show each new pin red by deleting its clause, and log the hand-run `skills/tests` result. The mutation-harness EXEMPT entry stays.
-- [ ] T5: Edit the three README vet sites and the CHANGELOG Unreleased vet entry (AC7). Append D-224, which narrows D-204 and names its D-108 door.
+- [x] T5: Edit the three README vet sites and the CHANGELOG Unreleased vet entry (AC7). Append D-224, which narrows D-204 and names its D-108 door.
 - [ ] T6: Run the `verify` slot on the branch head (AC6).
 
 ## Work log
@@ -70,6 +70,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: T2 done: step 3's open-choices bullet takes an exception gap (reading recommended, no option not to build); the idea-vet bullet now poses only flaws; "Work chosen at the set" closes on a flaw or an exception gap, and the agent decides other gaps.
 - 2026-10-29: T3 done: `/hotfix` step 1's vet reads a named row's cited records, sorts by the plan's test, names gap readings in chat and an exception gap at step 6's chip (guest handoff chip too); a flaw the fix's diff changes goes over the bar, one it leaves as it was gets a row written as the over-the-bar row is (step 7's docs-only commit) and the fix goes on, merged-PR re-entry included; change route takes the vet's dispositions. Both suites green.
 - 2026-10-29: T4 done: `test_idea_vet.py` re-pinned (12 broken pins) and extended to 34 tests; a scratch script deleted each of its 54 pinned phrases from the flattened skill text in turn, and each deletion turned a test red. Hand-run `skills/tests`: 987 tests OK. Mutation-harness EXEMPT entry unchanged.
+- 2026-10-29: T5 done: README `/milestone-plan` row, `/hotfix` row, and "Answer two questions in a run" bullet, and the CHANGELOG Unreleased vet entry (edited in place, still unreleased) describe the gap and flaw sort and the hotfix old-flaw row; D-224 appended. Validate and both suites green.
 
 ## Decisions
 
