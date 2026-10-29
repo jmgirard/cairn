@@ -74,6 +74,9 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: T6 done: `verify` slot green on f7237258 (both suites exit 0, plugin and marketplace validate exit 0, `claude plugin test` 2466 pass 0 fail in 140 s).
 - 2026-10-29: claim audit: 38 claims read, 3 corrected — README.md, CHANGELOG.md, skills/hotfix/SKILL.md. Docs' flaw definition now matches step 2's "the reading taken cannot avoid". `/hotfix` names an exception gap in the stand-in chip on paths with no step 6 chip (merged-PR nothing-owed acceptance chip, change route's push chip), pinned in the guard. CHANGELOG states that work chosen at the set stops and the rerun asks. Guard 35 tests, 55 pins red on deletion; `skills/tests` 987 OK; both suites green after the fix.
 - 2026-10-29: M324 to review.
+- 2026-10-29: review pass 1: four lenses, 28 findings; 16 fix now on the branch, 8 rejected, 2 noted, 4 to the AC5 amendment. Hand-run `skills/tests` 977 OK after the trim.
+- 2026-10-29: review return 1: diff-bug #1, the hotfix's left-as-it-was flaw row was never committed in owner mode; fixed on the branch in review pass 1 (step 7 writes it).
+- 2026-10-29: amendment routed: AC5 — an exception gap named at the hotfix approval chip conflicts with the hotfix bar and cannot act on the other reading (blame-history #2, diff-bug #3, #4, #10); AC5 also says step 1 adds the left-flaw row, which step 7 now writes (diff-bug #1).
 
 ## Decisions
 
@@ -90,3 +93,32 @@ Evidence gathered 2026-10-29 on ecc512ab (branch level with origin/main).
 - AC7: README.md:772 (`/milestone-plan` row: flaw posed with do-not-build, gap settled without a question unless another fitting reading changes what you get), README.md:776 (`/hotfix` row: gap settled unless it changes what you get, then named at the approval gate; a flaw in what the fix changes stops it; a flaw in what the fix leaves does not and becomes a candidate row), README.md:872-877 ("Answer two questions in a run": asked about each flaw; a gap settled unless another fitting reading gives different behavior), CHANGELOG.md:345-372 (Unreleased entry: gap settled unless readings differ, flaw asked, and a flaw the fix leaves as it was does not stop the hotfix). Read 2026-10-29.
 - Consistency gate: `cairn_validate` all checks passed; coverage complete; no principle changed, so `cairn_impact` skipped; verify green on the review head (AC6); marketplace validate prints no `version` warning; CHANGELOG Unreleased vet entry carries this change, no milestone ids in added lines.
 - Copilot: request made on PR #337 (exit 0); state still `none` after it, so Copilot request on PR #337 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: the left-as-it-was flaw row is never committed in owner mode and can leak into the hotfix branch or stay dirty on a decline — fix now (step 7 writes it in its one docs-only commit after its matched-row edits, guest on disk; a close before step 7 names the flaw); floor return (load-bearing)
+- diff-bug #2: the new row can be taken by the candidate-row match and deleted at step 7 — fix now (same change: written at step 7, after the match)
+- diff-bug #3: a gap named as a choice at the chip has no way to pick the other reading — amendment routed AC5
+- diff-bug #4: an exception gap at the chip contradicts the hotfix bar's design-decision stop — amendment routed AC5
+- diff-bug #5: "the fix takes that step's reading" is undefined for an adopted PR or merged diff — fix now (a PR diff that takes another reading has a flaw in what it changes); its guest change-route part rejected, false: a maintainer's requested item is part of the request that route vets
+- diff-bug #6: an exception gap's question can fall to the question cap — fix now (it counts among the questions that matter most)
+- diff-bug #7: a gap close is labelled the goal-wrong stop — fix now (the goal is not settled until the user picks a reading)
+- diff-bug #8: guest scope still says the vet "poses that as a concern" — fix now ("as a flaw")
+- diff-bug #9: the hotfix citation read covers only argument-named rows — fix now (rows that describe the bug too)
+- diff-bug #10: the stand-in chip list misses the merged-PR over-the-bar path — amendment routed AC5 (the chip naming goes)
+- diff-bug #11: a cited record that no longer exists has no rule — fix now (reads each cited record "that still exists")
+- diff-bug #12: guard growth when new skill rules owe no prose guard, and a docstring milestone cite — fix now (same as prior-review #1, #2)
+- diff-bug #13: path check — noted; dirty tree and moved remote failed only through #1
+- diff-bug #14: D-204 carries no forward pointer to D-224 — reject, false: the bounded read back-references D-204's id, which finds D-224's heading
+- blame-history #1: the plan never says which reading it takes, so a concern only another reading avoids sorts both ways — fix now (the plan takes the fitting reading that avoids the most concerns)
+- blame-history #2: the hotfix asks about an exception gap only after the code exists, against the hotfix bar — amendment routed AC5
+- blame-history #3: an exception-gap question can fall to the cap — fix now (same as diff-bug #6)
+- blame-history #4: a gap reading may contradict an uncited D-entry — reject, false: the collision check reads DECISIONS.md and surfaces a settled record as a question, and the vet names a settled concern with its record
+- blame-history #5: the gap example is unclear — fix now (reworded)
+- blame-history #6: the parked row is absorbed before its condition held — reject, planned change (user's choice at the question set)
+- blame-history #7: the tag rests on D-108's trigger — reject, planned change (D-224 names the trigger)
+- blame-history #8: D-109, D-162, M306 loop protection checked — noted
+- prior-review #1: new pins for new skill rules, which the profile says owe no prose guard and M323 removed — fix now (pins for new clauses dropped; re-pins of existing members kept; 24 tests, 34 pins red on deletion)
+- prior-review #2: bare milestone cite in the test docstring — fix now (cite removed)
+- ripple #1: the hotfix row "names it as a design decision" while the hotfix goes on, against the tier rule — fix now (the fix itself needs no design decision; the row names one for later work)
+- ripple #2: the parked row's text is stale — reject, planned change: step 9 hygiene graduates it (`started M324`)
+- ripple #3: guest scope "poses that as a concern" — fix now (same as diff-bug #8)
+- ripple #4: the settled-concern sentence names no tag — reject, false: it names the record whatever tag the concern takes

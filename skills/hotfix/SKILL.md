@@ -59,9 +59,11 @@ can resolve against the fork instead of the base repo.
    its name, its function, and its arguments? An issue's wording, a
    contributor's PR, or the docs that the fix restores answer none of the
    three. Before it sorts a concern on a candidate row that the argument
-   names, the vet reads each record the row cites. It sorts each concern
-   as a gap or a flaw by `/milestone-plan` step 2's test. For a gap, the
-   fix takes that step's reading. A gap that `/milestone-plan` step 2 sends
+   names or that describes the bug, the vet reads each record the row
+   cites that still exists. It sorts each concern as a gap or a flaw by
+   `/milestone-plan` step 2's test. For a gap, the fix takes that step's
+   reading. A PR diff that takes another reading has a flaw in what it
+   changes. A gap that `/milestone-plan` step 2 sends
    to its question set is also named as a choice in step 6's approval chip
    question text. On a path that poses no step 6 chip, the chip it poses
    in that place names it: the nothing-owed acceptance chip of the
@@ -73,10 +75,13 @@ can resolve against the fork instead of the base repo.
    close block that the route writes names the flaw. It names it as a
    design decision, so that a later plan's tier check finds a milestone and
    does not send the work back here. A flaw only in a name, argument, or
-   behavior that the fix's diff leaves as it was does not stop the fix.
-   Step 1 adds a candidate row that names it as a design decision, written
-   as the over-the-bar route writes its row (search-first applies), and
-   the hotfix goes on. On the merged-PR
+   behavior that the fix's diff leaves as it was does not stop the fix,
+   since the fix itself then needs no design decision. The chat result
+   names it, and the hotfix goes on. Step 7 adds a candidate row that names
+   it as a design decision for later work (search-first applies), after
+   its matched-row edits and in its one docs-only commit (guest mode: on
+   disk). A close block that ends the hotfix before step 7 names the flaw
+   instead. On the merged-PR
    re-entry below, the vet runs after the merge, and a flaw goes in
    step 7's close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
