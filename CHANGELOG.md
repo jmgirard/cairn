@@ -362,8 +362,9 @@
   records what the check found, each concern tagged `gap` or `flaw`.
   `/hotfix` asks the same questions of the behavior a fix or an adopted
   pull request produces, documented behavior included, and sorts concerns
-  the same way. A gap with two fitting readings stops the hotfix, so that
-  a plan can ask which one you want. Like any design decision, a flaw in what the fix changes leaves a
+  the same way. A gap whose other fitting reading gives different
+  behavior stops the hotfix, unless its pull request is already merged,
+  so that a plan can ask which one you want. Like any design decision, a flaw in what the fix changes leaves a
   candidate row or a `/milestone-plan` next command that names it, and
   stops the hotfix unless its pull request is already merged. A flaw in a
   name, argument, or behavior that the fix leaves as it was does not stop

@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M324: Settle vague ideas and ask about flawed ones
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -85,6 +85,8 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: amendment return: AC5 — "For a gap that is not one of AC2's exception, the fix takes the reading, and the chat result names it. A gap of AC2's exception takes the over-the-bar route, because a choice between its readings is a design decision, and the route's candidate row or close block names the readings. A flaw in a name, argument, or behavior that the fix's diff changes takes the over-the-bar route, as now. A flaw only in a name, argument, or behavior that the fix's diff leaves as it was does not stop the fix, and the hotfix goes on. If the run reaches step 7, step 7 adds a candidate row that names the flaw (search-first applies). A close block that ends the run before step 7 names the flaw. On the merged-PR re-entry the vet runs after the merge. When step 7 runs, a flaw goes in its close block, and a flaw the merged diff leaves as it was gets the candidate row there."
 - 2026-10-29: question set (amendment stop): should a hotfix stop and send a two-reading gap to a plan instead of naming it at the approval chip — stop and plan (recommended). Widening adopted at the user's selection: AC5 gains "A close block that ends the run before step 7 names the flaw".
 - 2026-10-29: T8 done: hotfix step 1 sends an exception gap over the bar with its readings named, step 7 writes the left-flaw row if reached, the merged-PR clause is conditional on step 7; step 6's gap chip sentence and the stand-in chip list removed; README `/hotfix` row and CHANGELOG entry say the hotfix stops so a plan can ask; D-225 supersedes D-224's chip clause and names the D-042 residual; candidate row "Vet a hotfix on a resumed merge" added (search-first: no overlap).
+- 2026-10-29: claim audit: 17 claims read, 2 corrected — README.md, CHANGELOG.md (the gap trigger is a fitting reading with different behavior, and the merged-PR exception); scoped to the amendment's diff since 485024bd.
+- 2026-10-29: M324 to review.
 
 ## Decisions
 
