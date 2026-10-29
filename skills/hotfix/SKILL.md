@@ -58,14 +58,35 @@ can resolve against the fork instead of the base repo.
    the PR literally asks? (3) Is it framed right, in
    its name, its function, and its arguments? An issue's wording, a
    contributor's PR, or the docs that the fix restores answer none of the
-   three. State the result in chat. A concern counts as a design decision,
+   three. Before it sorts a concern on a candidate row that the argument
+   names or that describes the bug, the vet reads each record the row
+   cites that still exists. It sorts each concern as a gap or a flaw by
+   `/milestone-plan` step 2's test. A gap that `/milestone-plan` step 2
+   sends to its question set takes the over-the-bar route above, because a
+   choice between its readings is a design decision. The candidate row or
+   the close block that the route writes names the readings as a design
+   decision, as it does for a flaw below. For any other
+   gap, the fix takes that step's reading. A PR diff that takes another
+   reading has a flaw in what it changes. State the result in chat, with
+   each gap's reading. A
+   flaw in a name, argument, or behavior that the fix's diff changes counts
+   as a design decision,
    so it takes the over-the-bar route above, and the candidate row or the
-   close block that the route writes names the concern. It names it as a
+   close block that the route writes names the flaw. It names it as a
    design decision, so that a later plan's tier check finds a milestone and
-   does not send the work back here. On the merged-PR
-   re-entry below, the vet runs after the merge, and the concern goes in
-   step 7's close block. There the concern waives none of the re-entry's
+   does not send the work back here. A flaw only in a name, argument, or
+   behavior that the fix's diff leaves as it was does not stop the fix,
+   since the fix itself then needs no design decision, and the hotfix goes
+   on. If the run reaches step 7, step 7 adds a candidate row that names
+   it as a design decision for later work (search-first applies), after
+   its matched-row edits and in its one docs-only commit (guest mode: on
+   disk). A close block that ends the run before step 7 names the flaw
+   instead. On the merged-PR
+   re-entry below, the vet runs after the merge. When step 7 runs, a flaw
+   goes in its close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
+   A flaw that the merged diff leaves as it was is not over the bar. It
+   gets its candidate row from step 7, as above.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -222,7 +243,7 @@ can resolve against the fork instead of the base repo.
      Make a change for each requested item, or
      name the reason for making none, and commit each change on the
      branch. The tier check below also runs the idea vet above on the
-     changed diff, and a concern takes the same over-the-bar disposition.
+     changed diff, and each concern takes the vet's dispositions there.
      Run `git fetch <base>`, then tier-check the PR's whole diff
      against `<base>/<default-branch>`. A diff over the hotfix bar takes
      this step's over-the-bar disposition, and nothing is pushed. That
@@ -578,7 +599,9 @@ can resolve against the fork instead of the base repo.
    keeping its title, with a `narrowed YYYY-MM-DD by the PR #N hotfix`
    note, where `#N` is the merged PR that carried the fix. The part left is
    that narrowing, never a second new row. On step 1's over-the-bar
-   disposition, step 7 neither removes nor narrows a matched row.
+   disposition, step 7 neither removes nor narrows a matched row. After
+   those edits, step 7 adds the candidate row for each flaw that step 1's
+   idea vet found in what the fix leaves as it was.
    In owner mode, every ROADMAP edit step 7 makes on any path, the
    candidate row added above included, lands in one docs-only commit on the
    default branch. Run step 2's `git status` check first, then check out

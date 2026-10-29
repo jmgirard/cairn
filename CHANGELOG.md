@@ -349,14 +349,27 @@
   touches, do the project's users want it beyond what the request
   literally asks, and is it framed right in its name, function, and
   arguments. An issue's wording or a maintainer's agreement does not
-  answer them. The plan's question set poses each concern, with an option
-  not to build the work and, where it fits, an option to build it under
-  another name or shape. The milestone's work log records
-  what the check found. `/hotfix` asks the same questions of the behavior
-  a fix or an adopted pull request produces, documented behavior included.
-  Like any design decision, a concern leaves a candidate row or a
-  `/milestone-plan` next command that names it, and stops the hotfix
-  unless its pull request is already merged.
+  answer them. Each concern is a gap or a flaw. A gap is a concern that
+  one fitting reading of the request avoids, where the request is only
+  vague. The agent settles a gap by that reading without a question,
+  unless another fitting reading gives different behavior. Then the
+  question set asks which reading you want. For work chosen at the
+  question set, the plan stops, and its rerun asks. A flaw is a concern
+  that the reading taken cannot avoid. The plan's question set poses each flaw, with an
+  option not to build the work and, where it fits, an option to build it
+  under another name or shape. Before it sorts a concern on a candidate
+  row, the plan reads the records the row cites. The milestone's work log
+  records what the check found, each concern tagged `gap` or `flaw`.
+  `/hotfix` asks the same questions of the behavior a fix or an adopted
+  pull request produces, documented behavior included, and sorts concerns
+  the same way. A gap whose other fitting reading gives different
+  behavior stops the hotfix, unless its pull request is already merged,
+  so that a plan can ask which one you want. Like any design decision, a flaw in what the fix changes leaves a
+  candidate row or a `/milestone-plan` next command that names it, and
+  stops the hotfix unless its pull request is already merged. A flaw in a
+  name, argument, or behavior that the fix leaves as it was does not stop
+  the hotfix. The fix goes on, and the flaw becomes a candidate row after
+  the merge, or is named in the close block when the hotfix stops first.
 
 - **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
   a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no

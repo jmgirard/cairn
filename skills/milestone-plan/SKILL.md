@@ -268,13 +268,30 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    collision check below quotes it. The vet runs at step 2 on every request that names work,
    a request that names an issue and a request that a router sent
    included. A request that names no work is vetted at step 3, once its
-   work is chosen. Each concern the vet finds goes to step 3's set. For
-   example, an option named for winsorizing that lumps rare factor levels
-   into one level does not winsorize, and it misranks ordered factors.
+   work is chosen. Before the vet sorts a concern on a candidate row's
+   request, it reads each record the row cites that still exists, such as
+   the milestone or review finding its provenance names. The vet sorts each
+   concern it finds as a gap or a flaw. If one reading of the request
+   avoids a set of concerns, each of them is a gap. That reading fits the
+   request's words and the records it cites. Its user-visible behavior is
+   behavior that the request's words name or leave open, and it leaves out
+   nothing the request asks for. A reading whose user-visible behavior
+   differs from behavior the words name is not such a reading. The plan
+   takes the fitting reading that avoids the most concerns. A concern that
+   this one reading cannot also avoid is a flaw. The plan drafts the criteria to
+   that reading and asks nothing about a gap, with one exception. When
+   another reading also fits the request and gives different user-visible
+   behavior, the gap goes to step 3's set as a choice that the request
+   leaves open. Each flaw goes to step 3's set. For example, an option
+   named for winsorizing that lumps rare factor levels into one level does
+   not winsorize, and it misranks ordered factors. No reading of that
+   request avoids the concern, so it is a flaw. A candidate row can ask to
+   close the gaps in a rule without naming them. The concern about which
+   gaps it means is a gap when the review finding it cites names them.
    Step 4 writes one work-log line `idea vet: <result>` in the first
-   milestone file it writes. The line names each concern in a clause, or
-   says that the vet found none. Each named concern carries the set's
-   answer to it.
+   milestone file it writes. The line names each concern in a clause
+   tagged `gap` or `flaw`, or says that the vet found none. A gap carries
+   the reading taken, and a flaw carries the set's answer to it.
 
    **Guest scope** (tracking-rules "Collaboration mode"). In guest mode,
    Scope In holds only the change that the request or the issue asks for,
@@ -289,7 +306,7 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    maintainer is an author whose association is OWNER, MEMBER, or
    COLLABORATOR (`gh issue view <N> --repo <base-repo> --json comments`).
    When they show that a maintainer chose the changed behavior on
-   purpose, the idea vet poses that as a concern and cites the comment or
+   purpose, the idea vet poses that as a flaw and cites the comment or
    commit that shows it. When a maintainer proposed an approach in the
    issue's comments, the plan takes that approach, or step 4 writes the
    work-log line `maintainer approach: <approach> — not taken: <reason>`.
@@ -382,28 +399,35 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    question. Its questions are:
    - what to work on, for a request that names no work,
    - choices that the request leaves open about what the user will get,
+     each gap that step 2's idea vet sends to the set included. A gap's
+     question recommends the reading the plan took, and its options do
+     not include not building the work,
    - files, access, or looks that only the user can supply and that
      implement or review will need,
    - permission for the outward actions and dependency changes that the work
      foresees,
-   - the concerns that step 2's idea vet found. The set poses them within
-     its cap, as one question per concern, or as one combined question
+   - the flaws that step 2's idea vet found. The set poses them within
+     its cap, as one question per flaw, or as one combined question
      where separate questions pass the cap. Each such question has a recommendation, and
      its options include not building the work. Where another framing
      fits, they also include building it under another name or shape.
      Choosing not to build writes no milestone file for that work and
      leaves any source candidate row in place. When no milestone is left
      to write, the plan writes nothing and ends with the close block, which
-     names each concern. An idea-vet question always counts among the
-     questions that matter most, so the agent never decides a concern.
+     names each flaw. An idea-vet question always counts among the
+     questions that matter most, so the agent never decides a flaw. A
+     gap's question that step 2 sends counts among them too, and gap
+     questions past the cap combine into one question the same way.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
-   file. If it finds a concern, the plan writes nothing and ends with a
-   close block. The close block names the concern, and its fenced command
-   is `/milestone-plan` with the chosen work named (a candidate row by its
-   short title), so that the rerun's question set poses the concern. This
-   close is the rulebook's goal-wrong stop.
+   file. If it finds a flaw, or a gap that step 2's rule sends to the set, the
+   plan writes nothing and ends with a close block. The close block names
+   the concern, and its fenced command is `/milestone-plan` with the chosen
+   work named (a candidate row by its short title), so that the rerun's
+   question set poses the concern. This close is the rulebook's goal-wrong
+   stop: for a gap, the goal is not settled until the user picks a
+   reading. The agent decides any other gap there, by step 2's reading.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,
