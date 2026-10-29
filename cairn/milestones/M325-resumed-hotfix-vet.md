@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, IP2, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — every adopting repo runs `/hotfix`
-- **Branch/PR:** m325-resumed-hotfix-vet
+- **Branch/PR:** m325-resumed-hotfix-vet, https://github.com/jmgirard/cairn/pull/338
 
 ## Goal
 
