@@ -398,28 +398,32 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    question. Its questions are:
    - what to work on, for a request that names no work,
    - choices that the request leaves open about what the user will get,
+     each gap that step 2's idea vet sends to the set included. A gap's
+     question recommends the reading the plan took, and its options do
+     not include not building the work,
    - files, access, or looks that only the user can supply and that
      implement or review will need,
    - permission for the outward actions and dependency changes that the work
      foresees,
-   - the concerns that step 2's idea vet found. The set poses them within
-     its cap, as one question per concern, or as one combined question
+   - the flaws that step 2's idea vet found. The set poses them within
+     its cap, as one question per flaw, or as one combined question
      where separate questions pass the cap. Each such question has a recommendation, and
      its options include not building the work. Where another framing
      fits, they also include building it under another name or shape.
      Choosing not to build writes no milestone file for that work and
      leaves any source candidate row in place. When no milestone is left
      to write, the plan writes nothing and ends with the close block, which
-     names each concern. An idea-vet question always counts among the
-     questions that matter most, so the agent never decides a concern.
+     names each flaw. An idea-vet question always counts among the
+     questions that matter most, so the agent never decides a flaw.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
-   file. If it finds a concern, the plan writes nothing and ends with a
-   close block. The close block names the concern, and its fenced command
-   is `/milestone-plan` with the chosen work named (a candidate row by its
-   short title), so that the rerun's question set poses the concern. This
-   close is the rulebook's goal-wrong stop.
+   file. If it finds a flaw, or a gap that step 2 sends to the set, the
+   plan writes nothing and ends with a close block. The close block names
+   the concern, and its fenced command is `/milestone-plan` with the chosen
+   work named (a candidate row by its short title), so that the rerun's
+   question set poses the concern. This close is the rulebook's goal-wrong
+   stop. The agent decides any other gap there, by step 2's reading.
 
    The agent decides the rest itself and writes a work-log line for each:
    criteria wording, criteria-audit findings, milestone splits and order,
