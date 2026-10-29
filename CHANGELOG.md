@@ -4,6 +4,21 @@
 
 ### Changes that affect existing repos
 
+- **`/cairn-triage` acts on candidate rows with no promotion condition.**
+  Before, the pass kept such a row on every run, because its drop, park,
+  and route rules each need a condition or a stated reason. Now the pass
+  proposes one of two changes for a row that states no condition and is
+  not `[high]`. It drafts a `promote when <condition>` and parks the row,
+  or it proposes a drop as not worth keeping. That drop needs a row that
+  cites no issue or user report. The row must also name only an error, a
+  warning, a cosmetic flaw, or slow running on a rare input. A pass that accepts such
+  a drop writes a decision entry that lists it. The next pass in an
+  existing repo proposes a change for each such row. `/milestone-review`
+  and `/copilot-review` now write a condition on each row they file for a
+  review finding. If no documented or common use reaches the finding, the
+  condition is "promote when a user reports it", and the row starts
+  `[parked]`.
+
 - **`cairn/LESSONS.md` keeps a fixed number of short lessons.** The file
   now holds at most 25 lessons, each one line of at most 450 bytes. These
   limits replace the 20,000-byte budget. A lesson's rank is the newest

@@ -189,7 +189,8 @@ class TestPromoteCarriesHigh(unittest.TestCase):
 
     def test_skip_needs_no_priority_change(self):
         self.assertIn(
-            "every item `keep` or `promote` with no priority change and no token change", self.step(4)
+            "every item `keep` or `promote` with no priority change, no token change, and no condition change",
+            self.step(4),
         )
 
     def test_table_row_states_it(self):
@@ -215,7 +216,8 @@ class TestPromoteCarriesHigh(unittest.TestCase):
 
     def test_nothing_applied_needs_no_priority_change(self):
         self.assertIn(
-            "an accept of only `keep` and `promote` items with no priority or token change", self.step(7)
+            "an accept of only `keep` and `promote` items with no priority, token, or condition change",
+            self.step(7),
         )
 
     def test_fences_put_candidates_before_known_issues(self):

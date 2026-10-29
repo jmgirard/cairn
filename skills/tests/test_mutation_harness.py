@@ -2330,7 +2330,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_skip_needs_no_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="every item\n   `keep` or `promote` with no priority change and no token change",
+        block="`keep` or `promote` with no priority change, no token change, and no\n   condition change",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -2366,7 +2366,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_nothing_applied_needs_no_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="an accept of only `keep` and `promote`\n   items with no priority or token change",
+        block="an accept of only `keep` and `promote`\n   items with no priority, token, or condition change",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -2387,6 +2387,7 @@ EXEMPT = {
     "test_hotfix_candidate_graduation": "M249 (2026-10-12): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     "test_plan_tier_check": "M250 (2026-10-14): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     "test_guest_stacked_milestones": "M268 (2026-10-16): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its removed-clause test proves each pinned clause can fail",
+    "test_triage_conditionless_rows": "M326 (2026-10-29): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its triage guards were shown red against the pre-change skill at implement",
     "test_triage_pr_named_rows": "M298 (2026-10-20): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned sentence, one subtest each, was shown red against the pre-change skill at implement",
     "test_idea_vet": "M306 (2026-10-21): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
@@ -4303,7 +4304,7 @@ REGISTRY += [
         guard="test_guest_triage",
         test="TestGuestTriageCommitsNothing.test_stamp_carries_the_drop_evidence",
         target="skills/cairn-triage/SKILL.md",
-        block="already-shipped drop, the record or path",
+        block="already-shipped, or not-worth-keeping drop, the record or path",
     ),
     Mutation(
         guard="test_guest_triage",

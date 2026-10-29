@@ -83,8 +83,9 @@ class TestGuestTriageCommitsNothing(unittest.TestCase):
     def test_stamp_carries_the_drop_evidence(self):
         text = read("cairn-triage/SKILL.md")
         self.assertIn(
-            "the stamp also names, beside each refuted-premise or "
-            "already-shipped drop, the record or path that holds its evidence",
+            "the stamp also names, beside each refuted-premise, "
+            "already-shipped, or not-worth-keeping drop, the record or path that "
+            "holds its evidence",
             text,
         )
 
