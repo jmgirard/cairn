@@ -88,6 +88,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: claim audit: 17 claims read, 2 corrected — README.md, CHANGELOG.md (the gap trigger is a fitting reading with different behavior, and the merged-PR exception); scoped to the amendment's diff since 485024bd.
 - 2026-10-29: M324 to review.
 - 2026-10-29: review pass 2: four lenses, 18 findings; 6 fix now, 11 rejected, 1 follow-up row. No floor return: diff-bug #1's loop needs a later plan to misread a row that names a design decision, so it is fixed as wording. ROADMAP at 24,042 bytes, 42 over its budget until step 9 graduates the parked row "Do not stop fixes on old naming flaws".
+- 2026-10-29: step-7 approval: m324-idea-vet-gaps approved for merge
 
 ## Decisions
 
