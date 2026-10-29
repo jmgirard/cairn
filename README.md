@@ -870,9 +870,9 @@ profile.
   is made, each question with a recommendation. It also asks ahead for what
   the run will need from you: a file, a login, a live look, or permission
   for an outward action. It also asks about each flaw the plan found
-  with the requested behavior itself, a concern that no fitting reading of
-  the request avoids. A gap, where the request is only vague, the agent
-  settles without a question by the reading that fits. It asks you only
+  with the requested behavior itself, a concern that the fitting reading
+  the agent takes cannot avoid. A gap, where the request is only vague, the
+  agent settles without a question by that reading. It asks you only
   when another fitting reading gives you different behavior. The
   merge question comes at the end of review.
   Between the question set and the merge question, expect the agent to

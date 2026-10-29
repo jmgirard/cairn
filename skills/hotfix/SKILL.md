@@ -63,7 +63,10 @@ can resolve against the fork instead of the base repo.
    as a gap or a flaw by `/milestone-plan` step 2's test. For a gap, the
    fix takes that step's reading. A gap that `/milestone-plan` step 2 sends
    to its question set is also named as a choice in step 6's approval chip
-   question text. State the result in chat, with each gap's reading. A
+   question text. On a path that poses no step 6 chip, the chip it poses
+   in that place names it: the nothing-owed acceptance chip of the
+   merged-PR re-entry, or the change route's push chip. State the result
+   in chat, with each gap's reading. A
    flaw in a name, argument, or behavior that the fix's diff changes counts
    as a design decision,
    so it takes the over-the-bar route above, and the candidate row or the

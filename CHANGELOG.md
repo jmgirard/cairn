@@ -353,8 +353,9 @@
   one fitting reading of the request avoids, where the request is only
   vague. The agent settles a gap by that reading without a question,
   unless another fitting reading gives different behavior. Then the
-  question set asks which reading you want. A flaw is a concern that no
-  fitting reading avoids. The plan's question set poses each flaw, with an
+  question set asks which reading you want. For work chosen at the
+  question set, the plan stops, and its rerun asks. A flaw is a concern
+  that the reading taken cannot avoid. The plan's question set poses each flaw, with an
   option not to build the work and, where it fits, an option to build it
   under another name or shape. Before it sorts a concern on a candidate
   row, the plan reads the records the row cites. The milestone's work log

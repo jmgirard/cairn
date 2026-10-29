@@ -220,6 +220,9 @@ class TestHotfixIdeaVet(unittest.TestCase):
             "For a gap, the fix takes that step's reading.",
             "A gap that `/milestone-plan` step 2 sends to its question set is "
             "also named as a choice in step 6's approval chip question text.",
+            "On a path that poses no step 6 chip, the chip it poses in that "
+            "place names it: the nothing-owed acceptance chip of the "
+            "merged-PR re-entry, or the change route's push chip.",
         ):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.vet)
