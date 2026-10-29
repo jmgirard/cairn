@@ -160,3 +160,8 @@ Pass 2 evidence, 2026-10-29, on 852ab0a5 (level with origin/main; PR #337 open, 
 - ripple #2: "goal-wrong stop" against the rulebook's definition — reject, false: repeats pass 1 diff-bug #7, settled by the clause on the unsettled goal
 - ripple #3: the parked row's text is stale — reject, planned change: repeats pass 1 ripple #2, graduated at step 9
 - ripple #4: the work-chosen arm says "a gap that step 2 sends" though step 3 vets that work — fix now ("step 2's rule sends"), fixed e0d68dd3
+- verify after pass-2 fixes, on e1373b52: scripts exit 0, hooks exit 0, both validates exit 0, `claude plugin test .` exit 0 (2466 pass, 0 fail).
+- conversation: PR #337 — empty: no reviews, no conversation comments, no unresolved threads.
+- Copilot level: no review exists; the request was made twice and GitHub recorded neither (state `none`).
+- snapshot: no changed snapshot files (list empty).
+- PR checks: "no checks reported"; this repo has no CI, so the PR is mergeable on local green.
