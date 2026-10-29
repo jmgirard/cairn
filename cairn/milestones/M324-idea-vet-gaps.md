@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M324: Settle vague ideas and ask about flawed ones
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/milestone-plan` and `/hotfix` ask adopters
-- **Branch/PR:** —
+- **Branch/PR:** m324-idea-vet-gaps
 
 ## Goal
 
@@ -45,7 +45,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 
 ## Tasks
 
-- [ ] T1: Edit `/milestone-plan` step 2's Idea vet paragraph (`skills/milestone-plan/SKILL.md:257`) and step 4's Idea-vet line bullet (`:627`) (AC1, AC2, AC4). Add a gap example beside the winsorize flaw example.
+- [x] T1: Edit `/milestone-plan` step 2's Idea vet paragraph (`skills/milestone-plan/SKILL.md:257`) and step 4's Idea-vet line bullet (`:627`) (AC1, AC2, AC4). Add a gap example beside the winsorize flaw example.
 - [ ] T2: Edit step 3's choices-left-open bullet, its idea-vet bullet (`:389`), and the "Work chosen at the set" arm (`:401`) (AC3).
 - [ ] T3: Edit `/hotfix` step 1's Idea vet paragraph (`skills/hotfix/SKILL.md:52`), the guest change route's vet sentence (`:224`), and step 6's approval chip text (AC5).
 - [ ] T4: Update `skills/tests/test_idea_vet.py`. Re-pin each changed phrase, and add one assertion per new clause. Show each new pin red by deleting its clause, and log the hand-run `skills/tests` result. The mutation-harness EXEMPT entry stays.
@@ -65,6 +65,8 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: question set: a gap whose fitting readings give different behavior is asked, not decided — ask (recommended).
 - 2026-10-29: question set: a hotfix flaw in what the fix's diff leaves as it was lets the fix go on with a candidate row — fix goes on (recommended).
 - 2026-10-29: plan gate chose the one-reading test over a rule that only cairn-written candidate rows skip the vet question, because a user's own vague request has the same gaps and a cairn row can hold a real flaw; falsified by a gap the agent settled that the user would have read differently.
+- 2026-10-29: M324 in-progress on m324-idea-vet-gaps; untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
+- 2026-10-29: T1 done: step 2's Idea vet sorts gap and flaw, reads a candidate row's cited records first, sends an exception gap as an open choice, and tags the `idea vet:` line; step 4's bullet already points at step 2's form, unchanged. Gap example added beside the winsorize flaw. Both suites green.
 
 ## Decisions
 

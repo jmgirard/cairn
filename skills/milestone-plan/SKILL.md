@@ -268,13 +268,29 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
    collision check below quotes it. The vet runs at step 2 on every request that names work,
    a request that names an issue and a request that a router sent
    included. A request that names no work is vetted at step 3, once its
-   work is chosen. Each concern the vet finds goes to step 3's set. For
-   example, an option named for winsorizing that lumps rare factor levels
-   into one level does not winsorize, and it misranks ordered factors.
+   work is chosen. Before the vet sorts a concern on a candidate row's
+   request, it reads each record the row cites, such as the milestone or
+   review finding its provenance names. The vet sorts each concern it
+   finds as a gap or a flaw. If one reading of the request avoids a set of
+   concerns, each of them is a gap. That reading fits the request's words
+   and the records it cites. Its user-visible behavior is behavior that the
+   request's words name or leave open, and it leaves out nothing the
+   request asks for. A reading whose user-visible behavior differs from
+   behavior the words name is not such a reading. A concern that this one
+   reading cannot also avoid is a flaw. The plan drafts the criteria to
+   that reading and asks nothing about a gap, with one exception. When
+   another reading also fits the request and gives different user-visible
+   behavior, the gap goes to step 3's set as a choice that the request
+   leaves open. Each flaw goes to step 3's set. For example, an option
+   named for winsorizing that lumps rare factor levels into one level does
+   not winsorize, and it misranks ordered factors. No reading of that
+   request avoids the concern, so it is a flaw. A candidate row that asks
+   to close the gaps in a rule without naming them holds a gap, when the
+   review finding it cites names them.
    Step 4 writes one work-log line `idea vet: <result>` in the first
-   milestone file it writes. The line names each concern in a clause, or
-   says that the vet found none. Each named concern carries the set's
-   answer to it.
+   milestone file it writes. The line names each concern in a clause
+   tagged `gap` or `flaw`, or says that the vet found none. A gap carries
+   the reading taken, and a flaw carries the set's answer to it.
 
    **Guest scope** (tracking-rules "Collaboration mode"). In guest mode,
    Scope In holds only the change that the request or the issue asks for,
