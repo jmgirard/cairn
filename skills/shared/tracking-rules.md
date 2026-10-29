@@ -257,7 +257,10 @@ condition that does not hold at that time, in place of `[high]` or `[low]`. The 
 merge made hold. The Candidates section orders its rows high → normal → low → parked, advisory
 order within a level; the token is the fact the order derives from, never a second encoding of it. A new row is
 inserted at its level by whoever adds it, never appended below the `[parked]` rows. The token is not a status, a file, or
-an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184).
+an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184). A row that
+`/milestone-review` or `/copilot-review` files for a review finding states its promotion condition as `promote when
+<condition>`. If no documented or common use reaches the finding, the condition is `promote when a user reports it`,
+so the row opens with `[parked]` (D-227).
 
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.

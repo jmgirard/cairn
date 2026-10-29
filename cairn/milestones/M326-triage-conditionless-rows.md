@@ -1,13 +1,13 @@
 # M326: Let triage settle rows with no condition
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP3, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/cairn-triage` proposes and how `/milestone-review` writes rows in every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m326-triage-conditionless-rows
 
 ## Goal
 
@@ -52,7 +52,7 @@
 
 ## Tasks
 
-- [ ] T1: Write the D-entry. Add the condition rule to tracking-rules "Candidate priority token". Then edit `skills/milestone-review/SKILL.md` step 5's follow-up and the other passages AC1's grep lists, and `skills/copilot-review/SKILL.md:88`.
+- [x] T1: Write the D-entry. Add the condition rule to tracking-rules "Candidate priority token". Then edit `skills/milestone-review/SKILL.md` step 5's follow-up and the other passages AC1's grep lists, and `skills/copilot-review/SKILL.md:88`.
 - [ ] T2: In `skills/cairn-triage/SKILL.md` step 2, add the "No condition" class and the fourth drop class. Add the class's place in the evidence order.
 - [ ] T3: Wire the condition change and the new drop through steps 3 to 7: table, chip, Amend, untouched rule, skip test, size count, placement rule, decision entry, stamp, status line.
 - [ ] T4: Update README's candidate and triage text and add a CHANGELOG entry. Add prose guards in `skills/tests` for the class, the drop class, the placement rule, and the review rule.
@@ -71,6 +71,8 @@
 - 2026-10-29: plan gate chose a condition change as a row fact over a ninth disposition, because D-027 fixes the vocabulary and token changes set the pattern; falsified by an Amend flow that cannot express a condition change without a disposition.
 - 2026-10-29: plan gate chose a decision entry for *not worth keeping* drops over the stamp alone, because D-027 recorded its YAGNI drop so search-first finds it; falsified by a dropped row refiled because the sweep missed it anyway.
 - 2026-10-29: remainder ledger: review rows born with a condition → M326; triage proposes for condition-less rows → M326; value-based drop → M326; backfill → M326 by the default pass (AC6); Known issues at the review gate → not built, triage's route class covers accepted limitations; design-interview nudge → parked candidate row, at the user's choice.
+- 2026-10-29: branch m326-triage-conditionless-rows cut from main at 4d201653; untracked `cairn-probe.log` and `tsconfig.json` are not this milestone's and stay unstaged.
+- 2026-10-29: T1 done: D-227; the rule sits in tracking-rules "Candidate priority token". In `/milestone-review`, step 5's follow-up states it, and the snapshot and PR-conversation follow-ups point to it. `/copilot-review` step 5 points to the rulebook. The descope remainder at review line 261 is wanted work, not a finding, so it is unchanged.
 
 ## Decisions
 
