@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="848 lines / 83,903 bytes",
+        block="851 lines / 84,189 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2387,7 +2387,6 @@ EXEMPT = {
     "test_hotfix_candidate_graduation": "M249 (2026-10-12): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     "test_plan_tier_check": "M250 (2026-10-14): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     "test_guest_stacked_milestones": "M268 (2026-10-16): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its removed-clause test proves each pinned clause can fail",
-    "test_triage_conditionless_rows": "M326 (2026-10-29): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); its triage guards were shown red against the pre-change skill at implement",
     "test_triage_pr_named_rows": "M298 (2026-10-20): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned sentence, one subtest each, was shown red against the pre-change skill at implement",
     "test_idea_vet": "M306 (2026-10-21): a hand-run tripwire, no mutation registration owed (PROFILE test-doctrine, D-109); each pinned clause was shown red by deleting it at implement",
     # M146, 2026-08-16: these six files' registrations died with the rulebook reduction —
