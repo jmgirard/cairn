@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M324 | Settle vague ideas and ask about flawed ones | review | — | normal | milestones/M324-idea-vet-gaps.md |
+| M324 | Settle vague ideas and ask about flawed ones | in-progress | — | normal | milestones/M324-idea-vet-gaps.md |
 | M323 | Close the leftover lesson hygiene gaps | done | — | normal | milestones/archive/M323-lesson-hygiene-gaps.md |
 | M322 | Stop citing lessons from code and docs | done | — | normal | milestones/archive/M322-lesson-cites.md |
 | M321 | Fix the gaps in lesson use marks | done | — | normal | milestones/archive/M321-lesson-use-mark-gaps.md |

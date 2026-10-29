@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M324: Settle vague ideas and ask about flawed ones
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -94,31 +94,31 @@ Evidence gathered 2026-10-29 on ecc512ab (branch level with origin/main).
 - Consistency gate: `cairn_validate` all checks passed; coverage complete; no principle changed, so `cairn_impact` skipped; verify green on the review head (AC6); marketplace validate prints no `version` warning; CHANGELOG Unreleased vet entry carries this change, no milestone ids in added lines.
 - Copilot: request made on PR #337 (exit 0); state still `none` after it, so Copilot request on PR #337 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
 - spawned: diff-bug, blame-history, prior-review, ripple
-- diff-bug #1: the left-as-it-was flaw row is never committed in owner mode and can leak into the hotfix branch or stay dirty on a decline — fix now (step 7 writes it in its one docs-only commit after its matched-row edits, guest on disk; a close before step 7 names the flaw); floor return (load-bearing)
-- diff-bug #2: the new row can be taken by the candidate-row match and deleted at step 7 — fix now (same change: written at step 7, after the match)
+- diff-bug #1: the left-as-it-was flaw row is never committed in owner mode and can leak into the hotfix branch or stay dirty on a decline — fix now (step 7 writes it in its one docs-only commit after its matched-row edits, guest on disk; a close before step 7 names the flaw); floor return (load-bearing), fixed 3600a485
+- diff-bug #2: the new row can be taken by the candidate-row match and deleted at step 7 — fix now (same change: written at step 7, after the match), fixed 3600a485
 - diff-bug #3: a gap named as a choice at the chip has no way to pick the other reading — amendment routed AC5
 - diff-bug #4: an exception gap at the chip contradicts the hotfix bar's design-decision stop — amendment routed AC5
-- diff-bug #5: "the fix takes that step's reading" is undefined for an adopted PR or merged diff — fix now (a PR diff that takes another reading has a flaw in what it changes); its guest change-route part rejected, false: a maintainer's requested item is part of the request that route vets
-- diff-bug #6: an exception gap's question can fall to the question cap — fix now (it counts among the questions that matter most)
-- diff-bug #7: a gap close is labelled the goal-wrong stop — fix now (the goal is not settled until the user picks a reading)
-- diff-bug #8: guest scope still says the vet "poses that as a concern" — fix now ("as a flaw")
-- diff-bug #9: the hotfix citation read covers only argument-named rows — fix now (rows that describe the bug too)
+- diff-bug #5: "the fix takes that step's reading" is undefined for an adopted PR or merged diff — fix now (a PR diff that takes another reading has a flaw in what it changes); its guest change-route part rejected, false: a maintainer's requested item is part of the request that route vets, fixed 3600a485
+- diff-bug #6: an exception gap's question can fall to the question cap — fix now (it counts among the questions that matter most), fixed 3600a485
+- diff-bug #7: a gap close is labelled the goal-wrong stop — fix now (the goal is not settled until the user picks a reading), fixed 3600a485
+- diff-bug #8: guest scope still says the vet "poses that as a concern" — fix now ("as a flaw"), fixed 3600a485
+- diff-bug #9: the hotfix citation read covers only argument-named rows — fix now (rows that describe the bug too), fixed 3600a485
 - diff-bug #10: the stand-in chip list misses the merged-PR over-the-bar path — amendment routed AC5 (the chip naming goes)
-- diff-bug #11: a cited record that no longer exists has no rule — fix now (reads each cited record "that still exists")
-- diff-bug #12: guard growth when new skill rules owe no prose guard, and a docstring milestone cite — fix now (same as prior-review #1, #2)
+- diff-bug #11: a cited record that no longer exists has no rule — fix now (reads each cited record "that still exists"), fixed 3600a485
+- diff-bug #12: guard growth when new skill rules owe no prose guard, and a docstring milestone cite — fix now (same as prior-review #1, #2), fixed 3600a485
 - diff-bug #13: path check — noted; dirty tree and moved remote failed only through #1
 - diff-bug #14: D-204 carries no forward pointer to D-224 — reject, false: the bounded read back-references D-204's id, which finds D-224's heading
-- blame-history #1: the plan never says which reading it takes, so a concern only another reading avoids sorts both ways — fix now (the plan takes the fitting reading that avoids the most concerns)
+- blame-history #1: the plan never says which reading it takes, so a concern only another reading avoids sorts both ways — fix now (the plan takes the fitting reading that avoids the most concerns), fixed 3600a485
 - blame-history #2: the hotfix asks about an exception gap only after the code exists, against the hotfix bar — amendment routed AC5
-- blame-history #3: an exception-gap question can fall to the cap — fix now (same as diff-bug #6)
+- blame-history #3: an exception-gap question can fall to the cap — fix now (same as diff-bug #6), fixed 3600a485
 - blame-history #4: a gap reading may contradict an uncited D-entry — reject, false: the collision check reads DECISIONS.md and surfaces a settled record as a question, and the vet names a settled concern with its record
-- blame-history #5: the gap example is unclear — fix now (reworded)
+- blame-history #5: the gap example is unclear — fix now (reworded), fixed 3600a485
 - blame-history #6: the parked row is absorbed before its condition held — reject, planned change (user's choice at the question set)
 - blame-history #7: the tag rests on D-108's trigger — reject, planned change (D-224 names the trigger)
 - blame-history #8: D-109, D-162, M306 loop protection checked — noted
-- prior-review #1: new pins for new skill rules, which the profile says owe no prose guard and M323 removed — fix now (pins for new clauses dropped; re-pins of existing members kept; 24 tests, 34 pins red on deletion)
-- prior-review #2: bare milestone cite in the test docstring — fix now (cite removed)
-- ripple #1: the hotfix row "names it as a design decision" while the hotfix goes on, against the tier rule — fix now (the fix itself needs no design decision; the row names one for later work)
+- prior-review #1: new pins for new skill rules, which the profile says owe no prose guard and M323 removed — fix now (pins for new clauses dropped; re-pins of existing members kept; 24 tests, 34 pins red on deletion), fixed 3600a485
+- prior-review #2: bare milestone cite in the test docstring — fix now (cite removed), fixed 3600a485
+- ripple #1: the hotfix row "names it as a design decision" while the hotfix goes on, against the tier rule — fix now (the fix itself needs no design decision; the row names one for later work), fixed 3600a485
 - ripple #2: the parked row's text is stale — reject, planned change: step 9 hygiene graduates it (`started M324`)
-- ripple #3: guest scope "poses that as a concern" — fix now (same as diff-bug #8)
+- ripple #3: guest scope "poses that as a concern" — fix now (same as diff-bug #8), fixed 3600a485
 - ripple #4: the settled-concern sentence names no tag — reject, false: it names the record whatever tag the concern takes
