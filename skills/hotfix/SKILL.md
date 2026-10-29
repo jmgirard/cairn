@@ -58,14 +58,27 @@ can resolve against the fork instead of the base repo.
    the PR literally asks? (3) Is it framed right, in
    its name, its function, and its arguments? An issue's wording, a
    contributor's PR, or the docs that the fix restores answer none of the
-   three. State the result in chat. A concern counts as a design decision,
+   three. Before it sorts a concern on a candidate row that the argument
+   names, the vet reads each record the row cites. It sorts each concern
+   as a gap or a flaw by `/milestone-plan` step 2's test. For a gap, the
+   fix takes that step's reading. A gap that `/milestone-plan` step 2 sends
+   to its question set is also named as a choice in step 6's approval chip
+   question text. State the result in chat, with each gap's reading. A
+   flaw in a name, argument, or behavior that the fix's diff changes counts
+   as a design decision,
    so it takes the over-the-bar route above, and the candidate row or the
-   close block that the route writes names the concern. It names it as a
+   close block that the route writes names the flaw. It names it as a
    design decision, so that a later plan's tier check finds a milestone and
-   does not send the work back here. On the merged-PR
-   re-entry below, the vet runs after the merge, and the concern goes in
-   step 7's close block. There the concern waives none of the re-entry's
+   does not send the work back here. A flaw only in a name, argument, or
+   behavior that the fix's diff leaves as it was does not stop the fix.
+   Step 1 adds a candidate row that names it as a design decision, written
+   as the over-the-bar route writes its row (search-first applies), and
+   the hotfix goes on. On the merged-PR
+   re-entry below, the vet runs after the merge, and a flaw goes in
+   step 7's close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
+   A flaw that the merged diff leaves as it was also gets its candidate
+   row.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -222,7 +235,7 @@ can resolve against the fork instead of the base repo.
      Make a change for each requested item, or
      name the reason for making none, and commit each change on the
      branch. The tier check below also runs the idea vet above on the
-     changed diff, and a concern takes the same over-the-bar disposition.
+     changed diff, and each concern takes the vet's dispositions there.
      Run `git fetch <base>`, then tier-check the PR's whole diff
      against `<base>/<default-branch>`. A diff over the hotfix bar takes
      this step's over-the-bar disposition, and nothing is pushed. That
@@ -417,7 +430,9 @@ can resolve against the fork instead of the base repo.
    authorizes (hotfix step 7). When step 1 matched a candidate row, the
    question text also names each matched row's title and says whether the
    merge removes the row or narrows it to the part the fix leaves (step 7).
-   The guest handoff chip below carries no row text.
+   The guest handoff chip below carries no row text. When step 1's idea
+   vet names a gap as a choice, the question text names the reading the
+   fix took and the other reading. The guest handoff chip names them too.
    When the gate presents the diff, note the head it shows: local `HEAD`
    for an authored fix not yet pushed, or the PR's `headRefOid` where a PR
    already exists. A decline at the chip removes any merge-guard marker

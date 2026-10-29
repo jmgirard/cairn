@@ -47,7 +47,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 
 - [x] T1: Edit `/milestone-plan` step 2's Idea vet paragraph (`skills/milestone-plan/SKILL.md:257`) and step 4's Idea-vet line bullet (`:627`) (AC1, AC2, AC4). Add a gap example beside the winsorize flaw example.
 - [x] T2: Edit step 3's choices-left-open bullet, its idea-vet bullet (`:389`), and the "Work chosen at the set" arm (`:401`) (AC3).
-- [ ] T3: Edit `/hotfix` step 1's Idea vet paragraph (`skills/hotfix/SKILL.md:52`), the guest change route's vet sentence (`:224`), and step 6's approval chip text (AC5).
+- [x] T3: Edit `/hotfix` step 1's Idea vet paragraph (`skills/hotfix/SKILL.md:52`), the guest change route's vet sentence (`:224`), and step 6's approval chip text (AC5).
 - [ ] T4: Update `skills/tests/test_idea_vet.py`. Re-pin each changed phrase, and add one assertion per new clause. Show each new pin red by deleting its clause, and log the hand-run `skills/tests` result. The mutation-harness EXEMPT entry stays.
 - [ ] T5: Edit the three README vet sites and the CHANGELOG Unreleased vet entry (AC7). Append D-224, which narrows D-204 and names its D-108 door.
 - [ ] T6: Run the `verify` slot on the branch head (AC6).
@@ -68,6 +68,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: M324 in-progress on m324-idea-vet-gaps; untracked `cairn-probe.log` and `tsconfig.json` left unstaged.
 - 2026-10-29: T1 done: step 2's Idea vet sorts gap and flaw, reads a candidate row's cited records first, sends an exception gap as an open choice, and tags the `idea vet:` line; step 4's bullet already points at step 2's form, unchanged. Gap example added beside the winsorize flaw. Both suites green.
 - 2026-10-29: T2 done: step 3's open-choices bullet takes an exception gap (reading recommended, no option not to build); the idea-vet bullet now poses only flaws; "Work chosen at the set" closes on a flaw or an exception gap, and the agent decides other gaps.
+- 2026-10-29: T3 done: `/hotfix` step 1's vet reads a named row's cited records, sorts by the plan's test, names gap readings in chat and an exception gap at step 6's chip (guest handoff chip too); a flaw the fix's diff changes goes over the bar, one it leaves as it was gets a row written as the over-the-bar row is (step 7's docs-only commit) and the fix goes on, merged-PR re-entry included; change route takes the vet's dispositions. Both suites green.
 
 ## Decisions
 
