@@ -122,3 +122,11 @@
 - diff-bug #13: more triage D-entries raise the id-collision risk when the remote moved ahead — follow-up, absorbed by the existing row "Support two cairn operators in one repo", which already names duplicate D-numbers; no edit
 - diff-bug #14: Overlap's survivor draft and the PR-named sentence list only priority and token changes — reject, false: the class skips both kinds of row
 - diff-bug (c): the new guard file's docstring and one weaker assertion — reject, moot: the file was removed (prior-review #2)
+- blame-history #1: the drop test's "only a rare input" is looser than D-205's `edge` (outside both documented and common use) — fix now, the skill, README, CHANGELOG, and D-227 use D-205's wording
+- blame-history #2: "promote when a user reports it" has no reader in triage — reject, planned change: the user chose that default at the plan gate, and a person's report is the evidence the gate reads
+- blame-history #3: D-227's door calls keep-by-default a shipped defect — reject, planned change: the trigger is triage failing its users in wrapped, the reasoning D-169 used
+- blame-history #4: `/hotfix` step 7 still files rows with no condition — reject, planned change, as diff-bug #3
+- blame-history #5: no order is set when retitle, token, and condition edits touch one row — reject, false: each writes at its own fixed place (title at the head, condition before ` — added ` or at the lineage place, token at the end)
+- blame-history #6: a parked row with no condition could get `parked → parked` — fixed in the diff-bug #6 commit 14c601ac
+- blame-history #7: the drafted condition is not the row author's words — reject, planned change: the gate shows each drafted condition and Amend can reword or decline it
+- blame-history #8: Title after a condition change is unclear — reject, false, as diff-bug #5

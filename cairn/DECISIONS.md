@@ -8193,7 +8193,7 @@ row. A row that the resumed over-the-bar stop writes has no owner-mode
 commit, as on every path of that stop. The candidate row "Commit the
 hotfix over-the-bar row" holds that gap.
 
-### D-227 (2026-10-29): `/cairn-triage` proposes a condition or a drop for a candidate row with no promotion condition, and review files each finding's row with a condition — annotates D-027's drop reasons, D-134's optional token, and D-184's writer rule; passes D-108's door (M326)
+### D-227 (2026-10-29): `/cairn-triage` proposes a condition or a drop for a candidate row with no promotion condition, and review files each finding's row with a condition — annotates D-027's drop reasons, D-134's optional token, D-184's writer rule, and D-205's `edge` test; passes D-108's door (M326)
 
 **Context:** `/milestone-review` filed each follow-up finding as a
 candidate row with provenance and no promotion condition. `/cairn-triage`
@@ -8210,7 +8210,9 @@ row that states no promotion condition, it proposes either a drop as
 <condition>` into the row and parks it. *Not worth keeping* is a fourth
 drop class. Its test reads the row alone: the row cites no issue and no
 user report, and its effect is an error, a warning, a cosmetic flaw, or
-slow running on a rare input. The pass's decision entry lists each such
+slow running that only an input outside the documented and common use
+reaches, as for D-205's `edge` reject, or that changes no output, such
+as a code comment. The pass's decision entry lists each such
 drop, as D-027 recorded its own YAGNI drop, so search-first finds it.
 Review and `/copilot-review` write `promote when <condition>` on each
 row they file for a finding. If no documented or common use reaches the
