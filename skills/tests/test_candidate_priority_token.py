@@ -119,22 +119,22 @@ class TestTriageReRatesParked(unittest.TestCase):
 
     triage = TestTriageReadsTheToken.triage
 
-    def test_a_condition_not_held_adds_parked(self):
+    def test_a_move_to_parked_carries_its_condition(self):
         self.assertIn(
-            "an untagged or `[low]` row that states a condition that has not held gets `priority: <level> → parked`",
+            "a move to `parked` carries its condition, and a move off `parked` needs no condition that has held",
             self.step(3),
         )
 
-    def test_parked_applies_to_three_dispositions_and_comes_first(self):
-        self.assertIn("on a `keep`, `compress`, or `retitle` row, the fourth level, `parked`", self.step(3))
-        self.assertIn("and it comes before the grounds above", self.step(3))
+    def test_any_rung_either_way_on_three_dispositions(self):
+        # M327: the ladder replaces the parked-first rule and the high-row exclusion.
+        self.assertIn(
+            "on a `keep`, `compress`, or `retitle` row, a priority change can name any rung of the ladder, "
+            "up or down by any number of rungs",
+            self.step(3),
+        )
 
-    def test_a_high_row_is_never_reparked(self):
-        # M284 review: a promoted row keeps its trigger text.
-        self.assertIn("a `[high]` row is never proposed `→ parked`", self.step(3))
-
-    def test_a_condition_held_removes_parked(self):
-        self.assertIn("a parked row whose condition held gets `priority: parked → normal`", self.step(3))
+    def test_a_condition_held_moves_up(self):
+        self.assertIn("a row whose condition has held usually moves up, as in `priority: parked → normal`", self.step(3))
 
     def test_a_promote_of_a_parked_row_names_it(self):
         self.assertIn("or `priority: parked → high`", self.step(3))
@@ -189,7 +189,7 @@ class TestPromoteCarriesHigh(unittest.TestCase):
 
     def test_skip_needs_no_priority_change(self):
         self.assertIn(
-            "every item `keep` or `promote` with no priority change, no token change, and no condition change",
+            "every item `keep` or `promote` with no priority change, no token change, no condition change, and no kept mark",
             self.step(4),
         )
 

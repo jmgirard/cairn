@@ -54,7 +54,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - [x] T1: Write the D-entry. Rewrite the rulebook paragraph. Edit review steps 5, 7, and 9 and the two follow-up sentences, `skills/copilot-review/SKILL.md:88-90`, and records-hygiene §7.
 - [x] T2: In triage step 2, state the ladder, remove the seven gate sentences, open every move, widen *not worth keeping*, and let the finding-absorbing options take a rung change.
 - [x] T3: Wire the kept mark through steps 2 to 7.
-- [ ] T4: Update README and CHANGELOG. Re-pin the guards on the removed sentences, and re-seed the `/milestone` rulebook mass at its three sites.
+- [x] T4: Update README and CHANGELOG. Re-pin the guards on the removed sentences, and re-seed the `/milestone` rulebook mass at its three sites.
 - [ ] T5: Run AC3's grep and AC6's two dry runs, then `verify`, `skills/tests`, and `cairn_validate`.
 
 ## Work log
@@ -74,6 +74,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: T1 done: D-228. The rulebook paragraph states the ladder and narrows the writer sentence to the parked rung. Review step 5 places rows on a rung and can propose a Known issues entry, the snapshot and PR-conversation follow-ups say "on step 5's rung", step 7 lists rung and Known issues proposals, and step 9 takes merge approval as the acceptance. Copilot's follow-up points to the ladder, and records-hygiene §7 adds a rung move.
 - 2026-10-30: T2 done: step 2's No condition class becomes the Rung class (any rung, either way, any distance; parked carries a drafted condition; off parked needs no held condition). Readiness promotes on a judged reason it names, Misfiling routes either way on judgment, *not worth keeping* is a judged reason for any item not held, and §7's options add a rung change. The seven gate sentences read 0 in the whitespace-joined file. A Kept mark bullet sits in step 2; its writing is T3.
 - 2026-10-30: T3 done: Amend's `keep` on a proposed move writes ` — kept <today>` at Accept. It is the sixth untouched carve-out and is counted in the skip test, size count, stamp, and status line. It is placed where a merge lineage clause goes, a newer mark replaces an older one, and `compress`, `merge`, and `split` keep it.
+- 2026-10-30: T4 done: README's ladder paragraph and triage row, and the CHANGELOG Unreleased entry, which replaces M326's still-unreleased entry with the ladder. Five guards in `test_candidate_priority_token.py` and two harness blocks are re-pinned to the new sentences. The rulebook-mass seed is 852 / 84,399 at its three sites. `skills/tests` and `cairn_validate` are green.
 
 ## Decisions
 
