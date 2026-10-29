@@ -133,3 +133,8 @@
 - blame-history #6: a parked row with no condition could get `parked → parked` — fixed in the diff-bug #6 commit 14c601ac
 - blame-history #7: the drafted condition is not the row author's words — reject, planned change: the gate shows each drafted condition and Amend can reword or decline it
 - blame-history #8: Title after a condition change is unclear — reject, false, as diff-bug #5
+- fixed shas: ripple fixes 170e6dc3; prior-review fixes d33416b0; diff-bug fixes 14c601ac; blame-history #1 1063f445.
+- totals: 37 findings — 17 fix now, 19 rejected (none `edge`), 1 follow-up absorbed into "Support two cairn operators in one repo". No finding showed a criterion failing, so no return. Amendments: 0 substantive, 1 minor (the guard file removal).
+- snapshot: none (no `_snaps` or `__snapshots__` path in the diff).
+- conversation: PR #339 read before the chip — 0 reviews, 0 comments, 0 unresolved threads.
+- copilot: no review on PR #339; the request at review start exited 0 but GitHub never recorded it (state query `none` at start and before the chip).
