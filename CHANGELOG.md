@@ -20,8 +20,9 @@
   gives a reason. `/milestone-review` and `/copilot-review` place each row
   they file for a review finding on a rung. If no documented or common use
   reaches the finding, the default is parked with "promote when a user
-  reports it". Review can also propose a finding as a Known issues entry,
-  which the merge question lists and the merge approval accepts.
+  reports it". `/milestone-review` can also propose a finding as a Known
+  issues entry, which its merge question lists and the merge approval
+  accepts.
 
 - **`cairn/LESSONS.md` keeps a fixed number of short lessons.** The file
   now holds at most 25 lessons, each one line of at most 450 bytes. These

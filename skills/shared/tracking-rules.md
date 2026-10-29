@@ -252,7 +252,8 @@ falsify the chosen approach**, never as a count of failures.
 **Candidate priority token.** A candidate row may open with `[high]` or `[low]` (`- [high] short title: detail — added
 YYYY-MM-DD — links`); a row with neither reads as `normal`. A row may instead open with `[parked]`, the fourth level,
 when its promotion condition has not held. A row on the parked rung states that condition, as `promote when
-<condition>`, and a row with no condition is valid at high, normal, or low. The token goes when the condition holds:
+<condition>`, and a row with no condition is valid at high, normal, or low. The token goes when the condition holds,
+or when a re-rate moves the row off parked:
 `/cairn-triage` re-rates it, and `/milestone-review` post-merge hygiene removes it from a row whose condition the
 merge made hold. The Candidates section orders its rows high → normal → low → parked, advisory
 order within a level; the token is the fact the order derives from, never a second encoding of it. A new row is

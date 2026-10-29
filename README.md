@@ -414,8 +414,9 @@ condition hold. A row whose condition is not written down gets no
 `[parked]` token. `/milestone-review` and `/copilot-review` place each
 row they file for a review finding on a rung. If no documented or common
 use reaches the finding, the default is parked with "promote when a user
-reports it". Review can also propose a finding as a Known issues entry,
-which the merge question lists and the merge approval accepts.
+reports it". `/milestone-review` can also propose a finding as a Known
+issues entry, which its merge question lists and the merge approval
+accepts.
 `scripts/cairn_validate.py` prints a `candidate order` WARN, with one line
 under it for each row that the file holds below a row of a lower priority.
 When `/cairn-triage`

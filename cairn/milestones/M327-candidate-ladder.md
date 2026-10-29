@@ -75,6 +75,8 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: T2 done: step 2's No condition class becomes the Rung class (any rung, either way, any distance; parked carries a drafted condition; off parked needs no held condition). Readiness promotes on a judged reason it names, Misfiling routes either way on judgment, *not worth keeping* is a judged reason for any item not held, and §7's options add a rung change. The seven gate sentences read 0 in the whitespace-joined file. A Kept mark bullet sits in step 2; its writing is T3.
 - 2026-10-30: T3 done: Amend's `keep` on a proposed move writes ` — kept <today>` at Accept. It is the sixth untouched carve-out and is counted in the skip test, size count, stamp, and status line. It is placed where a merge lineage clause goes, a newer mark replaces an older one, and `compress`, `merge`, and `split` keep it.
 - 2026-10-30: T4 done: README's ladder paragraph and triage row, and the CHANGELOG Unreleased entry, which replaces M326's still-unreleased entry with the ladder. Five guards in `test_candidate_priority_token.py` and two harness blocks are re-pinned to the new sentences. The rulebook-mass seed is 852 / 84,399 at its three sites. `skills/tests` and `cairn_validate` are green.
+- 2026-10-30: claim audit: 58 claims read, 2 corrected — CHANGELOG.md and README.md ("Review can also propose a Known issues entry" now names `/milestone-review` alone). Also from its note, the rulebook's parked sentence now says the token goes when a re-rate moves a row off parked. The rulebook-mass seed was re-seeded to 853 / 84,443.
+- 2026-10-30: verify green on T4 head ae5d72db: scripts/tests 0, hooks/tests 0, both plugin validates 0, plugin test 0 (2466 pass).
 
 ## Decisions
 
