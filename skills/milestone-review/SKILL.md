@@ -410,12 +410,15 @@ re-enters here, at the step the record shows is next:
    - **follow-up**: the rest go to candidate rows (search-first, per the
      candidate-creation rule, `tracking-rules.md` Intake; absorbing into an
      existing row counts). A pre-existing issue the diff did not introduce,
-     or a complaint about an unmodified line, lands here. Each row filed
-     for a finding states `promote when <condition>`. If no documented or
-     common use reaches the finding, the condition is `promote when a user
-     reports it`, and the row opens with `[parked]` (tracking-rules
-     "Candidate priority token"). Every other row this skill files for a
-     finding follows the same rule.
+     or a complaint about an unmodified line, lands here. The agent places
+     each row it files on a rung of the ladder (tracking-rules "Candidate
+     priority token") and states the reason. A row is parked only with its
+     condition. If no documented or common use reaches the finding, the
+     default is parked with `promote when a user reports it`. The agent
+     can instead propose a finding as a `cairn/DESIGN.md` Known issues
+     entry, a limitation the repo lives with. Step 7 lists each such
+     proposal. Every other row this skill files for a finding follows the
+     same rule.
 
    Every reported finding and its disposition is logged in the Review
    section, surfaced, never silently dropped (IP3), and the merge question
@@ -505,7 +508,8 @@ re-enters here, at the step the record shows is next:
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, each finding with its
    disposition in plain words (rejected and why, fixed on the branch, or
-   sent to which candidate row), diffstat, anything the user should eyeball
+   sent to which candidate row and rung, or proposed as which Known issues
+   entry), diffstat, anything the user should eyeball
    directly. The presentation and the merge chip share one turn
    (Mandated-substance rule): the chip's question text carries the compact
    decision summary and cites the milestone file's Review section by path,
@@ -555,7 +559,7 @@ re-enters here, at the step the record shows is next:
    produced the change, so the stored output matches its old content
    again. Re-recording the snapshot keeps the change and fixes nothing.
    Follow-up keeps a change that gives no wrong result and sends it to a
-   candidate row with step 5's promotion condition. Each such change gets one Review-section line,
+   candidate row on step 5's rung. Each such change gets one Review-section line,
    `snapshot: <path> — <disposition>`. A fix-now line gains
    `, fixed <sha>`, and a follow-up line names its candidate row. The
    line stays when the fix removes the path from the list. After every
@@ -610,8 +614,8 @@ re-enters here, at the step the record shows is next:
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`; a Copilot thread takes the module's `copilot:` line
    instead); fix-now work lands per step 6 before the chip is posed,
-   a follow-up becomes a candidate row (search-first) with step 5's
-   promotion condition. **Blocking rule.** A `CHANGES_REQUESTED`
+   a follow-up becomes a candidate row (search-first) on step 5's rung.
+   **Blocking rule.** A `CHANGES_REQUESTED`
    review whose author `type` is `User` and which has any unresolved thread
    removes merge from the chip's recommended option — the recommended
    option becomes address-first — while merge stays present as a
@@ -947,7 +951,9 @@ re-enters here, at the step the record shows is next:
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
    planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
-   written in this same hygiene commit. None accepted → skip.
+   written in this same hygiene commit. A Known issues entry that step 5
+   proposed and step 7's merge question listed is accepted by the merge
+   approval. None accepted → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its

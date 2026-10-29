@@ -8,7 +8,7 @@ _Released 1.0.0 (2026-07-16) to 2.1.0 (2026-10-18), each tagged `v<version>`; 1.
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M327 | Let triage move a row to any rung | planned | — | normal | milestones/M327-candidate-ladder.md |
+| M327 | Let triage move a row to any rung | in-progress | — | normal | milestones/M327-candidate-ladder.md |
 | M326 | Let triage settle rows with no condition | done | — | normal | milestones/archive/M326-triage-conditionless-rows.md |
 | M325 | Vet a hotfix on a resumed merge | done | — | normal | milestones/archive/M325-resumed-hotfix-vet.md |
 | M324 | Settle vague ideas and ask about flawed ones | done | — | normal | milestones/archive/M324-idea-vet-gaps.md |

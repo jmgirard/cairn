@@ -1,13 +1,13 @@
 # M327: Let triage move a row to any rung
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/cairn-triage` proposes and how skills write candidate rows in every adopting repo
-- **Branch/PR:** —
+- **Branch/PR:** m327-candidate-ladder
 
 ## Goal
 
@@ -51,7 +51,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 
 ## Tasks
 
-- [ ] T1: Write the D-entry. Rewrite the rulebook paragraph. Edit review steps 5, 7, and 9 and the two follow-up sentences, `skills/copilot-review/SKILL.md:88-90`, and records-hygiene §7.
+- [x] T1: Write the D-entry. Rewrite the rulebook paragraph. Edit review steps 5, 7, and 9 and the two follow-up sentences, `skills/copilot-review/SKILL.md:88-90`, and records-hygiene §7.
 - [ ] T2: In triage step 2, state the ladder, remove the seven gate sentences, open every move, widen *not worth keeping*, and let the finding-absorbing options take a rung change.
 - [ ] T3: Wire the kept mark through steps 2 to 7.
 - [ ] T4: Update README and CHANGELOG. Re-pin the guards on the removed sentences, and re-seed the `/milestone` rulebook mass at its three sites.
@@ -70,6 +70,8 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: plan gate chose a kept mark over re-proposing a declined move each pass, because the user named re-proposal as the M326 problem; falsified by a kept row that triage wrongly never revisits after a real change.
 - 2026-10-30: plan gate chose `ready now` out and plain rungs in, because a normal row with no condition already means ready; falsified by an operator who cannot tell a ready row from one that lacks a decision.
 - 2026-10-30: remainder ledger: the ladder and moves in either direction → M327; ready rows → M327, as the normal rung with no condition; kept rows not re-proposed → M327, the kept mark; drop or promote of conditioned rows on new context → M327; record sources for context → M327, reading taken in the idea vet.
+- 2026-10-30: branch m327-candidate-ladder cut from main at a455c2d6; untracked `cairn-probe.log` and `tsconfig.json` stay unstaged.
+- 2026-10-30: T1 done: D-228. The rulebook paragraph states the ladder and narrows the writer sentence to the parked rung. Review step 5 places rows on a rung and can propose a Known issues entry, the snapshot and PR-conversation follow-ups say "on step 5's rung", step 7 lists rung and Known issues proposals, and step 9 takes merge approval as the acceptance. Copilot's follow-up points to the ladder, and records-hygiene §7 adds a rung move.
 
 ## Decisions
 
