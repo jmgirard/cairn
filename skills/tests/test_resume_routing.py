@@ -328,7 +328,9 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     arm resumes an approved merge at step 6's CI wait only when the marker's
     head oid is the PR's head, no review requests changes, and the row match
     equals the PR body's `Candidate row:` lines; otherwise it takes the
-    walk. The resumed merge pins the head, and a refused merge stops. The
+    walk. When they hold, an idea vet runs first, and a concern over the
+    hotfix bar stops the resume (M325). The resumed merge pins the head,
+    and a refused merge stops. The
     guest arm reports and stops. Step 6 notes the head the gate shows,
     writes the marker with the head oid before the wait, merges with
     `--match-head-commit`, and its timeout close names both re-entries.
@@ -566,7 +568,8 @@ class TestHotfixOwnOpenPr(unittest.TestCase):
 
     def test_walk_treats_it_as_an_authored_fix(self):
         self.assertIn(
-            "When the owner arm above does not resume it, the run takes the "
+            "When the owner arm above neither resumes it nor stops it, the "
+            "run takes the "
             "tier-check walk with it as an authored fix whose PR exists, not "
             "as an adopted PR.",
             self.step1,

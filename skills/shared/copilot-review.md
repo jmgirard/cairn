@@ -41,7 +41,7 @@ First run the state query (§3). Only on `none`, request the review with
 <base-repo>`). On `pending` or `reviewed`, never request, whoever made the
 earlier request: a second request starts a second review and spends
 credits. A later run of this step on the same PR (a later review pass, a
-`/hotfix` rerun) that reads `none` requests again. A request GitHub
+`/hotfix` resume) that reads `none` requests again. A request GitHub
 never recorded also reads `none` (PR #291 to #293). `/hotfix` asks for Lite and
 `/milestone-review` for Balanced, but GitHub's settings choose the level:
 its API took none per request on 2026-10-10. A non-zero exit is a failed
