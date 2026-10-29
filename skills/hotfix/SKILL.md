@@ -61,14 +61,13 @@ can resolve against the fork instead of the base repo.
    three. Before it sorts a concern on a candidate row that the argument
    names or that describes the bug, the vet reads each record the row
    cites that still exists. It sorts each concern as a gap or a flaw by
-   `/milestone-plan` step 2's test. For a gap, the fix takes that step's
-   reading. A PR diff that takes another reading has a flaw in what it
-   changes. A gap that `/milestone-plan` step 2 sends
-   to its question set is also named as a choice in step 6's approval chip
-   question text. On a path that poses no step 6 chip, the chip it poses
-   in that place names it: the nothing-owed acceptance chip of the
-   merged-PR re-entry, or the change route's push chip. State the result
-   in chat, with each gap's reading. A
+   `/milestone-plan` step 2's test. A gap that `/milestone-plan` step 2
+   sends to its question set takes the over-the-bar route above, because a
+   choice between its readings is a design decision. The candidate row or
+   the close block that the route writes names the readings. For any other
+   gap, the fix takes that step's reading. A PR diff that takes another
+   reading has a flaw in what it changes. State the result in chat, with
+   each gap's reading. A
    flaw in a name, argument, or behavior that the fix's diff changes counts
    as a design decision,
    so it takes the over-the-bar route above, and the candidate row or the
@@ -76,17 +75,17 @@ can resolve against the fork instead of the base repo.
    design decision, so that a later plan's tier check finds a milestone and
    does not send the work back here. A flaw only in a name, argument, or
    behavior that the fix's diff leaves as it was does not stop the fix,
-   since the fix itself then needs no design decision. The chat result
-   names it, and the hotfix goes on. Step 7 adds a candidate row that names
+   since the fix itself then needs no design decision, and the hotfix goes
+   on. If the run reaches step 7, step 7 adds a candidate row that names
    it as a design decision for later work (search-first applies), after
    its matched-row edits and in its one docs-only commit (guest mode: on
-   disk). A close block that ends the hotfix before step 7 names the flaw
+   disk). A close block that ends the run before step 7 names the flaw
    instead. On the merged-PR
-   re-entry below, the vet runs after the merge, and a flaw goes in
-   step 7's close block. There the flaw waives none of the re-entry's
+   re-entry below, the vet runs after the merge. When step 7 runs, a flaw
+   goes in its close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
-   A flaw that the merged diff leaves as it was also gets its candidate
-   row.
+   A flaw that the merged diff leaves as it was gets its candidate row
+   there.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -438,9 +437,7 @@ can resolve against the fork instead of the base repo.
    authorizes (hotfix step 7). When step 1 matched a candidate row, the
    question text also names each matched row's title and says whether the
    merge removes the row or narrows it to the part the fix leaves (step 7).
-   The guest handoff chip below carries no row text. When step 1's idea
-   vet names a gap as a choice, the question text names the reading the
-   fix took and the other reading. The guest handoff chip names them too.
+   The guest handoff chip below carries no row text.
    When the gate presents the diff, note the head it shows: local `HEAD`
    for an authored fix not yet pushed, or the PR's `headRefOid` where a PR
    already exists. A decline at the chip removes any merge-guard marker

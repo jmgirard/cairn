@@ -8129,3 +8129,30 @@ recommended reading.
 **Consequences:** The parked candidate row "Do not stop fixes on old
 naming flaws" is absorbed by M324, before its promotion condition held,
 at the user's choice.
+
+### D-225 (2026-10-29): A hotfix sends an exception gap over the bar, and step 7 writes the row for a flaw the fix leaves as it was — supersedes D-224's "names an exception gap at its approval chip" clause; annotates D-042 (M324)
+
+**Context:** M324's review found that naming an exception gap at
+`/hotfix`'s approval chip conflicts with the hotfix bar, since a choice
+between two fitting readings is a design decision. The chip also had no
+way to act on the other reading, and one path poses no chip. A
+candidate row that step 1 added for a flaw the fix leaves as it was
+stayed uncommitted in owner mode.
+
+**Decision:** In `/hotfix`, a gap that `/milestone-plan` step 2 sends to
+its question set takes the over-the-bar route, and the route's row or
+close block names the readings. A flaw only in what the fix's diff leaves
+as it was gets its candidate row from step 7, in step 7's one docs-only
+commit, if the run reaches step 7. A close block that ends the run
+before step 7 names the flaw instead. The user chose this at the
+amendment stop.
+
+**Rejected:** Keeping the chip choice, since it cannot act on the other
+reading and it lets a hotfix ship a design decision. Falsified by a
+hotfix whose two readings both restore documented behavior.
+
+**Consequences:** On a run that ends before step 7, the close block is
+the flaw's only record. That is a residual of D-042's rule that what a
+session surfaces gets a candidate row, and a rerun's vet finds the flaw
+again. A resumed merge on an open PR skips the vet, so the candidate row
+"Vet a hotfix on a resumed merge" holds that gap.

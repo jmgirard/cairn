@@ -181,8 +181,8 @@ class TestHotfixIdeaVet(unittest.TestCase):
 
     def test_merged_pr_reentry(self):
         self.assertIn("On the merged-PR re-entry below, the vet runs after the "
-                      "merge, and a flaw goes in step 7's close block.",
-                      self.vet)
+                      "merge. When step 7 runs, a flaw goes in its close "
+                      "block.", self.vet)
 
     def test_merged_pr_flaw_waives_no_check(self):
         self.assertIn("There the flaw waives none of the re-entry's checks "
