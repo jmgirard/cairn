@@ -11,7 +11,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what `/milestone-plan` and `/hotfix` ask adopters
-- **Branch/PR:** m324-idea-vet-gaps
+- **Branch/PR:** m324-idea-vet-gaps, https://github.com/jmgirard/cairn/pull/337
 
 ## Goal
 
