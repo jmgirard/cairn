@@ -1,11 +1,13 @@
 """Regression guard: the plan and the hotfix vet the request as framed (M306).
 
 Pins `/milestone-plan` step 2's idea vet (its three questions, the
-not-proof sentence, and the requests it runs on), step 3's concerns bullet
-(the cap rule, the do-not-build option and what it writes, the other-name
-option) and its arm for work chosen at the set, step 4's `idea vet:` line,
-and `/hotfix` step 1's vet (its scope, its three questions, and the
-over-the-bar route, the merged-PR re-entry included). One assertion per
+not-proof sentence, the requests it runs on, and M324's gap-or-flaw sort),
+step 3's flaws bullet (the cap rule, the do-not-build option and what it
+writes, the other-name option), its open-choices bullet for a gap, and its
+arm for work chosen at the set, step 4's `idea vet:` line, and `/hotfix`
+step 1's vet (its scope, its three questions, the sort, the over-the-bar
+route for a flaw the fix changes, and the candidate row for one it leaves,
+the merged-PR re-entry included) with step 6's gap text. One assertion per
 member (M171). Text is whitespace-collapsed on read, so a phrase may wrap
 across lines.
 
@@ -61,13 +63,43 @@ class TestPlanIdeaVet(unittest.TestCase):
                       "work, a request that names an issue and a request that "
                       "a router sent included.", self.vet)
 
-    def test_concerns_go_to_the_set(self):
-        self.assertIn("Each concern the vet finds goes to step 3's set.",
-                      self.vet)
-
     def test_no_work_request_vetted_at_step_3(self):
         self.assertIn("A request that names no work is vetted at step 3, once "
                       "its work is chosen.", self.vet)
+
+    def test_reads_a_rows_cited_records_first(self):
+        self.assertIn("Before the vet sorts a concern on a candidate row's "
+                      "request, it reads each record the row cites",
+                      self.vet)
+
+    def test_gap_is_what_one_reading_avoids(self):
+        for phrase in (
+            "If one reading of the request avoids a set of concerns, each of "
+            "them is a gap.",
+            "That reading fits the request's words and the records it cites.",
+            "Its user-visible behavior is behavior that the request's words "
+            "name or leave open, and it leaves out nothing the request asks "
+            "for.",
+            "A reading whose user-visible behavior differs from behavior the "
+            "words name is not such a reading.",
+            "A concern that this one reading cannot also avoid is a flaw.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.vet)
+
+    def test_gap_asks_nothing_but_the_exception(self):
+        for phrase in (
+            "The plan drafts the criteria to that reading and asks nothing "
+            "about a gap, with one exception.",
+            "When another reading also fits the request and gives different "
+            "user-visible behavior, the gap goes to step 3's set as a choice "
+            "that the request leaves open.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.vet)
+
+    def test_flaws_go_to_the_set(self):
+        self.assertIn("Each flaw goes to step 3's set.", self.vet)
 
     def test_issue_text_and_settled_concerns(self):
         for phrase in (
@@ -79,20 +111,30 @@ class TestPlanIdeaVet(unittest.TestCase):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.vet)
 
-    def test_line_carries_the_answer(self):
-        self.assertIn("Each named concern carries the set's answer to it.",
-                      self.vet)
-
     def test_work_log_line_form(self):
         self.assertIn("Step 4 writes one work-log line `idea vet: <result>` in "
                       "the first milestone file it writes.", self.vet)
-        self.assertIn("The line names each concern in a clause, or says that "
-                      "the vet found none.", self.vet)
+        self.assertIn("The line names each concern in a clause tagged `gap` or "
+                      "`flaw`, or says that the vet found none.", self.vet)
+
+    def test_line_carries_reading_or_answer(self):
+        self.assertIn("A gap carries the reading taken, and a flaw carries the "
+                      "set's answer to it.", self.vet)
+
+    def test_step3_gap_is_an_open_choice(self):
+        for phrase in (
+            "each gap that step 2's idea vet sends to the set included.",
+            "A gap's question recommends the reading the plan took, and its "
+            "options do not include not building the work",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.step3)
 
     def test_step3_cap_rule(self):
-        self.assertIn("The set poses them within its cap, as one question per "
-                      "concern, or as one combined question where separate "
-                      "questions pass the cap.", self.step3)
+        self.assertIn("the flaws that step 2's idea vet found. The set poses "
+                      "them within its cap, as one question per flaw, or as "
+                      "one combined question where separate questions pass "
+                      "the cap.", self.step3)
 
     def test_step3_do_not_build_option(self):
         self.assertIn("its options include not building the work.", self.step3)
@@ -109,9 +151,9 @@ class TestPlanIdeaVet(unittest.TestCase):
     def test_step3_no_milestone_left_and_never_agent_decided(self):
         for phrase in (
             "When no milestone is left to write, the plan writes nothing and "
-            "ends with the close block, which names each concern.",
+            "ends with the close block, which names each flaw.",
             "An idea-vet question always counts among the questions that "
-            "matter most, so the agent never decides a concern.",
+            "matter most, so the agent never decides a flaw.",
         ):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.step3)
@@ -120,11 +162,12 @@ class TestPlanIdeaVet(unittest.TestCase):
         for phrase in (
             "For a request that names no work, the idea vet runs on the work "
             "chosen at the question set, before step 4 writes a file.",
-            "If it finds a concern, the plan writes nothing and ends with a "
-            "close block.",
+            "If it finds a flaw, or a gap that step 2 sends to the set, the "
+            "plan writes nothing and ends with a close block.",
             "The close block names the concern, and its fenced command is "
             "`/milestone-plan` with the chosen work named",
             "This close is the rulebook's goal-wrong stop.",
+            "The agent decides any other gap there, by step 2's reading.",
         ):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.step3)
@@ -159,38 +202,82 @@ class TestHotfixIdeaVet(unittest.TestCase):
             with self.subTest(phrase=phrase[:40]):
                 self.assertIn(phrase, self.vet)
 
+    def test_not_proof(self):
+        self.assertIn("An issue's wording, a contributor's PR, or the docs that "
+                      "the fix restores answer none of the three.", self.vet)
+
+    def test_reads_a_rows_cited_records_first(self):
+        self.assertIn("Before it sorts a concern on a candidate row that the "
+                      "argument names, the vet reads each record the row "
+                      "cites.", self.vet)
+
+    def test_sorts_by_the_plan_test(self):
+        self.assertIn("It sorts each concern as a gap or a flaw by "
+                      "`/milestone-plan` step 2's test.", self.vet)
+
+    def test_gap_takes_the_reading(self):
+        for phrase in (
+            "For a gap, the fix takes that step's reading.",
+            "A gap that `/milestone-plan` step 2 sends to its question set is "
+            "also named as a choice in step 6's approval chip question text.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.vet)
+
+    def test_result_in_chat(self):
+        self.assertIn("State the result in chat, with each gap's reading.",
+                      self.vet)
+
+    def test_flaw_the_fix_changes_goes_over_the_bar(self):
+        self.assertIn("A flaw in a name, argument, or behavior that the fix's "
+                      "diff changes counts as a design decision, so it takes "
+                      "the over-the-bar route above, and the candidate row or "
+                      "the close block that the route writes names the flaw.",
+                      self.vet)
+
     def test_concern_named_as_design_decision(self):
         self.assertIn("It names it as a design decision, so that a later "
                       "plan's tier check finds a milestone and does not send "
                       "the work back here.", self.vet)
 
-    def test_merged_pr_concern_waives_no_check(self):
-        self.assertIn("There the concern waives none of the re-entry's checks "
-                      "below, and the over-the-bar route's candidate row still "
-                      "names it.", self.vet)
-
-    def test_change_route_runs_the_vet(self):
-        self.assertIn("The tier check below also runs the idea vet above on "
-                      "the changed diff, and a concern takes the same "
-                      "over-the-bar disposition.", self.hotfix)
-
-    def test_not_proof(self):
-        self.assertIn("An issue's wording, a contributor's PR, or the docs that "
-                      "the fix restores answer none of the three.", self.vet)
-
-    def test_result_in_chat(self):
-        self.assertIn("State the result in chat.", self.vet)
-
-    def test_concern_goes_over_the_bar(self):
-        self.assertIn("A concern counts as a design decision, so it takes the "
-                      "over-the-bar route above, and the candidate row or the "
-                      "close block that the route writes names the concern.",
-                      self.vet)
+    def test_flaw_the_fix_leaves_does_not_stop_it(self):
+        for phrase in (
+            "A flaw only in a name, argument, or behavior that the fix's diff "
+            "leaves as it was does not stop the fix.",
+            "Step 1 adds a candidate row that names it as a design decision, "
+            "written as the over-the-bar route writes its row (search-first "
+            "applies), and the hotfix goes on.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.vet)
 
     def test_merged_pr_reentry(self):
         self.assertIn("On the merged-PR re-entry below, the vet runs after the "
-                      "merge, and the concern goes in step 7's close block.",
+                      "merge, and a flaw goes in step 7's close block.",
                       self.vet)
+
+    def test_merged_pr_flaw_waives_no_check(self):
+        self.assertIn("There the flaw waives none of the re-entry's checks "
+                      "below, and the over-the-bar route's candidate row still "
+                      "names it.", self.vet)
+
+    def test_merged_pr_left_flaw_gets_its_row(self):
+        self.assertIn("A flaw that the merged diff leaves as it was also gets "
+                      "its candidate row.", self.vet)
+
+    def test_change_route_runs_the_vet(self):
+        self.assertIn("The tier check below also runs the idea vet above on "
+                      "the changed diff, and each concern takes the vet's "
+                      "dispositions there.", self.hotfix)
+
+    def test_approval_chip_names_a_gap_choice(self):
+        for phrase in (
+            "When step 1's idea vet names a gap as a choice, the question text "
+            "names the reading the fix took and the other reading.",
+            "The guest handoff chip names them too.",
+        ):
+            with self.subTest(phrase=phrase[:40]):
+                self.assertIn(phrase, self.hotfix)
 
 
 if __name__ == "__main__":
