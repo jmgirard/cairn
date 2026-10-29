@@ -1,6 +1,6 @@
 # M326: Let triage settle rows with no condition
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,7 +56,7 @@
 - [x] T2: In `skills/cairn-triage/SKILL.md` step 2, add the "No condition" class and the fourth drop class. Add the class's place in the evidence order.
 - [x] T3: Wire the condition change and the new drop through steps 3 to 7: table, chip, Amend, untouched rule, skip test, size count, placement rule, decision entry, stamp, status line.
 - [x] T4: Update README's candidate and triage text and add a CHANGELOG entry. Add prose guards in `skills/tests` for the class, the drop class, the placement rule, and the review rule.
-- [ ] T5: Run AC6's dry run in a fresh subagent and record its table. Run `verify`, `skills/tests`, and `cairn_validate`.
+- [x] T5: Run AC6's dry run in a fresh subagent and record its table. Run `verify`, `skills/tests`, and `cairn_validate`.
 
 ## Work log
 
@@ -76,6 +76,9 @@
 - 2026-10-29: T2 done: step 2 gains the No condition class after Readiness and before Title. The `drop` row names *not worth keeping* as its fourth class, with the row-only test. A merge survivor and a `[high]` row are outside the class.
 - 2026-10-29: T3 done: the condition change is wired through the table, chip, Accept, Amend (decline drops parked too, or reword), the fifth untouched carve-out, the skip test, the placement rule, the size count, step 5's no-entry list, the stamp, and the status line. A not-worth-keeping drop writes the pass's decision entry and is named in the commit body and stamp. Placement: before ` — added ` with `; ` when the first `: ` comes first, else at the lineage clause's place with ` — `, chosen because a row whose first `: ` sits after ` — added` would otherwise take the condition into its short title.
 - 2026-10-29: T4 done: README's triage row and parked paragraph, a CHANGELOG entry under "Changes that affect existing repos", and `skills/tests/test_triage_conditionless_rows.py` (13 guards, exempt from the mutation registry like M298's file). Against main's triage skill, 10 of the 13 fail; the 3 that pass check the review skills, which main does not change. Three older guards and their harness blocks pinned sentences that this milestone extends, so they now read the new wording. `skills/tests` green, `cairn_validate` green.
+- 2026-10-30: T5 dry run (fresh Opus, wrapped at 796d6fa with a planted `[high]` row, open-PR read empty): 31 candidates, 29 with no condition. It proposed 5 *not worth keeping* drops and 19 condition changes, plus a route, a compress, and a split. The planted `[high]` row stayed `keep`. Gaps found: a §7 group `keep` (Cut the Ubuntu mirror) and an Overgrowth `compress` (Test small wrap-lines stops) skipped the class; fixed so both take a condition change. The reader was unsure whether "on a rare input" covered all four effects; the test now says "either only a rare input reaches it or it changes no output". Pre-existing notes, not this milestone's: Overgrowth splits a row with two "or" triggers for one piece of work, and §7's "filed finding" wording differs between the skill and records-hygiene. Review's AC6 run reads the fixed skill.
+- 2026-10-30: claim audit: 40 claims read, 5 corrected — CHANGELOG.md, README.md, skills/tests/test_triage_conditionless_rows.py (the held-row exceptions in the two docs; the test docstring and two tests' assertions).
+- 2026-10-30: verify green on the T4 head: scripts/tests, hooks/tests, both plugin validates, and plugin test (2466 pass); skills/tests and cairn_validate green after the T5 fixes.
 
 ## Decisions
 

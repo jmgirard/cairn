@@ -1,7 +1,8 @@
 """Regression guard: M326/D-227, candidate rows with no promotion condition.
 
 Locks `/cairn-triage`'s No condition class and its fourth drop class (AC2),
-the condition change's placement (AC4), the drop's record (AC5), and the
+the condition change's wiring and placement (AC3, AC4), the drop's record
+(AC5), and the
 review rule in the rulebook and both review skills (AC1). Each step is read
 with its whitespace collapsed, so wrapped sentences match (M171).
 
@@ -41,7 +42,12 @@ class TestNoConditionClass(unittest.TestCase):
         self.assertIn("that does not open with `[high]`, and that states no promotion condition", step(2))
 
     def test_class_proposes_a_condition_and_parked(self):
-        self.assertIn("the row takes `priority: <level> → parked`", step(2))
+        text = step(2)
+        self.assertIn("the pass drafts one condition, `promote when <condition>`", text)
+        self.assertIn("the row takes `priority: <level> → parked`", text)
+
+    def test_compress_and_group_keep_take_a_condition_too(self):
+        self.assertIn("or that §7's options leave `keep`, takes a condition change too", step(2))
 
     def test_class_never_keeps_by_default(self):
         self.assertIn("the class never leaves such a row `keep` with no change", step(2))
@@ -50,6 +56,8 @@ class TestNoConditionClass(unittest.TestCase):
         text = step(2)
         self.assertIn("its reason is one of four classes", text)
         self.assertIn("*not worth keeping* (only the no condition class below proposes it", text)
+        self.assertIn("its test reads the row alone", text)
+        self.assertIn("either only a rare input reaches it or it changes no output", text)
         self.assertIn("a wrong result with no error or warning never passes", text)
 
 

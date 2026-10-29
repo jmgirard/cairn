@@ -13,7 +13,8 @@
   cites no issue or user report. The row must also name only an error, a
   warning, a cosmetic flaw, or slow running on a rare input. A pass that accepts such
   a drop writes a decision entry that lists it. The next pass in an
-  existing repo proposes a change for each such row. `/milestone-review`
+  existing repo proposes a change for each such row. A started token, an
+  open PR, a live milestone, or a merge can still hold a row. `/milestone-review`
   and `/copilot-review` now write a condition on each row they file for a
   review finding. If no documented or common use reaches the finding, the
   condition is "promote when a user reports it", and the row starts
