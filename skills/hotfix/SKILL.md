@@ -49,8 +49,8 @@ can resolve against the fork instead of the base repo.
    route and becomes (or joins) a milestone — the disposition is unchanged,
    only the entry point is new. If an active milestone covers this code,
    flag the overlap instead of racing it.
-   **Idea vet (M306).** Every entry that runs this tier check also vets the
-   behavior that the fix or the PR diff produces, documented behavior
+   **Idea vet (M306).** Every entry that runs this tier check, and the
+   owner arm's resumed merge below, also vets the behavior that the fix or the PR diff produces, documented behavior
    included. It asks `/milestone-plan` step 2's three questions. (1) Is the
    behavior correct by its field's standards (for example statistical or
    technical), and does it do what its name says for every input type it
@@ -197,9 +197,22 @@ can resolve against the fork instead of the base repo.
      no entry of `latestReviews` has the state `CHANGES_REQUESTED`, even
      one the user overrode at the earlier chip. Third, the match names
      exactly the rows that the PR body's `Candidate row:` lines name.
-     When all three hold, say that the run resumes the approved merge. Skip
-     the tier check, steps 2 to 5, and step 6's Copilot round arm,
-     PR-conversation read, approval chip, and marker write. Go on at step
+     When all three hold, first run the idea vet above on the PR's diff
+     (`gh pr diff <N>`), with no other part of the tier check. The vet
+     checks nothing out, and it reads the records that a matched row cites
+     from the current checkout. A flaw only in what the diff leaves as it
+     was does not stop the resume, and it takes the vet's dispositions
+     above. A concern that the vet sends over the hotfix bar stops the
+     resume here, before the CI wait. Such a concern is a flaw in what the
+     diff changes, a gap whose reading the diff does not take included, or
+     a gap that `/milestone-plan` step 2 sends to its question set. Remove
+     the marker, merge nothing, leave the PR open, and take this step's
+     over-the-bar route. Its close block says that the approval the marker
+     recorded is withdrawn, names the concern, and says that the PR stays
+     open. With no such concern, say that the run resumes the approved
+     merge. Skip the rest of the tier check, steps 2 to 5, and step 6's
+     Copilot round arm, PR-conversation read, approval chip, and marker
+     write. Go on at step
      6's CI wait, then the merge with `--match-head-commit <oid>`, then step
      7 as it runs after an approval at step 6's chip. Before the merge,
      read `gh pr view <N> --json isCrossRepository`, and drop
