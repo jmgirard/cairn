@@ -63,6 +63,8 @@ A `/hotfix` rerun that resumes an approved merge vets the PR's diff again, so a 
 - 2026-10-29: T4 done: re-pinned `test_idea_vet.py`, `test_resume_routing.py`, and one `test_mutation_harness.py` block; hand-run `skills/tests` 977 OK. Verify: scripts and hooks suites OK, both `claude plugin validate` runs exit 0, `claude plugin test` 2466 pass, 0 fail.
 - 2026-10-29: claim audit: 27 claims read, 2 corrected — CHANGELOG.md (the row lands after the merge, or the close block names the flaw), skills/hotfix/SKILL.md step 6 (the CI-wait sentence names the resumed vet's stop before the wait); both re-read and hold. Guards, both suites, and both validates rerun green; the mod test not rerun, since only markdown changed after it.
 - 2026-10-29: implement done; status review.
+- 2026-10-29: review: copilot-review.md wording reverted (blame-history #1); 23 findings, 8 fixed at ed3f3941, 5 follow-up (new parked row "Tidy the resumed hotfix vet's stop"; one absorbed by "Commit the hotfix over-the-bar row"), 10 rejected; no return.
+- 2026-10-29: step-7 approval: m325-resumed-hotfix-vet approved for merge
 
 ## Decisions
 
