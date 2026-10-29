@@ -81,6 +81,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: amendment routed: AC5 — an exception gap named at the hotfix approval chip conflicts with the hotfix bar and cannot act on the other reading (blame-history #2, diff-bug #3, #4, #10); AC5 also says step 1 adds the left-flaw row, which step 7 now writes (diff-bug #1).
 - 2026-10-29: minor amendment: T7 (review return 1, done in review pass 1) and T8 (the AC5 amendment, pending its re-audit) added; Coverage AC5 → T3, T7, T8 and AC7 → T5, T8.
 - 2026-10-29: re-audit: AC5 (full) — 6 findings: gap sentences contradicted (taken), event order wrong (taken), merged-PR row unconditional (taken), D-224's chip clause needs a superseding entry (taken, T8), README/CHANGELOG chip claims go stale (taken as doc edits, AC7 not widened per D-118), resumed owner-arm merge skips the vet (not taken: widening after a defect return; to a candidate row).
+- 2026-10-29: re-audit: AC5 (full) — 3 findings: the merged-PR clause reads as if step 7 always runs (reworded), the draft widens past the original (chat clause dropped; the close-block clause kept and logged as a widening), a run that ends before step 7 leaves the close block as the flaw's only record, a D-042 residual (named in the new D-entry). Second re-audit on AC5: further wording goes to the user.
 
 ## Decisions
 
