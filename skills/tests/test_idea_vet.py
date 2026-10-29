@@ -120,7 +120,8 @@ class TestPlanIdeaVet(unittest.TestCase):
         for phrase in (
             "For a request that names no work, the idea vet runs on the work "
             "chosen at the question set, before step 4 writes a file.",
-            "If it finds a flaw, or a gap that step 2 sends to the set, the "
+            "If it finds a flaw, or a gap that step 2's rule sends to the "
+            "set, the "
             "plan writes nothing and ends with a close block.",
             "The close block names the concern, and its fenced command is "
             "`/milestone-plan` with the chosen work named",

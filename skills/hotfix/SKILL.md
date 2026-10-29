@@ -64,7 +64,8 @@ can resolve against the fork instead of the base repo.
    `/milestone-plan` step 2's test. A gap that `/milestone-plan` step 2
    sends to its question set takes the over-the-bar route above, because a
    choice between its readings is a design decision. The candidate row or
-   the close block that the route writes names the readings. For any other
+   the close block that the route writes names the readings as a design
+   decision, as it does for a flaw below. For any other
    gap, the fix takes that step's reading. A PR diff that takes another
    reading has a flaw in what it changes. State the result in chat, with
    each gap's reading. A
@@ -84,8 +85,8 @@ can resolve against the fork instead of the base repo.
    re-entry below, the vet runs after the merge. When step 7 runs, a flaw
    goes in its close block. There the flaw waives none of the re-entry's
    checks below, and the over-the-bar route's candidate row still names it.
-   A flaw that the merged diff leaves as it was gets its candidate row
-   there.
+   A flaw that the merged diff leaves as it was is not over the bar. It
+   gets its candidate row from step 7, as above.
    **Candidate-row match (M249).** Step 1 also finds the candidate rows
    this hotfix fixes. It runs on every entry to step 1, PR-reference
    re-entries included, before any stop this step takes, and never from
@@ -598,7 +599,9 @@ can resolve against the fork instead of the base repo.
    keeping its title, with a `narrowed YYYY-MM-DD by the PR #N hotfix`
    note, where `#N` is the merged PR that carried the fix. The part left is
    that narrowing, never a second new row. On step 1's over-the-bar
-   disposition, step 7 neither removes nor narrows a matched row.
+   disposition, step 7 neither removes nor narrows a matched row. After
+   those edits, step 7 adds the candidate row for each flaw that step 1's
+   idea vet found in what the fix leaves as it was.
    In owner mode, every ROADMAP edit step 7 makes on any path, the
    candidate row added above included, lands in one docs-only commit on the
    default branch. Run step 2's `git status` check first, then check out

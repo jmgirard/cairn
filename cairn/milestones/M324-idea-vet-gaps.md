@@ -87,6 +87,7 @@ The idea vet settles a concern that one fitting reading of the request avoids, a
 - 2026-10-29: T8 done: hotfix step 1 sends an exception gap over the bar with its readings named, step 7 writes the left-flaw row if reached, the merged-PR clause is conditional on step 7; step 6's gap chip sentence and the stand-in chip list removed; README `/hotfix` row and CHANGELOG entry say the hotfix stops so a plan can ask; D-225 supersedes D-224's chip clause and names the D-042 residual; candidate row "Vet a hotfix on a resumed merge" added (search-first: no overlap).
 - 2026-10-29: claim audit: 17 claims read, 2 corrected — README.md, CHANGELOG.md (the gap trigger is a fitting reading with different behavior, and the merged-PR exception); scoped to the amendment's diff since 485024bd.
 - 2026-10-29: M324 to review.
+- 2026-10-29: review pass 2: four lenses, 18 findings; 6 fix now, 11 rejected, 1 follow-up row. No floor return: diff-bug #1's loop needs a later plan to misread a row that names a design decision, so it is fixed as wording. ROADMAP at 24,042 bytes, 42 over its budget until step 9 graduates the parked row "Do not stop fixes on old naming flaws".
 
 ## Decisions
 
@@ -141,3 +142,21 @@ Pass 2 evidence, 2026-10-29, on 852ab0a5 (level with origin/main; PR #337 open, 
 - AC7: README.md:772, :776 (now: stops unless the PR is merged so a plan can ask; a flaw the fix leaves as it was becomes a candidate row), :872-877, and the CHANGELOG Unreleased vet entry (gap with a differing fitting reading stops the hotfix unless merged; flaw asked; left flaw does not stop it) re-read; all hold.
 - Consistency gate (pass 2): `cairn_validate` all checks passed; coverage complete; no principle changed; marketplace validate prints no `version` warning; CHANGELOG Unreleased entry carries the change; hand-run `skills/tests` 977 OK.
 - Copilot (pass 2): state `none`, so requested again (exit 0); still `none`, so Copilot request on PR #337 may not be recorded by GitHub (used-up Copilot credits are one cause). No second request.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- diff-bug #1: an exception-gap row names only its readings, so a later plan's tier check can send it back as a hotfix — fix now (the row or close block names the readings as a design decision)
+- diff-bug #2: the merged-PR sentence can read as putting a left-as-it-was flaw over the bar — fix now (such a flaw is not over the bar and gets its row from step 7)
+- diff-bug #3: the gap sentence uses any reading while the flaw sentence uses the reading taken, with no tie rule — reject, false: the reading taken is named, and a tie either leaves each reading a concern the other avoids (flaws, asked) or gives different behavior (an exception gap, asked)
+- diff-bug #4: D-224's gap definition predates the reading-taken sentence — reject, false: the decision (gap = a concern a fitting reading avoids, else flaw) stands, and the selection sentence is procedure in the skill
+- diff-bug #5: exception-gap questions have no rule to combine past the cap — fix now (they combine the same way as flaws)
+- diff-bug #6: step 7's own text does not name the left-flaw row — fix now (step 7 says it adds that row after its matched-row edits)
+- diff-bug #7: the over-the-bar row has no owner-mode commit path, and step 7's commit has no no-remote rule; both predate M324 — follow-up: candidate row "Commit the hotfix over-the-bar row"
+- diff-bug #8: "close the gaps in a rule" uses gap in its everyday sense — reject, false: repeats blame-history #5 of pass 1, settled
+- blame-history #1: a close block before step 7 is the left flaw's only record, against D-042 — reject, planned change: the amended AC5 at the user's stop, recorded in D-225
+- blame-history #2: the winsorize example's flaw call is asserted, not derived — reject, false: the request names the lumping behavior, and a reading whose behavior differs from named behavior is not a fitting reading
+- blame-history #3: the which-gaps example adds an unstated test — reject, false: it applies the "fits the records it cites" clause
+- prior-review #1: two re-pins carry new text — reject, false: they re-pin sentences the guard already held, whose wording changed inside the sentence
+- prior-review #2: the docstring keeps (M306) and (M171) — reject, false: those cites predate M324 and their archives record the point; pass 1 removed the M324 cite
+- ripple #1: README and CHANGELOG say a left flaw "becomes a candidate row" with no pre-step-7 exception — fix now (a row after the merge, or named in the close block)
+- ripple #2: "goal-wrong stop" against the rulebook's definition — reject, false: repeats pass 1 diff-bug #7, settled by the clause on the unsettled goal
+- ripple #3: the parked row's text is stale — reject, planned change: repeats pass 1 ripple #2, graduated at step 9
+- ripple #4: the work-chosen arm says "a gap that step 2 sends" though step 3 vets that work — fix now ("step 2's rule sends")

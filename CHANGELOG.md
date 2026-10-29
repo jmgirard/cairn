@@ -368,7 +368,8 @@
   candidate row or a `/milestone-plan` next command that names it, and
   stops the hotfix unless its pull request is already merged. A flaw in a
   name, argument, or behavior that the fix leaves as it was does not stop
-  the hotfix. It becomes a candidate row, and the fix goes on.
+  the hotfix. The fix goes on, and the flaw becomes a candidate row after
+  the merge, or is named in the close block when the hotfix stops first.
 
 - **A quarto-extension toolchain profile.** `/cairn-init` now picks it for
   a repo with `_extensions/<name>/_extension.yml` (or `.yaml`) and no

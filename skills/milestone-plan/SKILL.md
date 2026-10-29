@@ -416,11 +416,12 @@ its own `D-0NN` id; the headings decide what to open, never what to report.
      to write, the plan writes nothing and ends with the close block, which
      names each flaw. An idea-vet question always counts among the
      questions that matter most, so the agent never decides a flaw. A
-     gap's question that step 2 sends counts among them too.
+     gap's question that step 2 sends counts among them too, and gap
+     questions past the cap combine into one question the same way.
 
    **Work chosen at the set.** For a request that names no work, the idea
    vet runs on the work chosen at the question set, before step 4 writes a
-   file. If it finds a flaw, or a gap that step 2 sends to the set, the
+   file. If it finds a flaw, or a gap that step 2's rule sends to the set, the
    plan writes nothing and ends with a close block. The close block names
    the concern, and its fenced command is `/milestone-plan` with the chosen
    work named (a candidate row by its short title), so that the rerun's
