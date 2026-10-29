@@ -1,6 +1,6 @@
 ---
 name: cairn-triage
-description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record the default pass's principled drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, merge, split, or correct lessons.
+description: Triage every ROADMAP candidate row and every DESIGN.md Known issues entry in one pass, or with the argument `lessons` every cairn/LESSONS.md lesson - propose one disposition per item at a single gate, apply the accepted ones in one docs-only commit (in guest mode, on disk with no commit), and record the default pass's principled and not-worth-keeping drops as a decision. Use when the user wants to triage the candidates, prune the backlog, clean up the roadmap, sweep the known issues, or retire, trim, merge, split, or correct lessons.
 argument-hint: "[lessons]"
 ---
 
@@ -199,7 +199,7 @@ makes a lesson `keep` before any other rule but the length rule. If such a
 lesson is false or obsolete, steps 4 to 6 still run for the stamp, even
 when every proposal is `keep`. The stamp names the lesson and the
 evidence. A pinned lesson is neither a merge survivor nor merged away. A
-lesson leaves only by the six exits above. They replace the default pass's three drop reason classes,
+lesson leaves only by the six exits above. They replace the default pass's four drop reason classes,
 and its readiness class does not apply.
 
 A waiting line's `drop` names one of those exits other than `rank`. A
@@ -686,7 +686,7 @@ re-examines a lesson.
    leaves it, and none in an item being dropped, nor one inside a
    PR-named row's own short title as session start read it; `keep`
    changes nothing of
-   its own, and `promote` changes nothing of its own beyond the priority
+   its own beyond an accepted condition change, and `promote` changes nothing of its own beyond the priority
    change a candidate row's promote carries, though a `retitle` can rewrite a
    mention inside either, except one inside a PR-named row's own short
    title; an accepted priority change, a promote's
@@ -818,4 +818,5 @@ re-examines a lesson.
    and pushed (or wrote nothing), or in guest mode its edits are on disk in
    `cairn/` and uncommitted, so `/clear` is safe here, and any item
    can be re-examined by running `/cairn-triage` again; an item dropped on
-   principle returns only by superseding the pass's decision entry.
+   principle or as not worth keeping returns only by superseding the
+   pass's decision entry.

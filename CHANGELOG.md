@@ -11,7 +11,8 @@
   not `[high]`. It drafts a `promote when <condition>` and parks the row,
   or it proposes a drop as not worth keeping. That drop needs a row that
   cites no issue or user report. The row must also name only an error, a
-  warning, a cosmetic flaw, or slow running on a rare input. A pass that accepts such
+  warning, a cosmetic flaw, or slow running. Only a rare input can reach
+  that effect, or it must change no output, such as a code comment. A pass that accepts such
   a drop writes a decision entry that lists it. The next pass in an
   existing repo proposes a change for each such row. A started token, an
   open PR, a live milestone, or a merge can still hold a row. `/milestone-review`

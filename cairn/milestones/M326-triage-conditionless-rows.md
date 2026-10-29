@@ -90,3 +90,12 @@
 - AC3: read steps 3-7: table reason cell format, chip names each condition change, Accept applies it, Amend declines it with its parked move or rewords it, fifth untouched carve-out, skip test, size count, step 5 no-entry list, stamp, status line. Guards `test_decline_drops_parked_too`, `test_skip_test_counts_it` and the updated priority-token guards pass. Met.
 - AC4: step 4 places the condition before ` — added ` with `; ` when the first `: ` comes first, else at the lineage clause's place with ` — `, and says the short title stays the same. Guard `test_placement_keeps_the_short_title` passes. Met.
 - AC5: step 3 names the class and quotes the effect from the row; step 5 writes the decision entry for an accepted *not worth keeping* drop and lists it; step 6's commit body and the guest stamp name it. Guards `test_decision_entry_lists_the_drop`, `test_commit_body_names_it`, and the guest-triage stamp guard pass. Met.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- ripple #1: lessons-pass text at triage SKILL.md:202 still said "three drop reason classes" — fix now
+- ripple #2: the skill's description named only principled drops as recorded in a decision — fix now
+- ripple #3: the close's safety line named only principled drops as returning by supersession — fix now
+- ripple #4: `/hotfix` and `/milestone-implement` file finding rows with no condition — reject, planned change: Scope Out keeps those rows' shape, and the triage class still reaches them
+- ripple #5: step 4's "`keep` changes nothing of its own" ignores the condition change — fix now
+- ripple #6: no skill clears `[parked]` from a row whose condition is "a user reports it" — reject, false: triage step 3 re-rates a parked row whose condition held to normal
+- ripple #7: README and CHANGELOG stated the drop test as "on a rare input", narrower than the skill's "or changes no output" — fix now
+- ripple #8: copilot-review cites the rulebook paragraph and not the parked default — reject, false: the cited paragraph states the default, and AC1 accepts a pointer
