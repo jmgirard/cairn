@@ -255,8 +255,8 @@
   In a repo whose CI runs on pull requests, this extra push starts that
   CI again at the start of review.
 
-- **A candidate row that waits on its trigger is parked, and the pane
-  shows it last with an hourglass.** A candidate row can now open with
+- **A candidate row whose condition has not held can be parked, and the
+  pane shows it last with an hourglass.** A candidate row can now open with
   `[parked]` in place of `[high]` or `[low]`. The token marks a row whose
   promotion condition has not held yet. The cairn pane draws a parked row
   with a blue `⧗` and a blue title, after the gray `[low]` rows, each group
