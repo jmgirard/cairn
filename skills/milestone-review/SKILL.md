@@ -416,9 +416,11 @@ re-enters here, at the step the record shows is next:
      condition. If no documented or common use reaches the finding, the
      default is parked with `promote when a user reports it`. The agent
      can instead propose a finding as a `cairn/DESIGN.md` Known issues
-     entry, a limitation the repo lives with. Step 7 lists each such
-     proposal. Every other row this skill files for a finding follows the
-     same rule.
+     entry, a limitation the repo lives with. Its Review-section line's
+     disposition is `known issue`, followed by the entry's drafted text in
+     double quotes, so step 9 reads it from the file. Step 7 lists each
+     such proposal with that text verbatim. Every other row this skill
+     files for a finding follows the same rule.
 
    Every reported finding and its disposition is logged in the Review
    section, surfaced, never silently dropped (IP3), and the merge question
@@ -559,7 +561,7 @@ re-enters here, at the step the record shows is next:
    produced the change, so the stored output matches its old content
    again. Re-recording the snapshot keeps the change and fixes nothing.
    Follow-up keeps a change that gives no wrong result and sends it to a
-   candidate row on step 5's rung. Each such change gets one Review-section line,
+   candidate row on a rung by step 5's rule. Each such change gets one Review-section line,
    `snapshot: <path> — <disposition>`. A fix-now line gains
    `, fixed <sha>`, and a follow-up line names its candidate row. The
    line stays when the fix removes the path from the list. After every
@@ -614,7 +616,8 @@ re-enters here, at the step the record shows is next:
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`; a Copilot thread takes the module's `copilot:` line
    instead); fix-now work lands per step 6 before the chip is posed,
-   a follow-up becomes a candidate row (search-first) on step 5's rung.
+   a follow-up becomes a candidate row (search-first) on a rung by step
+   5's rule.
    **Blocking rule.** A `CHANGES_REQUESTED`
    review whose author `type` is `User` and which has any unresolved thread
    removes merge from the chip's recommended option — the recommended
@@ -952,8 +955,11 @@ re-enters here, at the step the record shows is next:
    surfaced that the user chose to live with — no candidate row, no fix
    planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
    written in this same hygiene commit. A Known issues entry that step 5
-   proposed and step 7's merge question listed is accepted by the merge
-   approval. None accepted → skip.
+   proposed and step 7's chip listed is accepted by the approval at that
+   chip: the merge approval in owner mode, the handoff approval in guest
+   mode. Step 9 writes each such entry from its Review-section
+   `known issue` line, quoted text verbatim, so a resumed run writes it
+   too. None accepted → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its

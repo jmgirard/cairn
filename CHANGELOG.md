@@ -8,10 +8,10 @@
   parked, Known issue, and dropped. Whoever writes or updates a row places
   it on a rung with a reason. A move can go up or down any number of
   rungs. Only a parked row needs a promotion condition. `/cairn-triage`
-  can now propose any rung for any row that a started token, an open PR,
-  or a live milestone does not hold. Before, the pass promoted a row only
-  after its trigger fired. It never parked a `[high]` row, and it routed a
-  row to Known issues only as an accepted limitation. A move to parked drafts a
+  can now propose any rung for any row that a started token or a live
+  milestone does not hold. Before, the pass promoted a row only after its
+  trigger fired. It never parked a `[high]` row, and it routed a Known
+  issues entry back to a row only with a stated trigger. A move to parked drafts a
   condition, and a move off parked needs no condition that has held. A
   drop can give "not worth keeping" as its reason, and a pass that accepts
   one writes a decision entry that lists it. When you keep a row the pass

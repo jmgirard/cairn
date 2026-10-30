@@ -126,7 +126,6 @@ class TestTriageReRatesParked(unittest.TestCase):
         )
 
     def test_any_rung_either_way_on_three_dispositions(self):
-        # M327: the ladder replaces the parked-first rule and the high-row exclusion.
         self.assertIn(
             "on a `keep`, `compress`, or `retitle` row, a priority change can name any rung of the ladder, "
             "up or down by any number of rungs",

@@ -357,7 +357,8 @@ re-examines a lesson.
    later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
    compressing such a row never substitutes for its disposition
-   (records-hygiene §7):
+   (records-hygiene §7). The kept-mark filter (below) applies to §7's
+   options and to every class:
    - **Staleness → `drop` or `compress`.** Grep `cairn/milestones/archive/`
      and the `### D-` headings for the item's subject: a premise an archived
      milestone refuted, a trigger that has already fired (the named
@@ -410,10 +411,11 @@ re-examines a lesson.
      and the reason names that. The close block hands it on. A promoted
      candidate row that does not open with `[high]` takes the priority
      change to `high`.
-   - **Rung → a priority change or `drop`.** The ladder runs high,
-     normal, low, parked, Known issue, dropped (tracking-rules "Candidate
-     priority token"). For a candidate row that the classes above leave
-     `keep`, or propose for `compress` or `retitle`, the pass can propose
+   - **Rung → a priority change, `route`, or `drop`.** The ladder runs
+     high, normal, low, parked, Known issue, dropped (tracking-rules
+     "Candidate priority token"). For a candidate row that the classes
+     above leave `keep` or propose for `compress`, or that the Title class
+     below proposes for `retitle`, the pass can propose
      any rung it judges right, up or down by any number of rungs, with a
      reason. A move to parked carries a condition change: the pass drafts
      one condition that has not held, `promote when <condition>`, unless
@@ -428,10 +430,11 @@ re-examines a lesson.
      decided, and the class skips it, and so does a row that a live
      milestone absorbs. A row already on the rung the pass judges right
      takes no priority change. §7's options can take a rung change too.
-   - **Kept mark.** A candidate row whose text holds ` — kept YYYY-MM-DD`
-     gets no move from any class above or below (no priority change, no
-     `route`, `drop`, or `promote`) unless its reason names a record, a
-     change, or a report dated after the mark. Its `keep` reason names the
+   - **Kept mark (a filter, not a class).** A candidate row whose text
+     holds ` — kept YYYY-MM-DD` gets no move from §7's options or from any
+     class above or below (no priority change, no `route`, `drop`,
+     `promote`, or absorption into a `merge`) unless its reason names a
+     record, a change, or a report dated after the mark. Its `keep` reason names the
      mark's date. The newest mark counts. A record dated the same day as
      the mark is not after it. `compress` and `retitle` are not moves, so
      a kept row can still take them.
@@ -576,15 +579,16 @@ re-examines a lesson.
      `keep` with its disposition and its reason in a few plain words, and
      each row proposed for a priority change with its new level, each
      proposed token change with its row, and each proposed condition
-     change with its row and its condition; the
+     change with its row and its condition. A chip posed after an *Amend*
+     also names each kept mark it will write, with its row; the
      table above is the verbatim evidence. A promoted row's change to `high`
      is named once, with its new level `high`, beside the promote, never
      again as a separate priority change. If the session-start open-PR
      read failed or returned 100 PRs, the question text says so. Three
      options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
-        the table is applied, with each priority change, token change, and
-        condition change.
+        the table is applied, with each priority change, token change,
+        condition change, and kept mark an *Amend* set.
      2. **Amend** — the user names the items to change and what they become
         (the option description says so); everything unnamed keeps its
         proposed disposition; a named item with no replacement given
@@ -688,10 +692,11 @@ re-examines a lesson.
    removes the line; `route` writes the item in its destination's shape, carrying the
    original provenance — a Known issues entry states the limitation as it
    **is** and how it was accepted (`routed from candidates <today>; added
-   <original date> — <original origin>`), a candidate row states what it
-   is, its promotion trigger as the class of evidence that would change the
-   stance, and `added <original date> — <original origin>, routed from
-   Known issues <today>` (the accepting `M<NNN>` as the origin); `retitle`
+   <original date> — <original origin>`), a candidate row opens with the
+   token of the rung the reason names (none for normal), states what it
+   is, states a condition only when that rung is parked, and ends with
+   `added <original date> — <original origin>, routed from Known issues
+   <today>` (the accepting `M<NNN>` as the origin); `retitle`
    keeps the row's `- ` and any priority token and puts the new title and
    `: ` before the row's text, which stays as it is, old title and provenance included
    (a row whose title is empty loses only its leading `: `), except for a row
@@ -732,8 +737,9 @@ re-examines a lesson.
    clause goes (above), opened with ` — `. Either way the row's short
    title stays the same. A kept mark goes where a merge survivor's lineage
    clause goes, so the short title stays the same, and it replaces any
-   older kept mark in the row. `compress`, `merge` (on the survivor), and
-   `split` (on each new row) keep the newest kept mark. A `compress`
+   older kept mark in the row. `compress`, `merge` (on the survivor, which
+   takes the newest mark among the rows it absorbs), and `split` (on each
+   new row) keep the newest kept mark. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end. A dead token that step 2 leaves in place is the exception. It stays where it sits, and the `compress` keeps the short
    title it sits in.

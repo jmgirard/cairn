@@ -8263,7 +8263,8 @@ each follow-up row on a rung, with parked and `promote when a user
 reports it` as the default for a finding that no documented or common
 use reaches, and its merge approval accepts a Known issues entry it
 listed. `/cairn-triage` can propose any rung for any row that no started
-token, open PR, or live milestone holds. This supersedes D-227's clauses
+token, live milestone, or recent kept mark holds; a row an open PR names
+keeps its short title. This supersedes D-227's clauses
 that force a condition on finding rows and on triage rows, that limit
 *not worth keeping* to rows with no condition and to a fixed effect
 list, and that skip `[high]` rows. *Not worth keeping* is a judged drop

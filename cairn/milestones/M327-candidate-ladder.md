@@ -1,6 +1,6 @@
 # M327: Let triage move a row to any rung
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -42,10 +42,10 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 ## Coverage
 
 - AC1 → T1
-- AC2 → T1
-- AC3 → T2
+- AC2 → T1, T6
+- AC3 → T2, T6
 - AC4 → T2
-- AC5 → T3
+- AC5 → T3, T6
 - AC6 → T5
 - AC7 → T1, T4, T5
 
@@ -56,6 +56,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - [x] T3: Wire the kept mark through steps 2 to 7.
 - [x] T4: Update README and CHANGELOG. Re-pin the guards on the removed sentences, and re-seed the `/milestone` rulebook mass at its three sites.
 - [x] T5: Run AC3's grep and AC6's two dry runs, then `verify`, `skills/tests`, and `cairn_validate`.
+- [x] T6: Fix review return 1 (triage step 4's route, review's Known issues record, guest acceptance) and the diff-bug fix-now findings logged in the Review section.
 
 ## Work log
 
@@ -81,6 +82,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: re-audit: AC6 (full) — second reader: claims match both skill texts. Findings answered with no wording change: P5 is planted as a feature, so the plan commit's drop test cannot take it; recording P4's table row and quoting the deciding sentences are review's procedure; the P2 contrast and a P7 probe would widen the promise, so they are declined. This is the criterion's one re-entry.
 - 2026-10-30: substantive amendment: AC6 now checks what each skill version allows or requires for the planted rows, not which judgment a reader makes. The old wording "P5 is not moved to parked and gets no condition" bound a judgment that the ladder leaves free; the head-skill reader parked P5 by judgment, which D-228 allows. The deliverable the user sees is unchanged, so no stop.
 - 2026-10-30: verify green on T4 head ae5d72db: scripts/tests 0, hooks/tests 0, both plugin validates 0, plugin test 0 (2466 pass).
+- 2026-10-30: T6 done (review return 1): triage step 4's route up writes the named rung's token and a condition only for parked; review step 5 records a Known issues proposal as a `known issue` Review line with its text, step 7 lists it verbatim, and step 9 writes it from that line on the owner merge or the guest handoff approval. Also fixed: the kept mark filters §7 options and merge absorption, the chip and Accept name kept marks, a survivor takes the newest absorbed mark, the rulebook defines the mark and tells every writer to keep it, the Rung class heading and retitle wording, "a rung by step 5's rule", the hold list in README, CHANGELOG, and D-228, the CHANGELOG route sentence, and the test comment. Rulebook-mass re-seeded to 855 / 84,618. verify, `skills/tests`, and `cairn_validate` green.
 
 ## Decisions
 

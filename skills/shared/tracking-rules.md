@@ -263,6 +263,8 @@ runs high, normal, low, parked, Known issue (an entry in `cairn/DESIGN.md`'s Kno
 writes or updates a candidate row places it on a rung and states the reason, and a move can go up or down any number
 of rungs. A skill that files a row can instead propose a Known issues entry, or no row, at its own gate. A review
 follow-up that no documented or common use reaches defaults to parked with `promote when a user reports it` (D-228).
+A row can carry ` — kept YYYY-MM-DD`, which `/cairn-triage` writes when the user keeps a row it proposed to move.
+Any skill that rewrites or narrows the row keeps the mark.
 
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
