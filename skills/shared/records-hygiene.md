@@ -44,8 +44,8 @@ the group. `/milestone-review`'s post-merge pass files new findings as a new
 row that names the older row's exact title in double quotes after its own
 `: `. The chip's options: promote a bounded milestone for the items that guard
 shipped behavior, route accepted items to `cairn/DESIGN.md` Known issues (the
-review skill's accepted-limitations block), prune the rest, or extend once
-more as an explicit choice, never the default. "Extended" means gaining a new
+review skill's accepted-limitations block), prune the rest, move rows to
+another rung, or extend once more as an explicit choice, never the default. "Extended" means gaining a new
 provenance or weighed note without a disposition. Compressing a row for a
 byte budget never substitutes for the disposition (M161, M211).
 

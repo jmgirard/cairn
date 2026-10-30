@@ -402,16 +402,21 @@ the theme's `permission` color, and the desktop draws its mark as a blue
 icon. So it differs from a `[low]` row. The `[high]` rows come first, then the normal rows,
 then the `[low]` rows, then the `[parked]` rows. Each group keeps its
 ROADMAP order, whatever order the file holds the groups in.
-The rulebook's "Candidate priority token" rule has whoever adds a row, you
-or a skill, write `[parked]` when the row's condition does not hold yet. `/cairn-triage` adds or removes it as it re-rates a row, and a
+A row sits on one ladder: high, normal, low, parked, Known issue, dropped.
+Whoever writes or updates a row, you or a skill, places it on a rung and
+gives the reason, and a move can go up or down any number of rungs. Only
+a parked row needs a condition, so a row with no condition is fine at
+high, normal, or low. `/cairn-triage` adds or removes `[parked]` as it re-rates a row, and a
 promote replaces it with `[high]`. After a merge, `/milestone-review`
 removes it from each parked row whose short title the milestone file
 quotes, or whose text names the milestone, where the merge made its
 condition hold. A row whose condition is not written down gets no
-`[parked]` token. A row that `/milestone-review` or `/copilot-review`
-files for a review finding states its condition. If no documented or
-common use reaches the finding, the condition is "promote when a user
-reports it", so the row starts parked.
+`[parked]` token. `/milestone-review` and `/copilot-review` place each
+row they file for a review finding on a rung. If no documented or common
+use reaches the finding, the default is parked with "promote when a user
+reports it". `/milestone-review` can also propose a finding as a Known
+issues entry, which its merge question lists and the merge approval
+accepts.
 `scripts/cairn_validate.py` prints a `candidate order` WARN, with one line
 under it for each row that the file holds below a row of a lower priority.
 When `/cairn-triage`
@@ -780,7 +785,7 @@ run in a fresh session. The end of a run is the natural point to `/clear`.
 | Take in an outside pull request | `/hotfix` again: it adopts the contributor's PR (`gh pr checkout`), holds it to the same bar, the three questions included, and merges on your approval |
 | Work through Copilot's review on a pull request | `/copilot-review`, or `/copilot-review 12`: reads each Copilot note and the review summary. It fixes, rejects, or defers each note. Then each Copilot review with an open note gets one PR comment, one line per note, and the notes' threads are resolved. The lines cover notes in the review body too. It replies on no thread and never thanks Copilot, and it asks you in chat about a note it cannot settle alone. It does not request a review. |
 | Fix a typo or tweak docs | Just ask: trivial edits commit directly to the default branch, no tracking (in guest mode, only `cairn/` edits, left on disk). Through `/milestone-plan`, the edit also removes the candidate row it fixes, such as a row you pressed in the cairn pane. It leaves a row that an open pull request names for that PR. If the check of the PRs fails, its option says so. A row it removes can end with an issue number, such as `(#12)`. In owner mode the edit then closes that open issue after the push, once its option names the close. It leaves a pull request's number alone. It also leaves alone an issue that a row it keeps names anywhere in its text, and an issue that an open milestone's `Resolves:` slot names. If its read of the open pull requests fails or stops at 100 PRs, it closes no issue |
-| Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). A row that states no promotion condition and is not `[high]` is not kept by default, unless a started token, an open PR, a live milestone, or a merge holds it. The pass proposes either a condition and `[parked]`, or a drop as not worth keeping when the row cites no issue or user report and names only an error, a warning, a cosmetic flaw, or slow running that only an input outside the documented and common use reaches, or that changes no output, such as a code comment. A pass that drops a row as not worth keeping writes a decision entry that lists it. `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one. It shortens or splits each lesson over 450 bytes and proposes dropping the lowest-ranked lessons (rank is the newest milestone in a lesson's provenance, not counting `trimmed` or `corrected` marks) down to 20 |
+| Prune the backlog | `/cairn-triage`: one proposal per candidate row and known issue, one gate, one docs-only commit on your say-so (in guest mode, edits on disk with no commit). The pass can propose any rung for a row, up or down any number of rungs, with a reason: high, normal, low, parked with a drafted condition, a Known issues entry, or a drop, including a drop as not worth keeping. A started token or a live milestone still holds a row in place, and a row that an open PR names keeps its short title. A pass that drops a row as not worth keeping writes a decision entry that lists it. When you keep a row it proposed to move, the row gets a ` — kept YYYY-MM-DD` mark, and the pass proposes no move for it again until something dated after the mark gives a reason. Rungs and kept marks apply to candidate rows only. `/cairn-triage lessons` does the same for each lesson in `cairn/LESSONS.md`, and can drop a false or obsolete lesson or correct one. It shortens or splits each lesson over 450 bytes and proposes dropping the lowest-ranked lessons (rank is the newest milestone in a lesson's provenance, not counting `trimmed` or `corrected` marks) down to 20 |
 | Prepare a release | `/cairn-release`: follows your repo's profile (a CRAN walk, a registry walk, or a version bump and tag); you run the final submit or tag step yourself. In a quarto-extension repo it reads the `version:` line in `_extension.yml` first. A version at the tip of the default branch with no `v<version>` tag gets tagged on the commit that started it, with no bump. You confirm it first. With a changelog file, the file needs a section headed with that version. Otherwise it raises the version at release time. A merge can raise the version to one with no tag. Then the `/milestone-review` or `/hotfix` close gives you the tag and push commands for the merge commit. A GitHub repo also gets `gh release create`. cairn does not run them |
 | Articulate a repo's design & principles | `/design-interview`: a two-phase interview (facts, then principles) that fills `DESIGN.md`; best run on Fable |
 | Adopt the system in another repo | `/cairn-init`: idempotent; safe to re-run |

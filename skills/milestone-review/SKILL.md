@@ -410,12 +410,19 @@ re-enters here, at the step the record shows is next:
    - **follow-up**: the rest go to candidate rows (search-first, per the
      candidate-creation rule, `tracking-rules.md` Intake; absorbing into an
      existing row counts). A pre-existing issue the diff did not introduce,
-     or a complaint about an unmodified line, lands here. Each row filed
-     for a finding states `promote when <condition>`. If no documented or
-     common use reaches the finding, the condition is `promote when a user
-     reports it`, and the row opens with `[parked]` (tracking-rules
-     "Candidate priority token"). Every other row this skill files for a
-     finding follows the same rule.
+     or a complaint about an unmodified line, lands here. The agent places
+     each row it files on a rung of the ladder (tracking-rules "Candidate
+     priority token") and states the reason. A row is parked only with its
+     condition. If no documented or common use reaches the finding, the
+     default is parked with `promote when a user reports it`. The agent
+     can instead propose a finding as a `cairn/DESIGN.md` Known issues
+     entry, a limitation the repo lives with. Its Review-section line's
+     disposition is `known issue: ` and then the entry's drafted text to
+     the end of the line, ending `Accepted at the M<NNN> gate`, so step 9
+     reads it from the file. It counts as a follow-up for the actioned
+     list and the return floor. Step 7 lists each such proposal with
+     that text verbatim. Every other row this skill
+     files for a finding follows the same rule.
 
    Every reported finding and its disposition is logged in the Review
    section, surfaced, never silently dropped (IP3), and the merge question
@@ -505,11 +512,14 @@ re-enters here, at the step the record shows is next:
    what the user is approving in plain words — what the milestone does or
    changes — then acceptance-criteria evidence, each finding with its
    disposition in plain words (rejected and why, fixed on the branch, or
-   sent to which candidate row), diffstat, anything the user should eyeball
+   sent to which candidate row and rung, or proposed as which Known issues
+   entry), diffstat, anything the user should eyeball
    directly. The presentation and the merge chip share one turn
    (Mandated-substance rule): the chip's question text carries the compact
    decision summary and cites the milestone file's Review section by path,
    and the full presentation rides best-effort in the chat above it.
+   The chip's question text names each proposed Known issues entry in a
+   few words and says that approving accepts it.
    When the `Resolves:` slot is not `—`, the chip's question text enumerates
    the post-merge issue writes it authorizes — close-if-open per `closes`
    entry; a comment naming what shipped and the remainder's candidate row
@@ -555,7 +565,7 @@ re-enters here, at the step the record shows is next:
    produced the change, so the stored output matches its old content
    again. Re-recording the snapshot keeps the change and fixes nothing.
    Follow-up keeps a change that gives no wrong result and sends it to a
-   candidate row with step 5's promotion condition. Each such change gets one Review-section line,
+   candidate row on a rung by step 5's rule. Each such change gets one Review-section line,
    `snapshot: <path> — <disposition>`. A fix-now line gains
    `, fixed <sha>`, and a follow-up line names its candidate row. The
    line stays when the fix removes the path from the list. After every
@@ -610,8 +620,9 @@ re-enters here, at the step the record shows is next:
    Review section as one line (`conversation: <author> <path:line or PR> —
    <disposition>`; a Copilot thread takes the module's `copilot:` line
    instead); fix-now work lands per step 6 before the chip is posed,
-   a follow-up becomes a candidate row (search-first) with step 5's
-   promotion condition. **Blocking rule.** A `CHANGES_REQUESTED`
+   a follow-up becomes a candidate row (search-first) on a rung by step
+   5's rule.
+   **Blocking rule.** A `CHANGES_REQUESTED`
    review whose author `type` is `User` and which has any unresolved thread
    removes merge from the chip's recommended option — the recommended
    option becomes address-first — while merge stays present as a
@@ -946,8 +957,14 @@ re-enters here, at the step the record shows is next:
    archive summary's Review line. No row qualifies → skip.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
-   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
-   written in this same hygiene commit. None accepted → skip.
+   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section
+   (created as `## Known issues` at the end of the file when missing),
+   written in this same hygiene commit. A Known issues entry that step 5
+   proposed and step 7's chip listed is accepted by the approval at that
+   chip: the merge approval in owner mode, the handoff approval in guest
+   mode. Step 9 writes each such entry from its Review-section
+   `known issue` line, quoted text verbatim, so a resumed run writes it
+   too. None accepted → skip.
    **Retire what this milestone covered:** if the milestone shipped a guard, or
    moved content into another file's slot, check whether that retires an
    existing lesson (tracking-rules "Retiring a lesson that no longer earns its

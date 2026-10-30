@@ -4,23 +4,25 @@
 
 ### Changes that affect existing repos
 
-- **`/cairn-triage` acts on candidate rows with no promotion condition.**
-  Before, the pass kept such a row on every run, because its drop, park,
-  and route rules each need a condition or a stated reason. Now the pass
-  proposes one of two changes for a row that states no condition and is
-  not `[high]`. It drafts a `promote when <condition>` and parks the row,
-  or it proposes a drop as not worth keeping. That drop needs a row that
-  cites no issue or user report. The row must also name only an error, a
-  warning, a cosmetic flaw, or slow running. Only an input outside the
-  documented and common use can reach that effect, or it must change no
-  output, such as a code comment. A pass that accepts such
-  a drop writes a decision entry that lists it. The next pass in an
-  existing repo proposes a change for each such row. A started token, an
-  open PR, a live milestone, or a merge can still hold a row. `/milestone-review`
-  and `/copilot-review` now write a condition on each row they file for a
-  review finding. If no documented or common use reaches the finding, the
-  condition is "promote when a user reports it", and the row starts
-  `[parked]`.
+- **Candidate rows move on one ladder.** The rungs are high, normal, low,
+  parked, Known issue, and dropped. Whoever writes or updates a row places
+  it on a rung with a reason. A move can go up or down any number of
+  rungs. Only a parked row needs a promotion condition. `/cairn-triage`
+  can now propose any rung for any row that a started token or a live
+  milestone does not hold. Before, the pass promoted a row only after its
+  trigger fired. It never parked a `[high]` row, and it routed a Known
+  issues entry back to a row only with a stated trigger. A move to parked drafts a
+  condition, and a move off parked needs no condition that has held. A
+  drop can give "not worth keeping" as its reason, and a pass that accepts
+  one writes a decision entry that lists it. When you keep a row the pass
+  proposed to move, the row gets a ` — kept YYYY-MM-DD` mark. The pass
+  then proposes no move for that row until something dated after the mark
+  gives a reason. `/milestone-review` and `/copilot-review` place each row
+  they file for a review finding on a rung. If no documented or common use
+  reaches the finding, the default is parked with "promote when a user
+  reports it". `/milestone-review` can also propose a finding as a Known
+  issues entry, which its merge question lists and the merge approval
+  accepts.
 
 - **`cairn/LESSONS.md` keeps a fixed number of short lessons.** The file
   now holds at most 25 lessons, each one line of at most 450 bytes. These
@@ -253,14 +255,14 @@
   In a repo whose CI runs on pull requests, this extra push starts that
   CI again at the start of review.
 
-- **A candidate row that waits on its trigger is parked, and the pane
-  shows it last with an hourglass.** A candidate row can now open with
+- **A candidate row whose condition has not held can be parked, and the
+  pane shows it last with an hourglass.** A candidate row can now open with
   `[parked]` in place of `[high]` or `[low]`. The token marks a row whose
   promotion condition has not held yet. The cairn pane draws a parked row
   with a blue `⧗` and a blue title, after the gray `[low]` rows, each group
-  in ROADMAP order. The rulebook's "Candidate priority token" rule has
-  whoever adds a row, you or a skill, write `[parked]` when the row's
-  condition does not hold. `/cairn-triage` adds or removes the token as a
+  in ROADMAP order. A parked row states its condition, and whoever adds
+  a row, you or a skill, can place it on the parked rung (see the ladder
+  entry above). `/cairn-triage` adds or removes the token as a
   priority change, and a promote replaces it with `[high]`. After a merge,
   `/milestone-review` removes it from each parked row whose short title
   the milestone file quotes or whose text names the milestone, where the

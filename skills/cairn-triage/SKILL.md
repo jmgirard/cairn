@@ -338,13 +338,13 @@ re-examines a lesson.
 
    | Disposition | Meaning |
    |---|---|
-   | `keep` | Unchanged. The default when no evidence class below fires. |
-   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. A PR-named row keeps its short title unless the user's *Amend* says to rewrite it (step 3). |
+   | `keep` | Unchanged. The default when no evidence class below fires and the pass sees no reason to move the item. |
+   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger, where the row states one, and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. A PR-named row keeps its short title unless the user's *Amend* says to rewrite it (step 3). |
    | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
-   | `drop` | Removed. Its reason is one of four classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), *rejected on principle* (the idea cuts against a stated stance), or *not worth keeping* (only the No condition class below proposes it, and its test reads the row alone: the row cites no issue and no user report, the effect it names is an error, a warning, a cosmetic flaw, or slow running, and either only an input outside the documented and common use reaches it, as for review's `edge` reject, or it changes no output, such as a code comment; a wrong result with no error or warning never passes). |
+   | `drop` | Removed. Its reason is one of four classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), *rejected on principle* (the idea cuts against a stated stance), or *not worth keeping* (the pass judges that what the item would do or fix is not worth the work; the reason quotes that text from the item and says why, and it applies to any item not held at `keep`). |
    | `promote` | Ready to plan — handed to `/milestone-plan` in the close block; **never planned in this pass**, and the row stays until that milestone's post-merge hygiene prunes it (records-hygiene §1). A promoted candidate row whose opening token is not `[high]` also takes the priority change to `high`. After the pass, the row sits with the `[high]` rows at the head of the Candidates list. While the cairn pane lists candidates, it marks the row `↑`. A Known issues entry has no token and takes none. |
-   | `route` | Misfiled — a candidate row that is really an accepted limitation moves to Known issues; a Known issues entry that is really deferred work moves to a candidate row with a stated trigger. |
+   | `route` | A move across the Known issue rung, either way — a candidate row the pass judges a limitation to live with moves to Known issues; a Known issues entry the pass judges worth doing moves to a candidate row on the rung the reason names, with a condition only when that rung is parked. |
    | `retitle` | A candidate row only. A new short title (tracking-rules "Candidate short title"), one sentence that names the work to do, and `: ` go after the row's `- ` and any priority token, before its text, which stays as it is (a row whose title is empty loses only its leading `: `). A row proposed because its title holds an icon is the exception, whatever other trigger it also meets. If its short title ends at a `: `, the new title replaces that title in place, so the old title and its icon do not stay in the row. Any other such row takes the new title and `: ` before its text, which stays with each icon removed. Each double-quoted mention of the old title in another ROADMAP row, a candidate row or a milestone row, or in a DESIGN.md Known issues entry, is rewritten to the new title in the same edit. A mention of a title that two or more rows share is listed as ambiguous and left as it is. A double-quoted mention of the old title that sits inside a PR-named row's own short title is not rewritten. The table lists it as left, with each naming PR's number, as it lists an ambiguous mention. That short title is the one session start read, whatever the row's own disposition. |
 
    A row carrying a live started token, or missing one, is `keep` before
@@ -357,7 +357,8 @@ re-examines a lesson.
    later ones refine the wording) — except that any other finding-absorbing row
    (defined below) takes §7's options before any class is checked, since
    compressing such a row never substitutes for its disposition
-   (records-hygiene §7):
+   (records-hygiene §7). The kept-mark filter (below) applies to §7's
+   options and to every class:
    - **Staleness → `drop` or `compress`.** Grep `cairn/milestones/archive/`
      and the `### D-` headings for the item's subject: a premise an archived
      milestone refuted, a trigger that has already fired (the named
@@ -365,7 +366,8 @@ re-examines a lesson.
      retired), or a cited path that no longer exists (`ls` it from the
      repo root, then under `cairn/` — provenance shorthand omits that
      prefix — before calling it dead). A dead citation with a live trigger
-     is `compress`, not `drop`. In guest mode a code path is checked with
+     is `compress`, not `drop`. A fired trigger whose work is still undone
+     goes to Readiness, not to a drop. In guest mode a code path is checked with
      `git cat-file -e <base>/<default-branch>:<path>` (the tracking-rules
      git model's base remote and default branch) in place of `ls`, a fired
      trigger or an *already shipped* drop is judged at that ref too, and an
@@ -401,33 +403,41 @@ re-examines a lesson.
      carrying restated context a reader can lose without losing the
      trigger or provenance → `compress`. The aim alone never fires — a row
      over it whose every clause earns its place is `keep`.
-   - **Misfiling → `route`.** A candidate with no promotion condition that
-     describes a limitation the repo lives with; a Known issues entry with a
-     fix condition that names future work.
-   - **Readiness → `promote`.** The trigger has fired and the work is
-     wanted now; the close block hands it on. A promoted candidate row that
-     does not open with `[high]` takes the priority change to `high`.
-   - **No condition → `drop` or a condition change.** It applies to a
-     candidate row that the classes above leave `keep`, that does not
-     open with `[high]`, and that states no promotion condition. A merge
-     survivor counts as decided, so the class skips it, and so does a row
-     that a live milestone absorbs. A row states a
-     promotion condition when its text names an event or state that would
-     make the work worth planning, such as `promote when …`. If the row
-     passes the *not worth keeping* test (the `drop` row above), the class
-     proposes that `drop`. Otherwise it proposes a condition change: the
-     pass drafts one condition, `promote when <condition>`, and the row
-     takes `priority: <level> → parked`, unless it already opens with
-     `[parked]`. For a review finding that no
-     documented or common use reaches, the drafted condition is `promote
-     when a user reports it`. The class never leaves such a row `keep`
-     with no change, but the user can still amend it to `keep` at the
-     gate. A condition change is a row fact beside the disposition, as a
-     priority change is, never a ninth disposition. It rides on `keep`,
-     `compress`, or `retitle`. A row with no condition that is not
-     `[high]` and that an earlier class proposes for `compress`, or that
-     §7's options leave `keep`, takes a condition change too, and no
-     drop.
+   - **Misfiling → `route`.** A candidate row the pass judges a limitation
+     the repo lives with, or a Known issues entry the pass judges worth
+     doing. The reason says why.
+   - **Readiness → `promote`.** The pass judges the work wanted now,
+     because its trigger has fired or because something it read says so,
+     and the reason names that. The close block hands it on. A promoted
+     candidate row that does not open with `[high]` takes the priority
+     change to `high`.
+   - **Rung → a priority change, `route`, or `drop`.** The ladder runs
+     high, normal, low, parked, Known issue, dropped (tracking-rules
+     "Candidate priority token"). For a candidate row that the classes
+     above leave `keep` or propose for `compress`, or that the Title class
+     below proposes for `retitle`, the pass can propose
+     any rung it judges right, up or down by any number of rungs, with a
+     reason. A move to parked carries a condition change: the pass drafts
+     one condition that has not held, `promote when <condition>`, unless
+     the row already states one that has not held. For a review finding that no documented or common use
+     reaches, the drafted condition is `promote when a user reports it`. A
+     move off parked needs no condition that has held. A move down to
+     Known issue is a `route`, and a move to dropped is a `drop`, often as
+     *not worth keeping*. A row with no condition can stay at high,
+     normal, or low. A condition change is a row fact beside the
+     disposition, as a priority change is, never a ninth disposition. It
+     rides on `keep`, `compress`, or `retitle`. A merge survivor counts as
+     decided, and the class skips it, and so does a row that a live
+     milestone absorbs. A row already on the rung the pass judges right
+     takes no priority change. §7's options can take a rung change too.
+   - **Kept mark (a filter, not a class).** A candidate row whose text
+     holds ` — kept YYYY-MM-DD` gets no move from §7's options or from any
+     class above or below (no priority change, no `route`, `drop`,
+     `promote`, or absorption into a `merge`) unless its reason names a
+     record, a change, or a report dated after the mark. Its `keep` reason names the
+     mark's date. The newest mark counts. A record dated the same day as
+     the mark is not after it. `compress` and `retitle` are not moves, so
+     a kept row can still take them.
    - **Title → `retitle`.** A candidate row that the classes above leave
      `keep` is proposed for `retitle` when its short title is empty, has
      fewer than 5 words or more than 40 characters as tracking-rules
@@ -471,9 +481,10 @@ re-examines a lesson.
    recording that a trigger did not fire is not a filed finding — takes
    §7's options in this
    vocabulary: `promote` (a bounded milestone for what guards shipped
-   behaviour), `route` (accepted limitations to Known issues), `drop` (the
-   rest), or `keep` as the explicit choice to extend no further; the
-   proposal table names §7 as the reason.
+   behaviour), `route` (accepted limitations to Known issues, or an entry
+   back to a rung), `drop` (the
+   rest), a priority change to another rung, or `keep` as the explicit
+   choice to extend no further; the proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
    `keep` (records-hygiene §1), with that milestone named in the reason. As the
    rule above says, a row carrying a live started token, or missing one,
@@ -527,7 +538,8 @@ re-examines a lesson.
      already shipped / rejected on principle / not worth keeping for a
      drop; trigger survives / trigger lost for a merge) and the record or
      path the evidence sits in. For *not worth keeping*, that is the row's
-     own text: the reason quotes the effect the row names.
+     own text: the reason quotes what the item would do or fix and says
+     why that is not worth the work.
      A `merge` names its survivor; a `split` names its rows; a `route` names
      its destination; a `promote` names the milestone title it hands on; a
      `retitle` names the new title, each mention it rewrites, and each
@@ -536,24 +548,22 @@ re-examines a lesson.
      A `keep`, `compress`, or `retitle` row may also carry a priority change
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
-     that cannot fire soon, is the usual ground; the token is never
+     that cannot fire soon, is the usual ground, and any other reason the
+     cell states can serve (step 2's Rung class); the token is never
      rewritten to encode order. A row of those three, or a `promote` row,
      can also carry a token change. The reason cell states it, as in
      `token: + started M260, quoted in M260-<slug>.md` or
      `token: − started M258, done`. A `keep`, `compress`, or `retitle` row
-     can also carry a condition change (step 2's No condition class). The
+     can also carry a condition change (step 2's Rung class). The
      reason cell states it with its move to parked, as in
      `condition: + promote when a user reports it; priority: normal →
      parked`. A `keep` with no priority, token, or condition change sits
      last so the changes read first.
-     On a `keep`, `compress`, or `retitle` row, the fourth level, `parked`,
-     follows the row's promotion condition (tracking-rules "Candidate
-     priority token", D-184), and it comes before the grounds above. An
-     untagged or `[low]` row that states a condition that has not held gets
-     `priority: <level> → parked`, not `→ low`. A parked row
-     whose condition held gets `priority: parked → normal`. A `[high]` row
-     is never proposed `→ parked`, because a promote marks its condition as
-     held.
+     On a `keep`, `compress`, or `retitle` row, a priority change can name
+     any rung of the ladder, up or down by any number of rungs (step 2's
+     Rung class). A move to `parked` carries its condition, and a move
+     off `parked` needs no condition that has held. A row whose condition
+     has held usually moves up, as in `priority: parked → normal`.
      Every `promote` of a candidate row whose opening token is not `[high]`
      carries the priority change to `high`. This holds for a proposed
      `promote` and for one the user sets at *Amend*. Its reason cell states
@@ -569,15 +579,18 @@ re-examines a lesson.
      `keep` with its disposition and its reason in a few plain words, and
      each row proposed for a priority change with its new level, each
      proposed token change with its row, and each proposed condition
-     change with its row and its condition; the
+     change with its row and its condition. A `route` up to parked names
+     its condition the same way, and that condition follows the condition
+     change's rules. A chip posed after an *Amend*
+     also names each kept mark it will write, with its row; the
      table above is the verbatim evidence. A promoted row's change to `high`
      is named once, with its new level `high`, beside the promote, never
      again as a separate priority change. If the session-start open-PR
      read failed or returned 100 PRs, the question text says so. Three
      options, in this order:
      1. **Accept as proposed** (recommended, first) — every disposition in
-        the table is applied, with each priority change, token change, and
-        condition change.
+        the table is applied, with each priority change, token change,
+        condition change, and kept mark an *Amend* set.
      2. **Amend** — the user names the items to change and what they become
         (the option description says so); everything unnamed keeps its
         proposed disposition; a named item with no replacement given
@@ -586,7 +599,13 @@ re-examines a lesson.
         decline a condition change alone, which declines its move to
         parked too, or give the condition new words, each `: ` in them
         written as `; `. A named item with no replacement keeps no
-        condition change. A promote's change
+        condition change. When the user sets `keep` on a candidate row
+        that the pass proposed to move (a priority change, `route`,
+        `drop`, `promote`, or absorption into a `merge`), or declines a
+        proposed move to parked,
+        the row takes a kept mark,
+        ` — kept <today>`, written when the answer is *Accept as
+        proposed*. A promote's change
         to `high` is not declined alone. To avoid it, the user amends the
         item to `keep`. The user can also amend a PR-named row to remove
         it or change its short title. Each chip after that names the row
@@ -658,11 +677,12 @@ re-examines a lesson.
      alone. A promoted row's change to `high` is a fourth. It touches the
      row's opening token and the row's place in the order alone. An
      accepted condition change is a fifth. It adds the condition text
-     alone, with its move to parked as a priority change.
+     alone, with its move to parked as a priority change. A kept mark set
+     at *Amend* is a sixth. It adds or replaces the mark text alone.
 
 4. **Apply.** When no accepted disposition changes a file — every item
-   `keep` or `promote` with no priority change, no token change, and no
-   condition change, or nothing enumerated —
+   `keep` or `promote` with no priority change, no token change, no
+   condition change, and no kept mark, or nothing enumerated —
    steps 4–6 are skipped
    entirely: no edit, no stamp, no commit, and the close block's status
    line reads `nothing applied`. Otherwise edit `cairn/ROADMAP.md` and
@@ -675,10 +695,11 @@ re-examines a lesson.
    removes the line; `route` writes the item in its destination's shape, carrying the
    original provenance — a Known issues entry states the limitation as it
    **is** and how it was accepted (`routed from candidates <today>; added
-   <original date> — <original origin>`), a candidate row states what it
-   is, its promotion trigger as the class of evidence that would change the
-   stance, and `added <original date> — <original origin>, routed from
-   Known issues <today>` (the accepting `M<NNN>` as the origin); `retitle`
+   <original date> — <original origin>`), a candidate row opens with the
+   token of the rung the reason names (none for normal), states what it
+   is, states a condition only when that rung is parked, and ends with
+   `added <original date> — <original origin>, routed from Known issues
+   <today>` (the accepting `M<NNN>` as the origin); `retitle`
    keeps the row's `- ` and any priority token and puts the new title and
    `: ` before the row's text, which stays as it is, old title and provenance included
    (a row whose title is empty loses only its leading `: `), except for a row
@@ -717,20 +738,24 @@ re-examines a lesson.
    opens with `; ` when a `: ` comes before it, and with ` — ` when the
    row holds no `: `. Otherwise it goes where a merge survivor's lineage
    clause goes (above), opened with ` — `. Either way the row's short
-   title stays the same. A `compress`
+   title stays the same. A kept mark goes where a merge survivor's lineage
+   clause goes, so the short title stays the same, and it replaces any
+   older kept mark in the row. `compress`, `merge` (on the survivor, which
+   keeps its own mark and takes none from the rows it absorbs), and
+   `split` (on each new row) keep the newest kept mark. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end. A dead token that step 2 leaves in place is the exception. It stays where it sits, and the `compress` keeps the short
    title it sits in.
    Candidates stay one item per line,
    ordered by token — high → normal → low → parked — then advisory within a level.
-   After the edits, token and condition changes included, `wc -l -c
+   After the edits, token and condition changes and kept marks included, `wc -l -c
    cairn/ROADMAP.md` stays under the ROADMAP line cap and byte budget
    (tracking-rules "Weight caps"); a pass that would push it over returns
    to the step-3 chip with the overflow named — the user re-decides, the
    pass never re-cuts an accepted disposition on its own and never commits
    over the cap. The count includes the stamp step 6 will write, which
    is longer when it names each `retitle`'s old and new titles, each
-   token change, each condition change, each re-rated row, a promoted one
+   token change, each condition change, each kept mark, each re-rated row, a promoted one
    included, and each PR-named row it names with its PRs, and in
    guest mode longer still because it names each drop's evidence; the pass
    never writes over the cap either. Every row or entry this step writes or rewrites is shown
@@ -748,7 +773,7 @@ re-examines a lesson.
      `DECISIONS.md` is the model — read it) minus its counts:
      **Context** (that a triage pass ran and what it weighed), **Decision**
      (each item dropped on principle by subject and its reason; each item
-     dropped as not worth keeping by subject and the effect its row named,
+     dropped as not worth keeping by subject and what it would do or fix,
      so search-first finds it if the finding is filed again; each
      trigger-losing merge by subject and the trigger that no longer
      stands — never a refuted-premise or already-shipped drop), **Consequences** (any prior
@@ -767,8 +792,8 @@ re-examines a lesson.
      is named in the commit message and the stamp too, beside its
      decision entry.
    `keep`, `compress`, `split`, `route`, `retitle`, `promote`, a
-   trigger-preserving `merge`, a priority change, a token change, and a
-   condition change write no decision entry;
+   trigger-preserving `merge`, a priority change, a token change, a
+   condition change, and a kept mark write no decision entry;
    the stamp is their record.
 
 6. **Validate, stamp, and commit.** Run
@@ -780,7 +805,8 @@ re-examines a lesson.
    changed: each dropped, merged, split, routed, compressed, retitled
    (old title → new title), and re-rated item by subject (a promoted row
    that took `high` included), each started token
-   added or removed with its row's subject, each condition change with its
+   added or removed with its row's subject, each kept mark with its row's
+   subject, each condition change with its
    row's subject, each PR-named row that an
    accepted change removed, made a merge survivor, or gave a new short
    title, with each naming PR's number, each row with a live `#<n>` token
@@ -796,7 +822,7 @@ re-examines a lesson.
    **Guest arm** (tracking-rules "Collaboration mode"): validate and stamp
    as above, and the stamp also names, beside each refuted-premise,
    already-shipped, or not-worth-keeping drop, the record or path that
-   holds its evidence (for the last, the effect its row named), since
+   holds its evidence (for the last, what the item would do or fix), since
    no commit body exists to hold it.
    The guest pass makes no commit and no push. The accepted edits stay on
    disk in `cairn/`, which git's exclude file leaves untracked, and the
@@ -806,9 +832,9 @@ re-examines a lesson.
    chip. Lead with the outcome in plain words: what left the lists, what
    merged or moved, what stayed. It names each PR-named row and each
    live `#<n>` row that the stamp names, with its PRs. Then a status line — items enumerated,
-   dispositions, priority changes, token changes, and condition changes applied by kind and the commit hash, or `nothing applied`
+   dispositions, priority changes, token changes, condition changes, and kept marks applied by kind and the commit hash, or `nothing applied`
    (an apply-nothing answer and an accept of only `keep` and `promote`
-   items with no priority, token, or condition change alike). In guest mode
+   items with no priority, token, or condition change and no kept mark alike). In guest mode
    `written to disk, not committed (guest mode)` stands in place of the
    commit hash. The decision
    entry, if written, and each row or entry written in step 4, verbatim.

@@ -123,9 +123,9 @@ regression reopens that work.
 Beside it, report the rulebook's mass the same way: measure
 `skills/shared/tracking-rules.md` with `wc -l -c` and report current
 lines/bytes and the growth since the recorded baseline —
-851 lines / 84,209 bytes (M326, 2026-10-30, the whole file after M326
-added the review rule for a finding row's promotion condition; the prior
-seed was M321's 848 lines / 83,903 bytes; bytes, because a
+855 lines / 84,618 bytes (M327, 2026-10-30, the whole file after M327
+stated the candidate ladder; the prior seed was M326's 851 lines /
+84,209 bytes; bytes, because a
 character count changes with the locale; re-seed these figures only when
 a later pass changes the file deliberately). Reporting only, same boundary
 as the cost line: no threshold, no verdict, no pass machinery — growth is
@@ -142,8 +142,8 @@ The script deliberately does not judge these — do them yourself and report:
   Release-shaped milestones are exempt: their idleness is owned by the
   `release window` advisory above whether or not it fired, so the bullet never
   judges one. Open RB with no RR after 7+ days (remind the user to run it);
-  `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
-  drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
+  `candidate` rows untouched ~6 months → offer a triage chip (promote / move
+  to another rung / keep / drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
   demand, never from here. A finding-absorbing group — a candidate row and
   the rows that name its short title (tracking-rules "Candidate short
   title") exactly in double quotes (direct references only), together

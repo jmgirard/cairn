@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="851 lines / 84,209 bytes",
+        block="855 lines / 84,618 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -2330,7 +2330,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_skip_needs_no_priority_change",
         target="skills/cairn-triage/SKILL.md",
-        block="`keep` or `promote` with no priority change, no token change, and no\n   condition change",
+        block="`keep` or `promote` with no priority change, no token change, no\n   condition change, and no kept mark",
     ),
     Mutation(
         guard="test_candidate_priority_token",
@@ -2342,7 +2342,7 @@ REGISTRY = [
         guard="test_candidate_priority_token",
         test="TestPromoteCarriesHigh.test_readiness_class_states_it",
         target="skills/cairn-triage/SKILL.md",
-        block="A promoted candidate row that\n     does not open with `[high]` takes the priority change to `high`",
+        block="A promoted\n     candidate row that does not open with `[high]` takes the priority\n     change to `high`",
     ),
     Mutation(
         guard="test_candidate_priority_token",

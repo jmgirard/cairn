@@ -8240,3 +8240,66 @@ deferred work keep their shape, and triage's new class still reaches
 them. A pass that accepts a *not worth keeping* drop writes a decision
 entry. A row that a dropped finding's later review files again surfaces
 that entry at the collision sweep.
+
+### D-228 (2026-10-30): A candidate row moves on one ladder, any number of rungs either way, and a row the user keeps at the triage gate gets a kept mark — supersedes D-227's forced-condition clauses, its *not worth keeping* limits, and its `[high]` exclusion; narrows D-184's writer rule to the parked rung and D-149's rejection of Known issues for findings; annotates D-027, D-134, and D-205 (M327)
+
+**Context:** D-227 made review write a condition on every finding row and
+made triage's No condition class propose a drop or a condition for every
+row without one. The user found that wanted work then got parked, and
+that a row kept at the gate came back on every pass. Triage could also
+promote a row only when its trigger had fired, could never park a
+`[high]` row, could drop as *not worth keeping* only a row with no
+condition, and could route a row only as an accepted limitation.
+
+**Decision:** At the user's words in M327's question set, a candidate
+row sits on one ladder: high, normal, low, parked, Known issue, dropped.
+Whoever writes or updates a row places it on a rung with a reason, and a
+move can go up or down any number of rungs. Only parked needs a
+condition, so a row with no condition is valid at high, normal, or low.
+This narrows D-184's writer rule to the parked rung: a row that states a
+condition that has not held can sit above parked. A skill can propose a
+Known issues entry or no row at its own gate. `/milestone-review` places
+each follow-up row on a rung, with parked and `promote when a user
+reports it` as the default for a finding that no documented or common
+use reaches, and its merge approval accepts a Known issues entry it
+listed. `/cairn-triage` can propose any rung for any row that no started
+token, live milestone, or kept mark with no later dated reason holds; a row an open PR names
+keeps its short title. This supersedes D-227's clauses
+that force a condition on finding rows and on triage rows, that limit
+*not worth keeping* to rows with no condition and to a fixed effect
+list, and that skip `[high]` rows. *Not worth keeping* is a judged drop
+reason for any such row, quoting what the row would do or fix. When the
+user sets `keep` at Amend on a proposed move, the pass writes ` — kept
+YYYY-MM-DD`, and it proposes no move for that row until its reason names
+something dated after the mark. D-027's fixed vocabulary stands: a rung
+change is a priority change, a `route`, a `drop`, or a `promote`. D-134's
+token stays optional and unchecked. The triage rule from M284's review
+that a `[high]` row is never parked goes too, so a promoted row whose
+condition has not held can move back down, with its condition kept.
+D-149 rejected filing unfixed findings in Known issues because that
+drops the promotion triggers. Review can now propose one as a Known
+issues entry, which the merge question shows and the user accepts.
+Triage can route any row to Known issues, a row with a condition
+included, as a proposal the user weighs at the gate, and it can route an
+entry back up to the rung its reason names, with a condition only when
+that rung is parked. M173's Staleness class dropped a row whose trigger
+had fired; a fired trigger whose work is still undone now goes to
+Readiness instead. D-205's rule that a wrong
+result is never an `edge` reject still governs review. In triage, a
+*not worth keeping* drop of a wrong-result row is a proposal that the
+user decides at the gate.
+
+**Door:** Removing the gates narrows conduct rules, so it is outside
+D-108's door. The ladder rule and the kept mark pass on the retained
+trigger: M326's shipped rules parked wanted work and brought a kept row
+back on every pass.
+
+**Rejected:** A `ready now` condition text, because a normal row with no
+condition already means ready. Falsified by an operator who cannot tell a
+ready row from an undecided one. Re-proposing a declined move on each
+pass, the M326 behavior the user named as the problem. Falsified by a
+kept row that triage never revisits after a real change.
+
+**Consequences:** A triage pass can propose more moves, and the gate is
+the only check on each. The kept mark is a second note a row can carry
+beside a started token. Review's post-merge unpark step is unchanged.

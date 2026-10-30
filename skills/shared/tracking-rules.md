@@ -251,16 +251,20 @@ falsify the chosen approach**, never as a count of failures.
 
 **Candidate priority token.** A candidate row may open with `[high]` or `[low]` (`- [high] short title: detail — added
 YYYY-MM-DD — links`); a row with neither reads as `normal`. A row may instead open with `[parked]`, the fourth level,
-when its promotion condition has not held. Whoever adds a row writes `[parked]` when the row states a promotion
-condition that does not hold at that time, in place of `[high]` or `[low]`. The token goes when the condition holds:
+when its promotion condition has not held. A row on the parked rung states that condition, as `promote when
+<condition>`, and a row with no condition is valid at high, normal, or low. The token goes when the condition holds,
+or when a re-rate moves the row off parked:
 `/cairn-triage` re-rates it, and `/milestone-review` post-merge hygiene removes it from a row whose condition the
 merge made hold. The Candidates section orders its rows high → normal → low → parked, advisory
 order within a level; the token is the fact the order derives from, never a second encoding of it. A new row is
 inserted at its level by whoever adds it, never appended below the `[parked]` rows. The token is not a status, a file, or
-an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184). A row that
-`/milestone-review` or `/copilot-review` files for a review finding states its promotion condition as `promote when
-<condition>`. If no documented or common use reaches the finding, the condition is `promote when a user reports it`,
-so the row opens with `[parked]` (D-227).
+an ID — `/cairn-triage` reads and re-rates it; a misspelled token reads as `normal` (D-134, D-184). **The ladder**
+runs high, normal, low, parked, Known issue (an entry in `cairn/DESIGN.md`'s Known issues section), dropped. Whoever
+writes or updates a candidate row places it on a rung and states the reason, and a move can go up or down any number
+of rungs. A skill that files a row can instead propose a Known issues entry, or no row, at its own gate. A review
+follow-up that no documented or common use reaches defaults to parked with `promote when a user reports it` (D-228).
+A row can carry ` — kept YYYY-MM-DD`, which `/cairn-triage` writes when the user keeps a row it proposed to move.
+Any skill that rewrites or narrows the row keeps the mark.
 
 **Candidate started token.** A candidate row that work has taken ends with ` — started M<NNN>` or ` — started #<n>`.
 `/milestone-plan` step 6 appends the first, in both modes, to each row the plan absorbs in full or in part.
