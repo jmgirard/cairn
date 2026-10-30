@@ -1251,3 +1251,115 @@ within each type and are never reused.
   row. Routed from candidates 2026-10-21; added 2026-10-20 — M304 review
   (diff-bug #2, #4, #8, #12; blame-history #1-#3; ripple #3; prior-review
   #2).
+- The resumed hotfix vet (M325) has two small gaps, found at the M325
+  review with no fix planned. The owner arm's vet reads code and records
+  from the current checkout, which can be dirty or stale (diff-bug #2,
+  blame-history #6). After its stop, the open PR keeps hiding its matched
+  rows, and nothing says whether to close it (diff-bug #6, blame-history
+  #7). If either misleads a real resume, it becomes a `/hotfix` or a
+  candidate row. Routed from candidates 2026-10-30; added 2026-10-29 —
+  M325 review.
+- A live milestone's citation of a lesson can stop matching, found at the
+  M320 review with no fix planned. A live milestone keeps a lesson that it
+  names by date and provenance (`/cairn-triage lessons`, review capture),
+  but a later `used` mark, compress, or split changes that provenance, and
+  the lesson then loses its protection. If a lesson that a planned
+  milestone named is evicted or proposed for drop because its citation no
+  longer matched, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-24 — M320 review (diff-bug #16).
+- Some test comments cite a bare milestone id for a point, found at the
+  M322 and M323 reviews with no fix planned. Examples are "(M23)" for the
+  newline trap and "(M53 discipline)", and the M023, M026, M053, and M054
+  archives do not record those points. D-222 lets a comment cite a
+  milestone only where its file records the point, but these predate it.
+  `test_budget_first_drafting.py`'s live-file docstring also narrates bug
+  history ("M99 review F4"). If a reader cannot follow such a comment from
+  its own words, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-25 — M322 review (diff-bug #1);
+  extended by M323 review (diff-bug #12).
+- The changed-snapshot lists (M310) miss changes made after a PR opens,
+  found at the M310 plan criteria audit and review with no fix planned.
+  M310 lists changed snapshot files at the review and hotfix gates and in
+  guest PR bodies, but three paths change or merge a PR with no list: the
+  guest hotfix change route (M266) pushes new commits to an open PR, a
+  guest Copilot round's fix commits land after the body is written, and
+  `/hotfix`'s merged-PR re-entry lists none. An open guest PR's handoff
+  comment repeats the full list on every pass, where a diff from the PR's
+  head before the push would list only new changes (diff-bug #11, D-209).
+  A snapshot file that a test run writes but no commit carries (Jest
+  without `--ci`) is in no list (diff-bug #14). `/hotfix`'s `gh pr diff`
+  lists the PR's current head, not the head the gate noted (diff-bug #15).
+  If a real PR's snapshot change arrives after the PR opened and no list
+  names it, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-21 — M310 plan; parked 2026-10-21
+  at a plan question set.
+- Three `/cairn-triage` title edges are left, found at the M299 review
+  with no fix planned. (1) Appending a missing started token to a row
+  whose text ends in a bare `:` or ` —` changes its short title, which can
+  break a PR's `Candidate row:` match or a milestone's quote (diff-bug #1,
+  blame-history #2, prior-review #2). (2) An Amend-set `retitle`, `split`,
+  `route`, or title-changing `compress` on a row with a live `M<NNN>`
+  token breaks the title its milestone file quotes, with no chip (diff-bug
+  #5, blame-history #4). (3) An Amend-set merge that changes a survivor's
+  title runs no mention search, and the stamp does not name it (diff-bug
+  #6). If one of these occurs in a real triage pass, it becomes a
+  `/hotfix` or a candidate row. Routed from candidates 2026-10-30; added
+  2026-10-20 — M299 review (D-199).
+- `/milestone-plan`'s trivial route has four issue gaps, found at the M300
+  review with no fix planned. (1) An open PR whose body says `Fixes #N`
+  but whose `Candidate row:` line is missing or names another row does not
+  protect #N (diff-bug #1). (2) Whether a narrowed row's text before or
+  after the edit protects a number is unstated (diff-bug #4). (3) An
+  uncommitted local edit to an open milestone's `Resolves:` slot is read
+  as is (diff-bug #7). (4) A failed read of an open milestone file has no
+  rule, unlike the PR read (blame-history #1). If a trivial edit closes an
+  owed issue in a real run, it becomes a `/hotfix` or a candidate row.
+  Routed from candidates 2026-10-30; added 2026-10-20 — M300 review.
+- The Copilot arm has two push edges, found at the M285 review with no fix
+  planned. (1) A header push is rejected because the remote moved ahead
+  after the PR opened, for example by a bot commit, and neither the arm
+  nor step 6 fetches and merges, so the record waits. (2) For an
+  owner-mode PR whose head is on a fork, the arm pushes to `origin`, not
+  to the PR's head remote. If either occurs in a real run, it becomes a
+  `/hotfix` or a candidate row. Routed from candidates 2026-10-30; added
+  2026-10-18 — M285 review (diff-bug #2, #4); narrowed 2026-10-20, item
+  (3), the ripple lens reading additions, not taken (D-192).
+- The pane card's project name (M291) has two edges, seen only in a
+  browser preview and found at the M291 review with no fix planned. (1) A
+  name cut with `…` has no hover card, since the first line carries no
+  `full`, and a hover card opens upward past the pane's top. (2) A
+  github.com URL's repo part reaches the card as parsed: `r.git.git` shows
+  `r.git`, and percent-encoding stays. If a cut or odd name is missed in a
+  real session, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-19 — M291 review (diff-bug #1, #8;
+  prior-review #1, #2); narrowed 2026-10-20 by M294, which shipped its
+  item (3).
+- With no milestone active, the pane can show no plan button, found at the
+  M305 review with no fix planned. The pane hides its planning Next line
+  whenever a candidate line draws (M305), but a row with an empty short
+  title has no ✎, so a list of only such rows leaves the pane no plan
+  button. The band's Plan stays. If an operator meets a drawn list with no
+  titled row, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-20 — M305 review (prior-review #1,
+  blame-history #1).
+- A parked row's title and its desktop icon use two blues, found at the
+  M305 review with no fix planned. The title draws in the theme's
+  `permission` key and the icon in a fixed `#7f93c4` (M305, D-203), chosen
+  from browser mockups rather than the docked pane, so the two can differ
+  by theme, and the planning `planMode` blue is near. If a desktop look
+  shows them clash, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-20 — M305 review (diff-bug #1,
+  prior-review #3, #4).
+- The guest sync's conflict route (M309) has five small gaps, found at the
+  M309 review with no fix planned. (1) A resume that only syncs runs a
+  full second review pass and handoff (diff-bug #4). (2) A dirty tree
+  makes `git rebase` refuse before any conflict, so the stop has no files
+  to name (diff-bug #6). (3) The abort and remote-commits stops leave the
+  milestone `in-progress` while its PR waits, so `/milestone` §2 stops
+  reading the PR (diff-bug #8). (4) A session that ends between a
+  resolved rebase and its push leaves a rebased local branch, and the next
+  sync's remote-commits check then stops on the old remote commits
+  (diff-bug #2). (5) A conflicted hotfix PR is reported, but nothing in
+  `/hotfix` rebases it (diff-bug #10). If one of these occurs on a real
+  guest PR, it becomes a `/hotfix` or a candidate row. Routed from
+  candidates 2026-10-30; added 2026-10-21 — M309 review.
