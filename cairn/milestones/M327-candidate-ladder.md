@@ -92,3 +92,11 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - AC3: the seven gate sentences, searched in whitespace-joined text with `grep -c -F`, read 1 each at a455c2d6 and 0 each at the head. Step 2's Rung class proposes any rung, up or down by any number of rungs, with a reason; a move to parked drafts a condition and a move off parked needs none held. The §7 options (triage 481) and records-hygiene 47 add a rung change. Met.
 - AC4: whitespace-joined greps find "Its reason is one of four classes", the *not worth keeping* text ("the pass judges that what the item would do or fix is not worth the work; the reason quotes that text from the item and says why, and it applies to any item not held at `keep`"), and step 5's "is *rejected on principle* or *not worth keeping*" trigger for the decision entry. Met.
 - AC5: whitespace-joined greps find each kept-mark site once: the Amend write at Accept, the sixth carve-out, the skip test, the lineage-clause placement with replacement of an older mark, `compress`/`merge`/`split` keeping it, the size count, the stamp, the status line, and step 2's "unless its reason names a record, a change, or a report dated after the mark. Its `keep` reason names the mark's date". Met.
+- spawned: diff-bug, blame-history, prior-review, ripple
+- prior-review #1: *not worth keeping* is widened past M326's effect test — reject, planned change (AC4, D-228, the user's ladder answer)
+- prior-review #2: a `[high]` row can be re-parked, reversing M284's fix — reject, planned change (AC3, D-228)
+- prior-review #3: the "unless it already opens with `[parked]`" clause from M326 is gone, so a parked row could be proposed `→ parked` — fix now, the Rung class says a row already on the judged rung takes no priority change, fixed b796a2e1
+- prior-review #4: the Rung class lost M326's live-milestone skip — fix now, restated in the class, fixed b796a2e1
+- prior-review #5: a move off parked no longer needs a held condition, loosening M284's unpark rule — reject, planned change (AC3, D-228)
+- prior-review #6: copilot-review no longer states the parked default — reject, false: it points to the rulebook paragraph, which states it
+
