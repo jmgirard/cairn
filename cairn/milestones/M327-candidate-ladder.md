@@ -7,7 +7,7 @@
 - **Principles touched:** IP2, IP3, GP1
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes what `/cairn-triage` proposes and how skills write candidate rows in every adopting repo
-- **Branch/PR:** m327-candidate-ladder
+- **Branch/PR:** m327-candidate-ladder, https://github.com/jmgirard/cairn/pull/340
 
 ## Goal
 
