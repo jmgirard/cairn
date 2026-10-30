@@ -142,8 +142,8 @@ The script deliberately does not judge these — do them yourself and report:
   Release-shaped milestones are exempt: their idleness is owned by the
   `release window` advisory above whether or not it fired, so the bullet never
   judges one. Open RB with no RR after 7+ days (remind the user to run it);
-  `candidate` rows untouched ~6 months → offer a triage chip (promote / keep /
-  drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
+  `candidate` rows untouched ~6 months → offer a triage chip (promote / move
+  to another rung / keep / drop — never auto-delete); a whole-list pass is `/cairn-triage`, run on
   demand, never from here. A finding-absorbing group — a candidate row and
   the rows that name its short title (tracking-rules "Candidate short
   title") exactly in double quotes (direct references only), together

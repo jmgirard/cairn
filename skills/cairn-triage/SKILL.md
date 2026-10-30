@@ -339,7 +339,7 @@ re-examines a lesson.
    | Disposition | Meaning |
    |---|---|
    | `keep` | Unchanged. The default when no evidence class below fires and the pass sees no reason to move the item. |
-   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. A PR-named row keeps its short title unless the user's *Amend* says to rewrite it (step 3). |
+   | `compress` | Rewritten toward the soft aim of **~300 bytes** in the shape *what it is / promote when / provenance* — the trigger, where the row states one, and the `added YYYY-MM-DD — <origin>` provenance always survive; only restated context goes. A Known issues entry compresses to *the limitation as it is / how it was accepted* (`Accepted at the M<NNN> gate` and any `corrected M<NNN>` mark survive). Advisory only, stated here and nowhere else. A PR-named row keeps its short title unless the user's *Amend* says to rewrite it (step 3). |
    | `merge` | The absorbed row's proposal: folded into a **named surviving row**, which gains one lineage clause (`absorbs <subject>, added <date> — <origin>`) and the absorbed row's trigger where it still applies. The survivor's own proposal is `keep` (its table reason reads `survivor of <absorbed subject>`); the lineage clause is the merge's edit, not a re-wording of the survivor. |
    | `split` | Replaced by **named rows**, each with one subject, one trigger, and the original provenance. |
    | `drop` | Removed. Its reason is one of four classes: *refuted premise* (a named archived milestone or record shows the premise false), *already shipped* (a named milestone or commit delivered it), *rejected on principle* (the idea cuts against a stated stance), or *not worth keeping* (the pass judges that what the item would do or fix is not worth the work; the reason quotes that text from the item and says why, and it applies to any item not held at `keep`). |
@@ -478,7 +478,8 @@ re-examines a lesson.
    recording that a trigger did not fire is not a filed finding — takes
    §7's options in this
    vocabulary: `promote` (a bounded milestone for what guards shipped
-   behaviour), `route` (accepted limitations to Known issues), `drop` (the
+   behaviour), `route` (accepted limitations to Known issues, or an entry
+   back to a rung), `drop` (the
    rest), a priority change to another rung, or `keep` as the explicit
    choice to extend no further; the proposal table names §7 as the reason.
    A row a `planned`/`in-progress`/`blocked`/`review` milestone absorbs is
@@ -534,7 +535,8 @@ re-examines a lesson.
      already shipped / rejected on principle / not worth keeping for a
      drop; trigger survives / trigger lost for a merge) and the record or
      path the evidence sits in. For *not worth keeping*, that is the row's
-     own text: the reason quotes the effect the row names.
+     own text: the reason quotes what the item would do or fix and says
+     why that is not worth the work.
      A `merge` names its survivor; a `split` names its rows; a `route` names
      its destination; a `promote` names the milestone title it hands on; a
      `retitle` names the new title, each mention it rewrites, and each
@@ -543,7 +545,8 @@ re-examines a lesson.
      A `keep`, `compress`, or `retitle` row may also carry a priority change
      (`priority: normal → high`, stated in the reason cell with its own reason) — re-rating from
      the evidence gathered in step 2: a trigger the repo is near, or one
-     that cannot fire soon, is the usual ground; the token is never
+     that cannot fire soon, is the usual ground, and any other reason the
+     cell states can serve (step 2's Rung class); the token is never
      rewritten to encode order. A row of those three, or a `promote` row,
      can also carry a token change. The reason cell states it, as in
      `token: + started M260, quoted in M260-<slug>.md` or
@@ -780,8 +783,8 @@ re-examines a lesson.
      is named in the commit message and the stamp too, beside its
      decision entry.
    `keep`, `compress`, `split`, `route`, `retitle`, `promote`, a
-   trigger-preserving `merge`, a priority change, a token change, and a
-   condition change write no decision entry;
+   trigger-preserving `merge`, a priority change, a token change, a
+   condition change, and a kept mark write no decision entry;
    the stamp is their record.
 
 6. **Validate, stamp, and commit.** Run

@@ -260,9 +260,9 @@
   `[parked]` in place of `[high]` or `[low]`. The token marks a row whose
   promotion condition has not held yet. The cairn pane draws a parked row
   with a blue `⧗` and a blue title, after the gray `[low]` rows, each group
-  in ROADMAP order. The rulebook's "Candidate priority token" rule has
-  whoever adds a row, you or a skill, write `[parked]` when the row's
-  condition does not hold. `/cairn-triage` adds or removes the token as a
+  in ROADMAP order. A parked row states its condition, and whoever adds
+  a row, you or a skill, can place it on the parked rung (see the ladder
+  entry above). `/cairn-triage` adds or removes the token as a
   priority change, and a promote replaces it with `[high]`. After a merge,
   `/milestone-review` removes it from each parked row whose short title
   the milestone file quotes or whose text names the milestone, where the

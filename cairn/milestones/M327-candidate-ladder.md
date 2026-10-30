@@ -110,4 +110,15 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - blame-history #8: any later dated change ends a kept hold — reject, planned change (AC5)
 - blame-history #9: route can move a Known issues entry back up — reject, planned change (AC3)
 - blame-history #10: copilot-review states no default — reject, false, as prior-review #6
+- ripple #1: the Unreleased CHANGELOG entry from M284 still said whoever adds a row writes `[parked]` when its condition does not hold — fix now, it points to the ladder entry
+- ripple #2, #3: step 5 and the guest stamp said "the effect its row named" — fixed in cbbd30a7 (blame-history #3)
+- ripple #4: step 3 said a *not worth keeping* reason "quotes the effect the row names" — fix now, it quotes what the item would do or fix and why
+- ripple #5: step 2's §7 vocabulary defined `route` as one-way to Known issues — fix now, it names the way back
+- ripple #6: step 3 named only trigger nearness as the ground for a priority change — fix now, any reason the cell states can serve
+- ripple #7: `/milestone`'s untouched-rows chip offered only promote, keep, drop — fix now, it adds a move to another rung
+- ripple #8: records-hygiene §7 and review step 9 still say "accepted" limitations — reject, false: review step 9's next sentence makes the merge approval that acceptance
+- ripple #9: `compress` said the trigger always survives, though a row can now have none — fix now, "where the row states one"
+- ripple #10: step 5's no-entry list omitted kept marks — fix now
+- ripple #11: `/milestone-plan` uses "kept row" for a row a trivial edit leaves in place, which collides with the kept mark — reject, style: a term in another context, no rule conflict
+- housekeeping: the ripple reader left `/private/tmp/claude-501/ct_m327.md`, outside the repo; a safety check blocked its delete, and it is left for the user, not deleted on the reader's request
 
