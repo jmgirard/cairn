@@ -579,7 +579,9 @@ re-examines a lesson.
      `keep` with its disposition and its reason in a few plain words, and
      each row proposed for a priority change with its new level, each
      proposed token change with its row, and each proposed condition
-     change with its row and its condition. A chip posed after an *Amend*
+     change with its row and its condition. A `route` up to parked names
+     its condition the same way, and that condition follows the condition
+     change's rules. A chip posed after an *Amend*
      also names each kept mark it will write, with its row; the
      table above is the verbatim evidence. A promoted row's change to `high`
      is named once, with its new level `high`, beside the promote, never
@@ -599,7 +601,8 @@ re-examines a lesson.
         written as `; `. A named item with no replacement keeps no
         condition change. When the user sets `keep` on a candidate row
         that the pass proposed to move (a priority change, `route`,
-        `drop`, or `promote`), or declines a proposed move to parked,
+        `drop`, `promote`, or absorption into a `merge`), or declines a
+        proposed move to parked,
         the row takes a kept mark,
         ` — kept <today>`, written when the answer is *Accept as
         proposed*. A promote's change
@@ -738,8 +741,8 @@ re-examines a lesson.
    title stays the same. A kept mark goes where a merge survivor's lineage
    clause goes, so the short title stays the same, and it replaces any
    older kept mark in the row. `compress`, `merge` (on the survivor, which
-   takes the newest mark among the rows it absorbs), and `split` (on each
-   new row) keep the newest kept mark. A `compress`
+   keeps its own mark and takes none from the rows it absorbs), and
+   `split` (on each new row) keep the newest kept mark. A `compress`
    keeps each started token that is not accepted for removal, at the row's
    end. A dead token that step 2 leaves in place is the exception. It stays where it sits, and the `compress` keeps the short
    title it sits in.

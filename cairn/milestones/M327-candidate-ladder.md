@@ -159,4 +159,25 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - ripple #1 (pass 2): tracking-rules 249 still has an alternative-approach row state its promotion condition — reject, false, as diff-bug #18: such a row waits on evidence, so it sits on the parked rung, where a condition is required
 - ripple #2 (pass 2): review step 5 says "one of three dispositions" though `known issue` is a new Review-line disposition — reject, false: the Known issues proposal sits inside the `follow-up` bullet as its alternative form, so the three dispositions and the chip's counts stand
 - ripple #3 (pass 2): the Unreleased CHANGELOG title for the parked token still said a row "that waits on its trigger is parked" — fix now
+- diff-bug #1 (pass 2): a `known issue` proposal could skip the actioned list and return floor — fix now, it counts as a follow-up
+- diff-bug #2 (pass 2): keeping a row proposed for absorption into a merge wrote no kept mark — fix now
+- diff-bug #3 (pass 2): a Known issues entry the user keeps is proposed again each pass — reject, planned change (Scope Out: an entry carries no kept mark)
+- diff-bug #4 (pass 2): a `route` up to parked writes a condition the chip never names — fix now, the chip names it and the condition change's rules apply
+- diff-bug #5 (pass 2): the merge chip cannot accept the merge while declining one listed entry — reject, planned change: the decline exit takes the requested change, and D-228 makes the approval the acceptance
+- diff-bug #6 (pass 2): Known issues proposals were not in the chip's question text — fix now, the question names each and says approving accepts it
+- diff-bug #7 (pass 2): a same-day record never lifts a kept mark — reject, planned change: the T5 fix chose a strict "after" so a same-day record cannot be ambiguous; the next day's record lifts it
+- diff-bug #8 (pass 2): a merge survivor could take an older or unset kept mark from absorbed rows — fix now, the survivor keeps its own mark and takes none
+- diff-bug #9 (pass 2): amending a promote to `keep` writes a kept mark — reject, planned change: a declined move is what the mark records
+- diff-bug #10 (pass 2): the rulebook's "states the reason" has no durable home for some writers — reject, false: the reason sits in the row's text, the triage stamp, or the Review line, by writer
+- diff-bug #11 (pass 2): `/milestone`'s "move to another rung" option has no rules — reject, false: the rulebook paragraph governs any writer's move, parked's condition included
+- diff-bug #12 (pass 2): a `known issue` line with double quotes in its text was ambiguous — fix now, the text runs from `known issue: ` to the line's end
+- diff-bug #13 (pass 2): review-written entries carried no acceptance mark — fix now, the text ends `Accepted at the M<NNN> gate`
+- diff-bug #14 (pass 2): README read as if lessons take rungs and kept marks — fix now, a sentence says those apply to candidate rows only (the pinned lessons sentence kept)
+- diff-bug #15 (pass 2): D-228 said "recent kept mark" — fix now, "kept mark with no later dated reason"
+- diff-bug #16 (pass 2): the CHANGELOG ladder entry runs past the wrap — reject, style
+- diff-bug (b) (pass 2): step 9 assumed a Known issues section — fix now, it creates `## Known issues` when missing
+- conversation (pass 2): PR #340 read before the chip — 0 reviews, 0 comments, 0 unresolved threads.
+- copilot: no review on PR #340; requests at both passes exited 0 but GitHub never recorded them (state `none`).
+- snapshot: none (no `_snaps` or `__snapshots__` path in the diff).
+- totals (both passes): 76 findings — 47 fixed on the branch, 29 rejected (none `edge`), 0 follow-up rows. One floor return (review return 1). Amendments: 1 substantive (AC6), 1 minor (T6 added). verify green on the final head.
 - pass 2 AC7 and gate: T6 head d8a74471 ran verify green (scripts 0, hooks 0, both validates 0, plugin test 0), `skills/tests` 0, and `cairn_validate` all checks passed. D-228 supersedes and narrows as AC7 states. README and CHANGELOG describe the ladder and the kept mark. The guards pin the new sentences. No `plugins[N].version` warning.

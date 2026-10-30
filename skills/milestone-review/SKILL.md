@@ -417,9 +417,11 @@ re-enters here, at the step the record shows is next:
      default is parked with `promote when a user reports it`. The agent
      can instead propose a finding as a `cairn/DESIGN.md` Known issues
      entry, a limitation the repo lives with. Its Review-section line's
-     disposition is `known issue`, followed by the entry's drafted text in
-     double quotes, so step 9 reads it from the file. Step 7 lists each
-     such proposal with that text verbatim. Every other row this skill
+     disposition is `known issue: ` and then the entry's drafted text to
+     the end of the line, ending `Accepted at the M<NNN> gate`, so step 9
+     reads it from the file. It counts as a follow-up for the actioned
+     list and the return floor. Step 7 lists each such proposal with
+     that text verbatim. Every other row this skill
      files for a finding follows the same rule.
 
    Every reported finding and its disposition is logged in the Review
@@ -516,6 +518,8 @@ re-enters here, at the step the record shows is next:
    (Mandated-substance rule): the chip's question text carries the compact
    decision summary and cites the milestone file's Review section by path,
    and the full presentation rides best-effort in the chat above it.
+   The chip's question text names each proposed Known issues entry in a
+   few words and says that approving accepts it.
    When the `Resolves:` slot is not `—`, the chip's question text enumerates
    the post-merge issue writes it authorizes — close-if-open per `closes`
    entry; a comment naming what shipped and the remainder's candidate row
@@ -953,7 +957,8 @@ re-enters here, at the step the record shows is next:
    archive summary's Review line. No row qualifies → skip.
    **Route accepted limitations:** a durable limitation this milestone
    surfaced that the user chose to live with — no candidate row, no fix
-   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section,
+   planned — gets an entry in `cairn/DESIGN.md`'s Known issues section
+   (created as `## Known issues` at the end of the file when missing),
    written in this same hygiene commit. A Known issues entry that step 5
    proposed and step 7's chip listed is accepted by the approval at that
    chip: the merge approval in owner mode, the handoff approval in guest
