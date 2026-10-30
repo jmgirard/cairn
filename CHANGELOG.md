@@ -448,6 +448,13 @@
 
 ### Fixes
 
+- **`/cairn-triage` weighs every item on each pass.** A pass could keep
+  every row because nothing changed since the last pass, even after the
+  triage rules themselves changed. The pass now weighs each item on what
+  it reads, and an earlier pass, its stamp, or a row's park date is never
+  a reason to keep a row. Only a ` — kept YYYY-MM-DD` mark holds a row on
+  your earlier choice.
+
 - **Review hygiene deletes the milestone file last.** The post-merge
   hygiene pass deleted the live milestone file near its start. In guest
   mode its check for parked rows that the merge readied then read nothing,

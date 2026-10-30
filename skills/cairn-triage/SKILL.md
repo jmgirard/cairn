@@ -332,7 +332,12 @@ re-examines a lesson.
    proposal.
 
 2. **Assess.** For each item, gather the evidence below and choose exactly
-   one disposition. The vocabulary is fixed — eight words, no sub-statuses
+   one disposition. Each pass weighs every item again on what it reads now.
+   An earlier pass is not evidence. A `keep` reason never cites an earlier
+   triage commit, the stamp, or the date a row was parked or last weighed.
+   The pass never skips an item because nothing changed since then, and
+   the skill's own rules can change between passes. Only a kept mark
+   (below) holds a row on the user's earlier choice. The vocabulary is fixed — eight words, no sub-statuses
    or scores (D-027) and no grouping (D-035); the priority token is a row
    fact re-rated beside the disposition (D-134), never a disposition:
 
