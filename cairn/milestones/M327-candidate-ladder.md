@@ -100,4 +100,14 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - prior-review #4: the Rung class lost M326's live-milestone skip — fix now, restated in the class, fixed b796a2e1
 - prior-review #5: a move off parked no longer needs a held condition, loosening M284's unpark rule — reject, planned change (AC3, D-228)
 - prior-review #6: copilot-review no longer states the parked default — reject, false: it points to the rulebook paragraph, which states it
+- blame-history #1: dropping "A `[high]` row is never proposed `→ parked`" undoes M284's fix, and D-228 did not name it; a parked move could reuse a condition that held — fix now, D-228 names the M284 rule, and the drafted or kept condition must not have held
+- blame-history #2: *not worth keeping* can drop a wrong-result row, against D-205's principle — fix now in part: D-228 says D-205 still governs review rejects and a triage drop of such a row is the user's call at the gate; the drop itself is a planned change
+- blame-history #3: *not worth keeping* now reaches Known issues entries, and step 5's decision-entry text said "the effect its row named" — fix now, the text reads "what it would do or fix" in step 5 and the guest stamp; the reach is a planned change (dropped is the rung below Known issue)
+- blame-history #4: declining a proposed move to parked writes no kept mark, so it returns next pass — fix now, that decline writes the mark; *Apply nothing* writing none is a planned change, since it changes no file
+- blame-history #5: D-149 rejected filing unfixed findings as Known issues, and D-228 did not name it — fix now, D-228 narrows D-149; the "or no row" option is a reject, which review already logs (IP3)
+- blame-history #6: merge approval now accepts listed Known issues entries — reject, planned change (AC2, D-228)
+- blame-history #7: promote no longer needs a fired trigger — reject, planned change (AC3)
+- blame-history #8: any later dated change ends a kept hold — reject, planned change (AC5)
+- blame-history #9: route can move a Known issues entry back up — reject, planned change (AC3)
+- blame-history #10: copilot-review states no default — reject, false, as prior-review #6
 

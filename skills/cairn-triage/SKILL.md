@@ -416,8 +416,8 @@ re-examines a lesson.
      `keep`, or propose for `compress` or `retitle`, the pass can propose
      any rung it judges right, up or down by any number of rungs, with a
      reason. A move to parked carries a condition change: the pass drafts
-     one condition, `promote when <condition>`, unless the row already
-     states one. For a review finding that no documented or common use
+     one condition that has not held, `promote when <condition>`, unless
+     the row already states one that has not held. For a review finding that no documented or common use
      reaches, the drafted condition is `promote when a user reports it`. A
      move off parked needs no condition that has held. A move down to
      Known issue is a `route`, and a move to dropped is a `drop`, often as
@@ -592,7 +592,8 @@ re-examines a lesson.
         written as `; `. A named item with no replacement keeps no
         condition change. When the user sets `keep` on a candidate row
         that the pass proposed to move (a priority change, `route`,
-        `drop`, or `promote`), the row takes a kept mark,
+        `drop`, or `promote`), or declines a proposed move to parked,
+        the row takes a kept mark,
         ` — kept <today>`, written when the answer is *Accept as
         proposed*. A promote's change
         to `high` is not declined alone. To avoid it, the user amends the
@@ -760,7 +761,7 @@ re-examines a lesson.
      `DECISIONS.md` is the model — read it) minus its counts:
      **Context** (that a triage pass ran and what it weighed), **Decision**
      (each item dropped on principle by subject and its reason; each item
-     dropped as not worth keeping by subject and the effect its row named,
+     dropped as not worth keeping by subject and what it would do or fix,
      so search-first finds it if the finding is filed again; each
      trigger-losing merge by subject and the trigger that no longer
      stands — never a refuted-premise or already-shipped drop), **Consequences** (any prior
@@ -809,7 +810,7 @@ re-examines a lesson.
    **Guest arm** (tracking-rules "Collaboration mode"): validate and stamp
    as above, and the stamp also names, beside each refuted-premise,
    already-shipped, or not-worth-keeping drop, the record or path that
-   holds its evidence (for the last, the effect its row named), since
+   holds its evidence (for the last, what the item would do or fix), since
    no commit body exists to hold it.
    The guest pass makes no commit and no push. The accepted edits stay on
    disk in `cairn/`, which git's exclude file leaves untracked, and the

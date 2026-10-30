@@ -8241,7 +8241,7 @@ them. A pass that accepts a *not worth keeping* drop writes a decision
 entry. A row that a dropped finding's later review files again surfaces
 that entry at the collision sweep.
 
-### D-228 (2026-10-30): A candidate row moves on one ladder, any number of rungs either way, and a row the user keeps at the triage gate gets a kept mark — supersedes D-227's forced-condition clauses, its *not worth keeping* limits, and its `[high]` exclusion; narrows D-184's writer rule to the parked rung; annotates D-027 and D-134 (M327)
+### D-228 (2026-10-30): A candidate row moves on one ladder, any number of rungs either way, and a row the user keeps at the triage gate gets a kept mark — supersedes D-227's forced-condition clauses, its *not worth keeping* limits, and its `[high]` exclusion; narrows D-184's writer rule to the parked rung and D-149's rejection of Known issues for findings; annotates D-027, D-134, and D-205 (M327)
 
 **Context:** D-227 made review write a condition on every finding row and
 made triage's No condition class propose a drop or a condition for every
@@ -8272,7 +8272,16 @@ user sets `keep` at Amend on a proposed move, the pass writes ` — kept
 YYYY-MM-DD`, and it proposes no move for that row until its reason names
 something dated after the mark. D-027's fixed vocabulary stands: a rung
 change is a priority change, a `route`, a `drop`, or a `promote`. D-134's
-token stays optional and unchecked.
+token stays optional and unchecked. The triage rule from M284's review
+that a `[high]` row is never parked goes too, so a promoted row whose
+condition has not held can move back down, with its condition kept.
+D-149 rejected filing unfixed findings in Known issues because that
+drops the promotion triggers. Review can now propose one as a Known
+issues entry, which the merge question shows and the user accepts, and
+triage can route it back up with a condition. D-205's rule that a wrong
+result is never an `edge` reject still governs review. In triage, a
+*not worth keeping* drop of a wrong-result row is a proposal that the
+user decides at the gate.
 
 **Door:** Removing the gates narrows conduct rules, so it is outside
 D-108's door. The ladder rule and the kept mark pass on the retained
