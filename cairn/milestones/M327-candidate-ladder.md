@@ -83,6 +83,7 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - 2026-10-30: substantive amendment: AC6 now checks what each skill version allows or requires for the planted rows, not which judgment a reader makes. The old wording "P5 is not moved to parked and gets no condition" bound a judgment that the ladder leaves free; the head-skill reader parked P5 by judgment, which D-228 allows. The deliverable the user sees is unchanged, so no stop.
 - 2026-10-30: verify green on T4 head ae5d72db: scripts/tests 0, hooks/tests 0, both plugin validates 0, plugin test 0 (2466 pass).
 - 2026-10-30: T6 done (review return 1): triage step 4's route up writes the named rung's token and a condition only for parked; review step 5 records a Known issues proposal as a `known issue` Review line with its text, step 7 lists it verbatim, and step 9 writes it from that line on the owner merge or the guest handoff approval. Also fixed: the kept mark filters §7 options and merge absorption, the chip and Accept name kept marks, a survivor takes the newest absorbed mark, the rulebook defines the mark and tells every writer to keep it, the Rung class heading and retitle wording, "a rung by step 5's rule", the hold list in README, CHANGELOG, and D-228, the CHANGELOG route sentence, and the test comment. Rulebook-mass re-seeded to 855 / 84,618. verify, `skills/tests`, and `cairn_validate` green.
+- 2026-10-30: step-7 approval: m327-candidate-ladder approved for merge
 
 ## Decisions
 
