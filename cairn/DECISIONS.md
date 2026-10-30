@@ -8278,8 +8278,13 @@ that a `[high]` row is never parked goes too, so a promoted row whose
 condition has not held can move back down, with its condition kept.
 D-149 rejected filing unfixed findings in Known issues because that
 drops the promotion triggers. Review can now propose one as a Known
-issues entry, which the merge question shows and the user accepts, and
-triage can route it back up with a condition. D-205's rule that a wrong
+issues entry, which the merge question shows and the user accepts.
+Triage can route any row to Known issues, a row with a condition
+included, as a proposal the user weighs at the gate, and it can route an
+entry back up to the rung its reason names, with a condition only when
+that rung is parked. M173's Staleness class dropped a row whose trigger
+had fired; a fired trigger whose work is still undone now goes to
+Readiness instead. D-205's rule that a wrong
 result is never an `edge` reject still governs review. In triage, a
 *not worth keeping* drop of a wrong-result row is a proposal that the
 user decides at the gate.
