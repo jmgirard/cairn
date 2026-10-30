@@ -425,8 +425,9 @@ re-examines a lesson.
      normal, or low. A condition change is a row fact beside the
      disposition, as a priority change is, never a ninth disposition. It
      rides on `keep`, `compress`, or `retitle`. A merge survivor counts as
-     decided, and the class skips it. §7's options can take a rung change
-     too.
+     decided, and the class skips it, and so does a row that a live
+     milestone absorbs. A row already on the rung the pass judges right
+     takes no priority change. §7's options can take a rung change too.
    - **Kept mark.** A candidate row whose text holds ` — kept YYYY-MM-DD`
      gets no move from any class above or below (no priority change, no
      `route`, `drop`, or `promote`) unless its reason names a record, a
