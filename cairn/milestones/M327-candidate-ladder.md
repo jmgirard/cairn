@@ -1,6 +1,6 @@
 # M327: Let triage move a row to any rung
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -120,5 +120,29 @@ Triage and every skill that writes or updates a candidate row can propose any pl
 - ripple #9: `compress` said the trigger always survives, though a row can now have none — fix now, "where the row states one"
 - ripple #10: step 5's no-entry list omitted kept marks — fix now
 - ripple #11: `/milestone-plan` uses "kept row" for a row a trivial edit leaves in place, which collides with the kept mark — reject, style: a term in another context, no rule conflict
+- diff-bug #1: triage step 4's `route` of a Known issues entry still writes a stated trigger and no rung token, against step 2's route row — fix now, floor return (load-bearing)
+- diff-bug #2: review's Known issues proposal is recorded nowhere a resumed or guest step 9 can read — fix now, floor return (load-bearing)
+- diff-bug #3: in guest mode no merge approval exists to accept a proposed Known issues entry — fix now, floor return (load-bearing)
+- diff-bug #4: §7's options bypass the kept mark — fix now
+- diff-bug #5: the chip and *Accept as proposed* do not name kept marks — fix now
+- diff-bug #6: the rulebook does not define the kept mark, so other row writers can lose it — fix now
+- diff-bug #7: `/milestone`'s stale-row chip — fixed in 1677d118 (ripple #7)
+- diff-bug #8: step 3's "quotes the effect the row names" — fixed in 1677d118 (ripple #4)
+- diff-bug #9: a proposed Known issues entry is not shown verbatim before approval — fix now
+- diff-bug #10: README, CHANGELOG, and D-228 overstate and leave out what holds a row — fix now
+- diff-bug #11: a kept row can be merged away, and an absorbed row's mark is not carried — fix now
+- diff-bug #12: no-entry list omits kept marks — fixed in 1677d118 (ripple #10)
+- diff-bug #13: the kept mark sits in the class list though it filters every class — fix now
+- diff-bug #14: the Rung class says "classes above" propose `retitle`, which comes from Title below — fix now
+- diff-bug #15: the Rung class heading leaves out `route` — fix now
+- diff-bug #16: "on step 5's rung" reads as one fixed rung — fix now
+- diff-bug #17: `/copilot-review` has no gate for a Known issues proposal — reject, false: the rulebook says a skill "can" propose one at its own gate, so a skill with none files a row
+- diff-bug #18: search-first still asks an alternative-approach row for a condition — reject, false: such a row waits on evidence, so it sits on the parked rung, consistent with the ladder
+- diff-bug #19: the CHANGELOG's "before" sentence misstates what changed for routes — fix now
+- diff-bug #20: D-228's door calls M326 shipped while its CHANGELOG entry is unreleased — reject, false: the default branch is the distribution channel (tracking-rules git model), and M326 merged there
+- diff-bug #21: the AC6 amendment weakened the criterion with no stop — reject, planned: logged as a substantive amendment with two re-audits; the deliverable is unchanged, so no stop is owed, and the merge question shows it
+- diff-bug #22: records-hygiene line 47 runs past the wrap — reject, style
+- diff-bug (c): the "# M327: …" test comment is narrative history — fix now; the CHANGELOG claims lacking prose guards — reject, false: the profile's test-doctrine makes skill-prose guards owed by nothing (M323)
+- review return 1: diff-bug #1 (triage step 4 route forces a trigger and no rung token), #2 (review's Known issues proposal not recorded for step 9), and #3 (guest mode has no acceptance event for a proposed Known issues entry)
 - housekeeping: the ripple reader left `/private/tmp/claude-501/ct_m327.md`, outside the repo; a safety check blocked its delete, and it is left for the user, not deleted on the reader's request
 
