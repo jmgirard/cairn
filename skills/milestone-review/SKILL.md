@@ -707,14 +707,16 @@ the session, re-enters here, at the step the record shows is next:
    command — the hook checks it before the command runs, so writing it in
    the same shell line as the merge is denied. Then
    require green CI by the tracking-rules merge CI wait (one watcher).
-   After the step's last commit, read `gh pr checks <N>`. With no check
+   After the step's last commit and the push above, read and note the
+   PR head with `gh pr view <N> --json headRefOid` (the head the wake
+   compares against), then read `gh pr checks <N>`. With no check
    pending, act on that read at once (below) and arm nothing. Otherwise
    arm the watch as a Bash `run_in_background` task:
 
    `gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /milestone-review M<NNN>"`
 
    The task's own exit code is the `echo`'s, so read the watch's status
-   from that wake line. Note the PR head this step pushed. End the
+   from that wake line. End the
    turn with a close block whose CI line (tracking-rules close-block
    shape) says that in the Claude Code desktop app the session resumes by
    itself when CI ends, that a `/clear` or other work before then ends
@@ -727,10 +729,10 @@ the session, re-enters here, at the step the record shows is next:
    session is still on this branch with no uncommitted change to a
    tracked file; if not, show the wake line and run nothing. Then read
    `gh pr checks <N>` and
-   `gh pr view <N> --json state,headRefOid,reviewDecision`; a failed read
+   `gh pr view <N> --json state,headRefOid,latestReviews`; a failed read
    stops with a close block naming its error. Before any fix, re-arm, or
-   merge, a head other than the one this step pushed, or a review
-   decision of `CHANGES_REQUESTED`, stops with a close block naming it.
+   merge, a head other than the one noted above, or a latest review in
+   state `CHANGES_REQUESTED`, stops with a close block naming it.
    Then a failed check takes the red-CI path below, a pending check arms
    the watch again, and every check passed (a skipped check counts as
    passed) goes on to the merge. Each of these stops fences

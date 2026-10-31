@@ -519,10 +519,11 @@ can resolve against the fork instead of the base repo.
    At the task's completion notification, first check that the session is
    still on this branch with no uncommitted change to a tracked file; if
    not, show the wake line and run nothing. Then read `gh pr checks <N>`
-   and `gh pr view <N> --json state,headRefOid,reviewDecision`; a failed
+   and `gh pr view <N> --json state,headRefOid,latestReviews`; a failed
    read stops with a close block naming its error. Before any fix,
-   re-arm, or merge, a head other than the marker's head oid, or a review
-   decision of `CHANGES_REQUESTED`, stops with a close block naming it.
+   re-arm, or merge, a head other than the marker's head oid, or a latest
+   review in state `CHANGES_REQUESTED`, stops with a close block naming
+   it.
    Then a failed check is fixed on the branch, and the new commits take
    step 1's walk and this approval again, since `--match-head-commit`
    refuses a moved head; red CI the agent cannot fix stops with a close

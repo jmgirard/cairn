@@ -399,32 +399,33 @@ exception: a host app's own PR monitor that the user turned on, such as the desk
 turns such a monitor on for a merge wait, the monitor does not replace the armed watch below, and a red result for a
 head commit the session already acted on is not acted on again.
 **A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Read `gh pr checks <N>`
-first. With no check pending, go straight to (d) and arm nothing, since a watch that exits before the turn ends sends
-no wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm `gh pr checks <N> --watch
---fail-fast` as a Bash `run_in_background` task. The watch has no time bound: a check that never settles leaves it
-armed with no wake (DESIGN.md Known issues). (b) After the watch exits, that task prints one wake line naming the PR
-number, the watch's exit status, and the invoking skill's resume command. The task's own exit code is the `echo`'s,
-so the status is read from the line (W26). (c) End the turn with a close block whose CI line says
-that in the Claude Code desktop app the session resumes by itself when CI ends, and that a `/clear` or other work
-in the session before then ends that resume; its fenced next command is that resume command, for a host where no
-wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code desktop
-session (W24, W25 — the host observed), first check that the session is still on the branch it armed from with no
-uncommitted change to a tracked file; if not, show the wake line and its resume command and run nothing. Then read
-the check state with `gh pr checks <N>`, and the merge state, head, and review decision with `gh pr view <N> --json
-state,headRefOid,reviewDecision`; a failed read stops with a close block naming its error. Before any fix, re-arm,
-or merge, a head that differs from the head the approval covered, or a review decision of `CHANGES_REQUESTED`,
-stops with a close block naming it. Then, if any check failed, take the red-CI path. Otherwise, if a check is
-pending, arm the watch again. If every check passed (a skipped check counts as passed), go on to the merge. Each of
-these stops fences the resume command. A PR no longer open follows "Resume
-is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch at its
-first failed check (W2, W24). A typed resume command while the session still holds an armed watch on the PR stops
-that watch with `TaskStop` first. A companion PR's reads are spelled `cd <abs-path> && …`. **A long-running local
+first. With no check pending, go straight to (d) and arm nothing, since a watch that exits before the turn ends is
+not observed to send a later wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm
+`gh pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. The watch has no time bound: a check that
+never settles leaves it armed with no wake (DESIGN.md Known issues). (b) After the watch exits, that task prints one
+wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
+exit code is the `echo`'s, so the status is read from the line (W26). (c) End the turn with a close block whose CI
+line says that in the Claude Code desktop app the session resumes by itself when CI ends, and that a `/clear` or
+other work in the session before then ends that resume; its fenced next command is that resume command, for a host
+where no wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code
+desktop session (W24, W25 — the host observed), first check that the session is still on the branch it armed from
+with no uncommitted change to a tracked file; if not, show the wake line and its resume command and run nothing.
+Then read the check state with `gh pr checks <N>`, and the merge state, head, and reviews with `gh pr view <N>
+--json state,headRefOid,latestReviews`; a failed read stops with a close block naming its error. Before any fix,
+re-arm, or merge, a head that differs from the head the invoking skill recorded at the approval
+(`/milestone-review`: the PR head read right after step 8's push; `/hotfix`: the marker's head oid), or a latest
+review in state `CHANGES_REQUESTED`, stops with a close block naming it. Then, if any check failed, take the red-CI
+path. Otherwise, if a check is pending, arm the watch again. If every check passed (a skipped check counts as
+passed), go on to the merge. Each of these stops fences the resume command. A PR no longer open follows "Resume is
+stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch at its first
+failed check (W2, W24). A typed resume command while the session still holds an armed watch on the PR stops that
+watch with `TaskStop` first. A companion PR's reads are spelled `cd <abs-path> && …`. **A long-running local
 command** (a suite, a build): foreground with a timeout when it fits; otherwise Bash `run_in_background`, acted on
 at its completion notification — its `timeout` does not end it; at the harness ceiling a foreground command is moved
 to the background, not killed (one starting with `sleep`, containing `git`, or unparseable as a compound is stopped
-instead). A Monitor is for a
-stream of events (each check as it lands), always with `timeout_ms` set — it is killed at that time, says so, and is
-then gone (`TaskStop` finds nothing). **A background subagent**: its own completion notification; nothing polls it.
+instead). A Monitor is for a stream of events (each check as it lands), always with `timeout_ms` set — it is killed
+at that time, says so, and is then gone (`TaskStop` finds nothing). **A background subagent**: its own completion
+notification; nothing polls it.
 **On timeout** (a local command's foreground call moved to the background; a Monitor's timeout event): report the
 fresh state, log one line, `TaskStop` a moved task, and stop with a close block whose fenced next command is the
 invoking skill's own command (`/cairn-release`, say) — the resume door. **No checks** (`gh pr checks` prints "no

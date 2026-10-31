@@ -8387,3 +8387,22 @@ review, not a bound. The observation that reopens the bound: a merge watch
 seen armed with no wake on a real PR, which would favor a wrapper that
 sends SIGTERM, or a Monitor once a Monitor event is seen to wake an idle
 session.
+
+### D-232 (2026-10-31): The wake's review guard reads `latestReviews`, and its head is the one the skill recorded at the approval — corrects D-231's `reviewDecision` read (M328 review pass 4)
+
+**Context:** D-231 had the wake read `reviewDecision`. GitHub fills that
+field only where a branch rule requires reviews, and on this repo it reads
+empty, so a review requesting changes would not stop the merge. D-231 also
+named "the head the approval covered", which `/milestone-review` never
+recorded.
+
+**Decision:** The wake reads `latestReviews` and stops on any latest
+review in state `CHANGES_REQUESTED`. The head it compares against is the
+one the invoking skill recorded: `/milestone-review` reads the PR head
+with `gh pr view --json headRefOid` right after step 8's push and before
+the first check read; `/hotfix` uses the marker's head oid. D-231 stands
+otherwise.
+
+**Consequences:** The guard works on repos with no required reviews. A
+later comment by the same reviewer can still mask their change request in
+`latestReviews`, as the existing DESIGN Known issue on that field says.

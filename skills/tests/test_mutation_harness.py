@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="889 lines / 88,037 bytes",
+        block="890 lines / 88,178 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3767,7 +3767,7 @@ REGISTRY += [
         test="TestWaitRuleMergeWait."
              "test_a_moved_head_or_requested_changes_stops_first",
         target=RULES,
-        block="or merge, a head that differs from the head the approval covered",
+        block="or merge, a head that differs from the head the invoking skill recorded at the approval",
     ),
     Mutation(
         guard="test_wait_rule",

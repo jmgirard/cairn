@@ -106,8 +106,9 @@ class TestWaitRuleMergeWait(unittest.TestCase):
         self.assertRegex(
             self.para,
             r"Before\s+any\s+fix,\s+re-arm,\s+or\s+merge,\s+a\s+head\s+that\s+differs"
-            r"\s+from\s+the\s+head\s+the\s+approval\s+covered,\s+or\s+a\s+review"
-            r"\s+decision\s+of\s+`CHANGES_REQUESTED`,\s+stops",
+            r"\s+from\s+the\s+head\s+the\s+invoking\s+skill\s+recorded\s+at\s+the"
+            r"\s+approval[\s\S]*?or\s+a\s+latest\s+review\s+in\s+state"
+            r"\s+`CHANGES_REQUESTED`,\s+stops",
         )
 
     def test_merge_wait_arms_only_while_a_check_is_pending(self):

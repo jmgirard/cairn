@@ -169,6 +169,7 @@ guard.
 - 2026-10-31: question set (thrash stop): user chose "Descope and ship": keep the background wait, remove the broken bound, add the moved-head and changes-requested guards, send the edge cases to parked rows and the never-settling check to a known issue, then one short review (diff-bug and ripple lenses over the descope diff) and the merge question.
 - 2026-10-31: substantive amendment: Scope Out gains "A time bound on the watch: none; a check that never settles is a DESIGN.md Known issue (descoped at the thrash stop, D-231)" and "The smaller merge-wait edge cases from review pass 3: candidate row "Close the merge CI wait's edge cases"". No criterion changed.
 - 2026-10-31: T9 done: `perl` bound and 142 handling removed from the rule and both sites; the wake reads `state,headRefOid,reviewDecision` and stops on a head other than the approved one (review: the head step 8 pushed; hotfix: the marker's head oid) or `CHANGES_REQUESTED` before any fix, re-arm, or merge; stop list updated; D-231 supersedes D-230's bound; parked row "Close the merge CI wait's edge cases" filed; known issue proposed in the Review section; CHANGELOG and `wait-mechanisms.md` reworded; `test_wait_rule` re-pinned (no bound, head and review guard) with mutation entries; baseline 889 lines / 88,037 bytes; AC section rewrapped wider (same words) for the 150-line cap; skills/tests 984 OK, scripts and hooks suites, both validates exit 0, cairn_validate green.
+- 2026-10-31: pass-4 fix-now on the branch: the wake reads `latestReviews` (D-232); the rule names each skill's recorded head; `/milestone-review` reads and notes `headRefOid` after the push and before the first check read; the early-exit wake claim marked unobserved in the rule; merge-wait paragraph rewrapped at 116 columns with each pinned phrase kept on one line; baseline 890 lines / 88,178 bytes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -264,4 +265,17 @@ Pass 3 (2026-10-31), after return 2 (T8, fixed 017b2472 for every pass-2 fix-now
 - ripple #4: test names keep "timeout" vocabulary — reject (style: names only)
 - ripple #5: copilot-review's unconditional safety line — reject (false: that skill arms no merge watch)
 - Pass-3 dispositions after the user chose descope at the thrash stop: diff-bug #1 — fix now (bound removed; the never-settling check is the known issue below); diff-bug #2 and #10 — reject (false: no bound and no `perl` wrapper remain); diff-bug #3, #4 and blame-history #1 — fix now (at the wake, a head other than the approved one, or `CHANGES_REQUESTED`, stops before any fix, re-arm, or merge; hotfix compares with the marker's head oid); blame-history #3 and prior-review #1 — fix now (sentence rewritten); diff-bug #11 — fix now (claim marked unobserved); diff-bug #5–#9, #12, blame-history #2, #4–#7, prior-review #2–#4, ripple #1 — follow-up: parked row "Close the merge CI wait's edge cases"
+- Pass 4 (2026-10-31), the short review the user chose at the thrash stop, over the descope diff `6ddc517a..HEAD`.
+- spawned: diff-bug, ripple
+- diff-bug #1: tracking-rules cites a DESIGN Known issue the diff never writes — reject (false: step 9 writes it from the `known issue:` line below once the merge approval accepts it)
+- diff-bug #2: `reviewDecision` is empty on a repo with no required reviews, so the changes-requested guard never fires here — fix now (reads `latestReviews`; D-232)
+- diff-bug #3: the rule's "head the approval covered" differs from review's "the one this step pushed", and review's approval commit moves the head — fix now (rule names each skill's recorded head)
+- diff-bug #4: review's "note the PR head" names no source, so a local HEAD with the unpushed header commit would stop every wake — fix now (read `headRefOid` from GitHub after the push)
+- diff-bug #5: the note came after the no-pending path that uses it — fix now (moved before the first check read)
+- diff-bug #6: the rule says an early-exit watch "sends no wake" while the reference page says it is unobserved — fix now
+- ripple #1: as diff-bug #6 — fix now
+- ripple #2: as diff-bug #1 — reject (false, as diff-bug #1)
+- ripple #3: DESIGN Known issue says hotfix step 6 has no red-CI stop — follow-up: absorbed into parked row "Close the merge CI wait's edge cases" (pre-existing)
+- ripple #4: as diff-bug #3 — fix now
+- Pass-4 gate on the final head: skills/tests 984 OK; scripts and hooks suites exit 0; plugin and marketplace validate exit 0, no `version` warning; `claude plugin test` 2466 pass, 0 fail; `cairn_validate` all checks passed; AC3 grep lists 11 lines, none a foreground or ceiling-bound wait; AC1's four steps and branches still stated (reads now `state,headRefOid,latestReviews`).
 - known issue: A merge CI watch has no time bound. A check that never settles, such as a required check that a path filter skips or a fork run waiting for approval, keeps the watch armed, and the session never wakes. Look at the PR, then type the resume command that the turn ended with. Accepted at the M328 gate
