@@ -6,11 +6,13 @@ The rulebook's wait paragraph once prescribed one blocking `gh pr checks
 harness ceiling is moved to the background rather than killed, so that
 wording produced the stale watcher it meant to prevent. The replacement rule
 has two load-bearing clauses pinned here: the trigger (what a wait is and
-that each thing waited on has one watcher) and the stop point (no watcher
-left armed at a commit, turn end, or `/clear` point — stopped with TaskStop
-first). Each is registered in the mutation harness. The timeout stop's
-fenced next command (M172) is a third load-bearing clause, unpinned — a new
-rule owes no prose guard here (test-doctrine slot). The negative check that
+that each thing waited on has one watcher, save a host PR monitor the user
+turned on) and the stop point (no watcher left armed at a commit, turn end,
+or `/clear` point — stopped with TaskStop first — save a merge's armed CI
+watch, M328). M328's merge CI wait is pinned too. Each is registered in the
+mutation harness. The timeout stop's fenced next command (M172, now for
+local commands and Monitors) is unpinned — a new rule owes no prose guard
+here (test-doctrine slot). The negative check that
 the superseded spelling is gone from the shipped prose spells the retired
 token by concatenation, so a grep of the tree for it does not hit this
 guard, and is unregistered — there is no block to mutate.
@@ -81,6 +83,76 @@ class TestWaitRuleStopPoint(unittest.TestCase):
         self.assertRegex(
             self.para,
             r"the session stops it with `TaskStop` first",
+        )
+
+
+class TestWaitRuleMergeWait(unittest.TestCase):
+    """M328 AC1, AC4: a merge's CI wait arms a background watch, ends the
+    turn, and acts at the notification, red before pending; a host app's
+    PR monitor the user turned on is the one exception to one watcher."""
+
+    def setUp(self):
+        self.para = section(rules(), "**Waiting on CI and background work**",
+                            "## Context hygiene")
+
+    def test_merge_wait_arms_a_background_watch(self):
+        self.assertRegex(
+            self.para,
+            r"Otherwise\s+arm\s+`gh\s+pr\s+checks\s+<N>\s+--watch\s+--fail-fast`\s+as"
+            r"\s+a\s+Bash\s+`run_in_background`\s+task\.",
+        )
+
+    def test_a_moved_head_or_requested_changes_stops_first(self):
+        self.assertRegex(
+            self.para,
+            r"Before\s+any\s+fix,\s+re-arm,\s+or\s+merge,\s+a\s+head\s+that\s+differs"
+            r"\s+from\s+the\s+head\s+the\s+invoking\s+skill\s+recorded\s+at\s+the"
+            r"\s+approval[\s\S]*?or\s+a\s+latest\s+review\s+in\s+state"
+            r"\s+`CHANGES_REQUESTED`,\s+stops",
+        )
+
+    def test_merge_wait_arms_only_while_a_check_is_pending(self):
+        self.assertRegex(
+            self.para,
+            r"With\s+no\s+check\s+pending,\s+go\s+straight\s+to\s+\(d\)\s+and\s+arm"
+            r"\s+nothing",
+        )
+
+    def test_a_failed_check_wins_over_a_pending_one(self):
+        self.assertRegex(
+            self.para,
+            r"if\s+any\s+check\s+failed,\s+take\s+the\s+red-CI\s+path\.\s+Otherwise,"
+            r"\s+if\s+a\s+check\s+is\s+pending",
+        )
+
+    def test_host_monitor_is_the_one_watcher_exception(self):
+        self.assertRegex(
+            self.para,
+            r"A\s+session\s+never\s+turns\s+such\s+a\s+monitor\s+on\s+for\s+a\s+merge"
+            r"\s+wait",
+        )
+
+
+class TestWaitRuleArmedTurnEnd(unittest.TestCase):
+    """M328 AC2: the armed merge watch is the one watcher a turn can end
+    on, and a wake line a session did not arm is shown, never acted on."""
+
+    def setUp(self):
+        self.para = section(rules(), "**Waiting on CI and background work**",
+                            "## Context hygiene")
+
+    def test_the_merge_watch_is_the_one_turn_end_exception(self):
+        self.assertRegex(
+            self.para,
+            r"The\s+one\s+exception\s+is\s+a\s+merge's\s+armed\s+CI\s+watch\s+above,"
+            r"\s+the\s+one\s+watcher\s+a\s+turn\s+can\s+end\s+on",
+        )
+
+    def test_an_unarmed_wake_line_runs_nothing(self):
+        self.assertRegex(
+            self.para,
+            r"shows\s+the\s+user\s+the\s+line\s+and\s+its\s+resume\s+command\s+and"
+            r"\s+runs\s+nothing\.",
         )
 
 

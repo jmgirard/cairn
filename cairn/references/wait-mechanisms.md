@@ -28,6 +28,16 @@ in `ROADMAP.md`, decisions in `DECISIONS.md`, architecture in `DESIGN.md`.
 - No-checks PR — https://github.com/jmgirard/cairn-wait-lab/pull/2 (branch `nochecks`, workflow file removed) — observed 2026-09-02.
 - Harness: Claude Code desktop session, Bash timeout ceiling 600 000 ms, Monitor default 300 000 ms — observed 2026-09-02.
 
+M328 added rows W24–W26 on 2026-10-31 (UTC). The lab repo had been
+deleted after M170, so the 2026-09-02 run links above no longer resolve. It
+was created again under the same name with one workflow: a `long` job
+(`sleep 720`) and a `gate` job that sleeps 180 s and fails when a
+`FAIL_LATE` file exists.
+
+- Green run — https://github.com/jmgirard/cairn-wait-lab/actions/runs/41215428891 (PR #1, 15:33:36–15:45:41) — observed 2026-10-31.
+- Late red run — https://github.com/jmgirard/cairn-wait-lab/actions/runs/41215432313 (PR #2, `FAIL_LATE` committed; `gate` failed at 3m5s) — observed 2026-10-31.
+- Harness: Claude Code desktop app session, the session that planned and implemented M328 — observed 2026-10-31.
+
 ## What the four mechanisms are
 
 Neutral description, before any observation:
@@ -77,6 +87,9 @@ Tags: `observed` (seen in this experiment, run or PR URL in the row) ·
 | W21 | any background task | `-p` (print) mode | Docs (headless): a background Bash shell "is terminated about five seconds after Claude has returned its final result and stdin has closed"; background subagents are waited for, capped at ten minutes idle from v2.1.182. | documented |
 | W22 | any background task | `--resume` / session exit | Docs (interactive-mode): cleaned up when Claude Code exits; handed to a background session if the session is backgrounded rather than exited. Issue #25188 (2026-02-12, closed duplicate) reports tracked background tasks SIGTERM'd on exit and on context compaction; compaction teardown is not on the doc pages. Nothing documents a watcher being restored on `--resume`. | documented |
 | W23 | background subagent | completion | Docs (sub-agents): "A background subagent's results reach Claude as a completion notification in a later turn"; it can leave a background Bash command running past its own end and is notified when that command ends; a finished subagent stays in `/tasks` marked done for ~30 s. | documented |
+| W24 | Bash `run_in_background` | red, idle session | PR #2: `gh pr checks 2 --watch --fail-fast` armed at 15:33:40, then the turn ended at about 15:34 with no tool call pending. At 15:36:54 the watch exited 1 on the `gate` failure while `long` was still pending. A `<task-notification>` started a new turn with no user message, and that turn read the wake line and re-read `gh pr checks 2` (exit 1: `gate` fail, `long` pending). | observed |
+| W25 | Bash `run_in_background` | green over the ceiling, idle session | PR #1: armed at 15:33:40, the turn ended twice before the run did (about 15:34 and about 15:38). The run took 12 min 5 s. The watch exited 0 at 15:45:47, and a `<task-notification>` started a new turn with no user message. Then `gh pr checks 1` read both checks `pass` (exit 0). | observed |
+| W26 | Bash `run_in_background` | exit status | In W24 and W25 the task ran the watch, then `echo`ed a wake line holding `$?`. The notification reported "exit code 0" both times, because the `echo` ran last. Only the wake line carried the watch's own status (1 on red, 0 on green). | observed |
 
 Documentation read 2026-09-02:
 https://code.claude.com/docs/en/tools-reference ·
@@ -89,7 +102,12 @@ https://github.com/anthropics/claude-code/issues/25188.
 ## What the ledger implies for a wait rule
 
 Stated here as findings, not as the rule (the rule is tracking-rules' and
-cites this page):
+cites this page). The M170 findings below shaped a foreground wait. M328's
+rows W24–W26 add that a finished background watch starts a new turn in an
+idle desktop session, so a merge's CI wait can arm one and end the turn.
+Whether a watch that exits while the turn is still open sends a later
+wake is not observed. The task's own exit code hides the watch's status
+(W26):
 
 - A foreground Bash wait is only "one blocking wait, resolved within the
   turn" when the command finishes inside its timeout; at the ceiling it
@@ -121,6 +139,9 @@ cites this page):
   page states `/clear` teardown.
 - Pin: `skills/tests/test_wait_rule.py` (hand-run) holds the rule's trigger
   and stop-point clauses.
+- W24–W26 → the merge CI wait of the wait rule (arm in the background, end
+  the turn, act at the notification, read the status from the wake line),
+  the stop-point clause's one exception, and the D-entry that M328 wrote.
 
 ## Open questions
 

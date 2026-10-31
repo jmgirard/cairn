@@ -8303,3 +8303,106 @@ kept row that triage never revisits after a real change.
 **Consequences:** A triage pass can propose more moves, and the gate is
 the only check on each. The kept mark is a second note a row can carry
 beside a started token. Review's post-merge unpark step is unchanged.
+
+### D-229 (2026-10-31): A merge's CI wait arms a background watch and ends the turn, and its notification resumes the run — supersedes D-128's foreground CI-wait clause and its turn-end stop-point bar for that watch, narrows D-128's one-watcher clause, annotates D-130 (M328)
+
+**Context:** Under D-128 a merge's CI wait was a foreground
+`gh pr checks --watch --fail-fast` below the 600 s Bash ceiling. A run
+longer than that stopped the session (D-130's timeout stop), and the user
+watched CI on GitHub and then reran the skill. t3code's PR watcher shows
+the other shape: arm a watch, end the turn, and let the host start the
+agent again on news. M328 observed that a finished `run_in_background`
+task starts a new turn in an idle Claude Code desktop session, on a late
+red run and on a green run past the ceiling
+(`cairn/references/wait-mechanisms.md` W24–W26).
+
+**Decision:** A merge's CI wait arms `gh pr checks <N> --watch
+--fail-fast` in the background with a wake line that carries the PR, the
+watch's status, and the resume command, ends the turn with a close block
+that names that command, and at the notification re-reads check and merge
+state: a failed check takes the red path, a pending one re-arms, all
+passed merges. That watch is the one watcher a turn can end on; a commit
+still ends with no watcher, and a `/clear` while it is armed is safe, since
+a session that gets a wake line it did not arm shows it and runs nothing.
+A host app's PR monitor that the user turned on is the one exception to
+one-watcher-per-wait; a session never turns one on, and a red result for a
+head commit already acted on is not acted on again. Local commands, Monitors,
+subagents, and the no-checks case keep D-128's rule. D-130's resume route
+stays as the path for a host where no wake comes.
+
+Rejected at the plan gate: arming only after a foreground wait reached the
+ceiling (two mechanisms to state and resume), and a Monitor with
+`timeout_ms` (it dies at an hour at most, where `gh --watch` ends on its
+own). Rejected at the question set: deferring to the desktop app's monitor,
+which does not wake on a pass; waking on review comments and conflicts.
+
+**Consequences:** After the merge approval, the session merges on green
+with no rerun by the user. The observation that reopens this entry: a
+merge watch whose notification never arrived in a desktop session that
+followed the rule, or an armed watch found running past an hour on a hung
+run.
+
+### D-230 (2026-10-31): The merge CI wait reads checks before it arms, bounds the watch at one hour, and guards the wake — annotates D-229, narrows its Monitor rejection (M328 review)
+
+**Context:** M328's second review pass found that D-229's watch has no
+bound (a required check that a path filter skips, D-133, or a fork PR
+awaiting approval stays pending), that a watch which exits before the turn
+ends sends no wake, that a typed resume arms a second watch, and that a
+wake can merge in the middle of other work.
+
+**Decision:** The session reads `gh pr checks` first and arms only while a
+check is pending. The watch runs under a one-hour `perl` alarm, and an
+exit at the bound stops with fresh check state. At the wake the session
+acts only while it is still on the branch it armed from with no
+uncommitted tracked change, reads the head before it re-arms, counts a
+skipped check as passed, and stops on a failed read. A typed resume stops
+the armed watch first. D-229's reason for rejecting a Monitor ("`gh
+--watch` ends on its own") no longer holds; the Monitor stays rejected
+because the alarm gives the same bound in the one command.
+
+**Consequences:** The closed stop list gains the bound, a head that
+someone else moved, and a failed read at a wake. D-229's decision and its
+reopening observations stand.
+
+### D-231 (2026-10-31): The merge CI watch has no time bound, and a moved head or a changes-requested review stops the wake before any action — supersedes D-230's one-hour bound and its Monitor sentence (M328 review, user descope)
+
+**Context:** M328's third review pass found that the `perl` alarm D-230
+chose never ends `gh`, which ignores SIGALRM (`gh` under a 2 s alarm
+exited 0, `cat` exited 142), and that a review requesting changes during
+the wait did not stop the merge. That was the third defect return, and at
+the thrash stop the user chose to descope.
+
+**Decision:** The watch runs with no time bound. A check that never
+settles leaves it armed with no wake, recorded as a DESIGN.md Known issue
+where the user types the resume command. At the wake, a head that differs
+from the head the approval covered, or a review decision of
+`CHANGES_REQUESTED`, stops with a close block before any fix, re-arm, or
+merge. D-230's other clauses stand: the read before arming, the branch and
+clean-tree check, skipped checks counted as passed, the stop on a failed
+read, and the `TaskStop` on a typed resume. The smaller review-pass-3
+edge cases go to one parked candidate row.
+
+**Consequences:** The stop list names a moved head and a changes-requested
+review, not a bound. The observation that reopens the bound: a merge watch
+seen armed with no wake on a real PR, which would favor a wrapper that
+sends SIGTERM, or a Monitor once a Monitor event is seen to wake an idle
+session.
+
+### D-232 (2026-10-31): The wake's review guard reads `latestReviews`, and its head is the one the skill recorded at the approval — corrects D-231's `reviewDecision` read (M328 review pass 4)
+
+**Context:** D-231 had the wake read `reviewDecision`. GitHub fills that
+field only where a branch rule requires reviews, and on this repo it reads
+empty, so a review requesting changes would not stop the merge. D-231 also
+named "the head the approval covered", which `/milestone-review` never
+recorded.
+
+**Decision:** The wake reads `latestReviews` and stops on any latest
+review in state `CHANGES_REQUESTED`. The head it compares against is the
+one the invoking skill recorded: `/milestone-review` reads the PR head
+with `gh pr view --json headRefOid` right after step 8's push and before
+the first check read; `/hotfix` uses the marker's head oid. D-231 stands
+otherwise.
+
+**Consequences:** The guard works on repos with no required reviews. A
+later comment by the same reviewer can still mask their change request in
+`latestReviews`, as the existing DESIGN Known issue on that field says.

@@ -76,8 +76,8 @@ yet) — a companion still open re-enters step 8's companion arm before the
 primary is pushed, and that arm runs first whichever route below the
 primary's state selects (a route that skips step 8 skips it for the
 primary alone) — and route on the state and the
-Review section; a stopped CI wait or a merge made outside the session
-re-enters here, at the step the record shows is next:
+Review section; a CI wait whose wake never came, or a merge made outside
+the session, re-enters here, at the step the record shows is next:
 
 - (a) `MERGED`, every acceptance-criterion box ticked against a recorded
   evidence line, and a work-log line recording step-7 approval (read by
@@ -706,24 +706,44 @@ re-enters here, at the step the record shows is next:
    marker. Write the marker in a **separate** step before the `gh pr merge`
    command — the hook checks it before the command runs, so writing it in
    the same shell line as the merge is denied. Then
-   require green CI
-   (a foreground `gh pr checks <pr> --watch --fail-fast` with a timeout
-   below the harness ceiling — one watcher, the tracking-rules wait rule; a
-   call moved to the background at the ceiling is reported from fresh
-   `gh pr checks` state, stopped with `TaskStop`, and the session stops
-   there with a close block whose fenced next command is
-   `/milestone-review M<NNN>` — the Session-start resume route re-derives
-   the merge state — and whose CI line (tracking-rules close-block shape)
-   states the current check state as read from fresh `gh pr checks`, then
-   that rerunning `/milestone-review M<NNN>` re-derives that state and
-   waits again, so waiting for green first is optional and never required;
-   never left armed at the merge, a commit, or a `/clear`
-   point, never merged past; a PR that reports no checks
-   exits 1 at once and is mergeable on local green where the profile's
-   consistency-gate says so — but a PR created moments ago can report no
-   checks before GitHub registers them, so where the profile does not
-   declare the repo CI-less, re-read `gh pr checks` after a short wait,
-   up to about a minute, before taking the no-checks case). Red CI → fix on the branch,
+   require green CI by the tracking-rules merge CI wait (one watcher).
+   After the step's last commit and the push above, read and note the
+   PR head with `gh pr view <N> --json headRefOid` (the head the wake
+   compares against), then read `gh pr checks <N>`. With no check
+   pending, act on that read at once (below) and arm nothing. Otherwise
+   arm the watch as a Bash `run_in_background` task:
+
+   `gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /milestone-review M<NNN>"`
+
+   The task's own exit code is the `echo`'s, so read the watch's status
+   from that wake line. End the
+   turn with a close block whose CI line (tracking-rules close-block
+   shape) says that in the Claude Code desktop app the session resumes by
+   itself when CI ends, that a `/clear` or other work before then ends
+   that resume, and that typing the fenced command re-poses the approval
+   and waits again; the fenced next command is `/milestone-review M<NNN>`,
+   for a host where no wake comes, and the Session-start resume route
+   re-derives the merge state. A typed `/milestone-review M<NNN>` while
+   this session still holds the armed watch stops it with `TaskStop`
+   first. At the task's completion notification, first check that the
+   session is still on this branch with no uncommitted change to a
+   tracked file; if not, show the wake line and run nothing. Then read
+   `gh pr checks <N>` and
+   `gh pr view <N> --json state,headRefOid,latestReviews`; a failed read
+   stops with a close block naming its error. Before any fix, re-arm, or
+   merge, a head other than the one noted above, or a latest review in
+   state `CHANGES_REQUESTED`, stops with a close block naming it.
+   Then a failed check takes the red-CI path below, a pending check arms
+   the watch again, and every check passed (a skipped check counts as
+   passed) goes on to the merge. Each of these stops fences
+   `/milestone-review M<NNN>`. A PR no longer
+   open takes the Session-start routes. Never merge past red or pending CI. A PR that
+   reports no checks makes the watch exit 1 at once, and it is mergeable
+   on local green where the profile's consistency-gate says so — but a PR
+   created moments ago can report no checks before GitHub registers them,
+   so where the profile does not declare the repo CI-less, re-read
+   `gh pr checks` after a short wait, up to about a minute, before taking
+   the no-checks case. Red CI → fix on the branch,
    re-verify, re-request approval if the fix was nontrivial. When green:
    `gh pr merge <N> --squash --delete-branch` with a clean summary message —
    name the PR number explicitly; a bare `gh pr merge` is denied by the guard
@@ -738,18 +758,20 @@ re-enters here, at the step the record shows is next:
    push -u origin <branch>`), open its PR (`cd <abs-path> && gh pr create
    --title … --body …`, ready for review, no `Candidate row:` line, and no
    cairn vocabulary when that repo is untracked), append its URL to the companion's header entry,
-   wait on its checks under the same wait rule as the primary (`cd
-   <abs-path> && gh pr checks <N> --watch --fail-fast`, with the same
-   timeout and no-checks handling), then — only when `<abs-path>` has a
+   wait on its checks by the same merge CI wait as the primary (the
+   background watch spelled `cd <abs-path> && gh pr checks <N> --watch
+   --fail-fast …`, its wake line naming the companion PR and
+   `/milestone-review M<NNN>`, with the same no-checks handling), then —
+   only when `<abs-path>` has a
    cairn root — write `<abs-path>/cairn/.merge-approved` (`M<NNN> approved
    YYYY-MM-DD for PR #<N>`, the companion's own milestone id or the
    primary's) in a separate step, and merge with `cd <abs-path> && gh pr
    merge <N> --squash --delete-branch`: the guard resolves the repo from
    the `cd` target — an untracked companion is let through on the step-7
    chip alone, a tracked one through that marker; any other `cd` spelling
-   is denied. A companion's red CI, failed merge, or CI-ceiling stop ends
-   the step before the primary is pushed, with the timeout close block
-   above naming the companion PR; the Session-start resume route re-reads
+   is denied. A companion's red CI that the agent cannot fix, or its failed
+   merge, ends the step before the primary is pushed, with a close block
+   naming the companion PR; the Session-start resume route re-reads
    each companion's state. The arm is absent in guest mode.
 
    **Guest arm — the handoff sequence**, in place of the marker, the CI

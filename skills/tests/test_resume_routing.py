@@ -237,7 +237,8 @@ class TestHotfixMergedPrReentry(unittest.TestCase):
             "A PR-reference argument whose `gh pr view <N> --json "
             "state,headRefName` reports `MERGED` and a head branch not "
             "matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged "
-            "outside the session or after a stopped CI wait) states in chat that "
+            "outside the session or after a CI wait whose wake never came) "
+            "states in chat that "
             "the hotfix bar never ran before this merge, then runs a post-hoc "
             "verification of the merged diff before step 7",
             self.step1,
@@ -333,7 +334,7 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     and a refused merge stops. The
     guest arm reports and stops. Step 6 notes the head the gate shows,
     writes the marker with the head oid before the wait, merges with
-    `--match-head-commit`, and its timeout close names both re-entries.
+    `--match-head-commit`, and its CI-wait close names both re-entries.
     Each trigger part and each outcome is pinned on its own,
     whitespace collapsed."""
 

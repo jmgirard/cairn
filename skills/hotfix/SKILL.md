@@ -117,8 +117,8 @@ can resolve against the fork instead of the base repo.
    **Merged-PR re-entry (M172, M174).** A PR-reference argument whose
    `gh pr view <N> --json state,headRefName` reports `MERGED` and a head
    branch not matching `m<nnn>-*` (a hotfix branch or an adopted PR, merged
-   outside the session or after a stopped CI wait) states in chat that the
-   hotfix bar never ran before this merge, then runs a post-hoc
+   outside the session or after a CI wait whose wake never came) states in
+   chat that the hotfix bar never ran before this merge, then runs a post-hoc
    verification of the merged diff before step 7 — the hotfix bar holds on
    every path to the default branch, not only the one the session drove:
    - *Tier check* the merged diff (`gh pr diff <N>`) as above. A diff over
@@ -191,7 +191,7 @@ can resolve against the fork instead of the base repo.
      match `m<nnn>-*`. Step 6's merge-guard marker starts with `hotfix `
      and names that PR (`for PR #<N>`). Such a marker means that an earlier
      run approved this merge at step 6 and stopped before the merge, most
-     often at the CI wait. Quote the marker's line in chat. Make the
+     often at a CI wait whose wake never came. Quote the marker's line in chat. Make the
      candidate-row match above.
      The run resumes the approved merge only when three conditions hold.
      First, the marker's ` at <oid>` equals the PR's `headRefOid`. Second,
@@ -499,29 +499,52 @@ can resolve against the fork instead of the base repo.
    approval cannot be checked against it; **drop `--delete-branch` on a
    fork PR** — that branch lives in the contributor's repo and is not ours
    to delete)
-   only on explicit approval at that chip, with green CI (one foreground
-   `gh pr checks <pr> --watch --fail-fast` wait with a timeout below the
-   harness ceiling — the tracking-rules wait rule; a call moved to the
-   background at the ceiling is reported from fresh `gh pr checks` state,
-   stopped with `TaskStop`, and the session stops there with a close block
-   whose fenced next command is `/hotfix` with the PR reference — step 1
-   re-derives the PR's state: while the PR is still open and the marker
-   names it, step 1's open-PR re-entry resumes at this wait (or takes the
-   walk again when one of its conditions fails, or stops before the wait
-   when its idea vet finds a concern over the hotfix bar), and for a PR
-   merged since, step 1's merged-PR re-entry verifies the merged diff
-   post-hoc — and whose CI line (tracking-rules close-block
-   shape) states the current check state as read from fresh `gh pr checks`,
-   then that rerunning `/hotfix` with the PR reference re-derives that state
-   and, when step 1 resumes, waits again, so waiting for green first is optional and never
-   required; never left armed,
-   never merged past; a PR created moments ago can report no checks before
-   GitHub registers them, so where the profile does not declare the repo
-   CI-less, re-read `gh pr checks` after a short wait, up to about a
-   minute, before taking the no-checks case). In owner mode, on approval, the order is
+   only on explicit approval at that chip, with green CI by the
+   tracking-rules merge CI wait (one watcher). After the step's last
+   commit, read `gh pr checks <N>`. With no check pending, act on that
+   read at once (below) and arm nothing. Otherwise arm the watch as a
+   Bash `run_in_background` task:
+
+   `gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /hotfix <PR reference>"`
+
+   The task's own exit code is the `echo`'s, so read the watch's status
+   from that wake line. End the
+   turn with a close block whose CI line (tracking-rules close-block
+   shape) says that in the Claude Code desktop app the session resumes by
+   itself when CI ends, that a `/clear` or other work before then ends
+   that resume, and that typing the fenced command re-derives the PR's
+   state and waits again; the fenced next command is `/hotfix` with the
+   PR reference, for a host where no wake comes.
+
+   At the task's completion notification, first check that the session is
+   still on this branch with no uncommitted change to a tracked file; if
+   not, show the wake line and run nothing. Then read `gh pr checks <N>`
+   and `gh pr view <N> --json state,headRefOid,latestReviews`; a failed
+   read stops with a close block naming its error. Before any fix,
+   re-arm, or merge, a head other than the marker's head oid, or a latest
+   review in state `CHANGES_REQUESTED`, stops with a close block naming
+   it.
+   Then a failed check is fixed on the branch, and the new commits take
+   step 1's walk and this approval again, since `--match-head-commit`
+   refuses a moved head; red CI the agent cannot fix stops with a close
+   block naming the failed check. A pending check arms the watch again,
+   and every check passed (a skipped check counts as passed) goes on to
+   the merge. Each of these stops fences `/hotfix` with the PR reference. A PR no longer open
+   takes step 1's re-entries.
+
+   A typed `/hotfix` with the PR reference, while this session still
+   holds the armed watch, stops it with `TaskStop` first. Step 1 then
+   re-derives the PR's state: while the PR is still open and the marker names it,
+   step 1's open-PR re-entry resumes at this wait (or takes the walk again
+   when one of its conditions fails, or stops before the wait when its idea
+   vet finds a concern over the hotfix bar), and for a PR merged since,
+   step 1's merged-PR re-entry verifies the merged diff post-hoc. Never merge past red or pending CI. A PR created moments
+   ago can report no checks before GitHub registers them, so where the
+   profile does not declare the repo CI-less, re-read `gh pr checks` after
+   a short wait, up to about a minute, before taking the no-checks case. In owner mode, on approval, the order is
    fixed: the push and any `gh pr create` above, then the merge-guard
    marker, then the CI wait, then the merge. Write the marker before the
-   wait, so a run that stops at the wait leaves it on disk for step 1's
+   wait, so a run whose wait never wakes leaves it on disk for step 1's
    open-PR re-entry. Just before the marker write, read the head with
    `gh pr view <N> --json headRefOid`. If it differs from the head the gate
    showed, write no marker and stop with a close block that names the new

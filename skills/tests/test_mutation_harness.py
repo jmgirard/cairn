@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="855 lines / 84,618 bytes",
+        block="890 lines / 88,178 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3754,6 +3754,53 @@ REGISTRY += [
         block="no watcher is left armed at a commit, a turn end, or a "
               "`/clear` point",
     ),
+    # M328: the merge CI wait, its red-before-pending order, the host
+    # monitor exception, and the armed turn-end exception.
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_merge_wait_arms_a_background_watch",
+        target=RULES,
+        block="`run_in_background` task. The watch has no time bound",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait."
+             "test_a_moved_head_or_requested_changes_stops_first",
+        target=RULES,
+        block="or merge, a head that differs from the head the invoking skill recorded at the approval",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait."
+             "test_merge_wait_arms_only_while_a_check_is_pending",
+        target=RULES,
+        block="go straight to (d) and arm nothing",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_a_failed_check_wins_over_a_pending_one",
+        target=RULES,
+        block="if any check failed, take the red-CI",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait.test_host_monitor_is_the_one_watcher_exception",
+        target=RULES,
+        block="never\nturns such a monitor on for a merge wait",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleArmedTurnEnd."
+             "test_the_merge_watch_is_the_one_turn_end_exception",
+        target=RULES,
+        block="The one exception is a merge's armed",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleArmedTurnEnd.test_an_unarmed_wake_line_runs_nothing",
+        target=RULES,
+        block="the line and its resume command and runs nothing.",
+    ),
 ]
 
 
@@ -4339,7 +4386,7 @@ REGISTRY += [
     # changes requested, row match), and per outcome (skip to the wait, the
     # head pin, the refused merge, the walk on a failed condition, the guest
     # stop and its close; M325's vet stop before the wait has no entry), plus step 6's order, marker line, presented head,
-    # decline, merge pin, and both halves of the timeout close. Blocks embed
+    # decline, merge pin, and both halves of the CI-wait close. Blocks embed
     # the physical wrap; the guard reads with whitespace collapsed.
     Mutation(
         guard="test_resume_routing",
