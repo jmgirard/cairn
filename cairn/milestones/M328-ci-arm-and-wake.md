@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -42,7 +42,7 @@ guard.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: The wait rule in `skills/shared/tracking-rules.md` ("Waiting on
+- [x] AC1: The wait rule in `skills/shared/tracking-rules.md` ("Waiting on
       CI and background work") states the merge CI wait in four steps.
       (a) The session arms `gh pr checks <N> --watch --fail-fast` as a Bash
       `run_in_background` task. (b) After the watch exits, that task prints
@@ -67,19 +67,19 @@ guard.
       `/clear` while the merge watch is armed is safe. It also states what a
       session does with a wake line from a watch that it did not arm: it
       shows the user the line and its resume command, and it runs nothing.
-- [ ] AC3: Each merge wait in `skills/milestone-review/SKILL.md` step 8,
+- [x] AC3: Each merge wait in `skills/milestone-review/SKILL.md` step 8,
       the primary merge and the companion arm, and in
       `skills/hotfix/SKILL.md` step 6 states the wait of AC1 and names its
       own resume command: `/milestone-review M<NNN>`, or `/hotfix` with the
       PR reference. No line in those two steps that
       `git grep -nE "gh pr checks|ceiling|TaskStop|moved to the background" -- skills/milestone-review/SKILL.md skills/hotfix/SKILL.md`
       lists describes a foreground or ceiling-bound merge wait.
-- [ ] AC4: The one-watcher clause of the wait rule names one exception: a
+- [x] AC4: The one-watcher clause of the wait rule names one exception: a
       host app's PR monitor that the user turned on, such as the desktop
       app's Auto-fix. The rule states that a session never turns such a
       monitor on for a merge wait, and that a red result for a head commit
       the session already acted on is not acted on again.
-- [ ] AC5: In `jmgirard/cairn-wait-lab`, a Claude Code desktop session arms
+- [x] AC5: In `jmgirard/cairn-wait-lab`, a Claude Code desktop session arms
       the watch as AC1 states and ends its turn. When the run ends, the
       session starts again with no user message and runs step (d) of AC1,
       taking the branch that matches the run. This occurs once on a green
@@ -87,7 +87,7 @@ guard.
       the turn ended. The wait rule cites the rows of
       `cairn/references/wait-mechanisms.md` that record these wakes, and it
       names the desktop app as the host observed.
-- [ ] AC6: Each line that
+- [x] AC6: Each line that
       `git grep -nE "times out|ceiling|TaskStop|gh pr checks|CI wait|waits on CI" -- README.md skills/*/SKILL.md skills/shared/tracking-rules.md cairn/PROFILE.md`
       lists, and that describes the CI wait of a merge, agrees with AC1 and
       AC2. The Unreleased section of `CHANGELOG.md` has an entry for the
@@ -158,9 +158,19 @@ guard.
 - 2026-10-31: T5 done: README's two stop lists now say red CI it cannot fix, and that a merge's CI wait resumes by itself; CHANGELOG Unreleased entry added. AC6 sweep: `cairn/PROFILE.md:68` (no-CI note), `milestone-implement:335` (waits on CI at its merge step), hotfix 194/208/217 (marker resume, step 6's CI wait), `milestone:167` (status read) still agree; `/cairn-release` site is local checks (Out); `skills/shared/profiles/` has no copy of the no-CI line.
 - 2026-10-31: T6 done: `test_wait_rule.py` gains five pins (merge wait arms in the background, failed before pending, host-monitor exception, armed turn-end exception, unarmed wake line runs nothing), each registered in the mutation table and red when blanked; rulebook baseline re-seeded to 872 lines / 86,398 bytes in `milestone/SKILL.md` and its two pins. verify: scripts 446 OK, hooks 210 OK, plugin and marketplace validate exit 0 (warnings are the untracked `cairn-probe.log`/`tsconfig.json`), plugin test 2466 pass; hand-run skills/tests 982 OK; cairn_validate green.
 - 2026-10-31: claim audit: 52 claims read, 8 corrected — skills/hotfix/SKILL.md (red path defined: fix, then step 1's walk and approval again, or stop; resume wording), README.md (desktop-only wake, resume command elsewhere), CHANGELOG.md (red wording, "to resume", "can get"), skills/shared/tracking-rules.md (red ends at first failed check, W2/W24; `/clear` cites W20 and marks delivery unobserved; moved-head check), skills/milestone-review/SKILL.md (CI line says typing the command re-poses approval; a head moved by someone else since approval merges nothing). Baseline re-seeded to 875 lines / 86,622 bytes; skills/tests 982 OK, scripts and hooks suites, both validates, cairn_validate green; plugin test last run at T6 (no `hooks/` change since).
+- 2026-10-31: review return 1: AC2 — the stop-point clause says a `/clear` while the merge watch is armed "loses nothing", but AC2 requires it to state that such a `/clear` is safe; review ticks were written by a `python3` script against the Write/Edit rule.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Pass 1 (2026-10-31). PR #342 opened at review start (Copilot arm); Copilot request made, state query read `none` after it: may not be recorded by GitHub (used-up Copilot credits are one cause).
+
+- AC1: tracking-rules wait rule, read at HEAD: "has four steps. (a) Arm `gh" (1 match); wake line naming PR, status, resume command (line 403); close block with CI line and fenced resume command (404-406); (d) reads `gh pr checks <N>` and `gh pr view <N> --json state`, "If any check failed, take the red-CI path. Otherwise, if a check is pending" (1 match), all passed → merge; closed PR and no-checks clauses named; foreground `gh pr checks` in the section: 0 matches; stop list reads "a local check that times out" (588); On timeout names local commands and Monitors (418). Pass.
+- AC2: early-stop clause names the armed turn end (600-602); stop-point clause names the merge watch as the one exception (426), still bars a commit, and an unarmed wake line "runs nothing" (430). The clause says a `/clear` while armed "loses nothing", not that it "is safe" as the criterion requires. Fail.
+- AC3: `/milestone-review` step 8 (713, 722) and its companion arm (752-753) and `/hotfix` step 6 (506, 519) state the background watch with their own resume command (1 match each); the AC3 grep lists 7 lines, none a foreground or ceiling-bound wait. Pass.
+- AC4: one-watcher clause names the host app's PR monitor exception, "A session never turns such a monitor on for a merge wait", and the head-commit rule (lines 397-400). Pass.
+- AC5: `wait-mechanisms.md` W24 (late red, PR #2 run 41215432313, failure at 15:36:54 after the turn ended ~15:34; woken turn read `gate` fail, `long` pending → red path) and W25 (green, PR #1 run 41215428891, 12 min 5 s; woken turn read both pass → merge branch), each an idle wake with no user message; the rule cites "(W24, W25 — the host observed)" and names the Claude Code desktop session. Pass.
+- AC6: the AC6 grep, outside the rewritten blocks, lists 23 lines; each that describes a merge's CI wait (README 710, hotfix 120/194/208/217/530, review 79, implement 335, tracking-rules 352/588/602/612-614) agrees; PROFILE:68 and cairn-release 122-126 (local checks, Out) do not describe a merge wait in conflict. CHANGELOG Unreleased line 7 entry. Pass.
