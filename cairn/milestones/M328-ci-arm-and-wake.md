@@ -106,7 +106,7 @@ guard.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Live probe (granted at the question set). In
+- [x] T1: Live probe (granted at the question set). In
       `jmgirard/cairn-wait-lab`, make the red `gate` job fail after about
       3 minutes, not 6 s. From a desktop session, arm the AC1 watch on a
       green run that includes the 720 s job, and on a late red run; end the
@@ -152,6 +152,7 @@ guard.
 - 2026-10-31: question set (implement stop): jmgirard/cairn-wait-lab no longer existed — user granted creating it again as a private repo with one workflow and two draft PRs.
 - 2026-10-31: T1 armed: lab PR #1 (green, 720 s job, run 41215428891) and PR #2 (gate fails after 180 s, run 41215432313), each `gh pr checks <N> --watch --fail-fast` in `run_in_background` with a wake line; turn ended at ~15:34 UTC to observe idle wakes.
 - 2026-10-31: T1 red wake: the idle session was started with no user message by PR #2's task notification (task exit 0; wake line "watch exited 1 at 15:36:54"); step (d) read `gate` fail and `long` pending, so the failed check won over the pending one (red path); turn ended again for PR #1.
+- 2026-10-31: T1 done: green wake on PR #1 (run 12 min 5 s, watch exited 0 at 15:45:47, idle session started with no user message, step (d) read both checks pass → merge branch); rows W24–W26 added to `wait-mechanisms.md`, W26 recording that the task's exit code is the `echo`'s, so the rule reads the status from the wake line; hand-run `skills/tests` green (977).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
