@@ -6,11 +6,13 @@ The rulebook's wait paragraph once prescribed one blocking `gh pr checks
 harness ceiling is moved to the background rather than killed, so that
 wording produced the stale watcher it meant to prevent. The replacement rule
 has two load-bearing clauses pinned here: the trigger (what a wait is and
-that each thing waited on has one watcher) and the stop point (no watcher
-left armed at a commit, turn end, or `/clear` point — stopped with TaskStop
-first). Each is registered in the mutation harness. The timeout stop's
-fenced next command (M172) is a third load-bearing clause, unpinned — a new
-rule owes no prose guard here (test-doctrine slot). The negative check that
+that each thing waited on has one watcher, save a host PR monitor the user
+turned on) and the stop point (no watcher left armed at a commit, turn end,
+or `/clear` point — stopped with TaskStop first — save a merge's armed CI
+watch, M328). M328's merge CI wait is pinned too. Each is registered in the
+mutation harness. The timeout stop's fenced next command (M172, now for
+local commands and Monitors) is unpinned — a new rule owes no prose guard
+here (test-doctrine slot). The negative check that
 the superseded spelling is gone from the shipped prose spells the retired
 token by concatenation, so a grep of the tree for it does not hit this
 guard, and is unregistered — there is no block to mutate.
@@ -96,9 +98,15 @@ class TestWaitRuleMergeWait(unittest.TestCase):
     def test_merge_wait_arms_a_background_watch(self):
         self.assertRegex(
             self.para,
-            r"\*\*A\s+merge's\s+CI\s+wait\*\*.*?has\s+four\s+steps\.\s+\(a\)\s+Arm"
-            r"\s+`gh\s+pr\s+checks\s+<N>\s+--watch\s+--fail-fast`\s+as\s+a\s+Bash"
-            r"\s+`run_in_background`\s+task\.",
+            r"Otherwise\s+arm\s+`gh\s+pr\s+checks\s+<N>\s+--watch\s+--fail-fast`\s+as"
+            r"\s+a\s+Bash\s+`run_in_background`\s+task,\s+under\s+a\s+one-hour\s+bound",
+        )
+
+    def test_merge_wait_arms_only_while_a_check_is_pending(self):
+        self.assertRegex(
+            self.para,
+            r"With\s+no\s+check\s+pending,\s+go\s+straight\s+to\s+\(d\)\s+and\s+arm"
+            r"\s+nothing",
         )
 
     def test_a_failed_check_wins_over_a_pending_one(self):

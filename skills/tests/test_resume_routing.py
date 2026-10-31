@@ -334,7 +334,7 @@ class TestHotfixOpenPrReentry(unittest.TestCase):
     and a refused merge stops. The
     guest arm reports and stops. Step 6 notes the head the gate shows,
     writes the marker with the head oid before the wait, merges with
-    `--match-head-commit`, and its timeout close names both re-entries.
+    `--match-head-commit`, and its CI-wait close names both re-entries.
     Each trigger part and each outcome is pinned on its own,
     whitespace collapsed."""
 

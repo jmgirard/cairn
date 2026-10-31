@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M328: Wait for CI without stopping the session
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -135,7 +135,7 @@ guard.
 - [x] T7: Review return 1: make the stop-point clause state that a
       `/clear` while the merge watch is armed is safe, keeping the W20 note
       that its notification's delivery is unobserved.
-- [ ] T8: Review return 2: in the wait rule and both skill sites, read
+- [x] T8: Review return 2: in the wait rule and both skill sites, read
       checks first and arm only while one is pending; bound the watch at
       one hour; check the head before re-arming; count skipped checks as
       passed and stop on a failed read; stop an armed watch on a typed
@@ -172,6 +172,7 @@ guard.
 - 2026-10-31: review return 1: AC2 — the stop-point clause says a `/clear` while the merge watch is armed "loses nothing", but AC2 requires it to state that such a `/clear` is safe; review ticks were written by a `python3` script against the Write/Edit rule.
 - 2026-10-31: T7 added for review return 1 (minor amendment) and done: the stop-point clause now reads a `/clear` while armed "is safe and loses nothing", W20 note kept; baseline re-seeded to 875 lines / 86,634 bytes; skills/tests 982 OK, scripts and hooks suites, both validates exit 0; status back to review.
 - 2026-10-31: review return 2: load-bearing defects in the merge wait from pass 2's lenses (diff-bug #1–#9, blame-history #1–#3, prior-review #1, ripple #1/#5/#7) — a second watcher on typed resume, no rule for a watch that exits before the turn ends, a wake that can merge mid-other-work, no branch for skipped checks or a failed read, no bound on a watch that never settles, re-arm before the head check, the moved-head stop off the stop list, host-unconditional CI line, overstated W20.
+- 2026-10-31: T8 added for review return 2 (minor amendment) and done: the merge wait reads `gh pr checks` before arming and arms only while a check is pending; the watch runs under a one-hour `perl` alarm (exit 142 checked live) whose exit stops with fresh state; the wake acts only on the armed branch with no uncommitted tracked change, reads state and head together, stops on a failed read or a foreign head before re-arming, counts skipped checks as passed; a typed resume `TaskStop`s the armed watch; CI line and the armed close's safety line name the desktop app and that `/clear` or other work ends the self-resume; stop list gains the bound, a foreign head, a failed read; W20 wording fixed; both skill sites mirror it (hotfix's typed-resume text moved after the wake handling); D-230 annotates D-229; CHANGELOG, wait-mechanisms implications, test docstrings and comments updated; `test_wait_rule` re-pinned (arm under the bound, arm only while pending); two parked rows filed (diff-bug #14, blame-history #5); baseline 889 lines / 88,073 bytes; skills/tests 983 OK, scripts and hooks suites, both validates exit 0, cairn_validate green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

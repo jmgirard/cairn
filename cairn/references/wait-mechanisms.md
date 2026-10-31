@@ -102,7 +102,11 @@ https://github.com/anthropics/claude-code/issues/25188.
 ## What the ledger implies for a wait rule
 
 Stated here as findings, not as the rule (the rule is tracking-rules' and
-cites this page):
+cites this page). The M170 findings below shaped a foreground wait. M328's
+rows W24–W26 add that a finished background watch starts a new turn in an
+idle desktop session, so a merge's CI wait can arm one and end the turn. A
+watch that exits while the turn is still open sends no later wake, and the
+task's own exit code hides the watch's status:
 
 - A foreground Bash wait is only "one blocking wait, resolved within the
   turn" when the command finishes inside its timeout; at the ceiling it

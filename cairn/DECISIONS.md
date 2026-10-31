@@ -8341,3 +8341,25 @@ with no rerun by the user. The observation that reopens this entry: a
 merge watch whose notification never arrived in a desktop session that
 followed the rule, or an armed watch found running past an hour on a hung
 run.
+
+### D-230 (2026-10-31): The merge CI wait reads checks before it arms, bounds the watch at one hour, and guards the wake — annotates D-229, narrows its Monitor rejection (M328 review)
+
+**Context:** M328's second review pass found that D-229's watch has no
+bound (a required check that a path filter skips, D-133, or a fork PR
+awaiting approval stays pending), that a watch which exits before the turn
+ends sends no wake, that a typed resume arms a second watch, and that a
+wake can merge in the middle of other work.
+
+**Decision:** The session reads `gh pr checks` first and arms only while a
+check is pending. The watch runs under a one-hour `perl` alarm, and an
+exit at the bound stops with fresh check state. At the wake the session
+acts only while it is still on the branch it armed from with no
+uncommitted tracked change, reads the head before it re-arms, counts a
+skipped check as passed, and stops on a failed read. A typed resume stops
+the armed watch first. D-229's reason for rejecting a Monitor ("`gh
+--watch` ends on its own") no longer holds; the Monitor stays rejected
+because the alarm gives the same bound in the one command.
+
+**Consequences:** The closed stop list gains the bound, a head that
+someone else moved, and a failed read at a wake. D-229's decision and its
+reopening observations stand.

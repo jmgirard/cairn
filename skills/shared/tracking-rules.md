@@ -398,21 +398,31 @@ watcher per wait: a run, command, or subagent is watched by one mechanism at a t
 exception: a host app's own PR monitor that the user turned on, such as the desktop app's Auto-fix. A session never
 turns such a monitor on for a merge wait, the monitor does not replace the armed watch below, and a red result for a
 head commit the session already acted on is not acted on again.
-**A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Arm `gh
-pr checks <N> --watch --fail-fast` as a Bash `run_in_background` task. (b) After the watch exits, that task prints
-one wake line naming the PR number, the watch's exit status, and the invoking skill's resume command. The task's own
-exit code is the `echo`'s, so the status is read from the line (W26). (c) End the turn with a close block whose CI
-line says the session resumes by itself when CI ends and whose fenced next command is that resume command, for a
-host where no wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code
-desktop session (W24, W25 — the host observed), read the check state with `gh pr checks <N>` and the merge state
-with `gh pr view <N> --json state`. If any check failed, take the red-CI path. Otherwise, if a check is pending (a
-push moved the head), arm the watch again. If every check passed, go on to the merge. A PR no longer open follows
-"Resume is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch
-at its first failed check (W2, W24), and a green run of any length ends it with no stop. A merge after a moved head
-still takes the invoking skill's own head check. **A long-running local command** (a suite, a build):
-foreground with a timeout when it fits; otherwise Bash `run_in_background`, acted on at its completion notification
-— its `timeout` does not end it; at the harness ceiling a foreground command is moved to the background, not killed
-(one starting with `sleep`, containing `git`, or unparseable as a compound is stopped instead). A Monitor is for a
+**A merge's CI wait** (`/milestone-review` step 8, `/hotfix` step 6) has four steps. (a) Read `gh pr checks <N>`
+first. With no check pending, go straight to (d) and arm nothing, since a watch that exits before the turn ends sends
+no wake (a no-checks PR, CI already done, a red run that fails in seconds). Otherwise arm `gh pr checks <N> --watch
+--fail-fast` as a Bash `run_in_background` task, under a one-hour bound (`perl -e 'alarm shift; exec @ARGV' 3600 gh
+pr checks …`). (b) After the watch exits, that task prints one wake line naming the PR number, the watch's exit
+status, and the invoking skill's resume command. The task's own exit code is the `echo`'s, so the status is read
+from the line (W26); 142 means the bound ended the watch. (c) End the turn with a close block whose CI line says
+that in the Claude Code desktop app the session resumes by itself when CI ends, and that a `/clear` or other work
+in the session before then ends that resume; its fenced next command is that resume command, for a host where no
+wake comes. (d) At that task's completion notification, which starts a new turn in an idle Claude Code desktop
+session (W24, W25 — the host observed), first check that the session is still on the branch it armed from with no
+uncommitted change to a tracked file; if not, show the wake line and its resume command and run nothing. Then read
+the check state with `gh pr checks <N>`, and the merge state and head with `gh pr view <N> --json
+state,headRefOid`; a failed read stops with a close block naming its error. If any check failed, take the red-CI
+path. Otherwise, if a check is pending, arm the watch again while the head is still the one the session pushed; a
+head someone else moved stops with a close block naming it. If every check passed (a skipped check counts as
+passed), go on to the merge under the skill's own head check. A wake line of status 142 stops with a close block
+reporting the fresh check state. Each of these stops fences the resume command. A PR no longer open follows "Resume
+is stateless" below, and one that reports no checks follows the no-checks clause. A red run ends the watch at its
+first failed check (W2, W24). A typed resume command while the session still holds an armed watch on the PR stops
+that watch with `TaskStop` first. A companion PR's reads are spelled `cd <abs-path> && …`. **A long-running local
+command** (a suite, a build): foreground with a timeout when it fits; otherwise Bash `run_in_background`, acted on
+at its completion notification — its `timeout` does not end it; at the harness ceiling a foreground command is moved
+to the background, not killed (one starting with `sleep`, containing `git`, or unparseable as a compound is stopped
+instead). A Monitor is for a
 stream of events (each check as it lands), always with `timeout_ms` set — it is killed at that time, says so, and is
 then gone (`TaskStop` finds nothing). **A background subagent**: its own completion notification; nothing polls it.
 **On timeout** (a local command's foreground call moved to the background; a Monitor's timeout event): report the
@@ -421,12 +431,14 @@ invoking skill's own command (`/cairn-release`, say) — the resume door. **No c
 checks reported" and exits 1 at once, `--watch` included): the PR is mergeable on local green where the profile's
 consistency-gate says so (one source: the git model's `cairn/**` bullet); never wait for a check that will not
 arrive.
-**Stop points**: no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at
-completion or `TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a
-closed issue reports survival), so the session stops it with `TaskStop` first. The one exception is a merge's armed
-CI watch above, the one watcher a turn can end on: it is armed after the turn's last commit, so a `/clear` while it
-is armed is safe and loses nothing (the watch is documented to survive it, W20, and whether its notification then
-reaches the new session is unobserved). A session that gets a wake line from a watch it did not arm, as after a `/clear`, shows
+**Stop points**: outside the one exception below,
+no watcher is left armed at a commit, a turn end, or a `/clear` point — a background task ends only at completion or
+`TaskStop`, a Monitor at those or its own `timeout_ms`, and no doc states that `/clear` stops either (a closed issue
+reports survival), so the session stops it with `TaskStop` first. The one exception is a merge's armed CI watch
+above, the one watcher a turn can end on: it is armed after the turn's last commit, so a `/clear` while it is armed
+is safe and loses nothing. It ends the self-resume, and the fenced resume command takes over (W20 reports the watch
+surviving `/clear`; whether its notification then reaches the new session is unobserved). A session that gets a wake
+line from a watch it did not arm, as after a `/clear`, shows
 the user the line and its resume command and runs nothing. A `/loop` or scheduled task is not a CI wait. **Resume is
 stateless**: re-derive the check state from `gh pr checks` and the PR's merge state from `gh pr view <N> --json
 state` (PR URL: the milestone header), never a remembered "CI was running" or "not yet merged".
@@ -585,7 +597,8 @@ stop whose choice is the user's is posed as a chip; any other stop ends with the
   sees from the plan included),
 - the repeated review-failure stop (`/milestone-review` step 4's thrash rule, and the second amendment return or the
   second re-audit on one criterion),
-- a local check that times out, or red CI that the agent cannot fix,
+- a local check that times out, a merge CI watch that reaches its one-hour bound, a PR head someone else moved
+  after the approval, a failed `gh` read at a wake, or red CI that the agent cannot fix,
 - a guard hook's denial,
 - a stop at a task boundary for context hygiene,
 - the offer to escalate to a Fable review (`/milestone-brief`),
@@ -617,7 +630,8 @@ commands in fenced
 blocks, primary first, each with a one-line plain-language label; at a stop inside a run the primary is the typed
 command that resumes it (`/milestone-implement <id>` or `/milestone-review <id>`), unless the stop's step names
 another (the goal-wrong stop's `/milestone-plan`, the guest handoff's `/milestone`). Last, one line noting that adjusting
-course or `/clear` are both safe at this point. No chip is posed to route to the next skill: the user runs the fenced
+course or `/clear` are both safe at this point; after a turn that arms a merge's CI watch, the line says instead
+that a `/clear` or other work ends the self-resume and the fenced command then takes over. No chip is posed to route to the next skill: the user runs the fenced
 command, and the block's fixed shape is itself the signal that a boundary was reached. Decision chips, the merge
 question and the stops above among them, are unaffected: a gate is a choice, and a close is a handoff. Outside a run,
 a decision arising mid-skill (a continue-or-stop choice, an acceptance over a produced proposal) is a gate and keeps

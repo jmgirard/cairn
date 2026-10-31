@@ -120,7 +120,7 @@ REGISTRY = [
         guard="test_cost_audit_line",
         test="TestCostAuditLine.test_the_rulebook_line_carries_its_seeded_baseline",
         target=MILESTONE,
-        block="875 lines / 86,634 bytes",
+        block="889 lines / 88,073 bytes",
     ),
     Mutation(
         guard="test_cost_audit_line",
@@ -3760,13 +3760,20 @@ REGISTRY += [
         guard="test_wait_rule",
         test="TestWaitRuleMergeWait.test_merge_wait_arms_a_background_watch",
         target=RULES,
-        block="has four steps. (a) Arm `gh",
+        block="task, under a one-hour bound",
+    ),
+    Mutation(
+        guard="test_wait_rule",
+        test="TestWaitRuleMergeWait."
+             "test_merge_wait_arms_only_while_a_check_is_pending",
+        target=RULES,
+        block="go straight to (d) and arm nothing",
     ),
     Mutation(
         guard="test_wait_rule",
         test="TestWaitRuleMergeWait.test_a_failed_check_wins_over_a_pending_one",
         target=RULES,
-        block="If any check failed, take the red-CI path.",
+        block="If any check failed, take the red-CI",
     ),
     Mutation(
         guard="test_wait_rule",
@@ -4372,7 +4379,7 @@ REGISTRY += [
     # changes requested, row match), and per outcome (skip to the wait, the
     # head pin, the refused merge, the walk on a failed condition, the guest
     # stop and its close; M325's vet stop before the wait has no entry), plus step 6's order, marker line, presented head,
-    # decline, merge pin, and both halves of the timeout close. Blocks embed
+    # decline, merge pin, and both halves of the CI-wait close. Blocks embed
     # the physical wrap; the guard reads with whitespace collapsed.
     Mutation(
         guard="test_resume_routing",

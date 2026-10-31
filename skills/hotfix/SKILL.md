@@ -500,29 +500,45 @@ can resolve against the fork instead of the base repo.
    fork PR** — that branch lives in the contributor's repo and is not ours
    to delete)
    only on explicit approval at that chip, with green CI by the
-   tracking-rules merge CI wait (one watcher). Arm the watch as a Bash
-   `run_in_background` task, after the step's last commit:
+   tracking-rules merge CI wait (one watcher). After the step's last
+   commit, read `gh pr checks <N>`. With no check pending, act on that
+   read at once (below) and arm nothing. Otherwise arm the watch as a
+   Bash `run_in_background` task:
 
-   `gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /hotfix <PR reference>"`
+   `perl -e 'alarm shift; exec @ARGV' 3600 gh pr checks <N> --watch --fail-fast >/dev/null 2>&1; echo "cairn wake: PR #<N> CI watch exited $?. Resume: /hotfix <PR reference>"`
 
    The task's own exit code is the `echo`'s, so read the watch's status
-   from that wake line. End the turn with a close block whose CI line
-   (tracking-rules close-block shape) says the session resumes by itself
-   when CI ends, and that typing the fenced command instead re-derives the
-   PR's state and waits again; the fenced next command is `/hotfix` with
-   the PR reference, for a host where no wake comes. Step 1 then re-derives the
-   PR's state: while the PR is still open and the marker names it,
+   from that wake line; 142 means the one-hour bound ended it. End the
+   turn with a close block whose CI line (tracking-rules close-block
+   shape) says that in the Claude Code desktop app the session resumes by
+   itself when CI ends, that a `/clear` or other work before then ends
+   that resume, and that typing the fenced command re-derives the PR's
+   state and waits again; the fenced next command is `/hotfix` with the
+   PR reference, for a host where no wake comes.
+
+   At the task's completion notification, first check that the session is
+   still on this branch with no uncommitted change to a tracked file; if
+   not, show the wake line and run nothing. Then read `gh pr checks <N>`
+   and `gh pr view <N> --json state,headRefOid`; a failed read stops with
+   a close block naming its error. A failed check is fixed on the branch,
+   and the new commits then take step 1's walk and this approval again,
+   since `--match-head-commit` refuses a moved head; red CI the agent
+   cannot fix stops with a close block naming the failed check. A head
+   that moved since the approval, by a push the session did not make,
+   re-arms nothing and stops with a close block naming it. Otherwise a
+   pending check arms the watch again, and every check passed (a skipped
+   check counts as passed) goes on to the merge. A wake line of status
+   142 stops with a close block reporting the fresh check state. Each of
+   these stops fences `/hotfix` with the PR reference. A PR no longer open
+   takes step 1's re-entries.
+
+   A typed `/hotfix` with the PR reference, while this session still
+   holds the armed watch, stops it with `TaskStop` first. Step 1 then
+   re-derives the PR's state: while the PR is still open and the marker names it,
    step 1's open-PR re-entry resumes at this wait (or takes the walk again
    when one of its conditions fails, or stops before the wait when its idea
    vet finds a concern over the hotfix bar), and for a PR merged since,
-   step 1's merged-PR re-entry verifies the merged diff post-hoc. At the task's
-   completion notification, read `gh pr checks <N>` and
-   `gh pr view <N> --json state`. A failed check is fixed on the branch,
-   and the new commits then take step 1's walk and this approval again,
-   since `--match-head-commit` refuses a moved head; red CI the agent
-   cannot fix stops with a close block naming the failed check. A pending
-   one arms the watch again, and every check passed goes on to the merge. A PR no longer open takes step 1's
-   re-entries. Never merge past red or pending CI. A PR created moments
+   step 1's merged-PR re-entry verifies the merged diff post-hoc. Never merge past red or pending CI. A PR created moments
    ago can report no checks before GitHub registers them, so where the
    profile does not declare the repo CI-less, re-read `gh pr checks` after
    a short wait, up to about a minute, before taking the no-checks case. In owner mode, on approval, the order is
